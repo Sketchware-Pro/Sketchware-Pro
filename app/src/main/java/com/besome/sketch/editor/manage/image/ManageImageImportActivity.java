@@ -2,10 +2,6 @@ package com.besome.sketch.editor.manage.image;
 
 import a.a.a.QB;
 import a.a.a.bB;
-import a.a.a.gu;
-import a.a.a.hu;
-import a.a.a.iu;
-import a.a.a.ju;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.xB;
@@ -29,6 +25,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.bumptech.glide.BitmapRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.analytics.HitBuilders;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -230,7 +227,15 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         this.ed_input.setHint(xB.b().a(this, 2131625268)); // R.string.design_manager_image_hint_enter_image_name
         this.nameValidator = new QB(getApplicationContext(), this.ed_input.getTextInputLayout(), uq.b, getReservedProjectImageNames(), getReservedSelectedCollectionNames());
         this.chk_samename = (CheckBox) findViewById(2131230892);
-        this.chk_samename.setOnCheckedChangeListener(new gu(this));
+        this.chk_samename.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                nameValidator.c(null);
+                nameValidator.a(selectedCollections.size());
+            } else {
+                nameValidator.c(selectedCollections.get(selectedItem).resName);
+                nameValidator.a(1);
+            }
+        });
         this.btn_decide = (Button) findViewById(2131230816);
         this.btn_decide.setText(xB.b().a(getApplicationContext(), 2131625255)); // R.string.design_manager_change_name_button
         this.btn_decide.setOnClickListener(this);
@@ -285,7 +290,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         }
     }
 
-    class ItemAdapter extends RecyclerView.Adapter<ViewHolder> {
+    class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
         class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -303,7 +308,22 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
                 this.img_conflict = (ImageView) itemView.findViewById(2131231126);
                 this.img = (ImageView) itemView.findViewById(2131231102);
                 this.tv_name = (TextView) itemView.findViewById(2131232055);
-                this.img.setOnClickListener(new ju(this, ItemAdapter.this));
+                this.img.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        selectedItem = getLayoutPosition();
+                        showPreview(selectedItem);
+                        tv_currentnum.setText(String.valueOf(selectedItem + 1));
+                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
+                        if (chk_samename.isChecked()) {
+                            nameValidator.c(null);
+                            nameValidator.a(selectedCollections.size());
+                        } else {
+                            nameValidator.c(selectedCollections.get(selectedItem).resName);
+                            nameValidator.a(1);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                });
             }
         }
 
@@ -324,7 +344,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             } else {
                 viewHolder.img.setBackgroundColor(Color.parseColor("#ffffff"));
             }
-            Glide.with(ManageImageImportActivity.this.getApplicationContext()).load(str).asBitmap().centerCrop().error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new iu(this, viewHolder.img));
+            Glide.with(ManageImageImportActivity.this.getApplicationContext()).load(str).asBitmap().centerCrop().error(2131165831).into(new BitmapImageViewTarget(viewHolder.img));
             viewHolder.tv_name.setText(((ProjectResourceBean) ManageImageImportActivity.this.selectedCollections.get(position)).resName);
         }
 
@@ -349,7 +369,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
     }
 
     public final void showPreview(int index) {
-        Glide.with(getApplicationContext()).load(this.selectedCollections.get(index).resFullName).asBitmap().centerCrop().error(2131165831).into((BitmapRequestBuilder<String, Bitmap>) new hu(this, this.img)); // R.drawable.ic_remove_grey600_24dp
+        Glide.with(getApplicationContext()).load(this.selectedCollections.get(index).resFullName).asBitmap().centerCrop().error(2131165831).into(new BitmapImageViewTarget(img)); // R.drawable.ic_remove_grey600_24dp
     }
 
     public final boolean isNameInUseByProjectImage(String name) {
