@@ -4,78 +4,70 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
-    
-    <ScrollView
+        
+    <LinearLayout
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
-         android:orientation="vertical"
-         android:padding="8dp">
+         android:orientation="vertical">
+             
+         <com.google.android.material.textfield.TextInputLayout
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="3.0dip"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="4dp">
+                 
+              <EditText
+                   android:id="@+id/listener_name"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:hint="Name"
+                   android:padding="8dp"
+                   android:textSize="16dp" />
+         </com.google.android.material.textfield.TextInputLayout>
+             
+         <com.google.android.material.textfield.TextInputLayout
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="3.0dip"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="4dp">
+                 
+              <EditText
+                   android:id="@+id/listener_custom_import"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:hint="Custom import"
+                   android:padding="8dp"
+                   android:textSize="16sp" />
+         </com.google.android.material.textfield.TextInputLayout>
          
-         <LinearLayout
-             android:layout_width="fill_parent"
-             android:layout_height="wrap_content"
-             android:orientation="vertical"
-             android:padding="8dp">
+         <com.google.android.material.textfield.TextInputLayout
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="3.0dip"
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="4dp">
+              
+              <EditText
+                  android:id="@+id/listener_code"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:hint="Code (### => variable name)"
+                  android:padding="8dp"
+                  android:textSize="26sp" />
+         </com.google.android.material.textfield.TextInputLayout>
              
-             <com.google.android.material.textfield.TextInputLayout
-                 android:layout_width="fill_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_margin="3.0dip"
-                 android:gravity="center"
-                 android:orientation="vertical"
-                 android:padding="4dp">
-                 
-                 <EditText
-                      android:id="@+id/listener_name"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:hint="Name"
-                      android:padding="8dp"
-                      android:textSize="16dp" />
-             </com.google.android.material.textfield.TextInputLayout>
-             
-             <com.google.android.material.textfield.TextInputLayout
-                 android:layout_width="fill_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_margin="3.0dip"
-                 android:gravity="center"
-                 android:orientation="vertical"
-                 android:padding="4dp">
-                 
-                 <EditText
-                      android:id="@+id/listener_custom_import"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:hint="Custom import"
-                      android:padding="8dp"
-                      android:textSize="16sp" />
-             </com.google.android.material.textfield.TextInputLayout>
-             
-             <com.google.android.material.textfield.TextInputLayout
-                 android:layout_width="fill_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_margin="3.0dip"
-                 android:gravity="center"
-                 android:orientation="vertical"
-                 android:padding="4.0dip">
-                 
-                 <EditText
-                      android:id="@+id/listener_code"
-                      android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:hint="Code (### => variable name)"
-                      android:padding="8.0dip"
-                      android:textSize="16.0sp" />
-             </com.google.android.material.textfield.TextInputLayout>
-             
-             <CheckBox
-                 android:id="@+id/listener_is_independent_class_or_method"
-                 android:layout_width="wrap_content"
-                 android:layout_height="fill_parent"
-                 android:gravity="center"
-                 android:padding="8.0dip"
-                 android:text="Independent class/method"
-                 android:textSize="16.0sp" />
-         </LinearLayout>
-    </ScrollView>
+         <CheckBox
+              android:id="@+id/listener_is_independent_class_or_method"
+              android:layout_width="wrap_content"
+              android:layout_height="fill_parent"
+              android:gravity="center"
+              android:padding="8.0dip"
+              android:text="Independent class/method"
+              android:textSize="26sp" />
+    </LinearLayout>
 </LinearLayout>
