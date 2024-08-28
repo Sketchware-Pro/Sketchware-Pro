@@ -277,7 +277,7 @@
         <activity
             android:name="mod.hilal.saif.activities.tools.ManageCustomComponentActivity"
             android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="mod.hilal.saif.activities.tools.AddCustomComponentActivity"
             android:configChanges="orientation|screenSize"
