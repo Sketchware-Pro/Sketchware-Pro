@@ -2,7 +2,6 @@ package com.besome.sketch.editor.manage.image;
 
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +21,7 @@ import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import a.a.a.By;
@@ -218,7 +218,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
 
     private void save() {
         if (a(O)) {
-            new Handler().postDelayed(() -> new SaveAsyncTask(getApplicationContext()).execute(), 500L);
+            new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
         }
     }
 
@@ -314,63 +314,70 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
-    private class SaveAsyncTask extends MA {
-        public SaveAsyncTask(Context context) {
-            super(context);
-            AddImageActivity.this.a(this);
+    private static class SaveAsyncTask extends MA {
+        private final WeakReference<AddImageActivity> activity;
+
+        public SaveAsyncTask(AddImageActivity activity) {
+            super(activity.getApplicationContext());
+            this.activity = new WeakReference<>(activity);
+            activity.a(this);
         }
 
         @Override
         public void a() {
-            h();
+            var activity = this.activity.get();
+            activity.h();
             Intent intent = new Intent();
-            intent.putExtra("sc_id", sc_id);
-            if (editing) {
-                intent.putExtra("image", image);
+            intent.putExtra("sc_id", activity.sc_id);
+            if (activity.editing) {
+                intent.putExtra("image", activity.image);
             } else {
-                intent.putExtra("images", images);
+                intent.putExtra("images", activity.images);
             }
-            setResult(RESULT_OK, intent);
-            finish();
+            activity.setResult(RESULT_OK, intent);
+            activity.finish();
         }
 
         @Override
         public void b() throws By {
+            var activity = this.activity.get();
             try {
                 publishProgress("Now processing..");
-                if (!multipleImagesPicked) {
-                    if (!editing) {
+                if (!activity.multipleImagesPicked) {
+                    if (!activity.editing) {
                         var image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                                ed_input_edittext.getText().toString().trim(), imageFilePath);
+                                activity.ed_input_edittext.getText().toString().trim(), activity.imageFilePath);
                         image.savedPos = 1;
                         image.isNew = true;
-                        image.rotate = imageRotationDegrees;
-                        image.flipVertical = imageScaleY;
-                        image.flipHorizontal = imageScaleX;
-                        if (chk_collection.isChecked()) {
-                            Op.g().a(sc_id, image);
+                        image.rotate = activity.imageRotationDegrees;
+                        image.flipVertical = activity.imageScaleY;
+                        image.flipHorizontal = activity.imageScaleX;
+                        if (activity.chk_collection.isChecked()) {
+                            Op.g().a(activity.sc_id, image);
                         }
-                        images.add(image);
-                    } else if (!B) {
-                        image.rotate = imageRotationDegrees;
-                        image.flipHorizontal = imageScaleX;
-                        image.flipVertical = imageScaleY;
+                        activity.images.add(image);
+                    } else if (!activity.B) {
+                        var image = activity.image;
+                        image.rotate = activity.imageRotationDegrees;
+                        image.flipHorizontal = activity.imageScaleX;
+                        image.flipVertical = activity.imageScaleY;
                         image.isEdited = true;
                     } else {
-                        image.resFullName = imageFilePath;
+                        var image = activity.image;
+                        image.resFullName = activity.imageFilePath;
                         image.savedPos = 1;
-                        image.rotate = imageRotationDegrees;
-                        image.flipVertical = imageScaleY;
-                        image.flipHorizontal = imageScaleX;
+                        image.rotate = activity.imageRotationDegrees;
+                        image.flipVertical = activity.imageScaleY;
+                        image.flipHorizontal = activity.imageScaleX;
                         image.isEdited = true;
                     }
                 } else {
                     var toAdd = new ArrayList<ProjectResourceBean>();
                     int i = 0;
-                    while (i < pickedImageUris.size()) {
-                        var uri = pickedImageUris.get(i);
-                        var imageName = ed_input_edittext.getText().toString().trim() + "_" + ++i;
-                        var imageFilePath = HB.a(getApplicationContext(), uri);
+                    while (i < activity.pickedImageUris.size()) {
+                        var uri = activity.pickedImageUris.get(i);
+                        var imageName = activity.ed_input_edittext.getText().toString().trim() + "_" + ++i;
+                        var imageFilePath = HB.a(activity.getApplicationContext(), uri);
                         if (imageFilePath == null) {
                             return;
                         }
@@ -383,11 +390,11 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                         image.flipHorizontal = 1;
                         toAdd.add(image);
                     }
-                    if (chk_collection.isChecked()) {
-                        Op.g().a(sc_id, toAdd, true);
+                    if (activity.chk_collection.isChecked()) {
+                        Op.g().a(activity.sc_id, toAdd, true);
                     }
-                    multipleImagesPicked = false;
-                    images.addAll(toAdd);
+                    activity.multipleImagesPicked = false;
+                    activity.images.addAll(toAdd);
                 }
             } catch (Exception e) {
                 // the bytecode's lying
@@ -400,7 +407,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                         case "duplicate_name" -> R.string.collection_duplicated_name;
                         default -> 0;
                     };
-                    var message = code != 0 ? xB.b().a(getApplicationContext(), code) : null;
+                    var message = code != 0 ? xB.b().a(activity.getApplicationContext(), code) : null;
 
                     var a = yy.a();
                     if (a != null && !a.isEmpty()) {
@@ -422,7 +429,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
 
         @Override
         public void a(String str) {
-            h();
+            activity.get().h();
         }
     }
 
