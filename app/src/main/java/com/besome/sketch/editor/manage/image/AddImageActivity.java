@@ -218,7 +218,10 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
 
     private void save() {
         if (a(O)) {
-            new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
+            new Handler().postDelayed(() -> {
+                k();
+                new SaveAsyncTask(this).execute();
+            }, 500L);
         }
     }
 
