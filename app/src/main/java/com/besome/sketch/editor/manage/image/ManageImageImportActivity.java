@@ -27,6 +27,8 @@ import com.bumptech.glide.BitmapRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.analytics.HitBuilders;
+import com.sketchware.remod.R;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -122,7 +124,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         if (arrayList.size() <= 0) {
             return false;
         }
-        String a = xB.b().a(getApplicationContext(), 2131624950);
+        String a = xB.b().a(getApplicationContext(), R.string.common_message_name_unavailable);
         Iterator it2 = arrayList.iterator();
         String str = "";
         while (it2.hasNext()) {
@@ -132,7 +134,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             }
             str = str + str2;
         }
-        bB.a(getApplicationContext(), a + "\n[" + str + "]", 1).show();
+        bB.a(getApplicationContext(), a + "\n[" + str + "]", bB.TOAST_WARNING).show();
         return true;
     }
 
@@ -142,7 +144,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
 
     @Override
     public void onBackPressed() {
-        setResult(-1);
+        setResult(RESULT_OK);
         super.onBackPressed();
     }
 
@@ -152,12 +154,12 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             return;
         }
         int id = v.getId();
-        if (id != 2131230816) {
-            if (id != 2131231113) {
-                if (id == 2131232151 && !n()) {
+        if (id != R.id.btn_decide) {
+            if (id != R.id.img_backbtn) {
+                if (id == R.id.tv_sendbtn && !n()) {
                     Intent intent = new Intent();
                     intent.putParcelableArrayListExtra("results", this.selectedCollections);
-                    setResult(-1, intent);
+                    setResult(RESULT_OK, intent);
                     finish();
                     return;
                 }
@@ -200,33 +202,33 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         if (!super.j()) {
             finish();
         }
-        setContentView(2131427527); // R.layout.manage_image_import
-        this.img_backbtn = (ImageView) findViewById(2131231113);
+        setContentView(R.layout.manage_image_import);
+        this.img_backbtn = (ImageView) findViewById(R.id.img_backbtn);
         this.img_backbtn.setOnClickListener(this);
-        this.tv_currentnum = (TextView) findViewById(2131231930);
-        this.tv_totalnum = (TextView) findViewById(2131232258);
-        this.tv_sendbtn = (TextView) findViewById(2131232151);
-        this.tv_sendbtn.setText(xB.b().a(getApplicationContext(), 2131625002).toUpperCase()); // R.string.common_word_import
+        this.tv_currentnum = (TextView) findViewById(R.id.tv_currentnum);
+        this.tv_totalnum = (TextView) findViewById(R.id.tv_totalnum);
+        this.tv_sendbtn = (TextView) findViewById(R.id.tv_sendbtn);
+        this.tv_sendbtn.setText(xB.b().a(getApplicationContext(), R.string.common_word_import).toUpperCase());
         this.tv_sendbtn.setOnClickListener(this);
-        this.tv_samename = (TextView) findViewById(2131232138);
-        this.tv_samename.setText(xB.b().a(getApplicationContext(), 2131625273)); // R.string.design_manager_image_title_apply_same_naming
+        this.tv_samename = (TextView) findViewById(R.id.tv_samename);
+        this.tv_samename.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_title_apply_same_naming));
         this.adapter = new ItemAdapter();
-        this.recycler_list = (RecyclerView) findViewById(2131231662);
+        this.recycler_list = (RecyclerView) findViewById(R.id.recycler_list);
         this.recycler_list.setHasFixedSize(true);
         this.recycler_list.setAdapter(this.adapter);
-        this.recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 0, false));
+        this.recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
         this.projectImages = getIntent().getParcelableArrayListExtra("project_images");
         this.selectedCollections = getIntent().getParcelableArrayListExtra("selected_collections");
         this.selectedCollectionsSize = this.selectedCollections.size();
         this.tv_currentnum.setText(String.valueOf(1));
         this.tv_totalnum.setText(String.valueOf(this.selectedCollectionsSize));
-        this.ed_input = (EasyDeleteEditText) findViewById(2131230990);
+        this.ed_input = (EasyDeleteEditText) findViewById(R.id.ed_input);
         this.ed_input_edittext = this.ed_input.getEditText();
         this.ed_input_edittext.setText(this.selectedCollections.get(0).resName);
         this.ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
-        this.ed_input.setHint(xB.b().a(this, 2131625268)); // R.string.design_manager_image_hint_enter_image_name
+        this.ed_input.setHint(xB.b().a(this, R.string.design_manager_image_hint_enter_image_name));
         this.nameValidator = new QB(getApplicationContext(), this.ed_input.getTextInputLayout(), uq.b, getReservedProjectImageNames(), getReservedSelectedCollectionNames());
-        this.chk_samename = (CheckBox) findViewById(2131230892);
+        this.chk_samename = (CheckBox) findViewById(R.id.chk_samename);
         this.chk_samename.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 nameValidator.c(null);
@@ -236,10 +238,10 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
                 nameValidator.a(1);
             }
         });
-        this.btn_decide = (Button) findViewById(2131230816);
-        this.btn_decide.setText(xB.b().a(getApplicationContext(), 2131625255)); // R.string.design_manager_change_name_button
+        this.btn_decide = (Button) findViewById(R.id.btn_decide);
+        this.btn_decide.setText(xB.b().a(getApplicationContext(), R.string.design_manager_change_name_button));
         this.btn_decide.setOnClickListener(this);
-        this.img = (ImageView) findViewById(2131231102);
+        this.img = (ImageView) findViewById(R.id.img);
     }
 
     @Override
@@ -275,9 +277,9 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             }
         }
         if (duplicateCollections.size() > 0) {
-            bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625277), 1).show(); // R.string.design_manager_message_collection_name_conflict
+            bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_conflict), bB.TOAST_WARNING).show();
         } else {
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625278), 0).show(); // R.string.design_manager_message_collection_name_no_conflict
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_no_conflict), bB.TOAST_NORMAL).show();
         }
         this.selectedCollections = new ArrayList<>();
         Iterator it2 = duplicateCollections.iterator();
@@ -304,10 +306,10 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                this.layout_item = (LinearLayout) itemView.findViewById(2131231359);
-                this.img_conflict = (ImageView) itemView.findViewById(2131231126);
-                this.img = (ImageView) itemView.findViewById(2131231102);
-                this.tv_name = (TextView) itemView.findViewById(2131232055);
+                this.layout_item = (LinearLayout) itemView.findViewById(R.id.layout_item);
+                this.img_conflict = (ImageView) itemView.findViewById(R.id.img_conflict);
+                this.img = (ImageView) itemView.findViewById(R.id.img);
+                this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
                 this.img.setOnClickListener(v -> {
                     if (!mB.a()) {
                         selectedItem = getLayoutPosition();
@@ -335,22 +337,22 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             ProjectResourceBean projectResourceBean = (ProjectResourceBean) ManageImageImportActivity.this.selectedCollections.get(position);
             String str = projectResourceBean.resFullName;
             if (projectResourceBean.isDuplicateCollection) {
-                viewHolder.img_conflict.setImageResource(2131165704);
+                viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
             } else {
-                viewHolder.img_conflict.setImageResource(2131165801);
+                viewHolder.img_conflict.setImageResource(R.drawable.ic_ok_48dp);
             }
             if (position == ManageImageImportActivity.this.selectedItem) {
-                viewHolder.img.setBackgroundResource(2131165348);
+                viewHolder.img.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
             } else {
                 viewHolder.img.setBackgroundColor(Color.parseColor("#ffffff"));
             }
-            Glide.with(ManageImageImportActivity.this.getApplicationContext()).load(str).asBitmap().centerCrop().error(2131165831).into(new BitmapImageViewTarget(viewHolder.img));
+            Glide.with(ManageImageImportActivity.this.getApplicationContext()).load(str).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(viewHolder.img));
             viewHolder.tv_name.setText(((ProjectResourceBean) ManageImageImportActivity.this.selectedCollections.get(position)).resName);
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427530, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_import_list_item, parent, false));
         }
 
         @Override
@@ -369,7 +371,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
     }
 
     public final void showPreview(int index) {
-        Glide.with(getApplicationContext()).load(this.selectedCollections.get(index).resFullName).asBitmap().centerCrop().error(2131165831).into(new BitmapImageViewTarget(img)); // R.drawable.ic_remove_grey600_24dp
+        Glide.with(getApplicationContext()).load(this.selectedCollections.get(index).resFullName).asBitmap().centerCrop().error(R.drawable.ic_remove_grey600_24dp).into(new BitmapImageViewTarget(img));
     }
 
     public final boolean isNameInUseByProjectImage(String name) {
