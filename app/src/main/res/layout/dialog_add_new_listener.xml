@@ -5,60 +5,54 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
         
-    <LinearLayout
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:orientation="vertical">
-             
-         <com.google.android.material.textfield.TextInputLayout
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:layout_margin="3dp"
-              android:gravity="center"
-              android:orientation="vertical">
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:gravity="center"
+        android:orientation="vertical">
                  
-              <com.google.android.material.textfield.TextInputEditText
-                   android:id="@+id/listener_name"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:hint="Name" />
-         </com.google.android.material.textfield.TextInputLayout>
-             
-         <com.google.android.material.textfield.TextInputLayout
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:layout_margin="3dp"
-              android:gravity="center"
-              android:orientation="vertical">
-                 
-              <com.google.android.material.textfield.TextInputEditText
-                   android:id="@+id/listener_custom_import"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:hint="Custom import" />
-         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/listener_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name" />
+    </com.google.android.material.textfield.TextInputLayout>
+    
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:gravity="center"
+        android:orientation="vertical">
+        
+        <com.google.android.material.textfield.TextInputEditText
+             android:id="@+id/listener_custom_import"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:hint="Custom import" />
+    </com.google.android.material.textfield.TextInputLayout>
          
-         <com.google.android.material.textfield.TextInputLayout
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:layout_margin="3dp"
-              android:gravity="center"
-              android:orientation="vertical">
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:gravity="center"
+        android:orientation="vertical">
               
-              <com.google.android.material.textfield.TextInputEditText
-                  android:id="@+id/listener_code"
-                  android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:hint="Code (### => variable name)" />
-         </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/listener_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Code (### => variable name)" />
+    </com.google.android.material.textfield.TextInputLayout>
              
-         <com.google.android.material.materialswitch.MaterialSwitch
-              android:id="@+id/listener_is_independent_class_or_method"
-              android:layout_width="wrap_content"
-              android:layout_height="fill_parent"
-              android:gravity="center"
-              android:padding="8.0dip"
-              android:text="Independent class/method"
-              android:textSize="14sp" />
-    </LinearLayout>
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/listener_is_independent_class_or_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Independent class/method"
+        android:textSize="12sp" />
 </LinearLayout>
