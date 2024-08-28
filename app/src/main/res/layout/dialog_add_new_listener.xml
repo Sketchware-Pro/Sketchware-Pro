@@ -26,7 +26,7 @@
                  android:padding="4dp">
                  
                  <EditText
-                      android:id="@+id/name"
+                      android:id="@+id/listener_name"
                       android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
                       android:hint="Name"
@@ -43,7 +43,7 @@
                  android:padding="4dp">
                  
                  <EditText
-                      android:id="@+id/customimport"
+                      android:id="@+id/listener_custom_import"
                       android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
                       android:hint="Custom import"
@@ -60,7 +60,7 @@
                  android:padding="4.0dip">
                  
                  <EditText
-                      android:id="@+id/code"
+                      android:id="@+id/listener_code"
                       android:layout_width="fill_parent"
                       android:layout_height="wrap_content"
                       android:hint="Code (### => variable name)"
@@ -69,7 +69,7 @@
              </com.google.android.material.textfield.TextInputLayout>
              
              <CheckBox
-                 android:id="@+id/separate"
+                 android:id="@+id/listener_is_independent_class_or_method"
                  android:layout_width="wrap_content"
                  android:layout_height="fill_parent"
                  android:gravity="center"

@@ -31,7 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.AddCustomAttributeBinding;
-import com.sketchware.remod.databinding.AddNewListenerBinding;
+import com.sketchware.remod.databinding.DialogAddNewListenerBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -119,26 +119,26 @@ public class EventsMaker extends Activity {
     }
 
     private void showAddDial() {
-        var listenerBinding = AddNewListenerBinding.inflate(getLayoutInflater());
+        var listenerBinding = DialogAddNewListenerBinding.inflate(getLayoutInflater());
         var dialog = new aB(this);
         dialog.b("New Listener");
         dialog.a("Type info of new listener");
         dialog.a(listenerBinding.getRoot());
         dialog.a("Save", v -> {
-             if (!listenerBinding.name.getText().toString().equals("")) {
+             if (!listenerBinding.listenerName.getText().toString().equals("")) {
                   HashMap<String, Object> hashMap = new HashMap<>();
-                  hashMap.put("name", listenerBinding.name.getText().toString());
-                  if (listenerBinding.separate.isChecked()) {
-                       hashMap.put("code", "//" + listenerBinding.name.getText().toString() + "\n" + listenerBinding.code.getText().toString());
+                  hashMap.put("name", listenerBinding.listenerName.getText().toString());
+                  if (listenerBinding.listenerIsIndependentClassOrMethod.isChecked()) {
+                       hashMap.put("code", "//" + listenerBinding.listenerName.getText().toString() + "\n" + listenerBinding.listenerCode.getText().toString());
                        hashMap.put("s", "true");
                   } else {
-                       hashMap.put("code", listenerBinding.code.getText().toString());
+                       hashMap.put("code", listenerBinding.listenerCode.getText().toString());
                        hashMap.put("s", "false");
                   }
-                  hashMap.put("imports", listenerBinding.customimport.getText().toString());
+                  hashMap.put("imports", listenerBinding.listenerCustomImport.getText().toString());
                   listMap.add(hashMap);
                   addItem();
-                  create.dismiss();
+                  dialog.dismiss();
                   return;
              }
             SketchwareUtil.toastError("Invalid name!");
@@ -175,22 +175,19 @@ public class EventsMaker extends Activity {
     }
 
     private void editItemDialog(final int position) {
-        final AlertDialog create = new AlertDialog.Builder(this).create();
-        AddNewListenerBinding listenerBinding = AddNewListenerBinding.inflate(getLayoutInflater());
-        create.setView(listenerBinding.getRoot());
-        create.setCanceledOnTouchOutside(true);
-        create.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        create.getWindow().setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        create.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        listenerBinding.name.setText(listMap.get(position).get("name").toString());
-        listenerBinding.code.setText(listMap.get(position).get("code").toString());
-        listenerBinding.customimport.setText(listMap.get(position).get("imports").toString());
+        var listenerBinding = DialogAddNewListenerBinding.inflate(getLayoutInflater());
+        var dialog = new aB(this);
+        dialog.b("Edit Listener");
+        dialog.a("Type new info of your listener");
+        dialog.a(listenerBinding.getRoot());
+        
+        listenerBinding.listenerName.setText(listMap.get(position).get("name").toString());
+        listenerBinding.listenerCode.setText(listMap.get(position).get("code").toString());
+        listenerBinding.listenerCustomImport.setText(listMap.get(position).get("imports").toString());
         if (listMap.get(position).containsKey("s") && listMap.get(position).get("s").toString().equals("true")) {
-            listenerBinding.separate.setChecked(true);
+            listenerBinding.listenerIsIndependentClassOrMethod.setChecked(true);
             ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(listMap.get(position).get("code").toString().split("\n")));
-            if (arrayList.get(0).contains("//" + listenerBinding.name.getText().toString())) {
+            if (arrayList.get(0).contains("//" + listenerBinding.listenerName.getText().toString())) {
                 arrayList.remove(0);
             }
             String str = "";
@@ -201,21 +198,21 @@ public class EventsMaker extends Activity {
                     str = str.concat("\n").concat(arrayList.get(i2));
                 }
             }
-            listenerBinding.code.setText(str);
+            listenerBinding.listenerCode.setText(str);
         }
-        listenerBinding.save.setOnClickListener(v -> {
-            if (!listenerBinding.name.getText().toString().equals("")) {
+        dialog.a("Save", v -> {
+            if (!listenerBinding.listenerName.getText().toString().equals("")) {
                 HashMap<String, Object> hashMap = listMap.get(position);
-                overrideEvents((String) hashMap.get("name"), listenerBinding.name.getText().toString());
-                hashMap.put("name", listenerBinding.name.getText().toString());
-                if (listenerBinding.separate.isChecked()) {
-                    hashMap.put("code", "//" + listenerBinding.name.getText().toString() + "\n" + listenerBinding.code.getText().toString());
+                overrideEvents((String) hashMap.get("name"), listenerBinding.listenerName.getText().toString());
+                hashMap.put("name", listenerBinding.listenerName.getText().toString());
+                if (listenerBinding.listenerIsIndependentClassOrMethod.isChecked()) {
+                    hashMap.put("code", "//" + listenerBinding.listenerName.getText().toString() + "\n" + listenerBinding.listenerCode.getText().toString());
                     hashMap.put("s", "true");
                 } else {
-                    hashMap.put("code", listenerBinding.code.getText().toString());
+                    hashMap.put("code", listenerBinding.listenerCode.getText().toString());
                     hashMap.put("s", "false");
                 }
-                hashMap.put("imports", listenerBinding.customimport.getText().toString());
+                hashMap.put("imports", listenerBinding.listenerCustomImport.getText().toString());
                 FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
                 refreshList();
                 create.dismiss();
@@ -223,8 +220,8 @@ public class EventsMaker extends Activity {
             }
             SketchwareUtil.toastError("Invalid name!");
         });
-        listenerBinding.cancel.setOnClickListener(Helper.getDialogDismissListener(create));
-        create.show();
+        dialog.a("Cancel", -> dialog.dismiss());
+        dialog.show();
     }
 
     private void refreshList() {
