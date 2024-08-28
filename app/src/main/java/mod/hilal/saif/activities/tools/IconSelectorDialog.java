@@ -21,9 +21,10 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import a.a.a.aB;
 import mod.jbk.util.OldResourceIdMapper;
 
-public class IconSelectorDialog extends Dialog {
+public class IconSelectorDialog extends aB {
 
     private final List<Integer> data;
     private final EditText ed;
