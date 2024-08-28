@@ -1,6 +1,5 @@
 package mod.hilal.saif.activities.tools;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -32,6 +31,7 @@ import com.google.gson.Gson;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.AddCustomAttributeBinding;
 import com.sketchware.remod.databinding.DialogAddNewListenerBinding;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.events.EventsHandler;
 
-public class EventsMaker extends Activity {
+public class EventsMaker extends BaseAppCompatActivity {
 
     public static final File EVENT_EXPORT_LOCATION = new File(Environment.getExternalStorageDirectory(),
             ".sketchware/data/system/export/events/");
@@ -57,7 +57,7 @@ public class EventsMaker extends Activity {
     private AddCustomAttributeBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = AddCustomAttributeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

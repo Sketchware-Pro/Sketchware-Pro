@@ -1,12 +1,13 @@
 package mod.hilal.saif.activities.tools;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.gson.Gson;
+
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ActivityEventsCreatorBinding;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
 
-public class EventsMakerCreator extends Activity {
+public class EventsMakerCreator extends BaseAppCompatActivity {
 
     private String _code;
     private String _desc;

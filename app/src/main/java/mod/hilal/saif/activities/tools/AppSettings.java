@@ -16,11 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.besome.sketch.help.SystemSettingActivity;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import dev.trindadedev.lib.filepicker.model.DialogConfigs;
 import dev.trindadedev.lib.filepicker.model.DialogProperties;
 import dev.trindadedev.lib.filepicker.view.FilePickerDialog;
@@ -43,7 +43,7 @@ import mod.khaled.logcat.LogReaderActivity;
 import mod.trindadedev.ui.activities.SettingsActivity;
 import mod.trindadedev.ui.fragments.settings.appearance.SettingsAppearanceFragment;
 
-public class AppSettings extends AppCompatActivity {
+public class AppSettings extends BaseAppCompatActivity {
 
     private LinearLayout content;
     private MaterialToolbar topAppBar;

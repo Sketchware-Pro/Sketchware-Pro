@@ -18,12 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.activity.EdgeToEdge;
 
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
@@ -46,7 +46,7 @@ import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 
-public class ManageCustomComponentActivity extends AppCompatActivity {
+public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
     private List<HashMap<String, Object>> componentsList = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
     private RecyclerView componentView;
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
+    public void onCreate(Bundle _savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.manage_custom_component);

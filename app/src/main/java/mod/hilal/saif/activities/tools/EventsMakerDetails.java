@@ -2,7 +2,6 @@ package mod.hilal.saif.activities.tools;
 
 import static mod.hilal.saif.activities.tools.EventsMaker.EVENTS_FILE;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -20,7 +19,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.AddCustomAttributeBinding;
-
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
+ 
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -29,7 +29,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
 
-public class EventsMakerDetails extends Activity {
+public class EventsMakerDetails extends BaseAppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
     private AlertDialog.Builder dia;
