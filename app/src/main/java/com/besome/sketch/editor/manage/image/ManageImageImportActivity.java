@@ -23,7 +23,6 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -197,8 +196,6 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         if (!super.j()) {
             finish();
         }
-        d.setScreenName(ManageImageImportActivity.class.getSimpleName());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void initializeLogic() {
