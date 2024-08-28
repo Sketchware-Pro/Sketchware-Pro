@@ -221,6 +221,8 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
                         if (messageId != 0) {
                             bB.a(this, xB.b().a(getApplicationContext(), messageId), bB.TOAST_WARNING).show();
                         }
+                    } else {
+                        throw e;
                     }
                 }
             } else {
