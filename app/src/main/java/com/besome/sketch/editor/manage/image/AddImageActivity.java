@@ -23,7 +23,6 @@ import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.By;
 import a.a.a.HB;
@@ -335,169 +334,89 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
             finish();
         }
 
-        /* JADX WARN: Removed duplicated region for block: B:57:0x01f1  */
-        /* JADX WARN: Removed duplicated region for block: B:62:0x0232 A[Catch: all -> 0x01a3, TryCatch #2 {, blocks: (B:4:0x0002, B:6:0x0013, B:8:0x001b, B:14:0x005e, B:10:0x006e, B:17:0x006d, B:18:0x0079, B:20:0x0081, B:22:0x00b5, B:24:0x00ff, B:25:0x0105, B:27:0x0111, B:29:0x0150, B:33:0x0169, B:42:0x0173, B:35:0x0183, B:36:0x018c, B:38:0x0192, B:45:0x0182, B:90:0x01a7, B:91:0x01b3, B:47:0x01b5, B:60:0x022c, B:62:0x0232, B:64:0x0238, B:65:0x023c, B:67:0x0242, B:69:0x024e, B:71:0x025f, B:74:0x026f, B:75:0x0288, B:76:0x028d, B:77:0x01f7, B:78:0x0209, B:79:0x021b, B:80:0x01cf, B:83:0x01d8, B:86:0x01e2), top: B:2:0x0002, inners: #1, #4 }] */
-        /* JADX WARN: Removed duplicated region for block: B:67:0x0242 A[Catch: all -> 0x01a3, TryCatch #2 {, blocks: (B:4:0x0002, B:6:0x0013, B:8:0x001b, B:14:0x005e, B:10:0x006e, B:17:0x006d, B:18:0x0079, B:20:0x0081, B:22:0x00b5, B:24:0x00ff, B:25:0x0105, B:27:0x0111, B:29:0x0150, B:33:0x0169, B:42:0x0173, B:35:0x0183, B:36:0x018c, B:38:0x0192, B:45:0x0182, B:90:0x01a7, B:91:0x01b3, B:47:0x01b5, B:60:0x022c, B:62:0x0232, B:64:0x0238, B:65:0x023c, B:67:0x0242, B:69:0x024e, B:71:0x025f, B:74:0x026f, B:75:0x0288, B:76:0x028d, B:77:0x01f7, B:78:0x0209, B:79:0x021b, B:80:0x01cf, B:83:0x01d8, B:86:0x01e2), top: B:2:0x0002, inners: #1, #4 }] */
-        /* JADX WARN: Removed duplicated region for block: B:79:0x021b A[Catch: all -> 0x01a3, TryCatch #2 {, blocks: (B:4:0x0002, B:6:0x0013, B:8:0x001b, B:14:0x005e, B:10:0x006e, B:17:0x006d, B:18:0x0079, B:20:0x0081, B:22:0x00b5, B:24:0x00ff, B:25:0x0105, B:27:0x0111, B:29:0x0150, B:33:0x0169, B:42:0x0173, B:35:0x0183, B:36:0x018c, B:38:0x0192, B:45:0x0182, B:90:0x01a7, B:91:0x01b3, B:47:0x01b5, B:60:0x022c, B:62:0x0232, B:64:0x0238, B:65:0x023c, B:67:0x0242, B:69:0x024e, B:71:0x025f, B:74:0x026f, B:75:0x0288, B:76:0x028d, B:77:0x01f7, B:78:0x0209, B:79:0x021b, B:80:0x01cf, B:83:0x01d8, B:86:0x01e2), top: B:2:0x0002, inners: #1, #4 }] */
         @Override
-        /*
-            Code decompiled incorrectly, please refer to instructions dump.
-        */
         public void b() {
-            String str;
-            String a;
-            ArrayList<String> a2;
-            Iterator<String> it;
-            char c = 0;
             try {
-                try {
-                    publishProgress("Now processing..");
-                    if (!multipleImagesPicked) {
-                        if (editing) {
-                            if (!B) {
-                                image.rotate = imageRotationDegrees;
-                                image.flipHorizontal = imageScaleX;
-                                image.flipVertical = imageScaleY;
-                                image.isEdited = true;
-                                return;
-                            }
-                            image.resFullName = imageFilePath;
-                            image.savedPos = 1;
-                            image.rotate = imageRotationDegrees;
-                            image.flipVertical = imageScaleY;
-                            image.flipHorizontal = imageScaleX;
-                            image.isEdited = true;
-                            return;
-                        }
-                        ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, ed_input_edittext.getText().toString().trim(), imageFilePath);
-                        projectResourceBean.savedPos = 1;
-                        projectResourceBean.isNew = true;
-                        projectResourceBean.rotate = imageRotationDegrees;
-                        projectResourceBean.flipVertical = imageScaleY;
-                        projectResourceBean.flipHorizontal = imageScaleX;
+                publishProgress("Now processing..");
+                if (!multipleImagesPicked) {
+                    if (!editing) {
+                        var image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
+                                ed_input_edittext.getText().toString().trim(), imageFilePath);
+                        image.savedPos = 1;
+                        image.isNew = true;
+                        image.rotate = imageRotationDegrees;
+                        image.flipVertical = imageScaleY;
+                        image.flipHorizontal = imageScaleX;
                         if (chk_collection.isChecked()) {
-                            try {
-                                Op.g().a(sc_id, projectResourceBean);
-                            } catch (yy e) {
-                                throw e;
-                            }
+                            Op.g().a(sc_id, image);
                         }
-                        images.add(projectResourceBean);
-                        return;
+                        images.add(image);
+                    } else if (!B) {
+                        image.rotate = imageRotationDegrees;
+                        image.flipHorizontal = imageScaleX;
+                        image.flipVertical = imageScaleY;
+                        image.isEdited = true;
+                    } else {
+                        image.resFullName = imageFilePath;
+                        image.savedPos = 1;
+                        image.rotate = imageRotationDegrees;
+                        image.flipVertical = imageScaleY;
+                        image.flipHorizontal = imageScaleX;
+                        image.isEdited = true;
                     }
-                    ArrayList<ProjectResourceBean> arrayList = new ArrayList<>();
+                } else {
+                    var toAdd = new ArrayList<ProjectResourceBean>();
                     int i = 0;
                     while (i < pickedImageUris.size()) {
-                        Uri uri = (Uri) pickedImageUris.get(i);
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(ed_input_edittext.getText().toString().trim());
-                        sb.append("_");
-                        i++;
-                        sb.append(i);
-                        String sb2 = sb.toString();
-                        String a3 = HB.a(getApplicationContext(), uri);
-                        if (a3 == null) {
+                        var uri = pickedImageUris.get(i);
+                        var imageName = ed_input_edittext.getText().toString().trim() + "_" + ++i;
+                        var imageFilePath = HB.a(getApplicationContext(), uri);
+                        if (imageFilePath == null) {
                             return;
                         }
-                        ProjectResourceBean projectResourceBean2 = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, sb2, a3);
-                        projectResourceBean2.savedPos = 1;
-                        projectResourceBean2.isNew = true;
-                        projectResourceBean2.rotate = iB.a(a3);
-                        projectResourceBean2.flipVertical = 1;
-                        projectResourceBean2.flipHorizontal = 1;
-                        arrayList.add(projectResourceBean2);
+                        var image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
+                                imageName, imageFilePath);
+                        image.savedPos = 1;
+                        image.isNew = true;
+                        image.rotate = iB.a(imageFilePath);
+                        image.flipVertical = 1;
+                        image.flipHorizontal = 1;
+                        toAdd.add(image);
                     }
                     if (chk_collection.isChecked()) {
-                        try {
-                            Op.g().a(sc_id, arrayList, true);
-                        } catch (yy e2) {
-                            throw e2;
-                        }
+                        Op.g().a(sc_id, toAdd, true);
                     }
                     multipleImagesPicked = false;
-                    images.addAll(arrayList);
-                } catch (Exception e3) {
-                    e3.printStackTrace();
-                    throw new By(e3.getMessage());
+                    images.addAll(toAdd);
                 }
-            } catch (yy e4) {
-                String message = e4.getMessage();
-                int hashCode = message.hashCode();
-                if (hashCode == -2111590760) {
-                    if (message.equals("fail_to_copy")) {
-                        c = 2;
-                        str = "";
-                        if (c != 0) {
-                        }
-                        a2 = e4.a();
-                        if (a2 != null) {
-                        }
-                        throw new By(a);
-                    }
-                    c = 65535;
-                    str = "";
-                    if (c != 0) {
-                    }
-                    a2 = e4.a();
-                    if (a2 != null) {
-                    }
-                    throw new By(a);
-                }
-                if (hashCode != -1587253668) {
-                    if (hashCode == -105163457 && message.equals("duplicate_name")) {
-                        str = "";
-                        if (c != 0) {
-                            a = xB.b().a(getApplicationContext(), R.string.collection_duplicated_name);
-                        } else if (c != 1) {
-                            a = c != 2 ? "" : xB.b().a(getApplicationContext(), R.string.collection_failed_to_copy);
-                        } else {
-                            a = xB.b().a(getApplicationContext(), R.string.collection_no_exist_file);
-                        }
-                        a2 = e4.a();
-                        if (a2 != null && a2.size() > 0) {
-                            it = a2.iterator();
-                            while (it.hasNext()) {
-                                String next = it.next();
-                                if (str.length() > 0) {
-                                    str = str + ", ";
-                                }
-                                str = str + next;
+            } catch (Exception e) {
+                // the bytecode's lying
+                // noinspection ConstantValue
+                if (e instanceof yy yy) {
+                    var errorMessage = yy.getMessage();
+                    var code = switch (errorMessage) {
+                        case "fail_to_copy" -> R.string.collection_failed_to_copy;
+                        case "file_no_exist" -> R.string.collection_no_exist_file;
+                        case "duplicate_name" -> R.string.collection_duplicated_name;
+                        default -> 0;
+                    };
+                    var message = code != 0 ? xB.b().a(getApplicationContext(), code) : null;
+
+                    var a = yy.a();
+                    if (a == null && !a.isEmpty()) {
+                        var names = "";
+                        for (String name : a) {
+                            if (!names.isEmpty()) {
+                                names += ", ";
                             }
-                            a = a + "[" + str + "]";
+                            names += name;
                         }
-                        throw new By(a);
+                        message += "[" + names + "]";
                     }
-                    c = 65535;
-                    str = "";
-                    if (c != 0) {
-                    }
-                    a2 = e4.a();
-                    if (a2 != null) {
-                        it = a2.iterator();
-                        while (it.hasNext()) {
-                        }
-                        a = a + "[" + str + "]";
-                    }
-                    throw new By(a);
+                    throw new RuntimeException(new By(message));
                 }
-                if (message.equals("file_no_exist")) {
-                    c = 1;
-                    str = "";
-                    if (c != 0) {
-                    }
-                    a2 = e4.a();
-                    if (a2 != null) {
-                    }
-                    throw new By(a);
-                }
-                c = 65535;
-                str = "";
-                if (c != 0) {
-                }
-                a2 = e4.a();
-                if (a2 != null) {
-                }
-                throw new By(a);
+                e.printStackTrace();
+                throw new RuntimeException(new By(e.getMessage()));
             }
         }
 
