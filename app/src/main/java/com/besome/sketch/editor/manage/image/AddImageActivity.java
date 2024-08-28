@@ -403,7 +403,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                     var message = code != 0 ? xB.b().a(getApplicationContext(), code) : null;
 
                     var a = yy.a();
-                    if (a == null && !a.isEmpty()) {
+                    if (a != null && !a.isEmpty()) {
                         var names = "";
                         for (String name : a) {
                             if (!names.isEmpty()) {
