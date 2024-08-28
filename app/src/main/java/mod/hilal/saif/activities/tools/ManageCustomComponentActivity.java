@@ -25,6 +25,7 @@ import androidx.activity.EdgeToEdge;
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -281,7 +282,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
         }
 
         public class ViewHolder extends CollapsibleViewHolder {
-            public final LinearLayout root;
+            public final MaterialCardView root;
             public final LinearLayout optionLayout;
             public final ImageView icon;
             public final TextView type;
@@ -291,7 +292,7 @@ public class ManageCustomComponentActivity extends AppCompatActivity {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView, 200);
-                root = (LinearLayout) itemView;
+                root = (MaterialCardView) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 type = itemView.findViewById(R.id.tv_component_type);
                 id = itemView.findViewById(R.id.tv_component_id);
