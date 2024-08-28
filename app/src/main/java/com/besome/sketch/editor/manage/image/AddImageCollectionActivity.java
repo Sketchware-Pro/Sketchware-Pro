@@ -1,17 +1,5 @@
 package com.besome.sketch.editor.manage.image;
 
-import a.a.a.By;
-import a.a.a.HB;
-import a.a.a.MA;
-import a.a.a.Op;
-import a.a.a.PB;
-import a.a.a.bB;
-import a.a.a.iB;
-import a.a.a.mB;
-import a.a.a.uq;
-import a.a.a.wq;
-import a.a.a.xB;
-import a.a.a.yy;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -26,67 +14,53 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.google.android.gms.analytics.HitBuilders;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import a.a.a.By;
+import a.a.a.HB;
+import a.a.a.MA;
+import a.a.a.Op;
+import a.a.a.PB;
+import a.a.a.bB;
+import a.a.a.iB;
+import a.a.a.mB;
+import a.a.a.uq;
+import a.a.a.wq;
+import a.a.a.xB;
+import a.a.a.yy;
+
 public class AddImageCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
+    private TextView tv_collection;
+    private TextView tv_add_photo;
+    private ImageView preview;
+    private PB imageNameValidator;
+    private EditText ed_input_edittext;
+    private EasyDeleteEditText ed_input;
+    private TextView tv_desc;
+    private CheckBox chk_collection;
+    private String sc_id;
+    private ArrayList<ProjectResourceBean> images;
+    private LinearLayout layout_img_inform = null;
+    private LinearLayout layout_img_modify = null;
+    private TextView tv_imgcnt = null;
+    private boolean z = false;
+    private String imageFilePath = null;
+    private int imageRotationDegrees = 0;
+    private int imageExifOrientation = 0;
+    private int imageScaleY = 1;
+    private int imageScaleX = 1;
+    private boolean editing = false;
+    private ProjectResourceBean editTarget = null;
 
-    public TextView tv_collection;
-
-    public TextView tv_add_photo;
-
-    public ImageView img_rotate;
-
-    public ImageView img_vertical;
-
-    public ImageView img_horizontal;
-
-    public ImageView preview;
-
-    public PB imageNameValidator;
-
-    public EditText ed_input_edittext;
-
-    public EasyDeleteEditText ed_input;
-    public int Q;
-    public int R;
-
-    public TextView tv_desc;
-
-    public CheckBox chk_collection;
-
-    public String sc_id;
-
-    public ArrayList<ProjectResourceBean> images;
-    public boolean t = false;
-
-    public LinearLayout layout_img_inform = null;
-
-    public LinearLayout layout_img_modify = null;
-
-    public TextView tv_imgcnt = null;
-    public boolean z = false;
-
-    public String imageFilePath = null;
-
-    public int imageRotationDegrees = 0;
-
-    public int imageExifOrientation = 0;
-
-    public int imageScaleY = 1;
-
-    public int imageScaleX = 1;
-
-    public boolean editing = false;
-
-    public ProjectResourceBean editTarget = null;
-
-    public final void flipImageHorizontally() {
+    private void flipImageHorizontally() {
         String imageFilePath = this.imageFilePath;
         if (imageFilePath == null || imageFilePath.length() <= 0) {
             return;
@@ -100,7 +74,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         refreshPreview();
     }
 
-    public final void flipImageVertically() {
+    private void flipImageVertically() {
         String imageFilePath = this.imageFilePath;
         if (imageFilePath == null || imageFilePath.length() <= 0) {
             return;
@@ -167,7 +141,6 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
                 flipImageVertically(); // R.id.img_vertical
                 return;
             default:
-                return;
         }
     }
 
@@ -194,9 +167,9 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         this.tv_collection.setVisibility(8);
         this.tv_add_photo = (TextView) findViewById(2131231865);
         this.preview = (ImageView) findViewById(2131231181);
-        this.img_rotate = (ImageView) findViewById(2131231176);
-        this.img_vertical = (ImageView) findViewById(2131231203);
-        this.img_horizontal = (ImageView) findViewById(2131231150);
+        ImageView img_rotate = (ImageView) findViewById(2131231176);
+        ImageView img_vertical = (ImageView) findViewById(2131231203);
+        ImageView img_horizontal = (ImageView) findViewById(2131231150);
         this.ed_input = (EasyDeleteEditText) findViewById(2131230990);
         this.ed_input_edittext = this.ed_input.getEditText();
         this.ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
@@ -205,9 +178,9 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         this.imageNameValidator.a(1);
         this.tv_add_photo.setText(xB.b().a(this, 2131625272));
         this.preview.setOnClickListener(this);
-        this.img_rotate.setOnClickListener(this);
-        this.img_vertical.setOnClickListener(this);
-        this.img_horizontal.setOnClickListener(this);
+        img_rotate.setOnClickListener(this);
+        img_vertical.setOnClickListener(this);
+        img_horizontal.setOnClickListener(this);
         this.r.setOnClickListener(this);
         this.s.setOnClickListener(this);
         this.z = false;
@@ -236,11 +209,11 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
     @Override
     public void onResume() {
         super.onResume();
-        this.d.setScreenName(AddImageCollectionActivity.class.getSimpleName().toString());
+        this.d.setScreenName(AddImageCollectionActivity.class.getSimpleName());
         this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    public final ArrayList<String> getReservedImageNames() {
+    private ArrayList<String> getReservedImageNames() {
         ArrayList<String> names = new ArrayList<>();
         names.add("app_icon");
         Iterator<ProjectResourceBean> it = this.images.iterator();
@@ -250,7 +223,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         return names;
     }
 
-    public final void pickImage() {
+    private void pickImage() {
         try {
             Intent intent = new Intent("android.intent.action.PICK", MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             intent.setType("image/*");
@@ -260,11 +233,11 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
-    public final void refreshPreview() {
+    private void refreshPreview() {
         this.preview.setImageBitmap(iB.a(iB.a(iB.a(this.imageFilePath, 1024, 1024), this.imageExifOrientation), this.imageRotationDegrees, this.imageScaleX, this.imageScaleY));
     }
 
-    public final void save() {
+    private void save() {
         if (a(this.imageNameValidator)) {
             new Handler().postDelayed(() -> {
                 k();
@@ -273,7 +246,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
-    public final void t() {
+    private void t() {
         TextView tv_desc = this.tv_desc;
         if (tv_desc != null) {
             tv_desc.setVisibility(4);
@@ -287,7 +260,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         this.tv_imgcnt.setVisibility(8);
     }
 
-    public boolean a(PB validator) {
+    private boolean a(PB validator) {
         if (!validator.b()) {
             return false;
         }
@@ -298,17 +271,16 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         return false;
     }
 
-    public final void setImageFromFile(String path) {
+    private void setImageFromFile(String path) {
         this.imageFilePath = path;
         this.preview.setImageBitmap(iB.a(path, 1024, 1024));
-        this.Q = path.lastIndexOf("/");
-        this.R = path.lastIndexOf(".");
+        int indexOfFilenameExtension = path.lastIndexOf(".");
         if (path.endsWith(".9.png")) {
-            this.R = path.lastIndexOf(".9.png");
+            indexOfFilenameExtension = path.lastIndexOf(".9.png");
         }
         EditText ed_input_edittext = this.ed_input_edittext;
         if (ed_input_edittext != null && (ed_input_edittext.getText() == null || this.ed_input_edittext.getText().length() <= 0)) {
-            this.ed_input_edittext.setText(path.substring(this.Q + 1, this.R));
+            this.ed_input_edittext.setText(path.substring(path.lastIndexOf("/") + 1, indexOfFilenameExtension));
         }
         try {
             this.imageExifOrientation = iB.a(path);
@@ -319,7 +291,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         t();
     }
 
-    public final void setImageRotation(int degrees) {
+    private void setImageRotation(int degrees) {
         String imageFilePath = this.imageFilePath;
         if (imageFilePath == null || imageFilePath.length() <= 0) {
             return;
@@ -331,7 +303,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         refreshPreview();
     }
 
-    class SaveAsyncTask extends MA {
+    private class SaveAsyncTask extends MA {
         public SaveAsyncTask(Context context) {
             super(context);
             AddImageCollectionActivity.this.a(this);
@@ -472,7 +444,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
-    public final void setImageFromUri(Uri uri) {
+    private void setImageFromUri(Uri uri) {
         String filePath;
         if (uri == null || (filePath = HB.a(this, uri)) == null) {
             return;
@@ -480,7 +452,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         setImageFromFile(filePath);
     }
 
-    public final String a(ProjectResourceBean projectResourceBean) {
+    private String a(ProjectResourceBean projectResourceBean) {
         return wq.a() + File.separator + "image" + File.separator + "data" + File.separator + projectResourceBean.resFullName;
     }
 }
