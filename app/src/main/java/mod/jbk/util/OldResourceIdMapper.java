@@ -2197,7 +2197,7 @@ public class OldResourceIdMapper {
             case 2131166281:
                 return R.drawable.yellow_arrow_down;
             case 2131166282:
-                return R.drawable.bottom_shadow;
+                return R.drawable.img_nocontent;
             case 2131166283:
                 return R.drawable.ic_folder_128;
             case 2131166284:

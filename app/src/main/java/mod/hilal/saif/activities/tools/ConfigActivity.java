@@ -41,6 +41,8 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 
+import dev.trindadedev.lib.ui.components.preference.*;
+
 public class ConfigActivity extends AppCompatActivity {
 
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
@@ -256,15 +258,15 @@ public class ConfigActivity extends AppCompatActivity {
         addSwitchPreference("Built-in blocks",
                 "May slow down loading blocks in Logic Editor.",
                 SETTING_SHOW_BUILT_IN_BLOCKS,
-                false, false);
+                false);
         addSwitchPreference("Show all variable blocks",
                 "All variable blocks will be visible, even if you don't have variables for them.",
                 SETTING_ALWAYS_SHOW_BLOCKS,
-                false, false);
+                false);
         addSwitchPreference("Show all blocks of palettes",
                 "Every single available block will be shown. Will slow down opening palettes!",
                 SETTING_SHOW_EVERY_SINGLE_BLOCK,
-                false, false);
+                false);
         addTextInputPreference("Backup directory",
                 "The default directory is /Internal storage/.sketchware/backups/.", v -> {
                     DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
@@ -291,11 +293,11 @@ public class ConfigActivity extends AppCompatActivity {
                         inputText.requestFocus();
                     });
                     dialog.show();
-                }, false);
+                });
         addSwitchPreference("Use legacy Code Editor",
                 "Enables old Code Editor from v6.2.0.",
                 SETTING_LEGACY_CODE_EDITOR,
-                false, false);
+                false);
         addSwitchPreference("Install projects with root access", "Automatically installs project APKs after building using root access.",
                 SETTING_ROOT_AUTO_INSTALL_PROJECTS, false, (buttonView, isChecked) -> {
                     if (isChecked) {
@@ -306,19 +308,19 @@ public class ConfigActivity extends AppCompatActivity {
                             }
                         });
                     }
-                }, false);
+                });
         addSwitchPreference("Launch projects after installing",
                 "Opens projects automatically after auto-installation using root.",
                 SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING,
-                true, false);
+                true);
         addSwitchPreference("Use new Version Control",
                 "Enables custom version code and name for projects.",
                 SETTING_USE_NEW_VERSION_CONTROL,
-                false, false);
+                false);
         addSwitchPreference("Enable block text input highlighting",
                 "Enables syntax highlighting while editing blocks' text parameters.",
                 SETTING_USE_ASD_HIGHLIGHTER,
-                false, false);
+                false);
         addTextInputPreference("Backup filename format",
                 "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)\"", v -> {
                     DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
@@ -359,204 +361,53 @@ public class ConfigActivity extends AppCompatActivity {
                         inputText.requestFocus();
                     });
                     dialog.show();
-                }, true);
+                });
     }
 
-    private void applyDesign(View view) {
-        view.setClickable(true);
-        view.setFocusable(true);
+    private void addSwitchPreference(String title, String description, String keyName, boolean defaultValue) {
+        addSwitchPreference(title, description, keyName, defaultValue, null);
     }
 
-    private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue, boolean lastItem) {
-        addSwitchPreference(title, subtitle, keyName, defaultValue, null, lastItem);
-    }
-
-    private void addSwitchPreference(String title, String subtitle, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener, boolean lastItem) {
-        LinearLayout preferenceRoot = new LinearLayout(this);
-
-        LinearLayout.LayoutParams preferenceRootParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.0f
-        );
-        preferenceRootParams.bottomMargin = lastItem ? dpToPx(25) : dpToPx(4);
-        preferenceRoot.setLayoutParams(preferenceRootParams);
-        preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
-        preferenceRoot.setPadding(
-                dpToPx(8),
-                dpToPx(4),
-                dpToPx(4),
-                dpToPx(8)
-        );
-        /* Android Studio complained about that inside the original XML */
-        preferenceRoot.setBaselineAligned(false);
-        content.addView(preferenceRoot);
-
-        LinearLayout textContainer = new LinearLayout(this);
-        textContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                dpToPx(0),
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1.0f
-        ));
-        textContainer.setOrientation(LinearLayout.VERTICAL);
-        textContainer.setPadding(
-                dpToPx(8),
-                dpToPx(8),
-                dpToPx(8),
-                dpToPx(8)
-        );
-        textContainer.setGravity(Gravity.CENTER_VERTICAL);
-        preferenceRoot.addView(textContainer);
-
-        TextView titleView = new TextView(this);
-        titleView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        titleView.setPadding(
-                dpToPx(0),
-                dpToPx(0),
-                dpToPx(0),
-                dpToPx(4)
-        );
-        titleView.setText(title);
-        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface, getTheme()));
-        titleView.setTextSize(16);
-        textContainer.addView(titleView);
-
-        TextView subtitleView = new TextView(this);
-        subtitleView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        subtitleView.setText(subtitle);
-        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant, getTheme()));
-        subtitleView.setTextSize(12);
-        textContainer.addView(subtitleView);
-
-        LinearLayout switchContainer = new LinearLayout(this);
-        switchContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0.0f
-        ));
-        switchContainer.setGravity(Gravity.CENTER);
-        switchContainer.setOrientation(LinearLayout.VERTICAL);
-        switchContainer.setPadding(
-                dpToPx(8),
-                dpToPx(8),
-                dpToPx(8),
-                dpToPx(8)
-        );
-        preferenceRoot.addView(switchContainer);
-
-        MaterialSwitch switchView = new MaterialSwitch(this);
-        switchView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        switchView.setPadding(
-                dpToPx(8),
-                dpToPx(8),
-                dpToPx(8),
-                dpToPx(8)
-        );
-        switchView.setTextColor(Color.parseColor("#000000"));
-        switchView.setTextSize(12);
-        switchContainer.addView(switchView);
-
-        preferenceRoot.setOnClickListener(v -> switchView.setChecked(!switchView.isChecked()));
-
-        switchView.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            ConfigActivity.setSetting(keyName, isChecked);
-            if (onCheckedChangeListener != null) {
-                onCheckedChangeListener.onCheckedChanged(buttonView, isChecked);
-            }
+    private void addSwitchPreference(String title, String description, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
+        PreferenceSwitch preferenceSwitch = new PreferenceSwitch(this);
+        preferenceSwitch.setTitle(title);
+        preferenceSwitch.setDescription(description);
+        preferenceSwitch.setValue(defaultValue);
+        
+        preferenceSwitch.setSwitchChangedListener((buttonView, isChecked) -> {
+             ConfigActivity.setSetting(keyName, isChecked);
+             if (onCheckedChangeListener != null) {
+                 onCheckedChangeListener.onCheckedChanged(buttonView, isChecked);
+             }
         });
-
+        
         if (setting_map.containsKey(keyName)) {
             Object value = setting_map.get(keyName);
             if (value == null) {
-                /* Nulls aren't great */
                 setting_map.remove(keyName);
             } else {
                 if (value instanceof Boolean) {
-                    switchView.setChecked((boolean) value);
+                    preferenceSwitch.setValue((boolean) value);
                 } else {
-                    SketchwareUtil.toastError("Detected invalid value for preference \""
-                            + title + "\". Restoring defaults");
+                    SketchwareUtil.toastError("Detected invalid value for preference \"" + title + "\". Restoring defaults");
                     setting_map.remove(keyName);
                     FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
                 }
             }
         } else {
-            setting_map.put(keyName, defaultValue);
-            switchView.setChecked(defaultValue);
-            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+           setting_map.put(keyName, defaultValue);
+           preferenceSwitch.setValue(defaultValue);
+           FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
         }
-        applyDesign(preferenceRoot);
+        content.addView(preferenceSwitch);
     }
 
-    private void addTextInputPreference(String title, String subtitle, View.OnClickListener listener, boolean lastItem) {
-        LinearLayout preferenceRoot = new LinearLayout(this);
-        LinearLayout.LayoutParams preferenceRootParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.0f
-        );
-
-        preferenceRootParams.bottomMargin = lastItem ? dpToPx(25) : dpToPx(4);
-
-        preferenceRoot.setLayoutParams(preferenceRootParams);
-        preferenceRoot.setOrientation(LinearLayout.HORIZONTAL);
-        preferenceRoot.setPadding(
-                dpToPx(8),
-                dpToPx(4),
-                dpToPx(4),
-                dpToPx(4)
-        );
-        /* Android Studio complained about this in the original XML files */
-        preferenceRoot.setBaselineAligned(false);
-        content.addView(preferenceRoot);
-
-        LinearLayout textContainer = new LinearLayout(this);
-        textContainer.setLayoutParams(new LinearLayout.LayoutParams(
-                dpToPx(0),
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1.0f
-        ));
-        textContainer.setOrientation(LinearLayout.VERTICAL);
-        textContainer.setPadding(
-                dpToPx(8),
-                dpToPx(8),
-                dpToPx(8),
-                dpToPx(8)
-        );
-        textContainer.setGravity(Gravity.CENTER_VERTICAL);
-        preferenceRoot.addView(textContainer);
-
-        TextView titleView = new TextView(this);
-        titleView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        titleView.setText(title);
-        titleView.setTextColor(getResources().getColor(R.color.color_text_onSurface, getTheme()));
-        titleView.setTextSize(16);
-        textContainer.addView(titleView);
-
-        TextView subtitleView = new TextView(this);
-        subtitleView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        ));
-        subtitleView.setText(subtitle);
-        subtitleView.setTextColor(getResources().getColor(R.color.color_text_onSurfaceVariant, getTheme()));
-        subtitleView.setTextSize(12);
-        textContainer.addView(subtitleView);
-
-        preferenceRoot.setOnClickListener(listener);
-        applyDesign(preferenceRoot);
+    private void addTextInputPreference(String title, String description, View.OnClickListener listener) {
+        Preference preference = new Preference(this);
+        preference.setTitle(title);
+        preference.setDescription(description);
+        preference.setPreferenceClickListener(listener);
+        content.addView(preference);
     }
 
     private void restoreDefaultSettings() {
