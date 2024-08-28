@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.manage.image;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +21,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import a.a.a.By;
@@ -222,7 +222,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         if (a(imageNameValidator)) {
             new Handler().postDelayed(() -> {
                 k();
-                new SaveAsyncTask(getApplicationContext()).execute();
+                new SaveAsyncTask(this).execute();
             }, 500L);
         }
     }
@@ -278,38 +278,41 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
-    private class SaveAsyncTask extends MA {
-        public SaveAsyncTask(Context context) {
-            super(context);
-            AddImageCollectionActivity.this.a(this);
+    private static class SaveAsyncTask extends MA {
+        private final WeakReference<AddImageCollectionActivity> activity;
+
+        public SaveAsyncTask(AddImageCollectionActivity activity) {
+            super(activity.getApplicationContext());
+            this.activity = new WeakReference<>(activity);
+            activity.a(this);
         }
 
         @Override
         public void a() {
-            if (editing) {
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
-            } else {
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
-            }
-            h();
-            finish();
+            var activity = this.activity.get();
+            bB.a(activity.getApplicationContext(), xB.b().a(activity.getApplicationContext(),
+                    activity.editing ? R.string.design_manager_message_edit_complete :
+                            R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
+            activity.h();
+            activity.finish();
         }
 
         @Override
         public void b() throws By {
+            var activity = this.activity.get();
             try {
                 publishProgress("Now processing..");
-                if (!editing) {
+                if (!activity.editing) {
                     var image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                            ed_input_edittext.getText().toString().trim(), imageFilePath);
+                            activity.ed_input_edittext.getText().toString().trim(), activity.imageFilePath);
                     image.savedPos = 1;
                     image.isNew = true;
-                    image.rotate = imageRotationDegrees;
-                    image.flipVertical = imageScaleY;
-                    image.flipHorizontal = imageScaleX;
-                    Op.g().a(sc_id, image);
+                    image.rotate = activity.imageRotationDegrees;
+                    image.flipVertical = activity.imageScaleY;
+                    image.flipHorizontal = activity.imageScaleX;
+                    Op.g().a(activity.sc_id, image);
                 } else {
-                    Op.g().a(editTarget, ed_input_edittext.getText().toString(), false);
+                    Op.g().a(activity.editTarget, activity.ed_input_edittext.getText().toString(), false);
                 }
             } catch (Exception e) {
                 // the bytecode's lying
@@ -321,7 +324,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
                         case "duplicate_name" -> R.string.collection_duplicated_name;
                         default -> 0;
                     };
-                    var message = messageId != 0 ? xB.b().a(getApplicationContext(), messageId) : "";
+                    var message = messageId != 0 ? xB.b().a(activity.getApplicationContext(), messageId) : "";
 
                     var a = yy.a();
                     if (a != null && !a.isEmpty()) {
@@ -343,7 +346,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
 
         @Override
         public void a(String str) {
-            h();
+            activity.get().h();
         }
     }
 
