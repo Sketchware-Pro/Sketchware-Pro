@@ -23,7 +23,6 @@ import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.By;
 import a.a.a.HB;
@@ -296,121 +295,49 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
             finish();
         }
 
-        /* JADX WARN: Removed duplicated region for block: B:31:0x00c4  */
-        /* JADX WARN: Removed duplicated region for block: B:36:0x0105 A[Catch: all -> 0x0075, TryCatch #0 {, blocks: (B:3:0x0001, B:5:0x0012, B:7:0x004b, B:12:0x005a, B:13:0x005b, B:18:0x0079, B:19:0x0085, B:21:0x0087, B:34:0x00ff, B:36:0x0105, B:38:0x010b, B:39:0x010f, B:41:0x0115, B:43:0x0121, B:45:0x0132, B:48:0x0142, B:49:0x015b, B:50:0x0160, B:51:0x00ca, B:52:0x00dc, B:53:0x00ee, B:54:0x00a1, B:57:0x00ab, B:60:0x00b5), top: B:2:0x0001, inners: #1, #3 }] */
-        /* JADX WARN: Removed duplicated region for block: B:41:0x0115 A[Catch: all -> 0x0075, TryCatch #0 {, blocks: (B:3:0x0001, B:5:0x0012, B:7:0x004b, B:12:0x005a, B:13:0x005b, B:18:0x0079, B:19:0x0085, B:21:0x0087, B:34:0x00ff, B:36:0x0105, B:38:0x010b, B:39:0x010f, B:41:0x0115, B:43:0x0121, B:45:0x0132, B:48:0x0142, B:49:0x015b, B:50:0x0160, B:51:0x00ca, B:52:0x00dc, B:53:0x00ee, B:54:0x00a1, B:57:0x00ab, B:60:0x00b5), top: B:2:0x0001, inners: #1, #3 }] */
-        /* JADX WARN: Removed duplicated region for block: B:53:0x00ee A[Catch: all -> 0x0075, TryCatch #0 {, blocks: (B:3:0x0001, B:5:0x0012, B:7:0x004b, B:12:0x005a, B:13:0x005b, B:18:0x0079, B:19:0x0085, B:21:0x0087, B:34:0x00ff, B:36:0x0105, B:38:0x010b, B:39:0x010f, B:41:0x0115, B:43:0x0121, B:45:0x0132, B:48:0x0142, B:49:0x015b, B:50:0x0160, B:51:0x00ca, B:52:0x00dc, B:53:0x00ee, B:54:0x00a1, B:57:0x00ab, B:60:0x00b5), top: B:2:0x0001, inners: #1, #3 }] */
         @Override
-        /*
-            Code decompiled incorrectly, please refer to instructions dump.
-        */
-        public void b() {
-            char c;
-            String str;
-            String a;
-            ArrayList<String> a2;
-            Iterator<String> it;
+        public void b() throws By {
             try {
-                try {
-                    publishProgress("Now processing..");
-                    if (editing) {
-                        Op.g().a(editTarget, ed_input_edittext.getText().toString(), true);
-                        return;
-                    }
-                    ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, ed_input_edittext.getText().toString().trim(), imageFilePath);
-                    projectResourceBean.savedPos = 1;
-                    projectResourceBean.isNew = true;
-                    projectResourceBean.rotate = imageRotationDegrees;
-                    projectResourceBean.flipVertical = imageScaleY;
-                    projectResourceBean.flipHorizontal = imageScaleX;
-                    try {
-                        Op.g().a(sc_id, projectResourceBean);
-                    } catch (yy e) {
-                        throw e;
-                    }
-                } catch (yy e2) {
-                    String message = e2.getMessage();
-                    int hashCode = message.hashCode();
-                    if (hashCode == -2111590760) {
-                        if (message.equals("fail_to_copy")) {
-                            c = 2;
-                            str = "";
-                            if (c != 0) {
-                            }
-                            a2 = e2.a();
-                            if (a2 != null) {
-                            }
-                            throw new By(a);
-                        }
-                        c = 65535;
-                        str = "";
-                        if (c != 0) {
-                        }
-                        a2 = e2.a();
-                        if (a2 != null) {
-                        }
-                        throw new By(a);
-                    }
-                    if (hashCode != -1587253668) {
-                        if (hashCode == -105163457 && message.equals("duplicate_name")) {
-                            c = 0;
-                            str = "";
-                            if (c != 0) {
-                                a = xB.b().a(getApplicationContext(), R.string.collection_duplicated_name);
-                            } else if (c != 1) {
-                                a = c != 2 ? "" : xB.b().a(getApplicationContext(), R.string.collection_failed_to_copy);
-                            } else {
-                                a = xB.b().a(getApplicationContext(), R.string.collection_no_exist_file);
-                            }
-                            a2 = e2.a();
-                            if (a2 != null && a2.size() > 0) {
-                                it = a2.iterator();
-                                while (it.hasNext()) {
-                                    String next = it.next();
-                                    if (str.length() > 0) {
-                                        str = str + ", ";
-                                    }
-                                    str = str + next;
-                                }
-                                a = a + "[" + str + "]";
-                            }
-                            throw new By(a);
-                        }
-                        c = 65535;
-                        str = "";
-                        if (c != 0) {
-                        }
-                        a2 = e2.a();
-                        if (a2 != null) {
-                            it = a2.iterator();
-                            while (it.hasNext()) {
-                            }
-                            a = a + "[" + str + "]";
-                        }
-                        throw new By(a);
-                    }
-                    if (message.equals("file_no_exist")) {
-                        c = 1;
-                        str = "";
-                        if (c != 0) {
-                        }
-                        a2 = e2.a();
-                        if (a2 != null) {
-                        }
-                        throw new By(a);
-                    }
-                    c = 65535;
-                    str = "";
-                    if (c != 0) {
-                    }
-                    a2 = e2.a();
-                    if (a2 != null) {
-                    }
-                    throw new By(a);
+                publishProgress("Now processing..");
+                if (!editing) {
+                    var image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
+                            ed_input_edittext.getText().toString().trim(), imageFilePath);
+                    image.savedPos = 1;
+                    image.isNew = true;
+                    image.rotate = imageRotationDegrees;
+                    image.flipVertical = imageScaleY;
+                    image.flipHorizontal = imageScaleX;
+                    Op.g().a(sc_id, image);
+                } else {
+                    Op.g().a(editTarget, ed_input_edittext.getText().toString(), false);
                 }
-            } catch (Exception e3) {
-                e3.printStackTrace();
-                throw new By(e3.getMessage());
+            } catch (Exception e) {
+                // the bytecode's lying
+                // noinspection ConstantValue
+                if (e instanceof yy yy) {
+                    var messageId = switch (yy.getMessage()) {
+                        case "fail_to_copy" -> R.string.collection_failed_to_copy;
+                        case "file_no_exist" -> R.string.collection_no_exist_file;
+                        case "duplicate_name" -> R.string.collection_duplicated_name;
+                        default -> 0;
+                    };
+                    var message = messageId != 0 ? xB.b().a(getApplicationContext(), messageId) : "";
+
+                    var a = yy.a();
+                    if (a != null && !a.isEmpty()) {
+                        var names = "";
+                        for (String name : a) {
+                            if (!names.isEmpty()) {
+                                names += ", ";
+                            }
+                            names += name;
+                        }
+                        message += "[" + names + "]";
+                    }
+                    throw new By(message);
+                }
+                e.printStackTrace();
+                throw new By(e.getMessage());
             }
         }
 
