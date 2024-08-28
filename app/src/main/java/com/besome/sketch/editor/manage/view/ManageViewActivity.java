@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.manage.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -212,7 +212,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
             k();
 
             try {
-                new Handler().postDelayed(() -> (new a(getApplicationContext())).execute(), 500L);
+                new Handler().postDelayed(() -> new a(this).execute(), 500L);
             } catch (Exception e) {
                 e.printStackTrace();
                 h();
@@ -326,32 +326,37 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         super.onSaveInstanceState(newState);
     }
 
-    public class a extends MA {
-        public a(Context var2) {
-            super(var2);
-            addTask(this);
+    private static class a extends MA {
+        private final WeakReference<ManageViewActivity> activity;
+
+        public a(ManageViewActivity activity) {
+            super(activity.getApplicationContext());
+            this.activity = new WeakReference<>(activity);
+            activity.addTask(this);
         }
 
         @Override
         public void a() {
-            h();
-            setResult(RESULT_OK);
-            finish();
+            var activity = this.activity.get();
+            activity.h();
+            activity.setResult(RESULT_OK);
+            activity.finish();
         }
 
         @Override
         public void a(String var1) {
-            h();
+            activity.get().h();
         }
 
         @Override
         public void b() throws By {
+            var activity = this.activity.get();
             try {
-                publishProgress(getTranslatedString(R.string.common_message_progress));
-                m();
+                publishProgress(activity.getTranslatedString(R.string.common_message_progress));
+                activity.m();
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new By(getTranslatedString(R.string.common_error_unknown));
+                throw new By(activity.getTranslatedString(R.string.common_error_unknown));
             }
         }
 
