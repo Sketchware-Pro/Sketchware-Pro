@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -134,7 +136,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (!super.j()) {
             finish();
@@ -182,7 +184,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
     }
 
     @Override
-    public void onPostCreate(Bundle savedInstanceState) {
+    public void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         initializeLogic();
         showPreview(0);
@@ -257,7 +259,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             ProjectResourceBean projectResourceBean = selectedCollections.get(position);
             if (projectResourceBean.isDuplicateCollection) {
                 viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
@@ -279,7 +281,8 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_import_list_item, parent, false));
         }
 
