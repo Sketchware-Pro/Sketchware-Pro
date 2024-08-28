@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -186,13 +185,6 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
             setImageFromFile(a(editTarget));
             layout_img_modify.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        d.setScreenName(AddImageCollectionActivity.class.getSimpleName());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private ArrayList<String> getReservedImageNames() {
