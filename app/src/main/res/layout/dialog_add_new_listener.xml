@@ -52,7 +52,7 @@
                   android:hint="Code (### => variable name)" />
          </com.google.android.material.textfield.TextInputLayout>
              
-         <CheckBox
+         <com.google.android.material.materialswitch.MaterialSwitch
               android:id="@+id/listener_is_independent_class_or_method"
               android:layout_width="wrap_content"
               android:layout_height="fill_parent"
