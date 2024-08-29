@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.CustomViewProBinding;
 
+import mod.trindadedev.ui.fragments.events.EventsManagerFragment;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
@@ -104,6 +105,6 @@ public class ListenersAdapter extends RecyclerView.Adapter<ListenersAdapter.View
         } else {
             eventAmount = 0;
         }
-        return context.getResources().getString(R.string.tools_events_);
+        return "Events: " + eventAmount;
     }
 }
