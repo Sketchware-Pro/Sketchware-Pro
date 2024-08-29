@@ -474,7 +474,7 @@ public class EventsMaker extends BaseAppCompatActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.layout_event_title, parent, false);
+                convertView = getLayoutInflater().inflate(R.layout.layout_event_item, parent, false);
             }
             LinearLayout linearLayout = convertView.findViewById(R.id.event_background);
             a(linearLayout, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);

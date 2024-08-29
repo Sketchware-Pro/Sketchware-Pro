@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.CustomViewProBinding;
+import com.sketchware.remod.databinding.LayoutEventItemBinding;
 
 import mod.trindadedev.ui.fragments.events.EventsManagerFragment;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -36,7 +36,7 @@ public class ListenersAdapter extends RecyclerView.Adapter<ListenersAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        CustomViewProBinding binding = CustomViewProBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        LayoutEventItemBinding binding = LayoutEventItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
     }
 
@@ -45,15 +45,15 @@ public class ListenersAdapter extends RecyclerView.Adapter<ListenersAdapter.View
         HashMap<String, Object> item = dataArray.get(position);
         String name = (String) item.get("name");
 
-        holder.binding.customViewProImg.setImageResource(R.drawable.event_on_response_48dp);
-        ((LinearLayout) holder.binding.customViewProImg.getParent()).setGravity(Gravity.CENTER);
+        holder.binding.eventIcon.setImageResource(R.drawable.event_on_response_48dp);
+        ((LinearLayout) holder.binding.eventIcon.getParent()).setGravity(Gravity.CENTER);
 
-        holder.binding.customViewProTitle.setText(name);
-        holder.binding.customViewProSubtitle.setText(getNumOfEvents(name));
+        holder.binding.eventTitle.setText(name);
+        holder.binding.eventSubtitle.setText(getNumOfEvents(name));
 
-        holder.linearLayout.setOnClickListener(v -> {});
+        holder.binding.eventCard.setOnClickListener(v -> {});
 
-        holder.linearLayout.setOnLongClickListener(v -> {
+        holder.binding.eventCard.setOnLongClickListener(v -> {
             new MaterialAlertDialogBuilder(context)
                 .setTitle(name)
                 .setItems(new String[]{"Edit", "Export", "Delete"}, (dialog, which) -> {
@@ -81,13 +81,11 @@ public class ListenersAdapter extends RecyclerView.Adapter<ListenersAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final CustomViewProBinding binding;
-        private final LinearLayout linearLayout;
-
-        public ViewHolder(@NonNull CustomViewProBinding binding) {
+        private final LayoutEventItemBinding binding;
+        
+        public ViewHolder(@NonNull LayoutEventItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-            this.linearLayout = binding.customViewProBackground;
         }
     }
 

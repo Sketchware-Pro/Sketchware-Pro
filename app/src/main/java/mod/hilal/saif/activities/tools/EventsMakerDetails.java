@@ -144,13 +144,13 @@ public class EventsMakerDetails extends BaseAppCompatActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_pro, parent, false);
+                convertView = getLayoutInflater().inflate(R.layout.layout_event_item, parent, false);
             }
-            LinearLayout root = convertView.findViewById(R.id.custom_view_pro_background);
+            LinearLayout root = convertView.findViewById(R.id.event_background);
             a(root, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);
-            ImageView icon = convertView.findViewById(R.id.custom_view_pro_img);
-            TextView title = convertView.findViewById(R.id.custom_view_pro_title);
-            TextView subtitle = convertView.findViewById(R.id.custom_view_pro_subtitle);
+            ImageView icon = convertView.findViewById(R.id.event_icon);
+            TextView title = convertView.findViewById(R.id.event_title);
+            TextView subtitle = convertView.findViewById(R.id.event_subtitle);
             if (lisName.equals("")) {
                 icon.setImageResource(R.drawable.widget_source);
             } else {
