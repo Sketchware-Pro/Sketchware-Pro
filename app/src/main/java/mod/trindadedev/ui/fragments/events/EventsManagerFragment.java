@@ -139,6 +139,40 @@ public class EventsManagerFragment extends BaseFragment {
           FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
           refreshList();
      }
+     
+     private void deleteItem(int position) {
+          listMap.remove(position);
+          FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
+          refreshList();
+     }
+
+     private void deleteRelatedEvents(String name) {
+          ArrayList<HashMap<String, Object>> events = new ArrayList<>();
+          if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
+              events = new Gson()
+                      .fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+              for (int i = events.size() - 1; i > -1; i--) {
+                  if (events.get(i).get("listener").toString().equals(name)) {
+                       events.remove(i);
+                  }
+              }
+          }
+          FileUtil.writeFile(EVENTS_FILE.getAbsolutePath(), new Gson().toJson(events));
+     }
+     
+     public static String getNumOfEvents(String name) {
+          int eventAmount = 0;
+          if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
+              ArrayList<HashMap<String, Object>> events = new Gson()
+                       .fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+              for (HashMap<String, Object> event : events) {
+                  if (event.get("listener").toString().equals(name)) {
+                        eventAmount++;
+                  }
+              }
+          }
+          return "Events: " + eventAmount;
+     }
 
      public class ListenersAdapter extends RecyclerView.Adapter<ListenersAdapter.ViewHolder> {
 
@@ -182,8 +216,8 @@ public class EventsManagerFragment extends BaseFragment {
                                     exportListener(position);
                                     break;
                                 case 2:
-                                    // TODO: deleteRelatedEvents(name);
-                                    // TODO: deleteItem(position);
+                                    deleteRelatedEvents(name);
+                                    deleteItem(position);
                                     break;
                             }
                         }).show();
@@ -204,19 +238,5 @@ public class EventsManagerFragment extends BaseFragment {
                     this.binding = binding;
                }
           }
-     }
-
-     public static String getNumOfEvents(String name) {
-          int eventAmount = 0;
-          if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
-              ArrayList<HashMap<String, Object>> events = new Gson()
-                       .fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
-              for (HashMap<String, Object> event : events) {
-                  if (event.get("listener").toString().equals(name)) {
-                        eventAmount++;
-                  }
-              }
-          }
-          return "Events: " + eventAmount;
      }
 }
