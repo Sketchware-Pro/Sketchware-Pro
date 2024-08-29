@@ -1,0 +1,4 @@
+<resources>
+    <style name="Scheme.SketchwarePro.Light" parent="Theme.Material3.DynamicColors.Light.NoActionBar" />
+    <style name="Scheme.SketchwarePro.Dark" parent="Theme.Material3.DynamicColors.Dark.NoActionBar" />
+</resources>
