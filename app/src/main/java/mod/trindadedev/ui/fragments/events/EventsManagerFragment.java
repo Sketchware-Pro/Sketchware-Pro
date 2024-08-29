@@ -50,7 +50,7 @@ public class EventsManagerFragment extends BaseFragment {
           configureToolbar(binding.toolbar);
           binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
           binding.fabNewListener.setOnClickListener(v -> showAddNewListenerDialog());
-          refreshList();
+          refreshList(listMap);
      }
      
      private void showAddNewListenerDialog() {
@@ -82,17 +82,17 @@ public class EventsManagerFragment extends BaseFragment {
           dialog.show();
      }
      
-     private void refreshList() {
-          listMap.clear();
+     public static void refreshList(ArrayList<HashMap<String, Object>> list) {
+          list.clear();
           if (FileUtil.isExistFile(LISTENERS_FILE.getAbsolutePath())) {
-               listMap = new Gson().fromJson(FileUtil.readFile(LISTENERS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
-               binding.listenersList.setAdapter(new ListenersAdapter(listMap, requireContext()));
+               list = new Gson().fromJson(FileUtil.readFile(LISTENERS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+               binding.listenersList.setAdapter(new ListenersAdapter(list, requireContext()));
                binding.listenersList.getAdapter().notifyDataSetChanged();
           }
      }
      
      private void addListenerItem() {
           FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
-          refreshList();
+          refreshList(listMap);
      }
 }
