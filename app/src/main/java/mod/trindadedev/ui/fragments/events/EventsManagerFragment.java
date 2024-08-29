@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import android.widget.LinearLayout;
 import android.content.Context;
 
@@ -32,53 +33,52 @@ import java.io.File;
 
 public class EventsManagerFragment extends BaseFragment {
 
-    private FragmentEventsManagerBinding binding;
-    public static final File EVENT_EXPORT_LOCATION = new File(Environment.getExternalStorageDirectory(),
-            ".sketchware/data/system/export/events/");
-    public static final File EVENTS_FILE = new File(Environment.getExternalStorageDirectory(),
-            ".sketchware/data/system/events.json");
-    public static final File LISTENERS_FILE = new File(Environment.getExternalStorageDirectory(),
-            ".sketchware/data/system/listeners.json");
-    private ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
+     private FragmentEventsManagerBinding binding;
+     public static final File EVENT_EXPORT_LOCATION = new File(Environment.getExternalStorageDirectory(),
+             ".sketchware/data/system/export/events/");
+     public static final File EVENTS_FILE = new File(Environment.getExternalStorageDirectory(),
+             ".sketchware/data/system/events.json");
+     public static final File LISTENERS_FILE = new File(Environment.getExternalStorageDirectory(),
+             ".sketchware/data/system/listeners.json");
+     private ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentEventsManagerBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
+     @Override
+     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+          binding = FragmentEventsManagerBinding.inflate(inflater, container, false);
+          return binding.getRoot();
+     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        configureToolbar(binding.toolbar);
-        binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
-        binding.activityEventsDescription.setText(getNumOfEvents(""));
-        binding.fabNewListener.setOnClickListener(v -> showAddNewListenerDialog());
-        refreshList();
-    }
+     @Override
+     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+          super.onViewCreated(view, savedInstanceState);
+          configureToolbar(binding.toolbar);
+          binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
+          binding.activityEventsDescription.setText(getNumOfEvents(""));
+          binding.fabNewListener.setOnClickListener(v -> showAddNewListenerDialog());
+          refreshList();
+     }
 
-    private void showAddNewListenerDialog() {
-        showListenerDialog(null, -1);
-    }
+     private void showAddNewListenerDialog() {
+          showListenerDialog(null, -1);
+     }
 
-    private void showEditListenerDialog(int position) {
-        showListenerDialog(listMap.get(position), position);
-    }
+     private void showEditListenerDialog(int position) {
+          showListenerDialog(listMap.get(position), position);
+     }
 
-    private void showListenerDialog(@Nullable HashMap<String, Object> existingListener, int position) {
-        var listenerBinding = DialogAddNewListenerBinding.inflate(LayoutInflater.from(requireContext()));
-        if (existingListener != null) {
-            listenerBinding.listenerName.setText(existingListener.get("name").toString());
-            listenerBinding.listenerCode.setText(existingListener.get("code").toString());
-            listenerBinding.listenerCustomImport.setText(existingListener.get("imports").toString());
-            if ("true".equals(existingListener.get("s"))) {
-                listenerBinding.listenerIsIndependentClassOrMethod.setChecked(true);
-                listenerBinding.listenerCode.setText(
-                        existingListener.get("code").toString().replaceFirst("//" + listenerBinding.listenerName.getText().toString() + "\n", ""));
-            }
-        }
-
-        var dialog = new MaterialAlertDialogBuilder(requireContext())
+     private void showListenerDialog(@Nullable HashMap<String, Object> existingListener, int position) {
+          var listenerBinding = DialogAddNewListenerBinding.inflate(LayoutInflater.from(requireContext()));
+          if (existingListener != null) {
+              listenerBinding.listenerName.setText(existingListener.get("name").toString());
+              listenerBinding.listenerCode.setText(existingListener.get("code").toString());
+              listenerBinding.listenerCustomImport.setText(existingListener.get("imports").toString());
+              if ("true".equals(existingListener.get("s"))) {
+                  listenerBinding.listenerIsIndependentClassOrMethod.setChecked(true);
+                  listenerBinding.listenerCode.setText(existingListener.get("code").toString().replaceFirst("//" + listenerBinding.listenerName.getText().toString() + "\n", ""));
+              }
+          }
+          
+          var dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(existingListener == null ? "New Listener" : "Edit Listener")
                 .setMessage("Type info of the listener")
                 .setView(listenerBinding.getRoot())
@@ -104,55 +104,74 @@ public class EventsManagerFragment extends BaseFragment {
                     }
                 })
                 .setNegativeButton("Cancel", (di, i) -> di.dismiss()).create();
-        dialog.show();
-    }
+          dialog.show();
+     }
 
-    public void refreshList() {
-        listMap.clear();
-        if (FileUtil.isExistFile(LISTENERS_FILE.getAbsolutePath())) {
-            listMap = new Gson().fromJson(FileUtil.readFile(LISTENERS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
-            binding.listenersList.setAdapter(new ListenersAdapter(listMap, requireContext()));
-            binding.listenersList.getAdapter().notifyDataSetChanged();
-        }
-    }
+     public void refreshList() {
+          listMap.clear();
+          if (FileUtil.isExistFile(LISTENERS_FILE.getAbsolutePath())) {
+                listMap = new Gson().fromJson(FileUtil.readFile(LISTENERS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+                binding.listenersList.setAdapter(new ListenersAdapter(listMap, requireContext()));
+                binding.listenersList.getAdapter().notifyDataSetChanged();
+          }
+     }
+    
+     private void exportListener(int p) {
+          String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/export/events/");
+          ArrayList<HashMap<String, Object>> ex = new ArrayList<>();
+          ex.add(listMap.get(p));
+          ArrayList<HashMap<String, Object>> ex2 = new ArrayList<>();
+          if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
+               ArrayList<HashMap<String, Object>> events = new Gson()
+                      .fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+               for (int i = 0; i < events.size(); i++) {
+                   if (events.get(i).get("listener").toString().equals(listMap.get(p).get("name"))) {
+                       ex2.add(events.get(i));
+                   }
+               }
+          }
+          FileUtil.writeFile(concat + ex.get(0).get("name").toString() + ".txt", new Gson().toJson(ex) + "\n" + new Gson().toJson(ex2));
+          SketchwareUtil.toast("Successfully exported event to:\n" +
+                   "/Internal storage/.sketchware/data/system/export/events", Toast.LENGTH_LONG);
+     }
 
-    private void addListenerItem() {
-        FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
-        refreshList();
-    }
+     private void addListenerItem() {
+          FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
+          refreshList();
+     }
 
-    public class ListenersAdapter extends RecyclerView.Adapter<ListenersAdapter.ViewHolder> {
+     public class ListenersAdapter extends RecyclerView.Adapter<ListenersAdapter.ViewHolder> {
 
-        private final ArrayList<HashMap<String, Object>> dataArray;
-        private final Context context;
+          private final ArrayList<HashMap<String, Object>> dataArray;
+          private final Context context;
 
-        public ListenersAdapter(ArrayList<HashMap<String, Object>> arrayList, Context context) {
-            this.dataArray = arrayList;
-            this.context = context;
-        }
+          public ListenersAdapter(ArrayList<HashMap<String, Object>> arrayList, Context context) {
+               this.dataArray = arrayList;
+               this.context = context;
+          }
 
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutEventItemBinding binding = LayoutEventItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new ViewHolder(binding);
-        }
+          @NonNull
+          @Override
+          public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+               LayoutEventItemBinding binding = LayoutEventItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+               return new ViewHolder(binding);
+          }
 
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            HashMap<String, Object> item = dataArray.get(position);
-            String name = (String) item.get("name");
+          @Override
+          public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+               HashMap<String, Object> item = dataArray.get(position);
+               String name = (String) item.get("name");
 
-            holder.binding.eventIcon.setImageResource(R.drawable.event_on_response_48dp);
-            ((LinearLayout) holder.binding.eventIcon.getParent()).setGravity(Gravity.CENTER);
+              holder.binding.eventIcon.setImageResource(R.drawable.event_on_response_48dp);
+              ((LinearLayout) holder.binding.eventIcon.getParent()).setGravity(Gravity.CENTER);
+  
+              holder.binding.eventTitle.setText(name);
+              holder.binding.eventSubtitle.setText(getNumOfEvents(name));
 
-            holder.binding.eventTitle.setText(name);
-            holder.binding.eventSubtitle.setText(getNumOfEvents(name));
+              holder.binding.eventCard.setOnClickListener(v -> {});
 
-            holder.binding.eventCard.setOnClickListener(v -> {});
-
-            holder.binding.eventCard.setOnLongClickListener(v -> {
-                new MaterialAlertDialogBuilder(context)
+              holder.binding.eventCard.setOnLongClickListener(v -> {
+                  new MaterialAlertDialogBuilder(context)
                         .setTitle(name)
                         .setItems(new String[]{"Edit", "Export", "Delete"}, (dialog, which) -> {
                             switch (which) {
@@ -160,7 +179,7 @@ public class EventsManagerFragment extends BaseFragment {
                                     showEditListenerDialog(position);
                                     break;
                                 case 1:
-                                    // TODO: export(position);
+                                    exportListener(position);
                                     break;
                                 case 2:
                                     // TODO: deleteRelatedEvents(name);
@@ -168,36 +187,36 @@ public class EventsManagerFragment extends BaseFragment {
                                     break;
                             }
                         }).show();
-                return true;
-            });
-        }
+                  return true;
+              });
+          }
 
-        @Override
-        public int getItemCount() {
-            return dataArray.size();
-        }
+          @Override
+          public int getItemCount() {
+               return dataArray.size();
+          }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            private final LayoutEventItemBinding binding;
+          public class ViewHolder extends RecyclerView.ViewHolder {
+               private final LayoutEventItemBinding binding;
 
-            public ViewHolder(@NonNull LayoutEventItemBinding binding) {
-                super(binding.getRoot());
-                this.binding = binding;
-            }
-        }
-    }
+               public ViewHolder(@NonNull LayoutEventItemBinding binding) {
+                    super(binding.getRoot());
+                    this.binding = binding;
+               }
+          }
+     }
 
-    public static String getNumOfEvents(String name) {
-        int eventAmount = 0;
-        if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
-            ArrayList<HashMap<String, Object>> events = new Gson()
-                    .fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
-            for (HashMap<String, Object> event : events) {
-                if (event.get("listener").toString().equals(name)) {
-                    eventAmount++;
-                }
-            }
-        }
-        return "Events: " + eventAmount;
-    }
+     public static String getNumOfEvents(String name) {
+          int eventAmount = 0;
+          if (FileUtil.isExistFile(EVENTS_FILE.getAbsolutePath())) {
+              ArrayList<HashMap<String, Object>> events = new Gson()
+                       .fromJson(FileUtil.readFile(EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+              for (HashMap<String, Object> event : events) {
+                  if (event.get("listener").toString().equals(name)) {
+                        eventAmount++;
+                  }
+              }
+          }
+          return "Events: " + eventAmount;
+     }
 }
