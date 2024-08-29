@@ -4,17 +4,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.FragmentEventsManagerDetailsBinding;
+import com.sketchware.remod.databinding.LayoutEventItemBinding;
 
 import mod.trindadedev.ui.fragments.BaseFragment;
+import mod.jbk.util.OldResourceIdMapper;
+
+import java.util.HashMap;
+import java.util.ArrayList;
 
 public class EventsManagerDetailsFragment extends BaseFragment {
 
+     private String listName;
      private FragmentEventsManagerDetailsBinding binding;
+     
+     public EventsManagerDetailsFragment () {
+          listName = "";
+     }
+     
+     public EventsManagerDetailsFragment(String listName) {
+          this.listName = listName;
+     }
 
      @Override
      public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,5 +42,58 @@ public class EventsManagerDetailsFragment extends BaseFragment {
      public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
           super.onViewCreated(view, savedInstanceState);
           configureToolbar(binding.toolbar);
+     }
+     
+     public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder> {
+
+          private final ArrayList<HashMap<String, Object>> dataArray;
+          private final Context context;
+
+          public EventsAdapter(ArrayList<HashMap<String, Object>> arrayList, Context context) {
+               this.dataArray = arrayList;
+               this.context = context;
+          }
+
+          @NonNull
+          @Override
+          public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+               LayoutEventItemBinding binding = LayoutEventItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+               return new ViewHolder(binding);
+          }
+
+          @Override
+          public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+               HashMap<String, Object> item = dataArray.get(position);
+
+               if (listName.equals("")) {
+                   holder.binding.eventIcon.setImageResource(R.drawable.widget_source);
+               } else {
+                   int imgRes = Integer.parseInt((String) dataArray.get(position).get("icon"));
+                   holder.binding.eventIcon.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(imgRes));
+               }
+               
+               holder.binding.eventTitle.setText((String) item.get("name"));
+               if ("".equals(dataArray.get(position).get("var"))) {
+                    holder.binding.eventSubtitle.setText("Activity event");
+               } else {
+                    holder.binding.eventSubtitle.setText((String) dataArray.get(position).get("var"));
+               
+               }
+               holder.binding.eventCard.setOnClickListener(v -> {});
+          }
+
+          @Override
+          public int getItemCount() {
+               return dataArray.size();
+          }
+
+          public class ViewHolder extends RecyclerView.ViewHolder {
+               private final LayoutEventItemBinding binding;
+
+               public ViewHolder(@NonNull LayoutEventItemBinding binding) {
+                    super(binding.getRoot());
+                    this.binding = binding;
+               }
+          }
      }
 }
