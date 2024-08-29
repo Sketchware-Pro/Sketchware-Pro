@@ -1,4 +1,4 @@
-package mod.trindadedev.ui.fragments
+package mod.trindadedev.ui.fragments;
 
 import androidx.fragment.app.Fragment;
 
