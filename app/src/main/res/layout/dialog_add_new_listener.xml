@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="8dp"
     android:orientation="vertical">
         
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
         android:gravity="center"
         android:orientation="vertical">
                  
@@ -22,7 +24,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
         android:gravity="center"
         android:orientation="vertical">
         
@@ -36,7 +37,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
         android:gravity="center"
         android:orientation="vertical">
               
@@ -51,8 +51,7 @@
         android:id="@+id/listener_is_independent_class_or_method"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="8dp"
         android:text="Independent class/method"
-        android:textSize="12sp" />
+        android:gravity="left|center_vertical"
+        android:textSize="14sp" />
 </LinearLayout>
