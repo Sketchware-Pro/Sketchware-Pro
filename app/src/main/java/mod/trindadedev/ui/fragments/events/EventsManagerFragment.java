@@ -48,8 +48,9 @@ public class EventsManagerFragment extends BaseFragment {
      public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
           super.onViewCreated(view, savedInstanceState);
           configureToolbar(binding.toolbar);
-          binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerFragment()));
+          binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
           binding.fabNewListener.setOnClickListener(v -> showAddNewListenerDialog());
+          refreshList();
      }
      
      private void showAddNewListenerDialog() {
@@ -71,14 +72,14 @@ public class EventsManagerFragment extends BaseFragment {
                           }
                           hashMap.put("imports", listenerBinding.listenerCustomImport.getText().toString());
                           listMap.add(hashMap);
-                     }                     
-                     /* TO-DO: addItem(); */
-                     di.dismiss();
-                     return;
+                          addListenerItem();
+                          di.dismiss();
+                          return;
+                     }
+                     SketchwareUtil.toastError("Invalid name!");
                })
                .setNegativeButton("Cancel", (di, i) -> di.dismiss()).create();
           dialog.show();
-          SketchwareUtil.toastError("Invalid name!");
      }
      
      private void refreshList() {
@@ -91,7 +92,7 @@ public class EventsManagerFragment extends BaseFragment {
      }
      
      private void addListenerItem() {
-        FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
-        refreshList();
+          FileUtil.writeFile(LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
+          refreshList();
      }
 }
