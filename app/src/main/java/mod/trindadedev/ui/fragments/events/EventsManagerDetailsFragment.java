@@ -47,6 +47,7 @@ public class EventsManagerDetailsFragment extends BaseFragment {
      public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
           super.onViewCreated(view, savedInstanceState);
           configureToolbar(binding.toolbar);
+          refreshList();
      }
      
      private void refreshList() {
