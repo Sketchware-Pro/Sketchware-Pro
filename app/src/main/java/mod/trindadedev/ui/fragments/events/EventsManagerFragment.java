@@ -52,6 +52,7 @@ public class EventsManagerFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         configureToolbar(binding.toolbar);
         binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
+        binding.activityEventsDescription.setText(getNumOfEvents(""));
         binding.fabNewListener.setOnClickListener(v -> showAddNewListenerDialog());
         refreshList();
     }
