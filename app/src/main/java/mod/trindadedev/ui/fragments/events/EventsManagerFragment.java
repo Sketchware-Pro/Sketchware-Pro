@@ -189,33 +189,33 @@ public class EventsManagerFragment extends BaseFragment {
                HashMap<String, Object> item = dataArray.get(position);
                String name = (String) item.get("name");
 
-              holder.binding.eventIcon.setImageResource(R.drawable.event_on_response_48dp);
-              ((LinearLayout) holder.binding.eventIcon.getParent()).setGravity(Gravity.CENTER);
+               holder.binding.eventIcon.setImageResource(R.drawable.event_on_response_48dp);
+               ((LinearLayout) holder.binding.eventIcon.getParent()).setGravity(Gravity.CENTER);
   
-              holder.binding.eventTitle.setText(name);
-              holder.binding.eventSubtitle.setText(getNumOfEvents(name));
+               holder.binding.eventTitle.setText(name);
+               holder.binding.eventSubtitle.setText(getNumOfEvents(name));
 
-              holder.binding.eventCard.setOnClickListener(v -> {});
+               holder.binding.eventCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment(name)));
 
-              holder.binding.eventCard.setOnLongClickListener(v -> {
-                  new MaterialAlertDialogBuilder(context)
-                        .setTitle(name)
-                        .setItems(new String[]{"Edit", "Export", "Delete"}, (dialog, which) -> {
-                            switch (which) {
-                                case 0:
-                                    showEditListenerDialog(position);
-                                    break;
-                                case 1:
-                                    exportListener(position);
-                                    break;
-                                case 2:
-                                    deleteRelatedEvents(name);
-                                    deleteItem(position);
-                                    break;
-                            }
-                        }).show();
-                  return true;
-              });
+               holder.binding.eventCard.setOnLongClickListener(v -> {
+                   new MaterialAlertDialogBuilder(context)
+                         .setTitle(name)
+                         .setItems(new String[]{"Edit", "Export", "Delete"}, (dialog, which) -> {
+                             switch (which) {
+                                 case 0:
+                                     showEditListenerDialog(position);
+                                     break;
+                                 case 1:
+                                     exportListener(position);
+                                     break;
+                                 case 2:
+                                     deleteRelatedEvents(name);
+                                     deleteItem(position);
+                                     break;
+                             }
+                         }).show();
+                   return true;
+               });
           }
 
           @Override
