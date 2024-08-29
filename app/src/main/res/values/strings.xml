@@ -2150,7 +2150,8 @@ Please try again later"</string>
     <string name="tools_events_manager">Events manager</string>
     <string name="tools_events_manager_activity_events">Activity events</string>
     <string name="tools_events_manager_listeners">Listeners</string>
-
+    <string name="tools_events_manager_details">Events manager Details</string>
+    
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
     <string name="assets_manager_options">Create or import</string>
