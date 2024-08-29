@@ -209,8 +209,16 @@ public class EventsManagerFragment extends BaseFragment {
                                      exportListener(position);
                                      break;
                                  case 2:
-                                     deleteRelatedEvents(name);
-                                     deleteItem(position);
+                                     new MaterialAlertDialogBuilder(context)
+                                           .setTitle("Delete listener")
+                                           .setMessage("Are you sure you want to delete this item?")
+                                           .setPositiveButton("Yes", (di, i) -> {
+                                                deleteRelatedEvents(name);
+                                                deleteItem(position);
+                                                di.dismiss();
+                                           })
+                                           .setNegativeButton("No", (di, i) -> di.dismiss())
+                                           .show();
                                      break;
                              }
                          }).show();

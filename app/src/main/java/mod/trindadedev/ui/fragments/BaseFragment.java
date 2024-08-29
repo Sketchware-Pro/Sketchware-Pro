@@ -15,7 +15,6 @@ import mod.hey.studios.util.Helper;
 
 public class BaseFragment extends Fragment {
 
-
      @Override
      public void onCreate(@Nullable Bundle savedInstanceState) {
           super.onCreate(savedInstanceState);
