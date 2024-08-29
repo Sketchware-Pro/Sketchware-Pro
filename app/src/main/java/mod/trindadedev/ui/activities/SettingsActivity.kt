@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.sketchware.remod.R
 import com.sketchware.remod.databinding.ActivitySettingsBinding
 
+import mod.trindadedev.ui.fragments.events.EventsManagerFragment
 import mod.trindadedev.ui.fragments.settings.appearance.SettingsAppearanceFragment
 
 class SettingsActivity : AppCompatActivity() {
@@ -17,6 +18,7 @@ class SettingsActivity : AppCompatActivity() {
     companion object {
         const val FRAGMENT_TAG_EXTRA = "fragment_tag"
         const val SETTINGS_APPEARANCE_FRAGMENT = "settings_appearance"
+        const val EVENTS_MANAGER_FRAGMENT = "events_manager"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +28,7 @@ class SettingsActivity : AppCompatActivity() {
         val fragmentTag = intent.getStringExtra(FRAGMENT_TAG_EXTRA)
         val fragment = when (fragmentTag) {
             SETTINGS_APPEARANCE_FRAGMENT -> SettingsAppearanceFragment()
+            EVENTS_MANAGER_FRAGMENT -> EventsManagerFragment()
             else -> throw IllegalArgumentException("Unknown fragment tag: $fragmentTag")
         }
         openFragment(fragment)
