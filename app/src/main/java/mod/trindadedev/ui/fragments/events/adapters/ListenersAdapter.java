@@ -89,7 +89,7 @@ public class ListenersAdapter extends RecyclerView.Adapter<ListenersAdapter.View
         }
     }
 
-    private String getNumOfEvents(String name) {
+    public static String getNumOfEvents(String name) {
         int eventAmount;
         if (FileUtil.isExistFile(EventsManagerFragment.EVENTS_FILE.getAbsolutePath())) {
             ArrayList<HashMap<String, Object>> events = new Gson()

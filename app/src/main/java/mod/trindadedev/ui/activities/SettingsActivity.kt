@@ -2,6 +2,7 @@ package mod.trindadedev.ui.activities
 
 import android.os.Bundle
 
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
@@ -23,6 +24,7 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val fragmentTag = intent.getStringExtra(FRAGMENT_TAG_EXTRA)
