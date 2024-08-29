@@ -1,14 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:id="@+id/event_card"
+    android:orientation="vertical"
+    android:layout_margin="14dp"
+    style="?materialCardViewFilledStyle"
+    app:cardBackgroundColor="?colorSurfaceContainer">
 
     <LinearLayout
-        android:id="@+id/custom_view_pro_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="#ffffffff"
+        android:id="@+id/event_background"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp">
@@ -20,9 +26,9 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/custom_view_pro_img"
                 android:layout_width="28dp"
-                android:layout_height="28dp" />
+                android:layout_height="28dp"
+                android:id="@+id/event_icon"/>
         </LinearLayout>
 
         <LinearLayout
@@ -33,19 +39,19 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/custom_view_pro_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#ff757575"
+                android:id="@+id/event_title"
+                android:textColor="?colorOnSurface"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/custom_view_pro_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:textColor="@color/light_grey"
+                android:id="@+id/event_subtitle"
+                android:textColor="?colorOnSurfaceVariant"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

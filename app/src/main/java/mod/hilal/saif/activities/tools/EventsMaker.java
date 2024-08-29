@@ -474,16 +474,16 @@ public class EventsMaker extends BaseAppCompatActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.custom_view_pro, parent, false);
+                convertView = getLayoutInflater().inflate(R.layout.layout_event_title, parent, false);
             }
-            LinearLayout linearLayout = convertView.findViewById(R.id.custom_view_pro_background);
+            LinearLayout linearLayout = convertView.findViewById(R.id.event_background);
             a(linearLayout, (int) SketchwareUtil.getDip(4), (int) SketchwareUtil.getDip(2), true);
-            ImageView imageView = convertView.findViewById(R.id.custom_view_pro_img);
-            TextView textView = convertView.findViewById(R.id.custom_view_pro_title);
+            ImageView imageView = convertView.findViewById(R.id.event_icon);
+            TextView textView = convertView.findViewById(R.id.event_title);
             imageView.setImageResource(R.drawable.event_on_response_48dp);
             ((LinearLayout) imageView.getParent()).setGravity(Gravity.CENTER);
             textView.setText((String) _data.get(position).get("name"));
-            ((TextView) convertView.findViewById(R.id.custom_view_pro_subtitle)).setText(getNumOfEvents(textView.getText().toString()));
+            ((TextView) convertView.findViewById(R.id.event_subtitle)).setText(getNumOfEvents(textView.getText().toString()));
             linearLayout.setOnClickListener(v -> {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), EventsMakerDetails.class);
