@@ -48,7 +48,7 @@ public class SketchLogger {
                         broadcastLog(e.getMessage());
                     }
                 }
-            });
+            };
             loggerThread.start();
         } else {
             throw new IllegalStateException("Logger already running");
