@@ -3,7 +3,6 @@ package com.besome.sketch.editor.view.item;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -56,12 +55,9 @@ public class ItemProgressBar extends LinearLayout implements sy {
 
     public void onDraw(Canvas var1) {
         if (b) {
-            Rect var2 = new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight());
-            var1.drawRect(var2, d);
+            var1.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), d);
         }
-
         super.onDraw(var1);
-
     }
 
     public void setBean(ViewBean var1) {
