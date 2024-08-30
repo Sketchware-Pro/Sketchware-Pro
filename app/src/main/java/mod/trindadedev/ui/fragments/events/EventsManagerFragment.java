@@ -36,6 +36,7 @@ import mod.hey.studios.util.Helper;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.File;
 
 public class EventsManagerFragment extends BaseFragment {
@@ -127,6 +128,7 @@ public class EventsManagerFragment extends BaseFragment {
                 binding.listenersRecyclerView.setAdapter(new ListenersAdapter(listMap, requireContext()));
                 binding.listenersRecyclerView.getAdapter().notifyDataSetChanged();
           }
+          Collections.reverse(listMap);
      }
      
      private void showImportEventsDialog() {

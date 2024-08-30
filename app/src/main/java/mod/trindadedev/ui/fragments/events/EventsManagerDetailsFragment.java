@@ -23,6 +23,7 @@ import mod.hey.studios.util.Helper;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class EventsManagerDetailsFragment extends BaseFragment {
      
@@ -71,6 +72,7 @@ public class EventsManagerDetailsFragment extends BaseFragment {
                 binding.eventsRecyclerView.setAdapter(new EventsAdapter(listMap, requireContext()));
                 binding.eventsRecyclerView.getAdapter().notifyDataSetChanged();
           }
+          Collections.reverse(listMap);
           if (listMap.size() == 0) {
                binding.noEventsLayout.setVisibility(View.VISIBLE);
           }
