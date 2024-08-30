@@ -1,38 +1,24 @@
 package com.besome.sketch.export;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.card.MaterialCardView;
 import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.R;
 
@@ -266,9 +252,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     }
 
     private void initializeAppBundleExportViews() {
-        export_aab_button.setOnClickListener(v -> {
-            aB dialog = new aB(this);
+        export_aab_button.setOnClickListener(view -> {
             if (BuildConfig.FLAVOR.equals(BuildConfig.FLAVOR_NAME_WITHOUT_AABS)) {
+                aB dialog = new aB(this);
                 dialog.a(R.drawable.break_warning_96_red);
                 dialog.b("Can't generate App Bundle");
                 dialog.a("This Sketchware Pro version doesn't support building AABs as it must work on " +
@@ -276,32 +262,44 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         BuildConfig.FLAVOR_NAME_WITH_AABS + " instead.");
                 dialog.b(Helper.getResString(R.string.common_word_close), Helper.getDialogDismissListener(dialog));
                 dialog.show();
-            } else {
-                GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
-                        R.drawable.color_about_96, "Sign outputted AAB", "The generated .aab file must be signed.\n" +
-                        "Copy your keystore to /Internal storage/sketchware/keystore/release_key.jks " +
-                        "and enter the alias' password.");
-                credentialsDialog.setListener(credentials -> {
-                    BuildingAsyncTask task = new BuildingAsyncTask(this);
-                    task.enableAppBundleBuild();
-                    if (credentials != null) {
-                        if (credentials.isForSigningWithTestkey()) {
-                            task.setSignWithTestkey(true);
-                        } else {
-                            task.configureResultJarSigning(
-                                    wq.j(),
-                                    credentials.getKeyStorePassword().toCharArray(),
-                                    credentials.getKeyAlias(),
-                                    credentials.getKeyPassword().toCharArray(),
-                                    credentials.getSigningAlgorithm()
-                            );
-                        }
-                    }
-                    task.execute();
-                });
-                credentialsDialog.show();
+                return;
             }
+
+            aB confirmationDialog = new aB(this);
+            confirmationDialog.b("Important note");
+            confirmationDialog.a("The generated .aab file must be signed.\nCopy your keystore to /Internal storage/sketchware/keystore/release_key.jks and enter the alias' password.");
+            confirmationDialog.a(R.drawable.ic_info_24);
+
+            confirmationDialog.b("Understood", v -> {
+                showAabSigningDialog();
+                confirmationDialog.dismiss();
+            });
+            confirmationDialog.show();
         });
+    }
+
+    private void showAabSigningDialog() {
+        GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
+                R.drawable.ic_key_24, "Sign outputted AAB", "Fill in the keystore details to sign the AAB.");
+        credentialsDialog.setListener(credentials -> {
+            BuildingAsyncTask task = new BuildingAsyncTask(this);
+            task.enableAppBundleBuild();
+            if (credentials != null) {
+                if (credentials.isForSigningWithTestkey()) {
+                    task.setSignWithTestkey(true);
+                } else {
+                    task.configureResultJarSigning(
+                            wq.j(),
+                            credentials.getKeyStorePassword().toCharArray(),
+                            credentials.getKeyAlias(),
+                            credentials.getKeyPassword().toCharArray(),
+                            credentials.getSigningAlgorithm()
+                    );
+                }
+            }
+            task.execute();
+        });
+        credentialsDialog.show();
     }
 
     /**
@@ -332,40 +330,57 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private void initializeSignApkViews() {
         sign_apk_loading_anim.setVisibility(View.GONE);
         sign_apk_output_stage.setVisibility(View.GONE);
-        sign_apk_button.setOnClickListener(v -> {
-            GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
-                    R.drawable.color_about_96,
-                    "Sign an APK",
-                    "To sign an APK, you need a keystore. Use your already created one, and copy it to " +
-                            "/Internal storage/sketchware/keystore/release_key.jks and enter the alias's password.\n" +
-                            "Note that this only signs your APK using signing scheme V1, to target Android 11+ for example, " +
-                            "use a 3rd-party tool (for now).");
-            credentialsDialog.setListener(credentials -> {
-                sign_apk_button.setVisibility(View.GONE);
-                sign_apk_output_stage.setVisibility(View.GONE);
-                sign_apk_loading_anim.setVisibility(View.VISIBLE);
-                sign_apk_loading_anim.playAnimation();
 
-                BuildingAsyncTask task = new BuildingAsyncTask(this);
-                if (credentials != null) {
-                    if (credentials.isForSigningWithTestkey()) {
-                        task.setSignWithTestkey(true);
-                    } else {
-                        task.configureResultJarSigning(
-                                wq.j(),
-                                credentials.getKeyStorePassword().toCharArray(),
-                                credentials.getKeyAlias(),
-                                credentials.getKeyPassword().toCharArray(),
-                                credentials.getSigningAlgorithm()
-                        );
-                    }
-                } else {
-                    task.disableResultJarSigning();
-                }
-                task.execute();
+        sign_apk_button.setOnClickListener(view -> {
+            aB confirmationDialog = new aB(this);
+            confirmationDialog.b("Important note");
+            confirmationDialog.a("""
+                    To sign an APK, you need a keystore. Use your already created one, and copy it to \
+                    /Internal storage/sketchware/keystore/release_key.jks and enter the alias's password.
+
+                    Note that this only signs your APK using signing scheme V1, to target Android 11+ for example, \
+                    use a 3rd-party tool (for now).""");
+            confirmationDialog.a(R.drawable.ic_info_24);
+
+            confirmationDialog.b("Understood", v -> {
+                showApkSigningDialog();
+                confirmationDialog.dismiss();
             });
-            credentialsDialog.show();
+            confirmationDialog.show();
         });
+    }
+
+    private void showApkSigningDialog() {
+        GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
+                R.drawable.ic_key_24,
+                "Sign an APK",
+                "Fill in the keystore details to sign the APK. " +
+                        "If you don't have a keystore, you can use a test key.");
+        credentialsDialog.setListener(credentials -> {
+            sign_apk_button.setVisibility(View.GONE);
+            sign_apk_output_stage.setVisibility(View.GONE);
+            sign_apk_loading_anim.setVisibility(View.VISIBLE);
+            sign_apk_loading_anim.playAnimation();
+
+            BuildingAsyncTask task = new BuildingAsyncTask(this);
+            if (credentials != null) {
+                if (credentials.isForSigningWithTestkey()) {
+                    task.setSignWithTestkey(true);
+                } else {
+                    task.configureResultJarSigning(
+                            wq.j(),
+                            credentials.getKeyStorePassword().toCharArray(),
+                            credentials.getKeyAlias(),
+                            credentials.getKeyPassword().toCharArray(),
+                            credentials.getSigningAlgorithm()
+                    );
+                }
+            } else {
+                task.disableResultJarSigning();
+            }
+            task.execute();
+        });
+        credentialsDialog.show();
     }
 
     private void initializeOutputDirectories() {
