@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
+    android:background="?attr/colorSurface"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
