@@ -3,74 +3,66 @@ package <?package_name?>;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.widget.HorizontalScrollView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DebugActivity extends Activity {
 
-    private String[] exceptionTypes = {
-            "StringIndexOutOfBoundsException",
-            "IndexOutOfBoundsException",
-            "ArithmeticException",
-            "NumberFormatException",
-            "ActivityNotFoundException"
-    };
-
-    private String[] exceptionMessages = {
-            "Invalid string operation\n",
-            "Invalid list operation\n",
-            "Invalid arithmetical operation\n",
-            "Invalid toNumber block operation\n",
-            "Invalid intent operation"
-    };
+    private static final Map<String, String> exceptionMap = new HashMap<>() {{
+        put("StringIndexOutOfBoundsException", "Invalid string operation\n");
+        put("IndexOutOfBoundsException", "Invalid list operation\n");
+        put("ArithmeticException", "Invalid arithmetical operation\n");
+        put("NumberFormatException", "Invalid toNumber block operation\n");
+        put("ActivityNotFoundException", "Invalid intent operation\n");
+    }};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        SpannableStringBuilder formattedMessage = new SpannableStringBuilder();
         Intent intent = getIntent();
         String errorMessage = "";
-        String madeErrorMessage = "";
 
         if (intent != null) {
             errorMessage = intent.getStringExtra("error");
+        }
 
+        if (!errorMessage.isEmpty()) {
             String[] split = errorMessage.split("\n");
-            //errorMessage = split[0];
-            try {
-                for (int j = 0; j < exceptionTypes.length; j++) {
-                    if (split[0].contains(exceptionTypes[j])) {
-                        madeErrorMessage = exceptionMessages[j];
 
-                        int addIndex = split[0].indexOf(exceptionTypes[j]) + exceptionTypes[j].length();
+            String exceptionType = split[0];
+            String message = exceptionMap.getOrDefault(exceptionType, "");
 
-                        madeErrorMessage += split[0].substring(addIndex, split[0].length());
-                        madeErrorMessage += "\n\nDetailed error message:\n" + errorMessage;
-                        break;
-                    }
-                }
-
-                if (madeErrorMessage.isEmpty()) {
-                    madeErrorMessage = errorMessage;
-                }
-            } catch (Exception e) {
-                madeErrorMessage = madeErrorMessage + "\n\nError while getting error: " + Log.getStackTraceString(e);
+            if (!message.isEmpty()) {
+                formattedMessage.append(message);
             }
+
+            for (int i = 1; i < split.length; i++) {
+                formattedMessage.append(split[i]);
+                formattedMessage.append("\n");
+            }
+        } else {
+            formattedMessage.append("No error message available.");
         }
 
         setTitle(getTitle() + " Crashed");
 
-        TextView error = new TextView(this);
-        error.setText(madeErrorMessage);
-        error.setTextIsSelectable(true);
+        TextView errorView = new TextView(this);
+        errorView.setText(formattedMessage);
+        errorView.setTextIsSelectable(true);
 
         HorizontalScrollView hscroll = new HorizontalScrollView(this);
         ScrollView vscroll = new ScrollView(this);
 
         hscroll.addView(vscroll);
-        vscroll.addView(error);
+        vscroll.addView(errorView);
 
         setContentView(hscroll);
     }
