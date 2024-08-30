@@ -71,6 +71,9 @@ public class EventsManagerDetailsFragment extends BaseFragment {
                 binding.eventsRecyclerView.setAdapter(new EventsAdapter(listMap, requireContext()));
                 binding.eventsRecyclerView.getAdapter().notifyDataSetChanged();
           }
+          if (listMap.size() == 0) {
+               binding.noEventsLayout.setVisibility(View.VISIBLE);
+          }
     }
 
     private void deleteItem(int position) {

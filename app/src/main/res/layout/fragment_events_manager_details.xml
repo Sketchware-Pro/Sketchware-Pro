@@ -53,6 +53,40 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     
+    <LinearLayout
+        android:id="@+id/no_events_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:colorBackground"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="100dp"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:src="@drawable/img_nocontent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="No Event"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Start by creating an event!"
+            android:textSize="14sp" />
+    </LinearLayout>
+    
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_new_event"
         android:layout_width="wrap_content"
