@@ -61,25 +61,18 @@ public class EventsManagerFragment extends BaseFragment {
           binding.fabNewListener.setOnClickListener(v -> showAddNewListenerDialog());
           refreshList();
      }
-     
-     @Override
-     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-          menu.add(0, 0, 0, "Import events");
-          menu.add(0, 1, 0, "Export events");
-          super.onCreateOptionsMenu(menu, inflater);
-     }
 
      @Override
      public boolean onOptionsItemSelected(MenuItem item) {
           switch (item.getItemId()) {
-                case 0:
-                     showImportEventsDialog();
-                     return true;
-                case 1:
-                     exportAllEvents();
-                     return true;
-                default:
-                     return super.onOptionsItemSelected(item);
+               case R.id.action_import_events:
+                   showImportEventsDialog();
+                   return true;
+               case R.id.action_export_events:
+                   exportAllEvents();
+                   return true;
+               default:
+                   return super.onOptionsItemSelected(item);
           }
      }
 
