@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.FragmentEventsManagerDetailsBinding;
@@ -115,7 +116,49 @@ public class EventsManagerDetailsFragment extends BaseFragment {
               } else {
                    holder.binding.eventSubtitle.setText((String) dataArray.get(position).get("var"));
               }
-              holder.binding.eventCard.setOnClickListener(v -> {});
+              holder.binding.eventCard.setOnClickListener(v -> {
+                   Bundle args = new Bundle();
+                   args.putString("lis_name", listName);
+                   args.putString("event", (String) dataArray.get(position).get("name"));
+                   args.putString("_pos", String.valueOf(position));
+                   args.putString("_name", (String) dataArray.get(position).get("name"));
+                   args.putString("_var", (String) dataArray.get(position).get("var"));
+                   args.putString("_lis", (String) dataArray.get(position).get("listener"));
+                   args.putString("_icon", (String) dataArray.get(position).get("icon"));
+                   args.putString("_desc", (String) dataArray.get(position).get("description"));
+                   args.putString("_par", (String) dataArray.get(position).get("parameters"));
+                   args.putString("_spec", (String) dataArray.get(position).get("headerSpec"));
+                   args.putString("_code", (String) dataArray.get(position).get("code"));
+                   EventsManagerCreatorFragment fragment = new EventsManagerCreatorFragment();
+                   fragment.setArguments(args);
+                   openFragment(fragment);
+              });
+              holder.binding.eventCard.setOnLongClickListener(v -> {
+                    new MaterialAlertDialogBuilder(getContext())
+                          .setTitle((String) dataArray.get(position).get("name"))
+                          .setMessage("Delete this event?")
+                          .setPositiveButton("Delete", (dialog, i) -> deleteItem(position))
+                          .setNeutralButton("Edit", (dialog, i) -> {
+                                 Bundle args = new Bundle();
+                                 args.putString("lis_name", listName);
+                                 args.putString("event", (String) dataArray.get(position).get("name"));
+                                 args.putString("_pos", String.valueOf(position));
+                                 args.putString("_name", (String) dataArray.get(position).get("name"));
+                                 args.putString("_var", (String) dataArray.get(position).get("var"));
+                                 args.putString("_lis", (String) dataArray.get(position).get("listener"));
+                                 args.putString("_icon", (String) dataArray.get(position).get("icon"));
+                                 args.putString("_desc", (String) dataArray.get(position).get("description"));
+                                 args.putString("_par", (String) dataArray.get(position).get("parameters"));
+                                 args.putString("_spec", (String) dataArray.get(position).get("headerSpec"));
+                                 args.putString("_code", (String) dataArray.get(position).get("code"));
+                                 EventsManagerCreatorFragment fragment = new EventsManagerCreatorFragment();
+                                 fragment.setArguments(args);
+                                 openFragment(fragment);
+                          })
+                          .setNegativeButton("Cancel", (di, i) -> di.dismiss())
+                          .show();
+                    return true;
+              });
          }
 
          @Override
