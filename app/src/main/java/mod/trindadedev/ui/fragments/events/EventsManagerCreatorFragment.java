@@ -178,7 +178,7 @@ public class EventsManagerCreatorFragment extends Fragment {
         if (isEdit) {
             binding.toolbar.setTitle(event_name);
         } else if (isActivityEvent) {
-            binding.toolbar.setTitle("Create a new Activity event");
+            binding.toolbar.setTitle("Create a new activity event");
         } else {
             binding.toolbar.setTitle(lisName + "Create a new event");
         }

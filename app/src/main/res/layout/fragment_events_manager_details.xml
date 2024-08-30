@@ -1,6 +1,6 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -38,9 +38,9 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="16dp"
-            android:orientation="vertical">
-            
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/events_recycler_view"
                 android:layout_width="match_parent"
@@ -48,11 +48,12 @@
                 android:clipToPadding="false"
                 android:paddingBottom="70dp"
                 android:transitionGroup="true"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-            
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/layout_event_item" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    
+
     <LinearLayout
         android:id="@+id/no_events_layout"
         android:layout_width="match_parent"
@@ -73,9 +74,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:gravity="center"
-            android:text="No Event"
+            android:text="No events"
             android:textSize="20sp" />
 
         <TextView
@@ -83,10 +84,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="Start by creating an event!"
+            android:text="Start by creating an new one"
             android:textSize="14sp" />
     </LinearLayout>
-    
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_new_event"
         android:layout_width="wrap_content"
@@ -98,5 +99,5 @@
         android:src="@drawable/ic_add_24"
         app:elevation="6dp"
         app:fabSize="normal" />
-    
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

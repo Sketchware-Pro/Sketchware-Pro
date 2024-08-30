@@ -31,6 +31,8 @@
         android:id="@+id/nested_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="50dp"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -40,134 +42,118 @@
             android:orientation="vertical"
             android:paddingTop="16dp">
 
-            <LinearLayout
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/layout_item"
+                style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-  
-                <com.google.android.material.card.MaterialCardView 
-                    android:id="@+id/layout_item"
+                android:layout_margin="14dp"
+                android:transitionGroup="true"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginTop="14dp"
-                    android:layout_marginRight="14dp"
-                    android:layout_marginBottom="14dp"
-                    style="?attr/materialCardViewFilledStyle"
-                    android:transitionGroup="true"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
-                    
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-                        
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="Event properties"
-                            android:textSize="16sp" />
-                            
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="3dp"
-                            android:gravity="center"
-                            android:transitionGroup="true"
-                            android:orientation="vertical">
-                            
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/events_creator_eventname"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Event Name"
-                                android:transitionGroup="true"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                        
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="3dp"
-                            android:gravity="center"
-                            android:transitionGroup="true"
-                            android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="16dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/events_creator_varname"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Widget/Component name"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                        
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="3dp"
-                            android:gravity="center"
-                            android:transitionGroup="true"
-                            android:orientation="vertical">
-                            
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/events_creator_listenername"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="listener name"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                        
-                        <LinearLayout
-                           android:layout_width="match_parent"
-                           android:layout_height="wrap_content"
-                           android:baselineAligned="false"
-                           android:orientation="horizontal">
-                           
-                           <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/events_creator_icon_til"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="3dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:transitionGroup="true"
-                                android:orientation="vertical">
-                                
-                                <com.google.android.material.textfield.TextInputEditText
-                                     android:id="@+id/events_creator_icon"
-                                     android:layout_width="match_parent"
-                                     android:layout_height="wrap_content"
-                                     android:hint="Icon"
-                                     android:inputType="number"
-                                     android:textSize="14sp" />
-                           </com.google.android.material.textfield.TextInputLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="4dp"
+                        android:text="Event properties"
+                        android:textSize="16sp" />
 
-                           <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical"
-                                android:transitionGroup="true"
-                                android:padding="4dp">
-
-                                <ImageView
-                                    android:id="@+id/events_creator_chooseicon"
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:scaleType="fitXY" />
-                           </LinearLayout>
-                        </LinearLayout>
-                        
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:gravity="center"
-                        android:transitionGroup="true"
-                        android:orientation="vertical">
-                        
+                        android:layout_marginTop="10dp"
+                        android:transitionGroup="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/events_creator_eventname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Event Name"
+                            android:textSize="14sp"
+                            android:transitionGroup="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:transitionGroup="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/events_creator_varname"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Widget/Component name"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:transitionGroup="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/events_creator_listenername"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Listener name"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/events_creator_icon_til"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:transitionGroup="true">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/events_creator_icon"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Icon"
+                                android:inputType="number"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="4dp"
+                            android:transitionGroup="true">
+
+                            <ImageView
+                                android:id="@+id/events_creator_chooseicon"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:scaleType="fitXY" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:transitionGroup="true">
+
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_desc"
                             android:layout_width="match_parent"
@@ -179,10 +165,8 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:gravity="center"
-                        android:transitionGroup="true"
-                        android:orientation="vertical">
+                        android:layout_marginTop="10dp"
+                        android:transitionGroup="true">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_params"
@@ -195,10 +179,8 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:transitionGroup="true"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:layout_marginTop="10dp"
+                        android:transitionGroup="true">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_spec"
@@ -211,10 +193,8 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:transitionGroup="true"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:layout_marginTop="10dp"
+                        android:transitionGroup="true">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/events_creator_code"
@@ -228,6 +208,7 @@
                         android:id="@+id/events_creator_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
                         android:padding="6dp"
                         android:text="Create New Listener"
                         android:textSize="12sp" />
@@ -239,8 +220,8 @@
                 android:layout_height="0dp"
                 android:layout_margin="8dp"
                 android:orientation="vertical"
-                app:cardCornerRadius="6dp"
                 android:transitionGroup="true"
+                app:cardCornerRadius="6dp"
                 app:cardElevation="2dp">
 
                 <LinearLayout
@@ -266,10 +247,9 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="3dp"
                             android:gravity="center"
-                            android:transitionGroup="true"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:transitionGroup="true">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_listenernameA"
@@ -282,10 +262,9 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="3dp"
                             android:gravity="center"
-                            android:transitionGroup="true"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:transitionGroup="true">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_listenercode"
@@ -298,10 +277,9 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="3dp"                            
                             android:gravity="center"
-                            android:transitionGroup="true"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:transitionGroup="true">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/events_creator_listenercustomimport"
@@ -314,33 +292,35 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="14dp"
-                android:transitionGroup="true"
-                android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/events_creator_cancel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="7dp"
-                    android:layout_weight="1"
-                    android:text="@string/common_word_cancel"
-                    android:textSize="@dimen/text_size_button_material"
-                    app:backgroundTint="?colorAccent" />
-                    
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/events_creator_save"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="7dp"
-                    android:layout_weight="1"
-                    android:text="@string/common_word_save"
-                    android:textSize="@dimen/text_size_button_material" />
-            </LinearLayout>
-          </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="14dp"
+        android:transitionGroup="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/events_creator_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
+            android:layout_weight="1"
+            android:text="@string/common_word_cancel"
+            android:textSize="@dimen/text_size_button_material"
+            app:backgroundTint="?colorAccent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/events_creator_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_weight="1"
+            android:text="@string/common_word_save"
+            android:textSize="@dimen/text_size_button_material" />
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

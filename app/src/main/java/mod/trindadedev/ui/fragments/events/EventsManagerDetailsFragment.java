@@ -4,26 +4,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
+import com.google.gson.Gson;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.FragmentEventsManagerDetailsBinding;
 import com.sketchware.remod.databinding.LayoutEventItemBinding;
 
-import mod.trindadedev.ui.fragments.BaseFragment;
-import mod.jbk.util.OldResourceIdMapper;
-import mod.agus.jcoderz.lib.FileUtil;
-import mod.hey.studios.util.Helper;
-
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+
+import mod.agus.jcoderz.lib.FileUtil;
+import mod.hey.studios.util.Helper;
+import mod.jbk.util.OldResourceIdMapper;
+import mod.trindadedev.ui.fragments.BaseFragment;
 
 public class EventsManagerDetailsFragment extends BaseFragment {
      
@@ -69,11 +67,11 @@ public class EventsManagerDetailsFragment extends BaseFragment {
                         listMap.add(events.get(i));
                     }
                 }
-                binding.eventsRecyclerView.setAdapter(new EventsAdapter(listMap, requireContext()));
+                binding.eventsRecyclerView.setAdapter(new EventsAdapter(listMap));
                 binding.eventsRecyclerView.getAdapter().notifyDataSetChanged();
           }
           Collections.reverse(listMap);
-          if (listMap.size() == 0) {
+          if (listMap.isEmpty()) {
                binding.noEventsLayout.setVisibility(View.VISIBLE);
           }
     }
@@ -97,11 +95,9 @@ public class EventsManagerDetailsFragment extends BaseFragment {
     public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.ViewHolder> {
 
          private final ArrayList<HashMap<String, Object>> dataArray;
-         private final Context context;
 
-         public EventsAdapter(ArrayList<HashMap<String, Object>> arrayList, Context context) {
+         public EventsAdapter(ArrayList<HashMap<String, Object>> arrayList) {
               this.dataArray = arrayList;
-              this.context = context;
          }
 
          @NonNull
@@ -146,7 +142,7 @@ public class EventsManagerDetailsFragment extends BaseFragment {
                    openFragment(fragment);
               });
               holder.binding.eventCard.setOnLongClickListener(v -> {
-                    new MaterialAlertDialogBuilder(getContext())
+                    new MaterialAlertDialogBuilder(requireContext())
                           .setTitle((String) dataArray.get(position).get("name"))
                           .setMessage("Delete this event?")
                           .setPositiveButton("Delete", (dialog, i) -> deleteItem(position))
@@ -178,7 +174,7 @@ public class EventsManagerDetailsFragment extends BaseFragment {
               return dataArray.size();
          }
 
-         public class ViewHolder extends RecyclerView.ViewHolder {
+         public static class ViewHolder extends RecyclerView.ViewHolder {
               private final LayoutEventItemBinding binding;
 
               public ViewHolder(@NonNull LayoutEventItemBinding binding) {
