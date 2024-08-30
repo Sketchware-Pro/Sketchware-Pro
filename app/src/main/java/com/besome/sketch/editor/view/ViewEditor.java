@@ -698,9 +698,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void setPreviewColors(String str) {
-        k.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
-        imgPhoneTopBg.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
-        toolbar.setBackgroundColor(ProjectFile.getColor(str, "color_primary"));
+        k.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY_DARK));
+        imgPhoneTopBg.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY_DARK));
+        toolbar.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY));
     }
 
     private void b(boolean z) {
