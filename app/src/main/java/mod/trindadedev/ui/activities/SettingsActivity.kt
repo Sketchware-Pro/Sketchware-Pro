@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment
 import com.sketchware.remod.R
 import com.sketchware.remod.databinding.ActivitySettingsBinding
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity
+
 import mod.trindadedev.ui.fragments.events.EventsManagerFragment
 import mod.trindadedev.ui.fragments.settings.appearance.SettingsAppearanceFragment
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseAppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
 

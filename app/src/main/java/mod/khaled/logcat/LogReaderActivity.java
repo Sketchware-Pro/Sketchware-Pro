@@ -15,7 +15,6 @@ import androidx.activity.BackEventCompat;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,10 +23,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ActivityLogcatreaderBinding;
 import com.sketchware.remod.databinding.EasyDeleteEdittextBinding;
 import com.sketchware.remod.databinding.ViewLogcatItemBinding;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +42,7 @@ import mod.SketchwareUtil;
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
 
-public class LogReaderActivity extends AppCompatActivity {
+public class LogReaderActivity extends BaseAppCompatActivity {
 
     private final BroadcastReceiver logger = new Logger();
     private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");

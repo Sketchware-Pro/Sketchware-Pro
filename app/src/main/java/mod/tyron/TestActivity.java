@@ -1,7 +1,6 @@
 package mod.tyron;
 
 import android.Manifest;
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,13 +14,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
+
 import a.a.a.yq;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.tyron.compiler.Compiler;
 import mod.tyron.compiler.IncrementalD8Compiler;
 import mod.tyron.compiler.IncrementalJavaCompiler;
 
-public class TestActivity extends Activity {
+public class TestActivity extends BaseAppCompatActivity {
 
     //activity for testing file changes
     private final List<File> changedList = new ArrayList<>();

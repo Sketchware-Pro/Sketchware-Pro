@@ -18,8 +18,11 @@ import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
+
 import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.R;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.util.HashMap;
@@ -30,7 +33,7 @@ import mod.RequestNetwork;
 import mod.RequestNetworkController;
 import mod.SketchwareUtil;
 
-public class CollectErrorActivity extends Activity {
+public class CollectErrorActivity extends BaseAppCompatActivity {
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
