@@ -23,27 +23,30 @@ public class SketchLogger {
 
     public static void startLogging() {
         if (!isRunning) {
-            loggerThread = new Thread(() -> {
-                isRunning = true;
-                try {
-                    Runtime.getRuntime().exec("logcat -c");
-                    Process process = Runtime.getRuntime().exec("logcat");
+            loggerThread = new Thread() {
+                @Override
+                public void run() {
+                    isRunning = true;
+                    try {
+                        Runtime.getRuntime().exec("logcat -c");
+                        Process process = Runtime.getRuntime().exec("logcat");
 
-                    try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                        String logTxt;
-                        while (isRunning && (logTxt = bufferedReader.readLine()) != null) {
-                            broadcastLog(logTxt);
-                        }
+                        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                            String logTxt;
+                            while (isRunning && (logTxt = bufferedReader.readLine()) != null) {
+                                broadcastLog(logTxt);
+                            }
 
-                        if (isRunning) {
-                            broadcastLog("Logger got killed. Restarting.");
-                            startLogging();
-                        } else {
-                            broadcastLog("Logger stopped.");
+                            if (isRunning) {
+                                broadcastLog("Logger got killed. Restarting.");
+                                startLogging();
+                            } else {
+                                broadcastLog("Logger stopped.");
+                            }
                         }
+                    } catch (IOException e) {
+                        broadcastLog(e.getMessage());
                     }
-                } catch (IOException e) {
-                    broadcastLog(e.getMessage());
                 }
             });
             loggerThread.start();

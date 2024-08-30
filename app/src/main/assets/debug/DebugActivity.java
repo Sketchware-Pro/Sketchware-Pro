@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class DebugActivity extends Activity {
 
-    private static final Map<String, String> exceptionMap = new HashMap<>() {{
+    private static final Map<String, String> exceptionMap = new HashMap<String, String>() {{
         put("StringIndexOutOfBoundsException", "Invalid string operation\n");
         put("IndexOutOfBoundsException", "Invalid list operation\n");
         put("ArithmeticException", "Invalid arithmetical operation\n");
