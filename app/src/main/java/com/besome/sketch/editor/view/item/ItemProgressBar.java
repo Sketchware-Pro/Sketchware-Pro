@@ -17,82 +17,83 @@ import a.a.a.wB;
 
 public class ItemProgressBar extends LinearLayout implements sy {
 
-    public ViewBean a;
-    public boolean b;
-    public boolean c;
-    public Paint d;
-    public float e;
-    public ImageView f;
+    private ViewBean viewBean;
+    private boolean isSelected;
+    private boolean isFixed;
+    private Paint paint;
+    private float paddingFactor;
+    private ImageView imageView;
 
-    public ItemProgressBar(Context var1) {
-        super(var1);
-        a(var1);
+    public ItemProgressBar(Context context) {
+        super(context);
+        initialize(context);
     }
 
-    public void a(Context var1) {
-        e = wB.a(var1, 1.0F);
-        d = new Paint(Paint.ANTI_ALIAS_FLAG);
-        d.setColor(0x9599d5d0);
+    private void initialize(Context context) {
+        paddingFactor = wB.a(context, 1.0F);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
-        f = new ImageView(getContext());
-        LinearLayout.LayoutParams var2 = new LinearLayout.LayoutParams(
+        imageView = new ImageView(getContext());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        f.setLayoutParams(var2);
-        f.setImageResource(R.drawable.progressbar_circle_48dp);
-        f.setScaleType(ScaleType.FIT_XY);
-        f.setPadding(0, 0, 0, 0);
-        addView(f);
+        imageView.setLayoutParams(layoutParams);
+        imageView.setImageResource(R.drawable.progressbar_circle_48dp);
+        imageView.setScaleType(ScaleType.FIT_XY);
+        imageView.setPadding(0, 0, 0, 0);
+        addView(imageView);
         setGravity(Gravity.CENTER);
     }
 
     public ViewBean getBean() {
-        return a;
+        return viewBean;
     }
 
     public boolean getFixed() {
-        return c;
+        return isFixed;
     }
 
     public boolean getSelection() {
-        return b;
+        return isSelected;
     }
 
     public void onDraw(Canvas var1) {
-        if (b) {
-            var1.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), d);
+        if (isSelected) {
+            var1.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
         }
         super.onDraw(var1);
     }
 
-    public void setBean(ViewBean var1) {
-        a = var1;
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
     }
 
-    public void setFixed(boolean var1) {
-        c = var1;
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
     }
 
-    public void setPadding(int var1, int var2, int var3, int var4) {
-        float var5 = (float) var1;
-        float var6 = e;
-        super.setPadding((int) (var5 * var6), (int) ((float) var2 * var6), (int) ((float) var3 * var6), (int) ((float) var4 * var6));
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding((int) (left * paddingFactor),
+                (int) (top * paddingFactor),
+                (int) (right * paddingFactor),
+                (int) (bottom * paddingFactor));
     }
 
-    public void setProgressBarStyle(String var1) {
-        if ("?android:progressBarStyle".equals(var1)) {
-            f.setImageResource(R.drawable.progressbar_circle_48dp);
-            f.getLayoutParams().width = (int) (e * 30F);
-            f.getLayoutParams().height = (int) (e * 30F);
-        } else if ("?android:progressBarStyleHorizontal".equals(var1)) {
-            f.setImageResource(R.drawable.progressbar_horizontal_48dp);
-            f.getLayoutParams().width = (int) (e * 320F);
-            f.getLayoutParams().height = (int) (e * 30F);
+    public void setProgressBarStyle(String progressBarStyle) {
+        if ("?android:progressBarStyle".equals(progressBarStyle)) {
+            imageView.setImageResource(R.drawable.progressbar_circle_48dp);
+            imageView.getLayoutParams().width = (int) (paddingFactor * 30F);
+            imageView.getLayoutParams().height = (int) (paddingFactor * 30F);
+        } else if ("?android:progressBarStyleHorizontal".equals(progressBarStyle)) {
+            imageView.setImageResource(R.drawable.progressbar_horizontal_48dp);
+            imageView.getLayoutParams().width = (int) (paddingFactor * 320F);
+            imageView.getLayoutParams().height = (int) (paddingFactor * 30F);
         }
     }
 
-    public void setSelection(boolean var1) {
-        b = var1;
+    public void setSelection(boolean selection) {
+        isSelected = selection;
         invalidate();
     }
 }
