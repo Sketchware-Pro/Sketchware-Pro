@@ -1,4 +1,7 @@
 <resources>
+    <!-- PLEASE, If you're going to create or modify a style -->
+    <!-- please MOVE (not copy) the style to a new styles file (styles_new.xml) -->
+    <!-- THIS FILE IS READ-ONLY (except deleting a style) -->
 
     <style name="AppTheme.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
         <item name="collapsedTitleTextAppearance">@style/MaterialToolbarTextCollapsedAppearance
