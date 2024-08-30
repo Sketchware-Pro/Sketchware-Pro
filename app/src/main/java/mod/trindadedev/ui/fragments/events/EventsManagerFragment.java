@@ -53,27 +53,22 @@ public class EventsManagerFragment extends BaseFragment {
      public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
           super.onViewCreated(view, savedInstanceState);
           configureToolbar(binding.toolbar);
-          if (getActivity() instanceof AppCompatActivity) {
-                ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
-          }
+          binding.toolbar.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                     case R.id.action_import_events:
+                          showImportEventsDialog();
+                          return true;
+                     case R.id.action_export_events:
+                          exportAllEvents();
+                          return true;
+                     default:
+                          return false;
+                }
+          });
           binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
           binding.activityEventsDescription.setText(getNumOfEvents(""));
           binding.fabNewListener.setOnClickListener(v -> showAddNewListenerDialog());
           refreshList();
-     }
-
-     @Override
-     public boolean onOptionsItemSelected(MenuItem item) {
-          switch (item.getItemId()) {
-               case R.id.action_import_events:
-                   showImportEventsDialog();
-                   return true;
-               case R.id.action_export_events:
-                   exportAllEvents();
-                   return true;
-               default:
-                   return super.onOptionsItemSelected(item);
-          }
      }
 
      private void showAddNewListenerDialog() {
