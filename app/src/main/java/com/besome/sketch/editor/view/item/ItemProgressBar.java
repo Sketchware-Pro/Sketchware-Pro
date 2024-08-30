@@ -79,35 +79,15 @@ public class ItemProgressBar extends LinearLayout implements sy {
     }
 
     public void setProgressBarStyle(String var1) {
-        byte var3;
-        label26:
-        {
-            int var2 = var1.hashCode();
-            if (var2 != -1631599723) {
-                if (var2 == 583759257 && var1.equals("?android:progressBarStyleHorizontal")) {
-                    var3 = 1;
-                    break label26;
-                }
-            } else if (var1.equals("?android:progressBarStyle")) {
-                var3 = 0;
-                break label26;
-            }
-
-            var3 = -1;
-        }
-
-        if (var3 != 0) {
-            if (var3 == 1) {
-                f.setImageResource(2131166033);
-                f.getLayoutParams().width = (int) (e * 320.0F);
-                f.getLayoutParams().height = (int) (e * 30.0F);
-            }
-        } else {
+        if ("?android:progressBarStyle".equals(var1)) {
             f.setImageResource(2131166032);
             f.getLayoutParams().width = (int) (e * 30.0F);
             f.getLayoutParams().height = (int) (e * 30.0F);
+        } else if ("?android:progressBarStyleHorizontal".equals(var1)) {
+            f.setImageResource(2131166033);
+            f.getLayoutParams().width = (int) (e * 320.0F);
+            f.getLayoutParams().height = (int) (e * 30.0F);
         }
-
     }
 
     public void setSelection(boolean var1) {
