@@ -48,6 +48,13 @@ public class EventsManagerDetailsFragment extends BaseFragment {
      public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
           super.onViewCreated(view, savedInstanceState);
           configureToolbar(binding.toolbar);
+          binding.fabNewEvent.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                args.putString("lis_name", listName);
+                EventsManagerCreatorFragment fragment = new EventsManagerCreatorFragment();
+                fragment.setArguments(args);
+                openFragment(fragment);
+          });
           refreshList();
      }
      
