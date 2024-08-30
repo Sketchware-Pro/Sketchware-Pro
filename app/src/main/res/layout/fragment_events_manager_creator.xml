@@ -54,6 +54,7 @@
                     android:layout_marginRight="14dp"
                     android:layout_marginBottom="14dp"
                     style="?attr/materialCardViewFilledStyle"
+                    android:transitionGroup="true"
                     app:cardBackgroundColor="?attr/colorSurfaceContainer">
                     
                     <LinearLayout
@@ -74,6 +75,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:gravity="center"
+                            android:transitionGroup="true"
                             android:orientation="vertical">
                             
                             <com.google.android.material.textfield.TextInputEditText
@@ -81,6 +83,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Event Name"
+                                android:transitionGroup="true"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
                         
@@ -89,6 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:gravity="center"
+                            android:transitionGroup="true"
                             android:orientation="vertical">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -104,6 +108,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:gravity="center"
+                            android:transitionGroup="true"
                             android:orientation="vertical">
                             
                             <com.google.android.material.textfield.TextInputEditText
@@ -127,6 +132,7 @@
                                 android:layout_margin="3dp"
                                 android:layout_weight="1"
                                 android:gravity="center"
+                                android:transitionGroup="true"
                                 android:orientation="vertical">
                                 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -143,6 +149,7 @@
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:orientation="vertical"
+                                android:transitionGroup="true"
                                 android:padding="4dp">
 
                                 <ImageView
@@ -158,6 +165,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:gravity="center"
+                        android:transitionGroup="true"
                         android:orientation="vertical">
                         
                         <com.google.android.material.textfield.TextInputEditText
@@ -173,6 +181,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
                         android:gravity="center"
+                        android:transitionGroup="true"
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -187,6 +196,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
+                        android:transitionGroup="true"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -202,6 +212,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
+                        android:transitionGroup="true"
                         android:gravity="center"
                         android:orientation="vertical">
 
@@ -229,6 +240,7 @@
                 android:layout_margin="8dp"
                 android:orientation="vertical"
                 app:cardCornerRadius="6dp"
+                android:transitionGroup="true"
                 app:cardElevation="2dp">
 
                 <LinearLayout
@@ -256,6 +268,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:gravity="center"
+                            android:transitionGroup="true"
                             android:orientation="vertical">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -271,6 +284,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"
                             android:gravity="center"
+                            android:transitionGroup="true"
                             android:orientation="vertical">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -286,6 +300,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="3dp"                            
                             android:gravity="center"
+                            android:transitionGroup="true"
                             android:orientation="vertical">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -303,6 +318,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="14dp"
+                android:transitionGroup="true"
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
