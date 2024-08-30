@@ -118,7 +118,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void initialize() {
-        context = new ContextThemeWrapper(getContext(), R.style.ViewEditorTheme);
+        context = new ContextThemeWrapper(getContext(), R.style.ThemeOverlay_SketchwarePro_ViewEditor);
         setBackgroundColor(Color.WHITE);
         addRootLayout();
         initTextView();

@@ -4,8 +4,58 @@
       If you change the style of a component from styles.xml, please MOVE (not copy) that style here.
 
       So, contributors, can you follow the following "guidelines" xD:
-      — 'Theme|Widget' - this prefix must always be included first
+      — 'Theme|ThemeOverlay|Widget|TextAppearance|ShapeAppearanceOverlay' -
+           this prefix must always be included first
       — 'SketchwarePro' - remains unchanged, as the name of the app speaks for itself.
       — '*' - instead of using the asterisk (*), replace it with the specific name of the component whose style is being modified or created.
     -->
+
+    <style name="Widget.SketchwarePro.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
+        <item name="collapsedTitleTextAppearance">@style/TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed</item>
+        <item name="expandedTitleTextAppearance">@style/TextAppearance.SketchwarePro.CollapsingToolbar.Expanded</item>
+        <item name="titleCollapseMode">scale</item>
+    </style>
+
+    <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/gilroy</item>
+        <item name="android:fontFamily">@font/gilroy</item>
+    </style>
+
+    <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Expanded" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/gilroy</item>
+        <item name="android:fontFamily">@font/gilroy</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.Toolbar.SmallText" parent="Widget.Material3.Toolbar">
+        <item name="titleTextAppearance">?attr/textAppearanceBodyLarge</item>
+        <item name="subtitleTextAppearance">?attr/textAppearanceBodyMedium</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.NavigationView.Main" parent="Widget.Material3.NavigationView">
+        <item name="dividerInsetEnd">@dimen/main_drawer_horizontal_padding</item>
+        <item name="dividerInsetStart">@dimen/main_drawer_horizontal_padding</item>
+        <item name="itemHorizontalPadding">@dimen/main_drawer_horizontal_padding</item>
+        <item name="itemIconPadding">@dimen/main_drawer_icon_padding</item>
+        <item name="itemShapeInsetEnd">@dimen/main_drawer_shape_horizontal_inset</item>
+        <item name="itemShapeInsetStart">@dimen/main_drawer_shape_horizontal_inset</item>
+        <item name="itemTextAppearance">?attr/textAppearanceBodyMedium</item>
+        <item name="subheaderInsetEnd">@dimen/main_drawer_horizontal_padding</item>
+        <item name="subheaderInsetStart">@dimen/main_drawer_horizontal_padding</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="hintEnabled">true</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SketchwarePro.TextInputLayout</item>
+        <item name="android:bottomLeftRadius">14dp</item>
+        <item name="android:bottomRightRadius">14dp</item>
+        <item name="android:topLeftRadius">14dp</item>
+        <item name="android:topRightRadius">14dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.SketchwarePro.TextInputLayout" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
+    </style>
+
+    <style name="ThemeOverlay.SketchwarePro.ViewEditor" parent="Base.Theme.MaterialComponents.Light" />
 </resources>

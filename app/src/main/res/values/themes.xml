@@ -4,7 +4,7 @@
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutLargeStyle</item>
         <item name="collapsingToolbarLayoutLargeSize">@dimen/collapsing_toolbar_large_size</item>
-        <item name="collapsingToolbarLayoutLargeStyle">@style/AppTheme.CollapsingToolbar</item>
+        <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.SketchwarePro.CollapsingToolbar</item>
         <item name="textInputStyle">@style/TextInputLayoutStyle</item>
 
         <item name="fontFamily">@font/gilroy</item>
@@ -12,12 +12,12 @@
     </style>
 
     <style name="Theme.SketchwarePro.Main">
-        <item name="navigationViewStyle">@style/MainDrawer</item>
+        <item name="navigationViewStyle">@style/Widget.SketchwarePro.NavigationView.Main</item>
     </style>
 
     <style name="Theme.SketchwarePro.Design">
         <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
-        <item name="toolbarStyle">@style/AppTheme.Design.Toolbar</item>
+        <item name="toolbarStyle">@style/Widget.SketchwarePro.Toolbar.SmallText</item>
     </style>
 
     <style name="Theme.SketchwarePro.Starting">
