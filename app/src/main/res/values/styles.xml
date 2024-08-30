@@ -81,9 +81,7 @@
         <item name="android:topLeftRadius">14dp</item>
         <item name="android:topRightRadius">14dp</item>
         <item name="hintEnabled">true</item>
-        <item name="shapeAppearanceOverlay">
-            @style/ShapeAppearanceOverlay.MyApp.TextInputLayout.Rounded
-        </item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SketchwarePro.TextInputLayout</item>
     </style>
 
     <style name="InLayoutTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -95,9 +93,7 @@
         <item name="android:topLeftRadius">14dp</item>
         <item name="android:topRightRadius">14dp</item>
         <item name="hintEnabled">true</item>
-        <item name="shapeAppearanceOverlay">
-            @style/ShapeAppearanceOverlay.MyApp.TextInputLayout.Rounded
-        </item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SketchwarePro.TextInputLayout</item>
     </style>
 
     <style name="roundedImageViewRounded">
