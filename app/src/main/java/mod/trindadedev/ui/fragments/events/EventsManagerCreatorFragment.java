@@ -111,7 +111,7 @@ public class EventsManagerCreatorFragment extends Fragment {
     }
 
     private void setupViews() {
-        binding.eventsCreatorCancel.setOnClickListener(v -> requireActivity().onBackPressed());
+        binding.eventsCreatorCancel.setOnClickListener(Helper.getBackPressedClickListener(requireActivity()));
         binding.eventsCreatorSave.setOnClickListener(v -> save());
         binding.eventsCreatorChooseicon.setOnClickListener(v -> showIconSelectorDialog());
     }
@@ -157,8 +157,8 @@ public class EventsManagerCreatorFragment extends Fragment {
             arrayList.add(hashMap);
         }
         FileUtil.writeFile(concat, new Gson().toJson(arrayList));
-        SketchwareUtil.toast("Saved");
-        requireActivity().finish();
+        SketchwareUtil.toast("Saved");      
+        getParentFragmentManager().popBackStack();
     }
 
     private int figureP(String str) {
@@ -182,7 +182,7 @@ public class EventsManagerCreatorFragment extends Fragment {
         } else {
             binding.toolbar.setTitle(lisName + "Create a new event");
         }
-        binding.toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(requireActivity()));
         ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.toolbar);
     }
 }
