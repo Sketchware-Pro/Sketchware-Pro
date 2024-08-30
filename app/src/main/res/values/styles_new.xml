@@ -1,0 +1,11 @@
+<resources>
+    <!--
+      I decided that new or modified styles will be stored here.
+      If you change the style of a component from styles.xml, please MOVE (not copy) that style here.
+
+      So, contributors, can you follow the following "guidelines" xD:
+      — 'Theme|Widget' - this prefix must always be included first
+      — 'SketchwarePro' - remains unchanged, as the name of the app speaks for itself.
+      — '*' - instead of using the asterisk (*), replace it with the specific name of the component whose style is being modified or created.
+    -->
+</resources>
