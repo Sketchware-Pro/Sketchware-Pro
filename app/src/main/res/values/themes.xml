@@ -5,7 +5,7 @@
         <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutLargeStyle</item>
         <item name="collapsingToolbarLayoutLargeSize">@dimen/collapsing_toolbar_large_size</item>
         <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.SketchwarePro.CollapsingToolbar</item>
-        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
+        <item name="textInputStyle">@style/Widget.SketchwarePro.TextInputLayout</item>
 
         <item name="fontFamily">@font/gilroy</item>
         <item name="android:fontFamily">@font/gilroy</item>
