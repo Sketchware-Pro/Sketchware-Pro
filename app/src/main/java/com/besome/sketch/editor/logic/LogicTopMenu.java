@@ -1,19 +1,16 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.besome.sketch.editor.logic;
 
-import a.a.a.wB;
-import a.a.a.xB;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import a.a.a.wB;
+import a.a.a.xB;
+
 public class LogicTopMenu extends LinearLayout {
+
     public LinearLayout a;
     public TextView b;
     public LinearLayout c;
@@ -33,68 +30,68 @@ public class LogicTopMenu extends LinearLayout {
 
     public LogicTopMenu(Context var1) {
         super(var1);
-        this.a(var1);
+        a(var1);
     }
 
     public LogicTopMenu(Context var1, AttributeSet var2) {
         super(var1, var2);
-        this.a(var1);
+        a(var1);
     }
 
     public final void a(Context var1) {
         wB.a(var1, this, 2131427493);
-        this.a = (LinearLayout)((LinearLayout)this).findViewById(2131231337);
-        this.b = (TextView)((LinearLayout)this).findViewById(2131231939);
-        this.c = (LinearLayout)((LinearLayout)this).findViewById(2131231336);
-        this.d = (TextView)((LinearLayout)this).findViewById(2131231927);
-        this.e = (LinearLayout)((LinearLayout)this).findViewById(2131231347);
-        this.f = (TextView)((LinearLayout)this).findViewById(2131231975);
-        this.g = (LinearLayout)((LinearLayout)this).findViewById(2131231339);
-        this.h = (TextView)((LinearLayout)this).findViewById(2131231955);
-        this.m = (ImageView)((LinearLayout)this).findViewById(2131231233);
-        this.n = (ImageView)((LinearLayout)this).findViewById(2131231227);
-        this.o = (ImageView)((LinearLayout)this).findViewById(2131231226);
-        this.p = (ImageView)((LinearLayout)this).findViewById(2131231229);
-        this.b.setText(xB.b().a(((LinearLayout)this).getContext(), 2131624986));
-        this.d.setText(xB.b().a(((LinearLayout)this).getContext(), 2131624982));
-        this.f.setText(xB.b().a(((LinearLayout)this).getContext(), 2131624978));
-        this.h.setText(xB.b().a(((LinearLayout)this).getContext(), 2131624989));
+        a = findViewById(2131231337);
+        b = findViewById(2131231939);
+        c = findViewById(2131231336);
+        d = findViewById(2131231927);
+        e = findViewById(2131231347);
+        f = findViewById(2131231975);
+        g = findViewById(2131231339);
+        h = findViewById(2131231955);
+        m = findViewById(2131231233);
+        n = findViewById(2131231227);
+        o = findViewById(2131231226);
+        p = findViewById(2131231229);
+        b.setText(xB.b().a(getContext(), 2131624986));
+        d.setText(xB.b().a(getContext(), 2131624982));
+        f.setText(xB.b().a(getContext(), 2131624978));
+        h.setText(xB.b().a(getContext(), 2131624989));
     }
 
     public void a(boolean var1) {
-        this.j = var1;
+        j = var1;
         if (var1) {
-            this.c.setBackgroundColor(((LinearLayout)this).getResources().getColor(2131034288));
-            this.d.setTextColor(-1);
-            this.n.setImageResource(2131165507);
+            c.setBackgroundColor(getResources().getColor(2131034288));
+            d.setTextColor(-1);
+            n.setImageResource(2131165507);
         } else {
-            this.c.setBackgroundColor(-65794);
-            this.d.setTextColor(-8553091);
-            this.n.setImageResource(2131165506);
+            c.setBackgroundColor(-65794);
+            d.setTextColor(-8553091);
+            n.setImageResource(2131165506);
         }
 
     }
 
     public boolean a() {
-        return this.j;
+        return j;
     }
 
     public boolean a(float var1, float var2) {
-        int var3 = this.c.getVisibility();
+        int var3 = c.getVisibility();
         boolean var4 = false;
         if (var3 == 8) {
             return false;
         } else {
             int[] var5 = new int[2];
-            this.c.getLocationOnScreen(var5);
+            c.getLocationOnScreen(var5);
             boolean var6 = var4;
-            if (var1 > (float)var5[0]) {
+            if (var1 > (float) var5[0]) {
                 var6 = var4;
-                if (var1 < (float)(var5[0] + this.c.getWidth())) {
+                if (var1 < (float) (var5[0] + c.getWidth())) {
                     var6 = var4;
-                    if (var2 > (float)var5[1]) {
+                    if (var2 > (float) var5[1]) {
                         var6 = var4;
-                        if (var2 < (float)(var5[1] + this.c.getHeight())) {
+                        if (var2 < (float) (var5[1] + c.getHeight())) {
                             var6 = true;
                         }
                     }
@@ -106,39 +103,39 @@ public class LogicTopMenu extends LinearLayout {
     }
 
     public void b(boolean var1) {
-        this.i = var1;
+        i = var1;
         if (var1) {
-            this.a.setBackgroundColor(((LinearLayout)this).getResources().getColor(2131034294));
-            this.b.setTextColor(-1);
-            this.m.setImageResource(2131165875);
+            a.setBackgroundColor(getResources().getColor(2131034294));
+            b.setTextColor(-1);
+            m.setImageResource(2131165875);
         } else {
-            this.a.setBackgroundColor(-65794);
-            this.b.setTextColor(-8553091);
-            this.m.setImageResource(2131165896);
+            a.setBackgroundColor(-65794);
+            b.setTextColor(-8553091);
+            m.setImageResource(2131165896);
         }
 
     }
 
     public boolean b() {
-        return this.i;
+        return i;
     }
 
     public boolean b(float var1, float var2) {
-        int var3 = this.a.getVisibility();
+        int var3 = a.getVisibility();
         boolean var4 = false;
         if (var3 == 8) {
             return false;
         } else {
             int[] var5 = new int[2];
-            this.a.getLocationOnScreen(var5);
+            a.getLocationOnScreen(var5);
             boolean var6 = var4;
-            if (var1 > (float)var5[0]) {
+            if (var1 > (float) var5[0]) {
                 var6 = var4;
-                if (var1 < (float)(var5[0] + this.a.getWidth())) {
+                if (var1 < (float) (var5[0] + a.getWidth())) {
                     var6 = var4;
-                    if (var2 > (float)var5[1]) {
+                    if (var2 > (float) var5[1]) {
                         var6 = var4;
-                        if (var2 < (float)(var5[1] + this.a.getHeight())) {
+                        if (var2 < (float) (var5[1] + a.getHeight())) {
                             var6 = true;
                         }
                     }
@@ -150,39 +147,39 @@ public class LogicTopMenu extends LinearLayout {
     }
 
     public void c(boolean var1) {
-        this.l = var1;
+        l = var1;
         if (var1) {
-            this.g.setBackgroundColor(((LinearLayout)this).getResources().getColor(2131034284));
-            this.h.setTextColor(-1);
-            this.p.setImageResource(2131165375);
+            g.setBackgroundColor(getResources().getColor(2131034284));
+            h.setTextColor(-1);
+            p.setImageResource(2131165375);
         } else {
-            this.g.setBackgroundColor(-65794);
-            this.h.setTextColor(-8553091);
-            this.p.setImageResource(2131165376);
+            g.setBackgroundColor(-65794);
+            h.setTextColor(-8553091);
+            p.setImageResource(2131165376);
         }
 
     }
 
     public boolean c() {
-        return this.l;
+        return l;
     }
 
     public boolean c(float var1, float var2) {
-        int var3 = this.g.getVisibility();
+        int var3 = g.getVisibility();
         boolean var4 = false;
         if (var3 == 8) {
             return false;
         } else {
             int[] var5 = new int[2];
-            this.g.getLocationOnScreen(var5);
+            g.getLocationOnScreen(var5);
             boolean var6 = var4;
-            if (var1 > (float)var5[0]) {
+            if (var1 > (float) var5[0]) {
                 var6 = var4;
-                if (var1 < (float)(var5[0] + this.g.getWidth())) {
+                if (var1 < (float) (var5[0] + g.getWidth())) {
                     var6 = var4;
-                    if (var2 > (float)var5[1]) {
+                    if (var2 > (float) var5[1]) {
                         var6 = var4;
-                        if (var2 < (float)(var5[1] + this.g.getHeight())) {
+                        if (var2 < (float) (var5[1] + g.getHeight())) {
                             var6 = true;
                         }
                     }
@@ -194,39 +191,39 @@ public class LogicTopMenu extends LinearLayout {
     }
 
     public void d(boolean var1) {
-        this.k = var1;
+        k = var1;
         if (var1) {
-            this.e.setBackgroundColor(((LinearLayout)this).getResources().getColor(2131034284));
-            this.f.setTextColor(-1);
-            this.o.setImageResource(2131165379);
+            e.setBackgroundColor(getResources().getColor(2131034284));
+            f.setTextColor(-1);
+            o.setImageResource(2131165379);
         } else {
-            this.e.setBackgroundColor(-65794);
-            this.f.setTextColor(-8553091);
-            this.o.setImageResource(2131165700);
+            e.setBackgroundColor(-65794);
+            f.setTextColor(-8553091);
+            o.setImageResource(2131165700);
         }
 
     }
 
     public boolean d() {
-        return this.k;
+        return k;
     }
 
     public boolean d(float var1, float var2) {
-        int var3 = this.e.getVisibility();
+        int var3 = e.getVisibility();
         boolean var4 = false;
         if (var3 == 8) {
             return false;
         } else {
             int[] var5 = new int[2];
-            this.e.getLocationOnScreen(var5);
+            e.getLocationOnScreen(var5);
             boolean var6 = var4;
-            if (var1 > (float)var5[0]) {
+            if (var1 > (float) var5[0]) {
                 var6 = var4;
-                if (var1 < (float)(var5[0] + this.e.getWidth())) {
+                if (var1 < (float) (var5[0] + e.getWidth())) {
                     var6 = var4;
-                    if (var2 > (float)var5[1]) {
+                    if (var2 > (float) var5[1]) {
                         var6 = var4;
-                        if (var2 < (float)(var5[1] + this.e.getHeight())) {
+                        if (var2 < (float) (var5[1] + e.getHeight())) {
                             var6 = true;
                         }
                     }
@@ -239,13 +236,13 @@ public class LogicTopMenu extends LinearLayout {
 
     public void e(boolean var1) {
         if (var1) {
-            this.e.setVisibility(0);
-            this.c.setVisibility(0);
-            this.g.setVisibility(8);
+            e.setVisibility(0);
+            c.setVisibility(0);
+            g.setVisibility(8);
         } else {
-            this.e.setVisibility(8);
-            this.c.setVisibility(8);
-            this.g.setVisibility(0);
+            e.setVisibility(8);
+            c.setVisibility(8);
+            g.setVisibility(0);
         }
 
     }
