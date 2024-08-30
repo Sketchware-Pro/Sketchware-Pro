@@ -16,6 +16,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -52,6 +53,9 @@ public class EventsManagerFragment extends BaseFragment {
      public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
           super.onViewCreated(view, savedInstanceState);
           configureToolbar(binding.toolbar);
+          if (getActivity() instanceof AppCompatActivity) {
+                ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
+          }
           binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
           binding.activityEventsDescription.setText(getNumOfEvents(""));
           binding.fabNewListener.setOnClickListener(v -> showAddNewListenerDialog());
