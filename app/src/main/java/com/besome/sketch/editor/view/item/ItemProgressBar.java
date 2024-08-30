@@ -3,11 +3,14 @@ package com.besome.sketch.editor.view.item;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
+import com.sketchware.remod.R;
 
 import a.a.a.sy;
 import a.a.a.wB;
@@ -28,17 +31,19 @@ public class ItemProgressBar extends LinearLayout implements sy {
 
     public void a(Context var1) {
         e = wB.a(var1, 1.0F);
-        d = new Paint(1);
-        d.setColor(-1785080368);
+        d = new Paint(Paint.ANTI_ALIAS_FLAG);
+        d.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
         f = new ImageView(getContext());
-        LinearLayout.LayoutParams var2 = new LinearLayout.LayoutParams(-1, -2);
+        LinearLayout.LayoutParams var2 = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
         f.setLayoutParams(var2);
-        f.setImageResource(2131166032);
+        f.setImageResource(R.drawable.progressbar_circle_48dp);
         f.setScaleType(ScaleType.FIT_XY);
         f.setPadding(0, 0, 0, 0);
         addView(f);
-        setGravity(17);
+        setGravity(Gravity.CENTER);
     }
 
     public ViewBean getBean() {
@@ -76,13 +81,13 @@ public class ItemProgressBar extends LinearLayout implements sy {
 
     public void setProgressBarStyle(String var1) {
         if ("?android:progressBarStyle".equals(var1)) {
-            f.setImageResource(2131166032);
-            f.getLayoutParams().width = (int) (e * 30.0F);
-            f.getLayoutParams().height = (int) (e * 30.0F);
+            f.setImageResource(R.drawable.progressbar_circle_48dp);
+            f.getLayoutParams().width = (int) (e * 30F);
+            f.getLayoutParams().height = (int) (e * 30F);
         } else if ("?android:progressBarStyleHorizontal".equals(var1)) {
-            f.setImageResource(2131166033);
-            f.getLayoutParams().width = (int) (e * 320.0F);
-            f.getLayoutParams().height = (int) (e * 30.0F);
+            f.setImageResource(R.drawable.progressbar_horizontal_48dp);
+            f.getLayoutParams().width = (int) (e * 320F);
+            f.getLayoutParams().height = (int) (e * 30F);
         }
     }
 
