@@ -127,7 +127,7 @@ public class CompileLogActivity extends AppCompatActivity {
         binding.optionsLayout.setVisibility(View.VISIBLE);
         binding.noContentLayout.setVisibility(View.GONE);
 
-        binding.tvCompileLog.setText(CompileLogHelper.colorErrsAndWarnings(error));
+        binding.tvCompileLog.setText(CompileLogHelper.getColoredLogs(this, error));
         binding.tvCompileLog.setTextIsSelectable(true);
     }
 

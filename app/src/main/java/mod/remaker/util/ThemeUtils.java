@@ -1,4 +1,4 @@
-package com.besome.sketch.lib;
+package mod.remaker.util;
 
 import android.view.View;
 
@@ -8,6 +8,8 @@ import androidx.annotation.ColorInt;
 import com.google.android.material.color.MaterialColors;
 
 public class ThemeUtils {
+    ThemeUtils() {
+    }
 
     @ColorInt
     public static int getColor(View view, @AttrRes int resourceId) {

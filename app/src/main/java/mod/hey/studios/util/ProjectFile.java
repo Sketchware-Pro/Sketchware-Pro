@@ -6,6 +6,11 @@ import a.a.a.lC;
 import a.a.a.yB;
 
 public class ProjectFile {
+    public static final String COLOR_ACCENT = "color_accent";
+    public static final String COLOR_PRIMARY = "color_primary";
+    public static final String COLOR_PRIMARY_DARK = "color_primary_dark";
+    public static final String COLOR_CONTROL_HIGHLIGHT = "color_control_highlight";
+    public static final String COLOR_CONTROL_NORMAL = "color_control_normal";
 
     public static int getColor(String sc_id, String color) {
         return yB.a(lC.b(sc_id), color, getDefaultColor(color));
@@ -33,19 +38,16 @@ public class ProjectFile {
 	 }
 	*/
 
-    private static int getDefaultColor(String color) {
+    public static int getDefaultColor(String color) {
         switch (color) {
             case "color_primary_dark":
-                return Color.parseColor("#ff0084c2");
+                return Color.parseColor("#ff1976d2");
 
             case "color_control_highlight":
-                return Color.parseColor("#20008dcd");
-
-            case "color_control_normal":
-                return Color.parseColor("#ff57beee");
+                return Color.parseColor("#202196f3");
 
             default:
-                return Color.parseColor("#ff008dcd");
+                return Color.parseColor("#ff2196f3");
         }
     }
 }
