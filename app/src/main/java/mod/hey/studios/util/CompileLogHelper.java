@@ -27,13 +27,13 @@ public class CompileLogHelper {
         SpannableStringBuilder spannable = new SpannableStringBuilder(logs);
 
         Matcher errorMatcher = ERROR_PATTERN.matcher(logs);
-        applyStyle(spannable, errorMatcher, ERROR_COL);
+        applyStyle(spannable, errorMatcher, errorColor);
 
         Matcher warningMatcher = WARNING_PATTERN.matcher(logs);
-        applyStyle(spannable, warningMatcher, WARNING_COL);
+        applyStyle(spannable, warningMatcher, warningColor);
 
         Matcher xmlMatcher = XML_PATTERN.matcher(logs);
-        applyStyle(spannable, xmlMatcher, ERROR_COL);
+        applyStyle(spannable, xmlMatcher, errorColor);
 
         return spannable;
     }
