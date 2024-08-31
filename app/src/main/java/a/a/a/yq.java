@@ -221,11 +221,11 @@ public class yq {
         versionCode = yB.c(metadata, "sc_ver_code");
         versionName = yB.c(metadata, "sc_ver_name");
 
-        colorAccent = yB.a(metadata, "color_accent", getDefaultColor(ProjectFile.COLOR_ACCENT));
-        colorPrimary = yB.a(metadata, "color_primary", getDefaultColor(ProjectFile.COLOR_PRIMARY));
-        colorPrimaryDark = yB.a(metadata, "color_primary_dark", getDefaultColor(ProjectFile.COLOR_PRIMARY_DARK));
-        colorControlHighlight = yB.a(metadata, "color_control_highlight", getDefaultColor(ProjectFile.COLOR_CONTROL_HIGHLIGHT));
-        colorControlNormal = yB.a(metadata, "color_control_normal", getDefaultColor(ProjectFile.COLOR_CONTROL_NORMAL));
+        colorAccent = yB.a(metadata, ProjectFile.COLOR_ACCENT, getDefaultColor(ProjectFile.COLOR_ACCENT));
+        colorPrimary = yB.a(metadata, ProjectFile.COLOR_PRIMARY, getDefaultColor(ProjectFile.COLOR_PRIMARY));
+        colorPrimaryDark = yB.a(metadata, ProjectFile.COLOR_PRIMARY_DARK, getDefaultColor(ProjectFile.COLOR_PRIMARY_DARK));
+        colorControlHighlight = yB.a(metadata, ProjectFile.COLOR_CONTROL_HIGHLIGHT, getDefaultColor(ProjectFile.COLOR_CONTROL_HIGHLIGHT));
+        colorControlNormal = yB.a(metadata, ProjectFile.COLOR_CONTROL_NORMAL, getDefaultColor(ProjectFile.COLOR_CONTROL_NORMAL));
 
         projectSettings = new ProjectSettings(sc_id);
         fileUtil = new oB(true);
