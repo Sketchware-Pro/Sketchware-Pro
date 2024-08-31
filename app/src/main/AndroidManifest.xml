@@ -62,7 +62,6 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.projects.MyProjectSettingActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity android:name="com.besome.sketch.tools.CompileLogActivity" />
