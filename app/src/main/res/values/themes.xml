@@ -5,6 +5,7 @@
         <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutLargeStyle</item>
         <item name="collapsingToolbarLayoutLargeSize">@dimen/collapsing_toolbar_large_size</item>
         <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.SketchwarePro.CollapsingToolbar</item>
+        <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_material</item>
         <item name="textInputStyle">@style/Widget.SketchwarePro.TextInputLayout</item>
 
         <item name="fontFamily">@font/gilroy</item>
