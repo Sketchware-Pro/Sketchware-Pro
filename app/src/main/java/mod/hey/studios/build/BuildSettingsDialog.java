@@ -14,12 +14,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.besome.sketch.lib.ThemeUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
 import mod.SketchwareUtil;
+import mod.remaker.util.ThemeUtils;
 
 public class BuildSettingsDialog {
 

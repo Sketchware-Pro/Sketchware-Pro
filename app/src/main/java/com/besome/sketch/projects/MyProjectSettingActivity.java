@@ -1,5 +1,7 @@
 package com.besome.sketch.projects;
 
+import static mod.hey.studios.util.ProjectFile.getDefaultColor;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -53,6 +55,7 @@ import a.a.a.yB;
 import mod.SketchwareUtil;
 import mod.hasrat.control.VersionDialog;
 import mod.hey.studios.util.Helper;
+import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class MyProjectSettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -120,11 +123,12 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         binding.okButton.setOnClickListener(this);
         binding.cancel.setOnClickListener(this);
 
-        projectThemeColors[0] = getResources().getColor(R.color.color_accent);
-        projectThemeColors[1] = getResources().getColor(R.color.color_primary);
-        projectThemeColors[2] = getResources().getColor(R.color.color_primary_dark);
-        projectThemeColors[3] = getResources().getColor(R.color.color_control_highlight);
-        projectThemeColors[4] = getResources().getColor(R.color.color_control_normal);
+        projectThemeColors[0] = getDefaultColor(ProjectFile.COLOR_ACCENT);
+        projectThemeColors[1] = getDefaultColor(ProjectFile.COLOR_PRIMARY);
+        projectThemeColors[2] = getDefaultColor(ProjectFile.COLOR_PRIMARY_DARK);
+        projectThemeColors[3] = getDefaultColor(ProjectFile.COLOR_CONTROL_HIGHLIGHT);
+        projectThemeColors[4] = getDefaultColor(ProjectFile.COLOR_CONTROL_NORMAL);
+
         for (int i = 0; i < themeColorKeys.length; i++) {
             ThemeColorView colorView = new ThemeColorView(this, i);
             colorView.name.setText(themeColorLabels[i]);

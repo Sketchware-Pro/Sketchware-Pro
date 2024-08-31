@@ -1,16 +1,7 @@
 <resources>
-
-    <style name="AppTheme.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
-        <item name="collapsedTitleTextAppearance">@style/MaterialToolbarTextCollapsedAppearance
-        </item>
-        <item name="expandedTitleTextAppearance">@style/MaterialToolbarTextExpandedAppearance</item>
-        <item name="titleCollapseMode">scale</item>
-    </style>
-
-    <style name="AppTheme.Design.Toolbar" parent="Widget.Material3.Toolbar">
-        <item name="titleTextAppearance">?attr/textAppearanceBodyLarge</item>
-        <item name="subtitleTextAppearance">?attr/textAppearanceBodyMedium</item>
-    </style>
+    <!-- PLEASE, If you're going to create or modify a style -->
+    <!-- please MOVE (not copy) the style to a new styles file (styles_new.xml) -->
+    <!-- THIS FILE IS READ-ONLY (except deleting a style) -->
 
     <style name="AppTheme.Check.White" parent="@style/Base.Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorControlActivated">@color/color_chk_white_highlight</item>
@@ -40,18 +31,6 @@
     <style name="DesignTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
         <item name="android:textSize">12sp</item>
         <item name="textAllCaps">true</item>
-    </style>
-
-    <style name="MainDrawer" parent="Widget.Material3.NavigationView">
-        <item name="dividerInsetEnd">@dimen/main_drawer_horizontal_padding</item>
-        <item name="dividerInsetStart">@dimen/main_drawer_horizontal_padding</item>
-        <item name="itemHorizontalPadding">@dimen/main_drawer_horizontal_padding</item>
-        <item name="itemIconPadding">@dimen/main_drawer_icon_padding</item>
-        <item name="itemShapeInsetEnd">@dimen/main_drawer_shape_horizontal_inset</item>
-        <item name="itemShapeInsetStart">@dimen/main_drawer_shape_horizontal_inset</item>
-        <item name="itemTextAppearance">?attr/textAppearanceBodyMedium</item>
-        <item name="subheaderInsetEnd">@dimen/main_drawer_horizontal_padding</item>
-        <item name="subheaderInsetStart">@dimen/main_drawer_horizontal_padding</item>
     </style>
 
     <style name="MainTabLayout" parent="@style/Widget.Design.TabLayout">
@@ -94,7 +73,7 @@
         <item name="android:minHeight">3dp</item>
     </style>
 
-    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="TextDropDownLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="android:paddingHorizontal">0dp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:bottomLeftRadius">14dp</item>
@@ -102,9 +81,7 @@
         <item name="android:topLeftRadius">14dp</item>
         <item name="android:topRightRadius">14dp</item>
         <item name="hintEnabled">true</item>
-        <item name="shapeAppearanceOverlay">
-            @style/ShapeAppearanceOverlay.MyApp.TextInputLayout.Rounded
-        </item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SketchwarePro.TextInputLayout</item>
     </style>
 
     <style name="InLayoutTextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
@@ -116,14 +93,7 @@
         <item name="android:topLeftRadius">14dp</item>
         <item name="android:topRightRadius">14dp</item>
         <item name="hintEnabled">true</item>
-        <item name="shapeAppearanceOverlay">
-            @style/ShapeAppearanceOverlay.MyApp.TextInputLayout.Rounded
-        </item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.MyApp.TextInputLayout.Rounded" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/inputfields_corners_radius</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SketchwarePro.TextInputLayout</item>
     </style>
 
     <style name="roundedImageViewRounded">
@@ -146,16 +116,6 @@
     <style name="chipText" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:fontFamily">@font/gilroy</item>
         <item name="fontFamily">@font/gilroy</item>
-    </style>
-
-    <style name="MaterialToolbarTextExpandedAppearance" parent="TextAppearance.Material3.HeadlineMedium">
-        <item name="fontFamily">@font/gilroy</item>
-        <item name="android:fontFamily">@font/gilroy</item>
-    </style>
-
-    <style name="MaterialToolbarTextCollapsedAppearance" parent="TextAppearance.Material3.TitleLarge">
-        <item name="fontFamily">@font/gilroy</item>
-        <item name="android:fontFamily">@font/gilroy</item>
     </style>
 
     <style name="TextAppearance.Compat.Notification.Info.Media" parent="@style/TextAppearance.Compat.Notification.Info">
@@ -291,8 +251,6 @@
         <item name="android:textSize">14sp</item>
         <item name="textAllCaps">false</item>
     </style>
-
-    <style name="ViewEditorTheme" parent="Base.Theme.MaterialComponents.Light" />
 
     <!--  bottom sheet style  -->
     <style name="BottomSheetCardStyle" parent="">

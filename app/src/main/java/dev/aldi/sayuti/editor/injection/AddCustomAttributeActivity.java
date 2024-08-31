@@ -13,7 +13,6 @@ import android.widget.PopupMenu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.besome.sketch.lib.ThemeUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
@@ -28,6 +27,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.remaker.view.CustomAttributeView;
+import mod.remaker.util.ThemeUtils;
 
 public class AddCustomAttributeActivity extends AppCompatActivity {
 

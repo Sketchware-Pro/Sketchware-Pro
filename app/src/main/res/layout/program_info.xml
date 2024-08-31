@@ -35,6 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:textStyle="bold"
                     android:gravity="center"
                     android:text="@string/title_sketchware"
                     android:textAppearance="?attr/textAppearanceHeadlineSmall"
@@ -46,10 +47,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:gravity="center"
-                    android:textColor="?attr/colorGreen"
+                    android:textColor="?attr/colorOnSurface"
                     android:textIsSelectable="true"
                     android:textSize="16sp"
-                    android:textStyle="bold"
                     tools:text="Version 1.0.0" />
 
                 <TextView

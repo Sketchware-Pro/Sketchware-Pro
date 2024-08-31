@@ -118,7 +118,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void initialize() {
-        context = new ContextThemeWrapper(getContext(), R.style.ViewEditorTheme);
+        context = new ContextThemeWrapper(getContext(), R.style.ThemeOverlay_SketchwarePro_ViewEditor);
         setBackgroundColor(Color.WHITE);
         addRootLayout();
         initTextView();
@@ -585,7 +585,7 @@ public class ViewPane extends RelativeLayout {
         itemFloatingActionButton.setLayoutParams(new LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        itemFloatingActionButton.setMainColor(ProjectFile.getColor(sc_id, "color_accent"));
+        itemFloatingActionButton.setMainColor(ProjectFile.getColor(sc_id, ProjectFile.COLOR_ACCENT));
         itemFloatingActionButton.setFixed(true);
         if (viewBean == null) {
             ViewBean viewBean2 = new ViewBean("_fab", ViewBean.VIEW_TYPE_WIDGET_FAB);
