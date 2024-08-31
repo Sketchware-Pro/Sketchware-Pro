@@ -63,7 +63,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:gravity="center"
                 app:startIconDrawable="@drawable/ic_android_24">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -71,15 +70,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:textSize="14sp" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_package_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 app:placeholderText="com.my.newproject"
                 app:startIconDrawable="@drawable/ic_package_24">
 
@@ -87,17 +85,15 @@
                     android:id="@+id/et_package_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start|center"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:textSize="14sp" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_project_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 app:startIconDrawable="@drawable/ic_interests_24">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -105,14 +101,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:textSize="14sp" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
+                android:layout_marginTop="17dp"
                 app:strokeColor="?attr/colorOutline">
 
                 <LinearLayout
@@ -125,7 +120,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="8dp">
+                        android:paddingEnd="8dp"
+                        android:paddingStart="8dp">
 
                         <HorizontalScrollView
                             android:layout_width="0dp"
@@ -175,6 +171,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="64dp"
                 android:layout_marginTop="13dp"
                 app:strokeColor="?attr/colorOutline">
 
@@ -267,6 +264,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:layout_gravity="bottom"
+        android:background="?attr/colorSurface"
         android:orientation="horizontal">
 
         <Button
