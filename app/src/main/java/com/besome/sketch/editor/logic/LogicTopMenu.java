@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sketchware.remod.R;
+
 import a.a.a.wB;
 import a.a.a.xB;
 
@@ -39,35 +41,35 @@ public class LogicTopMenu extends LinearLayout {
     }
 
     public final void a(Context var1) {
-        wB.a(var1, this, 2131427493);
-        a = findViewById(2131231337);
-        b = findViewById(2131231939);
-        c = findViewById(2131231336);
-        d = findViewById(2131231927);
-        e = findViewById(2131231347);
-        f = findViewById(2131231975);
-        g = findViewById(2131231339);
-        h = findViewById(2131231955);
-        m = findViewById(2131231233);
-        n = findViewById(2131231227);
-        o = findViewById(2131231226);
-        p = findViewById(2131231229);
-        b.setText(xB.b().a(getContext(), 2131624986));
-        d.setText(xB.b().a(getContext(), 2131624982));
-        f.setText(xB.b().a(getContext(), 2131624978));
-        h.setText(xB.b().a(getContext(), 2131624989));
+        wB.a(var1, this, R.layout.logic_editor_top_menu);
+        a = findViewById(R.id.layout_delete);
+        b = findViewById(R.id.tv_delete);
+        c = findViewById(R.id.layout_copy);
+        d = findViewById(R.id.tv_copy);
+        e = findViewById(R.id.layout_favorite);
+        f = findViewById(R.id.tv_favorite);
+        g = findViewById(R.id.layout_detail);
+        h = findViewById(R.id.tv_detail);
+        m = findViewById(R.id.iv_trash);
+        n = findViewById(R.id.iv_copy);
+        o = findViewById(R.id.iv_bookmark);
+        p = findViewById(R.id.iv_detail);
+        b.setText(xB.b().a(getContext(), R.string.common_word_delete));
+        d.setText(xB.b().a(getContext(), R.string.common_word_copy));
+        f.setText(xB.b().a(getContext(), R.string.common_word_collection));
+        h.setText(xB.b().a(getContext(), R.string.common_word_detail));
     }
 
     public void a(boolean var1) {
         j = var1;
         if (var1) {
-            c.setBackgroundColor(getResources().getColor(2131034288));
-            d.setTextColor(-1);
-            n.setImageResource(2131165507);
+            c.setBackgroundColor(getResources().getColor(R.color.scolor_green_normal));
+            d.setTextColor(0xffffffff);
+            n.setImageResource(R.drawable.copy_48_white);
         } else {
-            c.setBackgroundColor(-65794);
-            d.setTextColor(-8553091);
-            n.setImageResource(2131165506);
+            c.setBackgroundColor(0xfffefefe);
+            d.setTextColor(0xff7d7d7d);
+            n.setImageResource(R.drawable.copy_48_gray);
         }
 
     }
@@ -79,7 +81,7 @@ public class LogicTopMenu extends LinearLayout {
     public boolean a(float var1, float var2) {
         int var3 = c.getVisibility();
         boolean var4 = false;
-        if (var3 == 8) {
+        if (var3 == GONE) {
             return false;
         } else {
             int[] var5 = new int[2];
@@ -105,13 +107,13 @@ public class LogicTopMenu extends LinearLayout {
     public void b(boolean var1) {
         i = var1;
         if (var1) {
-            a.setBackgroundColor(getResources().getColor(2131034294));
+            a.setBackgroundColor(getResources().getColor(R.color.scolor_red_02));
             b.setTextColor(-1);
-            m.setImageResource(2131165875);
+            m.setImageResource(R.drawable.ic_trashcan_white_48dp);
         } else {
-            a.setBackgroundColor(-65794);
-            b.setTextColor(-8553091);
-            m.setImageResource(2131165896);
+            a.setBackgroundColor(0xfffefefe);
+            b.setTextColor(0xff7d7d7d);
+            m.setImageResource(R.drawable.icon_delete);
         }
 
     }
@@ -123,7 +125,7 @@ public class LogicTopMenu extends LinearLayout {
     public boolean b(float var1, float var2) {
         int var3 = a.getVisibility();
         boolean var4 = false;
-        if (var3 == 8) {
+        if (var3 == GONE) {
             return false;
         } else {
             int[] var5 = new int[2];
@@ -149,13 +151,13 @@ public class LogicTopMenu extends LinearLayout {
     public void c(boolean var1) {
         l = var1;
         if (var1) {
-            g.setBackgroundColor(getResources().getColor(2131034284));
-            h.setTextColor(-1);
-            p.setImageResource(2131165375);
+            g.setBackgroundColor(getResources().getColor(R.color.scolor_blue_01));
+            h.setTextColor(0xffffffff);
+            p.setImageResource(R.drawable.block_96_white);
         } else {
-            g.setBackgroundColor(-65794);
-            h.setTextColor(-8553091);
-            p.setImageResource(2131165376);
+            g.setBackgroundColor(0xfffefefe);
+            h.setTextColor(0xff7d7d7d);
+            p.setImageResource(R.drawable.block_flled_grey);
         }
 
     }
@@ -167,7 +169,7 @@ public class LogicTopMenu extends LinearLayout {
     public boolean c(float var1, float var2) {
         int var3 = g.getVisibility();
         boolean var4 = false;
-        if (var3 == 8) {
+        if (var3 == GONE) {
             return false;
         } else {
             int[] var5 = new int[2];
@@ -193,13 +195,13 @@ public class LogicTopMenu extends LinearLayout {
     public void d(boolean var1) {
         k = var1;
         if (var1) {
-            e.setBackgroundColor(getResources().getColor(2131034284));
-            f.setTextColor(-1);
-            o.setImageResource(2131165379);
+            e.setBackgroundColor(getResources().getColor(R.color.scolor_blue_01));
+            f.setTextColor(0xffffffff);
+            o.setImageResource(R.drawable.bookmark_48_white);
         } else {
-            e.setBackgroundColor(-65794);
-            f.setTextColor(-8553091);
-            o.setImageResource(2131165700);
+            e.setBackgroundColor(0xfffefefe);
+            f.setTextColor(0xff7d7d7d);
+            o.setImageResource(R.drawable.ic_bookmark_red_48dp);
         }
 
     }
@@ -211,7 +213,7 @@ public class LogicTopMenu extends LinearLayout {
     public boolean d(float var1, float var2) {
         int var3 = e.getVisibility();
         boolean var4 = false;
-        if (var3 == 8) {
+        if (var3 == GONE) {
             return false;
         } else {
             int[] var5 = new int[2];
@@ -236,13 +238,13 @@ public class LogicTopMenu extends LinearLayout {
 
     public void e(boolean var1) {
         if (var1) {
-            e.setVisibility(0);
-            c.setVisibility(0);
-            g.setVisibility(8);
+            e.setVisibility(VISIBLE);
+            c.setVisibility(VISIBLE);
+            g.setVisibility(GONE);
         } else {
-            e.setVisibility(8);
-            c.setVisibility(8);
-            g.setVisibility(0);
+            e.setVisibility(GONE);
+            c.setVisibility(GONE);
+            g.setVisibility(VISIBLE);
         }
 
     }
