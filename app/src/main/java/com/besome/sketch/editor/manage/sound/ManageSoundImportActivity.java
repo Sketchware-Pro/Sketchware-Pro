@@ -40,7 +40,7 @@ import a.a.a.xB;
 
 public class ManageSoundImportActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private QB nameValidator;
-    private boolean B;
+    private boolean mediaPlayerIsPrepared;
     private ImageView img_album;
     private ImageView img_play;
     private TextView tv_currentnum;
@@ -70,7 +70,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         return names;
     }
 
-    private boolean n() {
+    private boolean doDuplicateNamesExist() {
         ArrayList<String> duplicateNames = new ArrayList<>();
         for (ProjectResourceBean selectedCollection : selectedCollections) {
             if (selectedCollection.isDuplicateCollection) {
@@ -129,7 +129,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             } else if (id == R.id.img_backbtn) {
                 onBackPressed();
             } else if (id == R.id.img_play) {
-                if (B) {
+                if (mediaPlayerIsPrepared) {
                     if (mediaPlayer.isPlaying()) {
                         pausePlayback();
                     } else {
@@ -138,7 +138,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
                     }
                 }
             } else if (id == R.id.tv_sendbtn) {
-                if (!n()) {
+                if (!doDuplicateNamesExist()) {
                     if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                         mediaPlayer.stop();
                         mediaPlayer.release();
@@ -257,7 +257,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
     }
 
     private void pausePlayback() {
-        if (mediaPlayer != null && B && mediaPlayer.isPlaying()) {
+        if (mediaPlayer != null && mediaPlayerIsPrepared && mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             img_play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
         }
@@ -335,10 +335,10 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setOnPreparedListener(mp -> {
-            B = true;
+            mediaPlayerIsPrepared = true;
             img_play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
         });
-        mediaPlayer.setOnCompletionListener(mp -> B = false);
+        mediaPlayer.setOnCompletionListener(mp -> mediaPlayerIsPrepared = false);
         try {
             String filePath = selectedCollections.get(i).resFullName;
             loadSoundEmbeddedPicture(filePath, img_album, -1);
