@@ -31,7 +31,6 @@ import com.sketchware.remod.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.QB;
 import a.a.a.bB;
@@ -56,9 +55,8 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
     private ArrayList<String> getReservedSelectedCollectionNames() {
         ArrayList<String> names = new ArrayList<>();
         names.add("app_icon");
-        Iterator<ProjectResourceBean> it = this.selectedCollections.iterator();
-        while (it.hasNext()) {
-            names.add(it.next().resName);
+        for (ProjectResourceBean selectedCollection : selectedCollections) {
+            names.add(selectedCollection.resName);
         }
         return names;
     }
@@ -66,41 +64,36 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
     private ArrayList<String> getReservedProjectSoundNames() {
         ArrayList<String> names = new ArrayList<>();
         names.add("app_icon");
-        Iterator<ProjectResourceBean> it = this.projectSounds.iterator();
-        while (it.hasNext()) {
-            names.add(it.next().resName);
+        for (ProjectResourceBean projectSound : projectSounds) {
+            names.add(projectSound.resName);
         }
         return names;
     }
 
     private boolean n() {
-        ArrayList arrayList = new ArrayList();
-        Iterator<ProjectResourceBean> it = this.selectedCollections.iterator();
-        while (it.hasNext()) {
-            ProjectResourceBean next = it.next();
-            if (next.isDuplicateCollection) {
-                arrayList.add(next.resName);
+        ArrayList<String> duplicateNames = new ArrayList<>();
+        for (ProjectResourceBean selectedCollection : selectedCollections) {
+            if (selectedCollection.isDuplicateCollection) {
+                duplicateNames.add(selectedCollection.resName);
             }
         }
-        if (arrayList.size() > 0) {
-            String a = xB.b().a(getApplicationContext(), R.string.common_message_name_unavailable);
-            Iterator it2 = arrayList.iterator();
-            String str = "";
-            while (it2.hasNext()) {
-                String str2 = (String) it2.next();
-                if (str.length() > 0) {
-                    str = str + ", ";
+        if (!duplicateNames.isEmpty()) {
+            String message = xB.b().a(getApplicationContext(), R.string.common_message_name_unavailable);
+            String names = "";
+            for (String str2 : duplicateNames) {
+                if (!names.isEmpty()) {
+                    names = names + ", ";
                 }
-                str = str + str2;
+                names = names + str2;
             }
-            bB.a(getApplicationContext(), a + "\n[" + str + "]", bB.TOAST_WARNING).show();
+            bB.a(getApplicationContext(), message + "\n[" + names + "]", bB.TOAST_WARNING).show();
             return true;
         }
         return false;
     }
 
     private boolean isNameValid() {
-        return this.nameValidator.b();
+        return nameValidator.b();
     }
 
     @Override
@@ -114,53 +107,47 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         if (!mB.a()) {
             switch (v.getId()) {
                 case R.id.btn_decide:
-                    String obj = this.ed_input_edittext.getText().toString();
+                    String name = ed_input_edittext.getText().toString();
                     if (isNameValid()) {
-                        if (this.chk_samename.isChecked()) {
+                        if (chk_samename.isChecked()) {
                             int i = 0;
-                            while (i < this.selectedCollections.size()) {
-                                ProjectResourceBean projectResourceBean2 = this.selectedCollections.get(i);
-                                StringBuilder sb = new StringBuilder();
-                                sb.append(obj);
-                                sb.append("_");
-                                i++;
-                                sb.append(i);
-                                projectResourceBean2.resName = sb.toString();
-                                projectResourceBean2.isDuplicateCollection = false;
+                            while (i < selectedCollections.size()) {
+                                ProjectResourceBean sound = selectedCollections.get(i);
+                                sound.resName = name + "_" + (++i);
+                                sound.isDuplicateCollection = false;
                             }
                         } else {
-                            ProjectResourceBean projectResourceBean = this.selectedCollections.get(this.selectedItem);
-                            projectResourceBean.resName = obj;
-                            projectResourceBean.isDuplicateCollection = false;
+                            ProjectResourceBean sound = selectedCollections.get(selectedItem);
+                            sound.resName = name;
+                            sound.isDuplicateCollection = false;
                         }
-                        this.nameValidator.a(getReservedSelectedCollectionNames());
-                        this.adapter.notifyDataSetChanged();
+                        nameValidator.a(getReservedSelectedCollectionNames());
+                        adapter.notifyDataSetChanged();
                     } else {
-                        this.ed_input_edittext.setText(this.selectedCollections.get(this.selectedItem).resName);
+                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
                     }
                     break;
                 case R.id.img_backbtn:
                     onBackPressed();
                     break;
                 case R.id.img_play:
-                    if (this.B) {
-                        if (this.mediaPlayer.isPlaying()) {
+                    if (B) {
+                        if (mediaPlayer.isPlaying()) {
                             pausePlayback();
                         } else {
-                            this.mediaPlayer.start();
-                            this.img_play.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
+                            mediaPlayer.start();
+                            img_play.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
                         }
                     }
                     break;
                 case R.id.tv_sendbtn:
                     if (!n()) {
-                        MediaPlayer mediaPlayer = this.mediaPlayer;
                         if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                            this.mediaPlayer.stop();
-                            this.mediaPlayer.release();
+                            mediaPlayer.stop();
+                            mediaPlayer.release();
                         }
                         Intent intent = new Intent();
-                        intent.putParcelableArrayListExtra("results", this.selectedCollections);
+                        intent.putParcelableArrayListExtra("results", selectedCollections);
                         setResult(RESULT_OK, intent);
                         finish();
                     }
@@ -179,30 +166,30 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         setContentView(R.layout.manage_sound_import);
         ImageView img_backbtn = findViewById(R.id.img_backbtn);
         img_backbtn.setOnClickListener(this);
-        this.tv_currentnum = findViewById(R.id.tv_currentnum);
+        tv_currentnum = findViewById(R.id.tv_currentnum);
         TextView tv_totalnum = findViewById(R.id.tv_totalnum);
         TextView tv_sendbtn = findViewById(R.id.tv_sendbtn);
         tv_sendbtn.setText(xB.b().a(getApplicationContext(), R.string.common_word_import).toUpperCase());
         tv_sendbtn.setOnClickListener(this);
         TextView tv_samename = findViewById(R.id.tv_samename);
         tv_samename.setText(xB.b().a(getApplicationContext(), R.string.design_manager_sound_title_apply_same_naming));
-        this.adapter = new ItemAdapter();
+        adapter = new ItemAdapter();
         RecyclerView recycler_list = findViewById(R.id.recycler_list);
         recycler_list.setHasFixedSize(true);
-        recycler_list.setAdapter(this.adapter);
+        recycler_list.setAdapter(adapter);
         recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
-        this.projectSounds = getIntent().getParcelableArrayListExtra("project_sounds");
-        this.selectedCollections = getIntent().getParcelableArrayListExtra("selected_collections");
-        this.tv_currentnum.setText(String.valueOf(1));
-        tv_totalnum.setText(String.valueOf(this.selectedCollections.size()));
+        projectSounds = getIntent().getParcelableArrayListExtra("project_sounds");
+        selectedCollections = getIntent().getParcelableArrayListExtra("selected_collections");
+        tv_currentnum.setText(String.valueOf(1));
+        tv_totalnum.setText(String.valueOf(selectedCollections.size()));
         EasyDeleteEditText ed_input = findViewById(R.id.ed_input);
-        this.ed_input_edittext = ed_input.getEditText();
-        this.ed_input_edittext.setText(this.selectedCollections.get(0).resName);
-        this.ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
+        ed_input_edittext = ed_input.getEditText();
+        ed_input_edittext.setText(selectedCollections.get(0).resName);
+        ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
         ed_input.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
-        this.nameValidator = new QB(getApplicationContext(), ed_input.getTextInputLayout(), uq.b, getReservedProjectSoundNames(), getReservedSelectedCollectionNames());
-        this.chk_samename = findViewById(R.id.chk_samename);
-        this.chk_samename.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        nameValidator = new QB(getApplicationContext(), ed_input.getTextInputLayout(), uq.b, getReservedProjectSoundNames(), getReservedSelectedCollectionNames());
+        chk_samename = findViewById(R.id.chk_samename);
+        chk_samename.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 nameValidator.c(null);
                 nameValidator.a(selectedCollections.size());
@@ -214,18 +201,17 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         Button btn_decide = findViewById(R.id.btn_decide);
         btn_decide.setText(xB.b().a(getApplicationContext(), R.string.design_manager_change_name_button));
         btn_decide.setOnClickListener(this);
-        this.img_album = findViewById(R.id.img_album);
-        this.img_play = findViewById(R.id.img_play);
-        this.img_play.setOnClickListener(this);
+        img_album = findViewById(R.id.img_album);
+        img_play = findViewById(R.id.img_play);
+        img_play.setOnClickListener(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MediaPlayer mediaPlayer = this.mediaPlayer;
         if (mediaPlayer != null) {
             mediaPlayer.stop();
-            this.mediaPlayer.release();
+            mediaPlayer.release();
         }
     }
 
@@ -240,7 +226,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         super.onPostCreate(savedInstanceState);
         initializeLogic();
         showPreview(0);
-        this.adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -249,16 +235,14 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         if (!super.j()) {
             finish();
         }
-        this.d.setScreenName(ManageSoundImportActivity.class.getSimpleName().toString());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
+        d.setScreenName(ManageSoundImportActivity.class.getSimpleName().toString());
+        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void initializeLogic() {
-        ArrayList duplicateCollections = new ArrayList();
-        ArrayList notDuplicateCollections = new ArrayList();
-        Iterator<ProjectResourceBean> it = this.selectedCollections.iterator();
-        while (it.hasNext()) {
-            ProjectResourceBean selectedCollection = it.next();
+        ArrayList<ProjectResourceBean> duplicateCollections = new ArrayList<>();
+        ArrayList<ProjectResourceBean> notDuplicateCollections = new ArrayList<>();
+        for (ProjectResourceBean selectedCollection : selectedCollections) {
             if (isNameInUseByProjectSound(selectedCollection.resName)) {
                 selectedCollection.isDuplicateCollection = true;
                 duplicateCollections.add(selectedCollection);
@@ -267,27 +251,20 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
                 notDuplicateCollections.add(selectedCollection);
             }
         }
-        if (duplicateCollections.size() > 0) {
+        if (!duplicateCollections.isEmpty()) {
             bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_conflict), bB.TOAST_WARNING).show();
         } else {
             bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_no_conflict), bB.TOAST_NORMAL).show();
         }
-        this.selectedCollections = new ArrayList<>();
-        Iterator it2 = duplicateCollections.iterator();
-        while (it2.hasNext()) {
-            this.selectedCollections.add((ProjectResourceBean) it2.next());
-        }
-        Iterator it3 = notDuplicateCollections.iterator();
-        while (it3.hasNext()) {
-            this.selectedCollections.add((ProjectResourceBean) it3.next());
-        }
+        selectedCollections = new ArrayList<>();
+        selectedCollections.addAll(duplicateCollections);
+        selectedCollections.addAll(notDuplicateCollections);
     }
 
     private void pausePlayback() {
-        MediaPlayer mediaPlayer = this.mediaPlayer;
-        if (mediaPlayer != null && this.B && mediaPlayer.isPlaying()) {
-            this.mediaPlayer.pause();
-            this.img_play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+        if (mediaPlayer != null && B && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            img_play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
         }
     }
 
@@ -300,11 +277,11 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                this.layout_item = itemView.findViewById(R.id.layout_item);
-                this.img_conflict = itemView.findViewById(R.id.img_conflict);
-                this.img = itemView.findViewById(R.id.img);
-                this.tv_name = itemView.findViewById(R.id.tv_name);
-                this.img.setOnClickListener(v -> {
+                layout_item = itemView.findViewById(R.id.layout_item);
+                img_conflict = itemView.findViewById(R.id.img_conflict);
+                img = itemView.findViewById(R.id.img);
+                tv_name = itemView.findViewById(R.id.tv_name);
+                img.setOnClickListener(v -> {
                     if (!mB.a()) {
                         pausePlayback();
                         selectedItem = getLayoutPosition();
@@ -329,25 +306,23 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
 
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
-            ProjectResourceBean sound = ManageSoundImportActivity.this.selectedCollections.get(position);
-            String str = sound.resFullName;
-            int unused = ManageSoundImportActivity.this.selectedItem;
+            ProjectResourceBean sound = selectedCollections.get(position);
             if (sound.isDuplicateCollection) {
                 viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
             } else {
                 viewHolder.img_conflict.setImageResource(R.drawable.ic_ok_48dp);
             }
-            if (position == ManageSoundImportActivity.this.selectedItem) {
+            if (position == selectedItem) {
                 viewHolder.img.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
             } else {
                 viewHolder.img.setBackgroundColor(Color.WHITE);
             }
             try {
-                ManageSoundImportActivity.this.loadSoundEmbeddedPicture(str, viewHolder.img, position);
+                loadSoundEmbeddedPicture(sound.resFullName, viewHolder.img, position);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            viewHolder.tv_name.setText(ManageSoundImportActivity.this.selectedCollections.get(position).resName);
+            viewHolder.tv_name.setText(selectedCollections.get(position).resName);
         }
 
         @Override
@@ -357,32 +332,31 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
 
         @Override
         public int getItemCount() {
-            return ManageSoundImportActivity.this.selectedCollections.size();
+            return selectedCollections.size();
         }
     }
 
     private void showPreview(int i) {
-        this.mediaPlayer = new MediaPlayer();
-        this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        this.mediaPlayer.setOnPreparedListener(mp -> {
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setOnPreparedListener(mp -> {
             B = true;
             img_play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
         });
-        this.mediaPlayer.setOnCompletionListener(mp -> B = false);
+        mediaPlayer.setOnCompletionListener(mp -> B = false);
         try {
-            String filePath = this.selectedCollections.get(i).resFullName;
-            loadSoundEmbeddedPicture(filePath, this.img_album, -1);
-            this.mediaPlayer.setDataSource(filePath);
-            this.mediaPlayer.prepare();
+            String filePath = selectedCollections.get(i).resFullName;
+            loadSoundEmbeddedPicture(filePath, img_album, -1);
+            mediaPlayer.setDataSource(filePath);
+            mediaPlayer.prepare();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private boolean isNameInUseByProjectSound(String str) {
-        Iterator<ProjectResourceBean> it = this.projectSounds.iterator();
-        while (it.hasNext()) {
-            if (it.next().resName.equals(str)) {
+        for (ProjectResourceBean projectSound : projectSounds) {
+            if (projectSound.resName.equals(str)) {
                 return true;
             }
         }
@@ -402,13 +376,13 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
                 });
             } else {
                 target.setImageResource(R.drawable.default_album_art_200dp);
-                if (position != -1 && this.selectedItem != position) {
+                if (position != -1 && selectedItem != position) {
                     target.setBackgroundResource(R.drawable.bg_outline_album);
                 }
             }
         } catch (IllegalArgumentException unused) {
             target.setImageResource(R.drawable.default_album_art_200dp);
-            if (position != -1 && this.selectedItem != position) {
+            if (position != -1 && selectedItem != position) {
                 target.setBackgroundResource(R.drawable.bg_outline_album);
             }
         }
