@@ -18,37 +18,37 @@ import java.io.InputStreamReader;
  * - Use `SketchLogger.broadcastLog(String)` to manually send a debug log message.
  */
 public class SketchLogger {
-    private static Thread loggerThread;
     private static volatile boolean isRunning = false;
+    private static Thread loggerThread = new Thread() {
+        @Override
+        public void run() {
+            isRunning = true;
+
+            try {
+                Runtime.getRuntime().exec("logcat -c");
+                Process process = Runtime.getRuntime().exec("logcat");
+
+                try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                    String logTxt;
+                    while (isRunning && (logTxt = bufferedReader.readLine()) != null) {
+                        broadcastLog(logTxt);
+                    }
+
+                    if (isRunning) {
+                        broadcastLog("Logger got killed. Restarting.");
+                        startLogging();
+                    } else {
+                        broadcastLog("Logger stopped.");
+                    }
+                }
+            } catch (IOException e) {
+                broadcastLog(e.getMessage());
+            }
+        }
+    };
 
     public static void startLogging() {
         if (!isRunning) {
-            loggerThread = new Thread() {
-                @Override
-                public void run() {
-                    isRunning = true;
-                    try {
-                        Runtime.getRuntime().exec("logcat -c");
-                        Process process = Runtime.getRuntime().exec("logcat");
-
-                        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                            String logTxt;
-                            while (isRunning && (logTxt = bufferedReader.readLine()) != null) {
-                                broadcastLog(logTxt);
-                            }
-
-                            if (isRunning) {
-                                broadcastLog("Logger got killed. Restarting.");
-                                startLogging();
-                            } else {
-                                broadcastLog("Logger stopped.");
-                            }
-                        }
-                    } catch (IOException e) {
-                        broadcastLog(e.getMessage());
-                    }
-                }
-            };
             loggerThread.start();
         } else {
             throw new IllegalStateException("Logger already running");
