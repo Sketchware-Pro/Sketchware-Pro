@@ -1,12 +1,7 @@
 package com.besome.sketch.editor.manage.sound;
 
 import a.a.a.QB;
-import a.a.a.Zv;
-import a.a.a._v;
-import a.a.a.aw;
 import a.a.a.bB;
-import a.a.a.bw;
-import a.a.a.cw;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.xB;
@@ -30,11 +25,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
-import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -264,7 +262,15 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         this.ed_input.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
         this.nameValidator = new QB(getApplicationContext(), this.ed_input.getTextInputLayout(), uq.b, getReservedProjectSoundNames(), getReservedSelectedCollectionNames());
         this.chk_samename = (CheckBox) findViewById(R.id.chk_samename);
-        this.chk_samename.setOnCheckedChangeListener(new Zv(this));
+        this.chk_samename.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                nameValidator.c(null);
+                nameValidator.a(selectedCollections.size());
+            } else {
+                nameValidator.c(selectedCollections.get(selectedItem).resName);
+                nameValidator.a(1);
+            }
+        });
         this.btn_decide = (Button) findViewById(R.id.btn_decide);
         this.btn_decide.setText(xB.b().a(getApplicationContext(), R.string.design_manager_change_name_button));
         this.btn_decide.setOnClickListener(this);
@@ -363,7 +369,23 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
                 this.img_conflict = (ImageView) itemView.findViewById(R.id.img_conflict);
                 this.img = (ImageView) itemView.findViewById(R.id.img);
                 this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
-                this.img.setOnClickListener(new cw(this, ItemAdapter.this));
+                this.img.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        pausePlayback();
+                        selectedItem = getLayoutPosition();
+                        showPreview(selectedItem);
+                        tv_currentnum.setText(String.valueOf(selectedItem + 1));
+                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
+                        if (chk_samename.isChecked()) {
+                            nameValidator.c(null);
+                            nameValidator.a(selectedCollections.size());
+                        } else {
+                            nameValidator.c(selectedCollections.get(selectedItem).resName);
+                            nameValidator.a(1);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                });
             }
         }
 
@@ -385,7 +407,11 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             } else {
                 viewHolder.img.setBackgroundColor(Color.WHITE);
             }
-            ManageSoundImportActivity.this.loadSoundEmbeddedPicture(str, viewHolder.img, position);
+            try {
+                ManageSoundImportActivity.this.loadSoundEmbeddedPicture(str, viewHolder.img, position);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             viewHolder.tv_name.setText(((ProjectResourceBean) ManageSoundImportActivity.this.selectedCollections.get(position)).resName);
         }
 
@@ -405,18 +431,21 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         return i;
     }
 
-    public static void b(ManageSoundImportActivity manageSoundImportActivity, int i) {
+    public static void b(ManageSoundImportActivity manageSoundImportActivity, int i) throws IOException {
         manageSoundImportActivity.showPreview(i);
     }
 
     public final void showPreview(int i) {
-        String filePath = this.selectedCollections.get(i).resFullName;
-        loadSoundEmbeddedPicture(filePath, this.img_album, -1);
         this.mediaPlayer = new MediaPlayer();
         this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        this.mediaPlayer.setOnPreparedListener(new _v(this));
-        this.mediaPlayer.setOnCompletionListener(new aw(this));
+        this.mediaPlayer.setOnPreparedListener(mp -> {
+            B = true;
+            img_play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+        });
+        this.mediaPlayer.setOnCompletionListener(mp -> B = false);
         try {
+            String filePath = this.selectedCollections.get(i).resFullName;
+            loadSoundEmbeddedPicture(filePath, this.img_album, -1);
             this.mediaPlayer.setDataSource(filePath);
             this.mediaPlayer.prepare();
         } catch (Exception e) {
@@ -434,12 +463,17 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         return false;
     }
 
-    public final void loadSoundEmbeddedPicture(String filePath, ImageView target, int position) {
+    public final void loadSoundEmbeddedPicture(String filePath, ImageView target, int position) throws IOException {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             mediaMetadataRetriever.setDataSource(filePath);
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                Glide.with(getApplicationContext()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into((DrawableRequestBuilder<byte[]>) new bw(this, target));
+                Glide.with(getApplicationContext()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
+                    @Override
+                    public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        target.setImageDrawable(glideDrawable);
+                    }
+                });
             } else {
                 target.setImageResource(R.drawable.default_album_art_200dp);
                 if (position != -1 && this.selectedItem != position) {
