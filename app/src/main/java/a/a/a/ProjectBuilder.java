@@ -484,10 +484,8 @@ public class ProjectBuilder {
 
     /**
      * Run Eclipse Compiler to compile Java files.
-     *
-     * @throws Throwable Thrown when Eclipse had problems compiling
      */
-    public void compileJavaCode() throws Throwable {
+    public void compileJavaCode() throws zy, IOException {
         long savedTimeMillis = System.currentTimeMillis();
 
         class EclipseOutOutputStream extends OutputStream {

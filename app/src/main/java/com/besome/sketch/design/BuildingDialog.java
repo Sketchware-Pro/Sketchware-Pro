@@ -31,7 +31,7 @@ public class BuildingDialog extends Dialog {
         super.setCanceledOnTouchOutside(false);
         super.setCancelable(true);
 
-        getWindow().getAttributes().windowAnimations = R.style.BottomSheetAnimation;
+        getWindow().getAttributes().windowAnimations = R.style.Animation_Design_BottomSheetDialog;
     }
 
     public void setProgress(String text) {

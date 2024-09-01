@@ -146,10 +146,10 @@ public class AddViewActivity extends BaseDialogActivity {
     }
 
     private void initItem(int option) {
-        featureToolbar = (option & 1) == 1;
-        featureStatusBar = (option & 2) != 2;
-        featureFab = (option & 8) == 8;
-        featureDrawer = (option & 4) == 4;
+        featureToolbar = (option & ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) == ProjectFileBean.OPTION_ACTIVITY_TOOLBAR;
+        featureStatusBar = (option & ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN) != ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
+        featureFab = (option & ProjectFileBean.OPTION_ACTIVITY_FAB) == ProjectFileBean.OPTION_ACTIVITY_FAB;
+        featureDrawer = (option & ProjectFileBean.OPTION_ACTIVITY_DRAWER) == ProjectFileBean.OPTION_ACTIVITY_DRAWER;
     }
 
     private void initializeItems() {
@@ -164,7 +164,7 @@ public class AddViewActivity extends BaseDialogActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 276 && resultCode == -1) {
+        if (requestCode == 276 && resultCode == RESULT_OK) {
             ProjectFileBean presetData = data.getParcelableExtra("preset_data");
             P = presetData.presetName;
             initItem(presetData.options);
@@ -227,23 +227,23 @@ public class AddViewActivity extends BaseDialogActivity {
                     options = 0;
                 }
                 if (!featureStatusBar) {
-                    options = options | 2;
+                    options = options | ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
                 }
                 if (featureFab) {
-                    options = options | 8;
+                    options = options | ProjectFileBean.OPTION_ACTIVITY_FAB;
                 }
                 if (featureDrawer) {
-                    options = options | 4;
+                    options = options | ProjectFileBean.OPTION_ACTIVITY_DRAWER;
                 }
                 projectFileBean.options = options;
                 Intent intent = new Intent();
                 intent.putExtra("project_file", projectFileBean);
-                setResult(-1, intent);
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete, new Object[0]), 0).show();
+                setResult(RESULT_OK, intent);
+                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete, new Object[0]), bB.TOAST_NORMAL).show();
                 finish();
             } else if (isValid(nameValidator)) {
                 String var4 = binding.edName.getText().toString() + getSuffix(binding.addViewTypeSelector);
-                ProjectFileBean projectFileBean = new ProjectFileBean(0, var4,
+                ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4,
                         binding.btnbarOrientation.getSelectedItemKey(),
                         binding.btnbarKeyboard.getSelectedItemKey(),
                         featureToolbar, !featureStatusBar,
@@ -253,14 +253,14 @@ public class AddViewActivity extends BaseDialogActivity {
                 if (P != null) {
                     intent.putExtra("preset_views", getPresetData(P));
                 }
-                setResult(-1, intent);
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), 0).show();
+                setResult(RESULT_OK, intent);
+                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
                 finish();
             }
 
         });
         super.s.setOnClickListener(v -> {
-            setResult(0);
+            setResult(RESULT_CANCELED);
             finish();
         });
         if (requestCode == 265) {
@@ -340,7 +340,8 @@ public class AddViewActivity extends BaseDialogActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup var1, int var2) {
             View var3 = wB.a(var1.getContext(), R.layout.manage_screen_activity_add_feature_item);
-            var3.setLayoutParams(new ViewGroup.LayoutParams(-1, -2));
+            var3.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT));
             return new ViewHolder(var3);
         }
 

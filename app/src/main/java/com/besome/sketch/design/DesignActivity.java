@@ -1081,9 +1081,11 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                         dialog.b("Dismiss", Helper.getDialogDismissListener(dialog));
                         dialog.show();
                     });
+                } catch (zy zy) {
+                    activity.indicateCompileErrorOccurred(zy.getMessage());
                 } catch (Throwable tr) {
                     LogUtil.e("DesignActivity$BuildAsyncTask", "Failed to build project", tr);
-                    activity.indicateCompileErrorOccurred(tr instanceof zy ? tr.getMessage() : Log.getStackTraceString(tr));
+                    activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));
                 }
             }
         }
