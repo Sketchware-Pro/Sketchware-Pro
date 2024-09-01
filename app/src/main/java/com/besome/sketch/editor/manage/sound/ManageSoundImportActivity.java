@@ -105,54 +105,49 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            switch (v.getId()) {
-                case R.id.btn_decide:
-                    String name = ed_input_edittext.getText().toString();
-                    if (isNameValid()) {
-                        if (chk_samename.isChecked()) {
-                            int i = 0;
-                            while (i < selectedCollections.size()) {
-                                ProjectResourceBean sound = selectedCollections.get(i);
-                                sound.resName = name + "_" + (++i);
-                                sound.isDuplicateCollection = false;
-                            }
-                        } else {
-                            ProjectResourceBean sound = selectedCollections.get(selectedItem);
-                            sound.resName = name;
+            int id = v.getId();
+            if (id == R.id.btn_decide) {
+                String name = ed_input_edittext.getText().toString();
+                if (isNameValid()) {
+                    if (chk_samename.isChecked()) {
+                        int i = 0;
+                        while (i < selectedCollections.size()) {
+                            ProjectResourceBean sound = selectedCollections.get(i);
+                            sound.resName = name + "_" + (++i);
                             sound.isDuplicateCollection = false;
                         }
-                        nameValidator.a(getReservedSelectedCollectionNames());
-                        adapter.notifyDataSetChanged();
                     } else {
-                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
+                        ProjectResourceBean sound = selectedCollections.get(selectedItem);
+                        sound.resName = name;
+                        sound.isDuplicateCollection = false;
                     }
-                    break;
-                case R.id.img_backbtn:
-                    onBackPressed();
-                    break;
-                case R.id.img_play:
-                    if (B) {
-                        if (mediaPlayer.isPlaying()) {
-                            pausePlayback();
-                        } else {
-                            mediaPlayer.start();
-                            img_play.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
-                        }
+                    nameValidator.a(getReservedSelectedCollectionNames());
+                    adapter.notifyDataSetChanged();
+                } else {
+                    ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
+                }
+            } else if (id == R.id.img_backbtn) {
+                onBackPressed();
+            } else if (id == R.id.img_play) {
+                if (B) {
+                    if (mediaPlayer.isPlaying()) {
+                        pausePlayback();
+                    } else {
+                        mediaPlayer.start();
+                        img_play.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
                     }
-                    break;
-                case R.id.tv_sendbtn:
-                    if (!n()) {
-                        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                            mediaPlayer.stop();
-                            mediaPlayer.release();
-                        }
-                        Intent intent = new Intent();
-                        intent.putParcelableArrayListExtra("results", selectedCollections);
-                        setResult(RESULT_OK, intent);
-                        finish();
+                }
+            } else if (id == R.id.tv_sendbtn) {
+                if (!n()) {
+                    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                        mediaPlayer.stop();
+                        mediaPlayer.release();
                     }
-                    break;
-                default:
+                    Intent intent = new Intent();
+                    intent.putParcelableArrayListExtra("results", selectedCollections);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         }
     }
