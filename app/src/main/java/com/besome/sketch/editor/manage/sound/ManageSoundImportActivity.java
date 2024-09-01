@@ -12,6 +12,7 @@ import a.a.a.uq;
 import a.a.a.xB;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.analytics.HitBuilders;
+import com.sketchware.remod.R;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -136,7 +139,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         if (arrayList.size() <= 0) {
             return false;
         }
-        String a = xB.b().a(getApplicationContext(), 2131624950); // R.string.common_message_name_unavailable
+        String a = xB.b().a(getApplicationContext(), R.string.common_message_name_unavailable);
         Iterator it2 = arrayList.iterator();
         String str = "";
         while (it2.hasNext()) {
@@ -146,7 +149,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             }
             str = str + str2;
         }
-        bB.a(getApplicationContext(), a + "\n[" + str + "]", 1).show();
+        bB.a(getApplicationContext(), a + "\n[" + str + "]", bB.TOAST_WARNING).show();
         return true;
     }
 
@@ -156,7 +159,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
 
     @Override
     public void onBackPressed() {
-        setResult(-1);
+        setResult(RESULT_OK);
         super.onBackPressed();
     }
 
@@ -166,8 +169,8 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             return;
         }
         switch (v.getId()) {
-            case 2131230816:
-                String obj = this.ed_input_edittext.getText().toString(); // R.id.btn_decide
+            case R.id.btn_decide:
+                String obj = this.ed_input_edittext.getText().toString();
                 if (!isNameValid()) {
                     this.ed_input_edittext.setText(this.selectedCollections.get(this.selectedItem).resName);
                     return;
@@ -194,23 +197,23 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
                 this.nameValidator.a(getReservedSelectedCollectionNames());
                 this.adapter.notifyDataSetChanged();
                 return;
-            case 2131231113:
-                onBackPressed(); // R.id.img_backbtn
+            case R.id.img_backbtn:
+                onBackPressed();
                 return;
-            case 2131231165:
-                if (this.B) { // R.id.img_play
+            case R.id.img_play:
+                if (this.B) {
                     if (this.mediaPlayer.isPlaying()) {
                         pausePlayback();
                         return;
                     } else {
                         this.mediaPlayer.start();
-                        this.img_play.setImageResource(2131165805); // R.drawable.ic_pause_circle_outline_black_36dp
+                        this.img_play.setImageResource(R.drawable.ic_pause_circle_outline_black_36dp);
                         return;
                     }
                 }
                 return;
-            case 2131232151:
-                if (n()) { // R.id.tv_sendbtn
+            case R.id.tv_sendbtn:
+                if (n()) {
                     return;
                 }
                 MediaPlayer mediaPlayer = this.mediaPlayer;
@@ -220,7 +223,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
                 }
                 Intent intent = new Intent();
                 intent.putParcelableArrayListExtra("results", this.selectedCollections);
-                setResult(-1, intent);
+                setResult(RESULT_OK, intent);
                 finish();
                 return;
             default:
@@ -234,39 +237,39 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         if (!super.j()) {
             finish();
         }
-        setContentView(2131427566); // R.layout.manage_sound_import
-        this.img_backbtn = (ImageView) findViewById(2131231113);
+        setContentView(R.layout.manage_sound_import);
+        this.img_backbtn = (ImageView) findViewById(R.id.img_backbtn);
         this.img_backbtn.setOnClickListener(this);
-        this.tv_currentnum = (TextView) findViewById(2131231930);
-        this.tv_totalnum = (TextView) findViewById(2131232258);
-        this.tv_sendbtn = (TextView) findViewById(2131232151);
-        this.tv_sendbtn.setText(xB.b().a(getApplicationContext(), 2131625002).toUpperCase()); // R.string.common_word_import
+        this.tv_currentnum = (TextView) findViewById(R.id.tv_currentnum);
+        this.tv_totalnum = (TextView) findViewById(R.id.tv_totalnum);
+        this.tv_sendbtn = (TextView) findViewById(R.id.tv_sendbtn);
+        this.tv_sendbtn.setText(xB.b().a(getApplicationContext(), R.string.common_word_import).toUpperCase());
         this.tv_sendbtn.setOnClickListener(this);
-        this.tv_samename = (TextView) findViewById(2131232138);
-        this.tv_samename.setText(xB.b().a(getApplicationContext(), 2131625284)); // R.string.design_manager_sound_title_apply_same_naming
+        this.tv_samename = (TextView) findViewById(R.id.tv_samename);
+        this.tv_samename.setText(xB.b().a(getApplicationContext(), R.string.design_manager_sound_title_apply_same_naming));
         this.adapter = new ItemAdapter();
-        this.recycler_list = (RecyclerView) findViewById(2131231662);
+        this.recycler_list = (RecyclerView) findViewById(R.id.recycler_list);
         this.recycler_list.setHasFixedSize(true);
         this.recycler_list.setAdapter(this.adapter);
-        this.recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 0, false));
+        this.recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
         this.projectSounds = getIntent().getParcelableArrayListExtra("project_sounds");
         this.selectedCollections = getIntent().getParcelableArrayListExtra("selected_collections");
         this.selectedCollectionsSize = this.selectedCollections.size();
         this.tv_currentnum.setText(String.valueOf(1));
         this.tv_totalnum.setText(String.valueOf(this.selectedCollectionsSize));
-        this.ed_input = (EasyDeleteEditText) findViewById(2131230990);
+        this.ed_input = (EasyDeleteEditText) findViewById(R.id.ed_input);
         this.ed_input_edittext = this.ed_input.getEditText();
         this.ed_input_edittext.setText(this.selectedCollections.get(0).resName);
         this.ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
-        this.ed_input.setHint(xB.b().a(this, 2131625282)); // R.string.design_manager_sound_hint_enter_sound_name
+        this.ed_input.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
         this.nameValidator = new QB(getApplicationContext(), this.ed_input.getTextInputLayout(), uq.b, getReservedProjectSoundNames(), getReservedSelectedCollectionNames());
-        this.chk_samename = (CheckBox) findViewById(2131230892);
+        this.chk_samename = (CheckBox) findViewById(R.id.chk_samename);
         this.chk_samename.setOnCheckedChangeListener(new Zv(this));
-        this.btn_decide = (Button) findViewById(2131230816);
-        this.btn_decide.setText(xB.b().a(getApplicationContext(), 2131625255)); // R.string.design_manager_change_name_button
+        this.btn_decide = (Button) findViewById(R.id.btn_decide);
+        this.btn_decide.setText(xB.b().a(getApplicationContext(), R.string.design_manager_change_name_button));
         this.btn_decide.setOnClickListener(this);
-        this.img_album = (ImageView) findViewById(2131231106);
-        this.img_play = (ImageView) findViewById(2131231165);
+        this.img_album = (ImageView) findViewById(R.id.img_album);
+        this.img_play = (ImageView) findViewById(R.id.img_play);
         this.img_play.setOnClickListener(this);
     }
 
@@ -319,9 +322,9 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             }
         }
         if (duplicateCollections.size() > 0) {
-            bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625277), 1).show(); // R.string.design_manager_message_collection_name_conflict
+            bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_conflict), bB.TOAST_WARNING).show();
         } else {
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), 2131625278), 0).show(); // R.string.design_manager_message_collection_name_no_conflict
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_no_conflict), bB.TOAST_NORMAL).show();
         }
         this.selectedCollections = new ArrayList<>();
         Iterator it2 = duplicateCollections.iterator();
@@ -338,7 +341,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         MediaPlayer mediaPlayer = this.mediaPlayer;
         if (mediaPlayer != null && this.B && mediaPlayer.isPlaying()) {
             this.mediaPlayer.pause();
-            this.img_play.setImageResource(2131165812);
+            this.img_play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
         }
     }
 
@@ -356,10 +359,10 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                this.layout_item = (LinearLayout) itemView.findViewById(2131231359);
-                this.img_conflict = (ImageView) itemView.findViewById(2131231126);
-                this.img = (ImageView) itemView.findViewById(2131231102);
-                this.tv_name = (TextView) itemView.findViewById(2131232055);
+                this.layout_item = (LinearLayout) itemView.findViewById(R.id.layout_item);
+                this.img_conflict = (ImageView) itemView.findViewById(R.id.img_conflict);
+                this.img = (ImageView) itemView.findViewById(R.id.img);
+                this.tv_name = (TextView) itemView.findViewById(R.id.tv_name);
                 this.img.setOnClickListener(new cw(this, ItemAdapter.this));
             }
         }
@@ -373,14 +376,14 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             String str = sound.resFullName;
             int unused = ManageSoundImportActivity.this.selectedItem;
             if (sound.isDuplicateCollection) {
-                viewHolder.img_conflict.setImageResource(2131165704);
+                viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
             } else {
-                viewHolder.img_conflict.setImageResource(2131165801);
+                viewHolder.img_conflict.setImageResource(R.drawable.ic_ok_48dp);
             }
             if (position == ManageSoundImportActivity.this.selectedItem) {
-                viewHolder.img.setBackgroundResource(2131165348);
+                viewHolder.img.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
             } else {
-                viewHolder.img.setBackgroundColor(Color.parseColor("#ffffff"));
+                viewHolder.img.setBackgroundColor(Color.WHITE);
             }
             ManageSoundImportActivity.this.loadSoundEmbeddedPicture(str, viewHolder.img, position);
             viewHolder.tv_name.setText(((ProjectResourceBean) ManageSoundImportActivity.this.selectedCollections.get(position)).resName);
@@ -388,7 +391,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427530, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_import_list_item, parent, false));
         }
 
         @Override
@@ -410,7 +413,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         String filePath = this.selectedCollections.get(i).resFullName;
         loadSoundEmbeddedPicture(filePath, this.img_album, -1);
         this.mediaPlayer = new MediaPlayer();
-        this.mediaPlayer.setAudioStreamType(3);
+        this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         this.mediaPlayer.setOnPreparedListener(new _v(this));
         this.mediaPlayer.setOnCompletionListener(new aw(this));
         try {
@@ -438,15 +441,15 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
                 Glide.with(getApplicationContext()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into((DrawableRequestBuilder<byte[]>) new bw(this, target));
             } else {
-                target.setImageResource(2131165520);
+                target.setImageResource(R.drawable.default_album_art_200dp);
                 if (position != -1 && this.selectedItem != position) {
-                    target.setBackgroundResource(2131165346);
+                    target.setBackgroundResource(R.drawable.bg_outline_album);
                 }
             }
         } catch (IllegalArgumentException unused) {
-            target.setImageResource(2131165520);
+            target.setImageResource(R.drawable.default_album_art_200dp);
             if (position != -1 && this.selectedItem != position) {
-                target.setBackgroundResource(2131165346);
+                target.setBackgroundResource(R.drawable.bg_outline_album);
             }
         }
         mediaMetadataRetriever.release();
