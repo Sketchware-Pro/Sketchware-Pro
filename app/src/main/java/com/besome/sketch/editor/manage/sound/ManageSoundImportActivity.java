@@ -40,56 +40,20 @@ import a.a.a.uq;
 import a.a.a.xB;
 
 public class ManageSoundImportActivity extends BaseAppCompatActivity implements View.OnClickListener {
-    public QB nameValidator;
-    public boolean B;
-    public ImageView img_album;
-    public ImageView img_play;
-    public ImageView img_backbtn;
-    public TextView tv_currentnum;
-    public TextView tv_totalnum;
-    public TextView tv_sendbtn;
-    public TextView tv_samename;
-    public RecyclerView recycler_list;
-    public EasyDeleteEditText ed_input;
-    public EditText ed_input_edittext;
-    public CheckBox chk_samename;
-    public ItemAdapter adapter;
-    public ArrayList<ProjectResourceBean> projectSounds;
-    public ArrayList<ProjectResourceBean> selectedCollections;
-    public int selectedCollectionsSize = 0;
-    public int selectedItem = 0;
-    public Button btn_decide;
-    public MediaPlayer mediaPlayer;
+    private QB nameValidator;
+    private boolean B;
+    private ImageView img_album;
+    private ImageView img_play;
+    private TextView tv_currentnum;
+    private EditText ed_input_edittext;
+    private CheckBox chk_samename;
+    private ItemAdapter adapter;
+    private ArrayList<ProjectResourceBean> projectSounds;
+    private ArrayList<ProjectResourceBean> selectedCollections;
+    private int selectedItem = 0;
+    private MediaPlayer mediaPlayer;
 
-    public static ArrayList a(ManageSoundImportActivity manageSoundImportActivity) {
-        return manageSoundImportActivity.selectedCollections;
-    }
-
-    public static int b(ManageSoundImportActivity manageSoundImportActivity) {
-        return manageSoundImportActivity.selectedItem;
-    }
-
-    public static ImageView c(ManageSoundImportActivity manageSoundImportActivity) {
-        return manageSoundImportActivity.img_play;
-    }
-
-    public static TextView d(ManageSoundImportActivity manageSoundImportActivity) {
-        return manageSoundImportActivity.tv_currentnum;
-    }
-
-    public static EditText e(ManageSoundImportActivity manageSoundImportActivity) {
-        return manageSoundImportActivity.ed_input_edittext;
-    }
-
-    public static CheckBox f(ManageSoundImportActivity manageSoundImportActivity) {
-        return manageSoundImportActivity.chk_samename;
-    }
-
-    public static ItemAdapter g(ManageSoundImportActivity manageSoundImportActivity) {
-        return manageSoundImportActivity.adapter;
-    }
-
-    public final ArrayList<String> getReservedSelectedCollectionNames() {
+    private ArrayList<String> getReservedSelectedCollectionNames() {
         ArrayList<String> names = new ArrayList<>();
         names.add("app_icon");
         Iterator<ProjectResourceBean> it = this.selectedCollections.iterator();
@@ -99,7 +63,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         return names;
     }
 
-    public final ArrayList<String> getReservedProjectSoundNames() {
+    private ArrayList<String> getReservedProjectSoundNames() {
         ArrayList<String> names = new ArrayList<>();
         names.add("app_icon");
         Iterator<ProjectResourceBean> it = this.projectSounds.iterator();
@@ -109,7 +73,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         return names;
     }
 
-    public final boolean n() {
+    private boolean n() {
         ArrayList arrayList = new ArrayList();
         Iterator<ProjectResourceBean> it = this.selectedCollections.iterator();
         while (it.hasNext()) {
@@ -135,7 +99,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         return false;
     }
 
-    public final boolean isNameValid() {
+    private boolean isNameValid() {
         return this.nameValidator.b();
     }
 
@@ -213,31 +177,30 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             finish();
         }
         setContentView(R.layout.manage_sound_import);
-        this.img_backbtn = findViewById(R.id.img_backbtn);
-        this.img_backbtn.setOnClickListener(this);
+        ImageView img_backbtn = findViewById(R.id.img_backbtn);
+        img_backbtn.setOnClickListener(this);
         this.tv_currentnum = findViewById(R.id.tv_currentnum);
-        this.tv_totalnum = findViewById(R.id.tv_totalnum);
-        this.tv_sendbtn = findViewById(R.id.tv_sendbtn);
-        this.tv_sendbtn.setText(xB.b().a(getApplicationContext(), R.string.common_word_import).toUpperCase());
-        this.tv_sendbtn.setOnClickListener(this);
-        this.tv_samename = findViewById(R.id.tv_samename);
-        this.tv_samename.setText(xB.b().a(getApplicationContext(), R.string.design_manager_sound_title_apply_same_naming));
+        TextView tv_totalnum = findViewById(R.id.tv_totalnum);
+        TextView tv_sendbtn = findViewById(R.id.tv_sendbtn);
+        tv_sendbtn.setText(xB.b().a(getApplicationContext(), R.string.common_word_import).toUpperCase());
+        tv_sendbtn.setOnClickListener(this);
+        TextView tv_samename = findViewById(R.id.tv_samename);
+        tv_samename.setText(xB.b().a(getApplicationContext(), R.string.design_manager_sound_title_apply_same_naming));
         this.adapter = new ItemAdapter();
-        this.recycler_list = findViewById(R.id.recycler_list);
-        this.recycler_list.setHasFixedSize(true);
-        this.recycler_list.setAdapter(this.adapter);
-        this.recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
+        RecyclerView recycler_list = findViewById(R.id.recycler_list);
+        recycler_list.setHasFixedSize(true);
+        recycler_list.setAdapter(this.adapter);
+        recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
         this.projectSounds = getIntent().getParcelableArrayListExtra("project_sounds");
         this.selectedCollections = getIntent().getParcelableArrayListExtra("selected_collections");
-        this.selectedCollectionsSize = this.selectedCollections.size();
         this.tv_currentnum.setText(String.valueOf(1));
-        this.tv_totalnum.setText(String.valueOf(this.selectedCollectionsSize));
-        this.ed_input = findViewById(R.id.ed_input);
-        this.ed_input_edittext = this.ed_input.getEditText();
+        tv_totalnum.setText(String.valueOf(this.selectedCollections.size()));
+        EasyDeleteEditText ed_input = findViewById(R.id.ed_input);
+        this.ed_input_edittext = ed_input.getEditText();
         this.ed_input_edittext.setText(this.selectedCollections.get(0).resName);
         this.ed_input_edittext.setPrivateImeOptions("defaultInputmode=english;");
-        this.ed_input.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
-        this.nameValidator = new QB(getApplicationContext(), this.ed_input.getTextInputLayout(), uq.b, getReservedProjectSoundNames(), getReservedSelectedCollectionNames());
+        ed_input.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
+        this.nameValidator = new QB(getApplicationContext(), ed_input.getTextInputLayout(), uq.b, getReservedProjectSoundNames(), getReservedSelectedCollectionNames());
         this.chk_samename = findViewById(R.id.chk_samename);
         this.chk_samename.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
@@ -248,9 +211,9 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
                 nameValidator.a(1);
             }
         });
-        this.btn_decide = findViewById(R.id.btn_decide);
-        this.btn_decide.setText(xB.b().a(getApplicationContext(), R.string.design_manager_change_name_button));
-        this.btn_decide.setOnClickListener(this);
+        Button btn_decide = findViewById(R.id.btn_decide);
+        btn_decide.setText(xB.b().a(getApplicationContext(), R.string.design_manager_change_name_button));
+        btn_decide.setOnClickListener(this);
         this.img_album = findViewById(R.id.img_album);
         this.img_play = findViewById(R.id.img_play);
         this.img_play.setOnClickListener(this);
@@ -290,7 +253,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
-    public final void initializeLogic() {
+    private void initializeLogic() {
         ArrayList duplicateCollections = new ArrayList();
         ArrayList notDuplicateCollections = new ArrayList();
         Iterator<ProjectResourceBean> it = this.selectedCollections.iterator();
@@ -320,7 +283,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         }
     }
 
-    public void pausePlayback() {
+    private void pausePlayback() {
         MediaPlayer mediaPlayer = this.mediaPlayer;
         if (mediaPlayer != null && this.B && mediaPlayer.isPlaying()) {
             this.mediaPlayer.pause();
@@ -328,8 +291,8 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         }
     }
 
-    class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
-        class ViewHolder extends RecyclerView.ViewHolder {
+    private class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public LinearLayout layout_item;
             public ImageView img_conflict;
             public ImageView img;
@@ -398,16 +361,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         }
     }
 
-    public static int a(ManageSoundImportActivity manageSoundImportActivity, int i) {
-        manageSoundImportActivity.selectedItem = i;
-        return i;
-    }
-
-    public static void b(ManageSoundImportActivity manageSoundImportActivity, int i) throws IOException {
-        manageSoundImportActivity.showPreview(i);
-    }
-
-    public final void showPreview(int i) {
+    private void showPreview(int i) {
         this.mediaPlayer = new MediaPlayer();
         this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         this.mediaPlayer.setOnPreparedListener(mp -> {
@@ -425,7 +379,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         }
     }
 
-    public final boolean isNameInUseByProjectSound(String str) {
+    private boolean isNameInUseByProjectSound(String str) {
         Iterator<ProjectResourceBean> it = this.projectSounds.iterator();
         while (it.hasNext()) {
             if (it.next().resName.equals(str)) {
@@ -435,7 +389,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         return false;
     }
 
-    public final void loadSoundEmbeddedPicture(String filePath, ImageView target, int position) throws IOException {
+    private void loadSoundEmbeddedPicture(String filePath, ImageView target, int position) throws IOException {
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         try {
             mediaMetadataRetriever.setDataSource(filePath);
