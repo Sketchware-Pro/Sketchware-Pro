@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -267,7 +268,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             public ImageView img;
             public TextView tv_name;
 
-            public ViewHolder(View itemView) {
+            public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 layout_item = itemView.findViewById(R.id.layout_item);
                 img_conflict = itemView.findViewById(R.id.img_conflict);
@@ -297,7 +298,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             ProjectResourceBean sound = selectedCollections.get(position);
             if (sound.isDuplicateCollection) {
                 viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
@@ -318,7 +319,8 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_import_list_item, parent, false));
         }
 
