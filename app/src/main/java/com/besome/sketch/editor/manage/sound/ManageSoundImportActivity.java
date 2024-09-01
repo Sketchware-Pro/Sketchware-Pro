@@ -26,7 +26,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.io.IOException;
@@ -230,8 +229,6 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         if (!super.j()) {
             finish();
         }
-        d.setScreenName(ManageSoundImportActivity.class.getSimpleName().toString());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void initializeLogic() {
