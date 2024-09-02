@@ -59,18 +59,16 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
 
     private ArrayList<String> getScreenNames() {
         ArrayList<String> screenNames = new ArrayList<>();
-        ArrayList<ProjectFileBean> b = jC.b(this.sc_id).b();
-        if (b != null) {
-            Iterator<ProjectFileBean> it = b.iterator();
-            while (it.hasNext()) {
-                screenNames.add(it.next().fileName);
+        ArrayList<ProjectFileBean> activities = jC.b(this.sc_id).b();
+        if (activities != null) {
+            for (ProjectFileBean projectFileBean : activities) {
+                screenNames.add(projectFileBean.fileName);
             }
         }
-        ArrayList<ProjectFileBean> c = jC.b(this.sc_id).c();
-        if (c != null) {
-            Iterator<ProjectFileBean> it2 = c.iterator();
-            while (it2.hasNext()) {
-                screenNames.add(it2.next().fileName);
+        ArrayList<ProjectFileBean> customViews = jC.b(this.sc_id).c();
+        if (customViews != null) {
+            for (ProjectFileBean projectFileBean : customViews) {
+                screenNames.add(projectFileBean.fileName);
             }
         }
         return screenNames;
@@ -82,13 +80,13 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         switch (requestCode) {
             case 264:
                 if (resultCode == RESULT_OK) {
-                    ProjectFileBean projectFileBean = (ProjectFileBean) data.getParcelableExtra("project_file");
-                    jC.b(this.sc_id).a(projectFileBean);
-                    if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-                        jC.b(this.sc_id).a(2, projectFileBean.getDrawerName());
+                    ProjectFileBean projectFile = data.getParcelableExtra("project_file");
+                    jC.b(this.sc_id).a(projectFile);
+                    if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
+                        jC.b(this.sc_id).a(2, projectFile.getDrawerName());
                     }
                     if (data.hasExtra("preset_views")) {
-                        a(projectFileBean, data.getParcelableArrayListExtra("preset_views"));
+                        a(projectFile, data.getParcelableArrayListExtra("preset_views"));
                     }
                     jC.b(this.sc_id).j();
                     jC.b(this.sc_id).l();
@@ -98,34 +96,34 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 return;
             case 265:
                 if (resultCode == RESULT_OK) {
-                    ProjectFileBean projectFileBean2 = (ProjectFileBean) data.getParcelableExtra("project_file");
-                    ProjectFileBean projectFileBean3 = jC.b(this.sc_id).b().get(this.adapter.selectedItem);
-                    projectFileBean3.keyboardSetting = projectFileBean2.keyboardSetting;
-                    projectFileBean3.orientation = projectFileBean2.orientation;
-                    projectFileBean3.options = projectFileBean2.options;
-                    if (projectFileBean2.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-                        jC.b(this.sc_id).a(2, projectFileBean2.getDrawerName());
+                    ProjectFileBean projectFile = data.getParcelableExtra("project_file");
+                    ProjectFileBean activity = jC.b(this.sc_id).b().get(this.adapter.selectedItem);
+                    activity.keyboardSetting = projectFile.keyboardSetting;
+                    activity.orientation = projectFile.orientation;
+                    activity.options = projectFile.options;
+                    if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
+                        jC.b(this.sc_id).a(2, projectFile.getDrawerName());
                     } else {
-                        jC.b(this.sc_id).b(2, projectFileBean2.getDrawerName());
+                        jC.b(this.sc_id).b(2, projectFile.getDrawerName());
                     }
-                    if (projectFileBean2.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)
-                            || projectFileBean2.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
+                    if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)
+                            || projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
                         jC.c(this.sc_id).c().useYn = "Y";
                     }
                     Adapter adapter = this.adapter;
                     adapter.notifyItemChanged(adapter.selectedItem);
                     Intent intent = new Intent();
-                    intent.putExtra("project_file", projectFileBean2);
+                    intent.putExtra("project_file", projectFile);
                     setResult(RESULT_OK, intent);
                     return;
                 }
                 return;
             case 266:
                 if (resultCode == RESULT_OK) {
-                    ProjectFileBean projectFileBean4 = (ProjectFileBean) data.getParcelableExtra("project_file");
-                    jC.b(this.sc_id).a(projectFileBean4);
+                    ProjectFileBean projectFile = data.getParcelableExtra("project_file");
+                    jC.b(this.sc_id).a(projectFile);
                     if (data.hasExtra("preset_views")) {
-                        a(projectFileBean4, data.getParcelableArrayListExtra("preset_views"));
+                        a(projectFile, data.getParcelableArrayListExtra("preset_views"));
                     }
                     jC.b(this.sc_id).j();
                     jC.b(this.sc_id).l();
@@ -137,20 +135,20 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 switch (requestCode) {
                     case 276:
                         if (resultCode == RESULT_OK) {
-                            ProjectFileBean projectFileBean5 = (ProjectFileBean) data.getParcelableExtra("preset_data");
-                            ProjectFileBean projectFileBean6 = jC.b(this.sc_id).b().get(this.adapter.selectedItem);
-                            projectFileBean6.keyboardSetting = projectFileBean5.keyboardSetting;
-                            projectFileBean6.orientation = projectFileBean5.orientation;
-                            projectFileBean6.options = projectFileBean5.options;
-                            if (projectFileBean5.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)
-                                    || projectFileBean5.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
+                            ProjectFileBean presetData = data.getParcelableExtra("preset_data");
+                            ProjectFileBean activity = jC.b(this.sc_id).b().get(this.adapter.selectedItem);
+                            activity.keyboardSetting = presetData.keyboardSetting;
+                            activity.orientation = presetData.orientation;
+                            activity.options = presetData.options;
+                            if (presetData.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)
+                                    || presetData.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
                                 jC.c(this.sc_id).c().useYn = "Y";
                             }
-                            a(projectFileBean5, projectFileBean6, requestCode);
+                            a(presetData, activity, requestCode);
                             jC.b(this.sc_id).j();
                             this.adapter.notifyDataSetChanged();
                             Intent intent2 = new Intent();
-                            intent2.putExtra("project_file", projectFileBean6);
+                            intent2.putExtra("project_file", activity);
                             setResult(RESULT_OK, intent2);
                             return;
                         }
@@ -158,19 +156,18 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     case 277:
                     case 278:
                         if (resultCode == RESULT_OK) {
-                            ProjectFileBean projectFileBean7 = (ProjectFileBean) data.getParcelableExtra("preset_data");
-                            ProjectFileBean projectFileBean8 = jC.b(this.sc_id).c().get(this.adapter.selectedItem);
-                            a(projectFileBean7, projectFileBean8, requestCode);
+                            ProjectFileBean presetData = data.getParcelableExtra("preset_data");
+                            ProjectFileBean customView = jC.b(this.sc_id).c().get(this.adapter.selectedItem);
+                            a(presetData, customView, requestCode);
                             jC.b(this.sc_id).j();
                             this.adapter.notifyDataSetChanged();
                             Intent intent3 = new Intent();
-                            intent3.putExtra("project_file", projectFileBean8);
+                            intent3.putExtra("project_file", customView);
                             setResult(RESULT_OK, intent3);
                             return;
                         }
                         return;
                     default:
-                        return;
                 }
         }
     }
@@ -179,8 +176,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.file_selector_popup_select_xml);
-        Intent intent = getIntent();
         if (savedInstanceState == null) {
+            Intent intent = getIntent();
             this.sc_id = intent.getStringExtra("sc_id");
             this.currentXml = intent.getStringExtra("current_xml");
             this.isCustomView = intent.getBooleanExtra("is_custom_view", false);
@@ -194,11 +191,11 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         } else {
             this.selectedTab = TAB_ACTIVITY;
         }
-        SelectableButtonBar button_bar = (SelectableButtonBar) findViewById(R.id.button_bar);
-        this.empty_message = (TextView) findViewById(R.id.empty_message);
-        RecyclerView list_xml = (RecyclerView) findViewById(R.id.list_xml);
-        ImageView add_button = (ImageView) findViewById(R.id.add_button);
-        LinearLayout container = (LinearLayout) findViewById(R.id.container);
+        SelectableButtonBar button_bar = findViewById(R.id.button_bar);
+        this.empty_message = findViewById(R.id.empty_message);
+        RecyclerView list_xml = findViewById(R.id.list_xml);
+        ImageView add_button = findViewById(R.id.add_button);
+        LinearLayout container = findViewById(R.id.container);
         button_bar.a(TAB_ACTIVITY, xB.b().a(this, R.string.common_word_view).toUpperCase());
         button_bar.a(TAB_CUSTOM_VIEW, xB.b().a(this, R.string.common_word_custom_view).toUpperCase());
         button_bar.setSelectedItemByIndex(this.selectedTab);
@@ -218,14 +215,14 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         add_button.setOnClickListener(v -> {
             if (!mB.a()) {
                 if (selectedTab == TAB_ACTIVITY) {
-                    Intent i = new Intent(getApplicationContext(), AddViewActivity.class);
-                    i.putStringArrayListExtra("screen_names", getScreenNames());
-                    i.putExtra("request_code", 264);
-                    startActivityForResult(i, 264);
+                    Intent intent = new Intent(getApplicationContext(), AddViewActivity.class);
+                    intent.putStringArrayListExtra("screen_names", getScreenNames());
+                    intent.putExtra("request_code", 264);
+                    startActivityForResult(intent, 264);
                 } else if (selectedTab == TAB_CUSTOM_VIEW) {
-                    Intent i = new Intent(getApplicationContext(), AddCustomViewActivity.class);
-                    i.putStringArrayListExtra("screen_names", getScreenNames());
-                    startActivityForResult(i, 266);
+                    Intent intent = new Intent(getApplicationContext(), AddCustomViewActivity.class);
+                    intent.putStringArrayListExtra("screen_names", getScreenNames());
+                    startActivityForResult(intent, 266);
                 }
             }
         });
@@ -261,12 +258,12 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                this.container = (LinearLayout) itemView.findViewById(R.id.container);
-                this.img_edit = (ImageView) itemView.findViewById(R.id.img_edit);
-                this.img_view = (ImageView) itemView.findViewById(R.id.img_view);
-                this.tv_filename = (TextView) itemView.findViewById(R.id.tv_filename);
-                this.tv_linked_filename = (TextView) itemView.findViewById(R.id.tv_linked_filename);
-                this.img_preset_setting = (ImageView) itemView.findViewById(R.id.img_preset_setting);
+                this.container = itemView.findViewById(R.id.container);
+                this.img_edit = itemView.findViewById(R.id.img_edit);
+                this.img_view = itemView.findViewById(R.id.img_view);
+                this.tv_filename = itemView.findViewById(R.id.tv_filename);
+                this.tv_linked_filename = itemView.findViewById(R.id.tv_linked_filename);
+                this.img_preset_setting = itemView.findViewById(R.id.img_preset_setting);
                 itemView.setOnClickListener(v -> {
                     if (!mB.a()) {
                         selectedItem = getLayoutPosition();
@@ -313,8 +310,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
             viewHolder.container.setBackgroundColor(ViewSelectorActivity.this.getResources().getColor(R.color.transparent));
-            int i = ViewSelectorActivity.this.selectedTab;
-            if (i == TAB_ACTIVITY) {
+            int selectedTab = ViewSelectorActivity.this.selectedTab;
+            if (selectedTab == TAB_ACTIVITY) {
                 viewHolder.tv_filename.setVisibility(View.VISIBLE);
                 viewHolder.tv_linked_filename.setVisibility(View.VISIBLE);
                 ProjectFileBean projectFileBean = jC.b(ViewSelectorActivity.this.sc_id).b().get(position);
@@ -331,20 +328,20 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 viewHolder.tv_filename.setTextColor(0xff404040);
                 return;
             }
-            if (i == TAB_CUSTOM_VIEW) {
+            if (selectedTab == TAB_CUSTOM_VIEW) {
                 viewHolder.img_edit.setVisibility(View.GONE);
                 viewHolder.tv_linked_filename.setVisibility(View.GONE);
-                ProjectFileBean projectFileBean2 = jC.b(ViewSelectorActivity.this.sc_id).c().get(position);
-                if (ViewSelectorActivity.this.currentXml.equals(projectFileBean2.getXmlName())) {
+                ProjectFileBean customView = jC.b(ViewSelectorActivity.this.sc_id).c().get(position);
+                if (ViewSelectorActivity.this.currentXml.equals(customView.getXmlName())) {
                     viewHolder.container.setBackgroundColor(ViewSelectorActivity.this.getResources().getColor(R.color.scolor_dark_yellow_01));
                 }
-                if (projectFileBean2.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
+                if (customView.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
                     viewHolder.img_view.setImageResource(ViewSelectorActivity.this.getViewIcon(4));
-                    viewHolder.tv_filename.setText(projectFileBean2.fileName.substring(1));
+                    viewHolder.tv_filename.setText(customView.fileName.substring(1));
                     viewHolder.tv_filename.setTextColor(0xffff0000);
                 } else {
                     viewHolder.img_view.setImageResource(ViewSelectorActivity.this.getViewIcon(3));
-                    viewHolder.tv_filename.setText(projectFileBean2.getXmlName());
+                    viewHolder.tv_filename.setText(customView.getXmlName());
                     viewHolder.tv_filename.setTextColor(0xff000000);
                 }
             }
@@ -360,11 +357,11 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             int size;
             ViewSelectorActivity.this.empty_message.setVisibility(View.GONE);
             ViewSelectorActivity viewSelectorActivity = ViewSelectorActivity.this;
-            int i = viewSelectorActivity.selectedTab;
-            if (i == TAB_ACTIVITY) {
+            int selectedTab = viewSelectorActivity.selectedTab;
+            if (selectedTab == TAB_ACTIVITY) {
                 size = jC.b(viewSelectorActivity.sc_id).b().size();
             } else {
-                size = i == TAB_CUSTOM_VIEW ? jC.b(viewSelectorActivity.sc_id).c().size() : 0;
+                size = selectedTab == TAB_CUSTOM_VIEW ? jC.b(viewSelectorActivity.sc_id).c().size() : 0;
             }
             if (size == 0) {
                 ViewSelectorActivity.this.empty_message.setVisibility(View.VISIBLE);
@@ -373,63 +370,55 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         }
     }
 
-    private void a(ProjectFileBean projectFileBean, ArrayList<ViewBean> arrayList) {
+    private void a(ProjectFileBean projectFile, ArrayList<ViewBean> presetViews) {
         jC.a(this.sc_id);
-        Iterator<ViewBean> it = eC.a(arrayList).iterator();
-        while (it.hasNext()) {
-            ViewBean next = it.next();
-            next.id = a(next.type, projectFileBean.getXmlName());
-            jC.a(this.sc_id).a(projectFileBean.getXmlName(), next);
-            if (next.type == ViewBean.VIEW_TYPE_WIDGET_BUTTON
-                    && projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
-                jC.a(this.sc_id).a(projectFileBean.getJavaName(), 1, next.type, next.id, "onClick");
+        for (ViewBean view : eC.a(presetViews)) {
+            view.id = a(view.type, projectFile.getXmlName());
+            jC.a(this.sc_id).a(projectFile.getXmlName(), view);
+            if (view.type == ViewBean.VIEW_TYPE_WIDGET_BUTTON
+                    && projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+                jC.a(this.sc_id).a(projectFile.getJavaName(), 1, view.type, view.id, "onClick");
             }
         }
     }
 
-    private void a(ProjectFileBean projectFileBean, ProjectFileBean projectFileBean2, int i) {
-        ArrayList<ViewBean> d = jC.a(this.sc_id).d(projectFileBean2.getXmlName());
+    private void a(ProjectFileBean presetData, ProjectFileBean projectFile, int requestCode) {
+        ArrayList<ViewBean> d = jC.a(this.sc_id).d(projectFile.getXmlName());
         for (int size = d.size() - 1; size >= 0; size--) {
-            jC.a(this.sc_id).a(projectFileBean2, d.get(size));
+            jC.a(this.sc_id).a(projectFile, d.get(size));
         }
-        ArrayList<ViewBean> a = a(projectFileBean.presetName, i);
+        ArrayList<ViewBean> a = a(presetData.presetName, requestCode);
         jC.a(this.sc_id);
-        Iterator<ViewBean> it = eC.a(a).iterator();
-        while (it.hasNext()) {
-            ViewBean next = it.next();
-            next.id = a(next.type, projectFileBean2.getXmlName());
-            jC.a(this.sc_id).a(projectFileBean2.getXmlName(), next);
-            if (next.type == ViewBean.VIEW_TYPE_WIDGET_BUTTON
-                    && projectFileBean2.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
-                jC.a(this.sc_id).a(projectFileBean2.getJavaName(), 1, next.type, next.id, "onClick");
+        for (ViewBean view : eC.a(a)) {
+            view.id = a(view.type, projectFile.getXmlName());
+            jC.a(this.sc_id).a(projectFile.getXmlName(), view);
+            if (view.type == ViewBean.VIEW_TYPE_WIDGET_BUTTON
+                    && projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+                jC.a(this.sc_id).a(projectFile.getJavaName(), 1, view.type, view.id, "onClick");
             }
         }
     }
 
-    private ArrayList<ViewBean> a(String str, int i) {
-        ArrayList<ViewBean> arrayList = new ArrayList<>();
-        switch (i) {
-            case 276:
-                return rq.f(str);
-            case 277:
-                return rq.b(str);
-            case 278:
-                return rq.d(str);
-            default:
-                return arrayList;
-        }
+    private ArrayList<ViewBean> a(String presetName, int requestCode) {
+        ArrayList<ViewBean> views = new ArrayList<>();
+        return switch (requestCode) {
+            case 276 -> rq.f(presetName);
+            case 277 -> rq.b(presetName);
+            case 278 -> rq.d(presetName);
+            default -> views;
+        };
     }
 
-    private String a(int i, String str) {
-        String b = wq.b(i);
+    private String a(int viewType, String xmlName) {
+        String b = wq.b(viewType);
         StringBuilder sb = new StringBuilder();
         sb.append(b);
-        int[] iArr = this.x;
-        int i2 = iArr[i] + 1;
-        iArr[i] = i2;
+        int[] x = this.x;
+        int i2 = x[viewType] + 1;
+        x[viewType] = i2;
         sb.append(i2);
         String sb2 = sb.toString();
-        ArrayList<ViewBean> d = jC.a(this.sc_id).d(str);
+        ArrayList<ViewBean> d = jC.a(this.sc_id).d(xmlName);
         while (true) {
             boolean z = false;
             Iterator<ViewBean> it = d.iterator();
@@ -448,8 +437,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             StringBuilder sb3 = new StringBuilder();
             sb3.append(b);
             int[] iArr2 = this.x;
-            int i3 = iArr2[i] + 1;
-            iArr2[i] = i3;
+            int i3 = iArr2[viewType] + 1;
+            iArr2[viewType] = i3;
             sb3.append(i3);
             sb2 = sb3.toString();
         }
