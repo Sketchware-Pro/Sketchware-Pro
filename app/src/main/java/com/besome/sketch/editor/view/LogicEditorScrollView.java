@@ -8,17 +8,14 @@ import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 
 public class LogicEditorScrollView extends FrameLayout {
-    public float a = 0;
-    public float b = 0;
-
-    public int scaledTouchSlop = 0;
-    public boolean d = false;
-
-    public boolean scrollEnabled = true;
-
-    public boolean useScroll = true;
-    public float g = -1;
-    public float h = -1;
+    private float a = 0;
+    private float b = 0;
+    private int scaledTouchSlop = 0;
+    private boolean d = false;
+    private boolean scrollEnabled = true;
+    private boolean useScroll = true;
+    private float g = -1;
+    private float h = -1;
 
     public LogicEditorScrollView(Context context) {
         this(context, null);
@@ -145,7 +142,7 @@ public class LogicEditorScrollView extends FrameLayout {
         this.useScroll = z;
     }
 
-    public boolean a() {
+    private boolean a() {
         if (getChildCount() <= 0 || !this.useScroll || !this.scrollEnabled) {
             return false;
         }
