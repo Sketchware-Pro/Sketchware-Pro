@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -240,7 +241,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             public final TextView tv_linked_filename;
             public final ImageView img_preset_setting;
 
-            public ViewHolder(View itemView) {
+            public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 container = itemView.findViewById(R.id.container);
                 img_edit = itemView.findViewById(R.id.img_edit);
@@ -292,7 +293,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
             viewHolder.container.setBackgroundColor(ContextCompat.getColor(
                     ViewSelectorActivity.this, R.color.transparent));
             if (selectedTab == TAB_ACTIVITY) {
@@ -332,7 +333,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.file_selector_popup_select_xml_activity_item, parent, false));
         }
 
