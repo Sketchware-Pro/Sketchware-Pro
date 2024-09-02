@@ -1,12 +1,5 @@
 package com.besome.sketch.editor.manage;
 
-import a.a.a.eC;
-import a.a.a.hC;
-import a.a.a.jC;
-import a.a.a.mB;
-import a.a.a.rq;
-import a.a.a.wq;
-import a.a.a.xB;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,8 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.manage.view.AddCustomViewActivity;
@@ -30,31 +25,30 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import a.a.a.eC;
+import a.a.a.hC;
+import a.a.a.jC;
+import a.a.a.mB;
+import a.a.a.rq;
+import a.a.a.wq;
+import a.a.a.xB;
+
 public class ViewSelectorActivity extends BaseAppCompatActivity {
-
     public LinearLayout container;
-
     public RecyclerView list_xml;
-
     public Adapter adapter;
-
     public String sc_id;
-
     public ProjectFileBean projectFile;
-
     public SelectableButtonBar button_bar;
-
     public TextView empty_message;
-
     public ImageView add_button;
-
     public String currentXml;
     public int v;
-    public final int k = ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY;
-    public final int l = ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW;
-
     public boolean isCustomView = false;
     public int[] x = new int[19];
+
+    public final int k = ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY;
+    public final int l = ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW;
 
     public static ArrayList a(ViewSelectorActivity viewSelectorActivity) {
         return viewSelectorActivity.l();
@@ -263,21 +257,14 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
     }
 
     class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-
         public int selectedItem = -1;
 
         class ViewHolder extends RecyclerView.ViewHolder {
-
             public LinearLayout container;
-
             public ImageView img_edit;
-
             public ImageView img_view;
-
             public TextView tv_filename;
-
             public TextView tv_linked_filename;
-
             public ImageView img_preset_setting;
 
             public ViewHolder(View itemView) {
