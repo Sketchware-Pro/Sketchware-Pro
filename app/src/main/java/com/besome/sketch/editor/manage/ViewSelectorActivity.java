@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -292,14 +293,16 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
-            viewHolder.container.setBackgroundColor(getResources().getColor(R.color.transparent));
+            viewHolder.container.setBackgroundColor(ContextCompat.getColor(
+                    ViewSelectorActivity.this, R.color.transparent));
             if (selectedTab == TAB_ACTIVITY) {
                 viewHolder.tv_filename.setVisibility(View.VISIBLE);
                 viewHolder.tv_linked_filename.setVisibility(View.VISIBLE);
                 ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
                 String xmlName = projectFileBean.getXmlName();
                 if (currentXml.equals(xmlName)) {
-                    viewHolder.container.setBackgroundColor(getResources().getColor(R.color.scolor_dark_yellow_01));
+                    viewHolder.container.setBackgroundColor(ContextCompat.getColor(
+                            ViewSelectorActivity.this, R.color.scolor_dark_yellow_01));
                 }
                 String javaName = projectFileBean.getJavaName();
                 viewHolder.img_edit.setVisibility(View.VISIBLE);
@@ -313,7 +316,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 viewHolder.tv_linked_filename.setVisibility(View.GONE);
                 ProjectFileBean customView = jC.b(sc_id).c().get(position);
                 if (currentXml.equals(customView.getXmlName())) {
-                    viewHolder.container.setBackgroundColor(getResources().getColor(R.color.scolor_dark_yellow_01));
+                    viewHolder.container.setBackgroundColor(ContextCompat.getColor(
+                            ViewSelectorActivity.this, R.color.scolor_dark_yellow_01));
                 }
                 if (customView.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
                     viewHolder.img_view.setImageResource(getViewIcon(4));
