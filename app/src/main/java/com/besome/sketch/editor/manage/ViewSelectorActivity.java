@@ -1,13 +1,9 @@
 package com.besome.sketch.editor.manage;
 
-import a.a.a.Gt;
-import a.a.a.Ht;
-import a.a.a.It;
-import a.a.a.Jt;
-import a.a.a.Kt;
-import a.a.a.Lt;
 import a.a.a.eC;
+import a.a.a.hC;
 import a.a.a.jC;
+import a.a.a.mB;
 import a.a.a.rq;
 import a.a.a.wq;
 import a.a.a.xB;
@@ -23,6 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.manage.view.AddCustomViewActivity;
+import com.besome.sketch.editor.manage.view.AddViewActivity;
+import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.SelectableButtonBar;
 import com.google.android.gms.analytics.HitBuilders;
@@ -218,10 +217,29 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         this.list_xml.setLayoutManager(new LinearLayoutManager(getApplicationContext(), 1, false));
         this.list_xml.setHasFixedSize(true);
         this.list_xml.setAdapter(this.adapter);
-        this.button_bar.setListener(new Gt(this));
+        this.button_bar.setListener(selectedItemKey -> {
+            if (selectedItemKey != v) {
+                v = selectedItemKey;
+                adapter.notifyDataSetChanged();
+                empty_message.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+            }
+        });
         this.empty_message.setText(xB.b().a(this, 2131625294)); // R.string.design_manager_view_message_no_view
-        this.add_button.setOnClickListener(new Ht(this));
-        this.container.setOnClickListener(new It(this));
+        this.add_button.setOnClickListener(view -> {
+            if (!mB.a()) {
+                if (v == k) {
+                    Intent i = new Intent(getApplicationContext(), AddViewActivity.class);
+                    i.putStringArrayListExtra("screen_names", l());
+                    i.putExtra("request_code", 264);
+                    startActivityForResult(i, 264);
+                } else if (v == l) {
+                    Intent i = new Intent(getApplicationContext(), AddCustomViewActivity.class);
+                    i.putStringArrayListExtra("screen_names", l());
+                    startActivityForResult(i, 266);
+                }
+            }
+        });
+        this.container.setOnClickListener(v -> finish());
         overridePendingTransition(2130771982, 2130771983); // R.anim.ani_fade_in, R.anim.ani_fade_out
     }
 
@@ -266,9 +284,43 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 this.tv_filename = (TextView) itemView.findViewById(2131231979);
                 this.tv_linked_filename = (TextView) itemView.findViewById(2131232032);
                 this.img_preset_setting = (ImageView) itemView.findViewById(2131231168);
-                itemView.setOnClickListener(new Jt(this, Adapter.this));
-                this.img_view.setOnClickListener(new Kt(this, Adapter.this));
-                this.img_preset_setting.setOnClickListener(new Lt(this, Adapter.this));
+                itemView.setOnClickListener(view -> {
+                    if (!mB.a()) {
+                        selectedItem = getLayoutPosition();
+                        hC hC = jC.b(sc_id);
+                        ArrayList<ProjectFileBean> list = switch (v) {
+                            case k -> hC.b();
+                            case l -> hC.c();
+                            default -> null;
+                        };
+                        if (list != null) {
+                            projectFile = list.get(getLayoutPosition());
+                        }
+                        Intent intent = new Intent();
+                        intent.putExtra("project_file", projectFile);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                });
+                this.img_view.setOnClickListener(view -> {
+                    if (v == 0 && !mB.a()) {
+                        selectedItem = getLayoutPosition();
+                        Intent intent = new Intent(getApplicationContext(), AddViewActivity.class);
+                        intent.putExtra("project_file", jC.b(sc_id).b().get(getLayoutPosition()));
+                        intent.putExtra("request_code", 265);
+                        startActivityForResult(intent, 265);
+                    }
+                });
+                this.img_preset_setting.setOnClickListener(view -> {
+                    if (!mB.a()) {
+                        selectedItem = getLayoutPosition();
+                        int requestCode = a(jC.b(sc_id).b().get(getLayoutPosition()));
+                        Intent intent = new Intent(getApplicationContext(), PresetSettingActivity.class);
+                        intent.putExtra("request_code", requestCode);
+                        intent.putExtra("edit_mode", true);
+                        startActivityForResult(intent, requestCode);
+                    }
+                });
             }
         }
 
