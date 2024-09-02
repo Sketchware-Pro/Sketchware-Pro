@@ -6,13 +6,9 @@ import android.widget.FrameLayout;
 import com.besome.sketch.editor.logic.BlockPane;
 
 public class ViewLogicEditor extends LogicEditorScrollView {
-
-    public Context context;
-
-    public BlockPane blockPane;
-    public boolean k = true;
-
-    public int[] locationOnScreen = new int[2];
+    private final BlockPane blockPane;
+    private boolean k = true;
+    private final int[] locationOnScreen = new int[2];
 
     public ViewLogicEditor(Context context) {
         this(context, null);
@@ -28,8 +24,7 @@ public class ViewLogicEditor extends LogicEditorScrollView {
 
     public ViewLogicEditor(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        this.context = context;
-        this.blockPane = new BlockPane(this.context);
+        this.blockPane = new BlockPane(context);
         this.blockPane.setLayoutParams(new FrameLayout.LayoutParams(-2, -2));
         addView(this.blockPane);
     }
