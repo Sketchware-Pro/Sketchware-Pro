@@ -10,18 +10,24 @@ public class ViewLogicEditor extends LogicEditorScrollView {
     public Context context;
 
     public BlockPane blockPane;
-    public boolean k;
+    public boolean k = true;
 
-    public int[] locationOnScreen;
+    public int[] locationOnScreen = new int[2];
 
     public ViewLogicEditor(Context context) {
-        super(context);
-        this.k = true;
-        this.locationOnScreen = new int[2];
-        initialize(context);
+        this(context, null);
     }
 
-    private void initialize(Context context) {
+    public ViewLogicEditor(Context context, AttributeSet attributeSet) {
+        this(context, attributeSet, 0);
+    }
+
+    public ViewLogicEditor(Context context, AttributeSet attrs, int defStyleAttr) {
+        this(context, attrs, defStyleAttr, 0);
+    }
+
+    public ViewLogicEditor(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
         this.context = context;
         this.blockPane = new BlockPane(this.context);
         this.blockPane.setLayoutParams(new FrameLayout.LayoutParams(-2, -2));
@@ -41,13 +47,6 @@ public class ViewLogicEditor extends LogicEditorScrollView {
             this.blockPane.b();
             this.k = false;
         }
-    }
-
-    public ViewLogicEditor(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        this.k = true;
-        this.locationOnScreen = new int[2];
-        initialize(context);
     }
 
     public boolean a(float x, float y) {
