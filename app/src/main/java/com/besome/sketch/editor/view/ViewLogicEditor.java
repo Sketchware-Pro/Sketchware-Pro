@@ -2,6 +2,7 @@ package com.besome.sketch.editor.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import com.besome.sketch.editor.logic.BlockPane;
 
@@ -25,7 +26,8 @@ public class ViewLogicEditor extends LogicEditorScrollView {
     public ViewLogicEditor(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.blockPane = new BlockPane(context);
-        this.blockPane.setLayoutParams(new FrameLayout.LayoutParams(-2, -2));
+        this.blockPane.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
         addView(this.blockPane);
     }
 
