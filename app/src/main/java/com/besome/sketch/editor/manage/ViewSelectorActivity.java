@@ -91,9 +91,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     jC.b(sc_id).j();
                     jC.b(sc_id).l();
                     adapter.notifyDataSetChanged();
-                    return;
                 }
-                return;
+                break;
             case 265:
                 if (resultCode == RESULT_OK) {
                     ProjectFileBean projectFile = data.getParcelableExtra("project_file");
@@ -114,9 +113,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     Intent intent = new Intent();
                     intent.putExtra("project_file", projectFile);
                     setResult(RESULT_OK, intent);
-                    return;
                 }
-                return;
+                break;
             case 266:
                 if (resultCode == RESULT_OK) {
                     ProjectFileBean projectFile = data.getParcelableExtra("project_file");
@@ -127,47 +125,41 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     jC.b(sc_id).j();
                     jC.b(sc_id).l();
                     adapter.notifyDataSetChanged();
-                    return;
                 }
-                return;
+                break;
+            case 276:
+                if (resultCode == RESULT_OK) {
+                    ProjectFileBean presetData = data.getParcelableExtra("preset_data");
+                    ProjectFileBean activity = jC.b(sc_id).b().get(adapter.selectedItem);
+                    activity.keyboardSetting = presetData.keyboardSetting;
+                    activity.orientation = presetData.orientation;
+                    activity.options = presetData.options;
+                    if (presetData.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)
+                            || presetData.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
+                        jC.c(sc_id).c().useYn = "Y";
+                    }
+                    a(presetData, activity, requestCode);
+                    jC.b(sc_id).j();
+                    adapter.notifyDataSetChanged();
+                    Intent intent2 = new Intent();
+                    intent2.putExtra("project_file", activity);
+                    setResult(RESULT_OK, intent2);
+                }
+                break;
+            case 277:
+            case 278:
+                if (resultCode == RESULT_OK) {
+                    ProjectFileBean presetData = data.getParcelableExtra("preset_data");
+                    ProjectFileBean customView = jC.b(sc_id).c().get(adapter.selectedItem);
+                    a(presetData, customView, requestCode);
+                    jC.b(sc_id).j();
+                    adapter.notifyDataSetChanged();
+                    Intent intent3 = new Intent();
+                    intent3.putExtra("project_file", customView);
+                    setResult(RESULT_OK, intent3);
+                }
+                break;
             default:
-                switch (requestCode) {
-                    case 276:
-                        if (resultCode == RESULT_OK) {
-                            ProjectFileBean presetData = data.getParcelableExtra("preset_data");
-                            ProjectFileBean activity = jC.b(sc_id).b().get(adapter.selectedItem);
-                            activity.keyboardSetting = presetData.keyboardSetting;
-                            activity.orientation = presetData.orientation;
-                            activity.options = presetData.options;
-                            if (presetData.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)
-                                    || presetData.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
-                                jC.c(sc_id).c().useYn = "Y";
-                            }
-                            a(presetData, activity, requestCode);
-                            jC.b(sc_id).j();
-                            adapter.notifyDataSetChanged();
-                            Intent intent2 = new Intent();
-                            intent2.putExtra("project_file", activity);
-                            setResult(RESULT_OK, intent2);
-                            return;
-                        }
-                        return;
-                    case 277:
-                    case 278:
-                        if (resultCode == RESULT_OK) {
-                            ProjectFileBean presetData = data.getParcelableExtra("preset_data");
-                            ProjectFileBean customView = jC.b(sc_id).c().get(adapter.selectedItem);
-                            a(presetData, customView, requestCode);
-                            jC.b(sc_id).j();
-                            adapter.notifyDataSetChanged();
-                            Intent intent3 = new Intent();
-                            intent3.putExtra("project_file", customView);
-                            setResult(RESULT_OK, intent3);
-                            return;
-                        }
-                        return;
-                    default:
-                }
         }
     }
 
@@ -324,9 +316,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 viewHolder.tv_linked_filename.setVisibility(View.VISIBLE);
                 viewHolder.tv_linked_filename.setText(javaName);
                 viewHolder.tv_filename.setTextColor(0xff404040);
-                return;
-            }
-            if (selectedTab == TAB_CUSTOM_VIEW) {
+            } else if (selectedTab == TAB_CUSTOM_VIEW) {
                 viewHolder.img_edit.setVisibility(View.GONE);
                 viewHolder.tv_linked_filename.setVisibility(View.GONE);
                 ProjectFileBean customView = jC.b(sc_id).c().get(position);
@@ -352,13 +342,14 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
 
         @Override
         public int getItemCount() {
-            int size;
             empty_message.setVisibility(View.GONE);
-            if (selectedTab == TAB_ACTIVITY) {
-                size = jC.b(sc_id).b().size();
-            } else {
-                size = selectedTab == TAB_CUSTOM_VIEW ? jC.b(sc_id).c().size() : 0;
-            }
+            hC hC = jC.b(sc_id);
+            ArrayList<ProjectFileBean> list = switch (selectedTab) {
+                case TAB_ACTIVITY -> hC.b();
+                case TAB_CUSTOM_VIEW -> hC.c();
+                default -> null;
+            };
+            int size = list != null ? list.size() : 0;
             if (size == 0) {
                 empty_message.setVisibility(View.VISIBLE);
             }
