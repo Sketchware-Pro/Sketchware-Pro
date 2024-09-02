@@ -19,7 +19,6 @@ import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.SelectableButtonBar;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -219,13 +218,6 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         });
         container.setOnClickListener(v -> finish());
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        d.setScreenName(ViewSelectorActivity.class.getSimpleName().toString());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
