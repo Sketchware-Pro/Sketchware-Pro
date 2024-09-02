@@ -8,32 +8,32 @@ import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 
 public class LogicEditorScrollView extends FrameLayout {
-    public float a;
-    public float b;
+    public float a = 0;
+    public float b = 0;
 
-    public int scaledTouchSlop;
-    public boolean d;
+    public int scaledTouchSlop = 0;
+    public boolean d = false;
 
-    public boolean scrollEnabled;
+    public boolean scrollEnabled = true;
 
-    public boolean useScroll;
-    public float g;
-    public float h;
+    public boolean useScroll = true;
+    public float g = -1;
+    public float h = -1;
 
     public LogicEditorScrollView(Context context) {
-        super(context);
-        this.a = 0.0f;
-        this.b = 0.0f;
-        this.scaledTouchSlop = 0;
-        this.d = false;
-        this.scrollEnabled = true;
-        this.useScroll = true;
-        this.g = -1.0f;
-        this.h = -1.0f;
-        initialize(context);
+        this(context, null);
     }
 
-    public final void initialize(Context context) {
+    public LogicEditorScrollView(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public LogicEditorScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
+        this(context, attrs, defStyleAttr, 0);
+    }
+
+    public LogicEditorScrollView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
         this.scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
@@ -151,18 +151,5 @@ public class LogicEditorScrollView extends FrameLayout {
         }
         View childAt = getChildAt(0);
         return getWidth() < (childAt.getWidth() + getPaddingLeft()) + getPaddingRight() || getHeight() < (childAt.getHeight() + getPaddingTop()) + getPaddingBottom();
-    }
-
-    public LogicEditorScrollView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.a = 0.0f;
-        this.b = 0.0f;
-        this.scaledTouchSlop = 0;
-        this.d = false;
-        this.scrollEnabled = true;
-        this.useScroll = true;
-        this.g = -1.0f;
-        this.h = -1.0f;
-        initialize(context);
     }
 }
