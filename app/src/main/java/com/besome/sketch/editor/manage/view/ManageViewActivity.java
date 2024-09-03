@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,6 @@ import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.sketchware.remod.R;
@@ -271,8 +271,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         });
 
         actionButtonsContainer = findViewById(R.id.layout_btn_group);
-        MaterialButton delete = findViewById(R.id.btn_delete);
-        MaterialButton cancel = findViewById(R.id.btn_cancel);
+        Button delete = findViewById(R.id.btn_delete);
+        Button cancel = findViewById(R.id.btn_cancel);
         delete.setText(getTranslatedString(R.string.common_word_delete));
         cancel.setText(getTranslatedString(R.string.common_word_cancel));
         delete.setOnClickListener(this);

@@ -1,10 +1,10 @@
 package a.a.a;
 
+import static mod.hey.studios.util.ProjectFile.getDefaultColor;
+
 import android.content.Context;
 import android.util.Log;
 import android.util.Pair;
-
-import androidx.core.content.ContextCompat;
 
 import com.besome.sketch.SketchApplication;
 import com.besome.sketch.beans.BlockBean;
@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
+import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.blocks.CommandBlock;
 
 public class yq {
@@ -220,13 +221,13 @@ public class yq {
         versionCode = yB.c(metadata, "sc_ver_code");
         versionName = yB.c(metadata, "sc_ver_name");
 
-        colorAccent = yB.a(metadata, "color_accent", ContextCompat.getColor(context, R.color.color_accent));
-        colorPrimary = yB.a(metadata, "color_primary", ContextCompat.getColor(context, R.color.color_primary));
-        colorPrimaryDark = yB.a(metadata, "color_primary_dark", ContextCompat.getColor(context, R.color.color_primary_dark));
-        colorControlHighlight = yB.a(metadata, "color_control_highlight", ContextCompat.getColor(context, R.color.color_control_highlight));
-        colorControlNormal = yB.a(metadata, "color_control_normal", ContextCompat.getColor(context, R.color.color_control_normal));
-        projectSettings = new ProjectSettings(sc_id);
+        colorAccent = yB.a(metadata, ProjectFile.COLOR_ACCENT, getDefaultColor(ProjectFile.COLOR_ACCENT));
+        colorPrimary = yB.a(metadata, ProjectFile.COLOR_PRIMARY, getDefaultColor(ProjectFile.COLOR_PRIMARY));
+        colorPrimaryDark = yB.a(metadata, ProjectFile.COLOR_PRIMARY_DARK, getDefaultColor(ProjectFile.COLOR_PRIMARY_DARK));
+        colorControlHighlight = yB.a(metadata, ProjectFile.COLOR_CONTROL_HIGHLIGHT, getDefaultColor(ProjectFile.COLOR_CONTROL_HIGHLIGHT));
+        colorControlNormal = yB.a(metadata, ProjectFile.COLOR_CONTROL_NORMAL, getDefaultColor(ProjectFile.COLOR_CONTROL_NORMAL));
 
+        projectSettings = new ProjectSettings(sc_id);
         fileUtil = new oB(true);
         packageNameAsFolders = packageName.replaceAll("\\.", File.separator);
         binDirectoryPath = projectMyscPath + "bin";

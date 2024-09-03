@@ -31,7 +31,7 @@
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
-                        app:navigationIcon="@drawable/abc_ic_ab_back_material"
+                        app:navigationIcon="?attr/homeAsUpIndicator"
                         tools:menu="@menu/design_menu"
                         tools:subtitle="605"
                         tools:title="InternalDemo" />

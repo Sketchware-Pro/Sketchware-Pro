@@ -84,10 +84,6 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         binding = MyprojectSettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.toolbar.setTitle(R.string.myprojects_list_menu_title_create_a_new_project);
-        setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
         binding.toolbar.setNavigationOnClickListener(arg0 -> onBackPressed());
 
         if (!isStoragePermissionGranted()) finish();
@@ -98,30 +94,29 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         binding.verCode.setSelected(true);
         binding.verName.setSelected(true);
 
-        binding.contents.setOnClickListener(this);
         binding.appIconLayout.setOnClickListener(this);
         binding.verCodeHolder.setOnClickListener(this);
         binding.verNameHolder.setOnClickListener(this);
-        binding.etAppName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
-        binding.etPackageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
-        binding.etProjectName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_project_name));
+        binding.imgThemeColorHelp.setOnClickListener(this);
+        binding.okButton.setOnClickListener(this);
+        binding.cancel.setOnClickListener(this);
 
-        projectAppNameValidator = new LB(getApplicationContext(), binding.tiAppName);
-        projectPackageNameValidator = new UB(getApplicationContext(), binding.tiPackageName);
-        projectNameValidator = new VB(getApplicationContext(), binding.tiProjectName);
+        binding.tilAppName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
+        binding.tilPackageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
+        binding.tilProjectName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_project_name));
+
+        projectAppNameValidator = new LB(getApplicationContext(), binding.tilAppName);
+        projectPackageNameValidator = new UB(getApplicationContext(), binding.tilPackageName);
+        projectNameValidator = new VB(getApplicationContext(), binding.tilProjectName);
         binding.etPackageName.setPrivateImeOptions("defaultInputmode=english;");
         binding.etProjectName.setPrivateImeOptions("defaultInputmode=english;");
-        binding.tiPackageName.setOnFocusChangeListener((v, hasFocus) -> {
+        binding.tilPackageName.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 if (!shownPackageNameChangeWarning && !((EditText) v).getText().toString().trim().contains("com.my.newproject")) {
                     showPackageNameChangeWarning();
                 }
             }
         });
-        binding.imgThemeColorHelp.setOnClickListener(this);
-        /* Save & Cancel buttons */
-        binding.okButton.setOnClickListener(this);
-        binding.cancel.setOnClickListener(this);
 
         projectThemeColors[0] = getDefaultColor(ProjectFile.COLOR_ACCENT);
         projectThemeColors[1] = getDefaultColor(ProjectFile.COLOR_PRIMARY);

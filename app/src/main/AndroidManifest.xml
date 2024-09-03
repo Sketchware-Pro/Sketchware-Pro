@@ -52,6 +52,7 @@
             android:name="com.besome.sketch.editor.LogicEditorActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="false"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar"
             android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name="com.besome.sketch.editor.PropertyActivity"
@@ -61,7 +62,6 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.projects.MyProjectSettingActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity android:name="com.besome.sketch.tools.CompileLogActivity" />
@@ -74,7 +74,7 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.design.DesignActivity"
-            android:theme="@style/Theme.SketchwarePro.Design"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.MainActivity"

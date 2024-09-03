@@ -1,29 +1,24 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/contents"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?android:colorBackground"
-    android:orientation="vertical"
-    android:paddingBottom="10dp">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
-
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/myprojects_list_menu_title_create_a_new_project" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +34,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <FrameLayout
                     android:id="@+id/app_icon_layout"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
@@ -49,12 +44,10 @@
                         android:id="@+id/app_icon"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:contentDescription="@null"
                         android:scaleType="centerCrop"
                         android:src="@drawable/default_icon"
                         app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
-                </RelativeLayout>
+                </FrameLayout>
 
                 <TextView
                     android:id="@+id/tv_change_icon"
@@ -62,15 +55,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="@string/myprojects_settings_description_change_icon"
-                    android:textSize="11sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ti_app_name"
+                android:id="@+id/til_app_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:gravity="center"
                 app:startIconDrawable="@drawable/ic_android_24">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -78,32 +70,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:textSize="14sp" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ti_package_name"
+                android:id="@+id/til_package_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
+                app:placeholderText="com.my.newproject"
                 app:startIconDrawable="@drawable/ic_package_24">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_package_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start|center"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:textSize="14sp" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ti_project_name"
+                android:id="@+id/til_project_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 app:startIconDrawable="@drawable/ic_interests_24">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -111,18 +101,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:textSize="14sp" />
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:clickable="false"
-                android:focusable="false"
-                app:cardBackgroundColor="@android:color/transparent"
-                app:cardPreventCornerOverlap="true">
+                android:layout_marginTop="17dp"
+                app:strokeColor="?attr/colorOutline">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -134,7 +120,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:padding="8dp">
+                        android:paddingEnd="8dp"
+                        android:paddingStart="8dp">
 
                         <HorizontalScrollView
                             android:layout_width="0dp"
@@ -154,14 +141,13 @@
                                 android:orientation="horizontal" />
                         </HorizontalScrollView>
 
-
-                        <View
+                        <com.google.android.material.divider.MaterialDivider
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_marginVertical="12dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="4dp"
-                            android:background="#ffc6c6c6" />
+                            app:dividerColor="?attr/colorOutline"
+                            app:dividerInsetEnd="4dp"
+                            app:dividerInsetStart="8dp" />
 
                         <ImageView
                             android:id="@+id/img_theme_color_help"
@@ -185,12 +171,9 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:layout_marginBottom="30dp"
-                android:clickable="false"
-                android:focusable="false"
-                app:cardBackgroundColor="@android:color/transparent"
-                app:cardPreventCornerOverlap="true">
+                android:layout_marginBottom="64dp"
+                android:layout_marginTop="13dp"
+                app:strokeColor="?attr/colorOutline">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -236,7 +219,6 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginHorizontal="6dp"
-                        android:contentDescription="@null"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_version_control_24" />
 
@@ -280,27 +262,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorSurface"
         android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/cancel"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="7dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:text="@string/common_word_cancel"
-            android:textSize="@dimen/text_size_button_material"
-            app:backgroundTint="?colorAccent" />
+            android:textSize="@dimen/text_size_button_material" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/ok_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:text="@string/myprojects_list_menu_title_create_a_new_project"
             android:textSize="@dimen/text_size_button_material" />
     </LinearLayout>
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
