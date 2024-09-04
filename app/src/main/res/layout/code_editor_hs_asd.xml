@@ -8,6 +8,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="?attr/colorSurface"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="4dp"
@@ -25,14 +26,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Code Editor"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UTF-8"
-                android:textSize="11sp" />
+                android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <ImageView
