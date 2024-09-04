@@ -3,7 +3,7 @@ package mod.hey.studios.util;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.text.SpannableStringBuilder;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
@@ -20,11 +20,11 @@ public class CompileLogHelper {
     private static final Pattern WARNING_PATTERN = Pattern.compile("----------\n([0-9]+\\. WARNING)", Pattern.MULTILINE);
     private static final Pattern XML_PATTERN = Pattern.compile("error:", Pattern.MULTILINE);
 
-    public static SpannableStringBuilder getColoredLogs(Context context, String logs) {
+    public static SpannableString getColoredLogs(Context context, String logs) {
         int errorColor = MaterialColors.getColor(context, R.attr.colorError, TAG);
         int warningColor = MaterialColors.getColor(context, R.attr.colorAmber, TAG);
 
-        SpannableStringBuilder spannable = new SpannableStringBuilder(logs);
+        SpannableString spannable = new SpannableString(logs);
 
         Matcher errorMatcher = ERROR_PATTERN.matcher(logs);
         applyStyle(spannable, errorMatcher, errorColor);
@@ -33,15 +33,22 @@ public class CompileLogHelper {
         applyStyle(spannable, warningMatcher, warningColor);
 
         Matcher xmlMatcher = XML_PATTERN.matcher(logs);
-        applyStyle(spannable, xmlMatcher, errorColor);
+        applyStyleForXml(spannable, xmlMatcher, errorColor);
 
         return spannable;
     }
 
-    private static void applyStyle(SpannableStringBuilder spannable, Matcher matcher, int color) {
+    private static void applyStyle(SpannableString spannable, Matcher matcher, int color) {
         while (matcher.find()) {
             spannable.setSpan(new StyleSpan(Typeface.BOLD), matcher.start(1), matcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             spannable.setSpan(new ForegroundColorSpan(color), matcher.start(1), matcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+    }
+
+    private static void applyStyleForXml(SpannableString spannable, Matcher matcher, int color) {
+        while (matcher.find()) {
+            spannable.setSpan(new StyleSpan(Typeface.BOLD), matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new ForegroundColorSpan(color), matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 }
