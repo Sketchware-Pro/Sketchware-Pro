@@ -18,7 +18,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textColor="?attr/colorTertiary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="12sp" />
 
             <LinearLayout
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:textColor="?attr/colorTertiary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="12sp" />
 
             <LinearLayout

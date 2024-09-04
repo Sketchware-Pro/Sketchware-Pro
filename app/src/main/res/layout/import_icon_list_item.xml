@@ -2,8 +2,7 @@
     android:id="@+id/icon_bg"
     android:layout_width="60dp"
     android:layout_height="60dp"
-    android:layout_marginBottom="4dp"
-    android:layout_marginEnd="4dp"
+    android:layout_margin="4dp"
     android:orientation="vertical"
     android:gravity="center">
 
@@ -27,7 +26,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="8dp"
             android:gravity="center|left"
-            android:textColor="#fff5f5f5"
             android:textSize="14sp" />
     </LinearLayout>
 
