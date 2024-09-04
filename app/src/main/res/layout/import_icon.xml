@@ -9,55 +9,54 @@
         android:id="@+id/ti_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:importantForAutofill="noExcludeDescendants">
 
         <EditText
             android:id="@+id/ed_input"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1"
             android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/icons_button_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right"
-        android:orientation="horizontal">
+        app:singleSelection="true">
 
         <Button
             android:id="@+id/btn_black"
-            android:layout_width="60dp"
-            android:layout_height="25dp"
-            android:background="#ffe5e5e5"
-            android:checked="true"
-            android:textSize="12sp" />
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btn_grey"
-            android:layout_width="60dp"
-            android:layout_height="25dp"
-            android:background="#ffe5e5e5"
-            android:textSize="12sp" />
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btn_white"
-            android:layout_width="60dp"
-            android:layout_height="25dp"
-            android:background="#ffe5e5e5"
-            android:textSize="12sp" />
-    </LinearLayout>
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/image_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:background="#fff5f5f5"
         android:scrollbars="vertical"
         android:splitMotionEvents="false" />
 
@@ -65,17 +64,15 @@
         android:id="@+id/layout_btn_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffffff"
-        android:gravity="center|right"
-        android:orientation="horizontal"
-        android:padding="4dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_cancel"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="8dp"
             android:layout_weight="1" />
 
         <Button
@@ -83,7 +80,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginRight="16dp"
             android:layout_weight="1" />
+
     </LinearLayout>
 </LinearLayout>
