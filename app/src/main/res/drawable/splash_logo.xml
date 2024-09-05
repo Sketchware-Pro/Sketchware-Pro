@@ -5,8 +5,6 @@
     android:viewportWidth="201"
     android:viewportHeight="201">
     <group
-        android:scaleX="1.978932"
-        android:scaleY="1.978932"
         android:translateX="-96.13397"
         android:translateY="-66.94195">
         <path
