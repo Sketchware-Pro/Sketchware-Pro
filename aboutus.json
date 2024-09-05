@@ -18,7 +18,16 @@
       "isMainModder": true,
       "isActive": true,
       "title": null
-    }
+    },
+    {
+      "modder_username": "Remaker",
+      "modder_description": "Main modder",
+      "modder_img": "https://avatars.githubusercontent.com/u/95296093",
+      "isTitled": false,
+      "isMainModder": true,
+      "isActive": true,
+      "title": null
+    },
     {
       "modder_username": "Elfilibusterismo",
       "modder_description": "Main modder",
