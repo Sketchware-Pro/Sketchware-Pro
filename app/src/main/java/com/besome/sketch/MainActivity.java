@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -140,7 +141,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.Theme_SketchwarePro_Main);
+        SplashScreen.installSplashScreen(this);
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 
