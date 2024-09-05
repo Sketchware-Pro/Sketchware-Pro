@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.SketchwarePro.Starting" parent="Theme.SketchwarePro.Starting.Base">
+        <item name="windowSplashScreenBackground">@color/m3_sys_color_dynamic_light_surface</item>
+
+        <item name="android:navigationBarColor">@color/m3_sys_color_dynamic_light_surface</item>
+        <item name="android:statusBarColor">@color/m3_sys_color_dynamic_light_surface</item>
+    </style>
+</resources>
