@@ -1,16 +1,10 @@
 package mod.trindadedev.ui.activities
 
 import android.os.Bundle
-
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-
-import com.sketchware.remod.R
-import com.sketchware.remod.databinding.ActivitySettingsBinding
-
 import com.besome.sketch.lib.base.BaseAppCompatActivity
-
+import com.sketchware.remod.databinding.ActivitySettingsBinding
 import mod.trindadedev.ui.fragments.events.EventsManagerFragment
 import mod.trindadedev.ui.fragments.settings.appearance.SettingsAppearanceFragment
 
@@ -29,8 +23,7 @@ class SettingsActivity : BaseAppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val fragmentTag = intent.getStringExtra(FRAGMENT_TAG_EXTRA)
-        val fragment = when (fragmentTag) {
+        val fragment = when (val fragmentTag = intent.getStringExtra(FRAGMENT_TAG_EXTRA)) {
             SETTINGS_APPEARANCE_FRAGMENT -> SettingsAppearanceFragment()
             EVENTS_MANAGER_FRAGMENT -> EventsManagerFragment()
             else -> throw IllegalArgumentException("Unknown fragment tag: $fragmentTag")

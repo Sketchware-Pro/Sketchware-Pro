@@ -7,11 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
-
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.FragmentEventsManagerCreatorBinding;
 
@@ -21,8 +20,8 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
-import mod.jbk.util.OldResourceIdMapper;
 import mod.hilal.saif.activities.tools.IconSelectorDialog;
+import mod.jbk.util.OldResourceIdMapper;
 
 public class EventsManagerCreatorFragment extends Fragment {
 
@@ -157,7 +156,7 @@ public class EventsManagerCreatorFragment extends Fragment {
             arrayList.add(hashMap);
         }
         FileUtil.writeFile(concat, new Gson().toJson(arrayList));
-        SketchwareUtil.toast("Saved");      
+        SketchwareUtil.toast("Saved");
         getParentFragmentManager().popBackStack();
     }
 
