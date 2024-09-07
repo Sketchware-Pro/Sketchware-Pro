@@ -33,8 +33,8 @@ public class EventsManagerCreatorFragment extends Fragment {
     private String _spec;
     private String _var;
     private String event_name = "";
-    private boolean isActivityEvent = false;
-    private boolean isEdit = false;
+    private boolean isActivityEvent;
+    private boolean isEdit;
     private String lisName;
 
     private FragmentEventsManagerCreatorBinding binding;
