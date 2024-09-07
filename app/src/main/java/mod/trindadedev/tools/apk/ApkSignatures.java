@@ -10,13 +10,11 @@ import a.a.a.aB;
 public class ApkSignatures {
 
     private final Context context;
-    private final ApkUtils projectApk;
     private String abMsg;
 
     public ApkSignatures(Context context, String path) {
         this.context = context;
-        projectApk = new ApkUtils();
-        projectApk.setApkPath(path);
+        ApkUtils.setApkPath(path);
         try {
             abMsg = "SHA-1: " + getSha1() + "\n\nSHA-256: " + getSha256();
         } catch (Exception e) {
@@ -25,12 +23,12 @@ public class ApkSignatures {
     }
 
     public String getSha1() {
-        String sha1 = projectApk.getSHA1();
+        String sha1 = ApkUtils.getSHA1();
         return sha1 != null ? sha1 : "No SHA 1 key found.";
     }
 
     public String getSha256() {
-        String sha256 = projectApk.getSHA256();
+        String sha256 = ApkUtils.getSHA256();
         return sha256 != null ? sha256 : "No SHA 256 key found.";
     }
 
