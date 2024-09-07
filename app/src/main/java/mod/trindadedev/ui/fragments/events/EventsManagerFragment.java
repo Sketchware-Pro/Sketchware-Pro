@@ -62,16 +62,15 @@ public class EventsManagerFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         configureToolbar(binding.toolbar);
         binding.toolbar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.action_import_events:
-                    showImportEventsDialog();
-                    return true;
-                case R.id.action_export_events:
-                    exportAllEvents();
-                    return true;
-                default:
-                    return false;
+            int itemId = item.getItemId();
+            if (itemId == R.id.action_import_events) {
+                showImportEventsDialog();
+                return true;
+            } else if (itemId == R.id.action_export_events) {
+                exportAllEvents();
+                return true;
             }
+            return false;
         });
         binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
         binding.activityEventsDescription.setText(getNumOfEvents(""));
