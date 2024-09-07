@@ -1,8 +1,5 @@
 package com.besome.sketch.editor.event;
 
-import a.a.a.Ls;
-import a.a.a.Ms;
-import a.a.a.Ns;
 import a.a.a.bB;
 import a.a.a.dt;
 import a.a.a.gB;
@@ -26,6 +23,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
@@ -108,7 +107,24 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     public final void l() {
         if (this.eventsToAdd.size() == 0 && !this.C) {
             this.C = true;
-            gB.a((ViewGroup) this.events_preview, 300, (Animator.AnimatorListener) new Ls(this));
+            gB.a((ViewGroup) this.events_preview, 300, new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(@NonNull Animator animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(@NonNull Animator animation) {
+                    events_preview.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationCancel(@NonNull Animator animation) {
+                }
+
+                @Override
+                public void onAnimationRepeat(@NonNull Animator animation) {
+                }
+            });
         } else {
             if (this.eventsToAdd.size() <= 0 || !this.C) {
                 return;
@@ -413,7 +429,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         super.onSaveInstanceState(newState);
     }
 
-    class EventAdapter extends RecyclerView.Adapter<ViewHolder> {
+    class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
         public int lastSelectedEvent = -1;
 
@@ -445,8 +461,44 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 this.tv_target_id = (TextView) itemView.findViewById(2131232192);
                 this.tv_event_name = (TextView) itemView.findViewById(2131231970);
                 this.checkbox = (CheckBox) itemView.findViewById(2131230883);
-                itemView.setOnClickListener(new Ms(this, EventAdapter.this));
-                this.checkbox.setOnCheckedChangeListener(new Ns(this, EventAdapter.this));
+                itemView.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        lastSelectedEvent = getLayoutPosition();
+                        EventBean event = categories.get(categoryAdapter.lastSelectedCategory).get(lastSelectedEvent);
+                        if (event.isSelected) {
+                            event.isSelected = false;
+                            eventsToAdd.remove(event);
+                            l();
+                            eventsToAddAdapter.notifyItemRemoved(eventsToAddAdapter.getItemCount());
+                        } else {
+                            event.isSelected = true;
+                            eventsToAdd.add(event);
+                            l();
+                            eventsToAddAdapter.notifyItemInserted(eventsToAddAdapter.getItemCount());
+                        }
+                        if (!e) {
+                            notifyItemChanged(lastSelectedEvent);
+                        }
+                    }
+                });
+                this.checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    lastSelectedEvent = getLayoutPosition();
+                    EventBean event = categories.get(categoryAdapter.lastSelectedCategory).get(lastSelectedEvent);
+                    if (!event.isSelected && isChecked) {
+                        event.isSelected = true;
+                        eventsToAdd.add(event);
+                        l();
+                        eventsToAddAdapter.notifyItemInserted(eventsToAddAdapter.getItemCount());
+                    } else if (event.isSelected && !isChecked) {
+                        event.isSelected = false;
+                        eventsToAdd.remove(event);
+                        eventsToAddAdapter.notifyItemRemoved(eventsToAddAdapter.getItemCount());
+                        l();
+                    }
+                    if (!e) {
+                        notifyItemChanged(lastSelectedEvent);
+                    }
+                });
             }
         }
 
@@ -518,7 +570,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
     }
 
-    class CategoryAdapter extends RecyclerView.Adapter<ViewHolder> {
+    class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
 
         public int lastSelectedCategory = -1;
 
@@ -595,7 +647,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
     }
 
-    class EventsToAddAdapter extends RecyclerView.Adapter<ViewHolder> {
+    class EventsToAddAdapter extends RecyclerView.Adapter<EventsToAddAdapter.ViewHolder> {
 
         class ViewHolder extends RecyclerView.ViewHolder {
 
