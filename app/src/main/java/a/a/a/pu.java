@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +39,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
+import mod.agus.jcoderz.lib.FilePathUtil;
+import mod.nethical.svg.SvgUtils;
 
 public class pu extends qA implements View.OnClickListener {
     private String sc_id;
@@ -149,8 +157,19 @@ public class pu extends qA implements View.OnClickListener {
                     } else {
                         path = image.resFullName;
                     }
+
+
                     String str = projectImagesDirectory + File.separator + image.resName;
-                    iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
+                    if(image.resFullName.endsWith(".svg")){
+                        // convert the svg to vectors
+
+                        FilePathUtil fpu = new FilePathUtil();
+                        String xml_destination = fpu.getPathResource(sc_id) + "/drawable/";
+                        copyFile(path,str+".svg");
+                        SvgUtils.convert(str+".svg", xml_destination,"#000000");
+                    }else {
+                        iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -168,6 +187,20 @@ public class pu extends qA implements View.OnClickListener {
         jC.a(sc_id).b(jC.d(sc_id));
         jC.a(sc_id).k();
     }
+    public void copyFile(String srcPath, String destPath) throws IOException {
+        File srcFile = new File(srcPath);
+        File destFile = new File(destPath);
+
+        try (FileInputStream fis = new FileInputStream(srcFile);
+             FileOutputStream fos = new FileOutputStream(destFile)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+        }
+    }
+
 
     private void updateGuideVisibility() {
         if (images.size() == 0) {
