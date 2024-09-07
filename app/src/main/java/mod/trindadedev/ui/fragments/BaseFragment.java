@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.transition.MaterialSharedAxis;
@@ -28,8 +27,7 @@ public class BaseFragment extends Fragment {
     }
 
     public void openFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getParentFragmentManager();
-        fragmentManager.beginTransaction()
+        getParentFragmentManager().beginTransaction()
                 .replace(R.id.settings_fragment_container, fragment)
                 .addToBackStack(null)
                 .commit();
