@@ -299,7 +299,7 @@ public class EventsManagerFragment extends BaseFragment {
             return dataArray.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder {
             private final LayoutEventItemBinding binding;
 
             public ViewHolder(@NonNull LayoutEventItemBinding binding) {
