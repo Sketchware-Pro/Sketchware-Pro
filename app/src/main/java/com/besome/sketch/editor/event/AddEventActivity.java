@@ -9,6 +9,7 @@ import a.a.a.oq;
 import a.a.a.rs;
 import a.a.a.wB;
 import a.a.a.xB;
+
 import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
+
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
@@ -41,51 +43,29 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class AddEventActivity extends BaseAppCompatActivity implements View.OnClickListener {
-
     public ArrayList<EventBean> addableDrawerViewEvents;
-
     public ArrayList<EventBean> eventsToAdd;
     public boolean C;
-
     public Button add_button;
-
     public Button cancel_button;
-
     public int categoryIndex;
-
     public TextView empty_message;
-
     public dt moreBlockView;
-
     public String sc_id;
-
     public ProjectFileBean projectFile;
-
     public CategoryAdapter categoryAdapter;
-
     public EventAdapter eventAdapter;
-
     public EventsToAddAdapter eventsToAddAdapter;
-
     public TextView tv_category;
-
     public RecyclerView category_list;
-
     public RecyclerView event_list;
-
     public RecyclerView events_preview;
-
     public LinearLayout container;
-
     public ScrollView moreblock_layout;
-
     public HashMap<Integer, ArrayList<EventBean>> categories;
     public ArrayList<EventBean> w;
-
     public ArrayList<EventBean> addableViewEvents;
-
     public ArrayList<EventBean> addableComponentEvents;
-
     public ArrayList<EventBean> addableActivityEvents;
 
     public static HashMap a(AddEventActivity addEventActivity) {
@@ -109,7 +89,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     public final void l() {
         if (this.eventsToAdd.size() == 0 && !this.C) {
             this.C = true;
-            gB.a((ViewGroup) this.events_preview, 300, new Animator.AnimatorListener() {
+            gB.a(this.events_preview, 300, new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(@NonNull Animator animation) {
                 }
@@ -127,10 +107,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 public void onAnimationRepeat(@NonNull Animator animation) {
                 }
             });
-        } else {
-            if (this.eventsToAdd.size() <= 0 || !this.C) {
-                return;
-            }
+        } else if (this.eventsToAdd.size() > 0 && this.C) {
             this.C = false;
             this.events_preview.setVisibility(View.VISIBLE);
             gB.b(this.events_preview, 300, null);
@@ -138,11 +115,6 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     public final void m() {
-        boolean drawerViewEventExists;
-        ViewBean fab;
-        boolean fabEventExists;
-        boolean componentEventExists;
-        boolean viewEventExists;
         this.w.clear();
         this.addableActivityEvents.clear();
         this.addableComponentEvents.clear();
@@ -184,6 +156,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 if (viewEvents != null) {
                     for (String viewEvent : viewEvents) {
                         Iterator<EventBean> existingEvents = jC.a(this.sc_id).g(this.projectFile.getJavaName()).iterator();
+                        boolean viewEventExists;
                         while (true) {
                             if (!existingEvents.hasNext()) {
                                 viewEventExists = false;
@@ -213,6 +186,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 if (componentEvents != null) {
                     for (String componentEvent : componentEvents) {
                         Iterator<EventBean> it4 = jC.a(this.sc_id).g(this.projectFile.getJavaName()).iterator();
+                        boolean componentEventExists;
                         while (true) {
                             if (!it4.hasNext()) {
                                 componentEventExists = false;
@@ -231,9 +205,11 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 }
             }
         }
+        ViewBean fab;
         if (this.projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB) && (fab = jC.a(this.sc_id).h(this.projectFile.getXmlName())) != null) {
             for (String fabEvent : oq.c(fab.getClassInfo())) {
                 Iterator<EventBean> it5 = jC.a(this.sc_id).g(this.projectFile.getJavaName()).iterator();
+                boolean fabEventExists;
                 while (true) {
                     if (!it5.hasNext()) {
                         fabEventExists = false;
@@ -258,6 +234,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                     ViewBean drawerView = it6.next();
                     for (String drawerViewEvent : oq.c(drawerView.getClassInfo())) {
                         Iterator<EventBean> it7 = jC.a(this.sc_id).g(this.projectFile.getJavaName()).iterator();
+                        boolean drawerViewEventExists;
                         while (true) {
                             if (!it7.hasNext()) {
                                 drawerViewEventExists = false;
@@ -301,46 +278,45 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        if (mB.a()) {
-            return;
-        }
-        int id = v.getId();
-        if (id != R.id.add_button) {
-            if (id != R.id.cancel_button) {
-                return;
+        boolean finished = false;
+        if (!mB.a()) {
+            int id = v.getId();
+            if (id == R.id.add_button) {
+                if (this.eventsToAdd.size() != 0 || !this.moreBlockView.a()) {
+                    if (!this.moreBlockView.a()) {
+                        if (!this.moreBlockView.b()) {
+                            this.eventAdapter.setEvents(this.categories.get(4));
+                            this.categoryAdapter.lastSelectedCategory = 4;
+                            this.tv_category.setText(rs.a(getApplicationContext(), 4));
+                            this.empty_message.setVisibility(View.GONE);
+                            this.moreblock_layout.setVisibility(View.VISIBLE);
+                            this.categoryAdapter.notifyDataSetChanged();
+                            finished = true;
+                        } else {
+                            Pair<String, String> blockInformation = this.moreBlockView.getBlockInformation();
+                            jC.a(this.sc_id).a(this.projectFile.getJavaName(), blockInformation.first, blockInformation.second);
+                        }
+                    }
+                    if (!finished) {
+                        Iterator<EventBean> it = this.eventsToAdd.iterator();
+                        while (it.hasNext()) {
+                            jC.a(this.sc_id).a(this.projectFile.getJavaName(), it.next());
+                        }
+                        if (this.eventsToAdd.size() == 1) {
+                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.event_message_new_event), bB.TOAST_NORMAL).show();
+                        } else if (this.eventsToAdd.size() > 1) {
+                            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.event_message_new_events), bB.TOAST_NORMAL).show();
+                        }
+                        jC.a(this.sc_id).k();
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                }
+            } else if (id == R.id.cancel_button) {
+                setResult(RESULT_CANCELED);
+                finish();
             }
-            setResult(RESULT_CANCELED);
-            finish();
-            return;
         }
-        if (this.eventsToAdd.size() == 0 && this.moreBlockView.a()) {
-            return;
-        }
-        if (!this.moreBlockView.a()) {
-            if (!this.moreBlockView.b()) {
-                this.eventAdapter.setEvents(this.categories.get(4));
-                this.categoryAdapter.lastSelectedCategory = 4;
-                this.tv_category.setText(rs.a(getApplicationContext(), 4));
-                this.empty_message.setVisibility(View.GONE);
-                this.moreblock_layout.setVisibility(View.VISIBLE);
-                this.categoryAdapter.notifyDataSetChanged();
-                return;
-            }
-            Pair<String, String> blockInformation = this.moreBlockView.getBlockInformation();
-            jC.a(this.sc_id).a(this.projectFile.getJavaName(), (String) blockInformation.first, (String) blockInformation.second);
-        }
-        Iterator<EventBean> it = this.eventsToAdd.iterator();
-        while (it.hasNext()) {
-            jC.a(this.sc_id).a(this.projectFile.getJavaName(), it.next());
-        }
-        if (this.eventsToAdd.size() == 1) {
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.event_message_new_event), bB.TOAST_NORMAL).show();
-        } else if (this.eventsToAdd.size() > 1) {
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.event_message_new_events), bB.TOAST_NORMAL).show();
-        }
-        jC.a(this.sc_id).k();
-        setResult(RESULT_OK);
-        finish();
     }
 
     @Override
@@ -350,22 +326,22 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         Intent intent = getIntent();
         if (savedInstanceState == null) {
             this.sc_id = intent.getStringExtra("sc_id");
-            this.projectFile = (ProjectFileBean) intent.getParcelableExtra("project_file");
+            this.projectFile = intent.getParcelableExtra("project_file");
             this.categoryIndex = intent.getIntExtra("category_index", 0);
         } else {
             this.sc_id = savedInstanceState.getString("sc_id");
-            this.projectFile = (ProjectFileBean) savedInstanceState.getParcelable("project_file");
+            this.projectFile = savedInstanceState.getParcelable("project_file");
             this.categoryIndex = savedInstanceState.getInt("category_index");
         }
-        this.event_list = (RecyclerView) findViewById(R.id.event_list);
-        this.tv_category = (TextView) findViewById(R.id.tv_category);
-        this.category_list = (RecyclerView) findViewById(R.id.category_list);
-        this.events_preview = (RecyclerView) findViewById(R.id.events_preview);
-        this.container = (LinearLayout) findViewById(R.id.container);
-        this.add_button = (Button) findViewById(R.id.add_button);
-        this.cancel_button = (Button) findViewById(R.id.cancel_button);
-        this.empty_message = (TextView) findViewById(R.id.empty_message);
-        this.moreblock_layout = (ScrollView) findViewById(R.id.moreblock_layout);
+        this.event_list = findViewById(R.id.event_list);
+        this.tv_category = findViewById(R.id.tv_category);
+        this.category_list = findViewById(R.id.category_list);
+        this.events_preview = findViewById(R.id.events_preview);
+        this.container = findViewById(R.id.container);
+        this.add_button = findViewById(R.id.add_button);
+        this.cancel_button = findViewById(R.id.cancel_button);
+        this.empty_message = findViewById(R.id.empty_message);
+        this.moreblock_layout = findViewById(R.id.moreblock_layout);
         this.moreBlockView = new dt(this);
         this.moreblock_layout.addView(this.moreBlockView);
         this.moreblock_layout.setVisibility(View.GONE);
@@ -432,37 +408,28 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
-
         public int lastSelectedEvent = -1;
-
         public ArrayList<EventBean> events = new ArrayList<>();
         public boolean e;
 
         class ViewHolder extends RecyclerView.ViewHolder {
-
             public LinearLayout events_preview;
-
             public ImageView img_icon;
-
             public TextView tv_target_type;
-
             public TextView tv_sep;
-
             public TextView tv_target_id;
-
             public TextView tv_event_name;
-
             public CheckBox checkbox;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                this.events_preview = (LinearLayout) itemView.findViewById(R.id.events_preview);
-                this.img_icon = (ImageView) itemView.findViewById(R.id.img_icon);
-                this.tv_target_type = (TextView) itemView.findViewById(R.id.tv_target_type);
-                this.tv_sep = (TextView) itemView.findViewById(R.id.tv_sep);
-                this.tv_target_id = (TextView) itemView.findViewById(R.id.tv_target_id);
-                this.tv_event_name = (TextView) itemView.findViewById(R.id.tv_event_name);
-                this.checkbox = (CheckBox) itemView.findViewById(R.id.checkbox);
+                this.events_preview = itemView.findViewById(R.id.events_preview);
+                this.img_icon = itemView.findViewById(R.id.img_icon);
+                this.tv_target_type = itemView.findViewById(R.id.tv_target_type);
+                this.tv_sep = itemView.findViewById(R.id.tv_sep);
+                this.tv_target_id = itemView.findViewById(R.id.tv_target_id);
+                this.tv_event_name = itemView.findViewById(R.id.tv_event_name);
+                this.checkbox = itemView.findViewById(R.id.checkbox);
                 itemView.setOnClickListener(v -> {
                     if (!mB.a()) {
                         lastSelectedEvent = getLayoutPosition();
@@ -573,19 +540,16 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-
         public int lastSelectedCategory = -1;
 
         class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
             public LinearLayout container;
-
             public ImageView img_icon;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                this.img_icon = (ImageView) itemView.findViewById(R.id.img_icon);
-                this.container = (LinearLayout) itemView.findViewById(R.id.container);
+                this.img_icon = itemView.findViewById(R.id.img_icon);
+                this.container = itemView.findViewById(R.id.container);
                 itemView.setOnClickListener(this);
             }
 
@@ -608,7 +572,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                     } else {
                         AddEventActivity.this.moreblock_layout.setVisibility(View.GONE);
                         AddEventActivity addEventActivity2 = AddEventActivity.this;
-                        addEventActivity2.eventAdapter.setEvents((ArrayList<EventBean>) addEventActivity2.categories.get(Integer.valueOf(CategoryAdapter.this.lastSelectedCategory)));
+                        addEventActivity2.eventAdapter.setEvents(addEventActivity2.categories.get(Integer.valueOf(CategoryAdapter.this.lastSelectedCategory)));
                         AddEventActivity.this.eventAdapter.notifyDataSetChanged();
                     }
                 }
@@ -650,23 +614,18 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     class EventsToAddAdapter extends RecyclerView.Adapter<EventsToAddAdapter.ViewHolder> {
-
         class ViewHolder extends RecyclerView.ViewHolder {
-
             public LinearLayout ll_img_event;
-
             public RelativeLayout container;
-
             public ImageView img_icon;
-
             public ImageView img_event;
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                this.container = (RelativeLayout) itemView.findViewById(R.id.container);
-                this.img_icon = (ImageView) itemView.findViewById(R.id.img_icon);
-                this.img_event = (ImageView) itemView.findViewById(R.id.img_event);
-                this.ll_img_event = (LinearLayout) itemView.findViewById(R.id.ll_img_event);
+                this.container = itemView.findViewById(R.id.container);
+                this.img_icon = itemView.findViewById(R.id.img_icon);
+                this.img_event = itemView.findViewById(R.id.img_event);
+                this.ll_img_event = itemView.findViewById(R.id.ll_img_event);
             }
         }
 
@@ -676,7 +635,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             holder.ll_img_event.setVisibility(View.VISIBLE);
-            EventBean event = (EventBean) AddEventActivity.this.eventsToAdd.get(position);
+            EventBean event = AddEventActivity.this.eventsToAdd.get(position);
             int eventType = event.eventType;
             if (eventType == EventBean.EVENT_TYPE_ACTIVITY) {
                 holder.ll_img_event.setVisibility(View.GONE);
