@@ -39,12 +39,9 @@ public class EventsManagerCreatorFragment extends Fragment {
 
     private FragmentEventsManagerCreatorBinding binding;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentEventsManagerCreatorBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
-
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (getArguments() != null && getArguments().containsKey("lis_name")) {
             lisName = getArguments().getString("lis_name");
             isActivityEvent = lisName.equals("");
@@ -60,6 +57,13 @@ public class EventsManagerCreatorFragment extends Fragment {
             _spec = getArguments().getString("_spec");
             _code = getArguments().getString("_code");
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentEventsManagerCreatorBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
         setToolbar();
         getViewsById();
