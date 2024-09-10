@@ -43,42 +43,29 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class AddEventActivity extends BaseAppCompatActivity implements View.OnClickListener {
-    public ArrayList<EventBean> addableDrawerViewEvents;
-    public ArrayList<EventBean> eventsToAdd;
-    public boolean C;
-    public Button add_button;
-    public Button cancel_button;
-    public int categoryIndex;
-    public TextView empty_message;
-    public dt moreBlockView;
-    public String sc_id;
-    public ProjectFileBean projectFile;
-    public CategoryAdapter categoryAdapter;
-    public EventAdapter eventAdapter;
-    public EventsToAddAdapter eventsToAddAdapter;
-    public TextView tv_category;
-    public RecyclerView category_list;
-    public RecyclerView event_list;
-    public RecyclerView events_preview;
-    public LinearLayout container;
-    public ScrollView moreblock_layout;
-    public HashMap<Integer, ArrayList<EventBean>> categories;
-    public ArrayList<EventBean> w;
-    public ArrayList<EventBean> addableViewEvents;
-    public ArrayList<EventBean> addableComponentEvents;
-    public ArrayList<EventBean> addableActivityEvents;
-
-    public static HashMap a(AddEventActivity addEventActivity) {
-        return addEventActivity.categories;
-    }
-
-    public static ArrayList b(AddEventActivity addEventActivity) {
-        return addEventActivity.eventsToAdd;
-    }
-
-    public static void c(AddEventActivity addEventActivity) {
-        addEventActivity.l();
-    }
+    private ArrayList<EventBean> addableDrawerViewEvents;
+    private ArrayList<EventBean> eventsToAdd;
+    private boolean C;
+    private Button add_button;
+    private Button cancel_button;
+    private int categoryIndex;
+    private TextView empty_message;
+    private dt moreBlockView;
+    private String sc_id;
+    private ProjectFileBean projectFile;
+    private CategoryAdapter categoryAdapter;
+    private EventAdapter eventAdapter;
+    private EventsToAddAdapter eventsToAddAdapter;
+    private TextView tv_category;
+    private RecyclerView event_list;
+    private RecyclerView events_preview;
+    private LinearLayout container;
+    private ScrollView moreblock_layout;
+    private HashMap<Integer, ArrayList<EventBean>> categories;
+    private ArrayList<EventBean> addableEtcEvents;
+    private ArrayList<EventBean> addableViewEvents;
+    private ArrayList<EventBean> addableComponentEvents;
+    private ArrayList<EventBean> addableActivityEvents;
 
     @Override
     public void finish() {
@@ -86,7 +73,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
     }
 
-    public final void l() {
+    private void l() {
         if (this.eventsToAdd.size() == 0 && !this.C) {
             this.C = true;
             gB.a(this.events_preview, 300, new Animator.AnimatorListener() {
@@ -114,12 +101,12 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
     }
 
-    public final void m() {
-        this.w.clear();
+    private void initialize() {
+        this.addableEtcEvents.clear();
         this.addableActivityEvents.clear();
         this.addableComponentEvents.clear();
         this.addableDrawerViewEvents.clear();
-        this.w.clear();
+        this.addableEtcEvents.clear();
         this.eventsToAdd.clear();
         String[] activityEvents = oq.a();
         int length = activityEvents.length;
@@ -335,7 +322,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
         this.event_list = findViewById(R.id.event_list);
         this.tv_category = findViewById(R.id.tv_category);
-        this.category_list = findViewById(R.id.category_list);
+        RecyclerView category_list = findViewById(R.id.category_list);
         this.events_preview = findViewById(R.id.events_preview);
         this.container = findViewById(R.id.container);
         this.add_button = findViewById(R.id.add_button);
@@ -348,7 +335,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         this.add_button.setOnClickListener(this);
         this.cancel_button.setOnClickListener(this);
         this.categories = new HashMap<>();
-        this.w = new ArrayList<>();
+        this.addableEtcEvents = new ArrayList<>();
         this.addableViewEvents = new ArrayList<>();
         this.addableComponentEvents = new ArrayList<>();
         this.addableActivityEvents = new ArrayList<>();
@@ -357,16 +344,16 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         this.categories.put(1, this.addableViewEvents);
         this.categories.put(2, this.addableComponentEvents);
         this.categories.put(3, this.addableDrawerViewEvents);
-        this.categories.put(4, this.w);
+        this.categories.put(4, this.addableEtcEvents);
         this.event_list.setHasFixedSize(true);
         this.event_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         this.eventAdapter = new EventAdapter();
         this.event_list.setAdapter(this.eventAdapter);
-        this.category_list.setHasFixedSize(true);
+        category_list.setHasFixedSize(true);
         this.categoryAdapter = new CategoryAdapter();
-        this.category_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
-        this.category_list.setAdapter(this.categoryAdapter);
-        ((SimpleItemAnimator) this.category_list.getItemAnimator()).setSupportsChangeAnimations(false);
+        category_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
+        category_list.setAdapter(this.categoryAdapter);
+        ((SimpleItemAnimator) category_list.getItemAnimator()).setSupportsChangeAnimations(false);
         this.events_preview.setHasFixedSize(true);
         this.eventsToAddAdapter = new EventsToAddAdapter();
         this.events_preview.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
@@ -393,7 +380,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         super.onResume();
         gB.a(this.container, 500);
         if (this.projectFile != null) {
-            m();
+            initialize();
         }
         this.d.setScreenName(AddEventActivity.class.getSimpleName().toString());
         this.d.send(new HitBuilders.ScreenViewBuilder().build());
@@ -407,19 +394,19 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         super.onSaveInstanceState(newState);
     }
 
-    class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
-        public int lastSelectedEvent = -1;
-        public ArrayList<EventBean> events = new ArrayList<>();
-        public boolean e;
+    private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
+        private int lastSelectedEvent = -1;
+        private ArrayList<EventBean> events = new ArrayList<>();
+        private boolean e;
 
-        class ViewHolder extends RecyclerView.ViewHolder {
-            public LinearLayout events_preview;
-            public ImageView img_icon;
-            public TextView tv_target_type;
-            public TextView tv_sep;
-            public TextView tv_target_id;
-            public TextView tv_event_name;
-            public CheckBox checkbox;
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final LinearLayout events_preview;
+            public final ImageView img_icon;
+            public final TextView tv_target_type;
+            public final TextView tv_sep;
+            public final TextView tv_target_id;
+            public final TextView tv_event_name;
+            public final CheckBox checkbox;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -528,7 +515,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             return this.events.size();
         }
 
-        public void setEvents(ArrayList<EventBean> events) {
+        private void setEvents(ArrayList<EventBean> events) {
             if (events.size() == 0) {
                 AddEventActivity.this.empty_message.setVisibility(View.VISIBLE);
             } else {
@@ -539,12 +526,12 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
     }
 
-    class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-        public int lastSelectedCategory = -1;
+    private class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+        private int lastSelectedCategory = -1;
 
-        class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public LinearLayout container;
-            public ImageView img_icon;
+        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            public final LinearLayout container;
+            public final ImageView img_icon;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -613,8 +600,8 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
     }
 
-    class EventsToAddAdapter extends RecyclerView.Adapter<EventsToAddAdapter.ViewHolder> {
-        class ViewHolder extends RecyclerView.ViewHolder {
+    private class EventsToAddAdapter extends RecyclerView.Adapter<EventsToAddAdapter.ViewHolder> {
+        private class ViewHolder extends RecyclerView.ViewHolder {
             public LinearLayout ll_img_event;
             public RelativeLayout container;
             public ImageView img_icon;
