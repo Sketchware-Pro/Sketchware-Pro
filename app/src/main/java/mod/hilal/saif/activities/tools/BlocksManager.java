@@ -26,7 +26,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.card.MaterialCardView;
@@ -35,6 +34,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
 
-public class BlocksManager extends AppCompatActivity {
+public class BlocksManager extends BaseAppCompatActivity {
 
     private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private String blocks_dir = "";

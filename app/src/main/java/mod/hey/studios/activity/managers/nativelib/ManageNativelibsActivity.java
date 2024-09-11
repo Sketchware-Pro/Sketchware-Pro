@@ -16,7 +16,6 @@ import android.widget.PopupMenu;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,12 +23,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import dev.trindadedev.lib.filepicker.model.DialogConfigs;
 import dev.trindadedev.lib.filepicker.model.DialogProperties;
 import dev.trindadedev.lib.filepicker.view.FilePickerDialog;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
 import com.sketchware.remod.databinding.DialogInputLayoutBinding;
 import com.sketchware.remod.databinding.ManageFileBinding;
 import com.sketchware.remod.databinding.ManageJavaItemHsBinding;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +45,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
-public class ManageNativelibsActivity extends AppCompatActivity implements View.OnClickListener {
+public class ManageNativelibsActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private FilePickerDialog filePicker;
     private FilePathUtil fpu;
     private FileResConfig frc;
@@ -52,7 +55,7 @@ public class ManageNativelibsActivity extends AppCompatActivity implements View.
     private ManageFileBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ManageFileBinding.inflate(getLayoutInflater());

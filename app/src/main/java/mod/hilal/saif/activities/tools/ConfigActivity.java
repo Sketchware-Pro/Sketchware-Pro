@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.annotations.NonNull;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -29,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -43,7 +43,7 @@ import mod.jbk.util.LogUtil;
 
 import dev.trindadedev.lib.ui.components.preference.*;
 
-public class ConfigActivity extends AppCompatActivity {
+public class ConfigActivity extends BaseAppCompatActivity {
 
     public static final File SETTINGS_FILE = new File(FileUtil.getExternalStorageDir(), ".sketchware/data/settings.json");
     public static final String SETTING_ALWAYS_SHOW_BLOCKS = "always-show-blocks";
@@ -64,7 +64,7 @@ public class ConfigActivity extends AppCompatActivity {
     private LinearLayout content;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.prefences_content_appbar);

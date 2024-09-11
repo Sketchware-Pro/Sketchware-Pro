@@ -24,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.button.MaterialButton;
@@ -32,6 +31,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
 
-public class BlocksManagerCreatorActivity extends AppCompatActivity {
+public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
 
     private final ArrayList<String> id_detector = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> blocksList = new ArrayList<>();

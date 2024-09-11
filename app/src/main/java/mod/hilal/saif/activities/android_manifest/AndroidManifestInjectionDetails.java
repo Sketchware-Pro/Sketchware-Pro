@@ -18,13 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.CustomDialogAttributeBinding;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +33,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.ActComponentsDialog;
 import mod.remaker.view.CustomAttributeView;
 
-public class AndroidManifestInjectionDetails extends AppCompatActivity {
+public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
 
     private static String ATTRIBUTES_FILE_PATH;
     private final ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
@@ -45,7 +44,7 @@ public class AndroidManifestInjectionDetails extends AppCompatActivity {
     private String constant;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_custom_attribute);
 

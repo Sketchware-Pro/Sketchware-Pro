@@ -6,15 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.FragmentSettingsAppearanceBinding;
 
-import mod.hey.studios.util.Helper;
 import mod.trindadedev.manage.theme.ThemeManager;
+import mod.trindadedev.ui.fragments.BaseFragment;
 
-public class SettingsAppearanceFragment extends Fragment {
+public class SettingsAppearanceFragment extends BaseFragment {
 
     private FragmentSettingsAppearanceBinding binding;
 
@@ -27,8 +26,7 @@ public class SettingsAppearanceFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(getActivity()));
+        configureToolbar(binding.toolbar);
 
         switch (ThemeManager.getCurrentTheme(requireContext())) {
             case ThemeManager.THEME_LIGHT:

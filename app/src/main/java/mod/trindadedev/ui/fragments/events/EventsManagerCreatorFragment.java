@@ -1,12 +1,18 @@
-package mod.hilal.saif.activities.tools;
+package mod.trindadedev.ui.fragments.events;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.EventsCreatorBinding;
+import com.sketchware.remod.databinding.FragmentEventsManagerCreatorBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,9 +20,10 @@ import java.util.HashMap;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.IconSelectorDialog;
 import mod.jbk.util.OldResourceIdMapper;
 
-public class EventsMakerCreator extends Activity {
+public class EventsManagerCreatorFragment extends Fragment {
 
     private String _code;
     private String _desc;
@@ -26,38 +33,47 @@ public class EventsMakerCreator extends Activity {
     private String _spec;
     private String _var;
     private String event_name = "";
-    private boolean isActivityEvent = false;
-    private boolean isEdit = false;
+    private boolean isActivityEvent;
+    private boolean isEdit;
     private String lisName;
 
-    private EventsCreatorBinding binding;
+    private FragmentEventsManagerCreatorBinding binding;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = EventsCreatorBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        if (getIntent().hasExtra("lis_name")) {
-            lisName = getIntent().getStringExtra("lis_name");
+        if (getArguments() != null && getArguments().containsKey("lis_name")) {
+            lisName = getArguments().getString("lis_name");
             isActivityEvent = lisName.equals("");
         }
-        if (getIntent().hasExtra("event")) {
-            event_name = getIntent().getStringExtra("event");
+        if (getArguments() != null && getArguments().containsKey("event")) {
+            event_name = getArguments().getString("event");
             isEdit = true;
-            _name = getIntent().getStringExtra("_name");
-            _var = getIntent().getStringExtra("_var");
-            _icon = getIntent().getStringExtra("_icon");
-            _desc = getIntent().getStringExtra("_desc");
-            _par = getIntent().getStringExtra("_par");
-            _spec = getIntent().getStringExtra("_spec");
-            _code = getIntent().getStringExtra("_code");
+            _name = getArguments().getString("_name");
+            _var = getArguments().getString("_var");
+            _icon = getArguments().getString("_icon");
+            _desc = getArguments().getString("_desc");
+            _par = getArguments().getString("_par");
+            _spec = getArguments().getString("_spec");
+            _code = getArguments().getString("_code");
         }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentEventsManagerCreatorBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+
         setToolbar();
         getViewsById();
         setupViews();
+
         if (isEdit) {
             fillUp();
         }
+
+        return view;
     }
 
     private void fillUp() {
@@ -98,13 +114,13 @@ public class EventsMakerCreator extends Activity {
     }
 
     private void setupViews() {
-        binding.eventsCreatorCancel.setOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.eventsCreatorCancel.setOnClickListener(Helper.getBackPressedClickListener(requireActivity()));
         binding.eventsCreatorSave.setOnClickListener(v -> save());
         binding.eventsCreatorChooseicon.setOnClickListener(v -> showIconSelectorDialog());
     }
 
     private void showIconSelectorDialog() {
-        new IconSelectorDialog(this, binding.eventsCreatorIcon).show();
+        new IconSelectorDialog(requireActivity(), binding.eventsCreatorIcon).show();
     }
 
     private void save() {
@@ -145,7 +161,7 @@ public class EventsMakerCreator extends Activity {
         }
         FileUtil.writeFile(concat, new Gson().toJson(arrayList));
         SketchwareUtil.toast("Saved");
-        finish();
+        getParentFragmentManager().popBackStack();
     }
 
     private int figureP(String str) {
@@ -163,13 +179,13 @@ public class EventsMakerCreator extends Activity {
 
     private void setToolbar() {
         if (isEdit) {
-            binding.txToolbarTitle.setText(event_name);
+            binding.toolbar.setTitle(event_name);
         } else if (isActivityEvent) {
-            binding.txToolbarTitle.setText("Create a new Activity event");
+            binding.toolbar.setTitle("Create a new activity event");
         } else {
-            binding.txToolbarTitle.setText(lisName + "Create a new event");
+            binding.toolbar.setTitle(lisName + "Create a new event");
         }
-        binding.igToolbarBack.setOnClickListener(Helper.getBackPressedClickListener(this));
-        Helper.applyRippleToToolbarView(binding.igToolbarBack);
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(requireActivity()));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.toolbar);
     }
 }
