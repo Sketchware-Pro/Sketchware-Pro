@@ -39,7 +39,6 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class AddEventActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ArrayList<EventBean> addableDrawerViewEvents;
@@ -107,53 +106,43 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         addableDrawerViewEvents.clear();
         addableEtcEvents.clear();
         eventsToAdd.clear();
-        String[] activityEvents = oq.a();
-        int length = activityEvents.length;
-        int i = 0;
-        while (true) {
-            boolean exists = true;
-            if (i >= length) {
-                break;
-            }
-            String activityEvent = activityEvents[i];
-            Iterator<EventBean> it = jC.a(sc_id).g(projectFile.getJavaName()).iterator();
-            while (true) {
-                if (!it.hasNext()) {
-                    exists = false;
-                    break;
-                }
-                EventBean next = it.next();
-                if (next.eventType == EventBean.EVENT_TYPE_ACTIVITY && activityEvent.equals(next.eventName)) {
+
+        for (var activityEvent : oq.a()) {
+            boolean exists = false;
+            for (var existingEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
+                if (existingEvent.eventType == EventBean.EVENT_TYPE_ACTIVITY
+                        && activityEvent.equals(existingEvent.eventName)) {
+                    exists = true;
                     break;
                 }
             }
+
             if (!exists) {
                 addableActivityEvents.add(new EventBean(EventBean.EVENT_TYPE_ACTIVITY, 0, activityEvent, activityEvent));
             }
-            i++;
         }
         ArrayList<ViewBean> views = jC.a(sc_id).d(projectFile.getXmlName());
         ArrayList<ComponentBean> components = jC.a(sc_id).e(projectFile.getJavaName());
         if (views != null) {
             for (ViewBean view : views) {
                 for (String viewEvent : oq.c(view.getClassInfo())) {
-                    Iterator<EventBean> existingEvents = jC.a(sc_id).g(projectFile.getJavaName()).iterator();
-                    boolean viewEventExists;
-                    while (true) {
-                        if (!existingEvents.hasNext()) {
-                            viewEventExists = false;
-                            break;
-                        }
-                        EventBean existingEvent = existingEvents.next();
-                        if (existingEvent.eventType == EventBean.EVENT_TYPE_VIEW && view.id.equals(existingEvent.targetId) && viewEvent.equals(existingEvent.eventName)) {
-                            viewEventExists = true;
-                            break;
+                    boolean exists;
+                    if (viewEvent.equals("onBindCustomView") && (view.customView.isEmpty()
+                            || view.customView.equals("none"))) {
+                        exists = true;
+                    } else {
+                        exists = false;
+                        for (var existingEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
+                            if (existingEvent.eventType == EventBean.EVENT_TYPE_VIEW
+                                    && view.id.equals(existingEvent.targetId)
+                                    && viewEvent.equals(existingEvent.eventName)) {
+                                exists = true;
+                                break;
+                            }
                         }
                     }
-                    if (viewEvent.equals("onBindCustomView") && (view.customView.isEmpty() || view.customView.equals("none"))) {
-                        viewEventExists = true;
-                    }
-                    if (!viewEventExists) {
+
+                    if (!exists) {
                         addableViewEvents.add(new EventBean(EventBean.EVENT_TYPE_VIEW, view.type, view.id, viewEvent));
                     }
                 }
@@ -162,20 +151,16 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         if (components != null) {
             for (ComponentBean component : components) {
                 for (String componentEvent : oq.a(component.getClassInfo())) {
-                    Iterator<EventBean> it4 = jC.a(sc_id).g(projectFile.getJavaName()).iterator();
-                    boolean componentEventExists;
-                    while (true) {
-                        if (!it4.hasNext()) {
-                            componentEventExists = false;
-                            break;
-                        }
-                        EventBean existingComponentEvent = it4.next();
-                        if (existingComponentEvent.eventType == EventBean.EVENT_TYPE_COMPONENT && component.componentId.equals(existingComponentEvent.targetId) && componentEvent.equals(existingComponentEvent.eventName)) {
-                            componentEventExists = true;
+                    boolean exists = false;
+                    for (var existingEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
+                        if (existingEvent.eventType == EventBean.EVENT_TYPE_COMPONENT
+                                && component.componentId.equals(existingEvent.targetId)
+                                && componentEvent.equals(existingEvent.eventName)) {
+                            exists = true;
                             break;
                         }
                     }
-                    if (!componentEventExists) {
+                    if (!exists) {
                         addableComponentEvents.add(new EventBean(EventBean.EVENT_TYPE_COMPONENT, component.type, component.componentId, componentEvent));
                     }
                 }
@@ -184,20 +169,16 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         ViewBean fab;
         if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB) && (fab = jC.a(sc_id).h(projectFile.getXmlName())) != null) {
             for (String fabEvent : oq.c(fab.getClassInfo())) {
-                Iterator<EventBean> it5 = jC.a(sc_id).g(projectFile.getJavaName()).iterator();
-                boolean fabEventExists;
-                while (true) {
-                    if (!it5.hasNext()) {
-                        fabEventExists = false;
-                        break;
-                    }
-                    EventBean existingFabEvent = it5.next();
-                    if (existingFabEvent.eventType == EventBean.EVENT_TYPE_VIEW && fab.id.equals(existingFabEvent.targetId) && fabEvent.equals(existingFabEvent.eventName)) {
-                        fabEventExists = true;
+                boolean exists = false;
+                for (var existingFabEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
+                    if (existingFabEvent.eventType == EventBean.EVENT_TYPE_VIEW
+                            && fab.id.equals(existingFabEvent.targetId)
+                            && fabEvent.equals(existingFabEvent.eventName)) {
+                        exists = true;
                         break;
                     }
                 }
-                if (!fabEventExists) {
+                if (!exists) {
                     addableViewEvents.add(new EventBean(EventBean.EVENT_TYPE_VIEW, fab.type, fab.id, fabEvent));
                 }
             }
@@ -207,20 +188,16 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             if (drawerViews != null) {
                 for (ViewBean drawerView : drawerViews) {
                     for (String drawerViewEvent : oq.c(drawerView.getClassInfo())) {
-                        Iterator<EventBean> it7 = jC.a(sc_id).g(projectFile.getJavaName()).iterator();
-                        boolean drawerViewEventExists;
-                        while (true) {
-                            if (!it7.hasNext()) {
-                                drawerViewEventExists = false;
-                                break;
-                            }
-                            EventBean existingDrawerViewEvent = it7.next();
-                            if (existingDrawerViewEvent.eventType == EventBean.EVENT_TYPE_DRAWER_VIEW && drawerView.id.equals(existingDrawerViewEvent.targetId) && drawerViewEvent.equals(existingDrawerViewEvent.eventName)) {
-                                drawerViewEventExists = true;
+                        boolean exists = false;
+                        for (var existingEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
+                            if (existingEvent.eventType == EventBean.EVENT_TYPE_DRAWER_VIEW
+                                    && drawerView.id.equals(existingEvent.targetId)
+                                    && drawerViewEvent.equals(existingEvent.eventName)) {
+                                exists = true;
                                 break;
                             }
                         }
-                        if (!drawerViewEventExists) {
+                        if (!exists) {
                             addableDrawerViewEvents.add(new EventBean(EventBean.EVENT_TYPE_DRAWER_VIEW, drawerView.type, drawerView.id, drawerViewEvent));
                         }
                     }
