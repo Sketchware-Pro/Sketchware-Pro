@@ -16,21 +16,25 @@ import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+
 import dev.trindadedev.lib.filepicker.model.DialogConfigs;
 import dev.trindadedev.lib.filepicker.model.DialogProperties;
 import dev.trindadedev.lib.filepicker.view.FilePickerDialog;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
 import com.sketchware.remod.databinding.DialogInputLayoutBinding;
 import com.sketchware.remod.databinding.ManageFileBinding;
 import com.sketchware.remod.databinding.ManageJavaItemHsBinding;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +52,7 @@ import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
 @SuppressLint("SetTextI18n")
-public class ManageResourceActivity extends AppCompatActivity {
+public class ManageResourceActivity extends BaseAppCompatActivity {
 
     private CustomAdapter adapter;
     private FilePickerDialog dialog;
@@ -60,7 +64,7 @@ public class ManageResourceActivity extends AppCompatActivity {
     private ManageFileBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ManageFileBinding.inflate(getLayoutInflater());

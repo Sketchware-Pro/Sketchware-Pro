@@ -18,9 +18,6 @@ public class ThemeManager {
         saveTheme(context, type);
 
         switch (type) {
-            case THEME_SYSTEM:
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-                break;
             case THEME_LIGHT:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 break;
