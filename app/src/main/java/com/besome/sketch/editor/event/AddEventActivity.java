@@ -406,7 +406,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             public final TextView tv_event_name;
             public final CheckBox checkbox;
 
-            public ViewHolder(View itemView) {
+            public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 events_preview = itemView.findViewById(R.id.events_preview);
                 img_icon = itemView.findViewById(R.id.img_icon);
@@ -460,7 +460,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             e = true;
             holder.events_preview.removeAllViews();
             holder.events_preview.setVisibility(View.VISIBLE);
@@ -504,7 +504,8 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_logic_list_item_addevent, parent, false));
         }
 
@@ -531,7 +532,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             public final LinearLayout container;
             public final ImageView img_icon;
 
-            public ViewHolder(View itemView) {
+            public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 img_icon = itemView.findViewById(R.id.img_icon);
                 container = itemView.findViewById(R.id.container);
@@ -563,7 +564,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.img_icon.setImageResource(rs.a(position));
             if (lastSelectedCategory == position) {
                 holder.container.setBackgroundResource(R.drawable.border_top_corner_white_no_stroke);
@@ -577,7 +578,8 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_logic_list_category_icon_item, parent, false);
             inflate.setLayoutParams(new RecyclerView.LayoutParams(parent.getMeasuredWidth() / getItemCount(), (int) wB.a(getApplicationContext(), 44.0f)));
             inflate.setTranslationY(wB.a(getApplicationContext(), 12.0f));
@@ -600,7 +602,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             public ImageView img_icon;
             public ImageView img_event;
 
-            public ViewHolder(View itemView) {
+            public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 container = itemView.findViewById(R.id.container);
                 img_icon = itemView.findViewById(R.id.img_icon);
@@ -613,7 +615,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.ll_img_event.setVisibility(View.VISIBLE);
             EventBean event = eventsToAdd.get(position);
             int eventType = event.eventType;
@@ -627,7 +629,8 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.fr_logic_list_preview_with_event_item, parent, false));
         }
 
