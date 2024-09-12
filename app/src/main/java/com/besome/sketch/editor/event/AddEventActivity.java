@@ -35,7 +35,6 @@ import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -380,8 +379,6 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         if (projectFile != null) {
             initialize();
         }
-        d.setScreenName(AddEventActivity.class.getSimpleName().toString());
-        d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
