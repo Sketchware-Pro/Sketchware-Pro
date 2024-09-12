@@ -73,7 +73,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     private void l() {
-        if (eventsToAdd.size() == 0 && !C) {
+        if (eventsToAdd.isEmpty() && !C) {
             C = true;
             gB.a(events_preview, 300, new Animator.AnimatorListener() {
                 @Override
@@ -93,7 +93,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 public void onAnimationRepeat(@NonNull Animator animation) {
                 }
             });
-        } else if (eventsToAdd.size() > 0 && C) {
+        } else if (!eventsToAdd.isEmpty() && C) {
             C = false;
             events_preview.setVisibility(View.VISIBLE);
             gB.b(events_preview, 300, null);
@@ -135,58 +135,48 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         ArrayList<ViewBean> views = jC.a(sc_id).d(projectFile.getXmlName());
         ArrayList<ComponentBean> components = jC.a(sc_id).e(projectFile.getJavaName());
         if (views != null) {
-            Iterator<ViewBean> it2 = views.iterator();
-            while (it2.hasNext()) {
-                ViewBean view = it2.next();
-                String[] viewEvents = oq.c(view.getClassInfo());
-                if (viewEvents != null) {
-                    for (String viewEvent : viewEvents) {
-                        Iterator<EventBean> existingEvents = jC.a(sc_id).g(projectFile.getJavaName()).iterator();
-                        boolean viewEventExists;
-                        while (true) {
-                            if (!existingEvents.hasNext()) {
-                                viewEventExists = false;
-                                break;
-                            }
-                            EventBean existingEvent = existingEvents.next();
-                            if (existingEvent.eventType == EventBean.EVENT_TYPE_VIEW && view.id.equals(existingEvent.targetId) && viewEvent.equals(existingEvent.eventName)) {
-                                viewEventExists = true;
-                                break;
-                            }
+            for (ViewBean view : views) {
+                for (String viewEvent : oq.c(view.getClassInfo())) {
+                    Iterator<EventBean> existingEvents = jC.a(sc_id).g(projectFile.getJavaName()).iterator();
+                    boolean viewEventExists;
+                    while (true) {
+                        if (!existingEvents.hasNext()) {
+                            viewEventExists = false;
+                            break;
                         }
-                        if (viewEvent.equals("onBindCustomView") && (view.customView.equals("") || view.customView.equals("none"))) {
+                        EventBean existingEvent = existingEvents.next();
+                        if (existingEvent.eventType == EventBean.EVENT_TYPE_VIEW && view.id.equals(existingEvent.targetId) && viewEvent.equals(existingEvent.eventName)) {
                             viewEventExists = true;
+                            break;
                         }
-                        if (!viewEventExists) {
-                            addableViewEvents.add(new EventBean(EventBean.EVENT_TYPE_VIEW, view.type, view.id, viewEvent));
-                        }
+                    }
+                    if (viewEvent.equals("onBindCustomView") && (view.customView.isEmpty() || view.customView.equals("none"))) {
+                        viewEventExists = true;
+                    }
+                    if (!viewEventExists) {
+                        addableViewEvents.add(new EventBean(EventBean.EVENT_TYPE_VIEW, view.type, view.id, viewEvent));
                     }
                 }
             }
         }
         if (components != null) {
-            Iterator<ComponentBean> it3 = components.iterator();
-            while (it3.hasNext()) {
-                ComponentBean component = it3.next();
-                String[] componentEvents = oq.a(component.getClassInfo());
-                if (componentEvents != null) {
-                    for (String componentEvent : componentEvents) {
-                        Iterator<EventBean> it4 = jC.a(sc_id).g(projectFile.getJavaName()).iterator();
-                        boolean componentEventExists;
-                        while (true) {
-                            if (!it4.hasNext()) {
-                                componentEventExists = false;
-                                break;
-                            }
-                            EventBean existingComponentEvent = it4.next();
-                            if (existingComponentEvent.eventType == EventBean.EVENT_TYPE_COMPONENT && component.componentId.equals(existingComponentEvent.targetId) && componentEvent.equals(existingComponentEvent.eventName)) {
-                                componentEventExists = true;
-                                break;
-                            }
+            for (ComponentBean component : components) {
+                for (String componentEvent : oq.a(component.getClassInfo())) {
+                    Iterator<EventBean> it4 = jC.a(sc_id).g(projectFile.getJavaName()).iterator();
+                    boolean componentEventExists;
+                    while (true) {
+                        if (!it4.hasNext()) {
+                            componentEventExists = false;
+                            break;
                         }
-                        if (!componentEventExists) {
-                            addableComponentEvents.add(new EventBean(EventBean.EVENT_TYPE_COMPONENT, component.type, component.componentId, componentEvent));
+                        EventBean existingComponentEvent = it4.next();
+                        if (existingComponentEvent.eventType == EventBean.EVENT_TYPE_COMPONENT && component.componentId.equals(existingComponentEvent.targetId) && componentEvent.equals(existingComponentEvent.eventName)) {
+                            componentEventExists = true;
+                            break;
                         }
+                    }
+                    if (!componentEventExists) {
+                        addableComponentEvents.add(new EventBean(EventBean.EVENT_TYPE_COMPONENT, component.type, component.componentId, componentEvent));
                     }
                 }
             }
@@ -215,9 +205,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             ArrayList<ViewBean> drawerViews = jC.a(sc_id).d(projectFile.getDrawerXmlName());
             if (drawerViews != null) {
-                Iterator<ViewBean> it6 = drawerViews.iterator();
-                while (it6.hasNext()) {
-                    ViewBean drawerView = it6.next();
+                for (ViewBean drawerView : drawerViews) {
                     for (String drawerViewEvent : oq.c(drawerView.getClassInfo())) {
                         Iterator<EventBean> it7 = jC.a(sc_id).g(projectFile.getJavaName()).iterator();
                         boolean drawerViewEventExists;
@@ -240,7 +228,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             }
         }
         if (categoryAdapter.lastSelectedCategory == -1) {
-            eventAdapter.setEvents(categories.get(Integer.valueOf(categoryIndex)));
+            eventAdapter.setEvents(categories.get(categoryIndex));
             categoryAdapter.lastSelectedCategory = categoryIndex;
             tv_category.setText(rs.a(getApplicationContext(), categoryIndex));
             if (categoryAdapter != null) {
@@ -266,7 +254,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         if (!mB.a()) {
             int id = v.getId();
             if (id == R.id.add_button) {
-                if (eventsToAdd.size() != 0 || !moreBlockView.a()) {
+                if (!eventsToAdd.isEmpty() || !moreBlockView.a()) {
                     if (!moreBlockView.a()) {
                         if (!moreBlockView.b()) {
                             eventAdapter.setEvents(categories.get(4));
@@ -282,9 +270,8 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                         }
                     }
                     if (!finished) {
-                        Iterator<EventBean> it = eventsToAdd.iterator();
-                        while (it.hasNext()) {
-                            jC.a(sc_id).a(projectFile.getJavaName(), it.next());
+                        for (EventBean eventBean : eventsToAdd) {
+                            jC.a(sc_id).a(projectFile.getJavaName(), eventBean);
                         }
                         if (eventsToAdd.size() == 1) {
                             bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.event_message_new_event), bB.TOAST_NORMAL).show();
@@ -461,7 +448,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             e = true;
             holder.events_preview.removeAllViews();
             holder.events_preview.setVisibility(View.VISIBLE);
-            EventBean event = categories.get(Integer.valueOf(categoryAdapter.lastSelectedCategory)).get(position);
+            EventBean event = categories.get(categoryAdapter.lastSelectedCategory).get(position);
             ImageView imageView = new ImageView(getApplicationContext());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0, 0, (int) wB.a(getApplicationContext(), 2.0f), 0);
@@ -492,11 +479,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 holder.tv_target_id.setText(event.targetId);
             }
             holder.tv_event_name.setText(oq.a(event.eventName, getApplicationContext()));
-            if (event.isSelected) {
-                holder.checkbox.setChecked(true);
-            } else {
-                holder.checkbox.setChecked(false);
-            }
+            holder.checkbox.setChecked(event.isSelected);
             e = false;
         }
 
@@ -512,7 +495,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
 
         private void setEvents(ArrayList<EventBean> events) {
-            if (events.size() == 0) {
+            if (events.isEmpty()) {
                 empty_message.setVisibility(View.VISIBLE);
             } else {
                 empty_message.setVisibility(View.GONE);
@@ -549,7 +532,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                             empty_message.setVisibility(View.GONE);
                         } else {
                             moreblock_layout.setVisibility(View.GONE);
-                            eventAdapter.setEvents(categories.get(Integer.valueOf(lastSelectedCategory)));
+                            eventAdapter.setEvents(categories.get(lastSelectedCategory));
                             eventAdapter.notifyDataSetChanged();
                         }
                     }
@@ -593,7 +576,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     private class EventsToAddAdapter extends RecyclerView.Adapter<EventsToAddAdapter.ViewHolder> {
-        private class ViewHolder extends RecyclerView.ViewHolder {
+        private static class ViewHolder extends RecyclerView.ViewHolder {
             public LinearLayout ll_img_event;
             public RelativeLayout container;
             public ImageView img_icon;
