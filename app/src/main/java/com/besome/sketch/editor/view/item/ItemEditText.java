@@ -1,7 +1,5 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.wB;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,7 +7,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
 import androidx.appcompat.widget.AppCompatEditText;
+
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.wB;
 
 public class ItemEditText extends AppCompatEditText implements sy {
 
@@ -32,8 +34,8 @@ public class ItemEditText extends AppCompatEditText implements sy {
 
     public void initialize(Context context) {
         this.oneDp = wB.a(context, 1.0f);
-        this.paint = new Paint(1);
-        this.paint.setColor(-1785080368);
+        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        this.paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
         setFocusable(false);
         this.background = getBackground();
@@ -63,7 +65,7 @@ public class ItemEditText extends AppCompatEditText implements sy {
 
     @Override
     public void setBackgroundColor(int color) {
-        if (color == 16777215) {
+        if (color == 0xffffff) {
             setBackground(this.background);
         } else {
             super.setBackgroundColor(color);

@@ -1,13 +1,18 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.wB;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
+import android.view.Gravity;
+
 import androidx.appcompat.widget.AppCompatTextView;
+
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.wB;
 
 public class ItemWebView extends AppCompatTextView implements sy {
 
@@ -27,12 +32,12 @@ public class ItemWebView extends AppCompatTextView implements sy {
     }
 
     public void initialize(Context context) {
-        setGravity(17);
-        setTypeface(null, 1);
+        setGravity(Gravity.CENTER);
+        setTypeface(null, Typeface.BOLD);
         setText("WebView");
         this.oneDp = wB.a(context, 1.0f);
-        this.paint = new Paint(1);
-        this.paint.setColor(-1785080368);
+        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        this.paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
     }
 

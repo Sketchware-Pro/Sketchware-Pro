@@ -29,7 +29,7 @@ public class ItemImageView extends AppCompatImageView implements sy {
     public void initialize(Context context) {
         this.oneDp = wB.a(context, 1.0f);
         this.paint = new Paint(1);
-        this.paint.setColor(-1785080368);
+        this.paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
     }
 

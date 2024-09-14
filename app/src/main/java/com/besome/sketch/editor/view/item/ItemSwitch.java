@@ -1,13 +1,16 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.wB;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+
 import androidx.appcompat.widget.SwitchCompat;
+
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.wB;
 
 public class ItemSwitch extends SwitchCompat implements sy {
 
@@ -28,8 +31,8 @@ public class ItemSwitch extends SwitchCompat implements sy {
 
     public void initialize(Context context) {
         this.oneDp = wB.a(context, 1.0f);
-        this.paint = new Paint(1);
-        this.paint.setColor(-1785080368);
+        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        this.paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
     }
 

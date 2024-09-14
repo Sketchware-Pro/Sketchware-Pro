@@ -1,8 +1,5 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.ty;
-import a.a.a.wB;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,7 +9,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.ty;
+import a.a.a.wB;
 
 public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
 
@@ -45,7 +47,7 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
         setDrawingCacheEnabled(true);
         setMinimumWidth((int) wB.a(context, 32.0f));
         setMinimumHeight((int) wB.a(context, 32.0f));
-        this.paint = new Paint(1);
+        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.paint.setStrokeWidth(wB.a(getContext(), 2.0f));
     }
 
@@ -62,7 +64,7 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
             if (i2 >= childCount) {
                 break;
             }
-            if (getChildAt(i2).getVisibility() == 8) {
+            if (getChildAt(i2).getVisibility() == View.GONE) {
                 i = i2;
                 break;
             }
@@ -92,13 +94,13 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
     @Override
     public void measureChild(View child, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
         ViewGroup.LayoutParams layoutParams = child.getLayoutParams();
-        child.measure(View.MeasureSpec.makeMeasureSpec(Math.max(0, View.MeasureSpec.getSize(parentWidthMeasureSpec) - (getPaddingLeft() + getPaddingRight())), 0), FrameLayout.getChildMeasureSpec(parentHeightMeasureSpec, getPaddingTop() + getPaddingBottom(), layoutParams.height));
+        child.measure(View.MeasureSpec.makeMeasureSpec(Math.max(0, View.MeasureSpec.getSize(parentWidthMeasureSpec) - (getPaddingLeft() + getPaddingRight())), MeasureSpec.UNSPECIFIED), FrameLayout.getChildMeasureSpec(parentHeightMeasureSpec, getPaddingTop() + getPaddingBottom(), layoutParams.height));
     }
 
     @Override
     public void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-        child.measure(View.MeasureSpec.makeMeasureSpec(Math.max(0, View.MeasureSpec.getSize(parentWidthMeasureSpec) - ((((getPaddingLeft() + getPaddingRight()) + marginLayoutParams.leftMargin) + marginLayoutParams.rightMargin) + widthUsed)), 0), FrameLayout.getChildMeasureSpec(parentHeightMeasureSpec, getPaddingTop() + getPaddingBottom() + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin + heightUsed, marginLayoutParams.height));
+        child.measure(View.MeasureSpec.makeMeasureSpec(Math.max(0, View.MeasureSpec.getSize(parentWidthMeasureSpec) - ((((getPaddingLeft() + getPaddingRight()) + marginLayoutParams.leftMargin) + marginLayoutParams.rightMargin) + widthUsed)), MeasureSpec.UNSPECIFIED), FrameLayout.getChildMeasureSpec(parentHeightMeasureSpec, getPaddingTop() + getPaddingBottom() + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin + heightUsed, marginLayoutParams.height));
     }
 
     @Override
@@ -109,10 +111,10 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
             int scrollY = getScrollY();
             int scrollY2 = getScrollY() + getMeasuredHeight();
             if (this.selected) {
-                this.paint.setColor(-1785080368);
+                this.paint.setColor(0x9599d5d0);
                 canvas.drawRect(new Rect(scrollX, scrollY, scrollX2, scrollY2), this.paint);
             }
-            this.paint.setColor(-1428881408);
+            this.paint.setColor(0xaad50000);
             float scrollX3 = scrollX;
             float f = scrollY;
             float f2 = scrollX2;
@@ -166,7 +168,7 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
         int paddingTop;
         int paddingBottom;
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (View.MeasureSpec.getMode(widthMeasureSpec) != 0 && getChildCount() > 0) {
+        if (View.MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.UNSPECIFIED && getChildCount() > 0) {
             View childAt = getChildAt(0);
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) childAt.getLayoutParams();
             if (getContext().getApplicationInfo().targetSdkVersion >= 23) {
@@ -181,7 +183,7 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
             int i = paddingTop + paddingBottom;
             int measuredWidth = getMeasuredWidth() - paddingLeft;
             if (childAt.getMeasuredWidth() < measuredWidth) {
-                childAt.measure(View.MeasureSpec.makeMeasureSpec(measuredWidth, 1073741824), FrameLayout.getChildMeasureSpec(heightMeasureSpec, i, layoutParams.height));
+                childAt.measure(View.MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY), FrameLayout.getChildMeasureSpec(heightMeasureSpec, i, layoutParams.height));
             }
         }
     }

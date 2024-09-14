@@ -1,7 +1,5 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.wB;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,8 +7,13 @@ import android.graphics.Rect;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
 import com.besome.sketch.beans.ViewBean;
+
 import java.util.ArrayList;
+
+import a.a.a.sy;
+import a.a.a.wB;
 
 public class ItemListView extends ListView implements sy {
 
@@ -34,13 +37,13 @@ public class ItemListView extends ListView implements sy {
 
     public void initialize(Context context) {
         this.oneDp = wB.a(context, 1.0f);
-        this.paint = new Paint(1);
+        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.paint.setStrokeWidth(wB.a(getContext(), 2.0f));
         setDrawingCacheEnabled(true);
         this.items.add("List item 1");
         this.items.add("List item 2");
         this.items.add("List item 3");
-        setAdapter((ListAdapter) new ArrayAdapter(context, 17367043, this.items));
+        setAdapter((ListAdapter) new ArrayAdapter(context, android.R.layout.simple_list_item_1, this.items));
     }
 
     @Override
@@ -60,10 +63,10 @@ public class ItemListView extends ListView implements sy {
     @Override
     public void onDraw(Canvas canvas) {
         if (this.selected) {
-            this.paint.setColor(-1785080368);
+            this.paint.setColor(0x9599d5d0);
             canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.paint);
         } else {
-            this.paint.setColor(1610612736);
+            this.paint.setColor(0x60000000);
             int measuredWidth2 = getMeasuredWidth();
             int measuredHeight2 = getMeasuredHeight();
             float measuredWidth = measuredWidth2;
