@@ -1,7 +1,5 @@
 package com.besome.sketch.editor.view;
 
-import a.a.a.Rs;
-import a.a.a.wB;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,16 +11,15 @@ import android.widget.RelativeLayout;
 
 import com.sketchware.remod.R;
 
+import a.a.a.Rs;
+import a.a.a.wB;
+
 public class ViewDummy extends RelativeLayout {
-
     public ImageView img_notallowed;
-
     public ImageView img_dummy;
-
     public LinearLayout layout_dummy;
     public int[] d;
     public int[] e;
-
     public boolean allowed;
 
     public ViewDummy(Context context) {
@@ -78,109 +75,31 @@ public class ViewDummy extends RelativeLayout {
         initialize(context);
     }
 
-    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
     public void a(Rs rs) {
-        char c;
-        String str = rs.b;
-        int hashCode = str.hashCode();
-        if (hashCode == 108) {
-            if (str.equals("l")) {
-                c = '\t';
-            }
-            c = 65535;
-        } else if (hashCode == 110) {
-            if (str.equals("n")) {
-                c = 2;
-            }
-            c = 65535;
-        } else if (hashCode == 112) {
-            if (str.equals("p")) {
-                c = '\b';
-            }
-            c = 65535;
-        } else if (hashCode == 115) {
-            if (str.equals("s")) {
-                c = 3;
-            }
-            c = 65535;
-        } else if (hashCode != 118) {
-            switch (hashCode) {
-                case 97:
-                    if (str.equals("a")) {
-                        c = '\n';
-                        break;
-                    }
-                    c = 65535;
-                    break;
-                case 98:
-                    if (str.equals("b")) {
-                        c = 0;
-                        break;
-                    }
-                    c = 65535;
-                    break;
-                case 99:
-                    if (str.equals("c")) {
-                        c = 4;
-                        break;
-                    }
-                    c = 65535;
-                    break;
-                case 100:
-                    if (str.equals("d")) {
-                        c = 1;
-                        break;
-                    }
-                    c = 65535;
-                    break;
-                case 101:
-                    if (str.equals("e")) {
-                        c = 5;
-                        break;
-                    }
-                    c = 65535;
-                    break;
-                case 102:
-                    if (str.equals("f")) {
-                        c = 6;
-                        break;
-                    }
-                    c = 65535;
-                    break;
-                default:
-                    c = 65535;
-                    break;
-            }
-        } else {
-            if (str.equals("v")) {
-                c = 7;
-            }
-            c = 65535;
-        }
-        switch (c) {
-            case 0:
+        switch (rs.b) {
+            case "b":
                 this.img_dummy.setImageResource(R.drawable.selected_block_boolean);
                 break;
-            case 1:
-            case 2:
+            case "d":
+            case "n":
                 this.img_dummy.setImageResource(R.drawable.selected_block_integer);
                 break;
-            case 3:
+            case "s":
                 this.img_dummy.setImageResource(R.drawable.selected_block_string);
                 break;
-            case 4:
+            case "c":
                 this.img_dummy.setImageResource(R.drawable.selected_block_loop);
                 break;
-            case 5:
+            case "e":
                 this.img_dummy.setImageResource(R.drawable.selected_block_ifelse);
                 break;
-            case 6:
+            case "f":
                 this.img_dummy.setImageResource(R.drawable.selected_block_final);
                 break;
-            case 7:
-            case '\b':
-            case '\t':
-            case '\n':
+            case "v":
+            case "p":
+            case "l":
+            case "a":
                 this.img_dummy.setImageResource(R.drawable.selected_block_string);
                 break;
             default:
