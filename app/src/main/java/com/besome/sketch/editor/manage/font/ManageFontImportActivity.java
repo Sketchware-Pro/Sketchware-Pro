@@ -44,11 +44,11 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
 
     private boolean b(String var1) {
         for (ProjectResourceBean resourceBean : projectFonts) {
-            if (!resourceBean.resName.equals(var1)) {
-                return false;
+            if (resourceBean.resName.equals(var1)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     private void f(int position) {
