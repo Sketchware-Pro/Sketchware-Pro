@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -16,13 +17,16 @@
             android:id="@+id/img"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            tools:background="@drawable/bg_outline_dark_yellow"
+            tools:src="@tools:sample/avatars" />
 
         <ImageView
             android:id="@+id/img_conflict"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            tools:src="@drawable/ic_ok_48dp" />
     </RelativeLayout>
 
     <TextView
@@ -32,5 +36,6 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:textColor="#ff000000"
-        android:textSize="10sp" />
+        android:textSize="10sp"
+        tools:text="some_sound" />
 </LinearLayout>

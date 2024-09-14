@@ -21,10 +21,19 @@
         <item name="toolbarStyle">@style/Widget.SketchwarePro.Toolbar.SmallText</item>
     </style>
 
-    <style name="Theme.SketchwarePro.Starting">
-        <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
-        <item name="android:windowTranslucentStatus">false</item>
+    <style name="Theme.SketchwarePro.Starting.Base" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimationDuration">850</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
+        <item name="windowSplashScreenBackground">@color/splash_bg_color</item>
+        <item name="postSplashScreenTheme">@style/Theme.SketchwarePro.Main</item>
+
+        <item name="android:navigationBarColor">@color/splash_bg_color</item>
+        <item name="android:statusBarColor">@color/splash_bg_color</item>
+        <item name="android:windowLightStatusBar">@bool/is_light_theme</item>
+        <item name="android:windowLightNavigationBar">@bool/is_light_theme</item>
     </style>
+
+    <style name="Theme.SketchwarePro.Starting" parent="Theme.SketchwarePro.Starting.Base" />
 
     <style name="Platform.V21.Theme.SketchwarePro" parent="Base.Theme.SketchwarePro">
         <item name="android:navigationBarColor">@android:color/black</item>

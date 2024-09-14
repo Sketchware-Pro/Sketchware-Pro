@@ -2147,7 +2147,11 @@ Please try again later"</string>
     <string name="settings_appearance_theme_system">System default</string>
     <string name="settings_appearance_theme_light">Light theme</string>
     <string name="settings_appearance_theme_dark">Dark theme</string>
-
+    <string name="tools_events_manager">Events manager</string>
+    <string name="tools_events_manager_activity_events">Activity events</string>
+    <string name="tools_events_manager_listeners">Listeners</string>
+    <string name="tools_events_manager_details">Events manager Details</string>
+    
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
     <string name="assets_manager_options">Create or import</string>
@@ -2156,7 +2160,6 @@ Please try again later"</string>
     <string name="assets_manager_nofiles_title">No files here</string>
     <string name="assets_manager_nofiles_body">You don\'t have any files here yet, try creating one.</string>
     <string name="assets_manager_rename">Rename</string>
-
 
     <!--  about the team screen  -->
     <string name="about_title">About Sketchware Pro</string>
@@ -2167,7 +2170,6 @@ Please try again later"</string>
     <string name="about_loading_title">Getting data…</string>
     <string name="about_loading_subtitle">Don\'t worry, it won\'t take more than a second.</string>
     <string name="about_joindiscord">Join our Discord server</string>
-
 
     <!--  links  -->
     <string name="link_github_release">https://github.com/Sketchware-Pro/Sketchware-Pro/releases</string>

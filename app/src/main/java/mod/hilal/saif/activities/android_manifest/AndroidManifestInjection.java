@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
@@ -26,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ProgressMsgBoxBinding;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,8 +35,10 @@ import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.wB;
 import a.a.a.yq;
+
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
+
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
@@ -49,7 +51,7 @@ import mod.jbk.code.CodeEditorLanguages;
 import mod.remaker.view.CustomAttributeView;
 
 @SuppressLint("SetTextI18n")
-public class AndroidManifestInjection extends AppCompatActivity {
+public class AndroidManifestInjection extends BaseAppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> list_map = new ArrayList<>();
     private ListView act_list;
@@ -57,7 +59,7 @@ public class AndroidManifestInjection extends AppCompatActivity {
     private String activityName;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.android_manifest_injection);
 
@@ -74,7 +76,7 @@ public class AndroidManifestInjection extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         checkAttrs();
         refreshList();

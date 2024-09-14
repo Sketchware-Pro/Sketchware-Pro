@@ -1,5 +1,7 @@
 package com.besome.sketch.common;
 
+import static mod.remaker.util.ThemeUtils.isDarkThemeEnabled;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
@@ -29,6 +31,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 
@@ -107,15 +111,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
-            } else if (id == R.id.btn_black) {
-                setIconColor(ICON_COLOR_BLACK);
             } else if (id == R.id.btn_cancel) {
                 setResult(Activity.RESULT_CANCELED);
                 finish();
-            } else if (id == R.id.btn_grey) {
-                setIconColor(ICON_COLOR_GREY);
-            } else if (id == R.id.btn_white) {
-                setIconColor(ICON_COLOR_WHITE);
             }
         }
     }
@@ -165,15 +163,23 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         showBlackIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_black));
         showGreyIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_grey));
         showWhiteIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_white));
-        showBlackIcons.setOnClickListener(this);
-        showGreyIcons.setOnClickListener(this);
-        showWhiteIcons.setOnClickListener(this);
         iconName = findViewById(R.id.ed_input);
         ((TextInputLayout) findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.design_manager_icon_hint_enter_icon_name));
         iconNameValidator = new WB(getApplicationContext(), findViewById(R.id.ti_input), uq.b, alreadyAddedImageNames);
         iconName.setPrivateImeOptions("defaultInputmode=english;");
         k();
         new Handler().postDelayed(() -> new InitialIconLoader(this).execute(), 300L);
+
+        MaterialButtonToggleGroup iconsButtonGroup = findViewById(R.id.icons_button_group);
+        iconsButtonGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (checkedId == R.id.btn_black) {
+                setIconColor(ICON_COLOR_BLACK);
+            } else if (checkedId == R.id.btn_grey) {
+                setIconColor(ICON_COLOR_GREY);
+            } else if (checkedId == R.id.btn_white) {
+                setIconColor(ICON_COLOR_WHITE);
+            }
+        });
     }
 
     @Override
@@ -214,19 +220,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     private void setIconColor(int colorType) {
         if (iconType != colorType) {
             iconType = colorType;
-            if (colorType == ICON_COLOR_BLACK) {
-                showBlackIcons.setBackgroundColor(0xff33b8f5);
-                showGreyIcons.setBackgroundColor(0xffe5e5e5);
-                showWhiteIcons.setBackgroundColor(0xffe5e5e5);
-            } else if (colorType == ICON_COLOR_GREY) {
-                showBlackIcons.setBackgroundColor(0xffe5e5e5);
-                showGreyIcons.setBackgroundColor(0xff33b8f5);
-                showWhiteIcons.setBackgroundColor(0xffe5e5e5);
-            } else if (colorType == ICON_COLOR_WHITE) {
-                showBlackIcons.setBackgroundColor(0xffe5e5e5);
-                showGreyIcons.setBackgroundColor(0xffe5e5e5);
-                showWhiteIcons.setBackgroundColor(0xff33b8f5);
-            }
             new IconColorChangedIconLoader(this).execute();
         }
     }
@@ -282,7 +275,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final RelativeLayout background;
+            public final LinearLayout background;
             public final TextView name;
             public final ImageView icon;
 
@@ -305,15 +298,21 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            if (position != selectedIconPosition) {
-                if (iconType == ICON_COLOR_WHITE) {
-                    holder.background.setBackgroundColor(0xffbdbdbd);
-                } else {
-                    holder.background.setBackgroundColor(Color.WHITE);
-                }
-            } else {
-                holder.background.setBackgroundColor(0xffffccbc);
-            }
+            // if (position == selectedIconPosition) {
+                // holder.background.setBackgroundColor(
+                        // MaterialColors.getColor(holder.background, R.attr.colorSurfaceContainer));
+            // } else {
+                // boolean isDarkTheme = isDarkThemeEnabled(holder.background.getContext());
+                // if (isDarkTheme && (iconType == ICON_COLOR_BLACK || iconType == ICON_COLOR_GREY)) {
+                    // holder.background.setBackgroundColor(
+                            // MaterialColors.getColor(holder.background, R.attr.colorSurfaceInverse));
+                // }
+                // if (!isDarkTheme && iconType == ICON_COLOR_WHITE) {
+                    // holder.background.setBackgroundColor(
+                            // MaterialColors.getColor(holder.background, R.attr.colorSurfaceInverse));
+                // }
+            // }
+
             holder.name.setText(getItem(position).first);
             Glide.with(ImportIconActivity.this)
                     .load(getItem(position).second)

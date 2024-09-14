@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="32dp"
     android:layout_height="32dp"
@@ -10,7 +11,8 @@
         android:layout_height="24dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/android_icon" />
+        android:src="@drawable/android_icon"
+        tools:src="@drawable/widget_source" />
 
     <LinearLayout
         android:id="@+id/ll_img_event"
@@ -18,12 +20,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:background="@drawable/circle_bg_white_outline_secondary">
+        android:background="@drawable/circle_bg_white_outline_secondary"
+        tools:visibility="gone">
 
         <ImageView
             android:id="@+id/img_event"
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_margin="2dp" />
+            android:layout_margin="2dp"
+            tools:visibility="@drawable/bg_event_type_activity" />
     </LinearLayout>
 </RelativeLayout>
