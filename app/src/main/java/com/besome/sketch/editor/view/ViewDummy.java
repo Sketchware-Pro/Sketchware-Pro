@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.sketchware.remod.R;
+
 public class ViewDummy extends RelativeLayout {
 
     public ImageView img_notallowed;
@@ -32,10 +34,10 @@ public class ViewDummy extends RelativeLayout {
     }
 
     public final void initialize(Context context) {
-        wB.a(context, this, 2131427411); // R.layout.dummy
-        this.img_notallowed = (ImageView) findViewById(2131231163);
-        this.img_dummy = (ImageView) findViewById(2131231137);
-        this.layout_dummy = (LinearLayout) findViewById(2131231342);
+        wB.a(context, this, R.layout.dummy);
+        this.img_notallowed = (ImageView) findViewById(R.id.img_notallowed);
+        this.img_dummy = (ImageView) findViewById(R.id.img_dummy);
+        this.layout_dummy = (LinearLayout) findViewById(R.id.layout_dummy);
     }
 
     public void b(View view) {
@@ -52,9 +54,9 @@ public class ViewDummy extends RelativeLayout {
     public void setAllow(boolean allowed) {
         this.allowed = allowed;
         if (allowed) {
-            this.img_notallowed.setVisibility(4);
+            this.img_notallowed.setVisibility(View.INVISIBLE);
         } else {
-            this.img_notallowed.setVisibility(0);
+            this.img_notallowed.setVisibility(View.VISIBLE);
         }
     }
 
@@ -157,32 +159,32 @@ public class ViewDummy extends RelativeLayout {
         }
         switch (c) {
             case 0:
-                this.img_dummy.setImageResource(2131166067); // R.drawable.selected_block_boolean
+                this.img_dummy.setImageResource(R.drawable.selected_block_boolean);
                 break;
             case 1:
             case 2:
-                this.img_dummy.setImageResource(2131166071); // R.drawable.selected_block_integer
+                this.img_dummy.setImageResource(R.drawable.selected_block_integer);
                 break;
             case 3:
-                this.img_dummy.setImageResource(2131166073); // R.drawable.selected_block_string
+                this.img_dummy.setImageResource(R.drawable.selected_block_string);
                 break;
             case 4:
-                this.img_dummy.setImageResource(2131166072); // R.drawable.selected_block_loop
+                this.img_dummy.setImageResource(R.drawable.selected_block_loop);
                 break;
             case 5:
-                this.img_dummy.setImageResource(2131166070); // R.drawable.selected_block_ifelse
+                this.img_dummy.setImageResource(R.drawable.selected_block_ifelse);
                 break;
             case 6:
-                this.img_dummy.setImageResource(2131166069); // R.drawable.selected_block_final
+                this.img_dummy.setImageResource(R.drawable.selected_block_final);
                 break;
             case 7:
             case '\b':
             case '\t':
             case '\n':
-                this.img_dummy.setImageResource(2131166073); // R.drawable.selected_block_string
+                this.img_dummy.setImageResource(R.drawable.selected_block_string);
                 break;
             default:
-                this.img_dummy.setImageResource(2131166068); // R.drawable.selected_block_command
+                this.img_dummy.setImageResource(R.drawable.selected_block_command);
                 break;
         }
         this.img_dummy.setAlpha(0.5f);
@@ -190,8 +192,8 @@ public class ViewDummy extends RelativeLayout {
     }
 
     public void a(View view, float f, float f2, float f3, float f4, float f5, float f6) {
-        if (this.layout_dummy.getVisibility() != 0) {
-            setDummyVisibility(0);
+        if (this.layout_dummy.getVisibility() != View.VISIBLE) {
+            setDummyVisibility(View.VISIBLE);
         }
         getLocationOnScreen(this.e);
         this.layout_dummy.setX(((((this.d[0] - this.e[0]) + f) - f3) - this.img_notallowed.getWidth()) + f5);
