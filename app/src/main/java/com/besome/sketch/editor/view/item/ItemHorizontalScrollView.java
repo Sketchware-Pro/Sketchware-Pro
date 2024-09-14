@@ -236,7 +236,7 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding((int) wB.a(getContext(), left), (int) wB.a(getContext(), top), (int) wB.a(getContext(), right), (int) wB.a(getContext(), bottom));
+        super.setPadding((int) wB.a(getContext(), (float) left), (int) wB.a(getContext(), (float) top), (int) wB.a(getContext(), (float) right), (int) wB.a(getContext(), (float) bottom));
     }
 
     public void setScrollEnabled(boolean enabled) {
