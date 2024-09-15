@@ -18,7 +18,7 @@
         app:summary="Every single available block will be shown. Will slow down opening palettes!"
         app:title="Show all blocks of palettes" />
 
-    <EditTextPreference
+    <Preference
         app:iconSpaceReserved="false"
         app:key="backup-dir"
         app:summary="The default directory is /Internal storage/.sketchware/backups/."
@@ -54,7 +54,7 @@
         app:summary="Enables syntax highlighting while editing blocks' text parameters."
         app:title="Enable block text input highlighting" />
 
-    <EditTextPreference
+    <Preference
         app:iconSpaceReserved="false"
         app:key="backup-filename"
         app:summary="Default is &quot;$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)&quot;"

@@ -1,20 +1,19 @@
 package mod.hilal.saif.activities.tools;
 
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceDataStore;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.annotations.NonNull;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -70,7 +69,11 @@ public class ConfigActivity extends BaseAppCompatActivity {
         } else {
             restoreDefaultSettings();
         }
-        initialize();
+
+        var fragment = new PreferenceFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
     public static String getBackupPath() {
@@ -240,102 +243,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
         };
     }
 
-    @SuppressLint("SetTextI18n")
-    private void initialize() {
-        var fragment = new PreferenceFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit();
-
-        addTextInputPreference("Backup directory",
-                "The default directory is /Internal storage/.sketchware/backups/.", v -> {
-                    DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
-                    EditText inputText = dialogBinding.inputText;
-                    inputText.setText(getBackupPath());
-                    AlertDialog dialog = new MaterialAlertDialogBuilder(this)
-                            .setView(dialogBinding.getRoot())
-                            .setTitle("Backup directory")
-                            .setMessage("Directory inside /Internal storage/, e.g. .sketchware/backups")
-                            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                            .setPositiveButton(R.string.common_word_save, null)
-                            .create();
-
-                    dialogBinding.chipGroupTypes.setVisibility(View.GONE);
-                    dialog.setOnShowListener(dialogInterface -> {
-                        Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                        positiveButton.setOnClickListener(view -> {
-                            setSetting(SETTING_BACKUP_DIRECTORY, inputText.getText().toString());
-                            SketchwareUtil.toast("Saved");
-                            dialog.dismiss();
-                        });
-
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                        inputText.requestFocus();
-                    });
-                    dialog.show();
-                });
-        addSwitchPreference("Install projects with root access", "Automatically installs project APKs after building using root access.",
-                SETTING_ROOT_AUTO_INSTALL_PROJECTS, false, (buttonView, isChecked) -> {
-                    if (isChecked) {
-                        Shell.getShell(shell -> {
-                            if (!shell.isRoot()) {
-                                SketchwareUtil.toastError("Couldn't acquire root access");
-                                buttonView.setChecked(false);
-                            }
-                        });
-                    }
-                });
-        addTextInputPreference("Backup filename format",
-                "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)\"", v -> {
-                    DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
-                    EditText inputText = dialogBinding.inputText;
-                    inputText.setText(getBackupFileName());
-
-                    AlertDialog dialog = new MaterialAlertDialogBuilder(this)
-                            .setView(dialogBinding.getRoot())
-                            .setTitle("Backup filename format")
-                            .setMessage("This defines how SWB backup files get named.\n" +
-                                    "Available variables:\n" +
-                                    " - $projectName - Project name\n" +
-                                    " - $versionCode - App version code\n" +
-                                    " - $versionName - App version name\n" +
-                                    " - $pkgName - App package name\n" +
-                                    " - $timeInMs - Time during backup in milliseconds\n" +
-                                    "\n" +
-                                    "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
-                                    "$time(yyyy-MM-dd'T'HHmmss)\n")
-                            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                            .setPositiveButton(R.string.common_word_save, null)
-                            .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
-                                setting_map.remove(SETTING_BACKUP_FILENAME);
-                                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-                                SketchwareUtil.toast("Reset to default complete.");
-                            }).create();
-
-                    dialogBinding.chipGroupTypes.setVisibility(View.GONE);
-                    dialog.setOnShowListener(dialogInterface -> {
-                        Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                        positiveButton.setOnClickListener(view -> {
-                            setting_map.put(SETTING_BACKUP_FILENAME, inputText.getText().toString());
-                            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-                            SketchwareUtil.toast("Saved");
-                            dialog.dismiss();
-                        });
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                        inputText.requestFocus();
-                    });
-                    dialog.show();
-                });
-    }
-
-    private void addSwitchPreference(String title, String description, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
-        // fixme: implement
-    }
-
-    private void addTextInputPreference(String title, String description, View.OnClickListener listener) {
-        // fixme: implement
-    }
-
     private void restoreDefaultSettings() {
         restoreDefaultSettings(setting_map);
     }
@@ -346,6 +253,95 @@ public class ConfigActivity extends BaseAppCompatActivity {
         @Override
         public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
             setPreferencesFromResource(R.xml.preferences_config_activity, rootKey);
+            Preference backupDir = findPreference("backup-dir");
+            assert backupDir != null;
+            backupDir.setOnPreferenceClickListener(preference -> {
+                DialogCreateNewFileLayoutBinding binding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+                binding.inputText.setText(getBackupPath());
+                binding.chipGroupTypes.setVisibility(View.GONE);
+                AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                        .setView(binding.getRoot())
+                        .setTitle("Backup directory")
+                        .setMessage("Directory inside /Internal storage/, e.g. .sketchware/backups")
+                        .setNegativeButton(R.string.common_word_cancel, null)
+                        .setPositiveButton(R.string.common_word_save, null)
+                        .create();
+
+                dialog.setOnShowListener(dialogInterface -> {
+                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(
+                            Helper.getDialogDismissListener(dialogInterface));
+                    Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                    positiveButton.setOnClickListener(view -> {
+                        getDataStore().putString(SETTING_BACKUP_DIRECTORY, binding.inputText.getText().toString());
+                        SketchwareUtil.toast("Saved");
+                        dialog.dismiss();
+                    });
+
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    binding.inputText.requestFocus();
+                });
+                dialog.show();
+                return true;
+            });
+
+            SwitchPreferenceCompat installWithRoot = findPreference("root-auto-install-projects");
+            assert installWithRoot != null;
+            installWithRoot.setOnPreferenceChangeListener((preference, _newValue) -> {
+                Boolean newValue = (Boolean) _newValue;
+                if (newValue) {
+                    Shell.getShell(shell -> {
+                        if (!shell.isRoot()) {
+                            SketchwareUtil.toastError("Couldn't acquire root access");
+                            installWithRoot.setChecked(false);
+                        }
+                    });
+                }
+                return true;
+            });
+
+            Preference backupFilename = findPreference("backup-filename");
+            assert backupFilename != null;
+            backupFilename.setOnPreferenceClickListener(preference -> {
+                DialogCreateNewFileLayoutBinding binding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+                binding.chipGroupTypes.setVisibility(View.GONE);
+                binding.inputText.setText(getBackupFileName());
+
+                AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                        .setView(binding.getRoot())
+                        .setTitle("Backup filename format")
+                        .setMessage("This defines how SWB backup files get named.\n" +
+                                "Available variables:\n" +
+                                " - $projectName - Project name\n" +
+                                " - $versionCode - App version code\n" +
+                                " - $versionName - App version name\n" +
+                                " - $pkgName - App package name\n" +
+                                " - $timeInMs - Time during backup in milliseconds\n" +
+                                "\n" +
+                                "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
+                                "$time(yyyy-MM-dd'T'HHmmss)\n")
+                        .setNegativeButton(R.string.common_word_cancel, null)
+                        .setPositiveButton(R.string.common_word_save, null)
+                        .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
+                            getDataStore().putString(SETTING_BACKUP_FILENAME, null);
+                            SketchwareUtil.toast("Reset to default complete.");
+                        })
+                        .create();
+
+                dialog.setOnShowListener(dialogInterface -> {
+                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(
+                            Helper.getDialogDismissListener(dialog));
+                    Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                    positiveButton.setOnClickListener(view -> {
+                        getDataStore().putString(SETTING_BACKUP_FILENAME, binding.inputText.getText().toString());
+                        SketchwareUtil.toast("Saved");
+                        dialog.dismiss();
+                    });
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    binding.inputText.requestFocus();
+                });
+                dialog.show();
+                return true;
+            });
         }
 
         public DataStore getDataStore() {
