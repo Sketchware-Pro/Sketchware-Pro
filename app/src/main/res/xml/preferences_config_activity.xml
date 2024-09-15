@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="built-in-blocks"
+        app:summary="May slow down loading blocks in Logic Editor."
+        app:title="Built-in blocks" />
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="always-show-blocks"
+        app:summary="All variable blocks will be visible, even if you don't have variables for them."
+        app:title="Show all variable blocks" />
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="show-every-single-block"
+        app:summary="Every single available block will be shown. Will slow down opening palettes!"
+        app:title="Show all blocks of palettes" />
+
+    <EditTextPreference
+        app:iconSpaceReserved="false"
+        app:key="backup-dir"
+        app:summary="The default directory is /Internal storage/.sketchware/backups/."
+        app:title="Backup directory" />
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="legacy-ce"
+        app:summary="Enables old Code Editor from v6.2.0."
+        app:title="Use legacy Code Editor" />
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="root-auto-install-projects"
+        app:summary="Automatically installs project APKs after building using root access."
+        app:title="Install projects with root access" />
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="root-auto-open-after-installing"
+        app:summary="Opens projects automatically after auto-installation using root."
+        app:title="Launch projects after installing" />
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="use-new-version-control"
+        app:summary="Enables custom version code and name for projects."
+        app:title="Use new Version Control" />
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="use-asd-highlighter"
+        app:summary="Enables syntax highlighting while editing blocks' text parameters."
+        app:title="Enable block text input highlighting" />
+
+    <EditTextPreference
+        app:iconSpaceReserved="false"
+        app:key="backup-filename"
+        app:summary="Default is &quot;$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)&quot;"
+        app:title="Backup filename format" />
+</PreferenceScreen>

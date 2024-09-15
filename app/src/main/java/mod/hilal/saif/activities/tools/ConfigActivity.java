@@ -8,20 +8,22 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.preference.PreferenceDataStore;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.android.annotations.NonNull;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
+import com.sketchware.remod.databinding.PreferenceActivityBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -52,19 +54,13 @@ public class ConfigActivity extends BaseAppCompatActivity {
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
     private HashMap<String, Object> setting_map = new HashMap<>();
 
-    private LinearLayout content;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.prefences_content_appbar);
-
-        content = findViewById(R.id.content);
-        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
-
-        topAppBar.setTitle("Mod Settings");
-        topAppBar.setNavigationOnClickListener(view -> onBackPressed());
+        var binding = PreferenceActivityBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        binding.topAppBar.setTitle("Mod Settings");
 
         if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
             setting_map = readSettings();
@@ -246,18 +242,11 @@ public class ConfigActivity extends BaseAppCompatActivity {
 
     @SuppressLint("SetTextI18n")
     private void initialize() {
-        addSwitchPreference("Built-in blocks",
-                "May slow down loading blocks in Logic Editor.",
-                SETTING_SHOW_BUILT_IN_BLOCKS,
-                false);
-        addSwitchPreference("Show all variable blocks",
-                "All variable blocks will be visible, even if you don't have variables for them.",
-                SETTING_ALWAYS_SHOW_BLOCKS,
-                false);
-        addSwitchPreference("Show all blocks of palettes",
-                "Every single available block will be shown. Will slow down opening palettes!",
-                SETTING_SHOW_EVERY_SINGLE_BLOCK,
-                false);
+        var fragment = new PreferenceFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+
         addTextInputPreference("Backup directory",
                 "The default directory is /Internal storage/.sketchware/backups/.", v -> {
                     DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
@@ -285,10 +274,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
                     });
                     dialog.show();
                 });
-        addSwitchPreference("Use legacy Code Editor",
-                "Enables old Code Editor from v6.2.0.",
-                SETTING_LEGACY_CODE_EDITOR,
-                false);
         addSwitchPreference("Install projects with root access", "Automatically installs project APKs after building using root access.",
                 SETTING_ROOT_AUTO_INSTALL_PROJECTS, false, (buttonView, isChecked) -> {
                     if (isChecked) {
@@ -300,18 +285,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
                         });
                     }
                 });
-        addSwitchPreference("Launch projects after installing",
-                "Opens projects automatically after auto-installation using root.",
-                SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING,
-                true);
-        addSwitchPreference("Use new Version Control",
-                "Enables custom version code and name for projects.",
-                SETTING_USE_NEW_VERSION_CONTROL,
-                false);
-        addSwitchPreference("Enable block text input highlighting",
-                "Enables syntax highlighting while editing blocks' text parameters.",
-                SETTING_USE_ASD_HIGHLIGHTER,
-                false);
         addTextInputPreference("Backup filename format",
                 "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)\"", v -> {
                     DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
@@ -355,10 +328,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 });
     }
 
-    private void addSwitchPreference(String title, String description, String keyName, boolean defaultValue) {
-        addSwitchPreference(title, description, keyName, defaultValue, null);
-    }
-
     private void addSwitchPreference(String title, String description, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
         // fixme: implement
     }
@@ -369,5 +338,26 @@ public class ConfigActivity extends BaseAppCompatActivity {
 
     private void restoreDefaultSettings() {
         restoreDefaultSettings(setting_map);
+    }
+
+    public static class PreferenceFragment extends PreferenceFragmentCompat {
+        private DataStore dataStore;
+
+        @Override
+        public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+            setPreferencesFromResource(R.xml.preferences_config_activity, rootKey);
+        }
+
+        public DataStore getDataStore() {
+            return dataStore;
+        }
+
+        public void setDataStore(DataStore dataStore) {
+            this.dataStore = dataStore;
+            getPreferenceManager().setPreferenceDataStore(dataStore);
+        }
+    }
+
+    public static class DataStore extends PreferenceDataStore {
     }
 }
