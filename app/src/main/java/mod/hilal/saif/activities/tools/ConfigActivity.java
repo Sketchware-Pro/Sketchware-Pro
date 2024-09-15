@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceDataStore;
 import androidx.preference.PreferenceFragmentCompat;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dev.chrisbanes.insetter.Insetter;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
@@ -59,6 +61,10 @@ public class ConfigActivity extends BaseAppCompatActivity {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         var binding = PreferenceActivityBinding.inflate(getLayoutInflater());
+        // unfortunately, androidx.preference doesn't make it easy to support edge-to-edge layout properly, so this will have to do
+        Insetter.builder()
+                .padding(WindowInsetsCompat.Type.navigationBars())
+                .applyToView(binding.getRoot());
         setContentView(binding.getRoot());
 
         binding.topAppBar.setTitle("Mod Settings");
@@ -66,7 +72,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
         var fragment = new PreferenceFragment();
         fragment.setSnackbarView(binding.getRoot());
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .replace(binding.fragmentContainer.getId(), fragment)
                 .commit();
     }
 
