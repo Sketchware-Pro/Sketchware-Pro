@@ -30,6 +30,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -79,103 +80,46 @@ public class ConfigActivity extends BaseAppCompatActivity {
     }
 
     public static String getBackupPath() {
-        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            HashMap<String, Object> settings = readSettings();
-            if (settings.containsKey(SETTING_BACKUP_DIRECTORY)) {
-                Object value = settings.get(SETTING_BACKUP_DIRECTORY);
-                if (value instanceof String) {
-                    return (String) value;
-                } else {
-                    SketchwareUtil.toastError("Detected invalid preference "
-                                    + "for backup directory. Restoring defaults",
-                            Toast.LENGTH_LONG);
-                    settings.remove(SETTING_BACKUP_DIRECTORY);
-                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-                }
-            }
-        }
-        return "/.sketchware/backups/";
+        return DataStore.getInstance().getString(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
     }
 
     public static String getStringSettingValueOrSetAndGet(String settingKey, String toReturnAndSetIfNotFound) {
-        HashMap<String, Object> settings = readSettings();
+        var dataStore = DataStore.getInstance();
+        Map<String, Object> settings = dataStore.getSettings();
 
         Object value = settings.get(settingKey);
-        if (value instanceof String) {
-            return (String) value;
+        if (value instanceof String s) {
+            return s;
         } else {
-            settings.put(settingKey, toReturnAndSetIfNotFound);
-            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+            dataStore.putString(settingKey, toReturnAndSetIfNotFound);
+            dataStore.persist();
 
             return toReturnAndSetIfNotFound;
         }
     }
 
     public static String getBackupFileName() {
-        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
-            if (settings.containsKey(SETTING_BACKUP_FILENAME)) {
-                Object value = settings.get(SETTING_BACKUP_FILENAME);
-                if (value instanceof String) {
-                    return (String) value;
-                } else {
-                    SketchwareUtil.toastError("Detected invalid preference "
-                                    + "for backup filename. Restoring defaults",
-                            Toast.LENGTH_LONG);
-                    settings.remove(SETTING_BACKUP_FILENAME);
-                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-                }
-            }
-        }
-        return "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)";
+        return DataStore.getInstance().getString(SETTING_BACKUP_FILENAME, "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)");
     }
 
     public static boolean isLegacyCeEnabled() {
-        /* The legacy Code Editor is specifically opt-in */
-        if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            return false;
-        }
-
-        HashMap<String, Object> settings = readSettings();
-        if (settings.containsKey(SETTING_LEGACY_CODE_EDITOR)) {
-            Object value = settings.get(SETTING_LEGACY_CODE_EDITOR);
-            if (value instanceof Boolean) {
-                return (Boolean) value;
-            } else {
-                SketchwareUtil.toastError("Detected invalid preference for legacy "
-                                + " Code Editor. Restoring defaults",
-                        Toast.LENGTH_LONG);
-                settings.remove(SETTING_LEGACY_CODE_EDITOR);
-                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-            }
-        }
-        return false;
+        return DataStore.getInstance().getBoolean(SETTING_LEGACY_CODE_EDITOR, false);
     }
 
     public static boolean isSettingEnabled(String keyName) {
-        if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            return false;
-        }
-
-        HashMap<String, Object> settings = readSettings();
-        if (settings.containsKey(keyName)) {
-            Object value = settings.get(keyName);
-            if (value instanceof Boolean) {
-                return (Boolean) value;
-            } else {
-                SketchwareUtil.toastError("Detected invalid preference. Restoring defaults",
-                        Toast.LENGTH_LONG);
-                settings.remove(keyName);
-                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-            }
-        }
-        return false;
+        return DataStore.getInstance().getBoolean(keyName, false);
     }
 
     public static void setSetting(String key, Object value) {
-        HashMap<String, Object> settings = readSettings();
-        settings.put(key, value);
-        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+        var dataStore = DataStore.getInstance();
+        if (value instanceof String s) {
+            dataStore.putString(key, s);
+        } else if (value instanceof Boolean b) {
+            dataStore.putBoolean(key, b);
+        } else {
+            throw new IllegalArgumentException("Unhandled data type " + value.getClass());
+        }
+        dataStore.persist();
     }
 
     @NonNull
@@ -255,6 +199,8 @@ public class ConfigActivity extends BaseAppCompatActivity {
 
         @Override
         public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+            dataStore = DataStore.getInstance();
+            getPreferenceManager().setPreferenceDataStore(dataStore);
             setPreferencesFromResource(R.xml.preferences_config_activity, rootKey);
             Preference backupDir = findPreference("backup-dir");
             assert backupDir != null;
@@ -348,16 +294,72 @@ public class ConfigActivity extends BaseAppCompatActivity {
             return dataStore;
         }
 
-        public void setDataStore(DataStore dataStore) {
-            this.dataStore = dataStore;
-            getPreferenceManager().setPreferenceDataStore(dataStore);
-        }
-
         public void setSnackbarView(View snackbarView) {
             this.snackbarView = snackbarView;
         }
     }
 
+    /**
+     * An in-memory caching store for settings listed in {@link ConfigActivity}.
+     * Persists to {@link #SETTINGS_FILE}.
+     *
+     * @see #persist()
+     */
     public static class DataStore extends PreferenceDataStore {
+        private static DataStore INSTANCE;
+        private final Map<String, Object> settings;
+
+        private DataStore() {
+            settings = readSettings();
+        }
+
+        public static DataStore getInstance() {
+            return INSTANCE == null ? (INSTANCE = new DataStore()) : INSTANCE;
+        }
+
+        private Map<String, Object> getSettings() {
+            return settings;
+        }
+
+        /**
+         * Blocking method that writes its data to {@link #SETTINGS_FILE}. Should be called manually,
+         * since there's no automatic persist. Meaning, every write, unless they are in batches.
+         */
+        public void persist() {
+            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+        }
+
+        @Override
+        public void putString(String key, @Nullable String value) {
+            if (value == null) {
+                settings.remove(key);
+            } else {
+                settings.put(key, value);
+            }
+        }
+
+        @Nullable
+        @Override
+        public String getString(String key, @Nullable String defValue) {
+            var value = settings.get(key);
+            if (value instanceof String s) {
+                return s;
+            }
+            return defValue;
+        }
+
+        @Override
+        public void putBoolean(String key, boolean value) {
+            settings.put(key, value);
+        }
+
+        @Override
+        public boolean getBoolean(String key, boolean defValue) {
+            var value = settings.get(key);
+            if (value instanceof Boolean b) {
+                return b;
+            }
+            return defValue;
+        }
     }
 }
