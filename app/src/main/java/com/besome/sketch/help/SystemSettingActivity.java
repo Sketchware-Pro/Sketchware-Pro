@@ -9,6 +9,8 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.PreferenceActivityBinding;
 
+import mod.hey.studios.util.Helper;
+
 public class SystemSettingActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -17,6 +19,7 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.topAppBar.setTitle(R.string.main_drawer_title_system_settings);
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         getSupportFragmentManager().beginTransaction()
                 .replace(binding.fragmentContainer.getId(), new PreferenceFragment())
                 .commit();
