@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -18,6 +17,8 @@ import androidx.preference.SwitchPreferenceCompat;
 import com.android.annotations.NonNull;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
@@ -71,6 +72,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
         }
 
         var fragment = new PreferenceFragment();
+        fragment.setSnackbarView(binding.getRoot());
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
@@ -248,6 +250,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
     }
 
     public static class PreferenceFragment extends PreferenceFragmentCompat {
+        private View snackbarView;
         private DataStore dataStore;
 
         @Override
@@ -273,7 +276,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
                     Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
                     positiveButton.setOnClickListener(view -> {
                         getDataStore().putString(SETTING_BACKUP_DIRECTORY, binding.inputText.getText().toString());
-                        SketchwareUtil.toast("Saved");
                         dialog.dismiss();
                     });
 
@@ -290,7 +292,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 if (installWithRoot.isChecked()) {
                     Shell.getShell(shell -> {
                         if (!shell.isRoot()) {
-                            SketchwareUtil.toastError("Couldn't acquire root access");
+                            Snackbar.make(snackbarView, "Couldn't acquire root access", BaseTransientBottomBar.LENGTH_SHORT).show();
                             installWithRoot.setChecked(false);
                         }
                     });
@@ -322,7 +324,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                         .setPositiveButton(R.string.common_word_save, null)
                         .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
                             getDataStore().putString(SETTING_BACKUP_FILENAME, null);
-                            SketchwareUtil.toast("Reset to default complete.");
+                            Snackbar.make(snackbarView, "Reset to default complete.", BaseTransientBottomBar.LENGTH_SHORT).show();
                         })
                         .create();
 
@@ -332,7 +334,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
                     Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
                     positiveButton.setOnClickListener(view -> {
                         getDataStore().putString(SETTING_BACKUP_FILENAME, binding.inputText.getText().toString());
-                        SketchwareUtil.toast("Saved");
                         dialog.dismiss();
                     });
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -350,6 +351,10 @@ public class ConfigActivity extends BaseAppCompatActivity {
         public void setDataStore(DataStore dataStore) {
             this.dataStore = dataStore;
             getPreferenceManager().setPreferenceDataStore(dataStore);
+        }
+
+        public void setSnackbarView(View snackbarView) {
+            this.snackbarView = snackbarView;
         }
     }
 
