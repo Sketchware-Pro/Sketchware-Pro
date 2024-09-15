@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="P12I0"
+        app:summary="@string/system_settings_description_setting_vibration"
+        app:title="@string/system_settings_title_setting_vibration" />
+
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="P12I2"
+        app:summary="@string/system_settings_description_automatically_save"
+        app:title="@string/system_settings_title_automatically_save" />
+</PreferenceScreen>
