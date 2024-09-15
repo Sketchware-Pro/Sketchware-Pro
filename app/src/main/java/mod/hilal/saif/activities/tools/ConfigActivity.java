@@ -286,9 +286,8 @@ public class ConfigActivity extends BaseAppCompatActivity {
 
             SwitchPreferenceCompat installWithRoot = findPreference("root-auto-install-projects");
             assert installWithRoot != null;
-            installWithRoot.setOnPreferenceChangeListener((preference, _newValue) -> {
-                Boolean newValue = (Boolean) _newValue;
-                if (newValue) {
+            installWithRoot.setOnPreferenceClickListener(preference -> {
+                if (installWithRoot.isChecked()) {
                     Shell.getShell(shell -> {
                         if (!shell.isRoot()) {
                             SketchwareUtil.toastError("Couldn't acquire root access");
