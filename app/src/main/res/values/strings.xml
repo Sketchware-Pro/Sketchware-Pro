@@ -1178,7 +1178,13 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_block_detail_actionbar_title">Block Details</string>
     <string name="design_manager_block_hint_enter_block_name">Enter block name</string>
     <string name="design_manager_change_name_button">CHANGE NAME</string>
-    <string name="design_manager_font_description_example_sentence">An example sentence for preview</string>
+    <string name="design_manager_font_description_example_sentence">
+    An example sentence for preview
+    预览 的例句
+    عرض مثالي للتوضيح
+    プレビューの例文
+    Пример предложения для предварительного просмотра
+    </string>
     <string name="design_manager_font_description_guide_add_font">Add font files with .ttf extension</string>
     <string name="design_manager_font_description_look_like_this">My new font would look like this!</string>
     <string name="design_manager_font_hint_enter_font_name">Enter font name</string>
