@@ -14,9 +14,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.besome.sketch.ProjectsFragment;
 
-import dev.trindadedev.lib.filepicker.model.DialogConfigs;
-import dev.trindadedev.lib.filepicker.model.DialogProperties;
-import dev.trindadedev.lib.filepicker.view.FilePickerDialog;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
 
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ProgressMsgBoxBinding;

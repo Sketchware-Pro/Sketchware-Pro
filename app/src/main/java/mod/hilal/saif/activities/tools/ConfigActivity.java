@@ -1,34 +1,27 @@
 package mod.hilal.saif.activities.tools;
 
-import static mod.SketchwareUtil.dpToPx;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 
 import com.android.annotations.NonNull;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -40,8 +33,6 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
-
-import dev.trindadedev.lib.ui.components.preference.*;
 
 public class ConfigActivity extends BaseAppCompatActivity {
 
@@ -369,45 +360,11 @@ public class ConfigActivity extends BaseAppCompatActivity {
     }
 
     private void addSwitchPreference(String title, String description, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
-        PreferenceSwitch preferenceSwitch = new PreferenceSwitch(this);
-        preferenceSwitch.setTitle(title);
-        preferenceSwitch.setDescription(description);
-        preferenceSwitch.setValue(defaultValue);
-        
-        preferenceSwitch.setSwitchChangedListener((buttonView, isChecked) -> {
-             ConfigActivity.setSetting(keyName, isChecked);
-             if (onCheckedChangeListener != null) {
-                 onCheckedChangeListener.onCheckedChanged(buttonView, isChecked);
-             }
-        });
-        
-        if (setting_map.containsKey(keyName)) {
-            Object value = setting_map.get(keyName);
-            if (value == null) {
-                setting_map.remove(keyName);
-            } else {
-                if (value instanceof Boolean) {
-                    preferenceSwitch.setValue((boolean) value);
-                } else {
-                    SketchwareUtil.toastError("Detected invalid value for preference \"" + title + "\". Restoring defaults");
-                    setting_map.remove(keyName);
-                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-                }
-            }
-        } else {
-           setting_map.put(keyName, defaultValue);
-           preferenceSwitch.setValue(defaultValue);
-           FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-        }
-        content.addView(preferenceSwitch);
+        // fixme: implement
     }
 
     private void addTextInputPreference(String title, String description, View.OnClickListener listener) {
-        Preference preference = new Preference(this);
-        preference.setTitle(title);
-        preference.setDescription(description);
-        preference.setPreferenceClickListener(listener);
-        content.addView(preference);
+        // fixme: implement
     }
 
     private void restoreDefaultSettings() {

@@ -16,7 +16,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.sketchware.remod.R;
 
-import dev.trindadedev.lib.ui.components.preference.PreferenceSwitch;
 import mod.hey.studios.util.Helper;
 
 public class SystemSettingActivity extends BaseAppCompatActivity {
@@ -55,26 +54,6 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
     private void loadPreferences() {
         SharedPreferences preferences = getSharedPreferences("P12", Context.MODE_PRIVATE);
         preferenceEditor = preferences.edit();
-
-        addPreference(0, R.string.system_settings_title_setting_vibration, R.string.system_settings_description_setting_vibration, preferences.getBoolean("P12I0", true));
-        addPreference(1, R.string.system_settings_title_automatically_save, R.string.system_settings_description_automatically_save, preferences.getBoolean("P12I2", false));
-    }
-
-    private void addPreference(int key, int resName, int resDescription, boolean value) {
-        PreferenceSwitch preferenceSwitch = new PreferenceSwitch(this);
-        preferenceSwitch.setTitle(Helper.getResString(resName));
-        preferenceSwitch.setDescription(Helper.getResString(resDescription));
-        preferenceSwitch.setValue(value);
-
-        preferenceSwitch.setSwitchChangedListener((buttonView, isChecked) -> {
-            if (key == 0) {
-                preferenceEditor.putBoolean("P12I0", isChecked);
-            } else if (key == 1) {
-                preferenceEditor.putBoolean("P12I2", isChecked);
-            }
-        });
-
-        content.addView(preferenceSwitch);
     }
 
     private boolean saveSettings() {
