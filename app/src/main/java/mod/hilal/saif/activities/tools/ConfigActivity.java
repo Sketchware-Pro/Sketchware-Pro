@@ -53,7 +53,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
     public static final String SETTING_SKIP_MAJOR_CHANGES_REMINDER = "skip-major-changes-reminder";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
-    private HashMap<String, Object> setting_map = new HashMap<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,15 +61,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
         var binding = PreferenceActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.topAppBar.setTitle("Mod Settings");
-
-        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            setting_map = readSettings();
-            if (!setting_map.containsKey(SETTING_SHOW_BUILT_IN_BLOCKS) || !setting_map.containsKey(SETTING_ALWAYS_SHOW_BLOCKS)) {
-                restoreDefaultSettings();
-            }
-        } else {
-            restoreDefaultSettings();
-        }
 
         var fragment = new PreferenceFragment();
         fragment.setSnackbarView(binding.getRoot());
@@ -187,10 +177,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
                     "/.sketchware/resources/block/My Block/block.json";
             default -> throw new IllegalArgumentException("Unknown key '" + key + "'!");
         };
-    }
-
-    private void restoreDefaultSettings() {
-        restoreDefaultSettings(setting_map);
     }
 
     public static class PreferenceFragment extends PreferenceFragmentCompat {
