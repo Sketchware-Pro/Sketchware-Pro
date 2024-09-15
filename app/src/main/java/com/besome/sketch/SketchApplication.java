@@ -10,8 +10,6 @@ import android.util.Log;
 
 import com.besome.sketch.tools.CollectErrorActivity;
 
-import com.google.android.gms.analytics.Tracker;
-
 import mod.trindadedev.manage.theme.ThemeManager;
 
 public class SketchApplication extends Application {
@@ -20,10 +18,6 @@ public class SketchApplication extends Application {
 
     public static Context getContext() {
         return mApplicationContext;
-    }
-
-    public synchronized Tracker a() {
-        return new Tracker();
     }
 
     @Override

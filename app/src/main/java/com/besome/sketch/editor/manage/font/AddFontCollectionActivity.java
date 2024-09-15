@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -75,12 +74,6 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         } else if (id == R.id.common_dialog_ok_button) {
             saveFont();
         }
-    }
-
-    public void onResume() {
-        super.onResume();
-        this.d.setScreenName(AddFontCollectionActivity.class.getSimpleName());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public final void saveFont() {

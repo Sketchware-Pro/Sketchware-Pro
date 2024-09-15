@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.android.annotations.NonNull;
-import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     public FirebaseAnalytics mAnalytics;
 
-    public Tracker d;
     @Deprecated
     public Context e;
     public Activity parent;
@@ -108,7 +106,6 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         e = getApplicationContext();
-        d = new Tracker();
         taskList = new ArrayList<>();
         lottieDialog = new ZA(this);
         lC.a(getApplicationContext(), false);
