@@ -42,6 +42,7 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wB;
+import mod.hasrat.lib.DebouncedClickListener;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 
@@ -62,7 +63,6 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     private LogicPopupAddComponentTempBinding binding;
 
     private boolean checks() {
-        binding.addButton.setEnabled(false);
         int componentType = componentList.get(componentsAdapter.layoutPosition).type;
         String componentId = binding.edInput.getText().toString();
         if (!componentNameValidator.b()) {
@@ -219,7 +219,17 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         binding.tiInputFilePicker.setHint(Helper.getResString(R.string.component_file_picker_hint_mime_type));
         w = new HashMap<>();
         binding.imgBack.setOnClickListener(this);
-        binding.addButton.setOnClickListener(this);
+        binding.addButton.setOnClickListener(new DebouncedClickListener() {
+            @Override
+            protected void onDebouncedClick(View v) {
+                if (checks()) {
+                    bB.a(ComponentAddActivity.this, Helper.getResString(R.string.component_message_component_block_added), bB.TOAST_WARNING).show();
+                    mB.a(getApplicationContext(), binding.edInput);
+                    setResult(RESULT_OK);
+                    finish();
+                }
+            }
+        });
         binding.docsButton.setOnClickListener(this);
         binding.imgFilePicker.setOnClickListener(this);
     }
@@ -227,14 +237,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.add_button) {
-            if (!mB.a() && checks()) {
-                bB.a(this, Helper.getResString(R.string.component_message_component_block_added), bB.TOAST_WARNING).show();
-                mB.a(getApplicationContext(), binding.edInput);
-                setResult(RESULT_OK);
-                finish();
-            }
-        } else if (id == R.id.img_back) {
+        if (id == R.id.img_back) {
             if (!mB.a()) {
                 onBackPressed();
             }
