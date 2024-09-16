@@ -39,7 +39,7 @@ async def send_file(file_path, version):
 
     print(f"Sending file: {file_path} to the Telegram group")
 
-    message = os.getenv("DESCRIPTION") + f"**Version:** Android {'< 8' if version else '> 8'}"
+    message = os.getenv("DESCRIPTION") + f"**Version:** Android {'< 8' if version == 21 else '>= 8'}\n"
 
     try:
         await client.send_file(
