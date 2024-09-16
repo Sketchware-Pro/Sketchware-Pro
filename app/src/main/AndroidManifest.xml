@@ -23,6 +23,7 @@
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.SketchwarePro"
+        android:enableOnBackInvokedCallback="true"
         android:usesCleartextTraffic="true">
 
         <provider
