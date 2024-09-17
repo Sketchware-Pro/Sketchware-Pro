@@ -37,7 +37,7 @@ import a.a.a.xB;
 import a.a.a.yy;
 
 public class AddImageCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
-    private TextView tv_collection;
+
     private TextView tv_add_photo;
     private ImageView preview;
     private PB imageNameValidator;
@@ -144,8 +144,6 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         chk_collection.setVisibility(View.GONE);
         tv_desc = findViewById(R.id.tv_desc);
         tv_imgcnt = findViewById(R.id.tv_imgcnt);
-        tv_collection = findViewById(R.id.tv_collection);
-        tv_collection.setVisibility(View.GONE);
         tv_add_photo = findViewById(R.id.tv_add_photo);
         preview = findViewById(R.id.img_selected);
         ImageView img_rotate = findViewById(R.id.img_rotate);
@@ -180,7 +178,6 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
             imageNameValidator.a(1);
             ed_input_edittext.setText(editTarget.resName);
             chk_collection.setVisibility(View.GONE);
-            tv_collection.setVisibility(View.GONE);
             tv_add_photo.setVisibility(View.GONE);
             setImageFromFile(a(editTarget));
             layout_img_modify.setVisibility(View.GONE);

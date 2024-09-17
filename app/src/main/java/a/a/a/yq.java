@@ -494,8 +494,11 @@ public class yq {
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_INTERNET);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
                     }
-                    case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT ->
-                            N.addPermission(activity.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
+                    case ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH -> N.isTextToSpeechUsed = true;
+                    case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT -> {
+                        N.isSpeechToTextUsed = true;
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
+                    }
                     case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT -> {
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);

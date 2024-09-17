@@ -417,7 +417,14 @@ public class Ix {
      * @return The AndroidManifest as {@link String}
      */
     public String a() {
-        boolean addRequestLegacyExternalStorage = false;
+        int targetSdkVersion;
+        try {
+            targetSdkVersion = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28"));
+        } catch (NumberFormatException ignored) {
+            targetSdkVersion = 28;
+        }
+        boolean addRequestLegacyExternalStorage = targetSdkVersion >= 28;
+
         a.addAttribute("", "package", c.packageName);
 
         if (!c.hasPermissions()) {
@@ -437,12 +444,6 @@ public class Ix {
                 writePermission(a, Manifest.permission.CAMERA);
             }
             if (c.hasPermission(jq.PERMISSION_READ_EXTERNAL_STORAGE)) {
-                try {
-                    if (Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 28) {
-                        addRequestLegacyExternalStorage = true;
-                    }
-                } catch (NumberFormatException ignored) {
-                }
                 writePermission(a, Manifest.permission.READ_EXTERNAL_STORAGE);
             }
             if (c.hasPermission(jq.PERMISSION_WRITE_EXTERNAL_STORAGE)) {
@@ -507,28 +508,44 @@ public class Ix {
         }
         AndroidManifestInjector.getP(a, c.sc_id);
 
-        if (c.isAdMobEnabled) {
+        if (c.isAdMobEnabled || c.isTextToSpeechUsed || c.isSpeechToTextUsed) {
             XmlBuilder queries = new XmlBuilder("queries");
-            XmlBuilder forBrowserContent = new XmlBuilder("intent");
-            {
-                XmlBuilder action = new XmlBuilder("action");
-                action.addAttribute("android", "name", "android.intent.action.VIEW");
-                forBrowserContent.a(action);
-                XmlBuilder category = new XmlBuilder("category");
-                category.addAttribute("android", "name", "android.intent.category.BROWSABLE");
-                forBrowserContent.a(category);
-                XmlBuilder data = new XmlBuilder("data");
-                data.addAttribute("android", "scheme", "https");
-                forBrowserContent.a(data);
+            if (c.isAdMobEnabled) {
+                XmlBuilder forBrowserContent = new XmlBuilder("intent");
+                {
+                    XmlBuilder action = new XmlBuilder("action");
+                    action.addAttribute("android", "name", "android.intent.action.VIEW");
+                    forBrowserContent.a(action);
+                    XmlBuilder category = new XmlBuilder("category");
+                    category.addAttribute("android", "name", "android.intent.category.BROWSABLE");
+                    forBrowserContent.a(category);
+                    XmlBuilder data = new XmlBuilder("data");
+                    data.addAttribute("android", "scheme", "https");
+                    forBrowserContent.a(data);
+                }
+                queries.a(forBrowserContent);
+                XmlBuilder forCustomTabsService = new XmlBuilder("intent");
+                {
+                    XmlBuilder action = new XmlBuilder("action");
+                    action.addAttribute("android", "name", "android.support.customtabs.action.CustomTabsService");
+                    forCustomTabsService.a(action);
+                }
+                queries.a(forCustomTabsService);
             }
-            queries.a(forBrowserContent);
-            XmlBuilder forCustomTabsService = new XmlBuilder("intent");
-            {
+            if (c.isTextToSpeechUsed && targetSdkVersion >= 30) {
+                XmlBuilder intent = new XmlBuilder("intent");
                 XmlBuilder action = new XmlBuilder("action");
-                action.addAttribute("android", "name", "android.support.customtabs.action.CustomTabsService");
-                forCustomTabsService.a(action);
+                action.addAttribute("android", "name", "android.intent.action.TTS_SERVICE");
+                intent.a(action);
+                queries.a(intent);
             }
-            queries.a(forCustomTabsService);
+            if (c.isSpeechToTextUsed && targetSdkVersion >= 30) {
+                XmlBuilder intent = new XmlBuilder("intent");
+                XmlBuilder action = new XmlBuilder("action");
+                action.addAttribute("android", "name", "android.speech.RecognitionService");
+                intent.a(action);
+                queries.a(intent);
+            }
             a.a(queries);
         }
 

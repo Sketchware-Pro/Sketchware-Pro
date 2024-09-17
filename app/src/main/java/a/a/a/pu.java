@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +40,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class pu extends qA implements View.OnClickListener {
+
+    public boolean isSelecting = false;
     private String sc_id;
     private RecyclerView recyclerView;
     private ArrayList<ProjectResourceBean> images;
@@ -49,8 +50,6 @@ public class pu extends qA implements View.OnClickListener {
     private FloatingActionButton fab;
     private String projectImagesDirectory = "";
     private Adapter adapter = null;
-    public boolean isSelecting = false;
-
     private final ActivityResultLauncher<Intent> openImportIconActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             var data = result.getData();
@@ -64,20 +63,20 @@ public class pu extends qA implements View.OnClickListener {
         }
     });
     private final ActivityResultLauncher<Intent> showAddImageDialog = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-       if (result.getResultCode() == Activity.RESULT_OK) {
-           assert result.getData() != null;
-           ArrayList<ProjectResourceBean> addedImages;
-           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-               addedImages = result.getData().getParcelableArrayListExtra("images", ProjectResourceBean.class);
-           } else {
-               addedImages = result.getData().getParcelableArrayListExtra("images");
-           }
-           images.addAll(addedImages);
-           adapter.notifyItemRangeInserted(images.size() - addedImages.size(), addedImages.size());
-           updateGuideVisibility();
-           ((ManageImageActivity) requireActivity()).l().refreshData();
-           bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
-       }
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            ArrayList<ProjectResourceBean> addedImages;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                addedImages = result.getData().getParcelableArrayListExtra("images", ProjectResourceBean.class);
+            } else {
+                addedImages = result.getData().getParcelableArrayListExtra("images");
+            }
+            images.addAll(addedImages);
+            adapter.notifyItemRangeInserted(images.size() - addedImages.size(), addedImages.size());
+            updateGuideVisibility();
+            ((ManageImageActivity) requireActivity()).l().refreshData();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
+        }
     });
     private final ActivityResultLauncher<Intent> showImageDetailsDialog = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
@@ -294,99 +293,6 @@ public class pu extends qA implements View.OnClickListener {
         super.onSaveInstanceState(outState);
     }
 
-    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public final CheckBox checkBox;
-            public final TextView name;
-            public final ImageView image;
-            public final ImageView delete;
-            public final ImageView ninePatch;
-            public final LinearLayout deleteContainer;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                name = itemView.findViewById(R.id.tv_image_name);
-                image = itemView.findViewById(R.id.img);
-                delete = itemView.findViewById(R.id.img_delete);
-                ninePatch = itemView.findViewById(R.id.img_nine_patch);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
-                image.setOnClickListener(v -> {
-                    if (!isSelecting) {
-                        showImageDetailsDialog(images.get(getLayoutPosition()));
-                    } else {
-                        checkBox.setChecked(!checkBox.isChecked());
-                        images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
-                        notifyItemChanged(getLayoutPosition());
-                    }
-                });
-                image.setOnLongClickListener(v -> {
-                    a(true);
-                    checkBox.setChecked(!checkBox.isChecked());
-                    images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
-                    return true;
-                });
-            }
-        }
-
-        public Adapter(RecyclerView recyclerView) {
-            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        if (dy > 2) {
-                            if (fab.isEnabled()) {
-                                fab.hide();
-                            }
-                        } else if (dy < -2) {
-                            if (fab.isEnabled()) {
-                                fab.show();
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean image = images.get(position);
-
-            holder.deleteContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
-            holder.ninePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
-            holder.delete.setImageResource(image.isSelected ? R.drawable.ic_checkmark_green_48dp
-                    : R.drawable.ic_trashcan_white_48dp);
-            holder.checkBox.setChecked(image.isSelected);
-            holder.name.setText(image.resName);
-
-            Glide.with(requireActivity())
-                    .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
-                            : images.get(position).resFullName)
-                    .asBitmap()
-                    .centerCrop()
-                    .signature(kC.n())
-                    .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(holder.image) {
-                        @Override
-                        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                            super.onResourceReady(iB.a(bitmap, image.rotate, image.flipHorizontal, image.flipVertical), glideAnimation);
-                        }
-                    });
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
-        }
-
-        @Override
-        public int getItemCount() {
-            return images.size();
-        }
-    }
-
     private void showImageDetailsDialog(ProjectResourceBean projectResourceBean) {
         Intent intent = new Intent(requireContext(), AddImageActivity.class);
         intent.putParcelableArrayListExtra("images", images);
@@ -462,5 +368,98 @@ public class pu extends qA implements View.OnClickListener {
 
     private void addImages(ArrayList<ProjectResourceBean> arrayList) {
         images.addAll(arrayList);
+    }
+
+    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+        public Adapter(RecyclerView recyclerView) {
+            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 2) {
+                            if (fab.isEnabled()) {
+                                fab.hide();
+                            }
+                        } else if (dy < -2) {
+                            if (fab.isEnabled()) {
+                                fab.show();
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ProjectResourceBean image = images.get(position);
+
+            holder.deleteContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
+            holder.ninePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
+            holder.delete.setImageResource(image.isSelected ? R.drawable.ic_checkmark_green_48dp
+                    : R.drawable.ic_trashcan_white_48dp);
+            holder.checkBox.setChecked(image.isSelected);
+            holder.name.setText(image.resName);
+
+            Glide.with(requireActivity())
+                    .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
+                            : images.get(position).resFullName)
+                    .asBitmap()
+                    .centerCrop()
+                    .signature(kC.n())
+                    .error(R.drawable.ic_remove_grey600_24dp)
+                    .into(new BitmapImageViewTarget(holder.image) {
+                        @Override
+                        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                            super.onResourceReady(iB.a(bitmap, image.rotate, image.flipHorizontal, image.flipVertical), glideAnimation);
+                        }
+                    });
+        }
+
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
+        }
+
+        @Override
+        public int getItemCount() {
+            return images.size();
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final CheckBox checkBox;
+            public final TextView name;
+            public final ImageView image;
+            public final ImageView delete;
+            public final ImageView ninePatch;
+            public final LinearLayout deleteContainer;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                checkBox = itemView.findViewById(R.id.chk_select);
+                name = itemView.findViewById(R.id.tv_image_name);
+                image = itemView.findViewById(R.id.img);
+                delete = itemView.findViewById(R.id.img_delete);
+                ninePatch = itemView.findViewById(R.id.img_nine_patch);
+                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+                image.setOnClickListener(v -> {
+                    if (!isSelecting) {
+                        showImageDetailsDialog(images.get(getLayoutPosition()));
+                    } else {
+                        checkBox.setChecked(!checkBox.isChecked());
+                        images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+                        notifyItemChanged(getLayoutPosition());
+                    }
+                });
+                image.setOnLongClickListener(v -> {
+                    a(true);
+                    checkBox.setChecked(!checkBox.isChecked());
+                    images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+                    return true;
+                });
+            }
+        }
     }
 }

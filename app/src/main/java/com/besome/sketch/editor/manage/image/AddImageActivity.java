@@ -152,7 +152,6 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         chk_collection = findViewById(R.id.chk_collection);
         tv_desc = findViewById(R.id.tv_desc);
         tv_imgcnt = findViewById(R.id.tv_imgcnt);
-        TextView tv_collection = findViewById(R.id.tv_collection);
         tv_add_photo = findViewById(R.id.tv_add_photo);
         preview = findViewById(R.id.img_selected);
         ImageView img_rotate = findViewById(R.id.img_rotate);
@@ -164,7 +163,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         ed_input.setHint(xB.b().a(this, R.string.design_manager_image_hint_enter_image_name));
         O = new PB(this, ed_input.getTextInputLayout(), uq.b, getReservedImageNames());
         O.a(1);
-        tv_collection.setText(xB.b().a(getApplicationContext(), R.string.design_manager_title_add_to_collection));
+        chk_collection.setText(xB.b().a(getApplicationContext(), R.string.design_manager_title_add_to_collection));
         tv_add_photo.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_title_add_image));
         preview.setOnClickListener(this);
         img_rotate.setOnClickListener(this);

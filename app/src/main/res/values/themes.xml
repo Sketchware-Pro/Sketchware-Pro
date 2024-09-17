@@ -10,6 +10,7 @@
 
         <item name="fontFamily">@font/gilroy</item>
         <item name="android:fontFamily">@font/gilroy</item>
+        <item name="switchPreferenceCompatStyle">@style/Preference.SketchwarePro.SwitchPreferenceCompat</item>
     </style>
 
     <style name="Theme.SketchwarePro.Main">

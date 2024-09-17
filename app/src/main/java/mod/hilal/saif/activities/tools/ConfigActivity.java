@@ -1,47 +1,43 @@
 package mod.hilal.saif.activities.tools;
 
-import static mod.SketchwareUtil.dpToPx;
-
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceDataStore;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.annotations.NonNull;
-import com.google.android.material.appbar.MaterialToolbar;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.sketchware.remod.databinding.PreferenceActivityBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import dev.chrisbanes.insetter.Insetter;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
-
-import dev.trindadedev.lib.ui.components.preference.*;
 
 public class ConfigActivity extends BaseAppCompatActivity {
 
@@ -59,131 +55,68 @@ public class ConfigActivity extends BaseAppCompatActivity {
     public static final String SETTING_SKIP_MAJOR_CHANGES_REMINDER = "skip-major-changes-reminder";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
-    private HashMap<String, Object> setting_map = new HashMap<>();
-
-    private LinearLayout content;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.prefences_content_appbar);
+        var binding = PreferenceActivityBinding.inflate(getLayoutInflater());
+        // unfortunately, androidx.preference doesn't make it easy to support edge-to-edge layout properly, so this will have to do
+        Insetter.builder()
+                .padding(WindowInsetsCompat.Type.navigationBars())
+                .applyToView(binding.getRoot());
+        setContentView(binding.getRoot());
 
-        content = findViewById(R.id.content);
-        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
-
-        topAppBar.setTitle("Mod Settings");
-        topAppBar.setNavigationOnClickListener(view -> onBackPressed());
-
-        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            setting_map = readSettings();
-            if (!setting_map.containsKey(SETTING_SHOW_BUILT_IN_BLOCKS) || !setting_map.containsKey(SETTING_ALWAYS_SHOW_BLOCKS)) {
-                restoreDefaultSettings();
-            }
-        } else {
-            restoreDefaultSettings();
-        }
-        initialize();
+        binding.topAppBar.setTitle("Mod Settings");
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        var fragment = new PreferenceFragment();
+        fragment.setSnackbarView(binding.getRoot());
+        getSupportFragmentManager().beginTransaction()
+                .replace(binding.fragmentContainer.getId(), fragment)
+                .commit();
     }
 
     public static String getBackupPath() {
-        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            HashMap<String, Object> settings = readSettings();
-            if (settings.containsKey(SETTING_BACKUP_DIRECTORY)) {
-                Object value = settings.get(SETTING_BACKUP_DIRECTORY);
-                if (value instanceof String) {
-                    return (String) value;
-                } else {
-                    SketchwareUtil.toastError("Detected invalid preference "
-                                    + "for backup directory. Restoring defaults",
-                            Toast.LENGTH_LONG);
-                    settings.remove(SETTING_BACKUP_DIRECTORY);
-                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-                }
-            }
-        }
-        return "/.sketchware/backups/";
+        return DataStore.getInstance().getString(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
     }
 
     public static String getStringSettingValueOrSetAndGet(String settingKey, String toReturnAndSetIfNotFound) {
-        HashMap<String, Object> settings = readSettings();
+        var dataStore = DataStore.getInstance();
+        Map<String, Object> settings = dataStore.getSettings();
 
         Object value = settings.get(settingKey);
-        if (value instanceof String) {
-            return (String) value;
+        if (value instanceof String s) {
+            return s;
         } else {
-            settings.put(settingKey, toReturnAndSetIfNotFound);
-            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+            dataStore.putString(settingKey, toReturnAndSetIfNotFound);
+            dataStore.persist();
 
             return toReturnAndSetIfNotFound;
         }
     }
 
     public static String getBackupFileName() {
-        if (FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            HashMap<String, Object> settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
-            if (settings.containsKey(SETTING_BACKUP_FILENAME)) {
-                Object value = settings.get(SETTING_BACKUP_FILENAME);
-                if (value instanceof String) {
-                    return (String) value;
-                } else {
-                    SketchwareUtil.toastError("Detected invalid preference "
-                                    + "for backup filename. Restoring defaults",
-                            Toast.LENGTH_LONG);
-                    settings.remove(SETTING_BACKUP_FILENAME);
-                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-                }
-            }
-        }
-        return "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)";
+        return DataStore.getInstance().getString(SETTING_BACKUP_FILENAME, "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)");
     }
 
     public static boolean isLegacyCeEnabled() {
-        /* The legacy Code Editor is specifically opt-in */
-        if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            return false;
-        }
-
-        HashMap<String, Object> settings = readSettings();
-        if (settings.containsKey(SETTING_LEGACY_CODE_EDITOR)) {
-            Object value = settings.get(SETTING_LEGACY_CODE_EDITOR);
-            if (value instanceof Boolean) {
-                return (Boolean) value;
-            } else {
-                SketchwareUtil.toastError("Detected invalid preference for legacy "
-                                + " Code Editor. Restoring defaults",
-                        Toast.LENGTH_LONG);
-                settings.remove(SETTING_LEGACY_CODE_EDITOR);
-                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-            }
-        }
-        return false;
+        return DataStore.getInstance().getBoolean(SETTING_LEGACY_CODE_EDITOR, false);
     }
 
     public static boolean isSettingEnabled(String keyName) {
-        if (!FileUtil.isExistFile(SETTINGS_FILE.getAbsolutePath())) {
-            return false;
-        }
-
-        HashMap<String, Object> settings = readSettings();
-        if (settings.containsKey(keyName)) {
-            Object value = settings.get(keyName);
-            if (value instanceof Boolean) {
-                return (Boolean) value;
-            } else {
-                SketchwareUtil.toastError("Detected invalid preference. Restoring defaults",
-                        Toast.LENGTH_LONG);
-                settings.remove(keyName);
-                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
-            }
-        }
-        return false;
+        return DataStore.getInstance().getBoolean(keyName, false);
     }
 
     public static void setSetting(String key, Object value) {
-        HashMap<String, Object> settings = readSettings();
-        settings.put(key, value);
-        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+        var dataStore = DataStore.getInstance();
+        if (value instanceof String s) {
+            dataStore.putString(key, s);
+        } else if (value instanceof Boolean b) {
+            dataStore.putBoolean(key, b);
+        } else {
+            throw new IllegalArgumentException("Unhandled data type " + value.getClass());
+        }
+        dataStore.persist();
     }
 
     @NonNull
@@ -253,164 +186,173 @@ public class ConfigActivity extends BaseAppCompatActivity {
         };
     }
 
-    @SuppressLint("SetTextI18n")
-    private void initialize() {
-        addSwitchPreference("Built-in blocks",
-                "May slow down loading blocks in Logic Editor.",
-                SETTING_SHOW_BUILT_IN_BLOCKS,
-                false);
-        addSwitchPreference("Show all variable blocks",
-                "All variable blocks will be visible, even if you don't have variables for them.",
-                SETTING_ALWAYS_SHOW_BLOCKS,
-                false);
-        addSwitchPreference("Show all blocks of palettes",
-                "Every single available block will be shown. Will slow down opening palettes!",
-                SETTING_SHOW_EVERY_SINGLE_BLOCK,
-                false);
-        addTextInputPreference("Backup directory",
-                "The default directory is /Internal storage/.sketchware/backups/.", v -> {
-                    DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
-                    EditText inputText = dialogBinding.inputText;
-                    inputText.setText(getBackupPath());
-                    AlertDialog dialog = new MaterialAlertDialogBuilder(this)
-                            .setView(dialogBinding.getRoot())
-                            .setTitle("Backup directory")
-                            .setMessage("Directory inside /Internal storage/, e.g. .sketchware/backups")
-                            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                            .setPositiveButton(R.string.common_word_save, null)
-                            .create();
+    public static class PreferenceFragment extends PreferenceFragmentCompat {
+        private View snackbarView;
+        private DataStore dataStore;
 
-                    dialogBinding.chipGroupTypes.setVisibility(View.GONE);
-                    dialog.setOnShowListener(dialogInterface -> {
-                        Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                        positiveButton.setOnClickListener(view -> {
-                            setSetting(SETTING_BACKUP_DIRECTORY, inputText.getText().toString());
-                            SketchwareUtil.toast("Saved");
-                            dialog.dismiss();
-                        });
+        @Override
+        public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+            dataStore = DataStore.getInstance();
+            getPreferenceManager().setPreferenceDataStore(dataStore);
+            setPreferencesFromResource(R.xml.preferences_config_activity, rootKey);
+            Preference backupDir = findPreference("backup-dir");
+            assert backupDir != null;
+            backupDir.setOnPreferenceClickListener(preference -> {
+                DialogCreateNewFileLayoutBinding binding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+                binding.inputText.setText(getBackupPath());
+                binding.chipGroupTypes.setVisibility(View.GONE);
+                AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                        .setView(binding.getRoot())
+                        .setTitle("Backup directory")
+                        .setMessage("Directory inside /Internal storage/, e.g. .sketchware/backups")
+                        .setNegativeButton(R.string.common_word_cancel, null)
+                        .setPositiveButton(R.string.common_word_save, null)
+                        .create();
 
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                        inputText.requestFocus();
+                dialog.setOnShowListener(dialogInterface -> {
+                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(
+                            Helper.getDialogDismissListener(dialogInterface));
+                    Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                    positiveButton.setOnClickListener(view -> {
+                        getDataStore().putString(SETTING_BACKUP_DIRECTORY, binding.inputText.getText().toString());
+                        dialog.dismiss();
                     });
-                    dialog.show();
-                });
-        addSwitchPreference("Use legacy Code Editor",
-                "Enables old Code Editor from v6.2.0.",
-                SETTING_LEGACY_CODE_EDITOR,
-                false);
-        addSwitchPreference("Install projects with root access", "Automatically installs project APKs after building using root access.",
-                SETTING_ROOT_AUTO_INSTALL_PROJECTS, false, (buttonView, isChecked) -> {
-                    if (isChecked) {
-                        Shell.getShell(shell -> {
-                            if (!shell.isRoot()) {
-                                SketchwareUtil.toastError("Couldn't acquire root access");
-                                buttonView.setChecked(false);
-                            }
-                        });
-                    }
-                });
-        addSwitchPreference("Launch projects after installing",
-                "Opens projects automatically after auto-installation using root.",
-                SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING,
-                true);
-        addSwitchPreference("Use new Version Control",
-                "Enables custom version code and name for projects.",
-                SETTING_USE_NEW_VERSION_CONTROL,
-                false);
-        addSwitchPreference("Enable block text input highlighting",
-                "Enables syntax highlighting while editing blocks' text parameters.",
-                SETTING_USE_ASD_HIGHLIGHTER,
-                false);
-        addTextInputPreference("Backup filename format",
-                "Default is \"$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)\"", v -> {
-                    DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
-                    EditText inputText = dialogBinding.inputText;
-                    inputText.setText(getBackupFileName());
 
-                    AlertDialog dialog = new MaterialAlertDialogBuilder(this)
-                            .setView(dialogBinding.getRoot())
-                            .setTitle("Backup filename format")
-                            .setMessage("This defines how SWB backup files get named.\n" +
-                                    "Available variables:\n" +
-                                    " - $projectName - Project name\n" +
-                                    " - $versionCode - App version code\n" +
-                                    " - $versionName - App version name\n" +
-                                    " - $pkgName - App package name\n" +
-                                    " - $timeInMs - Time during backup in milliseconds\n" +
-                                    "\n" +
-                                    "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
-                                    "$time(yyyy-MM-dd'T'HHmmss)\n")
-                            .setNegativeButton(R.string.common_word_cancel, (dialogInterface, i) -> dialogInterface.dismiss())
-                            .setPositiveButton(R.string.common_word_save, null)
-                            .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
-                                setting_map.remove(SETTING_BACKUP_FILENAME);
-                                FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-                                SketchwareUtil.toast("Reset to default complete.");
-                            }).create();
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    binding.inputText.requestFocus();
+                });
+                dialog.show();
+                return true;
+            });
 
-                    dialogBinding.chipGroupTypes.setVisibility(View.GONE);
-                    dialog.setOnShowListener(dialogInterface -> {
-                        Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-                        positiveButton.setOnClickListener(view -> {
-                            setting_map.put(SETTING_BACKUP_FILENAME, inputText.getText().toString());
-                            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
-                            SketchwareUtil.toast("Saved");
-                            dialog.dismiss();
-                        });
-                        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                        inputText.requestFocus();
+            SwitchPreferenceCompat installWithRoot = findPreference("root-auto-install-projects");
+            assert installWithRoot != null;
+            installWithRoot.setOnPreferenceClickListener(preference -> {
+                if (installWithRoot.isChecked()) {
+                    Shell.getShell(shell -> {
+                        if (!shell.isRoot()) {
+                            Snackbar.make(snackbarView, "Couldn't acquire root access", BaseTransientBottomBar.LENGTH_SHORT).show();
+                            installWithRoot.setChecked(false);
+                        }
                     });
-                    dialog.show();
-                });
-    }
-
-    private void addSwitchPreference(String title, String description, String keyName, boolean defaultValue) {
-        addSwitchPreference(title, description, keyName, defaultValue, null);
-    }
-
-    private void addSwitchPreference(String title, String description, String keyName, boolean defaultValue, CompoundButton.OnCheckedChangeListener onCheckedChangeListener) {
-        PreferenceSwitch preferenceSwitch = new PreferenceSwitch(this);
-        preferenceSwitch.setTitle(title);
-        preferenceSwitch.setDescription(description);
-        preferenceSwitch.setValue(defaultValue);
-        
-        preferenceSwitch.setSwitchChangedListener((buttonView, isChecked) -> {
-             ConfigActivity.setSetting(keyName, isChecked);
-             if (onCheckedChangeListener != null) {
-                 onCheckedChangeListener.onCheckedChanged(buttonView, isChecked);
-             }
-        });
-        
-        if (setting_map.containsKey(keyName)) {
-            Object value = setting_map.get(keyName);
-            if (value == null) {
-                setting_map.remove(keyName);
-            } else {
-                if (value instanceof Boolean) {
-                    preferenceSwitch.setValue((boolean) value);
-                } else {
-                    SketchwareUtil.toastError("Detected invalid value for preference \"" + title + "\". Restoring defaults");
-                    setting_map.remove(keyName);
-                    FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
                 }
-            }
-        } else {
-           setting_map.put(keyName, defaultValue);
-           preferenceSwitch.setValue(defaultValue);
-           FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(setting_map));
+                return true;
+            });
+
+            Preference backupFilename = findPreference("backup-filename");
+            assert backupFilename != null;
+            backupFilename.setOnPreferenceClickListener(preference -> {
+                DialogCreateNewFileLayoutBinding binding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+                binding.chipGroupTypes.setVisibility(View.GONE);
+                binding.inputText.setText(getBackupFileName());
+
+                AlertDialog dialog = new MaterialAlertDialogBuilder(requireContext())
+                        .setView(binding.getRoot())
+                        .setTitle("Backup filename format")
+                        .setMessage("This defines how SWB backup files get named.\n" +
+                                "Available variables:\n" +
+                                " - $projectName - Project name\n" +
+                                " - $versionCode - App version code\n" +
+                                " - $versionName - App version name\n" +
+                                " - $pkgName - App package name\n" +
+                                " - $timeInMs - Time during backup in milliseconds\n" +
+                                "\n" +
+                                "Additionally, you can format your own time like this using Java's date formatter syntax:\n" +
+                                "$time(yyyy-MM-dd'T'HHmmss)\n")
+                        .setNegativeButton(R.string.common_word_cancel, null)
+                        .setPositiveButton(R.string.common_word_save, null)
+                        .setNeutralButton(R.string.common_word_reset, (dialogInterface, which) -> {
+                            getDataStore().putString(SETTING_BACKUP_FILENAME, null);
+                            Snackbar.make(snackbarView, "Reset to default complete.", BaseTransientBottomBar.LENGTH_SHORT).show();
+                        })
+                        .create();
+
+                dialog.setOnShowListener(dialogInterface -> {
+                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(
+                            Helper.getDialogDismissListener(dialog));
+                    Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                    positiveButton.setOnClickListener(view -> {
+                        getDataStore().putString(SETTING_BACKUP_FILENAME, binding.inputText.getText().toString());
+                        dialog.dismiss();
+                    });
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    binding.inputText.requestFocus();
+                });
+                dialog.show();
+                return true;
+            });
         }
-        content.addView(preferenceSwitch);
+
+        public DataStore getDataStore() {
+            return dataStore;
+        }
+
+        public void setSnackbarView(View snackbarView) {
+            this.snackbarView = snackbarView;
+        }
     }
 
-    private void addTextInputPreference(String title, String description, View.OnClickListener listener) {
-        Preference preference = new Preference(this);
-        preference.setTitle(title);
-        preference.setDescription(description);
-        preference.setPreferenceClickListener(listener);
-        content.addView(preference);
-    }
+    /**
+     * An in-memory caching store for settings listed in {@link ConfigActivity}.
+     * Persists to {@link #SETTINGS_FILE}.
+     *
+     * @see #persist()
+     */
+    public static class DataStore extends PreferenceDataStore {
+        private static DataStore INSTANCE;
+        private final Map<String, Object> settings;
 
-    private void restoreDefaultSettings() {
-        restoreDefaultSettings(setting_map);
+        private DataStore() {
+            settings = readSettings();
+        }
+
+        public static DataStore getInstance() {
+            return INSTANCE == null ? (INSTANCE = new DataStore()) : INSTANCE;
+        }
+
+        private Map<String, Object> getSettings() {
+            return settings;
+        }
+
+        /**
+         * Blocking method that writes its data to {@link #SETTINGS_FILE}. Should be called manually,
+         * since there's no automatic persist. Meaning, every write, unless they are in batches.
+         */
+        public void persist() {
+            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+        }
+
+        @Override
+        public void putString(String key, @Nullable String value) {
+            if (value == null) {
+                settings.remove(key);
+            } else {
+                settings.put(key, value);
+            }
+        }
+
+        @Nullable
+        @Override
+        public String getString(String key, @Nullable String defValue) {
+            var value = settings.get(key);
+            if (value instanceof String s) {
+                return s;
+            }
+            return defValue;
+        }
+
+        @Override
+        public void putBoolean(String key, boolean value) {
+            settings.put(key, value);
+        }
+
+        @Override
+        public boolean getBoolean(String key, boolean defValue) {
+            var value = settings.get(key);
+            if (value instanceof Boolean b) {
+                return b;
+            }
+            return defValue;
+        }
     }
 }
