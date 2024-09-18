@@ -27,7 +27,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="4dp"
-                android:src="@drawable/ic_left_back_blue_48dp" />
+                android:src="@drawable/ic_back_ios_24" />
 
             <TextView
                 android:id="@+id/tv_component_title"
