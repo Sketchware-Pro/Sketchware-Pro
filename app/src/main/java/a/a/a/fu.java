@@ -31,12 +31,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class fu extends qA implements View.OnClickListener {
-    private RecyclerView recyclerView;
-    private String sc_id;
-    private ArrayList<ProjectResourceBean> collectionImages;
-    private Adapter adapter = null;
-    private TextView guide;
-    private Button importImages;
 
     private final ActivityResultLauncher<Intent> openImageImportDetails = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         var data = result.getData();
@@ -58,6 +52,12 @@ public class fu extends qA implements View.OnClickListener {
             }
         }
     });
+    private RecyclerView recyclerView;
+    private String sc_id;
+    private ArrayList<ProjectResourceBean> collectionImages;
+    private Adapter adapter = null;
+    private TextView guide;
+    private Button importImages;
 
     public void refreshData() {
         collectionImages = Op.g().f();
@@ -158,28 +158,6 @@ public class fu extends qA implements View.OnClickListener {
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public final CheckBox checkBox;
-            public final TextView name;
-            public final ImageView image;
-            public final ImageView ninePatch;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                name = itemView.findViewById(R.id.tv_image_name);
-                image = itemView.findViewById(R.id.img);
-                ninePatch = itemView.findViewById(R.id.img_nine_patch);
-                checkBox.setVisibility(View.VISIBLE);
-                image.setOnClickListener(v -> {
-                    checkBox.setChecked(!checkBox.isChecked());
-                    collectionImages.get(getLayoutPosition()).isSelected = checkBox.isChecked();
-                    onItemSelected();
-                    notifyItemChanged(getLayoutPosition());
-                });
-            }
-        }
-
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean image = collectionImages.get(position);
@@ -204,6 +182,28 @@ public class fu extends qA implements View.OnClickListener {
         @Override
         public int getItemCount() {
             return collectionImages.size();
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final CheckBox checkBox;
+            public final TextView name;
+            public final ImageView image;
+            public final ImageView ninePatch;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                checkBox = itemView.findViewById(R.id.chk_select);
+                name = itemView.findViewById(R.id.tv_image_name);
+                image = itemView.findViewById(R.id.img);
+                ninePatch = itemView.findViewById(R.id.img_nine_patch);
+                checkBox.setVisibility(View.VISIBLE);
+                image.setOnClickListener(v -> {
+                    checkBox.setChecked(!checkBox.isChecked());
+                    collectionImages.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+                    onItemSelected();
+                    notifyItemChanged(getLayoutPosition());
+                });
+            }
         }
     }
 }
