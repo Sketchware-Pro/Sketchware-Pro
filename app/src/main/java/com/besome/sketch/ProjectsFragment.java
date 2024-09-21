@@ -22,20 +22,19 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.loadingindicator.LoadingIndicator;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.loadingindicator.LoadingIndicator;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
-import a.a.a.aB;
 import a.a.a.DA;
 import a.a.a.DB;
+import a.a.a.aB;
 import a.a.a.lC;
 import a.a.a.wB;
 import dev.chrisbanes.insetter.Insetter;
@@ -71,7 +70,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             synchronized (projectsList) {
                 projectsList.clear();
                 projectsList.addAll(lC.a());
-                Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
+                projectsList.sort(new ProjectComparator(preference.d("sortBy")));
             }
 
             requireActivity().runOnUiThread(() -> {
@@ -214,6 +213,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
         projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
         myProjects.setAdapter(projectsAdapter);
+
         refreshProjectsList();
 
         myProjects.addOnScrollListener(new RecyclerView.OnScrollListener() {

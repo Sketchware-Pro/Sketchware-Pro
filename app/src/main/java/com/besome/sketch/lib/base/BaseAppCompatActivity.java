@@ -120,26 +120,17 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         g();
-        if (lottieDialog != null && lottieDialog.isShowing()) {
-            lottieDialog.cancelAnimation();
-        }
         super.onDestroy();
     }
 
     @Override
     public void onPause() {
-        if (lottieDialog != null && lottieDialog.isShowing()) {
-            lottieDialog.pauseAnimation();
-        }
         super.onPause();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (lottieDialog != null && lottieDialog.isShowing()) {
-            lottieDialog.resumeAnimation();
-        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -44,7 +44,6 @@ import a.a.a.yB;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final ProjectsFragment projectsFragment;
@@ -64,8 +63,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void maybeAdjustSpecialActions() {
-        if (shownProjects.size() == 0) {
-            if (allProjects.size() > 0) {
+        if (shownProjects.isEmpty()) {
+            if (!allProjects.isEmpty()) {
                 if (shownSpecialActions == 2) {
                     shownSpecialActions = 1;
                     notifyItemRemoved(0);
@@ -84,7 +83,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         List<HashMap<String, Object>> newProjects;
         if (query.isEmpty()) {
             // prevent scrolling to the very bottom on start
-            if (shownProjects.size() == 0) {
+            if (shownProjects.isEmpty()) {
                 int projectCount;
                 if ((projectCount = allProjects.size()) > 0) {
                     shownProjects = allProjects;
