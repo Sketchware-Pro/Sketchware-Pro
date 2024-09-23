@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="14dp"
@@ -12,6 +12,8 @@
         android:layout_marginRight="14dp"
         android:layout_marginBottom="3.5dp"
         android:orientation="vertical"
+        style="?attr/materialCardViewFilledStyle"
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
         app:cardCornerRadius="12dp"
         app:cardElevation="2dp">
 
@@ -19,7 +21,6 @@
             android:id="@+id/background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffffff"
             android:orientation="vertical"
             android:paddingLeft="12dp"
             android:paddingTop="8dp"
@@ -47,8 +48,7 @@
                         android:paddingTop="2dp"
                         android:paddingRight="2dp"
                         android:paddingBottom="6dp"
-                        android:text="application"
-                        android:textColor="#ff424242"
+                        android:text="Application"
                         android:textSize="14sp" />
 
                     <include layout="@layout/block_customview_spec" />
@@ -60,13 +60,15 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/down_layout"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_margin="4dp"
                         android:gravity="center"
                         android:orientation="vertical"
+                        style="?attr/materialCardViewFilledStyle"
+                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="1dp">
 
@@ -74,7 +76,6 @@
                             android:id="@+id/down"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#ffffffff"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -86,15 +87,17 @@
                                 android:scaleType="fitXY"
                                 android:src="@drawable/selector_ic_chevron_left_grey_48" />
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/up_layout"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_margin="4dp"
                         android:gravity="center"
                         android:orientation="vertical"
+                        style="?attr/materialCardViewFilledStyle"
+                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
                         app:cardCornerRadius="5dp"
                         app:cardElevation="1dp">
 
@@ -102,7 +105,6 @@
                             android:id="@+id/up"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="#ffffffff"
                             android:gravity="center"
                             android:orientation="vertical">
 
@@ -114,9 +116,9 @@
                                 android:scaleType="fitXY"
                                 android:src="@drawable/selector_ic_chevron_left_grey_48" />
                         </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

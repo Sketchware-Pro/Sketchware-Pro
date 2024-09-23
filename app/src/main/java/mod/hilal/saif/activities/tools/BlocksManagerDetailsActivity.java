@@ -303,16 +303,6 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         block_list.onRestoreInstanceState(onSaveInstanceState);
     }
 
-    private void _a(View view) {
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        view.setBackground(rippleDrawable);
-        view.setClickable(true);
-        view.setFocusable(true);
-    }
-
     private void _swapitems(int sourcePosition, int targetPosition) {
         Collections.swap(all_blocks_list, sourcePosition, targetPosition);
         FileUtil.writeFile(blocks_path, new Gson().toJson(all_blocks_list));
@@ -577,9 +567,6 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                 downLayout.setVisibility(position != (blocks.size() - 1) ? View.VISIBLE : View.GONE);
                 upLayout.setVisibility(position != 0 ? View.VISIBLE : View.GONE);
             }
-            _a(up);
-            _a(down);
-            _a(background);
 
             Object blockName = block.get("name");
             if (blockName instanceof String) {
