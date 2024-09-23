@@ -1,12 +1,11 @@
 package mod.hilal.saif.activities.tools;
 
-import static mod.SketchwareUtil.dpToPx;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.Editable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -28,11 +26,11 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogBlockConfigurationBinding;
+import com.sketchware.remod.databinding.DialogPaletteBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,6 +44,7 @@ import a.a.a.Zx;
 import a.a.a.aB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
@@ -359,72 +358,53 @@ public class BlocksManager extends BaseAppCompatActivity {
         };
     }
 
+
     private void showPaletteDialog(boolean isEditing, Integer oldPosition, String oldName, String oldColor, Integer insertAtPosition) {
         aB dialog = new aB(this);
-        dialog.a(R.drawable.positive_96);
+        dialog.a(R.drawable.icon_style_white_96);
         dialog.b(!isEditing ? "Create a new palette" : "Edit palette");
 
-        LinearLayout customView = new LinearLayout(this);
-        customView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        customView.setOrientation(LinearLayout.VERTICAL);
+        DialogPaletteBinding binding = DialogPaletteBinding.inflate(getLayoutInflater());
 
-        TextInputLayout name = new TextInputLayout(this);
-        name.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        name.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
-        name.setOrientation(LinearLayout.VERTICAL);
-        name.setHint("Name");
-        customView.addView(name);
-
-        EditText nameEditText = new EditText(this);
-        nameEditText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        nameEditText.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
-        nameEditText.setTextSize(14);
         if (isEditing) {
-            nameEditText.setText(oldName);
+            binding.nameEditText.setText(oldName);
+            binding.colorEditText.setText(oldColor);
         }
-        name.addView(nameEditText);
 
-        LinearLayout colorContainer = new LinearLayout(this);
-        colorContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        colorContainer.setGravity(Gravity.CENTER | Gravity.LEFT);
-        customView.addView(colorContainer);
+        binding.colorEditText.addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                binding.color.setError(null);
+            }
+        });
+        binding.nameEditText.addTextChangedListener(new BaseTextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                binding.name.setError(null);
+            }
+        });
 
-        TextInputLayout color = new TextInputLayout(this);
-        color.setLayoutParams(new LinearLayout.LayoutParams(0,
-                ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-        color.setOrientation(LinearLayout.VERTICAL);
-        color.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
-        color.setHint("Color");
-        colorContainer.addView(color);
+        binding.openColorPalette.setOnClickListener(getSharedPaletteColorPickerShower(dialog, binding.colorEditText));
 
-        EditText colorEditText = new EditText(this);
-        colorEditText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        colorEditText.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
-        colorEditText.setTextSize(14);
-        if (isEditing) {
-            colorEditText.setText(oldColor);
-        }
-        color.addView(colorEditText);
-
-        ImageView openColorPalette = new ImageView(this);
-        openColorPalette.setLayoutParams(new LinearLayout.LayoutParams(dpToPx(50), dpToPx(28)));
-        openColorPalette.setFocusable(false);
-        openColorPalette.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        openColorPalette.setImageResource(R.drawable.color_palette_48);
-        colorContainer.addView(openColorPalette);
-
-        dialog.a(customView);
-        openColorPalette.setOnClickListener(getSharedPaletteColorPickerShower(dialog, colorEditText));
+        dialog.a(binding.getRoot());
 
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             try {
-                String nameInput = nameEditText.getText().toString();
-                String colorInput = colorEditText.getText().toString();
+                String nameInput = binding.nameEditText.getText().toString();
+                String colorInput = binding.colorEditText.getText().toString();
+
+                if (nameInput.isEmpty()) {
+                    binding.name.setError("Name cannot be empty");
+                    binding.name.requestFocus();
+                    return;
+                }
+
+                if (colorInput.isEmpty()) {
+                    binding.color.setError("Color cannot be empty");
+                    binding.color.requestFocus();
+                    return;
+                }
+
                 Color.parseColor(colorInput);
 
                 if (!isEditing) {
@@ -453,13 +433,16 @@ public class BlocksManager extends BaseAppCompatActivity {
                 }
                 dialog.dismiss();
             } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                color.setError("Malformed hexadecimal color");
-                color.requestFocus();
+                binding.color.setError("Malformed hexadecimal color");
+                binding.color.requestFocus();
             }
         });
+
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+
         dialog.show();
     }
+
 
     public class PaletteAdapter extends BaseAdapter {
 
