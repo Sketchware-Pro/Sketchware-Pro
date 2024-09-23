@@ -77,7 +77,7 @@ public class ProjectSettings {
     }
 
     /**
-     * @return The configured minimum SDK version. Returns 21 if none or an invalid value was set.
+     * @return The configured minimum SDK version. Returns 24 if none or an invalid value was set.
      * @see #SETTING_MINIMUM_SDK_VERSION
      */
     public int getMinSdkVersion() {
@@ -86,11 +86,11 @@ public class ProjectSettings {
                 //noinspection ConstantConditions because we catch that already
                 return Integer.parseInt(hashmap.get(SETTING_MINIMUM_SDK_VERSION));
             } catch (NumberFormatException | NullPointerException e) {
-                LogUtil.e(TAG, "Failed to parse the project's minimum SDK version! Defaulting to 21", e);
-                return 21;
+                LogUtil.e(TAG, "Failed to parse the project's minimum SDK version! Defaulting to 24", e);
+                return 24;
             }
         } else {
-            return 21;
+            return 24;
         }
     }
 
