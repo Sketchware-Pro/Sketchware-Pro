@@ -3,7 +3,6 @@ package mod.hey.studios.project;
 import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +58,7 @@ public class ProjectSettingsDialog {
 
         EditText targetSdkVersion = addInputPref(
                 ProjectSettings.SETTING_TARGET_SDK_VERSION,
-                "28",
+                "34",
                 "Target SDK version",
                 InputType.TYPE_CLASS_NUMBER,
                 preferenceContainer);
