@@ -417,8 +417,6 @@ public class BlocksManager extends BaseAppCompatActivity {
         nameEditText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         nameEditText.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
-        nameEditText.setTextColor(0xff000000);
-        nameEditText.setHintTextColor(0xff607d8b);
         nameEditText.setTextSize(14);
         if (isEditing) {
             nameEditText.setText(oldName);
@@ -443,8 +441,6 @@ public class BlocksManager extends BaseAppCompatActivity {
         colorEditText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         colorEditText.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
-        colorEditText.setTextColor(0xff000000);
-        colorEditText.setHintTextColor(0xff607d8b);
         colorEditText.setTextSize(14);
         if (isEditing) {
             colorEditText.setText(oldColor);
