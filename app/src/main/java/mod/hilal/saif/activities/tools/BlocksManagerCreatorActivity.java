@@ -1,6 +1,5 @@
 package mod.hilal.saif.activities.tools;
 
-import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;

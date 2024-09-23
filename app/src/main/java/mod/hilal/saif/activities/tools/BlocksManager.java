@@ -25,10 +25,10 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
@@ -286,7 +286,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             startActivity(intent);
         });
         recycle_bin_card.setOnLongClickListener(v -> {
-            new AlertDialog.Builder(this)
+            new MaterialAlertDialogBuilder(this)
                     .setTitle("Recycle bin")
                     .setMessage("Are you sure you want to empty the recycle bin? " +
                             "Blocks inside will be deleted PERMANENTLY, you CANNOT recover them!")
@@ -570,7 +570,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                             break;
 
                         case delete:
-                            new AlertDialog.Builder(BlocksManager.this)
+                            new MaterialAlertDialogBuilder(BlocksManager.this)
                                     .setTitle(pallet_listmap.get(position).get("name").toString())
                                     .setMessage("Remove all blocks related to this palette?")
                                     .setPositiveButton("Remove permanently", (dialog, which) -> {
