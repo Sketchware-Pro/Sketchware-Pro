@@ -16,23 +16,23 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Button;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -96,20 +96,20 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         ScrollView scrollView = findViewById(R.id.scroll_view);
         TextInputLayout nameLayout = findViewById(R.id.name_lay);
         name = findViewById(R.id.name);
-        LinearLayout selectType = findViewById(R.id.select_type);
+        ImageView selectType = findViewById(R.id.selectType);
         type = findViewById(R.id.type);
         typename = findViewById(R.id.type_name);
         spec = findViewById(R.id.spec);
         parameterScrollView = findViewById(R.id.scroll_parameters);
         spec2InputLayout = findViewById(R.id.spec_2lay);
-        LinearLayout colorSelector = findViewById(R.id.colour_selector);
+        ImageView openColorPalette = findViewById(R.id.openColorPalette);
         colour = findViewById(R.id.color);
         parametersHolder = findViewById(R.id.parameter_holder);
         spec2 = findViewById(R.id.spec2);
         code = findViewById(R.id.code);
         Button cancel = findViewById(R.id.cancel);
         Button save = findViewById(R.id.save);
-        LinearLayout reset = findViewById(R.id.reset);
+        ImageView reset = findViewById(R.id.reset);
 
         name.addTextChangedListener(new BaseTextWatcher() {
             @Override
@@ -220,7 +220,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             }
         });
 
-        colorSelector.setOnClickListener(v -> {
+        openColorPalette.setOnClickListener(v -> {
             View inflate = getLayoutInflater().inflate(R.layout.color_picker, null);
             Zx zx = new Zx(inflate, this, 0, true, false);
             zx.a(new PCP(colour));
