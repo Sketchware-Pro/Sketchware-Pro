@@ -1,14 +1,21 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_3balls"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="anim/loading_3balls.json"
+            app:lottie_loop="true" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myprojects"
@@ -19,16 +26,6 @@
             android:paddingBottom="80dp"
             android:splitMotionEvents="false"
             android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/myprojects_item"
-            tools:visibility="visible" />
-
-        <com.google.android.material.loadingindicator.LoadingIndicator
-            android:id="@+id/loading"
-            style="@style/Widget.Material3.LoadingIndicator.Contained"
-            android:layout_width="wrap_content"
-            android:layout_centerInParent="true"
-            app:indicatorSize="100dp"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </LinearLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

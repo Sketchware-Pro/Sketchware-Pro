@@ -22,19 +22,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.loadingindicator.LoadingIndicator;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
+import a.a.a.aB;
 import a.a.a.DA;
 import a.a.a.DB;
-import a.a.a.aB;
 import a.a.a.lC;
 import a.a.a.wB;
 import dev.chrisbanes.insetter.Insetter;
@@ -48,7 +49,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private final ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
     private ProjectsAdapter projectsAdapter;
     private DB preference;
-    private LoadingIndicator loading;
+    private LottieAnimationView loading;
     private RecyclerView myProjects;
 
     public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -70,7 +71,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             synchronized (projectsList) {
                 projectsList.clear();
                 projectsList.addAll(lC.a());
-                projectsList.sort(new ProjectComparator(preference.d("sortBy")));
+                Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
             }
 
             requireActivity().runOnUiThread(() -> {
@@ -189,7 +190,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         preference = new DB(requireContext(), "project");
         swipeRefresh = view.findViewById(R.id.swipe_refresh);
 
-        loading = view.findViewById(R.id.loading);
+        loading = view.findViewById(R.id.loading_3balls);
 
         ExtendedFloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
         fab.setOnClickListener(this);
@@ -213,7 +214,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
         projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
         myProjects.setAdapter(projectsAdapter);
-
         refreshProjectsList();
 
         myProjects.addOnScrollListener(new RecyclerView.OnScrollListener() {
