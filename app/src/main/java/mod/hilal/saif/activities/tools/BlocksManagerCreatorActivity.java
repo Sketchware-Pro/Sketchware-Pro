@@ -23,10 +23,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -106,8 +108,8 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         parametersHolder = findViewById(R.id.parameter_holder);
         spec2 = findViewById(R.id.spec2);
         code = findViewById(R.id.code);
-        MaterialButton cancel = findViewById(R.id.cancel);
-        MaterialButton save = findViewById(R.id.save);
+        Button cancel = findViewById(R.id.cancel);
+        Button save = findViewById(R.id.save);
         LinearLayout reset = findViewById(R.id.reset);
 
         name.addTextChangedListener(new BaseTextWatcher() {
@@ -164,7 +166,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                     "Header (h)"
             );
             AtomicInteger choice = new AtomicInteger();
-            new AlertDialog.Builder(this).setTitle("Block type")
+            new MaterialAlertDialogBuilder(this).setTitle("Block type")
                     .setSingleChoiceItems(choices.toArray(new String[0]),
                             types.indexOf(type.getText().toString()), (dialog, which) -> choice.set(which))
                     .setPositiveButton(R.string.common_word_save, (dialog, which) -> type.setText(types.get(choice.get())))
@@ -284,7 +286,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                 (int) SketchwareUtil.getDip(8),
                 0
         );
-        textView.setTextColor(0xff006064);
+        textView.setTextColor(MaterialColors.getColor(textView, com.google.android.material.R.attr.colorPrimary));
         textView.setText(name);
         textView.setTextSize(14.0f);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
