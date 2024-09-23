@@ -14,8 +14,7 @@
         android:orientation="vertical"
         style="?attr/materialCardViewFilledStyle"
         app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp">
+        app:cardCornerRadius="12dp">
 
         <LinearLayout
             android:id="@+id/background"
