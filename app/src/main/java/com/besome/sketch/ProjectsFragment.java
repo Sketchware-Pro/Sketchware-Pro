@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -47,41 +48,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private ProjectsAdapter projectsAdapter;
     private DB preference;
     private SearchView projectsSearchView;
-
-    public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == Activity.RESULT_OK) {
-            Intent data = result.getData();
-            assert data != null;
-            refreshProjectsList();
-            if (data.getBooleanExtra("is_new", false)) {
-                toDesignActivity(data.getStringExtra("sc_id"));
-            }
-        }
-    });
-
-    public void refreshProjectsList() {
-        // Don't load project list without having permissions
-        if (!c()) return;
-
-        new Thread(() -> {
-            synchronized (projectsList) {
-                projectsList.clear();
-                projectsList.addAll(lC.a());
-                projectsList.sort(new ProjectComparator(preference.d("sortBy")));
-            }
-
-            requireActivity().runOnUiThread(() -> {
-                if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
-                if (binding.loading3balls.getVisibility() == View.VISIBLE) {
-                    binding.loading3balls.setVisibility(View.GONE);
-                    binding.myprojects.setVisibility(View.VISIBLE);
-                }
-                projectsAdapter.setAllProjects(new ArrayList<>(projectsList));
-                if (projectsSearchView != null)
-                    projectsAdapter.filterData(projectsSearchView.getQuery().toString());
-            });
-        }).start();
-    }
 
     @Override
     public void b(int requestCode) {
@@ -197,22 +163,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 .margin(WindowInsetsCompat.Type.navigationBars())
                 .applyToView(fab);
 
-        binding.swipeRefresh.setOnRefreshListener(() -> {
-            // Check storage access
-            if (!c()) {
-                binding.swipeRefresh.setRefreshing(false);
-                // Ask for it
-                ((MainActivity) requireActivity()).s();
-            } else {
-                refreshProjectsList();
-            }
-        });
+        binding.swipeRefresh.setOnRefreshListener(this::refreshProjectsList);
 
         binding.myprojects.setHasFixedSize(true);
-        
+
         projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
         binding.myprojects.setAdapter(projectsAdapter);
-        refreshProjectsList();
+
+        binding.myprojects.post(this::refreshProjectsList); // wait for recyclerview to be ready
 
         binding.myprojects.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -226,6 +184,47 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             }
         });
     }
+
+    public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            Intent data = result.getData();
+            assert data != null;
+            refreshProjectsList();
+            if (data.getBooleanExtra("is_new", false)) {
+                toDesignActivity(data.getStringExtra("sc_id"));
+            }
+        }
+    });
+
+    public void refreshProjectsList() {
+        Log.d("ProjectsFragment", "Refreshing projects list...");
+        // Don't load project list without having permissions
+        if (!c()) {
+            if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
+            ((MainActivity) requireActivity()).s(); // ask for permissions
+            return;
+        }
+
+        new Thread(() -> {
+            synchronized (projectsList) {
+                projectsList.clear();
+                projectsList.addAll(lC.a());
+                projectsList.sort(new ProjectComparator(preference.d("sortBy")));
+            }
+
+            requireActivity().runOnUiThread(() -> {
+                if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
+                if (binding.loading3balls.getVisibility() == View.VISIBLE) {
+                    binding.loading3balls.setVisibility(View.GONE);
+                    binding.myprojects.setVisibility(View.VISIBLE);
+                }
+                projectsAdapter.setAllProjects(new ArrayList<>(projectsList));
+                if (projectsSearchView != null)
+                    projectsAdapter.filterData(projectsSearchView.getQuery().toString());
+            });
+        }).start();
+    }
+
 
     private void showProjectSortingDialog() {
         aB dialog = new aB(requireActivity());
