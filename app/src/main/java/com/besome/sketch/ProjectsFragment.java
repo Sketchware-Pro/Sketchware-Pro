@@ -20,41 +20,37 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.MyprojectsBinding;
+import com.sketchware.remod.databinding.SortProjectDialogBinding;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
-import a.a.a.aB;
 import a.a.a.DA;
 import a.a.a.DB;
+import a.a.a.aB;
 import a.a.a.lC;
-import a.a.a.wB;
 import dev.chrisbanes.insetter.Insetter;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 
 public class ProjectsFragment extends DA implements View.OnClickListener {
-    private SwipeRefreshLayout swipeRefresh;
-    private SearchView projectsSearchView;
+    private MyprojectsBinding binding;
     private final ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
     private ProjectsAdapter projectsAdapter;
     private DB preference;
-    private LottieAnimationView loading;
-    private RecyclerView myProjects;
+    private SearchView projectsSearchView;
 
     public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
-            var data = result.getData();
+            Intent data = result.getData();
             assert data != null;
             refreshProjectsList();
             if (data.getBooleanExtra("is_new", false)) {
@@ -71,15 +67,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             synchronized (projectsList) {
                 projectsList.clear();
                 projectsList.addAll(lC.a());
-                Collections.sort(projectsList, new ProjectComparator(preference.d("sortBy")));
+                projectsList.sort(new ProjectComparator(preference.d("sortBy")));
             }
 
             requireActivity().runOnUiThread(() -> {
-                if (swipeRefresh.isRefreshing()) swipeRefresh.setRefreshing(false);
-                if (loading != null) {
-                    ((ViewGroup) loading.getParent()).removeView(loading);
-                    myProjects.setVisibility(View.VISIBLE);
-                    loading = null;
+                if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
+                if (binding.loading3balls.getVisibility() == View.VISIBLE) {
+                    binding.loading3balls.setVisibility(View.GONE);
+                    binding.myprojects.setVisibility(View.VISIBLE);
                 }
                 projectsAdapter.setAllProjects(new ArrayList<>(projectsList));
                 if (projectsSearchView != null)
@@ -134,14 +129,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     public void restoreProject() {
-        (new BackupRestoreManager(getActivity(), this)).restore();
+        new BackupRestoreManager(getActivity(), this).restore();
     }
 
     @Override
     public void onClick(View v) {
         int viewId = v.getId();
 
-        if ((viewId == R.id.create_new_project)) {
+        if (viewId == R.id.create_new_project) {
             toProjectSettingsActivity();
         }
     }
@@ -154,6 +149,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         projectsSearchView = (SearchView) menu.findItem(R.id.searchProjects).getActionView();
+        if (projectsSearchView == null) return;
         projectsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextChange(String s) {
@@ -179,18 +175,21 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.myprojects, parent, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        binding = MyprojectsBinding.inflate(inflater, parent, false);
         setHasOptionsMenu(true);
-        return view;
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null; // avoid memory leaks
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         preference = new DB(requireContext(), "project");
-        swipeRefresh = view.findViewById(R.id.swipe_refresh);
-
-        loading = view.findViewById(R.id.loading_3balls);
 
         ExtendedFloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
         fab.setOnClickListener(this);
@@ -198,10 +197,10 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 .margin(WindowInsetsCompat.Type.navigationBars())
                 .applyToView(fab);
 
-        swipeRefresh.setOnRefreshListener(() -> {
+        binding.swipeRefresh.setOnRefreshListener(() -> {
             // Check storage access
             if (!c()) {
-                swipeRefresh.setRefreshing(false);
+                binding.swipeRefresh.setRefreshing(false);
                 // Ask for it
                 ((MainActivity) requireActivity()).s();
             } else {
@@ -209,14 +208,13 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             }
         });
 
-        myProjects = view.findViewById(R.id.myprojects);
-        myProjects.setHasFixedSize(true);
-
+        binding.myprojects.setHasFixedSize(true);
+        
         projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
-        myProjects.setAdapter(projectsAdapter);
+        binding.myprojects.setAdapter(projectsAdapter);
         refreshProjectsList();
 
-        myProjects.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.myprojects.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -232,11 +230,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private void showProjectSortingDialog() {
         aB dialog = new aB(requireActivity());
         dialog.b("Sort options");
-        View root = wB.a(requireActivity(), R.layout.sort_project_dialog);
-        RadioButton sortByName = root.findViewById(R.id.sortByName);
-        RadioButton sortByID = root.findViewById(R.id.sortByID);
-        RadioButton sortOrderAsc = root.findViewById(R.id.sortOrderAsc);
-        RadioButton sortOrderDesc = root.findViewById(R.id.sortOrderDesc);
+
+        SortProjectDialogBinding dialogBinding = SortProjectDialogBinding.inflate(LayoutInflater.from(requireActivity()));
+        RadioButton sortByName = dialogBinding.sortByName;
+        RadioButton sortByID = dialogBinding.sortByID;
+        RadioButton sortOrderAsc = dialogBinding.sortOrderAsc;
+        RadioButton sortOrderDesc = dialogBinding.sortOrderDesc;
 
         int storedValue = preference.a("sortBy", ProjectComparator.DEFAULT);
         if ((storedValue & ProjectComparator.SORT_BY_NAME) == ProjectComparator.SORT_BY_NAME) {
@@ -251,7 +250,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         if ((storedValue & ProjectComparator.SORT_ORDER_DESCENDING) == ProjectComparator.SORT_ORDER_DESCENDING) {
             sortOrderDesc.setChecked(true);
         }
-        dialog.a(root);
+
+        dialog.a(dialogBinding.getRoot());
         dialog.b("Save", v -> {
             int sortValue = 0;
             if (sortByName.isChecked()) {
