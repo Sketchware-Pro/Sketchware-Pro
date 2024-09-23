@@ -4,10 +4,7 @@ import static mod.SketchwareUtil.dpToPx;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Gravity;
@@ -27,6 +24,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,7 +32,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.sketchware.remod.databinding.DialogBlockConfigurationBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -100,8 +98,8 @@ public class BlocksManager extends BaseAppCompatActivity {
     }
 
     private void initializeLogic() {
-        _readSettings();
-        _refresh_list();
+        readSettings();
+        refresh_list();
         _recycleBin(recycle_bin_card);
     }
 
@@ -109,8 +107,8 @@ public class BlocksManager extends BaseAppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        _readSettings();
-        _refresh_list();
+        readSettings();
+        refresh_list();
     }
 
     @Override
@@ -130,80 +128,46 @@ public class BlocksManager extends BaseAppCompatActivity {
         return super.onOptionsItemSelected(menuItem);
     }
 
-    private void _a(final View _view) {
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        _view.setBackground(rippleDrawable);
-        _view.setClickable(true);
-        _view.setFocusable(true);
-    }
-
     private void showBlockConfigurationDialog() {
         aB dialog = new aB(this);
         dialog.a(R.drawable.ic_folder_48dp);
         dialog.b("Block configuration");
 
-        LinearLayout.LayoutParams defaultParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LinearLayout customView = new LinearLayout(this);
-        customView.setLayoutParams(defaultParams);
-        customView.setOrientation(LinearLayout.VERTICAL);
+        DialogBlockConfigurationBinding dialogBinding = DialogBlockConfigurationBinding.inflate(getLayoutInflater());
 
-        TextInputLayout tilPalettesPath = new TextInputLayout(this);
-        tilPalettesPath.setLayoutParams(defaultParams);
-        tilPalettesPath.setOrientation(LinearLayout.VERTICAL);
-        tilPalettesPath.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
-        tilPalettesPath.setHint("JSON file with palettes");
-        customView.addView(tilPalettesPath);
+        dialogBinding.palettesPath.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
+        dialogBinding.blocksPath.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
 
-        EditText palettesPath = new EditText(this);
-        palettesPath.setLayoutParams(defaultParams);
-        palettesPath.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
-        palettesPath.setTextSize(14);
-        palettesPath.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
-        tilPalettesPath.addView(palettesPath);
+        dialog.a(dialogBinding.getRoot());
 
-        TextInputLayout tilBlocksPath = new TextInputLayout(this);
-        tilBlocksPath.setLayoutParams(defaultParams);
-        tilBlocksPath.setOrientation(LinearLayout.VERTICAL);
-        tilBlocksPath.setPadding(dpToPx(4), dpToPx(4), dpToPx(4), dpToPx(4));
-        tilBlocksPath.setHint("JSON file with blocks");
-        customView.addView(tilBlocksPath);
-
-        EditText blocksPath = new EditText(this);
-        blocksPath.setLayoutParams(defaultParams);
-        blocksPath.setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(8));
-        blocksPath.setTextSize(14);
-        blocksPath.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
-        tilBlocksPath.addView(blocksPath);
-
-        dialog.a(customView);
         dialog.b(Helper.getResString(R.string.common_word_save), view -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
-                    palettesPath.getText().toString());
+                    dialogBinding.palettesPath.getText().toString());
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
-                    blocksPath.getText().toString());
+                    dialogBinding.blocksPath.getText().toString());
 
-            _readSettings();
-            _refresh_list();
+            readSettings();
+            refresh_list();
             dialog.dismiss();
         });
+
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+
         dialog.configureDefaultButton("Defaults", view -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
                     ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH));
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
                     ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH));
 
-            _readSettings();
-            _refresh_list();
+            readSettings();
+            refresh_list();
             dialog.dismiss();
         });
+
         dialog.show();
     }
 
-    private void _readSettings() {
+    private void readSettings() {
         pallet_dir = FileUtil.getExternalStorageDir() + ConfigActivity.getStringSettingValueOrSetAndGet(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
                 (String) ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH));
         blocks_dir = FileUtil.getExternalStorageDir() + ConfigActivity.getStringSettingValueOrSetAndGet(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
@@ -221,11 +185,11 @@ public class BlocksManager extends BaseAppCompatActivity {
                 // fall-through to shared handler
             }
 
-            SketchwareUtil.showFailedToParseJsonDialog(this, new File(blocks_dir), "Custom Blocks", v -> _readSettings());
+            SketchwareUtil.showFailedToParseJsonDialog(this, new File(blocks_dir), "Custom Blocks", v -> readSettings());
         }
     }
 
-    private void _refresh_list() {
+    private void refresh_list() {
         parsePaletteJson:
         {
             String paletteJsonContent;
@@ -241,7 +205,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                     // fall-through to shared handler
                 }
 
-                SketchwareUtil.showFailedToParseJsonDialog(this, new File(pallet_dir), "Custom Block Palettes", v -> _refresh_list());
+                SketchwareUtil.showFailedToParseJsonDialog(this, new File(pallet_dir), "Custom Block Palettes", v -> refresh_list());
             }
             pallet_listmap = new ArrayList<>();
         }
@@ -251,10 +215,10 @@ public class BlocksManager extends BaseAppCompatActivity {
         ((BaseAdapter) list_pallete.getAdapter()).notifyDataSetChanged();
         list_pallete.onRestoreInstanceState(savedState);
 
-        recycle_sub.setText("Blocks: " + (long) (_getN(-1)));
+        recycle_sub.setText("Blocks: " + (long) (getN(-1)));
     }
 
-    private double _getN(final double _p) {
+    private double getN(final double _p) {
         int n = 0;
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (all_blocks_list.get(i).get("palette").toString().equals(String.valueOf((long) (_p)))) {
@@ -264,15 +228,15 @@ public class BlocksManager extends BaseAppCompatActivity {
         return (n);
     }
 
-    private void _MoveUp(final double _p) {
+    private void moveUp(final double _p) {
         if (_p > 0) {
             Collections.swap(pallet_listmap, (int) (_p), (int) (_p + -1));
 
             Parcelable savedState = list_pallete.onSaveInstanceState();
             FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
             _swapRelatedBlocks(_p + 9, _p + 8);
-            _readSettings();
-            _refresh_list();
+            readSettings();
+            refresh_list();
             list_pallete.onRestoreInstanceState(savedState);
         }
     }
@@ -297,21 +261,21 @@ public class BlocksManager extends BaseAppCompatActivity {
         });
     }
 
-    private void _moveDown(final double _p) {
+    private void moveDown(final double _p) {
         if (_p < (pallet_listmap.size() - 1)) {
             Collections.swap(pallet_listmap, (int) (_p), (int) (_p + 1));
             {
                 Parcelable savedState = list_pallete.onSaveInstanceState();
                 FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
                 _swapRelatedBlocks(_p + 9, _p + 10);
-                _readSettings();
-                _refresh_list();
+                readSettings();
+                refresh_list();
                 list_pallete.onRestoreInstanceState(savedState);
             }
         }
     }
 
-    private void _removeRelatedBlocks(final double _p) {
+    private void removeRelatedBlocks(final double _p) {
         List<Map<String, Object>> newBlocks = new LinkedList<>();
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (!(Double.parseDouble(all_blocks_list.get(i).get("palette").toString()) == _p)) {
@@ -325,8 +289,8 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
         }
         FileUtil.writeFile(blocks_dir, new Gson().toJson(newBlocks));
-        _readSettings();
-        _refresh_list();
+        readSettings();
+        refresh_list();
     }
 
     private void _swapRelatedBlocks(final double _f, final double _s) {
@@ -345,8 +309,8 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
         }
         FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
-        _readSettings();
-        _refresh_list();
+        readSettings();
+        refresh_list();
     }
 
     private void _insertBlocksAt(final double _p) {
@@ -356,8 +320,8 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
         }
         FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
-        _readSettings();
-        _refresh_list();
+        readSettings();
+        refresh_list();
     }
 
     private void _moveRelatedBlocksToRecycleBin(final double _p) {
@@ -367,8 +331,8 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
         }
         FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
-        _readSettings();
-        _refresh_list();
+        readSettings();
+        refresh_list();
     }
 
     private void _emptyRecyclebin() {
@@ -379,8 +343,8 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
         }
         FileUtil.writeFile(blocks_dir, new Gson().toJson(newBlocks));
-        _readSettings();
-        _refresh_list();
+        readSettings();
+        refresh_list();
     }
 
     private View.OnClickListener getSharedPaletteColorPickerShower(Dialog dialog, EditText storePickedResultIn) {
@@ -471,21 +435,21 @@ public class BlocksManager extends BaseAppCompatActivity {
                     if (insertAtPosition == null) {
                         pallet_listmap.add(map);
                         FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                        _readSettings();
-                        _refresh_list();
+                        readSettings();
+                        refresh_list();
                     } else {
                         pallet_listmap.add(insertAtPosition, map);
                         FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                        _readSettings();
-                        _refresh_list();
+                        readSettings();
+                        refresh_list();
                         _insertBlocksAt(insertAtPosition + 9);
                     }
                 } else {
                     pallet_listmap.get(oldPosition).put("name", nameInput);
                     pallet_listmap.get(oldPosition).put("color", colorInput);
                     FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                    _readSettings();
-                    _refresh_list();
+                    readSettings();
+                    refresh_list();
                 }
                 dialog.dismiss();
             } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
@@ -534,8 +498,8 @@ public class BlocksManager extends BaseAppCompatActivity {
             final com.google.android.material.card.MaterialCardView background_card = convertView.findViewById(R.id.background_card);
 
             title.setText(pallet_listmap.get(position).get("name").toString());
-            sub.setText("Blocks: " + (long) (_getN(position + 9)));
-            recycle_sub.setText("Blocks: " + (long) (_getN(-1)));
+            sub.setText("Blocks: " + (long) (getN(position + 9)));
+            recycle_sub.setText("Blocks: " + (long) (getN(-1)));
 
             int backgroundColor;
             String paletteColorValue = (String) palettes.get(position).get("color");
@@ -576,27 +540,27 @@ public class BlocksManager extends BaseAppCompatActivity {
                                     .setPositiveButton("Remove permanently", (dialog, which) -> {
                                         pallet_listmap.remove(position);
                                         FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                                        _removeRelatedBlocks(position + 9);
-                                        _readSettings();
-                                        _refresh_list();
+                                        removeRelatedBlocks(position + 9);
+                                        readSettings();
+                                        refresh_list();
                                     })
                                     .setNegativeButton(R.string.common_word_cancel, null)
                                     .setNeutralButton("Move to recycle bin", (dialog, which) -> {
                                         _moveRelatedBlocksToRecycleBin(position + 9);
                                         pallet_listmap.remove(position);
                                         FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                                        _removeRelatedBlocks(position + 9);
-                                        _readSettings();
-                                        _refresh_list();
+                                        removeRelatedBlocks(position + 9);
+                                        readSettings();
+                                        refresh_list();
                                     }).show();
                             break;
 
                         case moveUp:
-                            _MoveUp(position);
+                            moveUp(position);
                             break;
 
                         case moveDown:
-                            _moveDown(position);
+                            moveDown(position);
                             break;
 
                         case insert:

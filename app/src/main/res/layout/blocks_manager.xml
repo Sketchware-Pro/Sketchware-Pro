@@ -91,7 +91,8 @@
             android:layout_height="wrap_content"
             android:choiceMode="none"
             android:divider="@null"
-            android:dividerHeight="0dp" />
+            android:dividerHeight="0dp"
+            tools:listitem="@layout/pallet_customview" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
