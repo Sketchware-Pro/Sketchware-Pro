@@ -1011,7 +1011,7 @@ public class OldResourceIdMapper {
             case 2131165688:
                 return R.drawable.ic_apk_color_96dp;
             case 2131165689:
-                return R.drawable.ic_arrow_drop_down_grey600_24dp;
+                return R.drawable.ic_arrow_drop_down_24px;
             case 2131165690:
                 return R.drawable.ic_arrow_drop_down_white_24dp;
             case 2131165691:
