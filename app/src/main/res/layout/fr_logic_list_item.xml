@@ -109,7 +109,7 @@
                 android:contentDescription="@null"
                 android:focusable="true"
                 android:padding="16dp"
-                android:src="@drawable/ic_arrow_drop_down_grey600_24dp"
+                android:src="@drawable/ic_arrow_drop_down_24px"
                 app:tint="?attr/colorControlNormal" />
         </RelativeLayout>
 
