@@ -42,7 +42,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/name_lay"
+                        android:id="@+id/name_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="8dp"
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/type_name"
+                            android:id="@+id/typename"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Type name"
@@ -142,7 +142,7 @@
                             android:layout_weight="1">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/color"
+                                android:id="@+id/colour"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Color"
@@ -185,14 +185,14 @@
                         app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
                         <HorizontalScrollView
-                            android:id="@+id/scroll_parameters"
+                            android:id="@+id/parameterScrollView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingVertical="6dp"
                             android:requiresFadingEdge="horizontal">
 
                             <LinearLayout
-                                android:id="@+id/parameter_holder"
+                                android:id="@+id/parametersHolder"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
@@ -201,7 +201,7 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/spec_2lay"
+                        android:id="@+id/spec2InputLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp">
