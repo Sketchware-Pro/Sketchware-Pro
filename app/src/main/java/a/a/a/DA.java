@@ -1,5 +1,7 @@
 package a.a.a;
 
+import android.content.pm.PackageManager;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
@@ -23,8 +25,8 @@ public abstract class DA extends qA {
     public abstract void c(int var1);
 
     public boolean c() {
-        return ContextCompat.checkSelfPermission(getContext(), "android.permission.WRITE_EXTERNAL_STORAGE") == 0
-                && ContextCompat.checkSelfPermission(getContext(), "android.permission.READ_EXTERNAL_STORAGE") == 0;
+        return ContextCompat.checkSelfPermission(requireContext(), "android.permission.WRITE_EXTERNAL_STORAGE") == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(requireContext(), "android.permission.READ_EXTERNAL_STORAGE") == PackageManager.PERMISSION_GRANTED;
     }
 
     public abstract void d();

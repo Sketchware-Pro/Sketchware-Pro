@@ -1128,37 +1128,36 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         public void onCancel(DialogInterface dialogInterface) {
             var currentActivity = activity.get();
 
-            if (currentActivity != null) {
-                currentActivity.runOnUiThread(() -> {
-                    aB cancelDialog = new aB(currentActivity);
-                    cancelDialog.b(currentActivity.getString(R.string.design_cancel_build_title));
-                    cancelDialog.a(currentActivity.getString(R.string.design_cancel_build_desc));
-                    cancelDialog.a(R.drawable.ic_exit_24);
+            if (currentActivity == null) return;
 
-                    cancelDialog.a(currentActivity.getString(R.string.design_cancel_build_btn_stop), v -> {
-                        if (!isBuildFinished) {
-                            if (!dialog.isCancelableOnBackPressed()) {
-                                dialog.setIsCancelableOnBackPressed(true);
-                                maybeShow();
-                                canceled = true;
-                            }
-                            dialog.show();
+            currentActivity.runOnUiThread(() -> {
+                aB cancelDialog = new aB(currentActivity);
+                cancelDialog.b(currentActivity.getString(R.string.design_cancel_build_title));
+                cancelDialog.a(currentActivity.getString(R.string.design_cancel_build_desc));
+                cancelDialog.a(R.drawable.ic_exit_24);
+
+                cancelDialog.a(currentActivity.getString(R.string.design_cancel_build_btn_stop), v -> {
+                    if (!isBuildFinished) {
+                        if (!dialog.isCancelableOnBackPressed()) {
+                            dialog.setIsCancelableOnBackPressed(true);
+                            maybeShow();
+                            canceled = true;
                         }
-                        currentActivity.runProject.setText("Canceling build...");
-                        publishProgress("Canceling build...");
-                        cancelDialog.dismiss();
-                        dialog.dismiss();
-                    });
-
-                    cancelDialog.b(currentActivity.getString(R.string.design_cancel_build_btn_continue), v -> {
-                        if (!isBuildFinished)
-                            dialog.show();
-                        dialog.dismiss();
-                    });
-
-                    cancelDialog.show();
+                        dialog.show();
+                    }
+                    currentActivity.runProject.setText("Canceling build...");
+                    publishProgress("Canceling build...");
+                    cancelDialog.dismiss();
                 });
-            }
+
+                cancelDialog.b(currentActivity.getString(R.string.design_cancel_build_btn_continue), v -> {
+                    if (!isBuildFinished)
+                        dialog.show();
+                    cancelDialog.dismiss();
+                });
+
+                cancelDialog.show();
+            });
         }
 
 

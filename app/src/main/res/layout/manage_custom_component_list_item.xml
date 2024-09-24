@@ -73,7 +73,7 @@
                 android:clickable="true"
                 android:contentDescription="@null"
                 android:padding="16dp"
-                android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
+                android:src="@drawable/ic_arrow_drop_down_24px" />
         </RelativeLayout>
 
         <LinearLayout

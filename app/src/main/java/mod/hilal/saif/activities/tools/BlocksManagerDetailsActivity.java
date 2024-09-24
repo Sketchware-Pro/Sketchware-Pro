@@ -1,7 +1,6 @@
 package mod.hilal.saif.activities.tools;
 
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -31,6 +30,7 @@ import androidx.cardview.widget.CardView;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -303,16 +303,6 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         block_list.onRestoreInstanceState(onSaveInstanceState);
     }
 
-    private void _a(View view) {
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        view.setBackground(rippleDrawable);
-        view.setClickable(true);
-        view.setFocusable(true);
-    }
-
     private void _swapitems(int sourcePosition, int targetPosition) {
         Collections.swap(all_blocks_list, sourcePosition, targetPosition);
         FileUtil.writeFile(blocks_path, new Gson().toJson(all_blocks_list));
@@ -374,7 +364,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                     break;
 
                 case "Delete":
-                    new AlertDialog.Builder(this)
+                    new MaterialAlertDialogBuilder(this)
                             .setTitle("Delete block?")
                             .setMessage("Are you sure you want to delete this block?")
                             .setPositiveButton("Recycle bin", (dialog, which) -> _moveToRecycleBin(position))
@@ -433,7 +423,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         }
 
         Gson gson = new Gson();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setNegativeButton(R.string.common_word_cancel, null);
         if (palette == -1) {
             AtomicInteger restoreToChoice = new AtomicInteger(-1);
@@ -474,7 +464,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                     SketchwareUtil.toastError("Invalid name entry of Custom Block #" + (i + 1) + " in Blocks to import");
                 }
             }
-            AlertDialog.Builder import_dialog = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder import_dialog = new MaterialAlertDialogBuilder(this);
             import_dialog.setTitle("Import blocks")
                     .setMultiChoiceItems(names.toArray(new CharSequence[0]), null, (dialog, which, isChecked) -> {
                         if (isChecked) {
@@ -577,9 +567,6 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                 downLayout.setVisibility(position != (blocks.size() - 1) ? View.VISIBLE : View.GONE);
                 upLayout.setVisibility(position != 0 ? View.VISIBLE : View.GONE);
             }
-            _a(up);
-            _a(down);
-            _a(background);
 
             Object blockName = block.get("name");
             if (blockName instanceof String) {
