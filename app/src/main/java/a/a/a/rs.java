@@ -55,17 +55,11 @@ import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.jbk.editor.manage.MoreblockImporter;
 
 public class rs extends qA implements View.OnClickListener, MoreblockImporterDialog.CallBack {
+
     private ProjectFileBean currentActivity;
     private CategoryAdapter categoryAdapter;
     private EventAdapter eventAdapter;
     private FloatingActionButton fab;
-    private final ActivityResultLauncher<Intent> addEventLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            result -> refreshEvents());
-    private final ActivityResultLauncher<Intent> openEvent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        // in case any Events were added, e.g. a new MoreBlock
-        refreshEvents();
-    });
-
     private HashMap<Integer, ArrayList<EventBean>> events;
     private ArrayList<EventBean> moreBlocks;
     private ArrayList<EventBean> viewEvents;
@@ -75,6 +69,12 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private TextView noEvents;
     private MaterialButton importMoreBlockFromCollection;
     private String sc_id;
+    private final ActivityResultLauncher<Intent> addEventLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> refreshEvents());
+    private final ActivityResultLauncher<Intent> openEvent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        // in case any Events were added, e.g. a new MoreBlock
+        refreshEvents();
+    });
 
     public static int a(int i) {
         if (i == 4) {
@@ -145,6 +145,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     public ProjectFileBean getCurrentActivity() {
         return currentActivity;
+    }
+
+    public void setCurrentActivity(ProjectFileBean projectFileBean) {
+        currentActivity = projectFileBean;
     }
 
     public void refreshEvents() {
@@ -291,10 +295,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private void showImportMoreBlockFromCollectionsDialog() {
         ArrayList<MoreBlockCollectionBean> moreBlocksInCollections = Pp.h().f();
         new MoreblockImporterDialog(requireActivity(), moreBlocksInCollections, this).show();
-    }
-
-    public void setCurrentActivity(ProjectFileBean projectFileBean) {
-        currentActivity = projectFileBean;
     }
 
     private void deleteEvent(EventBean event, int position) {
