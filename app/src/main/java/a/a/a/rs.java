@@ -77,35 +77,25 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     });
 
     public static int a(int i) {
-        if (i == 4) {
-            return R.drawable.more_block_96dp;
-        }
-        if (i == 1) {
-            return R.drawable.multiple_devices_48;
-        }
-        if (i == 0) {
-            return R.drawable.ic_cycle_color_48dp;
-        }
-        if (i == 3) {
-            return R.drawable.ic_drawer_color_48dp;
-        }
-        return i == 2 ? R.drawable.component_96 : 0;
+        return switch (i) {
+            case 0 -> R.drawable.ic_cycle_color_48dp;
+            case 1 -> R.drawable.multiple_devices_48;
+            case 2 -> R.drawable.component_96;
+            case 3 -> R.drawable.ic_drawer_color_48dp;
+            case 4 -> R.drawable.more_block_96dp;
+            default -> 0;
+        };
     }
 
     public static String a(Context context, int i) {
-        if (i == 4) {
-            return xB.b().a(context, R.string.common_word_moreblock);
-        }
-        if (i == 1) {
-            return xB.b().a(context, R.string.common_word_view);
-        }
-        if (i == 0) {
-            return xB.b().a(context, R.string.common_word_activity);
-        }
-        if (i == 3) {
-            return xB.b().a(context, R.string.common_word_drawer);
-        }
-        return i == 2 ? xB.b().a(context, R.string.common_word_component) : "";
+        return switch (i) {
+            case 0 -> xB.b().a(context, R.string.common_word_activity);
+            case 1 -> xB.b().a(context, R.string.common_word_view);
+            case 2 -> xB.b().a(context, R.string.common_word_component);
+            case 3 -> xB.b().a(context, R.string.common_word_drawer);
+            case 4 -> xB.b().a(context, R.string.common_word_moreblock);
+            default -> "";
+        };
     }
 
     @Override
