@@ -32,7 +32,7 @@ on:
 jobs:
   notifyTelegram:
     name: Notify Telegram
-    runs-on: ${{ secrets.USE_SELF_HOSTED_RUNNER == 'true' && 'self-hosted' || 'ubuntu-latest' }}
+    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'ubuntu-latest' || 'self-hosted' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -42,7 +42,6 @@ jobs:
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
 
       - name: Send a message to Telegram
-        if: ${{ success() }}
         env:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -56,7 +55,7 @@ jobs:
 
   build:
     name: Build APKs
-    runs-on: ${{ secrets.USE_SELF_HOSTED_RUNNER == 'true' && 'self-hosted' || 'ubuntu-latest' }}
+    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'ubuntu-latest' || 'self-hosted' }}
     strategy:
       matrix:
         apiLevel: [21, 26]
@@ -91,7 +90,7 @@ jobs:
 
   aggregateAndSend:
     name: Send APKs to Telegram
-    runs-on: ${{ secrets.USE_SELF_HOSTED_RUNNER == 'true' && 'self-hosted' || 'ubuntu-latest' }}
+    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'ubuntu-latest' || 'self-hosted' }}
     needs: build
     steps:
       - uses: actions/checkout@v4
