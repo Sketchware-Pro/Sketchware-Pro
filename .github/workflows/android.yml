@@ -32,7 +32,7 @@ on:
 jobs:
   notifyTelegram:
     name: Notify Telegram
-    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'ubuntu-latest' || 'self-hosted' }}
+    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -55,7 +55,7 @@ jobs:
 
   build:
     name: Build APKs
-    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'ubuntu-latest' || 'self-hosted' }}
+    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     strategy:
       matrix:
         apiLevel: [21, 26]
@@ -90,7 +90,7 @@ jobs:
 
   aggregateAndSend:
     name: Send APKs to Telegram
-    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'ubuntu-latest' || 'self-hosted' }}
+    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     needs: build
     steps:
       - uses: actions/checkout@v4
