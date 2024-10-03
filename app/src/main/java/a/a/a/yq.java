@@ -13,7 +13,6 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
 import com.sketchware.remod.xml.XmlBuilder;
 
 import java.io.File;
@@ -456,6 +455,21 @@ public class yq {
             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.setupGoogleMap(googleMaps);
         }
+        for (ProjectFileBean customView : projectFileManager.c()) {
+            for (ViewBean viewBean : eC.a(projectDataManager.d(customView.getXmlName()))) {
+                var classNameParts = viewBean.convert.split("\\.");
+                var className = classNameParts[classNameParts.length - 1];
+                switch (className) {
+                    case "CircleImageView" -> N.x.isCircleImageViewUsed = true;
+                    case "CodeView" -> N.x.isCodeViewUsed = true;
+                    case "LottieAnimationView" -> N.x.isLottieUsed = true;
+                    case "OTPView" -> N.x.isOTPViewUsed = true;
+                    case "PatternLockView" -> N.x.isPatternLockViewUsed = true;
+                    case "WaveSideBar" -> N.x.isWaveSideBarUsed = true;
+                    case "YouTubePlayerView" -> N.x.isYoutubePlayerUsed = true;
+                }
+            }
+        }
         for (ProjectFileBean activity : projectFileManager.b()) {
             if (activity.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                 N.a(activity.getActivityName()).a = true;
@@ -512,7 +526,8 @@ public class yq {
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN ->
                             N.x.isFBGoogleUsed = true;
                     case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> N.x.isOneSignalUsed = true;
-                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
+                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER,
+                         ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
                             N.x.isFBAdsUsed = true;
                     default -> {
                     }
