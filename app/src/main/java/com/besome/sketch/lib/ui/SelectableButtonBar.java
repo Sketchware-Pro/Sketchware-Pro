@@ -11,7 +11,6 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 
 import a.a.a.YA;
-import a.a.a.cB;
 import a.a.a.wB;
 
 public class SelectableButtonBar extends LinearLayout {
@@ -66,7 +65,7 @@ public class SelectableButtonBar extends LinearLayout {
         LinearLayout.LayoutParams var4 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
         var4.weight = 1.0F;
         var3.setLayoutParams(var4);
-        ((LinearLayout) var3).setOnClickListener(new cB(this));
+        var3.setOnClickListener(view -> setSelectedItemByKey(var3.b));
         return var3;
     }
 
