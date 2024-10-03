@@ -2,9 +2,11 @@ package com.besome.sketch.lib.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -36,11 +38,11 @@ public class SelectableButtonBar extends LinearLayout {
         for (int var2 = 0; var2 < var1; ++var2) {
             LinearLayout var3 = b(a.get(var2), b.get(var2));
             if (var2 == 0) {
-                var3.setBackgroundResource(2131166076);
+                var3.setBackgroundResource(R.drawable.selector_btnbar_left);
             } else if (var2 == var1 - 1) {
-                var3.setBackgroundResource(2131166077);
+                var3.setBackgroundResource(R.drawable.selector_btnbar_right);
             } else {
-                var3.setBackgroundResource(2131166075);
+                var3.setBackgroundResource(R.drawable.selector_btnbar_center);
             }
 
             addView(var3);
@@ -61,7 +63,7 @@ public class SelectableButtonBar extends LinearLayout {
 
     public final LinearLayout b(int var1, String var2) {
         a var3 = new a(this, getContext(), var1, var2);
-        LinearLayout.LayoutParams var4 = new LinearLayout.LayoutParams(0, -2);
+        LinearLayout.LayoutParams var4 = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
         var4.weight = 1.0F;
         var3.setLayoutParams(var4);
         ((LinearLayout) var3).setOnClickListener(new cB(this));
@@ -130,15 +132,16 @@ public class SelectableButtonBar extends LinearLayout {
             a = var2;
             b = var3;
             c = var4;
-            setOrientation(0);
+            setOrientation(LinearLayout.HORIZONTAL);
             setGravity(17);
             var2 = (int) wB.a(getContext(), 4.0F);
             setPadding(var2, var2, var2, var2);
             d = new TextView(var1);
-            LinearLayout.LayoutParams var5 = new LinearLayout.LayoutParams(-2, -2);
+            LinearLayout.LayoutParams var5 = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             d.setLayoutParams(var5);
             d.setText(var4);
-            d.setTextColor(-16740915);
+            d.setTextColor(0xff008dcd);
             d.setLines(1);
             d.setTextSize(2, 12.0F);
             addView(d);
@@ -147,9 +150,9 @@ public class SelectableButtonBar extends LinearLayout {
         public void setSelected(boolean var1) {
             super.setSelected(var1);
             if (var1) {
-                d.setTextColor(-1);
+                d.setTextColor(0xffffffff);
             } else {
-                d.setTextColor(-16740915);
+                d.setTextColor(0xff008dcd);
             }
 
         }
