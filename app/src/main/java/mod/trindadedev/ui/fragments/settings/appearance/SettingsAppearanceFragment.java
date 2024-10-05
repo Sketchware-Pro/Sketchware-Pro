@@ -27,7 +27,10 @@ public class SettingsAppearanceFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureToolbar(binding.toolbar);
-
+        configureThemeController();
+    }
+    
+    private void configureThemeController() {
         switch (ThemeManager.getCurrentTheme(requireContext())) {
             case ThemeManager.THEME_LIGHT:
                 binding.toggleThemes.check(R.id.theme_light);
@@ -40,8 +43,8 @@ public class SettingsAppearanceFragment extends BaseFragment {
                 break;
         }
 
-        binding.toggleThemes.setOnCheckedChangeListener((group, checkedId) -> {
-            if (checkedId != View.NO_ID) {
+        binding.toggleThemes.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
                 if (checkedId == R.id.theme_light) {
                     ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_LIGHT);
                 } else if (checkedId == R.id.theme_system) {
