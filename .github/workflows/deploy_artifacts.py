@@ -12,7 +12,6 @@ apk_min_api21 = os.getenv("APK_MIN_API21")
 apk_min_api26 = os.getenv("APK_MIN_API26")
 
 # Create the client with bot token directly
-os.remove('bot_session.session') if os.path.exists('bot_session.session') else None
 client = TelegramClient('bot_session', api_id, api_hash).start(bot_token=bot_token)
 client.parse_mode = 'markdown'
 
