@@ -1232,7 +1232,8 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_view_title_activity_preset">Activity Preset</string>
     <string name="design_manager_view_title_add_custom_view">New Custom View</string>
     <string name="design_manager_view_title_add_view">New Activity</string>
-    <string name="design_manager_view_title_edit_view">Edit Activity</string>
+    <string name="design_manager_view_title_edit_activity">Edit Activity</string>
+    <string name="design_manager_view_title_edit_view">Edit view</string>
     <string name="design_manager_view_title_empty_activity">Empty Activity</string>
     <string name="design_manager_view_title_keyboad_settings">Keyboard Settings</string>
     <string name="design_manager_view_title_screen_orientation">Screen Orientation</string>
