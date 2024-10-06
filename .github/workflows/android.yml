@@ -40,16 +40,17 @@ jobs:
         run: |
           echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git log -1 --pretty=format:'%H')" >> $GITHUB_ENV
 
       - name: Send a message to Telegram
         env:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-          MESSAGE: "A new build has been triggered by *${{ env.COMMIT_AUTHOR }}*.\n*Commit message:* ${{ env.COMMIT_MESSAGE }}\n\nI will send you the APKs here if the build is successful."
+          MESSAGE: "A new [build](https://github.com/Sketchware-Pro/Sketchware-Pro/commit/${{ env.COMMIT_HASH }}) has been triggered by *${{ env.COMMIT_AUTHOR }}*\\.\n\n*Commit message:*\n>${{ env.COMMIT_MESSAGE }}\n\n\nI will send you the APKs here if the build is successful\\."
         run: |
           curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
-          -d "{\"message_thread_id\": \"${TOPIC_ID}\", \"chat_id\": \"${CHAT_ID}\", \"text\": \"${MESSAGE}\", \"parse_mode\": \"markdown\"}" \
+          -d "{\"message_thread_id\": \"${TOPIC_ID}\", \"chat_id\": \"${CHAT_ID}\", \"text\": \"${MESSAGE}\", \"parse_mode\": \"markdownv2\", \"disable_web_page_preview\": true}" \
           -H "Content-Type: application/json"
         continue-on-error: true
 

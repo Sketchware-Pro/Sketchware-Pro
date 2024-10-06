@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,9 @@ import com.besome.sketch.editor.manage.view.AddCustomViewActivity;
 import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.ui.SelectableButtonBar;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -183,28 +186,28 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         } else {
             selectedTab = TAB_ACTIVITY;
         }
-        SelectableButtonBar button_bar = findViewById(R.id.button_bar);
+        MaterialButtonToggleGroup viewTypeSelector = findViewById(R.id.options_selector);
         empty_message = findViewById(R.id.empty_message);
         RecyclerView list_xml = findViewById(R.id.list_xml);
-        ImageView add_button = findViewById(R.id.add_button);
-        LinearLayout container = findViewById(R.id.container);
-        button_bar.a(TAB_ACTIVITY, xB.b().a(this, R.string.common_word_view).toUpperCase());
-        button_bar.a(TAB_CUSTOM_VIEW, xB.b().a(this, R.string.common_word_custom_view).toUpperCase());
-        button_bar.setSelectedItemByIndex(selectedTab);
-        button_bar.a();
+        ExtendedFloatingActionButton createNewView = findViewById(R.id.createNewView);
+        RelativeLayout container = findViewById(R.id.container);
         adapter = new Adapter();
         list_xml.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         list_xml.setHasFixedSize(true);
         list_xml.setAdapter(adapter);
-        button_bar.setListener(selectedItemKey -> {
-            if (selectedItemKey != selectedTab) {
-                selectedTab = selectedItemKey;
+        viewTypeSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                if (checkedId == R.id.option_view) {
+                    selectedTab = TAB_ACTIVITY;
+                } else if (checkedId == R.id.option_custom_view) {
+                    selectedTab = TAB_CUSTOM_VIEW;
+                }
                 adapter.notifyDataSetChanged();
                 empty_message.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
             }
         });
         empty_message.setText(xB.b().a(this, R.string.design_manager_view_message_no_view));
-        add_button.setOnClickListener(v -> {
+        createNewView.setOnClickListener(v -> {
             if (!mB.a()) {
                 if (selectedTab == TAB_ACTIVITY) {
                     Intent intent = new Intent(getApplicationContext(), AddViewActivity.class);
@@ -234,7 +237,9 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         private int selectedItem = -1;
 
         private class ViewHolder extends RecyclerView.ViewHolder {
+            public final MaterialCardView cardView;
             public final LinearLayout container;
+            public final RelativeLayout action_container;
             public final ImageView img_edit;
             public final ImageView img_view;
             public final TextView tv_filename;
@@ -243,13 +248,15 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
+                cardView = itemView.findViewById(R.id.cardView);
                 container = itemView.findViewById(R.id.container);
+                action_container = itemView.findViewById(R.id.action_container);
                 img_edit = itemView.findViewById(R.id.img_edit);
                 img_view = itemView.findViewById(R.id.img_view);
                 tv_filename = itemView.findViewById(R.id.tv_filename);
                 tv_linked_filename = itemView.findViewById(R.id.tv_linked_filename);
                 img_preset_setting = itemView.findViewById(R.id.img_preset_setting);
-                itemView.setOnClickListener(v -> {
+                cardView.setOnClickListener(v -> {
                     if (!mB.a()) {
                         selectedItem = getLayoutPosition();
                         hC hC = jC.b(sc_id);
@@ -267,7 +274,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                         finish();
                     }
                 });
-                img_view.setOnClickListener(v -> {
+                action_container.setOnClickListener(v -> {
                     if (selectedTab == TAB_ACTIVITY && !mB.a()) {
                         selectedItem = getLayoutPosition();
                         Intent intent = new Intent(getApplicationContext(), AddViewActivity.class);
@@ -302,8 +309,9 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
                 String xmlName = projectFileBean.getXmlName();
                 if (currentXml.equals(xmlName)) {
-                    viewHolder.container.setBackgroundColor(ContextCompat.getColor(
+                    viewHolder.cardView.setStrokeColor(ContextCompat.getColor(
                             ViewSelectorActivity.this, R.color.scolor_dark_yellow_01));
+                    viewHolder.cardView.setStrokeWidth(2);
                 }
                 String javaName = projectFileBean.getJavaName();
                 viewHolder.img_edit.setVisibility(View.VISIBLE);
@@ -311,23 +319,21 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 viewHolder.tv_filename.setText(xmlName);
                 viewHolder.tv_linked_filename.setVisibility(View.VISIBLE);
                 viewHolder.tv_linked_filename.setText(javaName);
-                viewHolder.tv_filename.setTextColor(0xff404040);
             } else if (selectedTab == TAB_CUSTOM_VIEW) {
                 viewHolder.img_edit.setVisibility(View.GONE);
                 viewHolder.tv_linked_filename.setVisibility(View.GONE);
                 ProjectFileBean customView = jC.b(sc_id).c().get(position);
                 if (currentXml.equals(customView.getXmlName())) {
-                    viewHolder.container.setBackgroundColor(ContextCompat.getColor(
+                    viewHolder.cardView.setStrokeColor(ContextCompat.getColor(
                             ViewSelectorActivity.this, R.color.scolor_dark_yellow_01));
+                    viewHolder.cardView.setStrokeWidth(2);
                 }
                 if (customView.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
                     viewHolder.img_view.setImageResource(getViewIcon(4));
                     viewHolder.tv_filename.setText(customView.fileName.substring(1));
-                    viewHolder.tv_filename.setTextColor(0xffff0000);
                 } else {
                     viewHolder.img_view.setImageResource(getViewIcon(3));
                     viewHolder.tv_filename.setText(customView.getXmlName());
-                    viewHolder.tv_filename.setTextColor(0xff000000);
                 }
             }
         }
