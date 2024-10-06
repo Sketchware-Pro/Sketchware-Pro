@@ -50,7 +50,7 @@ jobs:
           MESSAGE: "A new [build](https://github.com/Sketchware-Pro/Sketchware-Pro/commit/${{ env.COMMIT_HASH }}) has been triggered by *${{ env.COMMIT_AUTHOR }}*\\.\n\n*Commit message:*\n>${{ env.COMMIT_MESSAGE }}\n\n\nI will send you the APKs here if the build is successful\\."
         run: |
           curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
-          -d "{\"message_thread_id\": \"${TOPIC_ID}\", \"chat_id\": \"${CHAT_ID}\", \"text\": \"${MESSAGE}\", \"parse_mode\": \"markdown\"}" \
+          -d "{\"message_thread_id\": \"${TOPIC_ID}\", \"chat_id\": \"${CHAT_ID}\", \"text\": \"${MESSAGE}\", \"parse_mode\": \"markdownv2\", \"disable_web_page_preview\": true}" \
           -H "Content-Type: application/json"
         continue-on-error: true
 
