@@ -12,7 +12,6 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -51,7 +50,7 @@ import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
-import mod.ilyasse.activities.about.AboutModActivity;
+import mod.ilyasse.activities.about.AboutAppActivity;
 import mod.jbk.util.LogUtil;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
@@ -247,7 +246,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
             dialog.b("View", v -> {
                 dialog.dismiss();
-                Intent launcher = new Intent(this, AboutModActivity.class);
+                Intent launcher = new Intent(this, AboutAppActivity.class);
                 launcher.putExtra("select", "majorChanges");
                 startActivity(launcher);
             });

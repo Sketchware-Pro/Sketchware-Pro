@@ -19,18 +19,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -38,10 +37,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.LongSerializationPolicy;
-
 import com.sketchware.remod.R;
-
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +47,7 @@ import mod.RequestNetworkController;
 import mod.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 
-public class AboutModActivity extends BaseAppCompatActivity {
+public class AboutAppActivity extends BaseAppCompatActivity {
     private ViewPager viewPager;
     private ExtendedFloatingActionButton fab;
     private ArrayList<HashMap<String, Object>> teamList = new ArrayList<>();
@@ -95,7 +91,7 @@ public class AboutModActivity extends BaseAppCompatActivity {
         loadingTitle = findViewById(R.id.tv_loading);
         loadingDescription = findViewById(R.id.tv_loading_desc);
         requestData = new RequestNetwork(this);
-        sharedPref = getSharedPreferences("AboutMod", Activity.MODE_PRIVATE);
+        sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
@@ -138,7 +134,7 @@ public class AboutModActivity extends BaseAppCompatActivity {
 
                     if (data.discordInviteLink != null) discordInviteLink = data.discordInviteLink;
 
-                    teamList = data.moddersteam;
+                    teamList = data.teamMembers;
                     teamRecycler.setAdapter(new AboutAdapters.TeamRecyclerAdapter(teamList));
 
                     changelogList = data.changelog;
@@ -149,7 +145,7 @@ public class AboutModActivity extends BaseAppCompatActivity {
                     if (discordInviteLink != null) {
                         savedData.putString("discordInviteLinkBackup", discordInviteLink);
                     }
-                    savedData.putString("moddersBackup", new Gson().toJson(teamList));
+                    savedData.putString("teamBackup", new Gson().toJson(teamList));
                     savedData.putString("changelogBackup", new Gson().toJson(changelogList));
 
                     savedData.apply();
@@ -173,12 +169,12 @@ public class AboutModActivity extends BaseAppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onErrorResponse(String tag, String message) {
-                if (sharedPref.getString("moddersBackup", "").isEmpty()
+                if (sharedPref.getString("teamBackup", "").isEmpty()
                         || sharedPref.getString("changelogBackup", "").isEmpty()) {
                     loadingTitle.setText("Your device is offline!");
                     loadingDescription.setText("Check your internet connection and try again.");
                 } else {
-                    teamList = new Gson().fromJson(sharedPref.getString("moddersBackup", ""), Helper.TYPE_MAP_LIST);
+                    teamList = new Gson().fromJson(sharedPref.getString("teamBackup", ""), Helper.TYPE_MAP_LIST);
                     changelogList = new Gson().fromJson(sharedPref.getString("changelogBackup", ""), Helper.TYPE_MAP_LIST);
                     teamRecycler.setAdapter(new AboutAdapters.TeamRecyclerAdapter(teamList));
                     changelogRecycler.setAdapter(new AboutAdapters.ChangelogRecyclerAdapter(changelogList));
@@ -269,7 +265,7 @@ public class AboutModActivity extends BaseAppCompatActivity {
 
     private static class AboutUsData {
         String discordInviteLink;
-        ArrayList<HashMap<String, Object>> moddersteam;
+        ArrayList<HashMap<String, Object>> teamMembers;
         ArrayList<HashMap<String, Object>> changelog;
     }
 
@@ -301,7 +297,7 @@ public class AboutModActivity extends BaseAppCompatActivity {
                 }
                 viewContainer.addView(changelogRecyclerContainer);
             } else if (position == 2) {
-                TextView majorChanges = new TextView(AboutModActivity.this);
+                TextView majorChanges = new TextView(AboutAppActivity.this);
                 {
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
