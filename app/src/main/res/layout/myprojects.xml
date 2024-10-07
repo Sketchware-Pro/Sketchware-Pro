@@ -1,10 +1,11 @@
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
@@ -13,6 +14,7 @@
             android:id="@+id/loading_3balls"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_centerInParent="true"
             app:lottie_autoPlay="true"
             app:lottie_fileName="anim/loading_3balls.json"
             app:lottie_loop="true" />
@@ -26,6 +28,8 @@
             android:paddingBottom="80dp"
             android:splitMotionEvents="false"
             android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-    </LinearLayout>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/myprojects_item"
+            tools:visibility="visible" />
+    </RelativeLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
