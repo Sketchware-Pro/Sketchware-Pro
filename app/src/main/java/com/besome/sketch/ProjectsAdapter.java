@@ -17,10 +17,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.export.ExportProjectActivity;
-import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CircleImageView;
-import com.besome.sketch.projects.MyProjectButton;
-import com.besome.sketch.projects.MyProjectButtonLayout;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sketchware.remod.R;
@@ -30,10 +27,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import a.a.a.ZA;
 import a.a.a.aB;
@@ -82,7 +75,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void filterData(String query) {
         List<HashMap<String, Object>> newProjects;
         if (query.isEmpty()) {
-            // prevent scrolling to the very bottom on start
             if (shownProjects.isEmpty()) {
                 int projectCount;
                 if ((projectCount = allProjects.size()) > 0) {
@@ -94,12 +86,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             maybeAdjustSpecialActions();
             newProjects = allProjects;
         } else {
-            newProjects = allProjects.stream()
-                    .filter(project -> matchesQuery(project, query))
-                    .collect(Collectors.toList());
+            newProjects = new ArrayList<>();
+            for (HashMap<String, Object> project : allProjects) {
+                if (matchesQuery(project, query)) {
+                    newProjects.add(project);
+                }
+            }
         }
 
-        // remove them so DiffUtil isn't confused
         if (shownSpecialActions > 0) {
             notifyItemRangeRemoved(0, shownSpecialActions);
         }
@@ -135,20 +129,17 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 boolean hadCustomIcon = yB.a(oldMap, "custom_icon");
                 boolean hasChanged = hadCustomIcon != hasCustomIcon;
                 if (hadCustomIcon && hasCustomIcon) {
-                    // custom icon could've been changed, the project map doesn't tell us
                     hasChanged = true;
                 }
                 return !hasChanged;
             }
-        }, true /* sort behavior can be changed */);
+        }, true);
         shownProjects = newProjects;
         result.dispatchUpdatesTo(this);
-        // add them again after DiffUtil's done
         if (shownSpecialActions > 0) {
             notifyItemRangeInserted(0, shownSpecialActions);
         }
 
-        // hide Restore Projects when searching
         if (query.isEmpty()) {
             if (shownSpecialActions == 0) {
                 shownSpecialActions = 1;
@@ -188,35 +179,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (viewHolder instanceof ProjectViewHolder holder) {
             int position = truePosition - shownSpecialActions;
             HashMap<String, Object> projectMap = shownProjects.get(position);
-            holder.setProject(projectMap);
             String scId = yB.c(projectMap, "sc_id");
-
-            float rotation;
-            int visibility;
-            if (holder.isCollapsed()) {
-                visibility = View.GONE;
-                rotation = 0.0F;
-            } else {
-                visibility = View.VISIBLE;
-                rotation = -180.0F;
-            }
-            holder.projectOptionLayout.setVisibility(visibility);
-            holder.expand.setRotation(rotation);
-            if (yB.a(projectMap, "confirmation")) {
-                if (holder.shouldAnimateNextTransformation()) {
-                    holder.projectButtonLayout.showConfirmation();
-                    holder.setAnimateNextTransformation(false);
-                } else {
-                    holder.projectButtonLayout.showConfirmationWithoutAnimation();
-                }
-            } else {
-                if (holder.shouldAnimateNextTransformation()) {
-                    holder.projectButtonLayout.hideConfirmation();
-                    holder.setAnimateNextTransformation(false);
-                } else {
-                    holder.projectButtonLayout.hideConfirmationWithoutAnimation();
-                }
-            }
 
             holder.imgIcon.setImageResource(R.drawable.default_icon);
             if (yB.c(projectMap, "sc_ver_code").isEmpty()) {
@@ -252,42 +215,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.tvPublished.setText(yB.c(projectMap, "sc_id"));
             holder.itemView.setTag("custom");
 
-            holder.projectButtonLayout.setButtonOnClickListener(v -> {
-                if (mB.a()) return;
-                if (v instanceof MyProjectButton button) {
-                    switch (button.getButtonId()) {
-                        case 0 -> toProjectSettingOrRequestPermission(projectMap, position);
-                        case 1 -> backupProject(projectMap);
-                        case 2 -> toExportProjectActivity(projectMap);
-                        case 3 -> {
-                            {
-                                aB dialog = new aB(projectsFragment.requireActivity());
-                                dialog.a(R.drawable.icon_delete);
-                                dialog.b(Helper.getResString(R.string.delete_project_dialog_title));
-                                dialog.a(Helper.getResString(R.string.delete_project_dialog_message).replace("%1$s", yB.c(projectMap, "my_app_name")));
-
-                                dialog.b(Helper.getResString(R.string.common_word_delete), v1 -> {
-                                    deleteProject(holder.getLayoutPosition());
-                                    notifyItemChanged(holder.getLayoutPosition());
-                                    dialog.dismiss();
-                                });
-                                dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-                                dialog.show();
-                            }
-                        }
-                        case 4 -> showProjectSettingDialog(projectMap);
-                    }
-                } else if (v.getId() == R.id.confirm_yes) {
-                    projectMap.put("confirmation", true);
-                    holder.setAnimateNextTransformation(true);
-                    notifyItemChanged(holder.getLayoutPosition());
-                } else if (v.getId() == R.id.confirm_no) {
-                    projectMap.put("confirmation", false);
-                    holder.setAnimateNextTransformation(true);
-                    notifyItemChanged(holder.getLayoutPosition());
-                }
-            });
-
             holder.projectView.setOnClickListener(v -> {
                 if (!mB.a()) {
                     projectsFragment.toDesignActivity(yB.c(projectMap, "sc_id"));
@@ -297,6 +224,15 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             holder.appIconLayout.setOnClickListener(v -> {
                 mB.a(v);
                 toProjectSettingOrRequestPermission(projectMap, position);
+            });
+
+            holder.expand.setOnClickListener(v -> {
+                showProjectOptionsBottomSheet(projectMap, truePosition);
+            });
+
+            holder.projectView.setOnLongClickListener(v -> {
+                showProjectOptionsBottomSheet(projectMap, truePosition);
+                return true;
             });
         } else if (viewHolder instanceof SpecialActionViewHolder holder) {
             boolean isNewProjectView = allProjects.isEmpty() && truePosition == 0;
@@ -319,11 +255,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return new ProjectViewHolder(inflater.inflate(R.layout.myprojects_item, parent, false));
     }
 
-    private static class ProjectViewHolder extends CollapsibleViewHolder {
+    private static class ProjectViewHolder extends RecyclerView.ViewHolder {
         public final TextView tvPublished;
         public final ImageView expand;
-        public final MyProjectButtonLayout projectButtonLayout;
-        public final LinearLayout projectOptionLayout;
         public final LinearLayout projectView;
         public final View appIconLayout;
         public final CircleImageView imgIcon;
@@ -332,10 +266,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public final TextView packageName;
         public final TextView projectVersion;
 
-        private Map<String, Object> project;
 
         public ProjectViewHolder(View itemView) {
-            super(itemView, 300);
+            super(itemView);
             projectView = itemView.findViewById(R.id.project_one);
             projectName = itemView.findViewById(R.id.project_name);
             appIconLayout = itemView.findViewById(R.id.app_icon_layout);
@@ -345,46 +278,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             projectVersion = itemView.findViewById(R.id.project_version);
             tvPublished = itemView.findViewById(R.id.tv_published);
             expand = itemView.findViewById(R.id.expand);
-            projectOptionLayout = itemView.findViewById(R.id.project_option_layout);
-            projectButtonLayout = itemView.findViewById(R.id.project_option);
-            onDoneInitializingViews();
-        }
-
-        @Override
-        protected boolean isCollapsed() {
-            var value = project.get("expand");
-            if (value != null) {
-                return (boolean) value;
-            } else {
-                return true;
-            }
-        }
-
-        @Override
-        protected void setIsCollapsed(boolean isCollapsed) {
-            project.put("expand", isCollapsed);
-        }
-
-        @NonNull
-        @Override
-        protected ViewGroup getOptionsLayout() {
-            return projectOptionLayout;
-        }
-
-        @NonNull
-        @Override
-        protected Set<? extends View> getOnClickCollapseTriggerViews() {
-            return Set.of(expand);
-        }
-
-        @NonNull
-        @Override
-        protected Set<? extends View> getOnLongClickCollapseTriggerViews() {
-            return Set.of(projectView);
-        }
-
-        public void setProject(Map<String, Object> project) {
-            this.project = project;
         }
     }
 
@@ -419,7 +312,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void deleteProject(int truePosition) {
-        final ZA c = new ZA(activity); //Now loading
+        final ZA c = new ZA(activity);
         c.show();
 
         var sc_id = yB.c(shownProjects.get(truePosition - shownSpecialActions), "sc_id");
@@ -427,9 +320,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             lC.a(activity, sc_id);
             activity.runOnUiThread(() -> {
                 c.dismiss();
-                Predicate<HashMap<String, Object>> remover = (project -> yB.c(project, "sc_id").equals(sc_id));
-                shownProjects.removeIf(remover);
-                allProjects.removeIf(remover);
+                shownProjects.removeIf(project -> yB.c(project, "sc_id").equals(sc_id));
+                allProjects.removeIf(project -> yB.c(project, "sc_id").equals(sc_id));
                 notifyItemRemoved(truePosition);
 
                 maybeAdjustSpecialActions();
@@ -463,9 +355,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         activity.startActivity(intent);
     }
 
-
-    // TODO: call this method when that tiny arrow is clicked. also entirely remove collapsible layout code
-    private void showProjectOptionsBottomSheet(HashMap<String, Object> projectMap, int position, ProjectViewHolder holder) {
+    private void showProjectOptionsBottomSheet(HashMap<String, Object> projectMap, int position) {
         BottomSheetDialog projectOptionsBSD = new BottomSheetDialog(activity);
         var binding = BottomSheetProjectOptionsBinding.inflate(LayoutInflater.from(activity));
         var view = binding.getRoot();
@@ -489,10 +379,19 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             projectOptionsBSD.dismiss();
         });
         binding.projectDelete.setOnClickListener(v -> {
-            // confirmation is needed here before deleting the project
-            notifyItemChanged(position);
-            deleteProject(holder.getLayoutPosition());
             projectOptionsBSD.dismiss();
+            aB dialog = new aB(projectsFragment.requireActivity());
+            dialog.a(R.drawable.icon_delete);
+            dialog.b(Helper.getResString(R.string.delete_project_dialog_title));
+            dialog.a(Helper.getResString(R.string.delete_project_dialog_message).replace("%1$s", yB.c(projectMap, "my_app_name")));
+
+            dialog.b(Helper.getResString(R.string.common_word_delete), v1 -> {
+                deleteProject(position);
+                notifyItemChanged(position);
+                dialog.dismiss();
+            });
+            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+            dialog.show();
         });
         projectOptionsBSD.show();
     }

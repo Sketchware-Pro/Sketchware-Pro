@@ -4,143 +4,120 @@
     style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginBottom="10dp"
+    android:background="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
+
     <LinearLayout
+        android:id="@+id/project_one"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="96dp"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/project_one"
+        <RelativeLayout
+            android:id="@+id/app_icon_layout"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="16dp">
+
+            <View
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/circle_bg_white"
+                android:contentDescription="@null"
+                android:visibility="gone" />
+
+            <com.besome.sketch.lib.ui.CircleImageView
+                android:id="@+id/img_icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@null"
+                android:src="@drawable/android_icon" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/app_icon_layout"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="16dp">
-
-                <View
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle_bg_white"
-                    android:contentDescription="@null"
-                    android:visibility="gone" />
-
-                <com.besome.sketch.lib.ui.CircleImageView
-                    android:id="@+id/img_icon"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_centerInParent="true"
-                    android:contentDescription="@null"
-                    android:src="@drawable/android_icon" />
-            </RelativeLayout>
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:gravity="center|left"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/project_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    tools:text="Sketchware Pro Demo" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center|left"
-                    android:orientation="vertical">
+                    android:layout_marginRight="40dp"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/project_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        tools:text="Sketchware Pro Demo" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="40dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/app_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?attr/textAppearanceBodySmall"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            tools:text="InternalDemo" />
-
-                        <TextView
-                            android:id="@+id/project_version"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:textAppearance="?attr/textAppearanceBodySmall"
-                            android:textColor="?attr/colorOnSurfaceVariant"
-                            android:textSize="10sp"
-                            tools:text="1.0(1)" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/package_name"
+                        android:id="@+id/app_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?attr/textAppearanceBodySmall"
                         android:textColor="?attr/colorOnSurfaceVariant"
-                        tools:text="com.jbk.internal.demo" />
+                        tools:text="InternalDemo" />
+
+                    <TextView
+                        android:id="@+id/project_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="10sp"
+                        tools:text="1.0(1)" />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/expand"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="right"
-                    android:padding="8dp"
-                    android:src="@drawable/selector_ic_expand_more_24"
-                    app:tint="?attr/colorControlNormal" />
-
                 <TextView
-                    android:id="@+id/tv_published"
+                    android:id="@+id/package_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="right"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
                     android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorPrimary"
-                    tools:text="605" />
-            </RelativeLayout>
-        </LinearLayout>
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    tools:text="com.jbk.internal.demo" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/project_option_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/expand"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="right"
+                android:padding="8dp"
+                android:src="@drawable/selector_ic_expand_more_24"
+                app:tint="?attr/colorControlNormal" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="16dp"
-                android:background="?attr/colorOutlineVariant" />
-
-            <com.besome.sketch.projects.MyProjectButtonLayout
-                android:id="@+id/project_option"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            <TextView
+                android:id="@+id/tv_published"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorPrimary"
+                tools:text="605" />
+        </RelativeLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
