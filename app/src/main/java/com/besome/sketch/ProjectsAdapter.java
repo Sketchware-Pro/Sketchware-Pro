@@ -7,9 +7,6 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
@@ -17,11 +14,12 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.export.ExportProjectActivity;
-import com.besome.sketch.lib.ui.CircleImageView;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.BottomSheetProjectOptionsBinding;
+import com.sketchware.remod.databinding.MyprojectsItemBinding;
+import com.sketchware.remod.databinding.MyprojectsItemSpecialBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -181,7 +179,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             HashMap<String, Object> projectMap = shownProjects.get(position);
             String scId = yB.c(projectMap, "sc_id");
 
-            holder.imgIcon.setImageResource(R.drawable.default_icon);
+            holder.binding.imgIcon.setImageResource(R.drawable.default_icon);
             if (yB.c(projectMap, "sc_ver_code").isEmpty()) {
                 projectMap.put("sc_ver_code", "1");
                 projectMap.put("sc_ver_name", "1.0");
@@ -203,34 +201,34 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     uri = Uri.fromFile(new File(iconFolder, "icon.png"));
                 }
 
-                holder.imgIcon.setImageURI(uri);
+                holder.binding.imgIcon.setImageURI(uri);
             }
 
-            holder.appName.setText(yB.c(projectMap, "my_ws_name"));
-            holder.projectName.setText(yB.c(projectMap, "my_app_name"));
-            holder.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
+            holder.binding.appName.setText(yB.c(projectMap, "my_ws_name"));
+            holder.binding.projectName.setText(yB.c(projectMap, "my_app_name"));
+            holder.binding.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
             String version = yB.c(projectMap, "sc_ver_name") + "(" + yB.c(projectMap, "sc_ver_code") + ")";
-            holder.projectVersion.setText(version);
-            holder.tvPublished.setVisibility(View.VISIBLE);
-            holder.tvPublished.setText(yB.c(projectMap, "sc_id"));
+            holder.binding.projectVersion.setText(version);
+            holder.binding.tvPublished.setVisibility(View.VISIBLE);
+            holder.binding.tvPublished.setText(yB.c(projectMap, "sc_id"));
             holder.itemView.setTag("custom");
 
-            holder.projectView.setOnClickListener(v -> {
+            holder.binding.projectOne.setOnClickListener(v -> {
                 if (!mB.a()) {
                     projectsFragment.toDesignActivity(yB.c(projectMap, "sc_id"));
                 }
             });
 
-            holder.appIconLayout.setOnClickListener(v -> {
+            holder.binding.appIconLayout.setOnClickListener(v -> {
                 mB.a(v);
                 toProjectSettingOrRequestPermission(projectMap, position);
             });
 
-            holder.expand.setOnClickListener(v -> {
+            holder.binding.expand.setOnClickListener(v -> {
                 showProjectOptionsBottomSheet(projectMap, truePosition);
             });
 
-            holder.projectView.setOnLongClickListener(v -> {
+            holder.binding.projectOne.setOnLongClickListener(v -> {
                 showProjectOptionsBottomSheet(projectMap, truePosition);
                 return true;
             });
@@ -250,48 +248,30 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         var inflater = LayoutInflater.from(parent.getContext());
         if (viewType == 1) {
-            return new SpecialActionViewHolder(inflater.inflate(R.layout.myprojects_item_special, parent, false));
+            var binding = MyprojectsItemSpecialBinding.inflate(inflater, parent, false);
+            return new SpecialActionViewHolder(binding);
         }
-        return new ProjectViewHolder(inflater.inflate(R.layout.myprojects_item, parent, false));
+        var binding = MyprojectsItemBinding.inflate(inflater, parent, false);
+        return new ProjectViewHolder(binding);
     }
 
     private static class ProjectViewHolder extends RecyclerView.ViewHolder {
-        public final TextView tvPublished;
-        public final ImageView expand;
-        public final LinearLayout projectView;
-        public final View appIconLayout;
-        public final CircleImageView imgIcon;
-        public final TextView projectName;
-        public final TextView appName;
-        public final TextView packageName;
-        public final TextView projectVersion;
+        public final MyprojectsItemBinding binding;
 
-
-        public ProjectViewHolder(View itemView) {
-            super(itemView);
-            projectView = itemView.findViewById(R.id.project_one);
-            projectName = itemView.findViewById(R.id.project_name);
-            appIconLayout = itemView.findViewById(R.id.app_icon_layout);
-            imgIcon = itemView.findViewById(R.id.img_icon);
-            appName = itemView.findViewById(R.id.app_name);
-            packageName = itemView.findViewById(R.id.package_name);
-            projectVersion = itemView.findViewById(R.id.project_version);
-            tvPublished = itemView.findViewById(R.id.tv_published);
-            expand = itemView.findViewById(R.id.expand);
+        public ProjectViewHolder(MyprojectsItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 
     private class SpecialActionViewHolder extends RecyclerView.ViewHolder {
-        public final ImageView icon;
-        public final TextView title;
-
+        public final MyprojectsItemSpecialBinding binding;
         private boolean isNewProjectAction = true;
 
-        public SpecialActionViewHolder(@NonNull View itemView) {
-            super(itemView);
-            icon = itemView.findViewById(R.id.iv_create_new);
-            title = itemView.findViewById(R.id.tv_create_new);
-            itemView.findViewById(R.id.project_one).setOnClickListener(v -> {
+        public SpecialActionViewHolder(@NonNull MyprojectsItemSpecialBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+            binding.projectOne.setOnClickListener(v -> {
                 if (isNewProjectAction()) {
                     projectsFragment.toProjectSettingsActivity();
                 } else {
@@ -302,8 +282,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public void setIsNewProjectAction(boolean b) {
             isNewProjectAction = b;
-            icon.setImageResource(isNewProjectAction ? R.drawable.plus_96 : R.drawable.data_backup_96);
-            title.setText(activity.getString(isNewProjectAction ? R.string.myprojects_list_menu_title_create_a_new_project : R.string.myprojects_list_menu_title_restore_projects));
+            binding.ivCreateNew.setImageResource(isNewProjectAction ? R.drawable.plus_96 : R.drawable.data_backup_96);
+            binding.tvCreateNew.setText(activity.getString(isNewProjectAction ? R.string.myprojects_list_menu_title_create_a_new_project : R.string.myprojects_list_menu_title_restore_projects));
         }
 
         public boolean isNewProjectAction() {
