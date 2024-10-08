@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.sketchware.remod.databinding.FragmentAboutAppBinding;
 
-import mod.ilyasse.activities.about.adapters.AboutAdapters;
+import mod.ilyasse.activities.about.adapters.ChangeLogAdapter;
 import mod.ilyasse.activities.about.models.AboutAppViewModel;
 
 public class ChangeLogFragment extends Fragment {
@@ -36,7 +36,7 @@ public class ChangeLogFragment extends Fragment {
     private void initViews() {
         aboutAppData.getChangelog().observe(getViewLifecycleOwner(), changeLogsArrayList -> {
             if (changeLogsArrayList != null && !changeLogsArrayList.isEmpty()) {
-                binding.list.setAdapter(new AboutAdapters.ChangelogRecyclerAdapter(changeLogsArrayList));
+                binding.list.setAdapter(new ChangeLogAdapter(changeLogsArrayList));
             }
         });
     }

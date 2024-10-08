@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.sketchware.remod.databinding.FragmentAboutAppBinding;
 
-import mod.ilyasse.activities.about.adapters.AboutAdapters;
+import mod.ilyasse.activities.about.adapters.TeamAdapter;
 import mod.ilyasse.activities.about.models.AboutAppViewModel;
 
 public class TeamFragment extends Fragment {
@@ -36,7 +36,7 @@ public class TeamFragment extends Fragment {
     private void initViews() {
         aboutAppData.getTeamMembers().observe(getViewLifecycleOwner(), teamArrayList -> {
             if (teamArrayList != null && !teamArrayList.isEmpty()) {
-                binding.list.setAdapter(new AboutAdapters.TeamRecyclerAdapter(teamArrayList));
+                binding.list.setAdapter(new TeamAdapter(teamArrayList));
             }
         });
     }
