@@ -19,17 +19,33 @@
             app:lottie_fileName="anim/loading_3balls.json"
             app:lottie_loop="true" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/myprojects"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingTop="8dp"
-            android:paddingBottom="80dp"
-            android:splitMotionEvents="false"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/myprojects_item"
-            tools:visibility="visible" />
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/special_action"
+                    layout="@layout/myprojects_item_special" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/myprojects"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="true"
+                    android:paddingBottom="80dp"
+                    android:splitMotionEvents="false"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/myprojects_item"
+                    tools:visibility="visible" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
     </RelativeLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

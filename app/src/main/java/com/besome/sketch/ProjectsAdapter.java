@@ -19,12 +19,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.BottomSheetProjectOptionsBinding;
 import com.sketchware.remod.databinding.MyprojectsItemBinding;
-import com.sketchware.remod.databinding.MyprojectsItemSpecialBinding;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
 
 import a.a.a.ZA;
 import a.a.a.aB;
@@ -41,7 +41,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final Activity activity;
     private List<HashMap<String, Object>> shownProjects = new ArrayList<>();
     private List<HashMap<String, Object>> allProjects;
-    private int shownSpecialActions = 1;
 
     public ProjectsAdapter(ProjectsFragment projectsFragment, List<HashMap<String, Object>> allProjects) {
         this.projectsFragment = projectsFragment;
@@ -53,35 +52,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         allProjects = projects;
     }
 
-    private void maybeAdjustSpecialActions() {
-        if (shownProjects.isEmpty()) {
-            if (!allProjects.isEmpty()) {
-                if (shownSpecialActions == 2) {
-                    shownSpecialActions = 1;
-                    notifyItemRemoved(0);
-                }
-            } else {
-                if (shownSpecialActions == 1) {
-                    notifyItemChanged(0);
-                    notifyItemInserted(1);
-                    shownSpecialActions = 2;
-                }
-            }
-        }
-    }
-
     public void filterData(String query) {
         List<HashMap<String, Object>> newProjects;
         if (query.isEmpty()) {
-            if (shownProjects.isEmpty()) {
-                int projectCount;
-                if ((projectCount = allProjects.size()) > 0) {
-                    shownProjects = allProjects;
-                    notifyItemChanged(0);
-                    notifyItemRangeInserted(1, projectCount);
-                }
-            }
-            maybeAdjustSpecialActions();
             newProjects = allProjects;
         } else {
             newProjects = new ArrayList<>();
@@ -92,9 +65,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         }
 
-        if (shownSpecialActions > 0) {
-            notifyItemRangeRemoved(0, shownSpecialActions);
-        }
         var result = DiffUtil.calculateDiff(new DiffUtil.Callback() {
             @Override
             public int getOldListSize() {
@@ -134,26 +104,11 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }, true);
         shownProjects = newProjects;
         result.dispatchUpdatesTo(this);
-        if (shownSpecialActions > 0) {
-            notifyItemRangeInserted(0, shownSpecialActions);
-        }
-
-        if (query.isEmpty()) {
-            if (shownSpecialActions == 0) {
-                shownSpecialActions = 1;
-                notifyItemInserted(0);
-            }
-        } else {
-            if (shownSpecialActions > 0) {
-                shownSpecialActions = 0;
-                notifyItemRemoved(0);
-            }
-        }
     }
 
     @Override
     public int getItemCount() {
-        return shownSpecialActions + shownProjects.size();
+        return shownProjects.size();
     }
 
     private boolean matchesQuery(HashMap<String, Object> projectMap, String searchQuery) {
@@ -173,84 +128,70 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int truePosition) {
-        if (viewHolder instanceof ProjectViewHolder holder) {
-            int position = truePosition - shownSpecialActions;
-            HashMap<String, Object> projectMap = shownProjects.get(position);
-            String scId = yB.c(projectMap, "sc_id");
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        ProjectViewHolder holder = (ProjectViewHolder) viewHolder;
+        HashMap<String, Object> projectMap = shownProjects.get(position);
+        String scId = yB.c(projectMap, "sc_id");
 
-            holder.binding.imgIcon.setImageResource(R.drawable.default_icon);
-            if (yB.c(projectMap, "sc_ver_code").isEmpty()) {
-                projectMap.put("sc_ver_code", "1");
-                projectMap.put("sc_ver_name", "1.0");
-                lC.b(scId, projectMap);
-            }
-
-            if (yB.b(projectMap, "sketchware_ver") <= 0) {
-                projectMap.put("sketchware_ver", 61);
-                lC.b(scId, projectMap);
-            }
-
-            if (yB.a(projectMap, "custom_icon")) {
-                Uri uri;
-                String iconFolder = wq.e() + File.separator + scId;
-                if (Build.VERSION.SDK_INT >= 24) {
-                    String providerPath = activity.getPackageName() + ".provider";
-                    uri = FileProvider.getUriForFile(activity, providerPath, new File(iconFolder, "icon.png"));
-                } else {
-                    uri = Uri.fromFile(new File(iconFolder, "icon.png"));
-                }
-
-                holder.binding.imgIcon.setImageURI(uri);
-            }
-
-            holder.binding.appName.setText(yB.c(projectMap, "my_ws_name"));
-            holder.binding.projectName.setText(yB.c(projectMap, "my_app_name"));
-            holder.binding.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
-            String version = yB.c(projectMap, "sc_ver_name") + "(" + yB.c(projectMap, "sc_ver_code") + ")";
-            holder.binding.projectVersion.setText(version);
-            holder.binding.tvPublished.setVisibility(View.VISIBLE);
-            holder.binding.tvPublished.setText(yB.c(projectMap, "sc_id"));
-            holder.itemView.setTag("custom");
-
-            holder.binding.projectOne.setOnClickListener(v -> {
-                if (!mB.a()) {
-                    projectsFragment.toDesignActivity(yB.c(projectMap, "sc_id"));
-                }
-            });
-
-            holder.binding.appIconLayout.setOnClickListener(v -> {
-                mB.a(v);
-                toProjectSettingOrRequestPermission(projectMap, position);
-            });
-
-            holder.binding.expand.setOnClickListener(v -> {
-                showProjectOptionsBottomSheet(projectMap, truePosition);
-            });
-
-            holder.binding.projectOne.setOnLongClickListener(v -> {
-                showProjectOptionsBottomSheet(projectMap, truePosition);
-                return true;
-            });
-        } else if (viewHolder instanceof SpecialActionViewHolder holder) {
-            boolean isNewProjectView = allProjects.isEmpty() && truePosition == 0;
-            holder.setIsNewProjectAction(isNewProjectView);
+        holder.binding.imgIcon.setImageResource(R.drawable.default_icon);
+        if (yB.c(projectMap, "sc_ver_code").isEmpty()) {
+            projectMap.put("sc_ver_code", "1");
+            projectMap.put("sc_ver_name", "1.0");
+            lC.b(scId, projectMap);
         }
-    }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position - shownSpecialActions < 0 ? 1 : 0;
+        if (yB.b(projectMap, "sketchware_ver") <= 0) {
+            projectMap.put("sketchware_ver", 61);
+            lC.b(scId, projectMap);
+        }
+
+        if (yB.a(projectMap, "custom_icon")) {
+            Uri uri;
+            String iconFolder = wq.e() + File.separator + scId;
+            if (Build.VERSION.SDK_INT >= 24) {
+                String providerPath = activity.getPackageName() + ".provider";
+                uri = FileProvider.getUriForFile(activity, providerPath, new File(iconFolder, "icon.png"));
+            } else {
+                uri = Uri.fromFile(new File(iconFolder, "icon.png"));
+            }
+
+            holder.binding.imgIcon.setImageURI(uri);
+        }
+
+        holder.binding.appName.setText(yB.c(projectMap, "my_ws_name"));
+        holder.binding.projectName.setText(yB.c(projectMap, "my_app_name"));
+        holder.binding.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
+        String version = yB.c(projectMap, "sc_ver_name") + " (" + yB.c(projectMap, "sc_ver_code") + ")";
+        holder.binding.projectVersion.setText(version);
+        holder.binding.tvPublished.setVisibility(View.VISIBLE);
+        holder.binding.tvPublished.setText(yB.c(projectMap, "sc_id"));
+        holder.itemView.setTag("custom");
+
+        holder.binding.projectOne.setOnClickListener(v -> {
+            if (!mB.a()) {
+                projectsFragment.toDesignActivity(yB.c(projectMap, "sc_id"));
+            }
+        });
+
+        holder.binding.getRoot().setOnClickListener(v -> {
+            mB.a(v);
+            toProjectSettingOrRequestPermission(projectMap, position);
+        });
+
+        holder.binding.expand.setOnClickListener(v -> {
+            showProjectOptionsBottomSheet(projectMap, position);
+        });
+
+        holder.binding.projectOne.setOnLongClickListener(v -> {
+            showProjectOptionsBottomSheet(projectMap, position);
+            return true;
+        });
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         var inflater = LayoutInflater.from(parent.getContext());
-        if (viewType == 1) {
-            var binding = MyprojectsItemSpecialBinding.inflate(inflater, parent, false);
-            return new SpecialActionViewHolder(binding);
-        }
         var binding = MyprojectsItemBinding.inflate(inflater, parent, false);
         return new ProjectViewHolder(binding);
     }
@@ -264,47 +205,19 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private class SpecialActionViewHolder extends RecyclerView.ViewHolder {
-        public final MyprojectsItemSpecialBinding binding;
-        private boolean isNewProjectAction = true;
-
-        public SpecialActionViewHolder(@NonNull MyprojectsItemSpecialBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-            binding.projectOne.setOnClickListener(v -> {
-                if (isNewProjectAction()) {
-                    projectsFragment.toProjectSettingsActivity();
-                } else {
-                    projectsFragment.restoreProject();
-                }
-            });
-        }
-
-        public void setIsNewProjectAction(boolean b) {
-            isNewProjectAction = b;
-            binding.ivCreateNew.setImageResource(isNewProjectAction ? R.drawable.plus_96 : R.drawable.data_backup_96);
-            binding.tvCreateNew.setText(activity.getString(isNewProjectAction ? R.string.myprojects_list_menu_title_create_a_new_project : R.string.myprojects_list_menu_title_restore_projects));
-        }
-
-        public boolean isNewProjectAction() {
-            return isNewProjectAction;
-        }
-    }
-
-    private void deleteProject(int truePosition) {
+    private void deleteProject(int position) {
         final ZA c = new ZA(activity);
         c.show();
 
-        var sc_id = yB.c(shownProjects.get(truePosition - shownSpecialActions), "sc_id");
+        var sc_id = yB.c(shownProjects.get(position), "sc_id");
         new Thread(() -> {
             lC.a(activity, sc_id);
             activity.runOnUiThread(() -> {
                 c.dismiss();
-                shownProjects.removeIf(project -> yB.c(project, "sc_id").equals(sc_id));
-                allProjects.removeIf(project -> yB.c(project, "sc_id").equals(sc_id));
-                notifyItemRemoved(truePosition);
-
-                maybeAdjustSpecialActions();
+                Predicate<HashMap<String, Object>> remover = (project -> yB.c(project, "sc_id").equals(sc_id));
+                shownProjects.removeIf(remover);
+                allProjects.removeIf(remover);
+                notifyItemRemoved(position);
             });
         }).start();
     }

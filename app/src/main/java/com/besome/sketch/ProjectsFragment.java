@@ -182,6 +182,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 }
             }
         });
+
+        binding.specialAction.getRoot().setOnClickListener(v -> restoreProject());
     }
 
     public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -219,6 +221,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 projectsAdapter.setAllProjects(new ArrayList<>(projectsList));
                 if (projectsSearchView != null)
                     projectsAdapter.filterData(projectsSearchView.getQuery().toString());
+
+                binding.myprojects.scrollToPosition(0);
             });
         }).start();
     }
