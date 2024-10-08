@@ -1,18 +1,10 @@
 package mod.hey.studios.project;
 
-import static mod.SketchwareUtil.getDip;
-
 import android.app.Activity;
-import android.text.InputType;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
-import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.DialogProjectSettingsBinding;
 
 import a.a.a.aB;
 import mod.hey.studios.util.Helper;
@@ -30,67 +22,33 @@ public class ProjectSettingsDialog {
     public void show() {
         aB dialog = new aB(activity);
         dialog.a(R.drawable.services_48);
-        dialog.b("Project Configuration");
+        dialog.b("Project configurations");
 
-        ScrollView preferenceScroller = new ScrollView(dialog.getContext());
-        {
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            preferenceScroller.setLayoutParams(layoutParams);
-        }
+        DialogProjectSettingsBinding binding = DialogProjectSettingsBinding.inflate(activity.getLayoutInflater());
 
-        LinearLayout preferenceContainer = new LinearLayout(dialog.getContext());
-        {
-            ViewGroup.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            preferenceContainer.setLayoutParams(layoutParams);
-            preferenceContainer.setOrientation(LinearLayout.VERTICAL);
-        }
+        binding.etMinimumSdkVersion.setText(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
+        binding.etTargetSdkVersion.setText(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "34"));
+        binding.etApplicationClassName.setText(settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication"));
 
-        EditText minimumSdkVersion = addInputPref(
-                ProjectSettings.SETTING_MINIMUM_SDK_VERSION,
-                "21",
-                "Minimum SDK version",
-                InputType.TYPE_CLASS_NUMBER,
-                preferenceContainer);
+        binding.cbRemoveOldMethods.setChecked(
+                settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, "false").equals("true"));
+        binding.cbUseNewMaterialComponentsAppTheme.setChecked(
+                settings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES, "false").equals("true"));
 
-        EditText targetSdkVersion = addInputPref(
-                ProjectSettings.SETTING_TARGET_SDK_VERSION,
-                "34",
-                "Target SDK version",
-                InputType.TYPE_CLASS_NUMBER,
-                preferenceContainer);
+        binding.etMinimumSdkVersion.setTag(ProjectSettings.SETTING_MINIMUM_SDK_VERSION);
+        binding.etTargetSdkVersion.setTag(ProjectSettings.SETTING_TARGET_SDK_VERSION);
+        binding.etApplicationClassName.setTag(ProjectSettings.SETTING_APPLICATION_CLASS);
+        binding.cbRemoveOldMethods.setTag(ProjectSettings.SETTING_DISABLE_OLD_METHODS);
+        binding.cbUseNewMaterialComponentsAppTheme.setTag(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES);
 
-        EditText applicationClassName = addInputPref(
-                ProjectSettings.SETTING_APPLICATION_CLASS,
-                ".SketchApplication",
-                "Application class name",
-                InputType.TYPE_CLASS_TEXT,
-                preferenceContainer);
-
-        CheckBox removeOldMethods = addTogglePref(
-                ProjectSettings.SETTING_DISABLE_OLD_METHODS,
-                false,
-                "Remove old deprecated methods in files, like showMessage, getDip, etc.",
-                preferenceContainer);
-
-        CheckBox useNewMaterialComponentsAppTheme = addTogglePref(
-                ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
-                false,
-                "Use new MaterialComponents AppTheme (will replace e.g. Button with MaterialButton, be careful!)",
-                preferenceContainer);
-
-        preferenceScroller.addView(preferenceContainer);
-        dialog.a(preferenceScroller);
+        dialog.a(binding.getRoot());
 
         final View[] preferences = {
-                minimumSdkVersion,
-                targetSdkVersion,
-                applicationClassName,
-                removeOldMethods,
-                useNewMaterialComponentsAppTheme
+                binding.etMinimumSdkVersion,
+                binding.etTargetSdkVersion,
+                binding.etApplicationClassName,
+                binding.cbRemoveOldMethods,
+                binding.cbUseNewMaterialComponentsAppTheme
         };
 
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
@@ -99,62 +57,5 @@ public class ProjectSettingsDialog {
             dialog.dismiss();
         });
         dialog.show();
-    }
-
-    private CheckBox addTogglePref(String key, boolean defaultState, String hint, LinearLayout layout) {
-        CheckBox i = new CheckBox(activity);
-        LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        l.setMargins(
-                0,
-                (int) getDip(10),
-                0,
-                0
-        );
-        i.setLayoutParams(l);
-        layout.addView(i);
-
-        String v = settings.getValue(key, defaultState ? "true" : "false");
-
-        i.setText(hint);
-        i.setChecked(v.equals("true"));
-        i.setPadding(
-                (int) getDip(4),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8)
-        );
-
-        i.setTag(key);
-
-        return i;
-    }
-
-    private EditText addInputPref(String key, String defaultValue, String hint, int inputType, LinearLayout layout) {
-        TextInputLayout i = new TextInputLayout(activity);
-        LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        l.setMargins(
-                0,
-                (int) getDip(10),
-                0,
-                0
-        );
-        i.setLayoutParams(l);
-        layout.addView(i);
-
-        EditText e = new EditText(activity);
-        e.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        e.setHint(hint);
-        e.setText(settings.getValue(key, defaultValue));
-        e.setTag(key);
-        e.setInputType(inputType);
-        i.addView(e);
-
-        return e;
     }
 }
