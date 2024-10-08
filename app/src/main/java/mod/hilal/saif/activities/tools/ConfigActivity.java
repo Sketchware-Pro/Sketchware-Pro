@@ -67,7 +67,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 .applyToView(binding.getRoot());
         setContentView(binding.getRoot());
 
-        binding.topAppBar.setTitle("Mod Settings");
+        binding.topAppBar.setTitle("App Settings");
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         var fragment = new PreferenceFragment();
         fragment.setSnackbarView(binding.getRoot());

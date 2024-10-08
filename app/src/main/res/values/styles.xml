@@ -243,15 +243,6 @@
         <item name="colorPrimaryDark">#ff000000</item>
     </style>
 
-    <style name="AboutPageTabLayout" parent="Base.Widget.Design.TabLayout">
-        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
-    </style>
-
-    <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textSize">14sp</item>
-        <item name="textAllCaps">false</item>
-    </style>
-
     <!--  bottom sheet style  -->
     <style name="BottomSheetCardStyle" parent="">
         <item name="cornerFamilyTopLeft">rounded</item>

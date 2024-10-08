@@ -50,7 +50,7 @@ import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
-import mod.ilyasse.activities.about.AboutAppActivity;
+import mod.ilyasse.activities.about.AboutActivity;
 import mod.jbk.util.LogUtil;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
@@ -246,7 +246,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
             dialog.b("View", v -> {
                 dialog.dismiss();
-                Intent launcher = new Intent(this, AboutAppActivity.class);
+                Intent launcher = new Intent(this, AboutActivity.class);
                 launcher.putExtra("select", "majorChanges");
                 startActivity(launcher);
             });

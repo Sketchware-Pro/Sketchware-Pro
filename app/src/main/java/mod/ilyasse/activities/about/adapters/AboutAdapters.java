@@ -1,4 +1,4 @@
-package mod.ilyasse.activities.about;
+package mod.ilyasse.activities.about.adapters;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -28,15 +28,19 @@ import com.sketchware.remod.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
+
+import mod.ilyasse.activities.about.models.AboutResponseModel;
 
 public class AboutAdapters {
+
     public static class TeamRecyclerAdapter extends RecyclerView.Adapter<TeamRecyclerAdapter.ViewHolder> {
 
-        private final ArrayList<HashMap<String, Object>> team;
+        private final ArrayList<AboutResponseModel.TeamMember> team;
 
-        public TeamRecyclerAdapter(ArrayList<HashMap<String, Object>> data) {
+        public TeamRecyclerAdapter(ArrayList<AboutResponseModel.TeamMember> data) {
             team = data;
         }
 
@@ -52,33 +56,32 @@ public class AboutAdapters {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            Object contributorImg = team.get(position).get("modder_img");
-            if (contributorImg instanceof String) {
-                circularImage(holder.icon, (String) contributorImg);
+            AboutResponseModel.TeamMember member = team.get(position);
+
+            // Load image
+            String contributorImg = member.getMemberImg();
+            if (contributorImg != null) {
+                circularImage(holder.icon, contributorImg);
             }
 
-            Object contributorUsername = team.get(position).get("modder_username");
-            if (contributorUsername instanceof String) {
-                holder.username.setText((String) contributorUsername);
+            // Set username
+            String contributorUsername = member.getMemberUsername();
+            if (contributorUsername != null) {
+                holder.username.setText(contributorUsername);
             }
 
-            Object contributorDescription = team.get(position).get("modder_description");
-            if (contributorDescription instanceof String) {
-                holder.description.setText((String) contributorDescription);
+            // Set description
+            String contributorDescription = member.getMemberDescription();
+            if (contributorDescription != null) {
+                holder.description.setText(contributorDescription);
             }
 
-            Object isTitled = team.get(position).get("isTitled");
-            boolean isTitle = false;
-            if (isTitled instanceof String) {
-                isTitle = Boolean.parseBoolean((String) isTitled);
-            } else if (isTitled instanceof Boolean) {
-                isTitle = (boolean) isTitled;
-            }
-
-            Object titleText = team.get(position).get("title");
-            if (isTitle) {
-                if (titleText instanceof String) {
-                    holder.title.setText((String) titleText);
+            // Handle title
+            boolean isTitled = member.isTitled();
+            if (isTitled) {
+                String titleText = member.getTitle();
+                if (titleText != null) {
+                    holder.title.setText(titleText);
                     holder.title.setVisibility(View.VISIBLE);
                 } else {
                     holder.title.setVisibility(View.GONE);
@@ -87,33 +90,20 @@ public class AboutAdapters {
                 holder.title.setVisibility(View.GONE);
             }
 
-
-            Object isPartofTeam = team.get(position).get("isMainModder");
-            boolean isPartofTeamBool = false;
-            if (isPartofTeam instanceof String) {
-                isPartofTeamBool = Boolean.parseBoolean((String) isPartofTeam);
-            } else if (isPartofTeam instanceof Boolean) {
-                isPartofTeamBool = (boolean) isPartofTeam;
-            }
-
-            if (isPartofTeamBool) {
+            // Handle sidebar color and status
+            boolean isMainModder = member.isMainModder();
+            if (isMainModder) {
                 advancedCorners(holder.sidebar, MaterialColors.getColor(holder.sidebar, com.google.android.material.R.attr.colorPrimary));
             } else {
                 advancedCorners(holder.sidebar, MaterialColors.getColor(holder.sidebar, R.attr.colorGreen));
             }
 
-            if (isPartofTeamBool) {
+            if (isMainModder) {
                 holder.status.setVisibility(View.VISIBLE);
-                Object isActive = team.get(position).get("isActive");
-                boolean isActiveBool = false;
-                if (isActive instanceof String) {
-                    isActiveBool = Boolean.parseBoolean((String) isActive);
-                } else if (isActive instanceof Boolean) {
-                    isActiveBool = (boolean) isActive;
-                }
+                boolean isActive = member.isActive();
                 int activeBackgroundColor;
                 int activeBackgroundTextColor;
-                if (isActiveBool) {
+                if (isActive) {
                     holder.status.setText("Active");
                     activeBackgroundColor = MaterialColors.getColor(holder.status, R.attr.colorCoolGreenContainer);
                     activeBackgroundTextColor = MaterialColors.getColor(holder.status, R.attr.colorOnCoolGreenContainer);
@@ -131,9 +121,7 @@ public class AboutAdapters {
 
         @Override
         public int getItemCount() {
-            if (team != null)
-                return team.size();
-            return 0;
+            return team != null ? team.size() : 0;
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -158,10 +146,10 @@ public class AboutAdapters {
 
     public static class ChangelogRecyclerAdapter extends RecyclerView.Adapter<ChangelogRecyclerAdapter.ViewHolder> {
 
-        private static final String CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO = "showingAdditionalInfo";
-        private final ArrayList<HashMap<String, Object>> changelog;
+        private final ArrayList<AboutResponseModel.ChangeLogs> changelog;
+        private final Set<Integer> showingAdditionalInfoPositions = new HashSet<>();
 
-        public ChangelogRecyclerAdapter(ArrayList<HashMap<String, Object>> data) {
+        public ChangelogRecyclerAdapter(ArrayList<AboutResponseModel.ChangeLogs> data) {
             changelog = data;
         }
 
@@ -172,56 +160,36 @@ public class AboutAdapters {
             var view = inflater.inflate(R.layout.about_changelog, null);
             var layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             view.setLayoutParams(layoutParams);
-            return new ChangelogRecyclerAdapter.ViewHolder(view);
+            return new ViewHolder(view);
         }
 
         @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            HashMap<String, Object> release = changelog.get(position);
+            AboutResponseModel.ChangeLogs release = changelog.get(position);
 
-            Object isTitled = release.get("isTitled");
-            boolean isTitle = false;
-            if (isTitled instanceof String) {
-                isTitle = Boolean.parseBoolean((String) isTitled);
-            } else if (isTitled instanceof Boolean) {
-                isTitle = (boolean) isTitled;
-            }
-
-            if (isTitle) {
-                holder.title.setVisibility(View.VISIBLE);
-                Object titleText = release.get("title");
-
-                if (titleText instanceof String) {
-                    holder.title.setText((String) titleText);
+            // Handle title
+            boolean isTitled = release.isTitled();
+            if (isTitled) {
+                String titleText = release.getTitle();
+                if (titleText != null) {
+                    holder.title.setText(titleText);
+                    holder.title.setVisibility(View.VISIBLE);
                 } else {
                     holder.title.setText("We've messed something up, sorry for the inconvenience!\n" +
                             "(Details: Invalid data type of \"title\")");
+                    holder.title.setVisibility(View.VISIBLE);
                 }
             } else {
                 holder.title.setVisibility(View.GONE);
             }
 
-
-            boolean isBetaVersion = false;
-            Object isBeta = release.get("isBeta");
-            if (isBeta instanceof String) {
-                isBetaVersion = Boolean.parseBoolean((String) isBeta);
-            } else if (isBeta instanceof Boolean) {
-                isBetaVersion = (boolean) isBeta;
-            }
-
+            // Handle variant
+            boolean isBetaVersion = release.isBeta();
             boolean previousIsBetaValueDiffers = true;
             if (position != 0) {
-                HashMap<String, Object> previousChangelog = changelog.get(position - 1);
-
-                Object previousIsBeta = previousChangelog.get("isBeta");
-
-                if (previousIsBeta instanceof String) {
-                    previousIsBetaValueDiffers = Boolean.parseBoolean((String) previousIsBeta) != isBetaVersion;
-                } else if (previousIsBeta instanceof Boolean) {
-                    previousIsBetaValueDiffers = ((boolean) previousIsBeta) != isBetaVersion;
-                }
+                boolean previousIsBeta = changelog.get(position - 1).isBeta();
+                previousIsBetaValueDiffers = previousIsBeta != isBetaVersion;
             }
 
             holder.variant.setVisibility(previousIsBetaValueDiffers ? View.VISIBLE : View.GONE);
@@ -229,56 +197,48 @@ public class AboutAdapters {
                 holder.variant.setText(isBetaVersion ? "Beta" : "Official");
             }
 
-
-            Object releaseDate = release.get("releaseDate");
-
-            if (releaseDate instanceof Double) {
+            // Handle release date
+            long releaseDate = release.getReleaseDate();
+            if (releaseDate > 0) {
                 holder.releasedOn.setVisibility(View.VISIBLE);
-                long timestamp = ((Double) releaseDate).longValue();
-
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                holder.releasedOn.setText("Released on: " + formatter.format(new Date(timestamp)));
+                holder.releasedOn.setText("Released on: " + formatter.format(new Date(releaseDate)));
             } else {
                 holder.releasedOn.setVisibility(View.GONE);
             }
 
-            Object description = release.get("description");
-
-            if (description instanceof String) {
-                holder.subtitle.setText((String) description);
+            // Handle description
+            String description = release.getDescription();
+            if (description != null) {
+                holder.subtitle.setText(description);
                 Linkify.addLinks(holder.subtitle, Linkify.WEB_URLS);
             } else {
                 holder.subtitle.setText("We've messed something up, sorry for the inconvenience!\n" +
                         "(Details: Invalid data type of \"description\")");
             }
 
-            boolean showingAdditionalInfo = false;
-            Object showingAdditionalInfoObject;
-            if (release.containsKey(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO) &&
-                    (showingAdditionalInfoObject = release.get(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO)) instanceof Boolean &&
-                    ((Boolean) showingAdditionalInfoObject)) {
-                showingAdditionalInfo = true;
-            }
+            // Handle additional info visibility
+            boolean showingAdditionalInfo = showingAdditionalInfoPositions.contains(position);
 
             holder.viewAdditionalInfo.setVisibility(showingAdditionalInfo ? View.VISIBLE : View.GONE);
             holder.arrow.setRotation(showingAdditionalInfo ? 0 : 180);
+
             holder.arrow.setOnClickListener(v -> holder.logBackground.performClick());
 
             holder.logBackground.setOnClickListener(v -> {
-                if (holder.viewAdditionalInfo.getVisibility() == View.VISIBLE) {
+                if (showingAdditionalInfoPositions.contains(position)) {
                     shadAnim(holder.arrow, "rotation", 180, 220);
                     holder.viewAdditionalInfo.setVisibility(View.GONE);
-                    release.put(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO, false);
+                    showingAdditionalInfoPositions.remove(position);
                 } else {
                     shadAnim(holder.arrow, "rotation", 0, 220);
                     holder.viewAdditionalInfo.setVisibility(View.VISIBLE);
-                    release.put(CHANGELOG_KEY_SHOWING_ADDITIONAL_INFO, true);
+                    showingAdditionalInfoPositions.add(position);
                 }
                 animateLayoutChanges(holder.logBackground);
-
-                notifyItemChanged(position);
             });
-            if (0 == position) {
+
+            if (position == 0) {
                 advancedCorners(holder.leftLine, Color.parseColor("#2f55ed"));
             } else {
                 holder.leftLine.setBackground(null);
@@ -338,7 +298,6 @@ public class AboutAdapters {
     }
 
     private static void animateLayoutChanges(LinearLayout view) {
-        //i used this instead of the xml attribute because this one looks better and smoother.
         AutoTransition autoTransition = new AutoTransition();
         autoTransition.setDuration((short) 300);
         TransitionManager.beginDelayedTransition(view, autoTransition);
