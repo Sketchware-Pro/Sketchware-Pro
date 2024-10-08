@@ -1,5 +1,8 @@
 package mod.hey.studios.project;
 
+import static com.besome.sketch.Config.VAR_DEFAULT_MIN_SDK_VERSION;
+import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
+
 import android.app.Activity;
 import android.view.View;
 
@@ -26,8 +29,8 @@ public class ProjectSettingsDialog {
 
         DialogProjectSettingsBinding binding = DialogProjectSettingsBinding.inflate(activity.getLayoutInflater());
 
-        binding.etMinimumSdkVersion.setText(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
-        binding.etTargetSdkVersion.setText(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "34"));
+        binding.etMinimumSdkVersion.setText(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION, String.valueOf(VAR_DEFAULT_MIN_SDK_VERSION)));
+        binding.etTargetSdkVersion.setText(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)));
         binding.etApplicationClassName.setText(settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication"));
 
         binding.cbRemoveOldMethods.setChecked(

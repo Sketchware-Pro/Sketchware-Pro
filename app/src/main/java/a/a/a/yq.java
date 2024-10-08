@@ -1,5 +1,7 @@
 package a.a.a;
 
+import static com.besome.sketch.Config.VAR_DEFAULT_MIN_SDK_VERSION;
+import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
 import static mod.hey.studios.util.ProjectFile.getDefaultColor;
 
 import android.content.Context;
@@ -304,7 +306,7 @@ public class yq {
      */
     public void h() {
         fileUtil.b(projectMyscPath + File.separator + "app" + File.separator + "build.gradle",
-                Lx.getBuildGradleString(28, 21, projectSettings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28"), N));
+                Lx.getBuildGradleString(VAR_DEFAULT_TARGET_SDK_VERSION, VAR_DEFAULT_MIN_SDK_VERSION, projectSettings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)), N));
         fileUtil.b(projectMyscPath + File.separator + "settings.gradle", Lx.a());
         fileUtil.b(projectMyscPath + File.separator + "build.gradle", Lx.c("8.2.2", "4.4.2"));
     }
