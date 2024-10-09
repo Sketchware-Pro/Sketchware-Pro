@@ -1,6 +1,7 @@
 package a.a.a;
 
 import static android.text.TextUtils.isEmpty;
+import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
 
 import android.Manifest;
 import android.app.Service;
@@ -407,7 +408,7 @@ public class Ix {
 
     public void setYq(yq yqVar) {
         settings = new ProjectSettings(yqVar.sc_id);
-        targetsSdkVersion31OrHigher = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 31;
+        targetsSdkVersion31OrHigher = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION))) >= 31;
         packageName = yqVar.packageName;
     }
 
@@ -419,9 +420,9 @@ public class Ix {
     public String a() {
         int targetSdkVersion;
         try {
-            targetSdkVersion = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28"));
+            targetSdkVersion = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)));
         } catch (NumberFormatException ignored) {
-            targetSdkVersion = 28;
+            targetSdkVersion = VAR_DEFAULT_TARGET_SDK_VERSION;
         }
         boolean addRequestLegacyExternalStorage = targetSdkVersion >= 28;
 

@@ -298,7 +298,7 @@
             android:name="mod.hilal.saif.activities.tools.AppSettings"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="mod.ilyasse.activities.about.AboutModActivity"
+            android:name="mod.ilyasse.activities.about.AboutActivity"
             android:configChanges="orientation|screenSize" />
         <activity android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
         <activity

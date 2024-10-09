@@ -11,8 +11,12 @@
     -->
 
     <style name="Widget.SketchwarePro.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
-        <item name="collapsedTitleTextAppearance">@style/TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed</item>
-        <item name="expandedTitleTextAppearance">@style/TextAppearance.SketchwarePro.CollapsingToolbar.Expanded</item>
+        <item name="collapsedTitleTextAppearance">
+            @style/TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed
+        </item>
+        <item name="expandedTitleTextAppearance">
+            @style/TextAppearance.SketchwarePro.CollapsingToolbar.Expanded
+        </item>
         <item name="titleCollapseMode">scale</item>
     </style>
 
@@ -45,7 +49,9 @@
 
     <style name="Widget.SketchwarePro.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="hintEnabled">true</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SketchwarePro.TextInputLayout</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearanceOverlay.SketchwarePro.TextInputLayout
+        </item>
         <item name="android:bottomLeftRadius">14dp</item>
         <item name="android:bottomRightRadius">14dp</item>
         <item name="android:topLeftRadius">14dp</item>
@@ -62,4 +68,18 @@
     <style name="Preference.SketchwarePro.SwitchPreferenceCompat" parent="@style/Preference.SwitchPreferenceCompat.Material">
         <item name="widgetLayout">@layout/preference_widget_layout_m3_switch</item>
     </style>
+
+    <!--  TabLayout style  -->
+    <style name="TabLayoutStyle" parent="Base.Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
+        <item name="tabIndicatorColor">?attr/colorPrimary</item>
+        <item name="tabIndicator">@drawable/view_tab_indicator</item>
+        <item name="tabIndicatorAnimationMode">elastic</item>
+        <item name="tabSelectedTextColor">?attr/colorPrimary</item>
+    </style>
+
+    <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
+        <item name="textAllCaps">false</item>
+    </style>
+    <!--  end TabLayout style  -->
 </resources>

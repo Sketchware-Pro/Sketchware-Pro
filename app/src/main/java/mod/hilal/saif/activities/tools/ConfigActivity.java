@@ -52,7 +52,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
     public static final String SETTING_SHOW_EVERY_SINGLE_BLOCK = "show-every-single-block";
     public static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
     public static final String SETTING_USE_ASD_HIGHLIGHTER = "use-asd-highlighter";
-    public static final String SETTING_SKIP_MAJOR_CHANGES_REMINDER = "skip-major-changes-reminder";
+    public static final String SETTING_CRITICAL_UPDATE_REMINDER = "critical-update-reminder";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
 
@@ -67,7 +67,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 .applyToView(binding.getRoot());
         setContentView(binding.getRoot());
 
-        binding.topAppBar.setTitle("Mod Settings");
+        binding.topAppBar.setTitle("App Settings");
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         var fragment = new PreferenceFragment();
         fragment.setSnackbarView(binding.getRoot());

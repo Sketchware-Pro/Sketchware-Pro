@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -183,6 +182,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 }
             }
         });
+
+        binding.specialAction.getRoot().setOnClickListener(v -> restoreProject());
     }
 
     public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -197,7 +198,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     });
 
     public void refreshProjectsList() {
-        Log.d("ProjectsFragment", "Refreshing projects list...");
         // Don't load project list without having permissions
         if (!c()) {
             if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
@@ -221,6 +221,8 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 projectsAdapter.setAllProjects(new ArrayList<>(projectsList));
                 if (projectsSearchView != null)
                     projectsAdapter.filterData(projectsSearchView.getQuery().toString());
+
+                binding.myprojects.scrollToPosition(0);
             });
         }).start();
     }

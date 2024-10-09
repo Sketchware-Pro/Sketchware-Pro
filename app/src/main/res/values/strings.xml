@@ -2190,7 +2190,7 @@ Please try again later"</string>
     <string name="common_word_add_activtiy">Add Activity</string>
     <string name="delete_custom_activity_dialog_message">All features related to %1$s will be removed. Are you sure?</string>
     <string name="delete_custom_activity_dialog_title">Delete Activity</string>
-    <string name="delete_project_dialog_title">Delete Project</string>
+    <string name="delete_project_dialog_title">Delete project</string>
     <string name="delete_project_dialog_message">Are you sure you want to delete this project named %1$s?</string>
     <string name="src_code_editor_unsaved_changes_dialog_warning_message">You have unsaved changes. Are you sure you want to exit?</string>
     <string name="change_firebase_config_title">Change Firebase Config</string>

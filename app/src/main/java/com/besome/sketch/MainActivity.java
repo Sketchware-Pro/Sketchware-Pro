@@ -7,12 +7,12 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -51,7 +51,8 @@ import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
-import mod.ilyasse.activities.about.AboutModActivity;
+import mod.ilyasse.activities.about.AboutActivity;
+import mod.ilyasse.utils.base.BottomSheetDialogView;
 import mod.jbk.util.LogUtil;
 import mod.tyron.backup.CallBackTask;
 import mod.tyron.backup.SingleCopyAsyncTask;
@@ -238,26 +239,46 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                     }
                 }).execute(data);
             }
-        } else if (hasStorageAccess && !ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER)) {
-            aB dialog = new aB(this);
-            dialog.b("New changes in v6.4.0");
-            dialog.a("Just as a reminder; There have been many changes since v6.3.0 fix1, " +
-                    "and it's important to know them all if you want your projects to still work.\n" +
-                    "You can view all changes whenever you want at the updated About Sketchware Pro screen.");
+        } else if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_CRITICAL_UPDATE_REMINDER)) {
 
-            dialog.b("View", v -> {
-                dialog.dismiss();
-                Intent launcher = new Intent(this, AboutModActivity.class);
-                launcher.putExtra("select", "majorChanges");
-                startActivity(launcher);
-            });
-            dialog.a("Close", Helper.getDialogDismissListener(dialog));
-            dialog.configureDefaultButton("Never show again", v -> {
-                ConfigActivity.setSetting(ConfigActivity.SETTING_SKIP_MAJOR_CHANGES_REMINDER, true);
-                dialog.dismiss();
-            });
-            dialog.show();
+            BottomSheetDialogView bottomSheetDialog = getBottomSheetDialogView();
+
+            bottomSheetDialog.getPositiveButton().setEnabled(false);
+
+            CountDownTimer countDownTimer = new CountDownTimer(20000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    bottomSheetDialog.setPositiveButtonText(millisUntilFinished / 1000 + "");
+                }
+
+                public void onFinish() {
+                    bottomSheetDialog.setPositiveButtonText("View changes");
+                    bottomSheetDialog.getPositiveButton().setEnabled(true);
+                }
+            };
+            countDownTimer.start();
+
+            if (!this.isFinishing()) bottomSheetDialog.show();
         }
+    }
+
+    @NonNull
+    private BottomSheetDialogView getBottomSheetDialogView() {
+        BottomSheetDialogView bottomSheetDialog = new BottomSheetDialogView(this);
+        bottomSheetDialog.setTitle("Major changes in V6.4.0");
+        bottomSheetDialog.setDescription("""
+                There have been major changes since v6.3.0 fix1, \
+                and it's very important to know them all if you want your projects to still work.
+                
+                You can view all changes whenever you want at the updated About Sketchware Pro screen.""");
+
+        bottomSheetDialog.setPositiveButton("View changes", (dialog, which) -> {
+            ConfigActivity.setSetting(ConfigActivity.SETTING_CRITICAL_UPDATE_REMINDER, true);
+            Intent launcher = new Intent(this, AboutActivity.class);
+            launcher.putExtra("select", "changelog");
+            startActivity(launcher);
+        });
+        bottomSheetDialog.setCancelable(false);
+        return bottomSheetDialog;
     }
 
     @Override
