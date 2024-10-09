@@ -36,22 +36,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get Git Commit Info
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
         run: |
-          echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
-          echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
-          echo "COMMIT_HASH=$(git log -1 --pretty=format:'%H')" >> $GITHUB_ENV
+          pip install requests
 
       - name: Send a message to Telegram
         env:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-          MESSAGE: "A new [build](https://github.com/Sketchware-Pro/Sketchware-Pro/commit/${{ env.COMMIT_HASH }}) has been triggered by *${{ env.COMMIT_AUTHOR }}*\\.\n\n*Commit message:*\n>${{ env.COMMIT_MESSAGE }}\n\n\nI will send you the APKs here if the build is successful\\."
         run: |
-          curl -s -X POST https://api.telegram.org/bot${BOT_TOKEN}/sendMessage \
-          -d "{\"message_thread_id\": \"${TOPIC_ID}\", \"chat_id\": \"${CHAT_ID}\", \"text\": \"${MESSAGE}\", \"parse_mode\": \"markdownv2\", \"disable_web_page_preview\": true}" \
-          -H "Content-Type: application/json"
+          python ./.github/workflows/notify_telegram.py
         continue-on-error: true
 
   build:
@@ -108,10 +108,13 @@ jobs:
           name: apk-minApi26-debug
           path: ./downloaded-artifact/minApi26
 
-      - name: Set up Python environment
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
         run: |
-          python -m venv venv
-          . venv/bin/activate
           pip install telethon
 
       - name: Get Git Commit Info
@@ -135,10 +138,6 @@ jobs:
           TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
           APK_MIN_API21: ./downloaded-artifact/minApi21/app-minApi21-debug.apk
           APK_MIN_API26: ./downloaded-artifact/minApi26/app-minApi26-debug.apk
-          DESCRIPTION: |
-            **Commit by:** ${{ env.COMMIT_AUTHOR }}
-            **Commit message:** ${{ env.COMMIT_MESSAGE }}
         run: |
-          . venv/bin/activate
           python ./.github/workflows/deploy_artifacts.py
         continue-on-error: true
