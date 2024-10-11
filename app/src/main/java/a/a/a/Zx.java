@@ -92,7 +92,7 @@ public class Zx extends PopupWindow {
         j.setHasFixedSize(true);
         LinearLayoutManager var12 = new LinearLayoutManager(var2.getApplicationContext());
         j.setLayoutManager(var12);
-        j.setAdapter(new a(this));
+        j.setAdapter(new ColorsAdapter(this));
         j.setItemAnimator(new DefaultItemAnimator());
         f = var1.findViewById(2131231026);
         ((TextInputLayout) var1.findViewById(2131231807)).setHint(xB.b().a(var2, 2131625752));
@@ -329,10 +329,10 @@ public class Zx extends PopupWindow {
         j.getAdapter().notifyDataSetChanged();
     }
 
-    public class a extends RecyclerView.Adapter<a> {
-        public final Zx c;
+    private class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorViewHolder> {
+        private final Zx c;
 
-        public a(Zx var1) {
+        public ColorsAdapter(Zx var1) {
             c = var1;
         }
 
@@ -340,7 +340,7 @@ public class Zx extends PopupWindow {
             return c.c.get(c.l).length;
         }
 
-        public void onBindViewHolder(a var1, int var2) {
+        public void onBindViewHolder(ColorViewHolder var1, int var2) {
             TextView var3 = var1.u;
             ColorBean var4 = ((ColorBean[]) c.c.get(c.l))[var2];
             boolean var5;
@@ -365,18 +365,18 @@ public class Zx extends PopupWindow {
 
         }
 
-        public a onCreateViewHolder(ViewGroup var1, int var2) {
-            return new a(this, LayoutInflater.from(var1.getContext()).inflate(2131427375, var1, false));
+        public ColorViewHolder onCreateViewHolder(ViewGroup var1, int var2) {
+            return new ColorViewHolder(this, LayoutInflater.from(var1.getContext()).inflate(2131427375, var1, false));
         }
 
-        public class a extends RecyclerView.ViewHolder {
+        private class ColorViewHolder extends RecyclerView.ViewHolder {
             public View t;
             public TextView u;
             public TextView v;
             public ImageView w;
-            public final a x;
+            public final ColorsAdapter x;
 
-            public a(a var1, View var2) {
+            public ColorViewHolder(ColorsAdapter var1, View var2) {
                 super(var2);
                 x = var1;
                 t = var2.findViewById(2131231326);
