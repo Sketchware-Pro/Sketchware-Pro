@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ColorBean;
 import com.besome.sketch.editor.view.ColorGroupItem;
 import com.google.android.material.textfield.TextInputLayout;
+import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 
@@ -51,16 +52,16 @@ public class Zx extends PopupWindow {
 
     private void deleteAllSavedColors() {
         aB dialog = new aB(activity);
-        dialog.a(2131165524);
-        dialog.b(xB.b().a(activity, 2131625755));
-        dialog.a(xB.b().a(activity, 0x7f0e0719));
-        dialog.b(xB.b().a(activity, 2131624986), v -> {
+        dialog.a(R.drawable.delete_96);
+        dialog.b(xB.b().a(activity, R.string.picker_color_title_delete_all_custom_color));
+        dialog.a(xB.b().a(activity, R.string.picker_color_message_delete_all_custom_color));
+        dialog.b(xB.b().a(activity, R.string.common_word_delete), v -> {
             colorPref.a();
             colorGroups.set(0, getSavedColorBeans());
             notifyChanges();
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(activity, 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(activity, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
@@ -92,20 +93,20 @@ public class Zx extends PopupWindow {
         int[] widthAndHeight = GB.c(activity);
         super.setWidth(widthAndHeight[0]);
         super.setHeight(widthAndHeight[1]);
-        i = contentView.findViewById(2131231351);
-        d = contentView.findViewById(2131231327);
-        recyclerView = contentView.findViewById(2131230905);
+        i = contentView.findViewById(R.id.layout_hsv_color);
+        d = contentView.findViewById(R.id.layout_color_title);
+        recyclerView = contentView.findViewById(R.id.color_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(activity.getApplicationContext()));
         recyclerView.setAdapter(new ColorsAdapter());
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        f = contentView.findViewById(2131231026);
-        ((TextInputLayout) contentView.findViewById(2131231807)).setHint(xB.b().a(activity, 2131625752));
-        g = contentView.findViewById(2131231932);
-        colorValidator = new XB(activity, contentView.findViewById(2131231807), g);
+        f = contentView.findViewById(R.id.et_custom_color);
+        ((TextInputLayout) contentView.findViewById(R.id.ti_custom_color)).setHint(xB.b().a(activity, R.string.picker_color_hint_enter_hex_color_code));
+        g = contentView.findViewById(R.id.tv_custom_color);
+        colorValidator = new XB(activity, contentView.findViewById(R.id.ti_custom_color), g);
         f.setPrivateImeOptions("defaultInputmode=english;");
-        h = contentView.findViewById(2131231864);
-        h.setText(xB.b().a(activity, 2131624970).toUpperCase());
+        h = contentView.findViewById(R.id.tv_add_color);
+        h.setText(xB.b().a(activity, R.string.common_word_add).toUpperCase());
         h.setOnClickListener(view -> {
             if (colorValidator.b()) {
                 String formattedColor = String.format("#%8s", f.getText().toString()).replaceAll(" ", "F");
@@ -123,7 +124,7 @@ public class Zx extends PopupWindow {
             colorGroupItem.b.setOnClickListener(v -> {
                 l = finalJ;
                 if (finalJ == 0 && colorGroups.get(finalJ).length == 0) {
-                    bB.b(activity, xB.b().a(activity, 2131625751), 1).show();
+                    bB.b(activity, xB.b().a(activity, R.string.picker_color_custom_color_not_found), 1).show();
 
                 }
                 recyclerView.getAdapter().notifyDataSetChanged();
@@ -134,9 +135,9 @@ public class Zx extends PopupWindow {
             d.addView(colorGroupItem);
             if (j == k) {
                 colorGroupItem.c.setImageResource(colorBean.icon);
-                colorGroupItem.c.setVisibility(0);
+                colorGroupItem.c.setVisibility(View.VISIBLE);
             } else {
-                colorGroupItem.c.setVisibility(8);
+                colorGroupItem.c.setVisibility(View.GONE);
             }
 
             colorGroupItem.b.setOnLongClickListener(v -> {
@@ -167,20 +168,20 @@ public class Zx extends PopupWindow {
 
     private void showColorRemoveDialog(String color) {
         aB dialog = new aB(activity);
-        dialog.a(2131165524);
-        dialog.b(xB.b().a(activity, 2131625756));
-        dialog.a(xB.b().a(activity, 2131625754));
-        dialog.b(xB.b().a(activity, 2131624986), v -> {
+        dialog.a(R.drawable.delete_96);
+        dialog.b(xB.b().a(activity, R.string.picker_color_title_delete_custom_color));
+        dialog.a(xB.b().a(activity, R.string.picker_color_message_delete_custom_color));
+        dialog.b(xB.b().a(activity, R.string.common_word_delete), v -> {
             removeSavedColor(color);
             notifyChanges();
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(activity, 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.a(xB.b().a(activity, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
 
     private void initializeColorData(boolean isColorTransparent, boolean isColorNone) {
-        colorList.add(new ColorBean("#FFF6F6F6", "CUSTOM", "#212121", 2131165412));
+        colorList.add(new ColorBean("#FFF6F6F6", "CUSTOM", "#212121", R.drawable.checked_grey_32));
         colorList.add(sq.p[0]);
         colorList.add(sq.q[0]);
         colorList.add(sq.r[0]);
@@ -300,7 +301,7 @@ public class Zx extends PopupWindow {
                             {
                                 ColorBean var13;
                                 try {
-                                    var13 = new ColorBean(colorStrings[var3], "CUSTOM", "#212121", 2131165412);
+                                    var13 = new ColorBean(colorStrings[var3], "CUSTOM", "#212121", R.drawable.checked_grey_32);
                                 } catch (Exception var9) {
                                     var10001 = false;
                                     break label44;
@@ -311,7 +312,7 @@ public class Zx extends PopupWindow {
                             }
                         } else {
                             try {
-                                colorBeans[var3] = new ColorBean(colorStrings[var3], "CUSTOM", "#ffffff", 2131165414);
+                                colorBeans[var3] = new ColorBean(colorStrings[var3], "CUSTOM", "#ffffff", R.drawable.checked_white_32);
                                 break label52;
                             } catch (Exception var10) {
                                 var10001 = false;
@@ -343,7 +344,7 @@ public class Zx extends PopupWindow {
     private void savePickedColor(String color) {
         String savedColors = colorPref.f("P24I1");
         if (savedColors.contains(color)) {
-            bB.b(activity, xB.b().a(activity, 2131625750), 0).show();
+            bB.b(activity, xB.b().a(activity, R.string.picker_color_already_exist), 0).show();
         } else {
             String colorsToSave = color + "," + savedColors;
             colorPref.a("P24I1", colorsToSave);
@@ -385,16 +386,16 @@ public class Zx extends PopupWindow {
             holder.t.setBackgroundColor(((ColorBean[]) colorGroups.get(l))[position].colorCode);
             if (position == m && l == k) {
                 holder.w.setImageResource(((ColorBean[]) colorGroups.get(l))[position].icon);
-                holder.w.setVisibility(0);
+                holder.w.setVisibility(View.VISIBLE);
             } else {
-                holder.w.setVisibility(8);
+                holder.w.setVisibility(View.GONE);
             }
 
         }
 
         @NonNull
         public ColorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ColorViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427375, parent, false));
+            return new ColorViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.color_picker_item, parent, false));
         }
 
         private class ColorViewHolder extends RecyclerView.ViewHolder {
@@ -406,10 +407,10 @@ public class Zx extends PopupWindow {
 
             public ColorViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(2131231326);
-                u = itemView.findViewById(2131231915);
-                v = itemView.findViewById(2131231916);
-                w = itemView.findViewById(2131231182);
+                t = itemView.findViewById(R.id.layout_color_item);
+                u = itemView.findViewById(R.id.tv_color_code);
+                v = itemView.findViewById(R.id.tv_color_name);
+                w = itemView.findViewById(R.id.img_selector);
                 itemView.setOnClickListener(v -> {
                     if (colorPickerCallback != null) {
                         if (u.getText().toString().equals("TRANSPARENT")) {
