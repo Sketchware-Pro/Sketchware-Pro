@@ -1234,8 +1234,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 a(ss, String.format("0x%08X", i & (Color.WHITE)));
             }
         });
-        zx.setBackgroundDrawable(null);
-        zx.setAnimationStyle(android.R.style.Animation_Dialog);
         zx.showAtLocation(a2, Gravity.CENTER, 0, 0);
     }
 

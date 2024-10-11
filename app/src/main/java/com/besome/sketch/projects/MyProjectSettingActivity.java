@@ -380,8 +380,6 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private void pickColor(int colorIndex) {
         View view = wB.a(this, R.layout.color_picker);
         Zx zx = new Zx(view, this, projectThemeColors[colorIndex], false, false);
-        zx.setBackgroundDrawable(null);
-        zx.setAnimationStyle(android.R.style.Animation_Dialog);
         zx.a(pickedColor -> {
             projectThemeColors[colorIndex] = pickedColor;
             syncThemeColors();

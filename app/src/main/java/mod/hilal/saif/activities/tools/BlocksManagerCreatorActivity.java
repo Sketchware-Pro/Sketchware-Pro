@@ -187,8 +187,6 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             View inflate = getLayoutInflater().inflate(R.layout.color_picker, null);
             Zx zx = new Zx(inflate, this, 0, true, false);
             zx.a(new PCP(binding.colour));
-            zx.setBackgroundDrawable(null);
-            zx.setAnimationStyle(android.R.style.Animation_Dialog);
             zx.showAtLocation(inflate, Gravity.CENTER, 0, 0);
         });
 

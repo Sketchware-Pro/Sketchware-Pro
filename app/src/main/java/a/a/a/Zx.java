@@ -86,7 +86,8 @@ public class Zx extends PopupWindow {
                 }
             }
         }
-
+        super.setBackgroundDrawable(null);
+        super.setAnimationStyle(android.R.style.Animation_Dialog);
         super.setFocusable(true);
         super.setOutsideTouchable(true);
         super.setContentView(contentView);
