@@ -117,12 +117,12 @@ public class ProjectSettings {
                 //String value = (String) v.getTag(1);
                 String value;
 
-                if (v instanceof EditText) {
-                    value = ((EditText) v).getText().toString();
-                } else if (v instanceof Checkable) {
-                    value = ((Checkable) v).isChecked() ? "true" : "false";
-                } else if (v instanceof RadioGroup) {
-                    value = getCheckedRbValue((RadioGroup) v);
+                if (v instanceof EditText editText) {
+                    value = editText.getText().toString();
+                } else if (v instanceof Checkable checkable) {
+                    value = checkable.isChecked() ? "true" : "false";
+                } else if (v instanceof RadioGroup radioGroup) {
+                    value = getCheckedRbValue(radioGroup);
                 } else {
                     continue;
                 }
