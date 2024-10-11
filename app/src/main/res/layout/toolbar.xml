@@ -14,5 +14,5 @@
         android:contentDescription="@string/title_sketchware"
         android:scaleType="fitCenter"
         android:src="@drawable/top_title_logo"
-        app:tint="?attr/colorOnSurface" />
+        app:tint="?attr/colorPrimary" />
 </androidx.appcompat.widget.Toolbar>

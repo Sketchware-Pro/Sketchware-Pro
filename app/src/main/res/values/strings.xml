@@ -2180,7 +2180,7 @@ Please try again later"</string>
 
     <!--  links  -->
     <string name="link_github_release">https://github.com/Sketchware-Pro/Sketchware-Pro/releases</string>
-    <string name="link_docs_url">https://sketchware-pro.vercel.app/docs</string>
+    <string name="link_docs_url">https://docs.sketchware.pro</string>
     <string name="link_ideas_url">https://discord.gg/4uxhMwCt</string>
     <string name="link_discord_invite">https://discord.gg/kq39yhT4rX</string>
     <string name="link_telegram_invite">https://t.me/sketchwarepro</string>

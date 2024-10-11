@@ -42,7 +42,7 @@ public class BuildSettingsDialog {
                 addSingleChoicePref(BuildSettings.SETTING_JAVA_VERSION, BuildSettingsDialogBridge.getAvailableJavaVersions(), "1.7", "Java version", contentView),
                 addTogglePref(BuildSettings.SETTING_NO_WARNINGS, true, "Hide warnings in error log", contentView),
                 addTogglePref(BuildSettings.SETTING_NO_HTTP_LEGACY, false, "Don't include http-legacy-28.dex", contentView),
-                addTogglePref(BuildSettings.SETTING_ENABLE_LOGCAT, true, "Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs.", contentView)
+                addTogglePref(BuildSettings.SETTING_ENABLE_LOGCAT, false, "Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs.", contentView)
         };
         var builder = new MaterialAlertDialogBuilder(activity)
                 .setTitle("Build Settings")

@@ -487,12 +487,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         k.setBackgroundColor(0xff0084c2);
         k.setOrientation(LinearLayout.HORIZONTAL);
         k.setGravity(Gravity.CENTER_VERTICAL);
-        k.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 25.0f)));
+        k.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 25f)));
         fileName = new TextView(context);
         fileName.setTextColor(Color.WHITE);
         fileName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        fileName.setPadding((int) (f * 8.0f), 0, 0, 0);
+        fileName.setPadding((int) (f * 8f), 0, 0, 0);
         fileName.setGravity(Gravity.CENTER_VERTICAL);
         k.addView(fileName);
         imgPhoneTopBg = new ImageView(context);

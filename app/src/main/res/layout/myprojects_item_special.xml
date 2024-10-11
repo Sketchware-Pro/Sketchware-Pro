@@ -19,9 +19,8 @@
             android:id="@+id/iv_create_new"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:scaleType="fitCenter"
             android:src="@drawable/ic_restore_white_24dp"
-            app:tint="?attr/colorSurfaceInverse" />
+            app:tint="?colorControlNormal" />
 
         <TextView
             android:id="@+id/tv_create_new"
@@ -29,6 +28,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/myprojects_list_menu_title_restore_projects"
-            android:textColor="?attr/colorSurfaceInverse" />
+            android:textColor="?attr/colorOnSurface" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
