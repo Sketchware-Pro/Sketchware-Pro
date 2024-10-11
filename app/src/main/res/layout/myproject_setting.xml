@@ -1,5 +1,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingBottom="40dp"
             android:paddingHorizontal="16dp">
 
             <LinearLayout
@@ -120,8 +122,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingEnd="8dp"
-                        android:paddingStart="8dp">
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp">
 
                         <HorizontalScrollView
                             android:layout_width="0dp"
@@ -162,17 +164,20 @@
                         android:id="@+id/img_color_guide"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
                         android:background="#ff000000"
+                        android:scaleType="fitCenter"
                         android:src="@drawable/color_guide"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="64dp"
                 android:layout_marginTop="13dp"
+                android:layout_marginBottom="64dp"
                 app:strokeColor="?attr/colorOutline">
 
                 <LinearLayout
