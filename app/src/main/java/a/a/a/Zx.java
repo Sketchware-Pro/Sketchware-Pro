@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,61 +28,59 @@ import mod.hey.studios.util.Helper;
 
 public class Zx extends PopupWindow {
 
-    public b a;
-    public ArrayList<ColorBean> b = new ArrayList();
-    public ArrayList<ColorBean[]> c = new ArrayList();
-    public LinearLayout d;
-    public XB e;
-    public EditText f;
-    public TextView g;
-    public TextView h;
-    public HorizontalScrollView i;
-    public RecyclerView j;
-    public int k;
-    public int l;
-    public int m = -1;
-    public DB n;
-    public View o;
-    public Activity p;
+    private b colorPickerCallback;
+    private final ArrayList<ColorBean> colorList = new ArrayList<>();
+    private final ArrayList<ColorBean[]> colorGroups = new ArrayList<>();
+    private LinearLayout d;
+    private XB colorValidator;
+    private EditText f;
+    private TextView g;
+    private TextView h;
+    private HorizontalScrollView i;
+    private RecyclerView recyclerView;
+    private int k;
+    private int l;
+    private int m = -1;
+    private DB colorPref;
+    private Activity activity;
 
-    public Zx(View var1, Activity var2, int var3, boolean var4, boolean var5) {
-        super(var2);
-        a(var1, var2, var3, var4, var5);
+    public Zx(View contentView, Activity activity, int var3, boolean var4, boolean var5) {
+        super(activity);
+        initialize(contentView, activity, var3, var4, var5);
     }
 
-    public final void a() {
-        aB var1 = new aB(p);
-        var1.a(2131165524);
-        var1.b(xB.b().a(p, 2131625755));
-        var1.a(xB.b().a(p, 2131625753));
-        var1.b(xB.b().a(p, 2131624986), v -> {
-            n.a();
-            c.set(0, b());
-            d();
-            var1.dismiss();
+    private void deleteAllSavedColors() {
+        aB dialog = new aB(activity);
+        dialog.a(2131165524);
+        dialog.b(xB.b().a(activity, 2131625755));
+        dialog.a(xB.b().a(activity, 0x7f0e0719));
+        dialog.b(xB.b().a(activity, 2131624986), v -> {
+            colorPref.a();
+            colorGroups.set(0, getSavedColorBeans());
+            notifyChanges();
+            dialog.dismiss();
         });
-        var1.a(xB.b().a(p, 2131624974), Helper.getDialogDismissListener(var1));
-        var1.show();
+        dialog.a(xB.b().a(activity, 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
-    public void a(b var1) {
-        a = var1;
+    public void a(b callback) {
+        colorPickerCallback = callback;
     }
 
-    public void a(View var1, Activity var2, int var3, boolean var4, boolean var5) {
-        p = var2;
-        o = var1;
-        n = new DB(var2, "P24");
-        a(var4, var5);
+    public void initialize(View contentView, Activity activity, int var3, boolean var4, boolean var5) {
+        this.activity = activity;
+        colorPref = new DB(activity, "P24");
+        initializeColorData(var4, var5);
 
-        for (int var6 = 0; var6 < c.size(); ++var6) {
-            ColorBean[] var7 = c.get(var6);
+        for (int groupIndex = 0; groupIndex < colorGroups.size(); ++groupIndex) {
+            ColorBean[] colorBeans = colorGroups.get(groupIndex);
 
-            for (int var8 = 0; var8 < var7.length; ++var8) {
-                if (var7[var8].colorCode == var3) {
-                    k = var6;
-                    l = var6;
-                    m = var8;
+            for (int colorIndex = 0; colorIndex < colorBeans.length; ++colorIndex) {
+                if (colorBeans[colorIndex].colorCode == var3) {
+                    k = groupIndex;
+                    l = groupIndex;
+                    m = colorIndex;
                     break;
                 }
             }
@@ -89,74 +88,73 @@ public class Zx extends PopupWindow {
 
         super.setFocusable(true);
         super.setOutsideTouchable(true);
-        super.setContentView(var1);
-        int[] var11 = GB.c(var2);
-        super.setWidth(var11[0]);
-        super.setHeight(var11[1]);
-        i = var1.findViewById(2131231351);
-        d = var1.findViewById(2131231327);
-        j = var1.findViewById(2131230905);
-        j.setHasFixedSize(true);
-        LinearLayoutManager var12 = new LinearLayoutManager(var2.getApplicationContext());
-        j.setLayoutManager(var12);
-        j.setAdapter(new ColorsAdapter(this));
-        j.setItemAnimator(new DefaultItemAnimator());
-        f = var1.findViewById(2131231026);
-        ((TextInputLayout) var1.findViewById(2131231807)).setHint(xB.b().a(var2, 2131625752));
-        g = var1.findViewById(2131231932);
-        e = new XB(var2, var1.findViewById(2131231807), g);
+        super.setContentView(contentView);
+        int[] widthAndHeight = GB.c(activity);
+        super.setWidth(widthAndHeight[0]);
+        super.setHeight(widthAndHeight[1]);
+        i = contentView.findViewById(2131231351);
+        d = contentView.findViewById(2131231327);
+        recyclerView = contentView.findViewById(2131230905);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity.getApplicationContext()));
+        recyclerView.setAdapter(new ColorsAdapter());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        f = contentView.findViewById(2131231026);
+        ((TextInputLayout) contentView.findViewById(2131231807)).setHint(xB.b().a(activity, 2131625752));
+        g = contentView.findViewById(2131231932);
+        colorValidator = new XB(activity, contentView.findViewById(2131231807), g);
         f.setPrivateImeOptions("defaultInputmode=english;");
-        h = var1.findViewById(2131231864);
-        h.setText(xB.b().a(var2, 2131624970).toUpperCase());
+        h = contentView.findViewById(2131231864);
+        h.setText(xB.b().a(activity, 2131624970).toUpperCase());
         h.setOnClickListener(view -> {
-            if (e.b()) {
+            if (colorValidator.b()) {
                 String formattedColor = String.format("#%8s", f.getText().toString()).replaceAll(" ", "F");
-                c(formattedColor.toUpperCase());
-                d();
+                savePickedColor(formattedColor.toUpperCase());
+                notifyChanges();
             }
         });
-        j.getAdapter().notifyItemChanged(m);
+        recyclerView.getAdapter().notifyItemChanged(m);
         d.removeAllViews();
 
-        for (int j = 0; j < b.size(); ++j) {
-            ColorGroupItem var13 = new ColorGroupItem(var2);
-            ColorBean var9 = b.get(j);
+        for (int j = 0; j < colorList.size(); ++j) {
+            ColorGroupItem colorGroupItem = new ColorGroupItem(activity);
+            ColorBean colorBean = colorList.get(j);
             int finalJ = j;
-            var13.b.setOnClickListener(v -> {
+            colorGroupItem.b.setOnClickListener(v -> {
                 l = finalJ;
-                if (finalJ == 0 && c.get(finalJ).length == 0) {
-                    bB.b(var2, xB.b().a(var2, 2131625751), 1).show();
+                if (finalJ == 0 && colorGroups.get(finalJ).length == 0) {
+                    bB.b(activity, xB.b().a(activity, 2131625751), 1).show();
 
                 }
-                this.j.getAdapter().notifyDataSetChanged();
+                recyclerView.getAdapter().notifyDataSetChanged();
             });
-            var13.b.setText(var9.colorName);
-            var13.b.setTextColor(var9.displayNameColor);
-            var13.b.setBackgroundColor(var9.colorCode);
-            d.addView(var13);
+            colorGroupItem.b.setText(colorBean.colorName);
+            colorGroupItem.b.setTextColor(colorBean.displayNameColor);
+            colorGroupItem.b.setBackgroundColor(colorBean.colorCode);
+            d.addView(colorGroupItem);
             if (j == k) {
-                var13.c.setImageResource(var9.icon);
-                var13.c.setVisibility(0);
+                colorGroupItem.c.setImageResource(colorBean.icon);
+                colorGroupItem.c.setVisibility(0);
             } else {
-                var13.c.setVisibility(8);
+                colorGroupItem.c.setVisibility(8);
             }
 
-            var13.b.setOnLongClickListener(v -> {
-                if (finalJ == 0) a();
+            colorGroupItem.b.setOnLongClickListener(v -> {
+                if (finalJ == 0) deleteAllSavedColors();
                 return false;
             });
         }
 
-        Animation var10 = var1.getAnimation();
-        if (var10 != null) {
-            var10.setAnimationListener(new Animation.AnimationListener() {
+        Animation animation = contentView.getAnimation();
+        if (animation != null) {
+            animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    c();
+                    smoothScrollToCurrentItem();
                 }
 
                 @Override
@@ -167,101 +165,97 @@ public class Zx extends PopupWindow {
 
     }
 
-    public final void a(String var1) {
-        aB var2 = new aB(p);
-        var2.a(2131165524);
-        var2.b(xB.b().a(p, 2131625756));
-        var2.a(xB.b().a(p, 2131625754));
-        var2.b(xB.b().a(p, 2131624986), v -> {
-            b(var1);
-            d();
-            var2.dismiss();
+    private void showColorRemoveDialog(String color) {
+        aB dialog = new aB(activity);
+        dialog.a(2131165524);
+        dialog.b(xB.b().a(activity, 2131625756));
+        dialog.a(xB.b().a(activity, 2131625754));
+        dialog.b(xB.b().a(activity, 2131624986), v -> {
+            removeSavedColor(color);
+            notifyChanges();
+            dialog.dismiss();
         });
-        var2.a(xB.b().a(p, 2131624974), Helper.getDialogDismissListener(var2));
-        var2.show();
+        dialog.a(xB.b().a(activity, 2131624974), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
-    public void a(boolean var1, boolean var2) {
-        b.add(new ColorBean("#FFF6F6F6", "CUSTOM", "#212121", 2131165412));
-        b.add(sq.p[0]);
-        b.add(sq.q[0]);
-        b.add(sq.r[0]);
-        b.add(sq.s[0]);
-        b.add(sq.t[0]);
-        b.add(sq.u[0]);
-        b.add(sq.v[0]);
-        b.add(sq.w[0]);
-        b.add(sq.x[0]);
-        b.add(sq.y[0]);
-        b.add(sq.z[0]);
-        b.add(sq.A[0]);
-        b.add(sq.B[0]);
-        b.add(sq.C[0]);
-        b.add(sq.D[0]);
-        b.add(sq.E[0]);
-        b.add(sq.F[0]);
-        b.add(sq.G[0]);
-        b.add(sq.H[0]);
-        b.add(sq.I[0]);
-        b.add(sq.J[0]);
-        c.add(b());
-        c.add(sq.p);
-        c.add(sq.q);
-        c.add(sq.r);
-        c.add(sq.s);
-        c.add(sq.t);
-        c.add(sq.u);
-        c.add(sq.v);
-        c.add(sq.w);
-        c.add(sq.x);
-        c.add(sq.y);
-        c.add(sq.z);
-        c.add(sq.A);
-        c.add(sq.B);
-        c.add(sq.C);
-        c.add(sq.D);
-        c.add(sq.E);
-        c.add(sq.F);
-        c.add(sq.G);
-        c.add(sq.H);
-        c.add(sq.I);
-        c.add(sq.J);
-        if (var1) {
-            b.add(sq.K[0]);
-            c.add(sq.K);
+    private void initializeColorData(boolean isColorTransparent, boolean isColorNone) {
+        colorList.add(new ColorBean("#FFF6F6F6", "CUSTOM", "#212121", 2131165412));
+        colorList.add(sq.p[0]);
+        colorList.add(sq.q[0]);
+        colorList.add(sq.r[0]);
+        colorList.add(sq.s[0]);
+        colorList.add(sq.t[0]);
+        colorList.add(sq.u[0]);
+        colorList.add(sq.v[0]);
+        colorList.add(sq.w[0]);
+        colorList.add(sq.x[0]);
+        colorList.add(sq.y[0]);
+        colorList.add(sq.z[0]);
+        colorList.add(sq.A[0]);
+        colorList.add(sq.B[0]);
+        colorList.add(sq.C[0]);
+        colorList.add(sq.D[0]);
+        colorList.add(sq.E[0]);
+        colorList.add(sq.F[0]);
+        colorList.add(sq.G[0]);
+        colorList.add(sq.H[0]);
+        colorList.add(sq.I[0]);
+        colorList.add(sq.J[0]);
+        colorGroups.add(getSavedColorBeans());
+        colorGroups.add(sq.p);
+        colorGroups.add(sq.q);
+        colorGroups.add(sq.r);
+        colorGroups.add(sq.s);
+        colorGroups.add(sq.t);
+        colorGroups.add(sq.u);
+        colorGroups.add(sq.v);
+        colorGroups.add(sq.w);
+        colorGroups.add(sq.x);
+        colorGroups.add(sq.y);
+        colorGroups.add(sq.z);
+        colorGroups.add(sq.A);
+        colorGroups.add(sq.B);
+        colorGroups.add(sq.C);
+        colorGroups.add(sq.D);
+        colorGroups.add(sq.E);
+        colorGroups.add(sq.F);
+        colorGroups.add(sq.G);
+        colorGroups.add(sq.H);
+        colorGroups.add(sq.I);
+        colorGroups.add(sq.J);
+        if (isColorTransparent) {
+            colorList.add(sq.K[0]);
+            colorGroups.add(sq.K);
         }
-
-        if (var2) {
-            b.add(sq.L[0]);
-            c.add(sq.L);
+        if (isColorNone) {
+            colorList.add(sq.L[0]);
+            colorGroups.add(sq.L);
         }
-
     }
 
-    public final void b(String var1) {
-        String var2 = n.f("P24I1");
-        if (var2.contains(var1)) {
-            String var3 = var1 +
-                    ",";
-            var1 = var2.replaceAll(var3, "");
-            n.a("P24I1", var1);
-            c.set(0, b());
-            d();
+    private void removeSavedColor(String color) {
+        String savedColors = colorPref.f("P24I1");
+        if (savedColors.contains(color)) {
+            String colorToRemove = color + ",";
+            String colorToSave = savedColors.replaceAll(colorToRemove, "");
+            colorPref.a("P24I1", colorToSave);
+            colorGroups.set(0, getSavedColorBeans());
+            notifyChanges();
         }
-
     }
 
-    public final ColorBean[] b() {
-        String var1 = n.f("P24I1");
+    private ColorBean[] getSavedColorBeans() {
+        String savedColors = colorPref.f("P24I1");
         ColorBean[] var4;
-        if (!var1.isEmpty()) {
-            String[] var2 = var1.split(",");
-            ColorBean[] var12 = new ColorBean[var2.length];
+        if (!savedColors.isEmpty()) {
+            String[] colorStrings = savedColors.split(",");
+            ColorBean[] colorBeans = new ColorBean[colorStrings.length];
             int var3 = 0;
 
             while (true) {
-                var4 = var12;
-                if (var3 >= var2.length) {
+                var4 = colorBeans;
+                if (var3 >= colorStrings.length) {
                     break;
                 }
 
@@ -275,7 +269,7 @@ public class Zx extends PopupWindow {
                         int var8;
                         boolean var10001;
                         try {
-                            var5 = Color.parseColor(var2[var3]);
+                            var5 = Color.parseColor(colorStrings[var3]);
                             var6 = Color.red(var5);
                             var7 = Color.green(var5);
                             var8 = Color.blue(var5);
@@ -306,18 +300,18 @@ public class Zx extends PopupWindow {
                             {
                                 ColorBean var13;
                                 try {
-                                    var13 = new ColorBean(var2[var3], "CUSTOM", "#212121", 2131165412);
+                                    var13 = new ColorBean(colorStrings[var3], "CUSTOM", "#212121", 2131165412);
                                 } catch (Exception var9) {
                                     var10001 = false;
                                     break label44;
                                 }
 
-                                var12[var3] = var13;
+                                colorBeans[var3] = var13;
                                 break label52;
                             }
                         } else {
                             try {
-                                var12[var3] = new ColorBean(var2[var3], "CUSTOM", "#ffffff", 2131165414);
+                                colorBeans[var3] = new ColorBean(colorStrings[var3], "CUSTOM", "#ffffff", 2131165414);
                                 break label52;
                             } catch (Exception var10) {
                                 var10001 = false;
@@ -325,8 +319,8 @@ public class Zx extends PopupWindow {
                         }
                     }
 
-                    n.a();
-                    var12 = new ColorBean[0];
+                    colorPref.a();
+                    colorBeans = new ColorBean[0];
                 }
 
                 ++var3;
@@ -338,106 +332,98 @@ public class Zx extends PopupWindow {
         return var4;
     }
 
-    public final void c() {
+    private void smoothScrollToCurrentItem() {
         if (k < d.getChildCount()) {
-            View var1 = d.getChildAt(k);
-            i.smoothScrollTo((int) var1.getX(), 0);
-            j.scrollToPosition(m);
+            View childView = d.getChildAt(k);
+            i.smoothScrollTo((int) childView.getX(), 0);
+            recyclerView.scrollToPosition(m);
         }
     }
 
-    public final void c(String var1) {
-        String var2 = n.f("P24I1");
-        if (var2.contains(var1)) {
-            bB.b(p, xB.b().a(p, 2131625750), 0).show();
+    private void savePickedColor(String color) {
+        String savedColors = colorPref.f("P24I1");
+        if (savedColors.contains(color)) {
+            bB.b(activity, xB.b().a(activity, 2131625750), 0).show();
         } else {
-            String var3 = var1 +
-                    "," +
-                    var2;
-            var1 = var3;
-            n.a("P24I1", var1);
-            c.set(0, b());
-            d();
+            String colorsToSave = color + "," + savedColors;
+            colorPref.a("P24I1", colorsToSave);
+            colorGroups.set(0, getSavedColorBeans());
+            notifyChanges();
             k = 0;
-            c();
+            smoothScrollToCurrentItem();
         }
     }
 
-    public final void d() {
+    private void notifyChanges() {
         l = 0;
         k = 0;
         m = 0;
-        j.getAdapter().notifyDataSetChanged();
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     private class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorViewHolder> {
-        private final Zx c;
 
-        public ColorsAdapter(Zx var1) {
-            c = var1;
+        public ColorsAdapter() {
         }
 
         public int getItemCount() {
-            return c.c.get(c.l).length;
+            return colorGroups.get(l).length;
         }
 
-        public void onBindViewHolder(ColorViewHolder var1, int var2) {
-            TextView var3 = var1.u;
-            ColorBean var4 = ((ColorBean[]) c.c.get(c.l))[var2];
-            boolean var5;
-            var5 = c.l == 0;
+        public void onBindViewHolder(ColorViewHolder holder, int position) {
+            ColorBean colorBean = ((ColorBean[]) colorGroups.get(l))[position];
 
-            var3.setText(var4.getColorCode(var5));
-            if (var2 == 0) {
-                var1.v.setText(((ColorBean[]) c.c.get(c.l))[0].colorName);
+            holder.u.setText(colorBean.getColorCode(l == 0));
+            if (position == 0) {
+                holder.v.setText(((ColorBean[]) colorGroups.get(l))[0].colorName);
             } else {
-                var1.v.setText("");
+                holder.v.setText("");
             }
 
-            var1.u.setTextColor(((ColorBean[]) c.c.get(c.l))[var2].displayNameColor);
-            var1.v.setTextColor(((ColorBean[]) c.c.get(c.l))[var2].displayNameColor);
-            var1.t.setBackgroundColor(((ColorBean[]) c.c.get(c.l))[var2].colorCode);
-            if (var2 == c.m && c.l == c.k) {
-                var1.w.setImageResource(((ColorBean[]) c.c.get(c.l))[var2].icon);
-                var1.w.setVisibility(0);
+            holder.u.setTextColor(((ColorBean[]) colorGroups.get(l))[position].displayNameColor);
+            holder.v.setTextColor(((ColorBean[]) colorGroups.get(l))[position].displayNameColor);
+            holder.t.setBackgroundColor(((ColorBean[]) colorGroups.get(l))[position].colorCode);
+            if (position == m && l == k) {
+                holder.w.setImageResource(((ColorBean[]) colorGroups.get(l))[position].icon);
+                holder.w.setVisibility(0);
             } else {
-                var1.w.setVisibility(8);
+                holder.w.setVisibility(8);
             }
 
         }
 
-        public ColorViewHolder onCreateViewHolder(ViewGroup var1, int var2) {
-            return new ColorViewHolder(this, LayoutInflater.from(var1.getContext()).inflate(2131427375, var1, false));
+        @NonNull
+        public ColorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ColorViewHolder(LayoutInflater.from(parent.getContext()).inflate(2131427375, parent, false));
         }
 
         private class ColorViewHolder extends RecyclerView.ViewHolder {
+
             public View t;
             public TextView u;
             public TextView v;
             public ImageView w;
-            public final ColorsAdapter x;
 
-            public ColorViewHolder(ColorsAdapter var1, View var2) {
-                super(var2);
-                x = var1;
-                t = var2.findViewById(2131231326);
-                u = var2.findViewById(2131231915);
-                v = var2.findViewById(2131231916);
-                w = var2.findViewById(2131231182);
-                var2.setOnClickListener(v -> {
-                    if (a != null) {
+            public ColorViewHolder(View itemView) {
+                super(itemView);
+                t = itemView.findViewById(2131231326);
+                u = itemView.findViewById(2131231915);
+                v = itemView.findViewById(2131231916);
+                w = itemView.findViewById(2131231182);
+                itemView.setOnClickListener(v -> {
+                    if (colorPickerCallback != null) {
                         if (u.getText().toString().equals("TRANSPARENT")) {
-                            a.a(0);
+                            colorPickerCallback.a(0);
                         } else if (u.getText().toString().equals("NONE")) {
-                            a.a(0xffffff);
+                            colorPickerCallback.a(0xffffff);
                         } else {
-                            a.a(Color.parseColor(u.getText().toString()));
+                            colorPickerCallback.a(Color.parseColor(u.getText().toString()));
                         }
                     }
-                    c.dismiss();
+                    dismiss();
                 });
-                var2.setOnLongClickListener(v -> {
-                    if (l == 0) a(u.getText().toString());
+                itemView.setOnLongClickListener(v -> {
+                    if (l == 0) showColorRemoveDialog(u.getText().toString());
                     return false;
                 });
             }
