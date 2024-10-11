@@ -36,7 +36,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -788,7 +787,7 @@ public class ProjectBuilder {
      * <p>
      * This method uses apksigner, but kellinwood's zipsigner as fallback.
      */
-    public void signDebugApk() throws GeneralSecurityException, IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public void signDebugApk() {
         TestkeySignBridge.signWithTestkey(yq.unsignedUnalignedApkPath, yq.finalToInstallApkPath);
     }
 
