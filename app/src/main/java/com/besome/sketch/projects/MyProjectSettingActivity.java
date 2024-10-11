@@ -13,7 +13,6 @@ import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -380,13 +379,13 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
     private void pickColor(int colorIndex) {
         View view = wB.a(this, R.layout.color_picker);
-        view.setAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_fade_in));
         Zx zx = new Zx(view, this, projectThemeColors[colorIndex], false, false);
+        zx.setBackgroundDrawable(null);
+        zx.setAnimationStyle(android.R.style.Animation_Dialog);
         zx.a(pickedColor -> {
             projectThemeColors[colorIndex] = pickedColor;
             syncThemeColors();
         });
-        zx.setAnimationStyle(R.anim.abc_fade_in);
         zx.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
