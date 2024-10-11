@@ -22,7 +22,6 @@ import com.sketchware.remod.databinding.FileSelectorPopupSelectXmlActivityItemBi
 import com.sketchware.remod.databinding.FileSelectorPopupSelectXmlBinding;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.eC;
 import a.a.a.hC;
@@ -391,12 +390,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         ArrayList<ViewBean> d = jC.a(sc_id).d(xmlName);
         while (true) {
             boolean z = false;
-            Iterator<ViewBean> it = d.iterator();
-            while (true) {
-                if (!it.hasNext()) {
-                    break;
-                }
-                if (sb2.equals(it.next().id)) {
+            for (ViewBean viewBean : d) {
+                if (sb2.equals(viewBean.id)) {
                     z = true;
                     break;
                 }
@@ -404,12 +399,12 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             if (!z) {
                 return sb2;
             }
-            StringBuilder sb3 = new StringBuilder();
-            sb3.append(b);
-            int i3 = x[viewType] + 1;
-            x[viewType] = i3;
-            sb3.append(i3);
-            sb2 = sb3.toString();
+            sb = new StringBuilder();
+            sb.append(b);
+            i2 = x[viewType] + 1;
+            x[viewType] = i2;
+            sb.append(i2);
+            sb2 = sb.toString();
         }
     }
 
