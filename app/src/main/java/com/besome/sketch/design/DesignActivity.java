@@ -535,6 +535,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             projectLoader.execute();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            SystemLogPrinter.stop();
         }
     }
 
