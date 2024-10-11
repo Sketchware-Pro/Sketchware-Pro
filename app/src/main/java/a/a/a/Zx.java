@@ -17,12 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ColorBean;
 import com.besome.sketch.editor.view.ColorGroupItem;
 import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.ArrayList;
 
 public class Zx extends PopupWindow {
@@ -68,10 +71,10 @@ public class Zx extends PopupWindow {
         this.n = new DB(var2, "P24");
         this.a(var4, var5);
 
-        for(int var6 = 0; var6 < this.c.size(); ++var6) {
-            ColorBean[] var7 = (ColorBean[])this.c.get(var6);
+        for (int var6 = 0; var6 < this.c.size(); ++var6) {
+            ColorBean[] var7 = (ColorBean[]) this.c.get(var6);
 
-            for(int var8 = 0; var8 < var7.length; ++var8) {
+            for (int var8 = 0; var8 < var7.length; ++var8) {
                 if (var7[var8].colorCode == var3) {
                     this.k = var6;
                     this.l = var6;
@@ -87,28 +90,28 @@ public class Zx extends PopupWindow {
         int[] var11 = GB.c(var2);
         super.setWidth(var11[0]);
         super.setHeight(var11[1]);
-        this.i = (HorizontalScrollView)var1.findViewById(2131231351);
-        this.d = (LinearLayout)var1.findViewById(2131231327);
-        this.j = (RecyclerView)var1.findViewById(2131230905);
+        this.i = (HorizontalScrollView) var1.findViewById(2131231351);
+        this.d = (LinearLayout) var1.findViewById(2131231327);
+        this.j = (RecyclerView) var1.findViewById(2131230905);
         this.j.setHasFixedSize(true);
         LinearLayoutManager var12 = new LinearLayoutManager(var2.getApplicationContext());
         this.j.setLayoutManager(var12);
         this.j.setAdapter(new a(this));
         this.j.setItemAnimator(new DefaultItemAnimator());
-        this.f = (EditText)var1.findViewById(2131231026);
-        ((TextInputLayout)var1.findViewById(2131231807)).setHint(xB.b().a(var2, 2131625752));
-        this.g = (TextView)var1.findViewById(2131231932);
-        this.e = new XB(var2, (TextInputLayout)var1.findViewById(2131231807), this.g);
+        this.f = (EditText) var1.findViewById(2131231026);
+        ((TextInputLayout) var1.findViewById(2131231807)).setHint(xB.b().a(var2, 2131625752));
+        this.g = (TextView) var1.findViewById(2131231932);
+        this.e = new XB(var2, (TextInputLayout) var1.findViewById(2131231807), this.g);
         this.f.setPrivateImeOptions("defaultInputmode=english;");
-        this.h = (TextView)var1.findViewById(2131231864);
+        this.h = (TextView) var1.findViewById(2131231864);
         this.h.setText(xB.b().a(var2, 2131624970).toUpperCase());
         this.h.setOnClickListener(new Px(this));
         this.j.getAdapter().notifyItemChanged(this.m);
         this.d.removeAllViews();
 
-        for(var3 = 0; var3 < this.b.size(); ++var3) {
+        for (var3 = 0; var3 < this.b.size(); ++var3) {
             ColorGroupItem var13 = new ColorGroupItem(var2);
-            ColorBean var9 = (ColorBean)this.b.get(var3);
+            ColorBean var9 = (ColorBean) this.b.get(var3);
             var13.b.setOnClickListener(new Qx(this, var3, var2));
             var13.b.setText(var9.colorName);
             var13.b.setTextColor(var9.displayNameColor);
@@ -220,14 +223,16 @@ public class Zx extends PopupWindow {
             ColorBean[] var12 = new ColorBean[var2.length];
             int var3 = 0;
 
-            while(true) {
+            while (true) {
                 var4 = var12;
                 if (var3 >= var2.length) {
                     break;
                 }
 
-                label52: {
-                    label61: {
+                label52:
+                {
+                    label61:
+                    {
                         int var5;
                         int var6;
                         int var7;
@@ -261,7 +266,8 @@ public class Zx extends PopupWindow {
                         }
 
                         if (var5 >= 2) {
-                            label44: {
+                            label44:
+                            {
                                 ColorBean var13;
                                 try {
                                     var13 = new ColorBean(var2[var3], "CUSTOM", "#212121", 2131165412);
@@ -299,7 +305,7 @@ public class Zx extends PopupWindow {
     public final void c() {
         if (this.k < this.d.getChildCount()) {
             View var1 = this.d.getChildAt(this.k);
-            this.i.smoothScrollTo((int)var1.getX(), 0);
+            this.i.smoothScrollTo((int) var1.getX(), 0);
             this.j.scrollToPosition(this.m);
         }
     }
@@ -337,12 +343,12 @@ public class Zx extends PopupWindow {
         }
 
         public int getItemCount() {
-            return ((ColorBean[])this.c.c.get(this.c.l)).length;
+            return ((ColorBean[]) this.c.c.get(this.c.l)).length;
         }
 
         public void onBindViewHolder(a var1, int var2) {
             TextView var3 = var1.u;
-            ColorBean var4 = ((ColorBean[])this.c.c.get(this.c.l))[var2];
+            ColorBean var4 = ((ColorBean[]) this.c.c.get(this.c.l))[var2];
             boolean var5;
             if (this.c.l == 0) {
                 var5 = true;
@@ -352,16 +358,16 @@ public class Zx extends PopupWindow {
 
             var3.setText(var4.getColorCode(var5));
             if (var2 == 0) {
-                var1.v.setText(((ColorBean[])this.c.c.get(this.c.l))[0].colorName);
+                var1.v.setText(((ColorBean[]) this.c.c.get(this.c.l))[0].colorName);
             } else {
                 var1.v.setText("");
             }
 
-            var1.u.setTextColor(((ColorBean[])this.c.c.get(this.c.l))[var2].displayNameColor);
-            var1.v.setTextColor(((ColorBean[])this.c.c.get(this.c.l))[var2].displayNameColor);
-            var1.t.setBackgroundColor(((ColorBean[])this.c.c.get(this.c.l))[var2].colorCode);
+            var1.u.setTextColor(((ColorBean[]) this.c.c.get(this.c.l))[var2].displayNameColor);
+            var1.v.setTextColor(((ColorBean[]) this.c.c.get(this.c.l))[var2].displayNameColor);
+            var1.t.setBackgroundColor(((ColorBean[]) this.c.c.get(this.c.l))[var2].colorCode);
             if (var2 == this.c.m && this.c.l == this.c.k) {
-                var1.w.setImageResource(((ColorBean[])this.c.c.get(this.c.l))[var2].icon);
+                var1.w.setImageResource(((ColorBean[]) this.c.c.get(this.c.l))[var2].icon);
                 var1.w.setVisibility(0);
             } else {
                 var1.w.setVisibility(8);
@@ -384,9 +390,9 @@ public class Zx extends PopupWindow {
                 super(var2);
                 this.x = var1;
                 this.t = var2.findViewById(2131231326);
-                this.u = (TextView)var2.findViewById(2131231915);
-                this.v = (TextView)var2.findViewById(2131231916);
-                this.w = (ImageView)var2.findViewById(2131231182);
+                this.u = (TextView) var2.findViewById(2131231915);
+                this.v = (TextView) var2.findViewById(2131231916);
+                this.w = (ImageView) var2.findViewById(2131231182);
                 var2.setOnClickListener(new Xx(this, var1));
                 var2.setOnLongClickListener(new Yx(this, var1));
             }
