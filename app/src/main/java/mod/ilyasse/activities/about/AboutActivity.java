@@ -38,6 +38,8 @@ public class AboutActivity extends AppCompatActivity {
         binding = ActivityAboutAppBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        binding.toolbar.setNavigationOnClickListener(v -> finish());
+
         aboutAppData = new ViewModelProvider(this).get(AboutAppViewModel.class);
         sharedPref = getSharedPreferences("AppData", Activity.MODE_PRIVATE);
 
