@@ -55,7 +55,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:text="main.xml" />
@@ -66,7 +65,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="6dp"
-                android:layout_marginBottom="8dp"
                 android:gravity="center_vertical"
                 android:textSize="12sp"
                 tools:text="MainActivity.java" />

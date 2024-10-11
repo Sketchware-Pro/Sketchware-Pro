@@ -1,6 +1,7 @@
 package com.besome.sketch.editor.manage;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectFileBean;
@@ -184,15 +184,18 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         binding.optionsSelector.check(selectedTab == TAB_ACTIVITY ? R.id.option_view : R.id.option_custom_view);
         binding.emptyMessage.setText(xB.b().a(this, R.string.design_manager_view_message_no_view));
         adapter = new Adapter();
-        binding.listXml.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         binding.listXml.setHasFixedSize(true);
         binding.listXml.setAdapter(adapter);
         binding.optionsSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 if (checkedId == R.id.option_view) {
                     selectedTab = TAB_ACTIVITY;
+                    binding.optionView.setTextColor(R.attr.titleTextColor);
+                    binding.optionCustomView.setTextColor(Color.parseColor("#FFFFFF"));
                 } else if (checkedId == R.id.option_custom_view) {
                     selectedTab = TAB_CUSTOM_VIEW;
+                    binding.optionView.setTextColor(Color.parseColor("#FFFFFF"));
+                    binding.optionCustomView.setTextColor(R.attr.titleTextColor);
                 }
                 adapter.notifyDataSetChanged();
                 binding.emptyMessage.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
