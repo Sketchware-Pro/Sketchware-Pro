@@ -23,6 +23,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
+import mod.hey.studios.util.Helper;
+
 public class Zx extends PopupWindow {
 
     public b a;
@@ -52,8 +54,13 @@ public class Zx extends PopupWindow {
         var1.a(2131165524);
         var1.b(xB.b().a(p, 2131625755));
         var1.a(xB.b().a(p, 2131625753));
-        var1.b(xB.b().a(p, 2131624986), new Tx(this, var1));
-        var1.a(xB.b().a(p, 2131624974), new Ux(this, var1));
+        var1.b(xB.b().a(p, 2131624986), v -> {
+            n.a();
+            c.set(0, b());
+            d();
+            var1.dismiss();
+        });
+        var1.a(xB.b().a(p, 2131624974), Helper.getDialogDismissListener(var1));
         var1.show();
     }
 
@@ -101,31 +108,61 @@ public class Zx extends PopupWindow {
         f.setPrivateImeOptions("defaultInputmode=english;");
         h = var1.findViewById(2131231864);
         h.setText(xB.b().a(var2, 2131624970).toUpperCase());
-        h.setOnClickListener(new Px(this));
+        h.setOnClickListener(view -> {
+            if (e.b()) {
+                String formattedColor = String.format("#%8s", f.getText().toString()).replaceAll(" ", "F");
+                c(formattedColor.toUpperCase());
+                d();
+            }
+        });
         j.getAdapter().notifyItemChanged(m);
         d.removeAllViews();
 
-        for (var3 = 0; var3 < b.size(); ++var3) {
+        for (int j = 0; j < b.size(); ++j) {
             ColorGroupItem var13 = new ColorGroupItem(var2);
-            ColorBean var9 = b.get(var3);
-            var13.b.setOnClickListener(new Qx(this, var3, var2));
+            ColorBean var9 = b.get(j);
+            int finalJ = j;
+            var13.b.setOnClickListener(v -> {
+                l = finalJ;
+                if (finalJ == 0 && c.get(finalJ).length == 0) {
+                    bB.b(var2, xB.b().a(var2, 2131625751), 1).show();
+
+                }
+                this.j.getAdapter().notifyDataSetChanged();
+            });
             var13.b.setText(var9.colorName);
             var13.b.setTextColor(var9.displayNameColor);
             var13.b.setBackgroundColor(var9.colorCode);
             d.addView(var13);
-            if (var3 == k) {
+            if (j == k) {
                 var13.c.setImageResource(var9.icon);
                 var13.c.setVisibility(0);
             } else {
                 var13.c.setVisibility(8);
             }
 
-            var13.b.setOnLongClickListener(new Rx(this, var3));
+            var13.b.setOnLongClickListener(v -> {
+                if (finalJ == 0) a();
+                return false;
+            });
         }
 
         Animation var10 = var1.getAnimation();
         if (var10 != null) {
-            var10.setAnimationListener(new Sx(this));
+            var10.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    c();
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
         }
 
     }
@@ -135,8 +172,12 @@ public class Zx extends PopupWindow {
         var2.a(2131165524);
         var2.b(xB.b().a(p, 2131625756));
         var2.a(xB.b().a(p, 2131625754));
-        var2.b(xB.b().a(p, 2131624986), new Vx(this, var1, var2));
-        var2.a(xB.b().a(p, 2131624974), new Wx(this, var2));
+        var2.b(xB.b().a(p, 2131624986), v -> {
+            b(var1);
+            d();
+            var2.dismiss();
+        });
+        var2.a(xB.b().a(p, 2131624974), Helper.getDialogDismissListener(var2));
         var2.show();
     }
 
@@ -383,8 +424,22 @@ public class Zx extends PopupWindow {
                 u = var2.findViewById(2131231915);
                 v = var2.findViewById(2131231916);
                 w = var2.findViewById(2131231182);
-                var2.setOnClickListener(new Xx(this, var1));
-                var2.setOnLongClickListener(new Yx(this, var1));
+                var2.setOnClickListener(v -> {
+                    if (a != null) {
+                        if (u.getText().toString().equals("TRANSPARENT")) {
+                            a.a(0);
+                        } else if (u.getText().toString().equals("NONE")) {
+                            a.a(0xffffff);
+                        } else {
+                            a.a(Color.parseColor(u.getText().toString()));
+                        }
+                    }
+                    c.dismiss();
+                });
+                var2.setOnLongClickListener(v -> {
+                    if (l == 0) a(u.getText().toString());
+                    return false;
+                });
             }
         }
     }
