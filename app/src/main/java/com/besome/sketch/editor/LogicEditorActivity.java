@@ -1226,7 +1226,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public final void b(Ss ss) {
         View a2 = wB.a(this, R.layout.color_picker);
-        a2.setAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_fade_in));
         Zx zx = new Zx(a2, this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false);
         zx.a(i -> {
             if (i == 0) {
@@ -1235,7 +1234,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 a(ss, String.format("0x%08X", i & (Color.WHITE)));
             }
         });
-        zx.setAnimationStyle(R.anim.abc_fade_in);
+        zx.setBackgroundDrawable(null);
+        zx.setAnimationStyle(android.R.style.Animation_Dialog);
         zx.showAtLocation(a2, Gravity.CENTER, 0, 0);
     }
 
