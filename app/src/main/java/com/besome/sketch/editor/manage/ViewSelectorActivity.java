@@ -187,6 +187,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             selectedTab = TAB_ACTIVITY;
         }
         MaterialButtonToggleGroup viewTypeSelector = findViewById(R.id.options_selector);
+        viewTypeSelector.check(selectedTab == TAB_ACTIVITY ? R.id.option_view : R.id.option_custom_view);
         empty_message = findViewById(R.id.empty_message);
         RecyclerView list_xml = findViewById(R.id.list_xml);
         ExtendedFloatingActionButton createNewView = findViewById(R.id.createNewView);
