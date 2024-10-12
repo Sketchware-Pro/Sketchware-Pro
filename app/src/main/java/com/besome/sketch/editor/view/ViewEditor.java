@@ -213,14 +213,37 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void showPaletteFavorite() {
-        paletteWidget.setVisibility(View.GONE);
-        paletteFavorite.setVisibility(View.VISIBLE);
+        paletteWidget.animate()
+                .alpha(0f)
+                .setDuration(100)
+                .withEndAction(() -> {
+                    paletteWidget.setVisibility(View.GONE);
+                    paletteFavorite.setAlpha(0f);
+                    paletteFavorite.setVisibility(View.VISIBLE);
+                    paletteFavorite.animate()
+                            .alpha(1f)
+                            .setDuration(100)
+                            .start();
+                })
+                .start();
     }
 
     private void showPaletteWidget() {
-        paletteWidget.setVisibility(View.VISIBLE);
-        paletteFavorite.setVisibility(View.GONE);
+        paletteFavorite.animate()
+                .alpha(0f)
+                .setDuration(100)
+                .withEndAction(() -> {
+                    paletteFavorite.setVisibility(View.GONE);
+                    paletteWidget.setAlpha(0f);
+                    paletteWidget.setVisibility(View.VISIBLE);
+                    paletteWidget.animate()
+                            .alpha(1f)
+                            .setDuration(100)
+                            .start();
+                })
+                .start();
     }
+
 
     @Override
     public void onClick(View view) {

@@ -5,11 +5,11 @@ import android.content.pm.ApplicationInfo;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -117,16 +117,12 @@ public class ProjectSettings {
                 //String value = (String) v.getTag(1);
                 String value;
 
-                if (v instanceof EditText) {
-                    value = ((EditText) v).getText().toString();
-                } else if (v instanceof MaterialSwitch) {
-                    value = ((MaterialSwitch) v).isChecked() ? "true" : "false";
-                } else if (v instanceof RadioGroup) {
-
-                    value = getCheckedRbValue((RadioGroup) v);
-
-
-                    //value = ((RadioGroup)v).getCheckedRadioButtonId()
+                if (v instanceof EditText editText) {
+                    value = editText.getText().toString();
+                } else if (v instanceof Checkable checkable) {
+                    value = checkable.isChecked() ? "true" : "false";
+                } else if (v instanceof RadioGroup radioGroup) {
+                    value = getCheckedRbValue(radioGroup);
                 } else {
                     continue;
                 }

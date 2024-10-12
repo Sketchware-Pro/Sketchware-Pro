@@ -352,7 +352,6 @@ public class BlocksManager extends BaseAppCompatActivity {
             final View a = inf.inflate(R.layout.color_picker, null);
             final Zx zx = new Zx(a, this, 0, true, false);
             zx.a(new PCP(this, storePickedResultIn, dialog));
-            zx.setAnimationStyle(R.anim.abc_fade_in);
             zx.showAtLocation(a, Gravity.CENTER, 0, 0);
             dialog.dismiss();
         };

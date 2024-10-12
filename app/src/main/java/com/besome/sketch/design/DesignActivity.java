@@ -4,7 +4,6 @@ import static mod.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -16,7 +15,6 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -64,10 +62,11 @@ import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import a.a.a.DB;
 import a.a.a.GB;
-import a.a.a.MA;
 import a.a.a.ProjectBuilder;
 import a.a.a.ViewEditorFragment;
 import a.a.a.aB;
@@ -106,6 +105,7 @@ import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.ManageStringFogFragment;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
+import mod.hey.studios.util.SystemLogPrinter;
 import mod.hilal.saif.activities.android_manifest.AndroidManifestInjection;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.build.BuildProgressReceiver;
@@ -118,11 +118,10 @@ import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
 import mod.trindadedev.tools.apk.ApkSignatures;
 
-public class DesignActivity extends BaseAppCompatActivity implements OnClickListener {
+public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ImageView xmlLayoutOrientation;
     private boolean B;
     private int currentTabNumber;
-    private UnsavedChangesSaver unsavedChangesSaver;
     private String sc_id;
     private CustomViewPager viewPager;
     private CoordinatorLayout coordinatorLayout;
@@ -309,18 +308,31 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 viewPager.setCurrentItem(currentTabNumber);
             } else if (t.c("P12I2")) {
                 k();
-                new SaveChangesProjectCloser(this).execute();
+                saveChangesAndCloseProject();
             } else {
                 showSaveBeforeQuittingDialog();
             }
         }
     }
 
+    private void saveChangesAndCloseProject() {
+        k();
+        SaveChangesProjectCloser saveChangesProjectCloser = new SaveChangesProjectCloser(this);
+        saveChangesProjectCloser.execute();
+    }
+
+    private void saveProject() {
+        k();
+        ProjectSaver projectSaver = new ProjectSaver(this);
+        projectSaver.execute();
+    }
+
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
             if (v.getId() == R.id.btn_execute) {
-                new BuildAsyncTask(this).execute();
+                BuildTask buildTask = new BuildTask(this);
+                buildTask.execute();
             } else if (v.getId() == R.id.btn_compiler_opt) {
                 PopupMenu popupMenu = new PopupMenu(this, buildSettings);
                 Menu menu = popupMenu.getMenu();
@@ -503,8 +515,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 drawer.openDrawer(GravityCompat.END);
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
-            k();
-            new ProjectSaver(this).execute();
+            saveProject();
         }
 
         return super.onOptionsItemSelected(item);
@@ -520,9 +531,12 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         q = new yq(getApplicationContext(), wq.d(sc_id), projectInfo);
 
         try {
-            new ProjectLoader(this, savedInstanceState).execute();
+            ProjectLoader projectLoader = new ProjectLoader(this, savedInstanceState);
+            projectLoader.execute();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            SystemLogPrinter.stop();
         }
     }
 
@@ -548,12 +562,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             finish();
         }
 
-        if (unsavedChangesSaver != null && !unsavedChangesSaver.isCancelled()) {
-            unsavedChangesSaver.cancel(true);
-        }
-
         if (!B) {
-            unsavedChangesSaver = new UnsavedChangesSaver(this);
+            UnsavedChangesSaver unsavedChangesSaver = new UnsavedChangesSaver(this);
             unsavedChangesSaver.execute();
         }
     }
@@ -570,8 +580,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             if (!mB.a()) {
                 dialog.dismiss();
                 try {
-                    k();
-                    new SaveChangesProjectCloser(this).execute();
+                    saveChangesAndCloseProject();
                 } catch (Exception e) {
                     e.printStackTrace();
                     h();
@@ -583,7 +592,8 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                 dialog.dismiss();
                 try {
                     k();
-                    new DiscardChangesProjectCloser(this).execute();
+                    DiscardChangesProjectCloser discardChangesProjectCloser = new DiscardChangesProjectCloser(this);
+                    discardChangesProjectCloser.execute();
                 } catch (Exception e) {
                     e.printStackTrace();
                     h();
@@ -866,7 +876,7 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
     }
 
     @SafeVarargs
-    private final void launchActivity(Class<? extends Activity> toLaunch, ActivityResultLauncher<Intent> optionalLauncher, Pair<String, String>... extras) {
+    private void launchActivity(Class<? extends Activity> toLaunch, ActivityResultLauncher<Intent> optionalLauncher, Pair<String, String>... extras) {
         Intent intent = new Intent(getApplicationContext(), toLaunch);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
@@ -881,262 +891,226 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
         }
     }
 
-    private static class BuildAsyncTask extends MA implements OnCancelListener, BuildProgressReceiver {
-        private final WeakReference<DesignActivity> activity;
-        private final BuildingDialog dialog;
-        private boolean canceled;
-        private boolean isBuildFinished;
+    private abstract static class BaseTask {
+        protected final WeakReference<DesignActivity> activityRef;
 
-        public BuildAsyncTask(DesignActivity activity) {
-            super(activity.getApplicationContext());
-            this.activity = new WeakReference<>(activity);
-            activity.addTask(this);
+        protected BaseTask(DesignActivity activity) {
+            this.activityRef = new WeakReference<>(activity);
+        }
+
+        protected DesignActivity getActivity() {
+            return activityRef.get();
+        }
+    }
+
+    private static class BuildTask extends BaseTask implements DialogInterface.OnCancelListener, BuildProgressReceiver {
+        private volatile boolean canceled;
+        private volatile boolean isBuildFinished;
+        private final BuildingDialog dialog;
+        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        public BuildTask(DesignActivity activity) {
+            super(activity);
             dialog = new BuildingDialog(activity);
             maybeShow();
             dialog.setIsCancelableOnBackPressed(false);
         }
 
-        /**
-         * Reverts c (the "Run"-Button) to its original state,
-         * usually called after compilation was successful.
-         * <p>
-         * This closes the dialog, reverts u (the "Run"-Button)'s text and clickable property,
-         * and clears the FLAG_KEEP_SCREEN_ON flag.
-         */
-        @Override
-        public void a() {
-            dismiss();
-            var activity = this.activity.get();
-            activity.runProject.setText(Helper.getResString(R.string.common_word_run));
-            activity.runProject.setClickable(true);
-            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        public void execute() {
+            onPreExecute();
+            executorService.execute(this::doInBackground);
         }
 
-        /**
-         * Shows a Toast about APK build having failed, closes the dialog,
-         * reverts u (the "Run"-Button) and clears the FLAG_KEEP_SCREEN_ON flag.
-         *
-         * @param str Ignored parameter, for some reason
-         */
-        @Override
-        public void a(String str) {
-            var activity = this.activity.get();
+        private void onPreExecute() {
+            DesignActivity activity = getActivity();
+            if (activity == null) return;
+
             activity.runOnUiThread(() -> {
-                dismiss();
-                SketchwareUtil.toastError("APK build failed");
-                activity.runProject.setText(Helper.getResString(R.string.common_word_run));
-                activity.runProject.setClickable(true);
-                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                activity.runProject.setText("Building APK file...");
+                activity.runProject.setClickable(false);
+                activity.r.a("P1I10", true);
+                activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             });
         }
 
-        @Override
-        protected void onProgressUpdate(String... values) {
-            setProgress(values[0]);
-        }
+        private void doInBackground() {
+            DesignActivity activity = getActivity();
+            if (activity == null) return;
 
-        @Override
-        public void b() {
-            if (canceled) {
-                cancel(true);
-            } else {
-                isBuildFinished = false;
-                var activity = this.activity.get();
-                try {
-                    var q = activity.q;
-                    var sc_id = activity.sc_id;
-                    publishProgress("Deleting temporary files...");
-                    FileUtil.deleteFile(q.projectMyscPath);
+            try {
+                var q = activity.q;
+                var sc_id = activity.sc_id;
+                onProgress("Deleting temporary files...");
+                FileUtil.deleteFile(q.projectMyscPath);
 
-                    q.c(a);
-                    q.a();
-                    /* Extract project type template */
-                    q.a(a, wq.e("600"));
-                    if (yB.a(lC.b(sc_id), "custom_icon")) {
-                        q.a(wq.e()
-                                + File.separator + sc_id
-                                + File.separator + "icon.png");
-                    }
-
-                    kC kC = jC.d(sc_id);
-                    kC.b(q.resDirectoryPath + File.separator + "drawable-xhdpi");
-                    kC = jC.d(sc_id);
-                    kC.c(q.resDirectoryPath + File.separator + "raw");
-                    kC = jC.d(sc_id);
-                    kC.a(q.assetsPath + File.separator + "fonts");
-
-                    ProjectBuilder builder = new ProjectBuilder(this, a, q);
-
-                    var fileManager = jC.b(sc_id);
-                    var dataManager = jC.a(sc_id);
-                    var libraryManager = jC.c(sc_id);
-                    q.a(libraryManager, fileManager, dataManager, false);
-                    builder.buildBuiltInLibraryInformation();
-                    q.b(fileManager, dataManager, libraryManager, builder.getBuiltInLibraryManager());
-                    q.f();
-                    q.e();
-
-                    builder.maybeExtractAapt2();
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    publishProgress("Extracting built-in libraries...");
-                    BuiltInLibraries.extractCompileAssets(this);
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    publishProgress("AAPT2 is running...");
-                    builder.compileResources();
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    KotlinCompilerBridge.compileKotlinCodeIfPossible(this, builder);
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    publishProgress("Java is compiling...");
-                    builder.compileJavaCode();
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    /* Encrypt Strings in classes if enabled */
-                    StringfogHandler stringfogHandler = new StringfogHandler(sc_id);
-                    stringfogHandler.start(this, builder);
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    /* Obfuscate classes if enabled */
-                    ProguardHandler proguardHandler = new ProguardHandler(sc_id);
-                    proguardHandler.start(this, builder);
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    publishProgress(builder.getDxRunningText());
-                    builder.createDexFilesFromClasses();
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    publishProgress("Merging DEX files...");
-                    builder.getDexFilesReady();
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    publishProgress("Building APK...");
-                    builder.buildApk();
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    publishProgress("Signing APK...");
-                    builder.signDebugApk();
-                    if (canceled) {
-                        cancel(true);
-                        return;
-                    }
-
-                    activity.installBuiltApk();
-                    isBuildFinished = true;
-                } catch (MissingFileException e) {
-                    isBuildFinished = true;
-                    activity.runOnUiThread(() -> {
-                        boolean isMissingDirectory = e.isMissingDirectory();
-
-                        aB dialog = new aB(activity);
-                        if (isMissingDirectory) {
-                            dialog.b("Missing directory detected");
-                            dialog.a("A directory important for building is missing. " +
-                                    "Sketchware Pro can try creating " + e.getMissingFile().getAbsolutePath() +
-                                    " if you'd like to.");
-                            dialog.configureDefaultButton("Create", v -> {
-                                dialog.dismiss();
-                                if (!e.getMissingFile().mkdirs()) {
-                                    SketchwareUtil.toastError("Failed to create directory / directories!");
-                                }
-                            });
-                        } else {
-                            dialog.b("Missing file detected");
-                            dialog.a("A file needed for building is missing. " +
-                                    "Put the correct file back to " + e.getMissingFile().getAbsolutePath() +
-                                    " and try building again.");
-                        }
-                        dialog.b("Dismiss", Helper.getDialogDismissListener(dialog));
-                        dialog.show();
-                    });
-                } catch (zy zy) {
-                    activity.indicateCompileErrorOccurred(zy.getMessage());
-                } catch (Throwable tr) {
-                    LogUtil.e("DesignActivity$BuildAsyncTask", "Failed to build project", tr);
-                    activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));
+                q.c(activity.getApplicationContext());
+                q.a();
+                q.a(activity.getApplicationContext(), wq.e("600"));
+                if (yB.a(lC.b(sc_id), "custom_icon")) {
+                    q.a(wq.e()
+                            + File.separator + sc_id
+                            + File.separator + "icon.png");
                 }
+
+                kC kC = jC.d(sc_id);
+                kC.b(q.resDirectoryPath + File.separator + "drawable-xhdpi");
+                kC = jC.d(sc_id);
+                kC.c(q.resDirectoryPath + File.separator + "raw");
+                kC = jC.d(sc_id);
+                kC.a(q.assetsPath + File.separator + "fonts");
+
+                ProjectBuilder builder = new ProjectBuilder(this, activity.getApplicationContext(), q);
+
+                var fileManager = jC.b(sc_id);
+                var dataManager = jC.a(sc_id);
+                var libraryManager = jC.c(sc_id);
+                q.a(libraryManager, fileManager, dataManager, false);
+                builder.buildBuiltInLibraryInformation();
+                q.b(fileManager, dataManager, libraryManager, builder.getBuiltInLibraryManager());
+                q.f();
+                q.e();
+
+                builder.maybeExtractAapt2();
+                if (canceled) {
+                    return;
+                }
+
+                onProgress("Extracting built-in libraries...");
+                BuiltInLibraries.extractCompileAssets(this);
+                if (canceled) {
+                    return;
+                }
+
+                onProgress("AAPT2 is running...");
+                builder.compileResources();
+                if (canceled) {
+                    return;
+                }
+
+                KotlinCompilerBridge.compileKotlinCodeIfPossible(this, builder);
+                if (canceled) {
+                    return;
+                }
+
+                onProgress("Java is compiling...");
+                builder.compileJavaCode();
+                if (canceled) {
+                    return;
+                }
+
+                StringfogHandler stringfogHandler = new StringfogHandler(sc_id);
+                stringfogHandler.start(this, builder);
+                if (canceled) {
+                    return;
+                }
+
+                ProguardHandler proguardHandler = new ProguardHandler(sc_id);
+                proguardHandler.start(this, builder);
+                if (canceled) {
+                    return;
+                }
+
+                onProgress(builder.getDxRunningText());
+                builder.createDexFilesFromClasses();
+                if (canceled) {
+                    return;
+                }
+
+                onProgress("Merging DEX files...");
+                builder.getDexFilesReady();
+                if (canceled) {
+                    return;
+                }
+
+                onProgress("Building APK...");
+                builder.buildApk();
+                if (canceled) {
+                    return;
+                }
+
+                onProgress("Signing APK...");
+                builder.signDebugApk();
+                if (canceled) {
+                    return;
+                }
+
+                activity.installBuiltApk();
+                isBuildFinished = true;
+            } catch (MissingFileException e) {
+                isBuildFinished = true;
+                activity.runOnUiThread(() -> {
+                    boolean isMissingDirectory = e.isMissingDirectory();
+
+                    aB dialog = new aB(activity);
+                    if (isMissingDirectory) {
+                        dialog.b("Missing directory detected");
+                        dialog.a("A directory important for building is missing. " +
+                                "Sketchware Pro can try creating " + e.getMissingFile().getAbsolutePath() +
+                                " if you'd like to.");
+                        dialog.configureDefaultButton("Create", v -> {
+                            dialog.dismiss();
+                            if (!e.getMissingFile().mkdirs()) {
+                                SketchwareUtil.toastError("Failed to create directory / directories!");
+                            }
+                        });
+                    } else {
+                        dialog.b("Missing file detected");
+                        dialog.a("A file needed for building is missing. " +
+                                "Put the correct file back to " + e.getMissingFile().getAbsolutePath() +
+                                " and try building again.");
+                    }
+                    dialog.b("Dismiss", Helper.getDialogDismissListener(dialog));
+                    dialog.show();
+                });
+            } catch (zy zy) {
+                activity.indicateCompileErrorOccurred(zy.getMessage());
+            } catch (Throwable tr) {
+                LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
+                activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));
+            } finally {
+                activity.runOnUiThread(this::onPostExecute);
             }
         }
 
-        /**
-         * Dismiss this dialog, if DesignActivity hasn't been destroyed.
-         */
-        private void dismiss() {
-            if (!activity.get().isDestroyed()) {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                }
-            }
-        }
+        public void onProgress(String progress) {
+            DesignActivity activity = getActivity();
+            if (activity == null) return;
 
-        /**
-         * Updates the dialog's progress text.
-         *
-         * @param progressText The new text to display as progress
-         */
-        public void setProgress(String progressText) {
-            activity.get().runOnUiThread(() -> {
+            activity.runOnUiThread(() -> {
                 if (dialog.isShowing()) {
-                    dialog.setProgress(progressText);
+                    dialog.setProgress(progress);
                 }
             });
         }
 
-        /**
-         * Try to set this dialog's OnCancelListener as this, then show, unless already showing.
-         */
-        private void maybeShow() {
-            if (!dialog.isShowing()) {
-                dialog.setOnCancelListener(this);
-                dialog.show();
-            }
+        private void onPostExecute() {
+            DesignActivity activity = getActivity();
+            if (activity == null) return;
+
+            activity.runOnUiThread(() -> {
+                if (!activity.isDestroyed()) {
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                    activity.runProject.setText(Helper.getResString(R.string.common_word_run));
+                    activity.runProject.setClickable(true);
+                    activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
+            });
         }
 
         @Override
         public void onCancel(DialogInterface dialogInterface) {
-            var currentActivity = activity.get();
+            DesignActivity activity = getActivity();
+            if (activity == null) return;
 
-            if (currentActivity == null) return;
-
-            currentActivity.runOnUiThread(() -> {
-                aB cancelDialog = new aB(currentActivity);
-                cancelDialog.b(currentActivity.getString(R.string.design_cancel_build_title));
-                cancelDialog.a(currentActivity.getString(R.string.design_cancel_build_desc));
+            activity.runOnUiThread(() -> {
+                aB cancelDialog = new aB(activity);
+                cancelDialog.b(activity.getString(R.string.design_cancel_build_title));
+                cancelDialog.a(activity.getString(R.string.design_cancel_build_desc));
                 cancelDialog.a(R.drawable.ic_exit_24);
 
-                cancelDialog.a(currentActivity.getString(R.string.design_cancel_build_btn_stop), v -> {
+                cancelDialog.a(activity.getString(R.string.design_cancel_build_btn_stop), v -> {
                     if (!isBuildFinished) {
                         if (!dialog.isCancelableOnBackPressed()) {
                             dialog.setIsCancelableOnBackPressed(true);
@@ -1144,13 +1118,13 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
                             canceled = true;
                         }
                         dialog.show();
+                        activity.runProject.setText("Canceling build...");
+                        onProgress("Canceling build...");
                     }
-                    currentActivity.runProject.setText("Canceling build...");
-                    publishProgress("Canceling build...");
                     cancelDialog.dismiss();
                 });
 
-                cancelDialog.b(currentActivity.getString(R.string.design_cancel_build_btn_continue), v -> {
+                cancelDialog.b(activity.getString(R.string.design_cancel_build_btn_continue), v -> {
                     if (!isBuildFinished)
                         dialog.show();
                     cancelDialog.dismiss();
@@ -1160,207 +1134,166 @@ public class DesignActivity extends BaseAppCompatActivity implements OnClickList
             });
         }
 
+        private void maybeShow() {
+            DesignActivity activity = getActivity();
+            if (activity == null) return;
 
-        @Override
-        public void onCancelled() {
-            super.onCancelled();
-            var activity = this.activity.get();
             activity.runOnUiThread(() -> {
-                activity.runProject.setText(Helper.getResString(R.string.common_word_run));
-                activity.runProject.setClickable(true);
-                activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                if (!dialog.isShowing()) {
+                    dialog.setOnCancelListener(this);
+                    dialog.show();
+                }
             });
-            dismiss();
-        }
-
-        @Override
-        public void onPreExecute() {
-            super.onPreExecute();
-            var activity = this.activity.get();
-            activity.runProject.setText("Building APK file...");
-            activity.runProject.setClickable(false);
-            activity.r.a("P1I10", true);
-            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
-
-        @Override
-        public void onProgress(String progress) {
-            publishProgress(progress);
         }
     }
 
-    private static class ProjectLoader extends MA {
-        private final WeakReference<DesignActivity> activity;
+    private static class ProjectLoader extends BaseTask {
         private final Bundle savedInstanceState;
+        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         public ProjectLoader(DesignActivity activity, Bundle savedInstanceState) {
-            super(activity.getBaseContext());
-            this.activity = new WeakReference<>(activity);
-            activity.addTask(this);
+            super(activity);
             this.savedInstanceState = savedInstanceState;
         }
 
-        @Override
-        public void a() {
-            var activity = this.activity.get();
-            if (savedInstanceState != null) {
-                activity.projectFileSelector.onRestoreInstanceState(savedInstanceState);
-                if (savedInstanceState.getInt("file_selector_current_file_type") == 0) {
-                    activity.xmlLayoutOrientation.setVisibility(View.VISIBLE);
-                } else {
-                    activity.xmlLayoutOrientation.setVisibility(View.GONE);
-                }
+        public void execute() {
+            getActivity().k();
+            executorService.execute(this::doInBackground);
+        }
+
+        private void doInBackground() {
+            DesignActivity activity = getActivity();
+            if (activity != null) {
+                activity.loadProject(savedInstanceState != null);
+                activity.runOnUiThread(() -> {
+                    if (savedInstanceState != null) {
+                        activity.projectFileSelector.onRestoreInstanceState(savedInstanceState);
+                        if (savedInstanceState.getInt("file_selector_current_file_type") == 0) {
+                            activity.xmlLayoutOrientation.setVisibility(View.VISIBLE);
+                        } else {
+                            activity.xmlLayoutOrientation.setVisibility(View.GONE);
+                        }
+                    }
+
+                    activity.projectFileSelector.syncState();
+                    activity.h();
+                    if (savedInstanceState == null) {
+                        activity.checkForUnsavedProjectData();
+                    }
+                });
             }
-
-            activity.projectFileSelector.syncState();
-            activity.h();
-            if (savedInstanceState == null) {
-                activity.checkForUnsavedProjectData();
-            }
         }
-
-        @Override
-        public void a(String str) {
-            activity.get().h();
-        }
-
-        @Override
-        public void b() {
-            activity.get().loadProject(savedInstanceState != null);
-        }
-
     }
 
-    private static class DiscardChangesProjectCloser extends MA {
-        private final WeakReference<DesignActivity> activity;
+    private static class DiscardChangesProjectCloser extends BaseTask {
+        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         public DiscardChangesProjectCloser(DesignActivity activity) {
-            super(activity.getApplicationContext());
-            this.activity = new WeakReference<>(activity);
-            activity.addTask(this);
+            super(activity);
         }
 
-        @Override
-        public void a() {
-            var activity = this.activity.get();
-            activity.h();
-            activity.finish();
+        public void execute() {
+            getActivity().k();
+            executorService.execute(this::doInBackground);
         }
 
-        @Override
-        public void a(String str) {
-            var activity = this.activity.get();
-            activity.h();
-            activity.finish();
-        }
-
-        @Override
-        public void b() {
-            var sc_id = activity.get().sc_id;
-            jC.d(sc_id).v();
-            jC.d(sc_id).w();
-            jC.d(sc_id).u();
+        private void doInBackground() {
+            DesignActivity activity = getActivity();
+            if (activity != null) {
+                var sc_id = activity.sc_id;
+                jC.d(sc_id).v();
+                jC.d(sc_id).w();
+                jC.d(sc_id).u();
+                activity.runOnUiThread(() -> {
+                    activity.h();
+                    activity.finish();
+                });
+            }
         }
     }
 
-    private static class ProjectSaver extends MA {
-        private final WeakReference<DesignActivity> activity;
+    private static class ProjectSaver extends BaseTask {
+        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         public ProjectSaver(DesignActivity activity) {
-            super(activity.getApplicationContext());
-            this.activity = new WeakReference<>(activity);
-            activity.addTask(this);
+            super(activity);
         }
 
-        @Override
-        public void a() {
-            bB.a(a, Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
-            var activity = this.activity.get();
-            var sc_id = activity.sc_id;
-            activity.saveVersionCodeInformationToProject();
-            activity.h();
-            jC.d(sc_id).f();
-            jC.d(sc_id).g();
-            jC.d(sc_id).e();
+        public void execute() {
+            getActivity().k();
+            executorService.execute(this::doInBackground);
         }
 
-        @Override
-        public void a(String str) {
-            bB.b(a, Helper.getResString(R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
-            activity.get().h();
+        private void doInBackground() {
+            DesignActivity activity = getActivity();
+            if (activity != null) {
+                var sc_id = activity.sc_id;
+                jC.d(sc_id).a();
+                jC.b(sc_id).m();
+                jC.a(sc_id).j();
+                jC.d(sc_id).x();
+                jC.c(sc_id).l();
+                activity.runOnUiThread(() -> {
+                    bB.a(activity.getApplicationContext(), Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
+                    activity.saveVersionCodeInformationToProject();
+                    activity.h();
+                    jC.d(sc_id).f();
+                    jC.d(sc_id).g();
+                    jC.d(sc_id).e();
+                });
+            }
         }
-
-        @Override
-        public void b() {
-            var sc_id = activity.get().sc_id;
-            jC.d(sc_id).a();
-            jC.b(sc_id).m();
-            jC.a(sc_id).j();
-            jC.d(sc_id).x();
-            jC.c(sc_id).l();
-        }
-
     }
 
-    private static class SaveChangesProjectCloser extends MA {
-        private final WeakReference<DesignActivity> activity;
+    private static class SaveChangesProjectCloser extends BaseTask {
+        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         public SaveChangesProjectCloser(DesignActivity activity) {
-            super(activity.getApplicationContext());
-            this.activity = new WeakReference<>(activity);
-            activity.addTask(this);
+            super(activity);
         }
 
-        @Override
-        public void a() {
-            bB.a(a, Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
-            var activity = this.activity.get();
-            activity.saveVersionCodeInformationToProject();
-            activity.h();
-            activity.finish();
+        public void execute() {
+            getActivity().k();
+            executorService.execute(this::doInBackground);
         }
 
-        @Override
-        public void a(String str) {
-            bB.b(a, Helper.getResString(R.string.common_error_failed_to_save), bB.TOAST_NORMAL).show();
-            activity.get().h();
+        private void doInBackground() {
+            DesignActivity activity = getActivity();
+            if (activity != null) {
+                var sc_id = activity.sc_id;
+                jC.d(sc_id).a();
+                jC.b(sc_id).m();
+                jC.a(sc_id).j();
+                jC.d(sc_id).x();
+                jC.c(sc_id).l();
+                jC.d(sc_id).h();
+                activity.runOnUiThread(() -> {
+                    bB.a(activity.getApplicationContext(), Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
+                    activity.saveVersionCodeInformationToProject();
+                    activity.h();
+                    activity.finish();
+                });
+            }
         }
-
-        @Override
-        public void b() {
-            var sc_id = activity.get().sc_id;
-            jC.d(sc_id).a();
-            jC.b(sc_id).m();
-            jC.a(sc_id).j();
-            jC.d(sc_id).x();
-            jC.c(sc_id).l();
-            jC.d(sc_id).h();
-        }
-
     }
 
-    private static class UnsavedChangesSaver extends MA {
-        private final WeakReference<DesignActivity> activity;
+    private static class UnsavedChangesSaver extends BaseTask {
+        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         public UnsavedChangesSaver(DesignActivity activity) {
-            super(activity.getApplicationContext());
-            this.activity = new WeakReference<>(activity);
-            activity.addTask(this);
+            super(activity);
         }
 
-        @Override
-        public void a() {
+        public void execute() {
+            executorService.execute(this::doInBackground);
         }
 
-        @Override
-        public void a(String var1) {
+        private void doInBackground() {
+            DesignActivity activity = getActivity();
+            if (activity != null) {
+                jC.a(activity.sc_id).k();
+            }
         }
-
-        @Override
-        public void b() {
-            jC.a(activity.get().sc_id).k();
-        }
-
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
