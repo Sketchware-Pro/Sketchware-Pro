@@ -280,7 +280,6 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             dialog.b(Helper.getResString(R.string.common_word_delete), v1 -> {
                 deleteProject(position);
-                notifyItemChanged(position);
                 dialog.dismiss();
             });
             dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
