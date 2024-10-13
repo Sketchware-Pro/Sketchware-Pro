@@ -24,7 +24,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Predicate;
 
 import a.a.a.ZA;
 import a.a.a.aB;
@@ -175,15 +174,24 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         holder.binding.getRoot().setOnClickListener(v -> {
             mB.a(v);
-            toProjectSettingOrRequestPermission(projectMap, position);
+            int currentPosition = holder.getAbsoluteAdapterPosition();
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                toProjectSettingOrRequestPermission(projectMap, currentPosition);
+            }
         });
 
         holder.binding.expand.setOnClickListener(v -> {
-            showProjectOptionsBottomSheet(projectMap, position);
+            int currentPosition = holder.getAbsoluteAdapterPosition();
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                showProjectOptionsBottomSheet(projectMap, currentPosition);
+            }
         });
 
         holder.binding.projectOne.setOnLongClickListener(v -> {
-            showProjectOptionsBottomSheet(projectMap, position);
+            int currentPosition = holder.getAbsoluteAdapterPosition();
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                showProjectOptionsBottomSheet(projectMap, currentPosition);
+            }
             return true;
         });
     }
@@ -205,22 +213,25 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private void deleteProject(int position) {
+    private void deleteProject(HashMap<String, Object> projectMap, int position) {
         final ZA c = new ZA(activity);
         c.show();
 
-        var sc_id = yB.c(shownProjects.get(position), "sc_id");
+        var sc_id = yB.c(projectMap, "sc_id");
         new Thread(() -> {
             lC.a(activity, sc_id);
             activity.runOnUiThread(() -> {
                 c.dismiss();
-                Predicate<HashMap<String, Object>> remover = (project -> yB.c(project, "sc_id").equals(sc_id));
-                shownProjects.removeIf(remover);
-                allProjects.removeIf(remover);
+                shownProjects.remove(position);
                 notifyItemRemoved(position);
+                int allIndex = allProjects.indexOf(projectMap);
+                if (allIndex != -1) {
+                    allProjects.remove(allIndex);
+                }
             });
         }).start();
     }
+
 
     private void toProjectSettingOrRequestPermission(HashMap<String, Object> project, int index) {
         Intent intent = new Intent(activity, MyProjectSettingActivity.class);
@@ -279,7 +290,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             dialog.a(Helper.getResString(R.string.delete_project_dialog_message).replace("%1$s", yB.c(projectMap, "my_app_name")));
 
             dialog.b(Helper.getResString(R.string.common_word_delete), v1 -> {
-                deleteProject(position);
+                deleteProject(projectMap, position);
                 dialog.dismiss();
             });
             dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
