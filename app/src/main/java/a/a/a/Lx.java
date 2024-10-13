@@ -40,8 +40,10 @@ public class Lx {
         if (new BuildSettings(metadata.sc_id)
                 .getValue(BuildSettings.SETTING_NO_HTTP_LEGACY, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_FALSE)) {
-            content += "useLibrary 'org.apache.http.legacy'\r\n" +
-                    "\r\n";
+            content += """
+                    useLibrary 'org.apache.http.legacy'\r
+                    \r
+                    """;
         }
         content += "defaultConfig {\r\n" +
                 "applicationId \"" + metadata.packageName + "\"\r\n" +
@@ -65,24 +67,34 @@ public class Lx {
 
         List<BuiltInLibraries.BuiltInLibrary> excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(metadata.sc_id);
         if (isLibraryNotExcluded(BuiltInLibraries.ANDROIDX_APPCOMPAT, excludedLibraries) && metadata.g) {
-            content += "implementation 'androidx.appcompat:appcompat:1.4.0'\r\n" +
-                    "implementation 'com.google.android.material:material:1.6.1'\r\n";
+            content += """
+                    implementation 'androidx.appcompat:appcompat:1.7.0'\r
+                    implementation 'com.google.android.material:material:1.12.0'\r
+                    """;
+        }
+
+        if (metadata.isFirebaseEnabled) {
+            content += "implementation platform('com.google.firebase:firebase-bom:33.4.0')\r\n";
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_AUTH, excludedLibraries) && metadata.isFirebaseAuthUsed) {
-            content += "implementation 'com.google.firebase:firebase-auth:19.0.0'\r\n";
+            content += "implementation 'com.google.firebase:firebase-auth'\r\n";
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_DATABASE, excludedLibraries) && metadata.isFirebaseDatabaseUsed) {
-            content += "implementation 'com.google.firebase:firebase-database:19.0.0'\r\n";
+            content += "implementation 'com.google.firebase:firebase-database'\r\n";
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_STORAGE, excludedLibraries) && metadata.isFirebaseStorageUsed) {
-            content += "implementation 'com.google.firebase:firebase-storage:19.0.0'\r\n";
+            content += "implementation 'com.google.firebase:firebase-storage'\r\n";
+        }
+
+        if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS, excludedLibraries) && metadata.isDynamicLinkUsed) {
+            content += "implementation 'com.google.firebase:firebase-dynamic-links'\r\n";
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.PLAY_SERVICES_ADS, excludedLibraries) && metadata.isAdMobEnabled) {
-            content += "implementation 'com.google.android.gms:play-services-ads:20.1.0'\r\n";
+            content += "implementation 'com.google.android.gms:play-services-ads:23.4.0'\r\n";
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.PLAY_SERVICES_MAPS, excludedLibraries) && metadata.isMapUsed) {
@@ -90,19 +102,15 @@ public class Lx {
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.GLIDE, excludedLibraries) && metadata.isGlideUsed) {
-            content += "implementation 'com.github.bumptech.glide:glide:4.12.0'\r\n";
+            content += "implementation 'com.github.bumptech.glide:glide:4.16.0'\r\n";
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.GSON, excludedLibraries) && metadata.isGsonUsed) {
-            content += "implementation 'com.google.code.gson:gson:2.8.7'\r\n";
+            content += "implementation 'com.google.code.gson:gson:2.11.0''\r\n";
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.OKHTTP, excludedLibraries) && metadata.isHttp3Used) {
-            content += "implementation 'com.squareup.okhttp3:okhttp:3.9.1'\r\n";
-        }
-
-        if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_DYNAMIC_LINKS, excludedLibraries) && metadata.isDynamicLinkUsed) {
-            content += "implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'\r\n";
+            content += "implementation 'com.squareup.okhttp3:okhttp:4.12.0'\r\n";
         }
 
         ConstVarComponent extraMetadata = metadata.x;
@@ -119,7 +127,7 @@ public class Lx {
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.LOTTIE, excludedLibraries) && extraMetadata.isLottieUsed) {
-            content += "implementation 'com.airbnb:lottie:3.4.0'\r\n";
+            content += "implementation 'com.airbnb.android:lottie:6.5.2'\r\n";
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.OTPVIEW, excludedLibraries) && extraMetadata.isOTPViewUsed) {
@@ -135,7 +143,7 @@ public class Lx {
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.FACEBOOK_ADS_AUDIENCE_NETWORK_SDK, excludedLibraries) && extraMetadata.isFBAdsUsed) {
-            content += "implementation 'com.facebook.android:audience-network-sdk:5.9.0'";
+            content += "implementation 'com.facebook.android:audience-network-sdk:6.18.0'";
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.PLAY_SERVICES_AUTH, excludedLibraries) && extraMetadata.isFBGoogleUsed) {
@@ -143,7 +151,7 @@ public class Lx {
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_MESSAGING, excludedLibraries) && extraMetadata.isFCMUsed) {
-            content += "implementation 'com.google.firebase:firebase-messaging:19.0.0'";
+            content += "implementation 'com.google.firebase:firebase-messaging'";
         }
         return j(content + "}\r\n", false);
     }
