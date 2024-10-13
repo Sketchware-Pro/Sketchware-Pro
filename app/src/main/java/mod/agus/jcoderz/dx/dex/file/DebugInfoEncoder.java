@@ -382,7 +382,7 @@ public final class DebugInfoEncoder {
         int mark = output.getCursor();
 
         // Start by initializing the line number register.
-        if (sortedPositions.size() > 0) {
+        if (!sortedPositions.isEmpty()) {
             mod.agus.jcoderz.dx.dex.code.PositionList.Entry entry = sortedPositions.get(0);
             line = entry.getPosition().getLine();
         }

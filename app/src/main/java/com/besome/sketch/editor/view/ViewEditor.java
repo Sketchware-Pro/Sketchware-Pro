@@ -392,7 +392,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     if (areImagesAdded) {
                         bB.a(getContext(), xB.b().a(getContext(), R.string.view_widget_favorites_image_auto_added), bB.TOAST_NORMAL).show();
                     }
-                    if (arrayList.size() > 0) {
+                    if (!arrayList.isEmpty()) {
                         HashMap<String, String> hashMap = new HashMap<>();
                         viewPane.a(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                         for (ViewBean next : arrayList) {
@@ -402,7 +402,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                                 hashMap.put(next.id, next.id);
                             }
                             next.id = hashMap.get(next.id);
-                            if (arrayList.indexOf(next) != 0 && (str = next.parent) != null && str.length() > 0) {
+                            if (arrayList.indexOf(next) != 0 && (str = next.parent) != null && !str.isEmpty()) {
                                 next.parent = hashMap.get(next.parent);
                             }
                             jC.a(a).a(b, next);

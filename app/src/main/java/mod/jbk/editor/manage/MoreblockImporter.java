@@ -109,11 +109,11 @@ public class MoreblockImporter {
                 }
             }
             ArrayList<Gx> paramClassInfo = next.getParamClassInfo();
-            if (paramClassInfo.size() > 0) {
+            if (!paramClassInfo.isEmpty()) {
                 for (int i = 0; i < paramClassInfo.size(); i++) {
                     Gx gx = paramClassInfo.get(i);
                     String str = next.parameters.get(i);
-                    if (str.length() > 0 && str.charAt(0) != '@') {
+                    if (!str.isEmpty() && str.charAt(0) != '@') {
                         if (gx.b("boolean.SelectBoolean")) {
                             maybeAddVariable(0, str);
                         } else if (gx.b("double.SelectDouble")) {
@@ -141,7 +141,7 @@ public class MoreblockImporter {
                 }
             }
         }
-        if (toBeAddedVariables.size() == 0 && toBeAddedLists.size() == 0 && toBeAddedImages.size() == 0 && toBeAddedSounds.size() == 0 && toBeAddedFonts.size() == 0) {
+        if (toBeAddedVariables.isEmpty() && toBeAddedLists.isEmpty() && toBeAddedImages.isEmpty() && toBeAddedSounds.isEmpty() && toBeAddedFonts.isEmpty()) {
             createEvent(moreBlock);
         } else {
             showAutoAddDialog(moreBlock);

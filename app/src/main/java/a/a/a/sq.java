@@ -107,22 +107,22 @@ public class sq {
             }
 
             if ((horizontalGravity & Gravity.RIGHT) == Gravity.RIGHT) {
-                if (gravityValue.length() > 0) gravityValue += ", ";
+                if (!gravityValue.isEmpty()) gravityValue += ", ";
                 gravityValue += "right";
             }
         }
 
         if (verticalGravity == Gravity.CENTER_VERTICAL) {
-            if (gravityValue.length() > 0) gravityValue += ", ";
+            if (!gravityValue.isEmpty()) gravityValue += ", ";
             gravityValue += "center_vertical";
         } else {
             if ((verticalGravity & Gravity.TOP) == Gravity.TOP) {
-                if (gravityValue.length() > 0) gravityValue += ", ";
+                if (!gravityValue.isEmpty()) gravityValue += ", ";
                 gravityValue += "top";
             }
 
             if ((verticalGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
-                if (gravityValue.length() > 0) gravityValue += ", ";
+                if (!gravityValue.isEmpty()) gravityValue += ", ";
                 gravityValue += "bottom";
             }
         }

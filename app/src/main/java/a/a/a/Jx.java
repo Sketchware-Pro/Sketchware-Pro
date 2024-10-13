@@ -250,67 +250,67 @@ public class Jx {
         boolean activityHasFields = false;
 
         for (String constant : filePickerRequestCodes) {
-            if (constant.length() > 0) {
+            if (!constant.isEmpty()) {
                 activityHasFields = true;
                 sb.append(EOL);
                 sb.append(constant);
             }
         }
 
-        if (fieldsWithStaticInitializers.size() > 0) {
+        if (!fieldsWithStaticInitializers.isEmpty()) {
             if (activityHasFields) sb.append(EOL);
             activityHasFields = true;
 
             for (String componentFieldDeclaration : fieldsWithStaticInitializers) {
-                if (componentFieldDeclaration.length() > 0) {
+                if (!componentFieldDeclaration.isEmpty()) {
                     sb.append(EOL);
                     sb.append(componentFieldDeclaration);
                 }
             }
         }
 
-        if (fields.size() > 0) {
+        if (!fields.isEmpty()) {
             if (activityHasFields) sb.append(EOL);
             activityHasFields = true;
 
             for (String field : fields) {
-                if (field.length() > 0) {
+                if (!field.isEmpty()) {
                     sb.append(EOL);
                     sb.append(field);
                 }
             }
         }
 
-        if (lists.size() > 0) {
+        if (!lists.isEmpty()) {
             if (activityHasFields) sb.append(EOL);
             activityHasFields = true;
 
             for (String value : lists) {
-                if (value.length() > 0) {
+                if (!value.isEmpty()) {
                     sb.append(EOL);
                     sb.append(value);
                 }
             }
         }
 
-        if (views.size() > 0) {
+        if (!views.isEmpty()) {
             if (activityHasFields) sb.append(EOL);
             activityHasFields = true;
 
             for (String viewDeclaration : views) {
-                if (viewDeclaration.length() > 0) {
+                if (!viewDeclaration.isEmpty()) {
                     sb.append(EOL);
                     sb.append(viewDeclaration);
                 }
             }
         }
 
-        if (components.size() > 0) {
+        if (!components.isEmpty()) {
             if (activityHasFields) sb.append(EOL);
             activityHasFields = true;
 
             for (String componentFieldDeclaration : components) {
-                if (componentFieldDeclaration.length() > 0) {
+                if (!componentFieldDeclaration.isEmpty()) {
                     sb.append(EOL);
                     sb.append(componentFieldDeclaration);
                 }
@@ -415,42 +415,42 @@ public class Jx {
         }
 
         for (String value : initializeMethodCode) {
-            if (value.length() > 0) {
+            if (!value.isEmpty()) {
                 sb.append(EOL);
                 sb.append(value);
             }
         }
 
         for (String componentInitializer : componentInitializers) {
-            if (componentInitializer.length() > 0) {
+            if (!componentInitializer.isEmpty()) {
                 sb.append(EOL);
                 sb.append(componentInitializer);
             }
         }
 
         String hxG = eventManager.g();
-        if (hxG.length() > 0) {
+        if (!hxG.isEmpty()) {
             sb.append(EOL);
             sb.append(EOL);
             sb.append(hxG);
         }
 
         String hxC = eventManager.c();
-        if (hxC.length() > 0) {
+        if (!hxC.isEmpty()) {
             sb.append(EOL);
             sb.append(EOL);
             sb.append(hxC);
         }
 
         String hxD = eventManager.d();
-        if (hxD.length() > 0) {
+        if (!hxD.isEmpty()) {
             sb.append(EOL);
             sb.append(EOL);
             sb.append(hxD);
         }
 
         String hxF = eventManager.f();
-        if (hxF.length() > 0) {
+        if (!hxF.isEmpty()) {
             sb.append(EOL);
             sb.append(EOL);
             sb.append(hxF);
@@ -460,7 +460,7 @@ public class Jx {
         sb.append("}").append(EOL);
         sb.append(EOL);
         sb.append("private void initializeLogic() {").append(EOL);
-        if (onCreateEventCode.length() > 0) {
+        if (!onCreateEventCode.isEmpty()) {
             sb.append(onCreateEventCode).append(EOL);
         }
         sb.append("}").append(EOL);
@@ -507,18 +507,18 @@ public class Jx {
                 eventManager.a("onDestroy", "AdView", next.id);
             }
         }
-        if (eventManager.k.length() > 0) {
+        if (!eventManager.k.isEmpty()) {
             sb.append(EOL);
             sb.append(eventManager.k).append(EOL);
         }
-        if (eventManager.l.length() > 0) {
+        if (!eventManager.l.isEmpty()) {
             sb.append(EOL);
             sb.append(eventManager.l);
             sb.append(EOL);
         }
 
         String base = LogicHandler.base(eventManager.b());
-        if (base.length() > 0) {
+        if (!base.isEmpty()) {
             sb.append(EOL);
             sb.append(base);
         }
@@ -590,7 +590,7 @@ public class Jx {
 
     private String getDrawerViewDeclarationAndAddImports(ViewBean viewBean) {
         String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
-        if (viewType.equals("")) {
+        if (viewType.isEmpty()) {
             viewType = viewBean.getClassInfo().a();
         }
         addImports(mq.getImportsByTypeName(viewType));
@@ -608,7 +608,7 @@ public class Jx {
 
     private String getViewDeclarationAndAddImports(ViewBean viewBean) {
         String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
-        if (viewType.equals("")) {
+        if (viewType.isEmpty()) {
             viewType = viewBean.getClassInfo().a();
         }
         addImports(mq.getImportsByTypeName(viewType));
@@ -780,7 +780,7 @@ public class Jx {
 
     private String getDrawerViewInitializer(ViewBean viewBean) {
         String replaceAll = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
-        if (replaceAll.equals("")) {
+        if (replaceAll.isEmpty()) {
             replaceAll = viewBean.getClassInfo().a();
         }
         return Lx.getDrawerViewInitializer(replaceAll, viewBean.id, "_nav_view");
@@ -806,7 +806,7 @@ public class Jx {
 
     private String getViewInitializer(ViewBean viewBean) {
         String replaceAll = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
-        if (replaceAll.equals("")) {
+        if (replaceAll.isEmpty()) {
             replaceAll = viewBean.getClassInfo().a();
         }
         if (projectFileBean.fileName.contains("_fragment")) {

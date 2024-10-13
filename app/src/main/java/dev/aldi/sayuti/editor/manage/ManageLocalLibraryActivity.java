@@ -90,7 +90,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         lookup_list.clear();
         if (!notAssociatedWithProject) {
             String fileContent;
-            if (!FileUtil.isExistFile(local_lib_file) || (fileContent = FileUtil.readFile(local_lib_file)).equals("")) {
+            if (!FileUtil.isExistFile(local_lib_file) || (fileContent = FileUtil.readFile(local_lib_file)).isEmpty()) {
                 FileUtil.writeFile(local_lib_file, "[]");
             } else {
                 project_used_libs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);

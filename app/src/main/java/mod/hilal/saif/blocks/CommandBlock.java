@@ -31,7 +31,7 @@ public class CommandBlock {
         ArrayList<HashMap<String, Object>> data;
         try {
             //writeLog("try");
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).isEmpty() && !FileUtil.readFile(path).equals("[]")) {
                 //writeLog("the file is found and has content :)");
                 data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
                 //writeLog("get gson from file is done");
@@ -182,7 +182,7 @@ public class CommandBlock {
         }
 
         for (int i = 0; i < a.size(); i++) {
-            if (res.equals("")) {
+            if (res.isEmpty()) {
                 res = a.get(i);
             } else {
                 res = res.concat("\n").concat(a.get(i));
@@ -195,13 +195,13 @@ public class CommandBlock {
     private static String getExceptFirstLine(String c) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         String res = "";
-        if (a.size() > 0) {
+        if (!a.isEmpty()) {
             a.remove(0);
         } else {
             return c;
         }
         for (int i = 0; i < a.size(); i++) {
-            if (res.equals("")) {
+            if (res.isEmpty()) {
                 res = a.get(i);
             } else {
                 res = res.concat("\n").concat(a.get(i));
@@ -212,7 +212,7 @@ public class CommandBlock {
 
     private static String getFirstLine(String c) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
-        if (a.size() > 0) {
+        if (!a.isEmpty()) {
             return a.get(0);
         } else {
             return "";
@@ -245,7 +245,7 @@ public class CommandBlock {
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
         ArrayList<HashMap<String, Object>> data = new ArrayList<>();
         try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).isEmpty() && !FileUtil.readFile(path).equals("[]")) {
                 data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             }
         } catch (Exception ignored) {
@@ -317,7 +317,7 @@ public class CommandBlock {
     private static String assemble(ArrayList<String> a) {
         String res = "";
         for (int i = 0; i < a.size(); i++) {
-            if (res.equals("")) {
+            if (res.isEmpty()) {
                 res = a.get(i);
             } else {
                 res = res.concat("\n").concat(a.get(i));
@@ -469,7 +469,7 @@ public class CommandBlock {
         }
 
         for (int i = 0; i < a.size(); i++) {
-            if (res.equals("")) {
+            if (res.isEmpty()) {
                 res = a.get(i);
             } else {
                 res = res.concat("\n").concat(a.get(i));
@@ -509,7 +509,7 @@ public class CommandBlock {
         }
 
         for (int i = 0; i < r.size(); i++) {
-            if (res.equals("")) {
+            if (res.isEmpty()) {
                 res = r.get(i);
             } else {
                 res = res.concat("\n").concat(r.get(i));

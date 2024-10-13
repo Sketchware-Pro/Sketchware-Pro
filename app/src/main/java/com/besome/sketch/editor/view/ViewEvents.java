@@ -78,7 +78,7 @@ public class ViewEvents extends LinearLayout {
                 }
             }
 
-            if (!event.equals("onBindCustomView") || (!viewBean.customView.equals("") && !viewBean.customView.equals("none"))) {
+            if (!event.equals("onBindCustomView") || (!viewBean.customView.isEmpty() && !viewBean.customView.equals("none"))) {
                 EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_VIEW, viewBean.type, viewBean.id, event);
                 eventBean.isSelected = eventAlreadyInActivity;
                 events.add(eventBean);

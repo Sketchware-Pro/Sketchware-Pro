@@ -211,7 +211,7 @@ public final class PhiInsn extends mod.agus.jcoderz.dx.ssa.SsaInsn {
             return sources;
         }
 
-        if (operands.size() == 0) {
+        if (operands.isEmpty()) {
             // How'd this happen? A phi insn with no operand?
             return mod.agus.jcoderz.dx.rop.code.RegisterSpecList.EMPTY;
         }
@@ -250,7 +250,7 @@ public final class PhiInsn extends mod.agus.jcoderz.dx.ssa.SsaInsn {
      * @return true if all operands use the same register
      */
     public boolean areAllOperandsEqual() {
-        if (operands.size() == 0 ) {
+        if (operands.isEmpty()) {
             // This should never happen.
             return true;
         }

@@ -193,7 +193,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                     for (int i = 0; i < next2.parameters.size(); i++) {
                         String parameter = next2.parameters.get(i);
-                        if (parameter != null && parameter.length() > 0) {
+                        if (parameter != null && !parameter.isEmpty()) {
                             if (parameter.charAt(0) == '@') {
                                 Rs parameterBlock = blockIdsAndBlocks.get(Integer.valueOf(parameter.substring(1)));
                                 if (parameterBlock != null) {
@@ -567,7 +567,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             for (int j = 0; j < block.parameters.size(); j++) {
                 String parameter = block.parameters.get(j);
-                if (parameter != null && parameter.length() > 0 && parameter.charAt(0) == '@') {
+                if (parameter != null && !parameter.isEmpty() && parameter.charAt(0) == '@') {
                     int parameterId = Integer.parseInt(parameter.substring(1));
                     int parameterAsBlockId = hashMap.containsKey(parameterId) ? hashMap.get(parameterId) : 0;
                     if (parameterAsBlockId >= 0) {
@@ -761,7 +761,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
-                } else if (text.length() > 0) {
+                } else if (!text.isEmpty()) {
                     if (text.charAt(0) == '@') {
                         text = " " + text;
                         break emptyStringSetter;
@@ -788,7 +788,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             for (int i = 0; i < blockBean.parameters.size(); i++) {
                 String parameter = blockBean.parameters.get(i);
                 if (parameter != null) {
-                    if (parameter.length() > 0 && parameter.charAt(0) == '@') {
+                    if (!parameter.isEmpty() && parameter.charAt(0) == '@') {
                         int blockId = Integer.parseInt(parameter.substring(1));
                         if (blockId > 0) {
                             Rs parameterBlock = o.a(blockId);
@@ -813,7 +813,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                 }
                             }
 
-                            if (parameter.length() > 0) {
+                            if (!parameter.isEmpty()) {
                                 if (ss.b.equals("m")) {
                                     switch (ss.c) {
                                         case "varInt":
@@ -2250,7 +2250,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                     for (int i = 0; i < clone2.parameters.size(); i++) {
                         String parameter = clone2.parameters.get(i);
-                        if (parameter != null && parameter.length() > 0 && parameter.charAt(0) == '@') {
+                        if (parameter != null && !parameter.isEmpty() && parameter.charAt(0) == '@') {
                             clone2.parameters.set(i, "@" + (Integer.parseInt(parameter.substring(1)) + 99000000));
                         }
                     }

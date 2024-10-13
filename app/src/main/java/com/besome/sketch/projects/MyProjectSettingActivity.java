@@ -161,7 +161,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             /* Set the dialog's title & create button label */
             String newProjectName = getIntent().getStringExtra("my_ws_name");
             String newProjectPackageName = getIntent().getStringExtra("my_sc_pkg_name");
-            if (sc_id == null || sc_id.equals("")) {
+            if (sc_id == null || sc_id.isEmpty()) {
                 sc_id = lC.b();
                 newProjectName = lC.c();
                 newProjectPackageName = "com.my." + newProjectName.toLowerCase();

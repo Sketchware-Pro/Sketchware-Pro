@@ -322,7 +322,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         boolean failedToAddResourceToCollections = false;
         for (BlockBean next : moreBlockBlocks) {
             ArrayList<Gx> paramClassInfo = next.getParamClassInfo();
-            if (paramClassInfo.size() > 0) {
+            if (!paramClassInfo.isEmpty()) {
                 for (int i = 0; i < paramClassInfo.size(); i++) {
                     Gx gx = paramClassInfo.get(i);
                     String parameter = next.parameters.get(i);
@@ -530,7 +530,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
 
         public void a(ArrayList<EventBean> arrayList) {
-            if (arrayList.size() == 0) {
+            if (arrayList.isEmpty()) {
                 noEvents.setVisibility(View.VISIBLE);
             } else {
                 noEvents.setVisibility(View.GONE);

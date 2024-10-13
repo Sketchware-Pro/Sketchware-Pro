@@ -115,7 +115,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         FilePickerDialog filePickerDialog = new FilePickerDialog(this, properties);
         filePickerDialog.setTitle("Select a JSON file");
         filePickerDialog.setDialogSelectionListener(selections -> {
-            if (FileUtil.readFile(selections[0]).equals("")) {
+            if (FileUtil.readFile(selections[0]).isEmpty()) {
                 SketchwareUtil.toastError("The selected file is empty!");
             } else if (FileUtil.readFile(selections[0]).equals("[]")) {
                 SketchwareUtil.toastError("The selected file is empty!");
@@ -239,11 +239,11 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         reference_list.clear();
         String paletteFileContent = FileUtil.readFile(pallet_path);
         String blocksFileContent = FileUtil.readFile(blocks_path);
-        if (paletteFileContent.equals("")) {
+        if (paletteFileContent.isEmpty()) {
             FileUtil.writeFile(pallet_path, "[]");
             paletteFileContent = "[]";
         }
-        if (blocksFileContent.equals("")) {
+        if (blocksFileContent.isEmpty()) {
             FileUtil.writeFile(blocks_path, "[]");
             blocksFileContent = "[]";
         }

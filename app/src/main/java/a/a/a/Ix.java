@@ -221,7 +221,7 @@ public class Ix {
                 XmlBuilder intentFilterDataTag = new XmlBuilder("data");
                 intentFilterDataTag.addAttribute("android", "host", stringStringPair.first);
                 intentFilterDataTag.addAttribute("android", "scheme", stringStringPair.second);
-                if (c.dlDataList.size() != 0) {
+                if (!c.dlDataList.isEmpty()) {
                     intentFilterTag.a(intentFilterDataTag);
                 }
             }
@@ -607,7 +607,7 @@ public class Ix {
                 }
                 if (!AndroidManifestInjector.isActivityKeyboardUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     String keyboardSetting = vq.a(projectFileBean.keyboardSetting);
-                    if (keyboardSetting.length() > 0) {
+                    if (!keyboardSetting.isEmpty()) {
                         activityTag.addAttribute("android", "windowSoftInputMode", keyboardSetting);
                     }
                 }

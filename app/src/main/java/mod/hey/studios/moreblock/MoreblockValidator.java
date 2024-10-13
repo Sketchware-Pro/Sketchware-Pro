@@ -44,7 +44,7 @@ public class MoreblockValidator extends MB {
             b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, 60));
             d = false;
         } else {
-            if (i != null && i.length() > 0 && name.equals(i)) {
+            if (i != null && !i.isEmpty() && name.equals(i)) {
                 b.setErrorEnabled(false);
                 d = true;
             } else if (registeredVariables.contains(name)) {
@@ -90,7 +90,7 @@ public class MoreblockValidator extends MB {
                         b.setError(Helper.getResString(R.string.invalid_value_rule_3));
                         d = false;
                     }
-                    if (name.trim().length() < 1) {
+                    if (name.trim().isEmpty()) {
                         b.setErrorEnabled(true);
                         b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, 1));
                         d = false;

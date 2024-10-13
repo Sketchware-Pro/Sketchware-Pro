@@ -162,7 +162,7 @@ public class ViewPane extends RelativeLayout {
     public sy g(ViewBean viewBean) {
         View findViewWithTag;
         String preId = viewBean.preId;
-        if (preId != null && preId.length() > 0 && !preId.equals(viewBean.id)) {
+        if (preId != null && !preId.isEmpty() && !preId.equals(viewBean.id)) {
             View preView = rootLayout.findViewWithTag(preId);
             if (preView != null) preView.setTag(viewBean.id);
             viewBean.preId = "";
@@ -186,7 +186,7 @@ public class ViewPane extends RelativeLayout {
             findViewWithTag = findViewWithTag(viewBean.id);
         }
         String str = viewBean.preParent;
-        if (str != null && str.length() > 0 && !viewBean.parent.equals(viewBean.preParent)) {
+        if (str != null && !str.isEmpty() && !viewBean.parent.equals(viewBean.preParent)) {
             ViewGroup viewGroup = rootLayout.findViewWithTag(viewBean.preParent);
             viewGroup.removeView(findViewWithTag);
             ((ty) viewGroup).a();
@@ -333,7 +333,7 @@ public class ViewPane extends RelativeLayout {
                 layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
             }
             view.setLayoutParams(layoutParams);
-            if (viewBean.getClassInfo().b("FloatingActionButton") && (imageBean = viewBean.image) != null && (str = imageBean.resName) != null && str.length() > 0) {
+            if (viewBean.getClassInfo().b("FloatingActionButton") && (imageBean = viewBean.image) != null && (str = imageBean.resName) != null && !str.isEmpty()) {
                 try {
                     Bitmap decodeFile = BitmapFactory.decodeFile(resourcesManager.f(viewBean.image.resName));
                     int round = Math.round(getResources().getDisplayMetrics().density / 2.0f);
@@ -865,19 +865,19 @@ public class ViewPane extends RelativeLayout {
 
     private void updateTextView(TextView textView, ViewBean viewBean) {
         String str = viewBean.text.text;
-        if (str != null && str.length() > 0 && str.contains("\\n")) {
+        if (str != null && !str.isEmpty() && str.contains("\\n")) {
             str = viewBean.text.text.replaceAll("\\\\n", "\n");
         }
         textView.setText(str);
         String textFont = new InjectAttributeHandler(viewBean).getAttributeValueOf("fontFamily");
-        if (textFont != null && textFont.length() > 0) {
+        if (textFont != null && !textFont.isEmpty()) {
             if (textFont.startsWith("@font/")) {
                 textFont = textFont.substring(6);
                 String textFontPath =
                         new ResourceUtil(sc_id, "font").getResourcePathFromName(textFont);
                 textView.setTypeface(
                         textFontPath != null
-                                && textFontPath.length() > 0
+                                && !textFontPath.isEmpty()
                                 && new File(textFontPath).exists()
                                 ? Typeface.createFromFile(textFontPath)
                                 : null,

@@ -156,12 +156,12 @@ public class LogReaderActivity extends BaseAppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 final String _charSeq = s.toString();
-                if (_charSeq.equals("") && (pkgFilterList.size() == 0)) {
+                if (_charSeq.isEmpty() && (pkgFilterList.isEmpty())) {
                     binding.logsRecyclerView.setAdapter(new Adapter(mainList));
                 } else {
                     ArrayList<HashMap<String, Object>> filteredList = new ArrayList<>();
                     for (HashMap<String, Object> m : mainList) {
-                        if (pkgFilterList.size() != 0) {
+                        if (!pkgFilterList.isEmpty()) {
                             if (m.containsKey("pkgName") && pkgFilterList.contains(m.get("pkgName").toString())) {
                                 if (m.get("logRaw").toString().toLowerCase().contains(_charSeq.toLowerCase())) {
                                     filteredList.add(m);
@@ -277,8 +277,8 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 }
 
                 mainList.add(map);
-                if (pkgFilterList.size() == 0) {
-                    if (!binding.searchInput.getText().toString().equals("")) {
+                if (pkgFilterList.isEmpty()) {
+                    if (!binding.searchInput.getText().toString().isEmpty()) {
                         if (map.get("logRaw").toString().toLowerCase().contains(binding.searchInput.getText().toString().toLowerCase())) {
                             ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                         }
@@ -286,7 +286,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                         ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                     }
                 } else if (map.containsKey("pkgName") && pkgFilterList.contains(map.get("pkgName").toString())) {
-                    if (!binding.searchInput.getText().toString().equals("")) {
+                    if (!binding.searchInput.getText().toString().isEmpty()) {
                         if (map.get("logRaw").toString().toLowerCase().contains(binding.searchInput.getText().toString().toLowerCase())) {
                             ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                         }
@@ -322,7 +322,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 binding.appBarLayout.setExpanded(false);
             }
 
-            if (data.size() > 0) {
+            if (!data.isEmpty()) {
                 if (persistentBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
                     persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     persistentBottomSheetBehavior.setHideable(false);

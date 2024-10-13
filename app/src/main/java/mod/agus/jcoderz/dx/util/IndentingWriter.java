@@ -70,7 +70,7 @@ public final class IndentingWriter extends FilterWriter {
 
         this.width = (width != 0) ? width : Integer.MAX_VALUE;
         this.maxIndent = width >> 1;
-        this.prefix = (prefix.length() == 0) ? null : prefix;
+        this.prefix = (prefix.isEmpty()) ? null : prefix;
 
         bol();
     }

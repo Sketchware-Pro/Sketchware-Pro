@@ -26,8 +26,8 @@ import java.util.Objects;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
-import mod.remaker.view.CustomAttributeView;
 import mod.remaker.util.ThemeUtils;
+import mod.remaker.view.CustomAttributeView;
 
 public class AddCustomAttributeActivity extends AppCompatActivity {
 
@@ -57,7 +57,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             binding.txToolbarTitle.setText(widgetType);
 
             activityInjectionsFilePath = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/injection/appcompat/" + activityFilename;
-            if (!FileUtil.isExistFile(activityInjectionsFilePath) || FileUtil.readFile(activityInjectionsFilePath).equals("")) {
+            if (!FileUtil.isExistFile(activityInjectionsFilePath) || FileUtil.readFile(activityInjectionsFilePath).isEmpty()) {
                 activityInjections = new Gson().fromJson(AppCompatInjection.getDefaultActivityInjections(), Helper.TYPE_MAP_LIST);
             } else {
                 activityInjections = new Gson().fromJson(FileUtil.readFile(activityInjectionsFilePath), Helper.TYPE_MAP_LIST);
@@ -86,7 +86,7 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             String namespaceInput = attributeBinding.inputRes.getText().toString();
             String nameInput = attributeBinding.inputAttr.getText().toString();
             String valueInput = attributeBinding.inputValue.getText().toString();
-            if (!namespaceInput.trim().equals("") && !nameInput.trim().equals("") && !valueInput.trim().equals("")) {
+            if (!namespaceInput.trim().isEmpty() && !nameInput.trim().isEmpty() && !valueInput.trim().isEmpty()) {
                 String newValue = namespaceInput + ":" + nameInput + "=\"" + valueInput + "\"";
                 if (type.equals("create")) {
                     HashMap<String, Object> map = new HashMap<>();

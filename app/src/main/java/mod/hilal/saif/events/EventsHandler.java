@@ -615,7 +615,7 @@ public class EventsHandler {
         if (FileUtil.isExistFile(CUSTOM_EVENTS_FILE_PATH)) {
             String customEventsContent = FileUtil.readFile(CUSTOM_EVENTS_FILE_PATH);
 
-            if (!customEventsContent.equals("") && !customEventsContent.equals("[]")) {
+            if (!customEventsContent.isEmpty() && !customEventsContent.equals("[]")) {
                 try {
                     customEvents = new Gson().fromJson(customEventsContent, Helper.TYPE_MAP_LIST);
 
@@ -638,7 +638,7 @@ public class EventsHandler {
         if (FileUtil.isExistFile(CUSTOM_LISTENERE_FILE_PATH)) {
             String customListenersContent = FileUtil.readFile(CUSTOM_LISTENERE_FILE_PATH);
 
-            if (!customListenersContent.equals("") && !customListenersContent.equals("[]")) {
+            if (!customListenersContent.isEmpty() && !customListenersContent.equals("[]")) {
                 try {
                     customListeners = new Gson().fromJson(customListenersContent, Helper.TYPE_MAP_LIST);
 

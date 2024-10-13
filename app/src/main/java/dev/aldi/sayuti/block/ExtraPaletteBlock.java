@@ -76,7 +76,7 @@ public class ExtraPaletteBlock {
                 view = eC.c("_drawer_" + xmlName, logicEditor.C);
             }
             String customView = view.customView;
-            if (customView != null && customView.length() > 0) {
+            if (customView != null && !customView.isEmpty()) {
                 for (ViewBean viewBean : jC.a(sc_id).d(ProjectFileBean.getXmlName(customView))) {
                     if (viewBean.getClassInfo().a(str)) {
                         mapSave.put(str, true);
@@ -250,7 +250,7 @@ public class ExtraPaletteBlock {
                 viewBean = eC.c("_drawer_" + xmlName, viewId);
             }
             String viewBeanCustomView = viewBean.customView;
-            if (viewBeanCustomView != null && viewBeanCustomView.length() > 0) {
+            if (viewBeanCustomView != null && !viewBeanCustomView.isEmpty()) {
                 ArrayList<ViewBean> customViews = jC.a(sc_id).d(ProjectFileBean.getXmlName(viewBeanCustomView));
                 for (int i = 0, customViewsSize = customViews.size(); i < customViewsSize; i++) {
                     ViewBean customView = customViews.get(i);
@@ -441,7 +441,7 @@ public class ExtraPaletteBlock {
             case 5:
                 extraBlocks.fileBlocks();
                 logicEditor.a("FileUtil Blocks", 0xff555555);
-                if (frc.getAssetsFile().size() > 0) {
+                if (!frc.getAssetsFile().isEmpty()) {
                     logicEditor.a(" ", "getAssetFile");
                     logicEditor.a("s", "copyAssetFile");
                 }
@@ -938,11 +938,11 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "startActivity");
                     logicEditor.a(" ", "startActivityWithChooser");
                 }
-                if (frc.getBroadcastFile().size() > 0) {
+                if (!frc.getBroadcastFile().isEmpty()) {
                     logicEditor.a("Broadcast", 0xff555555);
                     logicEditor.a(" ", "sendBroadcast");
                 }
-                if (frc.getServiceFile().size() > 0) {
+                if (!frc.getServiceFile().isEmpty()) {
                     logicEditor.a("Service", 0xff555555);
                     logicEditor.a(" ", "startService");
                     logicEditor.a(" ", "stopService");

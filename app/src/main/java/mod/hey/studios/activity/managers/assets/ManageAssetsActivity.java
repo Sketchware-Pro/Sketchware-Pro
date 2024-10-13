@@ -248,7 +248,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
 
         assetsAdapter = new AssetsAdapter();
         binding.filesListRecyclerView.setAdapter(assetsAdapter);
-        if (currentTree.size() == 0) {
+        if (currentTree.isEmpty()) {
             binding.noContentLayout.setVisibility(View.VISIBLE);
         } else {
             binding.noContentLayout.setVisibility(View.GONE);

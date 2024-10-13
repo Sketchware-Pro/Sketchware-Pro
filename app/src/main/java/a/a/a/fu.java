@@ -46,7 +46,7 @@ public class fu extends qA implements View.OnClickListener {
             for (ProjectResourceBean image : importedImages) {
                 newImportedImages.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, image.resFullName));
             }
-            if (newImportedImages.size() > 0) {
+            if (!newImportedImages.isEmpty()) {
                 ((ManageImageActivity) requireActivity()).m().a(newImportedImages);
                 ((ManageImageActivity) requireActivity()).f(0);
             }
@@ -72,7 +72,7 @@ public class fu extends qA implements View.OnClickListener {
     }
 
     public void updateGuideVisibility() {
-        boolean isEmpty = collectionImages.size() == 0;
+        boolean isEmpty = collectionImages.isEmpty();
         guide.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
         recyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
     }
@@ -84,7 +84,7 @@ public class fu extends qA implements View.OnClickListener {
                 selectedCollections.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, wq.a() + File.separator + "image" + File.separator + "data" + File.separator + image.resFullName));
             }
         }
-        if (selectedCollections.size() > 0) {
+        if (!selectedCollections.isEmpty()) {
             Intent intent = new Intent(requireActivity(), ManageImageImportActivity.class);
             intent.putParcelableArrayListExtra("project_images", ((ManageImageActivity) requireActivity()).m().d());
             intent.putParcelableArrayListExtra("selected_collections", selectedCollections);

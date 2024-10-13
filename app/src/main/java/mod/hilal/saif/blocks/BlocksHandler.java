@@ -2411,7 +2411,7 @@ public class BlocksHandler {
     private static void checkDir() {
         String extraBlocksPath = ExtraBlockFile.EXTRA_MENU_BLOCK_FILE.getAbsolutePath();
 
-        if (!ExtraBlockFile.EXTRA_BLOCKS_DATA_FILE.exists() || FileUtil.readFile(extraBlocksPath).equals("")) {
+        if (!ExtraBlockFile.EXTRA_BLOCKS_DATA_FILE.exists() || FileUtil.readFile(extraBlocksPath).isEmpty()) {
             FileUtil.writeFile(extraBlocksPath, "[]");
         }
     }

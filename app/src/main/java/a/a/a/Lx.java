@@ -595,7 +595,7 @@ public class Lx {
             String initializer = getInitializer(typeName, parameters);
             String builtInType = mq.e(typeName);
             if (initializer.length() <= 0) {
-                if (!(builtInType.equals("") || builtInType.equals("RewardedVideoAd") || builtInType.equals("FirebaseCloudMessage") || builtInType.equals("FragmentStatePagerAdapter"))) {
+                if (!(builtInType.isEmpty() || builtInType.equals("RewardedVideoAd") || builtInType.equals("FirebaseCloudMessage") || builtInType.equals("FragmentStatePagerAdapter"))) {
                     fieldDeclaration += " " + builtInType + " " + typeInstanceName + ";";
                 } else {
                     switch (typeName) {
@@ -616,7 +616,7 @@ public class Lx {
             } else {
                 String typeNameOfField = builtInType;
 
-                if (builtInType.equals("") && "Videos".equals(typeName)) {
+                if (builtInType.isEmpty() && "Videos".equals(typeName)) {
                     typeNameOfField = "Intent";
                 }
 
@@ -1157,7 +1157,7 @@ public class Lx {
 
             case "FilePicker":
                 String mimeType;
-                if (parameters[0] != null && parameters[0].length() > 0) {
+                if (parameters[0] != null && !parameters[0].isEmpty()) {
                     mimeType = parameters[0].replace(";", "");
                 } else {
                     mimeType = "*/*";

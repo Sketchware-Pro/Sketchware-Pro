@@ -111,7 +111,7 @@ public class EventsManagerDetailsFragment extends BaseFragment {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             HashMap<String, Object> item = dataArray.get(position);
 
-            if (listName.equals("")) {
+            if (listName.isEmpty()) {
                 holder.binding.eventIcon.setImageResource(R.drawable.widget_source);
             } else {
                 int imgRes = Integer.parseInt((String) dataArray.get(position).get("icon"));
