@@ -308,7 +308,13 @@ public class yq {
         fileUtil.b(projectMyscPath + File.separator + "app" + File.separator + "build.gradle",
                 Lx.getBuildGradleString(VAR_DEFAULT_TARGET_SDK_VERSION, VAR_DEFAULT_MIN_SDK_VERSION, projectSettings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)), N));
         fileUtil.b(projectMyscPath + File.separator + "settings.gradle", Lx.a());
-        fileUtil.b(projectMyscPath + File.separator + "build.gradle", Lx.c("8.2.2", "4.4.2"));
+        fileUtil.b(projectMyscPath + File.separator + "build.gradle", Lx.c("8.7.0", "4.4.2"));
+
+        fileUtil.b(projectMyscPath + File.separator + "gradle.properties", """
+                android.enableR8.fullMode=false
+                android.enableJetifier=true
+                android.useAndroidX=true
+                """.trim());
     }
 
     /**
@@ -626,7 +632,7 @@ public class yq {
                         case "OnResultBillingResponse":
                         case "Youtube useWebUI":
                         case "FacebookAds setProvider":
-                            if (block.parameters.size() > 0) {
+                            if (!block.parameters.isEmpty()) {
                                 if (N.x.param == null) N.x.param = new HashMap<>();
                                 N.x.param.clear();
                                 N.x.param.put(block.opCode, block.parameters);
@@ -678,10 +684,10 @@ public class yq {
                 mx.addString("firebase_database_url", databaseUrl, false);
                 mx.addString("project_id", projectId, false);
                 mx.addString("google_app_id", firebaseLibrary.reserved1, false);
-                if (firebaseLibrary.reserved2 != null && firebaseLibrary.reserved2.length() > 0) {
+                if (firebaseLibrary.reserved2 != null && !firebaseLibrary.reserved2.isEmpty()) {
                     mx.addString("google_api_key", firebaseLibrary.reserved2, false);
                 }
-                if (firebaseLibrary.reserved3 != null && firebaseLibrary.reserved3.length() > 0) {
+                if (firebaseLibrary.reserved3 != null && !firebaseLibrary.reserved3.isEmpty()) {
                     mx.addString("google_storage_bucket", firebaseLibrary.reserved3, false);
                 }
             }
