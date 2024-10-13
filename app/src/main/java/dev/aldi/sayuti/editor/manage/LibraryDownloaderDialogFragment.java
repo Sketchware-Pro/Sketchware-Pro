@@ -22,7 +22,6 @@ import org.cosmic.ide.dependency.resolver.api.Artifact;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -35,6 +34,7 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
     private LibraryDownloaderDialogBinding binding;
     private final Gson gson = new Gson();
     private boolean notAssociatedWithProject = false;
+    private String dependencyName;
     private BuildSettings buildSettings;
     private String local_lib_file = "";
     private LibraryDownloaderListener listener;
@@ -80,7 +80,7 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
     }
 
     private void initDownloadFlow() {
-        String dependencyName = Objects.requireNonNull(binding.dependencyInput.getText()).toString();
+        dependencyName = Objects.requireNonNull(binding.dependencyInput.getText()).toString();
         if (dependencyName.isEmpty()) {
             SketchwareUtil.toastError("Please enter a dependency");
             return;
@@ -210,7 +210,9 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
                             new SetTextRunnable("Adding dependencies to project...").run();
                             var fileContent = FileUtil.readFile(local_lib_file);
                             var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);
-                            enabledLibs.addAll(dependencies.stream().map(ManageLocalLibraryActivity::createLibraryMap).collect(Collectors.toUnmodifiableList()));
+                            enabledLibs.addAll(dependencies.stream()
+                                    .map(name -> ManageLocalLibraryActivity.createLibraryMap(name, dependencyName))
+                                    .toList());
                             FileUtil.writeFile(local_lib_file, gson.toJson(enabledLibs));
                         }
                         if (getActivity() == null) return;

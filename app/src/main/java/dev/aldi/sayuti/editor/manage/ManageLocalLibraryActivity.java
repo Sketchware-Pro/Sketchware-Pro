@@ -115,7 +115,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         binding.librariesList.setAdapter(new LibraryAdapter(localLibraryNames));
     }
 
-    public static HashMap<String, Object> createLibraryMap(String name) {
+    public static HashMap<String, Object> createLibraryMap(String name, String dependency) {
         String configPath = local_libs_path + name + "/config";
         String resPath = local_libs_path + name + "/res";
         String jarPath = local_libs_path + name + "/classes.jar";
@@ -126,6 +126,9 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
 
         HashMap<String, Object> localLibrary = new HashMap<>();
         localLibrary.put("name", name);
+        if (dependency != null) {
+            localLibrary.put("dependency", dependency);
+        }
         if (FileUtil.isExistFile(configPath)) {
             localLibrary.put("packageName", FileUtil.readFile(configPath));
         }
@@ -149,6 +152,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         }
         return localLibrary;
     }
+
 
     public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
 
@@ -176,29 +180,37 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
 
             binding.checkboxContent.setOnClickListener(v -> {
                 String name = binding.checkboxContent.getText().toString();
-                HashMap<String, Object> localLibrary = createLibraryMap(name);
 
+                HashMap<String, Object> localLibrary;
                 if (!binding.checkboxContent.isChecked()) {
-                    int i = -1;
-                    for (int j = 0; j < project_used_libs.size(); j++) {
-                        HashMap<String, Object> nLocalLibrary = project_used_libs.get(j);
-                        if (name.equals(nLocalLibrary.get("name"))) {
-                            i = j;
+                    // Remove the library from the list
+                    int indexToRemove = -1;
+                    for (int i = 0; i < project_used_libs.size(); i++) {
+                        HashMap<String, Object> lib = project_used_libs.get(i);
+                        if (name.equals(lib.get("name"))) {
+                            indexToRemove = i;
                             break;
                         }
                     }
-                    project_used_libs.remove(i);
+                    if (indexToRemove != -1) {
+                        project_used_libs.remove(indexToRemove);
+                    }
                 } else {
-                    for (HashMap<String, Object> usedLibrary : project_used_libs) {
-                        if (Objects.requireNonNull(usedLibrary.get("name")).toString().equals(name)) {
-                            project_used_libs.remove(usedLibrary);
+                    // Add the library to the list
+                    // Here, we need to find the dependency string if it exists
+                    String dependency = null;
+                    for (HashMap<String, Object> lib : lookup_list) {
+                        if (name.equals(lib.get("name"))) {
+                            dependency = (String) lib.get("dependency");
                             break;
                         }
                     }
+                    localLibrary = createLibraryMap(name, dependency);
                     project_used_libs.add(localLibrary);
                 }
                 FileUtil.writeFile(local_lib_file, new Gson().toJson(project_used_libs));
             });
+
 
             binding.checkboxContent.setChecked(false);
             if (!notAssociatedWithProject) {
