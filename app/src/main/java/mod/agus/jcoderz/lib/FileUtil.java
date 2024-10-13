@@ -639,17 +639,12 @@ public class FileUtil {
             ExifInterface exif = new ExifInterface(filePath);
             int iOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1);
 
-            switch (iOrientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    rotate = 90;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    rotate = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    rotate = 270;
-                    break;
-            }
+            rotate = switch (iOrientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90 -> 90;
+                case ExifInterface.ORIENTATION_ROTATE_180 -> 180;
+                case ExifInterface.ORIENTATION_ROTATE_270 -> 270;
+                default -> rotate;
+            };
         } catch (IOException e) {
             return 0;
         }

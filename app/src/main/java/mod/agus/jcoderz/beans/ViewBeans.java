@@ -86,89 +86,35 @@ public class ViewBeans {
     }
 
     public static int getViewTypeResId(int id) {
-        switch (id) {
-            case VIEW_TYPE_WIDGET_RADIOBUTTON:
-                return R.drawable.widget_radio_button;
-
-            case VIEW_TYPE_WIDGET_RATINGBAR:
-                return R.drawable.color_star_24;
-
-            case VIEW_TYPE_WIDGET_VIDEOVIEW:
-                return R.drawable.widget_mediaplayer;
-
-            case VIEW_TYPE_WIDGET_SEARCHVIEW:
-                return R.drawable.ic_search_color_96dp;
-
-            case VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW:
-            case VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW:
-            case VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT:
-                return R.drawable.widget_edit_text;
-
-            case VIEW_TYPE_WIDGET_GRIDVIEW:
-            case VIEW_TYPE_WIDGET_RECYCLERVIEW:
-                return R.drawable.grid_3_48;
-
-            case VIEW_TYPE_WIDGET_ANALOGCLOCK:
-            case VIEW_TYPE_WIDGET_TIMEPICKER:
-            case VIEW_TYPE_WIDGET_DIGITALCLOCK:
-                return R.drawable.widget_timer;
-
-            case VIEW_TYPE_WIDGET_DATEPICKER:
-                return R.drawable.date_span_96;
-
-            case VIEW_TYPE_LAYOUT_TABLAYOUT:
-                return R.drawable.widget_tab_layout;
-
-            case VIEW_TYPE_LAYOUT_VIEWPAGER:
-                return R.drawable.widget_view_pager;
-
-            case VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW:
-                return R.drawable.widget_bottom_view;
-
-            case VIEW_TYPE_WIDGET_BADGEVIEW:
-                return R.drawable.item_badge_view;
-
-            case VIEW_TYPE_WIDGET_PATTERNLOCKVIEW:
-                return R.drawable.widget_pattern_lock_view;
-
-            case VIEW_TYPE_WIDGET_WAVESIDEBAR:
-                return R.drawable.widget_wave_side_bar;
-
-            case VIEW_TYPE_LAYOUT_CARDVIEW:
-                return R.drawable.widget_cardview;
-
-            case VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT:
-                return R.drawable.widget_collapsing_toolbar;
-
-            case VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT:
-                return R.drawable.widget_swipe_refresh;
-
-            case VIEW_TYPE_LAYOUT_RADIOGROUP:
-                return R.drawable.widget_radiogroup;
-
-            case VIEW_TYPE_WIDGET_MATERIALBUTTON:
-                return R.drawable.widget_material_button;
-
-            case VIEW_TYPE_WIDGET_SIGNINBUTTON:
-                return R.drawable.google_48;
-
-            case VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW:
-                return R.drawable.widget_circle_image;
-
-            case VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW:
-                return R.drawable.widget_lottie;
-
-            case VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW:
-                return R.drawable.widget_youtube;
-
-            case VIEW_TYPE_WIDGET_OTPVIEW:
-                return R.drawable.event_google_signin;
-
-            case VIEW_TYPE_WIDGET_CODEVIEW:
-                return R.drawable.widget_code_view;
-
-            default:
-                return id;
-        }
+        return switch (id) {
+            case VIEW_TYPE_WIDGET_RADIOBUTTON -> R.drawable.widget_radio_button;
+            case VIEW_TYPE_WIDGET_RATINGBAR -> R.drawable.color_star_24;
+            case VIEW_TYPE_WIDGET_VIDEOVIEW -> R.drawable.widget_mediaplayer;
+            case VIEW_TYPE_WIDGET_SEARCHVIEW -> R.drawable.ic_search_color_96dp;
+            case VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW, VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW,
+                 VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT -> R.drawable.widget_edit_text;
+            case VIEW_TYPE_WIDGET_GRIDVIEW, VIEW_TYPE_WIDGET_RECYCLERVIEW -> R.drawable.grid_3_48;
+            case VIEW_TYPE_WIDGET_ANALOGCLOCK, VIEW_TYPE_WIDGET_TIMEPICKER,
+                 VIEW_TYPE_WIDGET_DIGITALCLOCK -> R.drawable.widget_timer;
+            case VIEW_TYPE_WIDGET_DATEPICKER -> R.drawable.date_span_96;
+            case VIEW_TYPE_LAYOUT_TABLAYOUT -> R.drawable.widget_tab_layout;
+            case VIEW_TYPE_LAYOUT_VIEWPAGER -> R.drawable.widget_view_pager;
+            case VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW -> R.drawable.widget_bottom_view;
+            case VIEW_TYPE_WIDGET_BADGEVIEW -> R.drawable.item_badge_view;
+            case VIEW_TYPE_WIDGET_PATTERNLOCKVIEW -> R.drawable.widget_pattern_lock_view;
+            case VIEW_TYPE_WIDGET_WAVESIDEBAR -> R.drawable.widget_wave_side_bar;
+            case VIEW_TYPE_LAYOUT_CARDVIEW -> R.drawable.widget_cardview;
+            case VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT -> R.drawable.widget_collapsing_toolbar;
+            case VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT -> R.drawable.widget_swipe_refresh;
+            case VIEW_TYPE_LAYOUT_RADIOGROUP -> R.drawable.widget_radiogroup;
+            case VIEW_TYPE_WIDGET_MATERIALBUTTON -> R.drawable.widget_material_button;
+            case VIEW_TYPE_WIDGET_SIGNINBUTTON -> R.drawable.google_48;
+            case VIEW_TYPE_WIDGET_CIRCLEIMAGEVIEW -> R.drawable.widget_circle_image;
+            case VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW -> R.drawable.widget_lottie;
+            case VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW -> R.drawable.widget_youtube;
+            case VIEW_TYPE_WIDGET_OTPVIEW -> R.drawable.event_google_signin;
+            case VIEW_TYPE_WIDGET_CODEVIEW -> R.drawable.widget_code_view;
+            default -> id;
+        };
     }
 }

@@ -507,23 +507,13 @@ public final class RopToDop {
                 if (resultReg == null) {
                     return mod.agus.jcoderz.dx.dex.code.Dops.NOP;
                 } else {
-                    switch (resultReg.getBasicType()) {
-                        case mod.agus.jcoderz.dx.rop.type.Type.BT_INT:
-                        case mod.agus.jcoderz.dx.rop.type.Type.BT_FLOAT:
-                        case mod.agus.jcoderz.dx.rop.type.Type.BT_BOOLEAN:
-                        case mod.agus.jcoderz.dx.rop.type.Type.BT_BYTE:
-                        case mod.agus.jcoderz.dx.rop.type.Type.BT_CHAR:
-                        case mod.agus.jcoderz.dx.rop.type.Type.BT_SHORT:
-                            return mod.agus.jcoderz.dx.dex.code.Dops.MOVE_RESULT;
-                        case mod.agus.jcoderz.dx.rop.type.Type.BT_LONG:
-                        case mod.agus.jcoderz.dx.rop.type.Type.BT_DOUBLE:
-                            return mod.agus.jcoderz.dx.dex.code.Dops.MOVE_RESULT_WIDE;
-                        case mod.agus.jcoderz.dx.rop.type.Type.BT_OBJECT:
-                            return mod.agus.jcoderz.dx.dex.code.Dops.MOVE_RESULT_OBJECT;
-                        default: {
-                            throw new RuntimeException("Unexpected basic type");
-                        }
-                    }
+                    return switch (resultReg.getBasicType()) {
+                        case Type.BT_INT, Type.BT_FLOAT, Type.BT_BOOLEAN, Type.BT_BYTE,
+                             Type.BT_CHAR, Type.BT_SHORT -> Dops.MOVE_RESULT;
+                        case Type.BT_LONG, Type.BT_DOUBLE -> Dops.MOVE_RESULT_WIDE;
+                        case Type.BT_OBJECT -> Dops.MOVE_RESULT_OBJECT;
+                        default -> throw new RuntimeException("Unexpected basic type");
+                    };
                 }
             }
 

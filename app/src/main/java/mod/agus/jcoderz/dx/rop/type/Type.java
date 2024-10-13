@@ -576,17 +576,11 @@ public final class Type implements TypeBearer, Comparable<Type> {
     /** {@inheritDoc} */
     @Override
     public Type getFrameType() {
-        switch (basicType) {
-            case BT_BOOLEAN:
-            case BT_BYTE:
-            case BT_CHAR:
-            case BT_INT:
-            case BT_SHORT: {
-                return INT;
-            }
-        }
+        return switch (basicType) {
+            case BT_BOOLEAN, BT_BYTE, BT_CHAR, BT_INT, BT_SHORT -> INT;
+            default -> this;
+        };
 
-        return this;
     }
 
     /** {@inheritDoc} */
@@ -598,17 +592,11 @@ public final class Type implements TypeBearer, Comparable<Type> {
     /** {@inheritDoc} */
     @Override
     public int getBasicFrameType() {
-        switch (basicType) {
-            case BT_BOOLEAN:
-            case BT_BYTE:
-            case BT_CHAR:
-            case BT_INT:
-            case BT_SHORT: {
-                return BT_INT;
-            }
-        }
+        return switch (basicType) {
+            case BT_BOOLEAN, BT_BYTE, BT_CHAR, BT_INT, BT_SHORT -> BT_INT;
+            default -> basicType;
+        };
 
-        return basicType;
     }
 
     /** {@inheritDoc} */
@@ -660,14 +648,11 @@ public final class Type implements TypeBearer, Comparable<Type> {
      * @return the category
      */
     public int getCategory() {
-        switch (basicType) {
-            case BT_LONG:
-            case BT_DOUBLE: {
-                return 2;
-            }
-        }
+        return switch (basicType) {
+            case BT_LONG, BT_DOUBLE -> 2;
+            default -> 1;
+        };
 
-        return 1;
     }
 
     /**
@@ -678,14 +663,11 @@ public final class Type implements TypeBearer, Comparable<Type> {
      * @return whether or not this is a category 1 type
      */
     public boolean isCategory1() {
-        switch (basicType) {
-            case BT_LONG:
-            case BT_DOUBLE: {
-                return false;
-            }
-        }
+        return switch (basicType) {
+            case BT_LONG, BT_DOUBLE -> false;
+            default -> true;
+        };
 
-        return true;
     }
 
     /**
@@ -696,14 +678,11 @@ public final class Type implements TypeBearer, Comparable<Type> {
      * @return whether or not this is a category 2 type
      */
     public boolean isCategory2() {
-        switch (basicType) {
-            case BT_LONG:
-            case BT_DOUBLE: {
-                return true;
-            }
-        }
+        return switch (basicType) {
+            case BT_LONG, BT_DOUBLE -> true;
+            default -> false;
+        };
 
-        return false;
     }
 
     /**
@@ -714,17 +693,11 @@ public final class Type implements TypeBearer, Comparable<Type> {
      * @return whether this type is "intlike"
      */
     public boolean isIntlike() {
-        switch (basicType) {
-            case BT_BOOLEAN:
-            case BT_BYTE:
-            case BT_CHAR:
-            case BT_INT:
-            case BT_SHORT: {
-                return true;
-            }
-        }
+        return switch (basicType) {
+            case BT_BOOLEAN, BT_BYTE, BT_CHAR, BT_INT, BT_SHORT -> true;
+            default -> false;
+        };
 
-        return false;
     }
 
     /**
@@ -734,21 +707,12 @@ public final class Type implements TypeBearer, Comparable<Type> {
      * @return whether this type is primitive
      */
     public boolean isPrimitive() {
-        switch (basicType) {
-            case BT_BOOLEAN:
-            case BT_BYTE:
-            case BT_CHAR:
-            case BT_DOUBLE:
-            case BT_FLOAT:
-            case BT_INT:
-            case BT_LONG:
-            case BT_SHORT:
-            case BT_VOID: {
-                return true;
-            }
-        }
+        return switch (basicType) {
+            case BT_BOOLEAN, BT_BYTE, BT_CHAR, BT_DOUBLE, BT_FLOAT, BT_INT, BT_LONG, BT_SHORT,
+                 BT_VOID -> true;
+            default -> false;
+        };
 
-        return false;
     }
 
     /**

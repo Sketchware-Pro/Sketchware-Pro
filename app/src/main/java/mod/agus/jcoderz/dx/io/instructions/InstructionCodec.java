@@ -926,41 +926,35 @@ public enum InstructionCodec {
         mod.agus.jcoderz.dx.io.IndexType indexType = mod.agus.jcoderz.dx.io.OpcodeInfo.getIndexType(opcode);
 
         // TODO: Having to switch like this is less than ideal.
-        switch (registerCount) {
-            case 0:
-                return new ZeroRegisterDecodedInstruction(
-                        format, opcode, index, indexType,
-                        0, 0L);
-            case 1:
-                return new OneRegisterDecodedInstruction(
-                        format, opcode, index, indexType,
-                        0, 0L,
-                        a);
-            case 2:
-                return new TwoRegisterDecodedInstruction(
-                        format, opcode, index, indexType,
-                        0, 0L,
-                        a, b);
-            case 3:
-                return new ThreeRegisterDecodedInstruction(
-                        format, opcode, index, indexType,
-                        0, 0L,
-                        a, b, c);
-            case 4:
-                return new FourRegisterDecodedInstruction(
-                        format, opcode, index, indexType,
-                        0, 0L,
-                        a, b, c, d);
-            case 5:
-                return new FiveRegisterDecodedInstruction(
-                        format, opcode, index, indexType,
-                        0, 0L,
-                        a, b, c, d, e);
-            default: // fall out
-        }
+        // fall out
+        return switch (registerCount) {
+            case 0 -> new ZeroRegisterDecodedInstruction(
+                    format, opcode, index, indexType,
+                    0, 0L);
+            case 1 -> new OneRegisterDecodedInstruction(
+                    format, opcode, index, indexType,
+                    0, 0L,
+                    a);
+            case 2 -> new TwoRegisterDecodedInstruction(
+                    format, opcode, index, indexType,
+                    0, 0L,
+                    a, b);
+            case 3 -> new ThreeRegisterDecodedInstruction(
+                    format, opcode, index, indexType,
+                    0, 0L,
+                    a, b, c);
+            case 4 -> new FourRegisterDecodedInstruction(
+                    format, opcode, index, indexType,
+                    0, 0L,
+                    a, b, c, d);
+            case 5 -> new FiveRegisterDecodedInstruction(
+                    format, opcode, index, indexType,
+                    0, 0L,
+                    a, b, c, d, e);
+            default -> throw new DexException("bogus registerCount: "
+                    + Hex.uNibble(registerCount));
+        };
 
-        throw new DexException("bogus registerCount: "
-                + Hex.uNibble(registerCount));
     }
 
     /**

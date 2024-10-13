@@ -153,21 +153,21 @@ public final class Dop {
      * @return {@code non-null;} the opposite test
      */
     public Dop getOppositeTest() {
-        switch (opcode) {
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_EQ:  return Dops.IF_NE;
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_NE:  return Dops.IF_EQ;
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_LT:  return Dops.IF_GE;
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_GE:  return Dops.IF_LT;
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_GT:  return Dops.IF_LE;
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_LE:  return Dops.IF_GT;
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_EQZ: return Dops.IF_NEZ;
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_NEZ: return Dops.IF_EQZ;
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_LTZ: return Dops.IF_GEZ;
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_GEZ: return Dops.IF_LTZ;
-            case mod.agus.jcoderz.dx.io.Opcodes.IF_GTZ: return Dops.IF_LEZ;
-            case Opcodes.IF_LEZ: return Dops.IF_GTZ;
-        }
+        return switch (opcode) {
+            case Opcodes.IF_EQ -> Dops.IF_NE;
+            case Opcodes.IF_NE -> Dops.IF_EQ;
+            case Opcodes.IF_LT -> Dops.IF_GE;
+            case Opcodes.IF_GE -> Dops.IF_LT;
+            case Opcodes.IF_GT -> Dops.IF_LE;
+            case Opcodes.IF_LE -> Dops.IF_GT;
+            case Opcodes.IF_EQZ -> Dops.IF_NEZ;
+            case Opcodes.IF_NEZ -> Dops.IF_EQZ;
+            case Opcodes.IF_LTZ -> Dops.IF_GEZ;
+            case Opcodes.IF_GEZ -> Dops.IF_LTZ;
+            case Opcodes.IF_GTZ -> Dops.IF_LEZ;
+            case Opcodes.IF_LEZ -> Dops.IF_GTZ;
+            default -> throw new IllegalArgumentException("bogus opcode: " + this);
+        };
 
-        throw new IllegalArgumentException("bogus opcode: " + this);
     }
 }
