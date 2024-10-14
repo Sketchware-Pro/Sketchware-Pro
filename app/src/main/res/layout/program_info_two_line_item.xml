@@ -1,34 +1,41 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/tv_name"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:alpha="0.87"
-        android:textAppearance="?attr/textAppearanceBodyMedium" />
+        android:orientation="vertical"
+        android:minHeight="60dp"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/tv_desc"
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorOnSurfaceVariant" />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_name"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="4dp"
-        android:alpha="0.6"
-        android:textAppearance="?attr/textAppearanceBodySmall" />
+        android:layout_gravity="bottom"
+        app:dividerInsetEnd="20dp"
+        app:dividerInsetStart="20dp"
+        app:dividerThickness="0.5dp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_alignParentBottom="true"
-        android:background="?attr/colorOutlineVariant" />
-
-</RelativeLayout>
+</FrameLayout>
