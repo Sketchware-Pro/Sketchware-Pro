@@ -85,4 +85,8 @@
         <item name="textAllCaps">false</item>
     </style>
     <!--  end TabLayout style  -->
+
+    <style name="ThemeOverlay.SketchwarePro.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
 </resources>
