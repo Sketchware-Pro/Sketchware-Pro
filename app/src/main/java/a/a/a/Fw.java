@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -346,6 +347,10 @@ public class Fw extends qA {
                     }
                 });
                 viewItem.setOnLongClickListener(view -> {
+                    if (getLayoutPosition() == 0) {
+                        Toast.makeText(getContext(), "Main activity cannot be deleted", Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
                     ((ManageViewActivity) getActivity()).a(true);
                     layoutPosition = getLayoutPosition();
                     checkBox.setChecked(!checkBox.isChecked());
