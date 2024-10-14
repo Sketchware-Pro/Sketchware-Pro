@@ -39,15 +39,10 @@ public class ProjectFile {
 	*/
 
     public static int getDefaultColor(String color) {
-        switch (color) {
-            case "color_primary_dark":
-                return Color.parseColor("#ff1976d2");
-
-            case "color_control_highlight":
-                return Color.parseColor("#202196f3");
-
-            default:
-                return Color.parseColor("#ff2196f3");
-        }
+        return switch (color) {
+            case "color_primary_dark" -> Color.parseColor("#ff1976d2");
+            case "color_control_highlight" -> Color.parseColor("#202196f3");
+            default -> Color.parseColor("#ff2196f3");
+        };
     }
 }

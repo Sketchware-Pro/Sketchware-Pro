@@ -396,7 +396,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     }
 
     private void shareExportedSourceCode() {
-        if (export_src_filename.length() > 0) {
+        if (!export_src_filename.isEmpty()) {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("plain/text");
             intent.putExtra(Intent.EXTRA_SUBJECT, Helper.getResString(R.string.myprojects_export_src_title_email_subject, export_src_filename));

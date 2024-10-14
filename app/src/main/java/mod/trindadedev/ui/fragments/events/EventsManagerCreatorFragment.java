@@ -44,7 +44,7 @@ public class EventsManagerCreatorFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null && getArguments().containsKey("lis_name")) {
             lisName = getArguments().getString("lis_name");
-            isActivityEvent = lisName.equals("");
+            isActivityEvent = lisName.isEmpty();
         }
         if (getArguments() != null && getArguments().containsKey("event")) {
             event_name = getArguments().getString("event");

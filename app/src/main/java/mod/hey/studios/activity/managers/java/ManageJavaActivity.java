@@ -404,7 +404,7 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
 
         binding.filesListRecyclerView.setAdapter(filesAdapter);
 
-        binding.noContentLayout.setVisibility(currentTree.size() == 0 ? View.VISIBLE : View.GONE);
+        binding.noContentLayout.setVisibility(currentTree.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.ViewHolder> {

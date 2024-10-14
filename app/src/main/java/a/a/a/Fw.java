@@ -187,7 +187,7 @@ public class Fw extends qA {
 
     public void g() {
         if (activitiesFiles != null) {
-            if (activitiesFiles.size() == 0) {
+            if (activitiesFiles.isEmpty()) {
                 tvGuide.setVisibility(View.VISIBLE);
                 activitiesList.setVisibility(View.GONE);
             } else {

@@ -92,7 +92,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
                     bB.b(this, Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
-                } else if (jC.c(sc_id).d().reserved2.trim().length() == 0) {
+                } else if (jC.c(sc_id).d().reserved2.trim().isEmpty()) {
                     bB.b(this, Helper.getResString(R.string.design_library_firebase_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 } else {
@@ -126,7 +126,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 break;
 
             case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                if (binding.edInputFilePicker.getText().toString().length() == 0 || !componentMimeTypeValidator.b()) {
+                if (binding.edInputFilePicker.getText().toString().isEmpty() || !componentMimeTypeValidator.b()) {
                     return false;
                 }
                 jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, binding.edInputFilePicker.getText().toString());
@@ -244,7 +244,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         } else if (id == R.id.docs_button) {
             if (!mB.a()) {
                 String componentDocsUrlByTypeName = ComponentBean.getComponentDocsUrlByTypeName(componentList.get(componentsAdapter.layoutPosition).type);
-                if (componentDocsUrlByTypeName.equals("")) {
+                if (componentDocsUrlByTypeName.isEmpty()) {
                     bB.a(getApplicationContext(), Helper.getResString(R.string.component_add_message_docs_updated_soon), bB.TOAST_NORMAL).show();
                     return;
                 }

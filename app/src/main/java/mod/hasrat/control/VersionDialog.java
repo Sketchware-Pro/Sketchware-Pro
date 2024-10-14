@@ -55,7 +55,7 @@ public class VersionDialog {
 
             if (!mB.a() && validVerCode && validVerName) {
                 activity.binding.verCode.setText(verCode);
-                activity.binding.verName.setText(verNamePostfix.length() > 0 ? (verName + " " + verNamePostfix) : verName);
+                activity.binding.verName.setText(!verNamePostfix.isEmpty() ? (verName + " " + verNamePostfix) : verName);
                 dialog.dismiss();
             }
         });

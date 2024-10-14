@@ -428,26 +428,22 @@ public final class ConstantPoolParser {
     }
 
     private static int getMethodHandleTypeForKind(int kind) {
-        switch (kind) {
-            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_getField:
-                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INSTANCE_GET;
-            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_getStatic:
-                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_STATIC_GET;
-            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_putField:
-                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INSTANCE_PUT;
-            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_putStatic:
-                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_STATIC_PUT;
-            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_invokeVirtual:
-                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_INSTANCE;
-            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_invokeStatic:
-                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_STATIC;
-            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_invokeSpecial:
-                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_DIRECT;
-            case mod.agus.jcoderz.dx.cf.cst.MethodHandleKind.REF_newInvokeSpecial:
-                return mod.agus.jcoderz.dx.rop.cst.CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_CONSTRUCTOR;
-            case MethodHandleKind.REF_invokeInterface:
-                return CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_INTERFACE;
-        }
-        throw new IllegalArgumentException("invalid kind: " + kind);
+        return switch (kind) {
+            case MethodHandleKind.REF_getField -> CstMethodHandle.METHOD_HANDLE_TYPE_INSTANCE_GET;
+            case MethodHandleKind.REF_getStatic -> CstMethodHandle.METHOD_HANDLE_TYPE_STATIC_GET;
+            case MethodHandleKind.REF_putField -> CstMethodHandle.METHOD_HANDLE_TYPE_INSTANCE_PUT;
+            case MethodHandleKind.REF_putStatic -> CstMethodHandle.METHOD_HANDLE_TYPE_STATIC_PUT;
+            case MethodHandleKind.REF_invokeVirtual ->
+                    CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_INSTANCE;
+            case MethodHandleKind.REF_invokeStatic ->
+                    CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_STATIC;
+            case MethodHandleKind.REF_invokeSpecial ->
+                    CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_DIRECT;
+            case MethodHandleKind.REF_newInvokeSpecial ->
+                    CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_CONSTRUCTOR;
+            case MethodHandleKind.REF_invokeInterface ->
+                    CstMethodHandle.METHOD_HANDLE_TYPE_INVOKE_INTERFACE;
+            default -> throw new IllegalArgumentException("invalid kind: " + kind);
+        };
     }
 }

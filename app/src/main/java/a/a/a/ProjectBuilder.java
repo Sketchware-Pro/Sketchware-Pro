@@ -285,7 +285,7 @@ public class ProjectBuilder {
         classpath.append(mll.getJarLocalLibrary());
 
         /* Append user's custom classpath */
-        if (!build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "").equals("")) {
+        if (!build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "").isEmpty()) {
             classpath.append(":").append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
         }
 
@@ -460,7 +460,7 @@ public class ProjectBuilder {
                 lastDexNumber++;
             }
         }
-        if (dexObjects.size() > 0) {
+        if (!dexObjects.isEmpty()) {
             File file = new File(outputDirectory, lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex");
             mergeDexes(file, dexObjects);
             resultDexFiles.add(file);

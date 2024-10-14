@@ -15,21 +15,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.splashscreen.SplashScreen;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.MainBinding;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,16 +65,15 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         @Override
         public void handleOnBackPressed() {
             setEnabled(false);
-            drawerLayout.closeDrawers();
+            binding.drawerLayout.closeDrawers();
         }
     };
 
-    private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private DB u;
-    private CoordinatorLayout coordinator;
     private Snackbar storageAccessDenied;
-    private ProjectsFragment projectsFragment = null;
+    private FragmentsAdapter fragmentsAdapter;
+    private MainBinding binding;
 
     @Override
     // onRequestPermissionsResult but for Storage access only, and only when granted
@@ -79,6 +81,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         if (i == 9501) {
             allFilesAccessCheck();
 
+            ProjectsFragment projectsFragment = fragmentsAdapter != null ? fragmentsAdapter.getProjectsFragment() : null;
             if (projectsFragment != null) {
                 projectsFragment.refreshProjectsList();
             }
@@ -101,6 +104,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     }
 
     public void n() {
+        ProjectsFragment projectsFragment = fragmentsAdapter != null ? fragmentsAdapter.getProjectsFragment() : null;
         if (projectsFragment != null) {
             projectsFragment.refreshProjectsList();
         }
@@ -127,7 +131,10 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
                 case 212:
                     if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && isStoragePermissionGranted()) {
-                        projectsFragment.refreshProjectsList();
+                        ProjectsFragment projectsFragment = fragmentsAdapter != null ? fragmentsAdapter.getProjectsFragment() : null;
+                        if (projectsFragment != null) {
+                            projectsFragment.refreshProjectsList();
+                        }
                     }
                     break;
             }
@@ -143,15 +150,15 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
-        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 
         tryLoadingCustomizedAppStrings();
-        setContentView(R.layout.main);
+        binding = MainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         Insetter.builder()
                 .padding(WindowInsetsCompat.Type.navigationBars(), Side.create(true, false, true, false))
-                .applyToView(findViewById(R.id.layout_coordinator));
-        setSupportActionBar(findViewById(R.id.toolbar));
+                .applyToView(binding.layoutCoordinator);
+        setSupportActionBar(binding.toolbar.toolbar);
 
         u = new DB(getApplicationContext(), "U1");
         int u1I0 = u.a("U1I0", -1);
@@ -166,10 +173,9 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(null);
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.app_name, R.string.app_name);
-        drawerLayout.addDrawerListener(drawerToggle);
-        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+        drawerToggle = new ActionBarDrawerToggle(this, binding.drawerLayout, R.string.app_name, R.string.app_name);
+        binding.drawerLayout.addDrawerListener(drawerToggle);
+        binding.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
             }
@@ -189,9 +195,17 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             }
         });
 
-        projectsFragment = (ProjectsFragment) getSupportFragmentManager().findFragmentById(androidx.fragment.R.id.fragment_container_view_tag);
+        fragmentsAdapter = new FragmentsAdapter(this);
+        binding.viewPager.setAdapter(fragmentsAdapter);
 
-        coordinator = findViewById(R.id.layout_coordinator);
+        String[] tabTitles = new String[]{
+                getString(R.string.main_tab_title_myproject),
+                getString(R.string.main_tab_title_projects_store)
+        };
+
+        new TabLayoutMediator(binding.tabLayout, binding.viewPager,
+                (tab, position) -> tab.setText(tabTitles[position])
+        ).attach();
 
         boolean hasStorageAccess = isStoragePermissionGranted();
         if (!hasStorageAccess) {
@@ -204,7 +218,6 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
             Uri data = getIntent().getData();
             if (data != null) {
-                // TODO: Progress indicator while restoring project, possibly from background + notifications
                 new SingleCopyAsyncTask(data, this, new CallBackTask() {
                     @Override
                     public void onCopyPreExecute() {
@@ -217,6 +230,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                     @Override
                     public void onCopyPostExecute(String path, boolean wasSuccessful, String reason) {
                         if (wasSuccessful) {
+                            ProjectsFragment projectsFragment = fragmentsAdapter != null ? fragmentsAdapter.getProjectsFragment() : null;
                             BackupRestoreManager manager = new BackupRestoreManager(MainActivity.this, projectsFragment);
 
                             if (BackupFactory.zipContainsFile(path, "local_libs")) {
@@ -257,7 +271,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             };
             countDownTimer.start();
 
-            if (!this.isFinishing()) bottomSheetDialog.show();
+            if (!MainActivity.this.isFinishing()) bottomSheetDialog.show();
         }
     }
 
@@ -377,7 +391,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
     public void s() {
         if (storageAccessDenied == null || !storageAccessDenied.isShown()) {
-            storageAccessDenied = Snackbar.make(coordinator, Helper.getResString(R.string.common_message_permission_denied), Snackbar.LENGTH_INDEFINITE);
+            storageAccessDenied = Snackbar.make(binding.layoutCoordinator, Helper.getResString(R.string.common_message_permission_denied), Snackbar.LENGTH_INDEFINITE);
             storageAccessDenied.setAction(Helper.getResString(R.string.common_word_settings), v -> {
                 storageAccessDenied.dismiss();
                 ActivityCompat.requestPermissions(this, new String[]{
@@ -412,6 +426,43 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             bB.a(getApplicationContext(),
                     Helper.getResString(R.string.message_strings_xml_loaded),
                     0, 80, 0, 128).show();
+        }
+    }
+
+    // ----------------- Inner Classes ----------------- //
+
+    public static class FragmentsAdapter extends FragmentStateAdapter {
+
+        private final ProjectsFragment projectsFragment;
+        private final ProjectsStoreFragment projectsStoreFragment;
+
+        public FragmentsAdapter(@NonNull FragmentActivity fragmentActivity) {
+            super(fragmentActivity);
+            projectsFragment = new ProjectsFragment();
+            projectsStoreFragment = new ProjectsStoreFragment();
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            if (position == 1) {
+                return projectsStoreFragment;
+            } else {
+                return projectsFragment;
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
+
+        public ProjectsFragment getProjectsFragment() {
+            return projectsFragment;
+        }
+
+        public ProjectsStoreFragment getProjectsStoreFragment() {
+            return projectsStoreFragment;
         }
     }
 }

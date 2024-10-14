@@ -169,7 +169,7 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     private void updateGuideVisibility() {
-        if (images.size() == 0) {
+        if (images.isEmpty()) {
             guide.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         } else {
@@ -329,7 +329,7 @@ public class pu extends qA implements View.OnClickListener {
             }
         }
         addImages(imagesToAdd);
-        if (duplicateNames.size() > 0) {
+        if (!duplicateNames.isEmpty()) {
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n" +
                     "[" + String.join(", ", duplicateNames) + "]", bB.TOAST_WARNING).show();
         } else {

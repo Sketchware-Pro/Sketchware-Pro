@@ -822,7 +822,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                                 blockBean.spec = bean.id;
                             } else {
                                 ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
-                                if (paramClassInfo != null && paramClassInfo.size() > 0) {
+                                if (paramClassInfo != null && !paramClassInfo.isEmpty()) {
                                     for (int i = 0; i < paramClassInfo.size(); ++i) {
                                         if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(bean.preId)) {
                                             blockBean.parameters.set(i, bean.id);
@@ -857,7 +857,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                                 blockBean.spec = bean.id;
                             } else {
                                 ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
-                                if (paramClassInfo != null && paramClassInfo.size() > 0) {
+                                if (paramClassInfo != null && !paramClassInfo.isEmpty()) {
                                     for (int i = 0; i < paramClassInfo.size(); ++i) {
                                         if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(bean.preId)) {
                                             blockBean.parameters.set(i, bean.id);
@@ -883,7 +883,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                     while (true) {
                         childCount = size - 1;
                         if (childCount < 0) {
-                            if (bean.customView.equals("") || bean.customView.equals("none")) {
+                            if (bean.customView.isEmpty() || bean.customView.equals("none")) {
                                 Iterator<Entry<String, ArrayList<BlockBean>>> blocks = jC.a(sc_id).b(e.getJavaName()).entrySet().iterator();
 
                                 while (blocks.hasNext()) {

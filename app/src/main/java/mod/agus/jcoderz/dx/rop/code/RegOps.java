@@ -326,68 +326,68 @@ public final class RegOps {
      * @return {@code non-null;} its name
      */
     public static String opName(int opcode) {
-        switch (opcode) {
-            case NOP: return "nop";
-            case MOVE: return "move";
-            case MOVE_PARAM: return "move-param";
-            case MOVE_EXCEPTION: return "move-exception";
-            case CONST: return "const";
-            case GOTO: return "goto";
-            case IF_EQ: return "if-eq";
-            case IF_NE: return "if-ne";
-            case IF_LT: return "if-lt";
-            case IF_GE: return "if-ge";
-            case IF_LE: return "if-le";
-            case IF_GT: return "if-gt";
-            case SWITCH: return "switch";
-            case ADD: return "add";
-            case SUB: return "sub";
-            case MUL: return "mul";
-            case DIV: return "div";
-            case REM: return "rem";
-            case NEG: return "neg";
-            case AND: return "and";
-            case OR: return "or";
-            case XOR: return "xor";
-            case SHL: return "shl";
-            case SHR: return "shr";
-            case USHR: return "ushr";
-            case NOT: return "not";
-            case CMPL: return "cmpl";
-            case CMPG: return "cmpg";
-            case CONV: return "conv";
-            case TO_BYTE: return "to-byte";
-            case TO_CHAR: return "to-char";
-            case TO_SHORT: return "to-short";
-            case RETURN: return "return";
-            case ARRAY_LENGTH: return "array-length";
-            case THROW: return "throw";
-            case MONITOR_ENTER: return "monitor-enter";
-            case MONITOR_EXIT: return "monitor-exit";
-            case AGET: return "aget";
-            case APUT: return "aput";
-            case NEW_INSTANCE: return "new-instance";
-            case NEW_ARRAY: return "new-array";
-            case FILLED_NEW_ARRAY: return "filled-new-array";
-            case CHECK_CAST: return "check-cast";
-            case INSTANCE_OF: return "instance-of";
-            case GET_FIELD: return "get-field";
-            case GET_STATIC: return "get-static";
-            case PUT_FIELD: return "put-field";
-            case PUT_STATIC: return "put-static";
-            case INVOKE_STATIC: return "invoke-static";
-            case INVOKE_VIRTUAL: return "invoke-virtual";
-            case INVOKE_SUPER: return "invoke-super";
-            case INVOKE_DIRECT: return "invoke-direct";
-            case INVOKE_INTERFACE: return "invoke-interface";
-            case MOVE_RESULT: return "move-result";
-            case MOVE_RESULT_PSEUDO: return "move-result-pseudo";
-            case FILL_ARRAY_DATA: return "fill-array-data";
-            case INVOKE_POLYMORPHIC: return "invoke-polymorphic";
-            case INVOKE_CUSTOM: return "invoke-custom";
-        }
+        return switch (opcode) {
+            case NOP -> "nop";
+            case MOVE -> "move";
+            case MOVE_PARAM -> "move-param";
+            case MOVE_EXCEPTION -> "move-exception";
+            case CONST -> "const";
+            case GOTO -> "goto";
+            case IF_EQ -> "if-eq";
+            case IF_NE -> "if-ne";
+            case IF_LT -> "if-lt";
+            case IF_GE -> "if-ge";
+            case IF_LE -> "if-le";
+            case IF_GT -> "if-gt";
+            case SWITCH -> "switch";
+            case ADD -> "add";
+            case SUB -> "sub";
+            case MUL -> "mul";
+            case DIV -> "div";
+            case REM -> "rem";
+            case NEG -> "neg";
+            case AND -> "and";
+            case OR -> "or";
+            case XOR -> "xor";
+            case SHL -> "shl";
+            case SHR -> "shr";
+            case USHR -> "ushr";
+            case NOT -> "not";
+            case CMPL -> "cmpl";
+            case CMPG -> "cmpg";
+            case CONV -> "conv";
+            case TO_BYTE -> "to-byte";
+            case TO_CHAR -> "to-char";
+            case TO_SHORT -> "to-short";
+            case RETURN -> "return";
+            case ARRAY_LENGTH -> "array-length";
+            case THROW -> "throw";
+            case MONITOR_ENTER -> "monitor-enter";
+            case MONITOR_EXIT -> "monitor-exit";
+            case AGET -> "aget";
+            case APUT -> "aput";
+            case NEW_INSTANCE -> "new-instance";
+            case NEW_ARRAY -> "new-array";
+            case FILLED_NEW_ARRAY -> "filled-new-array";
+            case CHECK_CAST -> "check-cast";
+            case INSTANCE_OF -> "instance-of";
+            case GET_FIELD -> "get-field";
+            case GET_STATIC -> "get-static";
+            case PUT_FIELD -> "put-field";
+            case PUT_STATIC -> "put-static";
+            case INVOKE_STATIC -> "invoke-static";
+            case INVOKE_VIRTUAL -> "invoke-virtual";
+            case INVOKE_SUPER -> "invoke-super";
+            case INVOKE_DIRECT -> "invoke-direct";
+            case INVOKE_INTERFACE -> "invoke-interface";
+            case MOVE_RESULT -> "move-result";
+            case MOVE_RESULT_PSEUDO -> "move-result-pseudo";
+            case FILL_ARRAY_DATA -> "fill-array-data";
+            case INVOKE_POLYMORPHIC -> "invoke-polymorphic";
+            case INVOKE_CUSTOM -> "invoke-custom";
+            default -> "unknown-" + Hex.u1(opcode);
+        };
 
-        return "unknown-" + Hex.u1(opcode);
     }
 
     /**
@@ -398,20 +398,13 @@ public final class RegOps {
      * @return flipped IF Regop
      */
     public static int flippedIfOpcode(final int opcode) {
-        switch (opcode) {
-            case RegOps.IF_EQ:
-            case RegOps.IF_NE:
-                return opcode;
-            case RegOps.IF_LT:
-                return RegOps.IF_GT;
-            case RegOps.IF_GE:
-                return RegOps.IF_LE;
-            case RegOps.IF_LE:
-                return RegOps.IF_GE;
-            case RegOps.IF_GT:
-                return RegOps.IF_LT;
-            default:
-                throw new RuntimeException("Unrecognized IF regop: " + opcode);
-        }
+        return switch (opcode) {
+            case RegOps.IF_EQ, RegOps.IF_NE -> opcode;
+            case RegOps.IF_LT -> RegOps.IF_GT;
+            case RegOps.IF_GE -> RegOps.IF_LE;
+            case RegOps.IF_LE -> RegOps.IF_GE;
+            case RegOps.IF_GT -> RegOps.IF_LT;
+            default -> throw new RuntimeException("Unrecognized IF regop: " + opcode);
+        };
     }
 }

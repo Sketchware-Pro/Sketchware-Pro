@@ -165,9 +165,9 @@ public class LogicClickListener implements View.OnClickListener {
                 return;
             }
 
-            String variable = variableModifier.length() > 0 ? variableModifier + " " : "";
+            String variable = !variableModifier.isEmpty() ? variableModifier + " " : "";
             variable += variableType + " " + variableName;
-            if (variableInitializer.length() > 0) {
+            if (!variableInitializer.isEmpty()) {
                 variable += " = " + variableInitializer;
             }
             logicEditor.b(6, variable.trim());

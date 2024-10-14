@@ -141,7 +141,7 @@ public class br extends qA implements View.OnClickListener {
                      ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE,
                      ComponentBean.COMPONENT_TYPE_FILE_PICKER -> {
                     String path = componentBean.param1;
-                    if (path.length() == 0) {
+                    if (path.isEmpty()) {
                         path = "/";
                     }
                     itemBinding.tvComponentId.setText(componentBean.componentId + " : " + path);

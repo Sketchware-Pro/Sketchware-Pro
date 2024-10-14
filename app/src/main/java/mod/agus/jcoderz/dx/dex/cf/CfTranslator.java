@@ -245,24 +245,14 @@ public class CfTranslator {
             return constant;
         }
 
-        switch (type.getBasicType()) {
-            case mod.agus.jcoderz.dx.rop.type.Type.BT_BOOLEAN: {
-                return CstBoolean.make(((mod.agus.jcoderz.dx.rop.cst.CstInteger) constant).getValue());
-            }
-            case mod.agus.jcoderz.dx.rop.type.Type.BT_BYTE: {
-                return CstByte.make(((mod.agus.jcoderz.dx.rop.cst.CstInteger) constant).getValue());
-            }
-            case mod.agus.jcoderz.dx.rop.type.Type.BT_CHAR: {
-                return CstChar.make(((mod.agus.jcoderz.dx.rop.cst.CstInteger) constant).getValue());
-            }
-            case Type.BT_SHORT: {
-                return CstShort.make(((CstInteger) constant).getValue());
-            }
-            default: {
-                throw new UnsupportedOperationException("can't coerce " +
-                        constant + " to " + type);
-            }
-        }
+        return switch (type.getBasicType()) {
+            case Type.BT_BOOLEAN -> CstBoolean.make(((CstInteger) constant).getValue());
+            case Type.BT_BYTE -> CstByte.make(((CstInteger) constant).getValue());
+            case Type.BT_CHAR -> CstChar.make(((CstInteger) constant).getValue());
+            case Type.BT_SHORT -> CstShort.make(((CstInteger) constant).getValue());
+            default -> throw new UnsupportedOperationException("can't coerce " +
+                    constant + " to " + type);
+        };
     }
 
     /**

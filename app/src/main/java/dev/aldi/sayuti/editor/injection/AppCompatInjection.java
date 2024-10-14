@@ -62,7 +62,7 @@ public class AppCompatInjection {
         File injectionFile = new File(Environment.getExternalStorageDirectory(),
                 ".sketchware/data/" + sc_id + "/injection/appcompat/" + activityFilename);
         String fileContent;
-        if (injectionFile.exists() && (fileContent = FileUtil.readFile(injectionFile.getAbsolutePath())).length() != 0) {
+        if (injectionFile.exists() && !(fileContent = FileUtil.readFile(injectionFile.getAbsolutePath())).isEmpty()) {
             toParse = fileContent;
         } else {
             toParse = getDefaultActivityInjections();
