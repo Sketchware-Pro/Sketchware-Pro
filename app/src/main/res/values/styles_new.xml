@@ -76,6 +76,9 @@
         <item name="tabIndicator">@drawable/view_tab_indicator</item>
         <item name="tabIndicatorAnimationMode">elastic</item>
         <item name="tabSelectedTextColor">?attr/colorPrimary</item>
+        <item name="font">@font/gilroy</item>
+        <item name="android:fontFamily">@font/gilroy</item>
+
     </style>
 
     <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">

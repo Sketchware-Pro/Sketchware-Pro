@@ -1495,7 +1495,7 @@ But, components should be added manually for working correctly."</string>
     <string name="main_drawer_title_system_settings">System Settings</string>
     <string name="main_tab_title_competitions">Competitions</string>
     <string name="main_tab_title_myproject">My Projects</string>
-    <string name="main_tab_title_shared_projects">Shared Projects</string>
+    <string name="main_tab_title_projects_store">Projects store</string>
     <string name="main_tab_title_tutorials">Tutorials</string>
     <string name="manage_export_url_actionbar_title">Manage Exported URLs</string>
     <string name="manage_export_url_list_app_name">App Name</string>
