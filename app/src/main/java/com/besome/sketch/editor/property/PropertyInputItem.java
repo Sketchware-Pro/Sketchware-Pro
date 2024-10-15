@@ -4,15 +4,19 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectFileBean;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.PropertyPopupInputTextBinding;
 
 import a.a.a.Kw;
 import a.a.a.OB;
@@ -54,7 +58,8 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             case "property_hint" -> icon = R.drawable.help_96_blue;
             case "property_weight", "property_weight_sum" -> icon = R.drawable.one_to_many_48;
             case "property_rotate" -> icon = R.drawable.ic_reset_color_32dp;
-            case "property_lines", "property_max", "property_progress" -> icon = R.drawable.numbers_48;
+            case "property_lines", "property_max", "property_progress" ->
+                    icon = R.drawable.numbers_48;
             case "property_alpha" -> icon = R.drawable.opacity_48;
             case "property_translation_x" -> icon = R.drawable.swipe_right_48;
             case "property_translation_y" -> icon = R.drawable.swipe_down_48;
@@ -97,12 +102,16 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         if (!mB.a()) {
             switch (key) {
                 case "property_id" -> showViewIdDialog();
-                case "property_text", "property_hint", "property_inject" -> showTextInputDialog(0, 9999);
-                case "property_weight", "property_weight_sum", "property_rotate", "property_lines", "property_max", "property_progress" -> showNumberInputDialog();
+                case "property_text", "property_hint", "property_inject" ->
+                        showTextInputDialog(0, 9999);
+                case "property_weight", "property_weight_sum", "property_rotate", "property_lines",
+                     "property_max", "property_progress" -> showNumberInputDialog();
                 case "property_alpha" -> showNumberDecimalInputDialog(0, 1);
-                case "property_translation_x", "property_translation_y" -> showNumberDecimalInputDialog(-9999, 9999);
+                case "property_translation_x", "property_translation_y" ->
+                        showNumberDecimalInputDialog(-9999, 9999);
                 case "property_scale_x", "property_scale_y" -> showNumberDecimalInputDialog(0, 99);
-                case "property_convert" -> showTextInputDialog(0, 99);
+                case "property_convert" ->
+                        showAutoCompleteDialog(getResources().getStringArray(R.array.property_convert_options), 0, 99);
             }
         }
     }
@@ -228,4 +237,31 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
+
+    private void showAutoCompleteDialog(String[] options, int minValue, int maxValue) {
+        aB dialog = new aB((Activity) getContext());
+        dialog.b(tvName.getText().toString());
+        dialog.a(icon);
+
+        PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
+        MaterialAutoCompleteTextView input = binding.edTiAutoCompleteInput;
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, options);
+        input.setText(value);
+        input.setAdapter(adapter);
+        binding.tiInput.setVisibility(View.GONE);
+        binding.tiAutoCompleteInput.setVisibility(View.VISIBLE);
+        SB lengthValidator = new SB(context, binding.tiInput, minValue, maxValue);
+        lengthValidator.a(value);
+        dialog.a(binding.getRoot());
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+            if (lengthValidator.b()) {
+                setValue(input.getText().toString());
+                if (valueChangeListener != null) valueChangeListener.a(key, value);
+                dialog.dismiss();
+            }
+        });
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
+    }
+
 }

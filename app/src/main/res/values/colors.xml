@@ -63,7 +63,7 @@
     <color name="color_text_onSurfaceVariant">#41474D</color>
 
     <!--  input layout  -->
-    <color name="inputLayoutBackgroundColor">#FAFAFA</color>
+    <color name="inputLayoutBackgroundColor">#BFFAFAFA</color>
     <color name="inputLayoutStrokeColor">#D3D3D3</color>
 
     <!--  main layouts  -->
