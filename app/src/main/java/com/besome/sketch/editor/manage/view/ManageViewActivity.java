@@ -124,8 +124,10 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         invalidateOptionsMenu();
         if (selecting) {
             actionButtonsContainer.setVisibility(View.VISIBLE);
+            s.animate().translationY(-s.getHeight() + 20).setDuration(200L).start();
         } else {
             actionButtonsContainer.setVisibility(View.GONE);
+            s.animate().translationY(0.0F).setDuration(200L).start();
         }
 
         activitiesFragment.a(selecting);
