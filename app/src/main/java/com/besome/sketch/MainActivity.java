@@ -259,7 +259,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
             bottomSheetDialog.getPositiveButton().setEnabled(false);
 
-            CountDownTimer countDownTimer = new CountDownTimer(20000, 1000) {
+            CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {
                 public void onTick(long millisUntilFinished) {
                     bottomSheetDialog.setPositiveButtonText(millisUntilFinished / 1000 + "");
                 }
@@ -278,12 +278,12 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     @NonNull
     private BottomSheetDialogView getBottomSheetDialogView() {
         BottomSheetDialogView bottomSheetDialog = new BottomSheetDialogView(this);
-        bottomSheetDialog.setTitle("Major changes in V6.4.0");
+        bottomSheetDialog.setTitle("Major changes in v6.4.0");
         bottomSheetDialog.setDescription("""
                 There have been major changes since v6.3.0 fix1, \
                 and it's very important to know them all if you want your projects to still work.
                 
-                You can view all changes whenever you want at the updated About Sketchware Pro screen.""");
+                You can view all changes whenever you want at the About Sketchware Pro screen.""");
 
         bottomSheetDialog.setPositiveButton("View changes", (dialog, which) -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_CRITICAL_UPDATE_REMINDER, true);
