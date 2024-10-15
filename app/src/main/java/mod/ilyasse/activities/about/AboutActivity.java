@@ -24,6 +24,7 @@ import mod.ilyasse.activities.about.fragments.TeamFragment;
 import mod.ilyasse.activities.about.models.AboutAppViewModel;
 import mod.ilyasse.activities.about.models.AboutResponseModel;
 import mod.ilyasse.utils.Network;
+import mod.hey.studios.util.Helper;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -46,6 +47,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         binding.discordButton.setOnClickListener(v -> {
             String discordLink = aboutAppData.getDiscordInviteLink().getValue();
             if (discordLink != null) {
