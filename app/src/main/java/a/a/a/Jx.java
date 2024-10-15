@@ -135,7 +135,6 @@ public class Jx {
      */
     private String getLauncherActivity(String packageName) {
         String theImport = "";
-
         String activityName = ProjectFileBean.getActivityName(AndroidManifestInjector.getLauncherActivity(projectDataManager.a));
         if (!activityName.equals("MainActivity")) {
             theImport = "import " + packageName + "." + activityName + ";" + EOL;
@@ -162,7 +161,7 @@ public class Jx {
         boolean isDialogFragment = projectFileBean.fileName.contains("_dialog_fragment");
         boolean isBottomDialogFragment = projectFileBean.fileName.contains("_bottomdialog_fragment");
         boolean isFragment = projectFileBean.fileName.contains("_fragment");
-
+        boolean isService = projectFileBean.fileName.contains("_service");
         extraVariables();
         handleAppCompat();
         addFieldsDeclaration();
@@ -175,8 +174,7 @@ public class Jx {
         addLocalLibraryImports();
 
         StringBuilder sb = new StringBuilder(8192);
-        sb.append("package ").append(packageName).append(";").append(EOL)
-                .append(EOL);
+        sb.append("package ").append(packageName).append(";").append(EOL).append(EOL);
         if (projectFileBean.getActivityName().equals("MainActivity")) {
             sb.append(getLauncherActivity(packageName));
         }
@@ -189,7 +187,12 @@ public class Jx {
             if (buildConfig.isDebugBuild)
                 addImport("com.google.android.gms.ads.RequestConfiguration");
         }
-
+        // service imports
+        if (isService) {
+            addImport("android.app.Service");
+            addImport("android.os.IBinder");
+            addImport("android.content.Intent");
+        }
         if (buildConfig.g) {
             addImport("androidx.fragment.app.Fragment");
             addImport("androidx.fragment.app.FragmentManager");
@@ -231,6 +234,8 @@ public class Jx {
                 sb.append("DialogFragment");
             } else if (isFragment) {
                 sb.append("Fragment");
+            } else if (isService) {
+                sb.append("Service");
             } else {
                 sb.append("AppCompatActivity");
             }
@@ -241,6 +246,8 @@ public class Jx {
                 sb.append("DialogFragment");
             } else if (isFragment) {
                 sb.append("Fragment");
+            } else if (isService) {
+                sb.append("Service");
             } else {
                 sb.append("Activity");
             }
@@ -324,15 +331,18 @@ public class Jx {
             if (buildConfig.g) {
                 sb.append("@NonNull").append(EOL);
                 sb.append("@Override").append(EOL);
-                sb.append("public View onCreateView(@NonNull LayoutInflater _inflater, " +
-                        "@Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {").append(EOL);
+                sb.append("public View onCreateView(@NonNull LayoutInflater _inflater, " + "@Nullable ViewGroup _container, @Nullable Bundle _savedInstanceState) {").append(EOL);
             } else {
                 sb.append("@Override").append(EOL);
-                sb.append("public View onCreateView(LayoutInflater _inflater, ViewGroup _container, " +
-                        "Bundle _savedInstanceState) {").append(EOL);
+                sb.append("public View onCreateView(LayoutInflater _inflater, ViewGroup _container, " + "Bundle _savedInstanceState) {").append(EOL);
             }
             sb.append("View _view = _inflater.inflate(R.layout.").append(projectFileBean.fileName).append(", _container, false);").append(EOL);
             sb.append("initialize(_savedInstanceState, _view);");
+        } else if (isService) {
+            // service codes
+            sb.append("@Override").append(EOL);
+            sb.append("public int onStartCommand(Intent _intent, int _flags, int _startId) {").append(EOL);
+            sb.append("initialize();");
         } else {
             sb.append("@Override").append(EOL);
             sb.append("protected void onCreate(Bundle _savedInstanceState) {").append(EOL);
@@ -384,15 +394,25 @@ public class Jx {
             sb.append(EOL);
         }
 
-        if (!isFragment) {
-            // Adds initializeLogic() call too, don't worry
-            sb.append(permissionManager.writePermission(buildConfig.g, buildConfig.a(projectFileBean.getActivityName()).c));
+        if (isFragment) {
+            // for fragment
+            sb.append("initializeLogic();").append(EOL).append("return _view;").append(EOL);
+        } else if (isService) {
+            // for service
+            sb.append("initializeLogic();").append(EOL);
+            sb.append("return START_STICKY;").append(EOL);
         } else {
-            sb.append("initializeLogic();").append(EOL)
-                    .append("return _view;").append(EOL);
+            sb.append(permissionManager.writePermission(buildConfig.g, buildConfig.a(projectFileBean.getActivityName()).c));
         }
         sb.append("}").append(EOL);
 
+        if (isService) {
+            // Add IBinder for service
+            sb.append("@Override").append(EOL);
+            sb.append("public IBinder onBind(Intent _intent) {").append(EOL);
+            sb.append("return null;").append(EOL);
+            sb.append("}").append(EOL);
+        }
         if (permissionManager.hasPermission && !isFragment) {
             sb.append(EOL);
             sb.append("@Override").append(EOL);
@@ -406,6 +426,9 @@ public class Jx {
         sb.append(EOL);
         if (isFragment) {
             sb.append("private void initialize(Bundle _savedInstanceState, View _view) {");
+        } else if (isService) {
+            // service
+            sb.append("private void initialize() {");
         } else {
             sb.append("private void initialize(Bundle _savedInstanceState) {");
         }
@@ -532,43 +555,23 @@ public class Jx {
         for (int j = 0, qSize = adapterClasses.size(); j < qSize; j++) {
             String adapterCode = adapterClasses.get(j);
 
-            if (base.contains("public CharSequence onTabLayoutNewTabAdded(int _position) {")
-                    || !adapterCode.contains("return onTabLayoutNewTabAdded(pos);")) {
+            if (base.contains("public CharSequence onTabLayoutNewTabAdded(int _position) {") || !adapterCode.contains("return onTabLayoutNewTabAdded(pos);")) {
                 sb.append(adapterCode);
             } else {
-                sb.append(adapterCode.replace("return onTabLayoutNewTabAdded(pos);",
-                        "// Use the Activity Event (onTabLayoutNewTabAdded) in order to use this method" + EOL +
-                                "return \"page \" + String.valueOf(pos);"));
+                sb.append(adapterCode.replace("return onTabLayoutNewTabAdded(pos);", "// Use the Activity Event (onTabLayoutNewTabAdded) in order to use this method" + EOL + "return \"page \" + String.valueOf(pos);"));
             }
             if (j != qSize - 1) {
                 sb.append(EOL);
             }
         }
-        if (!isFragment && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
-                .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
+        if (!isFragment && !isService && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
             sb.append(getDeprecatedMethodsCode());
         }
         sb.append("}").append(EOL);
         String code = sb.toString();
 
         if (isFragment) {
-            code = code.replaceAll("getApplicationContext\\(\\)", "getContext().getApplicationContext()")
-                    .replaceAll("getBaseContext\\(\\)", "getActivity().getBaseContext()")
-                    .replaceAll("\\(ClipboardManager\\) getSystemService", "(ClipboardManager) getContext().getSystemService")
-                    .replaceAll("\\(Vibrator\\) getSystemService", "(Vibrator) getContext().getSystemService")
-                    .replaceAll("\\(SensorManager\\) getSystemService", "(SensorManager) getContext().getSystemService")
-                    .replaceAll("Typeface.createFromAsset\\(getAssets\\(\\)", "Typeface.createFromAsset(getContext().getAssets()")
-                    .replaceAll("= getAssets\\(\\).open", "= getContext().getAssets().open")
-                    .replaceAll("getSharedPreferences", "getContext().getSharedPreferences")
-                    .replaceAll("AlertDialog.Builder\\(this\\);", "AlertDialog.Builder(getActivity());")
-                    .replaceAll("SpeechRecognizer.createSpeechRecognizer\\(this\\);", "SpeechRecognizer.createSpeechRecognizer(getContext());")
-                    .replaceAll("new RequestNetwork\\(this\\);", "new RequestNetwork((Activity) getContext());")
-                    .replaceAll("new BluetoothConnect\\(this\\);", "new BluetoothConnect((Activity) getContext());")
-                    .replaceAll("MobileAds.getRewardedVideoAdInstance\\(this\\);", "MobileAds.getRewardedVideoAdInstance(getContext());")
-                    .replaceAll("runOnUiThread\\(new", "getActivity().runOnUiThread(new")
-                    .replaceAll(".setLayoutManager\\(new LinearLayoutManager\\(this", ".setLayoutManager(new LinearLayoutManager(getContext()")
-                    .replaceAll("getLayoutInflater\\(\\)", "getActivity().getLayoutInflater()")
-                    .replaceAll("getSupportFragmentManager\\(\\)", "getActivity().getSupportFragmentManager()");
+            code = code.replaceAll("getApplicationContext\\(\\)", "getContext().getApplicationContext()").replaceAll("getBaseContext\\(\\)", "getActivity().getBaseContext()").replaceAll("\\(ClipboardManager\\) getSystemService", "(ClipboardManager) getContext().getSystemService").replaceAll("\\(Vibrator\\) getSystemService", "(Vibrator) getContext().getSystemService").replaceAll("\\(SensorManager\\) getSystemService", "(SensorManager) getContext().getSystemService").replaceAll("Typeface.createFromAsset\\(getAssets\\(\\)", "Typeface.createFromAsset(getContext().getAssets()").replaceAll("= getAssets\\(\\).open", "= getContext().getAssets().open").replaceAll("getSharedPreferences", "getContext().getSharedPreferences").replaceAll("AlertDialog.Builder\\(this\\);", "AlertDialog.Builder(getActivity());").replaceAll("SpeechRecognizer.createSpeechRecognizer\\(this\\);", "SpeechRecognizer.createSpeechRecognizer(getContext());").replaceAll("new RequestNetwork\\(this\\);", "new RequestNetwork((Activity) getContext());").replaceAll("new BluetoothConnect\\(this\\);", "new BluetoothConnect((Activity) getContext());").replaceAll("MobileAds.getRewardedVideoAdInstance\\(this\\);", "MobileAds.getRewardedVideoAdInstance(getContext());").replaceAll("runOnUiThread\\(new", "getActivity().runOnUiThread(new").replaceAll(".setLayoutManager\\(new LinearLayoutManager\\(this", ".setLayoutManager(new LinearLayoutManager(getContext()").replaceAll("getLayoutInflater\\(\\)", "getActivity().getLayoutInflater()").replaceAll("getSupportFragmentManager\\(\\)", "getActivity().getSupportFragmentManager()");
         } else if (buildConfig.g) {
             code = code.replaceAll("getFragmentManager", "getSupportFragmentManager");
         }
@@ -616,57 +619,7 @@ public class Jx {
     }
 
     private String getDeprecatedMethodsCode() {
-        return EOL +
-                "@Deprecated" + EOL +
-                "public void showMessage(String _s) {" + EOL +
-                "Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();" + EOL +
-                "}" + EOL +
-                EOL +
-                "@Deprecated" + EOL +
-                "public int getLocationX(View _v) {" + EOL +
-                "int _location[] = new int[2];" + EOL +
-                "_v.getLocationInWindow(_location);" + EOL +
-                "return _location[0];" + EOL +
-                "}" + EOL +
-                EOL +
-                "@Deprecated" + EOL +
-                "public int getLocationY(View _v) {" + EOL +
-                "int _location[] = new int[2];" + EOL +
-                "_v.getLocationInWindow(_location);" + EOL +
-                "return _location[1];" + EOL +
-                "}" + EOL +
-                EOL +
-                "@Deprecated" + EOL +
-                "public int getRandom(int _min, int _max) {" + EOL +
-                "Random random = new Random();" + EOL +
-                "return random.nextInt(_max - _min + 1) + _min;" + EOL +
-                "}" + EOL +
-                EOL +
-                "@Deprecated" + EOL +
-                "public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {" + EOL +
-                "ArrayList<Double> _result = new ArrayList<Double>();" + EOL +
-                "SparseBooleanArray _arr = _list.getCheckedItemPositions();" + EOL +
-                "for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {" + EOL +
-                "if (_arr.valueAt(_iIdx))" + EOL +
-                "_result.add((double)_arr.keyAt(_iIdx));" + EOL +
-                "}" + EOL +
-                "return _result;" + EOL +
-                "}" + EOL +
-                EOL +
-                "@Deprecated" + EOL +
-                "public float getDip(int _input) {" + EOL +
-                "return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());" + EOL +
-                "}" + EOL +
-                EOL +
-                "@Deprecated" + EOL +
-                "public int getDisplayWidthPixels() {" + EOL +
-                "return getResources().getDisplayMetrics().widthPixels;" + EOL +
-                "}" + EOL +
-                EOL +
-                "@Deprecated" + EOL +
-                "public int getDisplayHeightPixels() {" + EOL +
-                "return getResources().getDisplayMetrics().heightPixels;" + EOL +
-                "}" + EOL;
+        return EOL + "@Deprecated" + EOL + "public void showMessage(String _s) {" + EOL + "Toast.makeText(getApplicationContext(), _s, Toast.LENGTH_SHORT).show();" + EOL + "}" + EOL + EOL + "@Deprecated" + EOL + "public int getLocationX(View _v) {" + EOL + "int _location[] = new int[2];" + EOL + "_v.getLocationInWindow(_location);" + EOL + "return _location[0];" + EOL + "}" + EOL + EOL + "@Deprecated" + EOL + "public int getLocationY(View _v) {" + EOL + "int _location[] = new int[2];" + EOL + "_v.getLocationInWindow(_location);" + EOL + "return _location[1];" + EOL + "}" + EOL + EOL + "@Deprecated" + EOL + "public int getRandom(int _min, int _max) {" + EOL + "Random random = new Random();" + EOL + "return random.nextInt(_max - _min + 1) + _min;" + EOL + "}" + EOL + EOL + "@Deprecated" + EOL + "public ArrayList<Double> getCheckedItemPositionsToArray(ListView _list) {" + EOL + "ArrayList<Double> _result = new ArrayList<Double>();" + EOL + "SparseBooleanArray _arr = _list.getCheckedItemPositions();" + EOL + "for (int _iIdx = 0; _iIdx < _arr.size(); _iIdx++) {" + EOL + "if (_arr.valueAt(_iIdx))" + EOL + "_result.add((double)_arr.keyAt(_iIdx));" + EOL + "}" + EOL + "return _result;" + EOL + "}" + EOL + EOL + "@Deprecated" + EOL + "public float getDip(int _input) {" + EOL + "return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, _input, getResources().getDisplayMetrics());" + EOL + "}" + EOL + EOL + "@Deprecated" + EOL + "public int getDisplayWidthPixels() {" + EOL + "return getResources().getDisplayMetrics().widthPixels;" + EOL + "}" + EOL + EOL + "@Deprecated" + EOL + "public int getDisplayHeightPixels() {" + EOL + "return getResources().getDisplayMetrics().heightPixels;" + EOL + "}" + EOL;
     }
 
     private void addImport(String classToImport) {
@@ -706,30 +659,13 @@ public class Jx {
                 fields.add("private Toolbar _toolbar;");
                 fields.add("private AppBarLayout _app_bar;");
                 fields.add("private CoordinatorLayout _coordinator;");
-                initializeMethodCode.add(
-                        "_app_bar = findViewById(R.id._app_bar);" + EOL +
-                                "_coordinator = findViewById(R.id._coordinator);" + EOL +
-                                "_toolbar = findViewById(R.id._toolbar);" + EOL +
-                                "setSupportActionBar(_toolbar);" + EOL +
-                                "getSupportActionBar().setDisplayHomeAsUpEnabled(true);" + EOL +
-                                "getSupportActionBar().setHomeButtonEnabled(true);" + EOL +
-                                "_toolbar.setNavigationOnClickListener(new View.OnClickListener() {" + EOL +
-                                "@Override" + EOL +
-                                "public void onClick(View _v) {" + EOL +
-                                "onBackPressed();" + EOL +
-                                "}" + EOL +
-                                "});"
-                );
+                initializeMethodCode.add("_app_bar = findViewById(R.id._app_bar);" + EOL + "_coordinator = findViewById(R.id._coordinator);" + EOL + "_toolbar = findViewById(R.id._toolbar);" + EOL + "setSupportActionBar(_toolbar);" + EOL + "getSupportActionBar().setDisplayHomeAsUpEnabled(true);" + EOL + "getSupportActionBar().setHomeButtonEnabled(true);" + EOL + "_toolbar.setNavigationOnClickListener(new View.OnClickListener() {" + EOL + "@Override" + EOL + "public void onClick(View _v) {" + EOL + "onBackPressed();" + EOL + "}" + EOL + "});");
             }
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
                 addImport("com.google.android.material.floatingactionbutton.FloatingActionButton");
 
                 fields.add("private FloatingActionButton _fab;");
-                initializeMethodCode.add(
-                        (projectFileBean.fileName.contains("_fragment") ?
-                                "_fab = _view.findViewById(R.id._fab);" :
-                                "_fab = findViewById(R.id._fab);") + EOL
-                );
+                initializeMethodCode.add((projectFileBean.fileName.contains("_fragment") ? "_fab = _view.findViewById(R.id._fab);" : "_fab = findViewById(R.id._fab);") + EOL);
             }
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) && !projectFileBean.fileName.contains("_fragment")) {
                 addImport("androidx.core.view.GravityCompat");
@@ -737,19 +673,11 @@ public class Jx {
                 addImport("androidx.appcompat.app.ActionBarDrawerToggle");
 
                 fields.add("private DrawerLayout _drawer;");
-                initializeMethodCode.add("_drawer = findViewById(R.id._drawer);" + EOL +
-                        "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
-                        projectFileBean.getActivityName() + ".this, _drawer, " +
+                initializeMethodCode.add("_drawer = findViewById(R.id._drawer);" + EOL + "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" + projectFileBean.getActivityName() + ".this, _drawer, " +
 
-                        (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ?
-                                "_toolbar, " : "") +
+                        (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ? "_toolbar, " : "") +
 
-                        "R.string.app_name, R.string.app_name);" + EOL +
-                        "_drawer.addDrawerListener(_toggle);" + EOL +
-                        "_toggle.syncState();" + EOL +
-                        EOL +
-                        "LinearLayout _nav_view = findViewById(R.id._nav_view);" + EOL
-                );
+                        "R.string.app_name, R.string.app_name);" + EOL + "_drawer.addDrawerListener(_toggle);" + EOL + "_toggle.syncState();" + EOL + EOL + "LinearLayout _nav_view = findViewById(R.id._nav_view);" + EOL);
                 addImports(mq.getImportsByTypeName("LinearLayout"));
             }
         }

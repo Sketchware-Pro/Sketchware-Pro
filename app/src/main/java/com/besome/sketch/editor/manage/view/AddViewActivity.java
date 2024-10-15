@@ -227,19 +227,28 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
                 finish();
             } else if (isValid(nameValidator)) {
                 String var4 = binding.edName.getText().toString() + getSuffix(binding.viewTypeSelector);
-                ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4,
-                        getSelectedButtonIndex(binding.screenOrientationSelector),
-                        getSelectedButtonIndex(binding.keyboardSettingsSelector),
-                        featureToolbar, !featureStatusBar,
-                        featureFab, featureDrawer);
-                Intent intent = new Intent();
-                intent.putExtra("project_file", projectFileBean);
-                if (P != null) {
-                    intent.putExtra("preset_views", getPresetData(P));
+                // service creating
+                if (binding.viewTypeSelector.getCheckedButtonId() == R.id.select_service) {
+                    ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4, 0, 0, false, true, false, false);
+                    Intent intent = new Intent();
+                    intent.putExtra("project_file", projectFileBean);
+                    if (P != null) {
+                        intent.putExtra("preset_views", getPresetData(P));
+                    }
+                    setResult(RESULT_OK, intent);
+                    bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
+                    finish();
+                } else {
+                    ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
+                    Intent intent = new Intent();
+                    intent.putExtra("project_file", projectFileBean);
+                    if (P != null) {
+                        intent.putExtra("preset_views", getPresetData(P));
+                    }
+                    setResult(RESULT_OK, intent);
+                    bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
+                    finish();
                 }
-                setResult(RESULT_OK, intent);
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
-                finish();
             }
 
         });
@@ -277,6 +286,7 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
             case 1 -> "_fragment";
             case 2 -> "_dialog_fragment";
             case 3 -> "_bottomdialog_fragment";
+            case 4 -> "_service";
             default -> "";
         };
     }
@@ -342,8 +352,7 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup var1, int var2) {
             View var3 = wB.a(var1.getContext(), R.layout.manage_screen_activity_add_feature_item);
-            var3.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
+            var3.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             return new ViewHolder(var3);
         }
 

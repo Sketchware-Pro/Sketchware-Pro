@@ -168,6 +168,12 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
         holder.binding.getRoot().setOnClickListener(clickListener);
         holder.binding.expand.setOnClickListener(clickListener);
+        holder.binding.imgIcon.setOnClickListener(v -> {
+            int currentPosition = holder.getAbsoluteAdapterPosition();
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                showProjectOptionsBottomSheet(projectMap, currentPosition);
+            }
+        });
         holder.binding.projectOne.setOnLongClickListener(v -> {
             int currentPosition = holder.getAbsoluteAdapterPosition();
             if (currentPosition != RecyclerView.NO_POSITION) {
