@@ -99,7 +99,6 @@
     </style>
 
     <style name="TextDropDownLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="boxBackgroundColor">?colorSurface</item>
         <item name="boxStrokeColor">@color/input_layout_selector</item>
         <item name="errorTextAppearance">@style/error_appearance</item>
         <item name="hintTextAppearance">@style/hint_appearance</item>
