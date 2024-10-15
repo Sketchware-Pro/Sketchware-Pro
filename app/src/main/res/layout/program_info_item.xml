@@ -15,6 +15,7 @@
         android:textAppearance="?attr/textAppearanceBodyMedium" />
 
     <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/layout_divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

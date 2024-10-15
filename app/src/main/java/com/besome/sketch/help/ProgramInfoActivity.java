@@ -36,11 +36,20 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
         addTwoLineItem(key, getString(name), getString(description));
     }
 
+    private void addTwoLineItem(int key, int name, int description, boolean hideDivider) {
+        addTwoLineItem(key, getString(name), getString(description), hideDivider);
+    }
+
     private void addTwoLineItem(int key, String name, String description) {
+        addTwoLineItem(key, name, description, false);
+    }
+
+    private void addTwoLineItem(int key, String name, String description, boolean hideDivider) {
         PropertyTwoLineItem item = new PropertyTwoLineItem(this);
         item.setKey(key);
         item.setName(name);
         item.setDesc(description);
+        item.setHideDivider(hideDivider);
         binding.content.addView(item);
         item.setOnClickListener(this::handleItem);
     }
@@ -49,10 +58,19 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
         addSingleLineItem(key, getString(name));
     }
 
+    private void addSingleLineItem(int key, int name, boolean hideDivider) {
+        addSingleLineItem(key, getString(name), hideDivider);
+    }
+
     private void addSingleLineItem(int key, String name) {
+        addSingleLineItem(key, name, false);
+    }
+
+    private void addSingleLineItem(int key, String name, boolean hideDivider) {
         PropertyOneLineItem item = new PropertyOneLineItem(this);
         item.setKey(key);
         item.setName(name);
+        item.setHideDivider(hideDivider);
         binding.content.addView(item);
         if (key == ITEM_SYSTEM_INFORMATION || key == ITEM_OPEN_SOURCE_LICENSES) {
             item.setOnClickListener(this::handleItem);
@@ -131,7 +149,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
         addTwoLineItem(ITEM_DISCORD, R.string.title_discord_community, R.string.link_discord_invite);
         addTwoLineItem(ITEM_TELEGRAM, R.string.title_telegram_community, R.string.link_telegram_invite);
         addSingleLineItem(ITEM_SYSTEM_INFORMATION, R.string.program_information_title_system_information);
-        addSingleLineItem(ITEM_OPEN_SOURCE_LICENSES, R.string.program_information_title_open_source_license);
+        addSingleLineItem(ITEM_OPEN_SOURCE_LICENSES, R.string.program_information_title_open_source_license, true);
     }
 
     private void toLicenseActivity() {
