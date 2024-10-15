@@ -112,6 +112,8 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                 case "property_scale_x", "property_scale_y" -> showNumberDecimalInputDialog(0, 99);
                 case "property_convert" ->
                         showAutoCompleteDialog(getResources().getStringArray(R.array.property_convert_options), 0, 99);
+                case "property_inject" -> 
+                        showAutoCompleteDialog(getResources().getStringArray(R.array.property_inject_options), 0, 99);
             }
         }
     }
