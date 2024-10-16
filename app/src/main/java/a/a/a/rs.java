@@ -234,6 +234,18 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         noEvents = parent.findViewById(R.id.tv_no_events);
         RecyclerView eventList = parent.findViewById(R.id.event_list);
         paletteView = parent.findViewById(R.id.palette);
+        paletteView.setOnItemSelectedListener(
+                item -> {
+                    initializeEvents(events.get(getPaletteIndex(item.getItemId())));
+                    if (getPaletteIndex(item.getItemId()) == 4) {
+                        importMoreBlockFromCollection.setVisibility(View.VISIBLE);
+                    } else {
+                        importMoreBlockFromCollection.setVisibility(View.GONE);
+                    }
+                    eventAdapter.a(events.get(getPaletteIndex(item.getItemId())));
+                    eventAdapter.notifyDataSetChanged();
+                    return true;
+                });
         RecyclerView categoryList = parent.findViewById(R.id.category_list);
         fab = paletteView.getHeaderView().findViewById(R.id.fab);
         noEvents.setVisibility(View.GONE);
