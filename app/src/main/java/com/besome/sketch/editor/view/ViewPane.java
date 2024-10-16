@@ -907,12 +907,37 @@ public class ViewPane extends RelativeLayout {
         String strokeWidth = handler.getAttributeValueOf("strokeWidth");
         // TODO: support for res values, like @color/card_bg
         // try-catch for prevent crash, and lose project changes
+        // I even started doing it, but Idk
         try {
-            cardView.setCardElevation(PropertiesUtil.resolveSize(cardElevation, 4));
-            cardView.setRadius(PropertiesUtil.resolveSize(cardCornerRadius, 8));
-            cardView.setUseCompatPadding(Boolean.parseBoolean(TextUtils.isEmpty(compatPadding) ? "false" : compatPadding));
-            cardView.setStrokeWidth(PropertiesUtil.resolveSize(strokeWidth, 0));
-            cardView.setStrokeColor(PropertiesUtil.isHexColor(strokeColor) ? PropertiesUtil.parseColor(strokeColor) : Color.WHITE);
+            if (cardElevation.startsWith("@dimen/")) {
+                
+            } else {
+                cardView.setCardElevation(PropertiesUtil.resolveSize(cardElevation, 4));
+            }
+            
+            if (compatPadding.startsWith("@bool/")) {
+                
+            } else {
+                cardView.setUseCompatPadding(Boolean.parseBoolean(TextUtils.isEmpty(compatPadding) ? "false" : compatPadding));
+            }
+            
+            if (cardCornerRadius.startsWith("@dimen/")) {
+                
+            } else {
+                cardView.setRadius(PropertiesUtil.resolveSize(cardCornerRadius, 8));
+            }
+            
+            if (strokeWidth.startsWith("@dimen/")) {
+            
+            } else {
+                cardView.setStrokeWidth(PropertiesUtil.resolveSize(strokeWidth, 0));
+            }
+            
+            if (strokeColor.startsWith("@color/")) {
+                
+            } else {
+                cardView.setStrokeColor(PropertiesUtil.isHexColor(strokeColor) ? PropertiesUtil.parseColor(strokeColor) : Color.WHITE);
+            }
         } catch(Exception e) {
             Log.e("ViewPane:updateCardView", e.toString());
         }
