@@ -95,17 +95,13 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:imeOptions">actionNext</item>
         <item name="android:padding">8dp</item>
-        <item name="android:textColorHint">#2B2B2B</item>
-        <item name="android:textColor">#000</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TextDropDownLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="boxBackgroundColor">@color/inputLayoutBackgroundColor</item>
         <item name="boxStrokeColor">@color/input_layout_selector</item>
         <item name="errorTextAppearance">@style/error_appearance</item>
         <item name="hintTextAppearance">@style/hint_appearance</item>
-        <item name="hintTextColor">#2B2B2B</item>
         <item name="shapeAppearanceOverlay">
             @style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded
         </item>
@@ -123,7 +119,6 @@
 
     <style name="hint_appearance" parent="@android:style/TextAppearance">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">#2B2B2B</item>
         <item name="android:fontFamily">@font/gilroy</item>
         <item name="fontFamily">@font/gilroy</item>
     </style>

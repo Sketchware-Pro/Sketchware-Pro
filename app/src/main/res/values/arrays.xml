@@ -1,0 +1,18 @@
+<resources>
+    <!--  properties  -->
+    <string-array name="property_convert_options">
+        <item>LinearLayout</item>
+        <item>RelativeLayout</item>
+        <item>FrameLayout</item>
+        <item>HorizontalScrollView</item>
+    </string-array>
+    
+    <string-array name="property_inject_options">
+        <item>android:visibility="gone"</item>
+        <item>android:textAppearance="@style/YourTextAppearanceStyle"</item>
+        <item>app:cornerRadius="10dp"</item>
+        <item>app:cardBackgroundColor="#FFFFFF"</item>
+        <item>app:srcCompat="@drawable/app_icon"</item>
+        <item>style="@style/YourStyleName"</item>
+    </string-array>
+</resources>
