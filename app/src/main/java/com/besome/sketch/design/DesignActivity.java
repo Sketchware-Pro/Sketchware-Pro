@@ -298,7 +298,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END);
         } else if (viewTabAdapter.g()) {
