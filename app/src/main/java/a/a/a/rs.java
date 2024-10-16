@@ -43,6 +43,7 @@ import com.besome.sketch.lib.ui.CollapsibleButton;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigationrail.NavigationRailView;
 import com.sketchware.remod.R;
 
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ import mod.jbk.editor.manage.MoreblockImporter;
 public class rs extends qA implements View.OnClickListener, MoreblockImporterDialog.CallBack {
 
     private ProjectFileBean currentActivity;
+    private NavigationRailView paletteView;
     private CategoryAdapter categoryAdapter;
     private EventAdapter eventAdapter;
     private FloatingActionButton fab;
@@ -215,6 +217,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private void initialize(ViewGroup parent) {
         noEvents = parent.findViewById(R.id.tv_no_events);
         RecyclerView eventList = parent.findViewById(R.id.event_list);
+        paletteView = parent.findViewById(R.id.palette);
         RecyclerView categoryList = parent.findViewById(R.id.category_list);
         fab = parent.findViewById(R.id.fab);
         noEvents.setVisibility(View.GONE);
