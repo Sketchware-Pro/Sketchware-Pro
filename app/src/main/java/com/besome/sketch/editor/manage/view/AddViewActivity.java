@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
-import com.besome.sketch.lib.base.BaseBottomSheetDialogActivity;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ManageScreenActivityAddTempBinding;
@@ -28,7 +28,7 @@ import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.xB;
 
-public class AddViewActivity extends BaseBottomSheetDialogActivity {
+public class AddViewActivity extends BaseAppCompatActivity {
 
     private YB nameValidator;
     private boolean featureStatusBar, featureToolbar, featureFab, featureDrawer;
@@ -178,13 +178,13 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
         super.onCreate(savedInstanceState);
         binding = ManageScreenActivityAddTempBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        e("Create new view");
+        binding.toolbar.setTitle("Create new");
         Intent intent1 = getIntent();
         ArrayList<String> screenNames = intent1.getStringArrayListExtra("screen_names");
         requestCode = intent1.getIntExtra("request_code", 264);
         projectFileBean = intent1.getParcelableExtra("project_file");
         if (projectFileBean != null) {
-            e(getTranslatedString(R.string.design_manager_view_title_edit_view));
+            binding.toolbar.setTitle("Edit " + projectFileBean.fileName);
             if (projectFileBean.fileName.contains("_service")) {
                 // if selected view is service, hide other widgets
                 binding.activityPreview.setVisibility(View.GONE);
@@ -193,21 +193,22 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
                 binding.keyboardSettingsSelector.setEnabled(false);
             }
         }
-        
+
         // hide other widgets when service button clicked
         binding.viewTypeSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (binding.viewTypeSelector.getCheckedButtonId() == R.id.select_service) {
-                makeTransitionAnimation(binding.mainLayout);
+                makeTransitionAnimation(binding.parentLayout);
                 binding.activityPreview.setVisibility(View.GONE);
                 binding.featureTypes.setVisibility(View.GONE);
-                binding.screenOrientationSelector.setEnabled(false);
-                binding.keyboardSettingsSelector.setEnabled(false);
+                binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
+                binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
+                binding.fabDrawerTipView.setVisibility(View.GONE);
             } else {
-                makeTransitionAnimation(binding.mainLayout);
+                makeTransitionAnimation(binding.parentLayout);
                 binding.activityPreview.setVisibility(View.VISIBLE);
                 binding.featureTypes.setVisibility(View.VISIBLE);
-                binding.screenOrientationSelector.setEnabled(true);
-                binding.keyboardSettingsSelector.setEnabled(true);
+                binding.viewOrientationSelectorLayout.setVisibility(View.VISIBLE);
+                binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.VISIBLE);
             }
         });
 
@@ -224,10 +225,7 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
             }
         });
 
-        d(getString(R.string.common_word_add));
-        b(getString(R.string.common_word_cancel));
-
-        r.setOnClickListener(v -> {
+        binding.btnSave.setOnClickListener(v -> {
             int options = ProjectFileBean.OPTION_ACTIVITY_TOOLBAR;
             if (265 == requestCode) {
                 projectFileBean.orientation = getSelectedButtonIndex(binding.screenOrientationSelector);
@@ -277,7 +275,7 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
             }
 
         });
-        s.setOnClickListener(v -> {
+        binding.btnCancel.setOnClickListener(v -> {
             setResult(RESULT_CANCELED);
             finish();
         });
@@ -296,8 +294,6 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
                     slideOutVertically(binding.imgKeyboard);
                 }
             });
-
-            r.setText(getString(R.string.common_word_save));
         } else {
             featureToolbar = true;
             featureStatusBar = true;
@@ -328,7 +324,7 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
 
     public void makeTransitionAnimation(LinearLayout linearLayout) {
         android.transition.AutoTransition autoTransition = new android.transition.AutoTransition();
-        autoTransition.setDuration(500);
+        autoTransition.setDuration(200);
         android.transition.TransitionManager.beginDelayedTransition(linearLayout, autoTransition);
     }
 
@@ -372,6 +368,7 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
             }
 
             if (featureFab || featureDrawer) {
+                makeTransitionAnimation(binding.parentLayout);
                 binding.fabDrawerTipView.setVisibility(View.VISIBLE);
             }
 
