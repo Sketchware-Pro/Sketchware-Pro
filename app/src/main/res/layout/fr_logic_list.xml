@@ -22,15 +22,6 @@
                 app:menu="@menu/logic_palette"
                 app:headerLayout="@layout/fab"
                 android:id="@+id/palette" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/category_list"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:splitMotionEvents="false"
-                tools:itemCount="4"
-                tools:listitem="@layout/common_category_triangle_item" />
         </LinearLayout>
 
         <LinearLayout

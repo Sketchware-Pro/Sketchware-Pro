@@ -2,8 +2,6 @@ package a.a.a;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Pair;
@@ -12,8 +10,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,11 +19,8 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.ViewPropertyAnimatorCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ComponentBean;
@@ -59,7 +52,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     private ProjectFileBean currentActivity;
     private NavigationRailView paletteView;
-    private CategoryAdapter categoryAdapter;
     private EventAdapter eventAdapter;
     private FloatingActionButton fab;
     private HashMap<Integer, ArrayList<EventBean>> events;
@@ -189,8 +181,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             if (getPaletteIndex() == -1) {
                 eventAdapter.a(events.get(0));
                 paletteView.setSelectedItemId(R.id.activity);
-                categoryAdapter.index = 0;
-                categoryAdapter.notifyDataSetChanged();
             }
             if (getPaletteIndex() == 4) {
                 importMoreBlockFromCollection.setVisibility(View.VISIBLE);
@@ -198,9 +188,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 importMoreBlockFromCollection.setVisibility(View.GONE);
             }
             if (eventAdapter != null) {
-                if (categoryAdapter != null) {
-                    categoryAdapter.notifyDataSetChanged();
-                }
                 eventAdapter.a(events.get(getPaletteIndex()));
                 eventAdapter.notifyDataSetChanged();
             }
@@ -246,15 +233,10 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     eventAdapter.notifyDataSetChanged();
                     return true;
                 });
-        RecyclerView categoryList = parent.findViewById(R.id.category_list);
         fab = paletteView.getHeaderView().findViewById(R.id.fab);
         noEvents.setVisibility(View.GONE);
         noEvents.setText(xB.b().a(requireContext(), R.string.event_message_no_events));
         eventList.setLayoutManager(new LinearLayoutManager(null, RecyclerView.VERTICAL, false));
-        categoryList.setLayoutManager(new LinearLayoutManager(null, RecyclerView.VERTICAL, false));
-        ((SimpleItemAnimator) categoryList.getItemAnimator()).setSupportsChangeAnimations(false);
-        categoryAdapter = new CategoryAdapter();
-        categoryList.setAdapter(categoryAdapter);
         eventAdapter = new EventAdapter();
         eventList.setAdapter(eventAdapter);
         fab.setOnClickListener(this);
@@ -390,91 +372,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             Pp.h().a(moreBlockName, b2, moreBlockBlocks, true);
         } catch (Exception unused2) {
             bB.b(requireContext(), xB.b().a(requireContext(), R.string.common_error_failed_to_save), 0).show();
-        }
-    }
-
-    private class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-        private int index = -1;
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            holder.name.setText(rs.a(requireContext(), position));
-            holder.icon.setImageResource(rs.a(position));
-            if (index == position) {
-                ViewPropertyAnimatorCompat animator1 = ViewCompat.animate(holder.icon);
-                animator1.scaleX(1);
-                animator1.scaleY(1);
-                animator1.setDuration(300);
-                animator1.setInterpolator(new AccelerateInterpolator());
-                animator1.start();
-                ViewPropertyAnimatorCompat animator2 = ViewCompat.animate(holder.icon);
-                animator2.scaleX(1);
-                animator2.scaleY(1);
-                animator2.setDuration(300);
-                animator2.setInterpolator(new AccelerateInterpolator());
-                animator2.start();
-                holder.pointerLeft.setVisibility(View.VISIBLE);
-                ColorMatrix colorMatrix = new ColorMatrix();
-                colorMatrix.setSaturation(1);
-                holder.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-            } else {
-                ViewPropertyAnimatorCompat animator1 = ViewCompat.animate(holder.icon);
-                animator1.scaleX(0.8f);
-                animator1.scaleY(0.8f);
-                animator1.setDuration(300);
-                animator1.setInterpolator(new DecelerateInterpolator());
-                animator1.start();
-                ViewPropertyAnimatorCompat animator2 = ViewCompat.animate(holder.icon);
-                animator2.scaleX(0.8f);
-                animator2.scaleY(0.8f);
-                animator2.setDuration(300);
-                animator2.setInterpolator(new DecelerateInterpolator());
-                animator2.start();
-                holder.pointerLeft.setVisibility(View.GONE);
-                ColorMatrix colorMatrix2 = new ColorMatrix();
-                colorMatrix2.setSaturation(0);
-                holder.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix2));
-            }
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.common_category_triangle_item, parent, false));
-        }
-
-        @Override
-        public int getItemCount() {
-            return events.size();
-        }
-
-        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public final ImageView icon;
-            public final TextView name;
-            public final View pointerLeft;
-
-            public ViewHolder(View itemView) {
-                super(itemView);
-                icon = itemView.findViewById(R.id.img_icon);
-                name = itemView.findViewById(R.id.tv_name);
-                pointerLeft = itemView.findViewById(R.id.pointer_left);
-                itemView.setOnClickListener(this);
-            }
-
-            @Override
-            public void onClick(View v) {
-                notifyItemChanged(index);
-                index = getLayoutPosition();
-                notifyItemChanged(index);
-                initializeEvents(events.get(index));
-                if (index == 4) {
-                    importMoreBlockFromCollection.setVisibility(View.VISIBLE);
-                } else {
-                    importMoreBlockFromCollection.setVisibility(View.GONE);
-                }
-                eventAdapter.a(events.get(index));
-                eventAdapter.notifyDataSetChanged();
-            }
         }
     }
 
