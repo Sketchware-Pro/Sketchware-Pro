@@ -954,8 +954,14 @@ public class ViewPane extends RelativeLayout {
     private void updateMaterialButton(ItemMaterialButton materialButton, InjectAttributeHandler handler) {
         String radius = handler.getAttributeValueOf("cornerRadius");
         String stroke = handler.getAttributeValueOf("strokeWidth");
-        materialButton.setStrokeWidth(PropertiesUtil.resolveSize(stroke, 0));
-        materialButton.setCornerRadius(PropertiesUtil.resolveSize(radius, 8));
+        // TODO: support for res values, like @dimen/button_corner_radius
+        // try-catch for prevent crash, and lose project changes
+        try {
+            materialButton.setStrokeWidth(PropertiesUtil.resolveSize(stroke, 0));
+            materialButton.setCornerRadius(PropertiesUtil.resolveSize(radius, 8));
+        } catch(Exception e) {
+            Log.e("ViewPane:updateMaterialButton", e.toString());
+        }
     }
 
     private String extractAttrValue(String line, String attrbute) {
