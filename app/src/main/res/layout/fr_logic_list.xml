@@ -73,14 +73,4 @@
                 tools:listitem="@layout/fr_logic_list_item" />
         </LinearLayout>
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add_white_36dp"
-        tools:ignore="ContentDescription" />
 </RelativeLayout>
