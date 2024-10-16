@@ -178,7 +178,10 @@ public class AddViewActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ManageScreenActivityAddTempBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         binding.toolbar.setTitle("Create new");
+        binding.toolbar.setNavigationOnClickListener(v -> finish());
+
         Intent intent1 = getIntent();
         ArrayList<String> screenNames = intent1.getStringArrayListExtra("screen_names");
         requestCode = intent1.getIntExtra("request_code", 264);
