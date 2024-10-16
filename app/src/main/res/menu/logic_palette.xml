@@ -2,23 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/activity"
-        android:title="@string/common_word_activity"
-        android:icon="@drawable/ic_lifecycle" />
+        android:icon="@drawable/ic_lifecycle"
+        android:title="@string/common_word_activity" />
     <item
         android:id="@+id/view"
-        android:title="@string/common_word_view"
-        android:icon="@drawable/ic_view" />
+        android:icon="@drawable/ic_view"
+        android:title="@string/common_word_view" />
     <item
         android:id="@+id/component"
-        android:title="@string/common_word_component"
-        android:icon="@drawable/ic_component" />
+        android:icon="@drawable/ic_component"
+        android:title="@string/common_word_component" />
     <item
         android:id="@+id/drawer"
-        android:title="@string/common_word_drawer"
-        android:icon="@drawable/ic_drawer" />
+        android:icon="@drawable/ic_drawer"
+        android:title="@string/common_word_drawer" />
     <item
         android:id="@+id/moreblock"
-        android:title="@string/common_word_moreblock"
         android:icon="@drawable/more_block_96dp"
-        android:tint="?android:colorControlNormal" />
+        android:tint="?android:colorControlNormal"
+        android:title="@string/common_word_moreblock" />
 </menu>
