@@ -65,9 +65,9 @@
       "title": null
     },
     {
-      "modder_username": "IndoSW",
-      "modder_description": "Direct Source Code Editor",
-      "modder_img": "https://i.imgur.com/mthq123.jpg",
+      "modder_username": "Aquiles Trindade",
+      "modder_description": "I love cats",
+      "modder_img": "https://avatars.githubusercontent.com/u/171992413",
       "isTitled": true,
       "isMainModder": false,
       "title": "Contributors"
@@ -82,7 +82,7 @@
     },
     {
       "modder_username": "Tyron",
-      "modder_description": "Easier restoring of projects, kotlinc port to Android",
+      "modder_description": "Easier restoring of projects, kotlinc port to Android.",
       "modder_img": "https://i.imgur.com/gP8jauO.png",
       "isTitled": false,
       "isMainModder": false,
@@ -106,7 +106,7 @@
     },
     {
       "modder_username": "Raival",
-      "modder_description": "Improved pretty-print in Code Editor, replaceable generated files feature",
+      "modder_description": "Improved pretty-print in Code Editor, replaceable generated files feature.",
       "modder_img": "https://avatars.githubusercontent.com/u/81700082",
       "isTitled": false,
       "isMainModder": false,
@@ -156,6 +156,14 @@
       "modder_username": "HAKANKOKCU",
       "modder_description": "Fixed image issue for old Android versions in the \"About Sketchware Pro\" screen. Also please visit: https://tbudgie.netlify.app",
       "modder_img": "https://avatars.githubusercontent.com/u/103432992",
+      "isTitled": false,
+      "isMainModder": false,
+      "title": null
+    },
+    {
+      "modder_username": "IndoSW",
+      "modder_description": "Direct Source Code Editor",
+      "modder_img": "https://i.imgur.com/mthq123.jpg",
       "isTitled": false,
       "isMainModder": false,
       "title": null
