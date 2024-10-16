@@ -70,7 +70,26 @@
       "modder_img": "https://avatars.githubusercontent.com/u/171992413",
       "isTitled": true,
       "isMainModder": false,
+      "isActive": true,
       "title": "Contributors"
+    },
+    {
+      "modder_username": "NiceSapien",
+      "modder_description": "Created the website and docs. Visit: https://nicesapien.is-a.dev",
+      "modder_img": "https://avatars.githubusercontent.com/u/71333407",
+      "isTitled": false,
+      "isMainModder": false,
+      "isActive": true,
+      "title": null
+    },
+    {
+      "modder_username": "Ilyasse",
+      "modder_description": "Redesigning Sketchware Pro to Material3.",
+      "modder_img": "https://i.imgur.com/i8PHDA7.png",
+      "isTitled": false,
+      "isMainModder": false,
+      "isActive": true,
+      "title": null
     },
     {
       "modder_username": "Rayen Sbai",
@@ -78,6 +97,7 @@
       "modder_img": "https://i.imgur.com/G7F3evT.jpg",
       "isTitled": false,
       "isMainModder": false,
+      "isActive": false,
       "title": null
     },
     {
@@ -86,14 +106,7 @@
       "modder_img": "https://i.imgur.com/gP8jauO.png",
       "isTitled": false,
       "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "Ilyasse",
-      "modder_description": "Hello hello hello...",
-      "modder_img": "https://i.imgur.com/i8PHDA7.png",
-      "isTitled": false,
-      "isMainModder": false,
+      "isActive": false,
       "title": null
     },
     {
@@ -102,6 +115,7 @@
       "modder_img": "https://i.imgur.com/gOopPZT.png",
       "isTitled": false,
       "isMainModder": false,
+      "isActive": false,
       "title": null
     },
     {
@@ -110,6 +124,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/81700082",
       "isTitled": false,
       "isMainModder": false,
+      "isActive": false,
       "title": null
     },
     {
@@ -118,6 +133,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/74397286",
       "isTitled": false,
       "isMainModder": false,
+      "isActive": false,
       "title": null
     },
     {
@@ -126,6 +142,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/70142054",
       "isTitled": false,
       "isMainModder": false,
+      "isActive": false,
       "title": null
     },
     {
@@ -134,6 +151,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/75154889",
       "isTitled": false,
       "isMainModder": false,
+      "isActive": false,
       "title": null
     },
     {
@@ -142,14 +160,7 @@
       "modder_img": "https://c.tenor.com/RiwhlBfA1PMAAAAC/gravity-falls-cropped.gif",
       "isTitled": false,
       "isMainModder": false,
-      "title": null
-    },
-    {
-      "modder_username": "NiceSapien",
-      "modder_description": "Created the website and docs. Visit: https://nicesapien.is-a.dev",
-      "modder_img": "https://avatars.githubusercontent.com/u/71333407",
-      "isTitled": false,
-      "isMainModder": false,
+      "isActive": false,
       "title": null
     },
     {
@@ -158,6 +169,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/103432992",
       "isTitled": false,
       "isMainModder": false,
+      "isActive": false,
       "title": null
     },
     {
@@ -166,6 +178,7 @@
       "modder_img": "https://i.imgur.com/mthq123.jpg",
       "isTitled": false,
       "isMainModder": false,
+      "isActive": false,
       "title": null
     }
   ],
