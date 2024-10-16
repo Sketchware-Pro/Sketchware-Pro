@@ -9,7 +9,7 @@
     
     <string-array name="property_inject_options">
         <item>android:visibility="gone"</item>
-        <item>android:textAppearance="10dp"</item>
+        <item>android:textAppearance="@style/YourTextAppearanceStyle"</item>
         <item>app:cornerRadius="10dp"</item>
         <item>app:cardBackgroundColor="#FFFFFF"</item>
         <item>app:srcCompat="@drawable/app_icon"</item>
