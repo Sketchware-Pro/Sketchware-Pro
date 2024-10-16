@@ -905,12 +905,17 @@ public class ViewPane extends RelativeLayout {
         String compatPadding = handler.getAttributeValueOf("cardUseCompatPadding");
         String strokeColor = handler.getAttributeValueOf("strokeColor");
         String strokeWidth = handler.getAttributeValueOf("strokeWidth");
-
-        cardView.setCardElevation(PropertiesUtil.resolveSize(cardElevation, 4));
-        cardView.setRadius(PropertiesUtil.resolveSize(cardCornerRadius, 8));
-        cardView.setUseCompatPadding(Boolean.parseBoolean(TextUtils.isEmpty(compatPadding) ? "false" : compatPadding));
-        cardView.setStrokeWidth(PropertiesUtil.resolveSize(strokeWidth, 0));
-        cardView.setStrokeColor(PropertiesUtil.isHexColor(strokeColor) ? PropertiesUtil.parseColor(strokeColor) : Color.WHITE);
+        // TODO: support for res values, like @color/card_bg
+        // try-catch for prevent crash, and lose project changes
+        try {
+            cardView.setCardElevation(PropertiesUtil.resolveSize(cardElevation, 4));
+            cardView.setRadius(PropertiesUtil.resolveSize(cardCornerRadius, 8));
+            cardView.setUseCompatPadding(Boolean.parseBoolean(TextUtils.isEmpty(compatPadding) ? "false" : compatPadding));
+            cardView.setStrokeWidth(PropertiesUtil.resolveSize(strokeWidth, 0));
+            cardView.setStrokeColor(PropertiesUtil.isHexColor(strokeColor) ? PropertiesUtil.parseColor(strokeColor) : Color.WHITE);
+        } catch(Exception e) {
+            Log.e("ViewPane:updateCardView", e.toString());
+        }
     }
 
     private void updateCircleImageView(ItemCircleImageView imageView, InjectAttributeHandler handler) {
