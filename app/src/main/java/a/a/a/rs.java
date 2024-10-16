@@ -121,7 +121,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             Intent intent = new Intent(requireActivity().getApplicationContext(), AddEventActivity.class);
             intent.putExtra("sc_id", sc_id);
             intent.putExtra("project_file", currentActivity);
-            intent.putExtra("category_index", categoryAdapter.index);
+            intent.putExtra("category_index", getPaletteIndex());
             addEventLauncher.launch(intent);
         }
     }
@@ -186,12 +186,13 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     drawerViewEvents.add(eventBean);
                 }
             }
-            if (categoryAdapter.index == -1) {
+            if (getPaletteIndex() == -1) {
                 eventAdapter.a(events.get(0));
+                paletteView.setSelectedItemId(R.id.activity);
                 categoryAdapter.index = 0;
                 categoryAdapter.notifyDataSetChanged();
             }
-            if (categoryAdapter.index == 4) {
+            if (getPaletteIndex() == 4) {
                 importMoreBlockFromCollection.setVisibility(View.VISIBLE);
             } else {
                 importMoreBlockFromCollection.setVisibility(View.GONE);
@@ -200,7 +201,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 if (categoryAdapter != null) {
                     categoryAdapter.notifyDataSetChanged();
                 }
-                eventAdapter.a(events.get(categoryAdapter.index));
+                eventAdapter.a(events.get(getPaletteIndex()));
                 eventAdapter.notifyDataSetChanged();
             }
         }
@@ -212,7 +213,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         } else {
             jC.a(sc_id).n(currentActivity.getJavaName(), moreBlock.targetId);
             bB.a(requireContext(), xB.b().a(requireContext(), R.string.common_message_complete_delete), 0).show();
-            events.get(categoryAdapter.index).remove(position);
+            events.get(getPaletteIndex()).remove(position);
             eventAdapter.notifyItemRemoved(position);
             eventAdapter.notifyItemRangeChanged(position, eventAdapter.getItemCount());
         }
@@ -308,7 +309,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     private void deleteEvent(EventBean event, int position) {
         EventBean.deleteEvent(sc_id, event, currentActivity);
         bB.a(requireContext(), xB.b().a(requireContext(), R.string.common_message_complete_delete), 0).show();
-        events.get(categoryAdapter.index).remove(position);
+        events.get(getPaletteIndex()).remove(position);
         eventAdapter.notifyItemRemoved(position);
         eventAdapter.notifyItemRangeChanged(position, eventAdapter.getItemCount());
     }
@@ -592,7 +593,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 optionsLayout = itemView.findViewById(R.id.event_option);
                 optionsLayout.setButtonOnClickListener(v -> {
                     if (!mB.a()) {
-                        EventBean eventBean = (events.get(categoryAdapter.index)).get(getLayoutPosition());
+                        EventBean eventBean = (events.get(getPaletteIndex())).get(getLayoutPosition());
                         if (v instanceof CollapsibleButton button) {
                             setAnimateNextTransformation(true);
                             int id = button.getButtonId();
@@ -621,7 +622,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                                     notifyItemChanged(getLayoutPosition());
                                 } else if (eventBean.buttonPressed == 1) {
                                     eventBean.isConfirmation = false;
-                                    if (categoryAdapter.index != 4) {
+                                    if (getPaletteIndex() != 4) {
                                         deleteEvent(eventBean, getLayoutPosition());
                                     } else {
                                         deleteMoreBlock(eventBean, getLayoutPosition());
@@ -635,7 +636,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 onDoneInitializingViews();
                 root.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        EventBean eventBean = events.get(categoryAdapter.index).get(getLayoutPosition());
+                        EventBean eventBean = events.get(getPaletteIndex()).get(getLayoutPosition());
                         openEvent(eventBean.targetId, eventBean.eventName, description.getText().toString());
                     }
                 });
@@ -643,12 +644,12 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
             @Override
             protected boolean isCollapsed() {
-                return events.get(categoryAdapter.index).get(getLayoutPosition()).isCollapsed;
+                return events.get(getPaletteIndex()).get(getLayoutPosition()).isCollapsed;
             }
 
             @Override
             protected void setIsCollapsed(boolean isCollapsed) {
-                events.get(categoryAdapter.index).get(getLayoutPosition()).isCollapsed = isCollapsed;
+                events.get(getPaletteIndex()).get(getLayoutPosition()).isCollapsed = isCollapsed;
             }
 
             @NonNull
