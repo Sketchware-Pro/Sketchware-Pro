@@ -479,6 +479,7 @@ public class Jx {
             sb.append(hxF);
         }
 
+
         sb.append(EOL);
         sb.append("}").append(EOL);
         sb.append(EOL);

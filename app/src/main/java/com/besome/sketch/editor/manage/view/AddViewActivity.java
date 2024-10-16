@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -184,7 +185,31 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
         projectFileBean = intent1.getParcelableExtra("project_file");
         if (projectFileBean != null) {
             e(getTranslatedString(R.string.design_manager_view_title_edit_view));
+            if (projectFileBean.fileName.contains("_service")) {
+                // if selected view is service, hide other widgets
+                binding.activityPreview.setVisibility(View.GONE);
+                binding.featureTypes.setVisibility(View.GONE);
+                binding.screenOrientationSelector.setEnabled(false);
+                binding.keyboardSettingsSelector.setEnabled(false);
+            }
         }
+        
+        // hide other widgets when service button clicked
+        binding.viewTypeSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (binding.viewTypeSelector.getCheckedButtonId() == R.id.select_service) {
+                makeTransitionAnimation(binding.mainLayout);
+                binding.activityPreview.setVisibility(View.GONE);
+                binding.featureTypes.setVisibility(View.GONE);
+                binding.screenOrientationSelector.setEnabled(false);
+                binding.keyboardSettingsSelector.setEnabled(false);
+            } else {
+                makeTransitionAnimation(binding.mainLayout);
+                binding.activityPreview.setVisibility(View.VISIBLE);
+                binding.featureTypes.setVisibility(View.VISIBLE);
+                binding.screenOrientationSelector.setEnabled(true);
+                binding.keyboardSettingsSelector.setEnabled(true);
+            }
+        });
 
         featuresAdapter = new FeaturesAdapter();
         binding.featureTypes.setAdapter(featuresAdapter);
@@ -299,6 +324,12 @@ public class AddViewActivity extends BaseBottomSheetDialogActivity {
             }
         }
         return -1;  // Return -1 if no button is selected
+    }
+
+    public void makeTransitionAnimation(LinearLayout linearLayout) {
+        android.transition.AutoTransition autoTransition = new android.transition.AutoTransition();
+        autoTransition.setDuration(500);
+        android.transition.TransitionManager.beginDelayedTransition(linearLayout, autoTransition);
     }
 
     private static class FeatureItem {
