@@ -1,4 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -6,4 +8,39 @@
         android:id="@+id/view_editor"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/view_editor_locked"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#9E000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:forceDarkAllowed="false"
+            android:scaleType="centerCrop"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="anim/locked.lottie"
+            app:lottie_loop="true"
+            app:lottie_repeatMode="reverse"
+            tools:targetApi="q" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:text="View editor is locked. Switch to an activity or a view to edit"
+            android:textColor="@color/color_chk_white_normal"
+            android:textSize="16sp"
+            android:translationY="-20dp" />
+
+    </LinearLayout>
 </RelativeLayout>

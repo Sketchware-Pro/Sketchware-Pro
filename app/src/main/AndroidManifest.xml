@@ -23,7 +23,8 @@
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.SketchwarePro"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:targetApi="p">
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -150,7 +151,6 @@
         <activity
             android:name="com.besome.sketch.editor.manage.view.AddViewActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.besome.sketch.editor.manage.view.AddCustomViewActivity"
