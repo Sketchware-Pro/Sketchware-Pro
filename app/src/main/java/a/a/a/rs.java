@@ -99,6 +99,21 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             default -> "";
         };
     }
+    
+    private int getPaletteIndex(int id) {
+        return switch (id) {
+            case R.id.activity -> 0;
+            case R.id.view -> 1;
+            case R.id.component -> 2;
+            case R.id.drawer -> 3;
+            case R.id.moreblock -> 4;
+            default -> -1;
+        };
+    }
+    
+    private int getPaletteIndex() {
+        return getPaletteIndex(paletteView.getSelectedItemId());
+    }
 
     @Override
     public void onClick(View v) {
