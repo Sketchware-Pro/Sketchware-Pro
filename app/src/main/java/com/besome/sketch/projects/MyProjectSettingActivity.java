@@ -13,7 +13,6 @@ import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -162,7 +161,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             /* Set the dialog's title & create button label */
             String newProjectName = getIntent().getStringExtra("my_ws_name");
             String newProjectPackageName = getIntent().getStringExtra("my_sc_pkg_name");
-            if (sc_id == null || sc_id.equals("")) {
+            if (sc_id == null || sc_id.isEmpty()) {
                 sc_id = lC.b();
                 newProjectName = lC.c();
                 newProjectPackageName = "com.my." + newProjectName.toLowerCase();
@@ -380,13 +379,11 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
     private void pickColor(int colorIndex) {
         View view = wB.a(this, R.layout.color_picker);
-        view.setAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_fade_in));
         Zx zx = new Zx(view, this, projectThemeColors[colorIndex], false, false);
         zx.a(pickedColor -> {
             projectThemeColors[colorIndex] = pickedColor;
             syncThemeColors();
         });
-        zx.setAnimationStyle(R.anim.abc_fade_in);
         zx.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 

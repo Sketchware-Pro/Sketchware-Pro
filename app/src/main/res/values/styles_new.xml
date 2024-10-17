@@ -11,8 +11,12 @@
     -->
 
     <style name="Widget.SketchwarePro.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
-        <item name="collapsedTitleTextAppearance">@style/TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed</item>
-        <item name="expandedTitleTextAppearance">@style/TextAppearance.SketchwarePro.CollapsingToolbar.Expanded</item>
+        <item name="collapsedTitleTextAppearance">
+            @style/TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed
+        </item>
+        <item name="expandedTitleTextAppearance">
+            @style/TextAppearance.SketchwarePro.CollapsingToolbar.Expanded
+        </item>
         <item name="titleCollapseMode">scale</item>
     </style>
 
@@ -45,7 +49,9 @@
 
     <style name="Widget.SketchwarePro.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="hintEnabled">true</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SketchwarePro.TextInputLayout</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearanceOverlay.SketchwarePro.TextInputLayout
+        </item>
         <item name="android:bottomLeftRadius">14dp</item>
         <item name="android:bottomRightRadius">14dp</item>
         <item name="android:topLeftRadius">14dp</item>
@@ -58,4 +64,63 @@
     </style>
 
     <style name="ThemeOverlay.SketchwarePro.ViewEditor" parent="Base.Theme.MaterialComponents.Light" />
+
+    <style name="Preference.SketchwarePro.SwitchPreferenceCompat" parent="@style/Preference.SwitchPreferenceCompat.Material">
+        <item name="widgetLayout">@layout/preference_widget_layout_m3_switch</item>
+    </style>
+
+    <!--  TabLayout style  -->
+    <style name="TabLayoutStyle" parent="Base.Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
+        <item name="tabIndicatorColor">?attr/colorPrimary</item>
+        <item name="tabIndicator">@drawable/view_tab_indicator</item>
+        <item name="tabIndicatorAnimationMode">elastic</item>
+        <item name="tabSelectedTextColor">?attr/colorPrimary</item>
+        <item name="font">@font/gilroy</item>
+        <item name="android:fontFamily">@font/gilroy</item>
+
+    </style>
+
+    <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
+        <item name="textAllCaps">false</item>
+    </style>
+    <!--  end TabLayout style  -->
+
+    <style name="ThemeOverlay.SketchwarePro.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <!--    AutoCompleteTextInputEditTextStyle    -->
+    <style name="TextInputEditTextStyle" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:imeOptions">actionNext</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextDropDownLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/input_layout_selector</item>
+        <item name="errorTextAppearance">@style/error_appearance</item>
+        <item name="hintTextAppearance">@style/hint_appearance</item>
+        <item name="shapeAppearanceOverlay">
+            @style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded
+        </item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">14dp</item>
+    </style>
+
+
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="hint_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/gilroy</item>
+        <item name="fontFamily">@font/gilroy</item>
+    </style>
+    <!--    end AutoCompleteTextInputEditTextStyle    -->
 </resources>

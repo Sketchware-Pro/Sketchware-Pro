@@ -562,29 +562,28 @@ public class ByteOps {
         for (int i = 0; i < len; /*i*/) {
             int idx = (Character.digit(s.charAt(i), 16) << 4) |
                 Character.digit(s.charAt(i + 1), 16);
-            int info;
-            switch (s.charAt(i + 3)) {
-                case '-': info = FMT_NO_ARGS; break;
-                case '0': info = FMT_NO_ARGS_LOCALS_1; break;
-                case '1': info = FMT_NO_ARGS_LOCALS_2; break;
-                case '2': info = FMT_NO_ARGS_LOCALS_3; break;
-                case '3': info = FMT_NO_ARGS_LOCALS_4; break;
-                case '4': info = FMT_NO_ARGS_LOCALS_5; break;
-                case 'b': info = FMT_BRANCH; break;
-                case 'c': info = FMT_WIDE_BRANCH; break;
-                case 'p': info = FMT_CPI; break;
-                case 'l': info = FMT_LOCAL_1; break;
-                case 'm': info = FMT_LOCAL_2; break;
-                case 'y': info = FMT_LITERAL_BYTE; break;
-                case 'I': info = FMT_INVOKEINTERFACE; break;
-                case 'L': info = FMT_LDC; break;
-                case 'S': info = FMT_SIPUSH; break;
-                case 'T': info = FMT_TABLESWITCH; break;
-                case 'U': info = FMT_LOOKUPSWITCH; break;
-                case 'M': info = FMT_MULTIANEWARRAY; break;
-                case 'W': info = FMT_WIDE; break;
-                default: info = FMT_INVALID; break;
-            }
+            int info = switch (s.charAt(i + 3)) {
+                case '-' -> FMT_NO_ARGS;
+                case '0' -> FMT_NO_ARGS_LOCALS_1;
+                case '1' -> FMT_NO_ARGS_LOCALS_2;
+                case '2' -> FMT_NO_ARGS_LOCALS_3;
+                case '3' -> FMT_NO_ARGS_LOCALS_4;
+                case '4' -> FMT_NO_ARGS_LOCALS_5;
+                case 'b' -> FMT_BRANCH;
+                case 'c' -> FMT_WIDE_BRANCH;
+                case 'p' -> FMT_CPI;
+                case 'l' -> FMT_LOCAL_1;
+                case 'm' -> FMT_LOCAL_2;
+                case 'y' -> FMT_LITERAL_BYTE;
+                case 'I' -> FMT_INVOKEINTERFACE;
+                case 'L' -> FMT_LDC;
+                case 'S' -> FMT_SIPUSH;
+                case 'T' -> FMT_TABLESWITCH;
+                case 'U' -> FMT_LOOKUPSWITCH;
+                case 'M' -> FMT_MULTIANEWARRAY;
+                case 'W' -> FMT_WIDE;
+                default -> FMT_INVALID;
+            };
 
             i += 5;
             if (s.charAt(i - 1) == ':') {

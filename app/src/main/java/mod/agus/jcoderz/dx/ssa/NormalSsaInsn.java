@@ -230,13 +230,9 @@ public final class NormalSsaInsn extends SsaInsn implements Cloneable {
         boolean hasLocalSideEffect
             = Optimizer.getPreserveLocals() && getLocalAssignment() != null;
 
-        switch (opcode.getOpcode()) {
-            case mod.agus.jcoderz.dx.rop.code.RegOps.MOVE_RESULT:
-            case mod.agus.jcoderz.dx.rop.code.RegOps.MOVE:
-            case RegOps.CONST:
-                return hasLocalSideEffect;
-            default:
-                return true;
-        }
+        return switch (opcode.getOpcode()) {
+            case RegOps.MOVE_RESULT, RegOps.MOVE, RegOps.CONST -> hasLocalSideEffect;
+            default -> true;
+        };
     }
 }

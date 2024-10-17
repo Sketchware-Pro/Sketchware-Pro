@@ -149,19 +149,19 @@ public final class CstType extends TypedConstant {
      * @return {@code non-null;} the corresponding wrapper class
      */
     public static CstType forBoxedPrimitiveType(Type primitiveType) {
-        switch (primitiveType.getBasicType()) {
-            case Type.BT_BOOLEAN: return BOOLEAN;
-            case Type.BT_BYTE:    return BYTE;
-            case Type.BT_CHAR:    return CHARACTER;
-            case Type.BT_DOUBLE:  return DOUBLE;
-            case Type.BT_FLOAT:   return FLOAT;
-            case Type.BT_INT:     return INTEGER;
-            case Type.BT_LONG:    return LONG;
-            case Type.BT_SHORT:   return SHORT;
-            case Type.BT_VOID:    return VOID;
-        }
+        return switch (primitiveType.getBasicType()) {
+            case Type.BT_BOOLEAN -> BOOLEAN;
+            case Type.BT_BYTE -> BYTE;
+            case Type.BT_CHAR -> CHARACTER;
+            case Type.BT_DOUBLE -> DOUBLE;
+            case Type.BT_FLOAT -> FLOAT;
+            case Type.BT_INT -> INTEGER;
+            case Type.BT_LONG -> LONG;
+            case Type.BT_SHORT -> SHORT;
+            case Type.BT_VOID -> VOID;
+            default -> throw new IllegalArgumentException("not primitive: " + primitiveType);
+        };
 
-        throw new IllegalArgumentException("not primitive: " + primitiveType);
     }
 
     /**

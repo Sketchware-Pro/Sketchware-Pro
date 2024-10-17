@@ -214,7 +214,7 @@ public class Ox {
         String convert = viewBean.convert;
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
 
-        XmlBuilder widgetTag = convert.equals("") ? new XmlBuilder(viewBean.getClassInfo().a()) :
+        XmlBuilder widgetTag = convert.isEmpty() ? new XmlBuilder(viewBean.getClassInfo().a()) :
                 new XmlBuilder(convert.replaceAll(" ", ""));
         if (convert.equals("include")) {
             if (!toNotAdd.contains("layout")) {
@@ -348,7 +348,7 @@ public class Ox {
                 }
             }
         }
-        if (!viewBean.inject.equals("")) {
+        if (!viewBean.inject.isEmpty()) {
             widgetTag.addAttributeValue(viewBean.inject.replaceAll(" ", ""));
         }
         if (widgetTag.c().equals("CollapsingToolbarLayout")) {
@@ -374,7 +374,7 @@ public class Ox {
         writeLayoutGravity(floatingActionButtonTag, viewBean);
 
         String resName = viewBean.image.resName;
-        if (resName != null && resName.length() > 0 && !resName.equals("NONE") &&
+        if (resName != null && !resName.isEmpty() && !resName.equals("NONE") &&
                 !toNotAdd.contains("app:srcCompat")) {
             floatingActionButtonTag.addAttribute("app", "srcCompat", "@drawable/" + resName.toLowerCase());
         }
@@ -400,26 +400,26 @@ public class Ox {
                         attrValue = "left";
                     }
                     if ((horizontalGravity & Gravity.RIGHT) == Gravity.RIGHT) {
-                        if (attrValue.length() > 0) {
+                        if (!attrValue.isEmpty()) {
                             attrValue += "|";
                         }
                         attrValue += "right";
                     }
                 }
                 if (verticalGravity == Gravity.CENTER_VERTICAL) {
-                    if (attrValue.length() > 0) {
+                    if (!attrValue.isEmpty()) {
                         attrValue += "|";
                     }
                     attrValue += "center_vertical";
                 } else {
                     if ((verticalGravity & Gravity.TOP) == Gravity.TOP) {
-                        if (attrValue.length() > 0) {
+                        if (!attrValue.isEmpty()) {
                             attrValue += "|";
                         }
                         attrValue += "top";
                     }
                     if ((verticalGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
-                        if (attrValue.length() > 0) {
+                        if (!attrValue.isEmpty()) {
                             attrValue += "|";
                         }
                         attrValue += "bottom";
@@ -433,7 +433,7 @@ public class Ox {
     private void writeImgSrcAttr(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         String resName = viewBean.image.resName;
-        if (resName.length() > 0 && !"NONE".equals(resName)) {
+        if (!resName.isEmpty() && !"NONE".equals(resName)) {
             String value = "@drawable/" + resName.toLowerCase();
             if (nx.c().equals("FloatingActionButton")) {
                 if (!toNotAdd.contains("app:srcCompat")) {
@@ -489,26 +489,26 @@ public class Ox {
                         attrValue = "left";
                     }
                     if ((horizontalGravity & Gravity.RIGHT) == Gravity.RIGHT) {
-                        if (attrValue.length() > 0) {
+                        if (!attrValue.isEmpty()) {
                             attrValue += "|";
                         }
                         attrValue += "right";
                     }
                 }
                 if (verticalGravity == Gravity.CENTER_VERTICAL) {
-                    if (attrValue.length() > 0) {
+                    if (!attrValue.isEmpty()) {
                         attrValue += "|";
                     }
                     attrValue += "center_vertical";
                 } else {
                     if ((verticalGravity & Gravity.TOP) == Gravity.TOP) {
-                        if (attrValue.length() > 0) {
+                        if (!attrValue.isEmpty()) {
                             attrValue += "|";
                         }
                         attrValue += "top";
                     }
                     if ((verticalGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
-                        if (attrValue.length() > 0) {
+                        if (!attrValue.isEmpty()) {
                             attrValue += "|";
                         }
                         attrValue += "bottom";
@@ -627,7 +627,7 @@ public class Ox {
     private void writeTextAttributes(XmlBuilder nx, ViewBean viewBean) {
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         String text = viewBean.text.text;
-        if (text != null && text.length() > 0 && !toNotAdd.contains("android:text")) {
+        if (text != null && !text.isEmpty() && !toNotAdd.contains("android:text")) {
             if (text.startsWith("@")) {
                 nx.addAttribute("android", "text", text);
             } else {
@@ -659,7 +659,7 @@ public class Ox {
             case ViewBeans.VIEW_TYPE_WIDGET_AUTOCOMPLETETEXTVIEW:
             case ViewBeans.VIEW_TYPE_WIDGET_MULTIAUTOCOMPLETETEXTVIEW:
                 String hint = viewBean.text.hint;
-                if (hint != null && hint.length() > 0 && !toNotAdd.contains("android:hint")) {
+                if (hint != null && !hint.isEmpty() && !toNotAdd.contains("android:hint")) {
                     if (hint.startsWith("@")) {
                         nx.addAttribute("android", "hint", hint);
                     } else {
@@ -810,7 +810,7 @@ public class Ox {
             case ViewBean.VIEW_TYPE_WIDGET_ADVIEW:
                 String adSize = viewBean.adSize;
                 if (!toNotAdd.contains("app:adSize")) {
-                    if (adSize == null || adSize.length() == 0) {
+                    if (adSize == null || adSize.isEmpty()) {
                         nx.addAttribute("app", "adSize", "SMART_BANNER");
                     } else {
                         nx.addAttribute("app", "adSize", adSize);
@@ -838,11 +838,11 @@ public class Ox {
                 }
 
                 String indeterminate = viewBean.indeterminate;
-                if (indeterminate != null && indeterminate.length() > 0 && !toNotAdd.contains("android:indeterminate")) {
+                if (indeterminate != null && !indeterminate.isEmpty() && !toNotAdd.contains("android:indeterminate")) {
                     nx.addAttribute("android", "indeterminate", indeterminate);
                 }
                 String progressStyle = viewBean.progressStyle;
-                if (progressStyle != null && progressStyle.length() > 0 && !toNotAdd.contains("style")) {
+                if (progressStyle != null && !progressStyle.isEmpty() && !toNotAdd.contains("style")) {
                     nx.addAttribute(null, "style", progressStyle);
                 }
                 break;
@@ -854,7 +854,7 @@ public class Ox {
      */
     private boolean hasAttr(String attrName, ViewBean bean) {
         final String inject = bean.inject;
-        if (inject == null || inject.equals("")) return false;
+        if (inject == null || inject.isEmpty()) return false;
         return Pattern.compile("(android|app) *?: *?" + attrName).matcher(inject).find();
     }
 

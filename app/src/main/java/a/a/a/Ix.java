@@ -1,6 +1,7 @@
 package a.a.a;
 
 import static android.text.TextUtils.isEmpty;
+import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
 
 import android.Manifest;
 import android.app.Service;
@@ -220,7 +221,7 @@ public class Ix {
                 XmlBuilder intentFilterDataTag = new XmlBuilder("data");
                 intentFilterDataTag.addAttribute("android", "host", stringStringPair.first);
                 intentFilterDataTag.addAttribute("android", "scheme", stringStringPair.second);
-                if (c.dlDataList.size() != 0) {
+                if (!c.dlDataList.isEmpty()) {
                     intentFilterTag.a(intentFilterDataTag);
                 }
             }
@@ -407,7 +408,7 @@ public class Ix {
 
     public void setYq(yq yqVar) {
         settings = new ProjectSettings(yqVar.sc_id);
-        targetsSdkVersion31OrHigher = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 31;
+        targetsSdkVersion31OrHigher = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION))) >= 31;
         packageName = yqVar.packageName;
     }
 
@@ -417,7 +418,14 @@ public class Ix {
      * @return The AndroidManifest as {@link String}
      */
     public String a() {
-        boolean addRequestLegacyExternalStorage = false;
+        int targetSdkVersion;
+        try {
+            targetSdkVersion = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)));
+        } catch (NumberFormatException ignored) {
+            targetSdkVersion = VAR_DEFAULT_TARGET_SDK_VERSION;
+        }
+        boolean addRequestLegacyExternalStorage = targetSdkVersion >= 28;
+
         a.addAttribute("", "package", c.packageName);
 
         if (!c.hasPermissions()) {
@@ -437,12 +445,6 @@ public class Ix {
                 writePermission(a, Manifest.permission.CAMERA);
             }
             if (c.hasPermission(jq.PERMISSION_READ_EXTERNAL_STORAGE)) {
-                try {
-                    if (Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 28) {
-                        addRequestLegacyExternalStorage = true;
-                    }
-                } catch (NumberFormatException ignored) {
-                }
                 writePermission(a, Manifest.permission.READ_EXTERNAL_STORAGE);
             }
             if (c.hasPermission(jq.PERMISSION_WRITE_EXTERNAL_STORAGE)) {
@@ -507,28 +509,44 @@ public class Ix {
         }
         AndroidManifestInjector.getP(a, c.sc_id);
 
-        if (c.isAdMobEnabled) {
+        if (c.isAdMobEnabled || c.isTextToSpeechUsed || c.isSpeechToTextUsed) {
             XmlBuilder queries = new XmlBuilder("queries");
-            XmlBuilder forBrowserContent = new XmlBuilder("intent");
-            {
-                XmlBuilder action = new XmlBuilder("action");
-                action.addAttribute("android", "name", "android.intent.action.VIEW");
-                forBrowserContent.a(action);
-                XmlBuilder category = new XmlBuilder("category");
-                category.addAttribute("android", "name", "android.intent.category.BROWSABLE");
-                forBrowserContent.a(category);
-                XmlBuilder data = new XmlBuilder("data");
-                data.addAttribute("android", "scheme", "https");
-                forBrowserContent.a(data);
+            if (c.isAdMobEnabled) {
+                XmlBuilder forBrowserContent = new XmlBuilder("intent");
+                {
+                    XmlBuilder action = new XmlBuilder("action");
+                    action.addAttribute("android", "name", "android.intent.action.VIEW");
+                    forBrowserContent.a(action);
+                    XmlBuilder category = new XmlBuilder("category");
+                    category.addAttribute("android", "name", "android.intent.category.BROWSABLE");
+                    forBrowserContent.a(category);
+                    XmlBuilder data = new XmlBuilder("data");
+                    data.addAttribute("android", "scheme", "https");
+                    forBrowserContent.a(data);
+                }
+                queries.a(forBrowserContent);
+                XmlBuilder forCustomTabsService = new XmlBuilder("intent");
+                {
+                    XmlBuilder action = new XmlBuilder("action");
+                    action.addAttribute("android", "name", "android.support.customtabs.action.CustomTabsService");
+                    forCustomTabsService.a(action);
+                }
+                queries.a(forCustomTabsService);
             }
-            queries.a(forBrowserContent);
-            XmlBuilder forCustomTabsService = new XmlBuilder("intent");
-            {
+            if (c.isTextToSpeechUsed && targetSdkVersion >= 30) {
+                XmlBuilder intent = new XmlBuilder("intent");
                 XmlBuilder action = new XmlBuilder("action");
-                action.addAttribute("android", "name", "android.support.customtabs.action.CustomTabsService");
-                forCustomTabsService.a(action);
+                action.addAttribute("android", "name", "android.intent.action.TTS_SERVICE");
+                intent.a(action);
+                queries.a(intent);
             }
-            queries.a(forCustomTabsService);
+            if (c.isSpeechToTextUsed && targetSdkVersion >= 30) {
+                XmlBuilder intent = new XmlBuilder("intent");
+                XmlBuilder action = new XmlBuilder("action");
+                action.addAttribute("android", "name", "android.speech.RecognitionService");
+                intent.a(action);
+                queries.a(intent);
+            }
             a.a(queries);
         }
 
@@ -553,7 +571,20 @@ public class Ix {
 
         boolean hasDebugActivity = false;
         for (ProjectFileBean projectFileBean : b) {
-            if (!projectFileBean.fileName.contains("_fragment")) {
+            if (projectFileBean.fileName.contains("_fragment")) {
+               // do not add xml codes to AndroidManifest
+            } else if (projectFileBean.fileName.contains("_service")) {
+                // add service to android manifest
+                XmlBuilder activityTag = new XmlBuilder("service");
+
+                String javaName = projectFileBean.getJavaName();
+                activityTag.addAttribute("android", "name", "." + javaName.substring(0, javaName.indexOf(".java")));
+                if (targetsSdkVersion31OrHigher && !AndroidManifestInjector.isActivityExportedUsed(c.sc_id, javaName)) {
+                    activityTag.addAttribute("android", "exported", "true");
+                }
+                applicationTag.a(activityTag);
+            } else {
+                // add activity to android manifest
                 XmlBuilder activityTag = new XmlBuilder("activity");
 
                 String javaName = projectFileBean.getJavaName();
@@ -589,7 +620,7 @@ public class Ix {
                 }
                 if (!AndroidManifestInjector.isActivityKeyboardUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     String keyboardSetting = vq.a(projectFileBean.keyboardSetting);
-                    if (keyboardSetting.length() > 0) {
+                    if (!keyboardSetting.isEmpty()) {
                         activityTag.addAttribute("android", "windowSoftInputMode", keyboardSetting);
                     }
                 }

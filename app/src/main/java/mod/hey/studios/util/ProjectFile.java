@@ -1,6 +1,10 @@
 package mod.hey.studios.util;
 
 import android.graphics.Color;
+import android.os.Build;
+
+import com.besome.sketch.SketchApplication;
+import com.google.android.material.color.MaterialColors;
 
 import a.a.a.lC;
 import a.a.a.yB;
@@ -39,15 +43,21 @@ public class ProjectFile {
 	*/
 
     public static int getDefaultColor(String color) {
-        switch (color) {
-            case "color_primary_dark":
-                return Color.parseColor("#ff1976d2");
-
-            case "color_control_highlight":
-                return Color.parseColor("#202196f3");
-
-            default:
-                return Color.parseColor("#ff2196f3");
+        // Check if the device is running Android 12 or above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // Android 12+ (API level 31): Use Material 3 dynamic colors
+            return switch (color) {
+                case "color_primary_dark" -> SketchApplication.getContext().getColor(android.R.color.system_accent1_500);
+                case "color_control_highlight" -> SketchApplication.getContext().getColor(android.R.color.system_accent1_100);
+                default -> SketchApplication.getContext().getColor(android.R.color.system_accent1_500);
+            };
+        } else {
+            // For Android versions below 12: use static fallback colors
+            return switch (color) {
+                case "color_primary_dark" -> Color.parseColor("#ff1976d2");
+                case "color_control_highlight" -> Color.parseColor("#202196f3");
+                default -> Color.parseColor("#ff2196f3");
+            };
         }
     }
 }

@@ -23,9 +23,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import dev.trindadedev.lib.filepicker.model.DialogConfigs;
-import dev.trindadedev.lib.filepicker.model.DialogProperties;
-import dev.trindadedev.lib.filepicker.view.FilePickerDialog;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
@@ -404,7 +404,7 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
 
         binding.filesListRecyclerView.setAdapter(filesAdapter);
 
-        binding.noContentLayout.setVisibility(currentTree.size() == 0 ? View.VISIBLE : View.GONE);
+        binding.noContentLayout.setVisibility(currentTree.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.ViewHolder> {

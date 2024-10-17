@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/common_dialog_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66000000"
+    android:gravity="bottom">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="280dp"
+        app:cardBackgroundColor="?colorSurfaceContainerHigh"
+        app:cardElevation="10dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:shapeAppearanceOverlay="@style/BottomSheetCardStyle"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="50dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/rounded_bottom_sheet_slider" />
+
+            <LinearLayout
+                android:id="@+id/common_dialog_title_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurfaceContainerHigh"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:translationZ="1dp">
+
+                <ImageView
+                    android:id="@+id/common_dialog_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="14dp"
+                    app:tint="?colorSecondary"
+                    tools:src="@drawable/ic_tune_24" />
+
+                <TextView
+                    android:id="@+id/common_dialog_tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingEnd="8dp"
+                    android:textSize="20sp"
+                    tools:text="Sketchware 2022 is real" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/common_dialog_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/common_dialog_button_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorSurfaceContainerHigh"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:id="@+id/common_dialog_default_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="18dp"
+                    android:paddingVertical="12dp"
+                    android:textColor="?colorPrimary"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Default" />
+
+
+                <TextView
+                    android:id="@+id/common_dialog_cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="18dp"
+                    android:paddingVertical="12dp"
+                    android:textColor="?colorPrimary"
+                    app:layout_constraintEnd_toStartOf="@+id/common_dialog_ok_button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Cancel" />
+
+                <TextView
+                    android:id="@+id/common_dialog_ok_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minWidth="0dp"
+                    android:paddingHorizontal="18dp"
+                    android:paddingVertical="12dp"
+                    android:textColor="?colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Okay" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,5 +1,11 @@
 from telethon import TelegramClient
 import os
+import subprocess
+
+def get_git_commit_info():
+    commit_author = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%an']).decode('utf-8')
+    commit_message = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%s']).decode('utf-8')
+    return commit_author, commit_message
 
 # Telegram API credentials
 api_id = int(os.getenv("API_ID"))
@@ -11,11 +17,12 @@ group_id = int(os.getenv("CHAT_ID"))
 apk_min_api21 = os.getenv("APK_MIN_API21")
 apk_min_api26 = os.getenv("APK_MIN_API26")
 
+# Get the latest commit info
+commit_author, commit_message = get_git_commit_info()
+
 # Create the client with bot token directly
-os.remove('bot_session.session') if os.path.exists('bot_session.session') else None
 client = TelegramClient('bot_session', api_id, api_hash).start(bot_token=bot_token)
 client.parse_mode = 'markdown'
-
 
 def human_readable_size(size, decimal_places=2):
     for unit in ['B', 'KB', 'MB', 'GB', 'TB']:
@@ -39,7 +46,11 @@ async def send_file(file_path, version):
 
     print(f"Sending file: {file_path} to the Telegram group")
 
-    message = os.getenv("DESCRIPTION") + f"**Version:** Android {'< 8' if version else '> 8'}"
+    message = (
+        f"**Commit by:** {commit_author}\n"
+        f"**Commit message:** {commit_message}\n"
+        f"**Version:** Android {'< 8' if version == 21 else '>= 8'}"
+    )
 
     try:
         await client.send_file(
@@ -53,7 +64,6 @@ async def send_file(file_path, version):
         print("\nFile sent successfully")
     except Exception as e:
         print(f"Failed to send file: {e}")
-
 
 try:
     with client:

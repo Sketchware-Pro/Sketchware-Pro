@@ -39,6 +39,11 @@
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
+                    style="@style/TabLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -65,8 +70,8 @@
                     android:background="?attr/colorSurface"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingBottom="2dp"
-                    android:paddingTop="2dp">
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp">
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -94,8 +99,7 @@
                         style="?materialIconButtonFilledStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginHorizontal="8dp"
                         app:icon="@drawable/sorting_options_48" />
 
                     <Button

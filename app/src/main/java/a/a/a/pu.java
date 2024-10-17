@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +40,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class pu extends qA implements View.OnClickListener {
+
+    public boolean isSelecting = false;
     private String sc_id;
     private RecyclerView recyclerView;
     private ArrayList<ProjectResourceBean> images;
@@ -49,8 +50,6 @@ public class pu extends qA implements View.OnClickListener {
     private FloatingActionButton fab;
     private String projectImagesDirectory = "";
     private Adapter adapter = null;
-    public boolean isSelecting = false;
-
     private final ActivityResultLauncher<Intent> openImportIconActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             var data = result.getData();
@@ -64,20 +63,20 @@ public class pu extends qA implements View.OnClickListener {
         }
     });
     private final ActivityResultLauncher<Intent> showAddImageDialog = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-       if (result.getResultCode() == Activity.RESULT_OK) {
-           assert result.getData() != null;
-           ArrayList<ProjectResourceBean> addedImages;
-           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-               addedImages = result.getData().getParcelableArrayListExtra("images", ProjectResourceBean.class);
-           } else {
-               addedImages = result.getData().getParcelableArrayListExtra("images");
-           }
-           images.addAll(addedImages);
-           adapter.notifyItemRangeInserted(images.size() - addedImages.size(), addedImages.size());
-           updateGuideVisibility();
-           ((ManageImageActivity) requireActivity()).l().refreshData();
-           bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
-       }
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            ArrayList<ProjectResourceBean> addedImages;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                addedImages = result.getData().getParcelableArrayListExtra("images", ProjectResourceBean.class);
+            } else {
+                addedImages = result.getData().getParcelableArrayListExtra("images");
+            }
+            images.addAll(addedImages);
+            adapter.notifyItemRangeInserted(images.size() - addedImages.size(), addedImages.size());
+            updateGuideVisibility();
+            ((ManageImageActivity) requireActivity()).l().refreshData();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
+        }
     });
     private final ActivityResultLauncher<Intent> showImageDetailsDialog = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
@@ -170,7 +169,7 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     private void updateGuideVisibility() {
-        if (images.size() == 0) {
+        if (images.isEmpty()) {
             guide.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         } else {
@@ -294,41 +293,84 @@ public class pu extends qA implements View.OnClickListener {
         super.onSaveInstanceState(outState);
     }
 
-    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public final CheckBox checkBox;
-            public final TextView name;
-            public final ImageView image;
-            public final ImageView delete;
-            public final ImageView ninePatch;
-            public final LinearLayout deleteContainer;
+    private void showImageDetailsDialog(ProjectResourceBean projectResourceBean) {
+        Intent intent = new Intent(requireContext(), AddImageActivity.class);
+        intent.putParcelableArrayListExtra("images", images);
+        intent.putExtra("sc_id", sc_id);
+        intent.putExtra("dir_path", projectImagesDirectory);
+        intent.putExtra("edit_target", projectResourceBean);
+        showImageDetailsDialog.launch(intent);
+    }
 
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                name = itemView.findViewById(R.id.tv_image_name);
-                image = itemView.findViewById(R.id.img);
-                delete = itemView.findViewById(R.id.img_delete);
-                ninePatch = itemView.findViewById(R.id.img_nine_patch);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
-                image.setOnClickListener(v -> {
-                    if (!isSelecting) {
-                        showImageDetailsDialog(images.get(getLayoutPosition()));
-                    } else {
-                        checkBox.setChecked(!checkBox.isChecked());
-                        images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
-                        notifyItemChanged(getLayoutPosition());
-                    }
-                });
-                image.setOnLongClickListener(v -> {
-                    a(true);
-                    checkBox.setChecked(!checkBox.isChecked());
-                    images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
-                    return true;
-                });
+    private ArrayList<String> getAllImageNames() {
+        ArrayList<String> names = new ArrayList<>();
+        names.add("app_icon");
+        for (ProjectResourceBean projectResourceBean : images) {
+            names.add(projectResourceBean.resName);
+        }
+        return names;
+    }
+
+    public void a(ArrayList<ProjectResourceBean> arrayList) {
+        ArrayList<ProjectResourceBean> imagesToAdd = new ArrayList<>();
+        ArrayList<String> duplicateNames = new ArrayList<>();
+        for (ProjectResourceBean next : arrayList) {
+            String imageName = next.resName;
+            if (isImageNameDuplicate(imageName)) {
+                duplicateNames.add(imageName);
+            } else {
+                ProjectResourceBean image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, imageName, next.resFullName);
+                image.savedPos = 1;
+                image.isNew = true;
+                image.rotate = 0;
+                image.flipVertical = 1;
+                image.flipHorizontal = 1;
+                imagesToAdd.add(image);
             }
         }
+        addImages(imagesToAdd);
+        if (!duplicateNames.isEmpty()) {
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n" +
+                    "[" + String.join(", ", duplicateNames) + "]", bB.TOAST_WARNING).show();
+        } else {
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_import_complete), bB.TOAST_WARNING).show();
+        }
+        adapter.notifyDataSetChanged();
+        updateGuideVisibility();
+    }
 
+    private boolean isImageNameDuplicate(String imageName) {
+        for (ProjectResourceBean image : images) {
+            if (image.resName.equals(imageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String a(ProjectResourceBean projectResourceBean) {
+        return projectImagesDirectory + File.separator + projectResourceBean.resFullName;
+    }
+
+    public void a(boolean isSelecting) {
+        this.isSelecting = isSelecting;
+        requireActivity().invalidateOptionsMenu();
+        unselectAll();
+        actionButtonContainer.setVisibility(this.isSelecting ? View.VISIBLE : View.GONE);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void addImage(ProjectResourceBean projectResourceBean) {
+        images.add(projectResourceBean);
+        adapter.notifyItemInserted(adapter.getItemCount());
+        updateGuideVisibility();
+    }
+
+    private void addImages(ArrayList<ProjectResourceBean> arrayList) {
+        images.addAll(arrayList);
+    }
+
+    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public Adapter(RecyclerView recyclerView) {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -385,82 +427,39 @@ public class pu extends qA implements View.OnClickListener {
         public int getItemCount() {
             return images.size();
         }
-    }
 
-    private void showImageDetailsDialog(ProjectResourceBean projectResourceBean) {
-        Intent intent = new Intent(requireContext(), AddImageActivity.class);
-        intent.putParcelableArrayListExtra("images", images);
-        intent.putExtra("sc_id", sc_id);
-        intent.putExtra("dir_path", projectImagesDirectory);
-        intent.putExtra("edit_target", projectResourceBean);
-        showImageDetailsDialog.launch(intent);
-    }
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final CheckBox checkBox;
+            public final TextView name;
+            public final ImageView image;
+            public final ImageView delete;
+            public final ImageView ninePatch;
+            public final LinearLayout deleteContainer;
 
-    private ArrayList<String> getAllImageNames() {
-        ArrayList<String> names = new ArrayList<>();
-        names.add("app_icon");
-        for (ProjectResourceBean projectResourceBean : images) {
-            names.add(projectResourceBean.resName);
-        }
-        return names;
-    }
-
-    public void a(ArrayList<ProjectResourceBean> arrayList) {
-        ArrayList<ProjectResourceBean> imagesToAdd = new ArrayList<>();
-        ArrayList<String> duplicateNames = new ArrayList<>();
-        for (ProjectResourceBean next : arrayList) {
-            String imageName = next.resName;
-            if (isImageNameDuplicate(imageName)) {
-                duplicateNames.add(imageName);
-            } else {
-                ProjectResourceBean image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, imageName, next.resFullName);
-                image.savedPos = 1;
-                image.isNew = true;
-                image.rotate = 0;
-                image.flipVertical = 1;
-                image.flipHorizontal = 1;
-                imagesToAdd.add(image);
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                checkBox = itemView.findViewById(R.id.chk_select);
+                name = itemView.findViewById(R.id.tv_image_name);
+                image = itemView.findViewById(R.id.img);
+                delete = itemView.findViewById(R.id.img_delete);
+                ninePatch = itemView.findViewById(R.id.img_nine_patch);
+                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+                image.setOnClickListener(v -> {
+                    if (!isSelecting) {
+                        showImageDetailsDialog(images.get(getLayoutPosition()));
+                    } else {
+                        checkBox.setChecked(!checkBox.isChecked());
+                        images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+                        notifyItemChanged(getLayoutPosition());
+                    }
+                });
+                image.setOnLongClickListener(v -> {
+                    a(true);
+                    checkBox.setChecked(!checkBox.isChecked());
+                    images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+                    return true;
+                });
             }
         }
-        addImages(imagesToAdd);
-        if (duplicateNames.size() > 0) {
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n" +
-                    "[" + String.join(", ", duplicateNames) + "]", bB.TOAST_WARNING).show();
-        } else {
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_import_complete), bB.TOAST_WARNING).show();
-        }
-        adapter.notifyDataSetChanged();
-        updateGuideVisibility();
-    }
-
-    private boolean isImageNameDuplicate(String imageName) {
-        for (ProjectResourceBean image : images) {
-            if (image.resName.equals(imageName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private String a(ProjectResourceBean projectResourceBean) {
-        return projectImagesDirectory + File.separator + projectResourceBean.resFullName;
-    }
-
-    public void a(boolean isSelecting) {
-        this.isSelecting = isSelecting;
-        requireActivity().invalidateOptionsMenu();
-        unselectAll();
-        actionButtonContainer.setVisibility(this.isSelecting ? View.VISIBLE : View.GONE);
-        adapter.notifyDataSetChanged();
-    }
-
-    private void addImage(ProjectResourceBean projectResourceBean) {
-        images.add(projectResourceBean);
-        adapter.notifyItemInserted(adapter.getItemCount());
-        updateGuideVisibility();
-    }
-
-    private void addImages(ArrayList<ProjectResourceBean> arrayList) {
-        images.addAll(arrayList);
     }
 }

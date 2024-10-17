@@ -25,7 +25,7 @@ public class DistinguishedNameValues extends LinkedHashMap<ASN1ObjectIdentifier,
     }
 
     public String put(ASN1ObjectIdentifier oid, String value) {
-        if (value != null && value.equals("")) value = null;
+        if (value != null && value.isEmpty()) value = null;
         if (containsKey(oid)) super.put(oid,value); // preserve original ordering
         else {
             super.put(oid,value);
@@ -77,7 +77,7 @@ public class DistinguishedNameValues extends LinkedHashMap<ASN1ObjectIdentifier,
         Vector<String> values = new Vector<String>();
 
         for (Map.Entry<ASN1ObjectIdentifier,String> entry : entrySet()) {
-            if (entry.getValue() != null && !entry.getValue().equals("")) {
+            if (entry.getValue() != null && !entry.getValue().isEmpty()) {
                 oids.add( entry.getKey());
                 values.add( entry.getValue());
             }

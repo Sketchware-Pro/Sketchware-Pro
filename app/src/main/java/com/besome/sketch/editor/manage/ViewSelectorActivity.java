@@ -1,17 +1,14 @@
 package com.besome.sketch.editor.manage;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectFileBean;
@@ -20,11 +17,11 @@ import com.besome.sketch.editor.manage.view.AddCustomViewActivity;
 import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.ui.SelectableButtonBar;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
+import com.sketchware.remod.databinding.FileSelectorPopupSelectXmlBinding;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import a.a.a.eC;
 import a.a.a.hC;
@@ -38,11 +35,11 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
     private Adapter adapter;
     private String sc_id;
     private ProjectFileBean projectFile;
-    private TextView empty_message;
     private String currentXml;
     private int selectedTab;
     private boolean isCustomView = false;
     private final int[] x = new int[19];
+    private FileSelectorPopupSelectXmlBinding binding;
 
     private final int TAB_ACTIVITY = ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY;
     private final int TAB_CUSTOM_VIEW = ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW;
@@ -167,7 +164,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.file_selector_popup_select_xml);
+        binding = FileSelectorPopupSelectXmlBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             sc_id = intent.getStringExtra("sc_id");
@@ -183,28 +181,27 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         } else {
             selectedTab = TAB_ACTIVITY;
         }
-        SelectableButtonBar button_bar = findViewById(R.id.button_bar);
-        empty_message = findViewById(R.id.empty_message);
-        RecyclerView list_xml = findViewById(R.id.list_xml);
-        ImageView add_button = findViewById(R.id.add_button);
-        LinearLayout container = findViewById(R.id.container);
-        button_bar.a(TAB_ACTIVITY, xB.b().a(this, R.string.common_word_view).toUpperCase());
-        button_bar.a(TAB_CUSTOM_VIEW, xB.b().a(this, R.string.common_word_custom_view).toUpperCase());
-        button_bar.setSelectedItemByIndex(selectedTab);
-        button_bar.a();
+        binding.optionsSelector.check(selectedTab == TAB_ACTIVITY ? R.id.option_view : R.id.option_custom_view);
+        binding.emptyMessage.setText(xB.b().a(this, R.string.design_manager_view_message_no_view));
         adapter = new Adapter();
-        list_xml.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
-        list_xml.setHasFixedSize(true);
-        list_xml.setAdapter(adapter);
-        button_bar.setListener(selectedItemKey -> {
-            if (selectedItemKey != selectedTab) {
-                selectedTab = selectedItemKey;
+        binding.listXml.setHasFixedSize(true);
+        binding.listXml.setAdapter(adapter);
+        binding.optionsSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                if (checkedId == R.id.option_view) {
+                    selectedTab = TAB_ACTIVITY;
+                    binding.optionView.setTextColor(R.attr.titleTextColor);
+                    binding.optionCustomView.setTextColor(Color.parseColor("#FFFFFF"));
+                } else if (checkedId == R.id.option_custom_view) {
+                    selectedTab = TAB_CUSTOM_VIEW;
+                    binding.optionView.setTextColor(Color.parseColor("#FFFFFF"));
+                    binding.optionCustomView.setTextColor(R.attr.titleTextColor);
+                }
                 adapter.notifyDataSetChanged();
-                empty_message.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                binding.emptyMessage.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
             }
         });
-        empty_message.setText(xB.b().a(this, R.string.design_manager_view_message_no_view));
-        add_button.setOnClickListener(v -> {
+        binding.createNewView.setOnClickListener(v -> {
             if (!mB.a()) {
                 if (selectedTab == TAB_ACTIVITY) {
                     Intent intent = new Intent(getApplicationContext(), AddViewActivity.class);
@@ -215,10 +212,11 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), AddCustomViewActivity.class);
                     intent.putStringArrayListExtra("screen_names", getScreenNames());
                     startActivityForResult(intent, 266);
+
                 }
             }
         });
-        container.setOnClickListener(v -> finish());
+        binding.container.setOnClickListener(v -> finish());
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
     }
 
@@ -234,22 +232,12 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         private int selectedItem = -1;
 
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final LinearLayout container;
-            public final ImageView img_edit;
-            public final ImageView img_view;
-            public final TextView tv_filename;
-            public final TextView tv_linked_filename;
-            public final ImageView img_preset_setting;
+            private final FileSelectorPopupSelectXmlActivityItemBinding itemBinding;
 
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                container = itemView.findViewById(R.id.container);
-                img_edit = itemView.findViewById(R.id.img_edit);
-                img_view = itemView.findViewById(R.id.img_view);
-                tv_filename = itemView.findViewById(R.id.tv_filename);
-                tv_linked_filename = itemView.findViewById(R.id.tv_linked_filename);
-                img_preset_setting = itemView.findViewById(R.id.img_preset_setting);
-                itemView.setOnClickListener(v -> {
+            public ViewHolder(@NonNull FileSelectorPopupSelectXmlActivityItemBinding binding) {
+                super(binding.getRoot());
+                this.itemBinding = binding;
+                itemBinding.cardView.setOnClickListener(v -> {
                     if (!mB.a()) {
                         selectedItem = getLayoutPosition();
                         hC hC = jC.b(sc_id);
@@ -267,7 +255,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                         finish();
                     }
                 });
-                img_view.setOnClickListener(v -> {
+                itemBinding.actionContainer.setOnClickListener(v -> {
                     if (selectedTab == TAB_ACTIVITY && !mB.a()) {
                         selectedItem = getLayoutPosition();
                         Intent intent = new Intent(getApplicationContext(), AddViewActivity.class);
@@ -276,7 +264,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                         startActivityForResult(intent, 265);
                     }
                 });
-                img_preset_setting.setOnClickListener(v -> {
+                itemBinding.imgPresetSetting.setOnClickListener(v -> {
                     if (!mB.a()) {
                         selectedItem = getLayoutPosition();
                         int requestCode = a(jC.b(sc_id).b().get(getLayoutPosition()));
@@ -294,40 +282,39 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-            viewHolder.container.setBackgroundColor(ContextCompat.getColor(
+            viewHolder.itemBinding.container.setBackgroundColor(ContextCompat.getColor(
                     ViewSelectorActivity.this, R.color.transparent));
             if (selectedTab == TAB_ACTIVITY) {
-                viewHolder.tv_filename.setVisibility(View.VISIBLE);
-                viewHolder.tv_linked_filename.setVisibility(View.VISIBLE);
+                viewHolder.itemBinding.tvFilename.setVisibility(View.VISIBLE);
+                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.VISIBLE);
                 ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
                 String xmlName = projectFileBean.getXmlName();
                 if (currentXml.equals(xmlName)) {
-                    viewHolder.container.setBackgroundColor(ContextCompat.getColor(
+                    viewHolder.itemBinding.cardView.setStrokeColor(ContextCompat.getColor(
                             ViewSelectorActivity.this, R.color.scolor_dark_yellow_01));
+                    viewHolder.itemBinding.cardView.setStrokeWidth(2);
                 }
                 String javaName = projectFileBean.getJavaName();
-                viewHolder.img_edit.setVisibility(View.VISIBLE);
-                viewHolder.img_view.setImageResource(getViewIcon(projectFileBean.options));
-                viewHolder.tv_filename.setText(xmlName);
-                viewHolder.tv_linked_filename.setVisibility(View.VISIBLE);
-                viewHolder.tv_linked_filename.setText(javaName);
-                viewHolder.tv_filename.setTextColor(0xff404040);
+                viewHolder.itemBinding.imgEdit.setVisibility(View.VISIBLE);
+                viewHolder.itemBinding.imgView.setImageResource(getViewIcon(projectFileBean.options));
+                viewHolder.itemBinding.tvFilename.setText(xmlName);
+                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.VISIBLE);
+                viewHolder.itemBinding.tvLinkedFilename.setText(javaName);
             } else if (selectedTab == TAB_CUSTOM_VIEW) {
-                viewHolder.img_edit.setVisibility(View.GONE);
-                viewHolder.tv_linked_filename.setVisibility(View.GONE);
+                viewHolder.itemBinding.imgEdit.setVisibility(View.GONE);
+                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.GONE);
                 ProjectFileBean customView = jC.b(sc_id).c().get(position);
                 if (currentXml.equals(customView.getXmlName())) {
-                    viewHolder.container.setBackgroundColor(ContextCompat.getColor(
+                    viewHolder.itemBinding.cardView.setStrokeColor(ContextCompat.getColor(
                             ViewSelectorActivity.this, R.color.scolor_dark_yellow_01));
+                    viewHolder.itemBinding.cardView.setStrokeWidth(2);
                 }
                 if (customView.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
-                    viewHolder.img_view.setImageResource(getViewIcon(4));
-                    viewHolder.tv_filename.setText(customView.fileName.substring(1));
-                    viewHolder.tv_filename.setTextColor(0xffff0000);
+                    viewHolder.itemBinding.imgView.setImageResource(getViewIcon(4));
+                    viewHolder.itemBinding.tvFilename.setText(customView.fileName.substring(1));
                 } else {
-                    viewHolder.img_view.setImageResource(getViewIcon(3));
-                    viewHolder.tv_filename.setText(customView.getXmlName());
-                    viewHolder.tv_filename.setTextColor(0xff000000);
+                    viewHolder.itemBinding.imgView.setImageResource(getViewIcon(3));
+                    viewHolder.itemBinding.tvFilename.setText(customView.getXmlName());
                 }
             }
         }
@@ -335,12 +322,14 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.file_selector_popup_select_xml_activity_item, parent, false));
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            FileSelectorPopupSelectXmlActivityItemBinding binding = FileSelectorPopupSelectXmlActivityItemBinding.inflate(inflater, parent, false);
+            return new ViewHolder(binding);
         }
 
         @Override
         public int getItemCount() {
-            empty_message.setVisibility(View.GONE);
+            binding.emptyMessage.setVisibility(View.GONE);
             hC hC = jC.b(sc_id);
             ArrayList<ProjectFileBean> list = switch (selectedTab) {
                 case TAB_ACTIVITY -> hC.b();
@@ -349,7 +338,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             };
             int size = list != null ? list.size() : 0;
             if (size == 0) {
-                empty_message.setVisibility(View.VISIBLE);
+                binding.emptyMessage.setVisibility(View.VISIBLE);
             }
             return size;
         }
@@ -405,12 +394,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         ArrayList<ViewBean> d = jC.a(sc_id).d(xmlName);
         while (true) {
             boolean z = false;
-            Iterator<ViewBean> it = d.iterator();
-            while (true) {
-                if (!it.hasNext()) {
-                    break;
-                }
-                if (sb2.equals(it.next().id)) {
+            for (ViewBean viewBean : d) {
+                if (sb2.equals(viewBean.id)) {
                     z = true;
                     break;
                 }
@@ -418,12 +403,12 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             if (!z) {
                 return sb2;
             }
-            StringBuilder sb3 = new StringBuilder();
-            sb3.append(b);
-            int i3 = x[viewType] + 1;
-            x[viewType] = i3;
-            sb3.append(i3);
-            sb2 = sb3.toString();
+            sb = new StringBuilder();
+            sb.append(b);
+            i2 = x[viewType] + 1;
+            x[viewType] = i2;
+            sb.append(i2);
+            sb2 = sb.toString();
         }
     }
 

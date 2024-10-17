@@ -1,79 +1,89 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
     android:layout_width="wrap_content"
-    android:layout_height="90dp"
-    android:minWidth="275dp"
-    android:maxWidth="325dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     android:layout_marginVertical="4dp"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="horizontal">
-
-    <RelativeLayout
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:background="@color/lighter_grey">
-
-        <ImageView
-            android:id="@+id/img_edit"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="4dp"
-            android:src="@drawable/ic_edit_grey600_24dp" />
-
-        <ImageView
-            android:id="@+id/img_view"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
+    app:cardBackgroundColor="?android:colorBackground">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="#ffffffff"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_filename"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:textColor="#ff404040"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/tv_linked_filename"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center_vertical"
-            android:textColor="#ff9a9a9a"
-            android:textSize="12sp" />
-    </LinearLayout>
-
-    <LinearLayout
+        android:id="@+id/container"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="#ffffffff"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:padding="8dp"
-        android:visibility="gone">
+        android:layout_height="90dp"
+        android:baselineAligned="false"
+        android:maxWidth="325dp"
+        android:minWidth="300dp"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/img_preset_setting"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_detail_setting_48dp" />
+
+        <RelativeLayout
+            android:id="@+id/action_container"
+            android:layout_width="90dp"
+            android:layout_height="match_parent"
+            android:background="@color/lighter_grey">
+
+            <ImageView
+                android:id="@+id/img_edit"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="4dp"
+                android:src="@drawable/ic_edit_grey600_24dp" />
+
+            <ImageView
+                android:id="@+id/img_view"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_filename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="main.xml" />
+
+            <TextView
+                android:id="@+id/tv_linked_filename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
+                android:textSize="12sp"
+                tools:text="MainActivity.java" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/img_preset_setting"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_detail_setting_48dp" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

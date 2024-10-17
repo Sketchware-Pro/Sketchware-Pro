@@ -89,7 +89,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
                 for (int i = 0; i < parameters.size(); i++) {
                     String parameter = blockBean.parameters.get(i);
 
-                    if (parameter != null && parameter.length() > 0) {
+                    if (parameter != null && !parameter.isEmpty()) {
                         if (parameter.charAt(0) == '@') {
                             Rs parameterBlock = blockIdsWithBlocks.get(Integer.valueOf(parameter.substring(1)));
                             if (parameterBlock != null) {

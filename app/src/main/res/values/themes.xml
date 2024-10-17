@@ -10,6 +10,11 @@
 
         <item name="fontFamily">@font/gilroy</item>
         <item name="android:fontFamily">@font/gilroy</item>
+        <item name="switchPreferenceCompatStyle">
+            @style/Preference.SketchwarePro.SwitchPreferenceCompat
+        </item>
+        <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.SketchwarePro.BottomSheetDialog</item>
     </style>
 
     <style name="Theme.SketchwarePro.Main">

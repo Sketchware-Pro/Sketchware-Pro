@@ -126,7 +126,7 @@ public class BackupFactory {
         //noinspection Java8ListSort
         Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
 
-        int id = list.size() == 0 ? 600 : Integer.parseInt(new File(list.get(list.size() - 1)).getName());
+        int id = list.isEmpty() ? 600 : Integer.parseInt(new File(list.get(list.size() - 1)).getName());
         return String.valueOf(id + 1);
     }
 

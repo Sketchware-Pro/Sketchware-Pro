@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -113,7 +112,6 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         boolean colorNoneAvailable;
         boolean colorTransparentAvailable;
         View view = wB.a(context, R.layout.color_picker);
-        view.setAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_fade_in));
         if (key.equals("property_background_color")) {
             colorTransparentAvailable = true;
             colorNoneAvailable = true;
@@ -128,7 +126,6 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
                 valueChangeListener.a(key, value);
             }
         });
-        colorPicker.setAnimationStyle(R.anim.abc_fade_in);
         colorPicker.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 }

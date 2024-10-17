@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorSurface"
@@ -51,7 +50,7 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_redo_24"/>
+            android:src="@drawable/ic_redo_24" />
 
         <ImageView
             android:id="@+id/save"
@@ -60,7 +59,7 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_save_24"/>
+            android:src="@drawable/ic_save_24" />
 
         <ImageView
             android:id="@+id/more"

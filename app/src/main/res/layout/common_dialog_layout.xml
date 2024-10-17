@@ -103,11 +103,11 @@
                             android:id="@+id/common_dialog_cancel_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:gravity="center"
                             android:minWidth="0dp"
                             android:paddingHorizontal="18dp"
-                            android:clickable="true"
-                            android:focusable="true"
                             android:paddingVertical="12dp"
                             android:textColor="?colorPrimary"
                             tools:text="Cancel" />

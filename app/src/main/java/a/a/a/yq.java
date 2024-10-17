@@ -1,5 +1,7 @@
 package a.a.a;
 
+import static com.besome.sketch.Config.VAR_DEFAULT_MIN_SDK_VERSION;
+import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
 import static mod.hey.studios.util.ProjectFile.getDefaultColor;
 
 import android.content.Context;
@@ -13,7 +15,6 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
 import com.sketchware.remod.xml.XmlBuilder;
 
 import java.io.File;
@@ -305,9 +306,15 @@ public class yq {
      */
     public void h() {
         fileUtil.b(projectMyscPath + File.separator + "app" + File.separator + "build.gradle",
-                Lx.getBuildGradleString(28, 21, projectSettings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28"), N));
+                Lx.getBuildGradleString(VAR_DEFAULT_TARGET_SDK_VERSION, VAR_DEFAULT_MIN_SDK_VERSION, projectSettings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)), N));
         fileUtil.b(projectMyscPath + File.separator + "settings.gradle", Lx.a());
-        fileUtil.b(projectMyscPath + File.separator + "build.gradle", Lx.c("8.2.2", "4.4.2"));
+        fileUtil.b(projectMyscPath + File.separator + "build.gradle", Lx.c("8.7.0", "4.4.2"));
+
+        fileUtil.b(projectMyscPath + File.separator + "gradle.properties", """
+                android.enableR8.fullMode=false
+                android.enableJetifier=true
+                android.useAndroidX=true
+                """.trim());
     }
 
     /**
@@ -456,6 +463,21 @@ public class yq {
             N.addPermission(jq.PERMISSION_ACCESS_NETWORK_STATE);
             N.setupGoogleMap(googleMaps);
         }
+        for (ProjectFileBean customView : projectFileManager.c()) {
+            for (ViewBean viewBean : eC.a(projectDataManager.d(customView.getXmlName()))) {
+                var classNameParts = viewBean.convert.split("\\.");
+                var className = classNameParts[classNameParts.length - 1];
+                switch (className) {
+                    case "CircleImageView" -> N.x.isCircleImageViewUsed = true;
+                    case "CodeView" -> N.x.isCodeViewUsed = true;
+                    case "LottieAnimationView" -> N.x.isLottieUsed = true;
+                    case "OTPView" -> N.x.isOTPViewUsed = true;
+                    case "PatternLockView" -> N.x.isPatternLockViewUsed = true;
+                    case "WaveSideBar" -> N.x.isWaveSideBarUsed = true;
+                    case "YouTubePlayerView" -> N.x.isYoutubePlayerUsed = true;
+                }
+            }
+        }
         for (ProjectFileBean activity : projectFileManager.b()) {
             if (activity.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                 N.a(activity.getActivityName()).a = true;
@@ -494,8 +516,11 @@ public class yq {
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_INTERNET);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_ACCESS_NETWORK_STATE);
                     }
-                    case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT ->
-                            N.addPermission(activity.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
+                    case ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH -> N.isTextToSpeechUsed = true;
+                    case ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT -> {
+                        N.isSpeechToTextUsed = true;
+                        N.addPermission(activity.getActivityName(), jq.PERMISSION_RECORD_AUDIO);
+                    }
                     case ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT -> {
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH);
                         N.addPermission(activity.getActivityName(), jq.PERMISSION_BLUETOOTH_ADMIN);
@@ -509,7 +534,8 @@ public class yq {
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN ->
                             N.x.isFBGoogleUsed = true;
                     case ComponentBean.COMPONENT_TYPE_ONESIGNAL -> N.x.isOneSignalUsed = true;
-                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER, ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
+                    case ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_BANNER,
+                         ComponentBean.COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
                             N.x.isFBAdsUsed = true;
                     default -> {
                     }
@@ -606,7 +632,7 @@ public class yq {
                         case "OnResultBillingResponse":
                         case "Youtube useWebUI":
                         case "FacebookAds setProvider":
-                            if (block.parameters.size() > 0) {
+                            if (!block.parameters.isEmpty()) {
                                 if (N.x.param == null) N.x.param = new HashMap<>();
                                 N.x.param.clear();
                                 N.x.param.put(block.opCode, block.parameters);
@@ -658,10 +684,10 @@ public class yq {
                 mx.addString("firebase_database_url", databaseUrl, false);
                 mx.addString("project_id", projectId, false);
                 mx.addString("google_app_id", firebaseLibrary.reserved1, false);
-                if (firebaseLibrary.reserved2 != null && firebaseLibrary.reserved2.length() > 0) {
+                if (firebaseLibrary.reserved2 != null && !firebaseLibrary.reserved2.isEmpty()) {
                     mx.addString("google_api_key", firebaseLibrary.reserved2, false);
                 }
-                if (firebaseLibrary.reserved3 != null && firebaseLibrary.reserved3.length() > 0) {
+                if (firebaseLibrary.reserved3 != null && !firebaseLibrary.reserved3.isEmpty()) {
                     mx.addString("google_storage_bucket", firebaseLibrary.reserved3, false);
                 }
             }

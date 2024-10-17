@@ -260,7 +260,7 @@ public final class ClassDataItem extends OffsettedItem {
      * there are no values to encode
      */
     public CstArray getStaticValuesConstant() {
-        if ((staticValuesConstant == null) && (staticFields.size() != 0)) {
+        if ((staticValuesConstant == null) && (!staticFields.isEmpty())) {
             staticValuesConstant = makeStaticValuesConstant();
         }
 

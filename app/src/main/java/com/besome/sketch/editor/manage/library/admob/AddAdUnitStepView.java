@@ -122,7 +122,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
 
     @Override
     public boolean isValid() {
-        if (adUnitBeanArrayList.size() > 0) {
+        if (!adUnitBeanArrayList.isEmpty()) {
             return true;
         } else {
             bB.a(getContext(), Helper.getResString(R.string.design_library_admob_setting_message_add_ad_unit), 1).show();
@@ -146,7 +146,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
     private class AdUnitsAdapter extends RecyclerView.Adapter<AdUnitsAdapter.ViewHolder> {
         @Override
         public int getItemCount() {
-            if (adUnitBeanArrayList.size() == 0) {
+            if (adUnitBeanArrayList.isEmpty()) {
                 tvWarning.setVisibility(View.VISIBLE);
             } else {
                 tvWarning.setVisibility(View.GONE);

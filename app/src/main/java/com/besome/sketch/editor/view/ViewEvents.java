@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.EventBean;
@@ -55,9 +54,6 @@ public class ViewEvents extends LinearLayout {
         events = new ArrayList<>();
         RecyclerView eventsList = findViewById(R.id.list_events);
         eventsList.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        eventsList.setLayoutManager(linearLayoutManager);
         eventAdapter = new EventAdapter();
         eventsList.setAdapter(eventAdapter);
         eventsList.setItemAnimator(new DefaultItemAnimator());
@@ -82,7 +78,7 @@ public class ViewEvents extends LinearLayout {
                 }
             }
 
-            if (!event.equals("onBindCustomView") || (!viewBean.customView.equals("") && !viewBean.customView.equals("none"))) {
+            if (!event.equals("onBindCustomView") || (!viewBean.customView.isEmpty() && !viewBean.customView.equals("none"))) {
                 EventBean eventBean = new EventBean(EventBean.EVENT_TYPE_VIEW, viewBean.type, viewBean.id, event);
                 eventBean.isSelected = eventAlreadyInActivity;
                 events.add(eventBean);

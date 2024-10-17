@@ -19,9 +19,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import dev.trindadedev.lib.filepicker.model.DialogConfigs;
-import dev.trindadedev.lib.filepicker.model.DialogProperties;
-import dev.trindadedev.lib.filepicker.view.FilePickerDialog;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -270,7 +270,7 @@ public class BlockSelectorActivity extends BaseAppCompatActivity implements View
     private void initializeLogic() {
         Helper.setViewsVisibility(true, binding.contai, binding.label);
         _readFile();
-        if (data.size() != 0) {
+        if (!data.isEmpty()) {
             _showItem(0);
         }
     }
@@ -288,7 +288,7 @@ public class BlockSelectorActivity extends BaseAppCompatActivity implements View
         filePickerDialog.setTitle("Select a JSON file");
         filePickerDialog.setDialogSelectionListener(selections -> {
             String fileContent = FileUtil.readFile(selections[0]);
-            if (fileContent.equals("")) {
+            if (fileContent.isEmpty()) {
                 SketchwareUtil.toastError("The selected file is empty!");
             } else if (fileContent.equals("[]")) {
                 SketchwareUtil.toastError("The selected file is empty!");
@@ -307,7 +307,7 @@ public class BlockSelectorActivity extends BaseAppCompatActivity implements View
         data.addAll(menu);
         FileUtil.writeFile(BLOCK_SELECTOR_MENUS_FILE.getAbsolutePath(), new Gson().toJson(data));
         _readFile();
-        if (data.size() != 0) {
+        if (!data.isEmpty()) {
             _showItem(0);
         }
         SketchwareUtil.toast("Successfully imported menu");

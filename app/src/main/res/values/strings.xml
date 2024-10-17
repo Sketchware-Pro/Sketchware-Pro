@@ -967,7 +967,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_information">Information</string>
     <string name="common_word_locale">Locale</string>
     <string name="common_word_modify">Modify</string>
-    <string name="common_word_moreblock">MoreBlock</string>
+    <string name="common_word_moreblock">Moreblock</string>
     <string name="common_word_next">NEXT</string>
     <string name="common_word_no">No</string>
     <string name="common_word_ok">OK</string>
@@ -1178,7 +1178,13 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_block_detail_actionbar_title">Block Details</string>
     <string name="design_manager_block_hint_enter_block_name">Enter block name</string>
     <string name="design_manager_change_name_button">CHANGE NAME</string>
-    <string name="design_manager_font_description_example_sentence">An example sentence for preview</string>
+    <string name="design_manager_font_description_example_sentence">
+    An example sentence for preview
+    预览 的例句
+    عرض مثالي للتوضيح
+    プレビューの例文
+    Пример предложения для предварительного просмотра
+    </string>
     <string name="design_manager_font_description_guide_add_font">Add font files with .ttf extension</string>
     <string name="design_manager_font_description_look_like_this">My new font would look like this!</string>
     <string name="design_manager_font_hint_enter_font_name">Enter font name</string>
@@ -1203,6 +1209,7 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_message_collection_name_conflict">There seems to be a naming conflict. Please make sure there are no duplicate names.</string>
     <string name="design_manager_message_collection_name_no_conflict">There were no naming conflicts</string>
     <string name="design_manager_message_edit_complete">Edit complete</string>
+    <string name="design_manager_message_service">You can not edit the service</string>
     <string name="design_manager_message_invalid_font">Selected font is invalid</string>
     <string name="design_manager_message_no_font_selected">You have to select a new font</string>
     <string name="design_manager_message_import_complete">Import complete</string>
@@ -1226,7 +1233,8 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_view_title_activity_preset">Activity Preset</string>
     <string name="design_manager_view_title_add_custom_view">New Custom View</string>
     <string name="design_manager_view_title_add_view">New Activity</string>
-    <string name="design_manager_view_title_edit_view">Edit Activity</string>
+    <string name="design_manager_view_title_edit_activity">Edit Activity</string>
+    <string name="design_manager_view_title_edit_view">Edit view</string>
     <string name="design_manager_view_title_empty_activity">Empty Activity</string>
     <string name="design_manager_view_title_keyboad_settings">Keyboard Settings</string>
     <string name="design_manager_view_title_screen_orientation">Screen Orientation</string>
@@ -1488,7 +1496,7 @@ But, components should be added manually for working correctly."</string>
     <string name="main_drawer_title_system_settings">System Settings</string>
     <string name="main_tab_title_competitions">Competitions</string>
     <string name="main_tab_title_myproject">My Projects</string>
-    <string name="main_tab_title_shared_projects">Shared Projects</string>
+    <string name="main_tab_title_projects_store">Projects store</string>
     <string name="main_tab_title_tutorials">Tutorials</string>
     <string name="manage_export_url_actionbar_title">Manage Exported URLs</string>
     <string name="manage_export_url_list_app_name">App Name</string>
@@ -1579,7 +1587,7 @@ But, components should be added manually for working correctly."</string>
     <string name="program_information_button_check_update">Check for Updates</string>
     <string name="program_information_button_reset_system">Reset settings</string>
     <string name="program_information_reset_system_complete_initialize">All of the data was initialized</string>
-    <string name="program_information_reset_system_confirm_description">"All projects will be resetted.
+    <string name="program_information_reset_system_confirm_description">"All projects will be reset.
 Do you want to continue?"</string>
     <string name="program_information_reset_system_title">Reset</string>
     <string name="program_information_reset_system_title_all_settings">Reset all settings</string>
@@ -1590,14 +1598,16 @@ Do you want to continue?"</string>
     <string name="program_information_title_share_with_friends">Share with Friends</string>
     <string name="program_information_title_suggest_ideas">Suggest Ideas</string>
     <string name="program_information_title_system_information">System Information</string>
-    <string name="property_ad_size">adSize</string>
-    <string name="property_alpha">alpha</string>
-    <string name="property_background_color">background color</string>
-    <string name="property_background_resource">background resource</string>
-    <string name="property_checked">checked</string>
-    <string name="property_choice_mode">choiceMode</string>
-    <string name="property_clickable">clickable</string>
-    <string name="property_custom_view_listview">customView</string>
+    <string name="property_ad_size">Ad size</string>
+    <string name="property_alpha">Alpha</string>
+    <string name="property_background_color">Background color</string>
+    <string name="property_background_resource">Background resource</string>
+    <string name="property_checked">Checked</string>
+    <string name="property_choice_mode">Choice mode</string>
+    <string name="property_clickable">Clickable</string>
+    <string name="property_custom_view_listview">Custom view</string>
+    <string name="property_inject">Custom attributes</string>
+    <string name="property_convert">Convert</string>
     <string name="property_description_component_intent_usage">"Follow these examples! It may result in a runtime error if you don't!
 
 ACTION_CALL, ACTION_DIAL
@@ -1606,10 +1616,10 @@ ACTION_CALL, ACTION_DIAL
 ACTION_VIEW
  url type (http://sketchware.io)"</string>
     <string name="property_description_edittext_ime_options">"It does not work when single_line is 'false' and input_type is 'text'"</string>
-    <string name="property_divider_height">dividerHeight</string>
-    <string name="property_enabled">enabled</string>
+    <string name="property_divider_height">Divider height</string>
+    <string name="property_enabled">Enabled</string>
     <string name="property_first_day_of_week">firstDayOfWeek</string>
-    <string name="property_gravity">gravity</string>
+    <string name="property_gravity">Gravity</string>
     <string name="property_group_basic">Basic</string>
     <string name="property_group_event">Event</string>
     <string name="property_group_recent">Recent</string>
@@ -1618,40 +1628,42 @@ ACTION_VIEW
     <string name="property_header_seekbar">SeekBar Properties</string>
     <string name="property_header_text">Text Properties</string>
     <string name="property_header_view">View Properties</string>
-    <string name="property_hint">hint</string>
-    <string name="property_hint_color">hint color</string>
+    <string name="property_hint">Hint</string>
+    <string name="property_hint_color">Hint color</string>
     <string name="property_hint_enter_value">Enter value</string>
     <string name="property_id">ID</string>
-    <string name="property_image">image</string>
-    <string name="property_ime_option">ime option</string>
-    <string name="property_indeterminate">indeterminate</string>
-    <string name="property_input_type">input type</string>
-    <string name="property_layout_gravity">layout gravity</string>
-    <string name="property_layout_height">height</string>
-    <string name="property_layout_width">width</string>
-    <string name="property_lines">lines</string>
-    <string name="property_margin">margin</string>
-    <string name="property_max">max</string>
-    <string name="property_orientation">orientation</string>
-    <string name="property_padding">padding</string>
-    <string name="property_progress">progress</string>
-    <string name="property_progressbar_style">progressBarStyle</string>
-    <string name="property_resource">resource</string>
-    <string name="property_rotate">rotate</string>
-    <string name="property_scale_type">scale type</string>
-    <string name="property_scale_x">scaleX</string>
-    <string name="property_scale_y">scaleY</string>
-    <string name="property_single_line">single line</string>
-    <string name="property_spinner_mode">spinnerMode</string>
-    <string name="property_text">text</string>
-    <string name="property_text_color">text color</string>
-    <string name="property_text_font">text font</string>
-    <string name="property_text_size">text size</string>
-    <string name="property_text_style">text style</string>
-    <string name="property_translation_x">translationX</string>
-    <string name="property_translation_y">translationY</string>
-    <string name="property_weight">weight</string>
-    <string name="property_weight_sum">weightSum</string>
+    <string name="property_image">Image</string>
+    <string name="property_ime_option">Ime option</string>
+    <string name="property_indeterminate">Indeterminate</string>
+    <string name="property_input_type">Input type</string>
+    <string name="property_layout_gravity">Layout gravity</string>
+    <string name="property_layout_height">Height</string>
+    <string name="property_layout_width">Width</string>
+    <string name="property_lines">Lines</string>
+    <string name="property_margin">Margin</string>
+    <string name="property_max">Max</string>
+    <string name="property_orientation">Orientation</string>
+    <string name="property_padding">Padding</string>
+    <string name="property_progress">Progress</string>
+    <string name="property_progressbar_style">Progress bar style</string>
+    <string name="property_resource">Resource</string>
+    <string name="property_rotate">Rotate</string>
+    <string name="property_scale_type">Scale type</string>
+    <string name="property_scale_x">ScaleX</string>
+    <string name="property_scale_y">ScaleY</string>
+    <string name="property_single_line">Single line</string>
+    <string name="property_spinner_mode">Spinner mode</string>
+    <string name="property_text">Text</string>
+    <string name="property_text_color">Text color</string>
+    <string name="property_text_font">Text font</string>
+    <string name="property_text_size">Text size</string>
+    <string name="property_text_style">Text style</string>
+    <string name="property_translation_x">TranslationX</string>
+    <string name="property_translation_y">TranslationY</string>
+    <string name="property_weight">Weight</string>
+    <string name="property_weight_sum">Weight sum</string>
+    <string name="property_visibility">Visibility</string>
+    <string name="property_animate_layout_changes">Animate layout changes</string>
     <string name="publish_account_setting_connecting_account_step_name">Do you have a Google Play Developer Account?</string>
     <string name="publish_account_setting_select_json_step_name">Check Service Account Credentials</string>
     <string name="publish_account_setting_title">Publish Account Settings</string>
@@ -2078,7 +2090,7 @@ Please try again later"</string>
     <string name="view_widget_favorites_image_auto_added">Images used in the widget are added to this project.</string>
     <string name="view_widget_favorites_save_guide">Saved widgets are saved to My Collection and are accessible from all the projects.</string>
     <string name="view_widget_favorites_save_guide_new">If you save this widget, this widget will be added to widget collection and images used in this widget will be added to image collection automatically. Saved widget can be used in all projects.</string>
-    <string name="view_widget_favorites_save_title">Save Widget to My Collection</string>
+    <string name="view_widget_favorites_save_title">Save widget to my collection</string>
     <string name="text_title_menu_resource">Resource</string>
     <string name="text_title_menu_assets">Asset</string>
     <string name="text_title_menu_permission">Permission</string>
@@ -2097,8 +2109,6 @@ Please try again later"</string>
     <string name="component_description_time_picker_dialog">Dialog to pick time</string>
     <string name="component_description_notification">Create notification</string>
     <string name="logic_editor_title_select_component">Select Component</string>
-    <string name="property_inject">inject</string>
-    <string name="property_convert">convert</string>
     <string name="component_description_fragment_adapter">FragmentStatePagerAdapter uses with TabLayout and ViewPager to manage each page.</string>
     <string name="design_drawer_menu_injection">AppCompat</string>
     <string name="design_drawer_menu_injection_subtitle">Modify AppCompat layouts</string>
@@ -2151,7 +2161,7 @@ Please try again later"</string>
     <string name="tools_events_manager_activity_events">Activity events</string>
     <string name="tools_events_manager_listeners">Listeners</string>
     <string name="tools_events_manager_details">Events manager Details</string>
-    
+
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
     <string name="assets_manager_options">Create or import</string>
@@ -2173,7 +2183,7 @@ Please try again later"</string>
 
     <!--  links  -->
     <string name="link_github_release">https://github.com/Sketchware-Pro/Sketchware-Pro/releases</string>
-    <string name="link_docs_url">https://sketchware-pro.vercel.app/docs</string>
+    <string name="link_docs_url">https://docs.sketchware.pro</string>
     <string name="link_ideas_url">https://discord.gg/4uxhMwCt</string>
     <string name="link_discord_invite">https://discord.gg/kq39yhT4rX</string>
     <string name="link_telegram_invite">https://t.me/sketchwarepro</string>
@@ -2183,12 +2193,11 @@ Please try again later"</string>
     <string name="common_word_add_activtiy">Add Activity</string>
     <string name="delete_custom_activity_dialog_message">All features related to %1$s will be removed. Are you sure?</string>
     <string name="delete_custom_activity_dialog_title">Delete Activity</string>
-    <string name="delete_project_dialog_title">Delete Project</string>
+    <string name="delete_project_dialog_title">Delete project</string>
     <string name="delete_project_dialog_message">Are you sure you want to delete this project named %1$s?</string>
     <string name="src_code_editor_unsaved_changes_dialog_warning_message">You have unsaved changes. Are you sure you want to exit?</string>
     <string name="change_firebase_config_title">Change Firebase Config</string>
     <string name="review_firebase_config_title">Review</string>
     <string name="edit_view_properties_title">Edit Properties</string>
-
 
 </resources>

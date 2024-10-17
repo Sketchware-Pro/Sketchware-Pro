@@ -1,47 +1,82 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#b6000000"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingTop="16dp">
+    android:paddingTop="36dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/options_selector"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp">
+        android:layout_centerHorizontal="true"
+        android:maxWidth="325dp"
+        android:minWidth="300dp"
+        app:checkedButton="@id/option_view"
+        app:selectionRequired="true"
+        app:singleSelection="true">
 
-        <com.besome.sketch.lib.ui.SelectableButtonBar
-            android:id="@+id/button_bar"
-            android:layout_width="200dp"
+        <Button
+            android:id="@+id/option_view"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:textColor="?attr/colorOnSurface"
+            android:layout_weight="1"
+            android:text="@string/common_word_view" />
 
-        <ImageView
-            android:id="@+id/add_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/button_bar"
-            android:padding="8dp"
-            android:src="@drawable/ic_add_circle_outline_white_36dp" />
-    </RelativeLayout>
+        <Button
+            android:id="@+id/option_custom_view"
+            style="?attr/materialButtonOutlinedStyle"
+            android:textColor="#ffffffff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/common_word_custom_view" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
 
     <TextView
         android:id="@+id/empty_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:textColor="#ffffffff"
         android:textSize="12sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_xml"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/options_selector"
+        android:layout_centerHorizontal="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="20dp"
+        tools:itemCount="4"
+        tools:listitem="@layout/file_selector_popup_select_xml_activity_item" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/shadow_gradient_bottom_top"
+        android:gravity="center_horizontal|bottom">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/createNewView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:text="Create new view"
+            app:icon="@drawable/ic_add_white_24dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
