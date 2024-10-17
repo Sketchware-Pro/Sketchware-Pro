@@ -1,26 +1,23 @@
-package mod.remaker.util;
+package mod.remaker.util
 
-import android.content.Context;
-import android.content.res.Configuration;
-import android.view.View;
+import android.content.Context
+import android.content.res.Configuration
+import android.view.View
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import com.google.android.material.color.MaterialColors
 
-import androidx.annotation.AttrRes;
-import androidx.annotation.ColorInt;
-
-import com.google.android.material.color.MaterialColors;
-
-public class ThemeUtils {
-    ThemeUtils() {
-    }
-
+object ThemeUtils {
+    @JvmStatic
     @ColorInt
-    public static int getColor(View view, @AttrRes int resourceId) {
-        return MaterialColors.getColor(view, resourceId);
+    fun getColor(view: View, @AttrRes resourceId: Int): Int {
+        return MaterialColors.getColor(view, resourceId)
     }
 
-    public static boolean isDarkThemeEnabled(Context context) {
-        Configuration configuration = context.getResources().getConfiguration();
-        int nightMode = configuration.uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        return nightMode == Configuration.UI_MODE_NIGHT_YES;
+    @JvmStatic
+    fun isDarkThemeEnabled(context: Context): Boolean {
+        val configuration = context.resources.configuration
+        val nightMode = configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        return nightMode == Configuration.UI_MODE_NIGHT_YES
     }
 }

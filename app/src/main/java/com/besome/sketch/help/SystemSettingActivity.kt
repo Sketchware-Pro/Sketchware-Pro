@@ -1,37 +1,39 @@
-package com.besome.sketch.help;
+package com.besome.sketch.help
 
-import android.os.Bundle;
+import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
+import androidx.preference.PreferenceFragmentCompat
+import com.besome.sketch.lib.base.BaseAppCompatActivity
+import com.sketchware.remod.R
+import com.sketchware.remod.databinding.PreferenceActivityBinding
+import mod.hey.studios.util.Helper
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
-import androidx.preference.PreferenceFragmentCompat;
+class SystemSettingActivity : BaseAppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        val binding = PreferenceActivityBinding.inflate(
+            layoutInflater
+        )
+        setContentView(binding.root)
 
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.PreferenceActivityBinding;
-
-import mod.hey.studios.util.Helper;
-
-public class SystemSettingActivity extends BaseAppCompatActivity {
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
-        super.onCreate(savedInstanceState);
-        var binding = PreferenceActivityBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        binding.topAppBar.setTitle(R.string.main_drawer_title_system_settings);
-        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        getSupportFragmentManager().beginTransaction()
-                .replace(binding.fragmentContainer.getId(), new PreferenceFragment())
-                .commit();
+        binding.topAppBar.setTitle(R.string.main_drawer_title_system_settings)
+        binding.topAppBar.setNavigationOnClickListener(
+            Helper.getBackPressedClickListener(
+                this
+            )
+        )
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentContainer.id, PreferenceFragment())
+            .commit()
     }
 
-    public static class PreferenceFragment extends PreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
-            getPreferenceManager().setSharedPreferencesName("P12");
-            setPreferencesFromResource(R.xml.preferences_system_settings, rootKey);
+    class PreferenceFragment : PreferenceFragmentCompat() {
+
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            preferenceManager.sharedPreferencesName = "P12"
+            setPreferencesFromResource(R.xml.preferences_system_settings, rootKey)
         }
+
     }
 }

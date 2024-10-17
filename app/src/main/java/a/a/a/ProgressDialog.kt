@@ -1,46 +1,41 @@
-package a.a.a;
+package a.a.a
 
-import android.app.Dialog;
-import android.content.Context;
-import android.view.Window;
-import android.widget.TextView;
+import android.app.Dialog
+import android.content.Context
+import android.view.View
+import android.view.Window
+import android.widget.TextView
+import com.sketchware.remod.R
 
-import com.sketchware.remod.R;
+class ProgressDialog(var1: Context) : Dialog(var1) {
+    private val tvProgress: TextView
+    private var isCancelable = false
 
-import java.util.Objects;
-
-public class _A extends Dialog {
-
-    private final TextView tvProgress;
-    private boolean isCancelable;
-
-    public _A(Context var1) {
-        super(var1);
-        Objects.requireNonNull(getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.progress_msg_box);
-        setTitle(xB.b().a(var1, R.string.common_message_progress));
-        tvProgress = (TextView) findViewById(R.id.tv_progress);
-        tvProgress.setText(xB.b().a(var1, R.string.common_message_loading));
-        super.setCanceledOnTouchOutside(false);
-        super.setCancelable(true);
+    init {
+        window?.requestFeature(Window.FEATURE_NO_TITLE)
+        setContentView(R.layout.progress_msg_box)
+        setTitle(xB.b().a(var1, R.string.common_message_progress))
+        tvProgress = findViewById<View>(R.id.tv_progress) as TextView
+        tvProgress.text = xB.b().a(var1, R.string.common_message_loading)
+        super.setCanceledOnTouchOutside(false)
+        super.setCancelable(true)
     }
 
-    public void a(String var1) {
-        tvProgress.setText(var1);
+    fun setProgress(progress: String?) {
+        tvProgress.text = progress
     }
 
-    public void a(boolean var1) {
-        isCancelable = var1;
+    fun setIsCancelable(cancelable: Boolean) {
+        isCancelable = cancelable
     }
 
-    public boolean a() {
-        return isCancelable;
+    fun isDialogCancelable(): Boolean {
+        return isCancelable
     }
 
-    @Override
-    public void onBackPressed() {
+    override fun onBackPressed() {
         if (!isCancelable) {
-            super.onBackPressed();
+            super.onBackPressed()
         }
     }
 }

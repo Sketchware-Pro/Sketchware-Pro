@@ -1,43 +1,30 @@
-package com.besome.sketch.ctrls;
+package com.besome.sketch.ctrls
 
-import android.content.Context;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import a.a.a.wB
+import android.content.Context
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import com.sketchware.remod.R
 
-import com.sketchware.remod.R;
+class CommonSpinnerItem(context: Context) : LinearLayout(context) {
+    var imgSelected: ImageView? = null
+    var spinnerName: TextView? = null
+    var context1: Context? = null
 
-import a.a.a.wB;
-
-public class CommonSpinnerItem extends LinearLayout {
-
-    public ImageView a;
-    public TextView b;
-    public Context c;
-
-    public CommonSpinnerItem(Context context) {
-        super(context);
-        initialize(context);
+    init {
+        context1 = context
+        wB.a(context, this, R.layout.common_spinner_item)
+        spinnerName = findViewById(R.id.tv_spn_name)
+        imgSelected = findViewById(R.id.imgv_selected)
     }
 
-    private void initialize(Context context) {
-        c = context;
-        wB.a(context, this, R.layout.common_spinner_item);
-        b = findViewById(R.id.tv_spn_name);
-        a = findViewById(R.id.imgv_selected);
+    fun setData(name: String?, isVisible: Boolean) {
+        spinnerName!!.text = name
+        imgSelected?.visibility = if (isVisible) VISIBLE else GONE
     }
 
-    public void a(String name, boolean isVisible) {
-        b.setText(name);
-        if (isVisible) {
-            a.setVisibility(View.VISIBLE);
-        } else {
-            a.setVisibility(View.GONE);
-        }
-
-    }
-
-    public void setTextSize(int textSize) {
+    fun setTextSize(textSize: Float) {
+        spinnerName?.textSize = textSize
     }
 }

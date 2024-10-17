@@ -23,20 +23,21 @@ android {
         return stdout.toString().trim()
     }
 
+    def baseVersion = "v6.4.0-SNAPSHOT-" + getCommitHash()
+
     defaultConfig {
         applicationId "com.sketchware.remod"
-        namespace "com.sketchware.remod"
         //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
         targetSdkVersion 28
         versionCode 150
-        versionName "v6.4.0-SNAPSHOT-" + getCommitHash()
+        versionName baseVersion
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
         buildConfigField("String", "FLAVOR_NAME_WITH_AABS", "\"minApi26\"")
         buildConfigField("String", "FLAVOR_NAME_WITHOUT_AABS", "\"minApi21\"")
 
-        buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v6.4.0-SNAPSHOT-${getCommitHash()}\"")
+        buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"${baseVersion}\"")
 
         buildConfigField("String", "CRASH_REPORT_WEBHOOK_URL", "\"${System.getenv("CRASH_REPORT_WEBHOOK_URL")}\"")
     }
@@ -101,75 +102,76 @@ android {
     configurations.minApi26Implementation {
         exclude group: 'javax.inject', module: 'javax.inject'
     }
+
+    namespace "com.sketchware.remod"
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"], exclude: "proguard-base-7.2.2.jar")
 
-    implementation "androidx.appcompat:appcompat:1.7.0"
-    implementation "androidx.core:core-splashscreen:1.0.1"
-    implementation "androidx.activity:activity:1.9.1"
-    implementation "androidx.recyclerview:recyclerview:1.3.2"
-    implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.viewpager:viewpager:1.0.0"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "com.google.android.material:material:1.12.0"
-    implementation "com.airbnb.android:lottie:6.5.2"
-    implementation "com.google.android.flexbox:flexbox:3.0.0"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.splashscreen
+    implementation libs.androidx.activity.ktx
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.cardview
+    implementation libs.androidx.viewpager
+    implementation libs.androidx.swiperefreshlayout
+    implementation libs.material
+    implementation libs.lottie
+    implementation libs.flexbox
 
-    implementation "androidx.annotation:annotation:1.8.0"
-    implementation "com.android.tools:annotations:31.5.1"
-    implementation "com.google.guava:guava:32.0.1-jre"
-    implementation 'androidx.exifinterface:exifinterface:1.3.7'
-    implementation "androidx.preference:preference:1.2.0"
+    implementation libs.androidx.annotation
+    implementation libs.annotations
+    implementation libs.guava
+    implementation libs.androidx.exifinterface
+    implementation libs.androidx.preference.ktx
 
-    def editorGroupId = "io.github.Rosemoe.sora-editor"
-    implementation platform("$editorGroupId:bom:0.23.4-467c137-SNAPSHOT")
-    implementation "$editorGroupId:editor"
-    implementation "$editorGroupId:language-java"
-    implementation "$editorGroupId:language-textmate"
+    implementation platform(libs.editor.bom)
+    implementation libs.editor
+    implementation libs.language.java
+    implementation libs.language.textmate
 
-    implementation "de.hdodenhof:circleimageview:3.1.0"
-    implementation "com.github.angads25:filepicker:1.1.1"
+    implementation libs.circleimageview
+    implementation libs.filepicker
 
-    minApi26Implementation "com.android.tools.build:bundletool:1.15.6"
+    minApi26Implementation libs.bundletool
     //noinspection GradleDependency copied from above dependency for not just runtime access
-    minApi26Implementation "com.google.protobuf:protobuf-java:3.19.2"
+    minApi26Implementation libs.protobuf.java
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
-    implementation "com.android.tools:r8:8.3.37"
-    implementation "com.github.Iyxan23:zipalign-java:1.2.0"
+    implementation libs.r8
+    implementation libs.zipalign.java
 
-    implementation "com.google.code.gson:gson:2.11.0"
-    implementation "com.madgag:scpkix-jdk15on:1.47.0.2"
+    implementation libs.gson
+    implementation libs.scpkix.jdk15on
 
     //noinspection GradleDependency
-    implementation "com.squareup.okhttp3:okhttp:4.10.0"
+    implementation libs.okhttp
     //noinspection GradleDependency
-    implementation "com.squareup.okio:okio:3.1.0"
-    implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
+    implementation libs.okio
+    implementation libs.dependencyresolver
 
-    minApi21Implementation "net.sf.proguard:proguard-base:6.0.3"
+    minApi21Implementation libs.proguard.base
     minApi26Implementation files('libs/proguard-base-7.2.2.jar')
-    minApi26Implementation 'com.guardsquare:proguard-core:9.0.2'
-    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20'
+    minApi26Implementation libs.proguard.core
+    minApi26Implementation libs.kotlin.stdlib.jdk8
 
     //noinspection GradleDependency
-    minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"
-    minApi26Implementation "org.eclipse.jdt:ecj:3.26.0"
+    minApi21Implementation libs.ecj
+    minApi26Implementation libs.ecj.v3260
 
-    minApi26Implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
+    minApi26Implementation libs.kotlinc.android
 
-    implementation "com.github.topjohnwu.libsu:core:5.0.4"
-    implementation "dev.chrisbanes.insetter:insetter:0.6.1"
+    implementation libs.core
+    implementation libs.insetter
 
     // Analytics and Crashlytics
     if (analyticsEnabled) {
         new File("$projectDir/google-services.json").text = secrets
     }
-    implementation platform("com.google.firebase:firebase-bom:33.2.0")
-    implementation "com.google.firebase:firebase-crashlytics"
-    implementation "com.google.firebase:firebase-analytics"
+    implementation platform(libs.firebase.bom)
+    implementation libs.firebase.crashlytics
+    implementation libs.firebase.analytics
 
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.0.4"
+    coreLibraryDesugaring libs.desugar.jdk.libs.nio
 }

@@ -1,30 +1,32 @@
-package com.besome.sketch.help;
+package com.besome.sketch.help
 
-import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
+import a.a.a.oB
+import android.os.Bundle
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
+import androidx.activity.enableEdgeToEdge
+import com.besome.sketch.lib.base.BaseAppCompatActivity
+import com.sketchware.remod.databinding.ActivityOssLibrariesBinding
+import mod.hey.studios.util.Helper
 
-import androidx.activity.EdgeToEdge;
+class LicenseActivity : BaseAppCompatActivity() {
 
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.databinding.ActivityOssLibrariesBinding;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        val binding = ActivityOssLibrariesBinding.inflate(
+            layoutInflater
+        )
+        setContentView(binding.root)
 
-import a.a.a.oB;
-import mod.hey.studios.util.Helper;
+        binding.toolbar.setNavigationOnClickListener(
+            Helper.getBackPressedClickListener(
+                this
+            )
+        )
 
-public class LicenseActivity extends BaseAppCompatActivity {
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
-        super.onCreate(savedInstanceState);
-        ActivityOssLibrariesBinding binding = ActivityOssLibrariesBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-
-        binding.licensesText.setText(new oB().b(getApplicationContext(), "oss.txt"));
-        binding.licensesText.setAutoLinkMask(Linkify.WEB_URLS);
-        binding.licensesText.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.licensesText.text = oB().b(applicationContext, "oss.txt")
+        binding.licensesText.autoLinkMask = Linkify.WEB_URLS
+        binding.licensesText.movementMethod = LinkMovementMethod.getInstance()
     }
 }

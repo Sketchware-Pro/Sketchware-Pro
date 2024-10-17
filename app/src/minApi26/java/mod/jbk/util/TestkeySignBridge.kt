@@ -1,16 +1,20 @@
-package mod.jbk.util;
+package mod.jbk.util
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
+import mod.alucard.tn.apksigner.ApkSigner
+import java.io.IOException
+import java.security.GeneralSecurityException
 
-import mod.alucard.tn.apksigner.ApkSigner;
-
-public class TestkeySignBridge {
-    private TestkeySignBridge() {
-    }
-
-    public static void signWithTestkey(String inputPath, String outputPath) throws GeneralSecurityException, IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        ApkSigner signer = new ApkSigner();
-        signer.signWithTestKey(inputPath, outputPath, null);
+object TestkeySignBridge {
+    @JvmStatic
+    @Throws(
+        GeneralSecurityException::class,
+        IOException::class,
+        ClassNotFoundException::class,
+        IllegalAccessException::class,
+        InstantiationException::class
+    )
+    fun signWithTestkey(inputPath: String, outputPath: String) {
+        val signer = ApkSigner()
+        signer.signWithTestKey(inputPath, outputPath, null)
     }
 }

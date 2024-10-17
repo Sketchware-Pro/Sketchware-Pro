@@ -451,7 +451,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             // Make a simple ProgressDialog show and set its OnCancelListener
             activity.get().a((DialogInterface.OnCancelListener) this);
             // Allow user to use back button
-            activity.get().progressDialog.a(false);
+            activity.get().progressDialog.setIsCancelable(false);
         }
 
         /**
@@ -684,8 +684,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         @Override
         public void onCancel(DialogInterface dialog) {
-            if (!activity.get().progressDialog.a()) {
-                activity.get().progressDialog.a(true);
+            if (!activity.get().progressDialog.isDialogCancelable()) {
+                activity.get().progressDialog.setIsCancelable(true);
                 activity.get().a((DialogInterface.OnCancelListener) this);
                 publishProgress("Canceling process...");
                 canceled = true;
@@ -718,7 +718,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         public void onProgressUpdate(String... strArr) {
             super.onProgressUpdate(strArr);
             // Update the ProgressDialog's text
-            activity.get().a(strArr[0]);
+            activity.get().setProgress(strArr[0]);
         }
 
         /**
