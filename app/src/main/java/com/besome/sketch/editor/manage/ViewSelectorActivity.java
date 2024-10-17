@@ -212,6 +212,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), AddCustomViewActivity.class);
                     intent.putStringArrayListExtra("screen_names", getScreenNames());
                     startActivityForResult(intent, 266);
+
                 }
             }
         });

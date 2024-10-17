@@ -59,9 +59,9 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         pref = SrcCodeEditor.pref;
 
         ImageView redo = findViewById(R.id.menu_view_redo);
-        redo.setOnClickListener(v -> codeEditor.undo());
+        redo.setOnClickListener(v -> codeEditor.redo());
         ImageView undo = findViewById(R.id.menu_view_undo);
-        undo.setOnClickListener(v -> codeEditor.redo());
+        undo.setOnClickListener(v -> codeEditor.undo());
         ImageView more = findViewById(R.id.more);
         more.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(act, v);
