@@ -45,6 +45,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.bobur.StringEditorActivity;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
@@ -310,6 +311,29 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
     }
 
     private void goEdit(int position) {
+        if (frc.listFileResource.get(position).endsWith("strings.xml")) {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), StringEditorActivity.class);
+            intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
+            intent.putExtra("content", frc.listFileResource.get(position));
+            intent.putExtra("xml", "");
+            startActivity(intent);
+        } else if (frc.listFileResource.get(position).endsWith("xml")) {
+            Intent intent = new Intent();
+            if (ConfigActivity.isLegacyCeEnabled()) {
+                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
+            } else {
+                intent.setClass(getApplicationContext(), SrcCodeEditor.class);
+            }
+            intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
+            intent.putExtra("content", frc.listFileResource.get(position));
+            intent.putExtra("xml", "");
+            startActivity(intent);
+        } else {
+            SketchwareUtil.toast("Only XML files can be edited");
+        }
+    }
+    private void goEdit2(int position) {
         if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
@@ -325,7 +349,6 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             SketchwareUtil.toast("Only XML files can be edited");
         }
     }
-
     private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
         private final ArrayList<String> data;
@@ -378,7 +401,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                                 SketchwareUtil.toast("Only XML files can be edited");
                             }
                         }
-                        case "Edit" -> goEdit(position);
+                        case "Edit" -> goEdit2(position);
                         case "Delete" -> showDeleteDialog(position);
                         case "Rename" -> showRenameDialog(frc.listFileResource.get(position));
                         default -> {
