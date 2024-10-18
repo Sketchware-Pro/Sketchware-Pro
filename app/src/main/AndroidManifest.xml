@@ -75,8 +75,8 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.design.DesignActivity"
-            android:theme="@style/Theme.SketchwarePro.SmallToolbar"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar" />
         <activity
             android:name="com.besome.sketch.MainActivity"
             android:configChanges="orientation|screenSize"
@@ -205,10 +205,10 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.besome.sketch.editor.manage.library.admob.AdmobActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.editor.manage.library.firebase.FirebaseActivity"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity"
             android:configChanges="orientation|screenSize" />
@@ -309,10 +309,11 @@
         <activity
             android:name="mod.khaled.logcat.LogReaderActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
-            
-        <activity
-            android:name="mod.trindadedev.ui.activities.SettingsActivity" />
-            
+
+        <activity android:name="mod.trindadedev.ui.activities.SettingsActivity" />
+        <activity android:name="mod.bobur.StringEditorActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
