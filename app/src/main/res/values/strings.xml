@@ -967,7 +967,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_information">Information</string>
     <string name="common_word_locale">Locale</string>
     <string name="common_word_modify">Modify</string>
-    <string name="common_word_moreblock">MoreBlock</string>
+    <string name="common_word_moreblock">Moreblock</string>
     <string name="common_word_next">NEXT</string>
     <string name="common_word_no">No</string>
     <string name="common_word_ok">OK</string>
@@ -2199,5 +2199,13 @@ Please try again later"</string>
     <string name="change_firebase_config_title">Change Firebase Config</string>
     <string name="review_firebase_config_title">Review</string>
     <string name="edit_view_properties_title">Edit Properties</string>
+    <string name="search_in_palettes_dialog_title">Search palettes</string>
+    <string name="search">Search</string>
+    <string name="cancel">Cancel</string>
+    <string name="restore">Restore</string>
+    <string name="searching">Searching…</string>
+    <string name="restoring">Restoring…</string>
+    <string name="search_error_message">Nothing found,\ntry again with something else</string>
+    <string name="search_header">"  Search…"</string>
 
 </resources>

@@ -102,16 +102,16 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         if (!mB.a()) {
             switch (key) {
                 case "property_id" -> showViewIdDialog();
-                case "property_text", "property_hint"->
-                        showTextInputDialog(0, 9999);
+                case "property_text", "property_hint" -> showTextInputDialog(0, 9999);
                 case "property_weight", "property_weight_sum", "property_rotate", "property_lines",
                      "property_max", "property_progress" -> showNumberInputDialog();
                 case "property_alpha" -> showNumberDecimalInputDialog(0, 1);
                 case "property_translation_x", "property_translation_y" ->
                         showNumberDecimalInputDialog(-9999, 9999);
                 case "property_scale_x", "property_scale_y" -> showNumberDecimalInputDialog(0, 99);
-                case "property_convert" -> showAutoCompleteDialog(getResources().getStringArray(R.array.property_convert_options), 0, 99);
-                case "property_inject" ->  showAutoCompleteDialog(getResources().getStringArray(R.array.property_inject_options), 0, 99);
+                case "property_convert" ->
+                        showAutoCompleteDialog(getResources().getStringArray(R.array.property_convert_options), 0, 99);
+                case "property_inject" -> showTextInputDialog(0, 1000);
             }
         }
     }
