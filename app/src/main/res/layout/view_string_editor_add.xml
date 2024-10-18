@@ -2,9 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:gravity="center|start"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -19,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
-            android:importantForAutofill="no"
+            android:imeOptions="actionNext"
+            android:inputType="text"
             android:singleLine="true"
             android:textSize="16sp"
             tools:ignore="LabelFor" />
@@ -36,8 +34,7 @@
             android:id="@+id/string_value_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine|textNoSuggestions"
+            android:inputType="textMultiLine"
             android:textSize="16sp"
             tools:ignore="LabelFor" />
     </com.google.android.material.textfield.TextInputLayout>
