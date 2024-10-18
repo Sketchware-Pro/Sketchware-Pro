@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:hint="String key">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -19,6 +20,7 @@
             android:importantForAutofill="no"
             android:inputType="textMultiLine|textNoSuggestions"
             android:textSize="16sp"
+            tools:text="String value"
             tools:ignore="LabelFor" />
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>
