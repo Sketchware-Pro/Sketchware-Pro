@@ -2,6 +2,8 @@ package com.besome.sketch.editor.manage.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -188,32 +190,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
         projectFileBean = intent1.getParcelableExtra("project_file");
         if (projectFileBean != null) {
             binding.toolbar.setTitle("Edit " + projectFileBean.fileName);
-            if (projectFileBean.fileName.contains("_service")) {
-                // if selected view is service, hide other widgets
-                binding.activityPreview.setVisibility(View.GONE);
-                binding.featureTypes.setVisibility(View.GONE);
-                binding.screenOrientationSelector.setEnabled(false);
-                binding.keyboardSettingsSelector.setEnabled(false);
-            }
         }
-
-        // hide other widgets when service button clicked
-        binding.viewTypeSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (binding.viewTypeSelector.getCheckedButtonId() == R.id.select_service) {
-                makeTransitionAnimation(binding.parentLayout);
-                binding.activityPreview.setVisibility(View.GONE);
-                binding.featureTypes.setVisibility(View.GONE);
-                binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
-                binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
-                binding.fabDrawerTipView.setVisibility(View.GONE);
-            } else {
-                makeTransitionAnimation(binding.parentLayout);
-                binding.activityPreview.setVisibility(View.VISIBLE);
-                binding.featureTypes.setVisibility(View.VISIBLE);
-                binding.viewOrientationSelectorLayout.setVisibility(View.VISIBLE);
-                binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.VISIBLE);
-            }
-        });
 
         featuresAdapter = new FeaturesAdapter();
         binding.featureTypes.setAdapter(featuresAdapter);
@@ -253,28 +230,15 @@ public class AddViewActivity extends BaseAppCompatActivity {
                 finish();
             } else if (isValid(nameValidator)) {
                 String var4 = binding.edName.getText().toString() + getSuffix(binding.viewTypeSelector);
-                // service creating
-                if (binding.viewTypeSelector.getCheckedButtonId() == R.id.select_service) {
-                    ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4, 0, 0, false, true, false, false);
-                    Intent intent = new Intent();
-                    intent.putExtra("project_file", projectFileBean);
-                    if (P != null) {
-                        intent.putExtra("preset_views", getPresetData(P));
-                    }
-                    setResult(RESULT_OK, intent);
-                    bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
-                    finish();
-                } else {
-                    ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
-                    Intent intent = new Intent();
-                    intent.putExtra("project_file", projectFileBean);
-                    if (P != null) {
-                        intent.putExtra("preset_views", getPresetData(P));
-                    }
-                    setResult(RESULT_OK, intent);
-                    bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
-                    finish();
+                ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
+                Intent intent = new Intent();
+                intent.putExtra("project_file", projectFileBean);
+                if (P != null) {
+                    intent.putExtra("preset_views", getPresetData(P));
                 }
+                setResult(RESULT_OK, intent);
+                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
+                finish();
             }
 
         });
@@ -310,7 +274,6 @@ public class AddViewActivity extends BaseAppCompatActivity {
             case 1 -> "_fragment";
             case 2 -> "_dialog_fragment";
             case 3 -> "_bottomdialog_fragment";
-            case 4 -> "_service";
             default -> "";
         };
     }
@@ -326,9 +289,9 @@ public class AddViewActivity extends BaseAppCompatActivity {
     }
 
     public void makeTransitionAnimation(LinearLayout linearLayout) {
-        android.transition.AutoTransition autoTransition = new android.transition.AutoTransition();
+        AutoTransition autoTransition = new android.transition.AutoTransition();
         autoTransition.setDuration(200);
-        android.transition.TransitionManager.beginDelayedTransition(linearLayout, autoTransition);
+        TransitionManager.beginDelayedTransition(linearLayout, autoTransition);
     }
 
     private static class FeatureItem {

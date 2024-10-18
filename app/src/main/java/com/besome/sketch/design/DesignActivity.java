@@ -447,7 +447,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(3);
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -905,10 +904,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private static class BuildTask extends BaseTask implements DialogInterface.OnCancelListener, BuildProgressReceiver {
-        private final BuildingDialog dialog;
-        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
         private volatile boolean canceled;
         private volatile boolean isBuildFinished;
+        private final BuildingDialog dialog;
+        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         public BuildTask(DesignActivity activity) {
             super(activity);
