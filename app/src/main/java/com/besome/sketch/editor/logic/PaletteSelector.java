@@ -2,21 +2,18 @@ package com.besome.sketch.editor.logic;
 
 import static mod.SketchwareUtil.dpToPx;
 
-import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.PalettesSearchDialogBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +22,7 @@ import java.util.concurrent.Executors;
 
 import a.a.a.Vs;
 import a.a.a.Ws;
+import a.a.a.aB;
 import mod.hey.studios.util.Helper;
 
 public class PaletteSelector extends LinearLayout implements View.OnClickListener {
@@ -33,7 +31,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
     private Vs onBlockCategorySelectListener;
     private LinearLayout paletteContainer;
 
-    private String searchValue = "", searchType = "Contains";
+    private String searchValue = "";
     private boolean isFirstItemSelected = false;
 
     private List<HashMap<String, Object>> allPalettes;
@@ -77,12 +75,12 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         TextView searchTextView = new TextView(context);
         searchTextView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
         searchTextView.setText(Helper.getResString(R.string.search_header));
+        searchTextView.setPadding(dpToPx(0), dpToPx(4), dpToPx(0), dpToPx(4));
         searchTextView.setOnClickListener(v -> showSearchDialog());
         addView(searchTextView);
     }
 
     private void initializePalettes() {
-
         isFirstItemSelected = false;
         paletteContainer.removeAllViews();
 
@@ -112,7 +110,8 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
             if (paletteContainer.getChildCount() > 0) {
                 paletteContainer.getChildAt(0).performClick();
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     private void addPalette(int id, String title, int color) {
@@ -149,62 +148,37 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
     }
 
     private void showSearchDialog() {
-        View dialogView = LayoutInflater.from(context).inflate(R.layout.palettes_search_dialog, null);
-        AlertDialog dialog = new AlertDialog.Builder(context)
-                .setView(dialogView)
-                .setCancelable(true)
-                .create();
+        aB dialog = new aB((Activity) context);
+        PalettesSearchDialogBinding binding = PalettesSearchDialogBinding.inflate(((Activity) context).getLayoutInflater());
 
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        EditText searchInput = dialogView.findViewById(R.id.edittext_search_value);
-        RadioButton radio1 = dialogView.findViewById(R.id.radioButton1);
-        RadioButton radio2 = dialogView.findViewById(R.id.radioButton2);
-
-        TextInputLayout inputLayout = dialogView.findViewById(R.id.textInputLayout_search);
-
-        MaterialButton cancelBtn = dialogView.findViewById(R.id.dialog_btn_cancel);
-        MaterialButton entreBtn = dialogView.findViewById(R.id.dialog_btn_entre);
-        MaterialButton restoreBtn = dialogView.findViewById(R.id.dialog_btn_restore);
-
-        cancelBtn.setOnClickListener(v -> dialog.dismiss());
-        entreBtn.setOnClickListener(v -> {
-            if (inputLayout.getError() == null) {
-                entreBtn.setText(Helper.getResString(R.string.searching));
-                startSearch(dialog, searchInput.getText().toString().trim());
+        dialog.b(context.getString(R.string.search_in_palettes_dialog_title));
+        dialog.b(context.getString(R.string.search), v1 -> {
+            if (binding.textInputLayoutSearch.getError() == null) {
+                startSearch(dialog, binding.edittextSearchValue.getText().toString().trim());
             }
+            dialog.dismiss();
         });
-        restoreBtn.setOnClickListener(v -> {
-            restoreBtn.setText(Helper.getResString(R.string.restoring));
-            searchType = "Contains";
-            startSearch(dialog, "");
-        });
-
-        if (searchType.equals("Contains")) {
-            radio1.setChecked(true);
-        } else {
-            radio2.setChecked(true);
+        dialog.a(context.getString(R.string.cancel), v1 -> dialog.dismiss());
+        if (!searchValue.isEmpty()) {
+            dialog.configureDefaultButton(context.getString(R.string.restore), v1 -> startSearch(dialog, ""));
         }
-        searchInput.setText(searchValue);
-
-        radio1.setOnCheckedChangeListener((button, isChecked) -> searchType = isChecked ? "Contains" : "StartWith");
-        searchInput.addTextChangedListener(new SimpleTextWatcher(s -> validateSearch(s.toString(), inputLayout)));
-
+        dialog.a(binding.getRoot());
+        binding.edittextSearchValue.setText(searchValue);
+        binding.edittextSearchValue.addTextChangedListener(new SimpleTextWatcher(s -> validateSearch(s.toString(), binding.textInputLayoutSearch)));
         dialog.show();
     }
 
     private boolean matchesSearch(String title) {
         String lowerTitle = title.toLowerCase();
         String lowerSearchValue = searchValue.toLowerCase();
-        return searchValue.isEmpty() || (searchType.equals("Contains") && lowerTitle.contains(lowerSearchValue)) ||
-                (searchType.equals("StartWith") && lowerTitle.startsWith(lowerSearchValue));
+        return searchValue.isEmpty() || lowerTitle.contains(lowerSearchValue);
     }
 
     private boolean canSearch(String query) {
         String trimmedQuery = query.trim().toLowerCase();
         return allPalettes.stream().anyMatch(palette -> {
             String title = palette.get("text").toString().toLowerCase();
-            return searchType.equals("Contains") ? title.contains(trimmedQuery) : title.startsWith(trimmedQuery);
+            return title.contains(trimmedQuery);
         });
     }
 
@@ -212,7 +186,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         layout.setError(canSearch(query) ? null : Helper.getResString(R.string.search_error_message));
     }
 
-    private void startSearch(AlertDialog dialog, String query) {
+    private void startSearch(aB dialog, String query) {
         searchValue = query;
         Executors.newSingleThreadExecutor().execute(() -> new Handler(Looper.getMainLooper()).post(() -> {
             initializePalettes();
@@ -223,10 +197,17 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
     private record SimpleTextWatcher(
             java.util.function.Consumer<CharSequence> onTextChanged) implements android.text.TextWatcher {
 
-        @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override public void afterTextChanged(android.text.Editable s) {}
-        @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                onTextChanged.accept(s);
-            }
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
+
+        @Override
+        public void afterTextChanged(android.text.Editable s) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            onTextChanged.accept(s);
+        }
+    }
 }
