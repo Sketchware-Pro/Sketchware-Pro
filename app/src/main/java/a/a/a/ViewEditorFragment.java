@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
@@ -33,7 +32,6 @@ public class ViewEditorFragment extends qA {
 
     private ProjectFileBean projectFileBean;
     private ViewEditor viewEditor;
-    private LinearLayout viewEditorLocked;
     private boolean isFabEnabled = false;
     private ViewProperty viewProperty;
     private ObjectAnimator n;
@@ -48,7 +46,6 @@ public class ViewEditorFragment extends qA {
     private void initialize(ViewGroup viewGroup) {
         setHasOptionsMenu(true);
         viewEditor = viewGroup.findViewById(R.id.view_editor);
-        viewEditorLocked = viewGroup.findViewById(R.id.view_editor_locked);
         viewEditor.setScreenType(getResources().getConfiguration().orientation);
         viewProperty = requireActivity().findViewById(R.id.view_property);
         viewProperty.setOnPropertyListener(new Iw() {
@@ -214,11 +211,6 @@ public class ViewEditorFragment extends qA {
     }
 
     private void e() {
-        if (projectFileBean.fileName.contains("_service")) {
-            viewEditorLocked.setVisibility(View.VISIBLE);
-            return;
-        }
-        viewEditorLocked.setVisibility(View.GONE);
         viewEditor.removeWidgetsAndLayouts();
         viewEditor.setPaletteLayoutVisible(View.VISIBLE);
         viewEditor.addWidgetLayout(PaletteWidget.a.a, "");
