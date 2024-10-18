@@ -2198,5 +2198,13 @@ Please try again later"</string>
     <string name="change_firebase_config_title">Change Firebase Config</string>
     <string name="review_firebase_config_title">Review</string>
     <string name="edit_view_properties_title">Edit Properties</string>
+    <string name="search_in_palettes_dialog_title">Search palettes</string>
+    <string name="search">Search</string>
+    <string name="cancel">Cancel</string>
+    <string name="restore">Restore</string>
+    <string name="searching">Searching…</string>
+    <string name="restoring">Restoring…</string>
+    <string name="search_error_message">Nothing found,\ntry again with something else</string>
+    <string name="search_header">"  Search…"</string>
 
 </resources>
