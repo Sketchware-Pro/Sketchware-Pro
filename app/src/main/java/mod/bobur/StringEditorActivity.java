@@ -232,6 +232,11 @@ public class StringEditorActivity extends AppCompatActivity {
         HashMap<String, Object> map = new HashMap<>();
         map.put("key", key);
         map.put("text", text);
+        if (listmap.isEmpty()) {
+            listmap.add(map);
+            adapter.notifyItemInserted(0);
+            return;
+        }
         for (int i = 0; i < listmap.size(); i++) {
             if (Objects.equals(listmap.get(i).get("key"), key)) {
                 listmap.set(i, map);
