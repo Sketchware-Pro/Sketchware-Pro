@@ -231,7 +231,7 @@ public class Zx extends PopupWindow {
         if (savedColors.contains(color)) {
             String colorToRemove = color + ",";
             String colorToSave = savedColors.replaceAll(colorToRemove, "");
-            colorPref.a("P24I1", colorToSave);
+            colorPref.a("P24I1", ((Object) colorToSave));
             colorGroups.set(0, getSavedColorBeans());
             notifyChanges();
         }
@@ -338,7 +338,7 @@ public class Zx extends PopupWindow {
             bB.b(activity, xB.b().a(activity, R.string.picker_color_already_exist), 0).show();
         } else {
             String colorsToSave = color + "," + savedColors;
-            colorPref.a("P24I1", colorsToSave);
+            colorPref.a("P24I1", (Object) (colorsToSave));
             colorGroups.set(0, getSavedColorBeans());
             notifyChanges();
             k = 0;
