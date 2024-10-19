@@ -53,6 +53,8 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
     private final ArrayList<String> id_detector = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> blocksList = new ArrayList<>();
     
+    private static final Pattern PARAM_PATTERN = Pattern.compile("%m(?!\\.[\\w]+)");
+    
     /**
      * Current mode of this activity, "edit" if editing a block, "add" if creating a new block and "insert" if inserting a block above another
      */
@@ -404,8 +406,16 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             binding.blockArea.addView(block);
         } catch (Exception e) {
             var block = new TextView(this);
-            block.setText("Error parsing block");
             block.setTextColor(Color.RED);
+            var input = binding.spec.getText().toString();
+            Matcher matcher = PARAM_PATTERN.matcher(input);
+            if (matcher.find()) {
+                int position = matcher.end();
+                //Unable to resolve this error because the Rs class still undecompiled.
+                block.setText("Error: '%m' must be followed by '.param' at position " + position);
+            } else {
+                block.setText(e.toString());
+            }
             binding.blockArea.addView(block);
         }
     }
