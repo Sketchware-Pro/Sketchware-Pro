@@ -1,9 +1,13 @@
 package com.besome.sketch.editor.property;
 
+import static mod.bobur.StringEditorActivity.convertXmlToListMap;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -15,8 +19,13 @@ import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.PropertyPopupInputTextBinding;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import a.a.a.Kw;
 import a.a.a.OB;
@@ -28,6 +37,8 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wB;
+import mod.agus.jcoderz.lib.FilePathUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
 @SuppressLint("ViewConstructor")
@@ -36,6 +47,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     private Context context;
     private String key = "";
     private String value = "";
+    private final String stringsStart = "@string/";
     private ImageView imgLeftIcon;
     private int icon;
     private TextView tvName;
@@ -45,6 +57,8 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     private String sc_id;
     private ProjectFileBean projectFileBean;
     private Kw valueChangeListener;
+    private List<String> keysList = new ArrayList<>();
+    private final ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
 
     public PropertyInputItem(Context context, boolean z) {
         super(context);
@@ -102,7 +116,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         if (!mB.a()) {
             switch (key) {
                 case "property_id" -> showViewIdDialog();
-                case "property_text", "property_hint" -> showTextInputDialog(0, 9999);
+                case "property_text", "property_hint" -> showTextInputDialog(9999 , false);
                 case "property_weight", "property_weight_sum", "property_rotate", "property_lines",
                      "property_max", "property_progress" -> showNumberInputDialog();
                 case "property_alpha" -> showNumberDecimalInputDialog(0, 1);
@@ -110,8 +124,8 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                         showNumberDecimalInputDialog(-9999, 9999);
                 case "property_scale_x", "property_scale_y" -> showNumberDecimalInputDialog(0, 99);
                 case "property_convert" ->
-                        showAutoCompleteDialog(getResources().getStringArray(R.array.property_convert_options), 0, 99);
-                case "property_inject" -> showTextInputDialog(0, 1000);
+                        showAutoCompleteDialog(getResources().getStringArray(R.array.property_convert_options));
+                case "property_inject" -> showTextInputDialog(1000, true);
             }
         }
     }
@@ -195,24 +209,112 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.show();
     }
 
-    private void showTextInputDialog(int minValue, int maxValue) {
+    private void showTextInputDialog(int maxValue, boolean isInject) {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
         View view = wB.a(getContext(), R.layout.property_popup_input_text);
         EditText input = view.findViewById(R.id.ed_input);
-        SB lengthValidator = new SB(context, view.findViewById(R.id.ti_input), minValue, maxValue);
+        TextInputLayout textInputLayout = view.findViewById(R.id.ti_input);
+        TextInputLayout textAutoCompleteInput = view.findViewById(R.id.ti_auto_complete_input);
+        MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.ed_ti_auto_complete_input);
+        SB lengthValidator;
+
+        if (isInject) {
+            lengthValidator = new SB(context, textInputLayout, 0, maxValue);
+            textAutoCompleteInput.setVisibility(View.GONE);
+        } else {
+            loadStringsListMap();
+            setupTextWatcher(textAutoCompleteInput, autoCompleteTextView);
+            lengthValidator = new SB(context, textAutoCompleteInput, 0, maxValue);
+            textAutoCompleteInput.setVisibility(View.VISIBLE);
+            textInputLayout.setVisibility(View.GONE);
+
+            dialog.a(view);
+            dialog.configureDefaultButton(context.getString(R.string.strings_xml), v1 -> {
+                autoCompleteTextView.setText(stringsStart);
+                autoCompleteTextView.setSelection(stringsStart.length());
+            });
+
+            keysList = new ArrayList<>();
+            List<String> mergedList = new ArrayList<>();
+
+            for (HashMap<String, Object> map : StringsListMap) {
+                String keyValue = map.get("key").toString();
+                keysList.add(stringsStart + keyValue);
+                mergedList.add(stringsStart + map.get("key") + " (" + map.get("text") + " )");
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    context, android.R.layout.simple_dropdown_item_1line, mergedList);
+
+            autoCompleteTextView.setAdapter(adapter);
+            autoCompleteTextView.setThreshold(1);
+            autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
+                String value = autoCompleteTextView.getText().toString();
+                autoCompleteTextView.setText(value.substring(0, value.indexOf(" (")));
+                autoCompleteTextView.setSelection(autoCompleteTextView.getText().toString().length());
+            });
+        }
+
         lengthValidator.a(value);
         dialog.a(view);
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (lengthValidator.b()) {
-                setValue(input.getText().toString());
+                if (textAutoCompleteInput.getError() != null) return;
+                if (isInject) {
+                    setValue(input.getText().toString());
+                } else {
+                    setValue(autoCompleteTextView.getText().toString());
+                }
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
+    }
+
+    private void loadStringsListMap() {
+        FilePathUtil fpu = new FilePathUtil();
+        String filePath = fpu.getPathResource(sc_id) + "/values/strings.xml";
+        convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+    }
+
+    public void setupTextWatcher(TextInputLayout textAutoCompleteInput, MaterialAutoCompleteTextView editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = s.toString().trim();
+                boolean foundMatch = false;
+
+                if (!text.startsWith(stringsStart)) {
+                    textAutoCompleteInput.setError(null);
+                    return;
+                }
+
+                for (String str : keysList) {
+                    if (str.startsWith(text)) {
+                        foundMatch = true;
+                        break;
+                    }
+                }
+
+                if (!foundMatch) {
+                    textAutoCompleteInput.setError("Not found in strings.xml");
+                } else {
+                    textAutoCompleteInput.setError(null);
+                }
+            }
+        });
     }
 
     private void showNumberDecimalInputDialog(int minValue, int maxValue) {
@@ -238,7 +340,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.show();
     }
 
-    private void showAutoCompleteDialog(String[] options, int minValue, int maxValue) {
+    private void showAutoCompleteDialog(String[] options) {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
@@ -250,7 +352,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         input.setAdapter(adapter);
         binding.tiInput.setVisibility(View.GONE);
         binding.tiAutoCompleteInput.setVisibility(View.VISIBLE);
-        SB lengthValidator = new SB(context, binding.tiInput, minValue, maxValue);
+        SB lengthValidator = new SB(context, binding.tiInput, 0, 99);
         lengthValidator.a(value);
         dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
