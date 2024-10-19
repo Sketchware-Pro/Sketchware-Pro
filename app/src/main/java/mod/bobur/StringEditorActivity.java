@@ -1,5 +1,7 @@
 package mod.bobur;
 
+import static androidx.recyclerview.widget.LinearLayoutManager.VERTICAL;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,10 +10,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.StringEditorBinding;
 import com.sketchware.remod.databinding.StringEditorItemBinding;
@@ -38,6 +40,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
+import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class StringEditorActivity extends AppCompatActivity {
@@ -50,24 +53,34 @@ public class StringEditorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = StringEditorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        initialize();
-    }
 
-    private void initialize() {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        binding.toolbar.setNavigationOnClickListener(_v -> onBackPressed());
+
         dialog = new MaterialAlertDialogBuilder(this);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new RecyclerViewAdapter(listmap);
+
+        binding.recyclerView.setAdapter(adapter);
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+
+        initializeItemDecoration();
+    }
+
+    private void initializeItemDecoration() {
+        MaterialDividerItemDecoration decoration = new MaterialDividerItemDecoration(binding.recyclerView.getContext(), VERTICAL);
+        decoration.setDividerInsetEnd((int) SketchwareUtil.getDip(16));
+        decoration.setDividerInsetStart((int) SketchwareUtil.getDip(16));
+        decoration.setDividerThickness(getResources().getDimensionPixelSize(R.dimen.default_divider_size));
+        decoration.setLastItemDecorated(false);
+        binding.recyclerView.addItemDecoration(decoration);
     }
 
     @Override
     protected void onResume() {
         convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
-        adapter = new RecyclerViewAdapter(listmap);
-        binding.recyclerView.setAdapter(adapter);
         super.onResume();
     }
 
@@ -277,10 +290,10 @@ public class StringEditorActivity extends AppCompatActivity {
             HashMap<String, Object> item = data.get(position);
             String key = (String) item.get("key");
             String text = (String) item.get("text");
-            holder.binding.textInputLayout.setHint(key);
-            holder.binding.editText.setText(text);
+            holder.binding.key.setText(key);
+            holder.binding.value.setText(text);
 
-            holder.binding.editText.setOnClickListener(v -> {
+            holder.binding.getRoot().setOnClickListener(v -> {
                 int adapterPosition = holder.getAdapterPosition();
                 HashMap<String, Object> currentItem = data.get(adapterPosition);
 
