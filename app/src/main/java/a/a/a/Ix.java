@@ -571,20 +571,7 @@ public class Ix {
 
         boolean hasDebugActivity = false;
         for (ProjectFileBean projectFileBean : b) {
-            if (projectFileBean.fileName.contains("_fragment")) {
-               // do not add xml codes to AndroidManifest
-            } else if (projectFileBean.fileName.contains("_service")) {
-                // add service to android manifest
-                XmlBuilder activityTag = new XmlBuilder("service");
-
-                String javaName = projectFileBean.getJavaName();
-                activityTag.addAttribute("android", "name", "." + javaName.substring(0, javaName.indexOf(".java")));
-                if (targetsSdkVersion31OrHigher && !AndroidManifestInjector.isActivityExportedUsed(c.sc_id, javaName)) {
-                    activityTag.addAttribute("android", "exported", "true");
-                }
-                applicationTag.a(activityTag);
-            } else {
-                // add activity to android manifest
+            if (!projectFileBean.fileName.contains("_fragment")) {
                 XmlBuilder activityTag = new XmlBuilder("activity");
 
                 String javaName = projectFileBean.getJavaName();
