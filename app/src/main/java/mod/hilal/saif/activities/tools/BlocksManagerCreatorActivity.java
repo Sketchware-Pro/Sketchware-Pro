@@ -184,10 +184,9 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         });
 
         binding.openColorPalette.setOnClickListener(v -> {
-            View inflate = getLayoutInflater().inflate(R.layout.color_picker, null);
-            Zx zx = new Zx(inflate, this, 0, true, false);
+            Zx zx = new Zx(this, 0, true, false);
             zx.a(new PCP(binding.colour));
-            zx.showAtLocation(inflate, Gravity.CENTER, 0, 0);
+            zx.showAtLocation(v, Gravity.CENTER, 0, 0);
         });
 
         binding.colour.addTextChangedListener(new BaseTextWatcher() {

@@ -6,10 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -20,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ColorBean;
 import com.besome.sketch.editor.view.ColorGroupItem;
-import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ColorPickerBinding;
 
 import java.util.ArrayList;
 
@@ -32,22 +29,19 @@ public class Zx extends PopupWindow {
     private b colorPickerCallback;
     private final ArrayList<ColorBean> colorList = new ArrayList<>();
     private final ArrayList<ColorBean[]> colorGroups = new ArrayList<>();
-    private LinearLayout d;
     private XB colorValidator;
-    private EditText f;
-    private TextView g;
-    private TextView h;
-    private HorizontalScrollView i;
-    private RecyclerView recyclerView;
     private int k;
     private int l;
     private int m = -1;
     private DB colorPref;
     private Activity activity;
 
-    public Zx(View contentView, Activity activity, int var3, boolean var4, boolean var5) {
+    private final ColorPickerBinding binding;
+
+    public Zx(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         super(activity);
-        initialize(contentView, activity, var3, var4, var5);
+        binding = ColorPickerBinding.inflate(activity.getLayoutInflater());
+        initialize(activity, var3, isTransparentColor, isNoneColor);
     }
 
     private void deleteAllSavedColors() {
@@ -69,10 +63,10 @@ public class Zx extends PopupWindow {
         colorPickerCallback = callback;
     }
 
-    public void initialize(View contentView, Activity activity, int var3, boolean var4, boolean var5) {
+    public void initialize(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         this.activity = activity;
         colorPref = new DB(activity, "P24");
-        initializeColorData(var4, var5);
+        initializeColorData(isTransparentColor, isNoneColor);
 
         for (int groupIndex = 0; groupIndex < colorGroups.size(); ++groupIndex) {
             ColorBean[] colorBeans = colorGroups.get(groupIndex);
@@ -90,33 +84,29 @@ public class Zx extends PopupWindow {
         super.setAnimationStyle(android.R.style.Animation_Dialog);
         super.setFocusable(true);
         super.setOutsideTouchable(true);
-        super.setContentView(contentView);
+        super.setContentView(binding.getRoot());
         int[] widthAndHeight = GB.c(activity);
         super.setWidth(widthAndHeight[0]);
         super.setHeight(widthAndHeight[1]);
-        i = contentView.findViewById(R.id.layout_hsv_color);
-        d = contentView.findViewById(R.id.layout_color_title);
-        recyclerView = contentView.findViewById(R.id.color_list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity.getApplicationContext()));
-        recyclerView.setAdapter(new ColorsAdapter());
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        f = contentView.findViewById(R.id.et_custom_color);
-        ((TextInputLayout) contentView.findViewById(R.id.ti_custom_color)).setHint(xB.b().a(activity, R.string.picker_color_hint_enter_hex_color_code));
-        g = contentView.findViewById(R.id.tv_custom_color);
-        colorValidator = new XB(activity, contentView.findViewById(R.id.ti_custom_color), g);
-        f.setPrivateImeOptions("defaultInputmode=english;");
-        h = contentView.findViewById(R.id.tv_add_color);
-        h.setText(xB.b().a(activity, R.string.common_word_add).toUpperCase());
-        h.setOnClickListener(view -> {
+        binding.colorList.setHasFixedSize(true);
+        binding.colorList.setLayoutManager(new LinearLayoutManager(activity.getApplicationContext()));
+        binding.colorList.setAdapter(new ColorsAdapter());
+        binding.colorList.setItemAnimator(new DefaultItemAnimator());
+
+        binding.tiCustomColor.setHint(xB.b().a(activity, R.string.picker_color_hint_enter_hex_color_code));
+
+        colorValidator = new XB(activity, binding.tiCustomColor, binding.tvCustomColor);
+        binding.etCustomColor.setPrivateImeOptions("defaultInputmode=english;");
+        binding.tvAddColor.setText(xB.b().a(activity, R.string.common_word_add).toUpperCase());
+        binding.tvAddColor.setOnClickListener(view -> {
             if (colorValidator.b()) {
-                String formattedColor = String.format("#%8s", f.getText().toString()).replaceAll(" ", "F");
+                String formattedColor = String.format("#%8s", binding.etCustomColor.getText().toString()).replaceAll(" ", "F");
                 savePickedColor(formattedColor.toUpperCase());
                 notifyChanges();
             }
         });
-        recyclerView.getAdapter().notifyItemChanged(m);
-        d.removeAllViews();
+        binding.colorList.getAdapter().notifyItemChanged(m);
+        binding.layoutColorTitle.removeAllViews();
 
         for (int j = 0; j < colorList.size(); ++j) {
             ColorGroupItem colorGroupItem = new ColorGroupItem(activity);
@@ -128,12 +118,12 @@ public class Zx extends PopupWindow {
                     bB.b(activity, xB.b().a(activity, R.string.picker_color_custom_color_not_found), 1).show();
 
                 }
-                recyclerView.getAdapter().notifyDataSetChanged();
+                binding.colorList.getAdapter().notifyDataSetChanged();
             });
             colorGroupItem.b.setText(colorBean.colorName);
             colorGroupItem.b.setTextColor(colorBean.displayNameColor);
             colorGroupItem.b.setBackgroundColor(colorBean.colorCode);
-            d.addView(colorGroupItem);
+            binding.layoutColorTitle.addView(colorGroupItem);
             if (j == k) {
                 colorGroupItem.c.setImageResource(colorBean.icon);
                 colorGroupItem.c.setVisibility(View.VISIBLE);
@@ -147,7 +137,7 @@ public class Zx extends PopupWindow {
             });
         }
 
-        Animation animation = contentView.getAnimation();
+        Animation animation = binding.getRoot().getAnimation();
         if (animation != null) {
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
@@ -335,10 +325,10 @@ public class Zx extends PopupWindow {
     }
 
     private void smoothScrollToCurrentItem() {
-        if (k < d.getChildCount()) {
-            View childView = d.getChildAt(k);
-            i.smoothScrollTo((int) childView.getX(), 0);
-            recyclerView.scrollToPosition(m);
+        if (k < binding.layoutColorTitle.getChildCount()) {
+            View childView = binding.layoutColorTitle.getChildAt(k);
+            binding.layoutHsvColor.smoothScrollTo((int) childView.getX(), 0);
+            binding.colorList.scrollToPosition(m);
         }
     }
 
@@ -360,7 +350,7 @@ public class Zx extends PopupWindow {
         l = 0;
         k = 0;
         m = 0;
-        recyclerView.getAdapter().notifyDataSetChanged();
+        binding.colorList.getAdapter().notifyDataSetChanged();
     }
 
     private class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorViewHolder> {
@@ -375,21 +365,21 @@ public class Zx extends PopupWindow {
         public void onBindViewHolder(ColorViewHolder holder, int position) {
             ColorBean colorBean = ((ColorBean[]) colorGroups.get(l))[position];
 
-            holder.u.setText(colorBean.getColorCode(l == 0));
+            holder.tvColorCode.setText(colorBean.getColorCode(l == 0));
             if (position == 0) {
-                holder.v.setText(((ColorBean[]) colorGroups.get(l))[0].colorName);
+                holder.tvColorName.setText(((ColorBean[]) colorGroups.get(l))[0].colorName);
             } else {
-                holder.v.setText("");
+                holder.tvColorName.setText("");
             }
 
-            holder.u.setTextColor(((ColorBean[]) colorGroups.get(l))[position].displayNameColor);
-            holder.v.setTextColor(((ColorBean[]) colorGroups.get(l))[position].displayNameColor);
-            holder.t.setBackgroundColor(((ColorBean[]) colorGroups.get(l))[position].colorCode);
+            holder.tvColorCode.setTextColor(((ColorBean[]) colorGroups.get(l))[position].displayNameColor);
+            holder.tvColorName.setTextColor(((ColorBean[]) colorGroups.get(l))[position].displayNameColor);
+            holder.layoutColorItem.setBackgroundColor(((ColorBean[]) colorGroups.get(l))[position].colorCode);
             if (position == m && l == k) {
-                holder.w.setImageResource(((ColorBean[]) colorGroups.get(l))[position].icon);
-                holder.w.setVisibility(View.VISIBLE);
+                holder.imgSelector.setImageResource(((ColorBean[]) colorGroups.get(l))[position].icon);
+                holder.imgSelector.setVisibility(View.VISIBLE);
             } else {
-                holder.w.setVisibility(View.GONE);
+                holder.imgSelector.setVisibility(View.GONE);
             }
 
         }
@@ -401,31 +391,31 @@ public class Zx extends PopupWindow {
 
         private class ColorViewHolder extends RecyclerView.ViewHolder {
 
-            public View t;
-            public TextView u;
-            public TextView v;
-            public ImageView w;
+            public View layoutColorItem;
+            public TextView tvColorCode;
+            public TextView tvColorName;
+            public ImageView imgSelector;
 
             public ColorViewHolder(View itemView) {
                 super(itemView);
-                t = itemView.findViewById(R.id.layout_color_item);
-                u = itemView.findViewById(R.id.tv_color_code);
-                v = itemView.findViewById(R.id.tv_color_name);
-                w = itemView.findViewById(R.id.img_selector);
+                layoutColorItem = itemView.findViewById(R.id.layout_color_item);
+                tvColorCode = itemView.findViewById(R.id.tv_color_code);
+                tvColorName = itemView.findViewById(R.id.tv_color_name);
+                imgSelector = itemView.findViewById(R.id.img_selector);
                 itemView.setOnClickListener(v -> {
                     if (colorPickerCallback != null) {
-                        if (u.getText().toString().equals("TRANSPARENT")) {
+                        if (tvColorCode.getText().toString().equals("TRANSPARENT")) {
                             colorPickerCallback.a(0);
-                        } else if (u.getText().toString().equals("NONE")) {
+                        } else if (tvColorCode.getText().toString().equals("NONE")) {
                             colorPickerCallback.a(0xffffff);
                         } else {
-                            colorPickerCallback.a(Color.parseColor(u.getText().toString()));
+                            colorPickerCallback.a(Color.parseColor(tvColorCode.getText().toString()));
                         }
                     }
                     dismiss();
                 });
                 itemView.setOnLongClickListener(v -> {
-                    if (l == 0) showColorRemoveDialog(u.getText().toString());
+                    if (l == 0) showColorRemoveDialog(tvColorCode.getText().toString());
                     return false;
                 });
             }

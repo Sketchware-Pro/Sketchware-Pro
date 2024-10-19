@@ -130,7 +130,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             binding.layoutThemeColors.addView(colorView);
             colorView.setOnClickListener(v -> {
                 if (!mB.a()) {
-                    pickColor((Integer) v.getTag());
+                    pickColor(v, (Integer) v.getTag());
                 }
             });
         }
@@ -377,14 +377,13 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private void pickColor(int colorIndex) {
-        View view = wB.a(this, R.layout.color_picker);
-        Zx zx = new Zx(view, this, projectThemeColors[colorIndex], false, false);
+    private void pickColor(View anchorView, int colorIndex) {
+        Zx zx = new Zx(this, projectThemeColors[colorIndex], false, false);
         zx.a(pickedColor -> {
             projectThemeColors[colorIndex] = pickedColor;
             syncThemeColors();
         });
-        zx.showAtLocation(view, Gravity.CENTER, 0, 0);
+        zx.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
     }
 
     private void showResetIconConfirmation() {
