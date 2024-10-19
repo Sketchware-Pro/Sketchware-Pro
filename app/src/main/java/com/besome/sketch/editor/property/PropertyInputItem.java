@@ -213,6 +213,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
+
         View view = wB.a(getContext(), R.layout.property_popup_input_text);
         EditText input = view.findViewById(R.id.ed_input);
         TextInputLayout textInputLayout = view.findViewById(R.id.ti_input);
@@ -226,53 +227,60 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         } else {
             loadStringsListMap();
             setupTextWatcher(textAutoCompleteInput, autoCompleteTextView);
+
             lengthValidator = new SB(context, textAutoCompleteInput, 0, maxValue);
             textAutoCompleteInput.setVisibility(View.VISIBLE);
             textInputLayout.setVisibility(View.GONE);
 
             dialog.a(view);
-            dialog.configureDefaultButton(context.getString(R.string.strings_xml), v1 -> {
+            dialog.configureDefaultButton(context.getString(R.string.strings_xml), v -> {
                 autoCompleteTextView.setText(stringsStart);
                 autoCompleteTextView.setSelection(stringsStart.length());
+                autoCompleteTextView.requestFocus();
             });
 
-            keysList = new ArrayList<>();
-            List<String> mergedList = new ArrayList<>();
-
-            for (HashMap<String, Object> map : StringsListMap) {
-                String keyValue = map.get("key").toString();
-                keysList.add(stringsStart + keyValue);
-                mergedList.add(stringsStart + map.get("key") + " (" + map.get("text") + " )");
-            }
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                    context, android.R.layout.simple_dropdown_item_1line, mergedList);
-
-            autoCompleteTextView.setAdapter(adapter);
-            autoCompleteTextView.setThreshold(1);
-            autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
-                String value = autoCompleteTextView.getText().toString();
-                autoCompleteTextView.setText(value.substring(0, value.indexOf(" (")));
-                autoCompleteTextView.setSelection(autoCompleteTextView.getText().toString().length());
-            });
+            setupAutoCompleteTextView(autoCompleteTextView);
         }
 
         lengthValidator.a(value);
         dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
-            if (lengthValidator.b()) {
-                if (textAutoCompleteInput.getError() != null) return;
-                if (isInject) {
-                    setValue(input.getText().toString());
-                } else {
-                    setValue(autoCompleteTextView.getText().toString());
-                }
-                if (valueChangeListener != null) valueChangeListener.a(key, value);
-                dialog.dismiss();
-            }
-        });
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> handleSave(lengthValidator, input, autoCompleteTextView, textAutoCompleteInput, isInject, dialog));
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
+    }
+
+    private void setupAutoCompleteTextView(MaterialAutoCompleteTextView autoCompleteTextView) {
+        keysList = new ArrayList<>();
+        List<String> mergedList = new ArrayList<>();
+
+        for (HashMap<String, Object> map : StringsListMap) {
+            String keyValue = map.get("key").toString();
+            keysList.add(stringsStart + keyValue);
+            mergedList.add(stringsStart + keyValue + " ( " + map.get("text") + " )");
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, mergedList);
+        autoCompleteTextView.setAdapter(adapter);
+        autoCompleteTextView.setThreshold(1);
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            String value = autoCompleteTextView.getText().toString();
+            autoCompleteTextView.setText(value.substring(0, value.indexOf(" (")));
+            autoCompleteTextView.setSelection(autoCompleteTextView.getText().length());
+        });
+    }
+
+    private void handleSave(SB lengthValidator, EditText input,
+                            MaterialAutoCompleteTextView autoCompleteTextView, TextInputLayout textAutoCompleteInput,
+                            boolean isInject, aB dialog) {
+        if (lengthValidator.b() && textAutoCompleteInput.getError() == null) {
+            if (isInject) {
+                setValue(input.getText().toString());
+            } else {
+                setValue(autoCompleteTextView.getText().toString());
+            }
+            if (valueChangeListener != null) valueChangeListener.a(key, value);
+            dialog.dismiss();
+        }
     }
 
     private void loadStringsListMap() {
@@ -284,12 +292,10 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     public void setupTextWatcher(TextInputLayout textAutoCompleteInput, MaterialAutoCompleteTextView editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -308,11 +314,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                     }
                 }
 
-                if (!foundMatch) {
-                    textAutoCompleteInput.setError("Not found in strings.xml");
-                } else {
-                    textAutoCompleteInput.setError(null);
-                }
+                textAutoCompleteInput.setError(foundMatch ? null : "Not found in strings.xml");
             }
         });
     }
