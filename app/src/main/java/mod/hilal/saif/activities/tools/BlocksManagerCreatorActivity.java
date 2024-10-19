@@ -42,6 +42,7 @@ import a.a.a.Rs;
 import a.a.a.Zx;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hasrat.highlighter.SimpleHighlighter;
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
@@ -403,7 +404,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         var blockType = specId.equalsIgnoreCase("regular") ? " " : specId;
         try {
             var block = new Rs(this, -1, binding.spec.getText().toString(), blockType, binding.name.getText().toString());
-            block.e = Color.parseColor(color);
+            block.e = PropertiesUtil.isHexColor(color) ? PropertiesUtil.parseColor(color) : Color.parseColor("#F0F0F0");
             binding.blockArea.addView(block);
         } catch (Exception e) {
             var block = new TextView(this);
