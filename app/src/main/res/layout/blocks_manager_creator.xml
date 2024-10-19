@@ -199,6 +199,20 @@
                                 android:padding="8dp" />
                         </HorizontalScrollView>
                     </com.google.android.material.card.MaterialCardView>
+                    
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/specInputLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/spec"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Spec"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/spec2InputLayout"
@@ -213,29 +227,28 @@
                             android:hint="Spec2"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-
+                    
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
                         android:padding="4dp"
-                        android:text="Block preview (click to edit)"
+                        android:text="Block preview"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textSize="12sp" />
 
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginRight="8dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/spec"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:gravity="center"
-                        android:hint="block spec"
-                        android:padding="8dp"
-                        android:singleLine="true"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                        <RelativeLayout
+                            android:id="@+id/block_area"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </HorizontalScrollView>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

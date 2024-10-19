@@ -38,6 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import a.a.a.Rs;
 import a.a.a.Zx;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -51,6 +52,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
     private BlocksManagerCreatorBinding binding;
     private final ArrayList<String> id_detector = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> blocksList = new ArrayList<>();
+    
     /**
      * Current mode of this activity, "edit" if editing a block, "add" if creating a new block and "insert" if inserting a block above another
      */
@@ -157,29 +159,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         binding.spec.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Matcher matcher = Pattern.compile("%[smdb]\\.?[a-zA-Z]*").matcher(s.toString());
-                while (matcher.find()) {
-                    try {
-                        binding.spec.getEditableText().setSpan(new ForegroundColorSpan(Color.WHITE),
-                                matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        binding.spec.getEditableText().setSpan(new BackgroundColorSpan(0x18000000),
-                                matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        binding.spec.getEditableText().setSpan(new RelativeSizeSpan(-5),
-                                matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        binding.spec.getEditableText().setSpan(new StyleSpan(1), matcher.start(),
-                                matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    } catch (Exception ignored) {
-                    }
-                }
+                updateBlockSpec(binding.type.getText().toString(), binding.colour.getText().toString());
             }
         });
 
@@ -416,44 +396,17 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
     }
 
     private void updateBlockSpec(String specId, String color) {
-        switch (specId) {
-            case " ":
-            case "regular":
-                binding.spec.setBackgroundResource(R.drawable.block_ori);
-                break;
-
-            case "b":
-                binding.spec.setBackgroundResource(R.drawable.block_boolean);
-                break;
-
-            case "c":
-            case "e":
-                binding.spec.setBackgroundResource(R.drawable.if_else);
-                break;
-
-            case "d":
-                binding.spec.setBackgroundResource(R.drawable.block_num);
-                break;
-
-            case "f":
-                binding.spec.setBackgroundResource(R.drawable.block_stop);
-                break;
-
-            default:
-                binding.spec.setBackgroundResource(R.drawable.block_string);
-                break;
-        }
+        binding.blockArea.removeAllViews();
+        var blockType = specId.equalsIgnoreCase("regular") ? " " : specId;
         try {
-            binding.spec.getBackground().setColorFilter(Color.parseColor(color), PorterDuff.Mode.MULTIPLY);
-            binding.spec.setTag(color);
+            var block = new Rs(this, -1, binding.spec.getText().toString(), blockType, binding.name.getText().toString());
+            block.e = Color.parseColor(color);
+            binding.blockArea.addView(block);
         } catch (Exception e) {
-            try {
-                binding.spec.getBackground().setColorFilter(Color.parseColor(palletColour), PorterDuff.Mode.MULTIPLY);
-                binding.spec.setTag(palletColour);
-            } catch (Exception e2) {
-                binding.spec.getBackground().setColorFilter(Color.parseColor("#8c8c8c"), PorterDuff.Mode.MULTIPLY);
-                binding.spec.setTag("#8c8c8c");
-            }
+            var block = new TextView(this);
+            block.setText("Error parsing block");
+            block.setTextColor(Color.RED);
+            binding.blockArea.addView(block);
         }
     }
 
