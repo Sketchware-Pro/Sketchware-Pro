@@ -175,12 +175,21 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         binding.colour.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!PropertiesUtil.isHexColor(s.toString())) {
+                    binding.colourLay.setError("Invalid hex color");
+                } else {
+                    binding.colourLay.setError(null);
+                }
                 updateBlockSpec(binding.type.getText().toString(), s.toString());
             }
         });
 
         binding.cancel.setOnClickListener(Helper.getBackPressedClickListener(this));
         binding.save.setOnClickListener(v -> {
+            if (!PropertiesUtil.isHexColor(binding.colour.getText().toString())) {
+                SketchwareUtil.showMessage(getApplicationContext(), "Invalid hex color");
+                return;
+            }
             if (binding.type.getText().toString().isEmpty()) {
                 binding.type.setText(" ");
             }
