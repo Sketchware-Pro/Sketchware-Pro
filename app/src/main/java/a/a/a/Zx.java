@@ -239,89 +239,41 @@ public class Zx extends PopupWindow {
 
     private ColorBean[] getSavedColorBeans() {
         String savedColors = colorPref.f("P24I1");
-        ColorBean[] var4;
+        ColorBean[] colorBeansResult;
         if (!savedColors.isEmpty()) {
             String[] colorStrings = savedColors.split(",");
             ColorBean[] colorBeans = new ColorBean[colorStrings.length];
-            int var3 = 0;
+            int index = 0;
+            while (index < colorStrings.length) {
+                try {
+                    int parsedColor = Color.parseColor(colorStrings[index]);
+                    int red = Color.red(parsedColor);
+                    int green = Color.green(parsedColor);
+                    int blue = Color.blue(parsedColor);
 
-            while (true) {
-                var4 = colorBeans;
-                if (var3 >= colorStrings.length) {
-                    break;
-                }
+                    int count = 0;
+                    if (red > 240) count++;
+                    if (green > 240) count++;
+                    if (blue > 240) count++;
 
-                label52:
-                {
-                    label61:
-                    {
-                        int var5;
-                        int var6;
-                        int var7;
-                        int var8;
-                        boolean var10001;
-                        try {
-                            var5 = Color.parseColor(colorStrings[var3]);
-                            var6 = Color.red(var5);
-                            var7 = Color.green(var5);
-                            var8 = Color.blue(var5);
-                        } catch (Exception var11) {
-                            var10001 = false;
-                            break label61;
-                        }
 
-                        byte var14;
-                        if (var6 > 240) {
-                            var14 = 1;
-                        } else {
-                            var14 = 0;
-                        }
+                    colorBeans[index] = new ColorBean(colorStrings[index], "CUSTOM",
+                            count >= 2 ? "#212121" : "#ffffff",
+                            R.drawable.checked_white_32);
 
-                        var6 = var14;
-                        if (var7 > 240) {
-                            var6 = var14 + 1;
-                        }
-
-                        var5 = var6;
-                        if (var8 > 240) {
-                            var5 = var6 + 1;
-                        }
-
-                        if (var5 >= 2) {
-                            label44:
-                            {
-                                ColorBean var13;
-                                try {
-                                    var13 = new ColorBean(colorStrings[var3], "CUSTOM", "#212121", R.drawable.checked_grey_32);
-                                } catch (Exception var9) {
-                                    var10001 = false;
-                                    break label44;
-                                }
-
-                                colorBeans[var3] = var13;
-                                break label52;
-                            }
-                        } else {
-                            try {
-                                colorBeans[var3] = new ColorBean(colorStrings[var3], "CUSTOM", "#ffffff", R.drawable.checked_white_32);
-                                break label52;
-                            } catch (Exception var10) {
-                                var10001 = false;
-                            }
-                        }
-                    }
-
+                } catch (Exception e) {
                     colorPref.a();
                     colorBeans = new ColorBean[0];
+                    break;
                 }
-
-                ++var3;
+                index++;
             }
+            colorBeansResult = colorBeans;
         } else {
-            var4 = new ColorBean[0];
+            colorBeansResult = new ColorBean[0];
         }
 
-        return var4;
+        return colorBeansResult;
     }
 
     private void smoothScrollToCurrentItem() {
