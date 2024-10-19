@@ -133,7 +133,7 @@ public class StringEditorActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void convertXmlToListMap(final String xmlString, final ArrayList<HashMap<String, Object>> listmap) {
+    public static void convertXmlToListMap(final String xmlString, final ArrayList<HashMap<String, Object>> listmap) {
         try {
             listmap.clear();
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
