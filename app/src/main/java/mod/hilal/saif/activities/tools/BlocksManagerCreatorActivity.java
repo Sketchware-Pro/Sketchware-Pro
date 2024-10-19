@@ -191,6 +191,11 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                 SketchwareUtil.showMessage(getApplicationContext(), "Invalid hex color");
                 return;
             }
+            Matcher matcher = PARAM_PATTERN.matcher(binding.spec.getText().toString());
+            if (matcher.find()) {
+                SketchwareUtil.showMessage(getApplicationContext(), "Invalid block params");
+                return;
+            }
             if (binding.type.getText().toString().isEmpty()) {
                 binding.type.setText(" ");
             }
