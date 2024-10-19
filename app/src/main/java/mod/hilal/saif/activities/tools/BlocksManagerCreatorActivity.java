@@ -1,15 +1,9 @@
 package mod.hilal.saif.activities.tools;
 
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.Gravity;
