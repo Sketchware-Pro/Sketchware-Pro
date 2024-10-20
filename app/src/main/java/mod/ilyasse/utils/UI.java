@@ -11,13 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.sketchware.remod.R;
 
 public class UI {
-    public static void circularImage(ImageView image, String url) {
+    public static void loadImageFromUrl(ImageView image, String url) {
         Glide.with(image.getContext())
                 .load(url)
-                .placeholder(R.drawable.ic_user)
                 .into(image);
     }
 

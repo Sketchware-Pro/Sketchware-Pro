@@ -1,4 +1,4 @@
-package com.besome.sketch;
+package com.besome.sketch.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.export.ExportProjectActivity;
+import com.besome.sketch.fragments.ProjectsFragment;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sketchware.remod.R;
@@ -143,22 +144,21 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
             holder.binding.imgIcon.setImageURI(uri);
         }
 
-        holder.binding.appName.setText(yB.c(projectMap, "my_ws_name"));
+        String version = " - " + yB.c(projectMap, "sc_ver_name") + " (" + yB.c(projectMap, "sc_ver_code") + ")";
+        holder.binding.appName.setText(yB.c(projectMap, "my_ws_name") + version);
         holder.binding.projectName.setText(yB.c(projectMap, "my_app_name"));
         holder.binding.packageName.setText(yB.c(projectMap, "my_sc_pkg_name"));
-        String version = yB.c(projectMap, "sc_ver_name") + " (" + yB.c(projectMap, "sc_ver_code") + ")";
-        holder.binding.projectVersion.setText(version);
         holder.binding.tvPublished.setVisibility(View.VISIBLE);
         holder.binding.tvPublished.setText(scId);
         holder.itemView.setTag("custom");
 
-        holder.binding.projectOne.setOnClickListener(v -> {
+        holder.binding.getRoot().setOnClickListener(v -> {
             if (!mB.a()) {
                 projectsFragment.toDesignActivity(scId);
             }
         });
 
-        View.OnClickListener clickListener = v -> {
+        View.OnClickListener showProjectSettingsDialog = v -> {
             mB.a(v);
             int currentPosition = holder.getAbsoluteAdapterPosition();
             if (currentPosition != RecyclerView.NO_POSITION) {
@@ -166,19 +166,10 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
             }
         };
 
-        holder.binding.getRoot().setOnClickListener(clickListener);
-        holder.binding.expand.setOnClickListener(clickListener);
-        holder.binding.imgIcon.setOnClickListener(v -> {
-            int currentPosition = holder.getAbsoluteAdapterPosition();
-            if (currentPosition != RecyclerView.NO_POSITION) {
-                showProjectOptionsBottomSheet(projectMap, currentPosition);
-            }
-        });
-        holder.binding.projectOne.setOnLongClickListener(v -> {
-            int currentPosition = holder.getAbsoluteAdapterPosition();
-            if (currentPosition != RecyclerView.NO_POSITION) {
-                showProjectOptionsBottomSheet(projectMap, currentPosition);
-            }
+        holder.binding.expand.setOnClickListener(showProjectSettingsDialog);
+        holder.binding.imgIcon.setOnClickListener(v -> toProjectSettingOrRequestPermission(projectMap, position));
+        holder.binding.getRoot().setOnLongClickListener(v -> {
+            showProjectOptionsBottomSheet(projectMap, holder.getAbsoluteAdapterPosition());
             return true;
         });
     }

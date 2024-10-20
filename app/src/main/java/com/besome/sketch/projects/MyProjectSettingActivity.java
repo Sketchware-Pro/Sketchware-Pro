@@ -107,8 +107,6 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         projectAppNameValidator = new LB(getApplicationContext(), binding.tilAppName);
         projectPackageNameValidator = new UB(getApplicationContext(), binding.tilPackageName);
         projectNameValidator = new VB(getApplicationContext(), binding.tilProjectName);
-        binding.etPackageName.setPrivateImeOptions("defaultInputmode=english;");
-        binding.etProjectName.setPrivateImeOptions("defaultInputmode=english;");
         binding.tilPackageName.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 if (!shownPackageNameChangeWarning && !((EditText) v).getText().toString().trim().contains("com.my.newproject")) {
@@ -130,12 +128,13 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             binding.layoutThemeColors.addView(colorView);
             colorView.setOnClickListener(v -> {
                 if (!mB.a()) {
-                    pickColor((Integer) v.getTag());
+                    pickColor(v, (Integer) v.getTag());
                 }
             });
         }
         if (updatingExistingProject) {
             /* Set the dialog's title & save button label */
+            binding.toolbar.setTitle("Project Settings");
             HashMap<String, Object> metadata = lC.b(sc_id);
             binding.etPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
             binding.etProjectName.setText(yB.c(metadata, "my_ws_name"));
@@ -377,14 +376,13 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private void pickColor(int colorIndex) {
-        View view = wB.a(this, R.layout.color_picker);
-        Zx zx = new Zx(view, this, projectThemeColors[colorIndex], false, false);
+    private void pickColor(View anchorView, int colorIndex) {
+        Zx zx = new Zx(this, projectThemeColors[colorIndex], false, false);
         zx.a(pickedColor -> {
             projectThemeColors[colorIndex] = pickedColor;
             syncThemeColors();
         });
-        zx.showAtLocation(view, Gravity.CENTER, 0, 0);
+        zx.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
     }
 
     private void showResetIconConfirmation() {

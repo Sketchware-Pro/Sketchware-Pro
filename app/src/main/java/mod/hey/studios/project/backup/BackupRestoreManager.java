@@ -1,7 +1,6 @@
 package mod.hey.studios.project.backup;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.widget.CheckBox;
@@ -12,7 +11,7 @@ import android.view.LayoutInflater;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.besome.sketch.ProjectsFragment;
+import com.besome.sketch.fragments.ProjectsFragment;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;

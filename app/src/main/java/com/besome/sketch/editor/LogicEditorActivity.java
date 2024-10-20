@@ -27,7 +27,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -1225,8 +1224,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void b(Ss ss) {
-        View a2 = wB.a(this, R.layout.color_picker);
-        Zx zx = new Zx(a2, this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false);
+        Zx zx = new Zx(this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false);
         zx.a(i -> {
             if (i == 0) {
                 a(ss, "Color.TRANSPARENT");
@@ -1234,7 +1232,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 a(ss, String.format("0x%08X", i & (Color.WHITE)));
             }
         });
-        zx.showAtLocation(a2, Gravity.CENTER, 0, 0);
+        zx.showAtLocation(ss, Gravity.CENTER, 0, 0);
     }
 
     public final void b(String str, String str2) {
