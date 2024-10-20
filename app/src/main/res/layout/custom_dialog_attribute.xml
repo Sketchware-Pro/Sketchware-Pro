@@ -2,14 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingLeft="24dp"
-    android:paddingTop="24dp"
-    android:paddingRight="24dp"
-    android:paddingBottom="8dp">
+    android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
-        style="?textInputFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="res">
@@ -19,12 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:textSize="16sp"
-            tools:text="hello" />
+            android:textSize="16sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        style="?textInputFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -40,7 +33,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_value"
-        style="?textInputFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

@@ -107,8 +107,6 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         projectAppNameValidator = new LB(getApplicationContext(), binding.tilAppName);
         projectPackageNameValidator = new UB(getApplicationContext(), binding.tilPackageName);
         projectNameValidator = new VB(getApplicationContext(), binding.tilProjectName);
-        binding.etPackageName.setPrivateImeOptions("defaultInputmode=english;");
-        binding.etProjectName.setPrivateImeOptions("defaultInputmode=english;");
         binding.tilPackageName.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 if (!shownPackageNameChangeWarning && !((EditText) v).getText().toString().trim().contains("com.my.newproject")) {
@@ -136,6 +134,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         }
         if (updatingExistingProject) {
             /* Set the dialog's title & save button label */
+            binding.toolbar.setTitle("Project Settings");
             HashMap<String, Object> metadata = lC.b(sc_id);
             binding.etPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
             binding.etProjectName.setText(yB.c(metadata, "my_ws_name"));

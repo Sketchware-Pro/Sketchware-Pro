@@ -25,7 +25,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.besome.sketch.fragments.ProjectsFragment;
+import com.besome.sketch.fragments.projects_store.ProjectsStoreFragment;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -195,6 +198,8 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             }
         });
 
+        binding.viewPager.setOffscreenPageLimit(2);
+
         fragmentsAdapter = new FragmentsAdapter(this);
         binding.viewPager.setAdapter(fragmentsAdapter);
 
@@ -206,6 +211,17 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         new TabLayoutMediator(binding.tabLayout, binding.viewPager,
                 (tab, position) -> tab.setText(tabTitles[position])
         ).attach();
+
+        binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    binding.createNewProject.show();
+                } else {
+                    binding.createNewProject.hide();
+                }
+            }
+        });
 
         boolean hasStorageAccess = isStoragePermissionGranted();
         if (!hasStorageAccess) {
