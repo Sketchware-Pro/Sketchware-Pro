@@ -244,6 +244,7 @@ public class StringEditorActivity extends AppCompatActivity {
                 return;
             }
         }
+        listmap.add(map);
         adapter.notifyItemInserted(listmap.size() - 1);
     }
 
