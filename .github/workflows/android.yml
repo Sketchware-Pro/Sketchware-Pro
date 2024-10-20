@@ -72,7 +72,6 @@ jobs:
       - name: Set environmental variables
         shell: bash
         env:
-          SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
           JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
         if: ${{ env.JSON_CONTENT != '' }}
         run: |
@@ -82,6 +81,8 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Build debug APK
+        env:
+          SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
         run: gradle assembleMinApi${{ matrix.apiLevel }}Debug
 
       - name: Upload debug APK
