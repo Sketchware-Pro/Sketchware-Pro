@@ -72,6 +72,7 @@ jobs:
       - name: Set environmental variables
         shell: bash
         env:
+          SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
           JSON_CONTENT: ${{ secrets.GOOGLE_SERVICES_JSON }}
         if: ${{ env.JSON_CONTENT != '' }}
         run: |
