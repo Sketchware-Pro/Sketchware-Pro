@@ -1,4 +1,4 @@
-package com.besome.sketch;
+package com.besome.sketch.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +21,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.MainActivity;
+import com.besome.sketch.adapters.ProjectsAdapter;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;

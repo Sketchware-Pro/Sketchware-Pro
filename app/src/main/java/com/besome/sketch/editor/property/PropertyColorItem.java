@@ -75,7 +75,7 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            showColorPicker();
+            showColorPicker(v);
         }
     }
 
@@ -108,10 +108,9 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         }
     }
 
-    private void showColorPicker() {
+    private void showColorPicker(View anchorView) {
         boolean colorNoneAvailable;
         boolean colorTransparentAvailable;
-        View view = wB.a(context, R.layout.color_picker);
         if (key.equals("property_background_color")) {
             colorTransparentAvailable = true;
             colorNoneAvailable = true;
@@ -119,13 +118,13 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             colorTransparentAvailable = false;
             colorNoneAvailable = false;
         }
-        Zx colorPicker = new Zx(view, (Activity) context, value, colorTransparentAvailable, colorNoneAvailable);
+        Zx colorPicker = new Zx((Activity) context, value, colorTransparentAvailable, colorNoneAvailable);
         colorPicker.a(i -> {
             setValue(i);
             if (valueChangeListener != null) {
                 valueChangeListener.a(key, value);
             }
         });
-        colorPicker.showAtLocation(view, Gravity.CENTER, 0, 0);
+        colorPicker.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
     }
 }

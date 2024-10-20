@@ -1,7 +1,7 @@
 package mod.ilyasse.activities.about.adapters;
 
 import static mod.ilyasse.utils.UI.advancedCorners;
-import static mod.ilyasse.utils.UI.circularImage;
+import static mod.ilyasse.utils.UI.loadImageFromUrl;
 import static mod.ilyasse.utils.UI.rippleRound;
 
 import android.view.LayoutInflater;
@@ -40,7 +40,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
 
         String contributorImg = member.getMemberImg();
         if (contributorImg != null) {
-            circularImage(holder.binding.imgUserIcon, contributorImg);
+            loadImageFromUrl(holder.binding.imgUserIcon, contributorImg);
         }
 
         String contributorUsername = member.getMemberUsername();
