@@ -2,15 +2,17 @@ package com.besome.sketch.fragments.projects_store.adapters;
 
 import static mod.ilyasse.utils.UI.loadImageFromUrl;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.fragments.projects_store.ProjectPreviewFragment;
 import com.besome.sketch.fragments.projects_store.api.ProjectModel;
+import com.google.gson.Gson;
 import com.sketchware.remod.databinding.ViewStoreProjectItemBinding;
 
 import java.util.List;
@@ -18,9 +20,11 @@ import java.util.List;
 public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdapter.ViewHolder> {
 
     private final List<ProjectModel.Project> projects;
+    private final FragmentActivity context;
 
-    public StoreProjectsAdapter(List<ProjectModel.Project> projects) {
+    public StoreProjectsAdapter(List<ProjectModel.Project> projects, FragmentActivity context) {
         this.projects = projects;
+        this.context = context;
     }
 
     @NonNull
@@ -43,11 +47,7 @@ public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdap
         holder.itemView.setScaleX(1f);
         holder.itemView.setScaleY(1f);
 
-        holder.binding.getRoot().setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("https://web.sketchub.in/p/" + project.getId()));
-            holder.itemView.getContext().startActivity(intent);
-        });
+        holder.binding.getRoot().setOnClickListener(v -> openProject(project));
     }
 
     @Override
@@ -64,6 +64,19 @@ public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdap
         public ViewHolder(ViewStoreProjectItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+        }
+    }
+
+    private void openProject(ProjectModel.Project project) {
+        var fm = context.getSupportFragmentManager();
+
+        if (fm.findFragmentByTag("project_preview") == null) {
+            var bundle = new Bundle();
+            bundle.putString("project_json", new Gson().toJson(project));
+
+            var bottomSheet = new ProjectPreviewFragment();
+            bottomSheet.setArguments(bundle);
+            bottomSheet.show(fm, "project_preview");
         }
     }
 }

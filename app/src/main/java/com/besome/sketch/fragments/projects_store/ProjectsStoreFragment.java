@@ -70,17 +70,17 @@ public class ProjectsStoreFragment extends Fragment {
     private void fetchData() {
         sketchHubAPI.getEditorsChoicerProjects(1, projectModel -> {
             if (projectModel != null) {
-                binding.editorsChoiceProjectsRecyclerView.setAdapter(new StorePagerProjectsAdapter(projectModel.getProjects()));
+                binding.editorsChoiceProjectsRecyclerView.setAdapter(new StorePagerProjectsAdapter(projectModel.getProjects(), requireActivity()));
             }
         });
         sketchHubAPI.getMostDownloadedProjects(1, projectModel -> {
             if (projectModel != null) {
-                binding.mostDownloadedProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects()));
+                binding.mostDownloadedProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), requireActivity()));
             }
         });
         sketchHubAPI.getRecentProjects(1, projectModel -> {
             if (projectModel != null) {
-                binding.recentProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects()));
+                binding.recentProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), requireActivity()));
             }
         });
     }
