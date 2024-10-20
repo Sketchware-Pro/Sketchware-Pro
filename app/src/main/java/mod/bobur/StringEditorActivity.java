@@ -38,6 +38,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
+import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class StringEditorActivity extends AppCompatActivity {
@@ -204,6 +205,7 @@ public class StringEditorActivity extends AppCompatActivity {
 
     public void saveXml() {
         FileUtil.writeFile(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
+        BlockLoader.refresh();
         SketchwareUtil.toast("Save completed", Toast.LENGTH_SHORT);
     }
 
