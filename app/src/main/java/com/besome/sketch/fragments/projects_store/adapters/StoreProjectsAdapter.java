@@ -36,7 +36,8 @@ public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdap
         ProjectModel.Project project = projects.get(position);
 
         holder.binding.projectTitle.setText(project.getTitle());
-        holder.binding.projectDesc.setText(project.getDescription());
+        holder.binding.projectLikes.setText(project.getLikes());
+        holder.binding.projectDownloads.setText(project.getDownloads());
         loadImageFromUrl(holder.binding.projectImage, project.getIcon());
 
         holder.itemView.setScaleX(1f);
