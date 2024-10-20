@@ -38,7 +38,7 @@ android {
 
         buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v6.4.0-SNAPSHOT-${getCommitHash()}\"")
 
-        buildConfigField("String", "CRASH_REPORT_WEBHOOK_URL", "\"${System.getenv("CRASH_REPORT_WEBHOOK_URL")}\"")
+        buildConfigField("String", "SKETCHUB_API_KEY", "\"${System.getenv("SKETCHUB_API_KEY")}\"")
     }
 
     flavorDimensions = ["api"]
