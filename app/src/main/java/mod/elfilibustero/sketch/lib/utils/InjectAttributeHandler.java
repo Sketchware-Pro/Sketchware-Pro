@@ -25,12 +25,7 @@ public class InjectAttributeHandler {
     }
 
     public String getAttributeValueOf(String name) {
-        for (Pair<String, String> pair : getAttributes()) {
-            if (pair.first.equals(name)) {
-                return pair.second;
-            }
-        }
-        return "";
+        return getAttributeByName(name).orElse("");
     }
     
     public boolean contains(String name) {
