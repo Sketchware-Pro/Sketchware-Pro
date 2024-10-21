@@ -47,6 +47,7 @@ public class StringEditorActivity extends AppCompatActivity {
     private MaterialAlertDialogBuilder dialog;
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
+    private boolean isComingFromAnotherActivity = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +67,19 @@ public class StringEditorActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
-        adapter = new RecyclerViewAdapter(listmap);
-        binding.recyclerView.setAdapter(adapter);
         super.onResume();
+        if (!isComingFromAnotherActivity) {
+            convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
+            adapter = new RecyclerViewAdapter(listmap);
+            binding.recyclerView.setAdapter(adapter);
+        }
+        isComingFromAnotherActivity = false;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isComingFromAnotherActivity = true;
     }
 
     @Override
