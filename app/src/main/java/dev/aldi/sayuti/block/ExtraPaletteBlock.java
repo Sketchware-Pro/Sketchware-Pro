@@ -1,5 +1,7 @@
 package dev.aldi.sayuti.block;
 
+import static mod.bobur.StringEditorActivity.convertXmlToListMap;
+
 import android.util.Pair;
 
 import com.besome.sketch.beans.ComponentBean;
@@ -18,7 +20,9 @@ import a.a.a.kq;
 import a.a.a.Ox;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.beans.ViewBeans;
+import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
 import mod.hasrat.blocks.ExtraBlocks;
 import mod.hasrat.control.logic.LogicClickListener;
@@ -389,6 +393,16 @@ public class ExtraPaletteBlock {
         }
 
         switch (paletteId) {
+            case -1:
+                String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
+                ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
+                convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+
+                for (HashMap<String, Object> map : StringsListMap) {
+                    String key = map.get("key").toString();
+                    logicEditor.a("s", "S98ZCS" + key);
+                }
+                return;
             case 0:
                 logicEditor.b("Add variable", "variableAdd");
                 logicEditor.b("Add custom variable", "variableAddNew", clickListener);

@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.view;
 
+import static mod.bobur.StringEditorActivity.convertXmlToListMap;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -61,6 +63,7 @@ import com.sketchware.remod.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -91,6 +94,8 @@ import mod.agus.jcoderz.editor.view.item.ItemRadioButton;
 import mod.agus.jcoderz.editor.view.item.ItemRatingBar;
 import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
+import mod.agus.jcoderz.lib.FilePathUtil;
+import mod.agus.jcoderz.lib.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
@@ -106,6 +111,7 @@ public class ViewPane extends RelativeLayout {
     private TextView highlightedTextView;
     private kC resourcesManager;
     private String sc_id;
+    private final String stringsStart = "@string/";
 
     public ViewPane(Context context) {
         super(context);
@@ -868,7 +874,7 @@ public class ViewPane extends RelativeLayout {
         if (str != null && !str.isEmpty() && str.contains("\\n")) {
             str = viewBean.text.text.replaceAll("\\\\n", "\n");
         }
-        textView.setText(str);
+        textView.setText(str.startsWith(stringsStart) ? getXmlString(str) : str);
         String textFont = new InjectAttributeHandler(viewBean).getAttributeValueOf("fontFamily");
         if (textFont != null && !textFont.isEmpty()) {
             if (textFont.startsWith("@font/")) {
@@ -894,8 +900,28 @@ public class ViewPane extends RelativeLayout {
         textView.setSingleLine(viewBean.text.singleLine != 0);
     }
 
+    public String getXmlString(String key) {
+        FilePathUtil fpu = new FilePathUtil();
+
+        String filePath = fpu.getPathResource(sc_id) + "/values/strings.xml";
+
+        ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
+
+        convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+
+        for (HashMap<String, Object> map : StringsListMap) {
+            String keyValue = stringsStart + map.get("key").toString().trim();
+            if (key.equals(keyValue)) {
+                return map.get("text").toString();
+            }
+        }
+
+        return key;
+    }
+
     private void updateEditText(EditText editText, ViewBean viewBean) {
-        editText.setHint(viewBean.text.hint);
+        String str = viewBean.text.hint;
+        editText.setHint(str.startsWith(stringsStart) ? getXmlString(str) : str);
         editText.setHintTextColor(viewBean.text.hintColor);
     }
 

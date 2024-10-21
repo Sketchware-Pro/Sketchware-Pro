@@ -122,7 +122,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private ImageView xmlLayoutOrientation;
     private boolean B;
     private int currentTabNumber;
-    private String sc_id;
+    public static String sc_id;
     private CustomViewPager viewPager;
     private CoordinatorLayout coordinatorLayout;
     private DrawerLayout drawer;
