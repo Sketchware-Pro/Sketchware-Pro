@@ -11,6 +11,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import mod.jbk.util.LogUtil;
@@ -24,12 +25,20 @@ public class InjectAttributeHandler {
     }
 
     public String getAttributeValueOf(String name) {
+        return getAttributeByName(name).orElse("");
+    }
+    
+    public boolean contains(String name) {
+        return getAttributeByName(name).isPresent();
+    }
+    
+    private Optional<String> getAttributeByName(String name) {
         for (Pair<String, String> pair : getAttributes()) {
             if (pair.first.equals(name)) {
-                return pair.second;
+                return Optional.of(pair.second);
             }
         }
-        return "";
+        return Optional.empty();
     }
 
     public Set<Pair<String, String>> getAttributes() {
