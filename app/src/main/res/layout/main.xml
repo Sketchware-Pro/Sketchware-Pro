@@ -53,9 +53,7 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:layout="@layout/myprojects" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/create_new_project"

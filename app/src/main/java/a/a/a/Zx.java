@@ -26,17 +26,16 @@ import mod.hey.studios.util.Helper;
 
 public class Zx extends PopupWindow {
 
-    private b colorPickerCallback;
     private final ArrayList<ColorBean> colorList = new ArrayList<>();
     private final ArrayList<ColorBean[]> colorGroups = new ArrayList<>();
+    private final ColorPickerBinding binding;
+    private b colorPickerCallback;
     private XB colorValidator;
     private int k;
     private int l;
     private int m = -1;
     private DB colorPref;
     private Activity activity;
-
-    private final ColorPickerBinding binding;
 
     public Zx(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         super(activity);
@@ -305,6 +304,10 @@ public class Zx extends PopupWindow {
         binding.colorList.getAdapter().notifyDataSetChanged();
     }
 
+    public interface b {
+        void a(int var1);
+    }
+
     private class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorViewHolder> {
 
         public ColorsAdapter() {
@@ -372,9 +375,5 @@ public class Zx extends PopupWindow {
                 });
             }
         }
-    }
-
-    public interface b {
-        void a(int var1);
     }
 }
