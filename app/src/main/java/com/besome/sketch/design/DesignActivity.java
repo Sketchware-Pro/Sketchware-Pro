@@ -543,6 +543,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
+        reloadViewEditor();
         if (!isStoragePermissionGranted()) {
             finish();
         }
@@ -873,6 +874,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         }
         launchActivity(SrcViewerActivity.class, null, new Pair<>("current", current));
+    }
+
+    public void reloadViewEditor() {
+        if (viewPager.getCurrentItem() == 0
+                && viewTabAdapter != null) {
+            viewTabAdapter.i();
+        }
     }
 
     @SafeVarargs
