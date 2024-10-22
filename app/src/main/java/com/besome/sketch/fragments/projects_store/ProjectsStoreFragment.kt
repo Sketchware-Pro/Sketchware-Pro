@@ -1,87 +1,95 @@
-package com.besome.sketch.fragments.projects_store;
+package com.besome.sketch.fragments.projects_store
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
+import com.besome.sketch.fragments.projects_store.adapters.StorePagerProjectsAdapter
+import com.besome.sketch.fragments.projects_store.adapters.StoreProjectsAdapter
+import com.besome.sketch.fragments.projects_store.api.ProjectModel
+import com.besome.sketch.fragments.projects_store.api.SketchHubAPI
+import com.besome.sketch.fragments.projects_store.classes.CenterZoomListener
+import com.besome.sketch.fragments.projects_store.classes.HorizontalItemDecoration
+import com.sketchware.remod.BuildConfig
+import com.sketchware.remod.R
+import com.sketchware.remod.databinding.FragmentProjectsStoreBinding
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
+class ProjectsStoreFragment : Fragment() {
+    private lateinit var binding: FragmentProjectsStoreBinding
+    private lateinit var sketchHubAPI: SketchHubAPI
 
-import com.besome.sketch.fragments.projects_store.adapters.StorePagerProjectsAdapter;
-import com.besome.sketch.fragments.projects_store.adapters.StoreProjectsAdapter;
-import com.besome.sketch.fragments.projects_store.api.SketchHubAPI;
-import com.besome.sketch.fragments.projects_store.classes.CenterZoomListener;
-import com.besome.sketch.fragments.projects_store.classes.HorizontalItemDecoration;
-import com.sketchware.remod.BuildConfig;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.FragmentProjectsStoreBinding;
-
-public class ProjectsStoreFragment extends Fragment {
-    private FragmentProjectsStoreBinding binding;
-    private SketchHubAPI sketchHubAPI;
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentProjectsStoreBinding.inflate(inflater, container, false);
-        sketchHubAPI = new SketchHubAPI(BuildConfig.SKETCHUB_API_KEY);
-        return binding.getRoot();
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentProjectsStoreBinding.inflate(inflater, container, false)
+        sketchHubAPI = SketchHubAPI(BuildConfig.SKETCHUB_API_KEY)
+        return binding.root
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        binding.storeSideNote.setSelected(true);
-        setupRecyclerView(binding.editorsChoiceProjectsRecyclerView);
-        fetchData();
+        binding.storeSideNote.isSelected = true
+        setupRecyclerView(binding.editorsChoiceProjectsRecyclerView)
+        fetchData()
     }
 
-    private void setupRecyclerView(RecyclerView recyclerView) {
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+    private fun setupRecyclerView(recyclerView: RecyclerView) {
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = layoutManager
 
-        SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(recyclerView);
+        val snapHelper: SnapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(recyclerView)
 
-        recyclerView.addOnScrollListener(new CenterZoomListener());
+        recyclerView.addOnScrollListener(CenterZoomListener())
 
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.recycler_view_item_spacing);
-        recyclerView.addItemDecoration(new HorizontalItemDecoration(spacingInPixels));
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.recycler_view_item_spacing)
+        recyclerView.addItemDecoration(HorizontalItemDecoration(spacingInPixels))
 
-        recyclerView.setClipToPadding(false);
-        recyclerView.setClipChildren(false);
+        recyclerView.clipToPadding = false
+        recyclerView.clipChildren = false
 
-        ViewParent parent = recyclerView.getParent();
-        if (parent instanceof ViewGroup) {
-            ((ViewGroup) parent).setClipChildren(false);
-            ((ViewGroup) parent).setClipToPadding(false);
+        val parent = recyclerView.parent
+        if (parent is ViewGroup) {
+            parent.clipChildren = false
+            parent.clipToPadding = false
         }
 
-        int sidePadding = getResources().getDimensionPixelSize(R.dimen.recycler_view_item_spacing);
-        recyclerView.setPadding(sidePadding, 0, sidePadding, 0);
+        val sidePadding = resources.getDimensionPixelSize(R.dimen.recycler_view_item_spacing)
+        recyclerView.setPadding(sidePadding, 0, sidePadding, 0)
     }
 
-    private void fetchData() {
-        sketchHubAPI.getEditorsChoicerProjects(1, projectModel -> {
+    private fun fetchData() {
+        sketchHubAPI.getEditorsChoicerProjects(
+            1
+        ) { projectModel: ProjectModel? ->
             if (projectModel != null) {
-                binding.editorsChoiceProjectsRecyclerView.setAdapter(new StorePagerProjectsAdapter(projectModel.getProjects(), requireActivity()));
+                binding.editorsChoiceProjectsRecyclerView.adapter =
+                    StorePagerProjectsAdapter(projectModel.projects, requireActivity())
             }
-        });
-        sketchHubAPI.getMostDownloadedProjects(1, projectModel -> {
+        }
+        sketchHubAPI.getMostDownloadedProjects(
+            1
+        ) { projectModel: ProjectModel? ->
             if (projectModel != null) {
-                binding.mostDownloadedProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), requireActivity()));
+                binding.mostDownloadedProjectsRecyclerView.adapter =
+                    StoreProjectsAdapter(projectModel.projects, requireActivity())
             }
-        });
-        sketchHubAPI.getRecentProjects(1, projectModel -> {
+        }
+        sketchHubAPI.getRecentProjects(
+            1
+        ) { projectModel: ProjectModel? ->
             if (projectModel != null) {
-                binding.recentProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), requireActivity()));
+                binding.recentProjectsRecyclerView.adapter =
+                    StoreProjectsAdapter(projectModel.projects, requireActivity())
             }
-        });
+        }
     }
 }

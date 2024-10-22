@@ -1,54 +1,28 @@
-package com.besome.sketch.fragments.projects_store.adapters;
+package com.besome.sketch.fragments.projects_store.adapters
 
-import static mod.ilyasse.utils.UI.loadImageFromUrl;
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.sketchware.remod.databinding.ViewStoreProjectScreenshotBinding
+import mod.ilyasse.utils.UI
 
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.sketchware.remod.databinding.ViewStoreProjectScreenshotBinding;
-
-import java.util.List;
-
-public class ProjectScreenshotsAdapter extends RecyclerView.Adapter<ProjectScreenshotsAdapter.ViewHolder> {
-
-    private final List<String> screenshots;
-
-    public ProjectScreenshotsAdapter(List<String> screenshots) {
-        this.screenshots = screenshots;
+class ProjectScreenshotsAdapter(private val screenshots: List<String>) :
+    RecyclerView.Adapter<ProjectScreenshotsAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ViewStoreProjectScreenshotBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public ProjectScreenshotsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ViewStoreProjectScreenshotBinding binding = ViewStoreProjectScreenshotBinding.inflate(inflater, parent, false);
-        return new ProjectScreenshotsAdapter.ViewHolder(binding);
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val screenshot = screenshots[position]
+        UI.loadImageFromUrl(holder.binding.screenshot, screenshot)
     }
 
-    @Override
-    public void onBindViewHolder(ProjectScreenshotsAdapter.ViewHolder holder, int position) {
-        String screenshot = screenshots.get(position);
-        loadImageFromUrl(holder.binding.screenshot, screenshot);
+    override fun getItemCount(): Int {
+        return screenshots.size
     }
 
-    @Override
-    public int getItemCount() {
-        if (screenshots == null) {
-            return 0;
-        }
-        return screenshots.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ViewStoreProjectScreenshotBinding binding;
-
-        public ViewHolder(ViewStoreProjectScreenshotBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
-
+    class ViewHolder(val binding: ViewStoreProjectScreenshotBinding) :
+        RecyclerView.ViewHolder(binding.root)
 }

@@ -1,82 +1,71 @@
-package com.besome.sketch.fragments.projects_store.adapters;
+package com.besome.sketch.fragments.projects_store.adapters
 
-import static mod.ilyasse.utils.UI.loadImageFromUrl;
+import android.app.ActivityOptions
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.besome.sketch.fragments.projects_store.ProjectPreviewActivity
+import com.besome.sketch.fragments.projects_store.api.ProjectModel
+import com.google.gson.Gson
+import com.sketchware.remod.databinding.ViewStoreProjectItemBinding
+import mod.ilyasse.utils.UI
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.besome.sketch.fragments.projects_store.ProjectPreviewFragment;
-import com.besome.sketch.fragments.projects_store.api.ProjectModel;
-import com.google.gson.Gson;
-import com.sketchware.remod.databinding.ViewStoreProjectItemBinding;
-
-import java.util.List;
-
-public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdapter.ViewHolder> {
-
-    private final List<ProjectModel.Project> projects;
-    private final FragmentActivity context;
-
-    public StoreProjectsAdapter(List<ProjectModel.Project> projects, FragmentActivity context) {
-        this.projects = projects;
-        this.context = context;
+class StoreProjectsAdapter(
+    private val projects: List<ProjectModel.Project>?,
+    private val context: FragmentActivity
+) :
+    RecyclerView.Adapter<StoreProjectsAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ViewStoreProjectItemBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
     }
 
-    @NonNull
-    @Override
-    public StoreProjectsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ViewStoreProjectItemBinding binding = ViewStoreProjectItemBinding.inflate(inflater, parent, false);
-        return new ViewHolder(binding);
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val project = projects!![position]
+
+        holder.binding.projectTitle.text = project.title
+        holder.binding.projectLikes.text = project.likes
+        holder.binding.projectDownloads.text = project.downloads
+        UI.loadImageFromUrl(holder.binding.projectImage, project.icon)
+
+        holder.itemView.scaleX = 1f
+        holder.itemView.scaleY = 1f
+
+        holder.binding.root.setOnClickListener { v: View -> openProject(project, v) }
     }
 
-    @Override
-    public void onBindViewHolder(StoreProjectsAdapter.ViewHolder holder, int position) {
-        ProjectModel.Project project = projects.get(position);
-
-        holder.binding.projectTitle.setText(project.getTitle());
-        holder.binding.projectLikes.setText(project.getLikes());
-        holder.binding.projectDownloads.setText(project.getDownloads());
-        loadImageFromUrl(holder.binding.projectImage, project.getIcon());
-
-        holder.itemView.setScaleX(1f);
-        holder.itemView.setScaleY(1f);
-
-        holder.binding.getRoot().setOnClickListener(v -> openProject(project));
-    }
-
-    @Override
-    public int getItemCount() {
+    override fun getItemCount(): Int {
         if (projects == null) {
-            return 0;
+            return 0
         }
-        return projects.size();
+        return projects.size
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ViewStoreProjectItemBinding binding;
+    class ViewHolder(val binding: ViewStoreProjectItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-        public ViewHolder(ViewStoreProjectItemBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
+    private val gson = Gson()
 
-    private void openProject(ProjectModel.Project project) {
-        var fm = context.getSupportFragmentManager();
+    private fun openProject(project: ProjectModel.Project, view: View) {
+        val fm = context.supportFragmentManager
 
         if (fm.findFragmentByTag("project_preview") == null) {
-            var bundle = new Bundle();
-            bundle.putString("project_json", new Gson().toJson(project));
+            val bundle = Bundle()
+            bundle.putString("project_json", gson.toJson(project))
 
-            var bottomSheet = new ProjectPreviewFragment();
-            bottomSheet.setArguments(bundle);
-            bottomSheet.show(fm, "project_preview");
+            val intent = Intent(context, ProjectPreviewActivity::class.java)
+            intent.putExtras(bundle)
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                context,
+                view,
+                "project_preview"
+            )
+            context.startActivity(intent, options.toBundle())
         }
     }
 }

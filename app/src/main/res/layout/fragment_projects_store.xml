@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="Editor's choice"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="Most downloaded projects"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:text="Recent projects"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView

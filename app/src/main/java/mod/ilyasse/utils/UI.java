@@ -21,8 +21,8 @@ public class UI {
 
     public static void advancedCorners(View view, int color) {
         GradientDrawable gd = new GradientDrawable();
-        gd.setColor(color);
         gd.setCornerRadii(new float[]{0, 0, 30, 30, 30, 30, 0, 0});
+        gd.setColor(color);
         view.setBackground(gd);
     }
 
@@ -43,8 +43,8 @@ public class UI {
 
     public static void rippleRound(View view, int focus, int pressed, double round) {
         GradientDrawable GG = new GradientDrawable();
-        GG.setColor(focus);
         GG.setCornerRadius((float) round);
+        GG.setColor(focus);
         RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{pressed}), GG, null);
         view.setBackground(RE);
     }
