@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:fadingEdgeLength="30dp"
     android:requiresFadingEdge="vertical"
+    android:background="?attr/colorSurface"
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
     <LinearLayout
