@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +27,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import a.a.a.jC;
+import a.a.a.pu;
 import coil.ComponentRegistry;
 import coil.ImageLoader;
 import coil.decode.SvgDecoder;
@@ -316,9 +319,11 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
                 if (iconNameValidator.b() && adapter.selectedIconPosition >= 0) {
+                    String resFullname =  adapter.getCurrentList().get(adapter.selectedIconPosition).second;
+                    Log.d("svg Imported icon full res", resFullname);
                     Intent intent = new Intent();
                     intent.putExtra("iconName", dialogBinding.inputText.getText().toString());
-                    intent.putExtra("iconPath", adapter.getCurrentList().get(adapter.selectedIconPosition).second);
+                    intent.putExtra("iconPath",resFullname);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }else{
