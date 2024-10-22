@@ -1,47 +1,63 @@
-package com.besome.sketch;
+package com.besome.sketch
 
-import android.app.AlarmManager;
-import android.app.Application;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Process;
-import android.util.Log;
+import android.app.AlarmManager
+import android.app.Application
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Process
+import android.util.Log
+import com.besome.sketch.tools.CollectErrorActivity
+import mod.trindadedev.manage.theme.ThemeManager
 
-import com.besome.sketch.tools.CollectErrorActivity;
+class SketchApplication : Application() {
 
-import mod.trindadedev.manage.theme.ThemeManager;
+    companion object {
+        private lateinit var mApplicationContext: Context
 
-public class SketchApplication extends Application {
-
-    private static Context mApplicationContext;
-
-    public static Context getContext() {
-        return mApplicationContext;
+        @JvmStatic
+        fun getContext(): Context = mApplicationContext
     }
 
-    @Override
-    public void onCreate() {
-        mApplicationContext = getApplicationContext();
-        Thread.UncaughtExceptionHandler uncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
-        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
-            Log.e("SketchApplication", "Uncaught exception on thread " + thread.getName(), throwable);
+    override fun onCreate() {
+        super.onCreate()
+        mApplicationContext = applicationContext
 
-            Intent intent = new Intent(getApplicationContext(), CollectErrorActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra("error", Log.getStackTraceString(throwable));
-            ((AlarmManager) getSystemService(Context.ALARM_SERVICE))
-                    .set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                            1000,
-                            PendingIntent.getActivity(getApplicationContext(), 11111, intent,
-                                    PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE));
-            Process.killProcess(Process.myPid());
-            System.exit(1);
-            if (uncaughtExceptionHandler != null) {
-                uncaughtExceptionHandler.uncaughtException(thread, throwable);
+        val defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+
+        Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+            Log.e("SketchApplication", "Uncaught exception on thread ${thread.name}", throwable)
+
+            // Prepare intent to launch CollectErrorActivity
+            val intent = Intent(applicationContext, CollectErrorActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                putExtra("error", Log.getStackTraceString(throwable))
             }
-        });
-        super.onCreate();
-        ThemeManager.applyTheme(this, ThemeManager.getCurrentTheme(this));
+
+            // Schedule the CollectErrorActivity to be launched after a delay
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val pendingIntent = PendingIntent.getActivity(
+                applicationContext,
+                11111,
+                intent,
+                PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            alarmManager.set(
+                AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                1000,
+                pendingIntent
+            )
+
+            // Kill the current process and exit
+            Process.killProcess(Process.myPid())
+            System.exit(1)
+
+            // Call the previous uncaught exception handler if there is one
+            defaultUncaughtExceptionHandler?.uncaughtException(thread, throwable)
+        }
+
+        // Apply the current theme using ThemeManager
+        ThemeManager.applyTheme(this, ThemeManager.getCurrentTheme(this))
     }
 }

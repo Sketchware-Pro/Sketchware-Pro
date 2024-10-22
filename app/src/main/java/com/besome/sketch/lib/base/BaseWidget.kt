@@ -1,73 +1,69 @@
-package com.besome.sketch.lib.base;
+package com.besome.sketch.lib.base
 
-import android.content.Context;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.Gravity
+import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.annotation.DrawableRes
+import com.sketchware.remod.R
 
-import androidx.annotation.DrawableRes;
+open class BaseWidget @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
 
-import com.sketchware.remod.R;
+    private lateinit var imgWidget: ImageView
+    private lateinit var tvWidget: TextView
 
-import a.a.a.wB;
-
-public class BaseWidget extends LinearLayout {
-    private ImageView img_widget;
-    private TextView tv_widget;
     @DrawableRes
-    private int widgetImgResId;
-    private int widgetType;
+    private var widgetImgResId: Int = 0
+    private var widgetType: Int = 0
 
-    public BaseWidget(Context context) {
-        super(context);
-        View.inflate(context, R.layout.widget_layout, this);
+    init {
+        View.inflate(context, R.layout.widget_layout, this)
 
-        setOrientation(HORIZONTAL);
-        setGravity(Gravity.CENTER);
+        orientation = HORIZONTAL
+        gravity = Gravity.CENTER
 
-        a(context);
+        a(context)
     }
 
-    public void a(Context context) {
-        img_widget = findViewById(R.id.img_widget);
-        tv_widget = findViewById(R.id.tv_widget);
+    open fun a(context: Context?) {
+        imgWidget = findViewById(R.id.img_widget)
+        tvWidget = findViewById(R.id.tv_widget)
 
-        setBackgroundResource(R.drawable.icon_bg);
-        setDrawingCacheEnabled(true);
+        setBackgroundResource(R.drawable.icon_bg)
+        isDrawingCacheEnabled = true
     }
 
-    public int getWidgetImageResId() {
-        return widgetImgResId;
+    fun getWidgetImageResId(): Int = widgetImgResId
+
+    fun getWidgetName(): String = tvWidget.text.toString()
+
+    fun getWidgetType(): Int = widgetType
+
+    fun setWidgetImage(@DrawableRes image: Int) {
+        widgetImgResId = image
+        imgWidget.setImageResource(image)
     }
 
-    public String getWidgetName() {
-        return tv_widget.getText().toString();
+    fun setWidgetName(widgetName: String) {
+        tvWidget.text = widgetName
     }
 
-    public int getWidgetType() {
-        return widgetType;
+    fun setWidgetNameTextSize(sizeSp: Float) {
+        tvWidget.textSize = sizeSp
     }
 
-    public void setWidgetImage(@DrawableRes int image) {
-        this.widgetImgResId = image;
-        img_widget.setImageResource(image);
+    fun setWidgetType(widgetType: WidgetType) {
+        this.widgetType = widgetType.ordinal
     }
 
-    public void setWidgetName(String widgetName) {
-        tv_widget.setText(widgetName);
-    }
-
-    public void setWidgetNameTextSize(float sizeSp) {
-        tv_widget.setTextSize(sizeSp);
-    }
-
-    public void setWidgetType(a widgetType) {
-        this.widgetType = widgetType.ordinal();
-    }
-
-    public enum a {
+    enum class WidgetType {
         a,
         b
     }

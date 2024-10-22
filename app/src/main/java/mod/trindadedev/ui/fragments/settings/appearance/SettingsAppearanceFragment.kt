@@ -1,60 +1,54 @@
-package mod.trindadedev.ui.fragments.settings.appearance;
+package mod.trindadedev.ui.fragments.settings.appearance
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.sketchware.remod.R
+import com.sketchware.remod.databinding.FragmentSettingsAppearanceBinding
+import mod.trindadedev.manage.theme.ThemeManager
+import mod.trindadedev.ui.fragments.BaseFragment
 
-import androidx.annotation.NonNull;
+class SettingsAppearanceFragment : BaseFragment() {
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.FragmentSettingsAppearanceBinding;
+    private var _binding: FragmentSettingsAppearanceBinding? = null
+    private val binding get() = _binding!!
 
-import mod.trindadedev.manage.theme.ThemeManager;
-import mod.trindadedev.ui.fragments.BaseFragment;
-
-public class SettingsAppearanceFragment extends BaseFragment {
-
-    private FragmentSettingsAppearanceBinding binding;
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentSettingsAppearanceBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSettingsAppearanceBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        configureToolbar(binding.toolbar);
-        configureThemeController();
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        configureToolbar(binding.toolbar)
+        configureThemeController()
     }
-    
-    private void configureThemeController() {
-        switch (ThemeManager.getCurrentTheme(requireContext())) {
-            case ThemeManager.THEME_LIGHT:
-                binding.toggleThemes.check(R.id.theme_light);
-                break;
-            case ThemeManager.THEME_DARK:
-                binding.toggleThemes.check(R.id.theme_dark);
-                break;
-            default:
-                binding.toggleThemes.check(R.id.theme_system);
-                break;
+
+    private fun configureThemeController() {
+        when (ThemeManager.getCurrentTheme(requireContext())) {
+            ThemeManager.THEME_LIGHT -> binding.toggleThemes.check(R.id.theme_light)
+            ThemeManager.THEME_DARK -> binding.toggleThemes.check(R.id.theme_dark)
+            else -> binding.toggleThemes.check(R.id.theme_system)
         }
 
-        binding.toggleThemes.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+        binding.toggleThemes.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
-                if (checkedId == R.id.theme_light) {
-                    ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_LIGHT);
-                } else if (checkedId == R.id.theme_system) {
-                    ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM);
-                } else if (checkedId == R.id.theme_dark) {
-                    ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_DARK);
-                } else {
-                    ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM);
+                when (checkedId) {
+                    R.id.theme_light -> ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_LIGHT)
+                    R.id.theme_system -> ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM)
+                    R.id.theme_dark -> ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_DARK)
+                    else -> ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM)
                 }
             }
-        });
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

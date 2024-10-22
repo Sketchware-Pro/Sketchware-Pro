@@ -9,17 +9,17 @@ import com.sketchware.remod.R;
 
 import java.util.Objects;
 
-public class _A extends Dialog {
+public class ProgressDialog extends Dialog {
 
     private final TextView tvProgress;
     private boolean isCancelable;
 
-    public _A(Context var1) {
+    public ProgressDialog(Context var1) {
         super(var1);
         Objects.requireNonNull(getWindow()).requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.progress_msg_box);
         setTitle(xB.b().a(var1, R.string.common_message_progress));
-        tvProgress = (TextView) findViewById(R.id.tv_progress);
+        tvProgress = findViewById(R.id.tv_progress);
         tvProgress.setText(xB.b().a(var1, R.string.common_message_loading));
         super.setCanceledOnTouchOutside(false);
         super.setCancelable(true);
@@ -33,7 +33,7 @@ public class _A extends Dialog {
         isCancelable = var1;
     }
 
-    public boolean a() {
+    public boolean isCancelable() {
         return isCancelable;
     }
 

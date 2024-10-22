@@ -684,7 +684,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         @Override
         public void onCancel(DialogInterface dialog) {
-            if (!activity.get().progressDialog.a()) {
+            if (!activity.get().progressDialog.isCancelable()) {
                 activity.get().progressDialog.a(true);
                 activity.get().a((DialogInterface.OnCancelListener) this);
                 publishProgress("Canceling process...");

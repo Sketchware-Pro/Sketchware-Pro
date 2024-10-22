@@ -19,15 +19,18 @@ class SettingsActivity : BaseAppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         val fragment = when (val fragmentTag = intent.getStringExtra(FRAGMENT_TAG_EXTRA)) {
             SETTINGS_APPEARANCE_FRAGMENT -> SettingsAppearanceFragment()
             EVENTS_MANAGER_FRAGMENT -> EventsManagerFragment()
             else -> throw IllegalArgumentException("Unknown fragment tag: $fragmentTag")
         }
+
         openFragment(fragment)
     }
 
