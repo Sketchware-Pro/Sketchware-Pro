@@ -2414,13 +2414,22 @@ public class BlocksHandler {
     }
 
     public static void xmlStringsBlocks(ArrayList<HashMap<String, Object>> arrayList) {
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("name", "getResString");
+        hashMap.put("type", "s");
+        hashMap.put("code", "getString(%s)");
+        hashMap.put("color", "#7C83DB");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "get String from %m.ResString");
+        arrayList.add(hashMap);
+
         String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
         ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
         convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
         for (HashMap<String, Object> map : StringsListMap) {
             String key = map.get("key").toString();
-            String value = map.get("text").toString();
-            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap = new HashMap<>();
             hashMap.put("name", "S98ZCS" + key); // S98ZCS : We need this part just to ensure that the identifier does not overlap with any other blocks.
             hashMap.put("type", "s");
             hashMap.put("code", "getString(R.string." + key + ")");

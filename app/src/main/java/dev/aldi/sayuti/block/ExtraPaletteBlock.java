@@ -398,6 +398,9 @@ public class ExtraPaletteBlock {
                 ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
                 convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
 
+                logicEditor.a("s", "getResString");
+                logicEditor.a("Saved Res Strings :", 0xff555555);
+
                 for (HashMap<String, Object> map : StringsListMap) {
                     String key = map.get("key").toString();
                     logicEditor.a("s", "S98ZCS" + key);

@@ -304,6 +304,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         binding.parametersHolder.addView(addBlockMenu("%m.layout ", "layout"));
         binding.parametersHolder.addView(addBlockMenu("%m.anim ", "anim"));
         binding.parametersHolder.addView(addBlockMenu("%m.drawable ", "drawable"));
+        binding.parametersHolder.addView(addBlockMenu("%m.ResString ", "ResStrings"));
     }
 
     private void receiveIntents() {
