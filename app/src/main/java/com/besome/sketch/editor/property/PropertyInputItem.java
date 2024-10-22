@@ -1,6 +1,7 @@
 package com.besome.sketch.editor.property;
 
 import static mod.bobur.StringEditorActivity.convertXmlToListMap;
+import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -33,6 +34,8 @@ import a.a.a.SB;
 import a.a.a.TB;
 import a.a.a._B;
 import a.a.a.aB;
+import a.a.a.lC;
+import a.a.a.yB;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
@@ -287,6 +290,13 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         FilePathUtil fpu = new FilePathUtil();
         String filePath = fpu.getPathResource(sc_id) + "/values/strings.xml";
         convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+
+        if (!isXmlStringsContains(StringsListMap, "app_name")) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("key", "app_name");
+            map.put("text", yB.c(lC.b(sc_id), "my_app_name"));
+            StringsListMap.add(0, map);
+        }
     }
 
     public void setupTextWatcher(TextInputLayout textAutoCompleteInput, MaterialAutoCompleteTextView editText) {

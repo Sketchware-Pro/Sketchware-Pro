@@ -28,6 +28,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -173,6 +174,15 @@ public class StringEditorActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isXmlStringsContains(ArrayList<HashMap<String, Object>> listMap, String value) {
+        for (Map<String, Object> map : listMap) {
+            if (map.containsKey("key") && value.equals(map.get("key"))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String convertListMapToXml(final ArrayList<HashMap<String, Object>> listmap) {

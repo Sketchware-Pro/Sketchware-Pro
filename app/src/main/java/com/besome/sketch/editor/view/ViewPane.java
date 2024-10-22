@@ -1,6 +1,7 @@
 package com.besome.sketch.editor.view;
 
 import static mod.bobur.StringEditorActivity.convertXmlToListMap;
+import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -69,9 +70,11 @@ import java.util.regex.Pattern;
 
 import a.a.a.Gx;
 import a.a.a.kC;
+import a.a.a.lC;
 import a.a.a.sy;
 import a.a.a.ty;
 import a.a.a.wB;
+import a.a.a.yB;
 import a.a.a.zB;
 import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
@@ -863,13 +866,15 @@ public class ViewPane extends RelativeLayout {
     }
 
     public String getXmlString(String key) {
-        FilePathUtil fpu = new FilePathUtil();
-
-        String filePath = fpu.getPathResource(sc_id) + "/values/strings.xml";
+        String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
 
         ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
 
         convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+
+        if (key.equals("@string/app_name") && !isXmlStringsContains(StringsListMap, "app_name")) {
+            return yB.c(lC.b(sc_id), "my_app_name");
+        }
 
         for (HashMap<String, Object> map : StringsListMap) {
             String keyValue = stringsStart + map.get("key").toString().trim();
