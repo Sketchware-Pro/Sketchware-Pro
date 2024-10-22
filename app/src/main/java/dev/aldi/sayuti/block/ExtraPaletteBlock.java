@@ -1,6 +1,7 @@
 package dev.aldi.sayuti.block;
 
 import static mod.bobur.StringEditorActivity.convertXmlToListMap;
+import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 
 import android.util.Pair;
 
@@ -400,6 +401,9 @@ public class ExtraPaletteBlock {
 
                 logicEditor.a("s", "getResString");
                 logicEditor.a("Saved Res Strings :", 0xff555555);
+                if (!isXmlStringsContains(StringsListMap, "app_name")) {
+                    logicEditor.a("s", "getAppName");
+                }
 
                 for (HashMap<String, Object> map : StringsListMap) {
                     String key = map.get("key").toString();

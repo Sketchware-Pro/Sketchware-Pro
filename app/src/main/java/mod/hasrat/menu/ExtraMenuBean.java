@@ -3,6 +3,7 @@ package mod.hasrat.menu;
 import static android.text.TextUtils.isEmpty;
 import static mod.SketchwareUtil.getDip;
 import static mod.bobur.StringEditorActivity.convertXmlToListMap;
+import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 
 import android.annotation.SuppressLint;
 import android.util.Pair;
@@ -599,6 +600,9 @@ public class ExtraMenuBean {
 
                 convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
 
+                if (!isXmlStringsContains(StringsListMap, "app_name")) {
+                    menus.add("R.string.app_name");
+                }
                 for (HashMap<String, Object> map : StringsListMap) {
                     menus.add("R.string." + map.get("key"));
                 }

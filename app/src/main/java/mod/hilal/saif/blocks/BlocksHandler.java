@@ -2424,6 +2424,15 @@ public class BlocksHandler {
         hashMap.put("spec", "get String from %m.ResString");
         arrayList.add(hashMap);
 
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getAppName");
+        hashMap.put("type", "s");
+        hashMap.put("code", "getString(R.string.app_name)");
+        hashMap.put("color", "#7C83DB");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "app_name");
+        arrayList.add(hashMap);
+
         String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
         ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
         convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
