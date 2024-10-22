@@ -1,6 +1,7 @@
 package mod.nethical.svg;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -129,9 +130,14 @@ public class SvgUtils {
 
         // Generate output XML path
         String outputFilePath = outputDir + "/" + new File(inputFilePath).getName().replace(".svg", ".xml");
-        Files.write(Paths.get(outputFilePath), writer.toString().getBytes());
 
-        System.out.println("Converted file saved to: " + outputFilePath);
+        Path outputPath = Paths.get(outputFilePath);
+        Files.createFile(outputPath);
+
+
+        Files.write(outputPath, writer.toString().getBytes());
+
+        Log.d("svgConverter","Converted file saved to: " + outputFilePath);
     }
 
 }

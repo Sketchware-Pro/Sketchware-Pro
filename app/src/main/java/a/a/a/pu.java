@@ -42,6 +42,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
@@ -148,6 +151,18 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     public void saveImages() {
+
+        FilePathUtil fpu = new FilePathUtil();
+
+        Path resources_dir_svg =Paths.get(fpu.getPathResource(sc_id) + "/drawable/");
+        try {
+            if(!Files.exists(resources_dir_svg)){
+                Files.createDirectories(resources_dir_svg);
+            }
+        } catch (IOException error) {
+            Log.d("pu.java","Failed to create directory for saving svgs at: "+ fpu.getPathResource(sc_id));
+        }
+
         for (ProjectResourceBean image : images) {
             if (image.isNew || image.isEdited) {
                 try {
@@ -160,13 +175,11 @@ public class pu extends qA implements View.OnClickListener {
 
 
                     String str = projectImagesDirectory + File.separator + image.resName;
+                    Log.d("svg","full name : " + image.resFullName.toString());
                     if(image.resFullName.endsWith(".svg")){
                         // convert the svg to vectors
-
-                        FilePathUtil fpu = new FilePathUtil();
-                        String xml_destination = fpu.getPathResource(sc_id) + "/drawable/";
                         copyFile(path,str+".svg");
-                        SvgUtils.convert(str+".svg", xml_destination,"#000000");
+                        SvgUtils.convert(str+".svg", resources_dir_svg.toString(),"#000000");
                     }else {
                         iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
                     }
