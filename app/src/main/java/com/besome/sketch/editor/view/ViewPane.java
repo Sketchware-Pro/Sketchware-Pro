@@ -646,107 +646,78 @@ public class ViewPane extends RelativeLayout {
         }
         return result;
     }
-
+    
+    private Rect getRectFor(View view) {
+        var rect = new Rect();
+        view.getGlobalVisibleRect(rect);
+        int scaledWidth = (int) (view.getWidth() * getScaleX());
+        int scaledHeight = (int) (view.getHeight() * getScaleY());
+        rect.right = rect.left + scaledWidth;
+        rect.bottom = rect.top + scaledHeight;
+        return rect;
+    }
+    
     private void a(ViewBean view, ItemLinearLayout linearLayout) {
-        int[] linearLayoutLocation = new int[2];
-        linearLayout.getLocationOnScreen(linearLayoutLocation);
-        int var4;
-        int linearLayoutGravity = linearLayout.getLayoutGravity();
-        int horizontalLinearLayoutGravity = linearLayoutGravity & Gravity.FILL_HORIZONTAL;
-        int verticalLinearLayoutGravity = linearLayoutGravity & Gravity.FILL_VERTICAL;
-        int linearLayoutX = linearLayoutLocation[0];
-        int var7;
-        int linearLayoutY = linearLayoutLocation[1];
-        addViewInfo(new Rect(linearLayoutX, linearLayoutY, (int) (linearLayout.getWidth() * getScaleX()) + linearLayoutX, (int) (linearLayout.getHeight() * getScaleY()) + linearLayoutY), linearLayout, -1, calculateViewDepth(linearLayout));
-        var4 = linearLayoutY + (int) (linearLayout.getPaddingTop() * getScaleY());
-        var7 = linearLayoutX + (int) (linearLayout.getPaddingLeft() * getScaleX());
-        int var8 = 0;
+        float scaleX = getScaleX();
+        float scaleY = getScaleY();
+        Rect parentRect = getRectFor(linearLayout);
+        addViewInfo(parentRect, linearLayout, -1, calculateViewDepth(linearLayout));
 
-        int var13;
+        int parentWidth = (int) (linearLayout.getMeasuredWidth() * scaleX);
+        int parentHeight = (int) (linearLayout.getMeasuredHeight() * scaleY);
+        int paddingLeft = (int) (linearLayout.getPaddingLeft() * scaleX);
+        int paddingTop = (int) (linearLayout.getPaddingTop() * scaleY);
+        
         for (int i = 0; i < linearLayout.getChildCount(); i++) {
             View child = linearLayout.getChildAt(i);
             if (child != null && child.getTag() != null && (view == null || view.id == null || !child.getTag().equals(view.id)) && child.getVisibility() == View.VISIBLE) {
-                label62:
-                {
-                    label61:
-                    {
-                        int[] childLocation = new int[2];
-                        child.getLocationOnScreen(childLocation);
-                        if (linearLayout.getOrientation() == LinearLayout.HORIZONTAL) {
-                            int leftMargin = ((LinearLayout.LayoutParams) child.getLayoutParams()).leftMargin;
-                            int rightMargin = ((LinearLayout.LayoutParams) child.getLayoutParams()).rightMargin;
-                            if (horizontalLinearLayoutGravity == Gravity.CENTER_HORIZONTAL) {
-                                if (i == 0) {
-                                    int x = childLocation[0] - (int) (leftMargin * getScaleX());
-                                    int y = linearLayoutLocation[1];
-                                    addViewInfo(new Rect(var7, y, x, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, 0, calculateViewDepth(linearLayout) + 1);
-                                    var7 = x;
-                                }
-
-                                var4 = (int) ((leftMargin + child.getMeasuredWidth() + rightMargin) * getScaleX()) + var7;
-                                int y = linearLayoutLocation[1];
-                                var7 = var8 + 1;
-                                addViewInfo(new Rect(var7, y, var4, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
-                                var8 = y;
-                            } else if (horizontalLinearLayoutGravity == Gravity.RIGHT) {
-                                int x = childLocation[0];
-                                int y = linearLayoutLocation[1];
-                                addViewInfo(new Rect(var7, y, x - (int) (leftMargin * getScaleX()), (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
-                                var4 = (int) ((childLocation[0] + child.getMeasuredWidth() + rightMargin) * getScaleX());
-                                var7 = var8 + 1;
-                                var8 = y;
-                            } else {
-                                var4 = (int) ((leftMargin + child.getMeasuredWidth() + rightMargin) * getScaleX()) + var7;
-                                int y = linearLayoutLocation[1];
-                                var7 = var8 + 1;
-                                addViewInfo(new Rect(var7, y, var4, (int) (linearLayout.getMeasuredHeight() * getScaleY()) + y), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
-                                var8 = y;
-                            }
-                        } else {
-                            int topMargin = ((LinearLayout.LayoutParams) child.getLayoutParams()).topMargin;
-                            int bottomMargin = ((LinearLayout.LayoutParams) child.getLayoutParams()).bottomMargin;
-                            if (verticalLinearLayoutGravity == Gravity.CENTER_VERTICAL) {
-                                if (i == 0) {
-                                    int x = linearLayoutLocation[0];
-                                    int y = childLocation[1] - (int) (topMargin * getScaleY());
-                                    addViewInfo(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, y), linearLayout, 0, calculateViewDepth(linearLayout) + 1);
-                                    var4 = y;
-                                }
-
-                                int bottom = var4 + (int) ((topMargin + child.getMeasuredHeight() + bottomMargin) * getScaleY());
-                                int x = linearLayoutLocation[0];
-                                int top = var8 + 1;
-                                addViewInfo(new Rect(x, top, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, bottom), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
-                                var8 = bottom;
-                                var7 = top;
-                                var4 = x;
-                            } else if (verticalLinearLayoutGravity == Gravity.BOTTOM) {
-                                int x = linearLayoutLocation[0];
-                                int y = childLocation[1];
-                                addViewInfo(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, y - (int) (topMargin * getScaleY())), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
-                                ++var8;
-                                var4 = x;
-                                var7 = (int) ((childLocation[1] + child.getMeasuredHeight() + bottomMargin) * getScaleY());
-                                var13 = var8;
-                                break label61;
-                            } else {
-                                var7 = var4 + (int) ((topMargin + child.getMeasuredHeight() + bottomMargin) * getScaleY());
-                                int x = linearLayoutLocation[0];
-                                addViewInfo(new Rect(x, var4, (int) (linearLayout.getMeasuredWidth() * getScaleX()) + x, var7), linearLayout, var8, calculateViewDepth(linearLayout) + 1);
-                                var4 = x;
-                                ++var8;
-                                break label62;
-                            }
-
-                        }
-
-                        var13 = var7;
-                        var7 = var8;
+                Rect childRect = getRectFor(child);
+                var layoutParams = (LinearLayout.LayoutParams) child.getLayoutParams();
+                int leftMargin = (int) (layoutParams.leftMargin * scaleX);
+                int rightMargin = (int) (layoutParams.rightMargin * scaleX);
+                int topMargin = (int) (layoutParams.topMargin * scaleY);
+                int bottomMargin = (int) (layoutParams.bottomMargin * scaleY);
+                int childWidth = (int) (child.getMeasuredWidth() * linearLayout.getScaleX());
+                int childHeight = (int) (child.getMeasuredHeight() * linearLayout.getScaleY());
+                if (linearLayout.getOrientation() == LinearLayout.VERTICAL) {
+                    if (i == 0) {
+                        int y = childRect.top - topMargin;
+                        addViewInfo(new Rect(parentRect.top, paddingTop, parentWidth + parentRect.top, y), linearLayout, 0, calculateViewDepth(linearLayout) + 1);
+                        paddingTop = y;
                     }
-
-                    var8 = var13;
+                    int childTop =
+                    i == 0
+                    ? childRect.top
+                    - (int) (topMargin * scaleX)
+                    + (int) ((topMargin + childHeight + bottomMargin) * scaleY)
+                    : (int) ((topMargin + childHeight + bottomMargin) * scaleY)
+                    + paddingTop;
+                    childRect.bottom = childTop;
+                    childRect.top = paddingTop;
+                    childRect.right = paddingLeft + parentWidth + parentRect.left;
+                    childRect.left = parentRect.left;
+                    paddingTop = childRect.bottom;
+                } else {
+                    if (i == 0) {
+                        int x = childRect.left - leftMargin;
+                        addViewInfo(new Rect(paddingLeft, parentRect.top, x, parentHeight + parentRect.top), linearLayout, 0, calculateViewDepth(linearLayout) + 1);
+                        paddingLeft = x;
+                    }
+                    int childLeft =
+                    i == 0
+                    ? childRect.left
+                    - (int) (leftMargin * scaleY)
+                    + (int) ((leftMargin + childWidth + rightMargin) * scaleX)
+                    : (int) ((leftMargin + childWidth + rightMargin) * scaleX)
+                    + paddingLeft;
+                    childRect.right = childLeft;
+                    childRect.top = parentRect.top;
+                    childRect.bottom = paddingTop + parentHeight + parentRect.top;
+                    childRect.left = paddingLeft;
+                    paddingLeft = childRect.right;
                 }
-
+                addViewInfo(childRect, linearLayout, i, calculateViewDepth(linearLayout) + 1);
+                
                 if (child instanceof ItemLinearLayout) {
                     a(view, (ItemLinearLayout) child);
                 } else if (child instanceof ItemHorizontalScrollView) {
@@ -756,17 +727,8 @@ public class ViewPane extends RelativeLayout {
                 } else if (child instanceof ItemCardView) {
                     a(view, (ViewGroup) child);
                 }
-
-                var13 = var4;
-            } else {
-                var13 = var7;
-                var7 = var4;
             }
-
-            var4 = var7;
-            var7 = var13;
         }
-
     }
 
     private void a(ViewBean viewBean, ViewGroup viewGroup) {
