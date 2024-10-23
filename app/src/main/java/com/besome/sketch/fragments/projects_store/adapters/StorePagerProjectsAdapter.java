@@ -2,17 +2,18 @@ package com.besome.sketch.fragments.projects_store.adapters;
 
 import static mod.ilyasse.utils.UI.loadImageFromUrl;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.besome.sketch.fragments.projects_store.ProjectPreviewFragment;
+import com.besome.sketch.fragments.projects_store.ProjectPreviewActivity;
 import com.besome.sketch.fragments.projects_store.api.ProjectModel;
 import com.google.gson.Gson;
 import com.sketchware.remod.databinding.ViewStoreProjectPagerItemBinding;
@@ -51,7 +52,7 @@ public class StorePagerProjectsAdapter extends RecyclerView.Adapter<StorePagerPr
         holder.itemView.setScaleX(1f);
         holder.itemView.setScaleY(1f);
 
-        holder.binding.getRoot().setOnClickListener(v -> openProject(project));
+        holder.binding.getRoot().setOnClickListener(v -> openProject(project, v));
     }
 
     @Override
@@ -71,16 +72,23 @@ public class StorePagerProjectsAdapter extends RecyclerView.Adapter<StorePagerPr
         }
     }
 
-    private void openProject(ProjectModel.Project project) {
+    private final Gson gson = new Gson();
+
+    private void openProject(ProjectModel.Project project, View view) {
         var fm = context.getSupportFragmentManager();
 
         if (fm.findFragmentByTag("project_preview") == null) {
             var bundle = new Bundle();
-            bundle.putString("project_json", new Gson().toJson(project));
+            bundle.putString("project_json", gson.toJson(project));
 
-            var bottomSheet = new ProjectPreviewFragment();
-            bottomSheet.setArguments(bundle);
-            bottomSheet.show(fm, "project_preview");
+            var intent = new Intent(context, ProjectPreviewActivity.class);
+            intent.putExtras(bundle);
+            var options = ActivityOptions.makeSceneTransitionAnimation(
+                    context,
+                    view,
+                    "project_preview"
+            );
+            context.startActivity(intent, options.toBundle());
         }
     }
 }

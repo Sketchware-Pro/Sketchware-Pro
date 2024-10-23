@@ -368,11 +368,18 @@ public class Ox {
         if (!viewBean.inject.isEmpty()) {
             widgetTag.addAttributeValue(viewBean.inject.replaceAll(" ", ""));
         }
-        if (widgetTag.c().equals("CollapsingToolbarLayout")) {
-            collapsingToolbarLayout = widgetTag;
-        } else {
-            nx.a(widgetTag);
+
+        if (widgetTag.c().equals("CollapsingToolbarLayout")
+                && buildConfig.g
+                && projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+            if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
+                if (collapsingToolbarLayout == null) {
+                    collapsingToolbarLayout = widgetTag;
+                    return;
+                }
+            }
         }
+        nx.a(widgetTag);
     }
 
     private void writeFabView(XmlBuilder nx, ViewBean viewBean) {

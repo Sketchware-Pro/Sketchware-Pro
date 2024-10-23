@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -33,6 +34,7 @@ import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.MainBinding;
@@ -60,8 +62,7 @@ import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.ilyasse.activities.about.AboutActivity;
 import mod.ilyasse.utils.base.BottomSheetDialogView;
 import mod.jbk.util.LogUtil;
-import mod.tyron.backup.CallBackTask;
-import mod.tyron.backup.SingleCopyAsyncTask;
+import mod.tyron.backup.SingleCopyTask;
 
 public class MainActivity extends BasePermissionAppCompatActivity {
     private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
@@ -157,6 +158,11 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
         tryLoadingCustomizedAppStrings();
         binding = MainBinding.inflate(getLayoutInflater());
+
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
+        getWindow().setSharedElementsUseOverlay(false);
+
         setContentView(binding.getRoot());
         Insetter.builder()
                 .padding(WindowInsetsCompat.Type.navigationBars(), Side.create(true, false, true, false))
@@ -202,6 +208,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
         fragmentsAdapter = new FragmentsAdapter(this);
         binding.viewPager.setAdapter(fragmentsAdapter);
+        binding.viewPager.setUserInputEnabled(false);
 
         String[] tabTitles = new String[]{
                 getString(R.string.main_tab_title_myproject),
@@ -234,7 +241,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
             Uri data = getIntent().getData();
             if (data != null) {
-                new SingleCopyAsyncTask(data, this, new CallBackTask() {
+                new SingleCopyTask(this, new SingleCopyTask.CallBackTask() {
                     @Override
                     public void onCopyPreExecute() {
                     }
@@ -267,7 +274,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                             SketchwareUtil.toastError("Failed to copy backup file to temporary location: " + reason, Toast.LENGTH_LONG);
                         }
                     }
-                }).execute(data);
+                }).copyFile(data);
             }
         } else if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_CRITICAL_UPDATE_REMINDER)) {
 

@@ -310,6 +310,9 @@
             android:name="mod.khaled.logcat.LogReaderActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
+        <activity android:name="com.besome.sketch.fragments.projects_store.ProjectPreviewActivity"
+            android:configChanges="orientation|screenSize" />
+
         <activity android:name="mod.trindadedev.ui.activities.SettingsActivity" />
         <activity android:name="mod.bobur.StringEditorActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
