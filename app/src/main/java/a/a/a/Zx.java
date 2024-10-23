@@ -49,7 +49,7 @@ public class Zx extends PopupWindow {
     private static String sc_id;
 
     private FileResConfig frc;
-    private FilePathUtil util
+    private FilePathUtil util;
 
     public Zx(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         super(activity);
