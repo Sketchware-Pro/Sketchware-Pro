@@ -677,7 +677,7 @@ public class Ox {
         }
          if (viewBean.text.textColor != 0) {
             if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor") && viewBean.text.resTextColor != null) {
-                nx.addAttribute("android", "textColor", viewBean.text.resTextColor);
+                nx.addAttribute("android", "textColor", "@color/" + viewBean.text.resTextColor);
             } else if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor")) {
                 nx.addAttribute("android", "textColor", String.format("#%06X", viewBean.text.textColor & 0xffffff));
             }
