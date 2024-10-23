@@ -49,6 +49,7 @@ public class Zx extends PopupWindow {
     private static String sc_id;
 
     private FileResConfig frc;
+    private FilePathUtil util
 
     public Zx(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         super(activity);
@@ -86,6 +87,7 @@ public class Zx extends PopupWindow {
     public void initialize(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         this.activity = activity;
         colorPref = new DB(activity, "P24");
+        util = new FilePathUtil();
         initializeColorData(isTransparentColor, isNoneColor);
 
         for (int groupIndex = 0; groupIndex < colorGroups.size(); ++groupIndex) {
@@ -303,7 +305,7 @@ public class Zx extends PopupWindow {
 
      private ColorBean[] geColorResBeans()  {
         ColorBean[] colorBeansResult;
-        parseColorsXML(FileUtil.readFile(FilePathUtil.getPathResource(sc_id)+"/values/colors.xml"));
+        parseColorsXML(FileUtil.readFile(util.getPathResource(sc_id)+"/values/colors.xml"));
         if (!color_res_list.isEmpty()) {
             ColorBean[] colorBeans = new ColorBean[color_res_list.size()];
             int index = 0;
