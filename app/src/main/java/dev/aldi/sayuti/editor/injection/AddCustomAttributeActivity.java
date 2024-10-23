@@ -113,9 +113,11 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
     private class CustomAdapter extends BaseAdapter {
 
         private final ArrayList<HashMap<String, Object>> injections;
+        private final ArrayList<HashMap<String, Object>> filtered;
 
         public CustomAdapter(ArrayList<HashMap<String, Object>> arrayList) {
-            injections = filterInjections(arrayList);
+            injections = arrayList;
+            filtered = filterInjections(injections);
         }
 
         private ArrayList<HashMap<String, Object>> filterInjections(ArrayList<HashMap<String, Object>> arrayList) {
@@ -130,12 +132,12 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return injections.size();
+            return filtered.size();
         }
 
         @Override
         public HashMap<String, Object> getItem(int position) {
-            return injections.get(position);
+            return filtered.get(position);
         }
 
         @Override
@@ -167,10 +169,15 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                     if (item.getItemId() == 0) {
                         dialog("edit", position);
                     } else {
-                        injections.remove(position);
-                        FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(injections));
-                        notifyDataSetChanged();
-                        SketchwareUtil.toast("Deleted successfully");
+                        int originalPosition = injections.indexOf(filtered.get(position));
+                        
+                        if (originalPosition != -1) {
+                            injections.remove(originalPosition);
+                            filtered.remove(position);
+                            FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(injections));
+                            notifyDataSetChanged();
+                            SketchwareUtil.toast("Deleted successfully");
+                        }
                     }
                     return true;
                 });
