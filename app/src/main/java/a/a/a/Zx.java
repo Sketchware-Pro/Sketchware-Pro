@@ -20,6 +20,9 @@ import com.besome.sketch.editor.view.ColorGroupItem;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ColorPickerBinding;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.util.ArrayList;
 import java.io.StringReader;
 import java.util.HashMap;
@@ -34,6 +37,7 @@ public class Zx extends PopupWindow {
 
     private final ArrayList<ColorBean> colorList = new ArrayList<>();
     private final ArrayList<ColorBean[]> colorGroups = new ArrayList<>();
+    private final ArrayList<HashMap<String, Object>> color_res_list = new ArrayList<>();
     private final ColorPickerBinding binding;
     private b colorPickerCallback;
     private XB colorValidator;
