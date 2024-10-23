@@ -22,6 +22,7 @@ import com.sketchware.remod.databinding.CustomDialogAttributeBinding;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -35,6 +36,8 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
 
     private String activityInjectionsFilePath = "";
     private String widgetType = "";
+    
+    private static final String ATTR_REGEX_TEMPLATE = "(android|app)\\s*:\\s*%s";
 
     private AddCustomAttributeBinding binding;
 
@@ -164,7 +167,9 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             attributeView.getImageView().setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, attributeView.getImageView());
                 popupMenu.getMenu().add(Menu.NONE, 0, Menu.NONE, "Edit");
-                popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
+                if (!hasAttribute("layout_height", value) || !hasAttribute("layout_width", value)) {
+                    popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
+                }
                 popupMenu.setOnMenuItemClickListener(item -> {
                     if (item.getItemId() == 0) {
                         dialog("edit", position);
@@ -185,6 +190,11 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             });
 
             return attributeView;
+        }
+
+        private boolean hasAttribute(String attrName, String attribute) {
+            String regex = String.format(ATTR_REGEX_TEMPLATE, Pattern.quote(attrName));
+            return Pattern.compile(regex).matcher(attribute).find();
         }
     }
 }
