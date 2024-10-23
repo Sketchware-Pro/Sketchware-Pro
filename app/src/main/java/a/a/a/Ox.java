@@ -675,8 +675,10 @@ public class Ox {
                 nx.addAttribute("android", "textStyle", "bold|italic");
             }
         }
-        if (viewBean.text.textColor != 0) {
-            if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor")) {
+         if (viewBean.text.textColor != 0) {
+            if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor") && viewBean.text.resTextColor != null) {
+                nx.addAttribute("android", "textColor", viewBean.text.resTextColor);
+            } else if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor")) {
                 nx.addAttribute("android", "textColor", String.format("#%06X", viewBean.text.textColor & 0xffffff));
             }
         }
