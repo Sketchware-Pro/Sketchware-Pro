@@ -46,7 +46,7 @@ public class Zx extends PopupWindow {
     private int m = -1;
     private DB colorPref;
     private Activity activity;
-    private String sc_id;
+    private static String sc_id;
 
     private FileResConfig frc;
 
