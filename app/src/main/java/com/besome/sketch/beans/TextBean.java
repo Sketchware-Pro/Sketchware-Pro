@@ -92,7 +92,7 @@ public class TextBean extends nA implements Parcelable {
         inputType = parcel.readInt();
         imeOption = parcel.readInt();
         resTextColor = parcel.readString();
-        resHintColor = parcel.readString()
+        resHintColor = parcel.readString();
     }
 
     public static Parcelable.Creator<TextBean> getCreator() {
