@@ -1,15 +1,9 @@
 package mod.hilal.saif.activities.tools;
 
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.Gravity;
@@ -38,9 +32,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import a.a.a.Rs;
 import a.a.a.Zx;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hasrat.highlighter.SimpleHighlighter;
 import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
@@ -51,6 +47,9 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
     private BlocksManagerCreatorBinding binding;
     private final ArrayList<String> id_detector = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> blocksList = new ArrayList<>();
+    
+    private static final Pattern PARAM_PATTERN = Pattern.compile("%m(?!\\.[\\w]+)");
+    
     /**
      * Current mode of this activity, "edit" if editing a block, "add" if creating a new block and "insert" if inserting a block above another
      */
@@ -157,29 +156,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         binding.spec.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Matcher matcher = Pattern.compile("%[smdb]\\.?[a-zA-Z]*").matcher(s.toString());
-                while (matcher.find()) {
-                    try {
-                        binding.spec.getEditableText().setSpan(new ForegroundColorSpan(Color.WHITE),
-                                matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        binding.spec.getEditableText().setSpan(new BackgroundColorSpan(0x18000000),
-                                matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        binding.spec.getEditableText().setSpan(new RelativeSizeSpan(-5),
-                                matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    } catch (Exception ignored) {
-                    }
-                    try {
-                        binding.spec.getEditableText().setSpan(new StyleSpan(1), matcher.start(),
-                                matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    } catch (Exception ignored) {
-                    }
-                }
+                updateBlockSpec(binding.type.getText().toString(), binding.colour.getText().toString());
             }
         });
 
@@ -192,12 +169,26 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         binding.colour.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!PropertiesUtil.isHexColor(s.toString())) {
+                    binding.colourLay.setError("Invalid hex color");
+                } else {
+                    binding.colourLay.setError(null);
+                }
                 updateBlockSpec(binding.type.getText().toString(), s.toString());
             }
         });
 
         binding.cancel.setOnClickListener(Helper.getBackPressedClickListener(this));
         binding.save.setOnClickListener(v -> {
+            if (!PropertiesUtil.isHexColor(binding.colour.getText().toString())) {
+                SketchwareUtil.showMessage(getApplicationContext(), "Invalid hex color");
+                return;
+            }
+            Matcher matcher = PARAM_PATTERN.matcher(binding.spec.getText().toString());
+            if (matcher.find()) {
+                SketchwareUtil.showMessage(getApplicationContext(), "Invalid block params");
+                return;
+            }
             if (binding.type.getText().toString().isEmpty()) {
                 binding.type.setText(" ");
             }
@@ -416,44 +407,25 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
     }
 
     private void updateBlockSpec(String specId, String color) {
-        switch (specId) {
-            case " ":
-            case "regular":
-                binding.spec.setBackgroundResource(R.drawable.block_ori);
-                break;
-
-            case "b":
-                binding.spec.setBackgroundResource(R.drawable.block_boolean);
-                break;
-
-            case "c":
-            case "e":
-                binding.spec.setBackgroundResource(R.drawable.if_else);
-                break;
-
-            case "d":
-                binding.spec.setBackgroundResource(R.drawable.block_num);
-                break;
-
-            case "f":
-                binding.spec.setBackgroundResource(R.drawable.block_stop);
-                break;
-
-            default:
-                binding.spec.setBackgroundResource(R.drawable.block_string);
-                break;
-        }
+        binding.blockArea.removeAllViews();
+        var blockType = specId.equalsIgnoreCase("regular") ? " " : specId;
         try {
-            binding.spec.getBackground().setColorFilter(Color.parseColor(color), PorterDuff.Mode.MULTIPLY);
-            binding.spec.setTag(color);
+            var block = new Rs(this, -1, binding.spec.getText().toString(), blockType, binding.name.getText().toString());
+            block.e = PropertiesUtil.isHexColor(color) ? PropertiesUtil.parseColor(color) : Color.parseColor("#F0F0F0");
+            binding.blockArea.addView(block);
         } catch (Exception e) {
-            try {
-                binding.spec.getBackground().setColorFilter(Color.parseColor(palletColour), PorterDuff.Mode.MULTIPLY);
-                binding.spec.setTag(palletColour);
-            } catch (Exception e2) {
-                binding.spec.getBackground().setColorFilter(Color.parseColor("#8c8c8c"), PorterDuff.Mode.MULTIPLY);
-                binding.spec.setTag("#8c8c8c");
+            var block = new TextView(this);
+            block.setTextColor(Color.RED);
+            var input = binding.spec.getText().toString();
+            Matcher matcher = PARAM_PATTERN.matcher(input);
+            if (matcher.find()) {
+                int position = matcher.end();
+                //Unable to resolve this error because the Rs class still undecompiled.
+                block.setText("Error: '%m' must be followed by '.param' at position " + position);
+            } else {
+                block.setText(e.toString());
             }
+            binding.blockArea.addView(block);
         }
     }
 
