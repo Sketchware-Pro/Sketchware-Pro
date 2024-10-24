@@ -22,6 +22,7 @@ import com.sketchware.remod.databinding.CustomDialogAttributeBinding;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -35,6 +36,8 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
 
     private String activityInjectionsFilePath = "";
     private String widgetType = "";
+    
+    private static final String ATTR_REGEX_TEMPLATE = "(android|app)\\s*:\\s*%s";
 
     private AddCustomAttributeBinding binding;
 
@@ -113,9 +116,11 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
     private class CustomAdapter extends BaseAdapter {
 
         private final ArrayList<HashMap<String, Object>> injections;
+        private final ArrayList<HashMap<String, Object>> filtered;
 
         public CustomAdapter(ArrayList<HashMap<String, Object>> arrayList) {
-            injections = filterInjections(arrayList);
+            injections = arrayList;
+            filtered = filterInjections(injections);
         }
 
         private ArrayList<HashMap<String, Object>> filterInjections(ArrayList<HashMap<String, Object>> arrayList) {
@@ -130,12 +135,12 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return injections.size();
+            return filtered.size();
         }
 
         @Override
         public HashMap<String, Object> getItem(int position) {
-            return injections.get(position);
+            return filtered.get(position);
         }
 
         @Override
@@ -162,15 +167,22 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             attributeView.getImageView().setOnClickListener(v -> {
                 PopupMenu popupMenu = new PopupMenu(AddCustomAttributeActivity.this, attributeView.getImageView());
                 popupMenu.getMenu().add(Menu.NONE, 0, Menu.NONE, "Edit");
-                popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
+                if (!hasAttribute("layout_height", value) || !hasAttribute("layout_width", value)) {
+                    popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
+                }
                 popupMenu.setOnMenuItemClickListener(item -> {
                     if (item.getItemId() == 0) {
                         dialog("edit", position);
                     } else {
-                        injections.remove(position);
-                        FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(injections));
-                        notifyDataSetChanged();
-                        SketchwareUtil.toast("Deleted successfully");
+                        int originalPosition = injections.indexOf(filtered.get(position));
+                        
+                        if (originalPosition != -1) {
+                            injections.remove(originalPosition);
+                            filtered.remove(position);
+                            FileUtil.writeFile(activityInjectionsFilePath, new Gson().toJson(injections));
+                            notifyDataSetChanged();
+                            SketchwareUtil.toast("Deleted successfully");
+                        }
                     }
                     return true;
                 });
@@ -178,6 +190,11 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
             });
 
             return attributeView;
+        }
+
+        private boolean hasAttribute(String attrName, String attribute) {
+            String regex = String.format(ATTR_REGEX_TEMPLATE, Pattern.quote(attrName));
+            return Pattern.compile(regex).matcher(attribute).find();
         }
     }
 }
