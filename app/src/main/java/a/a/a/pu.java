@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,7 +39,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
+import mod.agus.jcoderz.lib.FilePathUtil;
+import mod.nethical.svg.SvgUtils;
 
 public class pu extends qA implements View.OnClickListener {
     private String sc_id;
@@ -51,6 +62,8 @@ public class pu extends qA implements View.OnClickListener {
     private Adapter adapter = null;
     public boolean isSelecting = false;
 
+    public SvgUtils svgUtils;
+
     private final ActivityResultLauncher<Intent> openImportIconActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             var data = result.getData();
@@ -59,6 +72,7 @@ public class pu extends qA implements View.OnClickListener {
                     data.getStringExtra("iconName"), data.getStringExtra("iconPath"));
             icon.savedPos = 2;
             icon.isNew = true;
+
             addImage(icon);
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
         }
@@ -110,6 +124,8 @@ public class pu extends qA implements View.OnClickListener {
         sc_id = requireActivity().getIntent().getStringExtra("sc_id");
         projectImagesDirectory = jC.d(sc_id).l();
         ArrayList<ProjectResourceBean> arrayList = jC.d(sc_id).b;
+        svgUtils = new SvgUtils(requireContext());
+        svgUtils.initImageLoader();
         if (arrayList != null) {
             for (ProjectResourceBean next : arrayList) {
                 if (next.flipVertical == 0) {
@@ -140,6 +156,18 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     public void saveImages() {
+
+        FilePathUtil fpu = new FilePathUtil();
+
+        Path resources_dir_svg =Paths.get(fpu.getPathResource(sc_id) + "/drawable/");
+        try {
+            if(!Files.exists(resources_dir_svg)){
+                Files.createDirectories(resources_dir_svg);
+            }
+        } catch (IOException error) {
+            Log.d("pu.java","Failed to create directory for saving svgs at: "+ fpu.getPathResource(sc_id));
+        }
+
         for (ProjectResourceBean image : images) {
             if (image.isNew || image.isEdited) {
                 try {
@@ -149,8 +177,17 @@ public class pu extends qA implements View.OnClickListener {
                     } else {
                         path = image.resFullName;
                     }
+
+
                     String str = projectImagesDirectory + File.separator + image.resName;
-                    iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
+                    Log.d("svg","full name : " + image.resFullName.toString());
+                    if(image.resFullName.endsWith(".svg")){
+                        // convert the svg to vectors
+                        copyFile(path,str+".svg");
+                        SvgUtils.convert(str+".svg", resources_dir_svg.toString(),"#000000");
+                    }else {
+                        iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -159,8 +196,23 @@ public class pu extends qA implements View.OnClickListener {
         for (int i = 0; i < images.size(); i++) {
             ProjectResourceBean image = images.get(i);
             if (image.isNew || image.isEdited) {
-                images.set(i, new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                        image.resName, image.isNinePatch() ? image.resName + ".9.png" : image.resName + ".png"));
+
+                // Determine the correct file extension based on image type
+                String fileExtension;
+                if (image.isNinePatch()) {
+                    fileExtension = ".9.png";
+                } else if (image.isSvg()) {
+                    fileExtension = ".svg";
+                } else {
+                    fileExtension = ".png";
+                }
+
+                // Set the new ProjectResourceBean with the correct file extension
+                images.set(i, new ProjectResourceBean(
+                        ProjectResourceBean.PROJECT_RES_TYPE_FILE,
+                        image.resName,
+                        image.resName + fileExtension
+                ));
             }
         }
         jC.d(sc_id).b(images);
@@ -168,6 +220,20 @@ public class pu extends qA implements View.OnClickListener {
         jC.a(sc_id).b(jC.d(sc_id));
         jC.a(sc_id).k();
     }
+    public static void copyFile(String srcPath, String destPath) throws IOException {
+        File srcFile = new File(srcPath);
+        File destFile = new File(destPath);
+
+        try (FileInputStream fis = new FileInputStream(srcFile);
+             FileOutputStream fos = new FileOutputStream(destFile)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+        }
+    }
+
 
     private void updateGuideVisibility() {
         if (images.size() == 0) {
@@ -313,7 +379,9 @@ public class pu extends qA implements View.OnClickListener {
                 deleteContainer = itemView.findViewById(R.id.delete_img_container);
                 image.setOnClickListener(v -> {
                     if (!isSelecting) {
-                        showImageDetailsDialog(images.get(getLayoutPosition()));
+                        if(!images.get(getLayoutPosition()).resFullName.endsWith(".svg")){
+                            showImageDetailsDialog(images.get(getLayoutPosition()));
+                        }
                     } else {
                         checkBox.setChecked(!checkBox.isChecked());
                         images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
@@ -360,19 +428,29 @@ public class pu extends qA implements View.OnClickListener {
             holder.checkBox.setChecked(image.isSelected);
             holder.name.setText(image.resName);
 
-            Glide.with(requireActivity())
-                    .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
-                            : images.get(position).resFullName)
-                    .asBitmap()
-                    .centerCrop()
-                    .signature(kC.n())
-                    .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(holder.image) {
-                        @Override
-                        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                            super.onResourceReady(iB.a(bitmap, image.rotate, image.flipHorizontal, image.flipVertical), glideAnimation);
-                        }
-                    });
+            Log.d("svg res full name",projectImagesDirectory + File.separator + image.resFullName);
+            if (image.resFullName.endsWith(".svg")) {
+                try{
+                    svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));
+                } catch (Exception ignored) {
+
+                }
+            } else {
+                Glide.with(requireActivity())
+                        .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
+                                : images.get(position).resFullName)
+                        .asBitmap()
+                        .centerCrop()
+                        .signature(kC.n())
+                        .error(R.drawable.ic_remove_grey600_24dp)
+                        .into(new BitmapImageViewTarget(holder.image) {
+                            @Override
+                            public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                                super.onResourceReady(iB.a(bitmap, image.rotate, image.flipHorizontal, image.flipVertical), glideAnimation);
+                            }
+                        });
+            }
+
         }
 
         @Override

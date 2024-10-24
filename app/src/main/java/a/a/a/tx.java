@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
+import com.android.tools.r8.dex.S;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Key;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import mod.hey.studios.util.Helper;
+import mod.nethical.svg.SvgUtils;
 
 public class tx extends RelativeLayout implements View.OnClickListener {
     public String a;
@@ -45,10 +48,13 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     public int m;
     public Kw n;
 
+    public SvgUtils svgUtils;
     public tx(Context context, boolean z, String str, boolean z2) {
         super(context);
         this.d = false;
         this.a = str;
+        svgUtils = new SvgUtils(context);
+        svgUtils.initImageLoader();
         a(context, z, z2);
     }
 
@@ -120,6 +126,12 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                         fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
                     } else {
                         fromFile = Uri.fromFile(file);
+                    }
+                    //Todo: doesn't work, needs to be fixed.
+                    Log.d("address of svg path on editor screen: ",fromFile.toString());
+                    if(file.getAbsolutePath().endsWith(".svg")){
+                        svgUtils.loadImage(this.g,file.toString());
+                        return;
                     }
                     Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(this.g);
                     return;
@@ -264,7 +276,13 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
-                    Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
+                    // TODO: Doesn't work. needs to be fixed.
+                    if (file.getAbsolutePath().endsWith(".svg")) {
+                        Log.d("Loading svg: ", file.getAbsolutePath());
+                        svgUtils.loadImage(this.g, file.toString());
+                    } else {
+                        Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
+                    }
                 } else {
                     imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 }

@@ -1,11 +1,12 @@
 package com.besome.sketch.common;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,13 +14,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DiffUtil;
@@ -27,11 +27,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import a.a.a.jC;
+import a.a.a.pu;
+import coil.ComponentRegistry;
+import coil.ImageLoader;
+import coil.decode.SvgDecoder;
+import coil.request.ImageRequest;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
-import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.sketchware.remod.R;
 
+
+import com.sketchware.remod.databinding.DialogSaveIconBinding;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -39,6 +48,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import a.a.a.KB;
@@ -49,11 +59,11 @@ import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.wq;
 
-public class ImportIconActivity extends BaseAppCompatActivity implements View.OnClickListener {
-    private static final int ICON_COLOR_BLACK = 0;
-    private static final int ICON_COLOR_GREY = 1;
-    private static final int ICON_COLOR_WHITE = 2;
+import com.sketchware.remod.databinding.DialogFilterIconsLayoutBinding;
+import mod.nethical.svg.SvgUtils;
 
+public class ImportIconActivity extends BaseAppCompatActivity {
+    
     private final OnBackPressedCallback searchViewCloser = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
@@ -68,22 +78,28 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     };
 
     private RecyclerView iconsList;
-    private Button showBlackIcons;
-    private Button showGreyIcons;
-    private Button showWhiteIcons;
-    private EditText iconName;
+    private String iconName;
     private WB iconNameValidator;
     private MenuItem search;
     private SearchView searchView;
     private IconAdapter adapter = null;
+    private ArrayList<String> alreadyAddedImageNames;
+    private SvgUtils svgUtils;
     /**
-     * Current icons' color, where 0 stands for black, 1 for grey, and 2 for white.
+     * Current icons' style where 0 stands for filled and 1 stands for outlind
      */
+    private final static int OUTLINE_ICONS = 0;
+    private final static int FILLED_ICONS = 1;
+    
     private int iconType = -1;
-    private ArrayList<Pair<String, String>> icons = new ArrayList<>();
+    private List<Pair<String, String>> allIconPaths;
+    private List<Pair<String, String>> icons;
+    private final int ITEMS_PER_PAGE = 20;
+    private int currentPage = 0;
 
+    
     private int getGridLayoutColumnCount() {
-        return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 60;
+       return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 100;
     }
 
     private boolean doExtractedIconsExist() {
@@ -94,31 +110,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         KB.a(this, "icons" + File.separator + "icon_pack.zip", wq.getExtractedIconPackStoreLocation());
     }
 
-    @Override
-    public void onClick(View v) {
-        if (!mB.a()) {
-            int id = v.getId();
-
-            if (id == R.id.btn_accept) {
-                if (iconNameValidator.b() && adapter.selectedIconPosition >= 0) {
-                    Intent intent = new Intent();
-                    intent.putExtra("iconName", iconName.getText().toString());
-                    intent.putExtra("iconPath", adapter.getCurrentList().get(adapter.selectedIconPosition).second);
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
-                }
-            } else if (id == R.id.btn_black) {
-                setIconColor(ICON_COLOR_BLACK);
-            } else if (id == R.id.btn_cancel) {
-                setResult(Activity.RESULT_CANCELED);
-                finish();
-            } else if (id == R.id.btn_grey) {
-                setIconColor(ICON_COLOR_GREY);
-            } else if (id == R.id.btn_white) {
-                setIconColor(ICON_COLOR_WHITE);
-            }
-        }
-    }
+    
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -134,6 +126,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.import_icon);
 
+        svgUtils = new SvgUtils(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
@@ -146,33 +139,32 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
             }
         });
 
-        ArrayList<String> alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
-        Button save = findViewById(R.id.btn_accept);
-        save.setText(getTranslatedString(R.string.common_word_accept));
-        Button cancel = findViewById(R.id.btn_cancel);
-        cancel.setText(getTranslatedString(R.string.common_word_cancel));
-        save.setOnClickListener(this);
-        cancel.setOnClickListener(this);
+        alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
 
         iconsList = findViewById(R.id.image_list);
         iconsList.setHasFixedSize(true);
         iconsList.setLayoutManager(new GridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
         adapter = new IconAdapter();
         iconsList.setAdapter(adapter);
-        showBlackIcons = findViewById(R.id.btn_black);
-        showGreyIcons = findViewById(R.id.btn_grey);
-        showWhiteIcons = findViewById(R.id.btn_white);
-        showBlackIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_black));
-        showGreyIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_grey));
-        showWhiteIcons.setText(getTranslatedString(R.string.design_manager_image_import_icon_button_white));
-        showBlackIcons.setOnClickListener(this);
-        showGreyIcons.setOnClickListener(this);
-        showWhiteIcons.setOnClickListener(this);
-        iconName = findViewById(R.id.ed_input);
-        ((TextInputLayout) findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.design_manager_icon_hint_enter_icon_name));
-        iconNameValidator = new WB(getApplicationContext(), findViewById(R.id.ti_input), uq.b, alreadyAddedImageNames);
-        iconName.setPrivateImeOptions("defaultInputmode=english;");
         k();
+        
+        ExtendedFloatingActionButton filterIconsButton = findViewById(R.id.filterIconsButton);
+        filterIconsButton.setOnClickListener(v -> showFilterDialog());
+        
+        
+        iconsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                if (layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == icons.size() - 1) {
+                    // Reached the end, load more items
+                    loadMoreItems();
+                }
+            }
+        });
+        
         new Handler().postDelayed(() -> new InitialIconLoader(this).execute(), 300L);
     }
 
@@ -208,61 +200,148 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
     }
 
     private void setIconName(int iconPosition) {
-        iconName.setText(adapter.getCurrentList().get(iconPosition).first);
+        iconName=(adapter.getCurrentList().get(iconPosition).first);
     }
 
-    private void setIconColor(int colorType) {
-        if (iconType != colorType) {
-            iconType = colorType;
-            if (colorType == ICON_COLOR_BLACK) {
-                showBlackIcons.setBackgroundColor(0xff33b8f5);
-                showGreyIcons.setBackgroundColor(0xffe5e5e5);
-                showWhiteIcons.setBackgroundColor(0xffe5e5e5);
-            } else if (colorType == ICON_COLOR_GREY) {
-                showBlackIcons.setBackgroundColor(0xffe5e5e5);
-                showGreyIcons.setBackgroundColor(0xff33b8f5);
-                showWhiteIcons.setBackgroundColor(0xffe5e5e5);
-            } else if (colorType == ICON_COLOR_WHITE) {
-                showBlackIcons.setBackgroundColor(0xffe5e5e5);
-                showGreyIcons.setBackgroundColor(0xffe5e5e5);
-                showWhiteIcons.setBackgroundColor(0xff33b8f5);
-            }
-            new IconColorChangedIconLoader(this).execute();
-        }
+    private void setIconColor() {
+           new IconColorChangedIconLoader(this).execute();
     }
 
     private void listIcons() {
-        icons = new ArrayList<>();
-        String color = switch (iconType) {
-            case ICON_COLOR_BLACK -> "black";
-            case ICON_COLOR_GREY -> "grey";
-            case ICON_COLOR_WHITE -> "white";
-            default -> "black";
+        allIconPaths = new ArrayList<>();
+        
+        String iconFolderName = switch (iconType){
+            case FILLED_ICONS -> "filled";
+            case OUTLINE_ICONS -> "outline";
+            default -> "filled";
         };
-        String iconFolderName = "icon_" + color;
         String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation();
         try (Stream<Path> iconFiles = Files.list(Paths.get(iconPackStoreLocation, iconFolderName))) {
             iconFiles.map(Path::getFileName)
                     .map(Path::toString)
-                    .forEach(iconName -> icons.add(new Pair<>(
-                            iconName.substring(0, iconName.indexOf("_" + color)) + "_" + color,
+                    .forEach(iconName -> allIconPaths.add(new Pair<>(
+                            iconName,
                             Paths.get(iconPackStoreLocation, iconFolderName, iconName).toString()
                     )));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        icons = new ArrayList<>();
+        loadMoreItems(); // Load the first chunk of items
+    }
+    
+    private void loadMoreItems() {
+        int start = currentPage * ITEMS_PER_PAGE;
+        int end = Math.min(start + ITEMS_PER_PAGE, allIconPaths.size());
+
+        if (start < end) {
+            List<Pair<String, String>> newItems = allIconPaths.subList(start, end);
+            icons.addAll(newItems);
+            adapter.submitList(new ArrayList<>(icons));
+            currentPage++;
+        }
     }
 
-    private void filterIcons(String query) {
-        var filteredIcons = new ArrayList<Pair<String, String>>(icons.size());
-        for (Pair<String, String> icon : icons) {
+        private void filterIcons(String query) {
+        if(query.length()==0){
+            icons.clear();
+            currentPage = 0;
+            loadMoreItems();
+            return;
+        }
+        if(query.length()<3){
+            return;
+        }
+        
+        var filteredIcons = new ArrayList<Pair<String, String>>(allIconPaths.size());
+        for (Pair<String, String> icon : allIconPaths) {
             if (icon.first.toLowerCase().contains(query.toLowerCase())) {
                 filteredIcons.add(icon);
             }
         }
-        adapter.submitList(filteredIcons);
+        icons.clear();
+        icons.addAll(filteredIcons);
+        adapter.submitList(new ArrayList<>(icons));
     }
+    
+       private void showFilterDialog() {
+        DialogFilterIconsLayoutBinding dialogBinding = DialogFilterIconsLayoutBinding.inflate(getLayoutInflater());
+        
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setView(dialogBinding.getRoot())
+                .setTitle("Filter Icons")
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Apply", null)
+                .create();
 
+        dialog.setView(dialogBinding.getRoot());
+        
+        dialog.setOnShowListener(dialogInterface -> {
+            
+            Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(view -> {
+                int checkedChipId = dialogBinding.chipGroupStyle.getCheckedChipId();
+                if(checkedChipId==R.id.chip_outlined && iconType!=OUTLINE_ICONS){
+                    iconType = OUTLINE_ICONS;
+                    icons.clear();
+                    allIconPaths.clear();
+                    listIcons();       
+                }
+                if(checkedChipId==R.id.chip_outlined && iconType!=FILLED_ICONS){
+                   iconType = FILLED_ICONS;
+                    icons.clear();
+                    allIconPaths.clear();
+                    listIcons();              
+                }
+                dialogInterface.dismiss();
+                return;               
+                
+            });
+        });
+
+        dialog.show();
+
+    }
+    
+    private void showSaveDialog(int iconPosition){
+        DialogSaveIconBinding dialogBinding = DialogSaveIconBinding.inflate(getLayoutInflater());
+        
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setView(dialogBinding.getRoot())
+                .setTitle("Save")
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Save", null)
+                .create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            
+            Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(view -> {
+                if (iconNameValidator.b() && adapter.selectedIconPosition >= 0) {
+                    String resFullname =  adapter.getCurrentList().get(adapter.selectedIconPosition).second;
+                    Log.d("svg Imported icon full res", resFullname);
+                    Intent intent = new Intent();
+                    intent.putExtra("iconName", dialogBinding.inputText.getText().toString());
+                    intent.putExtra("iconPath",resFullname);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                }else{
+                    return;
+                }
+                dialogInterface.dismiss();
+            });
+        });
+
+        svgUtils.loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second);
+        
+        iconNameValidator = new WB(getApplicationContext(), dialogBinding.textInputLayout, uq.b,  alreadyAddedImageNames);
+        String filenameWithoutExtension = iconName.substring(0, iconName.lastIndexOf('.'));
+        dialogBinding.inputText.setText(filenameWithoutExtension);
+        dialog.setView(dialogBinding.getRoot());
+        dialog.show();
+    }
+    
     private class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.ViewHolder> {
         private static final DiffUtil.ItemCallback<Pair<String, String>> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
             @Override
@@ -282,22 +361,19 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final RelativeLayout background;
-            public final TextView name;
+            public final LinearLayout background;
             public final ImageView icon;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 background = itemView.findViewById(R.id.icon_bg);
-                name = itemView.findViewById(R.id.tv_icon_name);
                 icon = itemView.findViewById(R.id.img);
                 icon.setOnClickListener(v -> {
                     if (!mB.a()) {
-                        int lastSelectedPosition = selectedIconPosition;
                         selectedIconPosition = getLayoutPosition();
-                        notifyItemChanged(selectedIconPosition);
-                        notifyItemChanged(lastSelectedPosition);
                         setIconName(selectedIconPosition);
+                        showSaveDialog(selectedIconPosition);
+                        
                     }
                 });
             }
@@ -305,19 +381,8 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            if (position != selectedIconPosition) {
-                if (iconType == ICON_COLOR_WHITE) {
-                    holder.background.setBackgroundColor(0xffbdbdbd);
-                } else {
-                    holder.background.setBackgroundColor(Color.WHITE);
-                }
-            } else {
-                holder.background.setBackgroundColor(0xffffccbc);
-            }
-            holder.name.setText(getItem(position).first);
-            Glide.with(ImportIconActivity.this)
-                    .load(getItem(position).second)
-                    .into(holder.icon);
+            String filePath = getItem(position).second; // Adjust according to your data structure
+            svgUtils.loadImage(holder.icon, filePath);
         }
 
         @Override
@@ -340,7 +405,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         public void a() {
             var activity = this.activity.get();
             activity.h();
-            activity.setIconColor(ICON_COLOR_BLACK);
+            activity.setIconColor();
         }
 
         @Override
@@ -372,7 +437,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements View.On
         public void a() {
             var activity = this.activity.get();
             activity.h();
-            activity.iconName.setText("");
             int oldPosition = activity.adapter.selectedIconPosition;
             activity.adapter.selectedIconPosition = -1;
             activity.adapter.notifyItemChanged(oldPosition);
