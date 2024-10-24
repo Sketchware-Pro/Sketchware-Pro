@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.besome.sketch.fragments.ProjectsFragment;
+import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
