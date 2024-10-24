@@ -29,7 +29,6 @@ import java.util.HashMap;
 
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hey.studios.util.Helper;
 
@@ -49,7 +48,7 @@ public class Zx extends PopupWindow {
     private static String sc_id;
 
     private FileResConfig frc;
-    private FilePathUtil util;
+    private FileUtil util;
 
     public Zx(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         super(activity);
@@ -87,7 +86,7 @@ public class Zx extends PopupWindow {
     public void initialize(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         this.activity = activity;
         colorPref = new DB(activity, "P24");
-        util = new FilePathUtil();
+        util = new FileUtil();
         initializeColorData(isTransparentColor, isNoneColor);
 
         for (int groupIndex = 0; groupIndex < colorGroups.size(); ++groupIndex) {
@@ -302,10 +301,29 @@ public class Zx extends PopupWindow {
 
         return colorBeansResult;
     }
+    
+     // didn't use jcoderz's "readfile" method because it creates an empty colors.xml which make problems while compiling, + i just copied whole method with some changes.
+    public static String readFile(String path) {
+        StringBuilder sb = new StringBuilder();
+        try (FileReader fr = new FileReader(path)) {
+            char[] buff = new char[1024];
+            int length;
 
+            while ((length = fr.read(buff)) > 0) {
+                sb.append(new String(buff, 0, length));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return sb.toString();
+    }
+    
      private ColorBean[] geColorResBeans()  {
         ColorBean[] colorBeansResult;
-        parseColorsXML(FileUtil.readFile(util.getPathResource(sc_id)+"/values/colors.xml"));
+        String clrsPath = util.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/colors.xml"));
+        parseColorsXML(readFile(clrsPath));
+         
         if (!color_res_list.isEmpty()) {
             ColorBean[] colorBeans = new ColorBean[color_res_list.size()];
             int index = 0;
