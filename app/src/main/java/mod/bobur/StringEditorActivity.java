@@ -28,6 +28,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -38,6 +39,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
+import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class StringEditorActivity extends AppCompatActivity {
@@ -46,6 +48,7 @@ public class StringEditorActivity extends AppCompatActivity {
     private MaterialAlertDialogBuilder dialog;
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
+    private boolean isComingFromAnotherActivity = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +68,19 @@ public class StringEditorActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
-        adapter = new RecyclerViewAdapter(listmap);
-        binding.recyclerView.setAdapter(adapter);
         super.onResume();
+        if (!isComingFromAnotherActivity) {
+            convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
+            adapter = new RecyclerViewAdapter(listmap);
+            binding.recyclerView.setAdapter(adapter);
+        }
+        isComingFromAnotherActivity = false;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isComingFromAnotherActivity = true;
     }
 
     @Override
@@ -133,7 +145,7 @@ public class StringEditorActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void convertXmlToListMap(final String xmlString, final ArrayList<HashMap<String, Object>> listmap) {
+    public static void convertXmlToListMap(final String xmlString, final ArrayList<HashMap<String, Object>> listmap) {
         try {
             listmap.clear();
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -162,6 +174,15 @@ public class StringEditorActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isXmlStringsContains(ArrayList<HashMap<String, Object>> listMap, String value) {
+        for (Map<String, Object> map : listMap) {
+            if (map.containsKey("key") && value.equals(map.get("key"))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String convertListMapToXml(final ArrayList<HashMap<String, Object>> listmap) {
@@ -204,6 +225,7 @@ public class StringEditorActivity extends AppCompatActivity {
 
     public void saveXml() {
         FileUtil.writeFile(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
+        BlockLoader.refresh();
         SketchwareUtil.toast("Save completed", Toast.LENGTH_SHORT);
     }
 
@@ -244,6 +266,7 @@ public class StringEditorActivity extends AppCompatActivity {
                 return;
             }
         }
+        listmap.add(map);
         adapter.notifyItemInserted(listmap.size() - 1);
     }
 
