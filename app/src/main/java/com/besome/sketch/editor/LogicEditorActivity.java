@@ -1224,20 +1224,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void b(Ss ss) {
-       Zx zx = new Zx(this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false, B);
+        Zx zx = new Zx(this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false, B);
         zx.a(new Zx.b() {
             @Override
             public void a(int var1) {
                 if (var1 == 0) {
                     LogicEditorActivity.this.a(ss, "Color.TRANSPARENT");
-                }else{
+                } else {
                     LogicEditorActivity.this.a(ss, String.format("0x%08X", var1 & (Color.WHITE)));
                 }
             }
 
             @Override
-            public void a(String var1,int var2) {
-                LogicEditorActivity.this.a(ss, "getResources().getColor(R.color." + var1+ ")");
+            public void a(String var1, int var2) {
+                LogicEditorActivity.this.a(ss, "getResources().getColor(R.color." + var1 + ")");
             }
         });
         zx.showAtLocation(ss, Gravity.CENTER, 0, 0);

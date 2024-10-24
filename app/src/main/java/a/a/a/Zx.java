@@ -23,11 +23,12 @@ import com.sketchware.remod.databinding.ColorPickerBinding;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.util.ArrayList;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hey.studios.util.Helper;
@@ -47,8 +48,6 @@ public class Zx extends PopupWindow {
     private Activity activity;
     private static String sc_id;
 
-    private FileResConfig frc;
-    private FileUtil util;
 
     public Zx(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         super(activity);
@@ -56,12 +55,11 @@ public class Zx extends PopupWindow {
         initialize(activity, var3, isTransparentColor, isNoneColor);
     }
 
-    public Zx(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor,String scId)  {
+    public Zx(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor, String scId) {
         super(activity);
         binding = ColorPickerBinding.inflate(activity.getLayoutInflater());
         sc_id = scId;
         initialize(activity, var3, isTransparentColor, isNoneColor);
-
     }
 
     private void deleteAllSavedColors() {
@@ -86,7 +84,6 @@ public class Zx extends PopupWindow {
     public void initialize(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         this.activity = activity;
         colorPref = new DB(activity, "P24");
-        util = new FileUtil();
         initializeColorData(isTransparentColor, isNoneColor);
 
         for (int groupIndex = 0; groupIndex < colorGroups.size(); ++groupIndex) {
@@ -197,7 +194,8 @@ public class Zx extends PopupWindow {
 
     private void initializeColorData(boolean isColorTransparent, boolean isColorNone) {
         colorList.add(new ColorBean("#FFF6F6F6", "CUSTOM", "#212121", R.drawable.checked_grey_32));
-        if (sc_id !=null) colorList.add(new ColorBean("#FFF6F6F6", "Colors.xml", "#212121", R.drawable.checked_grey_32));
+        if (sc_id != null)
+            colorList.add(new ColorBean("#FFF6F6F6", "Colors.xml", "#212121", R.drawable.checked_grey_32));
         colorList.add(sq.p[0]);
         colorList.add(sq.q[0]);
         colorList.add(sq.r[0]);
@@ -220,7 +218,7 @@ public class Zx extends PopupWindow {
         colorList.add(sq.I[0]);
         colorList.add(sq.J[0]);
         colorGroups.add(getSavedColorBeans());
-        if (sc_id !=null) colorGroups.add(geColorResBeans());
+        if (sc_id != null) colorGroups.add(geColorResBeans());
         colorGroups.add(sq.p);
         colorGroups.add(sq.q);
         colorGroups.add(sq.r);
@@ -301,8 +299,8 @@ public class Zx extends PopupWindow {
 
         return colorBeansResult;
     }
-    
-     // didn't use jcoderz's "readfile" method because it creates an empty colors.xml which make problems while compiling, + i just copied whole method with some changes.
+
+    // didn't use jcoderz's "readfile" method because it creates an empty colors.xml which make problems while compiling, + i just copied whole method with some changes.
     public static String readFile(String path) {
         StringBuilder sb = new StringBuilder();
         try (FileReader fr = new FileReader(path)) {
@@ -318,12 +316,12 @@ public class Zx extends PopupWindow {
 
         return sb.toString();
     }
-    
-     private ColorBean[] geColorResBeans()  {
+
+    private ColorBean[] geColorResBeans() {
         ColorBean[] colorBeansResult;
-        String clrsPath = util.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/colors.xml"));
+        String clrsPath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/colors.xml"));
         parseColorsXML(readFile(clrsPath));
-         
+
         if (!color_res_list.isEmpty()) {
             ColorBean[] colorBeans = new ColorBean[color_res_list.size()];
             int index = 0;
@@ -427,7 +425,8 @@ public class Zx extends PopupWindow {
 
     public interface b {
         void a(int var1);
-        void a(String var1,int var2);
+
+        void a(String var1, int var2);
     }
 
     private class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ColorViewHolder> {
@@ -448,7 +447,7 @@ public class Zx extends PopupWindow {
             } else {
                 holder.tvColorName.setText("");
             }
-             if (l == 1) {
+            if (l == 1) {
                 holder.tvColorName.setText(((ColorBean[]) colorGroups.get(l))[position].colorName);
             }
 
@@ -490,7 +489,7 @@ public class Zx extends PopupWindow {
                             colorPickerCallback.a(0xffffff);
                         } else if (l == 1) {
                             colorPickerCallback.a((String) tvColorName.getText(), Color.parseColor(tvColorCode.getText().toString()));
-                        }else {
+                        } else {
                             colorPickerCallback.a(Color.parseColor(tvColorCode.getText().toString()));
                         }
                     }
