@@ -153,23 +153,34 @@ public class Ox {
         String backgroundResource = viewBean.layout.backgroundResource;
         if (backgroundResource == null || "NONE".equalsIgnoreCase(backgroundResource)) {
             int backgroundColor = viewBean.layout.backgroundColor;
+            String backgroundResColor = viewBean.layout.backgroundResColor;
+            String colorPath = "@color/" + backgroundResColor;
+
             if (backgroundColor != 0xffffff) {
                 if (backgroundColor != 0) {
                     int color = backgroundColor & 0xffffff;
                     if (nx.c().equals("BottomAppBar")) {
-                        if (!toNotAdd.contains("app:backgroundTint") && !injectHandler.contains("backgroundTint")) {
+                        if (!toNotAdd.contains("app:backgroundTint") && !injectHandler.contains("backgroundTint") && (backgroundResColor != null)) {
+                            nx.addAttribute("app", "backgroundTint", colorPath);
+                        } else if (!toNotAdd.contains("app:backgroundTint") && !injectHandler.contains("backgroundTint")) {
                             nx.addAttribute("app", "backgroundTint", String.format("#%06X", color));
                         }
                     } else if (nx.c().equals("CardView")) {
-                        if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor")) {
+                        if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor") && backgroundResColor != null) {
+                            nx.addAttribute("app", "cardBackgroundColor", colorPath);
+                        } else if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor")) {
                             nx.addAttribute("app", "cardBackgroundColor", String.format("#%06X", color));
                         }
                     } else if (nx.c().equals("CollapsingToolbarLayout")) {
-                        if (!toNotAdd.contains("app:contentScrim") && !injectHandler.contains("contentScrim")) {
+                        if (!toNotAdd.contains("app:contentScrim") && !injectHandler.contains("contentScrim") && backgroundResColor != null) {
+                            nx.addAttribute("app", "contentScrim", colorPath);
+                        } else if (!toNotAdd.contains("app:contentScrim") && !injectHandler.contains("contentScrim")) {
                             nx.addAttribute("app", "contentScrim", String.format("#%06X", color));
                         }
                     } else {
-                        if (!hasAttr("background", viewBean) && !toNotAdd.contains("android:background") && !injectHandler.contains("background")) {
+                        if (!hasAttr("background", viewBean) && !toNotAdd.contains("android:background") && !injectHandler.contains("background") && backgroundResColor != null) {
+                            nx.addAttribute("android", "background", colorPath);
+                        } else if (!hasAttr("background", viewBean) && !toNotAdd.contains("android:background") && !injectHandler.contains("background")) {
                             nx.addAttribute("android", "background", String.format("#%06X", color));
                         }
                     }
@@ -288,7 +299,7 @@ public class Ox {
         }
         if (viewBean.getClassInfo().a("LinearLayout") &&
                 !widgetTag.c().matches("(BottomAppBar|NavigationView|Coordinator|Floating|Collaps|include)\\w*")) {
-            if (!toNotAdd.contains("android:orientation")  && !injectHandler.contains("orientation")) {
+            if (!toNotAdd.contains("android:orientation") && !injectHandler.contains("orientation")) {
                 int orientation = viewBean.layout.orientation;
                 if (orientation == LinearLayout.HORIZONTAL) {
                     widgetTag.addAttribute("android", "orientation", "horizontal");
@@ -327,7 +338,10 @@ public class Ox {
             }
 
             int textColor = viewBean.text.textColor;
-            if (textColor != 0 && !toNotAdd.contains("app:sidebar_text_color")) {
+            String resTextColor = viewBean.text.resTextColor;
+            if (textColor != 0 && !toNotAdd.contains("app:sidebar_text_color") && resTextColor != null) {
+                widgetTag.addAttribute("app", "sidebar_text_color", "@color/" + resTextColor);
+            } else if (textColor != 0 && !toNotAdd.contains("app:sidebar_text_color")) {
                 widgetTag.addAttribute("app", "sidebar_text_color", String.format("#%06X", textColor & 0xffffff));
             }
         }
@@ -669,7 +683,9 @@ public class Ox {
             }
         }
         if (viewBean.text.textColor != 0) {
-            if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor")) {
+            if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor") && viewBean.text.resTextColor != null) {
+                nx.addAttribute("android", "textColor", "@color/" + viewBean.text.resTextColor);
+            } else if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor")) {
                 nx.addAttribute("android", "textColor", String.format("#%06X", viewBean.text.textColor & 0xffffff));
             }
         }
@@ -686,7 +702,9 @@ public class Ox {
                     }
                 }
                 if (viewBean.text.hintColor != 0) {
-                    if (!hasAttr("textColorHint", viewBean) && !toNotAdd.contains("android:textColorHint") && !injectHandler.contains("textColorHint")) {
+                    if (!hasAttr("textColorHint", viewBean) && !toNotAdd.contains("android:textColorHint") && (viewBean.text.resHintColor != null)) {
+                        nx.addAttribute("android", "textColorHint", "@color/" + viewBean.text.resHintColor);
+                    } else if (!hasAttr("textColorHint", viewBean) && !toNotAdd.contains("android:textColorHint")) {
                         nx.addAttribute("android", "textColorHint", String.format("#%06X", viewBean.text.hintColor & 0xffffff));
                     }
                 }

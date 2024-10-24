@@ -22,6 +22,8 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
 
     private Context context;
     private String key;
+    private String sc_id;
+    private String resValue;
     private int value;
     private TextView tvName;
     private TextView tvValue;
@@ -33,6 +35,12 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
 
     public PropertyColorItem(Context context, boolean z) {
         super(context);
+        initialize(context, z);
+    }
+    
+    public PropertyColorItem(Context context, boolean z, String scId) {
+        super(context);
+        sc_id = scId;
         initialize(context, z);
     }
 
@@ -57,9 +65,14 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
     public int getValue() {
         return value;
     }
+    
+    public String getResValue() {
+        return resValue;
+    }
 
     public void setValue(int value) {
         this.value = value;
+        resValue = null;
         if (value == 0) {
             tvValue.setText("TRANSPARENT");
             viewColor.setBackgroundColor(value);
@@ -68,6 +81,21 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             viewColor.setBackgroundColor(value);
         } else {
             tvValue.setText(String.format("#%08X", value));
+            viewColor.setBackgroundColor(value);
+        }
+    }
+
+    public void setValue(int value,String resValue) {
+        this.value = value;
+        this.resValue = resValue;
+        if (value == 0) {
+            tvValue.setText("TRANSPARENT");
+            viewColor.setBackgroundColor(value);
+        } else if (value == 0xffffff) {
+            tvValue.setText("NONE");
+            viewColor.setBackgroundColor(value);
+        } else {
+            tvValue.setText(resValue);
             viewColor.setBackgroundColor(value);
         }
     }
@@ -118,11 +146,22 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             colorTransparentAvailable = false;
             colorNoneAvailable = false;
         }
-        Zx colorPicker = new Zx((Activity) context, value, colorTransparentAvailable, colorNoneAvailable);
-        colorPicker.a(i -> {
-            setValue(i);
-            if (valueChangeListener != null) {
-                valueChangeListener.a(key, value);
+       Zx colorPicker = new Zx((Activity) context, value, colorTransparentAvailable, colorNoneAvailable,sc_id);
+        colorPicker.a(new Zx.b() {
+            @Override
+            public void a(int var1) {
+                setValue(var1);
+                if (valueChangeListener != null) {
+                    valueChangeListener.a(key, value);
+                }
+            }
+
+            @Override
+            public void a(String var1,int var2) {
+                setValue(var2, var1);
+                if (valueChangeListener != null) {
+                    valueChangeListener.a(key, value);
+                }
             }
         });
         colorPicker.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
