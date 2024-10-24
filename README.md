@@ -68,9 +68,12 @@ Examples:
 - `fix: Fix crash during launch on certain phones`
 - `refactor: Reformat code in File.java`
 
+> [!IMPORTANT]
+> If you want to add new features that don't require editing other packages other than `pro.sketchware`, make your changes in `pro.sketchware` package, and respect the directories and files structure and names.
+
 ## Thanks for Contributing
 
-Thank you for contributing to Sketchware Pro! Your contributions help keep Sketchware Pro alive. Each accepted contribution will be noted down in the "About Modders" activity. We'll use your GitHub name and profile picture initially, but they can be changed, of course.
+Thank you for contributing to Sketchware Pro! Your contributions help keep Sketchware Pro alive. Each accepted contribution will be noted down in the "About Team" activity. We'll use your GitHub name and profile picture initially, but they can be changed, of course.
 
 ## Discord
 
