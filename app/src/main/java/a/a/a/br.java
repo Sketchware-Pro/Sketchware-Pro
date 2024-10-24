@@ -130,99 +130,7 @@ public class br extends qA implements View.OnClickListener {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ComponentBean componentBean = components.get(position);
-            FrLogicListItemComponentBinding itemBinding = holder.binding;
-            itemBinding.tvComponentType.setText(ComponentBean.getComponentName(requireContext(), componentBean.type));
-            itemBinding.imgIcon.setImageResource(ComponentBean.getIconResource(componentBean.type));
-
-            switch (componentBean.type) {
-                case ComponentBean.COMPONENT_TYPE_SHAREDPREF ->
-                        itemBinding.tvComponentId.setText(componentBean.componentId + " : " + componentBean.param1);
-                case ComponentBean.COMPONENT_TYPE_FIREBASE,
-                     ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE,
-                     ComponentBean.COMPONENT_TYPE_FILE_PICKER -> {
-                    String path = componentBean.param1;
-                    if (path.isEmpty()) {
-                        path = "/";
-                    }
-                    itemBinding.tvComponentId.setText(componentBean.componentId + " : " + path);
-                }
-                default -> itemBinding.tvComponentId.setText(componentBean.componentId);
-            }
-
-            ArrayList<EventBean> addedEvents = jC.a(sc_id).a(projectFile.getJavaName(), componentBean);
-            ArrayList<String> availableEvents = new ArrayList<>(Arrays.asList(oq.a(componentBean.getClassInfo())));
-
-            itemBinding.eventsPreview.removeAllViews();
-            itemBinding.eventsPreview.setAlpha(1.0f);
-            itemBinding.eventsPreview.setTranslationX(0.0f);
-            if (componentBean.isCollapsed) {
-                itemBinding.componentOptionLayout.setVisibility(View.GONE);
-                itemBinding.imgMenu.setRotation(0.0f);
-            } else {
-                itemBinding.componentOptionLayout.setVisibility(View.VISIBLE);
-                itemBinding.imgMenu.setRotation(-180.0f);
-                if (componentBean.isConfirmation) {
-                    if (holder.shouldAnimateNextTransformation()) {
-                        itemBinding.componentOption.showConfirmation();
-                        holder.setAnimateNextTransformation(false);
-                    } else {
-                        itemBinding.componentOption.showConfirmationWithoutAnimation();
-                    }
-                } else {
-                    if (holder.shouldAnimateNextTransformation()) {
-                        itemBinding.componentOption.hideConfirmation();
-                        holder.setAnimateNextTransformation(false);
-                    } else {
-                        itemBinding.componentOption.hideConfirmationWithoutAnimation();
-                    }
-                }
-            }
-            itemBinding.componentOptionLayout.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
-
-            if (!addedEvents.isEmpty() || !availableEvents.isEmpty()) {
-                for (EventBean event : addedEvents) {
-                    if (availableEvents.contains(event.eventName)) {
-                        FrLogicListItemEventPreviewBinding previewBinding = FrLogicListItemEventPreviewBinding.inflate(LayoutInflater.from(requireContext()));
-
-                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT);
-                        layoutParams.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
-                        previewBinding.getRoot().setLayoutParams(layoutParams);
-                        previewBinding.icon.setImageResource(oq.a(event.eventName));
-                        previewBinding.iconBg.setBackgroundResource(R.drawable.circle_bg_white_outline_secondary);
-                        itemBinding.eventsPreview.addView(previewBinding.getRoot());
-                        availableEvents.remove(event.eventName);
-                    }
-                }
-
-                for (String eventName : availableEvents) {
-                    FrLogicListItemEventPreviewBinding previewBinding = FrLogicListItemEventPreviewBinding.inflate(LayoutInflater.from(requireContext()));
-                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutParams2.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
-                    previewBinding.getRoot().setLayoutParams(layoutParams2);
-                    previewBinding.icon.setImageResource(oq.a(eventName));
-                    ColorMatrix colorMatrix = new ColorMatrix();
-                    colorMatrix.setSaturation(0.0f);
-                    previewBinding.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
-                    itemBinding.eventsPreview.addView(previewBinding.getRoot());
-                    previewBinding.getRoot().setScaleX(0.8f);
-                    previewBinding.getRoot().setScaleY(0.8f);
-                }
-
-                itemBinding.componentEvents.setVisibility(View.VISIBLE);
-                if (!componentBean.isCollapsed) {
-                    itemBinding.eventsPreview.setTranslationX(itemBinding.eventsPreview.getWidth());
-                    itemBinding.eventsPreview.setAlpha(0);
-                }
-                holder.addedEventsAdapter.submitList(addedEvents);
-                holder.availableEventsAdapter.submitList(availableEvents);
-                itemBinding.componentEvents.setAdapter(holder.componentEventsAdapter);
-            } else {
-                itemBinding.componentEvents.setVisibility(View.GONE);
-            }
+            holder.bind(componentBean);
         }
 
         @Override
@@ -244,47 +152,175 @@ public class br extends qA implements View.OnClickListener {
 
         private class ViewHolder extends CollapsibleViewHolder {
 
-            public final AddedEventsAdapter addedEventsAdapter;
-            public final AvailableEventsAdapter availableEventsAdapter;
-            public final ConcatAdapter componentEventsAdapter;
-
             public final FrLogicListItemComponentBinding binding;
 
             public ViewHolder(FrLogicListItemComponentBinding itemBinding) {
                 super(itemBinding.getRoot(), 200);
                 binding = itemBinding;
-                itemBinding.componentOption.getDeleteButton().getLabel().setText(xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
-                itemBinding.componentOption.setButtonOnClickListener(v -> {
-                    int lastSelectedItem = getLayoutPosition();
-                    ComponentBean bean = jC.a(sc_id).a(projectFile.getJavaName(), lastSelectedItem);
-                    if (v instanceof CollapsibleButton) {
-                        bean.isConfirmation = true;
-                        setAnimateNextTransformation(true);
-                        notifyItemChanged(lastSelectedItem);
-                    } else {
-                        int id = v.getId();
-                        if (id == R.id.confirm_no) {
-                            bean.isConfirmation = false;
-                            setAnimateNextTransformation(true);
-                            notifyItemChanged(lastSelectedItem);
-                        } else if (id == R.id.confirm_yes) {
-                            jC.a(sc_id).b(projectFile.getJavaName(), bean);
-                            bean.isConfirmation = false;
-                            notifyItemRemoved(lastSelectedItem);
-                            notifyItemRangeChanged(lastSelectedItem, getItemCount());
-                        }
-                    }
-                });
+            }
+
+            void bind(ComponentBean componentBean) {
+                binding
+                        .componentOption
+                        .getDeleteButton()
+                        .getLabel()
+                        .setText(
+                                xB.b()
+                                        .a(
+                                                requireContext(),
+                                                R.string
+                                                        .component_context_menu_title_delete_component));
+                binding.componentOption.setButtonOnClickListener(
+                        v -> {
+                            int lastSelectedItem = getLayoutPosition();
+                            ComponentBean bean =
+                                    jC.a(sc_id).a(projectFile.getJavaName(), lastSelectedItem);
+                            if (v instanceof CollapsibleButton) {
+                                bean.isConfirmation = true;
+                                setAnimateNextTransformation(true);
+                                notifyItemChanged(lastSelectedItem);
+                            } else {
+                                int id = v.getId();
+                                if (id == R.id.confirm_no) {
+                                    bean.isConfirmation = false;
+                                    setAnimateNextTransformation(true);
+                                    notifyItemChanged(lastSelectedItem);
+                                } else if (id == R.id.confirm_yes) {
+                                    jC.a(sc_id).b(projectFile.getJavaName(), bean);
+                                    bean.isConfirmation = false;
+                                    notifyItemRemoved(lastSelectedItem);
+                                    notifyItemRangeChanged(lastSelectedItem, getItemCount());
+                                }
+                            }
+                        });
                 onDoneInitializingViews();
                 setOnClickCollapseConfig(v -> v != binding.getRoot());
-                itemBinding.componentEvents.setRecycledViewPool(eventViewHolders);
-                if (itemBinding.componentEvents.getLayoutManager() instanceof LinearLayoutManager manager) {
+                binding.componentEvents.setRecycledViewPool(eventViewHolders);
+                if (binding.componentEvents.getLayoutManager()
+                        instanceof LinearLayoutManager manager) {
                     manager.setRecycleChildrenOnDetach(true);
                 }
-                itemBinding.componentEvents.setItemAnimator(null);
-                addedEventsAdapter = new AddedEventsAdapter();
-                availableEventsAdapter = new AvailableEventsAdapter();
-                componentEventsAdapter = new ConcatAdapter(EVENTS_ADAPTER_CONFIG, addedEventsAdapter, availableEventsAdapter);
+                binding.componentEvents.setItemAnimator(null);
+                AddedEventsAdapter addedEventsAdapter = new AddedEventsAdapter();
+                AvailableEventsAdapter availableEventsAdapter = new AvailableEventsAdapter();
+                availableEventsAdapter.setOnEventClickListener(event -> {
+                    var newAddedEvents = new ArrayList<>(addedEventsAdapter.getCurrentList());
+                    newAddedEvents.add(event);
+                    addedEventsAdapter.submitList(newAddedEvents);
+                    var newAvailableEvents = new ArrayList<>(availableEventsAdapter.getCurrentList());
+                    newAvailableEvents.remove(event.eventName);
+                    availableEventsAdapter.submitList(newAvailableEvents);
+                    openEvent(event.targetId, event.eventName, event.eventName);
+                });
+                ConcatAdapter componentEventsAdapter =
+                        new ConcatAdapter(
+                                EVENTS_ADAPTER_CONFIG, addedEventsAdapter, availableEventsAdapter);
+
+                binding.tvComponentType.setText(
+                        ComponentBean.getComponentName(requireContext(), componentBean.type));
+                binding.imgIcon.setImageResource(
+                        ComponentBean.getIconResource(componentBean.type));
+
+                switch (componentBean.type) {
+                    case ComponentBean.COMPONENT_TYPE_SHAREDPREF -> binding.tvComponentId
+                            .setText(componentBean.componentId + " : " + componentBean.param1);
+                    case ComponentBean.COMPONENT_TYPE_FIREBASE,
+                            ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE,
+                            ComponentBean.COMPONENT_TYPE_FILE_PICKER -> {
+                        String path = componentBean.param1;
+                        if (path.isEmpty()) {
+                            path = "/";
+                        }
+                        binding.tvComponentId.setText(componentBean.componentId + " : " + path);
+                    }
+                    default -> binding.tvComponentId.setText(componentBean.componentId);
+                }
+
+                ArrayList<EventBean> addedEvents =
+                        jC.a(sc_id).a(projectFile.getJavaName(), componentBean);
+                ArrayList<String> availableEvents =
+                        new ArrayList<>(Arrays.asList(oq.a(componentBean.getClassInfo())));
+
+                binding.eventsPreview.removeAllViews();
+                binding.eventsPreview.setAlpha(1.0f);
+                binding.eventsPreview.setTranslationX(0.0f);
+                if (componentBean.isCollapsed) {
+                    binding.componentOptionLayout.setVisibility(View.GONE);
+                    binding.imgMenu.setRotation(0.0f);
+                } else {
+                    binding.componentOptionLayout.setVisibility(View.VISIBLE);
+                    binding.imgMenu.setRotation(-180.0f);
+                    if (componentBean.isConfirmation) {
+                        if (shouldAnimateNextTransformation()) {
+                            binding.componentOption.showConfirmation();
+                            setAnimateNextTransformation(false);
+                        } else {
+                            binding.componentOption.showConfirmationWithoutAnimation();
+                        }
+                    } else {
+                        if (shouldAnimateNextTransformation()) {
+                            binding.componentOption.hideConfirmation();
+                            setAnimateNextTransformation(false);
+                        } else {
+                            binding.componentOption.hideConfirmationWithoutAnimation();
+                        }
+                    }
+                }
+                binding.componentOptionLayout.getLayoutParams().height =
+                        ViewGroup.LayoutParams.WRAP_CONTENT;
+
+                if (!addedEvents.isEmpty() || !availableEvents.isEmpty()) {
+                    for (EventBean event : addedEvents) {
+                        if (availableEvents.contains(event.eventName)) {
+                            FrLogicListItemEventPreviewBinding previewBinding =
+                                    FrLogicListItemEventPreviewBinding.inflate(
+                                            LayoutInflater.from(requireContext()));
+
+                            LinearLayout.LayoutParams layoutParams =
+                                    new LinearLayout.LayoutParams(
+                                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                            layoutParams.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
+                            previewBinding.getRoot().setLayoutParams(layoutParams);
+                            previewBinding.icon.setImageResource(oq.a(event.eventName));
+                            previewBinding.iconBg.setBackgroundResource(
+                                    R.drawable.circle_bg_white_outline_secondary);
+                            binding.eventsPreview.addView(previewBinding.getRoot());
+                            availableEvents.remove(event.eventName);
+                        }
+                    }
+
+                    for (String eventName : availableEvents) {
+                        FrLogicListItemEventPreviewBinding previewBinding =
+                                FrLogicListItemEventPreviewBinding.inflate(
+                                        LayoutInflater.from(requireContext()));
+                        LinearLayout.LayoutParams layoutParams2 =
+                                new LinearLayout.LayoutParams(
+                                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                        layoutParams2.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
+                        previewBinding.getRoot().setLayoutParams(layoutParams2);
+                        previewBinding.icon.setImageResource(oq.a(eventName));
+                        ColorMatrix colorMatrix = new ColorMatrix();
+                        colorMatrix.setSaturation(0.0f);
+                        previewBinding.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+                        binding.eventsPreview.addView(previewBinding.getRoot());
+                        previewBinding.getRoot().setScaleX(0.8f);
+                        previewBinding.getRoot().setScaleY(0.8f);
+                    }
+
+                    binding.componentEvents.setVisibility(View.VISIBLE);
+                    if (!componentBean.isCollapsed) {
+                        binding.eventsPreview.setTranslationX(
+                                binding.eventsPreview.getWidth());
+                        binding.eventsPreview.setAlpha(0);
+                    }
+                    addedEventsAdapter.submitList(addedEvents);
+                    availableEventsAdapter.submitList(availableEvents);
+                    binding.componentEvents.setAdapter(componentEventsAdapter);
+                } else {
+                    binding.componentEvents.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -385,6 +421,12 @@ public class br extends qA implements View.OnClickListener {
                 public AvailableEventsAdapter() {
                     super(DIFF_CALLBACK);
                 }
+                
+                private EventClickListener listener;
+                
+                public void setOnEventClickListener(EventClickListener listener) {
+                    this.listener = listener;
+                }
 
                 @NonNull
                 @Override
@@ -406,15 +448,9 @@ public class br extends qA implements View.OnClickListener {
                             jC.a(sc_id).a(projectFile.getJavaName(), event);
                             bB.a(requireContext(), xB.b().a(requireContext(), R.string.event_message_new_event), 0).show();
                             holder.button.onEventAdded();
-                            
-                            var newAddedEvents = new ArrayList<>(addedEventsAdapter.getCurrentList());
-                            newAddedEvents.add(event);
-                            addedEventsAdapter.submitList(newAddedEvents);
-                            
-                            var newAvailableEvents = new ArrayList<>(availableEventsAdapter.getCurrentList());
-                            newAvailableEvents.remove(eventName);
-                            availableEventsAdapter.submitList(newAvailableEvents);
-                            openEvent(event.targetId, event.eventName, event.eventName);
+                            if (listener != null) {
+                                listener.onEventClick(event);
+                            }
                         }
                     });
                 }
@@ -427,6 +463,11 @@ public class br extends qA implements View.OnClickListener {
                     super(itemView);
                     button = itemView;
                 }
+            }
+            
+            private interface EventClickListener {
+                
+                void onEventClick(EventBean bean);
             }
         }
     }
