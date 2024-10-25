@@ -1,7 +1,8 @@
 package pro.sketchware.widgets;
 
 import static com.besome.sketch.beans.ViewBean.getViewTypeResId;
-import static mod.SketchwareUtil.dpToPx;
+
+import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.app.Activity;
 import android.content.Context;
@@ -38,9 +39,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import a.a.a.ViewEditorFragment;
 import a.a.a.aB;
 import a.a.a.xB;
-import mod.SketchwareUtil;
-import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class WidgetsCreatorManager extends IconBase {
 
@@ -438,7 +439,7 @@ public class WidgetsCreatorManager extends IconBase {
     public static void deleteWidgetMap(Context context, int position) {
         aB aBDialog = new aB((Activity) context);
         aBDialog.b(xB.b().a(context, R.string.view_widget_favorites_delete_title));
-        aBDialog.a(R.drawable.high_priority_96_red);
+        aBDialog.a(R.drawable.ic_delete_24);
         aBDialog.a(xB.b().a(context, R.string.view_widget_favorites_delete_message));
         aBDialog.b(xB.b().a(context, R.string.common_word_delete), v -> {
             for (Iterator<HashMap<String, Object>> iterator = ListMap.iterator(); iterator.hasNext(); ) {
