@@ -1,8 +1,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="?attr/colorPrimary" />
+    <stroke
+        android:width="0dp"
+        android:color="#ffffffff" />
+    <solid android:color="@color/view_property_tab_active" />
     <corners
-        android:bottomLeftRadius="8dp"
-        android:bottomRightRadius="8dp"
-        android:topLeftRadius="0dp"
-        android:topRightRadius="0dp" />
+        android:radius="300dp"/>
 </shape>

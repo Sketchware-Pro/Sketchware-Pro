@@ -185,7 +185,7 @@ public class LibrarySettingsImporter {
             }
 
             private void selectProject(int index) {
-                if (!projects.isEmpty()) {
+                if (projects.size() > 0) {
                     for (Map<String, Object> projectMap : projects) {
                         projectMap.put("selected", false);
                     }

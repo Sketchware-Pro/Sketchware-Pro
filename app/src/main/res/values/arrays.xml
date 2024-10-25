@@ -1,9 +1,0 @@
-<resources>
-    <!--  properties  -->
-    <string-array name="property_convert_options">
-        <item>LinearLayout</item>
-        <item>RelativeLayout</item>
-        <item>FrameLayout</item>
-        <item>HorizontalScrollView</item>
-    </string-array>
-</resources>

@@ -35,7 +35,7 @@ public class EditorManifest {
     }
 
     public static void manifestOneSignal(XmlBuilder applicationTag, String packageName, HashMap<String, ArrayList<String>> hashMap) {
-        if (!hashMap.isEmpty()) {
+        if (hashMap.size() != 0) {
             XmlBuilder metadataTag = new XmlBuilder("meta-data");
             metadataTag.addAttribute("android", "name", "onesignal_app_id");
             metadataTag.addAttribute("android", "value", hashMap.get("OneSignal setAppId").get(0));

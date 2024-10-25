@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     app:cardBackgroundColor="?colorSurfaceContainer"
-    app:strokeWidth="0.5dp">
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -109,7 +109,7 @@
                 android:contentDescription="@null"
                 android:focusable="true"
                 android:padding="16dp"
-                android:src="@drawable/ic_arrow_drop_down_24px"
+                android:src="@drawable/ic_arrow_drop_down_grey600_24dp"
                 app:tint="?attr/colorControlNormal" />
         </RelativeLayout>
 

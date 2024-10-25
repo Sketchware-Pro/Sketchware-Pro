@@ -11,7 +11,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
         <CheckBox
             android:id="@+id/checkbox_content"

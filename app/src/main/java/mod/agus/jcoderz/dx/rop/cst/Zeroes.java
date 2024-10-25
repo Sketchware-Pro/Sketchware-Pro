@@ -36,18 +36,20 @@ public final class Zeroes {
      * @return {@code non-null;} its "zero" value
      */
     public static Constant zeroFor(Type type) {
-        return switch (type.getBasicType()) {
-            case Type.BT_BOOLEAN -> CstBoolean.VALUE_FALSE;
-            case Type.BT_BYTE -> CstByte.VALUE_0;
-            case Type.BT_CHAR -> CstChar.VALUE_0;
-            case Type.BT_DOUBLE -> CstDouble.VALUE_0;
-            case Type.BT_FLOAT -> CstFloat.VALUE_0;
-            case Type.BT_INT -> CstInteger.VALUE_0;
-            case Type.BT_LONG -> CstLong.VALUE_0;
-            case Type.BT_SHORT -> CstShort.VALUE_0;
-            case Type.BT_OBJECT -> CstKnownNull.THE_ONE;
-            default -> throw new UnsupportedOperationException("no zero for type: " +
-                    type.toHuman());
-        };
+        switch (type.getBasicType()) {
+            case Type.BT_BOOLEAN: return CstBoolean.VALUE_FALSE;
+            case Type.BT_BYTE:    return CstByte.VALUE_0;
+            case Type.BT_CHAR:    return CstChar.VALUE_0;
+            case Type.BT_DOUBLE:  return CstDouble.VALUE_0;
+            case Type.BT_FLOAT:   return CstFloat.VALUE_0;
+            case Type.BT_INT:     return CstInteger.VALUE_0;
+            case Type.BT_LONG:    return CstLong.VALUE_0;
+            case Type.BT_SHORT:   return CstShort.VALUE_0;
+            case Type.BT_OBJECT:  return CstKnownNull.THE_ONE;
+            default: {
+                throw new UnsupportedOperationException("no zero for type: " +
+                        type.toHuman());
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             style="?attr/materialCardViewFilledStyle"
-            app:cardBackgroundColor="?attr/colorSurfaceContainer">
+            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
             <LinearLayout
                 android:id="@+id/layout_switch"
@@ -80,6 +80,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
+                        android:textColor="#ff757575"
                         android:textSize="14sp"
                         tools:text="@string/design_library_google_maps_description_operate_normally" />
                 </LinearLayout>
@@ -113,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                     <androidx.core.widget.NestedScrollView
                         android:layout_width="match_parent"

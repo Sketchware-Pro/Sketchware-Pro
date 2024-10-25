@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/property_group_item"
     android:layout_width="wrap_content"
     android:layout_height="32dp"
@@ -14,13 +13,10 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:duplicateParentState="true"
         android:lines="1"
         android:paddingHorizontal="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:textColor="@color/on_selector_tab_round"
-        android:textSize="12sp"
-        tools:text="Property" />
-
+        android:textColor="#ffffffff"
+        android:textSize="12sp" />
 </LinearLayout>

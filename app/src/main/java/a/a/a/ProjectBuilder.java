@@ -285,7 +285,7 @@ public class ProjectBuilder {
         classpath.append(mll.getJarLocalLibrary());
 
         /* Append user's custom classpath */
-        if (!build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "").isEmpty()) {
+        if (!build_settings.getValue(BuildSettings.SETTING_CLASSPATH, "").equals("")) {
             classpath.append(":").append(build_settings.getValue(BuildSettings.SETTING_CLASSPATH, ""));
         }
 
@@ -460,7 +460,7 @@ public class ProjectBuilder {
                 lastDexNumber++;
             }
         }
-        if (!dexObjects.isEmpty()) {
+        if (dexObjects.size() > 0) {
             File file = new File(outputDirectory, lastDexNumber == 1 ? "classes.dex" : "classes" + lastDexNumber + ".dex");
             mergeDexes(file, dexObjects);
             resultDexFiles.add(file);
@@ -484,8 +484,10 @@ public class ProjectBuilder {
 
     /**
      * Run Eclipse Compiler to compile Java files.
+     *
+     * @throws Throwable Thrown when Eclipse had problems compiling
      */
-    public void compileJavaCode() throws zy, IOException {
+    public void compileJavaCode() throws Throwable {
         long savedTimeMillis = System.currentTimeMillis();
 
         class EclipseOutOutputStream extends OutputStream {

@@ -245,7 +245,7 @@ public final class MixedItemSection extends Section {
             }
         }
 
-        if (index.isEmpty()) {
+        if (index.size() == 0) {
             return;
         }
 

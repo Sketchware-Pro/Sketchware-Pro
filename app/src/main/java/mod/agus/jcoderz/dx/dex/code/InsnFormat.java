@@ -59,12 +59,12 @@ public abstract class InsnFormat {
 
         sb.append(op);
 
-        if (!arg.isEmpty()) {
+        if (arg.length() != 0) {
             sb.append(' ');
             sb.append(arg);
         }
 
-        if (!comment.isEmpty()) {
+        if (comment.length() != 0) {
             sb.append(" // ");
             sb.append(comment);
         }

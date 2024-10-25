@@ -70,7 +70,7 @@ public final class MapItem extends OffsettedItem {
             throw new NullPointerException("sections == null");
         }
 
-        if (!mapSection.items().isEmpty()) {
+        if (mapSection.items().size() != 0) {
             throw new IllegalArgumentException(
                     "mapSection.items().size() != 0");
         }

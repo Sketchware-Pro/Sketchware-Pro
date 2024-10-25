@@ -37,7 +37,7 @@ public class AsdOldHandlerCodeEditor implements View.OnClickListener {
                 e.printStackTrace();
             }
             editable = parsedDouble;
-        } else if (!editable.isEmpty() && editable.charAt(0) == '@') {
+        } else if (editable.length() > 0 && editable.charAt(0) == '@') {
             editable = " " + editable;
         }
         logicEditorActivity.a(ss, (Object) editable);

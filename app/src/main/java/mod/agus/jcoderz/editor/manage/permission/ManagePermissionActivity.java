@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,12 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
-
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ManagePermissionBinding;
 import com.sketchware.remod.databinding.ViewItemPermissionBinding;
-
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 
@@ -33,7 +31,7 @@ import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
-public class ManagePermissionActivity extends BaseAppCompatActivity {
+public class ManagePermissionActivity extends AppCompatActivity {
     private PermissionsAdapter adapter;
     private ArrayList<String> arrayList;
     private FileResConfig frc;
@@ -43,7 +41,7 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
     private ManagePermissionBinding binding;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ManagePermissionBinding.inflate(getLayoutInflater());

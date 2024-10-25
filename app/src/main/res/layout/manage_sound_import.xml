@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -63,8 +62,7 @@
             android:layout_centerVertical="true"
             android:textColor="#ffffffff"
             android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="@string/common_word_import" />
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -72,10 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/manage_import_list_item"
-        tools:orientation="horizontal" />
+        android:layout_marginRight="8dp" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -96,16 +91,14 @@
                     android:id="@+id/img_album"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    tools:src="@tools:sample/backgrounds/scenic" />
+                    android:layout_centerInParent="true" />
 
                 <ImageView
                     android:id="@+id/img_play"
                     android:layout_width="72dp"
                     android:layout_height="72dp"
                     android:layout_centerInParent="true"
-                    android:padding="16dp"
-                    tools:src="@drawable/ic_play_circle_outline_black_36dp" />
+                    android:padding="16dp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -130,8 +123,7 @@
                         android:id="@+id/tv_samename"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="12sp"
-                        tools:text="@string/design_manager_sound_title_apply_same_naming" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <com.besome.sketch.lib.ui.EasyDeleteEditText
@@ -146,8 +138,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    tools:text="@string/design_manager_change_name_button" />
+                    android:layout_marginRight="16dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -18,7 +18,7 @@
             android:layout_marginHorizontal="14dp"
             android:layout_marginVertical="8dp"
             android:orientation="vertical"
-            app:cardBackgroundColor="?attr/colorSurfaceContainer">
+            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
             <LinearLayout
                 android:id="@+id/recycle_bin"
@@ -91,8 +91,7 @@
             android:layout_height="wrap_content"
             android:choiceMode="none"
             android:divider="@null"
-            android:dividerHeight="0dp"
-            tools:listitem="@layout/pallet_customview" />
+            android:dividerHeight="0dp" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -1,21 +1,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
-    android:gravity="center"
-    tools:layout_height="44dp"
-    tools:layout_width="120dp"
-    tools:background="@drawable/border_top_corner_white_no_stroke">
+    android:gravity="center">
 
     <ImageView
         android:id="@+id/img_icon"
         android:layout_width="24dp"
-        android:layout_height="24dp"
-        tools:alpha="0.6"
-        tools:scaleX="0.8"
-        tools:scaleY="0.8"
-        tools:src="@drawable/ic_cycle_color_48dp" />
+        android:layout_height="24dp" />
 </LinearLayout>

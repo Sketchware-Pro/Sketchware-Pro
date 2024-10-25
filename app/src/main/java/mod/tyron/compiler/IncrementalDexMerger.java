@@ -107,7 +107,7 @@ public class IncrementalDexMerger extends Compiler {
                     methodsMergedFile += currentDexMethods;
                 }
             }
-            if (!dexObjects.isEmpty()) {
+            if (dexObjects.size() > 0) {
                 File out = new File(outputPath.replace("classes2.dex", "classes" + (currentDexNo > 0 ? currentDexNo : "") + ".dex"));
                 if (out.exists()) {
                     out.delete();

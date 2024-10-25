@@ -1,13 +1,10 @@
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
-    style="@style/Widget.Material3.Toolbar.Surface"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:contentInsetStart="0dp"
-    app:contentInsetStart="0dp"
-    app:elevation="0dp"
-    app:layout_scrollFlags="scroll|enterAlways|snap">
+    app:contentInsetStart="0dp">
 
     <ImageView
         android:id="@+id/layout_main_logo"
@@ -17,5 +14,5 @@
         android:contentDescription="@string/title_sketchware"
         android:scaleType="fitCenter"
         android:src="@drawable/top_title_logo"
-        app:tint="?attr/colorPrimary" />
+        app:tint="?attr/colorOnSurface" />
 </androidx.appcompat.widget.Toolbar>

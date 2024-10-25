@@ -86,16 +86,16 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="@string/design_library_admob_title_app_id"
+                            android:textColor="#ff4d4d4d"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
                     <com.google.android.material.card.MaterialCardView
-                        style="?attr/materialCardViewFilledStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                        app:cardElevation="2dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -113,7 +113,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
-                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textColor="#ff7d7d7d"
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -144,17 +144,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:textColor="#ff4d4d4d"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             tools:text="@string/design_library_admob_title_banner" />
                     </LinearLayout>
 
                     <com.google.android.material.card.MaterialCardView
-                        style="?attr/materialCardViewFilledStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                        app:cardElevation="2dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -173,6 +173,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
+                                    android:textColor="#ff404040"
                                     android:textSize="14sp"
                                     tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -181,7 +182,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
-                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textColor="#ff7d7d7d"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
@@ -195,6 +196,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
+                                    android:textColor="#ff404040"
                                     android:textSize="14sp"
                                     tools:text="@string/design_library_admob_title_ad_unit_id" />
 
@@ -203,7 +205,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
-                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textColor="#ff7d7d7d"
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -234,17 +236,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:textColor="#ff4d4d4d"
                             android:textSize="14sp"
                             android:textStyle="bold"
                             tools:text="@string/design_library_admob_title_interstitial" />
                     </LinearLayout>
 
                     <com.google.android.material.card.MaterialCardView
-                        style="?attr/materialCardViewFilledStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                        app:cardElevation="2dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -263,6 +265,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
+                                    android:textColor="#ff404040"
                                     android:textSize="14sp"
                                     tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -271,7 +274,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
-                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textColor="#ff7d7d7d"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
@@ -285,6 +288,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
+                                    android:textColor="#ff404040"
                                     android:textSize="14sp"
                                     tools:text="@string/design_library_admob_title_ad_unit_id" />
 
@@ -293,7 +297,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
-                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textColor="#ff7d7d7d"
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -325,16 +329,16 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="Rewarded Ad"
+                            android:textColor="#ff4d4d4d"
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
                     <com.google.android.material.card.MaterialCardView
-                        style="?attr/materialCardViewFilledStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                        app:cardElevation="2dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -353,6 +357,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
+                                    android:textColor="#ff404040"
                                     android:textSize="14sp"
                                     tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -361,7 +366,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
-                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textColor="#ff7d7d7d"
                                     android:textSize="12sp" />
                             </LinearLayout>
 
@@ -375,6 +380,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
+                                    android:textColor="#ff404040"
                                     android:textSize="14sp"
                                     tools:text="@string/design_library_admob_title_ad_unit_id" />
 
@@ -383,7 +389,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:gravity="center|left"
-                                    android:textColor="?attr/colorOnSurfaceVariant"
+                                    android:textColor="#ff7d7d7d"
                                     android:textSize="12sp" />
                             </LinearLayout>
                         </LinearLayout>
@@ -409,17 +415,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:textColor="#ff4d4d4d"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         tools:text="@string/design_library_admob_dialog_set_test_device_title" />
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
-                    style="?attr/materialCardViewFilledStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                    app:cardElevation="2dp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/list_test_device"

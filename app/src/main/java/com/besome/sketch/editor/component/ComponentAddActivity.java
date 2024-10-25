@@ -42,7 +42,6 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wB;
-import pro.sketchware.lib.DebouncedClickListener;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 
@@ -63,6 +62,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     private LogicPopupAddComponentTempBinding binding;
 
     private boolean checks() {
+        binding.addButton.setEnabled(false);
         int componentType = componentList.get(componentsAdapter.layoutPosition).type;
         String componentId = binding.edInput.getText().toString();
         if (!componentNameValidator.b()) {
@@ -92,7 +92,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 if (jC.c(sc_id).d().useYn.equals(ProjectLibraryBean.LIB_USE_N)) {
                     bB.b(this, Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
-                } else if (jC.c(sc_id).d().reserved2.trim().isEmpty()) {
+                } else if (jC.c(sc_id).d().reserved2.trim().length() == 0) {
                     bB.b(this, Helper.getResString(R.string.design_library_firebase_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 } else {
@@ -126,7 +126,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 break;
 
             case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                if (binding.edInputFilePicker.getText().toString().isEmpty() || !componentMimeTypeValidator.b()) {
+                if (binding.edInputFilePicker.getText().toString().length() == 0 || !componentMimeTypeValidator.b()) {
                     return false;
                 }
                 jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, binding.edInputFilePicker.getText().toString());
@@ -219,17 +219,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         binding.tiInputFilePicker.setHint(Helper.getResString(R.string.component_file_picker_hint_mime_type));
         w = new HashMap<>();
         binding.imgBack.setOnClickListener(this);
-        binding.addButton.setOnClickListener(new DebouncedClickListener() {
-            @Override
-            protected void onDebouncedClick(View v) {
-                if (checks()) {
-                    bB.a(ComponentAddActivity.this, Helper.getResString(R.string.component_message_component_block_added), bB.TOAST_WARNING).show();
-                    mB.a(getApplicationContext(), binding.edInput);
-                    setResult(RESULT_OK);
-                    finish();
-                }
-            }
-        });
+        binding.addButton.setOnClickListener(this);
         binding.docsButton.setOnClickListener(this);
         binding.imgFilePicker.setOnClickListener(this);
     }
@@ -237,14 +227,21 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.img_back) {
+        if (id == R.id.add_button) {
+            if (!mB.a() && checks()) {
+                bB.a(this, Helper.getResString(R.string.component_message_component_block_added), bB.TOAST_WARNING).show();
+                mB.a(getApplicationContext(), binding.edInput);
+                setResult(RESULT_OK);
+                finish();
+            }
+        } else if (id == R.id.img_back) {
             if (!mB.a()) {
                 onBackPressed();
             }
         } else if (id == R.id.docs_button) {
             if (!mB.a()) {
                 String componentDocsUrlByTypeName = ComponentBean.getComponentDocsUrlByTypeName(componentList.get(componentsAdapter.layoutPosition).type);
-                if (componentDocsUrlByTypeName.isEmpty()) {
+                if (componentDocsUrlByTypeName.equals("")) {
                     bB.a(getApplicationContext(), Helper.getResString(R.string.component_add_message_docs_updated_soon), bB.TOAST_NORMAL).show();
                     return;
                 }

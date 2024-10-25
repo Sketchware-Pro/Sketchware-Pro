@@ -98,7 +98,7 @@ public class ExtraBlockCode {
         }
 
         String formattedCode;
-        if (!parameters.isEmpty()) {
+        if (parameters.size() > 0) {
             try {
                 formattedCode = String.format(blockInfo.getCode(), parameters.toArray(new Object[0]));
             } catch (Exception e) {

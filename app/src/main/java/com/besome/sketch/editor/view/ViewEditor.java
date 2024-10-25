@@ -213,37 +213,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void showPaletteFavorite() {
-        paletteWidget.animate()
-                .alpha(0f)
-                .setDuration(100)
-                .withEndAction(() -> {
-                    paletteWidget.setVisibility(View.GONE);
-                    paletteFavorite.setAlpha(0f);
-                    paletteFavorite.setVisibility(View.VISIBLE);
-                    paletteFavorite.animate()
-                            .alpha(1f)
-                            .setDuration(100)
-                            .start();
-                })
-                .start();
+        paletteWidget.setVisibility(View.GONE);
+        paletteFavorite.setVisibility(View.VISIBLE);
     }
 
     private void showPaletteWidget() {
-        paletteFavorite.animate()
-                .alpha(0f)
-                .setDuration(100)
-                .withEndAction(() -> {
-                    paletteFavorite.setVisibility(View.GONE);
-                    paletteWidget.setAlpha(0f);
-                    paletteWidget.setVisibility(View.VISIBLE);
-                    paletteWidget.animate()
-                            .alpha(1f)
-                            .setDuration(100)
-                            .start();
-                })
-                .start();
+        paletteWidget.setVisibility(View.VISIBLE);
+        paletteFavorite.setVisibility(View.GONE);
     }
-
 
     @Override
     public void onClick(View view) {
@@ -392,7 +369,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     if (areImagesAdded) {
                         bB.a(getContext(), xB.b().a(getContext(), R.string.view_widget_favorites_image_auto_added), bB.TOAST_NORMAL).show();
                     }
-                    if (!arrayList.isEmpty()) {
+                    if (arrayList.size() > 0) {
                         HashMap<String, String> hashMap = new HashMap<>();
                         viewPane.a(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                         for (ViewBean next : arrayList) {
@@ -402,7 +379,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                                 hashMap.put(next.id, next.id);
                             }
                             next.id = hashMap.get(next.id);
-                            if (arrayList.indexOf(next) != 0 && (str = next.parent) != null && !str.isEmpty()) {
+                            if (arrayList.indexOf(next) != 0 && (str = next.parent) != null && str.length() > 0) {
                                 next.parent = hashMap.get(next.parent);
                             }
                             jC.a(a).a(b, next);
@@ -510,12 +487,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         k.setBackgroundColor(0xff0084c2);
         k.setOrientation(LinearLayout.HORIZONTAL);
         k.setGravity(Gravity.CENTER_VERTICAL);
-        k.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 25f)));
+        k.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 25.0f)));
         fileName = new TextView(context);
         fileName.setTextColor(Color.WHITE);
         fileName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        fileName.setPadding((int) (f * 8f), 0, 0, 0);
+        fileName.setPadding((int) (f * 8.0f), 0, 0, 0);
         fileName.setGravity(Gravity.CENTER_VERTICAL);
         k.addView(fileName);
         imgPhoneTopBg = new ImageView(context);
@@ -721,9 +698,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void setPreviewColors(String str) {
-        k.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY_DARK));
-        imgPhoneTopBg.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY_DARK));
-        toolbar.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY));
+        k.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
+        imgPhoneTopBg.setBackgroundColor(ProjectFile.getColor(str, "color_primary_dark"));
+        toolbar.setBackgroundColor(ProjectFile.getColor(str, "color_primary"));
     }
 
     private void b(boolean z) {

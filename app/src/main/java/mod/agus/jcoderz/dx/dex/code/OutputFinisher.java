@@ -706,7 +706,7 @@ public final class OutputFinisher {
             }
 
             // Add any pending closely bound addresses
-            if (!(insn instanceof ZeroSizeInsn) && !closelyBoundAddresses.isEmpty()) {
+            if (!(insn instanceof ZeroSizeInsn) && closelyBoundAddresses.size() > 0) {
                 for (mod.agus.jcoderz.dx.dex.code.CodeAddress codeAddress: closelyBoundAddresses) {
                     result.add(codeAddress);
                 }

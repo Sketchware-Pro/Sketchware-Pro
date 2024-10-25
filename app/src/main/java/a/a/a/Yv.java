@@ -90,7 +90,7 @@ public class Yv extends qA implements View.OnClickListener {
                     arrayList.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, next.resName, wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + next.resFullName));
                 }
             }
-            if (!arrayList.isEmpty()) {
+            if (arrayList.size() > 0) {
                 ArrayList<ProjectResourceBean> d = ((ManageSoundActivity) requireActivity()).m().d();
                 Intent intent = new Intent(requireActivity(), ManageSoundImportActivity.class);
                 intent.putParcelableArrayListExtra("project_sounds", d);
@@ -239,7 +239,7 @@ public class Yv extends qA implements View.OnClickListener {
     }
 
     private void showOrHideNoSoundsText() {
-        if (sounds.isEmpty()) {
+        if (sounds.size() == 0) {
             noSoundsText.setVisibility(View.VISIBLE);
             soundsList.setVisibility(View.GONE);
         } else {
@@ -253,7 +253,7 @@ public class Yv extends qA implements View.OnClickListener {
         for (ProjectResourceBean next : arrayList) {
             arrayList2.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, next.resName, next.resFullName));
         }
-        if (!arrayList2.isEmpty()) {
+        if (arrayList2.size() > 0) {
             ((ManageSoundActivity) requireActivity()).m().a(arrayList2);
             ((ManageSoundActivity) requireActivity()).f(0);
         }

@@ -22,7 +22,7 @@ import com.sketchware.remod.databinding.ManageLibrarySettingAdmobTestDeviceItemB
 
 import a.a.a.Uu;
 import a.a.a.gB;
-import pro.sketchware.lib.CommonViewBindingAdapter;
+import mod.hasrat.lib.CommonViewBindingAdapter;
 import mod.hey.studios.util.Helper;
 
 public class ReviewStepView extends LinearLayout implements Uu {

@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -23,10 +22,7 @@
             android:id="@+id/category_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:splitMotionEvents="false"
-            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/fr_logic_list_category_icon_item"
-            tools:orientation="horizontal" />
+            android:splitMotionEvents="false" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,8 +39,7 @@
                 android:layout_marginBottom="8dp"
                 android:fontFamily="sans-serif-medium"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorPrimary"
-                tools:text="@string/common_word_activity" />
+                android:textColor="?attr/colorPrimary" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,23 +53,20 @@
                     android:layout_height="32dp"
                     android:gravity="center"
                     android:textSize="12sp"
-                    android:visibility="gone"
-                    tools:text="@string/event_message_no_avail_events" />
+                    android:visibility="gone" />
 
                 <ScrollView
                     android:id="@+id/moreblock_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    tools:visibility="gone" />
+                    android:orientation="horizontal" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/event_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scrollbars="vertical"
-                    android:splitMotionEvents="false"
-                    tools:listitem="@layout/fr_logic_list_item_addevent" />
+                    android:splitMotionEvents="false" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -85,11 +77,7 @@
                 android:paddingTop="8dp"
                 android:paddingRight="16dp"
                 android:paddingBottom="8dp"
-                android:visibility="gone"
-                tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/fr_logic_list_preview_with_event_item"
-                tools:orientation="horizontal"
-                tools:visibility="visible" />
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -103,18 +91,17 @@
                     style="?attr/materialButtonOutlinedStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    tools:text="@string/common_word_cancel" />
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1" />
 
                 <Button
                     android:id="@+id/add_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    tools:text="@string/common_word_add" />
+                    android:layout_weight="1" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -3,6 +3,7 @@ package mod.hilal.saif.activities.tools;
 import static com.besome.sketch.editor.view.ViewEditor.shakeView;
 import static mod.SketchwareUtil.dpToPx;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -16,16 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.besome.sketch.help.SystemSettingActivity;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogSelectApkToSignBinding;
 
@@ -40,10 +39,9 @@ import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
-import mod.trindadedev.ui.activities.SettingsActivity;
-import mod.trindadedev.ui.fragments.settings.appearance.SettingsAppearanceFragment;
+import mod.trindadedev.settings.appearance.AppearanceActivity;
 
-public class AppSettings extends BaseAppCompatActivity {
+public class AppSettings extends AppCompatActivity {
 
     private LinearLayout content;
     private MaterialToolbar topAppBar;
@@ -74,10 +72,10 @@ public class AppSettings extends BaseAppCompatActivity {
         dialog.setDialogSelectionListener(files -> {
             final boolean isDirectory = new File(files[0]).isDirectory();
             if (files.length > 1 || isDirectory) {
-                new MaterialAlertDialogBuilder(this)
+                new AlertDialog.Builder(this)
                         .setTitle("Select an action")
                         .setSingleChoiceItems(new String[]{"Delete"}, -1, (actionDialog, which) -> {
-                            new MaterialAlertDialogBuilder(this)
+                            new AlertDialog.Builder(this)
                                     .setTitle("Delete " + (isDirectory ? "folder" : "file") + "?")
                                     .setMessage("Are you sure you want to delete this " + (isDirectory ? "folder" : "file") + " permanently? This cannot be undone.")
                                     .setPositiveButton(R.string.common_word_delete, (deleteConfirmationDialog, pressedButton) -> {
@@ -92,7 +90,7 @@ public class AppSettings extends BaseAppCompatActivity {
                         })
                         .show();
             } else {
-                new MaterialAlertDialogBuilder(this)
+                new AlertDialog.Builder(this)
                         .setTitle("Select an action")
                         .setSingleChoiceItems(new String[]{"Edit", "Delete"}, -1, (actionDialog, which) -> {
                             switch (which) {
@@ -105,7 +103,7 @@ public class AppSettings extends BaseAppCompatActivity {
                                     intent.putExtra("xml", "");
                                     startActivity(intent);
                                 }
-                                case 1 -> new MaterialAlertDialogBuilder(this)
+                                case 1 -> new AlertDialog.Builder(this)
                                         .setTitle("Delete file?")
                                         .setMessage("Are you sure you want to delete this file permanently? This cannot be undone.")
                                         .setPositiveButton(R.string.common_word_delete, (deleteDialog, pressedButton) ->
@@ -125,22 +123,14 @@ public class AppSettings extends BaseAppCompatActivity {
         createToolsView(R.drawable.block_96_blue, "Block manager", "Manage your own blocks to use in Logic Editor", content, new ActivityLauncher(new Intent(getApplicationContext(), BlocksManager.class)), false);
         createToolsView(R.drawable.pull_down_48, "Block selector menu manager", "Manage your own block selector menus", content, new ActivityLauncher(new Intent(getApplicationContext(), BlockSelectorActivity.class)), false);
         createToolsView(R.drawable.collage_48, "Component manager", "Manage your own components", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class)), false);
-        createToolsView(R.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events", content, openSettingsActivity(SettingsActivity.EVENTS_MANAGER_FRAGMENT), false);
+        createToolsView(R.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events", content, new ActivityLauncher(new Intent(getApplicationContext(), EventsMaker.class)), false);
         createToolsView(R.drawable.colored_box_96, "Local library manager", "Manage and download local libraries", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system")), false);
         createToolsView(R.drawable.engineering_48, "Mod settings", "Change general mod settings", content, new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class)), false);
-        createToolsView(R.drawable.icon_pallete, getString(R.string.settings_appearance), getString(R.string.settings_appearance_description), content, openSettingsActivity(SettingsActivity.SETTINGS_APPEARANCE_FRAGMENT), false);
+        createToolsView(R.drawable.icon_pallete, getString(R.string.appearance), getString(R.string.appearance_description), content, new ActivityLauncher(new Intent(getApplicationContext(), AppearanceActivity.class)), false);
         createToolsView(R.mipmap.ic_type_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", content, v -> openWorkingDirectory(), false);
         createToolsView(R.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", content, v -> signApkFileDialog(), false);
         createToolsView(R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)), false);
         createToolsView(R.drawable.ic_settings_24, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", content, new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class)), true);
-    }
-    
-    private View.OnClickListener openSettingsActivity(String fragmentTag) {
-        return v -> {
-            Intent intent = new Intent(v.getContext(), SettingsActivity.class);
-            intent.putExtra("fragment_tag", fragmentTag);
-            v.getContext().startActivity(intent);
-        };
     }
 
     private void createToolsView(int icon, String title, String desc, LinearLayout toView, View.OnClickListener listener, boolean lastItem) {
@@ -231,7 +221,7 @@ public class AppSettings extends BaseAppCompatActivity {
 
         tv_progress.setText("Signing APK...");
 
-        AlertDialog building_dialog = new MaterialAlertDialogBuilder(this)
+        AlertDialog building_dialog = new AlertDialog.Builder(this)
                 .setView(building_root)
                 .create();
 

@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         style="?attr/materialCardViewFilledStyle"
-        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
         <EditText
             android:id="@+id/ed_input_project_id"
@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"
         style="?attr/materialCardViewFilledStyle"
-        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
         <EditText
             android:id="@+id/ed_input_app_id"
             android:layout_width="match_parent"
@@ -122,7 +122,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         style="?attr/materialCardViewFilledStyle"
-        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
         <EditText
             android:id="@+id/ed_input_api_key"
             android:layout_width="match_parent"

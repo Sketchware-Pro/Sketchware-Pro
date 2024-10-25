@@ -3,7 +3,6 @@ package com.besome.sketch.lib.ui;
 import a.a.a.wB;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,7 +11,6 @@ import com.sketchware.remod.R;
 public class PropertyTwoLineItem extends RelativeLayout {
     private int key = -1;
     private TextView tvName, tvDesc;
-    private View divider;
 
     public PropertyTwoLineItem(Context context) {
         super(context);
@@ -23,7 +21,6 @@ public class PropertyTwoLineItem extends RelativeLayout {
         wB.a(context, this, R.layout.program_info_two_line_item);
         tvName = findViewById(R.id.tv_name);
         tvDesc = findViewById(R.id.tv_desc);
-        divider = findViewById(R.id.layout_divider);
     }
 
     public int getKey() {
@@ -40,9 +37,5 @@ public class PropertyTwoLineItem extends RelativeLayout {
 
     public void setName(String var1) {
         tvName.setText(var1);
-    }
-
-    public void setHideDivider(boolean hideDivider) {
-        divider.setVisibility(hideDivider ? View.GONE : View.VISIBLE);
     }
 }

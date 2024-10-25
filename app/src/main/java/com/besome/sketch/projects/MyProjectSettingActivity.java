@@ -1,7 +1,5 @@
 package com.besome.sketch.projects;
 
-import static mod.hey.studios.util.ProjectFile.getDefaultColor;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +11,7 @@ import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -52,9 +51,8 @@ import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
 import mod.SketchwareUtil;
-import pro.sketchware.control.VersionDialog;
+import mod.hasrat.control.VersionDialog;
 import mod.hey.studios.util.Helper;
-import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class MyProjectSettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -83,6 +81,10 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         binding = MyprojectSettingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        binding.toolbar.setTitle(R.string.myprojects_list_menu_title_create_a_new_project);
+        setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         binding.toolbar.setNavigationOnClickListener(arg0 -> onBackPressed());
 
         if (!isStoragePermissionGranted()) finish();
@@ -93,34 +95,36 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         binding.verCode.setSelected(true);
         binding.verName.setSelected(true);
 
+        binding.contents.setOnClickListener(this);
         binding.appIconLayout.setOnClickListener(this);
         binding.verCodeHolder.setOnClickListener(this);
         binding.verNameHolder.setOnClickListener(this);
-        binding.imgThemeColorHelp.setOnClickListener(this);
-        binding.okButton.setOnClickListener(this);
-        binding.cancel.setOnClickListener(this);
+        binding.etAppName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
+        binding.etPackageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
+        binding.etProjectName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_project_name));
 
-        binding.tilAppName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
-        binding.tilPackageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
-        binding.tilProjectName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_project_name));
-
-        projectAppNameValidator = new LB(getApplicationContext(), binding.tilAppName);
-        projectPackageNameValidator = new UB(getApplicationContext(), binding.tilPackageName);
-        projectNameValidator = new VB(getApplicationContext(), binding.tilProjectName);
-        binding.tilPackageName.setOnFocusChangeListener((v, hasFocus) -> {
+        projectAppNameValidator = new LB(getApplicationContext(), binding.tiAppName);
+        projectPackageNameValidator = new UB(getApplicationContext(), binding.tiPackageName);
+        projectNameValidator = new VB(getApplicationContext(), binding.tiProjectName);
+        binding.etPackageName.setPrivateImeOptions("defaultInputmode=english;");
+        binding.etProjectName.setPrivateImeOptions("defaultInputmode=english;");
+        binding.tiPackageName.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 if (!shownPackageNameChangeWarning && !((EditText) v).getText().toString().trim().contains("com.my.newproject")) {
                     showPackageNameChangeWarning();
                 }
             }
         });
+        binding.imgThemeColorHelp.setOnClickListener(this);
+        /* Save & Cancel buttons */
+        binding.okButton.setOnClickListener(this);
+        binding.cancel.setOnClickListener(this);
 
-        projectThemeColors[0] = getDefaultColor(ProjectFile.COLOR_ACCENT);
-        projectThemeColors[1] = getDefaultColor(ProjectFile.COLOR_PRIMARY);
-        projectThemeColors[2] = getDefaultColor(ProjectFile.COLOR_PRIMARY_DARK);
-        projectThemeColors[3] = getDefaultColor(ProjectFile.COLOR_CONTROL_HIGHLIGHT);
-        projectThemeColors[4] = getDefaultColor(ProjectFile.COLOR_CONTROL_NORMAL);
-
+        projectThemeColors[0] = getResources().getColor(R.color.color_accent);
+        projectThemeColors[1] = getResources().getColor(R.color.color_primary);
+        projectThemeColors[2] = getResources().getColor(R.color.color_primary_dark);
+        projectThemeColors[3] = getResources().getColor(R.color.color_control_highlight);
+        projectThemeColors[4] = getResources().getColor(R.color.color_control_normal);
         for (int i = 0; i < themeColorKeys.length; i++) {
             ThemeColorView colorView = new ThemeColorView(this, i);
             colorView.name.setText(themeColorLabels[i]);
@@ -128,13 +132,12 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             binding.layoutThemeColors.addView(colorView);
             colorView.setOnClickListener(v -> {
                 if (!mB.a()) {
-                    pickColor(v, (Integer) v.getTag());
+                    pickColor((Integer) v.getTag());
                 }
             });
         }
         if (updatingExistingProject) {
             /* Set the dialog's title & save button label */
-            binding.toolbar.setTitle("Project Settings");
             HashMap<String, Object> metadata = lC.b(sc_id);
             binding.etPackageName.setText(yB.c(metadata, "my_sc_pkg_name"));
             binding.etProjectName.setText(yB.c(metadata, "my_ws_name"));
@@ -160,7 +163,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             /* Set the dialog's title & create button label */
             String newProjectName = getIntent().getStringExtra("my_ws_name");
             String newProjectPackageName = getIntent().getStringExtra("my_sc_pkg_name");
-            if (sc_id == null || sc_id.isEmpty()) {
+            if (sc_id == null || sc_id.equals("")) {
                 sc_id = lC.b();
                 newProjectName = lC.c();
                 newProjectPackageName = "com.my." + newProjectName.toLowerCase();
@@ -376,23 +379,16 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private void pickColor(View anchorView, int colorIndex) {
-        Zx zx = new Zx(this, projectThemeColors[colorIndex], false, false);
-        zx.a((new Zx.b() {
-            @Override
-            public void a(int var1) {
-                projectThemeColors[colorIndex] = var1;
-                syncThemeColors();
-            }
-
-            @Override
-            public void a(String var1, int var2) {
-                projectThemeColors[colorIndex] = var2;
-                syncThemeColors();
-            }
-         }
-        ));
-        zx.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
+    private void pickColor(int colorIndex) {
+        View view = wB.a(this, R.layout.color_picker);
+        view.setAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_fade_in));
+        Zx zx = new Zx(view, this, projectThemeColors[colorIndex], false, false);
+        zx.a(pickedColor -> {
+            projectThemeColors[colorIndex] = pickedColor;
+            syncThemeColors();
+        });
+        zx.setAnimationStyle(R.anim.abc_fade_in);
+        zx.showAtLocation(view, Gravity.CENTER, 0, 0);
     }
 
     private void showResetIconConfirmation() {

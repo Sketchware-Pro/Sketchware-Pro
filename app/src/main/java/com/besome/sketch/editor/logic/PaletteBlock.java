@@ -5,12 +5,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.android.material.card.MaterialCardView;
 
 import com.besome.sketch.lib.ui.CustomHorizontalScrollView;
 import com.besome.sketch.lib.ui.CustomScrollView;
@@ -60,28 +56,14 @@ public class PaletteBlock extends LinearLayout {
 
     public TextView a(String title) {
         TextView textView = new TextView(a);
-        textView.setLayoutParams(new LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, 
-           (int) (f * 30.0F)
-        ));
+        textView.setLayoutParams(new LayoutParams(-1, (int) (f * 30.0F)));
+        textView.setBackgroundResource(R.drawable.bg_feed);
         textView.setText(title);
         textView.setTextSize(10.0F);
-        textView.setGravity(Gravity.CENTER);
+        textView.setTextColor(Color.BLACK);
+        textView.setGravity(17);
         textView.setPadding((int) (f * 8.0F), 0, (int) (f * 8.0F), 0);
-        
-        var cardView = new MaterialCardView(a);
-        var params = new LayoutParams(
-             ViewGroup.LayoutParams.MATCH_PARENT,
-             ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(0, 0, 3, 3);
-        cardView.setLayoutParams(params);
-        
-        cardView.setCardElevation(0f); // I don't remember if the card has elevation by default 
-        cardView.setRadius(12.0f);
-        cardView.setStrokeWidth(0);
-        cardView.addView(textView);
-        blockBuilder.addView(cardView);
+        blockBuilder.addView(textView);
         return textView;
     }
 

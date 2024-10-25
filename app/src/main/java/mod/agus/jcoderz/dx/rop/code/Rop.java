@@ -368,10 +368,16 @@ public final class Rop {
      * @return true if rop is commutative
      */
     public boolean isCommutative() {
-        return switch (opcode) {
-            case RegOps.AND, RegOps.OR, RegOps.XOR, RegOps.ADD, RegOps.MUL -> true;
-            default -> false;
-        };
+        switch (opcode) {
+            case RegOps.AND:
+            case RegOps.OR:
+            case RegOps.XOR:
+            case RegOps.ADD:
+            case RegOps.MUL:
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**

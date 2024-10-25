@@ -1,7 +1,8 @@
 package mod.hey.studios.util;
 
-import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
 
 import kellinwood.logging.LogManager;
@@ -12,7 +13,6 @@ import mod.jbk.util.LogUtil;
 public class SystemLogPrinter {
 
     private static final String PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/debug.txt");
-    private static PrintStream ps;
 
     public static void start() {
         start(PATH);
@@ -74,23 +74,43 @@ public class SystemLogPrinter {
             }
         });
 
-        // Reset the log file
+        // Reset
         FileUtil.writeFile(path, "");
 
         try {
-            // Use FileOutputStream instead of FileWriter
-            ps = new PrintStream(new FileOutputStream(path, true), true);
+            FileWriter writer = new FileWriter(path, true);
+            PrintStream ps = new PrintStream(new SpecializedOutputStream(writer), true);
+
             System.setOut(ps);
             System.setErr(ps);
         } catch (IOException e) {
-            LogUtil.e("SystemLogPrinter", "IOException while creating PrintStream to " + path, e);
+            LogUtil.e("SystemLogPrinter", "IOException while creating FileWriter to " + path, e);
         }
     }
 
-    public static void stop() {
-        if (ps != null) {
-            ps.close();
-            ps = null;
+    private static class SpecializedOutputStream extends OutputStream {
+
+        private final FileWriter writer;
+
+        SpecializedOutputStream(FileWriter writer) {
+            this.writer = writer;
+        }
+
+        @Override
+        public void write(int b) throws IOException {
+            writer.write(b);
+        }
+
+        @Override
+        public void flush() throws IOException {
+            writer.flush();
+            super.flush();
+        }
+
+        @Override
+        public void close() throws IOException {
+            writer.close();
+            super.close();
         }
     }
 }

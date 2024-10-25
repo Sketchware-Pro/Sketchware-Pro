@@ -18,5 +18,5 @@
     <ImageView
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:src="@drawable/ic_arrow_drop_down_24px" />
+        android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
 </LinearLayout>

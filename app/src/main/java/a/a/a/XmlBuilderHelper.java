@@ -46,7 +46,7 @@ public class XmlBuilderHelper {
 
         String trimmedValue = value.trim();
         value = trimmedValue;
-        if (!trimmedValue.isEmpty()) {
+        if (trimmedValue.length() > 0) {
             name = trimmedValue;
             if (trimmedValue.charAt(0) == '"') {
                 name = trimmedValue.substring(1);

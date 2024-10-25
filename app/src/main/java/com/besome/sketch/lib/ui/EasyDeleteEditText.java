@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.databinding.EasyDeleteEdittextBinding;
 
-import pro.sketchware.lib.BaseTextWatcher;
+import mod.hasrat.lib.BaseTextWatcher;
 
 public class EasyDeleteEditText extends RelativeLayout {
 

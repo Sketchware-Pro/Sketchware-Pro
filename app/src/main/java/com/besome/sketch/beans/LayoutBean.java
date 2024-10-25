@@ -39,8 +39,6 @@ public class LayoutBean extends nA implements Parcelable {
     @Expose
     public int backgroundColor;
     @Expose
-    public String backgroundResColor;
-    @Expose
     public String backgroundResource;
     @Expose
     public int borderColor;
@@ -104,7 +102,6 @@ public class LayoutBean extends nA implements Parcelable {
         backgroundColor = parcel.readInt();
         borderColor = parcel.readInt();
         backgroundResource = parcel.readString();
-        backgroundResColor = parcel.readString();
     }
 
     public static Parcelable.Creator<LayoutBean> getCreator() {
@@ -130,7 +127,6 @@ public class LayoutBean extends nA implements Parcelable {
         backgroundColor = layoutBean.backgroundColor;
         borderColor = layoutBean.borderColor;
         backgroundResource = layoutBean.backgroundResource;
-        backgroundResColor = layoutBean.backgroundResColor;
     }
 
     @Override
@@ -172,6 +168,5 @@ public class LayoutBean extends nA implements Parcelable {
         parcel.writeInt(backgroundColor);
         parcel.writeInt(borderColor);
         parcel.writeString(backgroundResource);
-        parcel.writeString(backgroundResColor);
     }
 }

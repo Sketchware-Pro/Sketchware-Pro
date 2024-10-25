@@ -271,12 +271,13 @@ public final class Hex {
 
         while (length > 0) {
             if (col == 0) {
-                String astr = switch (addressLength) {
-                    case 2 -> Hex.u1(outOffset);
-                    case 4 -> Hex.u2(outOffset);
-                    case 6 -> Hex.u3(outOffset);
-                    default -> Hex.u4(outOffset);
-                };
+                String astr;
+                switch (addressLength) {
+                    case 2:  astr = Hex.u1(outOffset); break;
+                    case 4:  astr = Hex.u2(outOffset); break;
+                    case 6:  astr = Hex.u3(outOffset); break;
+                    default: astr = Hex.u4(outOffset); break;
+                }
                 sb.append(astr);
                 sb.append(": ");
             } else if ((col & 1) == 0) {

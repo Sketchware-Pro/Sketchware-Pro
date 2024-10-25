@@ -15,6 +15,7 @@ import androidx.activity.BackEventCompat;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,13 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ActivityLogcatreaderBinding;
 import com.sketchware.remod.databinding.EasyDeleteEdittextBinding;
 import com.sketchware.remod.databinding.ViewLogcatItemBinding;
-
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,10 +37,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mod.SketchwareUtil;
-import pro.sketchware.lib.BaseTextWatcher;
+import mod.hasrat.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
 
-public class LogReaderActivity extends BaseAppCompatActivity {
+public class LogReaderActivity extends AppCompatActivity {
 
     private final BroadcastReceiver logger = new Logger();
     private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");
@@ -156,12 +154,12 @@ public class LogReaderActivity extends BaseAppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 final String _charSeq = s.toString();
-                if (_charSeq.isEmpty() && (pkgFilterList.isEmpty())) {
+                if (_charSeq.equals("") && (pkgFilterList.size() == 0)) {
                     binding.logsRecyclerView.setAdapter(new Adapter(mainList));
                 } else {
                     ArrayList<HashMap<String, Object>> filteredList = new ArrayList<>();
                     for (HashMap<String, Object> m : mainList) {
-                        if (!pkgFilterList.isEmpty()) {
+                        if (pkgFilterList.size() != 0) {
                             if (m.containsKey("pkgName") && pkgFilterList.contains(m.get("pkgName").toString())) {
                                 if (m.get("logRaw").toString().toLowerCase().contains(_charSeq.toLowerCase())) {
                                     filteredList.add(m);
@@ -277,8 +275,8 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 }
 
                 mainList.add(map);
-                if (pkgFilterList.isEmpty()) {
-                    if (!binding.searchInput.getText().toString().isEmpty()) {
+                if (pkgFilterList.size() == 0) {
+                    if (!binding.searchInput.getText().toString().equals("")) {
                         if (map.get("logRaw").toString().toLowerCase().contains(binding.searchInput.getText().toString().toLowerCase())) {
                             ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                         }
@@ -286,7 +284,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                         ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                     }
                 } else if (map.containsKey("pkgName") && pkgFilterList.contains(map.get("pkgName").toString())) {
-                    if (!binding.searchInput.getText().toString().isEmpty()) {
+                    if (!binding.searchInput.getText().toString().equals("")) {
                         if (map.get("logRaw").toString().toLowerCase().contains(binding.searchInput.getText().toString().toLowerCase())) {
                             ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                         }
@@ -322,7 +320,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 binding.appBarLayout.setExpanded(false);
             }
 
-            if (!data.isEmpty()) {
+            if (data.size() > 0) {
                 if (persistentBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
                     persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     persistentBottomSheetBehavior.setHideable(false);

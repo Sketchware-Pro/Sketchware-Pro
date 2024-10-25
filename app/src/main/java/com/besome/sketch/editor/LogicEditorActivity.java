@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -27,6 +28,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -110,7 +112,7 @@ import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
-import pro.sketchware.menu.ExtraMenuBean;
+import mod.hasrat.menu.ExtraMenuBean;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
@@ -155,7 +157,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private void loadEventBlocks() {
         ArrayList<BlockBean> eventBlocks = jC.a(B).a(M.getJavaName(), C + "_" + D);
         if (eventBlocks != null) {
-            if (eventBlocks.isEmpty()) {
+            if (eventBlocks.size() == 0) {
                 e(X);
             }
 
@@ -192,7 +194,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                     for (int i = 0; i < next2.parameters.size(); i++) {
                         String parameter = next2.parameters.get(i);
-                        if (parameter != null && !parameter.isEmpty()) {
+                        if (parameter != null && parameter.length() > 0) {
                             if (parameter.charAt(0) == '@') {
                                 Rs parameterBlock = blockIdsAndBlocks.get(Integer.valueOf(parameter.substring(1)));
                                 if (parameterBlock != null) {
@@ -534,7 +536,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         HashMap<Integer, Integer> hashMap = new HashMap<>();
         ArrayList<BlockBean> arrayList2 = new ArrayList<>();
         for (BlockBean next : arrayList) {
-            if (next.id != null && !next.id.isEmpty()) {
+            if (next.id != null && !next.id.equals("")) {
                 arrayList2.add(next.clone());
             }
         }
@@ -566,7 +568,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             for (int j = 0; j < block.parameters.size(); j++) {
                 String parameter = block.parameters.get(j);
-                if (parameter != null && !parameter.isEmpty() && parameter.charAt(0) == '@') {
+                if (parameter != null && parameter.length() > 0 && parameter.charAt(0) == '@') {
                     int parameterId = Integer.parseInt(parameter.substring(1));
                     int parameterAsBlockId = hashMap.containsKey(parameterId) ? hashMap.get(parameterId) : 0;
                     if (parameterAsBlockId >= 0) {
@@ -589,7 +591,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         Rs firstBlock = null;
         for (int j = 0; j < arrayList2.size(); j++) {
             BlockBean blockBean = arrayList2.get(j);
-            if (blockBean.id != null && !blockBean.id.isEmpty()) {
+            if (blockBean.id != null && !blockBean.id.equals("")) {
                 Rs block = b(blockBean);
                 if (j == 0) {
                     firstBlock = block;
@@ -599,7 +601,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
         }
         for (BlockBean block : arrayList2) {
-            if (block.id != null && !block.id.isEmpty()) {
+            if (block.id != null && !block.id.equals("")) {
                 a(block, false);
             }
         }
@@ -681,12 +683,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         RadioGroup radioGroup = customView.findViewById(R.id.rg);
         LinearLayout content = customView.findViewById(R.id.content);
         ArrayList<String> images = jC.d(B).m();
-        if (selectingImage) {
-            images.add(0, "default_image");
-        } else if (selectingBackgroundImage) {
-            images.add(0, "NONE");
+        if (xq.a(B) || xq.b(B)) {
+            if (selectingImage) {
+                images.add(0, "default_image");
+            } else if (selectingBackgroundImage) {
+                images.add(0, "NONE");
+            }
         }
-
 
         for (String image : images) {
             RadioButton radioButton = new RadioButton(this);
@@ -760,7 +763,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
                     }
-                } else if (!text.isEmpty()) {
+                } else if (text.length() > 0) {
                     if (text.charAt(0) == '@') {
                         text = " " + text;
                         break emptyStringSetter;
@@ -787,7 +790,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             for (int i = 0; i < blockBean.parameters.size(); i++) {
                 String parameter = blockBean.parameters.get(i);
                 if (parameter != null) {
-                    if (!parameter.isEmpty() && parameter.charAt(0) == '@') {
+                    if (parameter.length() > 0 && parameter.charAt(0) == '@') {
                         int blockId = Integer.parseInt(parameter.substring(1));
                         if (blockId > 0) {
                             Rs parameterBlock = o.a(blockId);
@@ -796,7 +799,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             }
                         }
                     } else {
-                        if (block.V.get(i) instanceof Ss ss) {
+                        if (block.V.get(i) instanceof Ss) {
+                            Ss ss = (Ss) block.V.get(i);
                             String javaName = M.getJavaName();
                             String xmlName = M.getXmlName();
                             if (D.equals("onBindCustomView")) {
@@ -812,7 +816,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                 }
                             }
 
-                            if (!parameter.isEmpty()) {
+                            if (parameter.length() > 0) {
                                 if (ss.b.equals("m")) {
                                     switch (ss.c) {
                                         case "varInt":
@@ -1195,7 +1199,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     z = true;
                 }
             }
-            return z;
+            if (!z) {
+                return false;
+            }
         }
         return true;
     }
@@ -1224,23 +1230,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void b(Ss ss) {
-        Zx zx = new Zx(this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false, B);
-        zx.a(new Zx.b() {
-            @Override
-            public void a(int var1) {
-                if (var1 == 0) {
-                    LogicEditorActivity.this.a(ss, "Color.TRANSPARENT");
-                } else {
-                    LogicEditorActivity.this.a(ss, String.format("0x%08X", var1 & (Color.WHITE)));
-                }
-            }
-
-            @Override
-            public void a(String var1, int var2) {
-                LogicEditorActivity.this.a(ss, "getResources().getColor(R.color." + var1 + ")");
+        View a2 = wB.a(this, R.layout.color_picker);
+        a2.setAnimation(AnimationUtils.loadAnimation(this, R.anim.abc_fade_in));
+        Zx zx = new Zx(a2, this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false);
+        zx.a(i -> {
+            if (i == 0) {
+                a(ss, "Color.TRANSPARENT");
+            } else {
+                a(ss, String.format("0x%08X", i & (Color.WHITE)));
             }
         });
-        zx.showAtLocation(ss, Gravity.CENTER, 0, 0);
+        zx.setAnimationStyle(R.anim.abc_fade_in);
+        zx.showAtLocation(a2, Gravity.CENTER, 0, 0);
     }
 
     public final void b(String str, String str2) {
@@ -1372,7 +1373,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         RadioGroup radioGroup = customView.findViewById(R.id.rg);
         LinearLayout linearLayout = customView.findViewById(R.id.content);
         ArrayList<String> fontNames = jC.d(B).k();
-        fontNames.add(0, "default_font");
+        if (xq.a(B) || xq.b(B)) {
+            fontNames.add(0, "default_font");
+        }
         for (String fontName : fontNames) {
             RadioButton font = getFontRadioButton(fontName);
             radioGroup.addView(font);
@@ -1532,8 +1535,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             AsdAllEditor editor = new AsdAllEditor(this);
             editor.setCon(ss.getArgValue().toString());
             editor.show();
-            editor.saveLis(this, ss);
-            editor.cancelLis(editor);
+            editor.saveLis(this, ss, editor);
+            editor.cancelLis(this, editor);
             dialog.dismiss();
         });
         dialog.b(getTranslatedString(R.string.common_word_select), v -> {
@@ -1956,8 +1959,16 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         if (M == null) {
             return true;
         }
-        menu.findItem(R.id.menu_logic_redo).setEnabled(bC.d(B).g(s()));
-        menu.findItem(R.id.menu_logic_undo).setEnabled(bC.d(B).h(s()));
+        if (bC.d(B).g(s())) {
+            menu.findItem(R.id.menu_logic_redo).setEnabled(true);
+        } else {
+            menu.findItem(R.id.menu_logic_redo).setEnabled(false);
+        }
+        if (bC.d(B).h(s())) {
+            menu.findItem(R.id.menu_logic_undo).setEnabled(true);
+        } else {
+            menu.findItem(R.id.menu_logic_undo).setEnabled(false);
+        }
         return true;
     }
 
@@ -2118,7 +2129,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             Y = null;
             Z.removeCallbacks(aa);
             if (!u) {
-                if (v instanceof Rs rs) {
+                if (v instanceof Rs) {
+                    Rs rs = (Rs) v;
                     if (rs.getBlockType() == 0) {
                         a(rs, event.getX(), event.getY());
                     }
@@ -2256,7 +2268,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                     for (int i = 0; i < clone2.parameters.size(); i++) {
                         String parameter = clone2.parameters.get(i);
-                        if (parameter != null && !parameter.isEmpty() && parameter.charAt(0) == '@') {
+                        if (parameter != null && parameter.length() > 0 && parameter.charAt(0) == '@') {
                             clone2.parameters.set(i, "@" + (Integer.parseInt(parameter.substring(1)) + 99000000));
                         }
                     }
@@ -2271,8 +2283,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 o.getLocationOnScreen(oLocationOnScreen);
                 bC.d(B).a(s(), a3, width - oLocationOnScreen[0], a2 - oLocationOnScreen[1], null, null);
                 C();
-            } else if (v instanceof Rs rs13) {
+            } else if (v instanceof Rs) {
                 p.a(this.v);
+                Rs rs13 = (Rs) v;
                 if (rs13.getBlockType() == 1) {
                     int addTargetId = o.getAddTargetId();
                     BlockBean clone3 = addTargetId >= 0 ? o.a(addTargetId).getBean().clone() : null;
@@ -2295,7 +2308,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     BlockBean clone5 = addTargetId2 >= 0 ? o.a(addTargetId2).getBean().clone() : null;
                     ArrayList<BlockBean> data = ((Us) v).getData();
                     ArrayList<BlockBean> a5 = a(data, this.v[0], this.v[1], true);
-                    if (!a5.isEmpty()) {
+                    if (a5.size() > 0) {
                         Rs a6 = o.a(a5.get(0).id);
                         a(a6, this.v[0], this.v[1], true);
                         BlockBean blockBean3 = null;
@@ -2446,12 +2459,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             Configuration configuration = getResources().getConfiguration();
             boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
             if (isDarkTheme) {
-                codeEditor.setColorScheme(new SchemeDarcula());
+                codeEditor.setColorScheme( new SchemeDarcula());
             } else {
-                codeEditor.setColorScheme(new EditorColorScheme());
+                codeEditor.setColorScheme( new EditorColorScheme());
             }
         } else {
-            codeEditor.setColorScheme(new EditorColorScheme());
+            codeEditor.setColorScheme( new EditorColorScheme());
         }
 
         var dialog = new MaterialAlertDialogBuilder(this)

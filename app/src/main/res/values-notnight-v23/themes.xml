@@ -1,8 +1,8 @@
 <resources>
-    <style name="Platform.V23.Theme.SketchwarePro" parent="Platform.V21.Theme.SketchwarePro">
+    <style name="Platform.V23.AppTheme" parent="Platform.V21.AppTheme">
         <item name="android:statusBarColor">?android:attr/colorBackground</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="Platform.Theme.SketchwarePro" parent="Platform.V23.Theme.SketchwarePro" />
+    <style name="Platform.AppTheme" parent="Platform.V23.AppTheme" />
 </resources>

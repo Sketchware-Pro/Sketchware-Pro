@@ -23,10 +23,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -128,7 +126,7 @@ public class BackupFactory {
         //noinspection Java8ListSort
         Collections.sort(list, String.CASE_INSENSITIVE_ORDER);
 
-        int id = list.isEmpty() ? 600 : Integer.parseInt(new File(list.get(list.size() - 1)).getName());
+        int id = list.size() == 0 ? 600 : Integer.parseInt(new File(list.get(list.size() - 1)).getName());
         return String.valueOf(id + 1);
     }
 
@@ -383,19 +381,10 @@ public class BackupFactory {
         // Find custom blocks used and include them in the backup
         if (backupCustomBlocks) {
             CustomBlocksManager cbm = new CustomBlocksManager(sc_id);
-            
-            Set<ExtraBlockInfo> blocks = new HashSet<>();
-            Set<String> block_names = new HashSet<>();
+
+            ArrayList<ExtraBlockInfo> blocks = new ArrayList<>();
             for (BlockBean bean : cbm.getUsedBlocks()) {
-                if (!block_names.contains(bean.opCode)) {
-                    block_names.add(bean.opCode);
-                    if (cbm.contains(bean.opCode)) {
-                        blocks.add(cbm.getExtraBlockInfo(bean.opCode));
-                    } else {
-                        var block = BlockLoader.getBlockInfo(bean.opCode);
-                        blocks.add(block);
-                    }
-                }
+                blocks.add(BlockLoader.getBlockInfo(bean.opCode));
             }
 
             String json = new Gson().toJson(blocks);

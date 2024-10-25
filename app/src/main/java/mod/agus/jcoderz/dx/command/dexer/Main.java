@@ -542,7 +542,7 @@ public class Main {
                     processOne(fileNames[i], mainPassFilter);
                 }
 
-                if (!dexOutputFutures.isEmpty()) {
+                if (dexOutputFutures.size() > 0) {
                     throw new DexException("Too many classes in " + Arguments.MAIN_DEX_LIST_OPTION
                             + ", main dex capacity exceeded");
                 }
@@ -1098,7 +1098,7 @@ public class Main {
             }
         }
 
-        if (meths.isEmpty()) {
+        if (meths.size() == 0) {
             context.err.println("no such method: " + fqName);
             return;
         }
@@ -1849,7 +1849,7 @@ public class Main {
                             } catch(InterruptedException ex) {
                                 /* ignore */
                             }
-                        } else if (!outputDex.getClassDefs().items().isEmpty()) {
+                        } else if (outputDex.getClassDefs().items().size() > 0) {
                             // There are no further classes in the translation
                             // phase, and we have a full dex file. Rotate!
                             rotateDexFile();

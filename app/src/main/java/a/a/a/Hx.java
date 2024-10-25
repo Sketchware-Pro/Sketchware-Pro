@@ -64,7 +64,7 @@ public class Hx {
         StringBuilder sb = new StringBuilder(4096);
         for (b value : h) {
             String code = value.getCode();
-            if (sb.length() > 0 && !code.isEmpty()) {
+            if (sb.length() > 0 && code.length() > 0) {
                 sb.append(Jx.EOL);
                 sb.append(Jx.EOL);
             }
@@ -128,7 +128,7 @@ public class Hx {
     private void a(ArrayList<EventBean> events, HashMap<String, ArrayList<BlockBean>> logicBlocks) {
         for (EventBean eventBean : events) {
             ArrayList<BlockBean> eventLogicBlocks = logicBlocks.get(eventBean.targetId + "_" + eventBean.eventName);
-            String eventLogic = (eventLogicBlocks == null || eventLogicBlocks.isEmpty()) ? "" :
+            String eventLogic = (eventLogicBlocks == null || eventLogicBlocks.size() == 0) ? "" :
                     new Fx(projectFileBean.getActivityName(), jq, eventBean.eventName, eventLogicBlocks).a();
 
             switch (eventBean.eventType) {
@@ -189,7 +189,7 @@ public class Hx {
 
         for (a value : e) {
             String code = value.getCode();
-            if (sb.length() > 0 && !code.isEmpty()) {
+            if (sb.length() > 0 && code.length() > 0) {
                 sb.append(Jx.EOL);
                 sb.append(Jx.EOL);
             }
@@ -229,7 +229,7 @@ public class Hx {
         StringBuilder sb = new StringBuilder(4096);
         for (c next : g) {
             String a2 = next.a();
-            if (sb.length() > 0 && !a2.isEmpty()) {
+            if (sb.length() > 0 && a2.length() > 0) {
                 sb.append(Jx.EOL);
                 sb.append(Jx.EOL);
             }
@@ -268,7 +268,7 @@ public class Hx {
         for (c next : f) {
             next.b();
             String a2 = next.a();
-            if (sb.length() > 0 && !a2.isEmpty()) {
+            if (sb.length() > 0 && a2.length() > 0) {
                 sb.append(Jx.EOL);
                 sb.append(Jx.EOL);
             }
@@ -281,7 +281,7 @@ public class Hx {
         StringBuilder sb = new StringBuilder(4096);
         for (c value : c) {
             String a2 = value.a();
-            if (sb.length() > 0 && !a2.isEmpty()) {
+            if (sb.length() > 0 && a2.length() > 0) {
                 sb.append(Jx.EOL);
                 sb.append(Jx.EOL);
             }
@@ -380,7 +380,7 @@ public class Hx {
             StringBuilder sb = new StringBuilder(4096);
             for (d value : c) {
                 String a2 = value.a(a);
-                if (sb.length() > 0 && !a2.isEmpty()) {
+                if (sb.length() > 0 && a2.length() > 0) {
                     sb.append(Jx.EOL);
                     sb.append(Jx.EOL);
                 }
@@ -433,7 +433,7 @@ public class Hx {
             StringBuilder sb = new StringBuilder(4096);
             for (a value : c) {
                 String code = value.getCode();
-                if (sb.length() > 0 && !code.isEmpty()) {
+                if (sb.length() > 0 && code.length() > 0) {
                     sb.append(Jx.EOL);
                     sb.append(Jx.EOL);
                 }

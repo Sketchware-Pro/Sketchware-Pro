@@ -29,7 +29,7 @@ public class LogicHandler {
             }
             //assemble
             for (int i = 0; i < arr2.size(); i++) {
-                if (newStr.isEmpty()) {
+                if (newStr.equals("")) {
                     newStr = arr2.get(i);
                 } else {
                     newStr = newStr.concat("\n").concat(arr2.get(i));
@@ -61,7 +61,7 @@ public class LogicHandler {
             }
             //assemble
             for (int i = 0; i < arr2.size(); i++) {
-                if (newStr.isEmpty()) {
+                if (newStr.equals("")) {
                     newStr = arr2.get(i);
                 } else {
                     newStr = newStr.concat("\n").concat(arr2.get(i));
@@ -93,7 +93,7 @@ public class LogicHandler {
             }
             //assemble
             for (int i = 0; i < arr2.size(); i++) {
-                if (newStr.isEmpty()) {
+                if (newStr.equals("")) {
                     newStr = arr2.get(i);
                 } else {
                     newStr = newStr.concat("\n").concat(arr2.get(i));
@@ -124,7 +124,7 @@ public class LogicHandler {
             }
             //assemble
             for (int i = 0; i < arr2.size(); i++) {
-                if (newStr.isEmpty()) {
+                if (newStr.equals("")) {
                     newStr = arr2.get(i);
                 } else {
                     newStr = newStr.concat("\n").concat(arr2.get(i));

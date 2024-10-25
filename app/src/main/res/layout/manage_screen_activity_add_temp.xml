@@ -1,431 +1,237 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="Create view" />
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
 
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/activity_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingBottom="40dp"
-        android:scrollbars="none">
+            <RelativeLayout
+                android:layout_width="140dp"
+                android:layout_height="240dp"
+                android:background="@drawable/border_shadow">
 
-        <LinearLayout
-            android:id="@+id/parent_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="40dp">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/activity_preview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RelativeLayout
-                        android:layout_width="140dp"
-                        android:layout_height="240dp"
-                        android:background="@drawable/border_shadow">
-
-                        <LinearLayout
-                            android:id="@+id/preview_toolbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_below="@+id/preview_statusbar"
-                            android:background="@color/color_primary"
-                            android:gravity="center_vertical"
-                            android:padding="8dp">
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/arrow_back_white_48dp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/preview_statusbar"
-                            android:layout_width="match_parent"
-                            android:layout_height="10dp"
-                            android:background="#ff000000"
-                            android:gravity="right"
-                            android:orientation="horizontal"
-                            android:padding="2dp">
-
-                            <ImageView
-                                android:layout_width="6dp"
-                                android:layout_height="6dp"
-                                android:layout_marginRight="2dp"
-                                android:src="@drawable/ic_wifi_white_24dp" />
-
-                            <ImageView
-                                android:layout_width="6dp"
-                                android:layout_height="6dp"
-                                android:src="@drawable/ic_medium_battery_white_24dp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/preview_drawer"
-                            android:layout_width="90dp"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentLeft="true"
-                            android:background="#ff66aa5b"
-                            android:orientation="vertical"
-                            android:visibility="visible">
-
-                            <LinearLayout
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:layout_margin="16dp"
-                                android:background="@drawable/circle_bg_white"
-                                android:gravity="center">
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/android_icon" />
-                            </LinearLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="8dp"
-                                android:background="@color/lighter_grey" />
-                        </LinearLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/preview_keyboard"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true">
-
-                            <ImageView
-                                android:id="@+id/preview_fab"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
-                                android:layout_above="@+id/img_keyboard"
-                                android:layout_alignParentRight="true"
-                                android:padding="4dp"
-                                android:src="@drawable/fab_color" />
-
-                            <ImageView
-                                android:id="@+id/img_keyboard"
-                                android:layout_width="match_parent"
-                                android:layout_height="83dp"
-                                android:layout_alignParentBottom="true"
-                                android:scaleType="fitEnd"
-                                android:src="@drawable/android_keyboard" />
-                        </RelativeLayout>
-                    </RelativeLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/feature_types"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="10dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toBottomOf="@+id/activity_preview"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/activity_preview"
-                    app:layout_constraintTop_toTopOf="@+id/activity_preview"
-                    tools:listitem="@layout/manage_screen_activity_add_feature_item" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/ti_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:importantForAutofill="noExcludeDescendants">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_name"
+                <LinearLayout
+                    android:id="@+id/preview_toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Enter name"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:lines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/preview_statusbar"
+                    android:background="@color/color_primary"
+                    android:gravity="center_vertical"
+                    android:padding="8dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="16dp">
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/arrow_back_white_48dp" />
+                </LinearLayout>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/fabDrawerTipView"
+                <LinearLayout
+                    android:id="@+id/preview_statusbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:visibility="gone"
-                    tools:visibility="visible">
+                    android:layout_height="10dp"
+                    android:background="#ff000000"
+                    android:gravity="right"
+                    android:orientation="horizontal"
+                    android:padding="2dp">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingVertical="12dp">
+                    <ImageView
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_marginRight="2dp"
+                        android:src="@drawable/ic_wifi_white_24dp" />
+
+                    <ImageView
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:src="@drawable/ic_medium_battery_white_24dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/preview_drawer"
+                    android:layout_width="90dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:background="#ff66aa5b"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/circle_bg_white"
+                        android:gravity="center">
 
                         <ImageView
-                            android:id="@+id/tipIcon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_centerVertical="true"
-                            android:layout_marginHorizontal="10dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/side_menu_info_icon_over_white"
-                            app:tint="?attr/colorPrimary" />
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/android_icon" />
+                    </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/tipTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="1dp"
-                            android:layout_marginBottom="2dp"
-                            android:layout_toEndOf="@+id/tipIcon"
-                            android:text="Important note"
-                            android:textColor="?attr/colorPrimary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tipTitle"
-                            android:layout_marginTop="2dp"
-                            android:layout_toEndOf="@+id/tipIcon"
-                            android:text="@string/design_manager_view_message_slow_down"
-                            android:textSize="12sp" />
-                    </RelativeLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <LinearLayout
-                    android:id="@+id/add_view_type_selector_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingTop="16dp">
-
-
-                    <TextView
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="Type"
-                        android:textColor="?colorPrimary" />
-
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:requiresFadingEdge="horizontal"
-                        android:scrollbars="none">
-
-                        <com.google.android.material.button.MaterialButtonToggleGroup
-                            android:id="@+id/viewTypeSelector"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center_horizontal"
-                            app:checkedButton="@id/select_activity"
-                            app:selectionRequired="true"
-                            app:singleSelection="true">
-
-                            <Button
-                                android:id="@+id/select_activity"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Activity" />
-
-                            <Button
-                                android:id="@+id/select_fragment"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Fragment" />
-
-                            <Button
-                                android:id="@+id/select_dialogfragment"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="DialogFragment" />
-
-                            <Button
-                                android:id="@+id/select_bottomsheetdialogfragment"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="BottomSheetDialogFragment" />
-                        </com.google.android.material.button.MaterialButtonToggleGroup>
-                    </HorizontalScrollView>
+                        android:layout_height="1dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/lighter_grey" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/view_orientation_selector_layout"
+                <RelativeLayout
+                    android:id="@+id/preview_keyboard"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingTop="16dp">
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true">
 
+                    <ImageView
+                        android:id="@+id/preview_fab"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_above="@+id/img_keyboard"
+                        android:layout_alignParentRight="true"
+                        android:padding="4dp"
+                        android:src="@drawable/fab_color" />
 
-                    <TextView
+                    <ImageView
+                        android:id="@+id/img_keyboard"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="Screen orientation"
-                        android:textColor="?colorPrimary" />
+                        android:layout_height="83dp"
+                        android:layout_alignParentBottom="true"
+                        android:scaleType="fitEnd"
+                        android:src="@drawable/android_keyboard" />
+                </RelativeLayout>
+            </RelativeLayout>
 
+        </com.google.android.material.card.MaterialCardView>
 
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/screenOrientationSelector"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center_horizontal"
-                        app:checkedButton="@id/select_both"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/feature_types"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/activity_preview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/activity_preview"
+            app:layout_constraintTop_toTopOf="@+id/activity_preview"
+            tools:listitem="@layout/manage_screen_activity_add_feature_item" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <Button
-                            android:id="@+id/select_portrait"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Portrait" />
-
-                        <Button
-                            android:id="@+id/select_landscape"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Landscape" />
-
-                        <Button
-                            android:id="@+id/select_both"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Both" />
-
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/view_keyboard_settings_selector_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingTop="16dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
-                        android:text="Keyboard settings"
-                        android:textColor="?colorPrimary" />
-
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/keyboardSettingsSelector"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center_horizontal"
-                        app:checkedButton="@id/select_unspecified"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
-
-                        <Button
-                            android:id="@+id/select_unspecified"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Unspecified" />
-
-                        <Button
-                            android:id="@+id/select_visible"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Visible" />
-
-                        <Button
-                            android:id="@+id/select_hidden"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Hidden" />
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <LinearLayout
-        android:id="@+id/layout_btn_group"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ti_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="?android:colorBackground"
-        android:orientation="horizontal"
-        android:paddingVertical="16dp">
+        android:layout_marginVertical="8dp"
+        android:importantForAutofill="noExcludeDescendants">
 
-        <Button
-            android:id="@+id/btn_cancel"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ed_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:text="Cancel" />
+            android:hint="Enter activity name"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:animateLayoutChanges="true"
+        android:paddingBottom="16dp">
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="4dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_warning"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:text="Save" />
+            android:gravity="center"
+            tools:text="Warning: this is a useful information for the user"
+            android:layout_margin="8dp"
+            android:textColor="@color/grey"
+            android:textSize="12sp" />
 
+        <LinearLayout
+            android:id="@+id/add_view_type_selector_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Type"
+                android:textColor="?colorPrimary"
+                android:textSize="14sp" />
+
+            <com.besome.sketch.lib.ui.SelectableButtonBar
+                android:id="@+id/add_view_type_selector"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_screen_orientation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/color_primary"
+                android:textSize="14sp" />
+
+            <com.besome.sketch.lib.ui.SelectableButtonBar
+                android:id="@+id/btnbar_orientation"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_keyboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/color_primary"
+                android:textSize="14sp" />
+
+            <com.besome.sketch.lib.ui.SelectableButtonBar
+                android:id="@+id/btnbar_keyboard"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

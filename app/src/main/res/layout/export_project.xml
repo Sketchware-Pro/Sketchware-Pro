@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
                 app:cardElevation="0dp"
                 app:contentPadding="14dp">
 
@@ -114,6 +114,7 @@
                                         android:gravity="center_vertical"
                                         android:lines="1"
                                         android:padding="8dp"
+                                        android:textColor="@color/scolor_black_01"
                                         android:textSize="13sp" />
                                 </HorizontalScrollView>
                             </LinearLayout>
@@ -135,7 +136,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
                 app:cardElevation="0dp"
                 app:contentPadding="14dp">
 
@@ -224,6 +225,7 @@
                                         android:gravity="center_vertical"
                                         android:lines="1"
                                         android:padding="8dp"
+                                        android:textColor="@color/scolor_black_01"
                                         android:textSize="13sp" />
                                 </HorizontalScrollView>
                             </LinearLayout>
@@ -254,7 +256,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
                 app:cardElevation="0dp"
                 app:contentPadding="14dp">
 

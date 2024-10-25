@@ -3,12 +3,15 @@ package com.besome.sketch.help;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.view.View;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
+import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.databinding.ActivityOssLibrariesBinding;
+import com.sketchware.remod.R;
 
+import a.a.a.mB;
 import a.a.a.oB;
 import mod.hey.studios.util.Helper;
 
@@ -16,15 +19,22 @@ public class LicenseActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        ActivityOssLibrariesBinding binding = ActivityOssLibrariesBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.oss);
 
-        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.program_information_title_open_source_license));
+        toolbar.setNavigationOnClickListener(view -> {
+            if (!mB.a()) onBackPressed();
+        });
 
-        binding.licensesText.setText(new oB().b(getApplicationContext(), "oss.txt"));
-        binding.licensesText.setAutoLinkMask(Linkify.WEB_URLS);
-        binding.licensesText.setMovementMethod(LinkMovementMethod.getInstance());
+        TextView licensesText = findViewById(R.id.tv_oss);
+        licensesText.setText(new oB().b(getApplicationContext(), "oss.txt"));
+        licensesText.setAutoLinkMask(Linkify.WEB_URLS);
+        licensesText.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

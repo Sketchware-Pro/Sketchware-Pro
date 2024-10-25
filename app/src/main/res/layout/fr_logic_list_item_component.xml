@@ -68,7 +68,7 @@
                 android:contentDescription="@null"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="16dp"
-                android:src="@drawable/ic_arrow_drop_down_24px" />
+                android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
         </RelativeLayout>
 
         <LinearLayout

@@ -1,7 +1,5 @@
 package mod.jbk.build.compiler.resource;
 
-import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
-
 import android.content.Context;
 import android.content.pm.PackageManager;
 
@@ -162,7 +160,8 @@ public class ResourceCompiler {
             args.add("--min-sdk-version");
             args.add(String.valueOf(buildHelper.settings.getMinSdkVersion()));
             args.add("--target-sdk-version");
-            args.add(buildHelper.settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)));
+            args.add(buildHelper.settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION,
+                    "28"));
 
             args.add("--version-code");
             String versionCode = buildHelper.yq.versionCode;

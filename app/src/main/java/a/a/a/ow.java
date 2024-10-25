@@ -51,7 +51,7 @@ public class ow extends qA implements View.OnClickListener {
     private String A = "";
 
     private void i() {
-        if (sounds.isEmpty()) {
+        if (sounds.size() == 0) {
             noSoundsText.setVisibility(View.VISIBLE);
             soundsList.setVisibility(View.GONE);
         } else {
@@ -451,10 +451,10 @@ public class ow extends qA implements View.OnClickListener {
                 arrayList2.add(projectResourceBean);
             }
         }
-        if (!arrayList3.isEmpty()) {
+        if (arrayList3.size() > 0) {
             String str2 = "";
             for (String str3 : arrayList3) {
-                if (!str2.isEmpty()) {
+                if (str2.length() > 0) {
                     str2 = str2 + ", ";
                 }
                 str2 = str2 + str3;

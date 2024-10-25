@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         style="?attr/materialCardViewFilledStyle"
-        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,14 +37,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:textColor="?attr/colorPrimary"
+                    android:textColor="@color/scolor_blue_01"
                     android:textSize="16sp"
+                    android:textStyle="bold"
                     tools:text="@string/design_library_admob_title_banner" />
 
                 <TextView
                     android:id="@+id/tv_banner_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
                     android:padding="4dp"
                     android:text="EDIT"
                     android:textSize="12sp"
@@ -71,6 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -79,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textColor="#ff7d7d7d"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -96,6 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_unit_id" />
 
@@ -104,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textColor="#ff7d7d7d"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
@@ -115,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         style="?attr/materialCardViewFilledStyle"
-        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -141,14 +145,16 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center|left"
-                    android:textColor="?attr/colorPrimary"
+                    android:textColor="@color/scolor_blue_01"
                     android:textSize="16sp"
+                    android:textStyle="bold"
                     tools:text="@string/design_library_admob_title_interstitial" />
 
                 <TextView
                     android:id="@+id/tv_inter_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
                     android:padding="4dp"
                     android:text="EDIT"
                     android:textSize="12sp"
@@ -175,6 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -183,7 +190,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textColor="#ff7d7d7d"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -200,6 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_unit_id" />
 
@@ -208,7 +216,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textColor="#ff7d7d7d"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
@@ -219,7 +227,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         style="?attr/materialCardViewFilledStyle"
-        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -246,13 +254,15 @@
                     android:layout_weight="1"
                     android:gravity="center|left"
                     android:text="Rewarded Ad"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="16sp" />
+                    android:textColor="@color/scolor_blue_01"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_reward_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
                     android:padding="4dp"
                     android:text="EDIT"
                     android:textSize="12sp"
@@ -279,6 +289,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_name" />
 
@@ -287,7 +298,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textColor="#ff7d7d7d"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -304,6 +315,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
+                    android:textColor="?colorControlNormal"
                     android:textSize="14sp"
                     tools:text="@string/design_library_admob_title_ad_unit_id" />
 
@@ -312,7 +324,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center|left"
-                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textColor="#ff7d7d7d"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>

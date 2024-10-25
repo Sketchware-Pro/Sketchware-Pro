@@ -19,7 +19,7 @@ public class PaletteSelector {
 
     public ArrayList<HashMap<String, Object>> getPaletteSelector() {
         String paletteBlockFile = ExtraBlockFile.getPaletteBlockFile();
-        if (!paletteBlockFile.isEmpty()) {
+        if (!paletteBlockFile.equals("")) {
             try {
                 JSONArray palettes = new JSONArray(paletteBlockFile);
                 for (int i = 0; i < palettes.length(); i++) {

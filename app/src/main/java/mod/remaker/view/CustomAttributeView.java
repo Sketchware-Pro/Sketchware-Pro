@@ -1,40 +1,40 @@
 package mod.remaker.view;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sketchware.remod.databinding.CustomViewAttributeBinding;
+import com.sketchware.remod.R;
+
+import a.a.a.wB;
 
 public class CustomAttributeView extends FrameLayout {
+    private View container;
 
-    private final CustomViewAttributeBinding binding;
+    public ImageView icon;
+    public TextView text;
 
     public CustomAttributeView(Context context) {
         super(context);
-        binding = CustomViewAttributeBinding.inflate(LayoutInflater.from(context), this, true);
+        wB.a(context, this, R.layout.custom_view_attribute);
+
+        container = findViewById(R.id.cus_attr_layout);
+        text = findViewById(R.id.cus_attr_text);
+        icon = findViewById(R.id.cus_attr_btn);
+
         setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
 
     @Override
     public void setOnClickListener(View.OnClickListener listener) {
-        binding.cusAttrLayout.setOnClickListener(listener);
-    }
-
-    public TextView getTextView() {
-        return binding.cusAttrText;
-    }
-
-    public ImageView getImageView() {
-        return binding.cusAttrBtn;
+        container.setOnClickListener(listener);
     }
 
     @Override
     public void setOnLongClickListener(View.OnLongClickListener listener) {
-        binding.cusAttrLayout.setOnLongClickListener(listener);
+        container.setOnLongClickListener(listener);
     }
 }

@@ -1,7 +1,6 @@
 package a.a.a;
 
 import static android.text.TextUtils.isEmpty;
-import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
 
 import android.Manifest;
 import android.app.Service;
@@ -221,7 +220,7 @@ public class Ix {
                 XmlBuilder intentFilterDataTag = new XmlBuilder("data");
                 intentFilterDataTag.addAttribute("android", "host", stringStringPair.first);
                 intentFilterDataTag.addAttribute("android", "scheme", stringStringPair.second);
-                if (!c.dlDataList.isEmpty()) {
+                if (c.dlDataList.size() != 0) {
                     intentFilterTag.a(intentFilterDataTag);
                 }
             }
@@ -408,7 +407,7 @@ public class Ix {
 
     public void setYq(yq yqVar) {
         settings = new ProjectSettings(yqVar.sc_id);
-        targetsSdkVersion31OrHigher = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION))) >= 31;
+        targetsSdkVersion31OrHigher = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 31;
         packageName = yqVar.packageName;
     }
 
@@ -418,14 +417,7 @@ public class Ix {
      * @return The AndroidManifest as {@link String}
      */
     public String a() {
-        int targetSdkVersion;
-        try {
-            targetSdkVersion = Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)));
-        } catch (NumberFormatException ignored) {
-            targetSdkVersion = VAR_DEFAULT_TARGET_SDK_VERSION;
-        }
-        boolean addRequestLegacyExternalStorage = targetSdkVersion >= 28;
-
+        boolean addRequestLegacyExternalStorage = false;
         a.addAttribute("", "package", c.packageName);
 
         if (!c.hasPermissions()) {
@@ -445,6 +437,12 @@ public class Ix {
                 writePermission(a, Manifest.permission.CAMERA);
             }
             if (c.hasPermission(jq.PERMISSION_READ_EXTERNAL_STORAGE)) {
+                try {
+                    if (Integer.parseInt(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, "28")) >= 28) {
+                        addRequestLegacyExternalStorage = true;
+                    }
+                } catch (NumberFormatException ignored) {
+                }
                 writePermission(a, Manifest.permission.READ_EXTERNAL_STORAGE);
             }
             if (c.hasPermission(jq.PERMISSION_WRITE_EXTERNAL_STORAGE)) {
@@ -509,44 +507,28 @@ public class Ix {
         }
         AndroidManifestInjector.getP(a, c.sc_id);
 
-        if (c.isAdMobEnabled || c.isTextToSpeechUsed || c.isSpeechToTextUsed) {
+        if (c.isAdMobEnabled) {
             XmlBuilder queries = new XmlBuilder("queries");
-            if (c.isAdMobEnabled) {
-                XmlBuilder forBrowserContent = new XmlBuilder("intent");
-                {
-                    XmlBuilder action = new XmlBuilder("action");
-                    action.addAttribute("android", "name", "android.intent.action.VIEW");
-                    forBrowserContent.a(action);
-                    XmlBuilder category = new XmlBuilder("category");
-                    category.addAttribute("android", "name", "android.intent.category.BROWSABLE");
-                    forBrowserContent.a(category);
-                    XmlBuilder data = new XmlBuilder("data");
-                    data.addAttribute("android", "scheme", "https");
-                    forBrowserContent.a(data);
-                }
-                queries.a(forBrowserContent);
-                XmlBuilder forCustomTabsService = new XmlBuilder("intent");
-                {
-                    XmlBuilder action = new XmlBuilder("action");
-                    action.addAttribute("android", "name", "android.support.customtabs.action.CustomTabsService");
-                    forCustomTabsService.a(action);
-                }
-                queries.a(forCustomTabsService);
-            }
-            if (c.isTextToSpeechUsed && targetSdkVersion >= 30) {
-                XmlBuilder intent = new XmlBuilder("intent");
+            XmlBuilder forBrowserContent = new XmlBuilder("intent");
+            {
                 XmlBuilder action = new XmlBuilder("action");
-                action.addAttribute("android", "name", "android.intent.action.TTS_SERVICE");
-                intent.a(action);
-                queries.a(intent);
+                action.addAttribute("android", "name", "android.intent.action.VIEW");
+                forBrowserContent.a(action);
+                XmlBuilder category = new XmlBuilder("category");
+                category.addAttribute("android", "name", "android.intent.category.BROWSABLE");
+                forBrowserContent.a(category);
+                XmlBuilder data = new XmlBuilder("data");
+                data.addAttribute("android", "scheme", "https");
+                forBrowserContent.a(data);
             }
-            if (c.isSpeechToTextUsed && targetSdkVersion >= 30) {
-                XmlBuilder intent = new XmlBuilder("intent");
+            queries.a(forBrowserContent);
+            XmlBuilder forCustomTabsService = new XmlBuilder("intent");
+            {
                 XmlBuilder action = new XmlBuilder("action");
-                action.addAttribute("android", "name", "android.speech.RecognitionService");
-                intent.a(action);
-                queries.a(intent);
+                action.addAttribute("android", "name", "android.support.customtabs.action.CustomTabsService");
+                forCustomTabsService.a(action);
             }
+            queries.a(forCustomTabsService);
             a.a(queries);
         }
 
@@ -607,7 +589,7 @@ public class Ix {
                 }
                 if (!AndroidManifestInjector.isActivityKeyboardUsed(activityTag, c.sc_id, projectFileBean.getJavaName())) {
                     String keyboardSetting = vq.a(projectFileBean.keyboardSetting);
-                    if (!keyboardSetting.isEmpty()) {
+                    if (keyboardSetting.length() > 0) {
                         activityTag.addAttribute("android", "windowSoftInputMode", keyboardSetting);
                     }
                 }

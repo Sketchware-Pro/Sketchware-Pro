@@ -751,7 +751,7 @@ public final class SsaMethod {
         stack.add(null);    // Start with null parent.
         stack.add(rootBlock);
 
-        while (!stack.isEmpty()) {
+        while (stack.size() > 0) {
             mod.agus.jcoderz.dx.ssa.SsaBasicBlock cur = stack.pop();
             mod.agus.jcoderz.dx.ssa.SsaBasicBlock parent = stack.pop();
 
@@ -782,7 +782,7 @@ public final class SsaMethod {
 
         stack.add(getEntryBlock());
 
-        while (!stack.isEmpty()) {
+        while (stack.size() > 0) {
             mod.agus.jcoderz.dx.ssa.SsaBasicBlock cur = stack.pop();
             ArrayList<mod.agus.jcoderz.dx.ssa.SsaBasicBlock> curDomChildren = cur.getDomChildren();
 

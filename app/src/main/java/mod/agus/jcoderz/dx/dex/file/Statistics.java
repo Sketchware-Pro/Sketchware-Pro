@@ -70,7 +70,7 @@ public final class Statistics {
      * @param out {@code non-null;} where to write to
      */
     public final void writeAnnotation(mod.agus.jcoderz.dx.util.AnnotatedOutput out) {
-        if (dataMap.isEmpty()) {
+        if (dataMap.size() == 0) {
             return;
         }
 

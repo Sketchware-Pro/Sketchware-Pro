@@ -129,7 +129,7 @@ public class XmlBuilder {
         }
 
         private String toCode() {
-            if (namespace != null && !namespace.isEmpty()) {
+            if (namespace != null && namespace.length() > 0) {
                 return namespace + ":" + attr + "=" + "\"" + value + "\"";
             } else if (attr == null || attr.length() <= 0) {
                 return value.replaceAll("\n", g);

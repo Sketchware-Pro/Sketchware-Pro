@@ -23,6 +23,7 @@ import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ManageFontImportBinding;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import a.a.a.QB;
 import a.a.a.bB;
@@ -37,26 +38,26 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     private ItemAdapter itemAdapter;
     private ArrayList<ProjectResourceBean> projectFonts;
     private ArrayList<ProjectResourceBean> selectedCollection;
-    private int selectedItem;
+    private int x;
     private QB nameValidator;
     private ManageFontImportBinding binding;
 
-    private boolean isNameInUseByProjectFont(String name) {
-        for (ProjectResourceBean font : projectFonts) {
-            if (font.resName.equals(name)) {
-                return true;
+    private boolean b(String var1) {
+        for (ProjectResourceBean resourceBean : projectFonts) {
+            if (!resourceBean.resName.equals(var1)) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
-    private void showPreview(int position) {
-        String fontFilePath = selectedCollection.get(position).resFullName;
-        binding.textFont.setTypeface(Typeface.createFromFile(fontFilePath));
+    private void f(int position) {
+        String resFullName = selectedCollection.get(position).resFullName;
+        binding.textFont.setTypeface(Typeface.createFromFile(resFullName));
         binding.textFont.setText(xB.b().a(getApplicationContext(), R.string.design_manager_font_description_example_sentence));
     }
 
-    private ArrayList<String> getReservedSelectedCollectionNames() {
+    private ArrayList<String> getProjectResources() {
         ArrayList<String> names = new ArrayList<>();
         names.add("app_icon");
         for (ProjectResourceBean projectResourceBean : selectedCollection) {
@@ -65,7 +66,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         return names;
     }
 
-    private ArrayList<String> getReservedProjectImageNames() {
+    private ArrayList<String> m() {
         ArrayList<String> names = new ArrayList<>();
         names.add("app_icon");
         for (ProjectResourceBean projectResourceBean : projectFonts) {
@@ -75,71 +76,87 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     }
 
     private boolean n() {
-        ArrayList<String> duplicateNames = new ArrayList<>();
-        for (ProjectResourceBean font : selectedCollection) {
-            if (font.isDuplicateCollection) {
-                duplicateNames.add(font.resName);
+        ArrayList<String> var1 = new ArrayList<>();
+        for (ProjectResourceBean var3 : selectedCollection) {
+            if (var3.isDuplicateCollection) {
+                var1.add(var3.resName);
             }
         }
 
-        if (!duplicateNames.isEmpty()) {
-            String names = "";
-            for (String name : duplicateNames) {
-                if (!name.isEmpty()) {
-                    names += ", ";
+        if (!var1.isEmpty()) {
+            String var8 = xB.b().a(getApplicationContext(), R.string.common_message_name_unavailable);
+            Iterator<String> var4 = var1.iterator();
+
+            String var6;
+            StringBuilder var7;
+            for (var6 = ""; var4.hasNext(); var6 = var7.toString()) {
+                String var5 = var4.next();
+                String var9 = var6;
+                if (!var6.isEmpty()) {
+                    var9 = var6 + ", ";
                 }
-                names += name;
+
+                var7 = new StringBuilder();
+                var7.append(var9);
+                var7.append(var5);
             }
 
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(),
-                    R.string.common_message_name_unavailable) + "\n[" + names + "]", bB.TOAST_WARNING).show();
+            String message = var8 + "\n[" + var6 + "]";
+            bB.a(getApplicationContext(), message, 1).show();
             return true;
         } else {
             return false;
         }
     }
 
-    private boolean isNameValid() {
+    private boolean o() {
         return nameValidator.b();
     }
 
     @Override
     public void onBackPressed() {
-        setResult(RESULT_OK);
+        setResult(-1);
         super.onBackPressed();
     }
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-        if (id == binding.btnDecide.getId()) {
+        int i = v.getId();
+        if (i == binding.btnDecide.getId()) {
             String resName = r.getText().toString();
-            if (!isNameValid()) {
-                ProjectResourceBean font = selectedCollection.get(selectedItem);
-                r.setText(font.resName);
-            } else {
-                if (!binding.chkSamename.isChecked()) {
-                    ProjectResourceBean resourceBean = selectedCollection.get(selectedItem);
-                    resourceBean.resName = resName;
-                    resourceBean.isDuplicateCollection = false;
-                } else {
-                    int i = 0;
-                    while (i < selectedCollection.size()) {
-                        ProjectResourceBean font = selectedCollection.get(i);
-                        font.resName = resName + "_" + ++i;
-                        font.isDuplicateCollection = false;
-                    }
-                }
-                nameValidator.a(getReservedSelectedCollectionNames());
-                itemAdapter.notifyDataSetChanged();
+            if (!o()) {
+                ProjectResourceBean var7 = selectedCollection.get(x);
+                r.setText(var7.resName);
+                return;
             }
 
-        } else if (id == binding.imgBackbtn.getId()) {
+            if (!binding.chkSamename.isChecked()) {
+                ProjectResourceBean resourceBean = selectedCollection.get(x);
+                resourceBean.resName = resName;
+                resourceBean.isDuplicateCollection = false;
+                nameValidator.a(getProjectResources());
+                itemAdapter.notifyDataSetChanged();
+            } else {
+                ProjectResourceBean projectResourceBean;
+                for (i = 0; i < selectedCollection.size(); projectResourceBean.isDuplicateCollection = false) {
+                    projectResourceBean = selectedCollection.get(i);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append(resName);
+                    stringBuilder.append("_");
+                    i++;
+                    stringBuilder.append(i);
+                    projectResourceBean.resName = stringBuilder.toString();
+                }
+
+                nameValidator.a(getProjectResources());
+                itemAdapter.notifyDataSetChanged();
+            }
+        } else if (i == binding.imgBackbtn.getId()) {
             onBackPressed();
-        } else if (id == binding.tvSendbtn.getId() && !n()) {
-            Intent intent = new Intent();
-            intent.putParcelableArrayListExtra("results", selectedCollection);
-            setResult(RESULT_OK, intent);
+        } else if (i == binding.tvSendbtn.getId() && !n()) {
+            Intent var5 = new Intent();
+            var5.putParcelableArrayListExtra("results", selectedCollection);
+            setResult(-1, var5);
             finish();
         }
     }
@@ -168,13 +185,13 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         r.setText(selectedCollection.get(0).resName);
         r.setPrivateImeOptions("defaultInputmode=english;");
         binding.edInput.setHint(xB.b().a(this, R.string.design_manager_font_hint_enter_font_name));
-        nameValidator = new QB(getApplicationContext(), binding.edInput.getTextInputLayout(), uq.b, getReservedProjectImageNames(), getReservedSelectedCollectionNames());
+        nameValidator = new QB(getApplicationContext(), binding.edInput.getTextInputLayout(), uq.b, m(), getProjectResources());
         binding.chkSamename.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 nameValidator.c(null);
                 nameValidator.a(selectedCollection.size());
             } else {
-                nameValidator.c(selectedCollection.get(selectedItem).resName);
+                nameValidator.c(selectedCollection.get(x).resName);
                 nameValidator.a(1);
             }
         });
@@ -186,8 +203,8 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        initializeLogic();
-        showPreview(0);
+        p();
+        f(0);
         itemAdapter.notifyDataSetChanged();
     }
 
@@ -199,28 +216,37 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private void initializeLogic() {
-        ArrayList<ProjectResourceBean> duplicateCollections = new ArrayList<>();
-        ArrayList<ProjectResourceBean> notDuplicateCollections = new ArrayList<>();
-        for (ProjectResourceBean collectionFont : selectedCollection) {
-            if (isNameInUseByProjectFont(collectionFont.resName)) {
-                collectionFont.isDuplicateCollection = true;
-                duplicateCollections.add(collectionFont);
+    private void p() {
+        ArrayList<ProjectResourceBean> var1 = new ArrayList<>();
+        ArrayList<ProjectResourceBean> var2 = new ArrayList<>();
+        Iterator<ProjectResourceBean> var3 = selectedCollection.iterator();
+
+        ProjectResourceBean var4;
+        while (var3.hasNext()) {
+            var4 = var3.next();
+            if (b(var4.resName)) {
+                var4.isDuplicateCollection = true;
+                var1.add(var4);
             } else {
-                collectionFont.isDuplicateCollection = false;
-                notDuplicateCollections.add(collectionFont);
+                var4.isDuplicateCollection = false;
+                var2.add(var4);
             }
         }
 
-        if (!duplicateCollections.isEmpty()) {
+        if (!var1.isEmpty()) {
             bB.b(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_conflict), 1).show();
         } else {
             bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_collection_name_no_conflict), 0).show();
         }
 
         selectedCollection = new ArrayList<>();
-        selectedCollection.addAll(duplicateCollections);
-        selectedCollection.addAll(notDuplicateCollections);
+
+        for (ProjectResourceBean projectResourceBean : var1) {
+            var4 = projectResourceBean;
+            selectedCollection.add(var4);
+        }
+
+        selectedCollection.addAll(var2);
     }
 
     public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
@@ -241,7 +267,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
                 viewHolder.imgConflict.setImageResource(R.drawable.ic_ok_48dp);
             }
 
-            if (position == selectedItem) {
+            if (position == x) {
                 viewHolder.img.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
             } else {
                 viewHolder.img.setBackgroundResource(R.drawable.bg_outline);
@@ -270,8 +296,8 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
                 tvName = itemView.findViewById(R.id.tv_name);
                 img.setOnClickListener(view -> {
                     if (!mB.a()) {
-                        selectedItem = getLayoutPosition();
-                        showPreview(selectedItem);
+                        x = getLayoutPosition();
+                        f(x);
                         binding.tvCurrentnum.setText(String.valueOf(getLayoutPosition() + 1));
                         r.setText(selectedCollection.get(getLayoutPosition()).resName);
                         if (binding.chkSamename.isChecked()) {

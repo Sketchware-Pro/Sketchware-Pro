@@ -26,7 +26,7 @@ public class ComponentExtraCode {
         }
         if (str.contains("FragmentStatePagerAdapter")) {
             String temp = hx.k;
-            if (temp.isEmpty()) {
+            if (temp.equals("")) {
                 hx.k = str;
             } else {
                 hx.k = temp.concat("\r\n\r\n").concat(str);
@@ -35,7 +35,7 @@ public class ComponentExtraCode {
         }
         if (str.contains("extends AsyncTask<String, Integer, String>")) {
             String temp = hx.k;
-            if (temp.isEmpty()) {
+            if (temp.equals("")) {
                 hx.k = str;
             } else {
                 hx.k = temp.concat("\r\n\r\n").concat(str);
@@ -46,7 +46,7 @@ public class ComponentExtraCode {
         // Hilal's components
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/listeners.json");
         try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).isEmpty() && !FileUtil.readFile(path).equals("[]")) {
+            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
                 JSONArray arr = new JSONArray(FileUtil.readFile(path));
                 if (arr.length() > 0) {
                     for (int i = 0; i < arr.length(); i++) {
@@ -56,7 +56,7 @@ public class ComponentExtraCode {
                             String q = arr.getJSONObject(i).getString("s");
                             if (q.equals("true")) {
                                 String temp = hx.k;
-                                if (temp.isEmpty()) {
+                                if (temp.equals("")) {
                                     hx.k = str.replace(f, "");
                                     return;
                                 } else {
@@ -69,7 +69,7 @@ public class ComponentExtraCode {
                 }
             }
         } catch (Exception e) {
-            if (b.length() > 0 && !str.isEmpty()) {
+            if (b.length() > 0 && str.length() > 0) {
                 b.append("\r\n");
                 b.append("\r\n");
                 b.append(str);
@@ -78,7 +78,7 @@ public class ComponentExtraCode {
 
 
         ///others
-        if (b.length() > 0 && !str.isEmpty()) {
+        if (b.length() > 0 && str.length() > 0) {
             b.append("\r\n");
             b.append("\r\n");
         }
@@ -87,10 +87,10 @@ public class ComponentExtraCode {
 
     public String getFirstLine(String con) {
         ArrayList<String> list = new ArrayList<>(Arrays.asList(con.split("\n")));
-        if (!list.isEmpty()) {
+        if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 String a = list.get(i);
-                if (!a.isEmpty()) {
+                if (!a.equals("")) {
                     return a.trim();
                 }
             }

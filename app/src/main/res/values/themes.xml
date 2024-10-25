@@ -1,49 +1,94 @@
 <resources>
-    <style name="Base.Theme.SketchwarePro" parent="Scheme.SketchwarePro.DayNight" />
-    <style name="Theme.SketchwarePro" parent="Platform.Theme.SketchwarePro">
+    <style name="AppTheme" parent="Platform.AppTheme">
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutLargeStyle</item>
         <item name="collapsingToolbarLayoutLargeSize">@dimen/collapsing_toolbar_large_size</item>
-        <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.SketchwarePro.CollapsingToolbar</item>
-        <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_material</item>
-        <item name="textInputStyle">@style/Widget.SketchwarePro.TextInputLayout</item>
+        <item name="collapsingToolbarLayoutLargeStyle">@style/AppTheme.CollapsingToolbar</item>
+        <item name="textInputStyle">@style/TextInputLayoutStyle</item>
 
         <item name="fontFamily">@font/gilroy</item>
         <item name="android:fontFamily">@font/gilroy</item>
-        <item name="switchPreferenceCompatStyle">
-            @style/Preference.SketchwarePro.SwitchPreferenceCompat
-        </item>
-        <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.SketchwarePro.BottomSheetDialog</item>
     </style>
 
-    <style name="Theme.SketchwarePro.Main">
-        <item name="navigationViewStyle">@style/Widget.SketchwarePro.NavigationView.Main</item>
+    <style name="AppTheme.Main">
+        <item name="navigationViewStyle">@style/MainDrawer</item>
     </style>
 
-    <style name="Theme.SketchwarePro.SmallToolbar">
+    <style name="AppTheme.Design">
         <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
-        <item name="toolbarStyle">@style/Widget.SketchwarePro.Toolbar.SmallText</item>
+        <item name="toolbarStyle">@style/AppTheme.Design.Toolbar</item>
     </style>
 
-    <style name="Theme.SketchwarePro.Starting.Base" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimationDuration">850</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
-        <item name="windowSplashScreenBackground">@color/splash_bg_color</item>
-        <item name="postSplashScreenTheme">@style/Theme.SketchwarePro.Main</item>
-
-        <item name="android:navigationBarColor">@color/splash_bg_color</item>
-        <item name="android:statusBarColor">@color/splash_bg_color</item>
-        <item name="android:windowLightStatusBar">@bool/is_light_theme</item>
-        <item name="android:windowLightNavigationBar">@bool/is_light_theme</item>
+    <style name="AppTheme.Starting">
+        <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
 
-    <style name="Theme.SketchwarePro.Starting" parent="Theme.SketchwarePro.Starting.Base" />
-
-    <style name="Platform.V21.Theme.SketchwarePro" parent="Base.Theme.SketchwarePro">
+    <style name="Platform.V21.AppTheme" parent="Base.AppTheme">
         <item name="android:navigationBarColor">@android:color/black</item>
         <item name="android:statusBarColor">@android:color/black</item>
     </style>
 
-    <style name="Platform.Theme.SketchwarePro" parent="Platform.V21.Theme.SketchwarePro" />
+    <style name="Platform.AppTheme" parent="Platform.V21.AppTheme" />
+
+    <style name="Base.AppTheme" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorPrimaryFixed">@color/md_theme_light_primaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_light_primaryFixedDim</item>
+        <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
+        <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_light_onPrimaryFixed</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_light_onPrimaryFixedVariant</item>
+        <item name="colorSecondary">@color/md_theme_light_secondary</item>
+        <item name="colorSecondaryFixed">@color/md_theme_light_secondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_light_secondaryFixedDim</item>
+        <item name="colorOnSecondary">@color/md_theme_light_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_light_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_light_onSecondaryContainer</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_light_onSecondaryFixed</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_light_onSecondaryFixedVariant</item>
+        <item name="colorTertiary">@color/md_theme_light_tertiary</item>
+        <item name="colorTertiaryFixed">@color/md_theme_light_tertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_light_tertiaryFixedDim</item>
+        <item name="colorOnTertiary">@color/md_theme_light_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_light_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_light_onTertiaryContainer</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_light_onTertiaryFixed</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_light_onTertiaryFixedVariant</item>
+        <item name="colorError">@color/md_theme_light_error</item>
+        <item name="colorErrorContainer">@color/md_theme_light_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_light_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_light_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_light_background</item>
+        <item name="colorOnBackground">@color/md_theme_light_onBackground</item>
+        <item name="colorSurface">@color/md_theme_light_surface</item>
+        <item name="colorOnSurface">@color/md_theme_light_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_light_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_light_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
+        <item name="colorAmber">#785900</item>
+        <item name="colorOnAmber">#ffffff</item>
+        <item name="colorAmberContainer">#ffdf9e</item>
+        <item name="colorOnAmberContainer">#261a00</item>
+        <item name="harmonizeAmber">true</item>
+        <item name="colorCoolGreen">#006d44</item>
+        <item name="colorOnCoolGreen">#ffffff</item>
+        <item name="colorCoolGreenContainer">#7afbb7</item>
+        <item name="colorOnCoolGreenContainer">#002111</item>
+        <item name="harmonizeCoolGreen">true</item>
+        <item name="colorGreen">#006a62</item>
+        <item name="colorOnGreen">#ffffff</item>
+        <item name="colorGreenContainer">#72f7e9</item>
+        <item name="colorOnGreenContainer">#00201d</item>
+        <item name="harmonizeGreen">true</item>
+        <item name="colorViolet">#8a3e9c</item>
+        <item name="colorOnViolet">#ffffff</item>
+        <item name="colorVioletContainer">#fdd6ff</item>
+        <item name="colorOnVioletContainer">#340042</item>
+        <item name="harmonizeViolet">true</item>
+    </style>
 </resources>

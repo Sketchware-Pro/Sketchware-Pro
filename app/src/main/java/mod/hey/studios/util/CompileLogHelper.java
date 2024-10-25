@@ -1,6 +1,5 @@
 package mod.hey.studios.util;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.SpannableString;
@@ -8,47 +7,37 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 
-import com.google.android.material.color.MaterialColors;
-import com.sketchware.remod.R;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CompileLogHelper {
-    private static final String TAG = "CompileLogHelper";
-    private static final Pattern ERROR_PATTERN = Pattern.compile("----------\n([0-9]+\\. ERROR)", Pattern.MULTILINE);
-    private static final Pattern WARNING_PATTERN = Pattern.compile("----------\n([0-9]+\\. WARNING)", Pattern.MULTILINE);
-    private static final Pattern XML_PATTERN = Pattern.compile("error:", Pattern.MULTILINE);
 
-    public static SpannableString getColoredLogs(Context context, String logs) {
-        int errorColor = MaterialColors.getColor(context, R.attr.colorError, TAG);
-        int warningColor = MaterialColors.getColor(context, R.attr.colorAmber, TAG);
+    private static final int ERROR_COL = Color.parseColor("#fe0000");
+    private static final int WARNING_COL = Color.parseColor("#ffc400");
 
-        SpannableString spannable = new SpannableString(logs);
+    public static SpannableString colorErrsAndWarnings(String str) {
+        SpannableString spannable = new SpannableString(str);
+        Matcher errorMatcher = Pattern.compile("----------\n([0-9]+\\. ERROR)", Pattern.MULTILINE).matcher(str);
 
-        Matcher errorMatcher = ERROR_PATTERN.matcher(logs);
-        applyStyle(spannable, errorMatcher, errorColor);
+        while (errorMatcher.find()) {
+            spannable.setSpan(new StyleSpan(Typeface.BOLD), errorMatcher.start(1), errorMatcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new ForegroundColorSpan(ERROR_COL), errorMatcher.start(1), errorMatcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
 
-        Matcher warningMatcher = WARNING_PATTERN.matcher(logs);
-        applyStyle(spannable, warningMatcher, warningColor);
+        Matcher warningMatcher = Pattern.compile("----------\n([0-9]+\\. WARNING)", Pattern.MULTILINE).matcher(str);
 
-        Matcher xmlMatcher = XML_PATTERN.matcher(logs);
-        applyStyleForXml(spannable, xmlMatcher, errorColor);
+        while (warningMatcher.find()) {
+            spannable.setSpan(new StyleSpan(Typeface.BOLD), warningMatcher.start(1), warningMatcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new ForegroundColorSpan(WARNING_COL), warningMatcher.start(1), warningMatcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+
+        Matcher errorMatcherXml = Pattern.compile("error:", Pattern.MULTILINE).matcher(str);
+
+        while (errorMatcherXml.find()) {
+            spannable.setSpan(new StyleSpan(Typeface.BOLD), errorMatcherXml.start(), errorMatcherXml.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannable.setSpan(new ForegroundColorSpan(ERROR_COL), errorMatcherXml.start(), errorMatcherXml.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
 
         return spannable;
-    }
-
-    private static void applyStyle(SpannableString spannable, Matcher matcher, int color) {
-        while (matcher.find()) {
-            spannable.setSpan(new StyleSpan(Typeface.BOLD), matcher.start(1), matcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannable.setSpan(new ForegroundColorSpan(color), matcher.start(1), matcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-    }
-
-    private static void applyStyleForXml(SpannableString spannable, Matcher matcher, int color) {
-        while (matcher.find()) {
-            spannable.setSpan(new StyleSpan(Typeface.BOLD), matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannable.setSpan(new ForegroundColorSpan(color), matcher.start(), matcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
     }
 }

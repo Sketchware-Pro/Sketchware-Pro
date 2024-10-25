@@ -122,12 +122,23 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
         View view = wB.a(getContext(), R.layout.property_popup_selector_single);
         radioGroupContent = view.findViewById(R.id.rg_content);
 
-        String[] items = switch (key) {
-            case "property_ad_size" -> sq.k;
-            case "property_indeterminate" -> sq.l;
-            case "property_scale_type" -> sq.j;
-            default -> null;
-        };
+        String[] items;
+        switch (key) {
+            case "property_ad_size":
+                items = sq.k;
+                break;
+
+            case "property_indeterminate":
+                items = sq.l;
+                break;
+
+            case "property_scale_type":
+                items = sq.j;
+                break;
+
+            default:
+                items = null;
+        }
 
         for (String item : items) {
             radioGroupContent.addView(getOption(item));

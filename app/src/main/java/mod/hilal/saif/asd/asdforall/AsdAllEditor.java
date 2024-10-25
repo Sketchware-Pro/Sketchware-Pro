@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -31,9 +32,11 @@ public class AsdAllEditor extends Dialog {
     public final Activity activity;
     public ViewGroup base;
     public TextView cancel;
+    public View.OnClickListener cancel_l = null;
     public CodeEditorLayout code_editor;
     public CodeEditorEditText editor;
     public TextView save;
+    public View.OnClickListener save_l = null;
     public String content;
     public TextView title;
     public TextView zoom_in;
@@ -220,15 +223,14 @@ public class AsdAllEditor extends Dialog {
         handler.postDelayed(someRunnable, 500);
     }
 
-    public void saveLis(LogicEditorActivity logicEditorActivity, Ss ss) {
-        save.setOnClickListener(view -> {
-            logicEditorActivity.a(ss, code_editor.getText());
-            dismiss();
-        });
+    public void saveLis(LogicEditorActivity logicEditorActivity, Ss ss, AsdAllEditor asdAllEditor) {
+        save_l = new AsdAllEditorYes(logicEditorActivity, code_editor.getText(), ss, asdAllEditor, editor);
+        save.setOnClickListener(save_l);
     }
 
-    public void cancelLis(AsdAllEditor asdAllEditor) {
-        cancel.setOnClickListener(Helper.getDialogDismissListener(asdAllEditor));
+    public void cancelLis(LogicEditorActivity logicEditorActivity, AsdAllEditor asdAllEditor) {
+        cancel_l = Helper.getDialogDismissListener(asdAllEditor);
+        cancel.setOnClickListener(cancel_l);
     }
 
     public void setCon(String s) {

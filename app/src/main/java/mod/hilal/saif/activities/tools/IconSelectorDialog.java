@@ -2,8 +2,8 @@ package mod.hilal.saif.activities.tools;
 
 import static mod.SketchwareUtil.getDip;
 
-import android.app.Dialog;
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -21,10 +21,9 @@ import com.sketchware.remod.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import a.a.a.aB;
 import mod.jbk.util.OldResourceIdMapper;
 
-public class IconSelectorDialog extends aB {
+public class IconSelectorDialog extends Dialog {
 
     private final List<Integer> data;
     private final EditText ed;

@@ -18,14 +18,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.activity.EdgeToEdge;
 
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 
@@ -46,7 +45,7 @@ import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 
-public class ManageCustomComponentActivity extends BaseAppCompatActivity {
+public class ManageCustomComponentActivity extends AppCompatActivity {
 
     private List<HashMap<String, Object>> componentsList = new ArrayList<>();
 
@@ -57,7 +56,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
     private RecyclerView componentView;
 
     @Override
-    public void onCreate(Bundle _savedInstanceState) {
+    protected void onCreate(Bundle _savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.manage_custom_component);
@@ -116,7 +115,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
     private void readComponents(final String _path) {
         componentsList = new Gson().fromJson(FileUtil.readFile(_path), Helper.TYPE_MAP_LIST);
-        if (componentsList != null && !componentsList.isEmpty()) {
+        if (componentsList != null && componentsList.size() > 0) {
             ComponentsAdapter adapter = new ComponentsAdapter(componentsList);
             Parcelable state = componentView.getLayoutManager().onSaveInstanceState();
             componentView.setAdapter(adapter);
@@ -282,7 +281,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         }
 
         public class ViewHolder extends CollapsibleViewHolder {
-            public final MaterialCardView root;
+            public final LinearLayout root;
             public final LinearLayout optionLayout;
             public final ImageView icon;
             public final TextView type;
@@ -292,7 +291,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView, 200);
-                root = (MaterialCardView) itemView;
+                root = (LinearLayout) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 type = itemView.findViewById(R.id.tv_component_type);
                 id = itemView.findViewById(R.id.tv_component_id);

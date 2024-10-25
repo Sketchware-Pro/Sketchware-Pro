@@ -1,20 +1,19 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
-    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="64dp"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginVertical="4dp"
-    android:clickable="true"
-    android:focusable="true"
-    app:cardBackgroundColor="?attr/colorSurfaceContainer"
-    app:strokeWidth="0.5dp">
+    android:layout_marginVertical="2dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginBottom="2dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?selectableItemBackground"
         android:gravity="center|left"
         android:orientation="horizontal">
 
@@ -22,7 +21,8 @@
             android:id="@+id/chk_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp" />
+            android:layout_marginLeft="16dp"
+            android:contentDescription="@null" />
 
         <LinearLayout
             android:id="@+id/delete_img_container"
@@ -50,12 +50,13 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:background="#fff6f6f6"
             android:paddingHorizontal="8dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginLeft="16dp"
@@ -68,8 +69,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                tools:text="Custom view" />
+                android:textColor="#ff404040"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <ImageView

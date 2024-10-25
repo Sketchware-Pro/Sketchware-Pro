@@ -111,15 +111,16 @@ public final class CodeReader {
     }
 
     private void callVisit(DecodedInstruction[] all, DecodedInstruction one) {
-        Visitor visitor = switch (OpcodeInfo.getIndexType(one.getOpcode())) {
-            case STRING_REF -> stringVisitor;
-            case TYPE_REF -> typeVisitor;
-            case FIELD_REF -> fieldVisitor;
-            case METHOD_REF -> methodVisitor;
-            case METHOD_AND_PROTO_REF -> methodAndProtoVisitor;
-            case CALL_SITE_REF -> callSiteVisitor;
-            default -> null;
-        };
+        Visitor visitor = null;
+
+        switch (OpcodeInfo.getIndexType(one.getOpcode())) {
+            case STRING_REF:           visitor = stringVisitor;         break;
+            case TYPE_REF:             visitor = typeVisitor;           break;
+            case FIELD_REF:            visitor = fieldVisitor;          break;
+            case METHOD_REF:           visitor = methodVisitor;         break;
+            case METHOD_AND_PROTO_REF: visitor = methodAndProtoVisitor; break;
+            case CALL_SITE_REF:        visitor = callSiteVisitor;       break;
+        }
 
         if (visitor == null) {
             visitor = fallbackVisitor;

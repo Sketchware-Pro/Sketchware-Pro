@@ -1,144 +1,91 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
-    android:background="?attr/colorSurface"
+    android:background="#fff6f6f6"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="14dp"
-        android:layout_marginTop="10dp"
-        android:text="Pick your color"
-        android:textSize="24sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="14dp"
-        android:layout_marginTop="4dp"
-        android:text="Either enter a hex color code or pick a color from the list below." />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="8dp">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="4dp"
                 android:text="\#"
-                android:textSize="20sp" />
+                android:textColor="#ff757575"
+                android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ti_custom_color"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:importantForAutofill="noExcludeDescendants"
-                app:errorEnabled="false"
-                app:hintEnabled="false">
+                android:layout_height="wrap_content"
+                android:importantForAutofill="noExcludeDescendants">
 
                 <EditText
                     android:id="@+id/et_custom_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:hint="Hex color code"
-                    android:inputType="text"
                     android:lines="1"
                     android:maxLength="8" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <TextView
+            android:id="@+id/tv_custom_color"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
             android:layout_margin="8dp"
-            app:cardElevation="2dp"
-            app:strokeWidth="0dp">
+            android:background="#fff6f6f6" />
 
-            <TextView
-                android:id="@+id/tv_custom_color"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                tools:background="#4177FF" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            app:cardElevation="4dp"
-            app:strokeWidth="0dp">
-
-            <TextView
-                android:id="@+id/tv_add_color"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_gravity="center_vertical"
-                android:background="?attr/colorPrimary"
-                android:gravity="center"
-                android:textColor="?attr/colorOnPrimary"
-                tools:text="ADD" />
-        </com.google.android.material.card.MaterialCardView>
+        <TextView
+            android:id="@+id/tv_add_color"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:background="@color/color_primary"
+            android:gravity="center"
+            android:textColor="#ffffffff" />
     </LinearLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <HorizontalScrollView
+        android:id="@+id/layout_hsv_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginVertical="8dp"
-        app:cardElevation="4dp"
-        app:strokeWidth="0dp">
+        android:fillViewport="true"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
 
-        <HorizontalScrollView
-            android:id="@+id/layout_hsv_color"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/layout_color_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:scrollbars="none">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
 
-            <LinearLayout
-                android:id="@+id/layout_color_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/color_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        app:cardElevation="4dp"
-        app:strokeWidth="0dp">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/color_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            tools:listitem="@layout/color_picker_item" />
-    </com.google.android.material.card.MaterialCardView>
+        android:layout_marginBottom="16dp"
+        android:paddingBottom="16dp"
+        android:scrollbars="vertical"
+        android:splitMotionEvents="false" />
 </LinearLayout>

@@ -1,10 +1,11 @@
 package com.besome.sketch.tools;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -15,22 +16,28 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.Gson;
+import com.sketchware.remod.BuildConfig;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.util.HashMap;
 
 import a.a.a.GB;
 import a.a.a.xB;
+import mod.RequestNetwork;
+import mod.RequestNetworkController;
 import mod.SketchwareUtil;
 
-public class CollectErrorActivity extends BaseAppCompatActivity {
+public class CollectErrorActivity extends Activity {
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        RequestNetwork requestNetwork = new RequestNetwork(this);
+        WebhookListener listener = new WebhookListener();
         Intent intent = getIntent();
         if (intent != null) {
             final String error = intent.getStringExtra("error");
@@ -72,11 +79,74 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
                         + "Manufacturer: " + Build.MANUFACTURER + "\n"
                         + "Model: " + Build.MODEL;
 
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE); 
                 ClipData clip = ClipData.newPlainText("error", deviceInfo + "\n\n```\n" + error + "\n```");
                 clipboard.setPrimaryClip(clip);
                 runOnUiThread(() -> SketchwareUtil.toast("Copied", Toast.LENGTH_LONG));
+/*
+                new Thread(() -> {
+                    String stackTrace = error;
+                    String webhookContent;
+                    int i = 0;
+                    do { 
+                        int maxLength = i == 0 ?
+                                2000 - deviceInfo.length() - 8
+                                : 2000 - 8;
+                        webhookContent = i == 0 ? deviceInfo : "";
+                        webhookContent += "\n```\n";
+
+                        if (stackTrace.length() > maxLength) {
+                            String toProcess = stackTrace.substring(0, maxLength);
+                            int lastNewlineIndex = toProcess.lastIndexOf('\n');
+
+                            if (lastNewlineIndex != -1) {
+                                webhookContent += toProcess.substring(0, lastNewlineIndex + 1);
+                                stackTrace = stackTrace.substring(lastNewlineIndex + 1, stackTrace.length() - 1);
+                            } else {
+                                webhookContent += toProcess;
+                                stackTrace = stackTrace.substring(maxLength);
+                            }
+                        } else {
+                            webhookContent += stackTrace;
+                            stackTrace = "";
+                        }
+
+                        webhookContent += "```";
+
+                        HashMap<String, Object> params = new HashMap<>();
+                        params.put("content", webhookContent);
+                        requestNetwork.setParams(params, RequestNetworkController.REQUEST_BODY);
+                        requestNetwork.startRequestNetworkSynchronized(RequestNetworkController.POST, BuildConfig.CRASH_REPORT_WEBHOOK_URL, new Gson().toJson(params), listener);
+                        i++;
+                    } while (!stackTrace.isEmpty());
+
+                    if (!listener.hasFailed()) {
+                        runOnUiThread(() -> SketchwareUtil.toast("Sending crash logs…", Toast.LENGTH_LONG));
+                    }
+                }).start();
+*/
             });
+        }
+    }
+
+    private class WebhookListener implements RequestNetwork.RequestListener {
+
+        private boolean failed = false;
+
+        @Override
+        public void onResponse(String tag, String response, HashMap<String, Object> responseHeaders) {
+            SketchwareUtil.toast("Report sent!");
+            finish();
+        }
+
+        @Override
+        public void onErrorResponse(String tag, String message) {
+            failed = true;
+            SketchwareUtil.toast("Couldn't report the error. You can try reporting the crash manually in our Discord server.", Toast.LENGTH_LONG);
+        }
+
+        public boolean hasFailed() {
+            return failed;
         }
     }
 }

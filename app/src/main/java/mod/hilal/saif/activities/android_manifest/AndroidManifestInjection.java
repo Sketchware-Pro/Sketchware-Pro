@@ -12,10 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
@@ -25,7 +29,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ProgressMsgBoxBinding;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,10 +38,11 @@ import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.wB;
 import a.a.a.yq;
-
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
-
+import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
@@ -51,7 +55,7 @@ import mod.jbk.code.CodeEditorLanguages;
 import mod.remaker.view.CustomAttributeView;
 
 @SuppressLint("SetTextI18n")
-public class AndroidManifestInjection extends BaseAppCompatActivity {
+public class AndroidManifestInjection extends AppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> list_map = new ArrayList<>();
     private ListView act_list;
@@ -59,7 +63,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     private String activityName;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.android_manifest_injection);
 
@@ -76,7 +80,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
         super.onResume();
         checkAttrs();
         refreshList();
@@ -397,7 +401,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
                 editor.setEditable(false);
                 editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
                 editor.setTextSize(14);
-                editor.setText(!source.isEmpty() ? source : "Failed to generate source.");
+                editor.setText(!source.equals("") ? source : "Failed to generate source.");
                 editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
@@ -457,8 +461,8 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
-            attributeView.getImageView().setVisibility(View.GONE);
-            attributeView.getTextView().setText((String) list_map.get(position).get("act_name"));
+            attributeView.icon.setVisibility(View.GONE);
+            attributeView.text.setText((String) list_map.get(position).get("act_name"));
             attributeView.setOnClickListener(v -> {
                 Intent intent = new Intent();
                 intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);

@@ -1,140 +1,144 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_height="match_parent"
+     android:layout_width="match_parent"
+     android:fitsSystemWindows="true">
 
-    <!-- please set lift on scroll to false and elevation to 0 -->
-    <!-- when you implement search -->
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         android:fitsSystemWindows="true"
+         android:id="@+id/appBarLayout">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+             android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+             android:layout_width="match_parent"
+             app:layout_scrollFlags="scroll|exitUntilCollapsed"
+             android:fitsSystemWindows="true"
+             android:id="@+id/collapsingToolbar">
 
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="@string/local_library_manager" />
+                 android:layout_height="?attr/actionBarSize"
+                 android:layout_width="match_parent"
+                 app:title="@string/local_library_manager"
+                 app:layout_collapseMode="pin"
+                 app:navigationIcon="@drawable/abc_ic_ab_back_material"
+                 android:id="@+id/topAppBar" />
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <!--   search gotta be implemented fr, ez but eh    -->
+             android:layout_height="wrap_content"
+             android:layout_width="match_parent"
+             android:visibility="gone"
+             android:layout_marginEnd="16dp"
+             android:gravity="center_vertical"
+             android:orientation="horizontal"
+             android:layout_marginTop="4dp"
+             android:layout_marginStart="16dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/searchInputLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:hint="Search for permissions"
-                android:importantForAutofill="noExcludeDescendants"
-                app:boxCornerRadiusBottomEnd="50dp"
-                app:boxCornerRadiusBottomStart="50dp"
-                app:boxCornerRadiusTopEnd="50dp"
-                app:boxCornerRadiusTopStart="50dp"
-                app:startIconDrawable="@drawable/search_icon_grey">
+                 android:layout_height="wrap_content"
+                 android:layout_width="0dp"
+                 app:boxCornerRadiusTopEnd="50dp"
+                 android:layout_marginEnd="8dp"
+                 android:hint="Search for permissions"
+                 app:boxCornerRadiusBottomStart="50dp"
+                 android:importantForAutofill="noExcludeDescendants"
+                 app:boxCornerRadiusBottomEnd="50dp"
+                 app:startIconDrawable="@drawable/search_icon_grey"
+                 app:boxCornerRadiusTopStart="50dp"
+                 android:layout_weight="1"
+                 android:id="@+id/searchInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/searchInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:inputType="text" />
+                     android:layout_height="wrap_content"
+                     android:layout_width="match_parent"
+                     android:imeOptions="actionDone"
+                     android:inputType="text"
+                     android:id="@+id/searchInput" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/resetPermissions"
-                style="?attr/materialIconButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:insetBottom="0dp"
-                android:text="@string/common_word_reset"
-                app:icon="@drawable/ic_reset_24"
-                app:iconGravity="textStart"
-                app:iconSize="20dp" />
+                 android:layout_height="match_parent"
+                 android:layout_width="wrap_content"
+                 app:icon="@drawable/ic_reset_24"
+                 app:iconSize="20dp"
+                 android:insetBottom="0dp"
+                 style="?attr/materialIconButtonOutlinedStyle"
+                 android:id="@+id/resetPermissions"
+                 android:text="@string/common_word_reset"
+                 app:iconGravity="textStart" />
+
         </LinearLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/contentLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+         android:layout_height="match_parent"
+         android:layout_width="match_parent"
+         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+         android:orientation="vertical"
+         android:id="@+id/contentLayout">
 
-        <!-- add padding top 8dp when search is implemented -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/librariesList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="120dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:listitem="@layout/view_item_local_lib" />
+             android:layout_height="match_parent"
+             android:layout_width="match_parent"
+             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+             android:paddingBottom="120dp"
+             tools:listitem="@layout/view_item_local_lib"
+             android:clipToPadding="false"
+             android:id="@+id/librariesList" />
+
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/noContentLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?android:colorBackground"
-        android:fitsSystemWindows="false"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingBottom="100dp"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+         android:layout_height="match_parent"
+         android:layout_width="match_parent"
+         android:visibility="gone"
+         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+         android:background="?android:colorBackground"
+         android:gravity="center"
+         android:orientation="vertical"
+         android:paddingBottom="100dp"
+         android:fitsSystemWindows="false"
+         android:paddingHorizontal="16dp"
+         android:id="@+id/noContentLayout">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:src="@drawable/img_nocontent" />
+             android:layout_height="150dp"
+             android:layout_width="wrap_content"
+             android:src="@drawable/img_nocontent" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
-            android:text="@string/local_library_manager_no_libraries_title"
-            android:textSize="20sp" />
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+             android:gravity="center"
+             android:textSize="20sp"
+             android:layout_marginTop="30dp"
+             android:text="@string/local_library_manager_no_libraries_title" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="@string/local_library_manager_no_libraries_body"
-            android:textSize="14sp" />
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+             android:gravity="center"
+             android:textSize="14sp"
+             android:layout_marginTop="5dp"
+             android:text="@string/local_library_manager_no_libraries_body" />
+
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/downloadLibraryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="20dp"
-        android:text="@string/local_library_manager_download"
-        app:icon="@drawable/ic_download_24" />
+         android:layout_height="wrap_content"
+         android:layout_width="wrap_content"
+         android:layout_marginBottom="20dp"
+         app:icon="@drawable/ic_download_24"
+         android:id="@+id/downloadLibraryButton"
+         android:layout_gravity="center_horizontal|bottom"
+         android:text="@string/local_library_manager_download" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

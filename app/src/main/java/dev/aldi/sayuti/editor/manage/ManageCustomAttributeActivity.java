@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ManageCustomAttributeBinding;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,12 +24,23 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
     private String sc_id = "";
     private String xmlFilename = "";
 
+    private ListView manage_attr_listview;
+    private com.google.android.material.appbar.AppBarLayout appBarLayout;
+    private com.google.android.material.appbar.MaterialToolbar topAppBar;
+    private com.google.android.material.appbar.CollapsingToolbarLayout collapsingToolbar;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ManageCustomAttributeBinding binding = ManageCustomAttributeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        binding.topAppBar.setNavigationOnClickListener(view -> onBackPressed());
+        setContentView(R.layout.manage_custom_attribute);
+
+        topAppBar = findViewById(R.id.topAppBar);
+        appBarLayout = findViewById(R.id.appBarLayout);
+        collapsingToolbar = findViewById(R.id.collapsingToolbar);
+        manage_attr_listview = findViewById(R.id.manage_attr_listview);
+
+        topAppBar.setNavigationOnClickListener(view -> onBackPressed());
+
 
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name")) {
             sc_id = getIntent().getStringExtra("sc_id");
@@ -40,7 +51,7 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
             addType("FloatingActionButton");
             addType("DrawerLayout");
             addType("NavigationDrawer");
-            binding.manageAttrListview.setAdapter(new CustomAdapter(customAttributeLocations));
+            manage_attr_listview.setAdapter(new CustomAdapter(customAttributeLocations));
         } else {
             finish();
         }
@@ -83,8 +94,8 @@ public class ManageCustomAttributeActivity extends AppCompatActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
-            attributeView.getImageView().setImageResource(R.drawable.ic_property_inject);
-            attributeView.getTextView().setText(getItem(position));
+            attributeView.icon.setImageResource(R.drawable.ic_property_inject);
+            attributeView.text.setText(getItem(position));
             attributeView.setOnClickListener(v -> {
                 Intent i = new Intent();
                 i.setClass(getApplicationContext(), AddCustomAttributeActivity.class);

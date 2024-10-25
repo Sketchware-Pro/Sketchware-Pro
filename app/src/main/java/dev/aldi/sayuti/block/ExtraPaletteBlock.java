@@ -1,8 +1,5 @@
 package dev.aldi.sayuti.block;
 
-import static mod.bobur.StringEditorActivity.convertXmlToListMap;
-import static mod.bobur.StringEditorActivity.isXmlStringsContains;
-
 import android.util.Pair;
 
 import com.besome.sketch.beans.ComponentBean;
@@ -21,12 +18,10 @@ import a.a.a.kq;
 import a.a.a.Ox;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.beans.ViewBeans;
-import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
-import mod.agus.jcoderz.lib.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
-import pro.sketchware.blocks.ExtraBlocks;
-import pro.sketchware.control.logic.LogicClickListener;
+import mod.hasrat.blocks.ExtraBlocks;
+import mod.hasrat.control.logic.LogicClickListener;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hilal.saif.activities.tools.ConfigActivity;
@@ -81,7 +76,7 @@ public class ExtraPaletteBlock {
                 view = eC.c("_drawer_" + xmlName, logicEditor.C);
             }
             String customView = view.customView;
-            if (customView != null && !customView.isEmpty()) {
+            if (customView != null && customView.length() > 0) {
                 for (ViewBean viewBean : jC.a(sc_id).d(ProjectFileBean.getXmlName(customView))) {
                     if (viewBean.getClassInfo().a(str)) {
                         mapSave.put(str, true);
@@ -255,7 +250,7 @@ public class ExtraPaletteBlock {
                 viewBean = eC.c("_drawer_" + xmlName, viewId);
             }
             String viewBeanCustomView = viewBean.customView;
-            if (viewBeanCustomView != null && !viewBeanCustomView.isEmpty()) {
+            if (viewBeanCustomView != null && viewBeanCustomView.length() > 0) {
                 ArrayList<ViewBean> customViews = jC.a(sc_id).d(ProjectFileBean.getXmlName(viewBeanCustomView));
                 for (int i = 0, customViewsSize = customViews.size(); i < customViewsSize; i++) {
                     ViewBean customView = customViews.get(i);
@@ -394,22 +389,6 @@ public class ExtraPaletteBlock {
         }
 
         switch (paletteId) {
-            case -1:
-                String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
-                ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
-                convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
-
-                logicEditor.a("s", "getResString");
-                logicEditor.a("Saved Res Strings :", 0xff555555);
-                if (!isXmlStringsContains(StringsListMap, "app_name")) {
-                    logicEditor.a("s", "getAppName");
-                }
-
-                for (HashMap<String, Object> map : StringsListMap) {
-                    String key = map.get("key").toString();
-                    logicEditor.a("s", "S98ZCS" + key);
-                }
-                return;
             case 0:
                 logicEditor.b("Add variable", "variableAdd");
                 logicEditor.b("Add custom variable", "variableAddNew", clickListener);
@@ -462,7 +441,7 @@ public class ExtraPaletteBlock {
             case 5:
                 extraBlocks.fileBlocks();
                 logicEditor.a("FileUtil Blocks", 0xff555555);
-                if (!frc.getAssetsFile().isEmpty()) {
+                if (frc.getAssetsFile().size() > 0) {
                     logicEditor.a(" ", "getAssetFile");
                     logicEditor.a("s", "copyAssetFile");
                 }
@@ -959,11 +938,11 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "startActivity");
                     logicEditor.a(" ", "startActivityWithChooser");
                 }
-                if (!frc.getBroadcastFile().isEmpty()) {
+                if (frc.getBroadcastFile().size() > 0) {
                     logicEditor.a("Broadcast", 0xff555555);
                     logicEditor.a(" ", "sendBroadcast");
                 }
-                if (!frc.getServiceFile().isEmpty()) {
+                if (frc.getServiceFile().size() > 0) {
                     logicEditor.a("Service", 0xff555555);
                     logicEditor.a(" ", "startService");
                     logicEditor.a(" ", "stopService");

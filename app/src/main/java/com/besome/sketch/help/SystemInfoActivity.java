@@ -6,14 +6,15 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
+import android.widget.LinearLayout;
 
-import androidx.activity.EdgeToEdge;
+import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.PropertyOneLineItem;
 import com.besome.sketch.lib.ui.PropertyTwoLineItem;
 import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ActivitySystemInfoBinding;
 
 import a.a.a.GB;
 import a.a.a.mB;
@@ -21,16 +22,23 @@ import mod.hey.studios.util.Helper;
 
 public class SystemInfoActivity extends BaseAppCompatActivity {
 
-    private ActivitySystemInfoBinding binding;
+    private LinearLayout content;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        binding = ActivitySystemInfoBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        setContentView(R.layout.system_info);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        getSupportActionBar().setTitle(Helper.getResString(R.string.program_information_title_system_information));
+        toolbar.setNavigationOnClickListener(v -> {
+            if (!mB.a()) onBackPressed();
+        });
+        content = findViewById(R.id.content);
         addApiLevelInfo();
         addAndroidVersionNameInfo();
         addScreenResolutionInfo();
@@ -44,7 +52,7 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
         propertyTwoLineItem.setKey(key);
         propertyTwoLineItem.setName(name);
         propertyTwoLineItem.setDesc(description);
-        binding.content.addView(propertyTwoLineItem);
+        content.addView(propertyTwoLineItem);
     }
 
     private void addAndroidVersionNameInfo() {
@@ -61,7 +69,7 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
         PropertyOneLineItem propertyOneLineItem = new PropertyOneLineItem(this);
         propertyOneLineItem.setKey(5);
         propertyOneLineItem.setName(Helper.getResString(R.string.system_information_developer_options));
-        binding.content.addView(propertyOneLineItem);
+        content.addView(propertyOneLineItem);
         propertyOneLineItem.setOnClickListener(v -> {
             if (!mB.a()) {
                 try {

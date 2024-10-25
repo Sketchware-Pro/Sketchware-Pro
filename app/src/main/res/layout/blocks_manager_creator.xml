@@ -22,9 +22,13 @@
                 android:id="@+id/cardv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="14dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginBottom="14dp"
                 android:orientation="vertical"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -35,72 +39,93 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
+                        android:paddingLeft="6dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
                         android:text="Properties"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textColor="#ff424242"
+                        android:textSize="16sp" />
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/name_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
-                        android:orientation="vertical">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Name"
-                            android:maxLength="40"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <RelativeLayout
+                        android:id="@+id/name_lay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|left"
+                            android:hint="Name"
+                            android:padding="14dp"
+                            android:textColor="#ff000000"
+                            android:textColorHint="#ff607d8b"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:baselineAligned="false"
+                        android:layout_marginBottom="8dp"
                         android:gravity="center"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <EditText
                                 android:id="@+id/type"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:gravity="center|left"
                                 android:hint="Type"
-                                android:maxLength="10"
+                                android:padding="14dp"
+                                android:textColor="#ff000000"
+                                android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <ImageView
-                            android:id="@+id/selectType"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="8dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:paddingTop="5dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_arrow_drop_down_24px" />
-                    </RelativeLayout>
+                        <LinearLayout
+                            android:id="@+id/select_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="8dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/image"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/typename"
+                        <EditText
+                            android:id="@+id/type_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center|left"
                             android:hint="Type name"
-                            android:maxLength="40"
+                            android:padding="14dp"
+                            android:textColor="#ff000000"
+                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -109,9 +134,12 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="14dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginBottom="14dp"
                 android:orientation="vertical"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -122,184 +150,183 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
+                        android:paddingLeft="6dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
                         android:text="Design"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:textColor="#ff424242"
+                        android:textSize="16sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center_vertical"
+                        android:baselineAligned="false"
+                        android:gravity="center"
                         android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/reset"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="8dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_marginTop="8dp"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/selector_ic_rotate_right_36" />
+                        </LinearLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/colour_lay"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/colour"
+                            <EditText
+                                android:id="@+id/color"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="Color"
-                                android:maxLength="10"
+                                android:gravity="center|left"
+                                android:hint="color"
+                                android:padding="14dp"
+                                android:textColor="#ff000000"
+                                android:textColorHint="#ff607d8b"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <ImageView
-                            android:id="@+id/openColorPalette"
-                            android:layout_width="40dp"
-                            android:layout_height="50dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:padding="8dp"
-                            android:scaleType="fitCenter"
-                            app:srcCompat="@drawable/ic_pick_24" />
+                        <LinearLayout
+                            android:id="@+id/colour_selector"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="8dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/reset"
-                            android:layout_width="40dp"
-                            android:layout_height="50dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:padding="8dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/history_24px" />
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/ic_arrow_drop_down_grey600_24dp" />
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/spec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center|left"
+                        android:hint="block spec"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="#fff5f5f5"
+                        android:textColorHint="#ffcfd8dc"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:padding="4dp"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="4dp"
+                        android:paddingRight="4dp"
+                        android:paddingBottom="4dp"
                         android:text="Parameters"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textSize="12sp" />
+                        android:textColor="#ff757575"
+                        android:textSize="10sp" />
 
-                    <com.google.android.material.card.MaterialCardView
+                    <HorizontalScrollView
+                        android:id="@+id/scroll_parameters"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                        android:layout_height="wrap_content">
 
-                        <HorizontalScrollView
-                            android:id="@+id/parameterScrollView"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:id="@+id/parameter_holder"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingVertical="6dp"
-                            android:requiresFadingEdge="horizontal">
-
-                            <LinearLayout
-                                android:id="@+id/parametersHolder"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:padding="8dp" />
-                        </HorizontalScrollView>
-                    </com.google.android.material.card.MaterialCardView>
-                    
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/specInputLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/spec"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Spec"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:background="#fff5f5f5"
+                            android:orientation="horizontal"
+                            android:padding="8dp" />
+                    </HorizontalScrollView>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/spec2InputLayout"
+                        android:id="@+id/spec_2lay"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputEditText
+                        <EditText
                             android:id="@+id/spec2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center|left"
                             android:hint="Spec2"
+                            android:padding="14dp"
+                            android:textColor="#ff000000"
+                            android:textColorHint="#ff607d8b"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
-                    
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:padding="4dp"
-                        android:text="Block preview"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textSize="12sp" />
-
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginRight="8dp">
-
-                        <RelativeLayout
-                            android:id="@+id/block_area"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </HorizontalScrollView>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="14dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginBottom="14dp"
                 android:orientation="vertical"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:orientation="vertical"
                     android:padding="12dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
-                        android:text="Block embedded code"
-                        android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:paddingLeft="6dp"
+                        android:paddingTop="8dp"
+                        android:paddingRight="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Code"
+                        android:textColor="#ff424242"
+                        android:textSize="16sp" />
 
-                    <com.google.android.material.textfield.TextInputLayout
+                    <EditText
+                        android:id="@+id/code"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/code"
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:gravity="top"
-                            android:hint="Code"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
+                        android:background="#fff5f5f5"
+                        android:gravity="center|left|top"
+                        android:hint="Code"
+                        android:padding="8dp"
+                        android:textColor="#ff000000"
+                        android:textColorHint="#ff607d8b"
+                        android:textSize="14sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="14dp"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="10dp">
+        android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel"
