@@ -107,22 +107,22 @@ public class sq {
             }
 
             if ((horizontalGravity & Gravity.RIGHT) == Gravity.RIGHT) {
-                if (gravityValue.length() > 0) gravityValue += ", ";
+                if (!gravityValue.isEmpty()) gravityValue += ", ";
                 gravityValue += "right";
             }
         }
 
         if (verticalGravity == Gravity.CENTER_VERTICAL) {
-            if (gravityValue.length() > 0) gravityValue += ", ";
+            if (!gravityValue.isEmpty()) gravityValue += ", ";
             gravityValue += "center_vertical";
         } else {
             if ((verticalGravity & Gravity.TOP) == Gravity.TOP) {
-                if (gravityValue.length() > 0) gravityValue += ", ";
+                if (!gravityValue.isEmpty()) gravityValue += ", ";
                 gravityValue += "top";
             }
 
             if ((verticalGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
-                if (gravityValue.length() > 0) gravityValue += ", ";
+                if (!gravityValue.isEmpty()) gravityValue += ", ";
                 gravityValue += "bottom";
             }
         }
@@ -151,38 +151,18 @@ public class sq {
     }
 
     public static Pair<Integer, String>[] a(String property) {
-        switch (property) {
-            case "property_layout_width":
-            case "property_layout_height":
-                return a;
-
-            case "property_orientation":
-                return b;
-
-            case "property_text_size":
-                return o;
-
-            case "property_text_style":
-                return d;
-
-            case "property_input_type":
-                return i;
-
-            case "property_ime_option":
-                return e;
-
-            case "property_spinner_mode":
-                return f;
-
-            case "property_choice_mode":
-                return g;
-
-            case "property_first_day_of_week":
-                return h;
-
-            default:
-                return new Pair[0];
-        }
+        return switch (property) {
+            case "property_layout_width", "property_layout_height" -> a;
+            case "property_orientation" -> b;
+            case "property_text_size" -> o;
+            case "property_text_style" -> d;
+            case "property_input_type" -> i;
+            case "property_ime_option" -> e;
+            case "property_spinner_mode" -> f;
+            case "property_choice_mode" -> g;
+            case "property_first_day_of_week" -> h;
+            default -> new Pair[0];
+        };
     }
 
     public static Pair<String, String>[] b(String property) {

@@ -1,13 +1,12 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginHorizontal="16dp"
     android:layout_marginBottom="10dp"
-    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:cardCornerRadius="18dp"
+    app:strokeWidth="0.5dp">
 
     <LinearLayout
         android:id="@+id/project_one"
@@ -18,19 +17,17 @@
 
         <ImageView
             android:id="@+id/iv_create_new"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:background="@color/transparent"
-            android:clickable="false"
-            android:scaleType="centerInside"
-            tools:src="@drawable/plus_96" />
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_restore_white_24dp"
+            app:tint="?colorControlNormal" />
 
         <TextView
             android:id="@+id/tv_create_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:textColor="@color/scolor_blue_01"
-            tools:text="@string/myprojects_list_menu_title_create_a_new_project" />
+            android:layout_marginTop="4dp"
+            android:text="@string/myprojects_list_menu_title_restore_projects"
+            android:textColor="?attr/colorOnSurface" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

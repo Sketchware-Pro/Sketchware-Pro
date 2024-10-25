@@ -83,7 +83,7 @@ public class DeadCodeRemover {
         while ( 0 <= (regV = worklist.nextSetBit(0)) ) {
             worklist.clear(regV);
 
-            if (useList[regV].size() == 0
+            if (useList[regV].isEmpty()
                     || isCircularNoSideEffect(regV, null)) {
 
                 mod.agus.jcoderz.dx.ssa.SsaInsn insnS = ssaMeth.getDefinitionForRegister(regV);

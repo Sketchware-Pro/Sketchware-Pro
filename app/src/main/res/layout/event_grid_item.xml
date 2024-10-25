@@ -1,20 +1,22 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:minWidth="96dp"
+    app:strokeWidth="0.5dp"
     android:minHeight="74dp"
-    style="?attr/materialCardViewFilledStyle"
-    app:cardBackgroundColor="@color/view_property_grid_background">
+    app:cardBackgroundColor="?attr/colorSurfaceContainerHighest">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:minWidth="96dp"
         android:minHeight="74dp"
-        android:gravity="center"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -26,7 +28,8 @@
                 android:id="@+id/img_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true"
+                tools:src="@drawable/event_on_click_48dp" />
 
             <ImageView
                 android:id="@+id/img_used_event"
@@ -45,7 +48,9 @@
             android:paddingHorizontal="4dp"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
-            android:textColor="?colorControlNormal"
-            android:textSize="12sp" />
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="11sp"
+            tools:text="onClick" />
     </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>

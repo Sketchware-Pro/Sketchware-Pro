@@ -79,49 +79,33 @@ public class ProjectLibraryBean implements Parcelable {
     }
 
     public static int getLibraryIcon(int i) {
-        switch (i) {
-            case 0:
-                return R.drawable.widget_firebase;
-            case 1:
-                return R.drawable.connected_96;
-            case 2:
-                return R.drawable.widget_admob;
-            case 3:
-                return R.drawable.widget_google_map;
-            default:
-                return 0;
-        }
+        return switch (i) {
+            case 0 -> R.drawable.widget_firebase;
+            case 1 -> R.drawable.connected_96;
+            case 2 -> R.drawable.widget_admob;
+            case 3 -> R.drawable.widget_google_map;
+            default -> 0;
+        };
     }
 
     public static int getLibraryResDesc(int i) {
-        switch (i) {
-            case 0:
-                return R.string.design_library_description_firebase;
-            case 1:
-                return R.string.design_library_description_appcompat_and_design;
-            case 2:
-                return R.string.design_library_description_admob;
-            case 3:
-                return R.string.design_library_description_google_map;
-            default:
-                return 0;
-        }
+        return switch (i) {
+            case 0 -> R.string.design_library_description_firebase;
+            case 1 -> R.string.design_library_description_appcompat_and_design;
+            case 2 -> R.string.design_library_description_admob;
+            case 3 -> R.string.design_library_description_google_map;
+            default -> 0;
+        };
     }
 
     public static int getLibraryResName(int i) {
-        switch (i) {
-            case 0:
-                return R.string.design_library_firebase_title_firebase;
-            case 1:
-                return R.string.design_library_title_appcompat_and_design;
-            case 2:
-                return R.string.design_library_admob_title_admob;
-            case 3:
-                return R.string.design_library_google_map_title;
-            default:
-                return 0;
-
-        }
+        return switch (i) {
+            case 0 -> R.string.design_library_firebase_title_firebase;
+            case 1 -> R.string.design_library_title_appcompat_and_design;
+            case 2 -> R.string.design_library_admob_title_admob;
+            case 3 -> R.string.design_library_google_map_title;
+            default -> 0;
+        };
     }
 
     public void copy(ProjectLibraryBean projectLibraryBean) {

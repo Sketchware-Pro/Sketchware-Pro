@@ -19,15 +19,16 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.MenuActivityBinding;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
-public class BlockSelectorActivity extends AppCompatActivity implements View.OnClickListener {
+public class BlockSelectorActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private static final File BLOCK_SELECTOR_MENUS_FILE = new File(Environment.getExternalStorageDirectory(), ".sketchware/resources/block/My Block/menu.json");
 
@@ -269,7 +270,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
     private void initializeLogic() {
         Helper.setViewsVisibility(true, binding.contai, binding.label);
         _readFile();
-        if (data.size() != 0) {
+        if (!data.isEmpty()) {
             _showItem(0);
         }
     }
@@ -287,7 +288,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         filePickerDialog.setTitle("Select a JSON file");
         filePickerDialog.setDialogSelectionListener(selections -> {
             String fileContent = FileUtil.readFile(selections[0]);
-            if (fileContent.equals("")) {
+            if (fileContent.isEmpty()) {
                 SketchwareUtil.toastError("The selected file is empty!");
             } else if (fileContent.equals("[]")) {
                 SketchwareUtil.toastError("The selected file is empty!");
@@ -306,7 +307,7 @@ public class BlockSelectorActivity extends AppCompatActivity implements View.OnC
         data.addAll(menu);
         FileUtil.writeFile(BLOCK_SELECTOR_MENUS_FILE.getAbsolutePath(), new Gson().toJson(data));
         _readFile();
-        if (data.size() != 0) {
+        if (!data.isEmpty()) {
             _showItem(0);
         }
         SketchwareUtil.toast("Successfully imported menu");

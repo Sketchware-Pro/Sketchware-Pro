@@ -1,5 +1,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -16,7 +17,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:textColor="@color/grey"
             android:textSize="14sp" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -26,6 +26,7 @@
             android:layout_marginTop="2dp"
             android:layout_weight="1"
             android:scrollbars="vertical"
-            android:splitMotionEvents="false" />
+            android:splitMotionEvents="false"
+            tools:listitem="@layout/manage_view_list_item" />
     </LinearLayout>
 </ScrollView>

@@ -9,8 +9,8 @@ import android.view.View;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import com.google.android.gms.analytics.HitBuilders;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ManageFontAddBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
     private WB2 fontValidator;
     public int requestCode;
 
-    private com.sketchware.remod.databinding.ManageFontAddBinding binding;
+    private ManageFontAddBinding binding;
 
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
-        binding = com.sketchware.remod.databinding.ManageFontAddBinding.inflate(getLayoutInflater());
+        binding = ManageFontAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         e(getTranslatedString(R.string.design_manager_font_title_edit_font_name));
@@ -75,12 +75,6 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         } else if (id == R.id.common_dialog_ok_button) {
             saveFont();
         }
-    }
-
-    public void onResume() {
-        super.onResume();
-        this.d.setScreenName(AddFontCollectionActivity.class.getSimpleName());
-        this.d.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     public final void saveFont() {

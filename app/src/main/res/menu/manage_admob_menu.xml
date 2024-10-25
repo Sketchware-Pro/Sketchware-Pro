@@ -2,14 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_admob_help"
-        android:icon="@drawable/ic_help_white_50dp"
+        android:icon="@drawable/ic_help_24"
         android:orderInCategory="1"
-        android:title="Settings"
+        android:title="Admob Help"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_admob_settings"
-        android:icon="@drawable/side_menu_setting_icon_over_white"
+        android:icon="@drawable/ic_settings_24"
         android:orderInCategory="1"
-        android:title="Settings"
+        android:title="Admob Configuration"
         app:showAsAction="always" />
 </menu>

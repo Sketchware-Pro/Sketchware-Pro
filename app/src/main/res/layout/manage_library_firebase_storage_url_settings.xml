@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         style="?attr/materialCardViewFilledStyle"
-        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+        app:cardBackgroundColor="?attr/colorSurfaceContainer">
         <EditText
             android:id="@+id/ed_input_storage_url"
             android:layout_width="match_parent"

@@ -1,22 +1,13 @@
 package mod.jbk.export;
 
-import static mod.SketchwareUtil.dpToPx;
-
 import android.app.Activity;
-import android.text.InputType;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Spinner;
 
-import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.DialogKeystoreCredentialsBinding;
 
 import java.io.File;
 import java.util.LinkedList;
@@ -31,13 +22,7 @@ public class GetKeyStoreCredentialsDialog {
     private final aB dialog;
     private CredentialsReceiver receiver;
     private SigningMode mode;
-
-    private TextInputLayout tilAlias;
-    private EditText alias;
-    private TextInputLayout tilPassword;
-    private EditText password;
-    private TextInputLayout tilSigningAlgorithm;
-    private EditText signingAlgorithm;
+    private final DialogKeystoreCredentialsBinding binding;
 
     public GetKeyStoreCredentialsDialog(Activity activity, int iconResourceId, String title, String noticeText) {
         dialog = new aB(activity);
@@ -45,141 +30,92 @@ public class GetKeyStoreCredentialsDialog {
         dialog.b(title);
         dialog.a(noticeText);
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.b(Helper.getResString(R.string.common_word_next), v -> {
-            if (mode == SigningMode.OWN_KEY_STORE) {
-                // La/a/a/wq;->j()Ljava/lang/String; returns /Internal storage/sketchware/keystore/release_key.jks
-                if (new File(wq.j()).exists()) {
-                    boolean aliasEmpty = TextUtils.isEmpty(alias.getText().toString());
-                    boolean passwordEmpty = TextUtils.isEmpty(password.getText().toString());
-                    boolean algorithmEmpty = TextUtils.isEmpty(signingAlgorithm.getText().toString());
+        dialog.b(Helper.getResString(R.string.common_word_next), this::onNextButtonClick);
 
-                    if (aliasEmpty) {
-                        tilAlias.setError("Alias can't be empty");
-                    } else {
-                        tilAlias.setError(null);
-                    }
-                    if (passwordEmpty) {
-                        tilPassword.setError("Password can't be empty");
-                    } else {
-                        tilPassword.setError(null);
-                    }
-                    if (algorithmEmpty) {
-                        tilSigningAlgorithm.setError("Algorithm can't be empty");
-                    } else {
-                        tilSigningAlgorithm.setError(null);
-                    }
+        binding = DialogKeystoreCredentialsBinding.inflate(LayoutInflater.from(activity));
+        dialog.a(binding.getRoot());
 
-                    if (!aliasEmpty && !passwordEmpty && !algorithmEmpty) {
-                        dialog.dismiss();
+        setupSpinner(activity);
+    }
 
-                        receiver.gotCredentials(new Credentials(signingAlgorithm.getText().toString(),
-                                password.getText().toString(), alias.getText().toString(), password.getText().toString()));
-                    }
-                } else {
-                    SketchwareUtil.toastError("Keystore not found");
-                }
-            } else if (mode == SigningMode.TESTKEY) {
-                dialog.dismiss();
-                receiver.gotCredentials(new Credentials(signingAlgorithm.getText().toString()));
-            } else if (mode == SigningMode.DONT_SIGN) {
-                dialog.dismiss();
-                receiver.gotCredentials(null);
-            }
+    private void setupSpinner(Activity activity) {
+        String[] dropdownItems = getDropdownItems();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, dropdownItems);
+        binding.actSigningMode.setAdapter(adapter);
+        binding.actSigningMode.setOnItemClickListener((parent, view, position, id) -> {
+            mode = SigningMode.values()[position];
+            updateInputFieldsState();
         });
+    }
 
-        ScrollView scrollView = new ScrollView(activity);
-        scrollView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
+    private String[] getDropdownItems() {
+        LinkedList<String> labels = new LinkedList<>();
+        for (SigningMode mode : SigningMode.values()) {
+            labels.add(mode.label);
+        }
+        return labels.toArray(new String[0]);
+    }
 
-        LinearLayout contentView = new LinearLayout(activity);
-        contentView.setOrientation(LinearLayout.VERTICAL);
-        contentView.setPadding(
-                dpToPx(4),
-                0,
-                dpToPx(4),
-                0
-        );
-        scrollView.addView(contentView);
+    private void updateInputFieldsState() {
+        boolean signingWithKeyStore = mode == SigningMode.OWN_KEY_STORE;
+        binding.tilAlias.setEnabled(signingWithKeyStore);
+        binding.tilPassword.setEnabled(signingWithKeyStore);
+        binding.tilSigningAlgorithm.setEnabled(signingWithKeyStore);
+    }
 
-        String[] dropdownItems;
-        {
-            LinkedList<String> labels = new LinkedList<>();
-            for (SigningMode mode : SigningMode.values()) {
-                labels.add(mode.label);
+    private void onNextButtonClick(View v) {
+        if (mode == SigningMode.OWN_KEY_STORE) {
+            if (new File(wq.j()).exists()) {
+                if (validateInputs()) {
+                    dialog.dismiss();
+                    receiver.gotCredentials(new Credentials(
+                            binding.etSigningAlgorithm.getText().toString(),
+                            binding.etPassword.getText().toString(),
+                            binding.etAlias.getText().toString(),
+                            binding.etPassword.getText().toString()
+                    ));
+                }
+            } else {
+                SketchwareUtil.toastError("Keystore not found");
             }
+        } else if (mode == SigningMode.TESTKEY) {
+            dialog.dismiss();
+            receiver.gotCredentials(new Credentials(binding.etSigningAlgorithm.getText().toString()));
+        } else if (mode == SigningMode.DONT_SIGN) {
+            dialog.dismiss();
+            receiver.gotCredentials(null);
+        }
+    }
 
-            dropdownItems = labels.toArray(new String[0]);
+    private boolean validateInputs() {
+        boolean isValid = true;
+
+        if (TextUtils.isEmpty(binding.etAlias.getText())) {
+            binding.tilAlias.setError("Alias can't be empty");
+            isValid = false;
+        } else {
+            binding.tilAlias.setError(null);
         }
 
-        Spinner bruhSpinner = new Spinner(activity);
-        bruhSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_dropdown_item, dropdownItems));
-        bruhSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0 -> mode = SigningMode.OWN_KEY_STORE;
-                    case 1 -> mode = SigningMode.TESTKEY;
-                    case 2 -> mode = SigningMode.DONT_SIGN;
-                    default -> {
-                    }
-                }
+        if (TextUtils.isEmpty(binding.etPassword.getText())) {
+            binding.tilPassword.setError("Password can't be empty");
+            isValid = false;
+        } else {
+            binding.tilPassword.setError(null);
+        }
 
-                boolean signingWithKeyStore = mode == SigningMode.OWN_KEY_STORE;
-                tilAlias.setEnabled(signingWithKeyStore);
-                tilPassword.setEnabled(signingWithKeyStore);
-                tilSigningAlgorithm.setEnabled(signingWithKeyStore);
-            }
+        if (TextUtils.isEmpty(binding.etSigningAlgorithm.getText())) {
+            binding.tilSigningAlgorithm.setError("Algorithm can't be empty");
+            isValid = false;
+        } else {
+            binding.tilSigningAlgorithm.setError(null);
+        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        contentView.addView(bruhSpinner);
-
-        LinearLayout inputContainer = new LinearLayout(activity);
-        inputContainer.setOrientation(LinearLayout.VERTICAL);
-        inputContainer.setPadding(
-                dpToPx(12),
-                dpToPx(12),
-                dpToPx(12),
-                dpToPx(12)
-        );
-        contentView.addView(inputContainer);
-
-        tilAlias = new TextInputLayout(activity);
-        alias = new EditText(activity);
-        alias.setHint("Keystore alias");
-        tilAlias.addView(alias, 0, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        inputContainer.addView(tilAlias);
-
-        tilPassword = new TextInputLayout(activity);
-        password = new EditText(activity);
-        password.setHint("Alias password");
-        password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        tilPassword.setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE);
-        tilPassword.addView(password, 0, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        inputContainer.addView(tilPassword);
-
-        tilSigningAlgorithm = new TextInputLayout(activity);
-        tilSigningAlgorithm.setHelperText("Example: SHA256withRSA");
-        signingAlgorithm = new EditText(activity);
-        signingAlgorithm.setHint("Signing algorithm");
-        tilSigningAlgorithm.addView(signingAlgorithm, 0, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        inputContainer.addView(tilSigningAlgorithm);
-
-        dialog.a(scrollView);
-        // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        return isValid;
     }
 
     public void show() {
-        alias.requestFocus();
+        binding.etAlias.requestFocus();
         dialog.show();
     }
 
@@ -263,8 +199,8 @@ public class GetKeyStoreCredentialsDialog {
     }
 
     private enum SigningMode {
-        OWN_KEY_STORE("Sign using key store"),
-        TESTKEY("Sign using testkey"),
+        OWN_KEY_STORE("Sign using keystore"),
+        TESTKEY("Sign using a test key"),
         DONT_SIGN("Don't sign");
 
         private final String label;

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +22,8 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
 
     private Context context;
     private String key;
+    private String sc_id;
+    private String resValue;
     private int value;
     private TextView tvName;
     private TextView tvValue;
@@ -34,6 +35,12 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
 
     public PropertyColorItem(Context context, boolean z) {
         super(context);
+        initialize(context, z);
+    }
+
+    public PropertyColorItem(Context context, boolean z, String scId) {
+        super(context);
+        sc_id = scId;
         initialize(context, z);
     }
 
@@ -59,8 +66,13 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         return value;
     }
 
+    public String getResValue() {
+        return resValue;
+    }
+
     public void setValue(int value) {
         this.value = value;
+        resValue = null;
         if (value == 0) {
             tvValue.setText("TRANSPARENT");
             viewColor.setBackgroundColor(value);
@@ -73,10 +85,25 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         }
     }
 
+    public void setValue(int value, String resValue) {
+        this.value = value;
+        this.resValue = resValue;
+        if (value == 0) {
+            tvValue.setText("TRANSPARENT");
+            viewColor.setBackgroundColor(value);
+        } else if (value == 0xffffff) {
+            tvValue.setText("NONE");
+            viewColor.setBackgroundColor(value);
+        } else {
+            tvValue.setText(resValue);
+            viewColor.setBackgroundColor(value);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         if (!mB.a()) {
-            showColorPicker();
+            showColorPicker(v);
         }
     }
 
@@ -109,11 +136,9 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         }
     }
 
-    private void showColorPicker() {
+    private void showColorPicker(View anchorView) {
         boolean colorNoneAvailable;
         boolean colorTransparentAvailable;
-        View view = wB.a(context, R.layout.color_picker);
-        view.setAnimation(AnimationUtils.loadAnimation(context, R.anim.abc_fade_in));
         if (key.equals("property_background_color")) {
             colorTransparentAvailable = true;
             colorNoneAvailable = true;
@@ -121,14 +146,24 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             colorTransparentAvailable = false;
             colorNoneAvailable = false;
         }
-        Zx colorPicker = new Zx(view, (Activity) context, value, colorTransparentAvailable, colorNoneAvailable);
-        colorPicker.a(i -> {
-            setValue(i);
-            if (valueChangeListener != null) {
-                valueChangeListener.a(key, value);
+        Zx colorPicker = new Zx((Activity) context, value, colorTransparentAvailable, colorNoneAvailable, sc_id);
+        colorPicker.a(new Zx.b() {
+            @Override
+            public void a(int var1) {
+                setValue(var1);
+                if (valueChangeListener != null) {
+                    valueChangeListener.a(key, value);
+                }
+            }
+
+            @Override
+            public void a(String var1, int var2) {
+                setValue(var2, var1);
+                if (valueChangeListener != null) {
+                    valueChangeListener.a(key, value);
+                }
             }
         });
-        colorPicker.setAnimationStyle(R.anim.abc_fade_in);
-        colorPicker.showAtLocation(view, Gravity.CENTER, 0, 0);
+        colorPicker.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
     }
 }

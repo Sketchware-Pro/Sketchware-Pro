@@ -75,28 +75,19 @@ public final class DexTranslationAdvice
 
         mod.agus.jcoderz.dx.rop.cst.CstInteger cst = (mod.agus.jcoderz.dx.rop.cst.CstInteger) sourceB.getTypeBearer();
 
-        switch (opcode.getOpcode()) {
+        return switch (opcode.getOpcode()) {
             // These have 8 and 16 bit cst representations
-            case RegOps.REM:
-            case RegOps.ADD:
-            case RegOps.MUL:
-            case RegOps.DIV:
-            case RegOps.AND:
-            case RegOps.OR:
-            case RegOps.XOR:
-                return cst.fitsIn16Bits();
+            case RegOps.REM, RegOps.ADD, RegOps.MUL, RegOps.DIV, RegOps.AND, RegOps.OR,
+                 RegOps.XOR -> cst.fitsIn16Bits();
             // These only have 8 bit cst reps
-            case RegOps.SHL:
-            case RegOps.SHR:
-            case RegOps.USHR:
-                return cst.fitsIn8Bits();
+            case RegOps.SHL, RegOps.SHR, RegOps.USHR -> cst.fitsIn8Bits();
             // No sub-const insn, so check if equivalent add-const fits
-            case RegOps.SUB:
-                mod.agus.jcoderz.dx.rop.cst.CstInteger cst2 = CstInteger.make(-cst.getValue());
-                return cst2.fitsIn16Bits();
-            default:
-                return false;
-        }
+            case RegOps.SUB -> {
+                CstInteger cst2 = CstInteger.make(-cst.getValue());
+                yield cst2.fitsIn16Bits();
+            }
+            default -> false;
+        };
     }
 
     /** {@inheritDoc} */

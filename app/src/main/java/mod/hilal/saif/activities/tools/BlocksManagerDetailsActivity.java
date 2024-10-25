@@ -1,7 +1,6 @@
 package mod.hilal.saif.activities.tools;
 
 import android.animation.ObjectAnimator;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -25,17 +24,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.sketchware.remod.R;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
-public class BlocksManagerDetailsActivity extends AppCompatActivity {
+public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
 
     private static final String BLOCK_EXPORT_PATH = new File(FileUtil.getExternalStorageDir(), ".sketchware/resources/block/export/").getAbsolutePath();
 
@@ -115,7 +115,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         FilePickerDialog filePickerDialog = new FilePickerDialog(this, properties);
         filePickerDialog.setTitle("Select a JSON file");
         filePickerDialog.setDialogSelectionListener(selections -> {
-            if (FileUtil.readFile(selections[0]).equals("")) {
+            if (FileUtil.readFile(selections[0]).isEmpty()) {
                 SketchwareUtil.toastError("The selected file is empty!");
             } else if (FileUtil.readFile(selections[0]).equals("[]")) {
                 SketchwareUtil.toastError("The selected file is empty!");
@@ -239,11 +239,11 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         reference_list.clear();
         String paletteFileContent = FileUtil.readFile(pallet_path);
         String blocksFileContent = FileUtil.readFile(blocks_path);
-        if (paletteFileContent.equals("")) {
+        if (paletteFileContent.isEmpty()) {
             FileUtil.writeFile(pallet_path, "[]");
             paletteFileContent = "[]";
         }
-        if (blocksFileContent.equals("")) {
+        if (blocksFileContent.isEmpty()) {
             FileUtil.writeFile(blocks_path, "[]");
             blocksFileContent = "[]";
         }
@@ -301,16 +301,6 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         block_list.setAdapter(new Adapter(filtered_list));
         ((BaseAdapter) block_list.getAdapter()).notifyDataSetChanged();
         block_list.onRestoreInstanceState(onSaveInstanceState);
-    }
-
-    private void _a(View view) {
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        view.setBackground(rippleDrawable);
-        view.setClickable(true);
-        view.setFocusable(true);
     }
 
     private void _swapitems(int sourcePosition, int targetPosition) {
@@ -374,7 +364,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                     break;
 
                 case "Delete":
-                    new AlertDialog.Builder(this)
+                    new MaterialAlertDialogBuilder(this)
                             .setTitle("Delete block?")
                             .setMessage("Are you sure you want to delete this block?")
                             .setPositiveButton("Recycle bin", (dialog, which) -> _moveToRecycleBin(position))
@@ -433,7 +423,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
         }
 
         Gson gson = new Gson();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setNegativeButton(R.string.common_word_cancel, null);
         if (palette == -1) {
             AtomicInteger restoreToChoice = new AtomicInteger(-1);
@@ -474,7 +464,7 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                     SketchwareUtil.toastError("Invalid name entry of Custom Block #" + (i + 1) + " in Blocks to import");
                 }
             }
-            AlertDialog.Builder import_dialog = new AlertDialog.Builder(this);
+            MaterialAlertDialogBuilder import_dialog = new MaterialAlertDialogBuilder(this);
             import_dialog.setTitle("Import blocks")
                     .setMultiChoiceItems(names.toArray(new CharSequence[0]), null, (dialog, which, isChecked) -> {
                         if (isChecked) {
@@ -577,9 +567,6 @@ public class BlocksManagerDetailsActivity extends AppCompatActivity {
                 downLayout.setVisibility(position != (blocks.size() - 1) ? View.VISIBLE : View.GONE);
                 upLayout.setVisibility(position != 0 ? View.VISIBLE : View.GONE);
             }
-            _a(up);
-            _a(down);
-            _a(background);
 
             Object blockName = block.get("name");
             if (blockName instanceof String) {

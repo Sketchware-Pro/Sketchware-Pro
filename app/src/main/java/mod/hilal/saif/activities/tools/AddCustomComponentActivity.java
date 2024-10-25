@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.activity.EdgeToEdge;
 
 import com.google.gson.Gson;
@@ -23,15 +22,16 @@ import java.util.stream.Collectors;
 
 import a.a.a.aB;
 import a.a.a.wq;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
-import mod.hasrat.tools.ComponentHelper;
+import pro.sketchware.tools.ComponentHelper;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.util.OldResourceIdMapper;
 
-public class AddCustomComponentActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddCustomComponentActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private boolean isEditMode = false;
     private int position = 0;
@@ -41,7 +41,7 @@ public class AddCustomComponentActivity extends AppCompatActivity implements Vie
     private ManageCustomComponentAddBinding binding;
 
     @Override
-    protected void onCreate(Bundle _savedInstanceState) {
+    public void onCreate(Bundle _savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(_savedInstanceState);
         binding = ManageCustomComponentAddBinding.inflate(getLayoutInflater());

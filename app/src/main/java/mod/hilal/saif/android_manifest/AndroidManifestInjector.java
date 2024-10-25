@@ -4,13 +4,13 @@ import android.os.Environment;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.sketchware.remod.xml.XmlBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import com.sketchware.remod.xml.XmlBuilder;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
@@ -203,7 +203,7 @@ public class AndroidManifestInjector {
                     Object value = activityComponents.get("value");
 
                     if (value instanceof String) {
-                        if (!((String) value).trim().equals("")) {
+                        if (!((String) value).trim().isEmpty()) {
                             for (int k = 3; k < manifestLines.size(); k++) {
                                 String line = manifestLines.get(k);
                                 String _line = manifestLines.get(k - 1);
@@ -241,7 +241,7 @@ public class AndroidManifestInjector {
         File appComponents = getPathAndroidManifestAppComponents(projectId);
         if (appComponents.exists()) {
             String appComponentsContent;
-            if (!(appComponentsContent = FileUtil.readFile(appComponents.getAbsolutePath())).trim().equals("")) {
+            if (!(appComponentsContent = FileUtil.readFile(appComponents.getAbsolutePath())).trim().isEmpty()) {
                 String str2 = manifestLines.get(manifestLines.size() - 3);
                 String str3 = str2 + "\r\n" + appComponentsContent;
                 manifestLines.set(manifestLines.size() - 3, str3);

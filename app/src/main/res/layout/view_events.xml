@@ -1,4 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -7,7 +9,9 @@
         android:id="@+id/list_events"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="4dp"
+        android:orientation="horizontal"
+        android:scrollbars="none"
         android:splitMotionEvents="false"
-        android:scrollbars="none"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/event_grid_item" />
 </LinearLayout>

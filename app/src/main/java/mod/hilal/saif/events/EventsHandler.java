@@ -215,39 +215,17 @@ public class EventsHandler {
     }
 
     public static int getIcon(String name) {
-        switch (name) {
-            case "Import":
-            case "onActivityResult":
-            case "initializeLogic":
-            case "onBackPressed":
-            case "onPostCreate":
-            case "onStart":
-            case "onResume":
-            case "onPause":
-            case "onStop":
-            case "onDestroy":
-            case "onTabLayoutNewTabAdded":
-                return R.drawable.widget_source;
-
-            case " onLongClick":
-                return R.drawable.check_upload_apk_48dp;
-
-            case "onSwipeRefreshLayout":
-                return R.drawable.widget_swipe_refresh;
-
-            case "onPreExecute":
-                return R.drawable.event_on_stop_tracking_touch_48dp;
-
-            case "doInBackground":
-                return R.drawable.event_on_animation_start_48dp;
-
-            case "onProgressUpdate":
-                return R.drawable.event_on_page_started_48dp;
-
-            case "onPostExecute":
-                return R.drawable.event_on_progress_changed_48dp;
-
-            default:
+        return switch (name) {
+            case "Import", "onActivityResult", "initializeLogic", "onBackPressed", "onPostCreate",
+                 "onStart", "onResume", "onPause", "onStop", "onDestroy",
+                 "onTabLayoutNewTabAdded" -> R.drawable.widget_source;
+            case " onLongClick" -> R.drawable.check_upload_apk_48dp;
+            case "onSwipeRefreshLayout" -> R.drawable.widget_swipe_refresh;
+            case "onPreExecute" -> R.drawable.event_on_stop_tracking_touch_48dp;
+            case "doInBackground" -> R.drawable.event_on_animation_start_48dp;
+            case "onProgressUpdate" -> R.drawable.event_on_page_started_48dp;
+            case "onPostExecute" -> R.drawable.event_on_progress_changed_48dp;
+            default -> {
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
                     if (customEvent != null) {
@@ -259,10 +237,10 @@ public class EventsHandler {
 
                                 if (icon instanceof String) {
                                     try {
-                                        return OldResourceIdMapper.getDrawableFromOldResourceId(Integer.parseInt((String) icon));
+                                        yield OldResourceIdMapper.getDrawableFromOldResourceId(Integer.parseInt((String) icon));
                                     } catch (NumberFormatException e) {
                                         SketchwareUtil.toastError("Found invalid icon data type in Custom Event #" + (i + 1));
-                                        return R.drawable.android_icon;
+                                        yield R.drawable.android_icon;
                                     }
                                 } else {
                                     SketchwareUtil.toastError("Found invalid icon data type in Custom Event #" + (i + 1));
@@ -276,43 +254,28 @@ public class EventsHandler {
                     }
                 }
 
-                return R.drawable.android_icon;
-        }
+                yield R.drawable.android_icon;
+            }
+        };
     }
 
     public static String getDesc(String name) {
-        switch (name) {
-            case "Import":
-                return "add custom imports";
-
-            case "onActivityResult":
-                return "onActivityResult";
-
-            case "initializeLogic":
-                return "initializeLogic";
-
-            case "onSwipeRefreshLayout":
-                return "On SwipeRefreshLayout swipe";
-
-            case " onLongClick":
-                return "onLongClick";
-
-            case "onTabLayoutNewTabAdded":
-                return "return the name of current tab";
-
-            case "onPreExecute":
-                return "This method contains the code which is executed before the background processing starts.";
-
-            case "doInBackground":
-                return "This method contains the code which needs to be executed in background.";
-
-            case "onProgressUpdate":
-                return "This method receives progress updates from doInBackground method.";
-
-            case "onPostExecute":
-                return "This method is called after doInBackground method completes processing.";
-
-            default:
+        return switch (name) {
+            case "Import" -> "add custom imports";
+            case "onActivityResult" -> "onActivityResult";
+            case "initializeLogic" -> "initializeLogic";
+            case "onSwipeRefreshLayout" -> "On SwipeRefreshLayout swipe";
+            case " onLongClick" -> "onLongClick";
+            case "onTabLayoutNewTabAdded" -> "return the name of current tab";
+            case "onPreExecute" ->
+                    "This method contains the code which is executed before the background processing starts.";
+            case "doInBackground" ->
+                    "This method contains the code which needs to be executed in background.";
+            case "onProgressUpdate" ->
+                    "This method receives progress updates from doInBackground method.";
+            case "onPostExecute" ->
+                    "This method is called after doInBackground method completes processing.";
+            default -> {
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
                     if (customEvent != null) {
@@ -323,7 +286,7 @@ public class EventsHandler {
                                 Object description = customEvent.get("description");
 
                                 if (description instanceof String) {
-                                    return (String) description;
+                                    yield (String) description;
                                 } else {
                                     SketchwareUtil.toastError("Found invalid description data type in Custom Event #" + (i + 1));
                                 }
@@ -336,71 +299,57 @@ public class EventsHandler {
                     }
                 }
 
-                return "No_Description";
-        }
+                yield "No_Description";
+            }
+        };
     }
 
     public static String getEventCode(String targetId, String name, String param) {
-        switch (name) {
-            case "Import":
+        return switch (name) {
+            case "Import" ->
                 // Changed from: "...vF\n${param}\n//3b..."
-                return "//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF\r\n" +
-                        param + "\r\n" +
-                        "//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ";
-
-            case "onActivityResult":
-            case "initializeLogic":
-                return "";
-
-            case "onSwipeRefreshLayout":
+                    "//Ul5kmZqmO867OV0QTGOpjwX7MXmgzxzQBSZTf0Y16PnDXkhLsZfvF\r\n" +
+                            param + "\r\n" +
+                            "//3b5IqsVG57gNqLi7FBO2MeOW6iI7tOustUGwcA7HKXm0o7lovZ";
+            case "onActivityResult", "initializeLogic" -> "";
+            case "onSwipeRefreshLayout" ->
                 // Changed from: "@Override \npublic void..."
-                return "@Override\r\n" +
-                        "public void onRefresh() {\n" +
-                        param + "\r\n" +
-                        "}";
-
-            case " onLongClick":
+                    "@Override\r\n" +
+                            "public void onRefresh() {\n" +
+                            param + "\r\n" +
+                            "}";
+            case " onLongClick" ->
                 // Changed from: "@Override\r\n public boolean..."
-                return "@Override\r\n" +
-                        "public boolean onLongClick(View _view) {\r\n" +
-                        param + "\r\n" +
-                        "return true;\r\n" +
-                        "}";
-
-            case "onTabLayoutNewTabAdded":
+                    "@Override\r\n" +
+                            "public boolean onLongClick(View _view) {\r\n" +
+                            param + "\r\n" +
+                            "return true;\r\n" +
+                            "}";
+            case "onTabLayoutNewTabAdded" ->
                 // Changed from: "public  CharSequence  onTabLayoutNewTabAdded( int   _position ){..."
-                return "public CharSequence onTabLayoutNewTabAdded(int _position) {\r\n" +
-                        param + "\r\n" +
-                        "return null;\r\n" +
-                        "}";
-
-            case "onPreExecute":
-                return "@Override\r\n" +
-                        "protected void onPreExecute() {\r\n" +
-                        param + "\r\n" +
-                        "}";
-
-            case "doInBackground":
-                return "@Override\r\n" +
-                        "protected String doInBackground(String... params) {\r\n" +
-                        "String _param = params[0];\r\n" +
-                        param + "\r\n" +
-                        "}";
-
-            case "onProgressUpdate":
-                return "@Override\r\n" +
-                        "protected void onProgressUpdate(Integer... values) {\r\n" +
-                        "int _value = values[0];\r\n" +
-                        param + "\r\n" +
-                        "}";
-
-            case "onPostExecute":
-                return "@Override\r\n" +
-                        "protected void onPostExecute(String _result) {\r\n" +
-                        param + "\r\n" +
-                        "}";
-
-            default:
+                    "public CharSequence onTabLayoutNewTabAdded(int _position) {\r\n" +
+                            param + "\r\n" +
+                            "return null;\r\n" +
+                            "}";
+            case "onPreExecute" -> "@Override\r\n" +
+                    "protected void onPreExecute() {\r\n" +
+                    param + "\r\n" +
+                    "}";
+            case "doInBackground" -> "@Override\r\n" +
+                    "protected String doInBackground(String... params) {\r\n" +
+                    "String _param = params[0];\r\n" +
+                    param + "\r\n" +
+                    "}";
+            case "onProgressUpdate" -> "@Override\r\n" +
+                    "protected void onProgressUpdate(Integer... values) {\r\n" +
+                    "int _value = values[0];\r\n" +
+                    param + "\r\n" +
+                    "}";
+            case "onPostExecute" -> "@Override\r\n" +
+                    "protected void onPostExecute(String _result) {\r\n" +
+                    param + "\r\n" +
+                    "}";
+            default -> {
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
                     if (customEvent != null) {
@@ -411,7 +360,7 @@ public class EventsHandler {
                                 Object code = customEvent.get("code");
 
                                 if (code instanceof String) {
-                                    return String.format(((String) code).replace("###", targetId), param);
+                                    yield String.format(((String) code).replace("###", targetId), param);
                                 } else {
                                     SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
                                 }
@@ -424,31 +373,19 @@ public class EventsHandler {
                     }
                 }
 
-                return "//no code";
-        }
+                yield "//no code";
+            }
+        };
     }
 
     public static String getBlocks(String name) {
-        switch (name) {
-            case "Import":
-            case "initializeLogic":
-            case "onSwipeRefreshLayout":
-            case " onLongClick":
-            case "onPreExecute":
-                return "";
-
-            case "onActivityResult":
-                return "%d.requestCode %d.resultCode %m.intent";
-
-            case "onTabLayoutNewTabAdded":
-            case "onProgressUpdate":
-                return "%d";
-
-            case "doInBackground":
-            case "onPostExecute":
-                return "%s";
-
-            default:
+        return switch (name) {
+            case "Import", "initializeLogic", "onSwipeRefreshLayout", " onLongClick",
+                 "onPreExecute" -> "";
+            case "onActivityResult" -> "%d.requestCode %d.resultCode %m.intent";
+            case "onTabLayoutNewTabAdded", "onProgressUpdate" -> "%d";
+            case "doInBackground", "onPostExecute" -> "%s";
+            default -> {
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
                     if (customEvent != null) {
@@ -459,7 +396,7 @@ public class EventsHandler {
                                 Object parameters = customEvent.get("parameters");
 
                                 if (parameters instanceof String) {
-                                    return (String) parameters;
+                                    yield (String) parameters;
                                 } else {
                                     SketchwareUtil.toastError("Found invalid parameters data type in Custom Event #" + (i + 1));
                                 }
@@ -472,43 +409,25 @@ public class EventsHandler {
                     }
                 }
 
-                return "";
-        }
+                yield "";
+            }
+        };
     }
 
     public static String getSpec(String name, String event) {
-        switch (event) {
-            case "Import":
-                return "create new import";
-
-            case "onActivityResult":
-                return "OnActivityResult %d.requestCode %d.resultCode %m.intent.data";
-
-            case "initializeLogic":
-                return "initializeLogic";
-
-            case "onSwipeRefreshLayout":
-                return "when " + name + " refresh";
-
-            case " onLongClick":
-                return "when " + name + " long clicked";
-
-            case "onTabLayoutNewTabAdded":
-                return name + " return tab title %d.position";
-
-            case "onPreExecute":
-                return name + " onPreExecute ";
-
-            case "doInBackground":
-                return name + " doInBackground %s.param";
-
-            case "onProgressUpdate":
-                return name + " onProgressUpdate progress %d.value";
-
-            case "onPostExecute":
-                return name + " onPostExecute result %s.result";
-
-            default:
+        return switch (event) {
+            case "Import" -> "create new import";
+            case "onActivityResult" ->
+                    "OnActivityResult %d.requestCode %d.resultCode %m.intent.data";
+            case "initializeLogic" -> "initializeLogic";
+            case "onSwipeRefreshLayout" -> "when " + name + " refresh";
+            case " onLongClick" -> "when " + name + " long clicked";
+            case "onTabLayoutNewTabAdded" -> name + " return tab title %d.position";
+            case "onPreExecute" -> name + " onPreExecute ";
+            case "doInBackground" -> name + " doInBackground %s.param";
+            case "onProgressUpdate" -> name + " onProgressUpdate progress %d.value";
+            case "onPostExecute" -> name + " onPostExecute result %s.result";
+            default -> {
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
                     if (customEvent != null) {
@@ -519,7 +438,7 @@ public class EventsHandler {
                                 Object headerSpec = customEvent.get("headerSpec");
 
                                 if (headerSpec instanceof String) {
-                                    return ((String) headerSpec).replace("###", name);
+                                    yield ((String) headerSpec).replace("###", name);
                                 } else {
                                     SketchwareUtil.toastError("Found invalid header spec data type in Custom Event #" + (i + 1));
                                 }
@@ -532,29 +451,27 @@ public class EventsHandler {
                     }
                 }
 
-                return "no spec";
-        }
+                yield "no spec";
+            }
+        };
     }
 
     ///listeners codes
     public static String getListenerCode(String name, String var, String param) {
-        switch (name) {
-            case " onLongClickListener":
-                return var + ".setOnLongClickListener(new View.OnLongClickListener() {\r\n" +
-                        param + "\r\n" +
-                        "});";
-
-            case "onSwipeRefreshLayoutListener":
-                return var + ".setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {\r\n" +
-                        param + "\r\n" +
-                        "});";
-
-            case "AsyncTaskClass":
-                return "private class " + var + " extends AsyncTask<String, Integer, String> {\r\n" +
-                        param + "\r\n" +
-                        "}";
-
-            default:
+        return switch (name) {
+            case " onLongClickListener" ->
+                    var + ".setOnLongClickListener(new View.OnLongClickListener() {\r\n" +
+                            param + "\r\n" +
+                            "});";
+            case "onSwipeRefreshLayoutListener" ->
+                    var + ".setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {\r\n" +
+                            param + "\r\n" +
+                            "});";
+            case "AsyncTaskClass" ->
+                    "private class " + var + " extends AsyncTask<String, Integer, String> {\r\n" +
+                            param + "\r\n" +
+                            "}";
+            default -> {
                 for (int i = 0, cachedCustomListenersSize = cachedCustomListeners.size(); i < cachedCustomListenersSize; i++) {
                     HashMap<String, Object> customListener = cachedCustomListeners.get(i);
                     Object eventName = customListener.get("name");
@@ -564,7 +481,7 @@ public class EventsHandler {
                             Object code = customListener.get("code");
 
                             if (code instanceof String) {
-                                return String.format(((String) code).replace("###", var), param);
+                                yield String.format(((String) code).replace("###", var), param);
                             } else {
                                 SketchwareUtil.toastError("Found invalid code data type in Custom Event #" + (i + 1));
                             }
@@ -574,8 +491,9 @@ public class EventsHandler {
                     }
                 }
 
-                return "//no listener code";
-        }
+                yield "//no listener code";
+            }
+        };
     }
 
     public static void getImports(ArrayList<String> list, String name) {
@@ -615,7 +533,7 @@ public class EventsHandler {
         if (FileUtil.isExistFile(CUSTOM_EVENTS_FILE_PATH)) {
             String customEventsContent = FileUtil.readFile(CUSTOM_EVENTS_FILE_PATH);
 
-            if (!customEventsContent.equals("") && !customEventsContent.equals("[]")) {
+            if (!customEventsContent.isEmpty() && !customEventsContent.equals("[]")) {
                 try {
                     customEvents = new Gson().fromJson(customEventsContent, Helper.TYPE_MAP_LIST);
 
@@ -638,7 +556,7 @@ public class EventsHandler {
         if (FileUtil.isExistFile(CUSTOM_LISTENERE_FILE_PATH)) {
             String customListenersContent = FileUtil.readFile(CUSTOM_LISTENERE_FILE_PATH);
 
-            if (!customListenersContent.equals("") && !customListenersContent.equals("[]")) {
+            if (!customListenersContent.isEmpty() && !customListenersContent.equals("[]")) {
                 try {
                     customListeners = new Gson().fromJson(customListenersContent, Helper.TYPE_MAP_LIST);
 

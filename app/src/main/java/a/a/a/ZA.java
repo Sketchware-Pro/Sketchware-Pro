@@ -40,7 +40,4 @@ public class ZA extends Dialog {
         }
     }
 
-    public void d() {
-        super.setCancelable(true);
-    }
 }
