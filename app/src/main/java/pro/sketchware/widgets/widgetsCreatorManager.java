@@ -67,7 +67,6 @@ public class widgetsCreatorManager extends IconBase {
     public String f = "";
     public int type;
     public String Title;
-    public static boolean IsConvertCorrect = false;
 
     public widgetsCreatorManager(HashMap<String, Object> map, Context context) {
         super(context);
@@ -205,22 +204,19 @@ public class widgetsCreatorManager extends IconBase {
                 String widgetClass = Objects.requireNonNull(binding.addWidgetTo.getText()).toString().trim();
 
                 if (widgetTitle.isEmpty()) {
-                    binding.widgetTitle.setError(Helper.getResString(R.string.var_is_required));
+                    binding.inputTitle.setError(String.format(Helper.getResString(R.string.var_is_required, "Widget title")));
                     return;
                 }
                 if (widgetName.isEmpty()) {
-                    binding.widgetName.setError(Helper.getResString(R.string.var_is_required));
-                    return;
-                }
-                if (!IsConvertCorrect) {
+                    binding.inputName.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget class name"));
                     return;
                 }
                 if (widgetType.isEmpty()) {
-                    binding.widgetType.setError(Helper.getResString(R.string.var_is_required));
+                    binding.inputType.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget type"));
                     return;
                 }
                 if (widgetClass.isEmpty()) {
-                    binding.addWidgetTo.setError(Helper.getResString(R.string.var_is_required));
+                    binding.inputClass.setError(String.format(Helper.getResString(R.string.var_is_required), "Category"));
                     return;
                 }
 
