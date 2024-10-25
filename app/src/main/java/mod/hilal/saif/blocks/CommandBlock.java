@@ -21,7 +21,8 @@ import mod.hey.studios.util.Helper;
  * >replace
  * setSupportActionBar(_toolbar);
  * getSupportActionBar().setDisplayHomeAsUpEnabled(true);
- * BpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs*/
+ * BpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs
+ */
 public class CommandBlock {
 
     public static String applyCommands(String fileName, String c) {
@@ -30,7 +31,7 @@ public class CommandBlock {
         ArrayList<HashMap<String, Object>> data;
         try {
             //writeLog("try");
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).isEmpty() && !FileUtil.readFile(path).equals("[]")) {
                 //writeLog("the file is found and has content :)");
                 data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
                 //writeLog("get gson from file is done");
@@ -53,7 +54,7 @@ public class CommandBlock {
         }
     }
 
-    public static String N(String c, HashMap<String, Object> map) {
+    private static String N(String c, HashMap<String, Object> map) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         String res = "";
         String reference = (String) map.get("reference");
@@ -107,24 +108,24 @@ public class CommandBlock {
         }
 
         //old method
-		/*
-		if(command.equals("replace")){
-			int xxx = (int)(index + distance - before -1);
-			if ( xxx <0 ){ xxx = 0; }
+        /*
+        if(command.equals("replace")){
+            int xxx = (int)(index + distance - before -1);
+            if ( xxx <0 ){ xxx = 0; }
 
-			int ff = (int)(index + distance - before);
-			if ( ff <0 ){ ff = 0; }
-			int tt = (int)(index + distance + after +1);
-			if ( tt > a.size() ){ tt = a.size(); }
-			a.subList(ff , tt).clear();
+            int ff = (int)(index + distance - before);
+            if ( ff <0 ){ ff = 0; }
+            int tt = (int)(index + distance + after +1);
+            if ( tt > a.size() ){ tt = a.size(); }
+            a.subList(ff , tt).clear();
 
-			if (xxx > a.size()-2){
-				a.add(input);
-			} else {
-				a.add((int)(xxx+1) , input);
-			}
-		}
-		*/
+            if (xxx > a.size()-2){
+                a.add(input);
+            } else {
+                a.add((int)(xxx+1) , input);
+            }
+        }
+        */
 
         if (command.equals("replace")) {
             if (before == 0 && after == 0) {
@@ -181,7 +182,7 @@ public class CommandBlock {
         }
 
         for (int i = 0; i < a.size(); i++) {
-            if (res.equals("")) {
+            if (res.isEmpty()) {
                 res = a.get(i);
             } else {
                 res = res.concat("\n").concat(a.get(i));
@@ -191,16 +192,16 @@ public class CommandBlock {
         return res;
     }
 
-    public static String getExceptFirstLine(String c) {
+    private static String getExceptFirstLine(String c) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         String res = "";
-        if (a.size() > 0) {
+        if (!a.isEmpty()) {
             a.remove(0);
         } else {
             return c;
         }
         for (int i = 0; i < a.size(); i++) {
-            if (res.equals("")) {
+            if (res.isEmpty()) {
                 res = a.get(i);
             } else {
                 res = res.concat("\n").concat(a.get(i));
@@ -209,9 +210,9 @@ public class CommandBlock {
         return res;
     }
 
-    public static String getFirstLine(String c) {
+    private static String getFirstLine(String c) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
-        if (a.size() > 0) {
+        if (!a.isEmpty()) {
             return a.get(0);
         } else {
             return "";
@@ -240,11 +241,11 @@ public class CommandBlock {
     }
 
     // Write Temporary File
-    public static void WTF(ArrayList<HashMap<String, Object>> list) {
+    private static void WTF(ArrayList<HashMap<String, Object>> list) {
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
         ArrayList<HashMap<String, Object>> data = new ArrayList<>();
         try {
-            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).equals("") && !FileUtil.readFile(path).equals("[]")) {
+            if (FileUtil.isExistFile(path) && !FileUtil.readFile(path).isEmpty() && !FileUtil.readFile(path).equals("[]")) {
                 data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             }
         } catch (Exception ignored) {
@@ -283,7 +284,7 @@ public class CommandBlock {
         }
     }
 
-    public static void writeLog(String s) {
+    private static void writeLog(String s) {
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/log.txt");
         String text = "";
         if (FileUtil.isExistFile(path)) {
@@ -292,7 +293,7 @@ public class CommandBlock {
         FileUtil.writeFile(path, text.concat("\n=>").concat(s));
     }
 
-    public static void getCBs(ArrayList<HashMap<String, Object>> arr, String c, String sid, String eid) {
+    private static void getCBs(ArrayList<HashMap<String, Object>> arr, String c, String sid, String eid) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         boolean b = false;
         int n = -1;
@@ -313,10 +314,10 @@ public class CommandBlock {
         }
     }
 
-    public static String assemble(ArrayList<String> a) {
+    private static String assemble(ArrayList<String> a) {
         String res = "";
         for (int i = 0; i < a.size(); i++) {
-            if (res.equals("")) {
+            if (res.isEmpty()) {
                 res = a.get(i);
             } else {
                 res = res.concat("\n").concat(a.get(i));
@@ -325,7 +326,7 @@ public class CommandBlock {
         return res;
     }
 
-    public static String aCs(ArrayList<HashMap<String, Object>> arr, String c) {
+    private static String aCs(ArrayList<HashMap<String, Object>> arr, String c) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         String res = "";
         for (int i = 0; i < arr.size(); i++) {
@@ -392,25 +393,25 @@ public class CommandBlock {
             }
 
             ///old method
-		/*
-		if(command.equals("replace")){
-			boolean isZ = false;
-			int xxx = (int)(index + distance - before -1);
-			if ( xxx <=0 ){ isZ = true; xxx = 0; }
+        /*
+        if(command.equals("replace")){
+            boolean isZ = false;
+            int xxx = (int)(index + distance - before -1);
+            if ( xxx <=0 ){ isZ = true; xxx = 0; }
 
-			int ff = (int)(index + distance - before);
-			if ( ff <0 ){ ff = 0; }
-			int tt = (int)(index + distance + after +1);
-			if ( tt > a.size() ){ tt = a.size(); }
-			a.subList(ff , tt).clear();
-			//// fix bug
-			if (xxx > a.size()-2){
-				a.add(input);
-			} else if(isZ) {
-				a.add(0, input);
-			} else {
-				a.add((int)(xxx+1) , input);
-			} continue ;}*/
+            int ff = (int)(index + distance - before);
+            if ( ff <0 ){ ff = 0; }
+            int tt = (int)(index + distance + after +1);
+            if ( tt > a.size() ){ tt = a.size(); }
+            a.subList(ff , tt).clear();
+            //// fix bug
+            if (xxx > a.size()-2){
+                a.add(input);
+            } else if(isZ) {
+                a.add(0, input);
+            } else {
+                a.add((int)(xxx+1) , input);
+            } continue ;}*/
 
             if (command.equals("replace")) {
                 if (before == 0 && after == 0) {
@@ -468,7 +469,7 @@ public class CommandBlock {
         }
 
         for (int i = 0; i < a.size(); i++) {
-            if (res.equals("")) {
+            if (res.isEmpty()) {
                 res = a.get(i);
             } else {
                 res = res.concat("\n").concat(a.get(i));
@@ -478,7 +479,7 @@ public class CommandBlock {
         return res;
     }
 
-    public static int getIndex(ArrayList<String> a, String r) {
+    private static int getIndex(ArrayList<String> a, String r) {
         for (int i = 0; i < a.size(); i++) {
             if (a.get(i).contains(r)) {
                 return i;
@@ -487,7 +488,7 @@ public class CommandBlock {
         return -1;
     }
 
-    public static String rCCs(String c, String sid, String eid) {
+    private static String rCCs(String c, String sid, String eid) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         ArrayList<String> r = new ArrayList<>();
         String res = "";
@@ -508,7 +509,7 @@ public class CommandBlock {
         }
 
         for (int i = 0; i < r.size(); i++) {
-            if (res.equals("")) {
+            if (res.isEmpty()) {
                 res = r.get(i);
             } else {
                 res = res.concat("\n").concat(r.get(i));
@@ -518,7 +519,7 @@ public class CommandBlock {
         return res;
     }
 
-    public static void aC(ArrayList<String> arr, ArrayList<HashMap<String, Object>> arr2, Pair<Integer, Integer> p) {
+    private static void aC(ArrayList<String> arr, ArrayList<HashMap<String, Object>> arr2, Pair<Integer, Integer> p) {
         String ref;
         int dis;
         int af;

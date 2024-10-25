@@ -14,8 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.beans.SrcCodeBean;
 import com.besome.sketch.ctrls.CommonSpinnerItem;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -40,7 +39,7 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
 
-public class SrcViewerActivity extends AppCompatActivity {
+public class SrcViewerActivity extends BaseAppCompatActivity {
 
     private String sc_id;
     private Spinner filesListSpinner;

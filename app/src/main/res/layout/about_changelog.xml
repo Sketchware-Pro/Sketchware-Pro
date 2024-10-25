@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:colorBackground"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
         android:focusable="false"
         android:padding="8dp"
-        android:tag="tv_variant"
+        android:id="@+id/tv_variant"
         android:textAppearance="?attr/textAppearanceLabelLarge"
         tools:text="Official / Beta" />
 
@@ -26,7 +26,7 @@
         android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:tag="log_background">
+        android:id="@+id/log_background">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,22 +36,20 @@
 
             <LinearLayout
                 android:id="@+id/view_leftline"
-                android:layout_width="6dp"
+                android:layout_width="4dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginVertical="10dp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="10dp"
                 android:orientation="horizontal" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                app:cardCornerRadius="22.2dp">
+                android:layout_marginVertical="10dp"
+                app:cardCornerRadius="11.2dp">
 
                 <ImageView
-                    android:id="@+id/img_user_icon"
+                    android:id="@+id/img_variant_icon"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:focusable="false"
@@ -91,8 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:focusable="false"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
+                    android:paddingHorizontal="8dp"
                     android:paddingBottom="8dp"
                     android:textAppearance="?attr/textAppearanceBodySmall"
                     tools:text="Released on: ----- (= never ¯\\_(ツ)_/¯)" />
@@ -105,32 +102,30 @@
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_expand_less_grey600_24dp"
-                android:tag="ic_arrow"
+                android:id="@+id/ic_arrow"
                 app:tint="?attr/colorControlNormal" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginVertical="10dp"
             android:orientation="vertical"
-            android:tag="view_additional_info">
+            android:id="@+id/view_additional_info">
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                app:dividerInsetStart="10dp"
-                app:dividerInsetEnd="10dp" />
+                app:dividerInsetEnd="10dp"
+                app:dividerInsetStart="10dp" />
 
             <TextView
                 android:id="@+id/tv_sub_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginHorizontal="15dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="15dp"
                 android:autoLink="all"
                 android:clickable="true"
                 android:focusable="true"

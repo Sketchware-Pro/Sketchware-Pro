@@ -174,7 +174,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         int s = (int) wB.a(context, 24.0f);
         ImageView dropdown = new ImageView(context);
         dropdown.setLayoutParams(new LinearLayout.LayoutParams(s, s));
-        dropdown.setImageResource(R.drawable.ic_arrow_drop_down_grey600_24dp);
+        dropdown.setImageResource(R.drawable.ic_arrow_drop_down_24px);
         addView(dropdown);
     }
 

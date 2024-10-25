@@ -55,15 +55,11 @@ public class MethodHandle implements Comparable<MethodHandle> {
         }
 
         public boolean isField() {
-            switch (this) {
-                case METHOD_HANDLE_TYPE_STATIC_PUT:
-                case METHOD_HANDLE_TYPE_STATIC_GET:
-                case METHOD_HANDLE_TYPE_INSTANCE_PUT:
-                case METHOD_HANDLE_TYPE_INSTANCE_GET:
-                    return true;
-                default:
-                    return false;
-            }
+            return switch (this) {
+                case METHOD_HANDLE_TYPE_STATIC_PUT, METHOD_HANDLE_TYPE_STATIC_GET,
+                     METHOD_HANDLE_TYPE_INSTANCE_PUT, METHOD_HANDLE_TYPE_INSTANCE_GET -> true;
+                default -> false;
+            };
         }
     }
 

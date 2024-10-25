@@ -105,15 +105,11 @@ public final class CstMethodHandle extends TypedConstant {
      * @return true if the method handle type is a field accessor, false otherwise
      */
     public static boolean isAccessor(int type) {
-        switch (type) {
-            case METHOD_HANDLE_TYPE_STATIC_PUT:
-            case METHOD_HANDLE_TYPE_STATIC_GET:
-            case METHOD_HANDLE_TYPE_INSTANCE_PUT:
-            case METHOD_HANDLE_TYPE_INSTANCE_GET:
-                return true;
-            default:
-                return false;
-        }
+        return switch (type) {
+            case METHOD_HANDLE_TYPE_STATIC_PUT, METHOD_HANDLE_TYPE_STATIC_GET,
+                 METHOD_HANDLE_TYPE_INSTANCE_PUT, METHOD_HANDLE_TYPE_INSTANCE_GET -> true;
+            default -> false;
+        };
     }
 
     /**
@@ -132,16 +128,12 @@ public final class CstMethodHandle extends TypedConstant {
      * @return true if the method handle type is a method invocation, false otherwise
      */
     public static boolean isInvocation(int type) {
-        switch (type) {
-            case METHOD_HANDLE_TYPE_INVOKE_STATIC:
-            case METHOD_HANDLE_TYPE_INVOKE_INSTANCE:
-            case METHOD_HANDLE_TYPE_INVOKE_CONSTRUCTOR:
-            case METHOD_HANDLE_TYPE_INVOKE_DIRECT:
-            case METHOD_HANDLE_TYPE_INVOKE_INTERFACE:
-                return true;
-            default:
-                return false;
-        }
+        return switch (type) {
+            case METHOD_HANDLE_TYPE_INVOKE_STATIC, METHOD_HANDLE_TYPE_INVOKE_INSTANCE,
+                 METHOD_HANDLE_TYPE_INVOKE_CONSTRUCTOR, METHOD_HANDLE_TYPE_INVOKE_DIRECT,
+                 METHOD_HANDLE_TYPE_INVOKE_INTERFACE -> true;
+            default -> false;
+        };
     }
 
     /**

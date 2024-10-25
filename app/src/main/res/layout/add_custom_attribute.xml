@@ -24,7 +24,7 @@
                 android:layout_height="40dp"
                 android:padding="8dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/abc_ic_ab_back_material" />
+                android:src="?attr/homeAsUpIndicator" />
 
             <TextView
                 android:id="@+id/tx_toolbar_title"

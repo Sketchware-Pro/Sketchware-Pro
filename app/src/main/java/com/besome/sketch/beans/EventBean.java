@@ -58,20 +58,12 @@ public class EventBean extends CollapsibleBean implements Parcelable {
     }
 
     public static int getEventIconResource(int eventType, int targetType) {
-        switch (eventType) {
-            case EVENT_TYPE_ACTIVITY:
-                return R.drawable.widget_source;
-
-            case EVENT_TYPE_VIEW:
-            case EVENT_TYPE_DRAWER_VIEW:
-                return ViewBean.getViewTypeResId(targetType);
-
-            case EVENT_TYPE_COMPONENT:
-                return ComponentBean.getIconResource(targetType);
-
-            default:
-                return R.drawable.widget_module;
-        }
+        return switch (eventType) {
+            case EVENT_TYPE_ACTIVITY -> R.drawable.widget_source;
+            case EVENT_TYPE_VIEW, EVENT_TYPE_DRAWER_VIEW -> ViewBean.getViewTypeResId(targetType);
+            case EVENT_TYPE_COMPONENT -> ComponentBean.getIconResource(targetType);
+            default -> R.drawable.widget_module;
+        };
     }
 
     public static void deleteEvent(String sc_id, EventBean event, ProjectFileBean projectFileBean) {
@@ -82,41 +74,23 @@ public class EventBean extends CollapsibleBean implements Parcelable {
     }
 
     public static int getEventTypeBgRes(int eventType) {
-        switch (eventType) {
-            case EVENT_TYPE_VIEW:
-                return R.drawable.bg_event_type_view;
-
-            case EVENT_TYPE_COMPONENT:
-                return R.drawable.bg_event_type_component;
-
-            case EVENT_TYPE_ACTIVITY:
-                return R.drawable.bg_event_type_activity;
-
-            case EVENT_TYPE_DRAWER_VIEW:
-                return R.drawable.bg_event_type_drawer_view;
-
-            default:
-                return 0;
-        }
+        return switch (eventType) {
+            case EVENT_TYPE_VIEW -> R.drawable.bg_event_type_view;
+            case EVENT_TYPE_COMPONENT -> R.drawable.bg_event_type_component;
+            case EVENT_TYPE_ACTIVITY -> R.drawable.bg_event_type_activity;
+            case EVENT_TYPE_DRAWER_VIEW -> R.drawable.bg_event_type_drawer_view;
+            default -> 0;
+        };
     }
 
     public static String getEventTypeName(int eventType) {
-        switch (eventType) {
-            case EVENT_TYPE_VIEW:
-                return "view event";
-
-            case EVENT_TYPE_COMPONENT:
-                return "component event";
-
-            case EVENT_TYPE_ACTIVITY:
-                return "activity event";
-
-            case EVENT_TYPE_DRAWER_VIEW:
-                return "drawer view event";
-
-            default:
-                return "";
-        }
+        return switch (eventType) {
+            case EVENT_TYPE_VIEW -> "view event";
+            case EVENT_TYPE_COMPONENT -> "component event";
+            case EVENT_TYPE_ACTIVITY -> "activity event";
+            case EVENT_TYPE_DRAWER_VIEW -> "drawer view event";
+            default -> "";
+        };
     }
 
     public void copy(EventBean other) {

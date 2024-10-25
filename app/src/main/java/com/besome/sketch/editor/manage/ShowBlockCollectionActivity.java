@@ -32,7 +32,7 @@ import a.a.a.Ss;
 import a.a.a.Ts;
 import a.a.a.bB;
 import mod.SketchwareUtil;
-import mod.hasrat.tools.ImageFactory;
+import pro.sketchware.tools.ImageFactory;
 import mod.hey.studios.util.Helper;
 
 public class ShowBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -89,7 +89,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
                 for (int i = 0; i < parameters.size(); i++) {
                     String parameter = blockBean.parameters.get(i);
 
-                    if (parameter != null && parameter.length() > 0) {
+                    if (parameter != null && !parameter.isEmpty()) {
                         if (parameter.charAt(0) == '@') {
                             Rs parameterBlock = blockIdsWithBlocks.get(Integer.valueOf(parameter.substring(1)));
                             if (parameterBlock != null) {

@@ -26,6 +26,11 @@ public abstract class MA extends AsyncTask<Void, String, String> {
             return "";
         } catch (Exception e) {
             Log.e("MA", e.getMessage(), e);
+            // the bytecode's lying
+            // noinspection ConstantValue
+            if (e instanceof By) {
+                return e.getMessage();
+            }
             return xB.b().a(a, R.string.common_error_an_error_occurred) + "[" + e.getMessage() + "]";
         }
     }
@@ -34,7 +39,7 @@ public abstract class MA extends AsyncTask<Void, String, String> {
 
     public abstract void a(String var1);
 
-    public abstract void b();
+    public abstract void b() throws By;
 
     @Override
     protected void onPostExecute(String result) {

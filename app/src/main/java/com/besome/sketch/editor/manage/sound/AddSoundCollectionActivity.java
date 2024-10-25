@@ -195,7 +195,6 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     }
 
     private void r() {
-        char c;
         if (a(M)) {
             if (!u) {
                 String obj = binding.edInput.getText().toString();
@@ -210,39 +209,21 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
                     Qp.g().a(t, projectResourceBean);
                     bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete), 1).show();
                 } catch (Exception e) {
+                    // the bytecode's lying
+                    // noinspection ConstantValue
                     if (e instanceof yy) {
-                        String message = e.getMessage();
-                        int hashCode = message.hashCode();
-                        if (hashCode == -2111590760) {
-                            if (message.equals("fail_to_copy")) {
-                                c = 2;
-                            }
-                            c = 65535;
-                        } else if (hashCode != -1587253668) {
-                            if (hashCode == -105163457 && message.equals("duplicate_name")) {
-                                c = 0;
-                            }
-                            c = 65535;
-                        } else {
-                            if (message.equals("file_no_exist")) {
-                                c = 1;
-                            }
-                            c = 65535;
+                        var messageId = switch (e.getMessage()) {
+                            case "duplicate_name" -> R.string.collection_duplicated_name;
+                            case "file_no_exist" -> R.string.collection_no_exist_file;
+                            case "fail_to_copy" -> R.string.collection_failed_to_copy;
+                            default -> 0;
+                        };
+                        if (messageId != 0) {
+                            bB.a(this, xB.b().a(getApplicationContext(), messageId), bB.TOAST_WARNING).show();
                         }
-                        if (c == 0) {
-                            bB.a(this, xB.b().a(getApplicationContext(), R.string.collection_duplicated_name), 1).show();
-                            return;
-                        } else if (c == 1) {
-                            bB.a(this, xB.b().a(getApplicationContext(), R.string.collection_no_exist_file), 1).show();
-                            return;
-                        } else if (c != 2) {
-                            return;
-                        } else {
-                            bB.a(this, xB.b().a(getApplicationContext(), R.string.collection_failed_to_copy), 1).show();
-                            return;
-                        }
+                    } else {
+                        throw e;
                     }
-
                 }
             } else {
                 Qp.g().a(O, binding.edInput.getText().toString(), true);

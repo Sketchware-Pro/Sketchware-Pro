@@ -13,6 +13,7 @@
 bin/
 gen/
 out/
+.kotlin/
 
 # Gradle files
 .gradle/
@@ -34,30 +35,7 @@ captures/
 
 # IntelliJ
 *.iml
-.idea/caches/
-.idea/dictionaries/
-.idea/inspectionProfiles/Project_Default.xml
-.idea/libraries/
-.idea/modules/
-.idea/shelf/
-.idea/sonarlint/issuestore/
-.idea/sonarlint/securityhotspotstore/
-.idea/appInsightsSettings.xml
-.idea/assetWizardSettings.xml
-.idea/compiler.xml
-.idea/deploymentTargetDropDown.xml
-.idea/discord.xml
-.idea/gradle.xml
-.idea/intellij-javadocs-4.0.1.xml
-.idea/kotlinc.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/runConfigurations.xml
-.idea/tasks.xml
-.idea/vcs.xml
-.idea/workspace.xml
-.idea/deploymentTargetSelector.xml
-.idea/other.xml
+.idea/
 
 # Keystore files
 # Uncomment the following lines if you do not want to check your keystore files in.
@@ -86,3 +64,4 @@ fastlane/readme.md
 
 # For users who uses android ide for building app
 .androidide/
+/actions-runner

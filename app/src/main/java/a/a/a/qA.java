@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.gms.analytics.Tracker;
 
 public class qA extends Fragment {
 

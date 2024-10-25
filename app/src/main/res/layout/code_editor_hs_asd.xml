@@ -1,13 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?colorSurface"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="?attr/colorSurface"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="4dp"
@@ -25,14 +26,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Code Editor"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="UTF-8"
-                android:textSize="11sp" />
+                android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
 
         <ImageView
@@ -50,7 +50,7 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_redo_24"/>
+            android:src="@drawable/ic_redo_24" />
 
         <ImageView
             android:id="@+id/save"
@@ -59,7 +59,7 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_save_24"/>
+            android:src="@drawable/ic_save_24" />
 
         <ImageView
             android:id="@+id/more"

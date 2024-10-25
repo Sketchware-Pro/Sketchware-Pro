@@ -9,7 +9,7 @@
     android:layout_marginTop="10dp"
     android:focusable="true"
     android:clickable="true"
-    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+    app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
     <LinearLayout
         android:layout_width="match_parent"

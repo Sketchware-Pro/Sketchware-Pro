@@ -1,13 +1,17 @@
 package mod.hilal.saif.blocks;
 
+import static com.besome.sketch.design.DesignActivity.sc_id;
+import static mod.bobur.StringEditorActivity.convertXmlToListMap;
+
 import com.besome.sketch.editor.LogicEditorActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
+import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.hasrat.blocks.ExtraBlocks;
+import pro.sketchware.blocks.ExtraBlocks;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class BlocksHandler {
@@ -2406,12 +2410,50 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.videoad register fullscreen content callbacks (This Block isn't needed anymore, please remove it)");
         arrayList.add(hashMap);
+        xmlStringsBlocks(arrayList);
     }
+
+    public static void xmlStringsBlocks(ArrayList<HashMap<String, Object>> arrayList) {
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("name", "getResString");
+        hashMap.put("type", "s");
+        hashMap.put("code", "getString(%s)");
+        hashMap.put("color", "#7C83DB");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "get String from %m.ResString");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getAppName");
+        hashMap.put("type", "s");
+        hashMap.put("code", "getString(R.string.app_name)");
+        hashMap.put("color", "#7C83DB");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "app_name");
+        arrayList.add(hashMap);
+
+        String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
+        ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
+        convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+        for (HashMap<String, Object> map : StringsListMap) {
+            String key = map.get("key").toString();
+            hashMap = new HashMap<>();
+            hashMap.put("name", "S98ZCS" + key); // S98ZCS : We need this part just to ensure that the identifier does not overlap with any other blocks.
+            hashMap.put("type", "s");
+            hashMap.put("code", "getString(R.string." + key + ")");
+            hashMap.put("color", "#7C83DB");
+            hashMap.put("palette", "-1");
+            hashMap.put("spec", key);
+            arrayList.add(hashMap);
+        }
+    }
+
 
     private static void checkDir() {
         String extraBlocksPath = ExtraBlockFile.EXTRA_MENU_BLOCK_FILE.getAbsolutePath();
 
-        if (!ExtraBlockFile.EXTRA_BLOCKS_DATA_FILE.exists() || FileUtil.readFile(extraBlocksPath).equals("")) {
+        if (!ExtraBlockFile.EXTRA_BLOCKS_DATA_FILE.exists() || FileUtil.readFile(extraBlocksPath).isEmpty()) {
             FileUtil.writeFile(extraBlocksPath, "[]");
         }
     }

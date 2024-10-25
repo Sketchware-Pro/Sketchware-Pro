@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             style="?attr/materialCardViewFilledStyle"
-            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+            app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
             <LinearLayout
                 android:id="@+id/layout_switch"
@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
                     <LinearLayout
                         android:id="@+id/item"

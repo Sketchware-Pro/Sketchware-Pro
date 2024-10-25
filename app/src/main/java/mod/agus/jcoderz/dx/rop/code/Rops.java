@@ -1257,16 +1257,16 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opMove(TypeBearer type) {
-        switch (type.getBasicFrameType()) {
-            case Type.BT_INT:    return MOVE_INT;
-            case Type.BT_LONG:   return MOVE_LONG;
-            case Type.BT_FLOAT:  return MOVE_FLOAT;
-            case Type.BT_DOUBLE: return MOVE_DOUBLE;
-            case Type.BT_OBJECT: return MOVE_OBJECT;
-            case Type.BT_ADDR:   return MOVE_RETURN_ADDRESS;
-        }
+        return switch (type.getBasicFrameType()) {
+            case Type.BT_INT -> MOVE_INT;
+            case Type.BT_LONG -> MOVE_LONG;
+            case Type.BT_FLOAT -> MOVE_FLOAT;
+            case Type.BT_DOUBLE -> MOVE_DOUBLE;
+            case Type.BT_OBJECT -> MOVE_OBJECT;
+            case Type.BT_ADDR -> MOVE_RETURN_ADDRESS;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1277,15 +1277,15 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opMoveParam(TypeBearer type) {
-        switch (type.getBasicFrameType()) {
-            case Type.BT_INT:    return MOVE_PARAM_INT;
-            case Type.BT_LONG:   return MOVE_PARAM_LONG;
-            case Type.BT_FLOAT:  return MOVE_PARAM_FLOAT;
-            case Type.BT_DOUBLE: return MOVE_PARAM_DOUBLE;
-            case Type.BT_OBJECT: return MOVE_PARAM_OBJECT;
-        }
+        return switch (type.getBasicFrameType()) {
+            case Type.BT_INT -> MOVE_PARAM_INT;
+            case Type.BT_LONG -> MOVE_PARAM_LONG;
+            case Type.BT_FLOAT -> MOVE_PARAM_FLOAT;
+            case Type.BT_DOUBLE -> MOVE_PARAM_DOUBLE;
+            case Type.BT_OBJECT -> MOVE_PARAM_OBJECT;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1336,15 +1336,15 @@ public final class Rops {
             return CONST_OBJECT_NOTHROW;
         }
 
-        switch (type.getBasicFrameType()) {
-            case Type.BT_INT:    return CONST_INT;
-            case Type.BT_LONG:   return CONST_LONG;
-            case Type.BT_FLOAT:  return CONST_FLOAT;
-            case Type.BT_DOUBLE: return CONST_DOUBLE;
-            case Type.BT_OBJECT: return CONST_OBJECT;
-        }
+        return switch (type.getBasicFrameType()) {
+            case Type.BT_INT -> CONST_INT;
+            case Type.BT_LONG -> CONST_LONG;
+            case Type.BT_FLOAT -> CONST_FLOAT;
+            case Type.BT_DOUBLE -> CONST_DOUBLE;
+            case Type.BT_OBJECT -> CONST_OBJECT;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1658,14 +1658,14 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opNeg(TypeBearer type) {
-        switch (type.getBasicFrameType()) {
-            case Type.BT_INT:    return NEG_INT;
-            case Type.BT_LONG:   return NEG_LONG;
-            case Type.BT_FLOAT:  return NEG_FLOAT;
-            case Type.BT_DOUBLE: return NEG_DOUBLE;
-        }
+        return switch (type.getBasicFrameType()) {
+            case Type.BT_INT -> NEG_INT;
+            case Type.BT_LONG -> NEG_LONG;
+            case Type.BT_FLOAT -> NEG_FLOAT;
+            case Type.BT_DOUBLE -> NEG_DOUBLE;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1676,12 +1676,12 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opNot(TypeBearer type) {
-        switch (type.getBasicFrameType()) {
-            case Type.BT_INT:  return NOT_INT;
-            case Type.BT_LONG: return NOT_LONG;
-        }
+        return switch (type.getBasicFrameType()) {
+            case Type.BT_INT -> NOT_INT;
+            case Type.BT_LONG -> NOT_LONG;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1692,13 +1692,13 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opCmpl(TypeBearer type) {
-        switch (type.getBasicType()) {
-            case Type.BT_LONG:   return CMPL_LONG;
-            case Type.BT_FLOAT:  return CMPL_FLOAT;
-            case Type.BT_DOUBLE: return CMPL_DOUBLE;
-        }
+        return switch (type.getBasicType()) {
+            case Type.BT_LONG -> CMPL_LONG;
+            case Type.BT_FLOAT -> CMPL_FLOAT;
+            case Type.BT_DOUBLE -> CMPL_DOUBLE;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1709,12 +1709,12 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opCmpg(TypeBearer type) {
-        switch (type.getBasicType()) {
-            case Type.BT_FLOAT:  return CMPG_FLOAT;
-            case Type.BT_DOUBLE: return CMPG_DOUBLE;
-        }
+        return switch (type.getBasicType()) {
+            case Type.BT_FLOAT -> CMPG_FLOAT;
+            case Type.BT_DOUBLE -> CMPG_DOUBLE;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1774,16 +1774,16 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opReturn(TypeBearer type) {
-        switch (type.getBasicFrameType()) {
-            case Type.BT_INT:    return RETURN_INT;
-            case Type.BT_LONG:   return RETURN_LONG;
-            case Type.BT_FLOAT:  return RETURN_FLOAT;
-            case Type.BT_DOUBLE: return RETURN_DOUBLE;
-            case Type.BT_OBJECT: return RETURN_OBJECT;
-            case Type.BT_VOID:   return RETURN_VOID;
-        }
+        return switch (type.getBasicFrameType()) {
+            case Type.BT_INT -> RETURN_INT;
+            case Type.BT_LONG -> RETURN_LONG;
+            case Type.BT_FLOAT -> RETURN_FLOAT;
+            case Type.BT_DOUBLE -> RETURN_DOUBLE;
+            case Type.BT_OBJECT -> RETURN_OBJECT;
+            case Type.BT_VOID -> RETURN_VOID;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1794,19 +1794,19 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opAget(TypeBearer type) {
-        switch (type.getBasicType()) {
-            case Type.BT_INT:     return AGET_INT;
-            case Type.BT_LONG:    return AGET_LONG;
-            case Type.BT_FLOAT:   return AGET_FLOAT;
-            case Type.BT_DOUBLE:  return AGET_DOUBLE;
-            case Type.BT_OBJECT:  return AGET_OBJECT;
-            case Type.BT_BOOLEAN: return AGET_BOOLEAN;
-            case Type.BT_BYTE:    return AGET_BYTE;
-            case Type.BT_CHAR:    return AGET_CHAR;
-            case Type.BT_SHORT:   return AGET_SHORT;
-        }
+        return switch (type.getBasicType()) {
+            case Type.BT_INT -> AGET_INT;
+            case Type.BT_LONG -> AGET_LONG;
+            case Type.BT_FLOAT -> AGET_FLOAT;
+            case Type.BT_DOUBLE -> AGET_DOUBLE;
+            case Type.BT_OBJECT -> AGET_OBJECT;
+            case Type.BT_BOOLEAN -> AGET_BOOLEAN;
+            case Type.BT_BYTE -> AGET_BYTE;
+            case Type.BT_CHAR -> AGET_CHAR;
+            case Type.BT_SHORT -> AGET_SHORT;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1817,19 +1817,19 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opAput(TypeBearer type) {
-        switch (type.getBasicType()) {
-            case Type.BT_INT:     return APUT_INT;
-            case Type.BT_LONG:    return APUT_LONG;
-            case Type.BT_FLOAT:   return APUT_FLOAT;
-            case Type.BT_DOUBLE:  return APUT_DOUBLE;
-            case Type.BT_OBJECT:  return APUT_OBJECT;
-            case Type.BT_BOOLEAN: return APUT_BOOLEAN;
-            case Type.BT_BYTE:    return APUT_BYTE;
-            case Type.BT_CHAR:    return APUT_CHAR;
-            case Type.BT_SHORT:   return APUT_SHORT;
-        }
+        return switch (type.getBasicType()) {
+            case Type.BT_INT -> APUT_INT;
+            case Type.BT_LONG -> APUT_LONG;
+            case Type.BT_FLOAT -> APUT_FLOAT;
+            case Type.BT_DOUBLE -> APUT_DOUBLE;
+            case Type.BT_OBJECT -> APUT_OBJECT;
+            case Type.BT_BOOLEAN -> APUT_BOOLEAN;
+            case Type.BT_BYTE -> APUT_BYTE;
+            case Type.BT_CHAR -> APUT_CHAR;
+            case Type.BT_SHORT -> APUT_SHORT;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1843,23 +1843,21 @@ public final class Rops {
         Type type = arrayType.getType();
         Type elementType = type.getComponentType();
 
-        switch (elementType.getBasicType()) {
-            case Type.BT_INT:     return NEW_ARRAY_INT;
-            case Type.BT_LONG:    return NEW_ARRAY_LONG;
-            case Type.BT_FLOAT:   return NEW_ARRAY_FLOAT;
-            case Type.BT_DOUBLE:  return NEW_ARRAY_DOUBLE;
-            case Type.BT_BOOLEAN: return NEW_ARRAY_BOOLEAN;
-            case Type.BT_BYTE:    return NEW_ARRAY_BYTE;
-            case Type.BT_CHAR:    return NEW_ARRAY_CHAR;
-            case Type.BT_SHORT:   return NEW_ARRAY_SHORT;
-            case Type.BT_OBJECT: {
-                return new mod.agus.jcoderz.dx.rop.code.Rop(RegOps.NEW_ARRAY, type, StdTypeList.INT,
-                        mod.agus.jcoderz.dx.rop.code.Exceptions.LIST_Error_NegativeArraySizeException,
-                        "new-array-object");
-            }
-        }
+        return switch (elementType.getBasicType()) {
+            case Type.BT_INT -> NEW_ARRAY_INT;
+            case Type.BT_LONG -> NEW_ARRAY_LONG;
+            case Type.BT_FLOAT -> NEW_ARRAY_FLOAT;
+            case Type.BT_DOUBLE -> NEW_ARRAY_DOUBLE;
+            case Type.BT_BOOLEAN -> NEW_ARRAY_BOOLEAN;
+            case Type.BT_BYTE -> NEW_ARRAY_BYTE;
+            case Type.BT_CHAR -> NEW_ARRAY_CHAR;
+            case Type.BT_SHORT -> NEW_ARRAY_SHORT;
+            case Type.BT_OBJECT -> new Rop(RegOps.NEW_ARRAY, type, StdTypeList.INT,
+                    Exceptions.LIST_Error_NegativeArraySizeException,
+                    "new-array-object");
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1902,19 +1900,19 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opGetField(TypeBearer type) {
-        switch (type.getBasicType()) {
-            case Type.BT_INT:     return GET_FIELD_INT;
-            case Type.BT_LONG:    return GET_FIELD_LONG;
-            case Type.BT_FLOAT:   return GET_FIELD_FLOAT;
-            case Type.BT_DOUBLE:  return GET_FIELD_DOUBLE;
-            case Type.BT_OBJECT:  return GET_FIELD_OBJECT;
-            case Type.BT_BOOLEAN: return GET_FIELD_BOOLEAN;
-            case Type.BT_BYTE:    return GET_FIELD_BYTE;
-            case Type.BT_CHAR:    return GET_FIELD_CHAR;
-            case Type.BT_SHORT:   return GET_FIELD_SHORT;
-        }
+        return switch (type.getBasicType()) {
+            case Type.BT_INT -> GET_FIELD_INT;
+            case Type.BT_LONG -> GET_FIELD_LONG;
+            case Type.BT_FLOAT -> GET_FIELD_FLOAT;
+            case Type.BT_DOUBLE -> GET_FIELD_DOUBLE;
+            case Type.BT_OBJECT -> GET_FIELD_OBJECT;
+            case Type.BT_BOOLEAN -> GET_FIELD_BOOLEAN;
+            case Type.BT_BYTE -> GET_FIELD_BYTE;
+            case Type.BT_CHAR -> GET_FIELD_CHAR;
+            case Type.BT_SHORT -> GET_FIELD_SHORT;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1925,19 +1923,19 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opPutField(TypeBearer type) {
-        switch (type.getBasicType()) {
-            case Type.BT_INT:     return PUT_FIELD_INT;
-            case Type.BT_LONG:    return PUT_FIELD_LONG;
-            case Type.BT_FLOAT:   return PUT_FIELD_FLOAT;
-            case Type.BT_DOUBLE:  return PUT_FIELD_DOUBLE;
-            case Type.BT_OBJECT:  return PUT_FIELD_OBJECT;
-            case Type.BT_BOOLEAN: return PUT_FIELD_BOOLEAN;
-            case Type.BT_BYTE:    return PUT_FIELD_BYTE;
-            case Type.BT_CHAR:    return PUT_FIELD_CHAR;
-            case Type.BT_SHORT:   return PUT_FIELD_SHORT;
-        }
+        return switch (type.getBasicType()) {
+            case Type.BT_INT -> PUT_FIELD_INT;
+            case Type.BT_LONG -> PUT_FIELD_LONG;
+            case Type.BT_FLOAT -> PUT_FIELD_FLOAT;
+            case Type.BT_DOUBLE -> PUT_FIELD_DOUBLE;
+            case Type.BT_OBJECT -> PUT_FIELD_OBJECT;
+            case Type.BT_BOOLEAN -> PUT_FIELD_BOOLEAN;
+            case Type.BT_BYTE -> PUT_FIELD_BYTE;
+            case Type.BT_CHAR -> PUT_FIELD_CHAR;
+            case Type.BT_SHORT -> PUT_FIELD_SHORT;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1948,19 +1946,19 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opGetStatic(TypeBearer type) {
-        switch (type.getBasicType()) {
-            case Type.BT_INT:     return GET_STATIC_INT;
-            case Type.BT_LONG:    return GET_STATIC_LONG;
-            case Type.BT_FLOAT:   return GET_STATIC_FLOAT;
-            case Type.BT_DOUBLE:  return GET_STATIC_DOUBLE;
-            case Type.BT_OBJECT:  return GET_STATIC_OBJECT;
-            case Type.BT_BOOLEAN: return GET_STATIC_BOOLEAN;
-            case Type.BT_BYTE:    return GET_STATIC_BYTE;
-            case Type.BT_CHAR:    return GET_STATIC_CHAR;
-            case Type.BT_SHORT:   return GET_STATIC_SHORT;
-        }
+        return switch (type.getBasicType()) {
+            case Type.BT_INT -> GET_STATIC_INT;
+            case Type.BT_LONG -> GET_STATIC_LONG;
+            case Type.BT_FLOAT -> GET_STATIC_FLOAT;
+            case Type.BT_DOUBLE -> GET_STATIC_DOUBLE;
+            case Type.BT_OBJECT -> GET_STATIC_OBJECT;
+            case Type.BT_BOOLEAN -> GET_STATIC_BOOLEAN;
+            case Type.BT_BYTE -> GET_STATIC_BYTE;
+            case Type.BT_CHAR -> GET_STATIC_CHAR;
+            case Type.BT_SHORT -> GET_STATIC_SHORT;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -1971,19 +1969,19 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opPutStatic(TypeBearer type) {
-        switch (type.getBasicType()) {
-            case Type.BT_INT:     return PUT_STATIC_INT;
-            case Type.BT_LONG:    return PUT_STATIC_LONG;
-            case Type.BT_FLOAT:   return PUT_STATIC_FLOAT;
-            case Type.BT_DOUBLE:  return PUT_STATIC_DOUBLE;
-            case Type.BT_OBJECT:  return PUT_STATIC_OBJECT;
-            case Type.BT_BOOLEAN: return PUT_STATIC_BOOLEAN;
-            case Type.BT_BYTE:    return PUT_STATIC_BYTE;
-            case Type.BT_CHAR:    return PUT_STATIC_CHAR;
-            case Type.BT_SHORT:   return PUT_STATIC_SHORT;
-        }
+        return switch (type.getBasicType()) {
+            case Type.BT_INT -> PUT_STATIC_INT;
+            case Type.BT_LONG -> PUT_STATIC_LONG;
+            case Type.BT_FLOAT -> PUT_STATIC_FLOAT;
+            case Type.BT_DOUBLE -> PUT_STATIC_DOUBLE;
+            case Type.BT_OBJECT -> PUT_STATIC_OBJECT;
+            case Type.BT_BOOLEAN -> PUT_STATIC_BOOLEAN;
+            case Type.BT_BYTE -> PUT_STATIC_BYTE;
+            case Type.BT_CHAR -> PUT_STATIC_CHAR;
+            case Type.BT_SHORT -> PUT_STATIC_SHORT;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**
@@ -2091,15 +2089,15 @@ public final class Rops {
      * @return {@code non-null;} an appropriate instance
      */
     public static mod.agus.jcoderz.dx.rop.code.Rop opMarkLocal(TypeBearer type) {
-        switch (type.getBasicFrameType()) {
-            case Type.BT_INT:    return MARK_LOCAL_INT;
-            case Type.BT_LONG:   return MARK_LOCAL_LONG;
-            case Type.BT_FLOAT:  return MARK_LOCAL_FLOAT;
-            case Type.BT_DOUBLE: return MARK_LOCAL_DOUBLE;
-            case Type.BT_OBJECT: return MARK_LOCAL_OBJECT;
-        }
+        return switch (type.getBasicFrameType()) {
+            case Type.BT_INT -> MARK_LOCAL_INT;
+            case Type.BT_LONG -> MARK_LOCAL_LONG;
+            case Type.BT_FLOAT -> MARK_LOCAL_FLOAT;
+            case Type.BT_DOUBLE -> MARK_LOCAL_DOUBLE;
+            case Type.BT_OBJECT -> MARK_LOCAL_OBJECT;
+            default -> throwBadType(type);
+        };
 
-        return throwBadType(type);
     }
 
     /**

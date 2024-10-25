@@ -103,9 +103,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             case "property_text" -> b(property, bean.text.text);
             case "property_text_size" -> c(property, bean.text.textSize);
             case "property_text_style" -> c(property, bean.text.textType);
-            case "property_text_color" -> a(property, bean.text.textColor);
+            case "property_text_color" -> r(property,bean.text.resTextColor, bean.text.textColor); 
             case "property_hint" -> b(property, bean.text.hint);
-            case "property_hint_color" -> a(property, bean.text.hintColor);
+            case "property_hint_color" -> r(property, bean.text.resHintColor, bean.text.hintColor);
             case "property_single_line" -> e(property, bean.text.singleLine);
             case "property_lines" -> b(property, String.valueOf(bean.text.line));
             case "property_input_type" -> c(property, bean.text.inputType);
@@ -113,7 +113,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             case "property_image" -> b(property, bean.image.resName, true);
             case "property_scale_type" -> d(property, bean.image.scaleType);
             case "property_background_resource" -> b(property, bean.layout.backgroundResource, false);
-            case "property_background_color" -> a(property, bean.layout.backgroundColor);
+            case "property_background_color" -> r(property, bean.layout.backgroundResColor,bean.layout.backgroundColor);
             case "property_enabled" -> e(property, bean.enabled);
             case "property_rotate" -> b(property, String.valueOf(bean.image.rotate));
             case "property_alpha" -> b(property, String.valueOf(bean.alpha));
@@ -174,6 +174,22 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         }
 
         addView(indentItem);
+    }
+
+    private void r(String name, String value,int value2) {
+        PropertyColorItem colorItem = (PropertyColorItem) f.get(name);
+        if (colorItem == null) {
+            colorItem = new PropertyColorItem(getContext(), !b,sc_id);
+            colorItem.setOrientationItem(getOrientation());
+            colorItem.setKey(name);
+            colorItem.setValue(value2,value);
+            colorItem.setTag(name);
+            colorItem.setOnPropertyValueChangeListener(this);
+            f.put(name, colorItem);
+        } else {
+            colorItem.setValue(value2,value);;
+        }
+        addView(colorItem);
     }
 
     private void a(String key, int value, boolean isEnable) {
@@ -716,10 +732,18 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                 }
             } else if (view instanceof PropertyColorItem colorItem) {
                 switch (colorItem.getKey()) {
-                    case "property_text_color" -> bean.text.textColor = colorItem.getValue();
-                    case "property_hint_color" -> bean.text.hintColor = colorItem.getValue();
-                    case "property_background_color" ->
-                            bean.layout.backgroundColor = colorItem.getValue();
+                    case "property_text_color" -> {
+                        bean.text.textColor = colorItem.getValue();
+                        bean.text.resTextColor = colorItem.getResValue();
+                    }
+                    case "property_hint_color" -> {
+                        bean.text.hintColor = colorItem.getValue();
+                        bean.text.resHintColor = colorItem.getResValue();
+                    }
+                    case "property_background_color" -> {
+                        bean.layout.backgroundResColor = colorItem.getResValue();
+                        bean.layout.backgroundColor = colorItem.getValue();
+                    }
                 }
             } else if (view instanceof PropertyIndentItem indentItem) {
                 if (indentItem.getKey().equals("property_margin")) {
@@ -822,7 +846,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                                 blockBean.spec = bean.id;
                             } else {
                                 ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
-                                if (paramClassInfo != null && paramClassInfo.size() > 0) {
+                                if (paramClassInfo != null && !paramClassInfo.isEmpty()) {
                                     for (int i = 0; i < paramClassInfo.size(); ++i) {
                                         if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(bean.preId)) {
                                             blockBean.parameters.set(i, bean.id);
@@ -857,7 +881,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                                 blockBean.spec = bean.id;
                             } else {
                                 ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
-                                if (paramClassInfo != null && paramClassInfo.size() > 0) {
+                                if (paramClassInfo != null && !paramClassInfo.isEmpty()) {
                                     for (int i = 0; i < paramClassInfo.size(); ++i) {
                                         if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(bean.preId)) {
                                             blockBean.parameters.set(i, bean.id);
@@ -883,7 +907,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                     while (true) {
                         childCount = size - 1;
                         if (childCount < 0) {
-                            if (bean.customView.equals("") || bean.customView.equals("none")) {
+                            if (bean.customView.isEmpty() || bean.customView.equals("none")) {
                                 Iterator<Entry<String, ArrayList<BlockBean>>> blocks = jC.a(sc_id).b(e.getJavaName()).entrySet().iterator();
 
                                 while (blocks.hasNext()) {

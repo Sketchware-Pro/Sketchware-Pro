@@ -16,21 +16,25 @@ import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
 import com.sketchware.remod.databinding.DialogInputLayoutBinding;
 import com.sketchware.remod.databinding.ManageFileBinding;
 import com.sketchware.remod.databinding.ManageJavaItemHsBinding;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +45,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
+import mod.bobur.StringEditorActivity;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
@@ -48,7 +53,7 @@ import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
 @SuppressLint("SetTextI18n")
-public class ManageResourceActivity extends AppCompatActivity {
+public class ManageResourceActivity extends BaseAppCompatActivity {
 
     private CustomAdapter adapter;
     private FilePickerDialog dialog;
@@ -60,7 +65,7 @@ public class ManageResourceActivity extends AppCompatActivity {
     private ManageFileBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ManageFileBinding.inflate(getLayoutInflater());
@@ -306,6 +311,29 @@ public class ManageResourceActivity extends AppCompatActivity {
     }
 
     private void goEdit(int position) {
+        if (frc.listFileResource.get(position).endsWith("strings.xml")) {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), StringEditorActivity.class);
+            intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
+            intent.putExtra("content", frc.listFileResource.get(position));
+            intent.putExtra("xml", "");
+            startActivity(intent);
+        } else if (frc.listFileResource.get(position).endsWith("xml")) {
+            Intent intent = new Intent();
+            if (ConfigActivity.isLegacyCeEnabled()) {
+                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
+            } else {
+                intent.setClass(getApplicationContext(), SrcCodeEditor.class);
+            }
+            intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
+            intent.putExtra("content", frc.listFileResource.get(position));
+            intent.putExtra("xml", "");
+            startActivity(intent);
+        } else {
+            SketchwareUtil.toast("Only XML files can be edited");
+        }
+    }
+    private void goEdit2(int position) {
         if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
@@ -321,7 +349,6 @@ public class ManageResourceActivity extends AppCompatActivity {
             SketchwareUtil.toast("Only XML files can be edited");
         }
     }
-
     private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
         private final ArrayList<String> data;
@@ -374,7 +401,7 @@ public class ManageResourceActivity extends AppCompatActivity {
                                 SketchwareUtil.toast("Only XML files can be edited");
                             }
                         }
-                        case "Edit" -> goEdit(position);
+                        case "Edit" -> goEdit2(position);
                         case "Delete" -> showDeleteDialog(position);
                         case "Rename" -> showRenameDialog(frc.listFileResource.get(position));
                         default -> {

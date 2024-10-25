@@ -146,7 +146,7 @@ public class ManageLocalLibrary {
             if (jarPath instanceof String) {
                 jars.add(new File((String) jarPath));
             } else {
-                SketchwareUtil.toastError("Invalid JAR path of enabled Local library #" + i, Toast.LENGTH_LONG);
+                SketchwareUtil.toastError("Invalid JAR path of enabled Local library #" + i + "->" + localLibrary.get("name"), Toast.LENGTH_LONG);
             }
         }
 
@@ -164,7 +164,7 @@ public class ManageLocalLibrary {
                 classpath.append(":");
                 classpath.append((String) jarPath);
             } else {
-                SketchwareUtil.toastError("Invalid JAR path of enabled Local library #" + i, Toast.LENGTH_LONG);
+                SketchwareUtil.toastError("Invalid JAR path of enabled Local library #" + i + "->" + localLibrary.get("name"), Toast.LENGTH_LONG);
             }
         }
 

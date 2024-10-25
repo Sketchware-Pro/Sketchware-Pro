@@ -225,12 +225,12 @@ public class SCCP {
     }
 
     private static String latticeValName(int latticeVal) {
-        switch (latticeVal) {
-            case TOP: return "TOP";
-            case CONSTANT: return "CONSTANT";
-            case VARYING: return "VARYING";
-            default: return "UNKNOWN";
-        }
+        return switch (latticeVal) {
+            case TOP -> "TOP";
+            case CONSTANT -> "CONSTANT";
+            case VARYING -> "VARYING";
+            default -> "UNKNOWN";
+        };
     }
 
     /**
@@ -272,28 +272,15 @@ public class SCCP {
                     case mod.agus.jcoderz.dx.rop.type.Type.BT_INT:
                         constantBranch = true;
                         int vA = ((mod.agus.jcoderz.dx.rop.cst.CstInteger) cA).getValue();
-                        switch (opcode.getOpcode()) {
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_EQ:
-                                constantSuccessor = (vA == 0);
-                                break;
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_NE:
-                                constantSuccessor = (vA != 0);
-                                break;
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_LT:
-                                constantSuccessor = (vA < 0);
-                                break;
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_GE:
-                                constantSuccessor = (vA >= 0);
-                                break;
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_LE:
-                                constantSuccessor = (vA <= 0);
-                                break;
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_GT:
-                                constantSuccessor = (vA > 0);
-                                break;
-                            default:
-                                throw new RuntimeException("Unexpected op");
-                        }
+                        constantSuccessor = switch (opcode.getOpcode()) {
+                            case RegOps.IF_EQ -> (vA == 0);
+                            case RegOps.IF_NE -> (vA != 0);
+                            case RegOps.IF_LT -> (vA < 0);
+                            case RegOps.IF_GE -> (vA >= 0);
+                            case RegOps.IF_LE -> (vA <= 0);
+                            case RegOps.IF_GT -> (vA > 0);
+                            default -> throw new RuntimeException("Unexpected op");
+                        };
                         break;
                     default:
                         // not yet supported
@@ -304,28 +291,15 @@ public class SCCP {
                         constantBranch = true;
                         int vA = ((mod.agus.jcoderz.dx.rop.cst.CstInteger) cA).getValue();
                         int vB = ((mod.agus.jcoderz.dx.rop.cst.CstInteger) cB).getValue();
-                        switch (opcode.getOpcode()) {
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_EQ:
-                                constantSuccessor = (vA == vB);
-                                break;
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_NE:
-                                constantSuccessor = (vA != vB);
-                                break;
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_LT:
-                                constantSuccessor = (vA < vB);
-                                break;
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_GE:
-                                constantSuccessor = (vA >= vB);
-                                break;
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_LE:
-                                constantSuccessor = (vA <= vB);
-                                break;
-                            case mod.agus.jcoderz.dx.rop.code.RegOps.IF_GT:
-                                constantSuccessor = (vA > vB);
-                                break;
-                            default:
-                                throw new RuntimeException("Unexpected op");
-                        }
+                        constantSuccessor = switch (opcode.getOpcode()) {
+                            case RegOps.IF_EQ -> (vA == vB);
+                            case RegOps.IF_NE -> (vA != vB);
+                            case RegOps.IF_LT -> (vA < vB);
+                            case RegOps.IF_GE -> (vA >= vB);
+                            case RegOps.IF_LE -> (vA <= vB);
+                            case RegOps.IF_GT -> (vA > vB);
+                            default -> throw new RuntimeException("Unexpected op");
+                        };
                         break;
                     default:
                         // not yet supported

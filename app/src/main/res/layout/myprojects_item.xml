@@ -1,145 +1,100 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginHorizontal="16dp"
     android:layout_marginBottom="10dp"
-    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh">
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:cardCornerRadius="18dp"
+    app:strokeWidth="0.5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:gravity="center_vertical"
+        android:paddingVertical="12dp">
 
-        <LinearLayout
-            android:id="@+id/project_one"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/app_icon_layout"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="16dp">
-
-                <View
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/circle_bg_white"
-                    android:contentDescription="@null"
-                    android:visibility="gone" />
-
-                <com.besome.sketch.lib.ui.CircleImageView
-                    android:id="@+id/img_icon"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:layout_centerInParent="true"
-                    android:contentDescription="@null"
-                    android:src="@drawable/android_icon" />
-            </RelativeLayout>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/img_icon_view"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="10dp"
+            app:strokeWidth="0.5dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="center|left"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/project_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        tools:text="Sketchware Pro Demo" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="40dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/app_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:alpha="0.6"
-                            android:textAppearance="?attr/textAppearanceBodySmall"
-                            tools:text="InternalDemo" />
-
-                        <TextView
-                            android:id="@+id/project_version"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="4dp"
-                            android:alpha="0.6"
-                            android:textAppearance="?attr/textAppearanceBodySmall"
-                            android:textSize="10sp"
-                            tools:text="1.0(1)" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/package_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.6"
-                        android:textAppearance="?attr/textAppearanceBodySmall"
-                        tools:text="com.jbk.internal.demo" />
-                </LinearLayout>
+                android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/expand"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="right"
-                    android:padding="8dp"
-                    android:src="@drawable/selector_ic_expand_more_24"
-                    app:tint="?attr/colorControlNormal" />
+                    android:id="@+id/img_icon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@null"
+                    android:foreground="@drawable/shadow_gradient_bottom_top"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sketch_app_icon" />
 
                 <TextView
                     android:id="@+id/tv_published"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="right"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="8dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginBottom="4dp"
                     android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorTertiary"
+                    android:textColor="#fff"
                     tools:text="605" />
             </RelativeLayout>
-        </LinearLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
 
         <LinearLayout
-            android:id="@+id/project_option_layout"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="14dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="16dp"
-                android:background="?attr/colorOutline" />
+            <TextView
+                android:id="@+id/project_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textStyle="bold"
+                tools:text="Sketchware Pro Demo" />
 
-            <com.besome.sketch.projects.MyProjectButtonLayout
-                android:id="@+id/project_option"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="InternalDemo (1.4)" />
+
+            <TextView
+                android:id="@+id/package_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="com.jbk.internal.demo" />
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/expand"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:src="@drawable/selector_ic_expand_more_24"
+            app:tint="?attr/colorControlNormal" />
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

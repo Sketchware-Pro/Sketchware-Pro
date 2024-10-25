@@ -18,8 +18,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.CompileLogBinding;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import mod.SketchwareUtil;
 import mod.hey.studios.util.CompileLogHelper;
@@ -27,7 +30,7 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
-public class CompileLogActivity extends AppCompatActivity {
+public class CompileLogActivity extends BaseAppCompatActivity {
 
     private static final String PREFERENCE_WRAPPED_TEXT = "wrapped_text";
     private static final String PREFERENCE_USE_MONOSPACED_FONT = "use_monospaced_font";
@@ -127,7 +130,7 @@ public class CompileLogActivity extends AppCompatActivity {
         binding.optionsLayout.setVisibility(View.VISIBLE);
         binding.noContentLayout.setVisibility(View.GONE);
 
-        binding.tvCompileLog.setText(CompileLogHelper.colorErrsAndWarnings(error));
+        binding.tvCompileLog.setText(CompileLogHelper.getColoredLogs(this, error));
         binding.tvCompileLog.setTextIsSelectable(true);
     }
 

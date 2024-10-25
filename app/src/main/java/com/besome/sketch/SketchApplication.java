@@ -10,10 +10,7 @@ import android.util.Log;
 
 import com.besome.sketch.tools.CollectErrorActivity;
 
-import com.google.android.gms.analytics.Tracker;
-import com.google.android.material.color.DynamicColors;
-
-import mod.trindadedev.settings.appearance.theme.manage.ThemeManager;
+import mod.trindadedev.manage.theme.ThemeManager;
 
 public class SketchApplication extends Application {
 
@@ -21,10 +18,6 @@ public class SketchApplication extends Application {
 
     public static Context getContext() {
         return mApplicationContext;
-    }
-
-    public synchronized Tracker a() {
-        return new Tracker();
     }
 
     @Override
@@ -49,7 +42,6 @@ public class SketchApplication extends Application {
             }
         });
         super.onCreate();
-        DynamicColors.applyToActivitiesIfAvailable(this);
         ThemeManager.applyTheme(this, ThemeManager.getCurrentTheme(this));
     }
 }

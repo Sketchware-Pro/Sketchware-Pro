@@ -10,21 +10,47 @@
         android:id="@+id/layout_coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:background="?attr/colorSurface">
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
+            android:background="?attr/colorSurface"
             app:elevation="0dp"
-            app:liftOnScroll="false">
+            app:liftOnScroll="false"
+            app:liftOnScrollColor="@color/transparent">
 
-            <include layout="@layout/toolbar" />
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/mainTabsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:cardCornerRadius="18dp"
+                app:strokeWidth="0.5dp">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
+                    style="@style/TabLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/content"
-            android:name="com.besome.sketch.ProjectsFragment"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
@@ -38,12 +64,13 @@
             android:text="New project"
             app:icon="@drawable/ic_add_24"
             tools:ignore="ContentDescription" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.besome.sketch.MainDrawer
         android:id="@+id/left_drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true" />
+        android:layout_gravity="start" />
+
 </androidx.drawerlayout.widget.DrawerLayout>

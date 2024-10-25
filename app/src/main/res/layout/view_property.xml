@@ -1,13 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/view_property_background_color"
+    android:background="?attr/colorSurfaceContainer"
     android:orientation="vertical">
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,16 +20,15 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/view_property_spinner_filter"
+            android:backgroundTint="?attr/colorOnSurface"
             android:spinnerMode="dropdown" />
 
         <ImageView
             android:id="@+id/img_save"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:contentDescription="@null"
-            android:src="@drawable/save_icon_24px"
-            app:tint="#FFFFFFFF" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_save_24" />
     </LinearLayout>
 
     <LinearLayout
@@ -52,7 +50,9 @@
             android:id="@+id/hcv_property"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:paddingHorizontal="5dp">
 
             <LinearLayout
                 android:id="@+id/property_contents"
@@ -73,5 +73,7 @@
     <com.besome.sketch.editor.view.ViewEvents
         android:id="@+id/view_event"
         android:layout_width="match_parent"
-        android:layout_height="82dp" />
+        android:layout_height="82dp"
+        android:clipToPadding="false"
+        android:paddingHorizontal="5dp" />
 </LinearLayout>
