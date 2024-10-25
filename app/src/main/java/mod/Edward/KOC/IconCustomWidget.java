@@ -8,30 +8,22 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewEditor;
 import com.besome.sketch.editor.view.palette.IconBase;
-import com.besome.sketch.editor.view.palette.PaletteWidget;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.PropertyPopupInputTextBinding;
-import com.sketchware.remod.databinding.WidgetsCreatorDialogBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -186,132 +178,86 @@ public class IconCustomWidget extends IconBase {
         FileUtil.writeFile(WidgetFilePath, new Gson().toJson(ListMap));
     }
 
-    public static void AddCustomWidgets(Context context, PaletteWidget paletteWidget) {
+    public static void showWidgetsCreatorDialog(Context context) {
+        aB dialog = new aB((Activity) context);
+        dialog.b(Helper.getResString(R.string.create_new_widget));
+        View inflate = wB.a(context, R.layout.widgets_creator_dialog);
 
-        MaterialCardView cardView = new MaterialCardView(context);
-        MarginLayoutParams layoutParams = new MarginLayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(dpToPx(5), 0, dpToPx(5), dpToPx(2));
-        cardView.setLayoutParams(layoutParams);
+        final TextInputEditText type = inflate.findViewById(R.id.widget_type);
+        final TextInputEditText name = inflate.findViewById(R.id.widget_name);
+        final TextInputEditText title = inflate.findViewById(R.id.widget_title);
+        final TextInputEditText inject = inflate.findViewById(R.id.inject_code);
+        final TextInputEditText add = inflate.findViewById(R.id.add_widget_to);
+        final TextInputLayout input_title = inflate.findViewById(R.id.input_title);
+        final TextInputLayout input_name = inflate.findViewById(R.id.input_name);
+        final TextInputLayout input_type = inflate.findViewById(R.id.input_type);
+        final TextInputLayout input_class = inflate.findViewById(R.id.input_class);
+        clearErrorOnTextChanged(type, input_type);
+        clearErrorOnTextChanged(name, input_name);
+        clearErrorOnTextChanged(title, input_title);
+        clearErrorOnTextChanged(add, input_class);
 
-        cardView.setRadius(28);
-        cardView.setCardElevation(10);
-        cardView.setStrokeWidth(0);
+        type.setLongClickable(false);
+        add.setLongClickable(false);
 
+        type.setOnClickListener(v -> {
+            ShowAlertDialog(context ,choices_array, types_array, type);
+        });
+        add.setOnClickListener(v ->{
+            List<String> types = new ArrayList<>(myArrayList);
+            ShowAlertDialog(context, types, add);
+        });
 
-        ImageView imageView = new ImageView(context);
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(
-                dpToPx(30),
-                dpToPx(30)));
-        imageView.setImageResource(R.drawable.plus_96);
+        dialog.b(Helper.getResString(R.string.create), v ->{
+            try {
+                String WidgetTitle = title.getText().toString().trim();
+                String WidgetName = name.getText().toString().trim();
+                String WidgetType = type.getText().toString().trim();
+                String WidgetInject = inject.getText().toString().trim();
+                String WidgetClass = add.getText().toString().trim();
+                if (WidgetTitle.isEmpty()) {
+                    input_title.setError(Helper.getResString(R.string.title_required));
+                    return;
+                }
+                if (WidgetName.isEmpty()) {
+                    input_name.setError(Helper.getResString(R.string.name_required));
+                    return;
+                }
+                if (!IsConvertCorrect) {
+                    return;
+                }
+                if (WidgetType.isEmpty()) {
+                    input_type.setError(Helper.getResString(R.string.type_required));
+                    return;
+                }
+                if (WidgetClass.isEmpty()) {
+                    input_class.setError(Helper.getResString(R.string.class_required));
+                    return;
+                }
+                HashMap<String, Object> Map = new HashMap<>();
+                Map.put("Class", WidgetClass);
+                Map.put("title", WidgetTitle);
+                Map.put("name", WidgetName);
+                Map.put("inject", WidgetInject);
+                Map.put("type", Integer.parseInt(WidgetType));
+                Object positionObject = ListMap.isEmpty() ? 0 : ListMap.get(ListMap.size() - 1).get("position");
+                int position;
+                if (positionObject instanceof Number) {
+                    position = ((Number) positionObject).intValue();
+                } else {
+                    position = Integer.parseInt(positionObject.toString());
+                }
 
-        TextView textView = new TextView(context);
-        textView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        textView.setTextSize(dpToPx(4));
-        textView.setText(Helper.getResString(R.string.create_new_widget));
+                Map.put("position", position + 1);
 
-        LinearLayout linearLayout = new LinearLayout(context);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        linearLayout.setGravity(Gravity.CENTER);
-        int padding = dpToPx(4);
-        linearLayout.setPadding(padding, padding, padding, padding);
-
-        linearLayout.addView(imageView);
-        linearLayout.addView(textView);
-
-        cardView.addView(linearLayout);
-        paletteWidget.AddCustomWidgets(cardView);
-        cardView.setOnClickListener(view -> {
-            aB dialog = new aB((Activity) context);
-            dialog.b(Helper.getResString(R.string.create_new_widget));
-
-            View inflate = wB.a(context, R.layout.widgets_creator_dialog);
-
-            final TextInputEditText type = inflate.findViewById(R.id.widget_type);
-            final TextInputEditText name = inflate.findViewById(R.id.widget_name);
-            final TextInputEditText title = inflate.findViewById(R.id.widget_title);
-            final TextInputEditText inject = inflate.findViewById(R.id.inject_code);
-            final TextInputEditText add = inflate.findViewById(R.id.add_widget_to);
-            final TextInputLayout input_title = inflate.findViewById(R.id.input_title);
-            final TextInputLayout input_name = inflate.findViewById(R.id.input_name);
-            final TextInputLayout input_type = inflate.findViewById(R.id.input_type);
-            final TextInputLayout input_class = inflate.findViewById(R.id.input_class);
-            clearErrorOnTextChanged(type, input_type);
-            clearErrorOnTextChanged(name, input_name);
-            clearErrorOnTextChanged(title, input_title);
-            clearErrorOnTextChanged(add, input_class);
-
-
-            type.setLongClickable(false);
-            add.setLongClickable(false);
-
-            type.setOnClickListener(v -> {
-                ShowAlertDialog(context ,choices_array, types_array, type);
-            });
-            add.setOnClickListener(v ->{
-                List<String> types = new ArrayList<>(myArrayList);
-                ShowAlertDialog(context, types, add);
-            });
-
-            dialog.b(Helper.getResString(R.string.create), v ->{
-                try {
-                    String WidgetTitle = title.getText().toString().trim();
-                    String WidgetName = name.getText().toString().trim();
-                    String WidgetType = type.getText().toString().trim();
-                    String WidgetInject = inject.getText().toString().trim();
-                    String WidgetClass = add.getText().toString().trim();
-                    if (WidgetTitle.isEmpty()) {
-                        input_title.setError(Helper.getResString(R.string.title_required));
-                        return;
-                    }
-                    if (WidgetName.isEmpty()) {
-                        input_name.setError(Helper.getResString(R.string.name_required));
-                        return;
-                    }
-                    if (!IsConvertCorrect) {
-                        return;
-                    }
-                    if (WidgetType.isEmpty()) {
-                        input_type.setError(Helper.getResString(R.string.type_required));
-                        return;
-                    }
-                    if (WidgetClass.isEmpty()) {
-                        input_class.setError(Helper.getResString(R.string.class_required));
-                        return;
-                    }
-                    HashMap<String, Object> Map = new HashMap<>();
-                    Map.put("Class", WidgetClass);
-                    Map.put("title", WidgetTitle);
-                    Map.put("name", WidgetName);
-                    Map.put("inject", WidgetInject);
-                    Map.put("type", Integer.parseInt(WidgetType));
-                    Object positionObject = ListMap.isEmpty() ? 0 : ListMap.get(ListMap.size() - 1).get("position");
-                    int position;
-                    if (positionObject instanceof Number) {
-                        position = ((Number) positionObject).intValue();
-                    } else {
-                        position = Integer.parseInt(positionObject.toString());
-                    }
-
-                    Map.put("position", position + 1);
-
-                    ListMap.add(Map);
-                    FileUtil.writeFile(WidgetFilePath, new Gson().toJson(ListMap));
-                    if (!myArrayList.contains(WidgetClass)) {
-                        myArrayList.add(WidgetClass);
-                        FileUtil.writeFile(TitlesFilePath, new Gson().toJson(myArrayList));
-                    }
-                    ViewEditorFragment.e();
-                    dialog.dismiss();
+                ListMap.add(Map);
+                FileUtil.writeFile(WidgetFilePath, new Gson().toJson(ListMap));
+                if (!myArrayList.contains(WidgetClass)) {
+                    myArrayList.add(WidgetClass);
+                    FileUtil.writeFile(TitlesFilePath, new Gson().toJson(myArrayList));
+                }
+                ViewEditorFragment.e();
+                dialog.dismiss();
                 } catch (Exception e) {
                     SketchwareUtil.toastError("Failed :" + e.getMessage());
                 }
@@ -320,7 +266,6 @@ public class IconCustomWidget extends IconBase {
 
             dialog.a(inflate);
             dialog.show();
-        });
     }
 
     public static void clearErrorOnTextChanged(final EditText editText, final TextInputLayout textInputLayout) {

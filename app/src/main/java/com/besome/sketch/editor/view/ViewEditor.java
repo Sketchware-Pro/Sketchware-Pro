@@ -1,7 +1,7 @@
 package com.besome.sketch.editor.view;
 
 
-import static mod.Edward.KOC.IconCustomWidget.AddCustomWidgets;
+import static mod.Edward.KOC.IconCustomWidget.showWidgetsCreatorDialog;
 import static mod.Edward.KOC.IconCustomWidget.DeleteWidgetMap;
 import static mod.Edward.KOC.IconCustomWidget.SubstringCovert;
 
@@ -558,6 +558,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         isVibrationEnabled = new DB(context, "P12").a("P12I0", true);
         scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        paletteWidget.cardView.setOnClickListener(view -> showWidgetsCreatorDialog(getContext()));
     }
 
     public void b(ArrayList<ViewBean> arrayList, boolean z) {
@@ -584,7 +585,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public void removeWidgetsAndLayouts() {
         paletteWidget.removeWidgetLayouts();
         paletteWidget.removeWidgets();
-        AddCustomWidgets(getContext(), paletteWidget);
     }
 
     public sy e(ViewBean viewBean) {

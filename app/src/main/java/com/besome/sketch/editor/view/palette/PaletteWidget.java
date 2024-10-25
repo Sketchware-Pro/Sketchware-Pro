@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.lib.ui.CustomScrollView;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.color.MaterialColors;
 import com.sketchware.remod.R;
 
@@ -58,6 +59,7 @@ public class PaletteWidget extends LinearLayout {
     private TextView titleLayouts;
     private TextView titleWidgets;
     private CustomScrollView scrollView;
+    public MaterialCardView cardView;
 
     public PaletteWidget(Context context) {
         super(context);
@@ -201,6 +203,7 @@ public class PaletteWidget extends LinearLayout {
         titleLayouts.setText(Helper.getResString(R.string.view_panel_title_layouts));
         titleWidgets.setText(Helper.getResString(R.string.view_panel_title_widgets));
         scrollView = findViewById(R.id.scv);
+        cardView = findViewById(R.id.cardView);
     }
 
     public void removeWidgets() {

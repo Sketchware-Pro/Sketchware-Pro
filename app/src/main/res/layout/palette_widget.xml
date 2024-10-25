@@ -1,7 +1,42 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:layout_marginVertical="6dp"
+        android:orientation="vertical"
+        app:cardBackgroundColor="?colorSurfaceContainerHigh"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:srcCompat="@drawable/plus_96" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/create_new_widget"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <com.besome.sketch.lib.ui.CustomScrollView
         android:id="@+id/scv"
@@ -17,7 +52,8 @@
                 android:id="@+id/tv_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginBottom="4dp"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="12sp" />
 
