@@ -195,7 +195,7 @@ public class Zx extends PopupWindow {
     private void initializeColorData(boolean isColorTransparent, boolean isColorNone) {
         colorList.add(new ColorBean("#FFF6F6F6", "CUSTOM", "#212121", R.drawable.checked_grey_32));
         if (sc_id != null)
-            colorList.add(new ColorBean("#FFF6F6F6", "Colors.xml", "#212121", R.drawable.checked_grey_32));
+            colorList.add(new ColorBean("#FFF6F6F6", "colors.xml", "#212121", R.drawable.checked_grey_32));
         colorList.add(sq.p[0]);
         colorList.add(sq.q[0]);
         colorList.add(sq.r[0]);
