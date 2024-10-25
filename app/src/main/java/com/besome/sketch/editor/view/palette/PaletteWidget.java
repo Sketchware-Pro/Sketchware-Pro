@@ -14,6 +14,8 @@ import com.besome.sketch.lib.ui.CustomScrollView;
 import com.google.android.material.color.MaterialColors;
 import com.sketchware.remod.R;
 
+import java.util.HashMap;
+
 import a.a.a.wB;
 import dev.aldi.sayuti.editor.view.palette.IconBadgeView;
 import dev.aldi.sayuti.editor.view.palette.IconBottomNavigationView;
@@ -34,6 +36,7 @@ import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
 import dev.aldi.sayuti.editor.view.palette.IconViewPager;
 import dev.aldi.sayuti.editor.view.palette.IconWaveSideBar;
 import dev.aldi.sayuti.editor.view.palette.IconYoutubePlayer;
+import mod.Edward.KOC.IconCustomWidget;
 import mod.agus.jcoderz.editor.view.palette.IconAnalogClock;
 import mod.agus.jcoderz.editor.view.palette.IconAutoCompleteTextView;
 import mod.agus.jcoderz.editor.view.palette.IconDatePicker;
@@ -64,6 +67,34 @@ public class PaletteWidget extends LinearLayout {
     public PaletteWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize(context);
+    }
+
+    public void AddCustomWidgets(View view) {
+        layoutContainer.addView(view);
+    }
+
+    public View CustomWidget(HashMap<String, Object> map) {
+        String title = map.get("title").toString();
+        String name = map.get("name").toString();
+        if (map.get("Class").toString().equals("Layouts")) {
+            LinearLayout iconBase;
+            Context context = getContext();
+            iconBase = new IconCustomWidget(map, context);
+            layoutContainer.addView(iconBase);
+            return iconBase;
+        } else {
+            IconBase iconBase;
+            Context context = getContext();
+            iconBase = new IconCustomWidget(map, context);
+            iconBase.setText(title);
+            iconBase.setName(name);
+            if (map.get("Class").toString().equals("AndroidX")) {
+                layoutContainer.addView(iconBase);
+            } else {
+                widgetsContainer.addView(iconBase);
+            }
+            return iconBase;
+        }
     }
 
     public View a(PaletteWidget.a layoutType, String tag) {
