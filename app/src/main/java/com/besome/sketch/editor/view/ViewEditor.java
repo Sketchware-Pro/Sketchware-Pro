@@ -2,8 +2,8 @@ package com.besome.sketch.editor.view;
 
 
 import static pro.sketchware.widgets.widgetsCreatorManager.showWidgetsCreatorDialog;
-import static pro.sketchware.widgets.widgetsCreatorManager.DeleteWidgetMap;
-import static pro.sketchware.widgets.widgetsCreatorManager.SubstringCovert;
+import static pro.sketchware.widgets.widgetsCreatorManager.deleteWidgetMap;
+import static pro.sketchware.widgets.widgetsCreatorManager.substringCovert;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -365,7 +365,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     break lol;
                 }
                 if (D && r instanceof widgetsCreatorManager) {
-                    DeleteWidgetMap(getContext(), (int) view.getTag());
+                    deleteWidgetMap(getContext(), (int) view.getTag());
                     break lol;
                 }
                 viewPane.resetView(false);
@@ -896,7 +896,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public final String a(int i, String convert) {
-        String b2 = convert == null ? wq.b(i) : SubstringCovert(convert);
+        String b2 = convert == null ? wq.b(i) : substringCovert(convert);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
         int i2 = e[i] + 1;

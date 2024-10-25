@@ -2215,7 +2215,7 @@ Please try again later"</string>
     <string name="create">Create</string>
     <string name="var_is_required">%s is required</string>
     <string name="widget_type_title">Widget type</string>
-    <string name="new_class">OR Create a new Class</string>
+    <string name="new_class">Or create a new category</string>
     <string name="add_to">Add Widget to Class :</string>
 
 </resources>
