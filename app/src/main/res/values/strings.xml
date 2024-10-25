@@ -1576,6 +1576,7 @@ But, components should be added manually for working correctly."</string>
     <string name="picker_color_already_exist">This color already exists</string>
     <string name="picker_color_custom_color_not_found">No custom color found</string>
     <string name="picker_color_hint_enter_hex_color_code">Enter hex color code</string>
+    <string name="picker_color_xml_is_empty">Colors.xml is empty</string>
     <string name="picker_color_message_delete_all_custom_color">Are you sure? This operation can not be undone</string>
     <string name="picker_color_message_delete_custom_color">Are you sure? This operation can not be undone</string>
     <string name="picker_color_title_delete_all_custom_color">Delete All Custom Colors</string>
@@ -2206,5 +2207,7 @@ Please try again later"</string>
     <string name="restoring">Restoring…</string>
     <string name="search_error_message">Nothing found,\ntry again with something else</string>
     <string name="search_header">"  Search…"</string>
+    <string name="strings_xml">strings.xml</string>
+    <string name="xml_strings">XML Strings</string>
 
 </resources>

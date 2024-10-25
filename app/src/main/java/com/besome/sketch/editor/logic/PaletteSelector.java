@@ -44,13 +44,19 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
             Helper.getResString(R.string.block_category_file),
             Helper.getResString(R.string.block_category_view_func),
             Helper.getResString(R.string.block_category_component_func),
+            Helper.getResString(R.string.xml_strings),
             Helper.getResString(R.string.block_category_moreblock)
     };
 
     private final int[] MainCategoriesColors = {
             0xffee7d16, 0xffcc5b22, 0xffe1a92a,
             0xff5cb722, 0xff23b9a9, 0xffa1887f,
-            0xff4a6cd4, 0xff2ca5e2, 0xff8a55d7
+            0xff4a6cd4, 0xff2ca5e2, 0xff7c83db,
+            0xff8a55d7
+    };
+
+    private final int[] MainCategoriesIds = {
+            0, 1, 2, 3, 4, 5, 6, 7, -1, 8
     };
 
     public PaletteSelector(Context context, AttributeSet attrs) {
@@ -87,24 +93,12 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         allPalettes = new ArrayList<>();
 
         for (int i = 0; i < MainCategoriesNames.length; i++) {
-            addPalette(i, MainCategoriesNames[i], MainCategoriesColors[i]);
-            HashMap<String, Object> palette = new HashMap<>();
-            palette.put("index", i);
-            palette.put("text", MainCategoriesNames[i]);
-            palette.put("color", MainCategoriesColors[i]);
-            allPalettes.add(palette);
+            addPaletteWithMap(MainCategoriesIds[i], MainCategoriesNames[i], MainCategoriesColors[i]);
         }
 
         new mod.agus.jcoderz.editor.manage.block.palette.PaletteSelector()
                 .getPaletteSelector()
-                .forEach(palette -> {
-                    allPalettes.add(palette);
-                    addPalette(
-                            Integer.parseInt(palette.get("index").toString()),
-                            palette.get("text").toString(),
-                            Integer.parseInt(palette.get("color").toString())
-                    );
-                });
+                .forEach(this::addDynamicPalette);
 
         try {
             if (paletteContainer.getChildCount() > 0) {
@@ -112,6 +106,20 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
             }
         } catch (Exception ignored) {
         }
+    }
+
+    private void addPaletteWithMap(int id, String title, int color) {
+        addPalette(id, title, color);
+        allPalettes.add(createPaletteMap(id, title, color));
+    }
+
+    private void addDynamicPalette(HashMap<String, Object> palette) {
+        int index = Integer.parseInt(palette.get("index").toString());
+        String text = palette.get("text").toString();
+        int color = Integer.parseInt(palette.get("color").toString());
+
+        addPalette(index, text, color);
+        allPalettes.add(palette);
     }
 
     private void addPalette(int id, String title, int color) {
@@ -125,6 +133,14 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
                 paletteView.setSelected(true);
             }
         }
+    }
+
+    private HashMap<String, Object> createPaletteMap(int index, String categoryName, int categoryColor) {
+        HashMap<String, Object> palette = new HashMap<>();
+        palette.put("index", index);
+        palette.put("text", categoryName);
+        palette.put("color", categoryColor);
+        return palette;
     }
 
     @Override

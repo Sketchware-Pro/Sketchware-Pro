@@ -378,10 +378,20 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
     private void pickColor(View anchorView, int colorIndex) {
         Zx zx = new Zx(this, projectThemeColors[colorIndex], false, false);
-        zx.a(pickedColor -> {
-            projectThemeColors[colorIndex] = pickedColor;
-            syncThemeColors();
-        });
+        zx.a((new Zx.b() {
+            @Override
+            public void a(int var1) {
+                projectThemeColors[colorIndex] = var1;
+                syncThemeColors();
+            }
+
+            @Override
+            public void a(String var1, int var2) {
+                projectThemeColors[colorIndex] = var2;
+                syncThemeColors();
+            }
+         }
+        ));
         zx.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
     }
 

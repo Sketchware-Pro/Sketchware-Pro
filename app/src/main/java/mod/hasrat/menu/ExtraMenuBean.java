@@ -2,6 +2,8 @@ package mod.hasrat.menu;
 
 import static android.text.TextUtils.isEmpty;
 import static mod.SketchwareUtil.getDip;
+import static mod.bobur.StringEditorActivity.convertXmlToListMap;
+import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 
 import android.annotation.SuppressLint;
 import android.util.Pair;
@@ -25,6 +27,7 @@ import com.sketchware.remod.R;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -589,6 +592,22 @@ public class ExtraMenuBean {
                 break;
 
             case "ResString":
+                title = "Select a ResString";
+
+                String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
+
+                ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
+
+                convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+
+                if (!isXmlStringsContains(StringsListMap, "app_name")) {
+                    menus.add("R.string.app_name");
+                }
+                for (HashMap<String, Object> map : StringsListMap) {
+                    menus.add("R.string." + map.get("key"));
+                }
+
+                break;
             case "ResStyle":
             case "ResColor":
             case "ResArray":
