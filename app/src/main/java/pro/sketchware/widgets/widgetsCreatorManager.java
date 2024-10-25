@@ -300,6 +300,13 @@ public class widgetsCreatorManager extends IconBase {
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setItemChecked(choice.get(), true);
+
+        int maxHeightPx = dpToPx(350);
+        listView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                maxHeightPx
+        ));
+
         if (listView.getParent() != null) {
             ((ViewGroup) listView.getParent()).removeView(listView);
         }
