@@ -9,7 +9,6 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -31,6 +30,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.PropertyPopupInputTextBinding;
+import com.sketchware.remod.databinding.WidgetsCreatorDialogBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +44,7 @@ import java.util.regex.Pattern;
 
 import a.a.a.ViewEditorFragment;
 import a.a.a.aB;
+import a.a.a.wB;
 import a.a.a.xB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -229,16 +231,11 @@ public class IconCustomWidget extends IconBase {
         cardView.addView(linearLayout);
         paletteWidget.AddCustomWidgets(cardView);
         cardView.setOnClickListener(view -> {
-            final AlertDialog dialog = new AlertDialog.Builder(context)
-                    .setView(R.layout.widgets_creator_dialog)
-                    .setCancelable(true)
-                    .create();
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            View inflate = LayoutInflater.from(context).inflate(R.layout.widgets_creator_dialog, null);
-            dialog.setView(inflate);
-            final TextView dialog_title = inflate.findViewById(R.id.dialog_title);
-            final MaterialButton btnCancel = inflate.findViewById(R.id.dialog_btn_cancel);
-            final MaterialButton btnEntre = inflate.findViewById(R.id.dialog_btn_entre);
+            aB dialog = new aB((Activity) context);
+            dialog.b(Helper.getResString(R.string.create_new_widget));
+
+            View inflate = wB.a(context, R.layout.widgets_creator_dialog);
+
             final TextInputEditText type = inflate.findViewById(R.id.widget_type);
             final TextInputEditText name = inflate.findViewById(R.id.widget_name);
             final TextInputEditText title = inflate.findViewById(R.id.widget_title);
@@ -253,21 +250,19 @@ public class IconCustomWidget extends IconBase {
             clearErrorOnTextChanged(title, input_title);
             clearErrorOnTextChanged(add, input_class);
 
-            dialog_title.setText(Helper.getResString(R.string.create_new_widget));
-            btnEntre.setText(Helper.getResString(R.string.create));
-            btnCancel.setText(Helper.getResString(R.string.common_word_cancel));
 
             type.setLongClickable(false);
             add.setLongClickable(false);
 
-            type.setOnClickListener(v ->{
+            type.setOnClickListener(v -> {
                 ShowAlertDialog(context ,choices_array, types_array, type);
             });
             add.setOnClickListener(v ->{
                 List<String> types = new ArrayList<>(myArrayList);
                 ShowAlertDialog(context, types, add);
             });
-            btnEntre.setOnClickListener(v ->{
+
+            dialog.b(Helper.getResString(R.string.create), v ->{
                 try {
                     String WidgetTitle = title.getText().toString().trim();
                     String WidgetName = name.getText().toString().trim();
@@ -321,7 +316,9 @@ public class IconCustomWidget extends IconBase {
                     SketchwareUtil.toastError("Failed :" + e.getMessage());
                 }
             });
-            btnCancel.setOnClickListener(v -> dialog.dismiss());
+            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+
+            dialog.a(inflate);
             dialog.show();
         });
     }
