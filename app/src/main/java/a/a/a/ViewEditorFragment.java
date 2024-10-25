@@ -1,8 +1,8 @@
 package a.a.a;
 
-import static pro.sketchware.widgets.widgetsCreatorManager.addExtraClasses;
-import static pro.sketchware.widgets.widgetsCreatorManager.addWidgetsByTitle;
-import static pro.sketchware.widgets.widgetsCreatorManager.getWidgetsListMap;
+import static pro.sketchware.widgets.WidgetsCreatorManager.addExtraClasses;
+import static pro.sketchware.widgets.WidgetsCreatorManager.addWidgetsByTitle;
+import static pro.sketchware.widgets.WidgetsCreatorManager.getWidgetsListMap;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;

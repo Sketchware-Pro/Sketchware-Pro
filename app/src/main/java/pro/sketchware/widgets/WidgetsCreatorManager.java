@@ -42,7 +42,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
-public class widgetsCreatorManager extends IconBase {
+public class WidgetsCreatorManager extends IconBase {
 
     public static ArrayList<HashMap<String, Object>> ListMap = new ArrayList<>();
     public static String widgetFilePath = "/storage/emulated/0/.sketchware/resources/widgets/widgets.json";
@@ -68,7 +68,11 @@ public class widgetsCreatorManager extends IconBase {
     public int type;
     public String Title;
 
-    public widgetsCreatorManager(HashMap<String, Object> map, Context context) {
+    public WidgetsCreatorManager(Context context) {
+        super(context);
+    }
+
+    public WidgetsCreatorManager(HashMap<String, Object> map, Context context) {
         super(context);
         MapInfo.putAll(map);
         type = (int) MapInfo.get("type");
@@ -302,10 +306,14 @@ public class widgetsCreatorManager extends IconBase {
         listView.setItemChecked(choice.get(), true);
 
         int maxHeightPx = dpToPx(350);
-        listView.setLayoutParams(new LinearLayout.LayoutParams(
+
+        LinearLayout.LayoutParams listParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 maxHeightPx
-        ));
+        );
+
+        listParams.setMargins(0, dpToPx(15), 0, dpToPx(10));
+        listView.setLayoutParams(listParams);
 
         if (listView.getParent() != null) {
             ((ViewGroup) listView.getParent()).removeView(listView);
