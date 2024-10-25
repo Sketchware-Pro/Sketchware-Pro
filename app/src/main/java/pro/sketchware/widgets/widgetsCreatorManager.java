@@ -4,7 +4,6 @@ import static com.besome.sketch.beans.ViewBean.getViewTypeResId;
 import static mod.SketchwareUtil.dpToPx;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +19,7 @@ import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewEditor;
 import com.besome.sketch.editor.view.palette.IconBase;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
@@ -277,7 +277,8 @@ public class widgetsCreatorManager extends IconBase {
 
     public static void showAlertDialog(Context context, List<String> choices, List<String> types, TextInputEditText type) {
         AtomicInteger choice = new AtomicInteger();
-        new AlertDialog.Builder(context).setTitle(Helper.getResString(R.string.widget_type_title))
+        new MaterialAlertDialogBuilder(context)
+                .setTitle(Helper.getResString(R.string.widget_type_title))
                 .setSingleChoiceItems(choices.toArray(new String[0]),
                         types.indexOf(Objects.requireNonNull(type.getText()).toString()), (dialog2, which) -> choice.set(which))
                 .setPositiveButton(R.string.common_word_save, (dialog2, which) ->
@@ -290,7 +291,7 @@ public class widgetsCreatorManager extends IconBase {
     public static void showAlertDialog(Context context, List<String> choices, TextInputEditText type) {
         AtomicInteger choice = new AtomicInteger(choices.indexOf(Objects.requireNonNull(type.getText()).toString()));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
 
@@ -329,8 +330,8 @@ public class widgetsCreatorManager extends IconBase {
             newEditText.setText(type.getText().toString());
         }
 
-        builder.setTitle(Helper.getResString(R.string.add_to));
-        builder.setView(layout)
+        builder.setTitle(Helper.getResString(R.string.add_to))
+                .setView(layout)
                 .setPositiveButton(R.string.common_word_save, (dialog2, which) -> {
                     String newWidget = Objects.requireNonNull(newEditText.getText()).toString();
                     if (!newWidget.isEmpty()) {
