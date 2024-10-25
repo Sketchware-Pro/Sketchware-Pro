@@ -1,4 +1,4 @@
-package mod.Edward.KOC;
+package pro.sketchware.widgets;
 
 import static com.besome.sketch.beans.ViewBean.getViewTypeResId;
 
@@ -42,7 +42,7 @@ import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 
-public class IconCustomWidget extends IconBase {
+public class widgetsCreatorManager extends IconBase {
 
     public static ArrayList<HashMap<String, Object>> ListMap = new ArrayList<>();
     public static String WidgetFilePath = "/storage/emulated/0/.sketchware/resources/widgets/widgets.json";
@@ -69,7 +69,7 @@ public class IconCustomWidget extends IconBase {
     public String Title;
     public static boolean IsConvertCorrect = false;
 
-    public IconCustomWidget(HashMap<String, Object> map, Context context) {
+    public widgetsCreatorManager(HashMap<String, Object> map, Context context) {
         super(context);
         MapInfo.putAll(map);
         type = (int) MapInfo.get("type");
