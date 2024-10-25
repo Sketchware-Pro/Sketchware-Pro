@@ -1,9 +1,9 @@
 package com.besome.sketch.editor.view;
 
 
-import static pro.sketchware.widgets.widgetsCreatorManager.showWidgetsCreatorDialog;
-import static pro.sketchware.widgets.widgetsCreatorManager.deleteWidgetMap;
-import static pro.sketchware.widgets.widgetsCreatorManager.substringCovert;
+import static pro.sketchware.widgets.WidgetsCreatorManager.showWidgetsCreatorDialog;
+import static pro.sketchware.widgets.WidgetsCreatorManager.deleteWidgetMap;
+import static pro.sketchware.widgets.WidgetsCreatorManager.substringCovert;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -66,7 +66,7 @@ import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
-import pro.sketchware.widgets.widgetsCreatorManager;
+import pro.sketchware.widgets.WidgetsCreatorManager;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
@@ -364,7 +364,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     deleteWidgetFromCollection(collectionWidget.getName());
                     break lol;
                 }
-                if (D && r instanceof widgetsCreatorManager) {
+                if (D && r instanceof WidgetsCreatorManager) {
                     deleteWidgetMap(getContext(), (int) view.getTag());
                     break lol;
                 }
@@ -644,7 +644,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         dummyView.a(r, u, v, u, v);
         dummyView.a(G);
         if (isViewAnIconBase(r)) {
-            if (r instanceof uy || r instanceof widgetsCreatorManager) {
+            if (r instanceof uy || r instanceof WidgetsCreatorManager) {
                 b(true);
                 viewPane.addRootLayout(null);
             } else {

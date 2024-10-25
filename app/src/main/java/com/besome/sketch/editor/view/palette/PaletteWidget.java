@@ -37,7 +37,7 @@ import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
 import dev.aldi.sayuti.editor.view.palette.IconViewPager;
 import dev.aldi.sayuti.editor.view.palette.IconWaveSideBar;
 import dev.aldi.sayuti.editor.view.palette.IconYoutubePlayer;
-import pro.sketchware.widgets.widgetsCreatorManager;
+import pro.sketchware.widgets.WidgetsCreatorManager;
 import mod.agus.jcoderz.editor.view.palette.IconAnalogClock;
 import mod.agus.jcoderz.editor.view.palette.IconAutoCompleteTextView;
 import mod.agus.jcoderz.editor.view.palette.IconDatePicker;
@@ -81,13 +81,13 @@ public class PaletteWidget extends LinearLayout {
         if (map.get("Class").toString().equals("Layouts")) {
             LinearLayout iconBase;
             Context context = getContext();
-            iconBase = new widgetsCreatorManager(map, context);
+            iconBase = new WidgetsCreatorManager(map, context);
             layoutContainer.addView(iconBase);
             return iconBase;
         } else {
             IconBase iconBase;
             Context context = getContext();
-            iconBase = new widgetsCreatorManager(map, context);
+            iconBase = new WidgetsCreatorManager(map, context);
             iconBase.setText(title);
             iconBase.setName(name);
             if (map.get("Class").toString().equals("AndroidX")) {
