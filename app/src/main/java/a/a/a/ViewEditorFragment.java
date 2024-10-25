@@ -1,8 +1,8 @@
 package a.a.a;
 
-import static pro.sketchware.widgets.widgetsCreatorManager.AddExtraClasses;
-import static pro.sketchware.widgets.widgetsCreatorManager.AddWidgetsByTitle;
-import static pro.sketchware.widgets.widgetsCreatorManager.GetWidgetsListMap;
+import static pro.sketchware.widgets.widgetsCreatorManager.addExtraClasses;
+import static pro.sketchware.widgets.widgetsCreatorManager.addWidgetsByTitle;
+import static pro.sketchware.widgets.widgetsCreatorManager.getWidgetsListMap;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -49,7 +49,7 @@ public class ViewEditorFragment extends qA {
 
     private void initialize(ViewGroup viewGroup) {
         setHasOptionsMenu(true);
-        GetWidgetsListMap();
+        getWidgetsListMap();
         viewEditor = viewGroup.findViewById(R.id.view_editor);
         viewEditor.setScreenType(getResources().getConfiguration().orientation);
         viewProperty = requireActivity().findViewById(R.id.view_property);
@@ -224,7 +224,7 @@ public class ViewEditorFragment extends qA {
         viewEditor.addWidgetLayout(PaletteWidget.a.c, "");
         viewEditor.addWidgetLayout(PaletteWidget.a.d, "");
         viewEditor.extraWidgetLayout("", "RadioGroup");
-        AddWidgetsByTitle(viewEditor, "Layouts");
+        addWidgetsByTitle(viewEditor, "Layouts");
 
         viewEditor.paletteWidget.extraTitle("AndroidX", 0);
         viewEditor.extraWidgetLayout("", "TabLayout");
@@ -233,7 +233,7 @@ public class ViewEditorFragment extends qA {
         viewEditor.extraWidgetLayout("", "CardView");
         viewEditor.extraWidgetLayout("", "TextInputLayout");
         viewEditor.extraWidgetLayout("", "SwipeRefreshLayout");
-        AddWidgetsByTitle(viewEditor, "AndroidX");
+        addWidgetsByTitle(viewEditor, "AndroidX");
 
         viewEditor.addWidget(PaletteWidget.b.c, "", "EditText", "Edit Text");
         viewEditor.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
@@ -251,7 +251,7 @@ public class ViewEditorFragment extends qA {
         viewEditor.extraWidget("", "SearchView", "SearchView");
         viewEditor.extraWidget("", "VideoView", "VideoView");
         viewEditor.addWidget(PaletteWidget.b.h, "", "WebView", "WebView");
-        AddWidgetsByTitle(viewEditor, "Widgets");
+        addWidgetsByTitle(viewEditor, "Widgets");
 
         viewEditor.paletteWidget.extraTitle("List", 1);
         viewEditor.addWidget(PaletteWidget.b.e, "", "ListView", "ListView");
@@ -259,7 +259,7 @@ public class ViewEditorFragment extends qA {
         viewEditor.extraWidget("", "RecyclerView", "RecyclerView");
         viewEditor.addWidget(PaletteWidget.b.f, "", "Spinner", "Spinner");
         viewEditor.extraWidget("", "ViewPager", "ViewPager");
-        AddWidgetsByTitle(viewEditor, "List");
+        addWidgetsByTitle(viewEditor, "List");
 
         viewEditor.paletteWidget.extraTitle("Library", 1);
         viewEditor.extraWidget("", "WaveSideBar", "WaveSideBar");
@@ -267,14 +267,14 @@ public class ViewEditorFragment extends qA {
         viewEditor.extraWidget("", "CodeView", "CodeView");
         viewEditor.extraWidget("", "LottieAnimation", "LottieAnimation");
         viewEditor.extraWidget("", "OTPView", "OTPView");
-        AddWidgetsByTitle(viewEditor, "Library");
+        addWidgetsByTitle(viewEditor, "Library");
 
         viewEditor.paletteWidget.extraTitle("Google", 1);
         viewEditor.addWidget(PaletteWidget.b.l, "", "AdView", "AdView");
         viewEditor.addWidget(PaletteWidget.b.n, "", "MapView", "MapView");
         viewEditor.extraWidget("", "SignInButton", "SignInButton");
         viewEditor.extraWidget("", "YoutubePlayer", "YoutubePlayer");
-        AddWidgetsByTitle(viewEditor, "Google");
+        addWidgetsByTitle(viewEditor, "Google");
 
         viewEditor.paletteWidget.extraTitle("Date & Time", 1);
         viewEditor.extraWidget("", "AnalogClock", "AnalogClock");
@@ -282,8 +282,8 @@ public class ViewEditorFragment extends qA {
         viewEditor.extraWidget("", "TimePicker", "TimePicker");
         viewEditor.extraWidget("", "DatePicker", "DatePicker");
         viewEditor.addWidget(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
-        AddWidgetsByTitle(viewEditor, "Date & Time");
-        AddExtraClasses(viewEditor);
+        addWidgetsByTitle(viewEditor, "Date & Time");
+        addExtraClasses(viewEditor);
     }
 
     private void startAnimation() {

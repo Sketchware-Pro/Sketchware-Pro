@@ -1,13 +1,14 @@
 package pro.sketchware.widgets;
 
 import static com.besome.sketch.beans.ViewBean.getViewTypeResId;
-
 import static mod.SketchwareUtil.dpToPx;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.WidgetsCreatorDialogBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,11 +34,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Pattern;
 
 import a.a.a.ViewEditorFragment;
 import a.a.a.aB;
-import a.a.a.wB;
 import a.a.a.xB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
@@ -45,8 +45,8 @@ import mod.hey.studios.util.Helper;
 public class widgetsCreatorManager extends IconBase {
 
     public static ArrayList<HashMap<String, Object>> ListMap = new ArrayList<>();
-    public static String WidgetFilePath = "/storage/emulated/0/.sketchware/resources/widgets/widgets.json";
-    public static String TitlesFilePath = "/storage/emulated/0/.sketchware/resources/widgets/titles.json";
+    public static String widgetFilePath = "/storage/emulated/0/.sketchware/resources/widgets/widgets.json";
+    public static String titlesFilePath = "/storage/emulated/0/.sketchware/resources/widgets/titles.json";
     public static ArrayList<String> myArrayList = new ArrayList<>();
     public static ArrayList<String> itemsToRemove = new ArrayList<>(Arrays.asList(
             "Layouts", "AndroidX", "Widgets", "List", "Library", "Google", "Date & Time"
@@ -73,9 +73,9 @@ public class widgetsCreatorManager extends IconBase {
         super(context);
         MapInfo.putAll(map);
         type = (int) MapInfo.get("type");
-        Title = MapInfo.get("title").toString();
+        Title = Objects.requireNonNull(MapInfo.get("title")).toString();
         setWidgetImage(getViewTypeResId(type));
-        setWidgetName(MapInfo.get("title").toString());
+        setWidgetName(Objects.requireNonNull(MapInfo.get("title")).toString());
     }
 
     @Override
@@ -88,8 +88,8 @@ public class widgetsCreatorManager extends IconBase {
         layoutBean.paddingTop = 8;
         layoutBean.paddingRight = 8;
         layoutBean.paddingBottom = 8;
-        viewBean.convert = MapInfo.get("name").toString();
-        switch(viewBean.type) {
+        viewBean.convert = Objects.requireNonNull(MapInfo.get("name")).toString();
+        switch (viewBean.type) {
             case 0, 2:
                 layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
                 viewBean.layout.orientation = VERTICAL;
@@ -103,45 +103,45 @@ public class widgetsCreatorManager extends IconBase {
             case 6:
                 viewBean.image.resName = f;
                 break;
-            case 7, 10, 12, 14, 36 ,39:
+            case 7, 10, 12, 14, 36, 39:
                 viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
             case 8:
                 viewBean.text.text = Title;
                 layoutBean.width = -1;
                 break;
         }
-        viewBean.inject = MapInfo.get("inject").toString();
+        viewBean.inject = Objects.requireNonNull(MapInfo.get("inject")).toString();
         return viewBean;
     }
 
-    public static void GetWidgetsListMap() {
-        if (FileUtil.isExistFile(WidgetFilePath)) {
+    public static void getWidgetsListMap() {
+        if (FileUtil.isExistFile(widgetFilePath)) {
             try {
-                ListMap = new Gson().fromJson(FileUtil.readFile(WidgetFilePath), new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                ListMap = new Gson().fromJson(FileUtil.readFile(widgetFilePath), new TypeToken<ArrayList<HashMap<String, Object>>>() {
                 }.getType());
-                CheckWidgetsListMap();
+                checkWidgetsListMap();
             } catch (Exception e) {
-                CreateWidgetsFile();
+                createWidgetsFile();
             }
         } else {
-            CreateWidgetsFile();
+            createWidgetsFile();
         }
-        if (FileUtil.isExistFile(TitlesFilePath)) {
+        if (FileUtil.isExistFile(titlesFilePath)) {
             try {
-                myArrayList = new Gson().fromJson(FileUtil.readFile(TitlesFilePath), new TypeToken<ArrayList<String>>() {
+                myArrayList = new Gson().fromJson(FileUtil.readFile(titlesFilePath), new TypeToken<ArrayList<String>>() {
                 }.getType());
             } catch (Exception e) {
-                CreateTitlesFile();
+                createTitlesFile();
             }
         } else {
-            CreateTitlesFile();
+            createTitlesFile();
         }
     }
 
-    public static void CheckWidgetsListMap() {
+    public static void checkWidgetsListMap() {
         int position = 0;
         for (HashMap<String, Object> map : ListMap) {
-            if (!CanAddWidget(map)) {
+            if (!canAddWidget(map)) {
                 ListMap.remove(position);
                 SketchwareUtil.toastError("Failed to get custom widget " + position + "#");
             }
@@ -149,24 +149,22 @@ public class widgetsCreatorManager extends IconBase {
         }
     }
 
-    public static void CreateTitlesFile() {
+    public static void createTitlesFile() {
         if (myArrayList != null) {
             myArrayList.clear();
         }
-        myArrayList.add("Layouts");
+        Objects.requireNonNull(myArrayList).add("Layouts");
         myArrayList.add("AndroidX");
         myArrayList.add("Widgets");
         myArrayList.add("List");
         myArrayList.add("Library");
         myArrayList.add("Google");
         myArrayList.add("Date & Time");
-        FileUtil.writeFile(TitlesFilePath, new Gson().toJson(myArrayList));
+        FileUtil.writeFile(titlesFilePath, new Gson().toJson(myArrayList));
     }
 
-    public static void CreateWidgetsFile() {
-        if (ListMap != null) {
-            ListMap.clear();
-        }
+    public static void createWidgetsFile() {
+        if (ListMap != null) ListMap.clear();
         HashMap<String, Object> map = new HashMap<>();
         map.put("Class", "Layouts");
         map.put("title", "RelativeLayout");
@@ -175,137 +173,117 @@ public class widgetsCreatorManager extends IconBase {
         map.put("type", 0);
         map.put("position", 0);
         ListMap.add(map);
-        FileUtil.writeFile(WidgetFilePath, new Gson().toJson(ListMap));
+        FileUtil.writeFile(widgetFilePath, new Gson().toJson(ListMap));
     }
 
     public static void showWidgetsCreatorDialog(Context context) {
         aB dialog = new aB((Activity) context);
         dialog.b(Helper.getResString(R.string.create_new_widget));
-        View inflate = wB.a(context, R.layout.widgets_creator_dialog);
+        WidgetsCreatorDialogBinding binding = WidgetsCreatorDialogBinding.inflate(LayoutInflater.from(context));
+        View inflate = binding.getRoot();
 
-        final TextInputEditText type = inflate.findViewById(R.id.widget_type);
-        final TextInputEditText name = inflate.findViewById(R.id.widget_name);
-        final TextInputEditText title = inflate.findViewById(R.id.widget_title);
-        final TextInputEditText inject = inflate.findViewById(R.id.inject_code);
-        final TextInputEditText add = inflate.findViewById(R.id.add_widget_to);
-        final TextInputLayout input_title = inflate.findViewById(R.id.input_title);
-        final TextInputLayout input_name = inflate.findViewById(R.id.input_name);
-        final TextInputLayout input_type = inflate.findViewById(R.id.input_type);
-        final TextInputLayout input_class = inflate.findViewById(R.id.input_class);
-        clearErrorOnTextChanged(type, input_type);
-        clearErrorOnTextChanged(name, input_name);
-        clearErrorOnTextChanged(title, input_title);
-        clearErrorOnTextChanged(add, input_class);
+        clearErrorOnTextChanged(binding.widgetType, binding.inputType);
+        clearErrorOnTextChanged(binding.widgetName, binding.inputName);
+        clearErrorOnTextChanged(binding.widgetTitle, binding.inputTitle);
+        clearErrorOnTextChanged(binding.addWidgetTo, binding.inputClass);
 
-        type.setLongClickable(false);
-        add.setLongClickable(false);
+        binding.widgetType.setLongClickable(false);
+        binding.addWidgetTo.setLongClickable(false);
 
-        type.setOnClickListener(v -> {
-            ShowAlertDialog(context ,choices_array, types_array, type);
-        });
-        add.setOnClickListener(v ->{
+        binding.widgetType.setOnClickListener(v -> showAlertDialog(context, choices_array, types_array, binding.widgetType));
+        binding.addWidgetTo.setOnClickListener(v -> {
             List<String> types = new ArrayList<>(myArrayList);
-            ShowAlertDialog(context, types, add);
+            showAlertDialog(context, types, binding.addWidgetTo);
         });
 
-        dialog.b(Helper.getResString(R.string.create), v ->{
+        dialog.b(Helper.getResString(R.string.create), v -> {
             try {
-                String WidgetTitle = title.getText().toString().trim();
-                String WidgetName = name.getText().toString().trim();
-                String WidgetType = type.getText().toString().trim();
-                String WidgetInject = inject.getText().toString().trim();
-                String WidgetClass = add.getText().toString().trim();
-                if (WidgetTitle.isEmpty()) {
-                    input_title.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget Name"));
+                String widgetTitle = Objects.requireNonNull(binding.widgetTitle.getText()).toString().trim();
+                String widgetName = Objects.requireNonNull(binding.widgetName.getText()).toString().trim();
+                String widgetType = Objects.requireNonNull(binding.widgetType.getText()).toString().trim();
+                String widgetInject = Objects.requireNonNull(binding.injectCode.getText()).toString().trim();
+                String widgetClass = Objects.requireNonNull(binding.addWidgetTo.getText()).toString().trim();
+
+                if (widgetTitle.isEmpty()) {
+                    binding.widgetTitle.setError(Helper.getResString(R.string.var_is_required));
                     return;
                 }
-                if (WidgetName.isEmpty()) {
-                    input_name.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget TypeView"));
+                if (widgetName.isEmpty()) {
+                    binding.widgetName.setError(Helper.getResString(R.string.var_is_required));
                     return;
                 }
                 if (!IsConvertCorrect) {
                     return;
                 }
-                if (WidgetType.isEmpty()) {
-                    input_type.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget Type"));
+                if (widgetType.isEmpty()) {
+                    binding.widgetType.setError(Helper.getResString(R.string.var_is_required));
                     return;
                 }
-                if (WidgetClass.isEmpty()) {
-                    input_class.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget Class"));
+                if (widgetClass.isEmpty()) {
+                    binding.addWidgetTo.setError(Helper.getResString(R.string.var_is_required));
                     return;
                 }
-                HashMap<String, Object> Map = new HashMap<>();
-                Map.put("Class", WidgetClass);
-                Map.put("title", WidgetTitle);
-                Map.put("name", WidgetName);
-                Map.put("inject", WidgetInject);
-                Map.put("type", Integer.parseInt(WidgetType));
+
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("Class", widgetClass);
+                map.put("title", widgetTitle);
+                map.put("name", widgetName);
+                map.put("inject", widgetInject);
+                map.put("type", Integer.parseInt(widgetType));
                 Object positionObject = ListMap.isEmpty() ? 0 : ListMap.get(ListMap.size() - 1).get("position");
                 int position;
                 if (positionObject instanceof Number) {
                     position = ((Number) positionObject).intValue();
                 } else {
-                    position = Integer.parseInt(positionObject.toString());
+                    position = Integer.parseInt(Objects.requireNonNull(positionObject).toString());
                 }
 
-                Map.put("position", position + 1);
+                map.put("position", position + 1);
 
-                ListMap.add(Map);
-                FileUtil.writeFile(WidgetFilePath, new Gson().toJson(ListMap));
-                if (!myArrayList.contains(WidgetClass)) {
-                    myArrayList.add(WidgetClass);
-                    FileUtil.writeFile(TitlesFilePath, new Gson().toJson(myArrayList));
+                ListMap.add(map);
+                FileUtil.writeFile(widgetFilePath, new Gson().toJson(ListMap));
+                if (!myArrayList.contains(widgetClass)) {
+                    myArrayList.add(widgetClass);
+                    FileUtil.writeFile(titlesFilePath, new Gson().toJson(myArrayList));
                 }
                 ViewEditorFragment.e();
                 dialog.dismiss();
-                } catch (Exception e) {
-                    SketchwareUtil.toastError("Failed :" + e.getMessage());
-                }
-            });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+            } catch (Exception e) {
+                SketchwareUtil.toastError("Failed: " + e.getMessage());
+            }
+        });
 
-            dialog.a(inflate);
-            dialog.show();
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+
+        dialog.a(inflate);
+        dialog.show();
     }
+
 
     public static void clearErrorOnTextChanged(final EditText editText, final TextInputLayout textInputLayout) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String se = s.toString();
-                if (editText.getId() == R.id.widget_name && !se.isEmpty()) {
-                    if (Pattern.compile("^[a-zA-Z.]*").matcher(se).matches()) {
-                        textInputLayout.setError(null);
-                        IsConvertCorrect = true;
-                    } else if (se.contains(" ")) {
-                        textInputLayout.setError(Helper.getResString(R.string.invalid_value_rule_6));
-                        IsConvertCorrect = false;
-                    } else {
-                        textInputLayout.setError(Helper.getResString(R.string.invalid_value_rule_2));
-                        IsConvertCorrect = false;
-                    }
-                } else {
+                if (textInputLayout.getError() != null) {
                     textInputLayout.setError(null);
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
-    /*
 
-    }
-
-     */
-    public static void ShowAlertDialog(Context context, List<String> choices, List<String> types, TextInputEditText type) {
+    public static void showAlertDialog(Context context, List<String> choices, List<String> types, TextInputEditText type) {
         AtomicInteger choice = new AtomicInteger();
         new AlertDialog.Builder(context).setTitle(Helper.getResString(R.string.widget_type_title))
                 .setSingleChoiceItems(choices.toArray(new String[0]),
-                        types.indexOf(type.getText().toString()), (dialog2, which) -> choice.set(which))
+                        types.indexOf(Objects.requireNonNull(type.getText()).toString()), (dialog2, which) -> choice.set(which))
                 .setPositiveButton(R.string.common_word_save, (dialog2, which) ->
                         type.setText(types.get(choice.get()))
                 )
@@ -313,8 +291,8 @@ public class widgetsCreatorManager extends IconBase {
                 .create().show();
     }
 
-    public static void ShowAlertDialog(Context context, List<String> choices, TextInputEditText type) {
-        AtomicInteger choice = new AtomicInteger(choices.indexOf(type.getText().toString()));
+    public static void showAlertDialog(Context context, List<String> choices, TextInputEditText type) {
+        AtomicInteger choice = new AtomicInteger(choices.indexOf(Objects.requireNonNull(type.getText()).toString()));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LinearLayout layout = new LinearLayout(context);
@@ -331,7 +309,7 @@ public class widgetsCreatorManager extends IconBase {
         layout.addView(listView);
 
         TextInputLayout textInputLayout = new TextInputLayout(context);
-        TextInputEditText newEditText =  new TextInputEditText(textInputLayout.getContext());
+        TextInputEditText newEditText = new TextInputEditText(textInputLayout.getContext());
         newEditText.setHint(Helper.getResString(R.string.new_class));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -358,7 +336,7 @@ public class widgetsCreatorManager extends IconBase {
         builder.setTitle(Helper.getResString(R.string.add_to));
         builder.setView(layout)
                 .setPositiveButton(R.string.common_word_save, (dialog2, which) -> {
-                    String newWidget = newEditText.getText().toString();
+                    String newWidget = Objects.requireNonNull(newEditText.getText()).toString();
                     if (!newWidget.isEmpty()) {
                         choices.add(newWidget);
                         type.setText(newWidget);
@@ -375,10 +353,12 @@ public class widgetsCreatorManager extends IconBase {
 
         newEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -396,7 +376,7 @@ public class widgetsCreatorManager extends IconBase {
         });
     }
 
-    public static void AddWidgetsByTitle(ViewEditor viewEditor, String title) {
+    public static void addWidgetsByTitle(ViewEditor viewEditor, String title) {
         for (HashMap<String, Object> map : ListMap) {
             try {
                 if (Objects.requireNonNull(map.get("Class")).toString().equals(title)) {
@@ -406,11 +386,12 @@ public class widgetsCreatorManager extends IconBase {
                     }
                     viewEditor.CreateCustomWidget(map);
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
     }
 
-    public static boolean CanAddWidget(HashMap<String, Object> map) {
+    public static boolean canAddWidget(HashMap<String, Object> map) {
         List<String> keysToCheck = Arrays.asList("Class", "title", "name", "inject", "type", "position");
         boolean containsAllKeys = map.keySet().containsAll(keysToCheck);
         Object value = map.get("type");
@@ -427,7 +408,7 @@ public class widgetsCreatorManager extends IconBase {
         return isContainedInTypes && containsAllKeys;
     }
 
-    public static void AddExtraClasses(ViewEditor viewEditor) {
+    public static void addExtraClasses(ViewEditor viewEditor) {
         ArrayList<String> myArrayListCopy = new ArrayList<>(myArrayList);
         myArrayListCopy.removeAll(itemsToRemove);
 
@@ -435,37 +416,37 @@ public class widgetsCreatorManager extends IconBase {
             try {
                 for (String item : myArrayListCopy) {
                     viewEditor.paletteWidget.extraTitle(item, 1);
-                    AddWidgetsByTitle(viewEditor, item);
+                    addWidgetsByTitle(viewEditor, item);
                 }
             } catch (Exception ignored) {
             }
         }
     }
 
-    public static void DeleteWidgetMap(Context context, int _position) {
+    public static void deleteWidgetMap(Context context, int position) {
         aB aBDialog = new aB((Activity) context);
         aBDialog.b(xB.b().a(context, R.string.view_widget_favorites_delete_title));
         aBDialog.a(R.drawable.high_priority_96_red);
         aBDialog.a(xB.b().a(context, R.string.view_widget_favorites_delete_message));
         aBDialog.b(xB.b().a(context, R.string.common_word_delete), v -> {
-            for (Iterator<HashMap<String, Object>> iterator = ListMap.iterator(); iterator.hasNext();) {
+            for (Iterator<HashMap<String, Object>> iterator = ListMap.iterator(); iterator.hasNext(); ) {
                 HashMap<String, Object> map = iterator.next();
                 Object positionValue = map.get("position");
 
                 if (positionValue != null) {
                     int positionIntValue = (positionValue instanceof Double) ? ((Double) positionValue).intValue() : (int) positionValue;
-                    if (positionIntValue == _position) {
+                    if (positionIntValue == position) {
                         iterator.remove();
-                        String Class = map.get("Class").toString();
-                        if (IsClassEmpty(Class) && !itemsToRemove.contains(Class)) {
+                        String Class = Objects.requireNonNull(map.get("Class")).toString();
+                        if (isClassEmpty(Class) && !itemsToRemove.contains(Class)) {
                             myArrayList.remove(Class);
-                            FileUtil.writeFile(TitlesFilePath, new Gson().toJson(myArrayList));
+                            FileUtil.writeFile(titlesFilePath, new Gson().toJson(myArrayList));
                         }
                         break;
                     }
                 }
             }
-            FileUtil.writeFile(WidgetFilePath, new Gson().toJson(ListMap));
+            FileUtil.writeFile(widgetFilePath, new Gson().toJson(ListMap));
             ViewEditorFragment.e();
             aBDialog.dismiss();
         });
@@ -473,12 +454,12 @@ public class widgetsCreatorManager extends IconBase {
         aBDialog.show();
     }
 
-    public static boolean IsClassEmpty(String str) {
+    public static boolean isClassEmpty(String str) {
         if (!ListMap.isEmpty()) {
             for (HashMap<String, Object> map : ListMap) {
                 if (map.containsKey("Class")) {
                     String classNameValue = (String) map.get("Class");
-                    if (classNameValue.equals(str)) {
+                    if (Objects.requireNonNull(classNameValue).equals(str)) {
                         return false;
                     }
                 }
@@ -487,7 +468,7 @@ public class widgetsCreatorManager extends IconBase {
         return true;
     }
 
-    public static String SubstringCovert(String input) {
+    public static String substringCovert(String input) {
         int lastIndex = input.lastIndexOf('.');
         if (lastIndex != -1) {
             return input.substring(lastIndex + 1);
@@ -495,5 +476,4 @@ public class widgetsCreatorManager extends IconBase {
             return input;
         }
     }
-
 }
