@@ -1365,6 +1365,7 @@ Do you want to continue?"</string>
     <string name="invalid_value_rule_3">Only use letters(a-z), numbers and Special characters(_)</string>
     <string name="invalid_value_rule_4">Only use small letters(a-z), numbers and special character(_)</string>
     <string name="invalid_value_rule_5">"Special letters(&amp;, &lt;, >, \", ') are not allowed"</string>
+    <string name="invalid_value_rule_6">Spaces aren\'t allowed</string>
     <string name="logic_block_favorites_delete_message">Are you sure you want to delete your saved block from My Collection? This action can not be undone.</string>
     <string name="logic_block_favorites_delete_title">Delete from My Collection</string>
     <string name="logic_block_favorites_save_guide">Saved blocks are added to My Collection and are accessible from all the projects.</string>
@@ -2212,10 +2213,7 @@ Please try again later"</string>
 
     <string name="create_new_widget">Create a Widget</string>
     <string name="create">Create</string>
-    <string name="title_required">Title is required</string>
-    <string name="name_required">Name is required</string>
-    <string name="type_required">Type is required</string>
-    <string name="class_required">Class is required</string>
+    <string name="var_is_required">%s is required</string>
     <string name="widget_type_title">Widget type</string>
     <string name="new_class">OR Create a new Class</string>
     <string name="add_to">Add Widget to Class :</string>

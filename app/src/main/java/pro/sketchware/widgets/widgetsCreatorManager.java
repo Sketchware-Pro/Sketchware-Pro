@@ -216,22 +216,22 @@ public class widgetsCreatorManager extends IconBase {
                 String WidgetInject = inject.getText().toString().trim();
                 String WidgetClass = add.getText().toString().trim();
                 if (WidgetTitle.isEmpty()) {
-                    input_title.setError(Helper.getResString(R.string.title_required));
+                    input_title.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget Name"));
                     return;
                 }
                 if (WidgetName.isEmpty()) {
-                    input_name.setError(Helper.getResString(R.string.name_required));
+                    input_name.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget TypeView"));
                     return;
                 }
                 if (!IsConvertCorrect) {
                     return;
                 }
                 if (WidgetType.isEmpty()) {
-                    input_type.setError(Helper.getResString(R.string.type_required));
+                    input_type.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget Type"));
                     return;
                 }
                 if (WidgetClass.isEmpty()) {
-                    input_class.setError(Helper.getResString(R.string.class_required));
+                    input_class.setError(String.format(Helper.getResString(R.string.var_is_required), "Widget Class"));
                     return;
                 }
                 HashMap<String, Object> Map = new HashMap<>();
@@ -281,10 +281,10 @@ public class widgetsCreatorManager extends IconBase {
                         textInputLayout.setError(null);
                         IsConvertCorrect = true;
                     } else if (se.contains(" ")) {
-                        textInputLayout.setError("Spaces aren't allowed to prevent crashes");
+                        textInputLayout.setError(Helper.getResString(R.string.invalid_value_rule_6));
                         IsConvertCorrect = false;
                     } else {
-                        textInputLayout.setError("Only use letters (a-zA-Z), numbers and Special characters (.)");
+                        textInputLayout.setError(Helper.getResString(R.string.invalid_value_rule_2));
                         IsConvertCorrect = false;
                     }
                 } else {
