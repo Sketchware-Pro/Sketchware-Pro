@@ -442,7 +442,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         }
         tempMap.put("typeName", binding.typename.getText().toString());
         tempMap.put("spec", binding.spec.getText().toString());
-        tempMap.put("color", binding.spec.getTag());
+        tempMap.put("color", binding.colour.getText().toString());
         if (binding.type.getText().toString().equals("e")) {
             tempMap.put("spec2", binding.spec2.getText().toString());
         }
@@ -464,7 +464,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         }
         tempMap.put("typeName", binding.typename.getText().toString());
         tempMap.put("spec", binding.spec.getText().toString());
-        tempMap.put("color", binding.spec.getTag());
+        tempMap.put("color", binding.colour.getText().toString());
         if (binding.type.getText().toString().equals("e")) {
             tempMap.put("spec2", binding.spec2.getText().toString());
         }
@@ -486,7 +486,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         }
         tempMap.put("typeName", binding.typename.getText().toString());
         tempMap.put("spec", binding.spec.getText().toString());
-        tempMap.put("color", binding.spec.getTag());
+        tempMap.put("color", binding.colour.getText().toString());
         if (binding.type.getText().toString().equals("e")) {
             tempMap.put("spec2", binding.spec2.getText().toString());
         }
