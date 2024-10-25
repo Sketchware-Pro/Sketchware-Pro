@@ -351,7 +351,6 @@ public class BlocksManager extends BaseAppCompatActivity {
             final Zx zx = new Zx(this, 0, true, false);
             zx.a(new PCP(this, storePickedResultIn, dialog));
             zx.showAtLocation(v, Gravity.CENTER, 0, 0);
-            dialog.dismiss();
         };
     }
 
