@@ -46,6 +46,7 @@
             android:digits="0123456789"
             android:hint="Select widget type"
             android:inputType="number"
+            android:focusable="false"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,6 +62,7 @@
             android:layout_height="wrap_content"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_()-."
             android:hint="Select category"
+            android:focusable="false"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
