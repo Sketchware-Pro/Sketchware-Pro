@@ -5,7 +5,7 @@ import java.io.File;
 import a.a.a.BuiltInLibraryManager;
 import a.a.a.ProjectBuilder;
 import a.a.a.yq;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 

@@ -2,8 +2,8 @@ package pro.sketchware.control.logic;
 
 import static android.text.TextUtils.isEmpty;
 import static com.besome.sketch.SketchApplication.getContext;
-import static mod.SketchwareUtil.dpToPx;
-import static mod.SketchwareUtil.getDip;
+import static pro.sketchware.utility.SketchwareUtil.dpToPx;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.content.Context;
 import android.text.InputType;
@@ -37,7 +37,7 @@ import a.a.a.bB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
-import mod.SketchwareUtil;
+import pro.sketchware.utility.SketchwareUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
 import mod.elfilibustero.sketch.lib.valid.VariableModifierValidator;
 import mod.elfilibustero.sketch.lib.valid.VariableTypeValidator;

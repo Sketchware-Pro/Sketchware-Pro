@@ -29,7 +29,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hey.studios.util.Helper;
 
@@ -195,7 +195,7 @@ public class Zx extends PopupWindow {
     private void initializeColorData(boolean isColorTransparent, boolean isColorNone) {
         colorList.add(new ColorBean("#FFF6F6F6", "CUSTOM", "#212121", R.drawable.checked_grey_32));
         if (sc_id != null)
-            colorList.add(new ColorBean("#FFF6F6F6", "Colors.xml", "#212121", R.drawable.checked_grey_32));
+            colorList.add(new ColorBean("#FFF6F6F6", "colors.xml", "#212121", R.drawable.checked_grey_32));
         colorList.add(sq.p[0]);
         colorList.add(sq.q[0]);
         colorList.add(sq.r[0]);
@@ -390,7 +390,7 @@ public class Zx extends PopupWindow {
                 }
                 eventType = parser.next();
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 

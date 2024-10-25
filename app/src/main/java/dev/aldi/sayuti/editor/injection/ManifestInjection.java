@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.sketchware.remod.xml.XmlBuilder;
 import a.a.a.jq;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.FileUtil;
 
 public class ManifestInjection {
 

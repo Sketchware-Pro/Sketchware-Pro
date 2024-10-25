@@ -39,8 +39,8 @@ import a.a.a.WB;
 import a.a.a.bB;
 import a.a.a.uq;
 import a.a.a.yy;
-import mod.SketchwareUtil;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.jbk.util.LogUtil;
 
 public class AddSoundActivity extends BaseDialogActivity implements View.OnClickListener {

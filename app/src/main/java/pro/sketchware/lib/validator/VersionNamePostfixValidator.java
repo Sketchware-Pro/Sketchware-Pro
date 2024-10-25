@@ -1,4 +1,4 @@
-package pro.sketchware.validator;
+package pro.sketchware.lib.validator;
 
 import android.content.Context;
 

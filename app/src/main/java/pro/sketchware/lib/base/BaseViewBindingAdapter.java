@@ -1,4 +1,4 @@
-package pro.sketchware.lib;
+package pro.sketchware.lib.base;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,7 +9,7 @@ import androidx.viewbinding.ViewBinding;
 
 import java.util.ArrayList;
 
-public abstract class CommonViewBindingAdapter<T> extends RecyclerView.Adapter<CommonViewBindingAdapter.ViewHolder> {
+public abstract class BaseViewBindingAdapter<T> extends RecyclerView.Adapter<BaseViewBindingAdapter.ViewHolder> {
 
     private ArrayList<T> items = new ArrayList<>();
 

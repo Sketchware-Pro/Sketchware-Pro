@@ -21,8 +21,8 @@ import java.util.Optional;
 
 import a.a.a.Lx;
 import a.a.a.xB;
-import mod.SketchwareUtil;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
 //responsible code :

@@ -1,6 +1,6 @@
 package com.besome.sketch.editor;
 
-import static mod.SketchwareUtil.getDip;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.content.Context;
 import android.content.Intent;

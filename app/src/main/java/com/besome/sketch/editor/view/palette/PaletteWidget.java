@@ -1,6 +1,6 @@
 package com.besome.sketch.editor.view.palette;
 
-import static mod.SketchwareUtil.dpToPx;
+import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.content.Context;
 import android.graphics.Color;

@@ -1,9 +1,12 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:layout_marginLeft="4dp"
     android:layout_marginTop="2dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:checkable="true"
+    app:checkedIconGravity="TOP_END"
     android:layout_marginRight="4dp"
     android:layout_marginBottom="2dp"
     android:elevation="4dp">
@@ -57,4 +60,4 @@
             android:textColor="#ff404040"
             android:textSize="16sp" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>
