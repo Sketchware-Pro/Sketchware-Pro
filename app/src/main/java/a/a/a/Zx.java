@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
@@ -378,8 +380,8 @@ public class Zx extends PopupWindow {
                         colorValue = parser.getText();
                         break;
                     case XmlPullParser.END_TAG:
-                        if ((tagName.equals("color") && (PropertiesUtil.isHexColor(colorValue)))) {
-                            if (colorName != null && colorValue != null) {
+                        if ((tagName.equals("color"))) {
+                            if (colorName != null && isValidHexColor(colorValue)) {
                                 HashMap<String, Object> colors = new HashMap<>();
                                 colors.put("colorName", colorName);
                                 colors.put("colorValue", colorValue);
@@ -392,6 +394,15 @@ public class Zx extends PopupWindow {
             }
         } catch (Exception ignored) {
         }
+    }
+
+     public static boolean isValidHexColor(String colorStr) {
+        if (colorStr == null) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile("^#([a-fA-F0-9]*)");
+        Matcher matcher = pattern.matcher(colorStr);
+        return matcher.matches();
     }
 
     private void smoothScrollToCurrentItem() {
