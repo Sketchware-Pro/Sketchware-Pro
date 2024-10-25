@@ -215,7 +215,7 @@ public class mq {
     /**
      * @return Imports needed for a type
      */
-    public static ArrayList<String> getImportsByTypeName(String name) {
+    public static ArrayList<String> getImportsByTypeName(String name, String convert) {
         ArrayList<String> importList = new ArrayList<>();
         ComponentsHandler.getImports(name, importList);
 
@@ -631,6 +631,9 @@ public class mq {
                 return importList;
 
             default:
+                if (convert != null && convert.contains(".")) {
+                    importList.add(convert);
+                }
                 return importList;
         }
     }
