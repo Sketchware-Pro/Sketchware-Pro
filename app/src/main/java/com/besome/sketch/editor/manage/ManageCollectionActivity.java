@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -46,6 +45,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -953,7 +953,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private class BlockCollectionViewHolder extends SoundlessViewHolder {
-            public final CardView cardView;
+            public final MaterialCardView cardView;
             public final CheckBox checkBox;
             public final ImageView blockIcon;
             public final ImageView delete;
@@ -990,7 +990,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private class FontCollectionViewHolder extends SoundlessViewHolder {
-            public final CardView cardView;
+            public final MaterialCardView cardView;
             public final CheckBox checkBox;
             public final ImageView fontIcon;
             public final ImageView delete;
@@ -1068,7 +1068,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private class MoreBlockCollectionViewHolder extends SoundlessViewHolder {
-            public final CardView cardView;
+            public final MaterialCardView cardView;
             public final CheckBox checkBox;
             public final ImageView delete;
             public final LinearLayout deleteContainer;
@@ -1108,7 +1108,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             public final ProgressBar playbackProgress;
             public final TextView totalDuration;
             public final LinearLayout deleteContainer;
-            public final CardView cardView;
+            public final MaterialCardView cardView;
             public final CheckBox checkBox;
             public final ImageView album;
             public final ImageView delete;
@@ -1167,7 +1167,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private class WidgetCollectionViewHolder extends SoundlessViewHolder {
-            public final CardView cardView;
+            public final MaterialCardView cardView;
             public final CheckBox checkBox;
             public final ImageView widgetIcon;
             public final ImageView delete;
