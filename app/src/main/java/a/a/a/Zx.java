@@ -390,7 +390,7 @@ public class Zx extends PopupWindow {
                 }
                 eventType = parser.next();
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 

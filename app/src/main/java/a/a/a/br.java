@@ -160,39 +160,32 @@ public class br extends qA implements View.OnClickListener {
             }
 
             void bind(ComponentBean componentBean) {
-                binding
-                        .componentOption
+                binding.componentOption
                         .getDeleteButton()
                         .getLabel()
-                        .setText(
-                                xB.b()
-                                        .a(
-                                                requireContext(),
-                                                R.string
-                                                        .component_context_menu_title_delete_component));
-                binding.componentOption.setButtonOnClickListener(
-                        v -> {
-                            int lastSelectedItem = getLayoutPosition();
-                            ComponentBean bean =
-                                    jC.a(sc_id).a(projectFile.getJavaName(), lastSelectedItem);
-                            if (v instanceof CollapsibleButton) {
-                                bean.isConfirmation = true;
-                                setAnimateNextTransformation(true);
-                                notifyItemChanged(lastSelectedItem);
-                            } else {
-                                int id = v.getId();
-                                if (id == R.id.confirm_no) {
-                                    bean.isConfirmation = false;
-                                    setAnimateNextTransformation(true);
-                                    notifyItemChanged(lastSelectedItem);
-                                } else if (id == R.id.confirm_yes) {
-                                    jC.a(sc_id).b(projectFile.getJavaName(), bean);
-                                    bean.isConfirmation = false;
-                                    notifyItemRemoved(lastSelectedItem);
-                                    notifyItemRangeChanged(lastSelectedItem, getItemCount());
-                                }
-                            }
-                        });
+                        .setText(xB.b().a(requireContext(), R.string.component_context_menu_title_delete_component));
+                binding.componentOption.setButtonOnClickListener(v -> {
+                    int lastSelectedItem = getLayoutPosition();
+                    ComponentBean bean =
+                            jC.a(sc_id).a(projectFile.getJavaName(), lastSelectedItem);
+                    if (v instanceof CollapsibleButton) {
+                        bean.isConfirmation = true;
+                        setAnimateNextTransformation(true);
+                        notifyItemChanged(lastSelectedItem);
+                    } else {
+                        int id = v.getId();
+                        if (id == R.id.confirm_no) {
+                            bean.isConfirmation = false;
+                            setAnimateNextTransformation(true);
+                            notifyItemChanged(lastSelectedItem);
+                        } else if (id == R.id.confirm_yes) {
+                            jC.a(sc_id).b(projectFile.getJavaName(), bean);
+                            bean.isConfirmation = false;
+                            notifyItemRemoved(lastSelectedItem);
+                            notifyItemRangeChanged(lastSelectedItem, getItemCount());
+                        }
+                    }
+                });
                 onDoneInitializingViews();
                 setOnClickCollapseConfig(v -> v != binding.getRoot());
                 binding.componentEvents.setRecycledViewPool(eventViewHolders);
@@ -212,9 +205,8 @@ public class br extends qA implements View.OnClickListener {
                     availableEventsAdapter.submitList(newAvailableEvents);
                     openEvent(event.targetId, event.eventName, event.eventName);
                 });
-                ConcatAdapter componentEventsAdapter =
-                        new ConcatAdapter(
-                                EVENTS_ADAPTER_CONFIG, addedEventsAdapter, availableEventsAdapter);
+                ConcatAdapter componentEventsAdapter = new ConcatAdapter(
+                        EVENTS_ADAPTER_CONFIG, addedEventsAdapter, availableEventsAdapter);
 
                 binding.tvComponentType.setText(
                         ComponentBean.getComponentName(requireContext(), componentBean.type));
@@ -225,8 +217,8 @@ public class br extends qA implements View.OnClickListener {
                     case ComponentBean.COMPONENT_TYPE_SHAREDPREF -> binding.tvComponentId
                             .setText(componentBean.componentId + " : " + componentBean.param1);
                     case ComponentBean.COMPONENT_TYPE_FIREBASE,
-                            ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE,
-                            ComponentBean.COMPONENT_TYPE_FILE_PICKER -> {
+                         ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE,
+                         ComponentBean.COMPONENT_TYPE_FILE_PICKER -> {
                         String path = componentBean.param1;
                         if (path.isEmpty()) {
                             path = "/";
@@ -273,8 +265,7 @@ public class br extends qA implements View.OnClickListener {
                     for (EventBean event : addedEvents) {
                         if (availableEvents.contains(event.eventName)) {
                             FrLogicListItemEventPreviewBinding previewBinding =
-                                    FrLogicListItemEventPreviewBinding.inflate(
-                                            LayoutInflater.from(requireContext()));
+                                    FrLogicListItemEventPreviewBinding.inflate(LayoutInflater.from(requireContext()));
 
                             LinearLayout.LayoutParams layoutParams =
                                     new LinearLayout.LayoutParams(
@@ -292,8 +283,7 @@ public class br extends qA implements View.OnClickListener {
 
                     for (String eventName : availableEvents) {
                         FrLogicListItemEventPreviewBinding previewBinding =
-                                FrLogicListItemEventPreviewBinding.inflate(
-                                        LayoutInflater.from(requireContext()));
+                                FrLogicListItemEventPreviewBinding.inflate(LayoutInflater.from(requireContext()));
                         LinearLayout.LayoutParams layoutParams2 =
                                 new LinearLayout.LayoutParams(
                                         ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -421,9 +411,9 @@ public class br extends qA implements View.OnClickListener {
                 public AvailableEventsAdapter() {
                     super(DIFF_CALLBACK);
                 }
-                
+
                 private EventClickListener listener;
-                
+
                 public void setOnEventClickListener(EventClickListener listener) {
                     this.listener = listener;
                 }
@@ -464,9 +454,8 @@ public class br extends qA implements View.OnClickListener {
                     button = itemView;
                 }
             }
-            
+
             private interface EventClickListener {
-                
                 void onEventClick(EventBean bean);
             }
         }
