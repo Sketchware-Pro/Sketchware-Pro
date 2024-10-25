@@ -13,18 +13,16 @@ import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.CompileLogBinding;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
-import mod.SketchwareUtil;
+import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.util.CompileLogHelper;
 import mod.hey.studios.util.Helper;
 import mod.jbk.diagnostic.CompileErrorSaver;

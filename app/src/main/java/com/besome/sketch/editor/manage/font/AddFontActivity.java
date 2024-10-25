@@ -16,13 +16,13 @@ import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ManageFontAddBinding;
 
 import a.a.a.Np;
-import a.a.a.WB2;
+import pro.sketchware.lib.validator.WB2;
 import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.yy;
-import mod.SketchwareUtil;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 

@@ -1,6 +1,6 @@
 package com.besome.sketch.editor;
 
-import static mod.SketchwareUtil.getDip;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -110,7 +110,7 @@ import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
-import mod.hasrat.menu.ExtraMenuBean;
+import pro.sketchware.menu.ExtraMenuBean;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;

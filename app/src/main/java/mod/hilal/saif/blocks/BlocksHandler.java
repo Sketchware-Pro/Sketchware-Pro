@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
-import mod.agus.jcoderz.lib.FilePathUtil;
-import mod.agus.jcoderz.lib.FileUtil;
-import mod.hasrat.blocks.ExtraBlocks;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.blocks.ExtraBlocks;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
 public class BlocksHandler {

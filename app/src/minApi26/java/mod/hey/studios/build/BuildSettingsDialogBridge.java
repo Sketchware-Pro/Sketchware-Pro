@@ -6,11 +6,11 @@ import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_1_7;
 import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_1_8;
 import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_1_9;
 
-import mod.SketchwareUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class BuildSettingsDialogBridge {
     public static String[] getAvailableJavaVersions() {
-        return new String[] {
+        return new String[]{
                 SETTING_JAVA_VERSION_1_7,
                 SETTING_JAVA_VERSION_1_8,
                 SETTING_JAVA_VERSION_1_9,

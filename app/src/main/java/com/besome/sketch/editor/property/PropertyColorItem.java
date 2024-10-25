@@ -37,7 +37,7 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         super(context);
         initialize(context, z);
     }
-    
+
     public PropertyColorItem(Context context, boolean z, String scId) {
         super(context);
         sc_id = scId;
@@ -65,7 +65,7 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
     public int getValue() {
         return value;
     }
-    
+
     public String getResValue() {
         return resValue;
     }
@@ -85,7 +85,7 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         }
     }
 
-    public void setValue(int value,String resValue) {
+    public void setValue(int value, String resValue) {
         this.value = value;
         this.resValue = resValue;
         if (value == 0) {
@@ -146,7 +146,7 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             colorTransparentAvailable = false;
             colorNoneAvailable = false;
         }
-       Zx colorPicker = new Zx((Activity) context, value, colorTransparentAvailable, colorNoneAvailable,sc_id);
+        Zx colorPicker = new Zx((Activity) context, value, colorTransparentAvailable, colorNoneAvailable, sc_id);
         colorPicker.a(new Zx.b() {
             @Override
             public void a(int var1) {
@@ -157,7 +157,7 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             }
 
             @Override
-            public void a(String var1,int var2) {
+            public void a(String var1, int var2) {
                 setValue(var2, var1);
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, value);

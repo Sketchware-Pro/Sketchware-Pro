@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 
-import mod.SketchwareUtil;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuiltInLibraries;

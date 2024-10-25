@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
-import mod.hasrat.control.logic.PermissionManager;
+import pro.sketchware.control.logic.PermissionManager;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;

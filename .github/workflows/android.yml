@@ -14,19 +14,6 @@ on:
       - 'gradlew.bat'
       - 'public-stable-ids.txt'
       - 'settings.gradle'
-  pull_request:
-    paths:
-      - '.github/workflows/android.yml'
-      - 'app/**'
-      - 'build-logic/**'
-      - 'kotlinc/**'
-      - 'gradle/**'
-      - 'build.gradle'
-      - 'gradle.properties'
-      - 'gradlew'
-      - 'gradlew.bat'
-      - 'public-stable-ids.txt'
-      - 'settings.gradle'
   workflow_dispatch:
 
 jobs:

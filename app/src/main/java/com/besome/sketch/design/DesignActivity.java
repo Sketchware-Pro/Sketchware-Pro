@@ -1,6 +1,6 @@
 package com.besome.sketch.design;
 
-import static mod.SketchwareUtil.getDip;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -90,10 +90,10 @@ import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import mod.SketchwareUtil;
+import pro.sketchware.utility.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;

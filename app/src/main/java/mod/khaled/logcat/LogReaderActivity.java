@@ -38,8 +38,8 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import mod.SketchwareUtil;
-import mod.hasrat.lib.BaseTextWatcher;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.lib.base.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
 
 public class LogReaderActivity extends BaseAppCompatActivity {
