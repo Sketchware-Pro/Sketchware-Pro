@@ -80,8 +80,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private static final int REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS = 279;
 
     private LinearLayout actionButtonGroup;
-    private boolean hasDeletedWidget = false;
-    private boolean selectingToBeDeletedItems = false;
+    private boolean hasDeletedWidget;
+    private boolean selectingToBeDeletedItems;
     private CategoryAdapter categoryAdapter;
     private CollectionAdapter collectionAdapter;
     private RecyclerView collection;
@@ -131,6 +131,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, REQUEST_CODE_ADD_SOUND_DIALOG);
     }
+
     private void showAddFontDialog() {
         Intent intent = new Intent(getApplicationContext(), AddFontActivity.class);
         intent.putParcelableArrayListExtra("font_names", fonts);
@@ -834,7 +835,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            holder.widgetIcon.setImageResource(ViewBean.getViewTypeResId(((ViewBean) bean.widgets.get(0)).type));
+            holder.widgetIcon.setImageResource(ViewBean.getViewTypeResId(bean.widgets.get(0).type));
             holder.name.setText(bean.name);
             holder.checkBox.setChecked(bean.isSelected);
         }
