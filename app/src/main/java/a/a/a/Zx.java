@@ -384,7 +384,7 @@ public class Zx extends PopupWindow {
                             if (colorName != null && isValidHexColor(colorValue)) {
                                 HashMap<String, Object> colors = new HashMap<>();
                                 colors.put("colorName", colorName);
-                                colors.put("colorValue", colorValue);
+                                colors.put("colorValue", String.format("#%8s", colorValue.replaceFirst("#", "")).replaceAll(" ", "F"));
                                 color_res_list.add(colors);
                             }
                         }
