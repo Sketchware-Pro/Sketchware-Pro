@@ -155,6 +155,12 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
+    }
+
+    @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
