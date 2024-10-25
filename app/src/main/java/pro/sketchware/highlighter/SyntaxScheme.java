@@ -1,4 +1,4 @@
-package mod.hasrat.highlighter;
+package pro.sketchware.highlighter;
 
 import android.graphics.Color;
 

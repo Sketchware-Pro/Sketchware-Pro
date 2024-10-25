@@ -42,7 +42,7 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wB;
-import mod.hasrat.lib.DebouncedClickListener;
+import pro.sketchware.lib.DebouncedClickListener;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 

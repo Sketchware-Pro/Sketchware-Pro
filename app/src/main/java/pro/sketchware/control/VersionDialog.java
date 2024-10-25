@@ -1,4 +1,4 @@
-package mod.hasrat.control;
+package pro.sketchware.control;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import com.sketchware.remod.databinding.DialogAdvancedVersionControlBinding;
 
 import a.a.a.aB;
 import a.a.a.mB;
-import mod.hasrat.validator.VersionNamePostfixValidator;
+import pro.sketchware.validator.VersionNamePostfixValidator;
 import mod.hey.studios.util.Helper;
 
 public class VersionDialog {

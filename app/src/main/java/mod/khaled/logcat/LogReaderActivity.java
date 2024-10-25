@@ -39,7 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import mod.SketchwareUtil;
-import mod.hasrat.lib.BaseTextWatcher;
+import pro.sketchware.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
 
 public class LogReaderActivity extends BaseAppCompatActivity {

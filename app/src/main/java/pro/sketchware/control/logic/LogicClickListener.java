@@ -1,4 +1,4 @@
-package mod.hasrat.control.logic;
+package pro.sketchware.control.logic;
 
 import static android.text.TextUtils.isEmpty;
 import static com.besome.sketch.SketchApplication.getContext;
@@ -11,7 +11,6 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -42,7 +41,7 @@ import mod.SketchwareUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
 import mod.elfilibustero.sketch.lib.valid.VariableModifierValidator;
 import mod.elfilibustero.sketch.lib.valid.VariableTypeValidator;
-import mod.hasrat.menu.ExtraMenuBean;
+import pro.sketchware.menu.ExtraMenuBean;
 import mod.hey.studios.util.Helper;
 
 public class LogicClickListener implements View.OnClickListener {

@@ -44,7 +44,7 @@ import a.a.a.Zx;
 import a.a.a.aB;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
-import mod.hasrat.lib.BaseTextWatcher;
+import pro.sketchware.lib.BaseTextWatcher;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;

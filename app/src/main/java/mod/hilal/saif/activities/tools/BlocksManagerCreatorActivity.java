@@ -37,8 +37,8 @@ import a.a.a.Zx;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
-import mod.hasrat.highlighter.SimpleHighlighter;
-import mod.hasrat.lib.BaseTextWatcher;
+import pro.sketchware.highlighter.SimpleHighlighter;
+import pro.sketchware.lib.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
 

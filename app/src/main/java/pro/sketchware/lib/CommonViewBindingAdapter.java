@@ -1,4 +1,4 @@
-package mod.hasrat.lib;
+package pro.sketchware.lib;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

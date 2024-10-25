@@ -1,4 +1,4 @@
-package mod.hasrat.menu;
+package pro.sketchware.menu;
 
 import static android.text.TextUtils.isEmpty;
 import static mod.SketchwareUtil.getDip;
@@ -43,7 +43,7 @@ import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.agus.jcoderz.lib.FileResConfig;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
-import mod.hasrat.highlighter.SimpleHighlighter;
+import pro.sketchware.highlighter.SimpleHighlighter;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;

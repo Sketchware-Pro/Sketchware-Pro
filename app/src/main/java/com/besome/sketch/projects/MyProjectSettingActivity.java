@@ -52,7 +52,7 @@ import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
 import mod.SketchwareUtil;
-import mod.hasrat.control.VersionDialog;
+import pro.sketchware.control.VersionDialog;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.activities.tools.ConfigActivity;

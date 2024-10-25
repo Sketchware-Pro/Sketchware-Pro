@@ -1,4 +1,4 @@
-package mod.hasrat.validator;
+package pro.sketchware.validator;
 
 import android.content.Context;
 

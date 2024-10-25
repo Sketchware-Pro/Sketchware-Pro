@@ -1,4 +1,4 @@
-package mod.hasrat.lib;
+package pro.sketchware.lib;
 
 import android.text.Editable;
 import android.text.TextWatcher;

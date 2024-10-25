@@ -1,4 +1,4 @@
-package mod.hasrat.blocks;
+package pro.sketchware.blocks;
 
 import android.util.Pair;
 

@@ -26,7 +26,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import mod.SketchwareUtil;
 import mod.agus.jcoderz.lib.FileUtil;
 import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
-import mod.hasrat.tools.ComponentHelper;
+import pro.sketchware.tools.ComponentHelper;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.util.OldResourceIdMapper;

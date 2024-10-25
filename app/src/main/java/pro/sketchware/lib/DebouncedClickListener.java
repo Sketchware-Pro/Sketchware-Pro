@@ -1,4 +1,4 @@
-package mod.hasrat.lib;
+package pro.sketchware.lib;
 
 import android.os.SystemClock;
 import android.view.View;
