@@ -29,7 +29,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hey.studios.util.Helper;
 

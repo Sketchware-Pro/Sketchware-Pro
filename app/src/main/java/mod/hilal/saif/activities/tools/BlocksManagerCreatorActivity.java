@@ -34,11 +34,11 @@ import java.util.regex.Pattern;
 
 import a.a.a.Rs;
 import a.a.a.Zx;
-import mod.SketchwareUtil;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
-import pro.sketchware.highlighter.SimpleHighlighter;
-import pro.sketchware.lib.BaseTextWatcher;
+import pro.sketchware.lib.highlighter.SimpleHighlighter;
+import pro.sketchware.lib.base.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
 

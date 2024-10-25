@@ -13,7 +13,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.google.gson.Gson;
 import com.sketchware.remod.databinding.FragmentStoreProjectPreviewBinding;
-import pro.sketchware.classes.UI;
+import pro.sketchware.utility.UI;
 
 import java.util.ArrayList;
 

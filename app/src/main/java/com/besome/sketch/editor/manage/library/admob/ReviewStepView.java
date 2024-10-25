@@ -22,7 +22,7 @@ import com.sketchware.remod.databinding.ManageLibrarySettingAdmobTestDeviceItemB
 
 import a.a.a.Uu;
 import a.a.a.gB;
-import pro.sketchware.lib.CommonViewBindingAdapter;
+import pro.sketchware.lib.base.BaseViewBindingAdapter;
 import mod.hey.studios.util.Helper;
 
 public class ReviewStepView extends LinearLayout implements Uu {
@@ -129,7 +129,7 @@ public class ReviewStepView extends LinearLayout implements Uu {
         adapter.setItems(projectLibraryBean.testDevices);
     }
 
-    public static class TestDevicesAdapter extends CommonViewBindingAdapter<AdTestDeviceBean> {
+    public static class TestDevicesAdapter extends BaseViewBindingAdapter<AdTestDeviceBean> {
 
         @NonNull
         @Override

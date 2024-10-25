@@ -30,8 +30,8 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import a.a.a.xB;
-import mod.agus.jcoderz.lib.FileUtil;
-import pro.sketchware.lib.BaseTextWatcher;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.lib.base.BaseTextWatcher;
 
 public class Helper {
     public static final TypeToken<HashMap<String, Object>> TYPE_MAP = new TypeToken<>() {

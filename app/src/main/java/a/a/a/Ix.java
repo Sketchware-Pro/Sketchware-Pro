@@ -20,14 +20,14 @@ import java.util.HashMap;
 import java.util.Set;
 
 import mod.agus.jcoderz.editor.manifest.EditorManifest;
-import mod.agus.jcoderz.lib.FilePathUtil;
-import mod.agus.jcoderz.lib.FileResConfig;
-import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.jbk.build.BuiltInLibraries;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileResConfig;
+import pro.sketchware.utility.FileUtil;
 
 public class Ix {
     public XmlBuilder a = new XmlBuilder("manifest");

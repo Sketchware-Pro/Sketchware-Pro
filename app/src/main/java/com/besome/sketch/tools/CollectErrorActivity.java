@@ -23,7 +23,7 @@ import java.io.File;
 
 import a.a.a.GB;
 import a.a.a.xB;
-import mod.SketchwareUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class CollectErrorActivity extends BaseAppCompatActivity {
     @SuppressLint("SetTextI18n")

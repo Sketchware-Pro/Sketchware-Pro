@@ -1,4 +1,4 @@
-package pro.sketchware.base;
+package pro.sketchware.lib.base;
 
 import android.content.Context;
 import android.view.LayoutInflater;

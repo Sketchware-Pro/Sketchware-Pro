@@ -6,7 +6,7 @@ import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_1_8;
 import android.os.Build;
 import android.widget.Toast;
 
-import mod.SketchwareUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class BuildSettingsDialogBridge {
     public static String[] getAvailableJavaVersions() {

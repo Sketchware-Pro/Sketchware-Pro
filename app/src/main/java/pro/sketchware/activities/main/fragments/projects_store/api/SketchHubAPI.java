@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import pro.sketchware.classes.Network;
+import pro.sketchware.utility.Network;
 
 public class SketchHubAPI {
 

@@ -1,4 +1,4 @@
-package pro.sketchware.highlighter;
+package pro.sketchware.lib.highlighter;
 
 import android.text.Editable;
 import android.text.Spanned;

@@ -42,9 +42,9 @@ import java.util.Map;
 
 import a.a.a.Zx;
 import a.a.a.aB;
-import mod.SketchwareUtil;
-import mod.agus.jcoderz.lib.FileUtil;
-import pro.sketchware.lib.BaseTextWatcher;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.lib.base.BaseTextWatcher;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;

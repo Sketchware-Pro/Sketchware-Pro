@@ -16,7 +16,7 @@ import java.util.List;
 
 import a.a.a.yq;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.FileUtil;
 
 public class IncrementalCompiler {
 

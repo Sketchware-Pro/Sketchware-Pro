@@ -1,6 +1,6 @@
 package mod.hilal.saif.asd.asdforall;
 
-import static mod.SketchwareUtil.getDip;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.Dialog;
