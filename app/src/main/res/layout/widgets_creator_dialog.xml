@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -26,7 +25,7 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:gravity="center_vertical"
-                android:hint="Widget Title"
+                android:hint="Widget Name"
                 android:padding="8dp"
                 android:singleLine="true"
                 android:textSize="16sp" />
@@ -45,7 +44,7 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:gravity="center_vertical"
-                android:hint="Widget Name ( Convert )"
+                android:hint="Widget TypeView ( Convert )"
                 android:padding="8dp"
                 android:singleLine="true"
                 android:textSize="16sp" />
@@ -66,7 +65,7 @@
                 android:clickable="true"
                 android:focusable="false"
                 android:gravity="center_vertical"
-                android:hint="Selecte Widget Type (int)"
+                android:hint="Widget Type (int)"
                 android:inputType="none"
                 android:padding="8dp"
                 android:singleLine="true"
@@ -87,7 +86,7 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:focusableInTouchMode="false"
                 android:gravity="center_vertical"
-                android:hint="Select Widget Class"
+                android:hint="Widget Class"
                 android:padding="8dp"
                 android:singleLine="true"
                 android:textSize="16sp" />
@@ -103,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:gravity="center_vertical"
-                android:hint="Extra XML code ( inject )"
+                android:hint="@string/property_inject"
                 android:inputType="textMultiLine"
                 android:maxLines="10"
                 android:minHeight="48dp"
@@ -112,7 +111,6 @@
                 android:singleLine="false"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
     </LinearLayout>
 
