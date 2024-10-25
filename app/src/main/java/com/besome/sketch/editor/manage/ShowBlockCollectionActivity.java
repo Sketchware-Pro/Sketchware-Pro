@@ -7,19 +7,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.BlockCollectionBean;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ManageCollectionShowBlockBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,20 +29,20 @@ import a.a.a.Rs;
 import a.a.a.Ss;
 import a.a.a.Ts;
 import a.a.a.bB;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.tools.ImageFactory;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.tools.ImageFactory;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ShowBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private String blockName;
-    private ViewBlockCollectionEditor blockCollectionEditor;
     private BlockPane pane;
     private EditText blockNameEditorText;
-    private LinearLayout actionSection;
     private NB blockNameValidator;
 
-    private void addBlocks(ArrayList<BlockBean> blocks, int someXValue, int someYValue) {
+    private ManageCollectionShowBlockBinding binding;
+
+    private void addBlocks(ArrayList<BlockBean> blocks) {
         HashMap<Integer, Rs> blockIdsWithBlocks = new HashMap<>();
         Rs firstBlock = null;
 
@@ -55,7 +53,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
 
             blockIdsWithBlocks.put(blockId, block);
             pane.g = Math.max(pane.g, blockId + 1);
-            pane.a(block, someXValue, someYValue);
+            pane.a(block, 10, 10);
 
             if (isFirstBlock) {
                 firstBlock = block;
@@ -109,11 +107,11 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
 
     private void resizeBottomViews() {
         int i = getResources().getDisplayMetrics().heightPixels;
-        actionSection.measure(0, 0);
-        blockCollectionEditor.setLayoutParams(new LinearLayout.LayoutParams(
+        binding.layoutButton.measure(0, 0);
+        binding.editor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ((i - GB.a((Context) this)) - GB.f(this)) - actionSection.getMeasuredHeight()));
-        blockCollectionEditor.requestLayout();
+                ((i - GB.a((Context) this)) - GB.f(this)) - binding.layoutButton.getMeasuredHeight()));
+        binding.editor.requestLayout();
     }
 
     @Override
@@ -134,32 +132,26 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_collection_show_block);
-
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        binding = ManageCollectionShowBlockBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(Helper.getResString(R.string.design_manager_block_detail_actionbar_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         blockName = getIntent().getStringExtra("block_name");
-        blockCollectionEditor = findViewById(R.id.editor);
-        blockCollectionEditor.setScrollEnabled(true);
-        pane = blockCollectionEditor.getBlockPane();
+        binding.editor.setScrollEnabled(true);
+        pane = binding.editor.getBlockPane();
 
-        EasyDeleteEditText input = findViewById(R.id.ed_input);
-        blockNameEditorText = input.getEditText();
+        blockNameEditorText = binding.edInput.getEditText();
         blockNameEditorText.setPrivateImeOptions("defaultInputmode=english;");
         blockNameEditorText.setText(blockName);
-        input.setHint(Helper.getResString(R.string.design_manager_block_hint_enter_block_name));
+        binding.edInput.setHint(Helper.getResString(R.string.design_manager_block_hint_enter_block_name));
 
-        Button save = findViewById(R.id.save_button);
-        save.setText(Helper.getResString(R.string.common_word_save));
-        save.setOnClickListener(this);
-        blockNameValidator = new NB(this, input.getTextInputLayout(), Mp.h().g());
-        actionSection = findViewById(R.id.layout_button);
+        binding.saveButton.setText(Helper.getResString(R.string.common_word_save));
+        binding.saveButton.setOnClickListener(this);
+        blockNameValidator = new NB(this, binding.edInput.getTextInputLayout(), Mp.h().g());
     }
 
     @Override
@@ -168,7 +160,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
 
         BlockCollectionBean block = Mp.h().a(blockName);
         if (block != null) {
-            addBlocks(block.blocks, 10, 10);
+            addBlocks(block.blocks);
             resizeBottomViews();
         } else {
             SketchwareUtil.toastError("Can't open corrupt Block");
@@ -192,7 +184,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == 12) {
-            if (ImageFactory.saveBitmap(blockCollectionEditor.getChildAt(0), blockName).exists()) {
+            if (ImageFactory.saveBitmap(binding.editor.getChildAt(0), blockName).exists()) {
                 SketchwareUtil.toast("Saved image to /Internal storage/sketchware/saved_block/" + blockName + ".png!");
             } else {
                 SketchwareUtil.toastError("Couldn't save image");
