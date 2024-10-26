@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import mod.agus.jcoderz.lib.FilePathUtil;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.beans.ResourceBean;
 
 public class ResourceUtil {

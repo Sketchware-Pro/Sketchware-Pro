@@ -1,8 +1,8 @@
 package pro.sketchware.activities.about.adapters;
 
-import static pro.sketchware.classes.UI.advancedCorners;
-import static pro.sketchware.classes.UI.loadImageFromUrl;
-import static pro.sketchware.classes.UI.rippleRound;
+import static pro.sketchware.utility.UI.advancedCorners;
+import static pro.sketchware.utility.UI.loadImageFromUrl;
+import static pro.sketchware.utility.UI.rippleRound;
 
 import android.view.LayoutInflater;
 import android.view.View;

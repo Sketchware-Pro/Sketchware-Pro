@@ -1,5 +1,10 @@
 package com.besome.sketch.editor.view;
 
+
+import static pro.sketchware.widgets.WidgetsCreatorManager.showWidgetsCreatorDialog;
+import static pro.sketchware.widgets.WidgetsCreatorManager.deleteWidgetMap;
+import static pro.sketchware.widgets.WidgetsCreatorManager.substringCovert;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -61,6 +66,7 @@ import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
+import pro.sketchware.widgets.WidgetsCreatorManager;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
@@ -358,6 +364,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     deleteWidgetFromCollection(collectionWidget.getName());
                     break lol;
                 }
+                if (D && r instanceof WidgetsCreatorManager) {
+                    deleteWidgetMap(getContext(), (int) view.getTag());
+                    break lol;
+                }
                 viewPane.resetView(false);
                 if (r instanceof uy uyVar) {
                     ArrayList<ViewBean> arrayList = new ArrayList<>();
@@ -397,7 +407,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         viewPane.a(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                         for (ViewBean next : arrayList) {
                             if (jC.a(a).h(projectFileBean.getXmlName(), next.id)) {
-                                hashMap.put(next.id, a(next.type));
+                                hashMap.put(next.id, a(next.type, null));
                             } else {
                                 hashMap.put(next.id, next.id);
                             }
@@ -548,6 +558,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         isVibrationEnabled = new DB(context, "P12").a("P12I0", true);
         scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        paletteWidget.cardView.setOnClickListener(view -> showWidgetsCreatorDialog(getContext()));
     }
 
     public void b(ArrayList<ViewBean> arrayList, boolean z) {
@@ -633,7 +644,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         dummyView.a(r, u, v, u, v);
         dummyView.a(G);
         if (isViewAnIconBase(r)) {
-            if (r instanceof uy) {
+            if (r instanceof uy || r instanceof WidgetsCreatorManager) {
                 b(true);
                 viewPane.addRootLayout(null);
             } else {
@@ -704,7 +715,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private void deleteWidgetFromCollection(String str) {
         aB aBVar = new aB((Activity) getContext());
         aBVar.b(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
-        aBVar.a(R.drawable.high_priority_96_red);
+        aBVar.a(R.drawable.ic_delete_24);
         aBVar.a(xB.b().a(getContext(), R.string.view_widget_favorites_delete_message));
         aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
             Rp.h().a(str, true);
@@ -884,8 +895,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         a2.setOnTouchListener(this);
     }
 
-    public final String a(int i) {
-        String b2 = wq.b(i);
+    public final String a(int i, String convert) {
+        String b2 = convert == null ? wq.b(i) : substringCovert(convert);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
         int i2 = e[i] + 1;
@@ -1021,4 +1032,19 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             setOnClickListener(this);
         }
     }
+
+    public void CreateCustomWidget(HashMap<String, Object> map) {
+        View extraWidget = paletteWidget.CustomWidget(map);
+        extraWidget.setClickable(true);
+        Object position = map.get("position");
+        int tagValue = 0;
+        if (position instanceof Integer) {
+            tagValue = (Integer) position;
+        } else if (position instanceof Double) {
+            tagValue = ((Double) position).intValue();
+        }
+        extraWidget.setTag(tagValue);
+        extraWidget.setOnTouchListener(this);
+    }
+
 }

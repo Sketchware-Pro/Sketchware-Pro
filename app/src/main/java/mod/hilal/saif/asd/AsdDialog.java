@@ -1,6 +1,6 @@
 package mod.hilal.saif.asd;
 
-import static mod.SketchwareUtil.getDip;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -27,7 +27,7 @@ import a.a.a.Ss;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
-import mod.SketchwareUtil;
+import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 

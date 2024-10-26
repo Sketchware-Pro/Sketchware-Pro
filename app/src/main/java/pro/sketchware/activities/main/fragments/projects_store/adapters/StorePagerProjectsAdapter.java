@@ -1,6 +1,6 @@
 package pro.sketchware.activities.main.fragments.projects_store.adapters;
 
-import static pro.sketchware.classes.UI.loadImageFromUrl;
+import static pro.sketchware.utility.UI.loadImageFromUrl;
 
 import android.app.ActivityOptions;
 import android.content.Intent;

@@ -1,8 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
-import static mod.SketchwareUtil.getDip;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
-import android.app.Dialog;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Gravity;

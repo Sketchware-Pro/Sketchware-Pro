@@ -23,7 +23,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -46,6 +45,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
@@ -80,8 +80,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private static final int REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS = 279;
 
     private LinearLayout actionButtonGroup;
-    private boolean hasDeletedWidget = false;
-    private boolean selectingToBeDeletedItems = false;
+    private boolean hasDeletedWidget;
+    private boolean selectingToBeDeletedItems;
     private CategoryAdapter categoryAdapter;
     private CollectionAdapter collectionAdapter;
     private RecyclerView collection;
@@ -131,6 +131,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, REQUEST_CODE_ADD_SOUND_DIALOG);
     }
+
     private void showAddFontDialog() {
         Intent intent = new Intent(getApplicationContext(), AddFontActivity.class);
         intent.putParcelableArrayListExtra("font_names", fonts);
@@ -834,7 +835,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
-            holder.widgetIcon.setImageResource(ViewBean.getViewTypeResId(((ViewBean) bean.widgets.get(0)).type));
+            holder.widgetIcon.setImageResource(ViewBean.getViewTypeResId(bean.widgets.get(0).type));
             holder.name.setText(bean.name);
             holder.checkBox.setChecked(bean.isSelected);
         }
@@ -952,7 +953,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private class BlockCollectionViewHolder extends SoundlessViewHolder {
-            public final CardView cardView;
+            public final MaterialCardView cardView;
             public final CheckBox checkBox;
             public final ImageView blockIcon;
             public final ImageView delete;
@@ -989,7 +990,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private class FontCollectionViewHolder extends SoundlessViewHolder {
-            public final CardView cardView;
+            public final MaterialCardView cardView;
             public final CheckBox checkBox;
             public final ImageView fontIcon;
             public final ImageView delete;
@@ -1067,7 +1068,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private class MoreBlockCollectionViewHolder extends SoundlessViewHolder {
-            public final CardView cardView;
+            public final MaterialCardView cardView;
             public final CheckBox checkBox;
             public final ImageView delete;
             public final LinearLayout deleteContainer;
@@ -1107,7 +1108,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             public final ProgressBar playbackProgress;
             public final TextView totalDuration;
             public final LinearLayout deleteContainer;
-            public final CardView cardView;
+            public final MaterialCardView cardView;
             public final CheckBox checkBox;
             public final ImageView album;
             public final ImageView delete;
@@ -1166,7 +1167,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         }
 
         private class WidgetCollectionViewHolder extends SoundlessViewHolder {
-            public final CardView cardView;
+            public final MaterialCardView cardView;
             public final CheckBox checkBox;
             public final ImageView widgetIcon;
             public final ImageView delete;

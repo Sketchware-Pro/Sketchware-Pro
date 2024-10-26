@@ -1,4 +1,4 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout_item"
     android:layout_width="match_parent"
     android:layout_height="64dp"
@@ -58,4 +58,4 @@
             android:textColor="#ff404040"
             android:textSize="16sp" />
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

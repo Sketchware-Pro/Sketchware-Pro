@@ -21,7 +21,7 @@ import a.a.a.ProjectBuilder;
 import a.a.a.yq;
 import a.a.a.zy;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-import mod.agus.jcoderz.lib.FilePathUtil;
+import pro.sketchware.utility.FilePathUtil;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.util.LogUtil;
 

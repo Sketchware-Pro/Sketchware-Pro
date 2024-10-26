@@ -11,7 +11,7 @@ import com.sketchware.remod.R;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import mod.SketchwareUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class AudioMetadata {
     public static final AudioAttributes MEDIA_PLAYER_AUDIO_ATTRIBUTES = new AudioAttributes.Builder()

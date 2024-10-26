@@ -16,7 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import a.a.a.Np;
-import a.a.a.WB2;
+import pro.sketchware.lib.validator.WB2;
 import a.a.a.bB;
 import a.a.a.uq;
 import a.a.a.wq;

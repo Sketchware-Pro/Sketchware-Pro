@@ -40,8 +40,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import a.a.a.lC;
 import a.a.a.yB;
-import mod.SketchwareUtil;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.project.custom_blocks.CustomBlocksManager;

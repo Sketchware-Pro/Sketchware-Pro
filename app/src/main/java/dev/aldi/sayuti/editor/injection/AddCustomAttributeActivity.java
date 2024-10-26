@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import mod.SketchwareUtil;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.remaker.util.ThemeUtils;
 import mod.remaker.view.CustomAttributeView;

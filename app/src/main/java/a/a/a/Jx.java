@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
-import mod.hasrat.control.logic.PermissionManager;
+import pro.sketchware.control.logic.PermissionManager;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
@@ -578,13 +578,13 @@ public class Jx {
 
     private String getListDeclarationAndAddImports(int listType, String listName) {
         String typeName = mq.b(listType);
-        addImports(mq.getImportsByTypeName(typeName));
+        addImports(mq.getImportsByTypeName(typeName, null));
         return Lx.a(typeName, listName, Lx.AccessModifier.PRIVATE);
     }
 
     private String getComponentDeclarationAndAddImports(ComponentBean componentBean) {
         String typeName = mq.a(componentBean.type);
-        addImports(mq.getImportsByTypeName(typeName));
+        addImports(mq.getImportsByTypeName(typeName, null));
         return Lx.a(typeName, componentBean.componentId, Lx.AccessModifier.PRIVATE, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
@@ -593,7 +593,7 @@ public class Jx {
         if (viewType.isEmpty()) {
             viewType = viewBean.getClassInfo().a();
         }
-        addImports(mq.getImportsByTypeName(viewType));
+        addImports(mq.getImportsByTypeName(viewType, null));
         return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
@@ -602,7 +602,7 @@ public class Jx {
      */
     private String getVariableDeclarationAndAddImports(int variableType, String name) {
         String variableTypeName = mq.c(variableType);
-        addImports(mq.getImportsByTypeName(variableTypeName));
+        addImports(mq.getImportsByTypeName(variableTypeName, null));
         return Lx.a(variableTypeName, name, Lx.AccessModifier.PRIVATE);
     }
 
@@ -611,7 +611,7 @@ public class Jx {
         if (viewType.isEmpty()) {
             viewType = viewBean.getClassInfo().a();
         }
-        addImports(mq.getImportsByTypeName(viewType));
+        addImports(mq.getImportsByTypeName(viewType, viewBean.convert));
         return Lx.a(viewType, viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
@@ -750,7 +750,7 @@ public class Jx {
                         EOL +
                         "LinearLayout _nav_view = findViewById(R.id._nav_view);" + EOL
                 );
-                addImports(mq.getImportsByTypeName("LinearLayout"));
+                addImports(mq.getImportsByTypeName("LinearLayout", null));
             }
         }
         addImport("android.app.*");

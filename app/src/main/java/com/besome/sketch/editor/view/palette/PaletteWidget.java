@@ -1,6 +1,6 @@
 package com.besome.sketch.editor.view.palette;
 
-import static mod.SketchwareUtil.dpToPx;
+import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,8 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.lib.ui.CustomScrollView;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.color.MaterialColors;
 import com.sketchware.remod.R;
+
+import java.util.HashMap;
 
 import a.a.a.wB;
 import dev.aldi.sayuti.editor.view.palette.IconBadgeView;
@@ -34,6 +37,7 @@ import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
 import dev.aldi.sayuti.editor.view.palette.IconViewPager;
 import dev.aldi.sayuti.editor.view.palette.IconWaveSideBar;
 import dev.aldi.sayuti.editor.view.palette.IconYoutubePlayer;
+import pro.sketchware.widgets.WidgetsCreatorManager;
 import mod.agus.jcoderz.editor.view.palette.IconAnalogClock;
 import mod.agus.jcoderz.editor.view.palette.IconAutoCompleteTextView;
 import mod.agus.jcoderz.editor.view.palette.IconDatePicker;
@@ -55,6 +59,7 @@ public class PaletteWidget extends LinearLayout {
     private TextView titleLayouts;
     private TextView titleWidgets;
     private CustomScrollView scrollView;
+    public MaterialCardView cardView;
 
     public PaletteWidget(Context context) {
         super(context);
@@ -64,6 +69,34 @@ public class PaletteWidget extends LinearLayout {
     public PaletteWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
         initialize(context);
+    }
+
+    public void AddCustomWidgets(View view) {
+        layoutContainer.addView(view);
+    }
+
+    public View CustomWidget(HashMap<String, Object> map) {
+        String title = map.get("title").toString();
+        String name = map.get("name").toString();
+        if (map.get("Class").toString().equals("Layouts")) {
+            LinearLayout iconBase;
+            Context context = getContext();
+            iconBase = new WidgetsCreatorManager(map, context);
+            layoutContainer.addView(iconBase);
+            return iconBase;
+        } else {
+            IconBase iconBase;
+            Context context = getContext();
+            iconBase = new WidgetsCreatorManager(map, context);
+            iconBase.setText(title);
+            iconBase.setName(name);
+            if (map.get("Class").toString().equals("AndroidX")) {
+                layoutContainer.addView(iconBase);
+            } else {
+                widgetsContainer.addView(iconBase);
+            }
+            return iconBase;
+        }
     }
 
     public View a(PaletteWidget.a layoutType, String tag) {
@@ -170,6 +203,7 @@ public class PaletteWidget extends LinearLayout {
         titleLayouts.setText(Helper.getResString(R.string.view_panel_title_layouts));
         titleWidgets.setText(Helper.getResString(R.string.view_panel_title_widgets));
         scrollView = findViewById(R.id.scv);
+        cardView = findViewById(R.id.cardView);
     }
 
     public void removeWidgets() {

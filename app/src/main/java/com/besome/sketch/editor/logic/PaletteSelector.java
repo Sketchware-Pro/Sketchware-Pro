@@ -1,6 +1,6 @@
 package com.besome.sketch.editor.logic;
 
-import static mod.SketchwareUtil.dpToPx;
+import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.app.Activity;
 import android.content.Context;

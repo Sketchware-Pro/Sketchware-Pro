@@ -7,19 +7,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.ManageCollectionShowBlockBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,19 +29,18 @@ import a.a.a.Rs;
 import a.a.a.Ss;
 import a.a.a.Ts;
 import a.a.a.bB;
-import mod.SketchwareUtil;
-import mod.hasrat.tools.ImageFactory;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.BlockUtil;
+import pro.sketchware.tools.ImageFactory;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private String moreBlockName;
-    private ViewBlockCollectionEditor blockCollectionEditor;
     private BlockPane pane;
     private EditText moreBlockNameEditorText;
-    private LinearLayout actionSection;
     private NB moreBlockNameValidator;
+    private ManageCollectionShowBlockBinding binding;
 
     private void addBlocks(ArrayList<BlockBean> blockBeans) {
         HashMap<Integer, Rs> hashMap = new HashMap<>();
@@ -116,11 +113,11 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
 
     private void resizeBottomViews() {
         int height = getResources().getDisplayMetrics().heightPixels;
-        actionSection.measure(0, 0);
-        blockCollectionEditor.setLayoutParams(new LinearLayout.LayoutParams(
+        binding.layoutButton.measure(0, 0);
+        binding.editor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ((height - GB.a((Context) this)) - GB.f(this)) - actionSection.getMeasuredHeight()));
-        blockCollectionEditor.requestLayout();
+                ((height - GB.a((Context) this)) - GB.f(this)) - binding.layoutButton.getMeasuredHeight()));
+        binding.editor.requestLayout();
     }
 
     @Override
@@ -141,32 +138,33 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_collection_show_block);
+        binding = ManageCollectionShowBlockBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle(Helper.getResString(R.string.design_manager_block_detail_actionbar_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         moreBlockName = getIntent().getStringExtra("block_name");
-        blockCollectionEditor = findViewById(R.id.editor);
-        blockCollectionEditor.setScrollEnabled(true);
-        pane = blockCollectionEditor.getBlockPane();
+        binding.editor.setScrollEnabled(true);
+        pane = binding.editor.getBlockPane();
 
-        EasyDeleteEditText input = findViewById(R.id.ed_input);
-        moreBlockNameEditorText = input.getEditText();
+        moreBlockNameEditorText = binding.edInput.getEditText();
         moreBlockNameEditorText.setPrivateImeOptions("defaultInputmode=english;");
         moreBlockNameEditorText.setText(moreBlockName);
-        input.setHint(Helper.getResString(R.string.design_manager_block_hint_enter_block_name));
+        binding.edInput.setHint(Helper.getResString(R.string.design_manager_block_hint_enter_block_name));
 
-        Button save = findViewById(R.id.save_button);
-        save.setText(Helper.getResString(R.string.common_word_save));
-        save.setOnClickListener(this);
-        moreBlockNameValidator = new NB(this, input.getTextInputLayout(), Pp.h().g());
-        actionSection = findViewById(R.id.layout_button);
+        binding.saveButton.setText(Helper.getResString(R.string.common_word_save));
+        binding.saveButton.setOnClickListener(this);
+        moreBlockNameValidator = new NB(this, binding.edInput.getTextInputLayout(), Pp.h().g());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 
     @Override
@@ -200,7 +198,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == 12) {
-            if (ImageFactory.saveBitmap(blockCollectionEditor.getChildAt(0), moreBlockName).exists()) {
+            if (ImageFactory.saveBitmap(binding.editor.getChildAt(0), moreBlockName).exists()) {
                 SketchwareUtil.toast("Saved image to /Internal storage/sketchware/saved_block/" + moreBlockName + ".png!");
             } else {
                 SketchwareUtil.toastError("Couldn't save image");
