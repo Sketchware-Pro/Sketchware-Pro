@@ -1,8 +1,10 @@
 package mod.nethical.svg
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
 import android.widget.ImageView
+import androidx.core.graphics.drawable.toBitmap
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
@@ -15,6 +17,7 @@ import java.io.StringWriter
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.regex.Pattern
+import kotlin.math.roundToInt
 
 class SvgUtils(private val context: Context) {
     private var imageLoader: ImageLoader? = null
@@ -44,6 +47,54 @@ class SvgUtils(private val context: Context) {
         }
     }
 
+    fun loadImage(imageView: ImageView, filePath: String,width: Int, height: Int) {
+        val file = File(filePath)
+        if (file.exists()) {
+            val request: ImageRequest = ImageRequest.Builder(context)
+                .allowConversionToBitmap(true)
+                .data(file)
+                .target(imageView)
+                .build()
+
+            imageLoader!!.enqueue(request)
+        }
+    }
+
+    fun loadScaledSvgIntoImageView(
+        imageView: ImageView,
+        svgPath: String,
+        scaleFactor: Float = 0.5f // Default scaling factor if none is provided
+    ) {
+        // Create an ImageLoader with SVG support
+        val imageLoader = ImageLoader.Builder(context)
+            .components {
+                add(SvgDecoder.Factory())
+            }
+            .build()
+
+        // Load the SVG image and apply scaling
+        val request = ImageRequest.Builder(context)
+            .data(svgPath)
+            .target { drawable ->
+                drawable.let {
+                    // Get density scaling
+                    val densityScale = (context.resources.displayMetrics.density * scaleFactor).roundToInt()
+                    val bitmap = drawable.toBitmap()
+                    // Apply scaling to width and height
+                    val scaledBitmap = Bitmap.createScaledBitmap(
+                        bitmap,
+                        bitmap.width * densityScale,
+                        bitmap.height * densityScale,
+                        true
+                    )
+                    // Set the scaled image on the ImageView
+                    imageView.setImageBitmap(scaledBitmap)
+                }
+            }
+            .build()
+
+        imageLoader.enqueue(request)
+    }
 
     fun loadWithoutQueue(imageView: ImageView,filePath: String){
         imageView.load(filePath) {

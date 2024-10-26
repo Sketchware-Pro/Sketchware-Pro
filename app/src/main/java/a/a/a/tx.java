@@ -108,6 +108,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     }
 
     public void setValue(String str) {
+
         Uri fromFile;
         if (str != null && !str.toLowerCase().equals("NONE".toLowerCase())) {
             this.c = str;
@@ -127,10 +128,9 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
-                    //Todo: doesn't work, needs to be fixed.
-                    Log.d("address of svg path on editor screen: ",fromFile.toString());
                     if(file.getAbsolutePath().endsWith(".svg")){
-                        svgUtils.loadImage(this.g,file.toString());
+                        Log.d("address of svg path on editor screen: ",file.getAbsolutePath());
+                        svgUtils.loadImage(this.g, file.toString());
                         return;
                     }
                     Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(this.g);
@@ -276,10 +276,9 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
-                    // TODO: Doesn't work. needs to be fixed.
                     if (file.getAbsolutePath().endsWith(".svg")) {
-                        Log.d("Loading svg: ", file.getAbsolutePath());
-                        svgUtils.loadImage(this.g, file.toString());
+
+                        svgUtils.loadImage(imageView, file.toString());
                     } else {
                         Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
                     }
