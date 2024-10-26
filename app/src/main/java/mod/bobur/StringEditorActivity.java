@@ -96,6 +96,9 @@ public class StringEditorActivity extends AppCompatActivity {
                     .create()
                     .show();
         }
+        if (listmap.isEmpty() && (! FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
+            saveXml();
+        }
     }
 
     @Override
