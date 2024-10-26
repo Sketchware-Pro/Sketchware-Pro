@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package a.a.a;
 
 import android.util.Pair;
@@ -26,41 +21,37 @@ public class Fx {
     public ExtraBlockCode mceb;
 
     public Fx(String var1, jq var2, String var3, ArrayList<BlockBean> var4) {
-        this.c = var1;
-        this.e = var2;
-        this.d = var3;
-        this.f = var4;
-        this.mceb = new ExtraBlockCode(this);
+        c = var1;
+        e = var2;
+        d = var3;
+        f = var4;
+        mceb = new ExtraBlockCode(this);
     }
 
     public String a() {
-        this.g = new HashMap();
-        ArrayList var1 = this.f;
-        if (var1 != null && var1.size() > 0) {
-            Iterator var2 = this.f.iterator();
+        g = new HashMap<>();
+        ArrayList<BlockBean> var1 = f;
+        if (var1 != null && !var1.isEmpty()) {
 
-            while(var2.hasNext()) {
-                BlockBean var3 = (BlockBean)var2.next();
-                this.g.put(var3.id, var3);
+            for (BlockBean var3 : f) {
+                g.put(var3.id, var3);
             }
 
-            StringBuilder var4 = new StringBuilder(4096);
-            var4.append(this.a((BlockBean)this.f.get(0), ""));
-            return var4.toString();
+            return a(f.get(0), "");
         } else {
             return "";
         }
     }
 
     public final String a(BlockBean var1, String var2) {
-        ArrayList var3 = new ArrayList();
+        ArrayList<String> var3 = new ArrayList();
 
         int var4;
         String var5;
         int var7;
         for(var4 = 0; var4 < var1.parameters.size(); ++var4) {
-            var5 = (String)var1.parameters.get(var4);
-            Gx var6 = (Gx)var1.getParamClassInfo().get(var4);
+            var5 = var1.parameters.get(var4);
+            Gx var6 = var1.getParamClassInfo().get(var4);
             if (var6.b("boolean")) {
                 var7 = 0;
             } else if (var6.b("double")) {
@@ -71,7 +62,7 @@ public class Fx {
                 var7 = 3;
             }
 
-            var3.add(this.a(var5, var7, var1.opCode));
+            var3.add(a(var5, var7, var1.opCode));
         }
 
         String var8;
@@ -2114,19 +2105,13 @@ public class Fx {
                                 var18 = var26.toString();
                             }
 
-                            var9 = (String)var3.get(var7);
+                            var9 = var3.get(var7);
                             if (var9.length() <= 0) {
-                                Gx var20 = (Gx)var1.getParamClassInfo().get(var7);
+                                Gx var20 = var1.getParamClassInfo().get(var7);
                                 if (var20.b("boolean")) {
-                                    var27 = new StringBuilder();
-                                    var27.append(var18);
-                                    var27.append("true");
-                                    var5 = var27.toString();
+                                    var5 = var18 + "true";
                                 } else if (var20.b("double")) {
-                                    var27 = new StringBuilder();
-                                    var27.append(var18);
-                                    var27.append("0");
-                                    var5 = var27.toString();
+                                    var5 = var18 + "0";
                                 } else {
                                     var5 = var18;
                                     if (var20.b("String")) {
@@ -2174,14 +2159,14 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 3:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "false";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s = %s;", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -2190,13 +2175,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 4:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s = %s;", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -2205,8 +2190,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 5:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s++;", var5);
                         var18 = var9;
                         break label3539;
@@ -2215,8 +2200,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 6:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s--;", var5);
                         var18 = var9;
                         break label3539;
@@ -2225,9 +2210,9 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 7:
-                    var5 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s = %s;", var5, var18);
                         var18 = var9;
                         break label3539;
@@ -2236,8 +2221,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 8:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s = new HashMap<>();", var5);
                         var18 = var9;
                         break label3539;
@@ -2246,9 +2231,9 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 9:
-                    var11 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    var8 = (String)var3.get(2);
+                    var11 = var3.get(0);
+                    var18 = var3.get(1);
+                    var8 = var3.get(2);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "";
@@ -2259,7 +2244,7 @@ public class Fx {
                         var18 = "";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = String.format("%s.put(%s, %s);", var11, var5, var18);
                         var18 = var9;
                         break label3539;
@@ -2268,14 +2253,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 10:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.get(%s).toString()", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -2284,14 +2269,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 11:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.containsKey(%s)", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -2300,14 +2285,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 12:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.remove(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -2316,8 +2301,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 13:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.size()", var5);
                         var18 = var9;
                         break label3539;
@@ -2326,8 +2311,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 14:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.clear();", var5);
                         var18 = var9;
                         break label3539;
@@ -2336,8 +2321,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 15:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.isEmpty()", var5);
                         var18 = var9;
                         break label3539;
@@ -2346,11 +2331,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 16:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("SketchwareUtil.getAllKeysFromMap(%s, %s);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -2360,11 +2345,11 @@ public class Fx {
                     }
                     break;
                 case 17:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.add(Double.valueOf(%s));", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -2374,14 +2359,14 @@ public class Fx {
                     }
                     break;
                 case 18:
-                    var8 = (String)var3.get(0);
-                    var5 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var5 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var9;
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var18 = var9;
-                        if (var5.length() > 0) {
-                            if (var11.length() > 0) {
+                        if (!var5.isEmpty()) {
+                            if (!var11.isEmpty()) {
                                 var5 = String.format("%s.add((int)(%s), Double.valueOf(%s));", var11, var5, var8);
                                 var18 = var9;
                                 break label3539;
@@ -2392,11 +2377,11 @@ public class Fx {
                     }
                     break;
                 case 19:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.get((int)(%s)).doubleValue()", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -2406,11 +2391,11 @@ public class Fx {
                     }
                     break;
                 case 20:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.indexOf(%s)", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -2420,11 +2405,11 @@ public class Fx {
                     }
                     break;
                 case 21:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.contains(%s)", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -2434,11 +2419,11 @@ public class Fx {
                     }
                     break;
                 case 22:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.add(%s);", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -2448,14 +2433,14 @@ public class Fx {
                     }
                     break;
                 case 23:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         var18 = var9;
-                        if (var8.length() > 0) {
-                            if (var11.length() > 0) {
+                        if (!var8.isEmpty()) {
+                            if (!var11.isEmpty()) {
                                 var5 = String.format("%s.add((int)(%s), %s);", var11, var8, var5);
                                 var18 = var9;
                                 break label3539;
@@ -2466,11 +2451,11 @@ public class Fx {
                     }
                     break;
                 case 24:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.get((int)(%s))", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -2480,11 +2465,11 @@ public class Fx {
                     }
                     break;
                 case 25:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.indexOf(%s)", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -2494,11 +2479,11 @@ public class Fx {
                     }
                     break;
                 case 26:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.contains(%s)", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -2508,9 +2493,9 @@ public class Fx {
                     }
                     break;
                 case 27:
-                    var18 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var18 = var3.get(0);
+                    var8 = var3.get(1);
+                    var11 = var3.get(2);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "";
@@ -2521,7 +2506,7 @@ public class Fx {
                         var18 = "";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var25 = new StringBuilder();
                         var25.append("{\r\n");
                         var25.append(String.format("HashMap<String, Object> _item = new HashMap<>();"));
@@ -2540,10 +2525,10 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 28:
-                    var8 = (String)var3.get(0);
-                    var10 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
-                    var16 = (String)var3.get(3);
+                    var8 = var3.get(0);
+                    var10 = var3.get(1);
+                    var11 = var3.get(2);
+                    var16 = var3.get(3);
                     var18 = var8;
                     if (var8.length() <= 0) {
                         var18 = "";
@@ -2554,11 +2539,11 @@ public class Fx {
                         var8 = "";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = var11;
                     }
 
-                    if (var16.length() > 0) {
+                    if (!var16.isEmpty()) {
                         var24 = new StringBuilder();
                         var24.append("{\r\n");
                         var24.append(String.format("HashMap<String, Object> _item = new HashMap<>();"));
@@ -2577,10 +2562,10 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 29:
-                    var18 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    var8 = var3.get(1);
+                    var11 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -2589,7 +2574,7 @@ public class Fx {
                         var18 = "";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = String.format("%s.get((int)%s).get(%s).toString()", var11, var5, var18);
                         var18 = var9;
                         break label3539;
@@ -2598,10 +2583,10 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 30:
-                    var8 = (String)var3.get(0);
-                    var10 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
-                    var16 = (String)var3.get(3);
+                    var8 = var3.get(0);
+                    var10 = var3.get(1);
+                    var11 = var3.get(2);
+                    var16 = var3.get(3);
                     var18 = var8;
                     if (var8.length() <= 0) {
                         var18 = "";
@@ -2612,11 +2597,11 @@ public class Fx {
                         var8 = "";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = var11;
                     }
 
-                    if (var16.length() > 0) {
+                    if (!var16.isEmpty()) {
                         var5 = String.format("%s.get((int)%s).put(%s, %s);", var16, var5, var18, var8);
                         var18 = var9;
                         break label3539;
@@ -2625,10 +2610,10 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 31:
-                    var11 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    var8 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var11 = var3.get(0);
+                    var18 = var3.get(1);
+                    var8 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -2637,7 +2622,7 @@ public class Fx {
                         var18 = "";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = String.format("%s.get((int)%s).containsKey(%s)", var11, var5, var18);
                         var18 = var9;
                         break label3539;
@@ -2646,11 +2631,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 32:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.add(%s);", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -2660,16 +2645,16 @@ public class Fx {
                     }
                     break;
                 case 33:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    var11 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var11.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var11.isEmpty()) {
                             var5 = String.format("%s.add((int)%s, %s);", var11, var5, var8);
                             var18 = var9;
                             break label3539;
@@ -2679,16 +2664,16 @@ public class Fx {
                     }
                     break;
                 case 34:
-                    var18 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    var8 = var3.get(1);
+                    var11 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var11.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var11.isEmpty()) {
                             var5 = String.format("%s = %s.get((int)%s);", var11, var8, var5);
                             var18 = var9;
                             break label3539;
@@ -2698,11 +2683,11 @@ public class Fx {
                     }
                     break;
                 case 35:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.remove((int)(%s));", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -2712,8 +2697,8 @@ public class Fx {
                     }
                     break;
                 case 36:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.size()", var5);
                         var18 = var9;
                         break label3539;
@@ -2722,8 +2707,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 37:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.clear();", var5);
                         var18 = var9;
                         break label3539;
@@ -2734,7 +2719,7 @@ public class Fx {
                 case 38:
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var5 = this.a(String.valueOf(var7), "");
+                        var5 = a(String.valueOf(var7), "");
                     } else {
                         var5 = "";
                     }
@@ -2743,15 +2728,15 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 39:
-                    var8 = (String)var3.get(0);
+                    var8 = var3.get(0);
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var18 = this.a(String.valueOf(var7), "");
+                        var18 = a(String.valueOf(var7), "");
                     } else {
                         var18 = "";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = var8;
                     }
 
@@ -2763,10 +2748,10 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 40:
-                    var8 = (String)var3.get(0);
+                    var8 = var3.get(0);
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var5 = this.a(String.valueOf(var7), "");
+                        var5 = a(String.valueOf(var7), "");
                     } else {
                         var5 = "";
                     }
@@ -2780,17 +2765,17 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 41:
-                    var11 = (String)var3.get(0);
+                    var11 = var3.get(0);
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var5 = this.a(String.valueOf(var7), "");
+                        var5 = a(String.valueOf(var7), "");
                     } else {
                         var5 = "";
                     }
 
                     var7 = var1.subStack2;
                     if (var7 >= 0) {
-                        var18 = this.a(String.valueOf(var7), "");
+                        var18 = a(String.valueOf(var7), "");
                     } else {
                         var18 = "";
                     }
@@ -2813,8 +2798,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 45:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("!%s", var5);
                         var18 = var9;
                         break label3539;
@@ -2829,14 +2814,14 @@ public class Fx {
                 case 50:
                 case 51:
                 case 52:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var11;
                     if (var11.length() <= 0) {
                         var18 = "0";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = var8;
                     }
 
@@ -2844,14 +2829,14 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 53:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var11;
                     if (var11.length() <= 0) {
                         var18 = "0";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = var8;
                     }
 
@@ -2860,8 +2845,8 @@ public class Fx {
                     break label3539;
                 case 54:
                 case 55:
-                    var18 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var18 = var3.get(0);
+                    var8 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "true";
@@ -2876,14 +2861,14 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 56:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
                     var18 = var8;
                     if (var8.length() <= 0) {
                         var18 = "0";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = var11;
                     }
 
@@ -2891,8 +2876,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 57:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.length()", var5);
                         var18 = var9;
                         break label3539;
@@ -2901,29 +2886,29 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 58:
-                    var5 = String.format("%s.concat(%s)", (String)var3.get(0), (String)var3.get(1));
+                    var5 = String.format("%s.concat(%s)", var3.get(0), var3.get(1));
                     var18 = var9;
                     break label3539;
                 case 59:
-                    var5 = (String)var3.get(0);
-                    var5 = String.format("%s.indexOf(%s)", (String)var3.get(1), var5);
+                    var5 = var3.get(0);
+                    var5 = String.format("%s.indexOf(%s)", var3.get(1), var5);
                     var18 = var9;
                     break label3539;
                 case 60:
-                    var5 = (String)var3.get(0);
-                    var5 = String.format("%s.lastIndexOf(%s)", (String)var3.get(1), var5);
+                    var5 = var3.get(0);
+                    var5 = String.format("%s.lastIndexOf(%s)", var3.get(1), var5);
                     var18 = var9;
                     break label3539;
                 case 61:
-                    var10 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var10 = var3.get(0);
+                    var8 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var8;
                     if (var8.length() <= 0) {
                         var18 = "0";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = var11;
                     }
 
@@ -2931,38 +2916,32 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 62:
-                    var5 = String.format("%s.equals(%s)", (String)var3.get(0), (String)var3.get(1));
+                    var5 = String.format("%s.equals(%s)", var3.get(0), var3.get(1));
                     var18 = var9;
                     break label3539;
                 case 63:
-                    var5 = String.format("%s.contains(%s)", (String)var3.get(0), (String)var3.get(1));
+                    var5 = String.format("%s.contains(%s)", var3.get(0), var3.get(1));
                     var18 = var9;
                     break label3539;
                 case 64:
-                    var5 = String.format("%s.replace(%s, %s)", (String)var3.get(0), (String)var3.get(1), (String)var3.get(2));
+                    var5 = String.format("%s.replace(%s, %s)", var3.get(0), var3.get(1), var3.get(2));
                     var18 = var9;
                     break label3539;
                 case 65:
-                    var5 = String.format("%s.replaceFirst(%s, %s)", (String)var3.get(0), (String)var3.get(1), (String)var3.get(2));
+                    var5 = String.format("%s.replaceFirst(%s, %s)", var3.get(0), var3.get(1), var3.get(2));
                     var18 = var9;
                     break label3539;
                 case 66:
-                    var5 = String.format("%s.replaceAll(%s, %s)", (String)var3.get(0), (String)var3.get(1), (String)var3.get(2));
+                    var5 = String.format("%s.replaceAll(%s, %s)", var3.get(0), var3.get(1), var3.get(2));
                     var18 = var9;
                     break label3539;
                 case 67:
-                    label2252: {
-                        var18 = (String)var3.get(0);
-                        if (var18.length() > 0) {
-                            var5 = var18;
-                            if (!var18.equals("\"\"")) {
-                                break label2252;
-                            }
-                        }
-
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty() && !var18.equals("\"\"")) {
+                        var5 = var18;
+                    } else {
                         var5 = "\"0\"";
                     }
-
                     var5 = String.format("Double.parseDouble(%s)", var5);
                     var18 = var9;
                     break label3539;
@@ -2971,20 +2950,20 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 69:
-                    var5 = String.format("%s.trim()", (String)var3.get(0));
+                    var5 = String.format("%s.trim()", var3.get(0));
                     var18 = var9;
                     break label3539;
                 case 70:
-                    var5 = String.format("%s.toUpperCase()", (String)var3.get(0));
+                    var5 = String.format("%s.toUpperCase()", var3.get(0));
                     var18 = var9;
                     break label3539;
                 case 71:
-                    var5 = String.format("%s.toLowerCase()", (String)var3.get(0));
+                    var5 = String.format("%s.toLowerCase()", var3.get(0));
                     var18 = var9;
                     break label3539;
                 case 72:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -2992,8 +2971,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 73:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3001,14 +2980,14 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 74:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
                     var18 = var11;
                     if (var11.length() <= 0) {
                         var18 = "";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = var8;
                     }
 
@@ -3016,12 +2995,12 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 75:
-                    var8 = (String)var1.parameters.get(0);
+                    var8 = var1.parameters.get(0);
                     var18 = var9;
                     if (var8 != null) {
                         var18 = var9;
                         var5 = var8;
-                        if (var8.length() > 0) {
+                        if (!var8.isEmpty()) {
                             break label3539;
                         }
 
@@ -3029,11 +3008,11 @@ public class Fx {
                     }
                     break;
                 case 76:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s = new Gson().fromJson(%s, new TypeToken<HashMap<String, Object>>(){}.getType());", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -3043,8 +3022,8 @@ public class Fx {
                     }
                     break;
                 case 77:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("new Gson().toJson(%s)", var5);
                         var18 = var9;
                         break label3539;
@@ -3053,11 +3032,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 78:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s = new Gson().fromJson(%s, new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -3067,8 +3046,8 @@ public class Fx {
                     }
                     break;
                 case 79:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("new Gson().toJson(%s)", var5);
                         var18 = var9;
                         break label3539;
@@ -3077,8 +3056,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 80:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3102,14 +3081,14 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 85:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
                     var18 = var11;
                     if (var11.length() <= 0) {
                         var18 = "0";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = var8;
                     }
 
@@ -3117,14 +3096,14 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 86:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
                     var18 = var11;
                     if (var11.length() <= 0) {
                         var18 = "0";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = var8;
                     }
 
@@ -3132,14 +3111,14 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 87:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
                     var18 = var11;
                     if (var11.length() <= 0) {
                         var18 = "0";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = var8;
                     }
 
@@ -3147,7 +3126,7 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 88:
-                    var18 = (String)var3.get(0);
+                    var18 = var3.get(0);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "1";
@@ -3157,8 +3136,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 89:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3166,8 +3145,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 90:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3175,8 +3154,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 91:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3184,8 +3163,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 92:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3193,8 +3172,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 93:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3202,8 +3181,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 94:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3211,8 +3190,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 95:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3220,8 +3199,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 96:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3229,8 +3208,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 97:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3238,8 +3217,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 98:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3247,8 +3226,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 99:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3256,8 +3235,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 100:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3265,8 +3244,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 101:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3274,8 +3253,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 102:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3283,8 +3262,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 103:
-                    var18 = (String)var3.get(0);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -3292,15 +3271,15 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 104:
-                    var18 = (String)var3.get(0);
+                    var18 = var3.get(0);
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var5 = this.a(String.valueOf(var7), "");
+                        var5 = a(String.valueOf(var7), "");
                     } else {
                         var5 = "";
                     }
 
-                    if (var18.length() > 0) {
+                    if (!var18.isEmpty()) {
                         var5 = String.format("%s.setOnClickListener(new View.OnClickListener() {\n@Override\npublic void onClick(View _view) {\n%s\n}\n});", var18, var5);
                         var18 = var9;
                         break label3539;
@@ -3309,7 +3288,7 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 105:
-                    if (!this.e.a(this.c).a) {
+                    if (!e.a(c).a) {
                         var18 = var9;
                         var5 = var8;
                     } else {
@@ -3318,7 +3297,7 @@ public class Fx {
                     }
                     break label3539;
                 case 106:
-                    if (this.e.a(this.c).a) {
+                    if (e.a(c).a) {
                         var5 = "_drawer.openDrawer(GravityCompat.START);";
                         var18 = var9;
                         break label3539;
@@ -3327,7 +3306,7 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 107:
-                    if (this.e.a(this.c).a) {
+                    if (e.a(c).a) {
                         var5 = "_drawer.closeDrawer(GravityCompat.START);";
                         var18 = var9;
                         break label3539;
@@ -3336,14 +3315,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 108:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "true";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setEnabled(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3352,8 +3331,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 109:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.isEnabled()", var5);
                         var18 = var9;
                         break label3539;
@@ -3362,9 +3341,9 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 110:
-                    var5 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.setText(%s);", var5, var18);
                         var18 = var9;
                         break label3539;
@@ -3373,13 +3352,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 111:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
+                    var18 = var3.get(2);
                     if (var18.length() <= 0) {
                         var18 = var5;
                     } else {
-                        Pair[] var22 = sq.a("property_text_style");
+                        Pair<Integer, String>[] var22 = sq.a("property_text_style");
                         var4 = var22.length;
                         var5 = var18;
                         var7 = 0;
@@ -3390,7 +3369,7 @@ public class Fx {
                                 break;
                             }
 
-                            Pair var15 = var22[var7];
+                            Pair<Integer, String> var15 = var22[var7];
                             var18 = var5;
                             if (var15.second.equals(var5)) {
                                 var27 = new StringBuilder();
@@ -3407,7 +3386,7 @@ public class Fx {
                     if (var11.length() <= 0) {
                         var18 = var9;
                     } else {
-                        if (var8.length() > 0) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setTypeface(Typeface.createFromAsset(getAssets(),\"fonts/%s.ttf\"), %s);", var8, var11, var18);
                             var18 = var9;
                             break label3539;
@@ -3417,8 +3396,8 @@ public class Fx {
                     }
                     break;
                 case 112:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getText().toString()", var5);
                         var18 = var9;
                         break label3539;
@@ -3427,16 +3406,16 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 113:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "0xFF000000";
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var5.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var5.isEmpty()) {
                             var5 = String.format("%s.setBackgroundColor(%s);", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -3446,11 +3425,11 @@ public class Fx {
                     }
                     break;
                 case 114:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var11.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var11.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             if (!var8.equals("NONE")) {
                                 var26 = new StringBuilder();
                                 var26.append("R.drawable.");
@@ -3472,14 +3451,14 @@ public class Fx {
                     }
                     break;
                 case 115:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "0xFF000000";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setTextColor(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3488,16 +3467,16 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 116:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.endsWith(".9")) {
                         var5 = var18.replaceAll("\\.9", "");
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var5.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var5.isEmpty()) {
                             var5 = String.format("%s.setImageResource(R.drawable.%s);", var8, var5.toLowerCase());
                             var18 = var9;
                             break label3539;
@@ -3507,8 +3486,8 @@ public class Fx {
                     }
                     break;
                 case 117:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "0x00000000";
@@ -3523,28 +3502,27 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 118:
-                    var5 = (String)var3.get(0);
-                    var5.equals("\"\"");
+                    var5 = var3.get(0);
                     var5 = String.format("%s.requestFocus();", var5);
                     var18 = var9;
                     break label3539;
                 case 119:
-                    var5 = String.format("SketchwareUtil.showMessage(getApplicationContext(), %s);", (String)var3.get(0));
+                    var5 = String.format("SketchwareUtil.showMessage(getApplicationContext(), %s);", var3.get(0));
                     var18 = var9;
                     break label3539;
                 case 120:
-                    var5 = String.format("((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText(\"clipboard\", %s));", (String)var3.get(0));
+                    var5 = String.format("((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText(\"clipboard\", %s));", var3.get(0));
                     var18 = var9;
                     break label3539;
                 case 121:
-                    var5 = String.format("setTitle(%s);", (String)var3.get(0));
+                    var5 = String.format("setTitle(%s);", var3.get(0));
                     var18 = var9;
                     break label3539;
                 case 122:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
                     var5 = var18;
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         if (var11.equals("\"\"")) {
                             var5 = var18;
                         } else {
@@ -3555,7 +3533,7 @@ public class Fx {
                         }
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setAction(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3564,9 +3542,9 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 123:
-                    var5 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.setData(Uri.parse(%s));", var5, var18);
                         var18 = var9;
                         break label3539;
@@ -3575,11 +3553,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 124:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var5.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var5.isEmpty()) {
                             var5 = String.format("%s.setClass(getApplicationContext(), %s.class);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -3589,10 +3567,10 @@ public class Fx {
                     }
                     break;
                 case 125:
-                    var18 = (String)var3.get(0);
-                    var5 = (String)var3.get(1);
-                    var8 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(0);
+                    var5 = var3.get(1);
+                    var8 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = String.format("%s.putExtra(%s, %s);", var18, var5, var8);
                         var18 = var9;
                         break label3539;
@@ -3601,8 +3579,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 126:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     if (var18.length() <= 0) {
                         var5 = "";
                     } else {
@@ -3613,8 +3591,8 @@ public class Fx {
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var5.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var5.isEmpty()) {
                             var5 = String.format("%s.setFlags(%s);", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -3624,12 +3602,12 @@ public class Fx {
                     }
                     break;
                 case 127:
-                    var5 = String.format("getIntent().getStringExtra(%s)", (String)var3.get(0));
+                    var5 = String.format("getIntent().getStringExtra(%s)", var3.get(0));
                     var18 = var9;
                     break label3539;
                 case 128:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("startActivity(%s);", var5);
                         var18 = var9;
                         break label3539;
@@ -3642,11 +3620,11 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 130:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s = getApplicationContext().getSharedPreferences(%s, Activity.MODE_PRIVATE);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -3656,9 +3634,9 @@ public class Fx {
                     }
                     break;
                 case 131:
-                    var5 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getString(%s, \"\")", var5, var18);
                         var18 = var9;
                         break label3539;
@@ -3667,10 +3645,10 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 132:
-                    var5 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    var8 = (String)var3.get(2);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    var18 = var3.get(1);
+                    var8 = var3.get(2);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.edit().putString(%s, %s).commit();", var5, var18, var8);
                         var18 = var9;
                         break label3539;
@@ -3679,9 +3657,9 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 133:
-                    var5 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.edit().remove(%s).commit();", var5, var18);
                         var18 = var9;
                         break label3539;
@@ -3690,8 +3668,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 134:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s = Calendar.getInstance();", var5);
                         var18 = var9;
                         break label3539;
@@ -3700,16 +3678,16 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 135:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
+                    var18 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
                     var18 = var9;
-                    if (var11.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var11.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.add(Calendar.%s, (int)(%s));", var11, var8, var5);
                             var18 = var9;
                             break label3539;
@@ -3719,16 +3697,16 @@ public class Fx {
                     }
                     break;
                 case 136:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
+                    var18 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
                     var18 = var9;
-                    if (var11.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var11.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.set(Calendar.%s, (int)(%s));", var11, var8, var5);
                             var18 = var9;
                             break label3539;
@@ -3738,44 +3716,30 @@ public class Fx {
                     }
                     break;
                 case 137:
-                    label3015: {
-                        var8 = (String)var3.get(0);
-                        var18 = (String)var3.get(1);
-                        if (var18.length() > 0) {
-                            var5 = var18;
-                            if (!var18.equals("\"\"")) {
-                                break label3015;
-                            }
-                        }
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    var5 = (!var18.isEmpty() && !var18.equals("\"\"")) ? var18 : "\"yyyy/MM/dd hh:mm:ss\"";
 
-                        var5 = "\"yyyy/MM/dd hh:mm:ss\"";
+                    if (!var8.isEmpty()) {
+                        var5 = String.format("new SimpleDateFormat(%s).format(%s.getTime())", var5, var8);
                     }
 
-                    if (var8.length() > 0) {
-                        var5 = String.format("new SimpleDateFormat(%s).format(%s.getTime())", var5, var8);
+                    var18 = var9;
+                    break label3539;
+                case 138:
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
+                    var18 = var9;
+                    if (!var5.isEmpty() && !var8.isEmpty()) {
+                        var5 = String.format("(long)(%s.getTimeInMillis() - %s.getTimeInMillis())", var5, var8);
                         var18 = var9;
                         break label3539;
                     }
-
                     var18 = var9;
-                    break;
-                case 138:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
-                            var5 = String.format("(long)(%s.getTimeInMillis() - %s.getTimeInMillis())", var5, var8);
-                            var18 = var9;
-                            break label3539;
-                        }
-
-                        var18 = var9;
-                    }
                     break;
                 case 139:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getTimeInMillis()", var5);
                         var18 = var9;
                         break label3539;
@@ -3784,11 +3748,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 140:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setTimeInMillis((long)(%s));", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -3798,14 +3762,14 @@ public class Fx {
                     }
                     break;
                 case 141:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "VISIBLE";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setVisibility(View.%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3814,14 +3778,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 142:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "true";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setClickable(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3830,13 +3794,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 143:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setRotation((float)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3845,8 +3809,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 144:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getRotation()", var5);
                         var18 = var9;
                         break label3539;
@@ -3855,13 +3819,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 145:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setAlpha((float)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3870,8 +3834,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 146:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getAlpha()", var5);
                         var18 = var9;
                         break label3539;
@@ -3880,13 +3844,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 147:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setTranslationX((float)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3895,8 +3859,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 148:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getTranslationX()", var5);
                         var18 = var9;
                         break label3539;
@@ -3905,13 +3869,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 149:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setTranslationY((float)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3920,8 +3884,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 150:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getTranslationY()", var5);
                         var18 = var9;
                         break label3539;
@@ -3930,13 +3894,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 151:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setScaleX((float)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3945,8 +3909,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 152:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getScaleX()", var5);
                         var18 = var9;
                         break label3539;
@@ -3955,13 +3919,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 153:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setScaleY((float)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -3970,8 +3934,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 154:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getScaleY()", var5);
                         var18 = var9;
                         break label3539;
@@ -3980,8 +3944,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 155:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("SketchwareUtil.getLocationX(%s)", var5);
                         var18 = var9;
                         break label3539;
@@ -3990,8 +3954,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 156:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("SketchwareUtil.getLocationY(%s)", var5);
                         var18 = var9;
                         break label3539;
@@ -4000,14 +3964,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 157:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "false";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setChecked(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -4016,8 +3980,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 158:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.isChecked()", var5);
                         var18 = var9;
                         break label3539;
@@ -4026,11 +3990,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 159:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), %s, %s));", var5, "android.R.layout.simple_list_item_1", var8);
                             var18 = var9;
                             break label3539;
@@ -4044,11 +4008,11 @@ public class Fx {
                 case 326:
                 case 327:
                 case 328:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var18 = Lx.a(var5);
                             var24 = new StringBuilder();
                             var24.append("%s.setAdapter(new ");
@@ -4063,8 +4027,8 @@ public class Fx {
                     }
                     break;
                 case 161:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("((BaseAdapter)%s.getAdapter()).notifyDataSetChanged();", var5);
                         var18 = var9;
                         break label3539;
@@ -4073,10 +4037,10 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 162:
-                    var11 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    var8 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var11 = var3.get(0);
+                    var18 = var3.get(1);
+                    var8 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -4085,7 +4049,7 @@ public class Fx {
                         var18 = "false";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = String.format("%s.setItemChecked((int)(%s), %s);", var11, var5, var18);
                         var18 = var9;
                         break label3539;
@@ -4094,8 +4058,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 163:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getCheckedItemPosition()", var5);
                         var18 = var9;
                         break label3539;
@@ -4104,11 +4068,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 164:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s = SketchwareUtil.getCheckedItemPositionsToArray(%s);", var8, var5);
                             var18 = var9;
                             break label3539;
@@ -4118,8 +4082,8 @@ public class Fx {
                     }
                     break;
                 case 165:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getCheckedItemCount()", var5);
                         var18 = var9;
                         break label3539;
@@ -4128,10 +4092,9 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 166:
-                    var5 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    var5.length();
-                    if (var18.length() > 0) {
+                    var5 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = String.format("%s.smoothScrollToPosition((int)(%s));", var5, var18);
                         var18 = var9;
                         break label3539;
@@ -4140,11 +4103,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 167:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, %s));", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -4154,8 +4117,8 @@ public class Fx {
                     }
                     break;
                 case 168:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("((ArrayAdapter)%s.getAdapter()).notifyDataSetChanged();", var5);
                         var18 = var9;
                         break label3539;
@@ -4164,13 +4127,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 169:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setSelection((int)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -4179,8 +4142,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 170:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getSelectedItemPosition()", var5);
                         var18 = var9;
                         break label3539;
@@ -4189,11 +4152,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 171:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.loadUrl(%s);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -4203,8 +4166,8 @@ public class Fx {
                     }
                     break;
                 case 172:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getUrl()", var5);
                         var18 = var9;
                         break label3539;
@@ -4213,14 +4176,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 173:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "LOAD_DEFAULT";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.getSettings().setCacheMode(WebSettings.%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -4229,8 +4192,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 174:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.canGoBack()", var5);
                         var18 = var9;
                         break label3539;
@@ -4239,8 +4202,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 175:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.canGoForward()", var5);
                         var18 = var9;
                         break label3539;
@@ -4249,8 +4212,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 176:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.goBack();", var5);
                         var18 = var9;
                         break label3539;
@@ -4259,8 +4222,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 177:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.goForward();", var5);
                         var18 = var9;
                         break label3539;
@@ -4269,8 +4232,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 178:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.clearCache(true);", var5);
                         var18 = var9;
                         break label3539;
@@ -4279,8 +4242,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 179:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.clearHistory();", var5);
                         var18 = var9;
                         break label3539;
@@ -4289,8 +4252,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 180:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.stopLoading();", var5);
                         var18 = var9;
                         break label3539;
@@ -4299,8 +4262,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 181:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.zoomIn();", var5);
                         var18 = var9;
                         break label3539;
@@ -4309,8 +4272,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 182:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.zoomOut();", var5);
                         var18 = var9;
                         break label3539;
@@ -4319,8 +4282,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 183:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getDate()", var5);
                         var18 = var9;
                         break label3539;
@@ -4329,11 +4292,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 184:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setDate((long)(%s), true, true);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -4343,11 +4306,11 @@ public class Fx {
                     }
                     break;
                 case 185:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setMinDate((long)(%s));", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -4357,11 +4320,11 @@ public class Fx {
                     }
                     break;
                 case 186:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setMaxDate((long)(%s));", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -4371,9 +4334,9 @@ public class Fx {
                     }
                     break;
                 case 187:
-                    var8 = (String)var3.get(0);
-                    if (this.e.t.size() > 0) {
-                        Iterator var23 = this.e.t.iterator();
+                    var8 = var3.get(0);
+                    if (!e.t.isEmpty()) {
+                        Iterator<String> var23 = e.t.iterator();
                         var5 = "";
 
                         while(true) {
@@ -4382,7 +4345,7 @@ public class Fx {
                                 break;
                             }
 
-                            var18 = (String)var23.next();
+                            var18 = var23.next();
                             StringBuilder var21 = new StringBuilder();
                             var21.append(var5);
                             var21.append(".addTestDevice(\"");
@@ -4394,7 +4357,7 @@ public class Fx {
                         var18 = "";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.loadAd(new AdRequest.Builder()%s.build());", var8, var18);
                         var18 = var9;
                         break label3539;
@@ -4403,14 +4366,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 188:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = uq.q[0];
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("_%s_controller.setMapType(GoogleMap.%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -4419,19 +4382,19 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 189:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var8;
                     if (var8.length() <= 0) {
                         var18 = "0";
                     }
 
-                    var8 = (String)var3.get(2);
-                    if (var8.length() > 0) {
+                    var8 = var3.get(2);
+                    if (!var8.isEmpty()) {
                         var5 = var8;
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = String.format("_%s_controller.moveCamera(%s, %s);", var11, var18, var5);
                         var18 = var9;
                         break label3539;
@@ -4440,13 +4403,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 190:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("_%s_controller.zoomTo(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -4455,8 +4418,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 191:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("_%s_controller.zoomIn();", var5);
                         var18 = var9;
                         break label3539;
@@ -4465,8 +4428,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 192:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("_%s_controller.zoomOut();", var5);
                         var18 = var9;
                         break label3539;
@@ -4475,22 +4438,22 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 193:
-                    var11 = (String)var3.get(0);
-                    var10 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
+                    var11 = var3.get(0);
+                    var10 = var3.get(1);
+                    var18 = var3.get(2);
                     var8 = var18;
                     if (var18.length() <= 0) {
                         var8 = "0";
                     }
 
-                    var18 = (String)var3.get(3);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(3);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
                     var18 = var9;
-                    if (var11.length() > 0) {
-                        if (var10.length() > 0) {
+                    if (!var11.isEmpty()) {
+                        if (!var10.isEmpty()) {
                             var5 = String.format("_%s_controller.addMarker(%s, %s, %s);", var11, var10, var8, var5);
                             var18 = var9;
                             break label3539;
@@ -4500,13 +4463,13 @@ public class Fx {
                     }
                     break;
                 case 194:
-                    var5 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var8 = (String)var3.get(2);
-                    var10 = (String)var3.get(3);
+                    var5 = var3.get(0);
+                    var11 = var3.get(1);
+                    var8 = var3.get(2);
+                    var10 = var3.get(3);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var11.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var11.isEmpty()) {
                             var5 = String.format("_%s_controller.setMarkerInfo(%s, %s, %s);", var5, var11, var8, var10);
                             var18 = var9;
                             break label3539;
@@ -4516,22 +4479,22 @@ public class Fx {
                     }
                     break;
                 case 195:
-                    var11 = (String)var3.get(0);
-                    var10 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
+                    var11 = var3.get(0);
+                    var10 = var3.get(1);
+                    var18 = var3.get(2);
                     var8 = var18;
                     if (var18.length() <= 0) {
                         var8 = "0";
                     }
 
-                    var18 = (String)var3.get(3);
-                    if (var18.length() > 0) {
+                    var18 = var3.get(3);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
                     var18 = var9;
-                    if (var11.length() > 0) {
-                        if (var10.length() > 0) {
+                    if (!var11.isEmpty()) {
+                        if (!var10.isEmpty()) {
                             var5 = String.format("_%s_controller.setMarkerPosition(%s, %s, %s);", var11, var10, var8, var5);
                             var18 = var9;
                             break label3539;
@@ -4541,23 +4504,23 @@ public class Fx {
                     }
                     break;
                 case 196:
-                    var10 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
+                    var10 = var3.get(0);
+                    var11 = var3.get(1);
+                    var18 = var3.get(2);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = uq.r[0];
                     }
 
-                    var18 = (String)var3.get(3);
+                    var18 = var3.get(3);
                     var8 = var18;
                     if (var18.length() <= 0) {
                         var8 = "1";
                     }
 
                     var18 = var9;
-                    if (var10.length() > 0) {
-                        if (var11.length() > 0) {
+                    if (!var10.isEmpty()) {
+                        if (!var11.isEmpty()) {
                             var5 = String.format("_%s_controller.setMarkerColor(%s, BitmapDescriptorFactory.%s, %s);", var10, var11, var5, var8);
                             var18 = var9;
                             break label3539;
@@ -4567,19 +4530,19 @@ public class Fx {
                     }
                     break;
                 case 197:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
+                    var18 = var3.get(2);
                     var5 = var18;
                     if (var18.endsWith(".9")) {
                         var5 = var18.replaceAll("\\.9", "");
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var18 = var9;
-                        if (var11.length() > 0) {
-                            if (var5.length() > 0) {
+                        if (!var11.isEmpty()) {
+                            if (!var5.isEmpty()) {
                                 var5 = String.format("_%s_controller.setMarkerIcon(%s, R.drawable.%s);", var8, var11, var5.toLowerCase());
                                 var18 = var9;
                                 break label3539;
@@ -4590,17 +4553,17 @@ public class Fx {
                     }
                     break;
                 case 198:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
+                    var18 = var3.get(2);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "true";
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var11.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var11.isEmpty()) {
                             var5 = String.format("_%s_controller.setMarkerVisible(%s, %s);", var8, var11, var5);
                             var18 = var9;
                             break label3539;
@@ -4610,13 +4573,13 @@ public class Fx {
                     }
                     break;
                 case 199:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.vibrate((long)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -4625,20 +4588,20 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 200:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var18 = this.a(String.valueOf(var7), "");
+                        var18 = a(String.valueOf(var7), "");
                     } else {
                         var18 = "";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = var8;
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.schedule(%s, (int)(%s));", var11, var18, var11, var5);
                         var18 = var9;
                         break label3539;
@@ -4647,12 +4610,12 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 201:
-                    var12 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var10 = (String)var3.get(2);
+                    var12 = var3.get(0);
+                    var11 = var3.get(1);
+                    var10 = var3.get(2);
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var18 = this.a(String.valueOf(var7), "");
+                        var18 = a(String.valueOf(var7), "");
                     } else {
                         var18 = "";
                     }
@@ -4662,11 +4625,11 @@ public class Fx {
                         var8 = "0";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = var11;
                     }
 
-                    if (var12.length() > 0) {
+                    if (!var12.isEmpty()) {
                         var5 = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.scheduleAtFixedRate(%s, (int)(%s), (int)(%s));", var12, var18, var12, var5, var8);
                         var18 = var9;
                         break label3539;
@@ -4675,8 +4638,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 202:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.cancel();", var5);
                         var18 = var9;
                         break label3539;
@@ -4685,17 +4648,17 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 203:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    var11 = var3.get(2);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "";
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var11.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var11.isEmpty()) {
                             var5 = String.format("%s.child(%s).updateChildren(%s);", var8, var5, var11);
                             var18 = var9;
                             break label3539;
@@ -4705,11 +4668,11 @@ public class Fx {
                     }
                     break;
                 case 204:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.push().updateChildren(%s);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -4719,8 +4682,8 @@ public class Fx {
                     }
                     break;
                 case 205:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.push().getKey()", var5);
                         var18 = var9;
                         break label3539;
@@ -4729,14 +4692,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 206:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.child(%s).removeValue();", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -4745,18 +4708,18 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 207:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var5 = this.a(String.valueOf(var7), "");
+                        var5 = a(String.valueOf(var7), "");
                     } else {
                         var5 = "";
                     }
 
                     var18 = var9;
-                    if (var11.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var11.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var26 = new StringBuilder();
                             var26.append(String.format("%s.addListenerForSingleValueEvent(new ValueEventListener() {", var8));
                             var26.append("\n@Override\npublic void onDataChange(DataSnapshot _dataSnapshot) {\n");
@@ -4775,11 +4738,11 @@ public class Fx {
                     }
                     break;
                 case 208:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         var18 = var9;
                         if (!var8.equals("\"\"")) {
                             if (!var11.equals("\"\"")) {
@@ -4788,7 +4751,7 @@ public class Fx {
                                 var26.append(var5);
                                 var26.append("_create_user_listener");
                                 var18 = var26.toString();
-                                var5 = String.format("%s.createUserWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", var5, var8, var11, this.c, var18);
+                                var5 = String.format("%s.createUserWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", var5, var8, var11, c, var18);
                                 var18 = var9;
                                 break label3539;
                             }
@@ -4798,11 +4761,11 @@ public class Fx {
                     }
                     break;
                 case 209:
-                    var8 = (String)var3.get(0);
-                    var5 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var5 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var9;
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var18 = var9;
                         if (!var5.equals("\"\"")) {
                             if (!var11.equals("\"\"")) {
@@ -4811,7 +4774,7 @@ public class Fx {
                                 var26.append(var8);
                                 var26.append("_sign_in_listener");
                                 var18 = var26.toString();
-                                var5 = String.format("%s.signInWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", var8, var5, var11, this.c, var18);
+                                var5 = String.format("%s.signInWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", var8, var5, var11, c, var18);
                                 var18 = var9;
                                 break label3539;
                             }
@@ -4821,14 +4784,14 @@ public class Fx {
                     }
                     break;
                 case 210:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var26 = new StringBuilder();
                         var26.append("_");
                         var26.append(var5);
                         var26.append("_sign_in_listener");
                         var18 = var26.toString();
-                        var5 = String.format("%s.signInAnonymously().addOnCompleteListener(%s.this, %s);", var5, this.c, var18);
+                        var5 = String.format("%s.signInAnonymously().addOnCompleteListener(%s.this, %s);", var5, c, var18);
                         var18 = var9;
                         break label3539;
                     }
@@ -4838,14 +4801,14 @@ public class Fx {
                 case 211:
                     var18 = var9;
                     var5 = var8;
-                    if (this.e.a(this.c).b) {
+                    if (e.a(c).b) {
                         var5 = String.format("(FirebaseAuth.getInstance().getCurrentUser() != null)");
                         var18 = var9;
                     }
                     break label3539;
                 case 212:
                     var18 = var9;
-                    if (this.e.a(this.c).b) {
+                    if (e.a(c).b) {
                         var5 = String.format("FirebaseAuth.getInstance().getCurrentUser().getEmail()");
                         var18 = var9;
                         break label3539;
@@ -4853,17 +4816,17 @@ public class Fx {
                     break;
                 case 213:
                     var18 = var9;
-                    if (this.e.a(this.c).b) {
+                    if (e.a(c).b) {
                         var5 = String.format("FirebaseAuth.getInstance().getCurrentUser().getUid()");
                         var18 = var9;
                         break label3539;
                     }
                     break;
                 case 214:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         if (!var8.equals("\"\"")) {
                             var26 = new StringBuilder();
                             var26.append("_");
@@ -4879,15 +4842,15 @@ public class Fx {
                     break;
                 case 215:
                     var18 = var9;
-                    if (this.e.a(this.c).b) {
+                    if (e.a(c).b) {
                         var5 = String.format("FirebaseAuth.getInstance().signOut();");
                         var18 = var9;
                         break label3539;
                     }
                     break;
                 case 216:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.addChildEventListener(_%s_child_listener);", var5, var5);
                         var18 = var9;
                         break label3539;
@@ -4896,8 +4859,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 217:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.removeEventListener(_%s_child_listener);", var5, var5);
                         var18 = var9;
                         break label3539;
@@ -4906,8 +4869,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 218:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.registerListener(_%s_sensor_listener, %s.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR), SensorManager.SENSOR_DELAY_NORMAL);", var5, var5, var5);
                         var18 = var9;
                         break label3539;
@@ -4916,8 +4879,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 219:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.unregisterListener(_%s_sensor_listener);", var5, var5);
                         var18 = var9;
                         break label3539;
@@ -4926,20 +4889,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 220:
-                    label3002: {
-                        var8 = (String)var3.get(0);
-                        var18 = (String)var3.get(1);
-                        if (var18.length() > 0) {
-                            var5 = var18;
-                            if (!var18.equals("\"\"")) {
-                                break label3002;
-                            }
-                        }
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    var5 = (!var18.isEmpty() && !var18.equals("\"\"")) ? var18 : "\"Title\"";
 
-                        var5 = "\"Title\"";
-                    }
-
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setTitle(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -4948,20 +4902,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 221:
-                    label2997: {
-                        var8 = (String)var3.get(0);
-                        var18 = (String)var3.get(1);
-                        if (var18.length() > 0) {
-                            var5 = var18;
-                            if (!var18.equals("\"\"")) {
-                                break label2997;
-                            }
-                        }
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    var5 = (!var18.isEmpty() && !var18.equals("\"\"")) ? var18 : "\"Message\"";
 
-                        var5 = "\"Message\"";
-                    }
-
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setMessage(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -4970,8 +4915,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 222:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.create().show();", var5);
                         var18 = var9;
                         break label3539;
@@ -4980,27 +4925,23 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 223:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var5 = this.a(String.valueOf(var7), "");
+                        var5 = a(String.valueOf(var7), "");
                     } else {
                         var5 = "";
                     }
 
-                    label2991: {
-                        if (var8.length() > 0) {
+                        if (!var8.isEmpty()) {
                             var18 = var8;
-                            if (!var8.equals("\"\"")) {
-                                break label2991;
+                            if (var8.equals("\"\"")) {
+                                var18 = "\"OK\"";
                             }
                         }
 
-                        var18 = "\"OK\"";
-                    }
-
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = String.format("%s.setPositiveButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", var11, var18, var5);
                         var18 = var9;
                         break label3539;
@@ -5009,17 +4950,17 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 224:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var5 = this.a(String.valueOf(var7), "");
+                        var5 = a(String.valueOf(var7), "");
                     } else {
                         var5 = "";
                     }
 
                     label2985: {
-                        if (var8.length() > 0) {
+                        if (!var8.isEmpty()) {
                             var18 = var8;
                             if (!var8.equals("\"\"")) {
                                 break label2985;
@@ -5029,7 +4970,7 @@ public class Fx {
                         var18 = "\"Cancel\"";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = String.format("%s.setNegativeButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", var11, var18, var5);
                         var18 = var9;
                         break label3539;
@@ -5038,17 +4979,17 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 225:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
                     var7 = var1.subStack1;
                     if (var7 >= 0) {
-                        var5 = this.a(String.valueOf(var7), "");
+                        var5 = a(String.valueOf(var7), "");
                     } else {
                         var5 = "";
                     }
 
                     label2979: {
-                        if (var8.length() > 0) {
+                        if (!var8.isEmpty()) {
                             var18 = var8;
                             if (!var8.equals("\"\"")) {
                                 break label2979;
@@ -5058,7 +4999,7 @@ public class Fx {
                         var18 = "\"Neutral\"";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = String.format("%s.setNeutralButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", var11, var18, var5);
                         var18 = var9;
                         break label3539;
@@ -5067,11 +5008,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 226:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s = MediaPlayer.create(getApplicationContext(), R.raw.%s);", var5, var8.toLowerCase());
                             var18 = var9;
                             break label3539;
@@ -5081,8 +5022,8 @@ public class Fx {
                     }
                     break;
                 case 227:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.start();", var5);
                         var18 = var9;
                         break label3539;
@@ -5091,8 +5032,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 228:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.pause();", var5);
                         var18 = var9;
                         break label3539;
@@ -5101,13 +5042,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 229:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.seekTo((int)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -5116,8 +5057,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 230:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getCurrentPosition()", var5);
                         var18 = var9;
                         break label3539;
@@ -5126,8 +5067,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 231:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getDuration()", var5);
                         var18 = var9;
                         break label3539;
@@ -5136,8 +5077,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 232:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.reset();", var5);
                         var18 = var9;
                         break label3539;
@@ -5146,8 +5087,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 233:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.release();", var5);
                         var18 = var9;
                         break label3539;
@@ -5156,8 +5097,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 234:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.isPlaying()", var5);
                         var18 = var9;
                         break label3539;
@@ -5166,14 +5107,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 235:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "false";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setLooping(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -5182,8 +5123,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 236:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.isLooping()", var5);
                         var18 = var9;
                         break label3539;
@@ -5192,14 +5133,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 237:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "1";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s = new SoundPool((int)(%s), AudioManager.STREAM_MUSIC, 0);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -5208,11 +5149,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 238:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var5.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var5.isEmpty()) {
                             var5 = String.format("%s.load(getApplicationContext(), R.raw.%s, 1)", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -5222,16 +5163,16 @@ public class Fx {
                     }
                     break;
                 case 239:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
+                    var18 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var11.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var11.isEmpty()) {
                             var5 = String.format("%s.play((int)(%s), 1.0f, 1.0f, 1, (int)(%s), 1.0f)", var11, var8, var5);
                             var18 = var9;
                             break label3539;
@@ -5241,11 +5182,11 @@ public class Fx {
                     }
                     break;
                 case 240:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var5.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var5.isEmpty()) {
                             var5 = String.format("%s.stop((int)(%s));", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -5255,16 +5196,16 @@ public class Fx {
                     }
                     break;
                 case 241:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.endsWith(".9")) {
                         var5 = var18.replaceAll("\\.9", "");
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var5.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var5.isEmpty()) {
                             var5 = String.format("%s.setThumbResource(R.drawable.%s);", var8, var5.toLowerCase());
                             var18 = var9;
                             break label3539;
@@ -5274,16 +5215,16 @@ public class Fx {
                     }
                     break;
                 case 242:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.endsWith(".9")) {
                         var5 = var18.replaceAll("\\.9", "");
                     }
 
                     var18 = var9;
-                    if (var8.length() > 0) {
-                        if (var5.length() > 0) {
+                    if (!var8.isEmpty()) {
+                        if (!var5.isEmpty()) {
                             var5 = String.format("%s.setTrackResource(R.drawable.%s);", var8, var5.toLowerCase());
                             var18 = var9;
                             break label3539;
@@ -5293,13 +5234,13 @@ public class Fx {
                     }
                     break;
                 case 243:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setProgress((int)%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -5308,8 +5249,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 244:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getProgress()", var5);
                         var18 = var9;
                         break label3539;
@@ -5318,13 +5259,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 245:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setMax((int)%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -5333,8 +5274,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 246:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getMax()", var5);
                         var18 = var9;
                         break label3539;
@@ -5343,11 +5284,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 247:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setTarget(%s);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -5357,11 +5298,11 @@ public class Fx {
                     }
                     break;
                 case 248:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setPropertyName(\"%s\");", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -5371,13 +5312,13 @@ public class Fx {
                     }
                     break;
                 case 249:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setFloatValues((float)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -5386,19 +5327,19 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 250:
-                    var10 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var10 = var3.get(0);
+                    var8 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var11;
                     if (var11.length() <= 0) {
                         var18 = "0";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = var8;
                     }
 
-                    if (var10.length() > 0) {
+                    if (!var10.isEmpty()) {
                         var5 = String.format("%s.setFloatValues((float)(%s), (float)(%s));", var10, var5, var18);
                         var18 = var9;
                         break label3539;
@@ -5407,13 +5348,13 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 251:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setDuration((int)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -5422,11 +5363,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 252:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setRepeatMode(ValueAnimator.%s);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -5436,13 +5377,13 @@ public class Fx {
                     }
                     break;
                 case 253:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setRepeatCount((int)(%s));", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -5451,8 +5392,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 254:
-                    var18 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var18 = var3.get(0);
+                    var8 = var3.get(1);
                     if (var8.equals("Accelerate")) {
                         var5 = "new AccelerateInterpolator()";
                     } else {
@@ -5471,7 +5412,7 @@ public class Fx {
                         var5 = "new BounceInterpolator()";
                     }
 
-                    if (var18.length() > 0) {
+                    if (!var18.isEmpty()) {
                         var5 = String.format("%s.setInterpolator(%s);", var18, var5);
                         var18 = var9;
                         break label3539;
@@ -5480,8 +5421,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 255:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.start();", var5);
                         var18 = var9;
                         break label3539;
@@ -5490,8 +5431,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 256:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.cancel();", var5);
                         var18 = var9;
                         break label3539;
@@ -5500,8 +5441,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 257:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.isRunning()", var5);
                         var18 = var9;
                         break label3539;
@@ -5522,11 +5463,11 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 261:
-                    var8 = (String)var3.get(0);
-                    var5 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var5 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var9;
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var18 = var9;
                         if (!var5.equals("\"\"")) {
                             if (!var11.equals("\"\"")) {
@@ -5540,11 +5481,11 @@ public class Fx {
                     }
                     break;
                 case 262:
-                    var8 = (String)var3.get(0);
-                    var5 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var5 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var9;
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var18 = var9;
                         if (!var5.equals("\"\"")) {
                             if (!var11.equals("\"\"")) {
@@ -5558,10 +5499,10 @@ public class Fx {
                     }
                     break;
                 case 263:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         if (!var8.equals("\"\"")) {
                             var5 = String.format("_firebase_storage.getReferenceFromUrl(%s).delete().addOnSuccessListener(_%s_delete_success_listener).addOnFailureListener(_%s_failure_listener);", var8, var5, var5);
                             var18 = var9;
@@ -5572,7 +5513,7 @@ public class Fx {
                     }
                     break;
                 case 264:
-                    var5 = (String)var3.get(0);
+                    var5 = var3.get(0);
                     if (!var5.equals("\"\"")) {
                         var5 = String.format("FileUtil.readFile(%s)", var5);
                         var18 = var9;
@@ -5582,8 +5523,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 265:
-                    var5 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var18 = var3.get(1);
                     if (!var18.equals("\"\"")) {
                         var5 = String.format("FileUtil.writeFile(%s, %s);", var18, var5);
                         var18 = var9;
@@ -5593,8 +5534,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 266:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
                     if (!var5.equals("\"\"")) {
                         if (!var8.equals("\"\"")) {
@@ -5607,8 +5548,8 @@ public class Fx {
                     }
                     break;
                 case 267:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
                     if (!var5.equals("\"\"")) {
                         if (!var8.equals("\"\"")) {
@@ -5621,7 +5562,7 @@ public class Fx {
                     }
                     break;
                 case 268:
-                    var5 = (String)var3.get(0);
+                    var5 = var3.get(0);
                     if (!var5.equals("\"\"")) {
                         var5 = String.format("FileUtil.deleteFile(%s);", var5);
                         var18 = var9;
@@ -5631,7 +5572,7 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 269:
-                    var5 = (String)var3.get(0);
+                    var5 = var3.get(0);
                     if (!var5.equals("\"\"")) {
                         var5 = String.format("FileUtil.isExistFile(%s)", var5);
                         var18 = var9;
@@ -5641,7 +5582,7 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 270:
-                    var5 = (String)var3.get(0);
+                    var5 = var3.get(0);
                     if (!var5.equals("\"\"")) {
                         var5 = String.format("FileUtil.makeDir(%s);", var5);
                         var18 = var9;
@@ -5651,11 +5592,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 271:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
                     if (!var5.equals("\"\"")) {
-                        if (var8.length() > 0) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("FileUtil.listDir(%s, %s);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -5665,7 +5606,7 @@ public class Fx {
                     }
                     break;
                 case 272:
-                    var5 = (String)var3.get(0);
+                    var5 = var3.get(0);
                     if (!var5.equals("\"\"")) {
                         var5 = String.format("FileUtil.isDirectory(%s)", var5);
                         var18 = var9;
@@ -5675,7 +5616,7 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 273:
-                    var5 = (String)var3.get(0);
+                    var5 = var3.get(0);
                     if (!var5.equals("\"\"")) {
                         var5 = String.format("FileUtil.isFile(%s)", var5);
                         var18 = var9;
@@ -5685,7 +5626,7 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 274:
-                    var5 = (String)var3.get(0);
+                    var5 = var3.get(0);
                     if (!var5.equals("\"\"")) {
                         var5 = String.format("FileUtil.getFileLength(%s)", var5);
                         var18 = var9;
@@ -5695,11 +5636,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 275:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
                     if (!var5.equals("\"\"")) {
-                        if (var8.length() > 0) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.startsWith(%s)", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -5709,11 +5650,11 @@ public class Fx {
                     }
                     break;
                 case 276:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
                     if (!var5.equals("\"\"")) {
-                        if (var8.length() > 0) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.endsWith(%s)", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -5723,7 +5664,7 @@ public class Fx {
                     }
                     break;
                 case 277:
-                    var5 = (String)var3.get(0);
+                    var5 = var3.get(0);
                     if (!var5.equals("\"\"")) {
                         var5 = String.format("Uri.parse(%s).getLastPathSegment()", var5);
                         var18 = var9;
@@ -5741,8 +5682,8 @@ public class Fx {
                     var18 = var9;
                     break label3539;
                 case 280:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("FileUtil.getPublicDir(Environment.%s)", var5);
                         var18 = var9;
                         break label3539;
@@ -5751,9 +5692,9 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 281:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
+                    var18 = var3.get(2);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "1024";
@@ -5771,9 +5712,9 @@ public class Fx {
                     }
                     break;
                 case 282:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
+                    var18 = var3.get(2);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "1024";
@@ -5791,8 +5732,8 @@ public class Fx {
                     }
                     break;
                 case 283:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
                     if (!var5.equals("\"\"")) {
                         if (!var8.equals("\"\"")) {
@@ -5805,10 +5746,10 @@ public class Fx {
                     }
                     break;
                 case 284:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
+                    var18 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -5824,10 +5765,10 @@ public class Fx {
                     }
                     break;
                 case 285:
-                    var10 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var8 = (String)var3.get(2);
-                    var18 = (String)var3.get(3);
+                    var10 = var3.get(0);
+                    var11 = var3.get(1);
+                    var8 = var3.get(2);
+                    var18 = var3.get(3);
                     var5 = var8;
                     if (var8.length() <= 0) {
                         var5 = "1024";
@@ -5850,10 +5791,10 @@ public class Fx {
                     }
                     break;
                 case 286:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
+                    var18 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -5869,10 +5810,10 @@ public class Fx {
                     }
                     break;
                 case 287:
-                    var11 = (String)var3.get(0);
-                    var10 = (String)var3.get(1);
-                    var8 = (String)var3.get(2);
-                    var18 = (String)var3.get(3);
+                    var11 = var3.get(0);
+                    var10 = var3.get(1);
+                    var8 = var3.get(2);
+                    var18 = var3.get(3);
                     var5 = var8;
                     if (var8.length() <= 0) {
                         var5 = "1";
@@ -5895,16 +5836,16 @@ public class Fx {
                     }
                     break;
                 case 288:
-                    var12 = (String)var3.get(0);
-                    var10 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
-                    var11 = (String)var3.get(3);
+                    var12 = var3.get(0);
+                    var10 = var3.get(1);
+                    var18 = var3.get(2);
+                    var11 = var3.get(3);
                     var8 = var18;
                     if (var18.length() <= 0) {
                         var8 = "0";
                     }
 
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var5 = var11;
                     }
 
@@ -5920,9 +5861,9 @@ public class Fx {
                     }
                     break;
                 case 289:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
+                    var18 = var3.get(2);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "0x00000000";
@@ -5940,10 +5881,10 @@ public class Fx {
                     }
                     break;
                 case 290:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
+                    var18 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -5959,10 +5900,10 @@ public class Fx {
                     }
                     break;
                 case 291:
-                    var8 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var18 = (String)var3.get(2);
-                    if (var18.length() > 0) {
+                    var8 = var3.get(0);
+                    var11 = var3.get(1);
+                    var18 = var3.get(2);
+                    if (!var18.isEmpty()) {
                         var5 = var18;
                     }
 
@@ -5978,7 +5919,7 @@ public class Fx {
                     }
                     break;
                 case 292:
-                    var5 = (String)var3.get(0);
+                    var5 = var3.get(0);
                     if (!var5.equals("\"\"")) {
                         var5 = String.format("FileUtil.getJpegRotate(%s)", var5);
                         var18 = var9;
@@ -5988,8 +5929,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 293:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("startActivityForResult(%s, REQ_CD_%s);", var5, var5.toUpperCase());
                         var18 = var9;
                         break label3539;
@@ -5998,8 +5939,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 294:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("startActivityForResult(%s, REQ_CD_%s);", var5, var5.toUpperCase());
                         var18 = var9;
                         break label3539;
@@ -6008,10 +5949,10 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 295:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         if (!var8.equals("\"\"")) {
                             var5 = String.format("%s.setImageBitmap(FileUtil.decodeSampleBitmapFromPath(%s, 1024, 1024));", var5, var8);
                             var18 = var9;
@@ -6022,10 +5963,10 @@ public class Fx {
                     }
                     break;
                 case 296:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         if (!var8.equals("\"\"")) {
                             var5 = String.format("Glide.with(getApplicationContext()).load(Uri.parse(%s)).into(%s);", var8, var5);
                             var18 = var9;
@@ -6036,10 +5977,10 @@ public class Fx {
                     }
                     break;
                 case 297:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         if (!var8.equals("\"\"")) {
                             var5 = String.format("%s.setHint(%s);", var5, var8);
                             var18 = var9;
@@ -6050,10 +5991,10 @@ public class Fx {
                     }
                     break;
                 case 298:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         if (!var8.equals("\"\"")) {
                             var5 = String.format("%s.setHintTextColor(%s);", var5, var8);
                             var18 = var9;
@@ -6064,14 +6005,14 @@ public class Fx {
                     }
                     break;
                 case 299:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         var18 = var9;
-                        if (var8.length() > 0) {
-                            if (var11.length() > 0) {
+                        if (!var8.isEmpty()) {
+                            if (!var11.isEmpty()) {
                                 var5 = String.format("%s.setParams(%s, RequestNetworkController.%s);", var5, var8, var11);
                                 var18 = var9;
                                 break label3539;
@@ -6082,11 +6023,11 @@ public class Fx {
                     }
                     break;
                 case 300:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.setHeaders(%s);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -6096,17 +6037,17 @@ public class Fx {
                     }
                     break;
                 case 301:
-                    var11 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var5 = (String)var3.get(2);
-                    var10 = (String)var3.get(3);
+                    var11 = var3.get(0);
+                    var8 = var3.get(1);
+                    var5 = var3.get(2);
+                    var10 = var3.get(3);
                     var18 = var9;
-                    if (var11.length() > 0) {
+                    if (!var11.isEmpty()) {
                         var18 = var9;
-                        if (var8.length() > 0) {
+                        if (!var8.isEmpty()) {
                             var18 = var9;
                             if (!var5.equals("\"\"")) {
-                                if (var10.length() > 0) {
+                                if (!var10.isEmpty()) {
                                     var5 = String.format("%s.startRequestNetwork(RequestNetworkController.%s, %s, %s, _%s_request_listener);", var11, var8, var5, var10, var11);
                                     var18 = var9;
                                     break label3539;
@@ -6118,14 +6059,14 @@ public class Fx {
                     }
                     break;
                 case 302:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "false";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setIndeterminate(%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -6134,14 +6075,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 303:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "1";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setPitch((float)%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -6150,14 +6091,14 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 304:
-                    var8 = (String)var3.get(0);
-                    var18 = (String)var3.get(1);
+                    var8 = var3.get(0);
+                    var18 = var3.get(1);
                     var5 = var18;
                     if (var18.length() <= 0) {
                         var5 = "1";
                     }
 
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var5 = String.format("%s.setSpeechRate((float)%s);", var8, var5);
                         var18 = var9;
                         break label3539;
@@ -6166,11 +6107,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 305:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.speak(%s, TextToSpeech.QUEUE_ADD, null);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -6180,8 +6121,8 @@ public class Fx {
                     }
                     break;
                 case 306:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.isSpeaking()", var5);
                         var18 = var9;
                         break label3539;
@@ -6190,8 +6131,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 307:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.stop();", var5);
                         var18 = var9;
                         break label3539;
@@ -6200,8 +6141,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 308:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.shutdown();", var5);
                         var18 = var9;
                         break label3539;
@@ -6210,8 +6151,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 309:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("Intent _intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);\n_intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());\n%s.startListening(_intent);", var5);
                         var18 = var9;
                         break label3539;
@@ -6220,8 +6161,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 310:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.stopListening();", var5);
                         var18 = var9;
                         break label3539;
@@ -6230,8 +6171,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 311:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.cancel();\n%s.destroy();", var5, var5);
                         var18 = var9;
                         break label3539;
@@ -6240,11 +6181,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 312:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.readyConnection(_%s_bluetooth_connection_listener, %s);", var5, var5, var8);
                             var18 = var9;
                             break label3539;
@@ -6254,14 +6195,14 @@ public class Fx {
                     }
                     break;
                 case 313:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         var18 = var9;
-                        if (var8.length() > 0) {
-                            if (var11.length() > 0) {
+                        if (!var8.isEmpty()) {
+                            if (!var11.isEmpty()) {
                                 var5 = String.format("%s.readyConnection(_%s_bluetooth_connection_listener, %s, %s);", var5, var5, var8, var11);
                                 var18 = var9;
                                 break label3539;
@@ -6272,14 +6213,14 @@ public class Fx {
                     }
                     break;
                 case 314:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         var18 = var9;
-                        if (var8.length() > 0) {
-                            if (var11.length() > 0) {
+                        if (!var8.isEmpty()) {
+                            if (!var11.isEmpty()) {
                                 var5 = String.format("%s.startConnection(_%s_bluetooth_connection_listener, %s, %s);", var5, var5, var8, var11);
                                 var18 = var9;
                                 break label3539;
@@ -6290,17 +6231,17 @@ public class Fx {
                     }
                     break;
                 case 315:
-                    var5 = (String)var3.get(0);
-                    var11 = (String)var3.get(1);
-                    var8 = (String)var3.get(2);
-                    var10 = (String)var3.get(3);
+                    var5 = var3.get(0);
+                    var11 = var3.get(1);
+                    var8 = var3.get(2);
+                    var10 = var3.get(3);
                     var18 = var9;
-                    if (var5.length() > 0) {
+                    if (!var5.isEmpty()) {
                         var18 = var9;
-                        if (var11.length() > 0) {
+                        if (!var11.isEmpty()) {
                             var18 = var9;
-                            if (var8.length() > 0) {
-                                if (var10.length() > 0) {
+                            if (!var8.isEmpty()) {
+                                if (!var10.isEmpty()) {
                                     var5 = String.format("%s.startConnection(_%s_bluetooth_connection_listener, %s, %s, %s);", var5, var5, var11, var8, var10);
                                     var18 = var9;
                                     break label3539;
@@ -6312,11 +6253,11 @@ public class Fx {
                     }
                     break;
                 case 316:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.stopConnection(_%s_bluetooth_connection_listener, %s);", var5, var5, var8);
                             var18 = var9;
                             break label3539;
@@ -6326,14 +6267,14 @@ public class Fx {
                     }
                     break;
                 case 317:
-                    var8 = (String)var3.get(0);
-                    var5 = (String)var3.get(1);
-                    var11 = (String)var3.get(2);
+                    var8 = var3.get(0);
+                    var5 = var3.get(1);
+                    var11 = var3.get(2);
                     var18 = var9;
-                    if (var8.length() > 0) {
+                    if (!var8.isEmpty()) {
                         var18 = var9;
-                        if (var5.length() > 0) {
-                            if (var11.length() > 0) {
+                        if (!var5.isEmpty()) {
+                            if (!var11.isEmpty()) {
                                 var5 = String.format("%s.sendData(_%s_bluetooth_connection_listener, %s, %s);", var8, var8, var5, var11);
                                 var18 = var9;
                                 break label3539;
@@ -6344,8 +6285,8 @@ public class Fx {
                     }
                     break;
                 case 318:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.isBluetoothEnabled()", var5);
                         var18 = var9;
                         break label3539;
@@ -6354,8 +6295,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 319:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.isBluetoothActivated()", var5);
                         var18 = var9;
                         break label3539;
@@ -6364,8 +6305,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 320:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.activateBluetooth();", var5);
                         var18 = var9;
                         break label3539;
@@ -6374,11 +6315,11 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 321:
-                    var5 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var5 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var9;
-                    if (var5.length() > 0) {
-                        if (var8.length() > 0) {
+                    if (!var5.isEmpty()) {
+                        if (!var8.isEmpty()) {
                             var5 = String.format("%s.getPairedDevices(%s);", var5, var8);
                             var18 = var9;
                             break label3539;
@@ -6388,8 +6329,8 @@ public class Fx {
                     }
                     break;
                 case 322:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.getRandomUUID()", var5);
                         var18 = var9;
                         break label3539;
@@ -6398,27 +6339,27 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 323:
-                    var10 = (String)var3.get(0);
-                    var8 = (String)var3.get(1);
+                    var10 = var3.get(0);
+                    var8 = var3.get(1);
                     var18 = var8;
                     if (var8.length() <= 0) {
                         var18 = uq.p[0];
                     }
 
-                    var11 = (String)var3.get(2);
+                    var11 = var3.get(2);
                     var8 = var11;
                     if (var11.length() <= 0) {
                         var8 = "1000";
                     }
 
-                    var11 = (String)var3.get(3);
-                    if (var11.length() > 0) {
+                    var11 = var3.get(3);
+                    if (!var11.isEmpty()) {
                         var5 = var11;
                     }
 
-                    if (var10.length() > 0) {
-                        if (this.e.g) {
-                            var5 = String.format("if (ContextCompat.checkSelfPermission(%s.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n%s.requestLocationUpdates(LocationManager.%s, %s, %s, _%s_location_listener);\n}", this.c, var10, var18, var8, var5, var10);
+                    if (!var10.isEmpty()) {
+                        if (e.g) {
+                            var5 = String.format("if (ContextCompat.checkSelfPermission(%s.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n%s.requestLocationUpdates(LocationManager.%s, %s, %s, _%s_location_listener);\n}", c, var10, var18, var8, var5, var10);
                             var18 = var9;
                         } else {
                             var5 = String.format("if (Build.VERSION.SDK_INT >= 23) {if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n%s.requestLocationUpdates(LocationManager.%s, %s, %s, _%s_location_listener);\n}\n}\nelse {\n%s.requestLocationUpdates(LocationManager.%s, %s, %s, _%s_location_listener);\n}", var10, var18, var8, var5, var10, var10, var18, var8, var5, var10);
@@ -6430,8 +6371,8 @@ public class Fx {
                     var18 = var9;
                     break;
                 case 324:
-                    var5 = (String)var3.get(0);
-                    if (var5.length() > 0) {
+                    var5 = var3.get(0);
+                    if (!var5.isEmpty()) {
                         var5 = String.format("%s.removeUpdates(_%s_location_listener);", var5, var5);
                         var18 = var9;
                         break label3539;
@@ -6443,13 +6384,13 @@ public class Fx {
                     var18 = var9;
             }
 
-            var18 = this.mceb.getCodeExtraBlock(var1, var18);
+            var18 = mceb.getCodeExtraBlock(var1, var18);
             var5 = var18;
         }
 
         var9 = var5;
         StringBuilder var14;
-        if (this.b(var1.opCode, var2)) {
+        if (b(var1.opCode, var2)) {
             var14 = new StringBuilder();
             var14.append("(");
             var14.append(var5);
@@ -6462,7 +6403,7 @@ public class Fx {
             var14 = new StringBuilder();
             var14.append(var9);
             var14.append("\r\n");
-            var14.append(this.a(String.valueOf(var1.nextBlock), var18));
+            var14.append(a(String.valueOf(var1.nextBlock), var18));
             var2 = var14.toString();
         }
 
@@ -6484,10 +6425,7 @@ public class Fx {
                     if (var5 != 'n' && var5 != 't') {
                         var2.append("\\\\");
                     } else {
-                        StringBuilder var7 = new StringBuilder();
-                        var7.append("\\");
-                        var7.append(var5);
-                        var2.append(var7.toString());
+                        var2.append("\\" + var5);
                         var4 = var6;
                     }
                 } else {
@@ -6505,7 +6443,7 @@ public class Fx {
 
     public final String a(String var1, int var2, String var3) {
         if (var1.length() > 0 && var1.charAt(0) == '@') {
-            var3 = this.a(var1.substring(1), var3);
+            var3 = a(var1.substring(1), var3);
             var1 = var3;
             if (var2 == 2) {
                 var1 = var3;
@@ -6520,7 +6458,7 @@ public class Fx {
             if (var2 == 2) {
                 var6 = new StringBuilder();
                 var6.append("\"");
-                var6.append(this.a(var1));
+                var6.append(a(var1));
                 var6.append("\"");
                 return var6.toString();
             } else {
@@ -6548,11 +6486,11 @@ public class Fx {
     }
 
     public final String a(String var1, String var2) {
-        return !this.g.containsKey(var1) ? "" : this.a((BlockBean)this.g.get(var1), var2);
+        return !g.containsKey(var1) ? "" : a(g.get(var1), var2);
     }
 
     public final boolean b(String var1, String var2) {
-        String[] var3 = this.a;
+        String[] var3 = a;
         int var4 = var3.length;
         boolean var5 = false;
         int var6 = 0;
@@ -6572,7 +6510,7 @@ public class Fx {
             ++var6;
         }
 
-        String[] var9 = this.b;
+        String[] var9 = b;
         int var7 = var9.length;
         var4 = 0;
 
