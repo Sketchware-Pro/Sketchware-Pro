@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
-import pro.sketcheare.fragments.base.BaseFragment;
+import pro.sketchware.fragments.base.BaseFragment;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.IconSelectorDialog;
 import mod.jbk.util.OldResourceIdMapper;
