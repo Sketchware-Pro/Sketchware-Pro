@@ -447,7 +447,7 @@ public class Zx extends PopupWindow {
             } else {
                 holder.tvColorName.setText("");
             }
-            if (l == 1) {
+            if (l == 1 && sc_id != null) {
                 holder.tvColorName.setText(((ColorBean[]) colorGroups.get(l))[position].colorName);
             }
 
@@ -487,7 +487,7 @@ public class Zx extends PopupWindow {
                             colorPickerCallback.a(0);
                         } else if (tvColorCode.getText().toString().equals("NONE")) {
                             colorPickerCallback.a(0xffffff);
-                        } else if (l == 1) {
+                        } else if (l == 1 && sc_id != null) {
                             colorPickerCallback.a((String) tvColorName.getText(), Color.parseColor(tvColorCode.getText().toString()));
                         } else {
                             colorPickerCallback.a(Color.parseColor(tvColorCode.getText().toString()));
