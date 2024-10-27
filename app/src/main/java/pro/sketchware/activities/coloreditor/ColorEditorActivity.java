@@ -1,4 +1,4 @@
-package pro.sketchware.activities.color.editor;
+package pro.sketchware.activities.coloreditor;
 
 
 import android.app.Activity;
@@ -39,12 +39,12 @@ import java.util.regex.Pattern;
 import a.a.a.XB;
 import a.a.a.aB;
 import a.a.a.xB;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ColorEditorActivity extends AppCompatActivity {
 
@@ -129,7 +129,7 @@ public class ColorEditorActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (!Objects.equals(replaceXml(Objects.requireNonNull(convertListmapToXml(color_list))), replaceXml(FileUtil.readFile(getIntent().getStringExtra("content"))))) {
             showExitDialog();
-        }else{
+        } else {
             super.onBackPressed();
         }
         if (color_list.isEmpty() && (!FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
@@ -139,7 +139,7 @@ public class ColorEditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        menu.add(0, 0, 0, "Add a new string")
+        menu.add(0, 0, 0, "Add a new color")
                 .setIcon(R.drawable.ic_add_24)
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
 
@@ -148,7 +148,7 @@ public class ColorEditorActivity extends AppCompatActivity {
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         if (!checkDefaultString(getIntent().getStringExtra("content"))) {
-            menu.add(0, 2, 0, "Get default strings")
+            menu.add(0, 2, 0, "Get default colors")
                     .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
         }
 
@@ -163,22 +163,22 @@ public class ColorEditorActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == 1) {
             saveXml();
-        }else if (id == 0) {
+        } else if (id == 0) {
             addColorDialog();
-        }else if (id == 2) {
+        } else if (id == 2) {
             try {
                 parseColorsXML(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(getIntent().getStringExtra("content")))));
             } catch (Exception ignored) {
             }
 
             adapter.notifyDataSetChanged();
-        }else if (id == 3) {
+        } else if (id == 3) {
             saveXml();
 
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-            }else{
+            } else {
                 intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             }
             intent.putExtra("title", getIntent().getStringExtra("title"));
@@ -199,9 +199,9 @@ public class ColorEditorActivity extends AppCompatActivity {
             finish();
         });
         dialog.a(xB.b().a(activity, R.string.common_word_exit), v -> {
-                dialog.dismiss() ;
-                finish();
-                });
+            dialog.dismiss();
+            finish();
+        });
         dialog.show();
     }
 
@@ -211,15 +211,15 @@ public class ColorEditorActivity extends AppCompatActivity {
         dialog.b(xB.b().a(activity, R.string.color_editor_delete_color));
         dialog.a(xB.b().a(activity, R.string.picker_color_message_delete_all_custom_color));
         dialog.b(xB.b().a(activity, R.string.common_word_remove), v -> {
-               data.remove(position);
+            data.remove(position);
             if (data.size() - 1 >= 0) {
                 adapter.notifyDataSetChanged();
-            } else{
+            } else {
                 adapter.notifyItemRemoved(position);
             }
             dialog.dismiss();
         });
-        dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> dialog.dismiss()) ;
+        dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> dialog.dismiss());
         dialog.show();
     }
 
@@ -365,14 +365,15 @@ public class ColorEditorActivity extends AppCompatActivity {
                         return this;
                     }
                 }.getIns((int) 20, PropertiesUtil.parseColor(colorValue)));
-            }else{
+            } else {
                 if (data.size() - 1 >= 0) {
                     data.remove(position);
                     notifyDataSetChanged();
-                } else{
+                } else {
                     data.remove(position);
                     notifyItemRemoved(position);
-                };
+                }
+                ;
             }
 
             holder.itemBinding.edittextHex.setOnClickListener(v -> {
@@ -427,11 +428,10 @@ public class ColorEditorActivity extends AppCompatActivity {
                 });
 
                 dialog.configureDefaultButton("Delete", v1 -> {
+                    data.remove(position);
                     if (data.size() - 1 >= 0) {
-                        data.remove(position);
                         notifyDataSetChanged();
-                    } else{
-                        data.remove(position);
+                    } else {
                         notifyItemRemoved(position);
                     }
                     dialog.dismiss();
@@ -443,7 +443,7 @@ public class ColorEditorActivity extends AppCompatActivity {
 
             holder.itemBinding.edittextHex.setOnLongClickListener(v -> {
                 showDeleteDialog(adapter, position, data);
-                return false ;
+                return false;
             });
 
 

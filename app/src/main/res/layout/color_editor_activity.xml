@@ -11,10 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="Color  Editor" />
+        app:title="Colors editor" />
 
     <RelativeLayout
-        android:id="@+id/bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

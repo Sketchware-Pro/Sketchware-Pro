@@ -41,7 +41,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import pro.sketchware.activities.color.editor.ColorEditorActivity;
+import pro.sketchware.activities.coloreditor.ColorEditorActivity;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileResConfig;
