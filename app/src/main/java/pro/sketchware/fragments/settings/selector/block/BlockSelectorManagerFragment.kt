@@ -15,6 +15,7 @@ import com.google.gson.reflect.TypeToken
 
 import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
+import pro.sketchware.fragments.settings.selector.block.details.BlockSelectorDetailsFragment
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,7 +50,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
     ) {
         val adapter = BlockSelectorAdapter(
             onClick = { viewType ->
-                toast(viewType.name)
+                openFragment(BlockSelectorDetailsFragment(viewType))
             }
         )
         lifecycleScope.launch {
