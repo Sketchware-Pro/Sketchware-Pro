@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
+import com.sketchware.remod.R
 import com.sketchware.remod.databinding.LayoutBlockSelectorBinding
 
 class BlockSelectorAdapter(private val onClick: (String) -> Unit) :
