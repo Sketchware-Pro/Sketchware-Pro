@@ -48,6 +48,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
         view: View, 
         saved: Bundle?
     ) {
+        configureToolbar(binding.toolbar)
         val adapter = BlockSelectorAdapter(
             onClick = { viewType ->
                 openFragment(BlockSelectorDetailsFragment(viewType))

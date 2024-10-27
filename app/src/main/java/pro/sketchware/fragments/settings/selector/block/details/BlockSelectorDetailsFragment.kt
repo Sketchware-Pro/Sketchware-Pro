@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
+import com.google.android.material.appbar.MaterialToolbar
+
 import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
 
 import pro.sketchware.fragments.base.BaseFragment
@@ -30,6 +32,7 @@ class BlockSelectorDetailsFragment(
         view: View, 
         saved: Bundle?
     ) {
+        configureToolbar(binding.toolbar)
         val adapter = BlockSelectorDetailsAdapter(
             onClick = { selectorName ->
                 toast(selectorName)
@@ -38,6 +41,11 @@ class BlockSelectorDetailsFragment(
         adapter.submitList(viewType.data)
         binding.list.adapter = adapter
         super.onViewCreated(view, saved)
+    }
+    
+    override fun configureToolbar(toolbar: MaterialToolbar) {
+        super.configureToolbar(toolbar)
+        if(!viewType.name.equals("")) toolbar.setTitle(viewType.name)
     }
 
     override fun onDestroyView() {
