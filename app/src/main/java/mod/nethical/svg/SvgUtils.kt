@@ -83,8 +83,8 @@ class SvgUtils(private val context: Context) {
                     // Apply scaling to width and height
                     val scaledBitmap = Bitmap.createScaledBitmap(
                         bitmap,
-                        bitmap.width * densityScale,
-                        bitmap.height * densityScale,
+                        48 * densityScale,
+                        48 * densityScale,
                         true
                     )
                     // Set the scaled image on the ImageView
@@ -208,5 +208,6 @@ class SvgUtils(private val context: Context) {
             Log.d("svgConverter", "Converted file saved to: $outputFilePath")
         }
     }
+
 
 }

@@ -29,6 +29,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.hey.studios.util.Helper;
 import mod.nethical.svg.SvgUtils;
 
@@ -48,7 +49,9 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     public int m;
     public Kw n;
 
-    public SvgUtils svgUtils;
+    private SvgUtils svgUtils;
+
+    private FilePathUtil fpu = new FilePathUtil();
     public tx(Context context, boolean z, String str, boolean z2) {
         super(context);
         this.d = false;
@@ -120,6 +123,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                 this.g.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 return;
             } else {
+
                 File file = new File(jC.d(this.a).f(str));
                 if (file.exists()) {
                     if (Build.VERSION.SDK_INT >= 24) {
@@ -128,9 +132,8 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
-                    if(file.getAbsolutePath().endsWith(".svg")){
-                        Log.d("address of svg path on editor screen: ",file.getAbsolutePath());
-                        svgUtils.loadImage(this.g, file.toString());
+                    if(file.getAbsolutePath().endsWith(".xml")){
+                        svgUtils.loadImage(this.g, fpu.getSvgFullPath(this.a,str));
                         return;
                     }
                     Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(this.g);
@@ -276,9 +279,10 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
-                    if (file.getAbsolutePath().endsWith(".svg")) {
 
-                        svgUtils.loadImage(imageView, file.toString());
+                    if(file.getAbsolutePath().endsWith(".xml")){
+                        svgUtils.loadImage(imageView, fpu.getSvgFullPath(this.a,str));
+
                     } else {
                         Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
                     }

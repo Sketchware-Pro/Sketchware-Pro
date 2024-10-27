@@ -431,8 +431,9 @@ public class ViewPane extends RelativeLayout {
                     String imagelocation = resourcesManager.f(viewBean.image.resName);
 
                     int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
-                    if(imagelocation.endsWith(".svg")){
-                       svgUtils.loadScaledSvgIntoImageView( (ImageView) view,imagelocation,round3);
+                    if(imagelocation.endsWith(".xml")){
+                        FilePathUtil fpu = new FilePathUtil();
+                       svgUtils.loadScaledSvgIntoImageView( (ImageView) view,fpu.getSvgFullPath(sc_id,viewBean.image.resName),round3);
                     }else {
                         Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
                         ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));

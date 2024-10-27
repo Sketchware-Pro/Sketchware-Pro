@@ -24,6 +24,12 @@ public class FilePathUtil {
     public String getPathBroadcast(String sc_id) {
         return new File(SKETCHWARE_DATA, sc_id + "/files/broadcast").getAbsolutePath();
     }
+    public String getPathSvg(String sc_id) {
+        return new File(SKETCHWARE_DATA, sc_id + "/converted-vectors/").getAbsolutePath();
+    }
+    public String getSvgFullPath(String sc_id,String resName) {
+        return new File(getPathSvg(sc_id) + File.separator + resName + ".svg").getAbsolutePath();
+    }
 
     public String getPathService(String sc_id) {
         return new File(SKETCHWARE_DATA, sc_id + "/files/service").getAbsolutePath();

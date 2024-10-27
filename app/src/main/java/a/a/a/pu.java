@@ -64,6 +64,7 @@ public class pu extends qA implements View.OnClickListener {
 
     public SvgUtils svgUtils;
 
+    private FilePathUtil fpu = new FilePathUtil();
     private final ActivityResultLauncher<Intent> openImportIconActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             var data = result.getData();
@@ -157,12 +158,11 @@ public class pu extends qA implements View.OnClickListener {
 
     public void saveImages() {
 
-        FilePathUtil fpu = new FilePathUtil();
 
-        Path resources_dir_svg =Paths.get(fpu.getPathResource(sc_id) + "/drawable/");
+        Path svgDir =Paths.get(fpu.getPathSvg(sc_id));
         try {
-            if(!Files.exists(resources_dir_svg)){
-                Files.createDirectories(resources_dir_svg);
+            if(!Files.exists(svgDir)){
+                Files.createDirectories(svgDir);
             }
         } catch (IOException error) {
             Log.d("pu.java","Failed to create directory for saving svgs at: "+ fpu.getPathResource(sc_id));
@@ -183,8 +183,9 @@ public class pu extends qA implements View.OnClickListener {
                     Log.d("svg","full name : " + image.resFullName.toString());
                     if(image.resFullName.endsWith(".svg")){
                         // convert the svg to vectors
-                        copyFile(path,str+".svg");
-                        SvgUtils.convert(str+".svg", resources_dir_svg.toString(),"#000000");
+                        String svgPath = fpu.getSvgFullPath(sc_id,image.resName);
+                        copyFile(path,svgPath);
+                        SvgUtils.convert(svgPath,projectImagesDirectory ,"#000000");
                     }else {
                         iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
                     }
@@ -202,7 +203,7 @@ public class pu extends qA implements View.OnClickListener {
                 if (image.isNinePatch()) {
                     fileExtension = ".9.png";
                 } else if (image.isSvg()) {
-                    fileExtension = ".svg";
+                    fileExtension = ".xml";
                 } else {
                     fileExtension = ".png";
                 }
@@ -379,7 +380,7 @@ public class pu extends qA implements View.OnClickListener {
                 deleteContainer = itemView.findViewById(R.id.delete_img_container);
                 image.setOnClickListener(v -> {
                     if (!isSelecting) {
-                        if(!images.get(getLayoutPosition()).resFullName.endsWith(".svg")){
+                        if(!(images.get(getLayoutPosition()).resFullName.endsWith(".svg") || images.get(getLayoutPosition()).resFullName.endsWith(".xml"))){
                             showImageDetailsDialog(images.get(getLayoutPosition()));
                         }
                     } else {
@@ -430,11 +431,9 @@ public class pu extends qA implements View.OnClickListener {
 
             Log.d("svg res full name",projectImagesDirectory + File.separator + image.resFullName);
             if (image.resFullName.endsWith(".svg")) {
-                try{
-                    svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));
-                } catch (Exception ignored) {
-
-                }
+                svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));
+            } else if (image.resFullName.endsWith(".xml")) {
+                svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : fpu.getSvgFullPath(sc_id,image.resName));
             } else {
                 Glide.with(requireActivity())
                         .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
