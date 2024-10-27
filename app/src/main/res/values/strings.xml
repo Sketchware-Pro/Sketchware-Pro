@@ -901,6 +901,7 @@
     <string name="collection_duplicated_name">Duplicate file name in my collection</string>
     <string name="collection_failed_to_copy">Failed to save to my collection</string>
     <string name="collection_no_exist_file">File does not exist</string>
+    <string name="color_editor_delete_color">Delete Color</string>
     <string name="common_error_activity_not_found">Activity not found</string>
     <string name="common_error_an_error_occurred">An error occurred!</string>
     <string name="common_error_failed_to_connect_server">Failed to connect to the server</string>
