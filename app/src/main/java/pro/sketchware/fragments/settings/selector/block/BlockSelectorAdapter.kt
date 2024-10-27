@@ -41,6 +41,12 @@ class BlockSelectorAdapter(private val onClick: (String) -> Unit) :
 
     override fun onBindViewHolder(holder: BlockSelectorAdapterViewHolder, position: Int) {
         holder.bind(getItem(position))
+        when {
+            currentList.size == 1 -> holder.itemView.setBackgroundResource(R.drawable.shape_alone)
+            position == 0 -> holder.itemView.setBackgroundResource(R.drawable.shape_top)
+            position == currentList.size - 1 -> holder.itemView.setBackgroundResource(R.drawable.shape_bottom)
+            else -> holder.itemView.setBackgroundResource(R.drawable.shape_middle)
+        }
     }
 }
 
