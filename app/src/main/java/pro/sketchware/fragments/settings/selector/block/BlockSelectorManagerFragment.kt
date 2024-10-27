@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
 
 import pro.sketchware.fragments.base.BaseFragment
+import pro.sketchware.utility.SketchwareUtil.toast
 
 class BlockSelectorManagerFragment : BaseFragment() {
 
@@ -26,6 +27,19 @@ class BlockSelectorManagerFragment : BaseFragment() {
         view: View, 
         saved: Bundle?
     ) {
+        val adapter = BlockSelectorAdapter(
+            onClick = { selectorName ->
+                toast(selectorName)
+            }
+        )
+        val lst = listOf(
+            "TextView", 
+            "Button",
+            "LinearLayout", 
+            "TV"
+        ) // fake items for test
+        adapter.submitList(lst)
+        binding.list.adapter = adapter
         super.onViewCreated(view, saved)
     }
 
