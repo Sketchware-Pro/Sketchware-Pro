@@ -1,7 +1,5 @@
 package pro.sketchware.fragments.settings.selector.block
 
-// based on google example
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 
@@ -12,24 +10,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sketchware.remod.R
 import com.sketchware.remod.databinding.LayoutBlockSelectorBinding
 
-class BlockSelectorAdapter(private val onClick: (String) -> Unit) :
-    ListAdapter<String, BlockSelectorAdapter.BlockSelectorAdapterViewHolder>(BlockSelectorAdapterDiffCallback) {
+class BlockSelectorAdapter(private val onClick: (ViewType) -> Unit) :
+    ListAdapter<ViewType, BlockSelectorAdapter.BlockSelectorAdapterViewHolder>(BlockSelectorAdapterDiffCallback) {
 
     class BlockSelectorAdapterViewHolder(
         private val binding: LayoutBlockSelectorBinding,
-        val onClick: (String) -> Unit
+        val onClick: (ViewType) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private var currentString: String? = null
+        private var currentViewType: ViewType? = null
 
         init {
             itemView.setOnClickListener {
-                currentString?.let { onClick(it) }
+                currentViewType?.let { onClick(it) }
             }
         }
 
-        fun bind(string: String) {
-            currentString = string
-            binding.name.text = string
+        fun bind(viewType: ViewType) {
+            currentViewType = viewType
+            binding.name.text = viewType.name
         }
     }
 
@@ -51,12 +49,12 @@ class BlockSelectorAdapter(private val onClick: (String) -> Unit) :
     }
 }
 
-object BlockSelectorAdapterDiffCallback : DiffUtil.ItemCallback<String>() {
-    override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-        return oldItem == newItem
+object BlockSelectorAdapterDiffCallback : DiffUtil.ItemCallback<ViewType>() {
+    override fun areItemsTheSame(oldItem: ViewType, newItem: ViewType): Boolean {
+        return oldItem.name == newItem.name 
     }
 
-    override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-        return oldItem == newItem
+    override fun areContentsTheSame(oldItem: ViewType, newItem: ViewType): Boolean {
+        return oldItem == newItem 
     }
 }

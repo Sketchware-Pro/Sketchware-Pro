@@ -1010,6 +1010,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_watch">Watch</string>
     <string name="common_word_widget">Widget</string>
     <string name="common_word_yes">Yes</string>
+    <string name="common_word_new">New</string>
     <string name="component_add_docs_button_title_go_to_docs">Read Documentation</string>
     <string name="component_add_message_docs_updated_soon">The docs page will be updated soon</string>
     <string name="component_context_menu_title">Component menu</string>
