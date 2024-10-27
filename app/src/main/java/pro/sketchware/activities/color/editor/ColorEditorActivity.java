@@ -1,4 +1,4 @@
-package mod.mustiy;
+package pro.sketchware.activities.color.editor;
 
 
 import android.app.Activity;
