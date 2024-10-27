@@ -1,4 +1,4 @@
-package mod.trindadedev.tools.apk;
+package pro.sketchware.utility.apk;
 
 import android.app.Activity;
 import android.content.Context;
