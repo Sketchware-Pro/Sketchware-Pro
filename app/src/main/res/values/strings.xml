@@ -2160,11 +2160,12 @@ Please try again later"</string>
     <string name="settings_appearance_theme_system">System default</string>
     <string name="settings_appearance_theme_light">Light theme</string>
     <string name="settings_appearance_theme_dark">Dark theme</string>
-    <string name="tools_events_manager">Events manager</string>
-    <string name="tools_events_manager_activity_events">Activity events</string>
-    <string name="tools_events_manager_listeners">Listeners</string>
-    <string name="tools_events_manager_details">Events manager Details</string>
-
+    <string name="settings_events_manager">Events manager</string>
+    <string name="settings_events_manager_activity_events">Activity events</string>
+    <string name="settings_events_manager_listeners">Listeners</string>
+    <string name="settings_events_manager_details">Events manager Details</string>
+    <string name="settings_block_selector">Block Selector Manager</string>
+    
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
     <string name="assets_manager_options">Create or import</string>
