@@ -103,8 +103,8 @@ class BlockSelectorManagerFragment : BaseFragment() {
             dialogYesText = if (!isEdit) "Create" else "Save"
             dialogNoText = "Cancel"
             dialogYesListener = View.OnClickListener {
-                val selectorName = if (!isEdit) dialogBinding.palettesPath.text?.toString() else selector.get(index).name
-                val selectorTitle = if (!isEdit) dialogBinding.blocksPath.text?.toString() else selector.get(index).title
+                val selectorName = if (!isEdit) dialogBinding.palettesPath.text?.toString() else selectors.get(index).name
+                val selectorTitle = if (!isEdit) dialogBinding.blocksPath.text?.toString() else selectors.get(index).title
                 
                 if (selectorName.isNullOrEmpty()) {
                     toast("Please type Selector name")
