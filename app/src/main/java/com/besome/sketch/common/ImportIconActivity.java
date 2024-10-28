@@ -49,6 +49,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import a.a.a.KB;
@@ -88,10 +89,18 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     /**
      * Current icons' style where 0 stands for filled and 1 stands for outlind
      */
-    private final static int OUTLINE_ICONS = 0;
-    private final static int FILLED_ICONS = 1;
-    
-    private int iconType = -1;
+
+    private String selected_icon_type = ICON_TYPE_ROUND;
+
+    private static final String ICON_TYPE_OUTLINE = "outline";
+    private static final String ICON_TYPE_SHARP = "sharp";
+    private static final String ICON_TYPE_TWO_TONE = "twotone";
+    private static final String ICON_TYPE_ROUND = "round";
+    private static final String ICON_TYPE_BASELINE = "baseline";
+
+
+
+
     private List<Pair<String, String>> allIconPaths;
     private List<Pair<String, String>> icons;
     private final int ITEMS_PER_PAGE = 20;
@@ -142,7 +151,6 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
 
         iconsList = findViewById(R.id.image_list);
-        iconsList.setHasFixedSize(true);
         iconsList.setLayoutManager(new GridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
         adapter = new IconAdapter();
         iconsList.setAdapter(adapter);
@@ -209,21 +217,14 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
     private void listIcons() {
         allIconPaths = new ArrayList<>();
-        
-        String iconFolderName = switch (iconType){
-            case FILLED_ICONS -> "filled";
-            case OUTLINE_ICONS -> "outline";
-            default -> "filled";
-        };
-        String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation() + File.separator + "svg/";
 
-        Log.d("Loading icons", "Path: "+ iconPackStoreLocation);
+        String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation() + File.separator + "svg/";
         try (Stream<Path> iconFiles = Files.list(Paths.get(iconPackStoreLocation))) {
             iconFiles.map(Path::getFileName)
                     .map(Path::toString)
-                    .forEach(iconName -> allIconPaths.add(new Pair<>(
-                            iconName,
-                            Paths.get(iconPackStoreLocation, iconName).toString()
+                    .forEach(folderName -> allIconPaths.add(new Pair<>(
+                            folderName + "_" + selected_icon_type,
+                            Paths.get(iconPackStoreLocation, folderName,selected_icon_type + ".svg").toString()
                     )));
         } catch (IOException e) {
             e.printStackTrace();
@@ -231,7 +232,12 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         
         icons = new ArrayList<>();
         Log.d("icons",allIconPaths.toString());
-        loadMoreItems(); // Load the first chunk of items
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loadMoreItems(); // Load the first chunk of items
+            }
+        });
     }
     
     private void loadMoreItems() {
@@ -279,26 +285,48 @@ public class ImportIconActivity extends BaseAppCompatActivity {
                 .create();
 
         dialog.setView(dialogBinding.getRoot());
+        switch (selected_icon_type){
+            case ICON_TYPE_OUTLINE:
+                dialogBinding.chipGroupStyle.check(R.id.chip_outline);
+                break;
+            case ICON_TYPE_BASELINE:
+                dialogBinding.chipGroupStyle.check(R.id.chip_baseline);
+                break;
+            case ICON_TYPE_SHARP:
+                dialogBinding.chipGroupStyle.check(R.id.chip_sharp);
+                break;
+            case ICON_TYPE_TWO_TONE:
+                dialogBinding.chipGroupStyle.check(R.id.chip_twotone);
+                break;
+            case ICON_TYPE_ROUND:
+                dialogBinding.chipGroupStyle.check(R.id.chip_round);
+                break;
+        }
         
         dialog.setOnShowListener(dialogInterface -> {
             
             Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
                 int checkedChipId = dialogBinding.chipGroupStyle.getCheckedChipId();
-                if(checkedChipId==R.id.chip_outlined && iconType!=OUTLINE_ICONS){
-                    iconType = OUTLINE_ICONS;
-                    icons.clear();
-                    allIconPaths.clear();
-                    listIcons();       
+                if(checkedChipId==R.id.chip_outline && !Objects.equals(selected_icon_type, ICON_TYPE_OUTLINE)){
+                    updateIcons(ICON_TYPE_OUTLINE);
                 }
-                if(checkedChipId==R.id.chip_outlined && iconType!=FILLED_ICONS){
-                   iconType = FILLED_ICONS;
-                    icons.clear();
-                    allIconPaths.clear();
-                    listIcons();              
+                if(checkedChipId==R.id.chip_twotone && !Objects.equals(selected_icon_type, ICON_TYPE_TWO_TONE)){
+                    updateIcons(ICON_TYPE_TWO_TONE);
+                }
+
+                if(checkedChipId==R.id.chip_baseline && !Objects.equals(selected_icon_type, ICON_TYPE_BASELINE)){
+                    updateIcons(ICON_TYPE_BASELINE);
+                }
+
+                if(checkedChipId==R.id.chip_sharp && !Objects.equals(selected_icon_type, ICON_TYPE_SHARP)){
+                    updateIcons(ICON_TYPE_SHARP);
+                }
+
+                if(checkedChipId==R.id.chip_round && !Objects.equals(selected_icon_type, ICON_TYPE_ROUND)){
+                    updateIcons(ICON_TYPE_ROUND);
                 }
                 dialogInterface.dismiss();
-                return;               
                 
             });
         });
@@ -306,7 +334,19 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         dialog.show();
 
     }
-    
+
+    private void updateIcons(String type){
+//        iconsList.setAdapter(null);
+        selected_icon_type = type;
+        icons.clear();
+        allIconPaths.clear();
+        listIcons();
+        adapter.notifyDataSetChanged();
+//        iconsList.setAdapter(adapter);
+
+
+    }
+
     private void showSaveDialog(int iconPosition){
         DialogSaveIconBinding dialogBinding = DialogSaveIconBinding.inflate(getLayoutInflater());
         
@@ -336,10 +376,9 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             });
         });
 
-        svgUtils.loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second + File.separator + "outline.svg");
+        svgUtils.loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second );
         iconNameValidator = new WB(getApplicationContext(), dialogBinding.textInputLayout, uq.b,  alreadyAddedImageNames);
-        String filenameWithoutExtension = iconName.substring(0, iconName.lastIndexOf('.'));
-        dialogBinding.inputText.setText(filenameWithoutExtension);
+        dialogBinding.inputText.setText(iconName);
         dialog.setView(dialogBinding.getRoot());
         dialog.show();
     }
@@ -384,8 +423,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String filePath = getItem(position).second; // Adjust according to your data structure
-            svgUtils.loadImage(holder.icon, filePath + File.separator + "outline.svg");
-            Log.d("Loading",filePath + File.separator + "outline.svg");
+            svgUtils.loadImage(holder.icon, filePath);
+
         }
 
         @Override
