@@ -215,19 +215,22 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             case OUTLINE_ICONS -> "outline";
             default -> "filled";
         };
-        String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation();
-        try (Stream<Path> iconFiles = Files.list(Paths.get(iconPackStoreLocation, iconFolderName))) {
+        String iconPackStoreLocation = wq.getExtractedIconPackStoreLocation() + File.separator + "svg/";
+
+        Log.d("Loading icons", "Path: "+ iconPackStoreLocation);
+        try (Stream<Path> iconFiles = Files.list(Paths.get(iconPackStoreLocation))) {
             iconFiles.map(Path::getFileName)
                     .map(Path::toString)
                     .forEach(iconName -> allIconPaths.add(new Pair<>(
                             iconName,
-                            Paths.get(iconPackStoreLocation, iconFolderName, iconName).toString()
+                            Paths.get(iconPackStoreLocation, iconName).toString()
                     )));
         } catch (IOException e) {
             e.printStackTrace();
         }
         
         icons = new ArrayList<>();
+        Log.d("icons",allIconPaths.toString());
         loadMoreItems(); // Load the first chunk of items
     }
     
@@ -333,8 +336,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             });
         });
 
-        svgUtils.loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second);
-        
+        svgUtils.loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second + File.separator + "outline.svg");
         iconNameValidator = new WB(getApplicationContext(), dialogBinding.textInputLayout, uq.b,  alreadyAddedImageNames);
         String filenameWithoutExtension = iconName.substring(0, iconName.lastIndexOf('.'));
         dialogBinding.inputText.setText(filenameWithoutExtension);
@@ -382,7 +384,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String filePath = getItem(position).second; // Adjust according to your data structure
-            svgUtils.loadImage(holder.icon, filePath);
+            svgUtils.loadImage(holder.icon, filePath + File.separator + "outline.svg");
+            Log.d("Loading",filePath + File.separator + "outline.svg");
         }
 
         @Override
