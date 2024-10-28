@@ -74,7 +74,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
                     )
                 )
             } else {
-                selector.add(
+                selectors.add(
                     Selector(
                         name = "typeview",
                         title = "Select typeview:",
