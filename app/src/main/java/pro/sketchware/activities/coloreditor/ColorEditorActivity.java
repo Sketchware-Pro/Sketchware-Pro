@@ -3,13 +3,12 @@ package pro.sketchware.activities.coloreditor;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Xml;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -21,13 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ColorEditorActivityBinding;
 import com.sketchware.remod.databinding.ColorEditorAddBinding;
-import com.sketchware.remod.databinding.ColorEditorItemBinding;
+import com.sketchware.remod.databinding.PalletCustomviewBinding;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
-import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -39,17 +37,20 @@ import java.util.regex.Pattern;
 import a.a.a.XB;
 import a.a.a.aB;
 import a.a.a.xB;
+
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.XmlUtil;
 
 public class ColorEditorActivity extends AppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> color_list = new ArrayList<>();
-
+    boolean isGoingToEditor;
     private ColorEditorActivityBinding binding;
     private RecyclerViewAdapter adapter;
     private Activity activity;
@@ -82,6 +83,7 @@ public class ColorEditorActivity extends AppCompatActivity {
             return stringWriter.toString();
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -119,21 +121,24 @@ public class ColorEditorActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        parseColorsXML(FileUtil.readFile(getIntent().getStringExtra("content")));
-        adapter = new ColorEditorActivity.RecyclerViewAdapter(color_list);
-        binding.recyclerviewColors.setAdapter(adapter);
         super.onResume();
+        if (isGoingToEditor) {
+            parseColorsXML(FileUtil.readFile(getIntent().getStringExtra("content")));
+            adapter = new ColorEditorActivity.RecyclerViewAdapter(color_list);
+            binding.recyclerviewColors.setAdapter(adapter);
+        }
+        isGoingToEditor = false;
     }
 
     @Override
     public void onBackPressed() {
-        if (!Objects.equals(replaceXml(Objects.requireNonNull(convertListmapToXml(color_list))), replaceXml(FileUtil.readFile(getIntent().getStringExtra("content"))))) {
+        if (!Objects.equals(XmlUtil.replaceXml(Objects.requireNonNull(convertListmapToXml(color_list))), XmlUtil.replaceXml(FileUtil.readFile(getIntent().getStringExtra("content"))))) {
             showExitDialog();
-        } else {
+        }else{
             super.onBackPressed();
         }
         if (color_list.isEmpty() && (!FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
-            saveXml();
+            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
         }
     }
 
@@ -147,11 +152,6 @@ public class ColorEditorActivity extends AppCompatActivity {
                 .setIcon(R.drawable.save_icon_24px)
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        if (!checkDefaultString(getIntent().getStringExtra("content"))) {
-            menu.add(0, 2, 0, "Get default colors")
-                    .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
-        }
-
         menu.add(0, 3, 0, "Open in editor")
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
 
@@ -159,31 +159,27 @@ public class ColorEditorActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == 1) {
-            saveXml();
-        } else if (id == 0) {
+            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
+        }else if (id == 0) {
             addColorDialog();
-        } else if (id == 2) {
-            try {
-                parseColorsXML(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(getIntent().getStringExtra("content")))));
-            } catch (Exception ignored) {
-            }
-
+        }else if (id == 2) {
+            parseColorsXML(FileUtil.readFile(getDefaultResPath(Objects.requireNonNull(getIntent().getStringExtra("content")))));
             adapter.notifyDataSetChanged();
-        } else if (id == 3) {
-            saveXml();
-
+        }else if (id == 3) {
+            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-            } else {
+            }else{
                 intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             }
             intent.putExtra("title", getIntent().getStringExtra("title"));
             intent.putExtra("content", getIntent().getStringExtra("content"));
             intent.putExtra("xml", getIntent().getStringExtra("xml"));
+            isGoingToEditor = true;
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -194,7 +190,7 @@ public class ColorEditorActivity extends AppCompatActivity {
         dialog.b(xB.b().a(activity, R.string.common_word_warning));
         dialog.a(xB.b().a(activity, R.string.src_code_editor_unsaved_changes_dialog_warning_message));
         dialog.b(xB.b().a(activity, R.string.common_word_save), v -> {
-            saveXml();
+            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
             dialog.dismiss();
             finish();
         });
@@ -210,26 +206,17 @@ public class ColorEditorActivity extends AppCompatActivity {
         dialog.a(R.drawable.delete_96);
         dialog.b(xB.b().a(activity, R.string.color_editor_delete_color));
         dialog.a(xB.b().a(activity, R.string.picker_color_message_delete_all_custom_color));
-        dialog.b(xB.b().a(activity, R.string.common_word_remove), v -> {
+        dialog.b(xB.b().a(activity, R.string.common_word_delete), v -> {
             data.remove(position);
             if (data.size() - 1 >= 0) {
                 adapter.notifyDataSetChanged();
-            } else {
+            }else{
                 adapter.notifyItemRemoved(position);
             }
             dialog.dismiss();
         });
         dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> dialog.dismiss());
         dialog.show();
-    }
-
-    public String replaceXml(final String text) {
-        return text.replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "")
-                .replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>", "")
-                .replace("\r", "")
-                .replace("\n", "")
-                .replace(" ", "")
-                .replace("\t", "");
     }
 
     private void parseColorsXML(String colorXml) {
@@ -268,13 +255,8 @@ public class ColorEditorActivity extends AppCompatActivity {
                 eventType = parser.next();
             }
         } catch (Exception e) {
-            Log.e("PARSER ", e.toString());
+            e.printStackTrace();
         }
-    }
-
-    public void saveXml() {
-        FileUtil.writeFile(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
-        SketchwareUtil.toast("Save completed", Toast.LENGTH_SHORT);
     }
 
     public void addColorDialog() {
@@ -325,18 +307,11 @@ public class ColorEditorActivity extends AppCompatActivity {
 
     }
 
-    public boolean checkDefaultString(final String path) {
-        File file = new File(path);
-        String parentFolder = Objects.requireNonNull(file.getParentFile()).getName();
-        return parentFolder.equals("values");
-    }
-
-    public String getDefaultStringPath(final String path) {
+    public String getDefaultResPath(final String path) {
         return path.replaceFirst("/values-[a-z]{2}", "/values");
     }
 
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-
         ArrayList<HashMap<String, Object>> data;
 
         public RecyclerViewAdapter(ArrayList<HashMap<String, Object>> _arr) {
@@ -346,37 +321,29 @@ public class ColorEditorActivity extends AppCompatActivity {
         @NonNull
         @Override
         public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ColorEditorItemBinding itemBinding = ColorEditorItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            PalletCustomviewBinding itemBinding = PalletCustomviewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new ViewHolder(itemBinding);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String colorName = Objects.requireNonNull(data.get(position).get("colorName")).toString();
             String colorValue = Objects.requireNonNull(data.get(position).get("colorValue")).toString();
 
             if (isValidHexColor(colorValue)) {
-                holder.itemBinding.textinputlayoutName.setHint(colorName);
-                holder.itemBinding.edittextHex.setText(colorValue);
-                holder.itemBinding.colorPreview.setBackground(new GradientDrawable() {
-                    public GradientDrawable getIns(int a, int b) {
-                        this.setCornerRadius(a);
-                        this.setColor(b);
-                        return this;
-                    }
-                }.getIns((int) 20, PropertiesUtil.parseColor(colorValue)));
-            } else {
+                holder.itemBinding.title.setHint(colorName);
+                holder.itemBinding.sub.setText(colorValue);
+                holder.itemBinding.color.setBackgroundColor(PropertiesUtil.parseColor(colorValue));
+            }else{
+                data.remove(position);
                 if (data.size() - 1 >= 0) {
-                    data.remove(position);
                     notifyDataSetChanged();
-                } else {
-                    data.remove(position);
+                }else{
                     notifyItemRemoved(position);
                 }
-                ;
             }
 
-            holder.itemBinding.edittextHex.setOnClickListener(v -> {
+            holder.itemBinding.backgroundCard.setOnClickListener(v -> {
                 HashMap<String, Object> currentItem = data.get(position);
                 aB dialog = new aB(ColorEditorActivity.this);
                 ColorEditorAddBinding dialogBinding = ColorEditorAddBinding.inflate(LayoutInflater.from(ColorEditorActivity.this));
@@ -395,8 +362,8 @@ public class ColorEditorActivity extends AppCompatActivity {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (s.length() > 0 && Character.isDigit(s.charAt(start))) {
-                            dialogBinding.colorKeyInputLayout.setError("Color name should be starting with a letter");
-                        } else {
+                            dialogBinding.colorKeyInputLayout.setError("Color's name should be starting with a letter");
+                        }else{
                             dialogBinding.colorKeyInputLayout.setError(null);
                         }
                     }
@@ -431,7 +398,7 @@ public class ColorEditorActivity extends AppCompatActivity {
                     data.remove(position);
                     if (data.size() - 1 >= 0) {
                         notifyDataSetChanged();
-                    } else {
+                    }else{
                         notifyItemRemoved(position);
                     }
                     dialog.dismiss();
@@ -441,7 +408,7 @@ public class ColorEditorActivity extends AppCompatActivity {
                 dialog.show();
             });
 
-            holder.itemBinding.edittextHex.setOnLongClickListener(v -> {
+            holder.itemBinding.backgroundCard.setOnLongClickListener(v -> {
                 showDeleteDialog(adapter, position, data);
                 return false;
             });
@@ -455,9 +422,9 @@ public class ColorEditorActivity extends AppCompatActivity {
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            public ColorEditorItemBinding itemBinding;
+            public PalletCustomviewBinding itemBinding;
 
-            public ViewHolder(ColorEditorItemBinding itemBinding) {
+            public ViewHolder(PalletCustomviewBinding itemBinding) {
                 super(itemBinding.getRoot());
                 this.itemBinding = itemBinding;
             }

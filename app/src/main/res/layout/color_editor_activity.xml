@@ -16,14 +16,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview_colors"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp"
-            tools:listitem="@layout/color_editor_item" />
+            tools:listitem="@layout/pallet_customview" />
     </RelativeLayout>
 </LinearLayout>
