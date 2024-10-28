@@ -57,8 +57,11 @@ class BlockSelectorManagerFragment : BaseFragment() {
         configureToolbar(binding.toolbar)
         handleInsetts(binding.root)
         adapter = BlockSelectorAdapter(
-            onClick = { selector ->
+            onClick = { selector, index ->
                 openFragment(BlockSelectorDetailsFragment(selector))
+            },
+            onLongClick = { selector, index ->
+                showActionsDialog(index = index)
             }
         )
         lifecycleScope.launch {
@@ -72,31 +75,36 @@ class BlockSelectorManagerFragment : BaseFragment() {
         adapter.submitList(selectors)
         
         binding.createNew.setOnClickListener {
-            showCreateNewDialog()
+            showCreateEditDialog(false)
         }
         
         super.onViewCreated(view, saved)
     }
     
-    private fun parseJson(jsonString: String): MutableList<Selector> {
+    private fun parseJson(
+        jsonString: String
+    ): MutableList<Selector> {
         val gson = Gson()
         val listType = object : TypeToken<List<Selector>>() {}.type
         return gson.fromJson(jsonString, listType)
     }
     
-    private fun showCreateNewDialog() {
+    private fun showCreateEditDialog(
+        index: Int = 0,
+        isEdit: Boolean = false
+    ) {
         val dialogBinding = DialogCreateBinding.inflate(LayoutInflater.from(requireContext())).apply {
             tilPalettesPath.hint = "Selector name"
             tilBlocksPath.hint = "Selector title (ex: Select View:)"
         }
         val dialog = aB(requireActivity()).apply {
-            dialogTitleText = "New Selector"
+            dialogTitleText = if (!isEdit) "New Selector" else "Edit Selector"
             dialogCustomView = dialogBinding.getRoot()
-            dialogYesText = "Create"
+            dialogYesText = if (!isEdit) "Create" else "Save"
             dialogNoText = "Cancel"
             dialogYesListener = View.OnClickListener {
-                val selectorName = dialogBinding.palettesPath.text?.toString()
-                val selectorTitle = dialogBinding.blocksPath.text?.toString()
+                val selectorName = if (!isEdit) dialogBinding.palettesPath.text?.toString() else selector.get(index).name
+                val selectorTitle = if (!isEdit) dialogBinding.blocksPath.text?.toString() else selector.get(index).title
                 
                 if (selectorName.isNullOrEmpty()) {
                     toast("Please type Selector name")
@@ -106,13 +114,21 @@ class BlockSelectorManagerFragment : BaseFragment() {
                     toast("Please type Selector title")
                     return@OnClickListener
                 }
-                selectors.add(
-                    Selector(
+                if (!isEdit) {
+                    selectors.add(
+                        Selector(
+                            name = selectorName,
+                            title = selectorTitle,
+                            data = emptyList()
+                        )
+                    )
+                } else {
+                    selectors[index] = Selector(
                         name = selectorName,
                         title = selectorTitle,
-                        data = emptyList()
+                        data = selectors.get(index).data
                     )
-                )
+                }
                 saveAll()
                 adapter.notifyDataSetChanged()
                 dismiss()
@@ -124,6 +140,58 @@ class BlockSelectorManagerFragment : BaseFragment() {
         dialog.show()
     }
     
+    private fun showActionsDialog(
+        index: Int
+    ) {
+        val dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext)).apply {
+            edit.setOnClickListener {
+                showCreateEditDialog(
+                    index = index,
+                    isEdit = true
+                )
+            }
+            delete.setOnClickListener {
+                showConfirmationDialog(
+                    message = "Are you sure you want to delete this Selector?",
+                    onConfirm = {
+                        selectors.removeAt(index)
+                        saveAll()
+                        adapter.notifyDataSetChanged()
+                    },
+                    onCancel = { dialog ->
+                        dialog.dismiss()
+                    }
+                )
+            }
+        }
+        val dialog = aB(requireActivity()).apply {
+            dialogTitleText = "Actions"
+            dialogCustomView = dialogBinding.root
+        }
+        dialog.show()
+    }
+    
+    private fun showConfirmationDialog(
+        message: String,
+        onConfirm: () -> Unit,
+        onCancel: (aB) -> Unit
+    ) {
+        val dialog = aB(requireActivity()).apply {
+            dialogTitleText = "Attention"
+            dialogMessageText = message
+            dialogYesText = "Yes"
+            dialogNoText = "Cancel"
+            setCancelable(false)
+            dialogYesListener = View.OnClickListener {
+                onConfirm()
+            }
+            dialogNoListener = View.OnClickListener {
+                onCancel(this)
+            }
+        }
+        dialog.show()
+    }
+   
     private fun saveAll() {
         val gson: Gson = GsonBuilder()
             .setPrettyPrinting()
