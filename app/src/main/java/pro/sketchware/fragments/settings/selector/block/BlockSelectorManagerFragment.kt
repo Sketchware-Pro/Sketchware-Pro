@@ -55,6 +55,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
         saved: Bundle?
     ) {
         configureToolbar(binding.toolbar)
+        handleInsetts(binding.root)
         adapter = BlockSelectorAdapter(
             onClick = { selector ->
                 openFragment(BlockSelectorDetailsFragment(selector))
