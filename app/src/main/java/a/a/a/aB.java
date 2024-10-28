@@ -100,7 +100,8 @@ public class aB extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        getWindow().setWindowAnimations(R.style.Widget_SketchwarePro_Dialog);
+        
         {
             LayoutParams attributes = getWindow().getAttributes();
             attributes.width = ViewGroup.LayoutParams.MATCH_PARENT;
