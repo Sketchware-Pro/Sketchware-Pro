@@ -38,7 +38,7 @@ class BlockSelectorAdapter(
                         onLongClick(selector, index)
                     }
                 }
-                return true
+                true
             }
         }
 
