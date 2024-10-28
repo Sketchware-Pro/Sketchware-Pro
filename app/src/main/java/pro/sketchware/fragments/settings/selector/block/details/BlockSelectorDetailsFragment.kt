@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.google.android.material.appbar.MaterialToolbar
 
 import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
-import com.sketchware.remod.databinding.DialogAddCustomActivity as DialogCreateBinding
+import com.sketchware.remod.databinding.DialogAddCustomActivityBinding as DialogCreateBinding
 
 import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
