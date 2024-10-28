@@ -185,7 +185,7 @@ public class pu extends qA implements View.OnClickListener {
                         // convert the svg to vectors
                         String svgPath = fpu.getSvgFullPath(sc_id,image.resName);
                         copyFile(path,svgPath);
-                        SvgUtils.convert(svgPath,projectImagesDirectory ,"#000000");
+                        svgUtils.convert(svgPath,projectImagesDirectory ,"#000000");
                     }else {
                         iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
                     }
@@ -429,6 +429,9 @@ public class pu extends qA implements View.OnClickListener {
             holder.checkBox.setChecked(image.isSelected);
             holder.name.setText(image.resName);
 
+            if(svgUtils == null){
+                svgUtils = new SvgUtils(requireContext());
+            }
             Log.d("svg res full name",projectImagesDirectory + File.separator + image.resFullName);
             if (image.resFullName.endsWith(".svg")) {
                 svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));

@@ -11,6 +11,7 @@ import coil.load
 import coil.request.ImageRequest
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserFactory
+import org.xmlpull.v1.XmlSerializer
 import java.io.File
 import java.io.StringReader
 import java.io.StringWriter
@@ -19,6 +20,8 @@ import java.nio.file.Paths
 import java.util.regex.Pattern
 import kotlin.math.roundToInt
 
+
+const val SIZE_MULTIPLIER = 2
 class SvgUtils(private val context: Context) {
     private var imageLoader: ImageLoader? = null
 
@@ -101,113 +104,205 @@ class SvgUtils(private val context: Context) {
             decoderFactory { result, options, _ -> SvgDecoder(result.source, options) }
         }
     }
-    companion object {
-        private const val SIZE_MULTIPLIER = 2
 
-        @JvmStatic
-        @Throws(Exception::class)
-        fun convert(inputFilePath: String, outputDir: String, fillColor: String?) {
-            // Read the SVG file
-            val data = String(Files.readAllBytes(Paths.get(inputFilePath)))
+    fun convert(inputFilePath: String, outputDir: String, fillColor: String?) {
+        // Read the SVG file
+        val data = String(Files.readAllBytes(Paths.get(inputFilePath)))
 
-            // Default values for width, height, viewportWidth, and viewportHeight
-            var width = 24
-            var height = 24
-            var vWidth = 24
-            var vHeight = 24
+        // Create XML parser factory
+        val factory = XmlPullParserFactory.newInstance()
+        factory.isNamespaceAware = true
 
-            // Use regex to extract viewBox, width, and height if present
-            var pattern = Pattern.compile("viewBox=\"([0-9]+\\s[0-9]+\\s[0-9]+\\s[0-9]+)\"")
-            var matcher = pattern.matcher(data)
-            if (matcher.find()) {
-                val viewBoxValues =
-                    matcher.group(1)!!.split("\\s".toRegex()).dropLastWhile { it.isEmpty() }
-                        .toTypedArray()
-                vWidth = viewBoxValues[2].toInt()
-                vHeight = viewBoxValues[3].toInt()
-            }
+        // Parse the input SVG
+        val inputParser = factory.newPullParser()
+        inputParser.setInput(StringReader(data))
 
-            pattern = Pattern.compile("width=\"([0-9]+\\.?[0-9]*)\"")
-            matcher = pattern.matcher(data)
-            if (matcher.find()) {
-                width = matcher.group(1)?.toFloat() as Int
-            }
+        // Extract SVG attributes
+        val svgAttributes = extractSvgAttributes(inputParser)
 
-            pattern = Pattern.compile("height=\"([0-9]+\\.?[0-9]*)\"")
-            matcher = pattern.matcher(data)
-            if (matcher.find()) {
-                height = matcher.group(1)?.toFloat() as Int
-            }
+        // Create output XML
+        val writer = StringWriter()
+        val serializer = factory.newSerializer()
+        serializer.setOutput(writer)
 
-            // Start creating the XML file using XmlSerializer
-            val writer = StringWriter()
-            val factory = XmlPullParserFactory.newInstance()
-            val serializer = factory.newSerializer()
+        // Write the vector drawable
+        writeVectorDrawable(serializer, svgAttributes, inputParser, fillColor)
 
-            serializer.setOutput(writer)
-            serializer.startDocument("UTF-8", true)
+        // Save the output file
+        val outputFilePath = outputDir + "/" + File(inputFilePath).name.replace(".svg", ".xml")
+        val outputPath = Paths.get(outputFilePath)
+        Files.createDirectories(outputPath.parent)
+        Files.write(outputPath, writer.toString().toByteArray())
 
-            // Start the <vector> tag
-            serializer.startTag(null, "vector")
-            serializer.attribute(
-                null,
-                "xmlns:android",
-                "http://schemas.android.com/apk/res/android"
-            )
-            serializer.attribute(null, "android:name", "vector")
-            serializer.attribute(null, "android:width", (width * SIZE_MULTIPLIER).toString() + "dp")
-            serializer.attribute(
-                null,
-                "android:height",
-                (height * SIZE_MULTIPLIER).toString() + "dp"
-            )
-            serializer.attribute(null, "android:viewportWidth", vWidth.toString())
-            serializer.attribute(null, "android:viewportHeight", vHeight.toString())
+        Log.d("svgConverter", "Converted file saved to: $outputFilePath")
+    }
 
-            // Process the <path> tag(s) in the SVG
-            val parser = factory.newPullParser()
-            parser.setInput(StringReader(data))
-            var eventType = parser.eventType
+    data class SvgAttributes(
+        val width: Int = 24,
+        val height: Int = 24,
+        val viewportWidth: Float = 24f,
+        val viewportHeight: Float = 24f
+    )
 
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG && "path" == parser.name) {
-                    // Extract path data and fill color
-                    val pathData = parser.getAttributeValue(null, "d")
-                    var fill = parser.getAttributeValue(null, "fill")
+    private fun extractSvgAttributes(parser: XmlPullParser): SvgAttributes {
+        while (parser.eventType != XmlPullParser.START_TAG || parser.name != "svg") {
+            parser.next()
+        }
 
-                    // If a custom fill color is provided, use it; otherwise, use the default fill color
-                    if (fillColor != null && !fillColor.isEmpty()) {
-                        fill = fillColor
-                    } else if (fill == null) {
-                        fill = "#000000" // Default fill color
+        // Get viewBox attributes
+        val viewBox = parser.getAttributeValue(null, "viewBox")?.split(" ")
+        val viewportWidth = viewBox?.getOrNull(2)?.toFloatOrNull() ?: 24f
+        val viewportHeight = viewBox?.getOrNull(3)?.toFloatOrNull() ?: 24f
+
+        // Get width and height
+        val width = parser.getAttributeValue(null, "width")?.removeSuffix("px")?.toIntOrNull() ?: 24
+        val height = parser.getAttributeValue(null, "height")?.removeSuffix("px")?.toIntOrNull() ?: 24
+
+        return SvgAttributes(width, height, viewportWidth, viewportHeight)
+    }
+
+    private fun writeVectorDrawable(
+        serializer: XmlSerializer,
+        attributes: SvgAttributes,
+        parser: XmlPullParser,
+        customFillColor: String?
+    ) {
+
+        serializer.startDocument("UTF-8", true)
+
+        // Write vector tag
+        serializer.startTag(null, "vector")
+        serializer.attribute(null, "xmlns:android", "http://schemas.android.com/apk/res/android")
+        serializer.attribute(null, "android:width", "${attributes.width * SIZE_MULTIPLIER}dp")
+        serializer.attribute(null, "android:height", "${attributes.height * SIZE_MULTIPLIER}dp")
+        serializer.attribute(null, "android:viewportWidth", attributes.viewportWidth.toString())
+        serializer.attribute(null, "android:viewportHeight", attributes.viewportHeight.toString())
+
+        // Process all SVG elements
+        var depth = 0
+        var groupFillColor: String? = null
+
+        while (parser.eventType != XmlPullParser.END_DOCUMENT) {
+            when (parser.eventType) {
+                XmlPullParser.START_TAG -> {
+                    depth++
+                    when (parser.name) {
+                        "g" -> {
+                            groupFillColor = parser.getAttributeValue(null, "fill")
+                        }
+                        "path" -> {
+                            writePath(serializer, parser, customFillColor ?: groupFillColor)
+                        }
+                        "circle", "rect", "ellipse" -> {
+                            val pathData = convertShapeToPath(parser)
+                            writePathFromData(serializer, pathData, customFillColor ?: groupFillColor)
+                        }
                     }
-
-                    // Write the <path> tag
-                    serializer.startTag(null, "path")
-                    serializer.attribute(null, "android:name", "path")
-                    serializer.attribute(null, "android:pathData", pathData)
-                    serializer.attribute(null, "android:fillColor", fill)
-                    serializer.endTag(null, "path")
                 }
-                eventType = parser.next()
+                XmlPullParser.END_TAG -> {
+                    depth--
+                    if (parser.name == "g") {
+                        groupFillColor = null
+                    }
+                }
+            }
+            parser.next()
+        }
+
+        serializer.endTag(null, "vector")
+        serializer.endDocument()
+    }
+
+    private fun writePath(serializer: XmlSerializer, parser: XmlPullParser, inheritedFill: String?) {
+        val pathData = parser.getAttributeValue(null, "d")
+        val fill = parser.getAttributeValue(null, "fill") ?: inheritedFill ?: "#000000"
+
+        if (pathData != null) {
+            serializer.startTag(null, "path")
+            serializer.attribute(null, "android:pathData", pathData)
+            serializer.attribute(null, "android:fillColor", fill)
+
+            // Handle opacity if present
+            parser.getAttributeValue(null, "opacity")?.toFloatOrNull()?.let { opacity ->
+                if (opacity < 1.0f) {
+                    serializer.attribute(null, "android:fillAlpha", opacity.toString())
+                }
             }
 
-            // End the <vector> tag
-            serializer.endTag(null, "vector")
-            serializer.endDocument()
-
-            // Generate output XML path
-            val outputFilePath = outputDir + "/" + File(inputFilePath).name.replace(".svg", ".xml")
-
-            val outputPath = Paths.get(outputFilePath)
-            Files.createFile(outputPath)
-
-
-            Files.write(outputPath, writer.toString().toByteArray())
-
-            Log.d("svgConverter", "Converted file saved to: $outputFilePath")
+            serializer.endTag(null, "path")
         }
     }
 
+    private fun writePathFromData(serializer: XmlSerializer, pathData: String, fill: String?) {
+        serializer.startTag(null, "path")
+        serializer.attribute(null, "android:pathData", pathData)
+        serializer.attribute(null, "android:fillColor", fill ?: "#000000")
+        serializer.endTag(null, "path")
+    }
+
+    private fun convertShapeToPath(parser: XmlPullParser): String {
+        return when (parser.name) {
+            "circle" -> {
+                val cx = parser.getAttributeValue(null, "cx")?.toFloatOrNull() ?: 0f
+                val cy = parser.getAttributeValue(null, "cy")?.toFloatOrNull() ?: 0f
+                val r = parser.getAttributeValue(null, "r")?.toFloatOrNull() ?: 0f
+                createCirclePath(cx, cy, r)
+            }
+            "rect" -> {
+                val x = parser.getAttributeValue(null, "x")?.toFloatOrNull() ?: 0f
+                val y = parser.getAttributeValue(null, "y")?.toFloatOrNull() ?: 0f
+                val width = parser.getAttributeValue(null, "width")?.toFloatOrNull() ?: 0f
+                val height = parser.getAttributeValue(null, "height")?.toFloatOrNull() ?: 0f
+                val rx = parser.getAttributeValue(null, "rx")?.toFloatOrNull() ?: 0f
+                val ry = parser.getAttributeValue(null, "ry")?.toFloatOrNull() ?: 0f
+                createRectPath(x, y, width, height, rx, ry)
+            }
+            "ellipse" -> {
+                val cx = parser.getAttributeValue(null, "cx")?.toFloatOrNull() ?: 0f
+                val cy = parser.getAttributeValue(null, "cy")?.toFloatOrNull() ?: 0f
+                val rx = parser.getAttributeValue(null, "rx")?.toFloatOrNull() ?: 0f
+                val ry = parser.getAttributeValue(null, "ry")?.toFloatOrNull() ?: 0f
+                createEllipsePath(cx, cy, rx, ry)
+            }
+            else -> ""
+        }
+    }
+
+    private fun createCirclePath(cx: Float, cy: Float, r: Float): String {
+        return "M ${cx - r},$cy " +
+                "A $r,$r 0 0 1 ${cx + r},$cy " +
+                "A $r,$r 0 0 1 ${cx - r},$cy Z"
+    }
+
+    private fun createRectPath(
+        x: Float,
+        y: Float,
+        width: Float,
+        height: Float,
+        rx: Float,
+        ry: Float
+    ): String {
+        return if (rx <= 0f && ry <= 0f) {
+            "M $x,$y h $width v $height h ${-width} Z"
+        } else {
+            val effectiveRx = rx.coerceAtMost(width / 2)
+            val effectiveRy = ry.coerceAtMost(height / 2)
+            "M ${x + effectiveRx},$y " +
+                    "h ${width - 2 * effectiveRx} " +
+                    "a $effectiveRx,$effectiveRy 0 0 1 $effectiveRx,$effectiveRy " +
+                    "v ${height - 2 * effectiveRy} " +
+                    "a $effectiveRx,$effectiveRy 0 0 1 ${-effectiveRx},$effectiveRy " +
+                    "h ${-(width - 2 * effectiveRx)} " +
+                    "a $effectiveRx,$effectiveRy 0 0 1 ${-effectiveRx},${-effectiveRy} " +
+                    "v ${-(height - 2 * effectiveRy)} " +
+                    "a $effectiveRx,$effectiveRy 0 0 1 $effectiveRx,${-effectiveRy} Z"
+        }
+    }
+
+    private fun createEllipsePath(cx: Float, cy: Float, rx: Float, ry: Float): String {
+        return "M ${cx - rx},$cy " +
+                "A $rx,$ry 0 0 1 ${cx + rx},$cy " +
+                "A $rx,$ry 0 0 1 ${cx - rx},$cy Z"
+    }
 
 }
