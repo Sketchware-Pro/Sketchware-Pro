@@ -11,10 +11,10 @@ import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
 
 import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
-import pro.sketchware.fragments.settings.selector.block.ViewType
+import pro.sketchware.fragments.settings.selector.block.Selector
 
 class BlockSelectorDetailsFragment(
-    val viewType: ViewType
+    val selector: Selector
 ): BaseFragment() {
 
     private var _binding: FragmentBlockSelectorManagerBinding? = null
@@ -38,14 +38,14 @@ class BlockSelectorDetailsFragment(
                 toast(selectorName)
             }
         )
-        adapter.submitList(viewType.data)
+        adapter.submitList(selector.data)
         binding.list.adapter = adapter
         super.onViewCreated(view, saved)
     }
     
     override fun configureToolbar(toolbar: MaterialToolbar) {
         super.configureToolbar(toolbar)
-        if(!viewType.name.equals("")) toolbar.setTitle(viewType.name)
+        if(!selector.name.equals("")) toolbar.setTitle(selector.name)
     }
 
     override fun onDestroyView() {

@@ -1,6 +1,6 @@
 package pro.sketchware.fragments.settings.selector.block
 
-data class ViewType(
+data class Selector(
     val data: List<String>,
     val name: String,
     val title: String

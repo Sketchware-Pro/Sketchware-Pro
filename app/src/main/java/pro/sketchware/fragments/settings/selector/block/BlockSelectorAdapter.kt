@@ -10,28 +10,28 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sketchware.remod.R
 import com.sketchware.remod.databinding.LayoutBlockSelectorBinding
 
-class BlockSelectorAdapter(private val onClick: (ViewType) -> Unit) :
-    ListAdapter<ViewType, BlockSelectorAdapter.BlockSelectorAdapterViewHolder>(BlockSelectorAdapterDiffCallback) {
+class BlockSelectorAdapter(private val onClick: (Selector) -> Unit) :
+    ListAdapter<Selector, BlockSelectorAdapter.BlockSelectorAdapterViewHolder>(BlockSelectorAdapterDiffCallback) {
 
     class BlockSelectorAdapterViewHolder(
         private val binding: LayoutBlockSelectorBinding,
-        val onClick: (ViewType) -> Unit
+        val onClick: (Selector) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        private var currentViewType: ViewType? = null
+        private var currentSelector: Selector? = null
 
         init {
             itemView.setOnClickListener {
-                currentViewType?.let { onClick(it) }
+                currentSelector?.let { onClick(it) }
             }
         }
 
-        fun bind(viewType: ViewType) {
-            currentViewType = viewType
-            binding.name.text = viewType.name
+        fun bind(selector: Selector) {
+            currentSelector = selector
+            binding.name.text = selector.name
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlockSelectorAdapterViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, selector: Int): BlockSelectorAdapterViewHolder {
         val binding = LayoutBlockSelectorBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
@@ -49,12 +49,12 @@ class BlockSelectorAdapter(private val onClick: (ViewType) -> Unit) :
     }
 }
 
-object BlockSelectorAdapterDiffCallback : DiffUtil.ItemCallback<ViewType>() {
-    override fun areItemsTheSame(oldItem: ViewType, newItem: ViewType): Boolean {
+object BlockSelectorAdapterDiffCallback : DiffUtil.ItemCallback<Selector>() {
+    override fun areItemsTheSame(oldItem: Selector, newItem: Selector): Boolean {
         return oldItem.name == newItem.name 
     }
 
-    override fun areContentsTheSame(oldItem: ViewType, newItem: ViewType): Boolean {
+    override fun areContentsTheSame(oldItem: Selector, newItem: Selector): Boolean {
         return oldItem == newItem 
     }
 }

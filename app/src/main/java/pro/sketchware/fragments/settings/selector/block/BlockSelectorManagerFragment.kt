@@ -45,27 +45,28 @@ class BlockSelectorManagerFragment : BaseFragment() {
         return binding.root
     }
     
-    var typeViews: List<ViewType> = emptyList()
+    private var selectors: MutableList<Selector> = mutableListOf()
+    private lateinit var adapter: BlockSelectorAdapter
 
     override fun onViewCreated(
         view: View, 
         saved: Bundle?
     ) {
         configureToolbar(binding.toolbar)
-        val adapter = BlockSelectorAdapter(
-            onClick = { viewType ->
-                openFragment(BlockSelectorDetailsFragment(viewType))
+        adapter = BlockSelectorAdapter(
+            onClick = { selector ->
+                openFragment(BlockSelectorDetailsFragment(selector))
             }
         )
         lifecycleScope.launch {
-            typeViews = parseJson(
+            selectors = parseJson(
                 BLOCK_SELECTOR_MENUS_FILE.readText(
                     Charsets.UTF_8
                 )
             )
         }
         binding.list.adapter = adapter
-        adapter.submitList(typeViews)
+        adapter.submitList(selectors)
         
         binding.createNew.setOnClickListener {
             showCreateNewDialog()
@@ -74,21 +75,43 @@ class BlockSelectorManagerFragment : BaseFragment() {
         super.onViewCreated(view, saved)
     }
     
-    private fun parseJson(jsonString: String): List<ViewType> {
+    private fun parseJson(jsonString: String): MutableList<Selector> {
         val gson = Gson()
-        val listType = object : TypeToken<List<ViewType>>() {}.type
+        val listType = object : TypeToken<List<Selector>>() {}.type
         return gson.fromJson(jsonString, listType)
     }
     
     private fun showCreateNewDialog() {
-        val dialogBinding = DialogCreateBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialogBinding = DialogCreateBinding.inflate(LayoutInflater.from(requireContext())).apply {
+            tilPalettesPath.hint = "Selector name"
+            tilBlocksPath.hint = "Selector title (ex: Select View:)"
+        }
         val dialog = aB(requireActivity()).apply {
             dialogTitleText = "New Selector"
             dialogCustomView = dialogBinding.getRoot()
             dialogYesText = "Create"
             dialogNoText = "Cancel"
             dialogYesListener = View.OnClickListener {
-                // todo
+                val selectorName = dialogBinding.palettesPath.text?.toString()
+                val selectorTitle = dialogBinding.blocksPath.text?.toString()
+                
+                if (selectorName.isNullOrEmpty()) {
+                    toast("Please type Selector name")
+                    return@OnClickListener
+                }
+                if (selectorTitle.isNullOrEmpty()) {
+                    toast("Please type Selector title")
+                    return@OnClickListener
+                }
+                selectors.add(
+                    Selector(
+                        name = selectorName,
+                        title = selectorTitle,
+                        data = emptyList()
+                    )
+                )
+                adapter.submitList(selectors.toList())
+                dismiss()
             }
             dialogNoListener= View.OnClickListener {
                 dismiss()
