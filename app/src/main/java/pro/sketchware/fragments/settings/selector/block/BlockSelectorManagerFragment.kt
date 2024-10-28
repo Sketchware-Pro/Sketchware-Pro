@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 
 import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
 import com.sketchware.remod.databinding.DialogBlockConfigurationBinding as DialogCreateBinding
+import com.sketchware.remod.databinding.DialogSelectorActionsBinding
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
