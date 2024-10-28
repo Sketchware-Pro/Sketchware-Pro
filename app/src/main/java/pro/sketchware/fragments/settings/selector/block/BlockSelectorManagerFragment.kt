@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken
 
 import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
+import pro.sketchware.utility.FileUtil.writeFile
 import pro.sketchware.fragments.settings.selector.block.details.BlockSelectorDetailsFragment
 
 import kotlinx.coroutines.Dispatchers
@@ -110,6 +111,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
                         data = emptyList()
                     )
                 )
+                saveAll()
                 adapter.notifyDataSetChanged()
                 dismiss()
             }
@@ -118,6 +120,14 @@ class BlockSelectorManagerFragment : BaseFragment() {
             }
         }
         dialog.show()
+    }
+    
+    private fun saveAll() {
+        writeFile(
+            BLOCK_SELECTOR_MENUS_FILE.absolutePath, 
+            Gson().toJson(selectors)
+        )
+        toast("Saved!")
     }
     
     override fun onDestroyView() {
