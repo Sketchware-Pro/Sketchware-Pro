@@ -52,7 +52,7 @@ class BlockSelectorDetailsFragment(
     }
     
     private fun showCreateDialog() {
-        val dialogBinding = DialogCreateBinding.inflate(LayoutInflater(requireContext())).apply {
+        val dialogBinding = DialogCreateBinding.inflate(LayoutInflater.from(requireContext())).apply {
             activityNameInputLayout.hint = "Name"
         }
         val dialog = aB(requireActivity()).apply {
