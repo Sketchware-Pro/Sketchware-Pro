@@ -23,18 +23,19 @@ import pro.sketchware.R;
  */
 public class aB extends Dialog {
 
-    private int dialogImageResId = -1;
-    private String dialogTitleText = "";
-    private String dialogMessageText = "";
-    private boolean msgIsSelectable = false;
-    private View dialogCustomView;
-    private View dialogButtonsContainer;
-    private String dialogDefaultText = "Default";
-    private View.OnClickListener dialogDefaultListener = null;
-    private String dialogNoText = "No";
-    private View.OnClickListener dialogNoListener = null;
-    private String dialogYesText = "Yes";
-    private View.OnClickListener dialogYesListener = null;
+    // I don't know if it's bad  make everything public, but I did this so I could use .aB.apply in kotlin
+    public int dialogImageResId = -1;
+    public String dialogTitleText = "";
+    public String dialogMessageText = "";
+    public boolean msgIsSelectable = false;
+    public View dialogCustomView;
+    public View dialogButtonsContainer;
+    public String dialogDefaultText = "Default";
+    public View.OnClickListener dialogDefaultListener = null;
+    public String dialogNoText = "No";
+    public View.OnClickListener dialogNoListener = null;
+    public String dialogYesText = "Yes";
+    public View.OnClickListener dialogYesListener = null;
 
     public aB(Activity activity) {
         super(activity);

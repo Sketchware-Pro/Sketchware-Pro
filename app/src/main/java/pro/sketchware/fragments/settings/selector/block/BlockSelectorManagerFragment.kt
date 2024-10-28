@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 
 import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
+import com.sketchware.remod.databinding.DialogBlockConfigurationBinding as DialogCreateBinding
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -23,6 +24,8 @@ import kotlinx.coroutines.withContext
 import kotlin.io.readText
 
 import java.io.File
+
+import a.a.a.aB
 
 class BlockSelectorManagerFragment : BaseFragment() {
 
@@ -63,13 +66,35 @@ class BlockSelectorManagerFragment : BaseFragment() {
         }
         binding.list.adapter = adapter
         adapter.submitList(typeViews)
+        
+        binding.createNew.setOnClickListener {
+            showCreateNewDialog()
+        }
+        
         super.onViewCreated(view, saved)
     }
     
-    fun parseJson(jsonString: String): List<ViewType> {
+    private fun parseJson(jsonString: String): List<ViewType> {
         val gson = Gson()
         val listType = object : TypeToken<List<ViewType>>() {}.type
         return gson.fromJson(jsonString, listType)
+    }
+    
+    private fun showCreateNewDialog() {
+        val dialogBinding = DialogCreateBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = aB(requireActivity()).apply {
+            dialogTitleText = "New Selector"
+            dialogCustomView = dialogBinding.getRoot()
+            dialogYesText = "Create"
+            dialogNoText = "Cancel"
+            dialogYesListener = View.OnClickListener {
+                // todo
+            }
+            dialogNoListener= View.OnClickListener {
+                dismiss()
+            }
+        }
+        dialog.show()
     }
     
     override fun onDestroyView() {
