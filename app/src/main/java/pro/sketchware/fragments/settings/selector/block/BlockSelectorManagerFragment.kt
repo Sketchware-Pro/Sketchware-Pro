@@ -75,7 +75,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
         adapter.submitList(selectors)
         
         binding.createNew.setOnClickListener {
-            showCreateEditDialog(false)
+            showCreateEditDialog()
         }
         
         super.onViewCreated(view, saved)
