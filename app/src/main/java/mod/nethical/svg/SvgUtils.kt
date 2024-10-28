@@ -17,7 +17,6 @@ import java.io.StringReader
 import java.io.StringWriter
 import java.nio.file.Files
 import java.nio.file.Paths
-import java.util.regex.Pattern
 import kotlin.math.roundToInt
 
 
@@ -104,8 +103,92 @@ class SvgUtils(private val context: Context) {
             decoderFactory { result, options, _ -> SvgDecoder(result.source, options) }
         }
     }
-
     fun convert(inputFilePath: String, outputDir: String, fillColor: String?) {
+        // Create output directory if it doesn't exist
+        Files.createDirectories(Paths.get(outputDir))
+
+        // Read and process the SVG file
+        val inputData = String(Files.readAllBytes(Paths.get(inputFilePath)))
+
+        // If fillColor is provided, create modified SVG first
+        if (fillColor != null) {
+            val modifiedSvgPath = createModifiedSvg(inputFilePath, inputData, fillColor)
+            // Use the modified SVG as input for vector conversion
+            convertToVector(modifiedSvgPath, outputDir, fillColor)
+        } else {
+            // Convert original SVG directly if no fill color specified
+            convertToVector(inputFilePath, outputDir, null)
+        }
+    }
+
+    private fun createModifiedSvg(
+        inputFilePath: String,
+        inputData: String,
+        fillColor: String
+    ): String {
+        val factory = XmlPullParserFactory.newInstance()
+        factory.isNamespaceAware = true
+
+        val inputParser = factory.newPullParser()
+        inputParser.setInput(StringReader(inputData))
+
+        val writer = StringWriter()
+        val serializer = factory.newSerializer()
+        serializer.setOutput(writer)
+
+        // Start document
+        serializer.startDocument("UTF-8", true)
+
+        var depth = 0
+        while (inputParser.eventType != XmlPullParser.END_DOCUMENT) {
+            when (inputParser.eventType) {
+                XmlPullParser.START_TAG -> {
+                    val tag = inputParser.name
+                    serializer.startTag(inputParser.namespace, tag)
+
+                    // Copy all attributes
+                    for (i in 0 until inputParser.attributeCount) {
+                        val attrName = inputParser.getAttributeName(i)
+                        val attrValue = inputParser.getAttributeValue(i)
+
+                        // Replace fill color if this is a path, circle, rect, or ellipse
+                        if (attrName == "fill" && shouldApplyFillColor(tag)) {
+                            serializer.attribute(null, attrName, fillColor)
+                        } else {
+                            serializer.attribute(null, attrName, attrValue)
+                        }
+                    }
+
+                    // Add fill attribute if it doesn't exist for relevant tags
+                    if (shouldApplyFillColor(tag) && !hasFillAttribute(inputParser)) {
+                        serializer.attribute(null, "fill", fillColor)
+                    }
+
+                    depth++
+                }
+
+                XmlPullParser.END_TAG -> {
+                    serializer.endTag(inputParser.namespace, inputParser.name)
+                    depth--
+                }
+
+                XmlPullParser.TEXT -> {
+                    serializer.text(inputParser.text)
+                }
+            }
+            inputParser.next()
+        }
+
+        serializer.endDocument()
+
+        // Save modified SVG
+        File(inputFilePath).nameWithoutExtension
+        Files.write(Paths.get(inputFilePath), writer.toString().toByteArray())
+
+        return inputFilePath
+    }
+
+    private fun convertToVector(inputFilePath: String, outputDir: String, fillColor: String?) {
         // Read the SVG file
         val data = String(Files.readAllBytes(Paths.get(inputFilePath)))
 
@@ -129,13 +212,22 @@ class SvgUtils(private val context: Context) {
         writeVectorDrawable(serializer, svgAttributes, inputParser, fillColor)
 
         // Save the output file
-        val outputFilePath = outputDir + "/" + File(inputFilePath).name.replace(".svg", ".xml")
-        val outputPath = Paths.get(outputFilePath)
-        Files.createDirectories(outputPath.parent)
-        Files.write(outputPath, writer.toString().toByteArray())
+        val outputFilePath = "$outputDir/${File(inputFilePath).nameWithoutExtension}.xml"
+        Files.write(Paths.get(outputFilePath), writer.toString().toByteArray())
 
-        Log.d("svgConverter", "Converted file saved to: $outputFilePath")
+        Log.d("svgConverter", "Converted files saved to: $outputDir")
     }
+
+    private fun shouldApplyFillColor(tag: String): Boolean {
+        return tag in setOf("path", "circle", "rect", "ellipse", "polygon", "polyline")
+    }
+
+    private fun hasFillAttribute(parser: XmlPullParser): Boolean {
+        return (0 until parser.attributeCount).any {
+            parser.getAttributeName(it) == "fill"
+        }
+    }
+
 
     data class SvgAttributes(
         val width: Int = 24,
@@ -168,6 +260,7 @@ class SvgUtils(private val context: Context) {
         customFillColor: String?
     ) {
 
+
         serializer.startDocument("UTF-8", true)
 
         // Write vector tag
@@ -193,7 +286,7 @@ class SvgUtils(private val context: Context) {
                         "path" -> {
                             writePath(serializer, parser, customFillColor ?: groupFillColor)
                         }
-                        "circle", "rect", "ellipse" -> {
+                        "circle", "rect", "ellipse", "polygon", "polyline" -> {
                             val pathData = convertShapeToPath(parser)
                             writePathFromData(serializer, pathData, customFillColor ?: groupFillColor)
                         }

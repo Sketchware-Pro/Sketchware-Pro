@@ -185,7 +185,7 @@ public class pu extends qA implements View.OnClickListener {
                         // convert the svg to vectors
                         String svgPath = fpu.getSvgFullPath(sc_id,image.resName);
                         copyFile(path,svgPath);
-                        svgUtils.convert(svgPath,projectImagesDirectory ,"#000000");
+                        svgUtils.convert(svgPath,projectImagesDirectory ,"#FF0000");
                     }else {
                         iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
                     }
