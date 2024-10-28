@@ -98,8 +98,8 @@ class BlockSelectorManagerFragment : BaseFragment() {
             tilPalettesPath.hint = "Selector name"
             tilBlocksPath.hint = "Selector title (ex: Select View:)"
             if (isEdit) {
-                palettesPath.text = selectors.get(index).name
-                blocksPath.text = selectors.get(index).title
+                palettesPath.setText(selectors.get(index).name)
+                blocksPath.setText(selectors.get(index).title)
             }
         }
         val dialog = aB(requireActivity()).apply {
