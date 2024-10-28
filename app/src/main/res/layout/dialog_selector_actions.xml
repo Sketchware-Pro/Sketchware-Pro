@@ -16,7 +16,7 @@
         android:layout_marginTop="4dp"
         android:id="@+id/edit"
         android:gravity="center"
-        android:background="@drawable/shape_alone"
+        android:background="@drawable/shape_action_button"
         android:orientation="vertical">
 
         <ImageView
@@ -42,7 +42,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="4dp"
         android:id="@+id/delete"
-        android:background="@drawable/shape_alone"
+        android:background="@drawable/shape_action_button"
         android:gravity="center"
         android:orientation="vertical">
 
