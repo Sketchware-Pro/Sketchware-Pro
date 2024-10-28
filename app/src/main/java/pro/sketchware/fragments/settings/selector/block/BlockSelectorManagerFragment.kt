@@ -5,6 +5,10 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
+import android.widget.TextView
 
 import androidx.lifecycle.lifecycleScope
 
@@ -113,6 +117,16 @@ class BlockSelectorManagerFragment : BaseFragment() {
                 palettesPath.setText(selectors.get(index).name)
                 blocksPath.setText(selectors.get(index).title)
             }
+            palettesPath.setOnTextChanged(
+                onTextChanged = {
+                    if (itemAlreadyExists(it.toString())) {
+                        palettesPath.setError("An item with this name already exists")
+                    }
+                },
+                afterTextChanged = {
+                    palettesPath.setError(null)
+                }
+            )
         }
         val dialog = aB(requireActivity()).apply {
             dialogTitleText = if (!isEdit) "New Selector" else "Edit Selector"
@@ -192,6 +206,10 @@ class BlockSelectorManagerFragment : BaseFragment() {
         dialog.show()
     }
     
+    private aaa() {
+        
+    }
+    
     private fun showConfirmationDialog(
         message: String,
         onConfirm: (aB) -> Unit,
@@ -224,6 +242,12 @@ class BlockSelectorManagerFragment : BaseFragment() {
         toast("Saved!")
     }
     
+    private fun itemAlreadyExists(
+        toCompare: String
+    ): Boolean = selectors.any {
+        it.name == toCompare
+    }
+    
     /*
     * A Default list of Selector Itens
     */
@@ -249,6 +273,41 @@ class BlockSelectorManagerFragment : BaseFragment() {
             "MapView",
             "ProgressBar"
         )
+    }
+    
+    // big 😡
+    private fun EditText.setOnTextChanged(
+        onTextChanged: (CharSequence) -> Unit,
+        beforeTextChanged: (CharSequence) -> Unit = { },
+        afterTextChanged: (Editable) -> Unit = { }
+    ) {
+        this.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int, 
+                before: Int, 
+                count: Int
+            ) {
+                s?.let {
+                    onTextChanged(it)
+                }
+            }
+            override fun beforeTextChanged(
+                s: CharSequence?, 
+                start: Int,
+                count: Int, 
+                after: Int
+            ) {
+                s?.let {
+                    beforeTextChanged(it)
+                }
+            }
+            override fun afterTextChanged(e: Editable?) {
+                e?.let {
+                    afterTextChanged(it)
+                }
+            }
+        })
     }
     
     override fun onDestroyView() {
