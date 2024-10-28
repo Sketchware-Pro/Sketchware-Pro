@@ -144,7 +144,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
     private fun showActionsDialog(
         index: Int
     ) {
-        val dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext)).apply {
+        val dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext())).apply {
             edit.setOnClickListener {
                 showCreateEditDialog(
                     index = index,
