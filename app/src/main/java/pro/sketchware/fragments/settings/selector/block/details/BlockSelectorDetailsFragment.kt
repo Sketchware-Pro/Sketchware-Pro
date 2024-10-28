@@ -33,6 +33,7 @@ class BlockSelectorDetailsFragment(
         saved: Bundle?
     ) {
         configureToolbar(binding.toolbar)
+        handleInsetts(binding.root)
         val adapter = BlockSelectorDetailsAdapter(
             onClick = { selectorName ->
                 toast(selectorName)
