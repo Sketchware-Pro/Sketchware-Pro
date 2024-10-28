@@ -18,7 +18,7 @@ class BlockSelectorAdapter(
 
     class BlockSelectorAdapterViewHolder(
         private val binding: LayoutBlockSelectorBinding,
-        val onClick: (Selector, Int) -> Unit
+        val onClick: (Selector, Int) -> Unit,
         val onLongClick: (Selector, Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         private var currentSelector: Selector? = null
