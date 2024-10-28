@@ -110,7 +110,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
                         data = emptyList()
                     )
                 )
-                adapter.submitList(selectors.toList())
+                adapter.notifyDataSetChanged()
                 dismiss()
             }
             dialogNoListener= View.OnClickListener {
