@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken
 import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
 import pro.sketchware.utility.FileUtil.writeFile
+import pro.sketchware.utility.FileUtil.isExistFile
 import pro.sketchware.fragments.settings.selector.block.details.BlockSelectorDetailsFragment
 
 import kotlinx.coroutines.Dispatchers
@@ -66,11 +67,22 @@ class BlockSelectorManagerFragment : BaseFragment() {
             }
         )
         lifecycleScope.launch {
-            selectors = parseJson(
-                BLOCK_SELECTOR_MENUS_FILE.readText(
-                    Charsets.UTF_8
+            if (isExistFile(BLOCK_SELECTOR_MENUS_FILE.absolutePath)) {
+                selectors = parseJson(
+                    BLOCK_SELECTOR_MENUS_FILE.readText(
+                        Charsets.UTF_8
+                    )
                 )
-            )
+            } else {
+                selector.add(
+                    Selector(
+                        name = "typeview",
+                        title = "Select typeview:",
+                        data = getTypeViewList()
+                    )
+                )
+                saveAll()
+            }
         }
         binding.list.adapter = adapter
         adapter.submitList(selectors)
@@ -210,6 +222,33 @@ class BlockSelectorManagerFragment : BaseFragment() {
             gson.toJson(selectors)
         )
         toast("Saved!")
+    }
+    
+    /*
+    * A Default list of Selector Itens
+    */
+    private fun getTypeViewList(): List<String> {
+        return listOf(
+            "View",
+            "ViewGroup",
+            "LinearLayout",
+            "RelativeLayout",
+            "ScrollView",
+            "HorizontalScrollView",
+            "TextView",
+            "EditText",
+            "Button",
+            "RadioButton",
+            "CheckBox",
+            "Switch",
+            "ImageView",
+            "SeekBar",
+            "ListView",
+            "Spinner",
+            "WebView",
+            "MapView",
+            "ProgressBar"
+        )
     }
     
     override fun onDestroyView() {
