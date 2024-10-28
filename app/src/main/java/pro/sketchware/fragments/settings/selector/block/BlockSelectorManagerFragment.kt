@@ -97,6 +97,10 @@ class BlockSelectorManagerFragment : BaseFragment() {
         val dialogBinding = DialogCreateBinding.inflate(LayoutInflater.from(requireContext())).apply {
             tilPalettesPath.hint = "Selector name"
             tilBlocksPath.hint = "Selector title (ex: Select View:)"
+            if (isEdit) {
+                palettesPath.text = selectors.get(index).name
+                blocksPath.text = selectors.get(index).title
+            }
         }
         val dialog = aB(requireActivity()).apply {
             dialogTitleText = if (!isEdit) "New Selector" else "Edit Selector"
@@ -104,8 +108,8 @@ class BlockSelectorManagerFragment : BaseFragment() {
             dialogYesText = if (!isEdit) "Create" else "Save"
             dialogNoText = "Cancel"
             dialogYesListener = View.OnClickListener {
-                val selectorName = if (!isEdit) dialogBinding.palettesPath.text?.toString() else selectors.get(index).name
-                val selectorTitle = if (!isEdit) dialogBinding.blocksPath.text?.toString() else selectors.get(index).title
+                val selectorName = dialogBinding.palettesPath.text?.toString()
+                val selectorTitle = dialogBinding.blocksPath.text?.toString()
                 
                 if (selectorName.isNullOrEmpty()) {
                     toast("Please type Selector name")
