@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
     <LinearLayout 
         android:layout_width="100dp"
@@ -14,7 +14,7 @@
         android:layout_marginBottom="5dp"
         android:id="@+id/edit"
         android:gravity="center_vertical"
-        android:background="@drawable/shape_top"
+        android:background="@drawable/shape_alone"
         android:orientation="vertical"
         android:layout_gravity="center">
 
@@ -40,7 +40,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginBottom="5dp"
         android:id="@+id/delete"
-        android:background="@drawable/shape_bottom"
+        android:background="@drawable/shape_alone"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:layout_gravity="center">
