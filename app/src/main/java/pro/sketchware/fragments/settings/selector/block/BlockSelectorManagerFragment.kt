@@ -12,6 +12,7 @@ import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
 import com.sketchware.remod.databinding.DialogBlockConfigurationBinding as DialogCreateBinding
 
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
 import pro.sketchware.fragments.base.BaseFragment
@@ -123,9 +124,12 @@ class BlockSelectorManagerFragment : BaseFragment() {
     }
     
     private fun saveAll() {
+        val gson: Gson = GsonBuilder()
+            .setPrettyPrinting()
+            .create()
         writeFile(
             BLOCK_SELECTOR_MENUS_FILE.absolutePath, 
-            Gson().toJson(selectors)
+            gson.toJson(selectors)
         )
         toast("Saved!")
     }
