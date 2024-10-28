@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import com.google.android.material.appbar.MaterialToolbar
 
 import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
+import com.sketchware.remod.databinding.DialogAddCustomActivity as DialogCreateBinding
 
 import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
 import pro.sketchware.fragments.settings.selector.block.Selector
+
+import a.a.a.aB
 
 class BlockSelectorDetailsFragment(
     val selector: Selector
@@ -41,7 +44,29 @@ class BlockSelectorDetailsFragment(
         )
         adapter.submitList(selector.data)
         binding.list.adapter = adapter
+        
+        binding.createNew.setOnClickListener {
+            showCreateDialog()
+        }
         super.onViewCreated(view, saved)
+    }
+    
+    private fun showCreateDialog() {
+        val dialogBinding = DialogCreateBinding.inflate(LayoutInflater(requireContext())).apply {
+            activityNameInputLayout.hint = "Name"
+        }
+        val dialog = aB(requireActivity()).apply {
+            dialogTitleText = "New Selector Item"
+            dialogYesText = "Create"
+            dialogNoText = "Cancel"
+            dialogYesListener = View.OnClickListener {
+                //todo
+            }
+            dialogNoListener = View.OnClickListener {
+                dismiss()
+            }
+        }
+        dialog.show()
     }
     
     override fun configureToolbar(toolbar: MaterialToolbar) {
