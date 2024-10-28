@@ -144,37 +144,41 @@ class BlockSelectorManagerFragment : BaseFragment() {
     private fun showActionsDialog(
         index: Int
     ) {
-        val dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext())).apply {
+        val dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = aB(requireActivity()).apply {
+            dialogTitleText = "Actions"
+            dialogCustomView = dialogBinding.root
+        }
+        dialogBinding.apply {
             edit.setOnClickListener {
+                dialog.dismiss()
                 showCreateEditDialog(
                     index = index,
                     isEdit = true
                 )
             }
             delete.setOnClickListener {
+                dialog.dismiss()
                 showConfirmationDialog(
                     message = "Are you sure you want to delete this Selector?",
                     onConfirm = {
                         selectors.removeAt(index)
                         saveAll()
                         adapter.notifyDataSetChanged()
+                        it.dismiss()
                     },
-                    onCancel = { dialog ->
-                        dialog.dismiss()
+                    onCancel = {
+                        it.dismiss()
                     }
                 )
             }
-        }
-        val dialog = aB(requireActivity()).apply {
-            dialogTitleText = "Actions"
-            dialogCustomView = dialogBinding.root
         }
         dialog.show()
     }
     
     private fun showConfirmationDialog(
         message: String,
-        onConfirm: () -> Unit,
+        onConfirm: (aB) -> Unit,
         onCancel: (aB) -> Unit
     ) {
         val dialog = aB(requireActivity()).apply {
@@ -184,7 +188,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
             dialogNoText = "Cancel"
             setCancelable(false)
             dialogYesListener = View.OnClickListener {
-                onConfirm()
+                onConfirm(this)
             }
             dialogNoListener = View.OnClickListener {
                 onCancel(this)
