@@ -122,7 +122,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
             }
             palettesPath.setOnTextChanged(
                 onTextChanged = {
-                    Log.d(TAG, it.toString().lowercase)
+                    Log.d(TAG, it.toString().lowercase())
                     if (itemAlreadyExists(it.toString())) {
                         palettesPath.setError("An item with this name already exists")
                     } else {
