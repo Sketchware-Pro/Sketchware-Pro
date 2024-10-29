@@ -284,24 +284,48 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                 .create();
         dialog.setView(dialogBinding.getRoot());
 
-        dialogBinding.selectColour.setText("Select Color: " + selected_color_hex);
+        dialogBinding.selectColour.setText(selected_color_hex);
+        dialogBinding.selectColour.setBackgroundColor(selected_color);
+
+        if (Color.red(selected_color) * 0.299 + Color.green(selected_color) * 0.587 + Color.blue(selected_color) * 0.114 > 186) {
+            dialogBinding.selectColour.setTextColor(Color.BLACK);
+        } else {
+            dialogBinding.selectColour.setTextColor(Color.WHITE);
+        }
         dialogBinding.selectColour.setOnClickListener(view -> {
             colorpicker.a(new Zx.b() {
                 @Override
                 public void a(int var1) {
                     selected_color = var1;
                     selected_color_hex = "#" + String.format("%06X", var1 & (0x00FFFFFF));
+                    dialogBinding.selectColour.setText(selected_color_hex);
                     adapter.setSelectedColor(selected_color);
                     adapter.notifyDataSetChanged();
+
+                    dialogBinding.selectColour.setBackgroundColor(selected_color);
+
+                    if (Color.red(selected_color) * 0.299 + Color.green(selected_color) * 0.587 + Color.blue(selected_color) * 0.114 > 186) {
+                        dialogBinding.selectColour.setTextColor(Color.BLACK);
+                    } else {
+                        dialogBinding.selectColour.setTextColor(Color.WHITE);
+                    }
                 }
 
                 @Override
                 public void a(String var1, int var2) {
                     selected_color = var2;
                     selected_color_hex = "#" + String.format("%06X", var2 & (0x00FFFFFF));
+                    dialogBinding.selectColour.setText(selected_color_hex);
                     adapter.setSelectedColor(selected_color);
                     adapter.notifyDataSetChanged();
 
+                    dialogBinding.selectColour.setBackgroundColor(selected_color);
+
+                    if (Color.red(selected_color) * 0.299 + Color.green(selected_color) * 0.587 + Color.blue(selected_color) * 0.114 > 186) {
+                        dialogBinding.selectColour.setTextColor(Color.BLACK);
+                    } else {
+                        dialogBinding.selectColour.setTextColor(Color.WHITE);
+                    }
                 }
             });
             colorpicker.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -361,12 +385,10 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                 .create();
 
         dialog.setOnShowListener(dialogInterface -> {
-
             Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
                 if (iconNameValidator.b() && selectedIconPosition >= 0) {
                     String resFullname = adapter.getCurrentList().get(selectedIconPosition).second + File.separator + selected_icon_type + ".svg";
-                    Log.d("svg Imported icon full res", resFullname);
                     Intent intent = new Intent();
                     intent.putExtra("iconName", dialogBinding.inputText.getText().toString());
                     intent.putExtra("iconPath", resFullname);

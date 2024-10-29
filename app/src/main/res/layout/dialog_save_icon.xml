@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-     xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:app="http://schemas.android.com/apk/res-auto"
-     xmlns:tools="http://schemas.android.com/tools"
-     android:layout_height="wrap_content"
-     android:layout_width="match_parent"
-     android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <ImageView
-         android:layout_height="80dp"
-         android:layout_width="80dp"
-         android:padding="16dp"
-         android:layout_marginTop="16dp"
-         android:id="@+id/icon"
-         android:layout_gravity="center" />
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="2dp"
+        app:strokeWidth="0.5dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="16dp"
+            tools:src="@drawable/user_48_grey_filled" />
+    </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.textfield.TextInputLayout
-         android:layout_height="match_parent"
-         android:layout_width="match_parent"
-         app:hintEnabled="true"
-         android:hint="Enter the new name"
-         android:layout_marginHorizontal="20dp"
-         android:layout_marginTop="10dp"
-         android:id="@+id/textInputLayout">
+        android:id="@+id/textInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:hint="Enter icon name"
+        app:hintEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-             android:layout_height="match_parent"
-             android:layout_width="match_parent"
-             android:imeOptions="actionDone"
-             android:singleLine="true"
-             android:inputType="text"
-             android:id="@+id/inputText" />
+            android:id="@+id/inputText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="60"
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,6 +51,6 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="10dp"
-        android:text="This icon is available under the Apache Licence Version 2.0. Press to read more" />
+        android:text="This icon is available under the Apache Licence Version 2.0. Press to read more." />
 
 </LinearLayout>
