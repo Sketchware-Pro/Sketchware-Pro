@@ -193,6 +193,11 @@ class BlockSelectorManagerFragment : BaseFragment() {
                     isEdit = true
                 )
             }
+            export.setOnClickListener {
+                exportSelector(
+                    selector = selector.get(index)
+                )
+            }
             delete.setOnClickListener {
                 if(selectors.get(index).name.equals("typeview")) {
                     toast("you cannot delete the typeview.")
@@ -261,15 +266,32 @@ class BlockSelectorManagerFragment : BaseFragment() {
         path: String = BlockSelectorConsts.BLOCK_SELECTORS_FILE.absolutePath,
         message: String = "Saved"
     ) {
-        val gson: Gson = GsonBuilder()
-            .setPrettyPrinting()
-            .create()
         writeFile(
             path,
-            gson.toJson(selectors)
+            getGson().toJson(selectors)
         )
         toast(message)
     }
+    
+    private fun exportSelector(
+        selector: Selector
+    ) {
+        writeFile(
+            BlockSelectorConsts.EXPORT_FILE.absolutePath.replace("All_Menus", selector.name),
+            getGson().toJson(selector)
+        )
+    }
+    
+    private suspend fun getSelectorFromPath(
+        path: File
+    ): Selector {
+        val json = path.readText(Charsets.UTF_8)
+        return getGson().fromJson(json, Selector::class.java)
+    }
+    
+    private fun getGson() : Gson = GsonBuilder()
+        .setPrettyPrinting()
+        .create()
     
     private fun itemAlreadyExists(
         toCompare: String

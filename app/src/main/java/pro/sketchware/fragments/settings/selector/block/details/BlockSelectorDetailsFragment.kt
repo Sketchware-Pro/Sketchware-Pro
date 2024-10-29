@@ -113,6 +113,7 @@ class BlockSelectorDetailsFragment(
                     isEdit = true
                 )
             }
+            export.visibility = View.GONE
             delete.setOnClickListener {
                 dialog.dismiss()
                 showConfirmationDialog(
