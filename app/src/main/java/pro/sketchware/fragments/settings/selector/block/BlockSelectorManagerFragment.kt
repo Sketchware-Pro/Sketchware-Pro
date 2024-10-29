@@ -363,10 +363,15 @@ class BlockSelectorManagerFragment : BaseFragment() {
     
     private suspend fun getSelectorsFromFile(
         path: File
-    ): List<Selector> {
+    ): List<Selector>? {
         val json = path.readText(Charsets.UTF_8)
         val itemLstType = object : TypeToken<List<Selector>>() {}.type
-        return getGson().fromJson(json, itemLstType)
+        return try {
+            getGson().fromJson(json, itemLstType)
+        } catch (e: Exception) {
+            Log.e(BlockSelectorConsts.TAG, e.toString())
+            null
+        }
     }
     
     fun String.isObject(): Boolean {
