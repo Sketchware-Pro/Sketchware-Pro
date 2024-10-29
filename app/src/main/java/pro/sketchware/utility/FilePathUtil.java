@@ -29,7 +29,7 @@ public class FilePathUtil {
         return new File(SKETCHWARE_DATA, sc_id + "/converted-vectors/").getAbsolutePath();
     }
 
-    public String getSvgFullPath(String sc_id,String resName) {
+    public String getSvgFullPath(String sc_id, String resName) {
         return new File(getPathSvg(sc_id) + File.separator + resName + ".svg").getAbsolutePath();
     }
 

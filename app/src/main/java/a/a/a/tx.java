@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
 
-import com.android.tools.r8.dex.S;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.Key;
@@ -29,9 +27,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.hey.studios.util.Helper;
 import mod.nethical.svg.SvgUtils;
+import pro.sketchware.utility.FilePathUtil;
 
 public class tx extends RelativeLayout implements View.OnClickListener {
     public String a;
@@ -49,9 +47,10 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     public int m;
     public Kw n;
 
-    private SvgUtils svgUtils;
+    private final SvgUtils svgUtils;
 
-    private FilePathUtil fpu = new FilePathUtil();
+    private final FilePathUtil fpu = new FilePathUtil();
+
     public tx(Context context, boolean z, String str, boolean z2) {
         super(context);
         this.d = false;
@@ -113,7 +112,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     public void setValue(String str) {
 
         Uri fromFile;
-        if (str != null && !str.toLowerCase().equals("NONE".toLowerCase())) {
+        if (str != null && !str.equalsIgnoreCase("NONE")) {
             this.c = str;
             this.f.setText(str);
             if (jC.d(this.a).h(str) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
@@ -132,11 +131,11 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
-                    if(file.getAbsolutePath().endsWith(".xml")){
-                        svgUtils.loadImage(this.g, fpu.getSvgFullPath(this.a,str));
+                    if (file.getAbsolutePath().endsWith(".xml")) {
+                        svgUtils.loadImage(this.g, fpu.getSvgFullPath(this.a, str));
                         return;
                     }
-                    Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(this.g);
+                    Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(this.g);
                     return;
                 }
                 this.g.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
@@ -151,10 +150,10 @@ public class tx extends RelativeLayout implements View.OnClickListener {
 
     public final void a(Context context, boolean z, boolean z2) {
         wB.a(context, this, R.layout.property_resource_item);
-        this.e = (TextView) findViewById(R.id.tv_name);
-        this.f = (TextView) findViewById(R.id.tv_value);
-        this.g = (ImageView) findViewById(R.id.view_image);
-        this.h = (ImageView) findViewById(R.id.img_left_icon);
+        this.e = findViewById(R.id.tv_name);
+        this.f = findViewById(R.id.tv_value);
+        this.g = findViewById(R.id.view_image);
+        this.h = findViewById(R.id.img_left_icon);
         this.k = findViewById(R.id.property_item);
         this.l = findViewById(R.id.property_menu_item);
         this.d = z2;
@@ -170,9 +169,9 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         aBVar.b(this.e.getText().toString());
         aBVar.a(this.m);
         View a3 = wB.a(getContext(), R.layout.property_popup_selector_color);
-        ScrollView scrollView = (ScrollView) a3.findViewById(R.id.scroll_view);
-        this.i = (RadioGroup) a3.findViewById(R.id.rg);
-        this.j = (LinearLayout) a3.findViewById(R.id.content);
+        ScrollView scrollView = a3.findViewById(R.id.scroll_view);
+        this.i = a3.findViewById(R.id.rg);
+        this.j = a3.findViewById(R.id.content);
         ArrayList<String> m = jC.d(this.a).m();
         if (xq.a(this.a) || xq.b(this.a)) {
             if (this.d) {
@@ -267,7 +266,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         int i = (int) (a2 * 48.0f);
         imageView.setLayoutParams(new LinearLayout.LayoutParams(i, i));
-        if (!str.toLowerCase().equals("NONE".toLowerCase())) {
+        if (!str.equalsIgnoreCase("NONE")) {
             if (z) {
                 imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
             } else {
@@ -280,11 +279,11 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                         fromFile = Uri.fromFile(file);
                     }
 
-                    if(file.getAbsolutePath().endsWith(".xml")){
-                        svgUtils.loadImage(imageView, fpu.getSvgFullPath(this.a,str));
+                    if (file.getAbsolutePath().endsWith(".xml")) {
+                        svgUtils.loadImage(imageView, fpu.getSvgFullPath(this.a, str));
 
                     } else {
-                        Glide.with(getContext()).load(fromFile).signature((Key) kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
+                        Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
                     }
                 } else {
                     imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));

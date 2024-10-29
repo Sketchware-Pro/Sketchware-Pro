@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,13 +47,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
-import mod.agus.jcoderz.lib.FilePathUtil;
 import mod.nethical.svg.SvgUtils;
+import pro.sketchware.utility.FilePathUtil;
 
 public class pu extends qA implements View.OnClickListener {
     private String sc_id;
@@ -69,7 +66,7 @@ public class pu extends qA implements View.OnClickListener {
 
     public SvgUtils svgUtils;
 
-    private FilePathUtil fpu = new FilePathUtil();
+    private final FilePathUtil fpu = new FilePathUtil();
 
     Map<Integer, Map<String, Object>> colorMap = new HashMap<>();
     private final ActivityResultLauncher<Intent> openImportIconActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -79,33 +76,33 @@ public class pu extends qA implements View.OnClickListener {
             ProjectResourceBean icon = new ProjectResourceBean(
                     ProjectResourceBean.PROJECT_RES_TYPE_FILE,
                     data.getStringExtra("iconName"), data.getStringExtra("iconPath")
-                    );
+            );
             icon.savedPos = 2;
             icon.isNew = true;
 
-            int selectedColor = data.getIntExtra("iconColor",-1);
+            int selectedColor = data.getIntExtra("iconColor", -1);
             String selectedColorHex = data.getStringExtra("iconColorHex");
-            addNewColorFilterInfo(selectedColorHex,selectedColor,images.size());
+            addNewColorFilterInfo(selectedColorHex, selectedColor, images.size());
 
             addImage(icon);
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
         }
     });
     private final ActivityResultLauncher<Intent> showAddImageDialog = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-       if (result.getResultCode() == Activity.RESULT_OK) {
-           assert result.getData() != null;
-           ArrayList<ProjectResourceBean> addedImages;
-           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-               addedImages = result.getData().getParcelableArrayListExtra("images", ProjectResourceBean.class);
-           } else {
-               addedImages = result.getData().getParcelableArrayListExtra("images");
-           }
-           images.addAll(addedImages);
-           adapter.notifyItemRangeInserted(images.size() - addedImages.size(), addedImages.size());
-           updateGuideVisibility();
-           ((ManageImageActivity) requireActivity()).l().refreshData();
-           bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
-       }
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            ArrayList<ProjectResourceBean> addedImages;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                addedImages = result.getData().getParcelableArrayListExtra("images", ProjectResourceBean.class);
+            } else {
+                addedImages = result.getData().getParcelableArrayListExtra("images");
+            }
+            images.addAll(addedImages);
+            adapter.notifyItemRangeInserted(images.size() - addedImages.size(), addedImages.size());
+            updateGuideVisibility();
+            ((ManageImageActivity) requireActivity()).l().refreshData();
+            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
+        }
     });
     private final ActivityResultLauncher<Intent> showImageDetailsDialog = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
@@ -172,13 +169,13 @@ public class pu extends qA implements View.OnClickListener {
     public void saveImages() {
 
 
-        Path svgDir =Paths.get(fpu.getPathSvg(sc_id));
+        Path svgDir = Paths.get(fpu.getPathSvg(sc_id));
         try {
-            if(!Files.exists(svgDir)){
+            if (!Files.exists(svgDir)) {
                 Files.createDirectories(svgDir);
             }
         } catch (IOException error) {
-            Log.d("pu.java","Failed to create directory for saving svgs at: "+ fpu.getPathResource(sc_id));
+            Log.d("pu.java", "Failed to create directory for saving svgs at: " + fpu.getPathResource(sc_id));
         }
         int index = 0;
         for (ProjectResourceBean image : images) {
@@ -193,15 +190,15 @@ public class pu extends qA implements View.OnClickListener {
 
 
                     String str = projectImagesDirectory + File.separator + image.resName;
-                    Log.d("svg","full name : " + image.resFullName.toString());
-                    if(image.resFullName.endsWith(".svg")){
+                    Log.d("svg", "full name : " + image.resFullName.toString());
+                    if (image.resFullName.endsWith(".svg")) {
                         // convert the svg to vectors
-                        String svgPath = fpu.getSvgFullPath(sc_id,image.resName);
-                        copyFile(path,svgPath);
+                        String svgPath = fpu.getSvgFullPath(sc_id, image.resName);
+                        copyFile(path, svgPath);
                         String colorHex = (String) colorMap.get(index).get("colorHex");
                         colorHex = (colorHex != null) ? colorHex : "#FFFFFF";
-                        svgUtils.convert(svgPath,projectImagesDirectory , colorHex);
-                    }else {
+                        svgUtils.convert(svgPath, projectImagesDirectory, colorHex);
+                    } else {
                         iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
                     }
                 } catch (Exception e) {
@@ -237,6 +234,7 @@ public class pu extends qA implements View.OnClickListener {
         jC.a(sc_id).b(jC.d(sc_id));
         jC.a(sc_id).k();
     }
+
     public static void copyFile(String srcPath, String destPath) throws IOException {
         File srcFile = new File(srcPath);
         File destFile = new File(destPath);
@@ -253,7 +251,7 @@ public class pu extends qA implements View.OnClickListener {
 
 
     private void updateGuideVisibility() {
-        if (images.size() == 0) {
+        if (images.isEmpty()) {
             guide.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         } else {
@@ -396,7 +394,7 @@ public class pu extends qA implements View.OnClickListener {
                 deleteContainer = itemView.findViewById(R.id.delete_img_container);
                 image.setOnClickListener(v -> {
                     if (!isSelecting) {
-                        if(!(images.get(getLayoutPosition()).resFullName.endsWith(".svg") || images.get(getLayoutPosition()).resFullName.endsWith(".xml"))){
+                        if (!(images.get(getLayoutPosition()).resFullName.endsWith(".svg") || images.get(getLayoutPosition()).resFullName.endsWith(".xml"))) {
                             showImageDetailsDialog(images.get(getLayoutPosition()));
                         }
                     } else {
@@ -446,15 +444,15 @@ public class pu extends qA implements View.OnClickListener {
             holder.name.setText(image.resName);
 
 
-            if(colorMap.get(position) != null){
+            if (colorMap.get(position) != null) {
                 int color = Objects.requireNonNullElse((int) colorMap.get(position).get("color"), 0xFFFFFFFF);
-                Log.d("Applying filter to "+ String.valueOf(position), String.valueOf(color));
-                holder.image.setColorFilter(color,PorterDuff.Mode.SRC_IN);
+                Log.d("Applying filter to " + String.valueOf(position), String.valueOf(color));
+                holder.image.setColorFilter(color, PorterDuff.Mode.SRC_IN);
             } else {
                 holder.image.clearColorFilter();
             }
 
-            if(svgUtils == null){
+            if (svgUtils == null) {
                 svgUtils = new SvgUtils(requireContext());
                 svgUtils.initImageLoader();
             }
@@ -462,8 +460,8 @@ public class pu extends qA implements View.OnClickListener {
             if (image.resFullName.endsWith(".svg")) {
                 svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));
             } else if (image.resFullName.endsWith(".xml")) {
-                Log.d("loading converted vector: " , fpu.getSvgFullPath(sc_id,image.resName));
-                svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : fpu.getSvgFullPath(sc_id,image.resName));
+                Log.d("loading converted vector: ", fpu.getSvgFullPath(sc_id, image.resName));
+                svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : fpu.getSvgFullPath(sc_id, image.resName));
             } else {
                 Glide.with(requireActivity())
                         .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
@@ -568,13 +566,13 @@ public class pu extends qA implements View.OnClickListener {
         updateGuideVisibility();
     }
 
-    private void addNewColorFilterInfo(String colorHex, int color, int forPosition){
+    private void addNewColorFilterInfo(String colorHex, int color, int forPosition) {
         Map<String, Object> colorItem1 = new HashMap<>();
         colorItem1.put("colorHex", colorHex);
         colorItem1.put("color", color);
 
         colorMap.put(forPosition, colorItem1);
-        Log.d("color filter", "new color filter item at "+ forPosition + ": " + colorHex + " " + String.valueOf(color));
+        Log.d("color filter", "new color filter item at " + forPosition + ": " + colorHex + " " + String.valueOf(color));
     }
 
     private void addImages(ArrayList<ProjectResourceBean> arrayList) {
