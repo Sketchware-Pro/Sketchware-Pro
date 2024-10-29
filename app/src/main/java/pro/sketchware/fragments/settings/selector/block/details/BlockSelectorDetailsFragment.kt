@@ -70,6 +70,7 @@ class BlockSelectorDetailsFragment(
     ) {
         val dialogBinding = DialogCreateBinding.inflate(LayoutInflater.from(requireContext())).apply {
             activityNameInputLayout.hint = "Name"
+            if(isEdit) dialogBinding.activityNameInput.setText(selectors[index].data.get(indexA))
         }
         val dialog = aB(requireActivity()).apply {
             dialogTitleText = "New Selector Item"
@@ -87,6 +88,7 @@ class BlockSelectorDetailsFragment(
                     saveAll()
                     adapter.notifyDataSetChanged()
                 }
+                dismiss()
             }
             dialogNoListener = View.OnClickListener {
                 dismiss()
