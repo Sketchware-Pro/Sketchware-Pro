@@ -206,11 +206,8 @@ class BlockSelectorManagerFragment : BaseFragment() {
                     selector = selectors.get(index)
                 )
             }
+            if(selectors.get(index).name.equals("typeview")) delete.visibility = View.GONE
             delete.setOnClickListener {
-                if(selectors.get(index).name.equals("typeview")) {
-                    toast("You Cannot Delete the Typeview.")
-                    return@setOnClickListener
-                }
                 dialog.dismiss()
                 showConfirmationDialog(
                     message = "Are you sure you want to delete this Selector?",
