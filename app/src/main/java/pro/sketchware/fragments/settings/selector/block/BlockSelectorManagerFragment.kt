@@ -213,10 +213,6 @@ class BlockSelectorManagerFragment : BaseFragment() {
         dialog.show()
     }
     
-    private aaa() {
-        
-    }
-    
     private fun showConfirmationDialog(
         message: String,
         onConfirm: (aB) -> Unit,
