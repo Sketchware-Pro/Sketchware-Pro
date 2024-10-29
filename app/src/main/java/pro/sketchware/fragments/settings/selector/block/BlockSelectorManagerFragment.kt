@@ -9,7 +9,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
-import android.util.Log
 
 import androidx.lifecycle.lifecycleScope
 
@@ -122,11 +121,10 @@ class BlockSelectorManagerFragment : BaseFragment() {
             }
             palettesPath.setOnTextChanged(
                 onTextChanged = {
-                    Log.d(TAG, it.toString().lowercase())
                     if (itemAlreadyExists(it.toString())) {
-                        palettesPath.setError("An item with this name already exists")
+                        tilPalettesPath.setError("An item with this name already exists")
                     } else {
-                        palettesPath.setError(null)
+                        tilPalettesPath.setError(null)
                     }
                 }
             )
@@ -155,13 +153,17 @@ class BlockSelectorManagerFragment : BaseFragment() {
                     return@OnClickListener
                 }
                 if (!isEdit) {
-                    selectors.add(
-                        Selector(
-                            name = selectorName,
-                            title = selectorTitle,
-                            data = emptyList()
+                    if (!itemAlreadyExists(selectorName)) {
+                        selectors.add(
+                            Selector(
+                                name = selectorName,
+                                title = selectorTitle,
+                                data = emptyList()
+                            )
                         )
-                    )
+                    } else {
+                        toast("An item with this name already exists")
+                    }
                 } else {
                     selectors[index] = Selector(
                         name = selectorName,
