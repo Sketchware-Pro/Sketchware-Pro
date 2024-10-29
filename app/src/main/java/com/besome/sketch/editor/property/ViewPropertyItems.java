@@ -83,7 +83,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         switch (property) {
             case "property_id" -> {
                 String id = isGeneratedId ? bean.id.substring(1) : bean.id;
-                a(property, id, isGeneratedId);
+                a(property, id, isGeneratedId, null);
             }
             case "property_layout_width" -> a(property, bean.layout.width, isNotAdview);
             case "property_layout_height" -> a(property, bean.layout.height, isNotAdview);
@@ -103,7 +103,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             case "property_text" -> b(property, bean.text.text);
             case "property_text_size" -> c(property, bean.text.textSize);
             case "property_text_style" -> c(property, bean.text.textType);
-            case "property_text_color" -> r(property,bean.text.resTextColor, bean.text.textColor); 
+            case "property_text_color" -> r(property,bean.text.resTextColor, bean.text.textColor);
             case "property_hint" -> b(property, bean.text.hint);
             case "property_hint_color" -> r(property, bean.text.resHintColor, bean.text.hintColor);
             case "property_single_line" -> e(property, bean.text.singleLine);
@@ -132,7 +132,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             case "property_progressbar_style" -> c(property, bean.progressStyle);
             case "property_indeterminate" -> d(property, bean.indeterminate);
             case "property_inject" -> b(property, bean.inject);
-            case "property_convert" -> b(property, bean.convert);
+            case "property_convert" -> b(property, bean.convert, String.valueOf(bean.type));
         }
     }
 
@@ -276,11 +276,12 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         addView(pw);
     }
 
-    private void a(String key, String value, boolean z) {
+    private void a(String key, String value, boolean z, String typeView) {
         PropertyInputItem inputItem = (PropertyInputItem) f.get(key);
         if (inputItem == null) {
             inputItem = new PropertyInputItem(getContext(), !z);
             inputItem.setOrientationItem(getOrientation());
+            inputItem.setTypeView(typeView);
             inputItem.a(sc_id, e);
             inputItem.setKey(key);
             inputItem.setValue(value);
@@ -288,6 +289,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             inputItem.setOnPropertyValueChangeListener(this);
             f.put(key, inputItem);
         } else {
+            inputItem.setTypeView(typeView);
             inputItem.a(sc_id, e);
             inputItem.setValue(value);
         }
@@ -329,7 +331,11 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
     }
 
     private void b(String key, String value) {
-        a(key, value, b);
+        a(key, value, b, null);
+    }
+
+    private void b(String key, String value, String viewType) {
+        a(key, value, b, viewType);
     }
 
     private void b(String key, String value, boolean z) {
