@@ -194,13 +194,14 @@ class BlockSelectorManagerFragment : BaseFragment() {
                 )
             }
             export.setOnClickListener {
+                dialog.dismiss()
                 exportSelector(
                     selector = selectors.get(index)
                 )
             }
             delete.setOnClickListener {
                 if(selectors.get(index).name.equals("typeview")) {
-                    toast("you cannot delete the typeview.")
+                    toast("You Cannot Delete the Typeview.")
                     return@setOnClickListener
                 }
                 dialog.dismiss()
@@ -276,10 +277,12 @@ class BlockSelectorManagerFragment : BaseFragment() {
     private fun exportSelector(
         selector: Selector
     ) {
+        val path = BlockSelectorConsts.EXPORT_FILE.absolutePath.replace("All_Menus", selector.name)
         writeFile(
-            BlockSelectorConsts.EXPORT_FILE.absolutePath.replace("All_Menus", selector.name),
+            path,
             getGson().toJson(selector)
         )
+        toast("Exported in ${path}")
     }
     
     private suspend fun getSelectorFromPath(
