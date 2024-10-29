@@ -1,6 +1,6 @@
 package mod.hey.studios.project.custom_blocks;
 
-import static mod.SketchwareUtil.getDip;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.app.Activity;
 import android.content.Context;

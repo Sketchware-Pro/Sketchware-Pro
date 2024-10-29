@@ -23,7 +23,7 @@ import pro.sketchware.activities.about.fragments.MajorChangesFragment;
 import pro.sketchware.activities.about.fragments.TeamFragment;
 import pro.sketchware.activities.about.models.AboutAppViewModel;
 import pro.sketchware.activities.about.models.AboutResponseModel;
-import pro.sketchware.classes.Network;
+import pro.sketchware.utility.Network;
 import mod.hey.studios.util.Helper;
 
 public class AboutActivity extends AppCompatActivity {

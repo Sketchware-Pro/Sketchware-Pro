@@ -1,4 +1,4 @@
-package pro.sketchware.lib;
+package pro.sketchware.lib.base;
 
 import android.text.Editable;
 import android.text.TextWatcher;

@@ -11,7 +11,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ProjectConfigLayoutBinding;
 
-import mod.SketchwareUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class BuildSettingsDialog {
 

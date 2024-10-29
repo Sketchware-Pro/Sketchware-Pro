@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import a.a.a.ProjectBuilder;
-import mod.agus.jcoderz.lib.FileUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.project.ProjectSettings;
 
 public class DexCompiler {

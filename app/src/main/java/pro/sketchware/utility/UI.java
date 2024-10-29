@@ -1,4 +1,4 @@
-package pro.sketchware.classes;
+package pro.sketchware.utility;
 
 import android.animation.ObjectAnimator;
 import android.content.res.ColorStateList;

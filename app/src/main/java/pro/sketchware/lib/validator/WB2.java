@@ -1,4 +1,4 @@
-package a.a.a;
+package pro.sketchware.lib.validator;
 
 import android.content.Context;
 import android.text.Spanned;
@@ -8,6 +8,9 @@ import com.sketchware.remod.R;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+
+import a.a.a.MB;
+import a.a.a.xB;
 
 public class WB2 extends MB {
     public String[] reservedKeywords;

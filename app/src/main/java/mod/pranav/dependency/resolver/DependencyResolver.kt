@@ -9,7 +9,7 @@ import com.android.tools.r8.D8Command
 import com.android.tools.r8.OutputMode
 import com.google.gson.Gson
 import mod.agus.jcoderz.dx.command.dexer.Main
-import mod.agus.jcoderz.lib.FileUtil
+import pro.sketchware.utility.FileUtil
 import mod.hey.studios.build.BuildSettings
 import mod.hey.studios.util.Helper
 import mod.jbk.build.BuiltInLibraries

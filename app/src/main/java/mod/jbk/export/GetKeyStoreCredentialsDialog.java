@@ -14,7 +14,7 @@ import java.util.LinkedList;
 
 import a.a.a.aB;
 import a.a.a.wq;
-import mod.SketchwareUtil;
+import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 
 public class GetKeyStoreCredentialsDialog {

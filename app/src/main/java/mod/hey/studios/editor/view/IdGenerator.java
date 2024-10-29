@@ -33,7 +33,7 @@ public class IdGenerator {
                 break;
         }
 
-        return viewEditor.a(i);
+        return viewEditor.a(i, viewBean.convert);
     }
 
     public static String getLastPath(String str) {

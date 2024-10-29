@@ -1,4 +1,4 @@
-package mod;
+package pro.sketchware.utility;
 
 import static com.besome.sketch.SketchApplication.getContext;
 
@@ -27,7 +27,6 @@ import java.util.function.Consumer;
 
 import a.a.a.aB;
 import a.a.a.bB;
-import mod.agus.jcoderz.lib.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 
