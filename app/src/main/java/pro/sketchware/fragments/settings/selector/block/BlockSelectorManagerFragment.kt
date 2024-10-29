@@ -118,7 +118,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
                 blocksPath.setText(selectors.get(index).title)
             }
             if (palettesPath.text?.toString().equals("typeview")) {
-                palettesPath.setEnable(false)
+                palettesPath.isEnabled = false
                 palettesPath.setOnClickListener {
                     toast("You cannot change the name of this selector")
                 }
