@@ -95,6 +95,9 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private final int ITEMS_PER_PAGE = 40;
     private int currentPage = 0;
 
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+
     private Zx colorpicker;
 
     private int getGridLayoutColumnCount() {
@@ -152,13 +155,24 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+                if (isLoading || isLastPage) return;
+
                 GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
-                if (layoutManager != null && layoutManager.findLastCompletelyVisibleItemPosition() == icons.size() - 1) {
-                    // Reached the end, load more items
-                    loadMoreItems();
+                if (layoutManager != null) {
+                    int visibleItemCount = layoutManager.getChildCount();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0) {
+                        // Reached the end, load more items
+                        isLoading = true;
+                        loadMoreItems();
+                    }
                 }
             }
         });
+
 
         new Handler().postDelayed(() -> new InitialIconLoader(this).execute(), 300L);
     }
@@ -218,6 +232,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         }
 
         icons = new ArrayList<>();
+        currentPage = 0; // Reset currentPage to zero
         Log.d("icons", allIconPaths.toString());
         runOnUiThread(this::loadMoreItems);
     }
@@ -231,8 +246,13 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             icons.addAll(newItems);
             adapter.submitList(new ArrayList<>(icons));
             currentPage++;
+        } else {
+            // No more items to load
+            isLastPage = true;
         }
+        isLoading = false;
     }
+
 
     private void filterIcons(String query) {
         if (query.isEmpty()) {
