@@ -59,6 +59,7 @@ class BlockSelectorDetailsFragment(
             dialogTitleText = "New Selector Item"
             dialogYesText = "Create"
             dialogNoText = "Cancel"
+            dialogCustomView = dialogBinding.root
             dialogYesListener = View.OnClickListener {
                 //todo
             }
