@@ -20,6 +20,8 @@ import com.sketchware.remod.databinding.DialogSelectorActionsBinding
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.google.gson.JsonElement
+import com.google.gson.JsonParser
 
 import com.google.android.material.appbar.MaterialToolbar
 
@@ -341,6 +343,23 @@ class BlockSelectorManagerFragment : BaseFragment() {
         }
     }
     
+    private suspend fun getSelectorsFromFile(
+        path: File
+    ): List<Selector> {
+        val json = path.readText(Charsets.UTF_8)
+        val itemLstType = object : TypeToken<List<Selector>>() {}.type
+        return newItens: List<Selector> = getGson().fromJson(json, itemLstType)
+    }
+    
+    fun isObject(json: String): Boolean {
+        val jsonElement: JsonElement = JsonParser.parseString(json)
+        return when {
+            jsonElement.isJsonObject -> true
+            jsonElement.isJsonArray -> false
+            else -> false
+        }
+    }
+   
     private fun getGson() : Gson = GsonBuilder()
         .setPrettyPrinting()
         .create()
