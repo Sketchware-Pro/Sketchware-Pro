@@ -167,6 +167,7 @@ class BlockSelectorDetailsFragment(
     override fun configureToolbar(toolbar: MaterialToolbar) {
         super.configureToolbar(toolbar)
         if(!selectors[index].name.equals("")) toolbar.setTitle(selectors[index].name)
+        toolbar.menu.clear()
     }
 
     override fun onDestroyView() {
