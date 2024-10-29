@@ -258,7 +258,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
     }
    
     private fun saveAllSelectors(
-        path: String: = BlockSelectorConsts.BLOCK_SELECTORS_FILE.absolutePath,
+        path: String = BlockSelectorConsts.BLOCK_SELECTORS_FILE.absolutePath,
         message: String = "Saved"
     ) {
         val gson: Gson = GsonBuilder()
