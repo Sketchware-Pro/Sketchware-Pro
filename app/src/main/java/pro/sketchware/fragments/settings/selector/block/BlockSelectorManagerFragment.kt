@@ -158,7 +158,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
                             Selector(
                                 name = selectorName,
                                 title = selectorTitle,
-                                data = emptyList()
+                                data = mutableListOf()
                             )
                         )
                     } else {
@@ -262,8 +262,8 @@ class BlockSelectorManagerFragment : BaseFragment() {
     /*
     * A Default list of Selector Itens
     */
-    private fun getTypeViewList(): List<String> {
-        return listOf(
+    private fun getTypeViewList(): MutableList<String> {
+        return mutableListOf(
             "View",
             "ViewGroup",
             "LinearLayout",
