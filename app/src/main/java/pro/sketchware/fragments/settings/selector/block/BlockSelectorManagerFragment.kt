@@ -66,7 +66,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
         handleInsetts(binding.root)
         adapter = BlockSelectorAdapter(
             onClick = { selector, index ->
-                openFragment(BlockSelectorDetailsFragment(selector))
+                openFragment(BlockSelectorDetailsFragment(index, selectors))
             },
             onLongClick = { selector, index ->
                 showActionsDialog(index = index)
