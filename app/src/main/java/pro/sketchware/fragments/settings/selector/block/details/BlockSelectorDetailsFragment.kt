@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder
 
 import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
 import com.sketchware.remod.databinding.DialogAddCustomActivityBinding as DialogCreateBinding
+import com.sketchware.remod.databinding.DialogSelectorActionsBinding
 
 import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
@@ -47,20 +48,26 @@ class BlockSelectorDetailsFragment(
         handleInsetts(binding.root)
         
         adapter = BlockSelectorDetailsAdapter(
-            onClick = { selectorName ->
-                toast(selectorName)
+            onClick = {
+                toast(selectors[index].data.get(it))
+            },
+            onLongClick = {
+                showActionsDialogs(index = it)
             }
         )
         adapter.submitList(selectors[index].data)
         binding.list.adapter = adapter
         
         binding.createNew.setOnClickListener {
-            showCreateDialog()
+            showCreateEditDialog()
         }
         super.onViewCreated(view, saved)
     }
     
-    private fun showCreateDialog() {
+    private fun showCreateEditDialog(
+        isEdit: Boolean = false,
+        indexA: Int = 0
+    ) {
         val dialogBinding = DialogCreateBinding.inflate(LayoutInflater.from(requireContext())).apply {
             activityNameInputLayout.hint = "Name"
         }
@@ -72,7 +79,11 @@ class BlockSelectorDetailsFragment(
             dialogYesListener = View.OnClickListener {
                 val newItem = dialogBinding.activityNameInput.text?.toString()
                 if (!newItem.isNullOrEmpty()) {
-                    selectors[index].data.add(newItem)
+                    if (!isEdit) {
+                        selectors[index].data.add(newItem)
+                    } else {
+                        selectors[index].data[indexA] = newItem
+                    }
                     saveAll()
                     adapter.notifyDataSetChanged()
                 }
@@ -84,9 +95,60 @@ class BlockSelectorDetailsFragment(
         dialog.show()
     }
     
-    override fun configureToolbar(toolbar: MaterialToolbar) {
-        super.configureToolbar(toolbar)
-        if(!selectors[index].name.equals("")) toolbar.setTitle(selectors[index].name)
+    private fun showActionsDialog(
+        indexA: Int
+    ) {
+        val dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialog = aB(requireActivity()).apply {
+            dialogTitleText = "Actions"
+            dialogCustomView = dialogBinding.root
+        }
+        dialogBinding.apply {
+            edit.setOnClickListener {
+                dialog.dismiss()
+                showCreateEditDialog(
+                    index = indexA,
+                    isEdit = true
+                }
+            }
+            delete.setOnClickListener {
+                dialog.dismiss()
+                showConfirmationDialog(
+                    message = "Are you sure you want to delete this Selector Item?",
+                    onConfirm = {
+                        selectors[index].data.removeAt(indexA)
+                        saveAll()
+                        adapter.notifyDataSetChanged()
+                        it.dismiss()
+                    },
+                    onCancel = {
+                        it.dismiss()
+                    }
+                )
+            }
+        }
+        dialog.show()
+    }
+    
+    private fun showConfirmationDialog(
+        message: String,
+        onConfirm: (aB) -> Unit,
+        onCancel: (aB) -> Unit
+    ) {
+        val dialog = aB(requireActivity()).apply {
+            dialogTitleText = "Attention"
+            dialogMessageText = message
+            dialogYesText = "Yes"
+            dialogNoText = "Cancel"
+            setCancelable(false)
+            dialogYesListener = View.OnClickListener {
+                onConfirm(this)
+            }
+            dialogNoListener = View.OnClickListener {
+                onCancel(this)
+            }
+        }
+        dialog.show()
     }
     
     private fun saveAll() {
@@ -98,6 +160,11 @@ class BlockSelectorDetailsFragment(
             gson.toJson(selectors)
         )
         toast("Saved!")
+    }
+    
+    override fun configureToolbar(toolbar: MaterialToolbar) {
+        super.configureToolbar(toolbar)
+        if(!selectors[index].name.equals("")) toolbar.setTitle(selectors[index].name)
     }
 
     override fun onDestroyView() {
