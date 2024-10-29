@@ -114,7 +114,11 @@ public class ColorEditorActivity extends AppCompatActivity {
         activity = this;
 
         parseColorsXML(FileUtil.readFile(getIntent().getStringExtra("content")));
-        recyclerview_colors.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerview_colors.setLayoutManager(linearLayoutManager);
+
         adapter = new RecyclerViewAdapter(color_list);
         recyclerview_colors.setAdapter(adapter);
     }
