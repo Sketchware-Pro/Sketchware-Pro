@@ -335,7 +335,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
                 }
             } else {
                 val selectorsN = getSelectorsFromFile(file)
-                if (selectors != null) {
+                if (selectorsN != null) {
                     selectors.addAll(selectorsN)
                     saveAllSelectors()
                     adapter.notifyDataSetChanged()
