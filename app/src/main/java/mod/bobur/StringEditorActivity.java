@@ -48,7 +48,7 @@ public class StringEditorActivity extends AppCompatActivity {
     private MaterialAlertDialogBuilder dialog;
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
-    private boolean isComingFromAnotherActivity = false;
+    private boolean isComingFromSrcCodeEditor = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,18 +69,12 @@ public class StringEditorActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isComingFromAnotherActivity) {
+        if (isComingFromSrcCodeEditor) {
             convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
             adapter = new RecyclerViewAdapter(listmap);
             binding.recyclerView.setAdapter(adapter);
         }
-        isComingFromAnotherActivity = false;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        isComingFromAnotherActivity = true;
+        isComingFromSrcCodeEditor = false;
     }
 
     @Override
@@ -131,6 +125,7 @@ public class StringEditorActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         } else if (id == 3) {
             saveXml();
+            isComingFromSrcCodeEditor = true;
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
