@@ -195,7 +195,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
             }
             export.setOnClickListener {
                 exportSelector(
-                    selector = selector.get(index)
+                    selector = selectors.get(index)
                 )
             }
             delete.setOnClickListener {
