@@ -24,8 +24,10 @@ import com.google.android.material.appbar.MaterialToolbar
 
 import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
+import pro.sketchware.utility.SketchwareUtil.toastError
 import pro.sketchware.utility.FileUtil.writeFile
 import pro.sketchware.utility.FileUtil.isExistFile
+import pro.sketchware.utility.FileUtil.getExternalStorageDir
 import pro.sketchware.fragments.settings.selector.block.details.BlockSelectorDetailsFragment
 
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +38,8 @@ import kotlin.io.readText
 import java.io.File
 
 import a.a.a.aB
+
+import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog
 
 class BlockSelectorManagerFragment : BaseFragment() {
     
@@ -248,7 +252,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
         toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.import_block_selector_menus -> {
-                    // todo 😭
+                    showImportSelectorDialog()
                     true
                 }
                 R.id.export_all_block_selector_menus -> {
@@ -261,6 +265,45 @@ class BlockSelectorManagerFragment : BaseFragment() {
                 else -> false
             }
         }
+    }
+    
+    /* not finished, for now, only only json objects are allowed,
+     * like: 
+     * {
+     *   "data": [...],
+     *   "name": "Name",
+     *   "title": "Title"
+     * }
+     */
+    private fun showImportSelectorDialog() {
+        val filePickerDialog = SketchFilePickerDialog(requireActivity())
+            .allowExtension("json")
+            .setFilePath(getExternalStorageDir()) 
+            .setOnFileSelectedListener { dialog, file -> 
+                lifecycleScope.launch { 
+                    try {
+                        val selector = getSelectorFromFile(file)
+                        if (selector != null) {
+                            selectors.add(selector)
+                            saveAllSelectors()
+                            adapter.notifyDataSetChanged()
+                        } else {
+                            toastError("Make sure you select a file that contains a selector item.")
+                        }
+                    } catch (e: Exception) {
+                        Log.e(BlockSelectorConsts.TAG, e.toString())
+                        toastError("Make sure you select a file that contains a selector item.")
+                    }
+                }
+                dialog.dismiss()
+            }
+        filePickerDialog.setTitle("Select .json selector file")
+        filePickerDialog.a(R.drawable.file_48_blue) 
+        filePickerDialog.setOnDismissListener { dialog -> 
+            filePickerDialog.backPressed(dialog)
+        }
+        filePickerDialog.init()
+        filePickerDialog.show()
     }
    
     private fun saveAllSelectors(
@@ -285,11 +328,16 @@ class BlockSelectorManagerFragment : BaseFragment() {
         toast("Exported in ${path}")
     }
     
-    private suspend fun getSelectorFromPath(
+    private suspend fun getSelectorFromFile(
         path: File
-    ): Selector {
+    ): Selector? {
         val json = path.readText(Charsets.UTF_8)
-        return getGson().fromJson(json, Selector::class.java)
+        return try {
+            getGson().fromJson(json, Selector::class.java)
+        } catch (e: Exception) {
+            Log.e(BlockSelectorConsts.TAG, e.toString())
+            null
+        }
     }
     
     private fun getGson() : Gson = GsonBuilder()
@@ -303,8 +351,8 @@ class BlockSelectorManagerFragment : BaseFragment() {
     }
     
     /*
-    * A Default list of Selector Itens
-    */
+     * A Default list of Selector Itens
+     */
     private fun getTypeViewList(): MutableList<String> {
         return mutableListOf(
             "View",
