@@ -191,6 +191,14 @@ public class WidgetsCreatorManager extends IconBase {
         clearErrorOnTextChanged(binding.widgetTitle, binding.inputTitle);
         clearErrorOnTextChanged(binding.addWidgetTo, binding.inputClass);
 
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                binding.widgetName.getContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                getSuggestions(context)
+        );
+
+        binding.widgetName.setAdapter(adapter);
+
         binding.widgetType.setLongClickable(false);
         binding.addWidgetTo.setLongClickable(false);
 
@@ -259,7 +267,6 @@ public class WidgetsCreatorManager extends IconBase {
         dialog.a(inflate);
         dialog.show();
     }
-
 
     public static void clearErrorOnTextChanged(final EditText editText, final TextInputLayout textInputLayout) {
         editText.addTextChangedListener(new TextWatcher() {
@@ -489,4 +496,9 @@ public class WidgetsCreatorManager extends IconBase {
             return input;
         }
     }
+
+    public static List<String> getSuggestions(Context context) {
+        return Arrays.asList(context.getResources().getStringArray(R.array.property_convert_options));
+    }
+
 }

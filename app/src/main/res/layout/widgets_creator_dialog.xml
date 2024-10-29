@@ -19,12 +19,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextDropDownLayoutStyle"
         android:id="@+id/input_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="4dp">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:textSize="16sp"
             android:id="@+id/widget_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
