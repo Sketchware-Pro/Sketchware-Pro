@@ -285,6 +285,9 @@ public class Hx {
                 sb.append(Jx.EOL);
                 sb.append(Jx.EOL);
             }
+            if (!a2.isEmpty()) {
+                sb.append("binding.");
+            }
             sb.append(a2);
         }
         return sb.toString();
