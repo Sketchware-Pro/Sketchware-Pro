@@ -49,10 +49,10 @@ class BlockSelectorDetailsFragment(
         
         adapter = BlockSelectorDetailsAdapter(
             onClick = {
-                toast(selectors[index].data.get(it))
+                showActionsDialog(indexA = it)
             },
             onLongClick = {
-                showActionsDialog(indexA = it)
+                toast(selectors[index].data.get(it))
             }
         )
         adapter.submitList(selectors[index].data)
