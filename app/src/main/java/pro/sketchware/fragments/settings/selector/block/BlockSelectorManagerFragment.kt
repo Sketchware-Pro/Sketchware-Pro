@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
+import android.util.Log
 
 import androidx.lifecycle.lifecycleScope
 
@@ -40,6 +41,8 @@ class BlockSelectorManagerFragment : BaseFragment() {
     companion object {
         val BLOCK_SELECTOR_MENUS_FILE = 
             File(Environment.getExternalStorageDirectory(), ".sketchware/resources/block/My Block/menu.json")
+        
+        const val TAG = "BlockSelectorManagerFragment"
     }
     
     private var _binding: FragmentBlockSelectorManagerBinding? = null
@@ -117,23 +120,22 @@ class BlockSelectorManagerFragment : BaseFragment() {
                 palettesPath.setText(selectors.get(index).name)
                 blocksPath.setText(selectors.get(index).title)
             }
-            if (palettesPath.text?.toString().equals("typeview")) {
-                palettesPath.isEnabled = false
-                palettesPath.setOnClickListener {
-                    toast("You cannot change the name of this selector")
-                }
-                return@apply
-            }
             palettesPath.setOnTextChanged(
                 onTextChanged = {
+                    Log.d(TAG, it.toString().lowercase)
                     if (itemAlreadyExists(it.toString())) {
                         palettesPath.setError("An item with this name already exists")
+                    } else {
+                        palettesPath.setError(null)
                     }
-                },
-                afterTextChanged = {
-                    palettesPath.setError(null)
                 }
             )
+            if (palettesPath.text?.toString().equals("typeview")) {
+                palettesPath.isEnabled = false
+                tilPalettesPath.setOnClickListener {
+                    toast("You cannot change the name of this selector")
+                }
+            }
         }
         val dialog = aB(requireActivity()).apply {
             dialogTitleText = if (!isEdit) "New Selector" else "Edit Selector"
@@ -195,6 +197,10 @@ class BlockSelectorManagerFragment : BaseFragment() {
                 )
             }
             delete.setOnClickListener {
+                if(selectors.get(index).name.equals("typeview")) {
+                    toast("you cannot delete the typeview.")
+                    return@setOnClickListener
+                }
                 dialog.dismiss()
                 showConfirmationDialog(
                     message = "Are you sure you want to delete this Selector?",
@@ -248,7 +254,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
     private fun itemAlreadyExists(
         toCompare: String
     ): Boolean = selectors.any {
-        it.name == toCompare
+        it.name.lowercase() == toCompare.lowercase()
     }
     
     /*
@@ -282,7 +288,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
     private fun EditText.setOnTextChanged(
         onTextChanged: (CharSequence) -> Unit,
         beforeTextChanged: (CharSequence) -> Unit = { },
-        afterTextChanged: (Editable) -> Unit = { }
+        afterTextChanged: () -> Unit = { }
     ) {
         this.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(
@@ -306,9 +312,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
                 }
             }
             override fun afterTextChanged(e: Editable?) {
-                e?.let {
-                    afterTextChanged(it)
-                }
+                afterTextChanged()
             }
         })
     }
