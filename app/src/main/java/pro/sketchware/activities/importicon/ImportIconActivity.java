@@ -1,3 +1,4 @@
+// ImportIconActivity.java
 package pro.sketchware.activities.importicon;
 
 import android.app.Activity;
@@ -12,11 +13,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.activity.OnBackPressedCallback;
@@ -24,9 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -35,7 +32,6 @@ import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogFilterIconsLayoutBinding;
 import com.sketchware.remod.databinding.DialogSaveIconBinding;
 import com.sketchware.remod.databinding.ImportIconBinding;
-import com.sketchware.remod.databinding.ImportIconListItemBinding;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,9 +52,10 @@ import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.wq;
+import pro.sketchware.activities.importicon.adapters.IconAdapter;
 import pro.sketchware.utility.SvgUtils;
 
-public class ImportIconActivity extends BaseAppCompatActivity {
+public class ImportIconActivity extends BaseAppCompatActivity implements IconAdapter.OnIconSelectedListener {
 
     private final OnBackPressedCallback searchViewCloser = new OnBackPressedCallback(true) {
         @Override
@@ -82,20 +79,16 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     private IconAdapter adapter = null;
     private ArrayList<String> alreadyAddedImageNames;
     private SvgUtils svgUtils;
-    /**
-     * Current icons' style where 0 stands for filled and 1 stands for outlind
-     */
-
     private String selected_icon_type = ICON_TYPE_ROUND;
     private int selected_color = Color.parseColor("#FFFFFF");
     private String selected_color_hex = "#FFFFFF";
+    private int selectedIconPosition = -1;
 
     private static final String ICON_TYPE_OUTLINE = "outline";
     private static final String ICON_TYPE_SHARP = "sharp";
     private static final String ICON_TYPE_TWO_TONE = "twotone";
     private static final String ICON_TYPE_ROUND = "round";
     private static final String ICON_TYPE_BASELINE = "baseline";
-
 
     private List<Pair<String, String>> allIconPaths;
     private List<Pair<String, String>> icons;
@@ -115,7 +108,6 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     private void extractIcons() {
         KB.a(this, "icons" + File.separator + "icon_pack.zip", wq.getExtractedIconPackStoreLocation());
     }
-
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
@@ -137,7 +129,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         Toolbar toolbar = binding.toolbar.toolbar;
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getTranslatedString(R.string.design_manager_icon_actionbar_title));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getTranslatedString(R.string.design_manager_icon_actionbar_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
@@ -149,7 +141,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
 
         binding.imageList.setLayoutManager(new GridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
-        adapter = new IconAdapter();
+        adapter = new IconAdapter(this, selected_icon_type, selected_color, this);
         binding.imageList.setAdapter(adapter);
         k();
 
@@ -203,7 +195,6 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     }
 
     private void setIconName(int iconPosition) {
-        // forcefully including icon_ because trash resource naming convention in sw.
         iconName = ("icon_" + adapter.getCurrentList().get(iconPosition).first + "_" + selected_icon_type);
     }
 
@@ -228,7 +219,6 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
         icons = new ArrayList<>();
         Log.d("icons", allIconPaths.toString());
-        // Load the first chunk of items
         runOnUiThread(this::loadMoreItems);
     }
 
@@ -281,6 +271,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
                 public void a(int var1) {
                     selected_color = var1;
                     selected_color_hex = "#" + String.format("%06X", var1 & (0x00FFFFFF));
+                    adapter.setSelectedColor(selected_color);
                     adapter.notifyDataSetChanged();
                 }
 
@@ -288,6 +279,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
                 public void a(String var1, int var2) {
                     selected_color = var2;
                     selected_color_hex = "#" + String.format("%06X", var2 & (0x00FFFFFF));
+                    adapter.setSelectedColor(selected_color);
                     adapter.notifyDataSetChanged();
 
                 }
@@ -308,19 +300,19 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
                 int checkedChipId = dialogBinding.chipGroupStyle.getCheckedChipId();
-                if (checkedChipId == R.id.chip_outline && !Objects.equals(selected_icon_type, ICON_TYPE_OUTLINE)) {
+                if (checkedChipId == R.id.chip_outline && !selected_icon_type.equals(ICON_TYPE_OUTLINE)) {
                     updateIcons(ICON_TYPE_OUTLINE);
                 }
-                if (checkedChipId == R.id.chip_twotone && !Objects.equals(selected_icon_type, ICON_TYPE_TWO_TONE)) {
+                if (checkedChipId == R.id.chip_twotone && !selected_icon_type.equals(ICON_TYPE_TWO_TONE)) {
                     updateIcons(ICON_TYPE_TWO_TONE);
                 }
-                if (checkedChipId == R.id.chip_baseline && !Objects.equals(selected_icon_type, ICON_TYPE_BASELINE)) {
+                if (checkedChipId == R.id.chip_baseline && !selected_icon_type.equals(ICON_TYPE_BASELINE)) {
                     updateIcons(ICON_TYPE_BASELINE);
                 }
-                if (checkedChipId == R.id.chip_sharp && !Objects.equals(selected_icon_type, ICON_TYPE_SHARP)) {
+                if (checkedChipId == R.id.chip_sharp && !selected_icon_type.equals(ICON_TYPE_SHARP)) {
                     updateIcons(ICON_TYPE_SHARP);
                 }
-                if (checkedChipId == R.id.chip_round && !Objects.equals(selected_icon_type, ICON_TYPE_ROUND)) {
+                if (checkedChipId == R.id.chip_round && !selected_icon_type.equals(ICON_TYPE_ROUND)) {
                     updateIcons(ICON_TYPE_ROUND);
                 }
                 dialogInterface.dismiss();
@@ -334,9 +326,9 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
     private void updateIcons(String type) {
         selected_icon_type = type;
+        adapter.setSelectedIconType(selected_icon_type);
         adapter.notifyDataSetChanged();
     }
-
 
     private void showSaveDialog(int iconPosition) {
         DialogSaveIconBinding dialogBinding = DialogSaveIconBinding.inflate(getLayoutInflater());
@@ -352,8 +344,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
             Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
-                if (iconNameValidator.b() && adapter.selectedIconPosition >= 0) {
-                    String resFullname = adapter.getCurrentList().get(adapter.selectedIconPosition).second + File.separator + selected_icon_type + ".svg";
+                if (iconNameValidator.b() && selectedIconPosition >= 0) {
+                    String resFullname = adapter.getCurrentList().get(selectedIconPosition).second + File.separator + selected_icon_type + ".svg";
                     Log.d("svg Imported icon full res", resFullname);
                     Intent intent = new Intent();
                     intent.putExtra("iconName", dialogBinding.inputText.getText().toString());
@@ -383,57 +375,6 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         dialogBinding.inputText.setText(iconName);
         dialog.setView(dialogBinding.getRoot());
         dialog.show();
-    }
-
-
-    private class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.ViewHolder> {
-        private static final DiffUtil.ItemCallback<Pair<String, String>> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
-            @Override
-            public boolean areItemsTheSame(@NonNull Pair<String, String> oldItem, @NonNull Pair<String, String> newItem) {
-                return oldItem.first.equals(newItem.first);
-            }
-
-            @Override
-            public boolean areContentsTheSame(@NonNull Pair<String, String> oldItem, @NonNull Pair<String, String> newItem) {
-                return true;
-            }
-        };
-        private int selectedIconPosition = -1;
-
-        protected IconAdapter() {
-            super(DIFF_CALLBACK);
-        }
-
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            private final ImportIconListItemBinding itemBinding;
-
-            public ViewHolder(ImportIconListItemBinding binding) {
-                super(binding.getRoot());
-                this.itemBinding = binding;
-                binding.getRoot().setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        selectedIconPosition = getLayoutPosition();
-                        setIconName(selectedIconPosition);
-                        showSaveDialog(selectedIconPosition);
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            String filePath = getItem(position).second + File.separator + selected_icon_type + ".svg"; // Adjust according to your data structure
-            svgUtils.loadImage(holder.itemBinding.img, filePath);
-            holder.itemBinding.img.setColorFilter(selected_color, PorterDuff.Mode.SRC_IN);
-
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ImportIconListItemBinding binding = ImportIconListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new ViewHolder(binding);
-        }
     }
 
     private static class InitialIconLoader extends MA {
@@ -481,8 +422,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         public void a() {
             var activity = this.activity.get();
             activity.h();
-            int oldPosition = activity.adapter.selectedIconPosition;
-            activity.adapter.selectedIconPosition = -1;
+            int oldPosition = activity.selectedIconPosition;
+            activity.selectedIconPosition = -1;
             activity.adapter.notifyItemChanged(oldPosition);
             activity.adapter.submitList(activity.icons);
         }
@@ -501,6 +442,15 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         @Override
         public void a(String str) {
             activity.get().h();
+        }
+    }
+
+    @Override
+    public void onIconSelected(int position) {
+        if (!mB.a()) {
+            selectedIconPosition = position;
+            setIconName(position);
+            showSaveDialog(position);
         }
     }
 }
