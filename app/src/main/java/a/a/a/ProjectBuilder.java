@@ -27,6 +27,8 @@ import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 import com.iyxan23.zipalignjava.InvalidZipException;
 import com.iyxan23.zipalignjava.ZipAlign;
 
+import org.xml.sax.SAXException;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -44,7 +46,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.utility.SketchwareUtil;
 import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dex.FieldId;
@@ -153,6 +158,19 @@ public class ProjectBuilder {
                 progressReceiver);
         compiler.compile();
         LogUtil.d(TAG, "Compiling resources took " + (System.currentTimeMillis() - timestampResourceCompilationStarted) + " ms");
+    }
+
+    public void generateViewBinding() throws IOException, SAXException {
+        File outputDirectory = new File(yq.javaFilesPath + File.separator + yq.packageName.replace(".", File.separator) + File.separator + "databinding");
+        outputDirectory.mkdirs();
+
+        List<File> layouts = FileUtil.listFiles(yq.layoutFilesPath, "xml").stream()
+                .map(File::new)
+                .collect(Collectors.toList());
+
+        ViewBindingBuilder builder = new ViewBindingBuilder(layouts, outputDirectory, yq.packageName);
+
+        builder.generateBindings();
     }
 
     /**

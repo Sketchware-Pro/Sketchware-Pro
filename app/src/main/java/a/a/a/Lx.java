@@ -1108,8 +1108,8 @@ public class Lx {
 
         if (!type.equals("include") && !type.equals("#")) {
             initializer = name + " = " +
-                    (isInFragment ? "_view.findViewById(R.id." : "findViewById(R.id.") +
-                    name + ");";
+                    "binding." +
+                    name + ";";
         }
 
         return switch (type) {
