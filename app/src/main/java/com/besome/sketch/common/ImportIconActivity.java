@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -219,7 +220,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     }
 
     private void setIconName(int iconPosition) {
-        iconName=(adapter.getCurrentList().get(iconPosition).first);
+        iconName=(adapter.getCurrentList().get(iconPosition).first + "_" + selected_icon_type);
     }
 
     private void setIconColor() {
@@ -234,8 +235,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             iconFiles.map(Path::getFileName)
                     .map(Path::toString)
                     .forEach(folderName -> allIconPaths.add(new Pair<>(
-                            folderName + "_" + selected_icon_type,
-                            Paths.get(iconPackStoreLocation, folderName,selected_icon_type + ".svg").toString()
+                            folderName,
+                            Paths.get(iconPackStoreLocation, folderName).toString()
                     )));
         } catch (IOException e) {
             e.printStackTrace();
@@ -266,7 +267,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             loadMoreItems();
             return;
         }
-        if(query.length()<3){
+        if(query.length()<1){
             return;
         }
         
@@ -367,9 +368,6 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
     private void updateIcons(String type){
         selected_icon_type = type;
-        icons.clear();
-        allIconPaths.clear();
-        listIcons();
         adapter.notifyDataSetChanged();
 
     }
@@ -390,7 +388,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
                 if (iconNameValidator.b() && adapter.selectedIconPosition >= 0) {
-                    String resFullname =  adapter.getCurrentList().get(adapter.selectedIconPosition).second;
+                    String resFullname =  adapter.getCurrentList().get(adapter.selectedIconPosition).second + File.separator + selected_icon_type + ".svg";
                     Log.d("svg Imported icon full res", resFullname);
                     Intent intent = new Intent();
                     intent.putExtra("iconName", dialogBinding.inputText.getText().toString());
@@ -407,9 +405,16 @@ public class ImportIconActivity extends BaseAppCompatActivity {
             });
         });
 
-        svgUtils.loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second );
+        svgUtils.loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second + File.separator + selected_icon_type + ".svg");
         dialogBinding.icon.setColorFilter(selected_color,PorterDuff.Mode.SRC_IN);
         iconNameValidator = new WB(getApplicationContext(), dialogBinding.textInputLayout, uq.b,  alreadyAddedImageNames);
+        dialogBinding.licenceInfo.setOnClickListener(v -> {
+            Uri webpage = Uri.parse("https://www.apache.org/licenses/LICENSE-2.0.txt");
+            Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        });
         dialogBinding.inputText.setText(iconName);
         dialog.setView(dialogBinding.getRoot());
         dialog.show();
@@ -455,7 +460,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            String filePath = getItem(position).second; // Adjust according to your data structure
+            String filePath = getItem(position).second + File.separator + selected_icon_type + ".svg"; // Adjust according to your data structure
             svgUtils.loadImage(holder.icon, filePath);
             holder.icon.setColorFilter(selected_color, PorterDuff.Mode.SRC_IN);
 
