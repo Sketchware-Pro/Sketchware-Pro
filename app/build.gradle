@@ -132,7 +132,11 @@ dependencies {
     implementation "de.hdodenhof:circleimageview:3.1.0"
     implementation "com.github.angads25:filepicker:1.1.1"
 
+    implementation 'io.coil-kt:coil:2.0.0'
+    implementation 'io.coil-kt:coil-svg:2.0.0'
+    
     minApi26Implementation "com.android.tools.build:bundletool:1.15.6"
+    
     //noinspection GradleDependency copied from above dependency for not just runtime access
     minApi26Implementation "com.google.protobuf:protobuf-java:3.19.2"
     //noinspection GradleDependency
@@ -147,6 +151,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
     //noinspection GradleDependency
     implementation "com.squareup.okio:okio:3.1.0"
+
     implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
 
     minApi21Implementation "net.sf.proguard:proguard-base:6.0.3"

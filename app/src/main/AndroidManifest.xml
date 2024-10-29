@@ -40,7 +40,7 @@
             android:name="com.besome.sketch.common.SrcViewerActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="com.besome.sketch.common.ImportIconActivity"
+            android:name="pro.sketchware.activities.importicon.ImportIconActivity"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name="com.besome.sketch.help.LicenseActivity" />

@@ -55,7 +55,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_download_24" />
+                    android:src="@drawable/ic_download" />
 
                 <TextView
                     android:id="@+id/projectDownloads"
