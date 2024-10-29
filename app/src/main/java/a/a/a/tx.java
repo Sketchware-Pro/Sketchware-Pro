@@ -20,7 +20,6 @@ import androidx.core.content.FileProvider;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.Key;
 import com.sketchware.remod.R;
 
 import java.io.File;
@@ -28,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import mod.hey.studios.util.Helper;
-import mod.nethical.svg.SvgUtils;
+import pro.sketchware.utility.SvgUtils;
 import pro.sketchware.utility.FilePathUtil;
 
 public class tx extends RelativeLayout implements View.OnClickListener {

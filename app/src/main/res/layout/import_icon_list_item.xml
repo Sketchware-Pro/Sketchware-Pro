@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/icon_bg"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="15dp">
 
     <ImageView
         android:id="@+id/img"
@@ -15,6 +16,7 @@
         android:layout_height="80dp"
         android:padding="16dp"
         android:scaleType="centerInside"
-        app:tint="@color/grey" />
+        app:tint="@color/grey"
+        tools:src="@drawable/unit_96" />
 
 </LinearLayout>

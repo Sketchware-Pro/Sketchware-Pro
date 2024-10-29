@@ -103,7 +103,7 @@ import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
 import mod.hey.studios.util.ProjectFile;
-import mod.nethical.svg.SvgUtils;
+import pro.sketchware.utility.SvgUtils;
 
 public class ViewPane extends RelativeLayout {
 

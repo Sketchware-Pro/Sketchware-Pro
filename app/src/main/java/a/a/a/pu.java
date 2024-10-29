@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.common.ImportIconActivity;
+import pro.sketchware.activities.importicon.ImportIconActivity;
 import com.besome.sketch.editor.manage.image.AddImageActivity;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.bumptech.glide.Glide;
@@ -50,7 +50,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import mod.nethical.svg.SvgUtils;
+import pro.sketchware.utility.SvgUtils;
 import pro.sketchware.utility.FilePathUtil;
 
 public class pu extends qA implements View.OnClickListener {

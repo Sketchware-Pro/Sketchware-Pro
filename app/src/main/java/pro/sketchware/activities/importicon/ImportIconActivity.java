@@ -1,4 +1,4 @@
-package com.besome.sketch.common;
+package pro.sketchware.activities.importicon;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -18,8 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -33,10 +31,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.DialogFilterIconsLayoutBinding;
 import com.sketchware.remod.databinding.DialogSaveIconBinding;
+import com.sketchware.remod.databinding.ImportIconBinding;
+import com.sketchware.remod.databinding.ImportIconListItemBinding;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +56,7 @@ import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.wq;
-import mod.nethical.svg.SvgUtils;
+import pro.sketchware.utility.SvgUtils;
 
 public class ImportIconActivity extends BaseAppCompatActivity {
 
@@ -74,7 +73,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         }
     };
 
-    private RecyclerView iconsList;
+    private ImportIconBinding binding;
+
     private String iconName;
     private WB iconNameValidator;
     private MenuItem search;
@@ -120,22 +120,23 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (iconsList.getLayoutManager() instanceof GridLayoutManager manager) {
+        if (binding.imageList.getLayoutManager() instanceof GridLayoutManager manager) {
             manager.setSpanCount(getGridLayoutColumnCount());
         }
-        iconsList.requestLayout();
+        binding.imageList.requestLayout();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.import_icon);
+        binding = ImportIconBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         colorpicker = new Zx(this, 0xFFFFFFFF, false, false);
         svgUtils = new SvgUtils(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = binding.toolbar.toolbar;
+        binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(getTranslatedString(R.string.design_manager_icon_actionbar_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -147,17 +148,14 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
         alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
 
-        iconsList = findViewById(R.id.image_list);
-        iconsList.setLayoutManager(new GridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
+        binding.imageList.setLayoutManager(new GridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
         adapter = new IconAdapter();
-        iconsList.setAdapter(adapter);
+        binding.imageList.setAdapter(adapter);
         k();
 
-        ExtendedFloatingActionButton filterIconsButton = findViewById(R.id.filterIconsButton);
-        filterIconsButton.setOnClickListener(v -> showFilterDialog());
+        binding.filterIconsButton.setOnClickListener(v -> showFilterDialog());
 
-
-        iconsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.imageList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -270,7 +268,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
         var dialog = new MaterialAlertDialogBuilder(this)
                 .setView(dialogBinding.getRoot())
-                .setTitle("Filter Icons")
+                .setTitle("Filter icons")
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Apply", null)
                 .create();
@@ -316,15 +314,12 @@ public class ImportIconActivity extends BaseAppCompatActivity {
                 if (checkedChipId == R.id.chip_twotone && !Objects.equals(selected_icon_type, ICON_TYPE_TWO_TONE)) {
                     updateIcons(ICON_TYPE_TWO_TONE);
                 }
-
                 if (checkedChipId == R.id.chip_baseline && !Objects.equals(selected_icon_type, ICON_TYPE_BASELINE)) {
                     updateIcons(ICON_TYPE_BASELINE);
                 }
-
                 if (checkedChipId == R.id.chip_sharp && !Objects.equals(selected_icon_type, ICON_TYPE_SHARP)) {
                     updateIcons(ICON_TYPE_SHARP);
                 }
-
                 if (checkedChipId == R.id.chip_round && !Objects.equals(selected_icon_type, ICON_TYPE_ROUND)) {
                     updateIcons(ICON_TYPE_ROUND);
                 }
@@ -340,7 +335,6 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     private void updateIcons(String type) {
         selected_icon_type = type;
         adapter.notifyDataSetChanged();
-
     }
 
 
@@ -411,19 +405,16 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final LinearLayout background;
-            public final ImageView icon;
+            private final ImportIconListItemBinding itemBinding;
 
-            public ViewHolder(View itemView) {
-                super(itemView);
-                background = itemView.findViewById(R.id.icon_bg);
-                icon = itemView.findViewById(R.id.img);
-                icon.setOnClickListener(v -> {
+            public ViewHolder(ImportIconListItemBinding binding) {
+                super(binding.getRoot());
+                this.itemBinding = binding;
+                binding.getRoot().setOnClickListener(v -> {
                     if (!mB.a()) {
                         selectedIconPosition = getLayoutPosition();
                         setIconName(selectedIconPosition);
                         showSaveDialog(selectedIconPosition);
-
                     }
                 });
             }
@@ -432,15 +423,16 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String filePath = getItem(position).second + File.separator + selected_icon_type + ".svg"; // Adjust according to your data structure
-            svgUtils.loadImage(holder.icon, filePath);
-            holder.icon.setColorFilter(selected_color, PorterDuff.Mode.SRC_IN);
+            svgUtils.loadImage(holder.itemBinding.img, filePath);
+            holder.itemBinding.img.setColorFilter(selected_color, PorterDuff.Mode.SRC_IN);
 
         }
 
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.import_icon_list_item, parent, false));
+            ImportIconListItemBinding binding = ImportIconListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new ViewHolder(binding);
         }
     }
 
@@ -510,6 +502,5 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         public void a(String str) {
             activity.get().h();
         }
-
     }
 }
