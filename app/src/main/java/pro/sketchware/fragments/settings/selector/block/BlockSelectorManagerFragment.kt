@@ -357,6 +357,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
             getGson().fromJson(json, Selector::class.java)
         } catch (e: Exception) {
             Log.e(BlockSelectorConsts.TAG, e.toString())
+            toastError("An error occurred while trying to get the selector")
             null
         }
     }
@@ -370,6 +371,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
             getGson().fromJson(json, itemLstType)
         } catch (e: Exception) {
             Log.e(BlockSelectorConsts.TAG, e.toString())
+            toastError("An error occurred while trying to get the selectors")
             null
         }
     }
