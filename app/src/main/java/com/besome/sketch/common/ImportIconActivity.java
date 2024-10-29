@@ -1,13 +1,17 @@
 package com.besome.sketch.common;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,12 +31,15 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import a.a.a.Zx;
 import a.a.a.jC;
 import a.a.a.pu;
 import coil.ComponentRegistry;
 import coil.ImageLoader;
 import coil.decode.SvgDecoder;
 import coil.request.ImageRequest;
+
+import com.besome.sketch.editor.LogicEditorActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -40,6 +47,7 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.sketchware.remod.R;
 
 
+import com.sketchware.remod.databinding.DialogBinding;
 import com.sketchware.remod.databinding.DialogSaveIconBinding;
 import java.io.File;
 import java.io.IOException;
@@ -91,6 +99,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
      */
 
     private String selected_icon_type = ICON_TYPE_ROUND;
+    private int selected_color = Color.parseColor("#FFFFFF");
+    private String selected_color_hex = "#FFFFFF";
 
     private static final String ICON_TYPE_OUTLINE = "outline";
     private static final String ICON_TYPE_SHARP = "sharp";
@@ -100,12 +110,12 @@ public class ImportIconActivity extends BaseAppCompatActivity {
 
 
 
-
     private List<Pair<String, String>> allIconPaths;
     private List<Pair<String, String>> icons;
     private final int ITEMS_PER_PAGE = 20;
     private int currentPage = 0;
 
+    private Zx colorpicker;
     
     private int getGridLayoutColumnCount() {
        return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 100;
@@ -135,6 +145,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.import_icon);
 
+        colorpicker = new Zx(this,0xFFFFFFFF,false,false);
         svgUtils = new SvgUtils(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -232,12 +243,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         
         icons = new ArrayList<>();
         Log.d("icons",allIconPaths.toString());
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                loadMoreItems(); // Load the first chunk of items
-            }
-        });
+        // Load the first chunk of items
+        runOnUiThread(this::loadMoreItems);
     }
     
     private void loadMoreItems() {
@@ -283,8 +290,31 @@ public class ImportIconActivity extends BaseAppCompatActivity {
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Apply", null)
                 .create();
-
         dialog.setView(dialogBinding.getRoot());
+
+        dialogBinding.selectColour.setText("Select Color: "+selected_color_hex);
+        dialogBinding.selectColour.setOnClickListener(view-> {
+            colorpicker.a(new Zx.b() {
+                @Override
+                public void a(int var1) {
+                    selected_color = var1;
+                    selected_color_hex = "#" + String.format("%06X", var1 & (0x00FFFFFF));
+                    adapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                }
+
+                @Override
+                public void a(String var1, int var2) {
+                    selected_color = var2;
+                    selected_color_hex = "#" + String.format("%06X", var2 & (0x00FFFFFF));
+                    adapter.notifyDataSetChanged();
+                    dialog.dismiss();
+
+                }
+            });
+            colorpicker.showAtLocation(view, Gravity.CENTER, 0, 0);
+        });
+
         switch (selected_icon_type){
             case ICON_TYPE_OUTLINE:
                 dialogBinding.chipGroupStyle.check(R.id.chip_outline);
@@ -336,16 +366,14 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     }
 
     private void updateIcons(String type){
-//        iconsList.setAdapter(null);
         selected_icon_type = type;
         icons.clear();
         allIconPaths.clear();
         listIcons();
         adapter.notifyDataSetChanged();
-//        iconsList.setAdapter(adapter);
-
 
     }
+
 
     private void showSaveDialog(int iconPosition){
         DialogSaveIconBinding dialogBinding = DialogSaveIconBinding.inflate(getLayoutInflater());
@@ -367,6 +395,9 @@ public class ImportIconActivity extends BaseAppCompatActivity {
                     Intent intent = new Intent();
                     intent.putExtra("iconName", dialogBinding.inputText.getText().toString());
                     intent.putExtra("iconPath",resFullname);
+
+                    intent.putExtra("iconColor",selected_color);
+                    intent.putExtra("iconColorHex",selected_color_hex);
                     setResult(Activity.RESULT_OK, intent);
                     finish();
                 }else{
@@ -377,12 +408,14 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         });
 
         svgUtils.loadImage(dialogBinding.icon,adapter.getCurrentList().get(iconPosition).second );
+        dialogBinding.icon.setColorFilter(selected_color,PorterDuff.Mode.SRC_IN);
         iconNameValidator = new WB(getApplicationContext(), dialogBinding.textInputLayout, uq.b,  alreadyAddedImageNames);
         dialogBinding.inputText.setText(iconName);
         dialog.setView(dialogBinding.getRoot());
         dialog.show();
     }
-    
+
+
     private class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.ViewHolder> {
         private static final DiffUtil.ItemCallback<Pair<String, String>> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
             @Override
@@ -424,6 +457,7 @@ public class ImportIconActivity extends BaseAppCompatActivity {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             String filePath = getItem(position).second; // Adjust according to your data structure
             svgUtils.loadImage(holder.icon, filePath);
+            holder.icon.setColorFilter(selected_color, PorterDuff.Mode.SRC_IN);
 
         }
 

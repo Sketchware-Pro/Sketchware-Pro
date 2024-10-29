@@ -62,5 +62,13 @@
 
     </com.google.android.material.chip.ChipGroup>
 
+    <Button
+        android:id="@+id/select_colour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Select Color: #FFFFFF" />
+
 
 </LinearLayout>

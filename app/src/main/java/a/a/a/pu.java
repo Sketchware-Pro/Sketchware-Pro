@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +47,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.agus.jcoderz.lib.FilePathUtil;
@@ -65,14 +70,22 @@ public class pu extends qA implements View.OnClickListener {
     public SvgUtils svgUtils;
 
     private FilePathUtil fpu = new FilePathUtil();
+
+    Map<Integer, Map<String, Object>> colorMap = new HashMap<>();
     private final ActivityResultLauncher<Intent> openImportIconActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             var data = result.getData();
             assert data != null;
-            ProjectResourceBean icon = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                    data.getStringExtra("iconName"), data.getStringExtra("iconPath"));
+            ProjectResourceBean icon = new ProjectResourceBean(
+                    ProjectResourceBean.PROJECT_RES_TYPE_FILE,
+                    data.getStringExtra("iconName"), data.getStringExtra("iconPath")
+                    );
             icon.savedPos = 2;
             icon.isNew = true;
+
+            int selectedColor = data.getIntExtra("iconColor",-1);
+            String selectedColorHex = data.getStringExtra("iconColorHex");
+            addNewColorFilterInfo(selectedColorHex,selectedColor,images.size());
 
             addImage(icon);
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
@@ -167,7 +180,7 @@ public class pu extends qA implements View.OnClickListener {
         } catch (IOException error) {
             Log.d("pu.java","Failed to create directory for saving svgs at: "+ fpu.getPathResource(sc_id));
         }
-
+        int index = 0;
         for (ProjectResourceBean image : images) {
             if (image.isNew || image.isEdited) {
                 try {
@@ -185,7 +198,9 @@ public class pu extends qA implements View.OnClickListener {
                         // convert the svg to vectors
                         String svgPath = fpu.getSvgFullPath(sc_id,image.resName);
                         copyFile(path,svgPath);
-                        svgUtils.convert(svgPath,projectImagesDirectory ,"#FF0000");
+                        String colorHex = (String) colorMap.get(index).get("colorHex");
+                        colorHex = (colorHex != null) ? colorHex : "#FFFFFF";
+                        svgUtils.convert(svgPath,projectImagesDirectory , colorHex);
                     }else {
                         iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
                     }
@@ -193,6 +208,7 @@ public class pu extends qA implements View.OnClickListener {
                     e.printStackTrace();
                 }
             }
+            index++;
         }
         for (int i = 0; i < images.size(); i++) {
             ProjectResourceBean image = images.get(i);
@@ -429,13 +445,24 @@ public class pu extends qA implements View.OnClickListener {
             holder.checkBox.setChecked(image.isSelected);
             holder.name.setText(image.resName);
 
+
+            if(colorMap.get(position) != null){
+                int color = Objects.requireNonNullElse((int) colorMap.get(position).get("color"), 0xFFFFFFFF);
+                Log.d("Applying filter to "+ String.valueOf(position), String.valueOf(color));
+                holder.image.setColorFilter(color,PorterDuff.Mode.SRC_IN);
+            } else {
+                holder.image.clearColorFilter();
+            }
+
             if(svgUtils == null){
                 svgUtils = new SvgUtils(requireContext());
+                svgUtils.initImageLoader();
             }
-            Log.d("svg res full name",projectImagesDirectory + File.separator + image.resFullName);
+
             if (image.resFullName.endsWith(".svg")) {
                 svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));
             } else if (image.resFullName.endsWith(".xml")) {
+                Log.d("loading converted vector: " , fpu.getSvgFullPath(sc_id,image.resName));
                 svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : fpu.getSvgFullPath(sc_id,image.resName));
             } else {
                 Glide.with(requireActivity())
@@ -536,8 +563,18 @@ public class pu extends qA implements View.OnClickListener {
 
     private void addImage(ProjectResourceBean projectResourceBean) {
         images.add(projectResourceBean);
+        adapter.notifyDataSetChanged();
         adapter.notifyItemInserted(adapter.getItemCount());
         updateGuideVisibility();
+    }
+
+    private void addNewColorFilterInfo(String colorHex, int color, int forPosition){
+        Map<String, Object> colorItem1 = new HashMap<>();
+        colorItem1.put("colorHex", colorHex);
+        colorItem1.put("color", color);
+
+        colorMap.put(forPosition, colorItem1);
+        Log.d("color filter", "new color filter item at "+ forPosition + ": " + colorHex + " " + String.valueOf(color));
     }
 
     private void addImages(ArrayList<ProjectResourceBean> arrayList) {
