@@ -52,7 +52,7 @@ class BlockSelectorDetailsFragment(
                 toast(selectors[index].data.get(it))
             },
             onLongClick = {
-                showActionsDialogs(indexA = it)
+                showActionsDialog(indexA = it)
             }
         )
         adapter.submitList(selectors[index].data)
@@ -109,7 +109,7 @@ class BlockSelectorDetailsFragment(
                 showCreateEditDialog(
                     indexA = indexA,
                     isEdit = true
-                }
+                )
             }
             delete.setOnClickListener {
                 dialog.dismiss()
