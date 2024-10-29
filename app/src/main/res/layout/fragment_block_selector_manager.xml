@@ -24,7 +24,8 @@
                 android:layout_height="?actionBarSize"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/abc_ic_ab_back_material"
-                app:title="@string/settings_block_selector" />
+                app:title="@string/settings_block_selector" 
+                app:menu="@menu/block_selector_menu" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

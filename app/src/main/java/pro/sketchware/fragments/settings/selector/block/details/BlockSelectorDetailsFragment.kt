@@ -18,7 +18,7 @@ import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
 import pro.sketchware.utility.FileUtil.writeFile
 import pro.sketchware.fragments.settings.selector.block.Selector
-import pro.sketchware.fragments.settings.selector.block.BlockSelectorManagerFragment.Companion.BLOCK_SELECTOR_MENUS_FILE
+import pro.sketchware.fragments.settings.selector.block.BlockSelectorConsts
 
 import a.a.a.aB
 
@@ -158,7 +158,7 @@ class BlockSelectorDetailsFragment(
             .setPrettyPrinting()
             .create()
         writeFile(
-            BLOCK_SELECTOR_MENUS_FILE.absolutePath, 
+            BlockSelectorConsts.BLOCK_SELECTORS_FILE.absolutePath, 
             gson.toJson(selectors)
         )
         toast("Saved!")

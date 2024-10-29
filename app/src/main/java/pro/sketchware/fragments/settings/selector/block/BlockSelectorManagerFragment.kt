@@ -1,7 +1,6 @@
 package pro.sketchware.fragments.settings.selector.block
 
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import android.widget.TextView
 
 import androidx.lifecycle.lifecycleScope
 
+import com.sketchware.remod.R
 import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
 import com.sketchware.remod.databinding.DialogBlockConfigurationBinding as DialogCreateBinding
 import com.sketchware.remod.databinding.DialogSelectorActionsBinding
@@ -19,6 +19,8 @@ import com.sketchware.remod.databinding.DialogSelectorActionsBinding
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+
+import com.google.android.material.appbar.MaterialToolbar
 
 import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
@@ -36,13 +38,6 @@ import java.io.File
 import a.a.a.aB
 
 class BlockSelectorManagerFragment : BaseFragment() {
-
-    companion object {
-        val BLOCK_SELECTOR_MENUS_FILE = 
-            File(Environment.getExternalStorageDirectory(), ".sketchware/resources/block/My Block/menu.json")
-        
-        const val TAG = "BlockSelectorManagerFragment"
-    }
     
     private var _binding: FragmentBlockSelectorManagerBinding? = null
     private val binding get() = _binding!!
@@ -73,9 +68,9 @@ class BlockSelectorManagerFragment : BaseFragment() {
             }
         )
         lifecycleScope.launch {
-            if (isExistFile(BLOCK_SELECTOR_MENUS_FILE.absolutePath)) {
+            if (isExistFile(BlockSelectorConsts.BLOCK_SELECTORS_FILE.absolutePath)) {
                 selectors = parseJson(
-                    BLOCK_SELECTOR_MENUS_FILE.readText(
+                    BlockSelectorConsts.BLOCK_SELECTORS_FILE.readText(
                         Charsets.UTF_8
                     )
                 )
@@ -87,7 +82,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
                         data = getTypeViewList()
                     )
                 )
-                saveAll()
+                saveAllSelectors()
             }
         }
         binding.list.adapter = adapter
@@ -171,7 +166,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
                         data = selectors.get(index).data
                     )
                 }
-                saveAll()
+                saveAllSelectors()
                 adapter.notifyDataSetChanged()
                 dismiss()
             }
@@ -208,7 +203,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
                     message = "Are you sure you want to delete this Selector?",
                     onConfirm = {
                         selectors.removeAt(index)
-                        saveAll()
+                        saveAllSelectors()
                         adapter.notifyDataSetChanged()
                         it.dismiss()
                     },
@@ -241,16 +236,39 @@ class BlockSelectorManagerFragment : BaseFragment() {
         }
         dialog.show()
     }
+    
+    override fun configureToolbar(toolbar: MaterialToolbar) {
+        super.configureToolbar(toolbar)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.import_block_selector_menus -> {
+                    // todo 😭
+                    true
+                }
+                R.id.export_all_block_selector_menus -> {
+                    saveAllSelectors(
+                        path = BlockSelectorConsts.EXPORT_FILE.absolutePath,
+                        message = "Exported in ${BlockSelectorConsts.EXPORT_FILE.absolutePath}"
+                    )
+                    true
+                }
+                else -> false
+            }
+        }
+    }
    
-    private fun saveAll() {
+    private fun saveAllSelectors(
+        path: String: = BlockSelectorConsts.BLOCK_SELECTORS_FILE.absolutePath,
+        message: String = "Saved"
+    ) {
         val gson: Gson = GsonBuilder()
             .setPrettyPrinting()
             .create()
         writeFile(
-            BLOCK_SELECTOR_MENUS_FILE.absolutePath, 
+            path,
             gson.toJson(selectors)
         )
-        toast("Saved!")
+        toast(message)
     }
     
     private fun itemAlreadyExists(
