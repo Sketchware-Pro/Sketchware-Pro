@@ -100,7 +100,7 @@ public class aB extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        getWindow().setWindowAnimations(R.style.Widget_SketchwarePro_Dialog);
+        getWindow().setWindowAnimations(com.google.android.material.R.style.MaterialAlertDialog_Material3_Animation);
         
         {
             LayoutParams attributes = getWindow().getAttributes();

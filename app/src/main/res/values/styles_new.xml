@@ -123,9 +123,4 @@
         <item name="fontFamily">@font/gilroy</item>
     </style>
     <!--    end AutoCompleteTextInputEditTextStyle    -->
-    
-    <style name="Widget.SketchwarePro.Dialog" parent="">
-        <item name="android:windowEnterAnimation">@anim/ab_dialog_in</item>
-        <item name="android:windowExitAnimation">@anim/ab_dialog_out</item>
-    </style>
 </resources>
