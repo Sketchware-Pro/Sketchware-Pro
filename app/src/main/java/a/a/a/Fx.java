@@ -35,8 +35,8 @@ public class Fx {
     public String a() {
         g = new HashMap<>();
         ArrayList<BlockBean> beans = f;
-        if (beans != null && !beans.isEmpty()) {
 
+        if (beans != null && !beans.isEmpty()) {
             for (BlockBean bean : f) {
                 g.put(bean.id, bean);
             }
@@ -54,6 +54,7 @@ public class Fx {
             String param = bean.parameters.get(i);
             Gx paramInfo = bean.getParamClassInfo().get(i);
             int type;
+
             if (paramInfo.b("boolean")) {
                 type = 0;
             } else if (paramInfo.b("double")) {
@@ -5929,79 +5930,60 @@ public class Fx {
         return var2;
     }
 
-    public final String a(String var1) {
-        StringBuilder var2 = new StringBuilder(4096);
-        CharBuffer var3 = CharBuffer.wrap(var1);
+    private final String escapeString(String input) {
+        StringBuilder escapedString = new StringBuilder(4096);
+        CharBuffer charBuffer = CharBuffer.wrap(input);
 
-        for (int var4 = 0; var4 < var3.length(); ++var4) {
-            char var5 = var3.get(var4);
-            if (var5 == '"') {
-                var2.append("\\\"");
-            } else if (var5 == '\\') {
-                if (var4 < var3.length() - 1) {
-                    int var6 = var4 + 1;
-                    var5 = var3.get(var6);
-                    if (var5 != 'n' && var5 != 't') {
-                        var2.append("\\\\");
+        for (int i = 0; i < charBuffer.length(); ++i) {
+            char currentChar = charBuffer.get(i);
+            if (currentChar == '"') {
+                escapedString.append("\\\"");
+            } else if (currentChar == '\\') {
+                if (i < charBuffer.length() - 1) {
+                    int nextIndex = i + 1;
+                    currentChar = charBuffer.get(nextIndex);
+                    if (currentChar != 'n' && currentChar != 't') {
+                        escapedString.append("\\\\");
                     } else {
-                        var2.append("\\").append(var5);
-                        var4 = var6;
+                        escapedString.append("\\").append(currentChar);
+                        i = nextIndex;
                     }
                 } else {
-                    var2.append("\\\\");
+                    escapedString.append("\\\\");
                 }
-            } else if (var5 == '\n') {
-                var2.append("\\n");
+            } else if (currentChar == '\n') {
+                escapedString.append("\\n");
             } else {
-                var2.append(var5);
+                escapedString.append(currentChar);
             }
         }
 
-        return var2.toString();
+        return escapedString.toString();
     }
 
-    public final String a(String var1, int var2, String var3) {
-        if (!var1.isEmpty() && var1.charAt(0) == '@') {
-            var3 = a(var1.substring(1), var3);
-            var1 = var3;
-            if (var2 == 2) {
-                var1 = var3;
-                if (var3.length() <= 0) {
-                    var1 = "\"\"";
-                }
+    public final String a(String param, int type, String opcode) {
+        if (!param.isEmpty() && param.charAt(0) == '@') {
+            opcode = a(param.substring(1), opcode);
+            if (type == 2 && opcode.isEmpty()) {
+                return "\"\"";
             }
-
-            return var1;
-        } else {
-            StringBuilder var6;
-            if (var2 == 2) {
-                var6 = new StringBuilder();
-                var6.append("\"");
-                var6.append(a(var1));
-                var6.append("\"");
-                return var6.toString();
-            } else {
-                var3 = var1;
-                if (var2 == 1) {
-                    try {
-                        Integer.parseInt(var1);
-                        return var1;
-                    } catch (NumberFormatException var5) {
-                        try {
-                            Double.parseDouble(var1);
-                            var6 = new StringBuilder();
-                            var6.append(var1);
-                            var6.append("d");
-                            var3 = var6.toString();
-                        } catch (NumberFormatException var4) {
-                            var3 = var1;
-                        }
-                    }
+            return opcode;
+        } else if (type == 2) {
+            return "\"" + escapeString(param) + "\"";
+        } else if (type == 1) {
+            try {
+                Integer.parseInt(param);
+                return param;
+            } catch (NumberFormatException e1) {
+                try {
+                    Double.parseDouble(param);
+                    return param + "d";
+                } catch (NumberFormatException e2) {
+                    return param;
                 }
-
-                return var3;
             }
         }
+        return param;
     }
 
     public final String a(String var1, String var2) {
