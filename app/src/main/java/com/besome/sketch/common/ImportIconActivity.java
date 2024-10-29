@@ -220,7 +220,8 @@ public class ImportIconActivity extends BaseAppCompatActivity {
     }
 
     private void setIconName(int iconPosition) {
-        iconName=(adapter.getCurrentList().get(iconPosition).first + "_" + selected_icon_type);
+        // forcefully including icon_ because trash resource naming convention in sw.
+        iconName=("icon_" + adapter.getCurrentList().get(iconPosition).first + "_" + selected_icon_type);
     }
 
     private void setIconColor() {
@@ -301,7 +302,6 @@ public class ImportIconActivity extends BaseAppCompatActivity {
                     selected_color = var1;
                     selected_color_hex = "#" + String.format("%06X", var1 & (0x00FFFFFF));
                     adapter.notifyDataSetChanged();
-                    dialog.dismiss();
                 }
 
                 @Override
@@ -309,7 +309,6 @@ public class ImportIconActivity extends BaseAppCompatActivity {
                     selected_color = var2;
                     selected_color_hex = "#" + String.format("%06X", var2 & (0x00FFFFFF));
                     adapter.notifyDataSetChanged();
-                    dialog.dismiss();
 
                 }
             });
