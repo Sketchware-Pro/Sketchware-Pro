@@ -284,19 +284,7 @@ class BlockSelectorManagerFragment : BaseFragment() {
             .setFilePath(getExternalStorageDir()) 
             .setOnFileSelectedListener { dialog, file -> 
                 lifecycleScope.launch { 
-                    try {
-                        val selector = getSelectorFromFile(file)
-                        if (selector != null) {
-                            selectors.add(selector)
-                            saveAllSelectors()
-                            adapter.notifyDataSetChanged()
-                        } else {
-                            toastError("Make sure you select a file that contains a selector item.")
-                        }
-                    } catch (e: Exception) {
-                        Log.e(BlockSelectorConsts.TAG, e.toString())
-                        toastError("Make sure you select a file that contains a selector item.")
-                    }
+                    handleToImportFile(file)
                 }
                 dialog.dismiss()
             }
@@ -331,6 +319,36 @@ class BlockSelectorManagerFragment : BaseFragment() {
         toast("Exported in ${path}")
     }
     
+    private suspend fun handleToImportFile(
+        file: File
+    ) {
+        try {
+            val json = file.readText(Charsets.UTF_8)
+            if (json.isObject()) {
+                val selector = getSelectorFromFile(file)
+                if (selector != null) {
+                    selectors.add(selector)
+                    saveAllSelectors()
+                    adapter.notifyDataSetChanged()
+                } else {
+                    toastError("Make sure you select a file that contains selector item(s).")
+                }
+            } else {
+                val selectorsN = getSelectorsFromFile(file)
+                if (selectors != null) {
+                    selectors.addAll(selectorsN)
+                    saveAllSelectors()
+                    adapter.notifyDataSetChanged()
+                } else {
+                    toastError("Make sure you select a file that contains selector item(s).")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(BlockSelectorConsts.TAG, e.toString())
+            toastError("Make sure you select a file that contains a selector item(s).")
+        }
+    }
+    
     private suspend fun getSelectorFromFile(
         path: File
     ): Selector? {
@@ -348,11 +366,11 @@ class BlockSelectorManagerFragment : BaseFragment() {
     ): List<Selector> {
         val json = path.readText(Charsets.UTF_8)
         val itemLstType = object : TypeToken<List<Selector>>() {}.type
-        return newItens: List<Selector> = getGson().fromJson(json, itemLstType)
+        return getGson().fromJson(json, itemLstType)
     }
     
-    fun isObject(json: String): Boolean {
-        val jsonElement: JsonElement = JsonParser.parseString(json)
+    fun String.isObject(): Boolean {
+        val jsonElement: JsonElement = JsonParser.parseString(this)
         return when {
             jsonElement.isJsonObject -> true
             jsonElement.isJsonArray -> false
