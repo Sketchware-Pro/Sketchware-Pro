@@ -107,11 +107,11 @@ public class StringEditorActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         menu.add(0, 0, 0, "Add a new string")
-                .setIcon(R.drawable.ic_add_24)
+                .setIcon(R.drawable.ic_mtrl_add)
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         menu.add(0, 1, 0, "Save")
-                .setIcon(R.drawable.save_icon_24px)
+                .setIcon(R.drawable.ic_mtrl_save)
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         if (!checkDefaultString(getIntent().getStringExtra("content"))) {

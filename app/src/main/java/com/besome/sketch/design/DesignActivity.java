@@ -575,7 +575,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private void showSaveBeforeQuittingDialog() {
         aB dialog = new aB(this);
         dialog.b(Helper.getResString(R.string.design_quit_title_exit_projet));
-        dialog.a(R.drawable.ic_exit_24);
+        dialog.a(R.drawable.ic_mtrl_exit);
         dialog.a(Helper.getResString(R.string.design_quit_message_confirm_save));
         dialog.b(Helper.getResString(R.string.design_quit_button_save_and_exit), v -> {
             if (!mB.a()) {
@@ -622,7 +622,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private void askIfToRestoreOldUnsavedProjectData() {
         B = true;
         aB dialog = new aB(this);
-        dialog.a(R.drawable.ic_history_24);
+        dialog.a(R.drawable.ic_mtrl_history);
         dialog.b(Helper.getResString(R.string.design_restore_data_title));
         dialog.a(Helper.getResString(R.string.design_restore_data_message_confirm));
         dialog.b(Helper.getResString(R.string.common_word_restore), v -> {
@@ -1116,7 +1116,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 aB cancelDialog = new aB(activity);
                 cancelDialog.b(activity.getString(R.string.design_cancel_build_title));
                 cancelDialog.a(activity.getString(R.string.design_cancel_build_desc));
-                cancelDialog.a(R.drawable.ic_exit_24);
+                cancelDialog.a(R.drawable.ic_mtrl_exit);
 
                 cancelDialog.a(activity.getString(R.string.design_cancel_build_btn_stop), v -> {
                     if (!isBuildFinished) {

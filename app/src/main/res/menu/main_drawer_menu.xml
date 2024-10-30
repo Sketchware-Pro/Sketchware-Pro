@@ -2,12 +2,12 @@
 
     <item
         android:id="@+id/about_team"
-        android:icon="@drawable/ic_team_24"
+        android:icon="@drawable/ic_mtrl_team"
         android:title="About the team" />
 
     <item
         android:id="@+id/changelog"
-        android:icon="@drawable/ic_update_24"
+        android:icon="@drawable/ic_mtrl_update"
         android:title="Changelog" />
 
     <item
@@ -17,12 +17,12 @@
 
     <item
         android:id="@+id/create_release_keystore"
-        android:icon="@drawable/ic_key_24"
+        android:icon="@drawable/ic_mtrl_key"
         android:title="Create keystore" />
 
     <item
         android:id="@+id/app_settings"
-        android:icon="@drawable/ic_settings_24"
+        android:icon="@drawable/ic_mtrl_settings"
         android:title="Settings" />
 
     <item android:title="Related links">

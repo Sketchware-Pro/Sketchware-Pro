@@ -442,11 +442,11 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
             });
 
             if (isFolder(position)) {
-                holder.binding.icon.setImageResource(R.drawable.ic_folder_24);
+                holder.binding.icon.setImageResource(R.drawable.ic_mtrl_folder);
             } else if (fileName.endsWith(".java")) {
-                holder.binding.icon.setImageResource(R.drawable.ic_java_24);
+                holder.binding.icon.setImageResource(R.drawable.ic_mtrl_java);
             } else if (fileName.endsWith(".kt")) {
-                holder.binding.icon.setImageResource(R.drawable.ic_kotlin_24);
+                holder.binding.icon.setImageResource(R.drawable.ic_mtrl_kotlin);
             }
 
             Helper.applyRipple(ManageJavaActivity.this, holder.binding.more);

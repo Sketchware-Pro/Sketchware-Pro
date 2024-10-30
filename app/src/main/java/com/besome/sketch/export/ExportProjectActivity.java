@@ -268,7 +268,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             aB confirmationDialog = new aB(this);
             confirmationDialog.b("Important note");
             confirmationDialog.a("The generated .aab file must be signed.\nCopy your keystore to /Internal storage/sketchware/keystore/release_key.jks and enter the alias' password.");
-            confirmationDialog.a(R.drawable.ic_info_24);
+            confirmationDialog.a(R.drawable.ic_mtrl_info);
 
             confirmationDialog.b("Understood", v -> {
                 showAabSigningDialog();
@@ -280,7 +280,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
     private void showAabSigningDialog() {
         GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
-                R.drawable.ic_key_24, "Sign outputted AAB", "Fill in the keystore details to sign the AAB.");
+                R.drawable.ic_mtrl_key, "Sign outputted AAB", "Fill in the keystore details to sign the AAB.");
         credentialsDialog.setListener(credentials -> {
             BuildingAsyncTask task = new BuildingAsyncTask(this);
             task.enableAppBundleBuild();
@@ -340,7 +340,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
                     Note that this only signs your APK using signing scheme V1, to target Android 11+ for example, \
                     use a 3rd-party tool (for now).""");
-            confirmationDialog.a(R.drawable.ic_info_24);
+            confirmationDialog.a(R.drawable.ic_mtrl_info);
 
             confirmationDialog.b("Understood", v -> {
                 showApkSigningDialog();
@@ -352,7 +352,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
     private void showApkSigningDialog() {
         GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
-                R.drawable.ic_key_24,
+                R.drawable.ic_mtrl_key,
                 "Sign an APK",
                 "Fill in the keystore details to sign the APK. " +
                         "If you don't have a keystore, you can use a test key.");

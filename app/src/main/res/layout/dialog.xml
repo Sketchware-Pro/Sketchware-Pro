@@ -39,7 +39,7 @@
                     android:layout_marginEnd="14dp"
                     android:scaleType="fitCenter"
                     app:tint="?colorSecondary"
-                    tools:src="@drawable/ic_tune_24" />
+                    tools:src="@drawable/ic_mtrl_tune" />
 
                 <TextView
                     android:id="@+id/dialog_title"

@@ -715,7 +715,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private void deleteWidgetFromCollection(String str) {
         aB aBVar = new aB((Activity) getContext());
         aBVar.b(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
-        aBVar.a(R.drawable.ic_delete_24);
+        aBVar.a(R.drawable.ic_mtrl_delete);
         aBVar.a(xB.b().a(getContext(), R.string.view_widget_favorites_delete_message));
         aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
             Rp.h().a(str, true);

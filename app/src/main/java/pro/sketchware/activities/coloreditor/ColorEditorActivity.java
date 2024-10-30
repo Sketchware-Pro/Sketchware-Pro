@@ -113,7 +113,7 @@ public class ColorEditorActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         menu.add(0, MENU_SAVE, 0, "Save")
-                .setIcon(R.drawable.ic_save_24)
+                .setIcon(R.drawable.ic_mtrl_save)
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         menu.add(0, MENU_OPEN_IN_EDITOR, 0, "Open in editor")
@@ -239,7 +239,7 @@ public class ColorEditorActivity extends AppCompatActivity {
 
     public void showDeleteDialog(int position) {
         aB dialog = new aB(activity);
-        dialog.a(R.drawable.ic_delete_24);
+        dialog.a(R.drawable.ic_mtrl_delete);
         dialog.b(xB.b().a(activity, R.string.color_editor_delete_color));
         dialog.a(xB.b().a(activity, R.string.picker_color_message_delete_all_custom_color));
         dialog.b(xB.b().a(activity, R.string.common_word_delete), v -> {

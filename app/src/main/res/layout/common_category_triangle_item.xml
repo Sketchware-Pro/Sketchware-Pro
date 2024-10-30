@@ -19,7 +19,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="2dp"
-            tools:src="@drawable/ic_code_24" />
+            tools:src="@drawable/ic_mtrl_code" />
 
         <TextView
             android:id="@+id/tv_name"

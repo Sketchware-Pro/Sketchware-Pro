@@ -89,7 +89,7 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="30dp"
         android:text="@string/assets_manager_options"
-        app:icon="@drawable/ic_add_24"
+        app:icon="@drawable/ic_mtrl_add"
         tools:translationY="-70dp" />
 
     <LinearLayout

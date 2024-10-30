@@ -439,7 +439,7 @@ public class WidgetsCreatorManager extends IconBase {
     public static void deleteWidgetMap(Context context, int position) {
         aB aBDialog = new aB((Activity) context);
         aBDialog.b(xB.b().a(context, R.string.view_widget_favorites_delete_title));
-        aBDialog.a(R.drawable.ic_delete_24);
+        aBDialog.a(R.drawable.ic_mtrl_delete);
         aBDialog.a(xB.b().a(context, R.string.view_widget_favorites_delete_message));
         aBDialog.b(xB.b().a(context, R.string.common_word_delete), v -> {
             for (Iterator<HashMap<String, Object>> iterator = ListMap.iterator(); iterator.hasNext(); ) {

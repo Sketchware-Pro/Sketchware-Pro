@@ -36,5 +36,5 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
         android:text="Add new color"
-        app:icon="@drawable/ic_add_24" />
+        app:icon="@drawable/ic_mtrl_add" />
 </RelativeLayout>

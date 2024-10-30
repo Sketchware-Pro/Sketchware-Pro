@@ -286,16 +286,16 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
                 return false;
             });
             if (isFolder(position)) {
-                holder.binding.icon.setImageResource(R.drawable.ic_folder_24);
+                holder.binding.icon.setImageResource(R.drawable.ic_mtrl_folder);
             } else {
                 try {
                     if (FileUtil.isImageFile(item)) {
                         Glide.with(holder.binding.icon.getContext()).load(new File(item)).into(holder.binding.icon);
                     } else {
-                        holder.binding.icon.setImageResource(R.drawable.ic_file_24);
+                        holder.binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                     }
                 } catch (Exception ignored) {
-                    holder.binding.icon.setImageResource(R.drawable.ic_file_24);
+                    holder.binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                 }
             }
             Helper.applyRipple(holder.itemView.getContext(), holder.binding.more);

@@ -67,7 +67,7 @@
                 android:layout_height="match_parent"
                 android:insetBottom="0dp"
                 android:text="Reset"
-                app:icon="@drawable/ic_reset_24"
+                app:icon="@drawable/ic_mtrl_reset"
                 app:iconGravity="textStart"
                 app:iconSize="20dp" />
         </LinearLayout>

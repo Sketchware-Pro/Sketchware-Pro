@@ -24,11 +24,11 @@ public class MyProjectButtonLayout extends CollapsibleLayout<MyProjectButton> {
     @Override
     protected List<MyProjectButton> initializeButtons(@NonNull Context context) {
         return List.of(
-                MyProjectButton.create(context, 0, R.drawable.settings_96, Helper.getResString(this, R.string.myprojects_list_menu_title_settings)),
+                MyProjectButton.create(context, 0, R.drawable.ic_mtrl_settings, Helper.getResString(this, R.string.myprojects_list_menu_title_settings)),
                 MyProjectButton.create(context, 1, R.drawable.ic_backup, "Back up"),
                 MyProjectButton.create(context, 2, R.drawable.ic_export_grey_48dp, Helper.getResString(this, R.string.myprojects_list_menu_title_sign_export)),
                 MyProjectButton.create(context, 3, R.drawable.ic_delete_grey_48dp, Helper.getResString(this, R.string.myprojects_list_menu_title_delete)),
-                MyProjectButton.create(context, 4, R.drawable.settings_96, "Config")
+                MyProjectButton.create(context, 4, R.drawable.ic_mtrl_settings, "Config")
         );
     }
 

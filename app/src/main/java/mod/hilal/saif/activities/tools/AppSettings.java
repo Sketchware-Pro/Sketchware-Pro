@@ -127,11 +127,11 @@ public class AppSettings extends BaseAppCompatActivity {
         createToolsView(R.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events", content, openSettingsActivity(SettingsActivity.EVENTS_MANAGER_FRAGMENT), false);
         createToolsView(R.drawable.colored_box_96, "Local library manager", "Manage and download local libraries", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system")), false);
         createToolsView(R.drawable.engineering_48, "Mod settings", "Change general mod settings", content, new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class)), false);
-        createToolsView(R.drawable.icon_pallete, getString(R.string.settings_appearance), getString(R.string.settings_appearance_description), content, openSettingsActivity(SettingsActivity.SETTINGS_APPEARANCE_FRAGMENT), false);
+        createToolsView(R.drawable.ic_mtrl_palette, getString(R.string.settings_appearance), getString(R.string.settings_appearance_description), content, openSettingsActivity(SettingsActivity.SETTINGS_APPEARANCE_FRAGMENT), false);
         createToolsView(R.mipmap.ic_type_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", content, v -> openWorkingDirectory(), false);
         createToolsView(R.drawable.ic_apk_color_96dp, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", content, v -> signApkFileDialog(), false);
         createToolsView(R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)), false);
-        createToolsView(R.drawable.ic_settings_24, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", content, new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class)), true);
+        createToolsView(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", content, new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class)), true);
     }
     
     private View.OnClickListener openSettingsActivity(String fragmentTag) {

@@ -946,14 +946,7 @@ public class OldResourceIdMapper {
             case 2131166121 -> R.drawable.selector_top_fullscreen_icon;
             case 2131166122 -> R.drawable.selector_widget_icon;
             case 2131166123 -> R.drawable.services_48;
-            case 2131166124 -> R.drawable.settings_96;
-            case 2131166125 -> R.drawable.settings_96_white;
-            case 2131166126 -> R.drawable.settings_filled_96;
             case 2131166127 -> R.drawable.shadow_gradient_left;
-            case 2131166128 -> R.drawable.shake_phone_96;
-            case 2131166129 -> R.drawable.share_96;
-            case 2131166130 -> R.drawable.share_96_orange;
-            case 2131166131 -> R.drawable.share_96_white;
             case 2131166132 -> R.drawable.share_recommend;
             case 2131166133 -> R.drawable.share_white_outline_96;
             case 2131166134 -> R.drawable.sheets_48;

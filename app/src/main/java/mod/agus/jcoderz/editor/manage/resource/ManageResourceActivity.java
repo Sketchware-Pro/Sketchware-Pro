@@ -380,16 +380,16 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             binding.title.setText(Uri.parse(path).getLastPathSegment());
 
             if (FileUtil.isDirectory(path)) {
-                binding.icon.setImageResource(R.drawable.ic_folder_24);
+                binding.icon.setImageResource(R.drawable.ic_mtrl_folder);
             } else {
                 try {
                     if (FileUtil.isImageFile(path)) {
                         Glide.with(ManageResourceActivity.this).load(new File(path)).into(binding.icon);
                     } else {
-                        binding.icon.setImageResource(R.drawable.ic_file_24);
+                        binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                     }
                 } catch (Exception ignored) {
-                    binding.icon.setImageResource(R.drawable.ic_file_24);
+                    binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                 }
             }
 
