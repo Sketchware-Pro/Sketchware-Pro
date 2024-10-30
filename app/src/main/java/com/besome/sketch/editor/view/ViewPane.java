@@ -100,6 +100,7 @@ import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.InvokeUtil;
 import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
@@ -401,6 +402,9 @@ public class ViewPane extends RelativeLayout {
             if (view instanceof ItemLinearLayout) {
                 ((ItemLinearLayout) view).setLayoutGravity(viewBean.layout.gravity);
             }
+        }
+        if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
+            updateRelative(view, injectHandler);
         }
         if (classInfo.a("TextView")) {
             TextView textView = (TextView) view;
@@ -872,6 +876,122 @@ public class ViewPane extends RelativeLayout {
                 layoutParams3.gravity = layoutGravity;
             }
             view.setLayoutParams(layoutParams3);
+        }
+    }
+    
+    private void updateRelative(View view, InjectAttributeHandler handler) {
+        String layout_centerInParent = handler.getAttributeValueOf("layout_centerInParent");
+        String layout_centerVertical = handler.getAttributeValueOf("layout_centerVertical");
+        String layout_centerHorizontal = handler.getAttributeValueOf("layout_centerHorizontal");
+
+        if (Boolean.parseBoolean(layout_centerInParent))
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.CENTER_IN_PARENT);
+
+        if (Boolean.parseBoolean(layout_centerVertical))
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.CENTER_VERTICAL);
+
+        if (Boolean.parseBoolean(layout_centerHorizontal))
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.CENTER_HORIZONTAL);
+
+        String layout_alignParentStart = handler.getAttributeValueOf("layout_alignParentStart");
+        String layout_alignParentRight = handler.getAttributeValueOf("layout_alignParentRight");
+        String layout_alignParentTop = handler.getAttributeValueOf("layout_alignParentTop");
+        String layout_alignParentEnd = handler.getAttributeValueOf("layout_alignParentEnd");
+        String layout_alignParentLeft = handler.getAttributeValueOf("layout_alignParentLeft");
+        String layout_alignParentBottom = handler.getAttributeValueOf("layout_alignParentBottom");
+
+        if (Boolean.parseBoolean(layout_alignParentStart)) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_START);
+        }
+
+        if (Boolean.parseBoolean(layout_alignParentRight)) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_RIGHT);
+        }
+
+        if (Boolean.parseBoolean(layout_alignParentTop)) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_TOP);
+        }
+
+        if (Boolean.parseBoolean(layout_alignParentEnd)) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_END);
+        }
+
+        if (Boolean.parseBoolean(layout_alignParentLeft)) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_LEFT);
+        }
+
+        if (Boolean.parseBoolean(layout_alignParentBottom)) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_BOTTOM);
+        }
+
+        setRelativeRule(view, handler, "layout_alignStart", RelativeLayout.ALIGN_START);
+        setRelativeRule(view, handler, "layout_alignRight", RelativeLayout.ALIGN_RIGHT);
+        setRelativeRule(view, handler, "layout_alignTop", RelativeLayout.ALIGN_TOP);
+        setRelativeRule(view, handler, "layout_alignEnd", RelativeLayout.ALIGN_END);
+        setRelativeRule(view, handler, "layout_alignLeft", RelativeLayout.ALIGN_LEFT);
+        setRelativeRule(view, handler, "layout_alignBottom", RelativeLayout.ALIGN_BOTTOM);
+        setRelativeRule(view, handler, "layout_alignBaseline", RelativeLayout.ALIGN_BASELINE);
+
+        setRelativeRule(view, handler, "layout_above", RelativeLayout.ABOVE);
+        setRelativeRule(view, handler, "layout_below", RelativeLayout.BELOW);
+        setRelativeRule(view, handler, "layout_toStartOf", RelativeLayout.START_OF);
+        setRelativeRule(view, handler, "layout_toRightOf", RelativeLayout.RIGHT_OF);
+        setRelativeRule(view, handler, "layout_toEndOf", RelativeLayout.END_OF);
+        setRelativeRule(view, handler, "layout_toLeftOf", RelativeLayout.LEFT_OF);
+    }
+
+    private void setRelativeRule(
+            View view, InjectAttributeHandler handler, String attribute, int rule) {
+        String referenceId = handler.getAttributeValueOf(attribute);
+        if (referenceId != null && !referenceId.isEmpty()) {
+            var reference = PropertiesUtil.getUnitOrPrefix(referenceId);
+            if (reference != null) {
+                View refView = rootLayout.findViewWithTag(reference.second);
+                if (refView != null) {
+                    InvokeUtil.invoke(
+                            view.getLayoutParams(),
+                            "addRule",
+                            new Class[] {int.class, int.class},
+                            rule,
+                            refView.getId());
+                }
+            }
         }
     }
 
