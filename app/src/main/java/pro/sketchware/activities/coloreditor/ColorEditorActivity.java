@@ -7,17 +7,14 @@ import android.util.Xml;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ColorEditorActivityBinding;
 import com.sketchware.remod.databinding.ColorEditorAddBinding;
-import com.sketchware.remod.databinding.PalletCustomviewBinding;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -38,6 +35,8 @@ import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import pro.sketchware.activities.coloreditor.adapters.ColorsAdapter;
+import pro.sketchware.activities.coloreditor.models.ColorItem;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
@@ -47,7 +46,7 @@ public class ColorEditorActivity extends AppCompatActivity {
     private final ArrayList<ColorItem> colorList = new ArrayList<>();
     private boolean isGoingToEditor;
     private ColorEditorActivityBinding binding;
-    private RecyclerViewAdapter adapter;
+    private ColorsAdapter adapter;
     private Activity activity;
 
     private Zx colorpicker;
@@ -79,9 +78,9 @@ public class ColorEditorActivity extends AppCompatActivity {
         binding.toolbar.setNavigationOnClickListener(_v -> onBackPressed());
 
         parseColorsXML(FileUtil.readFile(contentPath));
-        binding.recyclerviewColors.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        binding.recyclerviewColors.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new RecyclerViewAdapter(colorList);
+        adapter = new ColorsAdapter(colorList, this);
         binding.recyclerviewColors.setAdapter(adapter);
 
         binding.addColorButton.setOnClickListener(v -> showColorEditDialog(null, -1));
@@ -198,7 +197,7 @@ public class ColorEditorActivity extends AppCompatActivity {
         }
     }
 
-    private static String convertListToXml(ArrayList<ColorItem> colorList) {
+    public static String convertListToXml(ArrayList<ColorItem> colorList) {
         try {
             XmlSerializer xmlSerializer = Xml.newSerializer();
             StringWriter stringWriter = new StringWriter();
@@ -229,7 +228,7 @@ public class ColorEditorActivity extends AppCompatActivity {
         return null;
     }
 
-    private static boolean isValidHexColor(String colorStr) {
+    public static boolean isValidHexColor(String colorStr) {
         if (colorStr == null) {
             return false;
         }
@@ -238,7 +237,7 @@ public class ColorEditorActivity extends AppCompatActivity {
         return matcher.matches();
     }
 
-    private void showDeleteDialog(int position) {
+    public void showDeleteDialog(int position) {
         aB dialog = new aB(activity);
         dialog.a(R.drawable.ic_delete_24);
         dialog.b(xB.b().a(activity, R.string.color_editor_delete_color));
@@ -252,7 +251,7 @@ public class ColorEditorActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void showColorEditDialog(ColorItem colorItem, int position) {
+    public void showColorEditDialog(ColorItem colorItem, int position) {
         aB dialog = new aB(this);
         ColorEditorAddBinding dialogBinding = ColorEditorAddBinding.inflate(LayoutInflater.from(this));
         XB colorValidator = new XB(this, dialogBinding.colorValueInputLayout, dialogBinding.colorPreview);
@@ -275,7 +274,7 @@ public class ColorEditorActivity extends AppCompatActivity {
                 SketchwareUtil.toast("Please fill in all fields", Toast.LENGTH_SHORT);
                 return;
             }
-            if (!colorValidator.b()) {
+            if (value.length() != 6 && value.length() != 8) {
                 SketchwareUtil.toast("Please enter a valid HEX color", Toast.LENGTH_SHORT);
                 return;
             }
@@ -329,82 +328,5 @@ public class ColorEditorActivity extends AppCompatActivity {
         }
         colorList.add(newItem);
         adapter.notifyItemInserted(colorList.size() - 1);
-    }
-
-    public class RecyclerViewAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-        private final ArrayList<ColorItem> data;
-
-        public RecyclerViewAdapter(ArrayList<ColorItem> data) {
-            this.data = data;
-        }
-
-        @NonNull
-        @Override
-        public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            PalletCustomviewBinding itemBinding = PalletCustomviewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new ViewHolder(itemBinding);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ColorItem colorItem = data.get(position);
-            String colorName = colorItem.getColorName();
-            String colorValue = colorItem.getColorValue();
-
-            if (isValidHexColor(colorValue)) {
-                holder.itemBinding.title.setHint(colorName);
-                holder.itemBinding.sub.setText(colorValue.toUpperCase());
-                holder.itemBinding.color.setBackgroundColor(PropertiesUtil.parseColor(colorValue));
-            } else {
-                data.remove(position);
-                notifyItemRemoved(position);
-            }
-
-            holder.itemBinding.backgroundCard.setOnClickListener(v -> showColorEditDialog(colorItem, position));
-            holder.itemBinding.backgroundCard.setOnLongClickListener(v -> {
-                showDeleteDialog(position);
-                return true;
-            });
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.size();
-        }
-
-        public class ViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
-            public PalletCustomviewBinding itemBinding;
-
-            public ViewHolder(PalletCustomviewBinding itemBinding) {
-                super(itemBinding.getRoot());
-                this.itemBinding = itemBinding;
-            }
-        }
-    }
-
-    public static class ColorItem {
-        private String colorName;
-        private String colorValue;
-
-        public ColorItem(String colorName, String colorValue) {
-            this.colorName = colorName;
-            this.colorValue = colorValue;
-        }
-
-        public String getColorName() {
-            return colorName;
-        }
-
-        public String getColorValue() {
-            return colorValue;
-        }
-
-        public void setColorName(String colorName) {
-            this.colorName = colorName;
-        }
-
-        public void setColorValue(String colorValue) {
-            this.colorValue = colorValue;
-        }
     }
 }
