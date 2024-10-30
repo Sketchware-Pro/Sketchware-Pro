@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/color_key_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:hint="Color name">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -28,7 +28,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="14dp">
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -37,10 +37,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
             android:gravity="center_vertical"
-            android:hint=" Color hex code"
+            android:hint="Color hex code"
             android:importantForAutofill="noExcludeDescendants"
             app:errorEnabled="true"
-            app:layout_constraintEnd_toStartOf="@+id/materialCardView"
+            app:layout_constraintEnd_toStartOf="@+id/color_preview_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -49,26 +49,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:digits="0123456789ABCDEFabcdef"
-                android:inputType="text"
+                android:inputType="text|textCapCharacters"
                 android:maxLength="8"
+                android:paddingLeft="32dp"
                 android:singleLine="true"
                 android:textSize="16sp"
                 app:errorEnabled="false" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardView"
+            android:id="@+id/color_preview_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/color_value_input_layout"
-            app:strokeWidth="0.5dp">
+            app:strokeWidth="1dp">
 
             <TextView
                 android:id="@+id/color_preview"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_gravity="center_vertical"
                 tools:background="#4177FF" />
 
@@ -78,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:paddingLeft="5dp"
+            android:paddingLeft="13dp"
             android:text="\#"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/color_value_input_layout"

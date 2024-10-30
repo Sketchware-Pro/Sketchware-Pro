@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Xml;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -35,14 +37,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import a.a.a.XB;
+import a.a.a.Zx;
 import a.a.a.aB;
 import a.a.a.xB;
-
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hilal.saif.activities.tools.ConfigActivity;
-
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
@@ -54,6 +55,8 @@ public class ColorEditorActivity extends AppCompatActivity {
     private ColorEditorActivityBinding binding;
     private RecyclerViewAdapter adapter;
     private Activity activity;
+
+    private Zx colorpicker;
 
     public static String convertListmapToXml(ArrayList<HashMap<String, Object>> colorList) {
         try {
@@ -106,6 +109,8 @@ public class ColorEditorActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+        colorpicker = new Zx(this, 0xFFFFFFFF, false, false);
+
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
@@ -121,6 +126,8 @@ public class ColorEditorActivity extends AppCompatActivity {
 
         adapter = new RecyclerViewAdapter(color_list);
         recyclerview_colors.setAdapter(adapter);
+
+        binding.addColorButton.setOnClickListener(v -> addColorDialog());
     }
 
     @Override
@@ -138,7 +145,7 @@ public class ColorEditorActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (!Objects.equals(XmlUtil.replaceXml(Objects.requireNonNull(convertListmapToXml(color_list))), XmlUtil.replaceXml(FileUtil.readFile(getIntent().getStringExtra("content"))))) {
             showExitDialog();
-        }else{
+        } else {
             super.onBackPressed();
         }
         if (color_list.isEmpty() && (!FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
@@ -148,15 +155,11 @@ public class ColorEditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        menu.add(0, 0, 0, "Add a new color")
-                .setIcon(R.drawable.ic_add_24)
+        menu.add(0, 0, 0, "Save")
+                .setIcon(R.drawable.ic_save_24)
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        menu.add(0, 1, 0, "Save")
-                .setIcon(R.drawable.save_icon_24px)
-                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-        menu.add(0, 3, 0, "Open in editor")
+        menu.add(0, 1, 0, "Open in editor")
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
 
         return super.onCreateOptionsMenu(menu);
@@ -165,19 +168,14 @@ public class ColorEditorActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == 1) {
+        if (id == 0) {
             XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
-        }else if (id == 0) {
-            addColorDialog();
-        }else if (id == 2) {
-            parseColorsXML(FileUtil.readFile(getDefaultResPath(Objects.requireNonNull(getIntent().getStringExtra("content")))));
-            adapter.notifyDataSetChanged();
-        }else if (id == 3) {
+        } else if (id == 1) {
             XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-            }else{
+            } else {
                 intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             }
             intent.putExtra("title", getIntent().getStringExtra("title"));
@@ -207,14 +205,14 @@ public class ColorEditorActivity extends AppCompatActivity {
 
     private void showDeleteDialog(RecyclerViewAdapter adapter, int position, ArrayList<HashMap<String, Object>> data) {
         aB dialog = new aB(activity);
-        dialog.a(R.drawable.delete_96);
+        dialog.a(R.drawable.ic_delete_24);
         dialog.b(xB.b().a(activity, R.string.color_editor_delete_color));
         dialog.a(xB.b().a(activity, R.string.picker_color_message_delete_all_custom_color));
         dialog.b(xB.b().a(activity, R.string.common_word_delete), v -> {
             data.remove(position);
             if (data.size() - 1 >= 0) {
                 adapter.notifyDataSetChanged();
-            }else{
+            } else {
                 adapter.notifyItemRemoved(position);
             }
             dialog.dismiss();
@@ -268,7 +266,7 @@ public class ColorEditorActivity extends AppCompatActivity {
         ColorEditorAddBinding binding = ColorEditorAddBinding.inflate(LayoutInflater.from(this));
         XB colorValidator = new XB(ColorEditorActivity.this, binding.colorValueInputLayout, binding.colorPreview);
 
-        dialog.b("Create new color");
+        dialog.b("Add new color");
         dialog.b("Create", v1 -> {
             String key = Objects.requireNonNull(binding.colorKeyInput.getText()).toString();
             String value = Objects.requireNonNull(binding.colorValueInput.getText()).toString();
@@ -284,6 +282,26 @@ public class ColorEditorActivity extends AppCompatActivity {
             addColor(key, value);
             dialog.dismiss();
         });
+
+        binding.colorPreviewCard.setOnClickListener(v -> {
+            Log.d("ColorPicker", "Opening color picker");
+            colorpicker.a(new Zx.b() {
+                @Override
+                public void a(int var1) {
+                    var selected_color_hex = "#" + String.format("%06X", var1 & (0x00FFFFFF));
+                    binding.colorPreviewCard.setCardBackgroundColor(PropertiesUtil.parseColor(selected_color_hex));
+                    binding.colorValueInput.setText(selected_color_hex.replace("#", ""));
+                    Log.d("ColorPicker", "Color: " + selected_color_hex);
+                }
+
+                @Override
+                public void a(String var1, int var2) {
+                }
+            });
+            colorpicker.showAtLocation(v, Gravity.CENTER, 0, 0);
+        });
+
+
         dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
         binding.colorPreview.setBackgroundColor(0xffffff);
         dialog.a(binding.getRoot());
@@ -311,10 +329,6 @@ public class ColorEditorActivity extends AppCompatActivity {
 
     }
 
-    public String getDefaultResPath(final String path) {
-        return path.replaceFirst("/values-[a-z]{2}", "/values");
-    }
-
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
         ArrayList<HashMap<String, Object>> data;
 
@@ -336,13 +350,13 @@ public class ColorEditorActivity extends AppCompatActivity {
 
             if (isValidHexColor(colorValue)) {
                 holder.itemBinding.title.setHint(colorName);
-                holder.itemBinding.sub.setText(colorValue);
+                holder.itemBinding.sub.setText(colorValue.toUpperCase());
                 holder.itemBinding.color.setBackgroundColor(PropertiesUtil.parseColor(colorValue));
-            }else{
+            } else {
                 data.remove(position);
                 if (data.size() - 1 >= 0) {
                     notifyDataSetChanged();
-                }else{
+                } else {
                     notifyItemRemoved(position);
                 }
             }
@@ -367,7 +381,7 @@ public class ColorEditorActivity extends AppCompatActivity {
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (s.length() > 0 && Character.isDigit(s.charAt(start))) {
                             dialogBinding.colorKeyInputLayout.setError("Color's name should be starting with a letter");
-                        }else{
+                        } else {
                             dialogBinding.colorKeyInputLayout.setError(null);
                         }
                     }
@@ -398,11 +412,29 @@ public class ColorEditorActivity extends AppCompatActivity {
                     }
                 });
 
+                dialogBinding.colorPreviewCard.setOnClickListener(view -> {
+                    Log.d("ColorPicker", "Opening color picker");
+                    colorpicker.a(new Zx.b() {
+                        @Override
+                        public void a(int var1) {
+                            var selected_color_hex = "#" + String.format("%06X", var1 & (0x00FFFFFF));
+                            dialogBinding.colorPreviewCard.setCardBackgroundColor(PropertiesUtil.parseColor(selected_color_hex));
+                            dialogBinding.colorValueInput.setText(selected_color_hex.replace("#", ""));
+                            Log.d("ColorPicker", "Color: " + selected_color_hex);
+                        }
+
+                        @Override
+                        public void a(String var1, int var2) {
+                        }
+                    });
+                    colorpicker.showAtLocation(view, Gravity.CENTER, 0, 0);
+                });
+
                 dialog.configureDefaultButton("Delete", v1 -> {
                     data.remove(position);
                     if (data.size() - 1 >= 0) {
                         notifyDataSetChanged();
-                    }else{
+                    } else {
                         notifyItemRemoved(position);
                     }
                     dialog.dismiss();
@@ -434,5 +466,4 @@ public class ColorEditorActivity extends AppCompatActivity {
             }
         }
     }
-
 }
