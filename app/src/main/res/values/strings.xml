@@ -901,6 +901,7 @@
     <string name="collection_duplicated_name">Duplicate file name in my collection</string>
     <string name="collection_failed_to_copy">Failed to save to my collection</string>
     <string name="collection_no_exist_file">File does not exist</string>
+    <string name="color_editor_delete_color">Delete color</string>
     <string name="common_error_activity_not_found">Activity not found</string>
     <string name="common_error_an_error_occurred">An error occurred!</string>
     <string name="common_error_failed_to_connect_server">Failed to connect to the server</string>
@@ -1578,8 +1579,8 @@ But, components should be added manually for working correctly."</string>
     <string name="picker_color_custom_color_not_found">No custom color found</string>
     <string name="picker_color_hint_enter_hex_color_code">Enter hex color code</string>
     <string name="picker_color_xml_is_empty">Colors.xml is empty</string>
-    <string name="picker_color_message_delete_all_custom_color">Are you sure? This operation can not be undone</string>
-    <string name="picker_color_message_delete_custom_color">Are you sure? This operation can not be undone</string>
+    <string name="picker_color_message_delete_all_custom_color">Are you sure you want to continue? This action can not be undone.</string>
+    <string name="picker_color_message_delete_custom_color">Are you sure you want to continue? This action can not be undone.</string>
     <string name="picker_color_title_delete_all_custom_color">Delete All Custom Colors</string>
     <string name="picker_color_title_delete_custom_color">Delete Custom Color</string>
     <string name="preset_setting_edit_warning">If you apply a Preset, exiting View data will be deleted. Continue?</string>

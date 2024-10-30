@@ -1,5 +1,7 @@
 package mod.bobur;
 
+import static pro.sketchware.utility.XmlUtil.replaceXml;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -39,8 +41,8 @@ import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
-import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import pro.sketchware.utility.XmlUtil;
 
 public class StringEditorActivity extends AppCompatActivity {
 
@@ -60,7 +62,7 @@ public class StringEditorActivity extends AppCompatActivity {
 
     private void initialize() {
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setNavigationOnClickListener(_v -> onBackPressed());
         dialog = new MaterialAlertDialogBuilder(this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -96,6 +98,10 @@ public class StringEditorActivity extends AppCompatActivity {
                     .create()
                     .show();
         }
+        if (listmap.isEmpty() && (! FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
+            XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
+
+        }
     }
 
     @Override
@@ -123,14 +129,14 @@ public class StringEditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         int id = item.getItemId();
         if (id == 1) {
-            saveXml();
+            XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
         } else if (id == 0) {
             addStringDialog();
         } else if (id == 2) {
             convertXmlToListMap(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(getIntent().getStringExtra("content")))), listmap);
             adapter.notifyDataSetChanged();
         } else if (id == 3) {
-            saveXml();
+            XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
@@ -215,19 +221,6 @@ public class StringEditorActivity extends AppCompatActivity {
                 .replace("\r", "&#13;");
     }
 
-    public String replaceXml(final String text) {
-        return text.replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>", "")
-                .replace("\r", "")
-                .replace("\n", "")
-                .replace(" ", "")
-                .replace("\t", "");
-    }
-
-    public void saveXml() {
-        FileUtil.writeFile(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
-        BlockLoader.refresh();
-        SketchwareUtil.toast("Save completed", Toast.LENGTH_SHORT);
-    }
 
     public void addStringDialog() {
         aB dialog = new aB(this);
@@ -272,7 +265,7 @@ public class StringEditorActivity extends AppCompatActivity {
 
     public boolean checkDefaultString(final String path) {
         File file = new File(path);
-        String parentFolder = file.getParentFile().getName();
+        String parentFolder = Objects.requireNonNull(file.getParentFile()).getName();
         return parentFolder.equals("values");
     }
 

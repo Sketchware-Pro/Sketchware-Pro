@@ -314,6 +314,7 @@
             android:configChanges="orientation|screenSize" />
 
         <activity android:name="mod.trindadedev.ui.activities.SettingsActivity" />
+        <activity android:name="pro.sketchware.activities.coloreditor.ColorEditorActivity" />
         <activity android:name="mod.bobur.StringEditorActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
