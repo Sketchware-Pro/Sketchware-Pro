@@ -815,6 +815,9 @@ public class ViewPane extends RelativeLayout {
         ViewBean bean = ((sy) view).getBean();
         ViewGroup viewGroup = rootLayout.findViewWithTag(bean.parent);
         viewGroup.addView(view, bean.index);
+        if (bean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
+            updateRelativeParentViews(view, new InjectAttributeHandler(bean));
+        }
         if (viewGroup instanceof ty) {
             ((ty) viewGroup).a();
         }
@@ -876,6 +879,23 @@ public class ViewPane extends RelativeLayout {
                 layoutParams3.gravity = layoutGravity;
             }
             view.setLayoutParams(layoutParams3);
+        }
+    }
+    
+    private void updateRelativeParentViews(View view, InjectAttributeHandler handler) {
+        var viewBean = handler.getBean();
+        updateRelative(view, handler);
+        
+        ViewGroup parent = rootLayout.findViewWithTag(viewBean.parent);
+        if (parent == null) {
+            return;
+        }
+        
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            var child = parent.getChildAt(i);
+            if (child instanceof sy editorItem) {
+                updateRelative(child, new InjectAttributeHandler(editorItem.getBean()));
+            }
         }
     }
     
