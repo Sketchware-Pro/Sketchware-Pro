@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import mod.hey.studios.util.Helper;
+import pro.sketchware.utility.SvgUtils;
+import pro.sketchware.utility.FilePathUtil;
 
 public class tx extends RelativeLayout implements View.OnClickListener {
     public String a;
@@ -44,19 +46,25 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     public int m;
     public Kw n;
 
+    private final SvgUtils svgUtils;
+
+    private final FilePathUtil fpu = new FilePathUtil();
+
     public tx(Context context, boolean z, String str, boolean z2) {
         super(context);
-        d = false;
-        a = str;
+        this.d = false;
+        this.a = str;
+        svgUtils = new SvgUtils(context);
+        svgUtils.initImageLoader();
         a(context, z, z2);
     }
 
     public String getKey() {
-        return b;
+        return this.b;
     }
 
     public String getValue() {
-        return c;
+        return this.c;
     }
 
     @Override
@@ -68,51 +76,53 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     }
 
     public void setKey(String str) {
-        b = str;
+        this.b = str;
         int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
         if (identifier > 0) {
-            e.setText(xB.b().a(getResources(), identifier));
+            this.e.setText(xB.b().a(getResources(), identifier));
             if ("property_image".equals(b)) {
                 m = R.drawable.ic_picture_48dp;
             } else if ("property_background_resource".equals(b)) {
                 m = R.drawable.variation_48;
             }
-            if (l.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(m);
+            if (this.l.getVisibility() == VISIBLE) {
+                ((ImageView) findViewById(R.id.img_icon)).setImageResource(this.m);
                 ((TextView) findViewById(R.id.tv_title)).setText(xB.b().a(getContext(), identifier));
             } else {
-                h.setImageResource(m);
+                this.h.setImageResource(this.m);
             }
         }
     }
 
     public void setOnPropertyValueChangeListener(Kw kw) {
-        n = kw;
+        this.n = kw;
     }
 
     public void setOrientationItem(int i) {
         if (i == 0) {
-            k.setVisibility(GONE);
-            l.setVisibility(VISIBLE);
+            this.k.setVisibility(GONE);
+            this.l.setVisibility(VISIBLE);
             return;
         }
-        k.setVisibility(VISIBLE);
-        l.setVisibility(GONE);
+        this.k.setVisibility(VISIBLE);
+        this.l.setVisibility(GONE);
     }
 
     public void setValue(String str) {
+
         Uri fromFile;
         if (str != null && !str.equalsIgnoreCase("NONE")) {
-            c = str;
-            f.setText(str);
-            if (jC.d(a).h(str) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
-                g.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
+            this.c = str;
+            this.f.setText(str);
+            if (jC.d(this.a).h(str) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                this.g.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 return;
             } else if (str.equals("default_image")) {
-                g.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
+                this.g.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 return;
             } else {
-                File file = new File(jC.d(a).f(str));
+
+                File file = new File(jC.d(this.a).f(str));
                 if (file.exists()) {
                     if (Build.VERSION.SDK_INT >= 24) {
                         Context context = getContext();
@@ -120,28 +130,32 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
-                    Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(g);
+                    if (file.getAbsolutePath().endsWith(".xml")) {
+                        svgUtils.loadImage(this.g, fpu.getSvgFullPath(this.a, str));
+                        return;
+                    }
+                    Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(this.g);
                     return;
                 }
-                g.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
+                this.g.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 return;
             }
         }
-        c = str;
-        f.setText("NONE");
-        g.setImageDrawable(null);
-        g.setBackgroundColor(Color.WHITE);
+        this.c = str;
+        this.f.setText("NONE");
+        this.g.setImageDrawable(null);
+        this.g.setBackgroundColor(Color.WHITE);
     }
 
     public final void a(Context context, boolean z, boolean z2) {
         wB.a(context, this, R.layout.property_resource_item);
-        e = findViewById(R.id.tv_name);
-        f = findViewById(R.id.tv_value);
-        g = findViewById(R.id.view_image);
-        h = findViewById(R.id.img_left_icon);
-        k = findViewById(R.id.property_item);
-        l = findViewById(R.id.property_menu_item);
-        d = z2;
+        this.e = findViewById(R.id.tv_name);
+        this.f = findViewById(R.id.tv_value);
+        this.g = findViewById(R.id.view_image);
+        this.h = findViewById(R.id.img_left_icon);
+        this.k = findViewById(R.id.property_item);
+        this.l = findViewById(R.id.property_menu_item);
+        this.d = z2;
         if (z) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -151,15 +165,15 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     public final void a() {
         LinearLayout a2;
         aB aBVar = new aB((Activity) getContext());
-        aBVar.b(e.getText().toString());
-        aBVar.a(m);
+        aBVar.b(this.e.getText().toString());
+        aBVar.a(this.m);
         View a3 = wB.a(getContext(), R.layout.property_popup_selector_color);
         ScrollView scrollView = a3.findViewById(R.id.scroll_view);
-        i = a3.findViewById(R.id.rg);
-        j = a3.findViewById(R.id.content);
-        ArrayList<String> m = jC.d(a).m();
-        if (xq.a(a) || xq.b(a)) {
-            if (d) {
+        this.i = a3.findViewById(R.id.rg);
+        this.j = a3.findViewById(R.id.content);
+        ArrayList<String> m = jC.d(this.a).m();
+        if (xq.a(this.a) || xq.b(this.a)) {
+            if (this.d) {
                 m.add(0, "default_image");
             } else {
                 m.add(0, "NONE");
@@ -170,18 +184,18 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         while (it.hasNext()) {
             String next = it.next();
             RadioButton a4 = a(next);
-            i.addView(a4);
-            if (next.equals(c)) {
+            this.i.addView(a4);
+            if (next.equals(this.c)) {
                 a4.setChecked(true);
                 radioButton = a4;
             }
-            if (xq.a(a)) {
+            if (xq.a(this.a)) {
                 if (next.equals("default_image")) {
                     a2 = a(next, true);
                 } else {
                     a2 = a(next, false);
                 }
-            } else if (xq.b(a)) {
+            } else if (xq.b(this.a)) {
                 if (next.equals("default_image")) {
                     a2 = a(next, true);
                 } else {
@@ -191,16 +205,16 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                 a2 = a(next, true);
             }
             a2.setOnClickListener(v -> ((RadioButton) i.getChildAt(j.indexOfChild(v))).setChecked(true));
-            j.addView(a2);
+            this.j.addView(a2);
         }
         if (radioButton == null) {
-            radioButton = (RadioButton) i.getChildAt(0);
+            radioButton = (RadioButton) this.i.getChildAt(0);
             radioButton.setChecked(true);
         }
         aBVar.a(a3);
         aBVar.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
-            for (int i = 0; i < this.i.getChildCount(); i++) {
-                RadioButton child = (RadioButton) this.i.getChildAt(i);
+            for (int i = 0; i < tx.this.i.getChildCount(); i++) {
+                RadioButton child = (RadioButton) tx.this.i.getChildAt(i);
                 if (child.isChecked()) {
                     setValue(child.getTag().toString());
                     if (n != null) {
@@ -255,7 +269,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
             if (z) {
                 imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
             } else {
-                File file = new File(jC.d(a).f(str));
+                File file = new File(jC.d(this.a).f(str));
                 if (file.exists()) {
                     if (Build.VERSION.SDK_INT >= 24) {
                         Context context = getContext();
@@ -263,7 +277,13 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     } else {
                         fromFile = Uri.fromFile(file);
                     }
-                    Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
+
+                    if (file.getAbsolutePath().endsWith(".xml")) {
+                        svgUtils.loadImage(imageView, fpu.getSvgFullPath(this.a, str));
+
+                    } else {
+                        Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
+                    }
                 } else {
                     imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 }

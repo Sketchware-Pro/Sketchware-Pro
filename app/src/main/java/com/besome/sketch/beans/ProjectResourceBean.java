@@ -31,6 +31,8 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
     public String resFullName;
     @Expose
     public String resName;
+
+
     @Expose
     public int resType;
     public int rotate;
@@ -73,6 +75,11 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
         return resFullName.endsWith(".9.png");
     }
 
+
+    public static boolean isSvg(String resFullName) {
+        return resFullName.endsWith(".svg");
+    }
+
     public void copy(ProjectResourceBean projectResourceBean) {
         resType = projectResourceBean.resType;
         resName = projectResourceBean.resName;
@@ -95,6 +102,9 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
 
     public boolean isNinePatch() {
         return isNinePatch(resFullName);
+    }
+    public boolean isSvg() {
+        return isSvg(resFullName);
     }
 
     public void print() {

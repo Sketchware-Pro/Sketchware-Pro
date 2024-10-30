@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,7 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.common.ImportIconActivity;
+import pro.sketchware.activities.importicon.ImportIconActivity;
 import com.besome.sketch.editor.manage.image.AddImageActivity;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.bumptech.glide.Glide;
@@ -37,11 +39,21 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sketchware.remod.R;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import pro.sketchware.utility.SvgUtils;
+import pro.sketchware.utility.FilePathUtil;
 
 public class pu extends qA implements View.OnClickListener {
-
-    public boolean isSelecting = false;
     private String sc_id;
     private RecyclerView recyclerView;
     private ArrayList<ProjectResourceBean> images;
@@ -50,14 +62,28 @@ public class pu extends qA implements View.OnClickListener {
     private FloatingActionButton fab;
     private String projectImagesDirectory = "";
     private Adapter adapter = null;
+    public boolean isSelecting = false;
+
+    public SvgUtils svgUtils;
+
+    private final FilePathUtil fpu = new FilePathUtil();
+
+    Map<Integer, Map<String, Object>> colorMap = new HashMap<>();
     private final ActivityResultLauncher<Intent> openImportIconActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             var data = result.getData();
             assert data != null;
-            ProjectResourceBean icon = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                    data.getStringExtra("iconName"), data.getStringExtra("iconPath"));
+            ProjectResourceBean icon = new ProjectResourceBean(
+                    ProjectResourceBean.PROJECT_RES_TYPE_FILE,
+                    data.getStringExtra("iconName"), data.getStringExtra("iconPath")
+            );
             icon.savedPos = 2;
             icon.isNew = true;
+
+            int selectedColor = data.getIntExtra("iconColor", -1);
+            String selectedColorHex = data.getStringExtra("iconColorHex");
+            addNewColorFilterInfo(selectedColorHex, selectedColor, images.size());
+
             addImage(icon);
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), bB.TOAST_NORMAL).show();
         }
@@ -109,6 +135,8 @@ public class pu extends qA implements View.OnClickListener {
         sc_id = requireActivity().getIntent().getStringExtra("sc_id");
         projectImagesDirectory = jC.d(sc_id).l();
         ArrayList<ProjectResourceBean> arrayList = jC.d(sc_id).b;
+        svgUtils = new SvgUtils(requireContext());
+        svgUtils.initImageLoader();
         if (arrayList != null) {
             for (ProjectResourceBean next : arrayList) {
                 if (next.flipVertical == 0) {
@@ -139,6 +167,17 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     public void saveImages() {
+
+
+        Path svgDir = Paths.get(fpu.getPathSvg(sc_id));
+        try {
+            if (!Files.exists(svgDir)) {
+                Files.createDirectories(svgDir);
+            }
+        } catch (IOException error) {
+            Log.d("pu.java", "Failed to create directory for saving svgs at: " + fpu.getPathResource(sc_id));
+        }
+        int index = 0;
         for (ProjectResourceBean image : images) {
             if (image.isNew || image.isEdited) {
                 try {
@@ -148,18 +187,46 @@ public class pu extends qA implements View.OnClickListener {
                     } else {
                         path = image.resFullName;
                     }
+
+
                     String str = projectImagesDirectory + File.separator + image.resName;
-                    iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
+                    Log.d("svg", "full name : " + image.resFullName.toString());
+                    if (image.resFullName.endsWith(".svg")) {
+                        // convert the svg to vectors
+                        String svgPath = fpu.getSvgFullPath(sc_id, image.resName);
+                        copyFile(path, svgPath);
+                        String colorHex = (String) colorMap.get(index).get("colorHex");
+                        colorHex = (colorHex != null) ? colorHex : "#FFFFFF";
+                        svgUtils.convert(svgPath, projectImagesDirectory, colorHex);
+                    } else {
+                        iB.a(path, image.isNinePatch() ? str + ".9.png" : str + ".png", image.rotate, image.flipHorizontal, image.flipVertical);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+            index++;
         }
         for (int i = 0; i < images.size(); i++) {
             ProjectResourceBean image = images.get(i);
             if (image.isNew || image.isEdited) {
-                images.set(i, new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                        image.resName, image.isNinePatch() ? image.resName + ".9.png" : image.resName + ".png"));
+
+                // Determine the correct file extension based on image type
+                String fileExtension;
+                if (image.isNinePatch()) {
+                    fileExtension = ".9.png";
+                } else if (image.isSvg()) {
+                    fileExtension = ".xml";
+                } else {
+                    fileExtension = ".png";
+                }
+
+                // Set the new ProjectResourceBean with the correct file extension
+                images.set(i, new ProjectResourceBean(
+                        ProjectResourceBean.PROJECT_RES_TYPE_FILE,
+                        image.resName,
+                        image.resName + fileExtension
+                ));
             }
         }
         jC.d(sc_id).b(images);
@@ -167,6 +234,21 @@ public class pu extends qA implements View.OnClickListener {
         jC.a(sc_id).b(jC.d(sc_id));
         jC.a(sc_id).k();
     }
+
+    public static void copyFile(String srcPath, String destPath) throws IOException {
+        File srcFile = new File(srcPath);
+        File destFile = new File(destPath);
+
+        try (FileInputStream fis = new FileInputStream(srcFile);
+             FileOutputStream fos = new FileOutputStream(destFile)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+        }
+    }
+
 
     private void updateGuideVisibility() {
         if (images.isEmpty()) {
@@ -293,6 +375,123 @@ public class pu extends qA implements View.OnClickListener {
         super.onSaveInstanceState(outState);
     }
 
+    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final CheckBox checkBox;
+            public final TextView name;
+            public final ImageView image;
+            public final ImageView delete;
+            public final ImageView ninePatch;
+            public final LinearLayout deleteContainer;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                checkBox = itemView.findViewById(R.id.chk_select);
+                name = itemView.findViewById(R.id.tv_image_name);
+                image = itemView.findViewById(R.id.img);
+                delete = itemView.findViewById(R.id.img_delete);
+                ninePatch = itemView.findViewById(R.id.img_nine_patch);
+                deleteContainer = itemView.findViewById(R.id.delete_img_container);
+                image.setOnClickListener(v -> {
+                    if (!isSelecting) {
+                        if (!(images.get(getLayoutPosition()).resFullName.endsWith(".svg") || images.get(getLayoutPosition()).resFullName.endsWith(".xml"))) {
+                            showImageDetailsDialog(images.get(getLayoutPosition()));
+                        }
+                    } else {
+                        checkBox.setChecked(!checkBox.isChecked());
+                        images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+                        notifyItemChanged(getLayoutPosition());
+                    }
+                });
+                image.setOnLongClickListener(v -> {
+                    a(true);
+                    checkBox.setChecked(!checkBox.isChecked());
+                    images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+                    return true;
+                });
+            }
+        }
+
+        public Adapter(RecyclerView recyclerView) {
+            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 2) {
+                            if (fab.isEnabled()) {
+                                fab.hide();
+                            }
+                        } else if (dy < -2) {
+                            if (fab.isEnabled()) {
+                                fab.show();
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ProjectResourceBean image = images.get(position);
+
+            holder.deleteContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
+            holder.ninePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
+            holder.delete.setImageResource(image.isSelected ? R.drawable.ic_checkmark_green_48dp
+                    : R.drawable.ic_trashcan_white_48dp);
+            holder.checkBox.setChecked(image.isSelected);
+            holder.name.setText(image.resName);
+
+
+            if (colorMap.get(position) != null) {
+                int color = Objects.requireNonNullElse((int) colorMap.get(position).get("color"), 0xFFFFFFFF);
+                Log.d("Applying filter to " + String.valueOf(position), String.valueOf(color));
+                holder.image.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            } else {
+                holder.image.clearColorFilter();
+            }
+
+            if (svgUtils == null) {
+                svgUtils = new SvgUtils(requireContext());
+                svgUtils.initImageLoader();
+            }
+
+            if (image.resFullName.endsWith(".svg")) {
+                svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));
+            } else if (image.resFullName.endsWith(".xml")) {
+                Log.d("loading converted vector: ", fpu.getSvgFullPath(sc_id, image.resName));
+                svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : fpu.getSvgFullPath(sc_id, image.resName));
+            } else {
+                Glide.with(requireActivity())
+                        .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
+                                : images.get(position).resFullName)
+                        .asBitmap()
+                        .centerCrop()
+                        .signature(kC.n())
+                        .error(R.drawable.ic_remove_grey600_24dp)
+                        .into(new BitmapImageViewTarget(holder.image) {
+                            @Override
+                            public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
+                                super.onResourceReady(iB.a(bitmap, image.rotate, image.flipHorizontal, image.flipVertical), glideAnimation);
+                            }
+                        });
+            }
+
+        }
+
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
+        }
+
+        @Override
+        public int getItemCount() {
+            return images.size();
+        }
+    }
+
     private void showImageDetailsDialog(ProjectResourceBean projectResourceBean) {
         Intent intent = new Intent(requireContext(), AddImageActivity.class);
         intent.putParcelableArrayListExtra("images", images);
@@ -329,7 +528,7 @@ public class pu extends qA implements View.OnClickListener {
             }
         }
         addImages(imagesToAdd);
-        if (!duplicateNames.isEmpty()) {
+        if (duplicateNames.size() > 0) {
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n" +
                     "[" + String.join(", ", duplicateNames) + "]", bB.TOAST_WARNING).show();
         } else {
@@ -362,104 +561,21 @@ public class pu extends qA implements View.OnClickListener {
 
     private void addImage(ProjectResourceBean projectResourceBean) {
         images.add(projectResourceBean);
+        adapter.notifyDataSetChanged();
         adapter.notifyItemInserted(adapter.getItemCount());
         updateGuideVisibility();
     }
 
-    private void addImages(ArrayList<ProjectResourceBean> arrayList) {
-        images.addAll(arrayList);
+    private void addNewColorFilterInfo(String colorHex, int color, int forPosition) {
+        Map<String, Object> colorItem1 = new HashMap<>();
+        colorItem1.put("colorHex", colorHex);
+        colorItem1.put("color", color);
+
+        colorMap.put(forPosition, colorItem1);
+        Log.d("color filter", "new color filter item at " + forPosition + ": " + colorHex + " " + String.valueOf(color));
     }
 
-    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        public Adapter(RecyclerView recyclerView) {
-            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        if (dy > 2) {
-                            if (fab.isEnabled()) {
-                                fab.hide();
-                            }
-                        } else if (dy < -2) {
-                            if (fab.isEnabled()) {
-                                fab.show();
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean image = images.get(position);
-
-            holder.deleteContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
-            holder.ninePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
-            holder.delete.setImageResource(image.isSelected ? R.drawable.ic_checkmark_green_48dp
-                    : R.drawable.ic_trashcan_white_48dp);
-            holder.checkBox.setChecked(image.isSelected);
-            holder.name.setText(image.resName);
-
-            Glide.with(requireActivity())
-                    .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
-                            : images.get(position).resFullName)
-                    .asBitmap()
-                    .centerCrop()
-                    .signature(kC.n())
-                    .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(holder.image) {
-                        @Override
-                        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                            super.onResourceReady(iB.a(bitmap, image.rotate, image.flipHorizontal, image.flipVertical), glideAnimation);
-                        }
-                    });
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
-        }
-
-        @Override
-        public int getItemCount() {
-            return images.size();
-        }
-
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public final CheckBox checkBox;
-            public final TextView name;
-            public final ImageView image;
-            public final ImageView delete;
-            public final ImageView ninePatch;
-            public final LinearLayout deleteContainer;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                name = itemView.findViewById(R.id.tv_image_name);
-                image = itemView.findViewById(R.id.img);
-                delete = itemView.findViewById(R.id.img_delete);
-                ninePatch = itemView.findViewById(R.id.img_nine_patch);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
-                image.setOnClickListener(v -> {
-                    if (!isSelecting) {
-                        showImageDetailsDialog(images.get(getLayoutPosition()));
-                    } else {
-                        checkBox.setChecked(!checkBox.isChecked());
-                        images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
-                        notifyItemChanged(getLayoutPosition());
-                    }
-                });
-                image.setOnLongClickListener(v -> {
-                    a(true);
-                    checkBox.setChecked(!checkBox.isChecked());
-                    images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
-                    return true;
-                });
-            }
-        }
+    private void addImages(ArrayList<ProjectResourceBean> arrayList) {
+        images.addAll(arrayList);
     }
 }
