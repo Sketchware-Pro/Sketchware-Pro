@@ -279,6 +279,7 @@ public class PaletteWidget extends LinearLayout {
             case "RadioGroup" -> new IconRadioGroup(context);
             case "CardView" -> new IconCardView(context);
             case "TextInputLayout" -> new IconTextInputLayout(context);
+            case "RelativeLayout" -> new IconRelativeLayout(context);
             default -> null;
         };
         if (tag != null && !tag.isEmpty()) {
