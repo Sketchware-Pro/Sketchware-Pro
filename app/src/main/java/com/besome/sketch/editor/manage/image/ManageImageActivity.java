@@ -25,7 +25,6 @@ import a.a.a.Op;
 import a.a.a.fu;
 import a.a.a.mB;
 import a.a.a.pu;
-import a.a.a.xB;
 
 public class ManageImageActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
     private String sc_id;
@@ -128,8 +127,8 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         public PagerAdapter(FragmentManager manager) {
             super(manager);
             labels = new String[2];
-            labels[0] = getTranslatedString(R.string.design_manager_tab_title_this_project).toUpperCase();
-            labels[1] = getTranslatedString(R.string.design_manager_tab_title_my_collection).toUpperCase();
+            labels[0] = getTranslatedString(R.string.design_manager_tab_title_this_project);
+            labels[1] = getTranslatedString(R.string.design_manager_tab_title_my_collection);
         }
 
         @Override
