@@ -1,12 +1,8 @@
 package pro.sketchware.activities.coloreditor;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.util.Xml;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,7 +13,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.ColorEditorActivityBinding;
@@ -31,7 +26,6 @@ import org.xmlpull.v1.XmlSerializer;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,15 +44,161 @@ import pro.sketchware.utility.XmlUtil;
 
 public class ColorEditorActivity extends AppCompatActivity {
 
-    private final ArrayList<HashMap<String, Object>> color_list = new ArrayList<>();
-    boolean isGoingToEditor;
+    private final ArrayList<ColorItem> colorList = new ArrayList<>();
+    private boolean isGoingToEditor;
     private ColorEditorActivityBinding binding;
     private RecyclerViewAdapter adapter;
     private Activity activity;
 
     private Zx colorpicker;
 
-    public static String convertListmapToXml(ArrayList<HashMap<String, Object>> colorList) {
+    private String contentPath;
+    private String title;
+    private String xmlPath;
+
+    private static final int MENU_SAVE = 0;
+    private static final int MENU_OPEN_IN_EDITOR = 1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ColorEditorActivityBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        initialize();
+    }
+
+    private void initialize() {
+        activity = this;
+        contentPath = getIntent().getStringExtra("content");
+        title = getIntent().getStringExtra("title");
+        xmlPath = getIntent().getStringExtra("xml");
+        colorpicker = new Zx(this, 0xFFFFFFFF, false, false);
+
+        setSupportActionBar(binding.toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        binding.toolbar.setNavigationOnClickListener(_v -> onBackPressed());
+
+        parseColorsXML(FileUtil.readFile(contentPath));
+        binding.recyclerviewColors.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        adapter = new RecyclerViewAdapter(colorList);
+        binding.recyclerviewColors.setAdapter(adapter);
+
+        binding.addColorButton.setOnClickListener(v -> showColorEditDialog(null, -1));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isGoingToEditor) {
+            parseColorsXML(FileUtil.readFile(contentPath));
+            adapter.notifyDataSetChanged();
+        }
+        isGoingToEditor = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        String originalXml = FileUtil.readFile(contentPath);
+        String newXml = convertListToXml(colorList);
+        if (!Objects.equals(XmlUtil.replaceXml(newXml), XmlUtil.replaceXml(originalXml))) {
+            showExitDialog();
+        } else {
+            super.onBackPressed();
+        }
+        if (colorList.isEmpty() && (!originalXml.contains("</resources>"))) {
+            XmlUtil.saveXml(contentPath, newXml);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        menu.add(0, MENU_SAVE, 0, "Save")
+                .setIcon(R.drawable.ic_save_24)
+                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        menu.add(0, MENU_OPEN_IN_EDITOR, 0, "Open in editor")
+                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == MENU_SAVE) {
+            XmlUtil.saveXml(contentPath, convertListToXml(colorList));
+        } else if (id == MENU_OPEN_IN_EDITOR) {
+            XmlUtil.saveXml(contentPath, convertListToXml(colorList));
+            Intent intent = new Intent();
+            if (ConfigActivity.isLegacyCeEnabled()) {
+                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
+            } else {
+                intent.setClass(getApplicationContext(), SrcCodeEditor.class);
+            }
+            intent.putExtra("title", title);
+            intent.putExtra("content", contentPath);
+            intent.putExtra("xml", xmlPath);
+            isGoingToEditor = true;
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showExitDialog() {
+        aB dialog = new aB(activity);
+        dialog.b(xB.b().a(activity, R.string.common_word_warning));
+        dialog.a(xB.b().a(activity, R.string.src_code_editor_unsaved_changes_dialog_warning_message));
+        dialog.b(xB.b().a(activity, R.string.common_word_save), v -> {
+            XmlUtil.saveXml(contentPath, convertListToXml(colorList));
+            dialog.dismiss();
+            finish();
+        });
+        dialog.a(xB.b().a(activity, R.string.common_word_exit), v -> {
+            dialog.dismiss();
+            finish();
+        });
+        dialog.show();
+    }
+
+    private void parseColorsXML(String colorXml) {
+        try {
+            colorList.clear();
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = factory.newPullParser();
+            parser.setInput(new StringReader(colorXml));
+
+            int eventType = parser.getEventType();
+            String colorName = null;
+            String colorValue = null;
+
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                String tagName = parser.getName();
+                switch (eventType) {
+                    case XmlPullParser.START_TAG:
+                        if ("color".equals(tagName)) {
+                            colorName = parser.getAttributeValue(null, "name");
+                        }
+                        break;
+                    case XmlPullParser.TEXT:
+                        colorValue = parser.getText();
+                        break;
+                    case XmlPullParser.END_TAG:
+                        if ("color".equals(tagName)) {
+                            if (colorName != null && isValidHexColor(colorValue)) {
+                                colorList.add(new ColorItem(colorName, colorValue));
+                            }
+                        }
+                        break;
+                }
+                eventType = parser.next();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String convertListToXml(ArrayList<ColorItem> colorList) {
         try {
             XmlSerializer xmlSerializer = Xml.newSerializer();
             StringWriter stringWriter = new StringWriter();
@@ -69,12 +209,10 @@ public class ColorEditorActivity extends AppCompatActivity {
             xmlSerializer.startTag(null, "resources");
             xmlSerializer.text("\n");
 
-            for (int i = 0; i < colorList.size(); i++) {
-                String colorName = Objects.requireNonNull(colorList.get(i).get("colorName")).toString();
-                String colorValue = Objects.requireNonNull(colorList.get(i).get("colorValue")).toString();
+            for (ColorItem colorItem : colorList) {
                 xmlSerializer.startTag(null, "color");
-                xmlSerializer.attribute(null, "name", colorName);
-                xmlSerializer.text(colorValue);
+                xmlSerializer.attribute(null, "name", colorItem.getColorName());
+                xmlSerializer.text(colorItem.getColorValue());
                 xmlSerializer.endTag(null, "color");
                 xmlSerializer.text("\n");
             }
@@ -91,7 +229,7 @@ public class ColorEditorActivity extends AppCompatActivity {
         return null;
     }
 
-    public static boolean isValidHexColor(String colorStr) {
+    private static boolean isValidHexColor(String colorStr) {
         if (colorStr == null) {
             return false;
         }
@@ -100,176 +238,38 @@ public class ColorEditorActivity extends AppCompatActivity {
         return matcher.matches();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ColorEditorActivityBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        initialize();
-    }
-
-    private void initialize() {
-        colorpicker = new Zx(this, 0xFFFFFFFF, false, false);
-
-        setSupportActionBar(binding.toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-
-        binding.toolbar.setNavigationOnClickListener(_v -> onBackPressed());
-        RecyclerView recyclerview_colors = findViewById(R.id.recyclerview_colors);
-        activity = this;
-
-        parseColorsXML(FileUtil.readFile(getIntent().getStringExtra("content")));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
-        recyclerview_colors.setLayoutManager(linearLayoutManager);
-
-        adapter = new RecyclerViewAdapter(color_list);
-        recyclerview_colors.setAdapter(adapter);
-
-        binding.addColorButton.setOnClickListener(v -> addColorDialog());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (isGoingToEditor) {
-            parseColorsXML(FileUtil.readFile(getIntent().getStringExtra("content")));
-            adapter = new ColorEditorActivity.RecyclerViewAdapter(color_list);
-            binding.recyclerviewColors.setAdapter(adapter);
-        }
-        isGoingToEditor = false;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!Objects.equals(XmlUtil.replaceXml(Objects.requireNonNull(convertListmapToXml(color_list))), XmlUtil.replaceXml(FileUtil.readFile(getIntent().getStringExtra("content"))))) {
-            showExitDialog();
-        } else {
-            super.onBackPressed();
-        }
-        if (color_list.isEmpty() && (!FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
-            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        menu.add(0, 0, 0, "Save")
-                .setIcon(R.drawable.ic_save_24)
-                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-        menu.add(0, 1, 0, "Open in editor")
-                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == 0) {
-            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
-        } else if (id == 1) {
-            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
-            Intent intent = new Intent();
-            if (ConfigActivity.isLegacyCeEnabled()) {
-                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-            } else {
-                intent.setClass(getApplicationContext(), SrcCodeEditor.class);
-            }
-            intent.putExtra("title", getIntent().getStringExtra("title"));
-            intent.putExtra("content", getIntent().getStringExtra("content"));
-            intent.putExtra("xml", getIntent().getStringExtra("xml"));
-            isGoingToEditor = true;
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void showExitDialog() {
-        aB dialog = new aB(activity);
-        dialog.b(xB.b().a(activity, R.string.common_word_warning));
-        dialog.a(xB.b().a(activity, R.string.src_code_editor_unsaved_changes_dialog_warning_message));
-        dialog.b(xB.b().a(activity, R.string.common_word_save), v -> {
-            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListmapToXml(color_list));
-            dialog.dismiss();
-            finish();
-        });
-        dialog.a(xB.b().a(activity, R.string.common_word_exit), v -> {
-            dialog.dismiss();
-            finish();
-        });
-        dialog.show();
-    }
-
-    private void showDeleteDialog(RecyclerViewAdapter adapter, int position, ArrayList<HashMap<String, Object>> data) {
+    private void showDeleteDialog(int position) {
         aB dialog = new aB(activity);
         dialog.a(R.drawable.ic_delete_24);
         dialog.b(xB.b().a(activity, R.string.color_editor_delete_color));
         dialog.a(xB.b().a(activity, R.string.picker_color_message_delete_all_custom_color));
         dialog.b(xB.b().a(activity, R.string.common_word_delete), v -> {
-            data.remove(position);
-            if (data.size() - 1 >= 0) {
-                adapter.notifyDataSetChanged();
-            } else {
-                adapter.notifyItemRemoved(position);
-            }
+            colorList.remove(position);
+            adapter.notifyItemRemoved(position);
             dialog.dismiss();
         });
         dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> dialog.dismiss());
         dialog.show();
     }
 
-    private void parseColorsXML(String colorXml) {
-        try {
-            color_list.clear();
-            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-            XmlPullParser parser = factory.newPullParser();
-            parser.setInput(new StringReader(colorXml));
-
-            int eventType = parser.getEventType();
-            String colorName = null;
-            String colorValue = null;
-
-            while (eventType != XmlPullParser.END_DOCUMENT) {
-                String tagName = parser.getName();
-                switch (eventType) {
-                    case XmlPullParser.START_TAG:
-                        if (tagName.equals("color")) {
-                            colorName = parser.getAttributeValue(null, "name");
-                        }
-                        break;
-                    case XmlPullParser.TEXT:
-                        colorValue = parser.getText();
-                        break;
-                    case XmlPullParser.END_TAG:
-                        if (tagName.equals("color")) {
-                            if (colorName != null && (isValidHexColor(colorValue))) {
-                                HashMap<String, Object> colors = new HashMap<>();
-                                colors.put("colorName", colorName);
-                                colors.put("colorValue", colorValue);
-                                color_list.add(colors);
-                            }
-                        }
-                        break;
-                }
-                eventType = parser.next();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addColorDialog() {
+    private void showColorEditDialog(ColorItem colorItem, int position) {
         aB dialog = new aB(this);
-        ColorEditorAddBinding binding = ColorEditorAddBinding.inflate(LayoutInflater.from(this));
-        XB colorValidator = new XB(ColorEditorActivity.this, binding.colorValueInputLayout, binding.colorPreview);
+        ColorEditorAddBinding dialogBinding = ColorEditorAddBinding.inflate(LayoutInflater.from(this));
+        XB colorValidator = new XB(this, dialogBinding.colorValueInputLayout, dialogBinding.colorPreview);
 
-        dialog.b("Add new color");
-        dialog.b("Create", v1 -> {
-            String key = Objects.requireNonNull(binding.colorKeyInput.getText()).toString();
-            String value = Objects.requireNonNull(binding.colorValueInput.getText()).toString();
+        if (colorItem != null) {
+            dialogBinding.colorKeyInput.setText(colorItem.getColorName());
+            dialogBinding.colorValueInput.setText(colorItem.getColorValue().replace("#", ""));
+            dialogBinding.colorPreview.setBackgroundColor(PropertiesUtil.parseColor(colorItem.getColorValue()));
+            dialog.b("Edit color");
+        } else {
+            dialog.b("Add new color");
+            dialogBinding.colorPreview.setBackgroundColor(0xFFFFFF);
+        }
+
+        dialog.b("Save", v1 -> {
+            String key = Objects.requireNonNull(dialogBinding.colorKeyInput.getText()).toString();
+            String value = Objects.requireNonNull(dialogBinding.colorValueInput.getText()).toString();
 
             if (key.isEmpty() || value.isEmpty()) {
                 SketchwareUtil.toast("Please fill in all fields", Toast.LENGTH_SHORT);
@@ -279,19 +279,23 @@ public class ColorEditorActivity extends AppCompatActivity {
                 SketchwareUtil.toast("Please enter a valid HEX color", Toast.LENGTH_SHORT);
                 return;
             }
-            addColor(key, value);
+            if (colorItem != null) {
+                colorItem.setColorName(key);
+                colorItem.setColorValue("#" + value);
+                adapter.notifyItemChanged(position);
+            } else {
+                addColor(key, value);
+            }
             dialog.dismiss();
         });
 
-        binding.colorPreviewCard.setOnClickListener(v -> {
-            Log.d("ColorPicker", "Opening color picker");
+        dialogBinding.colorPreviewCard.setOnClickListener(v -> {
             colorpicker.a(new Zx.b() {
                 @Override
-                public void a(int var1) {
-                    var selected_color_hex = "#" + String.format("%06X", var1 & (0x00FFFFFF));
-                    binding.colorPreviewCard.setCardBackgroundColor(PropertiesUtil.parseColor(selected_color_hex));
-                    binding.colorValueInput.setText(selected_color_hex.replace("#", ""));
-                    Log.d("ColorPicker", "Color: " + selected_color_hex);
+                public void a(int colorInt) {
+                    String selectedColorHex = "#" + String.format("%06X", colorInt & 0x00FFFFFF);
+                    dialogBinding.colorPreviewCard.setCardBackgroundColor(PropertiesUtil.parseColor(selectedColorHex));
+                    dialogBinding.colorValueInput.setText(selectedColorHex.replace("#", ""));
                 }
 
                 @Override
@@ -301,39 +305,37 @@ public class ColorEditorActivity extends AppCompatActivity {
             colorpicker.showAtLocation(v, Gravity.CENTER, 0, 0);
         });
 
+        if (colorItem != null) {
+            dialog.configureDefaultButton("Delete", v1 -> {
+                colorList.remove(position);
+                adapter.notifyItemRemoved(position);
+                dialog.dismiss();
+            });
+        }
 
         dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
-        binding.colorPreview.setBackgroundColor(0xffffff);
-        dialog.a(binding.getRoot());
+        dialog.a(dialogBinding.getRoot());
         dialog.show();
     }
 
-    public void addColor(final String name, final String value) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("colorName", name);
-        map.put("colorValue", "#" + value);
-        if (color_list.isEmpty()) {
-            color_list.add(map);
-            adapter.notifyItemInserted(0);
-            return;
-        }
-        for (int i = 0; i < color_list.size(); i++) {
-            if (Objects.equals(color_list.get(i).get("colorName"), name)) {
-                color_list.set(i, map);
+    private void addColor(String name, String value) {
+        ColorItem newItem = new ColorItem(name, "#" + value);
+        for (int i = 0; i < colorList.size(); i++) {
+            if (colorList.get(i).getColorName().equals(name)) {
+                colorList.set(i, newItem);
                 adapter.notifyItemChanged(i);
                 return;
             }
         }
-        color_list.add(map);
-        adapter.notifyItemInserted(color_list.size() - 1);
-
+        colorList.add(newItem);
+        adapter.notifyItemInserted(colorList.size() - 1);
     }
 
-    public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-        ArrayList<HashMap<String, Object>> data;
+    public class RecyclerViewAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+        private final ArrayList<ColorItem> data;
 
-        public RecyclerViewAdapter(ArrayList<HashMap<String, Object>> _arr) {
-            data = _arr;
+        public RecyclerViewAdapter(ArrayList<ColorItem> data) {
+            this.data = data;
         }
 
         @NonNull
@@ -345,8 +347,9 @@ public class ColorEditorActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            String colorName = Objects.requireNonNull(data.get(position).get("colorName")).toString();
-            String colorValue = Objects.requireNonNull(data.get(position).get("colorValue")).toString();
+            ColorItem colorItem = data.get(position);
+            String colorName = colorItem.getColorName();
+            String colorValue = colorItem.getColorValue();
 
             if (isValidHexColor(colorValue)) {
                 holder.itemBinding.title.setHint(colorName);
@@ -354,102 +357,14 @@ public class ColorEditorActivity extends AppCompatActivity {
                 holder.itemBinding.color.setBackgroundColor(PropertiesUtil.parseColor(colorValue));
             } else {
                 data.remove(position);
-                if (data.size() - 1 >= 0) {
-                    notifyDataSetChanged();
-                } else {
-                    notifyItemRemoved(position);
-                }
+                notifyItemRemoved(position);
             }
 
-            holder.itemBinding.backgroundCard.setOnClickListener(v -> {
-                HashMap<String, Object> currentItem = data.get(position);
-                aB dialog = new aB(ColorEditorActivity.this);
-                ColorEditorAddBinding dialogBinding = ColorEditorAddBinding.inflate(LayoutInflater.from(ColorEditorActivity.this));
-                XB colorValidator2 = new XB(ColorEditorActivity.this, dialogBinding.colorValueInputLayout, dialogBinding.colorPreview);
-
-                dialogBinding.colorKeyInput.setText(colorName);
-                dialogBinding.colorValueInput.setText(colorValue.replace("#", ""));
-                dialogBinding.colorPreview.setBackgroundColor(PropertiesUtil.parseColor(colorValue));
-
-                dialogBinding.colorKeyInput.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if (s.length() > 0 && Character.isDigit(s.charAt(start))) {
-                            dialogBinding.colorKeyInputLayout.setError("Color's name should be starting with a letter");
-                        } else {
-                            dialogBinding.colorKeyInputLayout.setError(null);
-                        }
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-
-                    }
-                });
-
-                dialog.b("Edit color");
-                dialog.b("Save", v1 -> {
-                    String name = Objects.requireNonNull(dialogBinding.colorKeyInput.getText()).toString();
-                    String colorHex = (Objects.requireNonNull(dialogBinding.colorValueInput.getText()).toString()).replace("#", "");
-                    if (name.isEmpty() || colorHex.isEmpty()) {
-                        SketchwareUtil.toast("Please fill in all fields", Toast.LENGTH_SHORT);
-                        return;
-                    }
-                    if (name.equals(colorName) && colorHex.equals(colorValue)) {
-                        dialog.dismiss();
-                        return;
-                    }
-                    if (colorValidator2.b()) {
-                        currentItem.put("colorName", name);
-                        currentItem.put("colorValue", "#" + colorHex);
-                        notifyItemChanged(position);
-                        dialog.dismiss();
-                    }
-                });
-
-                dialogBinding.colorPreviewCard.setOnClickListener(view -> {
-                    Log.d("ColorPicker", "Opening color picker");
-                    colorpicker.a(new Zx.b() {
-                        @Override
-                        public void a(int var1) {
-                            var selected_color_hex = "#" + String.format("%06X", var1 & (0x00FFFFFF));
-                            dialogBinding.colorPreviewCard.setCardBackgroundColor(PropertiesUtil.parseColor(selected_color_hex));
-                            dialogBinding.colorValueInput.setText(selected_color_hex.replace("#", ""));
-                            Log.d("ColorPicker", "Color: " + selected_color_hex);
-                        }
-
-                        @Override
-                        public void a(String var1, int var2) {
-                        }
-                    });
-                    colorpicker.showAtLocation(view, Gravity.CENTER, 0, 0);
-                });
-
-                dialog.configureDefaultButton("Delete", v1 -> {
-                    data.remove(position);
-                    if (data.size() - 1 >= 0) {
-                        notifyDataSetChanged();
-                    } else {
-                        notifyItemRemoved(position);
-                    }
-                    dialog.dismiss();
-                });
-                dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
-                dialog.a(dialogBinding.getRoot());
-                dialog.show();
-            });
-
+            holder.itemBinding.backgroundCard.setOnClickListener(v -> showColorEditDialog(colorItem, position));
             holder.itemBinding.backgroundCard.setOnLongClickListener(v -> {
-                showDeleteDialog(adapter, position, data);
-                return false;
+                showDeleteDialog(position);
+                return true;
             });
-
-
         }
 
         @Override
@@ -457,13 +372,39 @@ public class ColorEditorActivity extends AppCompatActivity {
             return data.size();
         }
 
-        public static class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
             public PalletCustomviewBinding itemBinding;
 
             public ViewHolder(PalletCustomviewBinding itemBinding) {
                 super(itemBinding.getRoot());
                 this.itemBinding = itemBinding;
             }
+        }
+    }
+
+    public static class ColorItem {
+        private String colorName;
+        private String colorValue;
+
+        public ColorItem(String colorName, String colorValue) {
+            this.colorName = colorName;
+            this.colorValue = colorValue;
+        }
+
+        public String getColorName() {
+            return colorName;
+        }
+
+        public String getColorValue() {
+            return colorValue;
+        }
+
+        public void setColorName(String colorName) {
+            this.colorName = colorName;
+        }
+
+        public void setColorValue(String colorValue) {
+            this.colorValue = colorValue;
         }
     }
 }
