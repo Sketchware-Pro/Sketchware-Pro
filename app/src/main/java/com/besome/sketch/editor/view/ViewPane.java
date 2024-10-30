@@ -576,6 +576,12 @@ public class ViewPane extends RelativeLayout {
                 viewBean.parent = view.getTag().toString();
                 viewBean.parentType = ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
                 viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            } else if (view instanceof ItemRelativeLayout) {
+                viewBean.preIndex = viewBean.index;
+                viewBean.index = viewInfo.getIndex();
+                viewBean.preParent = viewBean.parent;
+                viewBean.parent = view.getTag().toString();
+                viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_RELATIVE;
             }
         } else {
             viewBean.preIndex = viewBean.index;
@@ -737,6 +743,28 @@ public class ViewPane extends RelativeLayout {
                     a(view, (ViewGroup) child);
                 } else if (child instanceof ItemCardView) {
                     a(view, (ViewGroup) child);
+                } else if (child instanceof ItemRelativeLayout relativeLayout) {
+                    addDroppableForViewGroup(view, relativeLayout);
+                }
+            }
+        }
+    }
+
+    private void addDroppableForViewGroup(ViewBean viewBean, ViewGroup viewGroup) {
+        addViewInfo(getRectFor(viewGroup), viewGroup, -1, calculateViewDepth(viewGroup));
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View childAt = viewGroup.getChildAt(i);
+            if (childAt != null && childAt.getTag() != null && ((viewBean == null || viewBean.id == null || !childAt.getTag().equals(viewBean.id)) && childAt.getVisibility() == View.VISIBLE)) {
+                if (childAt instanceof ItemLinearLayout) {
+                    a(viewBean, (ItemLinearLayout) childAt);
+                } else if (childAt instanceof ItemHorizontalScrollView) {
+                    a(viewBean, (ViewGroup) childAt);
+                } else if (childAt instanceof ItemVerticalScrollView) {
+                    a(viewBean, (ViewGroup) childAt);
+                } else if (childAt instanceof ItemCardView) {
+                    a(viewBean, (ViewGroup) childAt);
+                } else if (childAt instanceof ItemRelativeLayout relativeLayout) {
+                    addDroppableForViewGroup(viewBean, relativeLayout);
                 }
             }
         }
@@ -757,6 +785,8 @@ public class ViewPane extends RelativeLayout {
                     a(viewBean, (ViewGroup) childAt);
                 } else if (childAt instanceof ItemCardView) {
                     a(viewBean, (ViewGroup) childAt);
+                } else if (childAt instanceof ItemRelativeLayout relativeLayout) {
+                    addDroppableForViewGroup(viewBean, relativeLayout);
                 }
             }
         }
