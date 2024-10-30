@@ -1,5 +1,6 @@
 package com.besome.sketch.editor.property;
 
+import static mod.bobur.StringEditorActivity.convertListMapToXml;
 import static mod.bobur.StringEditorActivity.convertXmlToListMap;
 import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 
@@ -291,8 +292,22 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         String filePath = fpu.getPathResource(sc_id) + "/values/strings.xml";
         convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
 
-        if (!isXmlStringsContains(StringsListMap, "app_name")) {
+        if (StringsListMap.isEmpty()) {
+            // Create app_name string if the strings.xml is empty
             HashMap<String, Object> map = new HashMap<>();
+            map.put("key", "app_name");
+            map.put("text", yB.c(lC.b(sc_id), "my_app_name"));
+            StringsListMap.add(0, map);
+            FileUtil.writeFile(filePath, convertListMapToXml(StringsListMap));
+        }
+
+        if (!isXmlStringsContains(StringsListMap, "app_name")) {
+            HashMap<String, Object> map = null;
+            try {
+                map = new HashMap<>();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             map.put("key", "app_name");
             map.put("text", yB.c(lC.b(sc_id), "my_app_name"));
             StringsListMap.add(0, map);

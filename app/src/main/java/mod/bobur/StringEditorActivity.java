@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.sketchware.remod.R;
+import com.sketchware.remod.databinding.SortProjectDialogBinding;
 import com.sketchware.remod.databinding.StringEditorBinding;
 import com.sketchware.remod.databinding.StringEditorItemBinding;
 import com.sketchware.remod.databinding.ViewStringEditorAddBinding;
@@ -35,12 +36,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import a.a.a.aB;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class StringEditorActivity extends AppCompatActivity {
 
@@ -49,6 +50,46 @@ public class StringEditorActivity extends AppCompatActivity {
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
     private boolean isComingFromAnotherActivity = false;
+
+    public static void convertXmlToListMap(final String xmlString, final ArrayList<HashMap<String, Object>> listmap) {
+        try {
+            listmap.clear();
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            ByteArrayInputStream input = new ByteArrayInputStream(xmlString.getBytes(StandardCharsets.UTF_8));
+            Document doc = builder.parse(new InputSource(input));
+            doc.getDocumentElement().normalize();
+            NodeList nodeList = doc.getElementsByTagName("string");
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    HashMap<String, Object> map = new HashMap<>();
+                    String key = element.getAttribute("name");
+                    String value = element.getTextContent();
+                    String translatable = element.getAttribute("translatable");
+                    if (translatable.isEmpty()) {
+                        translatable = "true";
+                    }
+                    map.put("key", key);
+                    map.put("text", value);
+                    map.put("translatable", translatable);
+                    listmap.add(map);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean isXmlStringsContains(ArrayList<HashMap<String, Object>> listMap, String value) {
+        for (Map<String, Object> map : listMap) {
+            if (map.containsKey("key") && value.equals(map.get("key"))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +156,8 @@ public class StringEditorActivity extends AppCompatActivity {
 
         menu.add(0, 3, 0, "Open in editor")
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
-
+        menu.add(0, 4, 0, "Sort")
+                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -141,51 +183,13 @@ public class StringEditorActivity extends AppCompatActivity {
             intent.putExtra("content", getIntent().getStringExtra("content"));
             intent.putExtra("xml", getIntent().getStringExtra("xml"));
             startActivity(intent);
+        } else if (id == 4) {
+            sortDialog();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public static void convertXmlToListMap(final String xmlString, final ArrayList<HashMap<String, Object>> listmap) {
-        try {
-            listmap.clear();
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            ByteArrayInputStream input = new ByteArrayInputStream(xmlString.getBytes(StandardCharsets.UTF_8));
-            Document doc = builder.parse(new InputSource(input));
-            doc.getDocumentElement().normalize();
-            NodeList nodeList = doc.getElementsByTagName("string");
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
-                    HashMap<String, Object> map = new HashMap<>();
-                    String key = element.getAttribute("name");
-                    String value = element.getTextContent();
-                    String translatable = element.getAttribute("translatable");
-                    if (translatable.isEmpty()) {
-                        translatable = "true";
-                    }
-                    map.put("key", key);
-                    map.put("text", value);
-                    map.put("translatable", translatable);
-                    listmap.add(map);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static boolean isXmlStringsContains(ArrayList<HashMap<String, Object>> listMap, String value) {
-        for (Map<String, Object> map : listMap) {
-            if (map.containsKey("key") && value.equals(map.get("key"))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String convertListMapToXml(final ArrayList<HashMap<String, Object>> listmap) {
+    public static String convertListMapToXml(final ArrayList<HashMap<String, Object>> listmap) {
         StringBuilder xmlString = new StringBuilder();
         xmlString.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n");
         for (HashMap<String, Object> map : listmap) {
@@ -204,7 +208,7 @@ public class StringEditorActivity extends AppCompatActivity {
         return xmlString.toString();
     }
 
-    private String escapeXml(String text) {
+    private static String escapeXml(String text) {
         if (text == null) return "";
         return text.replace("&", "&amp;")
                 .replace("<", "&lt;")
@@ -248,6 +252,48 @@ public class StringEditorActivity extends AppCompatActivity {
         dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
         dialog.a(binding.getRoot());
         dialog.show();
+    }
+
+    public void sortDialog() {
+        aB dialog = new aB(this);
+        SortProjectDialogBinding binding = SortProjectDialogBinding.inflate(LayoutInflater.from(this));
+        dialog.b("Sort options");
+        binding.sortByName.setText("Sort by value");
+        binding.sortByID.setText("Sort by key");
+
+        dialog.b("Save", v1 -> {
+            if (binding.sortByName.isChecked() && binding.sortOrderAsc.isChecked()) {
+                sortStrings(1);
+                dialog.dismiss();
+            } else if (binding.sortByName.isChecked() && binding.sortOrderDesc.isChecked()) {
+                sortStrings(2);
+                dialog.dismiss();
+            } else if (binding.sortByID.isChecked() && binding.sortOrderAsc.isChecked()) {
+                sortStrings(3);
+                dialog.dismiss();
+            } else if (binding.sortByID.isChecked() && binding.sortOrderDesc.isChecked()) {
+                sortStrings(4);
+                dialog.dismiss();
+            } else {
+                SketchwareUtil.toast("Please select a sort option", Toast.LENGTH_SHORT);
+            }
+        });
+        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
+        dialog.a(binding.getRoot());
+        dialog.show();
+    }
+
+    public void sortStrings(double type) {
+        if (type == 1) {
+            SketchwareUtil.sortListMap(listmap, "text", false, true);
+        } else if (type == 2) {
+            SketchwareUtil.sortListMap(listmap, "text", false, false);
+        } else if (type == 3) {
+            SketchwareUtil.sortListMap(listmap, "key", false, true);
+        } else if (type == 4) {
+            SketchwareUtil.sortListMap(listmap, "key", false, false);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     public void addString(final String key, final String text) {
