@@ -49,6 +49,7 @@ import com.besome.sketch.editor.view.item.ItemListView;
 import com.besome.sketch.editor.view.item.ItemMapView;
 import com.besome.sketch.editor.view.item.ItemProgressBar;
 import com.besome.sketch.editor.view.item.ItemRecyclerView;
+import com.besome.sketch.editor.view.item.ItemRelativeLayout;
 import com.besome.sketch.editor.view.item.ItemSearchView;
 import com.besome.sketch.editor.view.item.ItemSeekBar;
 import com.besome.sketch.editor.view.item.ItemSignInButton;
@@ -235,6 +236,7 @@ public class ViewPane extends RelativeLayout {
                  ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT,
                  ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT,
                  ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP -> new ItemLinearLayout(context);
+            case ViewBean.VIEW_TYPE_LAYOUT_RELATIVE -> new ItemRelativeLayout(context);
             case ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW -> new ItemCardView(context);
             case ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW -> new ItemHorizontalScrollView(context);
             case ViewBean.VIEW_TYPE_WIDGET_BUTTON -> new ItemButton(context);
