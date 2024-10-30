@@ -850,6 +850,15 @@ public class ViewPane extends RelativeLayout {
             }
             layoutParams2.weight = viewBean.layout.weight;
             view.setLayoutParams(layoutParams2);
+        } else if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
+            RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(width, height);
+            layoutParams2.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
+            layoutParams2.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
+            layoutParams2.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
+            layoutParams2.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
+            LayoutBean layoutBean3 = viewBean.layout;
+            view.setPadding(layoutBean3.paddingLeft, layoutBean3.paddingTop, layoutBean3.paddingRight, layoutBean3.paddingBottom);
+            view.setLayoutParams(layoutParams2);
         } else {
             FrameLayout.LayoutParams layoutParams3 = new FrameLayout.LayoutParams(width, height);
             layoutParams3.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
