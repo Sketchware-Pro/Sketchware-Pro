@@ -210,6 +210,7 @@ public class ViewBean extends nA implements Parcelable {
 
     public static int getViewTypeByTypeName(String typeName) {
         return switch (typeName) {
+            case "RelativeLayout" -> VIEW_TYPE_LAYOUT_RELATIVE;
             case "Switch" -> VIEW_TYPE_WIDGET_SWITCH;
             case "MapView" -> VIEW_TYPE_WIDGET_MAPVIEW;
             case "ProgressBar" -> VIEW_TYPE_WIDGET_PROGRESSBAR;
@@ -234,6 +235,7 @@ public class ViewBean extends nA implements Parcelable {
     public static String getViewTypeName(int type) {
         return switch (type) {
             case VIEW_TYPE_LAYOUT_LINEAR -> "LinearLayout";
+            case VIEW_TYPE_LAYOUT_RELATIVE -> "RelativeLayout";
             case VIEW_TYPE_LAYOUT_HSCROLLVIEW -> "HScrollView";
             case VIEW_TYPE_WIDGET_BUTTON -> "Button";
             case VIEW_TYPE_WIDGET_TEXTVIEW -> "TextView";
@@ -282,13 +284,7 @@ public class ViewBean extends nA implements Parcelable {
     public Gx buildClassInfo(int type) {
         String name = switch (type) {
             case VIEW_TYPE_LAYOUT_LINEAR -> "LinearLayout";
-
-            // RIP RelativeLayout
-         /* case VIEW_TYPE_LAYOUT_RELATIVE:
-                name = "RelativeLayout";
-                break;
-         */
-
+            case VIEW_TYPE_LAYOUT_RELATIVE -> "RelativeLayout";
             case VIEW_TYPE_LAYOUT_HSCROLLVIEW -> "HorizontalScrollView";
             case VIEW_TYPE_WIDGET_BUTTON -> "Button";
             case VIEW_TYPE_WIDGET_TEXTVIEW -> "TextView";
