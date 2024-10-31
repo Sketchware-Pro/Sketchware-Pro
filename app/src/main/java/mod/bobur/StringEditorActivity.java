@@ -220,7 +220,6 @@ public class StringEditorActivity extends AppCompatActivity {
 
     public void saveXml() {
         FileUtil.writeFile(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
-        BlockLoader.refresh();
         SketchwareUtil.toast("Save completed", Toast.LENGTH_SHORT);
     }
 

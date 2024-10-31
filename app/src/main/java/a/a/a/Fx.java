@@ -2049,6 +2049,11 @@ public class Fx {
                         var19 = 323;
                         break label3430;
                     }
+                default:
+                    if (var5.equals("getResStr")) {
+                        var19 = -2;
+                        break label3430;
+                    }
             }
 
             var19 = -1;
@@ -2069,6 +2074,10 @@ public class Fx {
             StringBuilder var26;
             StringBuilder var27;
             switch (var19) {
+                case -2:
+                    var5 = "getString(R.string." + blockBean.spec + ")";
+                    var18 = var9;
+                    break label3539;
                 case 0:
                     if (blockBean.parameters.size() <= 0) {
                         var7 = blockBean.spec.indexOf(" ");
