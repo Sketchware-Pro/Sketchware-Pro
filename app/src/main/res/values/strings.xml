@@ -1645,6 +1645,7 @@ ACTION_VIEW
     <string name="property_max">Max</string>
     <string name="property_orientation">Orientation</string>
     <string name="property_padding">Padding</string>
+    <string name="property_parent_attr">Parent attributes</string>
     <string name="property_progress">Progress</string>
     <string name="property_progressbar_style">Progress bar style</string>
     <string name="property_resource">Resource</string>

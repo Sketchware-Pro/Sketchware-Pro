@@ -898,27 +898,35 @@ public class ViewPane extends RelativeLayout {
             }
         }
     }
-    
+
     private void updateRelative(View view, InjectAttributeHandler handler) {
         String layout_centerInParent = handler.getAttributeValueOf("layout_centerInParent");
         String layout_centerVertical = handler.getAttributeValueOf("layout_centerVertical");
         String layout_centerHorizontal = handler.getAttributeValueOf("layout_centerHorizontal");
 
-        if (Boolean.parseBoolean(layout_centerInParent))
+        var bean = handler.getBean();
+        var parent = bean.parentAttributes;
+        if (Boolean.parseBoolean(layout_centerInParent)
+                || (parent.containsKey("android:layout_centerInParent")
+                        && Boolean.parseBoolean(parent.get("android:layout_centerInParent"))))
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
                     new Class[] {int.class},
                     RelativeLayout.CENTER_IN_PARENT);
 
-        if (Boolean.parseBoolean(layout_centerVertical))
+        if (Boolean.parseBoolean(layout_centerVertical)
+                || (parent.containsKey("android:layout_centerVertical")
+                        && Boolean.parseBoolean(parent.get("android:layout_centerVertical"))))
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
                     new Class[] {int.class},
                     RelativeLayout.CENTER_VERTICAL);
 
-        if (Boolean.parseBoolean(layout_centerHorizontal))
+        if (Boolean.parseBoolean(layout_centerHorizontal)
+                || (parent.containsKey("android:layout_centerHorizontal")
+                        && Boolean.parseBoolean(parent.get("android:layout_centerHorizontal"))))
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -932,7 +940,9 @@ public class ViewPane extends RelativeLayout {
         String layout_alignParentLeft = handler.getAttributeValueOf("layout_alignParentLeft");
         String layout_alignParentBottom = handler.getAttributeValueOf("layout_alignParentBottom");
 
-        if (Boolean.parseBoolean(layout_alignParentStart)) {
+        if (Boolean.parseBoolean(layout_alignParentStart)
+                || (parent.containsKey("android:layout_alignParentStart")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentStart")))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -940,7 +950,9 @@ public class ViewPane extends RelativeLayout {
                     RelativeLayout.ALIGN_PARENT_START);
         }
 
-        if (Boolean.parseBoolean(layout_alignParentRight)) {
+        if (Boolean.parseBoolean(layout_alignParentRight)
+                || (parent.containsKey("android:layout_alignParentRight")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentRight")))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -948,7 +960,9 @@ public class ViewPane extends RelativeLayout {
                     RelativeLayout.ALIGN_PARENT_RIGHT);
         }
 
-        if (Boolean.parseBoolean(layout_alignParentTop)) {
+        if (Boolean.parseBoolean(layout_alignParentTop)
+                || (parent.containsKey("android:layout_alignParentTop")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentTop")))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -956,7 +970,9 @@ public class ViewPane extends RelativeLayout {
                     RelativeLayout.ALIGN_PARENT_TOP);
         }
 
-        if (Boolean.parseBoolean(layout_alignParentEnd)) {
+        if (Boolean.parseBoolean(layout_alignParentEnd)
+                || (parent.containsKey("android:layout_alignParentEnd")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentEnd")))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -964,7 +980,9 @@ public class ViewPane extends RelativeLayout {
                     RelativeLayout.ALIGN_PARENT_END);
         }
 
-        if (Boolean.parseBoolean(layout_alignParentLeft)) {
+        if (Boolean.parseBoolean(layout_alignParentLeft)
+                || (parent.containsKey("android:layout_alignParentLeft")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentLeft")))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -972,7 +990,9 @@ public class ViewPane extends RelativeLayout {
                     RelativeLayout.ALIGN_PARENT_LEFT);
         }
 
-        if (Boolean.parseBoolean(layout_alignParentBottom)) {
+        if (Boolean.parseBoolean(layout_alignParentBottom)
+                || (parent.containsKey("android:layout_alignParentBottom")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentBottom")))) {
             InvokeUtil.invoke(
                     view.getLayoutParams(),
                     "addRule",
@@ -980,20 +1000,46 @@ public class ViewPane extends RelativeLayout {
                     RelativeLayout.ALIGN_PARENT_BOTTOM);
         }
 
-        setRelativeRule(view, handler, "layout_alignStart", RelativeLayout.ALIGN_START);
-        setRelativeRule(view, handler, "layout_alignRight", RelativeLayout.ALIGN_RIGHT);
-        setRelativeRule(view, handler, "layout_alignTop", RelativeLayout.ALIGN_TOP);
-        setRelativeRule(view, handler, "layout_alignEnd", RelativeLayout.ALIGN_END);
-        setRelativeRule(view, handler, "layout_alignLeft", RelativeLayout.ALIGN_LEFT);
-        setRelativeRule(view, handler, "layout_alignBottom", RelativeLayout.ALIGN_BOTTOM);
-        setRelativeRule(view, handler, "layout_alignBaseline", RelativeLayout.ALIGN_BASELINE);
+        if (parent.containsKey("android:layout_alignStart")) {
+            setRelativeRule(view, parent.get("android:layout_alignStart"), RelativeLayout.ALIGN_START);
+        } else setRelativeRule(view, handler, "layout_alignStart", RelativeLayout.ALIGN_START);
+        if (parent.containsKey("android:layout_alignRight")) {
+            setRelativeRule(view, parent.get("android:layout_alignRight"), RelativeLayout.ALIGN_RIGHT);
+        } else setRelativeRule(view, handler, "layout_alignRight", RelativeLayout.ALIGN_RIGHT);
+        if (parent.containsKey("android:layout_alignTop")) {
+            setRelativeRule(view, parent.get("android:layout_alignTop"), RelativeLayout.ALIGN_TOP);
+        } else setRelativeRule(view, handler, "layout_alignTop", RelativeLayout.ALIGN_TOP);
+        if (parent.containsKey("android:layout_alignEnd")) {
+            setRelativeRule(view, parent.get("android:layout_alignEnd"), RelativeLayout.ALIGN_END);
+        } else setRelativeRule(view, handler, "layout_alignEnd", RelativeLayout.ALIGN_END);
+        if (parent.containsKey("android:layout_alignLeft")) {
+            setRelativeRule(view, parent.get("android:layout_alignLeft"), RelativeLayout.ALIGN_LEFT);
+        } else setRelativeRule(view, handler, "layout_alignLeft", RelativeLayout.ALIGN_LEFT);
+        if (parent.containsKey("android:layout_alignBottom")) {
+            setRelativeRule(view, parent.get("android:layout_alignBottom"), RelativeLayout.ALIGN_BOTTOM);
+        } else setRelativeRule(view, handler, "layout_alignBottom", RelativeLayout.ALIGN_BOTTOM);
+        if (parent.containsKey("android:layout_alignBaseline")) {
+            setRelativeRule(view, parent.get("android:layout_alignBaseline"), RelativeLayout.ALIGN_BASELINE);
+        } else setRelativeRule(view, handler, "layout_alignBaseline", RelativeLayout.ALIGN_BASELINE);
 
-        setRelativeRule(view, handler, "layout_above", RelativeLayout.ABOVE);
-        setRelativeRule(view, handler, "layout_below", RelativeLayout.BELOW);
-        setRelativeRule(view, handler, "layout_toStartOf", RelativeLayout.START_OF);
-        setRelativeRule(view, handler, "layout_toRightOf", RelativeLayout.RIGHT_OF);
-        setRelativeRule(view, handler, "layout_toEndOf", RelativeLayout.END_OF);
-        setRelativeRule(view, handler, "layout_toLeftOf", RelativeLayout.LEFT_OF);
+        if (parent.containsKey("android:layout_above")) {
+            setRelativeRule(view, parent.get("android:layout_above"), RelativeLayout.ABOVE);
+        } else setRelativeRule(view, handler, "layout_above", RelativeLayout.ABOVE);
+        if (parent.containsKey("android:layout_below")) {
+            setRelativeRule(view, parent.get("android:layout_below"), RelativeLayout.BELOW);
+        } else setRelativeRule(view, handler, "layout_below", RelativeLayout.BELOW);
+        if (parent.containsKey("android:layout_toStartOf")) {
+            setRelativeRule(view, parent.get("android:layout_toStartOf"), RelativeLayout.START_OF);
+        } else setRelativeRule(view, handler, "layout_toStartOf", RelativeLayout.START_OF);
+        if (parent.containsKey("android:layout_toRightOf")) {
+            setRelativeRule(view, parent.get("android:layout_toRightOf"), RelativeLayout.RIGHT_OF);
+        } else setRelativeRule(view, handler, "layout_toRightOf", RelativeLayout.RIGHT_OF);
+        if (parent.containsKey("android:layout_toEndOf")) {
+            setRelativeRule(view, parent.get("android:layout_toEndOf"), RelativeLayout.END_OF);
+        } else setRelativeRule(view, handler, "layout_toEndOf", RelativeLayout.END_OF);
+        if (parent.containsKey("android:layout_toLeftOf")) {
+            setRelativeRule(view, parent.get("android:layout_toLeftOf"), RelativeLayout.LEFT_OF);
+        } else setRelativeRule(view, handler, "layout_toLeftOf", RelativeLayout.LEFT_OF);
     }
 
     private void setRelativeRule(
@@ -1002,7 +1048,13 @@ public class ViewPane extends RelativeLayout {
         if (referenceId != null && !referenceId.isEmpty()) {
             var reference = PropertiesUtil.getUnitOrPrefix(referenceId);
             if (reference != null) {
-                View refView = rootLayout.findViewWithTag(reference.second);
+                setRelativeRule(view, reference.second, rule);
+            }
+        }
+    }
+    
+    private void setRelativeRule(View view, String id, int rule) {
+        View refView = rootLayout.findViewWithTag(id);
                 if (refView != null) {
                     InvokeUtil.invoke(
                             view.getLayoutParams(),
@@ -1011,8 +1063,6 @@ public class ViewPane extends RelativeLayout {
                             rule,
                             refView.getId());
                 }
-            }
-        }
     }
 
     private void updateTextView(TextView textView, ViewBean viewBean) {

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.List;
 
 import a.a.a.Cx;
 import a.a.a.Gx;
@@ -87,6 +88,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             }
             case "property_layout_width" -> a(property, bean.layout.width, isNotAdview);
             case "property_layout_height" -> a(property, bean.layout.height, isNotAdview);
+            case "property_parent_attr" -> parentAttributes(property, bean.parentAttributes);
             case "property_margin" -> {
                 LayoutBean layoutBean = bean.layout;
                 a(property, layoutBean.marginLeft, layoutBean.marginTop, layoutBean.marginRight, layoutBean.marginBottom);
@@ -405,6 +407,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         Gx parentClassInfo = bean.getParentClassInfo();
         a(bean, "property_layout_width");
         a(bean, "property_layout_height");
+        if (bean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
+            a(bean, "property_parent_attr");
+        }
         a(bean, "property_padding");
         a(bean, "property_margin");
         if (classInfo.a("LinearLayout")) {
@@ -505,6 +510,32 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         }
 
         addView(switchSingleLineItem);
+    }
+    
+    private void parentAttributes(String key, HashMap<String, String> value) {
+        ArrayList<ViewBean> viewBeans = jC.a(sc_id).d(e.getXmlName());
+        List<String> ids = new ArrayList<>();
+        for (ViewBean bean : viewBeans) {
+            if (!bean.id.equals(c.id) && bean.parent.equals(c.parent)) {
+                ids.add(bean.id);
+            }
+        }
+        PropertyParentAttributesItem item = (PropertyParentAttributesItem) f.get(key);
+        if (item == null) {
+            item = new PropertyParentAttributesItem(getContext(), !b);
+            item.setOrientationItem(getOrientation());
+            item.setKey(key);
+            item.setValue(value);
+            item.setTag(key);
+            item.setOnPropertyValueChangeListener(this);
+            f.put(key, item);
+        } else {
+            item.setValue(value);
+        }
+        item.setBean(c);
+        item.setAvailableIds(ids);
+
+        addView(item);
     }
 
     public void f(ViewBean bean) {
@@ -778,6 +809,10 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             } else if (view instanceof Vw vw) {
                 if (vw.getKey().equals("property_text_font")) {
                     bean.text.textFont = vw.getValue();
+                }
+            } else if (view instanceof PropertyParentAttributesItem item) {
+                if (item.getKey().equals("property_parent_attr")) {
+                    bean.parentAttributes = item.getValue();
                 }
             }
         }

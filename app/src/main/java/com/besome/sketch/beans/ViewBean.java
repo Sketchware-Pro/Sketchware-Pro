@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import com.sketchware.remod.R;
 
+import java.util.HashMap;
+
 import a.a.a.Gx;
 import a.a.a.nA;
 import mod.agus.jcoderz.beans.ViewBeans;
@@ -129,6 +131,8 @@ public class ViewBean extends nA implements Parcelable {
     public float translationY;
     @Expose
     public int type;
+    @Expose
+    public HashMap<String, String> parentAttributes;
 
     public ViewBean() {
         parent = null;
@@ -157,6 +161,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = "";
         convert = "";
         progressStyle = PROGRESSBAR_STYLE_CIRCLE;
+        parentAttributes = new HashMap<>();
     }
 
     public ViewBean(Parcel parcel) {
@@ -194,6 +199,13 @@ public class ViewBean extends nA implements Parcelable {
         inject = parcel.readString();
         convert = parcel.readString();
         progressStyle = parcel.readString();
+        int size = parcel.readInt();
+        parentAttributes = new HashMap<>(size);
+        for (int i = 0; i < size; i++) {
+            String key = parcel.readString();
+            String value = parcel.readString();
+            parentAttributes.put(key, value);
+        }
     }
 
     public ViewBean(String id, int type) {
@@ -355,6 +367,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = other.inject;
         convert = other.convert;
         progressStyle = other.progressStyle;
+        parentAttributes = other.parentAttributes;
     }
 
     @Override
@@ -460,5 +473,10 @@ public class ViewBean extends nA implements Parcelable {
         dest.writeString(inject);
         dest.writeString(convert);
         dest.writeString(progressStyle);
+        dest.writeInt(parentAttributes.size());
+        for (HashMap.Entry<String, String> entry : parentAttributes.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
     }
 }

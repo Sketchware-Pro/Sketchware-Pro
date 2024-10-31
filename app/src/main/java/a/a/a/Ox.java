@@ -1,5 +1,7 @@
 package a.a.a;
 
+import static com.besome.sketch.editor.property.PropertyParentAttributesItem.RELATIVE_IDS;
+
 import android.annotation.SuppressLint;
 import android.view.Gravity;
 import android.view.View;
@@ -23,6 +25,7 @@ import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -367,6 +370,13 @@ public class Ox {
         }
         if (!viewBean.inject.isEmpty()) {
             widgetTag.addAttributeValue(viewBean.inject.replaceAll(" ", ""));
+        }
+        
+        if (!viewBean.parentAttributes.isEmpty()) {
+            viewBean.parentAttributes.forEach((key, value) -> {
+                String[] parts = key.split(":");
+                widgetTag.addAttribute(parts[0], parts[1], RELATIVE_IDS.contains(key) ? "@id/" + value : value);
+            });
         }
 
         if (widgetTag.c().equals("CollapsingToolbarLayout")
