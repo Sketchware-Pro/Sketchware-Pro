@@ -13,7 +13,7 @@ public class IconCardView extends IconBase {
 
     public IconCardView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_cardview);
+        setWidgetImage(R.drawable.ic_mtrl_rectangle);
         setWidgetName("CardView");
     }
 

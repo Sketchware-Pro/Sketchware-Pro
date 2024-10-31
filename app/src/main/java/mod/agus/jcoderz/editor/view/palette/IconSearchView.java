@@ -14,7 +14,7 @@ public class IconSearchView extends IconBase {
 
     public IconSearchView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.ic_search_color_96dp);
+        setWidgetImage(R.drawable.ic_mtrl_search);
         setWidgetName("SearchView");
     }
 

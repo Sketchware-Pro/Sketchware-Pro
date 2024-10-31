@@ -14,7 +14,7 @@ public class IconImageView extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_image_view);
+        setWidgetImage(R.drawable.ic_mtrl_image);
         setWidgetName("ImageView");
     }
 

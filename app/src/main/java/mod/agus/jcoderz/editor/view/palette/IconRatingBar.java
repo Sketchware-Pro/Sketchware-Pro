@@ -13,7 +13,7 @@ public class IconRatingBar extends IconBase {
 
     public IconRatingBar(Context context) {
         super(context);
-        setWidgetImage(R.drawable.color_star_24);
+        setWidgetImage(R.drawable.ic_mtrl_star);
         setWidgetName("RatingBar");
     }
 

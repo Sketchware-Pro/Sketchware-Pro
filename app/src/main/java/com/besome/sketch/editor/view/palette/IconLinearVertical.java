@@ -13,7 +13,7 @@ public class IconLinearVertical extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_linear_vertical);
+        setWidgetImage(R.drawable.ic_mtrl_view_vertical);
         setWidgetName("Linear(V)");
     }
 

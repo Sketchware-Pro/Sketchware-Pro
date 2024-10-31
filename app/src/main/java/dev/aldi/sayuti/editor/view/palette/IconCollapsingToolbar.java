@@ -13,7 +13,7 @@ public class IconCollapsingToolbar extends IconBase {
 
     public IconCollapsingToolbar(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_collapsing_toolbar);
+        setWidgetImage(R.drawable.ic_mtrl_collapsing_toolbar);
         setWidgetName("CollapsingToolbar");
     }
 

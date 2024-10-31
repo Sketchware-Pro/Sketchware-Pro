@@ -1,14 +1,11 @@
 package com.besome.sketch.editor.manage.library.firebase;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,8 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -240,9 +237,9 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.clear();
         if (stepNumber == STEP_3) {
-            menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Save").setIcon(getDrawable(R.drawable.save_icon_24px)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Save").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_save)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         } else {
-            menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Next").setIcon(getDrawable(R.drawable.next_plan_24px)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Next").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_next)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         return true;
     }

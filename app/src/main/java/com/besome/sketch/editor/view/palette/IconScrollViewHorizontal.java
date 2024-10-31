@@ -13,7 +13,7 @@ public class IconScrollViewHorizontal extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_horizontalscrollview);
+        setWidgetImage(R.drawable.ic_mtrl_swipe_horizontal);
         setWidgetName("Scroll(H)");
     }
 

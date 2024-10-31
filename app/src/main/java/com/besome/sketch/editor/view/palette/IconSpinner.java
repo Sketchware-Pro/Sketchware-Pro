@@ -13,7 +13,7 @@ public class IconSpinner extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_spinner);
+        setWidgetImage(R.drawable.ic_mtrl_spinner);
         setWidgetName("Spinner");
     }
 

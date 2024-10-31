@@ -13,7 +13,7 @@ public class IconWebView extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_web_view);
+        setWidgetImage(R.drawable.ic_mtrl_web);
         setWidgetName("WebView");
     }
 

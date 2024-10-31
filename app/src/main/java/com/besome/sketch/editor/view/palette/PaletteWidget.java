@@ -37,7 +37,6 @@ import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
 import dev.aldi.sayuti.editor.view.palette.IconViewPager;
 import dev.aldi.sayuti.editor.view.palette.IconWaveSideBar;
 import dev.aldi.sayuti.editor.view.palette.IconYoutubePlayer;
-import pro.sketchware.widgets.WidgetsCreatorManager;
 import mod.agus.jcoderz.editor.view.palette.IconAnalogClock;
 import mod.agus.jcoderz.editor.view.palette.IconAutoCompleteTextView;
 import mod.agus.jcoderz.editor.view.palette.IconDatePicker;
@@ -50,6 +49,7 @@ import mod.agus.jcoderz.editor.view.palette.IconSearchView;
 import mod.agus.jcoderz.editor.view.palette.IconTimePicker;
 import mod.agus.jcoderz.editor.view.palette.IconVideoView;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.widgets.WidgetsCreatorManager;
 
 public class PaletteWidget extends LinearLayout {
 
@@ -118,65 +118,24 @@ public class PaletteWidget extends LinearLayout {
     public View a(PaletteWidget.b widgetType, String tag, String text, String resourceName) {
         IconBase iconBase;
         switch (widgetType) {
-            case a:
-                iconBase = new IconButton(getContext());
-                break;
-
-            case c:
-                iconBase = new IconEditText(getContext());
-                break;
-
-            case b:
-                iconBase = new IconTextView(getContext());
-                break;
-
-            case d:
+            case a -> iconBase = new IconButton(getContext());
+            case c -> iconBase = new IconEditText(getContext());
+            case b -> iconBase = new IconTextView(getContext());
+            case d -> {
                 iconBase = new IconImageView(getContext());
                 ((IconImageView) iconBase).setResourceName(resourceName);
-                break;
-
-            case e:
-                iconBase = new IconListView(getContext());
-                break;
-
-            case f:
-                iconBase = new IconSpinner(getContext());
-                break;
-
-            case g:
-                iconBase = new IconCheckBox(getContext());
-                break;
-
-            case h:
-                iconBase = new IconWebView(getContext());
-                break;
-
-            case i:
-                iconBase = new IconSwitch(getContext());
-                break;
-
-            case j:
-                iconBase = new IconSeekBar(getContext());
-                break;
-
-            case k:
-                iconBase = new IconCalendarView(getContext());
-                break;
-
-            case l:
-                iconBase = new IconAdView(getContext());
-                break;
-
-            case m:
-                iconBase = new IconProgressBar(getContext());
-                break;
-
-            case n:
-                iconBase = new IconMapView(getContext());
-                break;
-
-            default:
-                iconBase = null;
+            }
+            case e -> iconBase = new IconListView(getContext());
+            case f -> iconBase = new IconSpinner(getContext());
+            case g -> iconBase = new IconCheckBox(getContext());
+            case h -> iconBase = new IconWebView(getContext());
+            case i -> iconBase = new IconSwitch(getContext());
+            case j -> iconBase = new IconSeekBar(getContext());
+            case k -> iconBase = new IconCalendarView(getContext());
+            case l -> iconBase = new IconAdView(getContext());
+            case m -> iconBase = new IconProgressBar(getContext());
+            case n -> iconBase = new IconMapView(getContext());
+            default -> iconBase = null;
         }
 
         if (tag != null && !tag.isEmpty()) {

@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import pro.sketchware.activities.coloreditor.ColorEditorActivity;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileResConfig;
@@ -318,7 +319,13 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             intent.putExtra("content", frc.listFileResource.get(position));
             intent.putExtra("xml", "");
             startActivity(intent);
-        } else if (frc.listFileResource.get(position).endsWith("xml")) {
+        } else if (frc.listFileResource.get(position).endsWith("colors.xml")) {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), ColorEditorActivity.class);
+            intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
+            intent.putExtra("content", frc.listFileResource.get(position));
+            startActivity(intent);
+        }else if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
@@ -373,16 +380,16 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             binding.title.setText(Uri.parse(path).getLastPathSegment());
 
             if (FileUtil.isDirectory(path)) {
-                binding.icon.setImageResource(R.drawable.ic_folder_24);
+                binding.icon.setImageResource(R.drawable.ic_mtrl_folder);
             } else {
                 try {
                     if (FileUtil.isImageFile(path)) {
                         Glide.with(ManageResourceActivity.this).load(new File(path)).into(binding.icon);
                     } else {
-                        binding.icon.setImageResource(R.drawable.ic_file_24);
+                        binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                     }
                 } catch (Exception ignored) {
-                    binding.icon.setImageResource(R.drawable.ic_file_24);
+                    binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                 }
             }
 

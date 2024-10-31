@@ -13,7 +13,7 @@ public class IconBottomNavigationView extends IconBase {
 
     public IconBottomNavigationView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_bottom_view);
+        setWidgetImage(R.drawable.ic_mtrl_bottom_navigation);
         setWidgetName("BottomNavigationView");
     }
 

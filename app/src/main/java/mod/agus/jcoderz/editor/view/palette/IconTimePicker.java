@@ -14,7 +14,7 @@ public class IconTimePicker extends IconBase {
 
     public IconTimePicker(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_timer);
+        setWidgetImage(R.drawable.ic_mtrl_time);
         setWidgetName("TimePicker");
     }
 

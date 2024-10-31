@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.sketchware.remod.R;
@@ -261,9 +262,9 @@ public class SrcCodeEditor extends AppCompatActivity {
             SharedPreferences local_pref = getSharedPreferences("hsce", Activity.MODE_PRIVATE);
             Menu toolbarMenu = toolbar.getMenu();
             toolbarMenu.clear();
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Undo").setIcon(getDrawable(R.drawable.ic_undo_24)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Redo").setIcon(getDrawable(R.drawable.ic_redo_24)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Save").setIcon(getDrawable(R.drawable.save_icon_24px)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Undo").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_undo)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Redo").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_redo)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Save").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_save)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Find & Replace");
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Word wrap").setCheckable(true).setChecked(local_pref.getBoolean("act_ww", false));
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Pretty print");

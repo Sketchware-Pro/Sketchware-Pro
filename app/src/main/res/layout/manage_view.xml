@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_add_24"
+        android:src="@drawable/ic_mtrl_add"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
         tools:ignore="ContentDescription" />

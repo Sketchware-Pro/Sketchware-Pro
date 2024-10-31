@@ -13,7 +13,7 @@ public class IconTextInputLayout extends IconBase {
 
     public IconTextInputLayout(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_edit_text);
+        setWidgetImage(R.drawable.ic_mtrl_edittext);
         setWidgetName("TextInputLayout");
     }
 

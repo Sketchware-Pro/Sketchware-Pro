@@ -13,7 +13,7 @@ public class IconPatternLockView extends IconBase {
 
     public IconPatternLockView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_pattern_lock_view);
+        setWidgetImage(R.drawable.ic_mtrl_pattern);
         setWidgetName("PatternLockView");
     }
 

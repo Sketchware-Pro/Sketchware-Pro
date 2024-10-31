@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/menu_logic_showsource"
-        android:icon="@drawable/ic_code_24"
+        android:icon="@drawable/ic_mtrl_code"
         android:orderInCategory="100"
         android:title="Show Source Code"
         app:showAsAction="always" />
@@ -24,7 +24,7 @@
 
     <item
         android:id="@+id/menu_block_helper"
-        android:icon="@drawable/ic_bookmark_24"
+        android:icon="@drawable/ic_mtrl_bookmark"
         android:orderInCategory="100"
         android:title="Blocks collection"
         app:showAsAction="always" />

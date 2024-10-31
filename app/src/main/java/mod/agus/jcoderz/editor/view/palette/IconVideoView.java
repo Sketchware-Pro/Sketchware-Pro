@@ -13,7 +13,7 @@ public class IconVideoView extends IconBase {
 
     public IconVideoView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_mediaplayer);
+        setWidgetImage(R.drawable.ic_mtrl_video);
         setWidgetName("VideoView");
     }
 

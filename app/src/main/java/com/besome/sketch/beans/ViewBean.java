@@ -256,25 +256,25 @@ public class ViewBean extends nA implements Parcelable {
 
     public static int getViewTypeResId(int type) {
         return switch (type) {
-            case VIEW_TYPE_LAYOUT_LINEAR -> R.drawable.widget_linear_horizontal;
-            case VIEW_TYPE_LAYOUT_RELATIVE -> R.drawable.widget_relative_layout;
-            case VIEW_TYPE_LAYOUT_HSCROLLVIEW -> R.drawable.widget_horizon_scrollview;
-            case VIEW_TYPE_WIDGET_BUTTON -> R.drawable.widget_button;
-            case VIEW_TYPE_WIDGET_TEXTVIEW -> R.drawable.widget_text_view;
-            case VIEW_TYPE_WIDGET_EDITTEXT -> R.drawable.widget_edit_text;
-            case VIEW_TYPE_WIDGET_IMAGEVIEW -> R.drawable.widget_image_view;
-            case VIEW_TYPE_WIDGET_WEBVIEW -> R.drawable.widget_web_view;
-            case VIEW_TYPE_WIDGET_PROGRESSBAR -> R.drawable.widget_progress_bar;
-            case VIEW_TYPE_WIDGET_LISTVIEW -> R.drawable.widget_list_view;
-            case VIEW_TYPE_WIDGET_SPINNER -> R.drawable.widget_spinner;
-            case VIEW_TYPE_WIDGET_CHECKBOX -> R.drawable.widget_check_box;
-            case VIEW_TYPE_LAYOUT_VSCROLLVIEW -> R.drawable.widget_scrollview;
-            case VIEW_TYPE_WIDGET_SWITCH -> R.drawable.widget_switch;
-            case VIEW_TYPE_WIDGET_SEEKBAR -> R.drawable.widget_seek_bar;
-            case VIEW_TYPE_WIDGET_CALENDARVIEW -> R.drawable.widget_calendarview;
-            case VIEW_TYPE_WIDGET_FAB -> R.drawable.widget_fab;
-            case VIEW_TYPE_WIDGET_ADVIEW -> R.drawable.widget_admob;
-            case VIEW_TYPE_WIDGET_MAPVIEW -> R.drawable.widget_google_map;
+            case VIEW_TYPE_LAYOUT_LINEAR -> R.drawable.ic_mtrl_view_horizontal;
+            case VIEW_TYPE_LAYOUT_RELATIVE -> R.drawable.ic_mtrl_view_relative;
+            case VIEW_TYPE_LAYOUT_HSCROLLVIEW -> R.drawable.ic_mtrl_swipe_horizontal;
+            case VIEW_TYPE_WIDGET_BUTTON -> R.drawable.ic_mtrl_button_click;
+            case VIEW_TYPE_WIDGET_TEXTVIEW -> R.drawable.ic_mtrl_formattext;
+            case VIEW_TYPE_WIDGET_EDITTEXT -> R.drawable.ic_mtrl_edittext;
+            case VIEW_TYPE_WIDGET_IMAGEVIEW -> R.drawable.ic_mtrl_image;
+            case VIEW_TYPE_WIDGET_WEBVIEW -> R.drawable.ic_mtrl_web;
+            case VIEW_TYPE_WIDGET_PROGRESSBAR -> R.drawable.ic_mtrl_progress_bar;
+            case VIEW_TYPE_WIDGET_LISTVIEW -> R.drawable.ic_mtrl_list;
+            case VIEW_TYPE_WIDGET_SPINNER -> R.drawable.ic_mtrl_spinner;
+            case VIEW_TYPE_WIDGET_CHECKBOX -> R.drawable.ic_mtrl_checkbox;
+            case VIEW_TYPE_LAYOUT_VSCROLLVIEW -> R.drawable.ic_mtrl_swap_vertical;
+            case VIEW_TYPE_WIDGET_SWITCH -> R.drawable.ic_mtrl_toggle;
+            case VIEW_TYPE_WIDGET_SEEKBAR -> R.drawable.ic_mtrl_seekbar;
+            case VIEW_TYPE_WIDGET_CALENDARVIEW -> R.drawable.ic_mtrl_calendar;
+            case VIEW_TYPE_WIDGET_FAB -> R.drawable.ic_mtrl_fab;
+            case VIEW_TYPE_WIDGET_ADVIEW -> R.drawable.ic_mtrl_ad;
+            case VIEW_TYPE_WIDGET_MAPVIEW -> R.drawable.ic_mtrl_map;
             default -> ViewBeans.getViewTypeResId(type);
         };
     }

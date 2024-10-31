@@ -13,7 +13,7 @@ public class IconBadgeView extends IconBase {
 
     public IconBadgeView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_badge_view);
+        setWidgetImage(R.drawable.ic_mtrl_badge);
         setWidgetName("BadgeView");
     }
 

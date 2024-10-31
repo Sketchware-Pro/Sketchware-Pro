@@ -233,7 +233,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         var builder = new MaterialAlertDialogBuilder(this)
                 .setTitle("Filter by package name")
                 .setMessage("For multiple package names, separate them with a comma (,).")
-                .setIcon(R.drawable.ic_filter_24)
+                .setIcon(R.drawable.ic_mtrl_filter)
                 .setView(view)
                 .setPositiveButton("Apply", (dialog, which) -> {
                     pkgFilter = dialogBinding.easyEdInput.getText().toString();

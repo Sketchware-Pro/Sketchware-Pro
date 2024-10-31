@@ -48,7 +48,7 @@ public class BuildSettingsDialog {
 
         var builder = new MaterialAlertDialogBuilder(activity)
                 .setTitle("Build Settings")
-                .setIcon(R.drawable.ic_tune_24)
+                .setIcon(R.drawable.ic_mtrl_tune)
                 .setPositiveButton("Save", (dialogInterface, i) -> settings.setValues(viewArr))
                 .setNegativeButton("Cancel", null);
         builder.setView(binding.getRoot());

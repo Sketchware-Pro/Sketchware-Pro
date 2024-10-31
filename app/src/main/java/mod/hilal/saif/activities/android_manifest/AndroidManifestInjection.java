@@ -356,7 +356,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Show Manifest Source").setIcon(getDrawable(R.drawable.ic_code_24)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Show Manifest Source").setIcon(getDrawable(R.drawable.ic_mtrl_code)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 

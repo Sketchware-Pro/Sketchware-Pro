@@ -13,7 +13,7 @@ public class IconAnalogClock extends IconBase {
 
     public IconAnalogClock(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_timer);
+        setWidgetImage(R.drawable.ic_mtrl_clock);
         setWidgetName("AnalogClock");
     }
 

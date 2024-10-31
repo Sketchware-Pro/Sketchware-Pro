@@ -37,11 +37,11 @@ public class ItemBottomNavigationView extends BottomNavigationView implements sy
         setClickable(false);
         var menu = getMenu();
         menu.add(Menu.NONE, 1, Menu.NONE, "Home")
-                .setIcon(R.drawable.ic_home);
+                .setIcon(R.drawable.ic_mtrl_home);
         menu.add(Menu.NONE, 2, Menu.NONE, "Chat")
-                .setIcon(R.drawable.ic_chat);
+                .setIcon(R.drawable.ic_mtrl_chat);
         menu.add(Menu.NONE, 3, Menu.NONE, "Profile")
-                .setIcon(R.drawable.ic_profile);
+                .setIcon(R.drawable.ic_mtrl_profile);
     }
 
     @Override

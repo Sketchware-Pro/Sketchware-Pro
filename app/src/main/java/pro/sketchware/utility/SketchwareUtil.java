@@ -171,7 +171,7 @@ public class SketchwareUtil {
     public static void showAnErrorOccurredDialog(Activity activity, String errorMessage) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
         builder.setTitle(Helper.getResString(R.string.common_error_an_error_occurred));
-        builder.setIcon(R.drawable.ic_warning);
+        builder.setIcon(R.drawable.ic_mtrl_warning);
         builder.setMessage(errorMessage);
         builder.setPositiveButton("Okay", null);
         builder.show();

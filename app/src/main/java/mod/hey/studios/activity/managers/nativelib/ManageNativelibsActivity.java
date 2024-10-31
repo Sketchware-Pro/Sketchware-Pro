@@ -320,7 +320,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
             }
 
             binding.title.setText(Uri.parse(path).getLastPathSegment());
-            binding.icon.setImageResource(FileUtil.isDirectory(path) ? R.drawable.ic_folder_24 : R.drawable.ic_file_24);
+            binding.icon.setImageResource(FileUtil.isDirectory(path) ? R.drawable.ic_mtrl_folder : R.drawable.ic_mtrl_file);
 
             binding.more.setOnClickListener(v -> {
                 PopupMenu menu = new PopupMenu(ManageNativelibsActivity.this, v);
