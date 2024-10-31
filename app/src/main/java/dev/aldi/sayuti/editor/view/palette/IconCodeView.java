@@ -13,7 +13,7 @@ public class IconCodeView extends IconBase {
 
     public IconCodeView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_code_view);
+        setWidgetImage(R.drawable.ic_mtrl_terminal);
         setWidgetName("CodeView");
     }
 

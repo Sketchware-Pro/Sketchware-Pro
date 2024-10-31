@@ -13,7 +13,7 @@ public class IconYoutubePlayer extends IconBase {
 
     public IconYoutubePlayer(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_youtube);
+        setWidgetImage(R.drawable.ic_mtrl_youtube);
         setWidgetName("YoutubePlayer");
     }
 

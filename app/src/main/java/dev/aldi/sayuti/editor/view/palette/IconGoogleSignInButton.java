@@ -13,7 +13,7 @@ public class IconGoogleSignInButton extends IconBase {
 
     public IconGoogleSignInButton(Context context) {
         super(context);
-        setWidgetImage(R.drawable.google_48);
+        setWidgetImage(R.drawable.ic_mtrl_login);
         setWidgetName("SignInButton");
     }
 

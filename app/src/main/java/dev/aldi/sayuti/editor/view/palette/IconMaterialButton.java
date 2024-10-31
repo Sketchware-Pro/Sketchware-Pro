@@ -15,7 +15,7 @@ public class IconMaterialButton extends IconBase {
 
     public IconMaterialButton(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_material_button);
+        setWidgetImage(R.drawable.ic_mtrl_button_click);
         setWidgetName("MaterialButton");
     }
 

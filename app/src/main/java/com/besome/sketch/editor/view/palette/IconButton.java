@@ -14,7 +14,7 @@ public class IconButton extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_button);
+        setWidgetImage(R.drawable.ic_mtrl_button_click);
         setWidgetName("Button");
     }
 

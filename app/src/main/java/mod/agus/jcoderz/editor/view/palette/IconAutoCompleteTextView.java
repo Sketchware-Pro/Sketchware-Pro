@@ -13,7 +13,7 @@ public class IconAutoCompleteTextView extends IconBase {
 
     public IconAutoCompleteTextView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_edit_text);
+        setWidgetImage(R.drawable.ic_mtrl_edittext);
         setWidgetName("AutoCompleteTextView");
     }
 

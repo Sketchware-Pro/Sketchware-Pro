@@ -650,7 +650,6 @@ public class OldResourceIdMapper {
             case 2131165825 -> R.drawable.ic_ratio_48dp;
             case 2131165826 -> R.drawable.ic_redo_grey_48dp;
             case 2131165827 -> R.drawable.ic_redo_white_48dp;
-            case 2131165828 -> R.drawable.ic_refresh_48dp;
             case 2131165829 -> R.drawable.ic_refresh_grey600_24dp;
             case 2131165830 -> R.drawable.ic_release_note;
             case 2131165831 -> R.drawable.ic_remove_grey600_24dp;

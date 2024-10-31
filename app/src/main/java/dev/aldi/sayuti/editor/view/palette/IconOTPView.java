@@ -13,7 +13,7 @@ public class IconOTPView extends IconBase {
 
     public IconOTPView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.event_google_signin);
+        setWidgetImage(R.drawable.ic_mtrl_password);
         setWidgetName("OTPView");
     }
 

@@ -14,7 +14,7 @@ public class IconDatePicker extends IconBase {
 
     public IconDatePicker(Context context) {
         super(context);
-        setWidgetImage(R.drawable.date_span_96);
+        setWidgetImage(R.drawable.ic_mtrl_calendary_today);
         setWidgetName("DatePicker");
     }
 

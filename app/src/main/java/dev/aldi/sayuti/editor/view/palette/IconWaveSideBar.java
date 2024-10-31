@@ -13,7 +13,7 @@ public class IconWaveSideBar extends IconBase {
 
     public IconWaveSideBar(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_wave_side_bar);
+        setWidgetImage(R.drawable.ic_mtrl_sidebar);
         setWidgetName("WaveSideBar");
     }
 

@@ -13,7 +13,7 @@ public class IconSeekBar extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_seek_bar);
+        setWidgetImage(R.drawable.ic_mtrl_seekbar);
         setWidgetName("SeekBar");
     }
 

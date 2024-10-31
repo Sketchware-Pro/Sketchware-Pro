@@ -13,7 +13,7 @@ public class IconLottieAnimation extends IconBase {
 
     public IconLottieAnimation(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_lottie);
+        setWidgetImage(R.drawable.ic_mtrl_animation);
         setWidgetName("Lottie");
     }
 

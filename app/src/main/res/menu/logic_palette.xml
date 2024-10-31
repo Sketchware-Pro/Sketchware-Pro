@@ -6,7 +6,7 @@
         android:title="@string/common_word_activity" />
     <item
         android:id="@+id/view"
-        android:icon="@drawable/ic_mtrl_view"
+        android:icon="@drawable/ic_mtrl_view_vertical"
         android:title="@string/common_word_view" />
     <item
         android:id="@+id/component"

@@ -13,7 +13,7 @@ public class IconRadioButton extends IconBase {
 
     public IconRadioButton(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_radio_button);
+        setWidgetImage(R.drawable.ic_mtrl_radio_btn);
         setWidgetName("RadioButton");
     }
 
