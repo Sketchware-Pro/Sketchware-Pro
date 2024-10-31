@@ -171,6 +171,8 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             }
         } catch (IndexOutOfBoundsException ignored) {
         }
+        setResult(RESULT_OK);
+        finish();
         super.onBackPressed();
     }
 
