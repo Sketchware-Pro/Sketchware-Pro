@@ -2415,7 +2415,7 @@ public class BlocksHandler {
         hashMap.put("name", "getResString");
         hashMap.put("type", "s");
         hashMap.put("code", "getString(%s)");
-        hashMap.put("color", "#07c83db");
+        hashMap.put("color", "#7c83db");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "get String from %m.ResString");
         arrayList.add(hashMap);
