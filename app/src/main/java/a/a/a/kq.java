@@ -19,11 +19,13 @@ public class kq {
         } else {
             var3 = var2;
             switch (var0) {
+                case "getResStr":
+                    var3 = 0xff7c83db;
+                    break;
                 case "getVar":
                     if (var1.equals("v")) {
                         break;
                     }
-
                     if (var1.equals("p")) {
                         var3 = -13851166;
                         break;
