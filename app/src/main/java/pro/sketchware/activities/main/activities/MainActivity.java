@@ -36,8 +36,8 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.MainBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.MainBinding;
 
 import java.io.File;
 import java.io.IOException;

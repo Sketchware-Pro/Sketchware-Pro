@@ -16,7 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.tabs.TabLayout;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.lang.ref.WeakReference;
 

@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
-import com.sketchware.remod.databinding.LibraryDownloaderDialogBinding;
+import pro.sketchware.databinding.LibraryDownloaderDialogBinding;
 
 import org.cosmic.ide.dependency.resolver.api.Artifact;
 

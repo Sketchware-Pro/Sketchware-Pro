@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.material.appbar.MaterialToolbar;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

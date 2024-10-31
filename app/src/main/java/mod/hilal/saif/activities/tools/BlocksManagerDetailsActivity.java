@@ -30,7 +30,7 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;

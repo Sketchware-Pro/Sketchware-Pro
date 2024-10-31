@@ -22,9 +22,9 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
-import com.sketchware.remod.databinding.PreferenceActivityBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
+import pro.sketchware.databinding.PreferenceActivityBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;

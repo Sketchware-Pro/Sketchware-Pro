@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.besome.sketch.lib.ui.CustomScrollView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.color.MaterialColors;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.HashMap;
 

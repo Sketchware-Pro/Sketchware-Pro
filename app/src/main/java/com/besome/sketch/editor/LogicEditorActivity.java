@@ -64,7 +64,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.lang.ref.WeakReference;

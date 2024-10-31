@@ -12,9 +12,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ColorEditorActivityBinding;
-import com.sketchware.remod.databinding.ColorEditorAddBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ColorEditorActivityBinding;
+import pro.sketchware.databinding.ColorEditorAddBinding;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;

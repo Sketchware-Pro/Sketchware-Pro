@@ -21,8 +21,8 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.BlocksManagerCreatorBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.BlocksManagerCreatorBinding;
 
 import java.io.File;
 import java.util.ArrayList;

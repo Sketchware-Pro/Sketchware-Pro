@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
 import com.google.android.material.card.MaterialCardView;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.ArrayList;
 

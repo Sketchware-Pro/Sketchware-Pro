@@ -25,8 +25,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.WidgetsCreatorDialogBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.WidgetsCreatorDialogBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;

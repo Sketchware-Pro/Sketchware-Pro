@@ -6,8 +6,8 @@ import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
 import android.app.Activity;
 import android.view.View;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.DialogProjectSettingsBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogProjectSettingsBinding;
 
 import a.a.a.aB;
 import mod.hey.studios.util.Helper;

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import pro.sketchware.activities.main.activities.MainActivity;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.HashMap;
 

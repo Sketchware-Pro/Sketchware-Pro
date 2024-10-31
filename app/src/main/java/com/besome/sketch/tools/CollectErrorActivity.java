@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 

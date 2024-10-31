@@ -17,9 +17,9 @@ import com.besome.sketch.editor.manage.view.AddCustomViewActivity;
 import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
-import com.sketchware.remod.databinding.FileSelectorPopupSelectXmlBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
+import pro.sketchware.databinding.FileSelectorPopupSelectXmlBinding;
 
 import java.util.ArrayList;
 

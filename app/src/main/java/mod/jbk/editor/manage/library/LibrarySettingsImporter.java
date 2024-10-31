@@ -20,7 +20,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.lib.ui.CircleImageView;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.util.HashSet;

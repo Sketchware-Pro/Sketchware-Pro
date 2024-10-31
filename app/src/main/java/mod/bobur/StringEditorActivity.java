@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.StringEditorBinding;
-import com.sketchware.remod.databinding.StringEditorItemBinding;
-import com.sketchware.remod.databinding.ViewStringEditorAddBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.StringEditorBinding;
+import pro.sketchware.databinding.StringEditorItemBinding;
+import pro.sketchware.databinding.ViewStringEditorAddBinding;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

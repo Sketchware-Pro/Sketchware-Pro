@@ -12,7 +12,7 @@ import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectResourceBean;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;

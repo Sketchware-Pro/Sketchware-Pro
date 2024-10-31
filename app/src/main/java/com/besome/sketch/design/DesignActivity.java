@@ -53,8 +53,8 @@ import com.besome.sketch.tools.CompileLogActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ProgressMsgBoxBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;

@@ -16,9 +16,9 @@ import androidx.viewbinding.ViewBinding;
 
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ManageLibraryAdmobPreviewBinding;
-import com.sketchware.remod.databinding.ManageLibrarySettingAdmobTestDeviceItemBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryAdmobPreviewBinding;
+import pro.sketchware.databinding.ManageLibrarySettingAdmobTestDeviceItemBinding;
 
 import a.a.a.Uu;
 import a.a.a.gB;

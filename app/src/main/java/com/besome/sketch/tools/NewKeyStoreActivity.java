@@ -12,7 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.RB;
 import a.a.a.SB;

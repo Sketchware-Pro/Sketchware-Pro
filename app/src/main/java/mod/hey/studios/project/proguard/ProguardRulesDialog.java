@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.lib.code_editor.CodeEditorLayout;

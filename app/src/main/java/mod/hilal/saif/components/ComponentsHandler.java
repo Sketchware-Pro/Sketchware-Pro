@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.besome.sketch.SketchApplication;
 import com.besome.sketch.beans.ComponentBean;
 import com.google.gson.Gson;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

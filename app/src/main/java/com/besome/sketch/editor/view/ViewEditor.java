@@ -43,7 +43,7 @@ import com.besome.sketch.editor.view.palette.IconLinearVertical;
 import com.besome.sketch.editor.view.palette.IconMapView;
 import com.besome.sketch.editor.view.palette.PaletteFavorite;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -23,7 +23,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.ArrayList;
 

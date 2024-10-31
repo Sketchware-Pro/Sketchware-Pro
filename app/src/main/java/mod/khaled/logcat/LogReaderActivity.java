@@ -24,10 +24,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ActivityLogcatreaderBinding;
-import com.sketchware.remod.databinding.EasyDeleteEdittextBinding;
-import com.sketchware.remod.databinding.ViewLogcatItemBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ActivityLogcatreaderBinding;
+import pro.sketchware.databinding.EasyDeleteEdittextBinding;
+import pro.sketchware.databinding.ViewLogcatItemBinding;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 

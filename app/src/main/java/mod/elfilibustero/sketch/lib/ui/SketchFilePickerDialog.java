@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;

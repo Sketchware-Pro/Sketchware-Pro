@@ -17,8 +17,8 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ProgressMsgBoxBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ProgressMsgBoxBinding;
 
 import java.io.File;
 import java.lang.ref.WeakReference;

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 public class IconLinearHorizontal extends IconBase {
     public IconLinearHorizontal(Context context) {

@@ -11,8 +11,8 @@ import android.widget.ListView;
 import androidx.activity.EdgeToEdge;
 
 import com.google.gson.Gson;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ManageCustomComponentAddBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageCustomComponentAddBinding;
 
 import java.io.File;
 import java.util.ArrayList;

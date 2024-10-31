@@ -28,7 +28,7 @@ import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.List;
 import java.util.regex.Matcher;

@@ -16,8 +16,8 @@ import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ManageCollectionShowBlockBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageCollectionShowBlockBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;

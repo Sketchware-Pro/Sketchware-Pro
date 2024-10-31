@@ -5,7 +5,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.wB;
 
