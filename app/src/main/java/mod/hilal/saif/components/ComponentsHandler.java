@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.util.Pair;
 import android.widget.Toast;
 
-import com.besome.sketch.SketchApplication;
+import pro.sketchware.SketchApplication;
 import com.besome.sketch.beans.ComponentBean;
 import com.google.gson.Gson;
 import pro.sketchware.R;

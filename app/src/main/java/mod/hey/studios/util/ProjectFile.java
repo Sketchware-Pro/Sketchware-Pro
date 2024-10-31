@@ -3,8 +3,7 @@ package mod.hey.studios.util;
 import android.graphics.Color;
 import android.os.Build;
 
-import com.besome.sketch.SketchApplication;
-import com.google.android.material.color.MaterialColors;
+import pro.sketchware.SketchApplication;
 
 import a.a.a.lC;
 import a.a.a.yB;

@@ -1,6 +1,6 @@
 package pro.sketchware.utility;
 
-import static com.besome.sketch.SketchApplication.getContext;
+import static pro.sketchware.SketchApplication.getContext;
 
 import android.app.Activity;
 import android.content.Context;

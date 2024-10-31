@@ -1,7 +1,7 @@
 package pro.sketchware.control.logic;
 
 import static android.text.TextUtils.isEmpty;
-import static com.besome.sketch.SketchApplication.getContext;
+import static pro.sketchware.SketchApplication.getContext;
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 import static pro.sketchware.utility.SketchwareUtil.getDip;
 
