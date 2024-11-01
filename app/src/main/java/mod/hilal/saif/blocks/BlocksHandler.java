@@ -1,15 +1,11 @@
 package mod.hilal.saif.blocks;
 
-import static com.besome.sketch.design.DesignActivity.sc_id;
-import static mod.bobur.StringEditorActivity.convertXmlToListMap;
-
 import com.besome.sketch.editor.LogicEditorActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
-import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.blocks.ExtraBlocks;
 import mod.hilal.saif.activities.tools.ConfigActivity;
