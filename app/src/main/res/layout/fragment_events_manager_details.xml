@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="Start by creating an new one"
+            android:text="Start by creating a new one"
             android:textSize="14sp" />
     </LinearLayout>
 
