@@ -93,8 +93,8 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         binding.logsRecyclerView.setAdapter(new Adapter(new ArrayList<>()));
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
-        registerReceiver(logger, intentFilter);
+        intentFilter.addAction("pro.sketchware.ACTION_NEW_DEBUG_LOG");
+        registerReceiver(logger, intentFilter, Context.RECEIVER_NOT_EXPORTED);
 
         final View decorView = getWindow().getDecorView();
         ViewCompat.setOnApplyWindowInsetsListener(decorView, (v, insets) -> {
