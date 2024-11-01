@@ -299,14 +299,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
                         android:layout_weight="1"
-                        android:hint="Parameter: m.name"
+                        android:hint="Parameter: m.name (without % sign)"
                         android:importantForAutofill="noExcludeDescendants">
 
                         <EditText
                             android:id="@+id/parameter"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="parameter (without %)"
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:lines="1"
@@ -325,7 +324,6 @@
                             android:id="@+id/name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="name"
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:lines="1"
