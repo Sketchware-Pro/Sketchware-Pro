@@ -81,6 +81,7 @@ public class StringEditorActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (replaceXml(FileUtil.readFile(getIntent().getStringExtra("content")))
                 .equals(replaceXml(convertListMapToXml(listmap))) || listmap.isEmpty()) {
+            setResult(RESULT_OK);
             finish();
         } else {
             dialog.setTitle("Warning")
@@ -180,7 +181,7 @@ public class StringEditorActivity extends AppCompatActivity {
         return false;
     }
 
-    public String convertListMapToXml(final ArrayList<HashMap<String, Object>> listmap) {
+    public static String convertListMapToXml(final ArrayList<HashMap<String, Object>> listmap) {
         StringBuilder xmlString = new StringBuilder();
         xmlString.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n");
         for (HashMap<String, Object> map : listmap) {
@@ -199,7 +200,7 @@ public class StringEditorActivity extends AppCompatActivity {
         return xmlString.toString();
     }
 
-    private String escapeXml(String text) {
+    public static String escapeXml(String text) {
         if (text == null) return "";
         return text.replace("&", "&amp;")
                 .replace("<", "&lt;")

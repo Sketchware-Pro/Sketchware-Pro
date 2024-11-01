@@ -399,6 +399,10 @@ public class ExtraPaletteBlock {
                 ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
                 convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
 
+                logicEditor.b("Add new String", "XmlString.Add");
+                logicEditor.b("Remove String(s)", "XmlString.remove");
+                logicEditor.b("Open String editor", "openStringEditor");
+
                 logicEditor.a("s", "getResString");
                 logicEditor.a("Saved Res Strings :", 0xff555555);
                 if (!isXmlStringsContains(StringsListMap, "app_name")) {
