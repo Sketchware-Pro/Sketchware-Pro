@@ -897,8 +897,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public final String a(ViewBean bean) {
         int i = bean.type;
-        //String b2 = convert == null ? wq.b(i) : substringCovert(convert);
-        String b2 = wq.b(i);
+        String b2 = !bean.isCustomWidget ? wq.b(i) : substringCovert(bean.convert);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
         int i2 = e[i] + 1;
