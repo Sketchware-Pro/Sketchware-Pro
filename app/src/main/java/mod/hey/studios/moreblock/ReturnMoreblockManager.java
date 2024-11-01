@@ -4,7 +4,7 @@ import android.util.Pair;
 import android.widget.RadioGroup;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.Iterator;
 

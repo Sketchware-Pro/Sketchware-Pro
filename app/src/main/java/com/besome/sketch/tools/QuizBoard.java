@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.QuizBean;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.QuizBoardBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.QuizBoardBinding;
 
 import java.util.ArrayList;
 import java.util.Random;

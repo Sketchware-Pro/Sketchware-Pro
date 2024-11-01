@@ -3,7 +3,7 @@ package mod.trindadedev.tools.apk;
 import android.app.Activity;
 import android.content.Context;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.aB;
 

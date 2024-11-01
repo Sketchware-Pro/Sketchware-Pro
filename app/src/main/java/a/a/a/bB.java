@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import mod.hey.studios.util.Helper;
 

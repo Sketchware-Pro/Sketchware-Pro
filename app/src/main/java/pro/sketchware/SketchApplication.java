@@ -1,4 +1,4 @@
-package com.besome.sketch;
+package pro.sketchware;
 
 import android.app.AlarmManager;
 import android.app.Application;

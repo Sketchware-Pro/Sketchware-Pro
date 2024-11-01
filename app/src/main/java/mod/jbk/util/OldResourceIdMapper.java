@@ -2,7 +2,7 @@ package mod.jbk.util;
 
 import androidx.annotation.DrawableRes;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 public class OldResourceIdMapper {
     public static final int LOWEST_ID = 2131165190;

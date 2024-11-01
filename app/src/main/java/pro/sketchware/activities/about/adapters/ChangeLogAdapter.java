@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sketchware.remod.databinding.AboutChangelogBinding;
+import pro.sketchware.databinding.AboutChangelogBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

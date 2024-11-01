@@ -9,7 +9,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 
 import com.google.android.material.color.MaterialColors;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

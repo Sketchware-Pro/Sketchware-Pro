@@ -21,8 +21,8 @@ import android.widget.TextView;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.PropertyPopupInputTextBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;

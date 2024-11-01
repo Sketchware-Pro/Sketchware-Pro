@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.ViewSelectorActivity;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.aB;
 import a.a.a.by;

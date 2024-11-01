@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity;
 import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
 import com.google.gson.Gson;
-import com.sketchware.remod.databinding.ViewStoreProjectItemBinding;
+import pro.sketchware.databinding.ViewStoreProjectItemBinding;
 
 import java.util.List;
 

@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.FragmentSettingsAppearanceBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.FragmentSettingsAppearanceBinding;
 
 import mod.trindadedev.manage.theme.ThemeManager;
 import mod.trindadedev.ui.fragments.BaseFragment;

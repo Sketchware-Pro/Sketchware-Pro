@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sketchware.remod.databinding.PalletCustomviewBinding;
+import pro.sketchware.databinding.PalletCustomviewBinding;
 
 import java.util.ArrayList;
 

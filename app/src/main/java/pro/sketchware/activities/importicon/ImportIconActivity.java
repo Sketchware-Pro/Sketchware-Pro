@@ -28,10 +28,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.DialogFilterIconsLayoutBinding;
-import com.sketchware.remod.databinding.DialogSaveIconBinding;
-import com.sketchware.remod.databinding.ImportIconBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
+import pro.sketchware.databinding.DialogSaveIconBinding;
+import pro.sketchware.databinding.ImportIconBinding;
 
 import java.io.File;
 import java.io.IOException;

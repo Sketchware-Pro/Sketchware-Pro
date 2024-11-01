@@ -28,10 +28,10 @@ import com.besome.sketch.editor.component.ComponentAddActivity;
 import com.besome.sketch.editor.component.ComponentEventButton;
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.FrComponentListBinding;
-import com.sketchware.remod.databinding.FrLogicListItemComponentBinding;
-import com.sketchware.remod.databinding.FrLogicListItemEventPreviewBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.FrComponentListBinding;
+import pro.sketchware.databinding.FrLogicListItemComponentBinding;
+import pro.sketchware.databinding.FrLogicListItemEventPreviewBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;

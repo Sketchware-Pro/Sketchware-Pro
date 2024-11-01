@@ -26,8 +26,8 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.MenuActivityBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.MenuActivityBinding;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;

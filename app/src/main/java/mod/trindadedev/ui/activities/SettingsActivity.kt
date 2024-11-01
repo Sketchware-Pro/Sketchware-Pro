@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.fragment.app.Fragment
 import com.besome.sketch.lib.base.BaseAppCompatActivity
-import com.sketchware.remod.databinding.ActivitySettingsBinding
+import pro.sketchware.databinding.ActivitySettingsBinding
 import mod.trindadedev.ui.fragments.events.EventsManagerFragment
 import mod.trindadedev.ui.fragments.settings.appearance.SettingsAppearanceFragment
 

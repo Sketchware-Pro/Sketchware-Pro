@@ -18,8 +18,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.card.MaterialCardView;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ManageSoundAddBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageSoundAddBinding;
 
 import java.io.File;
 import java.util.ArrayList;

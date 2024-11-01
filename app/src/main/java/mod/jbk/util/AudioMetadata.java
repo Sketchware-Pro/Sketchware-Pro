@@ -6,7 +6,7 @@ import android.media.MediaMetadataRetriever;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.IOException;
 import java.nio.file.Path;

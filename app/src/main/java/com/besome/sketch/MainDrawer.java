@@ -18,7 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.besome.sketch.help.ProgramInfoActivity;
 import com.besome.sketch.tools.NewKeyStoreActivity;
 import com.google.android.material.navigation.NavigationView;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.mB;
 import dev.chrisbanes.insetter.Insetter;

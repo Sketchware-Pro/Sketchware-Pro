@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sketchware.remod.databinding.ImportIconListItemBinding;
+import pro.sketchware.databinding.ImportIconListItemBinding;
 
 import java.io.File;
 

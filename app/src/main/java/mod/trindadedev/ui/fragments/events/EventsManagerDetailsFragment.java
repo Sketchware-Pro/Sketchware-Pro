@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.FragmentEventsManagerDetailsBinding;
-import com.sketchware.remod.databinding.LayoutEventItemBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.FragmentEventsManagerDetailsBinding;
+import pro.sketchware.databinding.LayoutEventItemBinding;
 
 import java.util.ArrayList;
 import java.util.Collections;

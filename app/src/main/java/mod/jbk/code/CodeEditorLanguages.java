@@ -1,6 +1,6 @@
 package mod.jbk.code;
 
-import com.besome.sketch.SketchApplication;
+import pro.sketchware.SketchApplication;
 
 import io.github.rosemoe.sora.lang.EmptyLanguage;
 import io.github.rosemoe.sora.lang.Language;

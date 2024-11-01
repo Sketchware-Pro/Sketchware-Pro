@@ -7,8 +7,8 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ViewBottomSheetDialogBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ViewBottomSheetDialogBinding;
 
 public class BottomSheetDialogView extends BottomSheetDialog {
     private final ViewBottomSheetDialogBinding binding;

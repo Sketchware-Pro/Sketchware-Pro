@@ -53,8 +53,8 @@ import com.besome.sketch.tools.CompileLogActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ProgressMsgBoxBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -166,6 +166,11 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private final ActivityResultLauncher<Intent> openCollectionManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             viewTabAdapter.j();
+        }
+    });
+    private final ActivityResultLauncher<Intent> openResourcesManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            viewTabAdapter.i();
         }
     });
     private rs eventTabAdapter;
@@ -543,7 +548,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        reloadViewEditor();
         if (!isStoragePermissionGranted()) {
             finish();
         }
@@ -808,7 +812,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      * Opens {@link ManageResourceActivity}.
      */
     void toResourceManager() {
-        launchActivity(ManageResourceActivity.class, null);
+        launchActivity(ManageResourceActivity.class, openResourcesManager);
     }
 
     /**
@@ -874,13 +878,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         }
         launchActivity(SrcViewerActivity.class, null, new Pair<>("current", current));
-    }
-
-    public void reloadViewEditor() {
-        if (viewPager.getCurrentItem() == 0
-                && viewTabAdapter != null) {
-            viewTabAdapter.i();
-        }
     }
 
     @SafeVarargs

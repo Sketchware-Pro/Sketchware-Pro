@@ -25,7 +25,7 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

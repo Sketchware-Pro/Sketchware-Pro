@@ -5,7 +5,7 @@ import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-import com.besome.sketch.SketchApplication;
+import pro.sketchware.SketchApplication;
 
 import java.io.File;
 import java.io.IOException;

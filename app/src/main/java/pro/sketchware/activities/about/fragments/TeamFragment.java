@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.sketchware.remod.databinding.FragmentAboutAppBinding;
+import pro.sketchware.databinding.FragmentAboutAppBinding;
 
 import pro.sketchware.activities.about.adapters.TeamAdapter;
 import pro.sketchware.activities.about.models.AboutAppViewModel;

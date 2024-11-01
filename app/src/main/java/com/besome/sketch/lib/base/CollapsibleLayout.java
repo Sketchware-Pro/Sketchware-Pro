@@ -14,7 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.List;
 

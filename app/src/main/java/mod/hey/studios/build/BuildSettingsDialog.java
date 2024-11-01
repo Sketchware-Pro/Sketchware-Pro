@@ -8,8 +8,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ProjectConfigLayoutBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ProjectConfigLayoutBinding;
 
 import pro.sketchware.utility.SketchwareUtil;
 

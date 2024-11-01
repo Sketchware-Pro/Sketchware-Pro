@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ColorBean;
 import com.besome.sketch.editor.view.ColorGroupItem;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ColorPickerBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ColorPickerBinding;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;

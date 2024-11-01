@@ -5,8 +5,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.LogicEditorTopMenuBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.LogicEditorTopMenuBinding;
 
 import a.a.a.xB;
 

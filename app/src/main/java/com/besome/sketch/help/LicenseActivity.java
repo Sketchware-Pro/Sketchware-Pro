@@ -7,7 +7,7 @@ import android.text.util.Linkify;
 import androidx.activity.EdgeToEdge;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.databinding.ActivityOssLibrariesBinding;
+import pro.sketchware.databinding.ActivityOssLibrariesBinding;
 
 import a.a.a.oB;
 import mod.hey.studios.util.Helper;

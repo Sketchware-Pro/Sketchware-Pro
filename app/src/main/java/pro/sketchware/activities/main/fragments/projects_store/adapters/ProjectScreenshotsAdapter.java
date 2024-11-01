@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.sketchware.remod.databinding.ViewStoreProjectScreenshotBinding;
+import pro.sketchware.databinding.ViewStoreProjectScreenshotBinding;
 
 import java.util.List;
 

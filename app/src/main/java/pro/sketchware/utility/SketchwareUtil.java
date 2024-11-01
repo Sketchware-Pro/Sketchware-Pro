@@ -1,6 +1,6 @@
 package pro.sketchware.utility;
 
-import static com.besome.sketch.SketchApplication.getContext;
+import static pro.sketchware.SketchApplication.getContext;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.util.TypedValue;
 import android.widget.Toast;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
