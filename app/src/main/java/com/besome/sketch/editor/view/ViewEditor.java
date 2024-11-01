@@ -407,7 +407,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         viewPane.a(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                         for (ViewBean next : arrayList) {
                             if (jC.a(a).h(projectFileBean.getXmlName(), next.id)) {
-                                hashMap.put(next.id, a(next.type, null));
+                                hashMap.put(next.id, a(next));
                             } else {
                                 hashMap.put(next.id, next.id);
                             }
@@ -421,7 +421,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     }
                 } else if (r instanceof IconBase icon) {
                     ViewBean bean = icon.getBean();
-                    bean.id = IdGenerator.getId(this, bean.type, bean);
+                    bean.id = a(bean);
                     viewPane.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                     jC.a(a).a(b, bean);
                     if (bean.type == 3 && projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
@@ -895,8 +895,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         a2.setOnTouchListener(this);
     }
 
-    public final String a(int i, String convert) {
-        String b2 = convert == null ? wq.b(i) : substringCovert(convert);
+    public final String a(ViewBean bean) {
+        int i = bean.type;
+        //String b2 = convert == null ? wq.b(i) : substringCovert(convert);
+        String b2 = wq.b(i);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
         int i2 = e[i] + 1;
