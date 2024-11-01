@@ -24,6 +24,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.sketchware.remod.R;
 import com.sketchware.remod.databinding.PropertyPopupInputTextBinding;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -287,8 +288,22 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             } else {
                 setValue(autoCompleteTextView.getText().toString());
             }
-            if (valueChangeListener != null) valueChangeListener.a(key, value);
-            dialog.dismiss();
+            if (valueChangeListener != null) {
+                String inputText = autoCompleteTextView.getText().toString();
+
+                if (inputText.equals(stringsStart)) {
+
+                    String errorMessage = MessageFormat.format(
+                            "Please select a String\n" +
+                                    "or remove \"{0}\" and add the value directly",
+                            stringsStart
+                    );
+                    textAutoCompleteInput.setError(errorMessage);
+                } else {
+                    valueChangeListener.a(key, value);
+                    dialog.dismiss();
+                }
+            }
         }
     }
 
@@ -316,21 +331,13 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             @Override
             public void afterTextChanged(Editable s) {
                 String text = s.toString().trim();
-                boolean foundMatch = false;
-
-                if (!text.startsWith(stringsStart)) {
+                if (!text.startsWith(stringsStart) || text.equals(stringsStart)) {
                     textAutoCompleteInput.setError(null);
                     return;
                 }
 
-                for (String str : keysList) {
-                    if (str.startsWith(text)) {
-                        foundMatch = true;
-                        break;
-                    }
-                }
-
-                textAutoCompleteInput.setError(foundMatch ? null : "Not found in strings.xml");
+                boolean isExactMatch = keysList.contains(text);
+                textAutoCompleteInput.setError(isExactMatch ? null : "Not found in strings.xml");
             }
         });
     }
