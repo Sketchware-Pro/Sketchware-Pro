@@ -43,7 +43,7 @@ import com.besome.sketch.editor.view.palette.IconLinearVertical;
 import com.besome.sketch.editor.view.palette.IconMapView;
 import com.besome.sketch.editor.view.palette.PaletteFavorite;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,7 +67,6 @@ import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
 import pro.sketchware.widgets.WidgetsCreatorManager;
-import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 
@@ -407,7 +406,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         viewPane.a(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                         for (ViewBean next : arrayList) {
                             if (jC.a(a).h(projectFileBean.getXmlName(), next.id)) {
-                                hashMap.put(next.id, a(next.type, null));
+                                hashMap.put(next.id, a(next));
                             } else {
                                 hashMap.put(next.id, next.id);
                             }
@@ -421,7 +420,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     }
                 } else if (r instanceof IconBase icon) {
                     ViewBean bean = icon.getBean();
-                    bean.id = IdGenerator.getId(this, bean.type, bean);
+                    bean.id = a(bean);
                     viewPane.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                     jC.a(a).a(b, bean);
                     if (bean.type == 3 && projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
@@ -715,7 +714,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private void deleteWidgetFromCollection(String str) {
         aB aBVar = new aB((Activity) getContext());
         aBVar.b(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
-        aBVar.a(R.drawable.ic_delete_24);
+        aBVar.a(R.drawable.ic_mtrl_delete);
         aBVar.a(xB.b().a(getContext(), R.string.view_widget_favorites_delete_message));
         aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
             Rp.h().a(str, true);
@@ -895,8 +894,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         a2.setOnTouchListener(this);
     }
 
-    public final String a(int i, String convert) {
-        String b2 = convert == null ? wq.b(i) : substringCovert(convert);
+    public final String a(ViewBean bean) {
+        int i = bean.type;
+        String b2 = !bean.isCustomWidget ? wq.b(i) : substringCovert(bean.convert);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
         int i2 = e[i] + 1;

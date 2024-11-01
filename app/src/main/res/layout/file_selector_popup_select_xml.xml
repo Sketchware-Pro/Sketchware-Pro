@@ -26,18 +26,18 @@
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/colorOnSurface"
             android:layout_weight="1"
-            android:text="@string/common_word_view" />
+            android:text="@string/common_word_view"
+            android:textColor="?attr/colorOnSurface" />
 
         <Button
             android:id="@+id/option_custom_view"
             style="?attr/materialButtonOutlinedStyle"
-            android:textColor="#ffffffff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/common_word_custom_view" />
+            android:text="@string/common_word_custom_view"
+            android:textColor="#ffffffff" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -56,8 +56,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/options_selector"
         android:layout_centerHorizontal="true"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_marginTop="20dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="4"
         tools:listitem="@layout/file_selector_popup_select_xml_activity_item" />
 

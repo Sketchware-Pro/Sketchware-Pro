@@ -5,7 +5,7 @@ import android.content.Context;
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 
@@ -13,7 +13,7 @@ public class IconRadioButton extends IconBase {
 
     public IconRadioButton(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_radio_button);
+        setWidgetImage(R.drawable.ic_mtrl_radio_btn);
         setWidgetName("RadioButton");
     }
 

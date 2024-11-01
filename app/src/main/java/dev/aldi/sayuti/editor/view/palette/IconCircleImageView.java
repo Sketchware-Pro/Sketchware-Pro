@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 
@@ -14,7 +14,7 @@ public class IconCircleImageView extends IconBase {
 
     public IconCircleImageView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_circle_image);
+        setWidgetImage(R.drawable.ic_mtrl_camera);
         setWidgetName("CircleImageView");
     }
 

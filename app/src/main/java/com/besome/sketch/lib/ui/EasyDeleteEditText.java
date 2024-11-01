@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.databinding.EasyDeleteEdittextBinding;
+import pro.sketchware.databinding.EasyDeleteEdittextBinding;
 
 import pro.sketchware.lib.base.BaseTextWatcher;
 

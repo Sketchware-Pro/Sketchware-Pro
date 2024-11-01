@@ -5,7 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.Gx;
 import mod.hilal.saif.components.ComponentsHandler;

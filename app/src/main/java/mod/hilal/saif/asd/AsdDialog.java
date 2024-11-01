@@ -20,7 +20,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.Lx;
 import a.a.a.Ss;

@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.color.MaterialColors;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.AboutTeamviewBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.AboutTeamviewBinding;
 
 import java.util.ArrayList;
 

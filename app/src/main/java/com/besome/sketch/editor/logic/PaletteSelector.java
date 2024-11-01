@@ -12,8 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.PalettesSearchDialogBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.PalettesSearchDialogBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;

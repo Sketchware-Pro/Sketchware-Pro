@@ -27,7 +27,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginBottom="4dp"
-                android:src="@drawable/ic_settings_24" />
+                android:src="@drawable/ic_mtrl_settings" />
 
             <TextView
                 android:layout_width="wrap_content"

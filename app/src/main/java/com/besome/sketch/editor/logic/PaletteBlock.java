@@ -14,7 +14,7 @@ import com.google.android.material.card.MaterialCardView;
 
 import com.besome.sketch.lib.ui.CustomHorizontalScrollView;
 import com.besome.sketch.lib.ui.CustomScrollView;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.Rs;
 import a.a.a.Ts;

@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:startIconDrawable="@drawable/ic_android_24">
+                app:startIconDrawable="@drawable/ic_mtrl_android">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_app_name"
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:placeholderText="com.my.newproject"
-                app:startIconDrawable="@drawable/ic_package_24">
+                app:startIconDrawable="@drawable/ic_mtrl_package">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_package_name"
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:startIconDrawable="@drawable/ic_interests_24">
+                app:startIconDrawable="@drawable/ic_mtrl_interests">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_project_name"
@@ -157,7 +157,7 @@
                             android:layout_height="36dp"
                             android:paddingVertical="6dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_help_24" />
+                            android:src="@drawable/ic_mtrl_help" />
                     </LinearLayout>
 
                     <ImageView
@@ -225,7 +225,7 @@
                         android:layout_height="24dp"
                         android:layout_marginHorizontal="6dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_version_control_24" />
+                        android:src="@drawable/ic_mtrl_version_control" />
 
                     <LinearLayout
                         android:id="@+id/ver_name_holder"

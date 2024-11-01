@@ -27,9 +27,9 @@ import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.MyprojectsBinding;
-import com.sketchware.remod.databinding.SortProjectDialogBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.MyprojectsBinding;
+import pro.sketchware.databinding.SortProjectDialogBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;

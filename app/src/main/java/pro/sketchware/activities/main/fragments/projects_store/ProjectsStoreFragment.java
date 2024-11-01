@@ -18,9 +18,9 @@ import pro.sketchware.activities.main.fragments.projects_store.adapters.StorePro
 import pro.sketchware.activities.main.fragments.projects_store.api.SketchHubAPI;
 import pro.sketchware.activities.main.fragments.projects_store.classes.CenterZoomListener;
 import pro.sketchware.activities.main.fragments.projects_store.classes.HorizontalItemDecoration;
-import com.sketchware.remod.BuildConfig;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.FragmentProjectsStoreBinding;
+import pro.sketchware.BuildConfig;
+import pro.sketchware.R;
+import pro.sketchware.databinding.FragmentProjectsStoreBinding;
 
 public class ProjectsStoreFragment extends Fragment {
     private FragmentProjectsStoreBinding binding;

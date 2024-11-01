@@ -8,8 +8,8 @@ import android.widget.BaseAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ManageCustomAttributeBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageCustomAttributeBinding;
 
 import java.util.LinkedList;
 import java.util.List;

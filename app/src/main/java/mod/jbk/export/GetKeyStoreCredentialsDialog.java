@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.DialogKeystoreCredentialsBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogKeystoreCredentialsBinding;
 
 import java.io.File;
 import java.util.LinkedList;

@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="Start by creating an new one"
+            android:text="Start by creating a new one"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -96,7 +96,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
-        android:src="@drawable/ic_add_24"
+        android:src="@drawable/ic_mtrl_add"
         app:elevation="6dp"
         app:fabSize="normal" />
 

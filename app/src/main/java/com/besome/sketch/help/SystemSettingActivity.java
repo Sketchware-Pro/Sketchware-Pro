@@ -7,8 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.PreferenceActivityBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.PreferenceActivityBinding;
 
 import mod.hey.studios.util.Helper;
 

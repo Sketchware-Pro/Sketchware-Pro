@@ -18,7 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import com.sketchware.remod.databinding.CompileLogBinding;
+import pro.sketchware.databinding.CompileLogBinding;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 

@@ -2,7 +2,7 @@ package mod.jbk.code;
 
 import android.content.res.AssetManager;
 
-import com.besome.sketch.SketchApplication;
+import pro.sketchware.SketchApplication;
 
 import org.eclipse.tm4e.core.registry.IThemeSource;
 

@@ -15,8 +15,8 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ActivityAboutAppBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ActivityAboutAppBinding;
 
 import pro.sketchware.activities.about.fragments.ChangeLogFragment;
 import pro.sketchware.activities.about.fragments.MajorChangesFragment;

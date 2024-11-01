@@ -8,8 +8,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ProjectConfigLayoutBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ProjectConfigLayoutBinding;
 
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -48,7 +48,7 @@ public class BuildSettingsDialog {
 
         var builder = new MaterialAlertDialogBuilder(activity)
                 .setTitle("Build Settings")
-                .setIcon(R.drawable.ic_tune_24)
+                .setIcon(R.drawable.ic_mtrl_tune)
                 .setPositiveButton("Save", (dialogInterface, i) -> settings.setValues(viewArr))
                 .setNegativeButton("Cancel", null);
         builder.setView(binding.getRoot());
