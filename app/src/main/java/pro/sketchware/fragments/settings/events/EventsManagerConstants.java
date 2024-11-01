@@ -1,4 +1,4 @@
-package mod.trindadedev.ui.fragments.events;
+package pro.sketchware.fragments.settings.events;
 
 import android.os.Environment;
 

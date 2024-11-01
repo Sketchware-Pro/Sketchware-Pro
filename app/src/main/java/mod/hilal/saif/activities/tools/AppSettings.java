@@ -40,7 +40,7 @@ import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
-import mod.trindadedev.ui.activities.SettingsActivity;
+import pro.sketchware.activities.settings.SettingsActivity;
 
 public class AppSettings extends BaseAppCompatActivity {
 

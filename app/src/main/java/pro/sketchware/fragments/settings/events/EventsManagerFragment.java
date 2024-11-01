@@ -1,4 +1,4 @@
-package mod.trindadedev.ui.fragments.events;
+package pro.sketchware.fragments.settings.events;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -30,7 +30,7 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
-import mod.trindadedev.ui.fragments.BaseFragment;
+import pro.sketchware.fragments.base.BaseFragment;
 
 public class EventsManagerFragment extends BaseFragment {
 

@@ -1,4 +1,4 @@
-package mod.trindadedev.ui.fragments;
+package pro.sketchware.fragments.base;
 
 import android.os.Bundle;
 

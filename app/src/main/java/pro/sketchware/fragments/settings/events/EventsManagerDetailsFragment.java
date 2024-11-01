@@ -1,4 +1,4 @@
-package mod.trindadedev.ui.fragments.events;
+package pro.sketchware.fragments.settings.events;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
-import mod.trindadedev.ui.fragments.BaseFragment;
+import pro.sketchware.fragments.base.BaseFragment;
 
 public class EventsManagerDetailsFragment extends BaseFragment {
 
