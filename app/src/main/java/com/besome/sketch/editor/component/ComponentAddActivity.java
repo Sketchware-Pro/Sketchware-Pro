@@ -27,11 +27,16 @@ import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.FlexboxLayoutManager.LayoutParams;
 import com.google.android.flexbox.JustifyContent;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.LogicPopupAddComponentTempBinding;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import a.a.a.GB;
 import a.a.a.SB;
@@ -61,6 +66,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     private boolean y;
 
     private LogicPopupAddComponentTempBinding binding;
+    private final AtomicInteger selectedMime = new AtomicInteger(0);
 
     private boolean checks() {
         int componentType = componentList.get(componentsAdapter.layoutPosition).type;
@@ -137,14 +143,6 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         }
         jC.a(sc_id).k();
         return true;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 275 && resultCode == RESULT_OK) {
-            binding.edInputFilePicker.setText(data.getStringExtra("mime_type"));
-        }
     }
 
     @Override
@@ -261,8 +259,33 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 }
             }
         } else if (id == R.id.img_file_picker) {
-            startActivityForResult(new Intent(this, ShowFilePickerTypesActivity.class), 275);
+            showFilePickerMimeTypeSelectionDialog();
         }
+    }
+
+    private void showFilePickerMimeTypeSelectionDialog() {
+        AtomicInteger selectedChoice = new AtomicInteger(selectedMime.get());
+
+        List<String> mimeTypes = Arrays.asList("*/*", "image/*", "audio/*", "text/*");
+        List<String> mimeTypeLabels = Arrays.asList(
+                getTranslatedString(R.string.component_file_picker_title_select_mime_type_all_files),
+                getTranslatedString(R.string.component_file_picker_title_select_mime_type_image_files),
+                getTranslatedString(R.string.component_file_picker_title_select_mime_type_audio_files),
+                getTranslatedString(R.string.component_file_picker_title_select_mime_type_text_files)
+        );
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(getTranslatedString(R.string.component_file_picker_title_select_mime_type))
+                .setSingleChoiceItems(mimeTypeLabels.toArray(new String[0]), selectedMime.get(), (dialog, which) -> {
+                    selectedChoice.set(which);
+                })
+                .setPositiveButton(R.string.common_word_select, (dialog, which) -> {
+                    String selectedMimeType = mimeTypes.get(selectedChoice.get());
+                    selectedMime.set(selectedChoice.get());
+                    binding.edInputFilePicker.setText(selectedMimeType);
+                })
+                .setNegativeButton(R.string.common_word_cancel, (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     @Override
