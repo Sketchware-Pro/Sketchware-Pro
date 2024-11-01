@@ -67,7 +67,6 @@ import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
 import pro.sketchware.widgets.WidgetsCreatorManager;
-import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 
