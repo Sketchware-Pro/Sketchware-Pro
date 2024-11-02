@@ -15,7 +15,6 @@ import pro.sketchware.databinding.FragmentBlockSelectorManagerBinding;
 import pro.sketchware.databinding.DialogAddCustomActivityBinding;
 import pro.sketchware.databinding.DialogSelectorActionsBinding;
 
-import pro.sketchware.fragments.base.BaseFragment;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.fragments.settings.selector.block.Selector;
@@ -24,8 +23,9 @@ import pro.sketchware.fragments.settings.selector.block.BlockSelectorConsts;
 import java.util.List;
 
 import a.a.a.aB;
+import a.a.a.qA;
 
-public class BlockSelectorDetailsFragment extends BaseFragment {
+public class BlockSelectorDetailsFragment extends qA {
 
     private final int index;
     private final List<Selector> selectors;

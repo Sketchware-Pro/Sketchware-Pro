@@ -3,10 +3,19 @@ package a.a.a;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.fragment.app.Fragment;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.transition.MaterialSharedAxis;
+
+import pro.sketchware.R;
+
+import dev.chrisbanes.insetter.Insetter;
 
 public class qA extends Fragment {
 
@@ -40,6 +49,30 @@ public class qA extends Fragment {
         super.onCreate(savedInstanceState);
         a = getActivity();
         b = a.getApplicationContext();
+        setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+        setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+        setExitTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+        setReenterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+    }
+    
+    public void openFragment(Fragment fragment) {
+        getParentFragmentManager().beginTransaction()
+            .replace(R.id.settings_fragment_container, fragment)
+            .addToBackStack(null)
+            .commit();
+    }
+    
+    public void configureToolbar(MaterialToolbar toolbar) {
+        final OnBackPressedDispatcher onBackPressedDispatcher = requireActivity().getOnBackPressedDispatcher();
+        toolbar.setNavigationOnClickListener(v -> {
+            onBackPressedDispatcher.onBackPressed();
+        });
+    }
+
+    public void handleInsetts(View root) {
+        Insetter.builder()
+            .padding(WindowInsetsCompat.Type.navigationBars())
+            .applyToView(root);
     }
 
 }

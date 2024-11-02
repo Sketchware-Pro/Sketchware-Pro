@@ -13,7 +13,9 @@ import pro.sketchware.databinding.FragmentSettingsAppearanceBinding;
 import pro.sketchware.utility.theme.ThemeManager;
 import pro.sketchware.fragments.base.BaseFragment;
 
-public class SettingsAppearanceFragment extends BaseFragment {
+import a.a.a.qA;
+
+public class SettingsAppearanceFragment extends qA {
 
     private FragmentSettingsAppearanceBinding binding;
 

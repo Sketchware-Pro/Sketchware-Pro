@@ -10,20 +10,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentEventsManagerDetailsBinding;
 import pro.sketchware.databinding.LayoutEventItemBinding;
+import pro.sketchware.utility.FileUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
-import pro.sketchware.fragments.base.BaseFragment;
 
-public class EventsManagerDetailsFragment extends BaseFragment {
+import a.a.a.qA;
+
+public class EventsManagerDetailsFragment extends qA {
 
     private final ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
     private final String listName;

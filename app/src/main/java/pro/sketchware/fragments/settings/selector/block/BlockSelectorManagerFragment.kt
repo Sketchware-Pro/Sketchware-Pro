@@ -25,7 +25,6 @@ import com.google.gson.JsonParser
 
 import com.google.android.material.appbar.MaterialToolbar
 
-import pro.sketchware.fragments.base.BaseFragment
 import pro.sketchware.utility.SketchwareUtil.toast
 import pro.sketchware.utility.SketchwareUtil.toastError
 import pro.sketchware.utility.FileUtil.writeFile
@@ -41,10 +40,11 @@ import kotlin.io.readText
 import java.io.File
 
 import a.a.a.aB
+import a.a.a.qA;
 
 import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog
 
-class BlockSelectorManagerFragment : BaseFragment() {
+class BlockSelectorManagerFragment : qA() {
     
     private var _binding: FragmentBlockSelectorManagerBinding? = null
     private val binding get() = _binding!!
