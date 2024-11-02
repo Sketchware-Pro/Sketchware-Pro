@@ -129,6 +129,8 @@ public class ViewBean extends nA implements Parcelable {
     public float translationY;
     @Expose
     public int type;
+    @Expose
+    public boolean isCustomWidget;
 
     public ViewBean() {
         parent = null;
@@ -157,6 +159,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = "";
         convert = "";
         progressStyle = PROGRESSBAR_STYLE_CIRCLE;
+        isCustomWidget = false;
     }
 
     public ViewBean(Parcel parcel) {
@@ -194,6 +197,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = parcel.readString();
         convert = parcel.readString();
         progressStyle = parcel.readString();
+        isCustomWidget = parcel.readBoolean();
     }
 
     public ViewBean(String id, int type) {
@@ -359,6 +363,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = other.inject;
         convert = other.convert;
         progressStyle = other.progressStyle;
+        isCustomWidget = other.isCustomWidget;
     }
 
     @Override
@@ -464,5 +469,6 @@ public class ViewBean extends nA implements Parcelable {
         dest.writeString(inject);
         dest.writeString(convert);
         dest.writeString(progressStyle);
+        dest.writeBoolean(isCustomWidget);
     }
 }
