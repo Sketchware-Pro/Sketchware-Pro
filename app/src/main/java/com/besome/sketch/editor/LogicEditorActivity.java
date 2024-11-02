@@ -78,7 +78,6 @@ import pro.sketchware.databinding.ViewStringEditorAddBinding;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -168,6 +167,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private View Y;
     private boolean G, u, W, X, da, ea, ha, ia;
     private final Runnable aa = this::r;
+    private ArrayList<BlockBean> savedBlockBean = new ArrayList<>();
 
     private final ActivityResultLauncher<Intent> openStringEditor = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
@@ -452,23 +452,51 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         listMap.removeIf(map -> key.equals(map.get("key")));
     }
 
-    public static boolean isXmlStringUsed(String projectScId, String key) {
+    private boolean isXmlStringUsed(String projectScId, String key) {
         if ("app_name".equals(key)) {
             return false;
         }
         eC projectDataManager = jC.a(projectScId);
 
-        return isKeyUsedInJavaFiles(projectDataManager, projectScId, key) || isKeyUsedInXmlFiles(projectDataManager, projectScId, key);
+        return isKeyHasNonSavedUsage(key) || isKeyUsedInJavaFiles(projectDataManager, projectScId, key) || isKeyUsedInXmlFiles(projectDataManager, projectScId, key);
     }
 
-    private static boolean isKeyUsedInJavaFiles(eC projectDataManager, String projectScId, String key) {
+    private boolean isKeyHasNonSavedUsage(String key) {
+        for (BlockBean block : o.getBlocks()) {
+            if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
+                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+
+                showToastError();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isKeyHasSavedUsage(String key) {
+        for (BlockBean block : savedBlockBean) {
+            if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
+                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isKeyUsedInJavaFiles(eC projectDataManager, String projectScId, String key) {
+
+        if ((getStringUsageLengthInJava(projectDataManager, projectScId, key) == 1) && isKeyHasSavedUsage(key) && !isKeyHasNonSavedUsage(key)) {
+            return false;
+        }
+
         for (String javaFileName : getAllJavaFileNames(projectScId)) {
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
                 for (BlockBean block : entry.getValue()) {
                     if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
                             (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
 
-                        showToastError(javaFileName);
+                        showToastError();
                         return true;
                     }
                 }
@@ -477,13 +505,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return false;
     }
 
-    private static boolean isKeyUsedInXmlFiles(eC projectDataManager, String projectScId, String key) {
+    private boolean isKeyUsedInXmlFiles(eC projectDataManager, String projectScId, String key) {
         for (String xmlFileName : getAllXmlFileNames(projectScId)) {
             for (ViewBean view : projectDataManager.d(xmlFileName)) {
                 if (view.text.text.equals("@string/" + key) ||
                         (view.text.hint.equals("@string/" + key))) {
 
-                    showToastError(xmlFileName);
+                    showToastError();
                     return true;
                 }
             }
@@ -491,13 +519,24 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return false;
     }
 
-    private static void showToastError(String fileName) {
-        SketchwareUtil.toastError(
-                MessageFormat.format(
-                        Helper.getResString(R.string.logic_editor_title_remove_xml_string_error),
-                        fileName
-                )
-        );
+    private void showToastError() {
+        SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_title_remove_xml_string_error));
+    }
+
+    private int getStringUsageLengthInJava(eC projectDataManager, String projectScId, String key) {
+        int length = 0;
+        for (String javaFileName : getAllJavaFileNames(projectScId)) {
+            for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
+                for (BlockBean block : entry.getValue()) {
+                    if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
+                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+
+                        length++;
+                    }
+                }
+            }
+        }
+        return length;
     }
 
     public static ArrayList<String> getAllJavaFileNames(String projectScId) {
@@ -822,6 +861,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         Rs rs2 = rs.E;
         if (rs2 != null) {
             w = rs2;
+            if (savedBlockBean.isEmpty()) {
+                savedBlockBean = o.getBlocks();
+            }
         }
         Rs rs3 = w;
         if (rs3 == null) {

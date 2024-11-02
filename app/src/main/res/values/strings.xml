@@ -1417,7 +1417,7 @@ Please try again after removing the blocks with this variable"</string>
     <string name="logic_editor_title_remove_list">Remove a list</string>
     <string name="logic_editor_title_remove_variable">Remove a variable</string>
     <string name="logic_editor_title_remove_xml_strings">Remove a String(s)</string>
-    <string name="logic_editor_title_remove_xml_string_error">Selected String is currently used in \"{0}\"\nPlease try again after removing the usage</string>
+    <string name="logic_editor_title_remove_xml_string_error">The selected string is currently in use in your project.\nPlease try again after removing all instances</string>
     <string name="logic_editor_title_request_network_method">Select Method</string>
     <string name="logic_editor_title_request_network_request_type">Select Request Type</string>
     <string name="logic_editor_title_select_activity">Select activity</string>
