@@ -11,7 +11,6 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentSettingsAppearanceBinding;
 
 import pro.sketchware.utility.theme.ThemeManager;
-import pro.sketchware.fragments.base.BaseFragment;
 
 import a.a.a.qA;
 

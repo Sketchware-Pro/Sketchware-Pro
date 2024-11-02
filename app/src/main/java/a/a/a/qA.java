@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.activity.OnBackPressedDispatcher;
 import androidx.fragment.app.Fragment;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
