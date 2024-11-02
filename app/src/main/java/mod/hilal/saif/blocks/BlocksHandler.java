@@ -2433,9 +2433,9 @@ public class BlocksHandler {
         hashMap.put("spec", "app_name");
         arrayList.add(hashMap);
 
-        String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
+        String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
         ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
-        convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+        convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
         for (HashMap<String, Object> map : StringsListMap) {
             String key = map.get("key").toString();
             hashMap = new HashMap<>();
