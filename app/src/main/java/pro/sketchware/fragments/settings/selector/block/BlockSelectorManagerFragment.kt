@@ -12,10 +12,10 @@ import android.util.Log
 
 import androidx.lifecycle.lifecycleScope
 
-import com.sketchware.remod.R
-import com.sketchware.remod.databinding.FragmentBlockSelectorManagerBinding
-import com.sketchware.remod.databinding.DialogBlockConfigurationBinding as DialogCreateBinding
-import com.sketchware.remod.databinding.DialogSelectorActionsBinding
+import pro.sketchware.R
+import pro.sketchware.databinding.FragmentBlockSelectorManagerBinding
+import pro.sketchware.databinding.DialogBlockConfigurationBinding as DialogCreateBinding
+import pro.sketchware.databinding.DialogSelectorActionsBinding
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -67,10 +67,10 @@ class BlockSelectorManagerFragment : BaseFragment() {
         configureToolbar(binding.toolbar)
         handleInsetts(binding.root)
         adapter = BlockSelectorAdapter(
-            onClick = { selector, index ->
+            { selector, index ->
                 openFragment(BlockSelectorDetailsFragment(index, selectors))
             },
-            onLongClick = { selector, index ->
+            { selector, index ->
                 showActionsDialog(index = index)
             }
         )
@@ -84,9 +84,9 @@ class BlockSelectorManagerFragment : BaseFragment() {
             } else {
                 selectors.add(
                     Selector(
-                        name = "typeview",
-                        title = "Select typeview:",
-                        data = getTypeViewList()
+                        "typeview",
+                        "Select typeview:",
+                        getTypeViewList()
                     )
                 )
                 saveAllSelectors()
@@ -158,9 +158,9 @@ class BlockSelectorManagerFragment : BaseFragment() {
                     if (!itemAlreadyExists(selectorName)) {
                         selectors.add(
                             Selector(
-                                name = selectorName,
-                                title = selectorTitle,
-                                data = mutableListOf()
+                                selectorName,
+                                selectorTitle,
+                                mutableListOf()
                             )
                         )
                     } else {
@@ -168,9 +168,9 @@ class BlockSelectorManagerFragment : BaseFragment() {
                     }
                 } else {
                     selectors[index] = Selector(
-                        name = selectorName,
-                        title = selectorTitle,
-                        data = selectors.get(index).data
+                        selectorName,
+                        selectorTitle,
+                        selectors.get(index).data
                     )
                 }
                 saveAllSelectors()
@@ -395,8 +395,8 @@ class BlockSelectorManagerFragment : BaseFragment() {
     /*
      * A Default list of Selector Itens
      */
-    private fun getTypeViewList(): MutableList<String> {
-        return mutableListOf(
+    private fun getTypeViewList(): List<String> {
+        return listOf(
             "View",
             "ViewGroup",
             "LinearLayout",
