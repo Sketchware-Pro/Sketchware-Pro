@@ -489,12 +489,12 @@ public class WidgetsCreatorManager extends IconBase {
         return true;
     }
 
-    public static String substringCovert(String input) {
+    public static String generateCustomWidgetId(String input) {
         int lastIndex = input.lastIndexOf('.');
         if (lastIndex != -1) {
-            input.substring(lastIndex + 1);
+            input = input.substring(lastIndex + 1);
         }
-        return input.toLowerCase();
+        return input.substring(0, 1).toLowerCase() + input.substring(1);
     }
 
     public static List<String> getSuggestions(Context context) {
