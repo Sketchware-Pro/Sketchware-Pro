@@ -115,7 +115,7 @@ public class WidgetsCreatorManager extends IconBase {
                 break;
         }
         viewBean.inject = Objects.requireNonNull(MapInfo.get("inject")).toString();
-        viewBean.isCustomWidget = true;
+        viewBean.isCustomWidget = 1;
         return viewBean;
     }
 

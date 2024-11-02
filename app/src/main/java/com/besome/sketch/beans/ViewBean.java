@@ -130,7 +130,11 @@ public class ViewBean extends nA implements Parcelable {
     @Expose
     public int type;
     @Expose
-    public boolean isCustomWidget;
+    public int isCustomWidget;
+
+    public boolean isItCustomWidget() {
+        return isCustomWidget == 1;
+    }
 
     public ViewBean() {
         parent = null;
@@ -159,7 +163,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = "";
         convert = "";
         progressStyle = PROGRESSBAR_STYLE_CIRCLE;
-        isCustomWidget = false;
+        isCustomWidget = 0;
     }
 
     public ViewBean(Parcel parcel) {
@@ -197,7 +201,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = parcel.readString();
         convert = parcel.readString();
         progressStyle = parcel.readString();
-        isCustomWidget = parcel.readBoolean();
+        isCustomWidget = parcel.readInt();
     }
 
     public ViewBean(String id, int type) {
@@ -469,6 +473,6 @@ public class ViewBean extends nA implements Parcelable {
         dest.writeString(inject);
         dest.writeString(convert);
         dest.writeString(progressStyle);
-        dest.writeBoolean(isCustomWidget);
+        dest.writeInt(isCustomWidget);
     }
 }
