@@ -22,7 +22,7 @@
             android:id="@+id/chk_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp" />
+            android:layout_marginLeft="10dp" />
 
         <LinearLayout
             android:id="@+id/delete_img_container"

@@ -17,9 +17,6 @@ import com.besome.sketch.editor.manage.view.AddCustomViewActivity;
 import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import pro.sketchware.R;
-import pro.sketchware.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
-import pro.sketchware.databinding.FileSelectorPopupSelectXmlBinding;
 
 import java.util.ArrayList;
 
@@ -30,9 +27,12 @@ import a.a.a.mB;
 import a.a.a.rq;
 import a.a.a.wq;
 import a.a.a.xB;
+import pro.sketchware.R;
+import pro.sketchware.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
+import pro.sketchware.databinding.FileSelectorPopupSelectXmlBinding;
 
 public class ViewSelectorActivity extends BaseAppCompatActivity {
-    private Adapter adapter;
+    private ViewSelectorAdapter viewSelectorAdapter;
     private String sc_id;
     private ProjectFileBean projectFile;
     private String currentXml;
@@ -88,13 +88,13 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     }
                     jC.b(sc_id).j();
                     jC.b(sc_id).l();
-                    adapter.notifyDataSetChanged();
+                    viewSelectorAdapter.notifyDataSetChanged();
                 }
                 break;
             case 265:
                 if (resultCode == RESULT_OK) {
                     ProjectFileBean projectFile = data.getParcelableExtra("project_file");
-                    ProjectFileBean activity = jC.b(sc_id).b().get(adapter.selectedItem);
+                    ProjectFileBean activity = jC.b(sc_id).b().get(viewSelectorAdapter.selectedItem);
                     activity.keyboardSetting = projectFile.keyboardSetting;
                     activity.orientation = projectFile.orientation;
                     activity.options = projectFile.options;
@@ -107,7 +107,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                             || projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
                         jC.c(sc_id).c().useYn = "Y";
                     }
-                    adapter.notifyItemChanged(adapter.selectedItem);
+                    viewSelectorAdapter.notifyItemChanged(viewSelectorAdapter.selectedItem);
                     Intent intent = new Intent();
                     intent.putExtra("project_file", projectFile);
                     setResult(RESULT_OK, intent);
@@ -122,13 +122,13 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     }
                     jC.b(sc_id).j();
                     jC.b(sc_id).l();
-                    adapter.notifyDataSetChanged();
+                    viewSelectorAdapter.notifyDataSetChanged();
                 }
                 break;
             case 276:
                 if (resultCode == RESULT_OK) {
                     ProjectFileBean presetData = data.getParcelableExtra("preset_data");
-                    ProjectFileBean activity = jC.b(sc_id).b().get(adapter.selectedItem);
+                    ProjectFileBean activity = jC.b(sc_id).b().get(viewSelectorAdapter.selectedItem);
                     activity.keyboardSetting = presetData.keyboardSetting;
                     activity.orientation = presetData.orientation;
                     activity.options = presetData.options;
@@ -138,7 +138,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     }
                     a(presetData, activity, requestCode);
                     jC.b(sc_id).j();
-                    adapter.notifyDataSetChanged();
+                    viewSelectorAdapter.notifyDataSetChanged();
                     Intent intent2 = new Intent();
                     intent2.putExtra("project_file", activity);
                     setResult(RESULT_OK, intent2);
@@ -148,10 +148,10 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             case 278:
                 if (resultCode == RESULT_OK) {
                     ProjectFileBean presetData = data.getParcelableExtra("preset_data");
-                    ProjectFileBean customView = jC.b(sc_id).c().get(adapter.selectedItem);
+                    ProjectFileBean customView = jC.b(sc_id).c().get(viewSelectorAdapter.selectedItem);
                     a(presetData, customView, requestCode);
                     jC.b(sc_id).j();
-                    adapter.notifyDataSetChanged();
+                    viewSelectorAdapter.notifyDataSetChanged();
                     Intent intent3 = new Intent();
                     intent3.putExtra("project_file", customView);
                     setResult(RESULT_OK, intent3);
@@ -183,9 +183,19 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         }
         binding.optionsSelector.check(selectedTab == TAB_ACTIVITY ? R.id.option_view : R.id.option_custom_view);
         binding.emptyMessage.setText(xB.b().a(this, R.string.design_manager_view_message_no_view));
-        adapter = new Adapter();
+        viewSelectorAdapter = new ViewSelectorAdapter();
         binding.listXml.setHasFixedSize(true);
-        binding.listXml.setAdapter(adapter);
+        binding.listXml.setAdapter(viewSelectorAdapter);
+        binding.listXml.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    binding.createNewView.hide();
+                } else {
+                    binding.createNewView.show();
+                }
+            }
+        });
         binding.optionsSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 if (checkedId == R.id.option_view) {
@@ -197,8 +207,8 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     binding.optionView.setTextColor(Color.parseColor("#FFFFFF"));
                     binding.optionCustomView.setTextColor(R.attr.titleTextColor);
                 }
-                adapter.notifyDataSetChanged();
-                binding.emptyMessage.setVisibility(adapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+                viewSelectorAdapter.notifyDataSetChanged();
+                binding.emptyMessage.setVisibility(viewSelectorAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
             }
         });
         binding.createNewView.setOnClickListener(v -> {
@@ -228,7 +238,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+    private class ViewSelectorAdapter extends RecyclerView.Adapter<ViewSelectorAdapter.ViewHolder> {
         private int selectedItem = -1;
 
         private class ViewHolder extends RecyclerView.ViewHolder {
@@ -277,13 +287,12 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             }
         }
 
-        public Adapter() {
-        }
-
         @Override
         public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-            viewHolder.itemBinding.container.setBackgroundColor(ContextCompat.getColor(
+            viewHolder.itemBinding.cardView.setStrokeWidth(0);
+            viewHolder.itemBinding.cardView.setStrokeColor(ContextCompat.getColor(
                     ViewSelectorActivity.this, R.color.transparent));
+
             if (selectedTab == TAB_ACTIVITY) {
                 viewHolder.itemBinding.tvFilename.setVisibility(View.VISIBLE);
                 viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.VISIBLE);

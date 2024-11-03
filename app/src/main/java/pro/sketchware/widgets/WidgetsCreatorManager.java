@@ -115,6 +115,7 @@ public class WidgetsCreatorManager extends IconBase {
                 break;
         }
         viewBean.inject = Objects.requireNonNull(MapInfo.get("inject")).toString();
+        viewBean.isCustomWidget = true;
         return viewBean;
     }
 
@@ -484,9 +485,8 @@ public class WidgetsCreatorManager extends IconBase {
     public static String substringCovert(String input) {
         int lastIndex = input.lastIndexOf('.');
         if (lastIndex != -1) {
-            return input.substring(lastIndex + 1);
-        } else {
-            return input;
+            input.substring(lastIndex + 1);
         }
+        return input.toLowerCase();
     }
 }
