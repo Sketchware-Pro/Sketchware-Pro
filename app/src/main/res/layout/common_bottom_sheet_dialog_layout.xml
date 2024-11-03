@@ -48,7 +48,7 @@
                     android:layout_height="24dp"
                     android:layout_marginEnd="14dp"
                     app:tint="?colorSecondary"
-                    tools:src="@drawable/ic_tune_24" />
+                    tools:src="@drawable/ic_mtrl_tune" />
 
                 <TextView
                     android:id="@+id/common_dialog_tv_title"

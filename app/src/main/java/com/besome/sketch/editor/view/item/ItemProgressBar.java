@@ -10,7 +10,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.sy;
 import a.a.a.wB;

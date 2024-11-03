@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 
@@ -13,7 +13,7 @@ public class IconSwipeRefreshLayout extends IconBase {
 
     public IconSwipeRefreshLayout(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_swipe_refresh);
+        setWidgetImage(R.drawable.ic_mtrl_refresh);
         setWidgetName("SwipeRefreshLayout");
     }
 

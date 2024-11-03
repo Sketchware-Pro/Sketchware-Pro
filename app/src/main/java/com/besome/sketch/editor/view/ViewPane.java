@@ -60,7 +60,7 @@ import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;

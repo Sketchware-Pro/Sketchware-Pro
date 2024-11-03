@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.FragmentEventsManagerCreatorBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.FragmentEventsManagerCreatorBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;

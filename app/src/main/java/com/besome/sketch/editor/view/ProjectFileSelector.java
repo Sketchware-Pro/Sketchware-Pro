@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.ViewSelectorActivity;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.aB;
 import a.a.a.by;
@@ -181,7 +181,7 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
     private void showAvailableJavaFiles() {
         availableFilesDialog = new aB((Activity) getContext());
         availableFilesDialog.b(xB.b().a(getContext(), R.string.design_file_selector_title_java));
-        availableFilesDialog.a(R.drawable.ic_java_24);
+        availableFilesDialog.a(R.drawable.ic_mtrl_java);
         View customView = wB.a(getContext(), R.layout.file_selector_popup_select_java);
         RecyclerView recyclerView = customView.findViewById(R.id.file_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));

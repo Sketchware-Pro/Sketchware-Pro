@@ -1,10 +1,10 @@
 package mod.tyron.compiler;
 
-import static com.besome.sketch.SketchApplication.getContext;
+import static pro.sketchware.SketchApplication.getContext;
 
 import android.util.Log;
 
-import com.besome.sketch.SketchApplication;
+import pro.sketchware.SketchApplication;
 
 import java.io.File;
 import java.io.IOException;

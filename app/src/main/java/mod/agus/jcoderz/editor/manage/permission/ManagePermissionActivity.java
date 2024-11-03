@@ -19,9 +19,9 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ManagePermissionBinding;
-import com.sketchware.remod.databinding.ViewItemPermissionBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManagePermissionBinding;
+import pro.sketchware.databinding.ViewItemPermissionBinding;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 

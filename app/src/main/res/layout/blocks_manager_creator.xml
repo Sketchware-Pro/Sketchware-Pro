@@ -157,7 +157,7 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:padding="8dp"
                             android:scaleType="fitCenter"
-                            app:srcCompat="@drawable/ic_pick_24" />
+                            app:srcCompat="@drawable/ic_mtrl_pick_color" />
 
                         <ImageView
                             android:id="@+id/reset"

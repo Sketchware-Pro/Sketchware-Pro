@@ -1,7 +1,7 @@
 package mod.tyron.compiler;
 
 import com.android.tools.r8.D8;
-import com.besome.sketch.SketchApplication;
+import pro.sketchware.SketchApplication;
 
 import java.io.File;
 import java.util.ArrayList;

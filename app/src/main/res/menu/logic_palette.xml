@@ -2,15 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/activity"
-        android:icon="@drawable/ic_lifecycle"
+        android:icon="@drawable/ic_mtrl_lifecycle"
         android:title="@string/common_word_activity" />
     <item
         android:id="@+id/view"
-        android:icon="@drawable/ic_view"
+        android:icon="@drawable/ic_mtrl_view_vertical"
         android:title="@string/common_word_view" />
     <item
         android:id="@+id/component"
-        android:icon="@drawable/ic_component"
+        android:icon="@drawable/ic_mtrl_component"
         android:title="@string/common_word_component" />
     <item
         android:id="@+id/drawer"

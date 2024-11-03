@@ -24,8 +24,8 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.sketchware.remod"
-        namespace "com.sketchware.remod"
+        applicationId "pro.sketchware"
+        namespace "pro.sketchware"
         //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
         targetSdkVersion 28
         versionCode 150

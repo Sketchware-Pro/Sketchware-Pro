@@ -29,11 +29,11 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
-import com.sketchware.remod.databinding.DialogInputLayoutBinding;
-import com.sketchware.remod.databinding.ManageFileBinding;
-import com.sketchware.remod.databinding.ManageJavaItemHsBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
+import pro.sketchware.databinding.DialogInputLayoutBinding;
+import pro.sketchware.databinding.ManageFileBinding;
+import pro.sketchware.databinding.ManageJavaItemHsBinding;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
@@ -442,11 +442,11 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
             });
 
             if (isFolder(position)) {
-                holder.binding.icon.setImageResource(R.drawable.ic_folder_24);
+                holder.binding.icon.setImageResource(R.drawable.ic_mtrl_folder);
             } else if (fileName.endsWith(".java")) {
-                holder.binding.icon.setImageResource(R.drawable.ic_java_24);
+                holder.binding.icon.setImageResource(R.drawable.ic_mtrl_java);
             } else if (fileName.endsWith(".kt")) {
-                holder.binding.icon.setImageResource(R.drawable.ic_kotlin_24);
+                holder.binding.icon.setImageResource(R.drawable.ic_mtrl_kotlin);
             }
 
             Helper.applyRipple(ManageJavaActivity.this, holder.binding.more);

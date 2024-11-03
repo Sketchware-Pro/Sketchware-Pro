@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.Rs;
 import a.a.a.wB;

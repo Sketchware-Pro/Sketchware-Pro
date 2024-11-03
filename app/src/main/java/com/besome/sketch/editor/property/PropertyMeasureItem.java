@@ -11,7 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.Kw;
 import a.a.a.TB;

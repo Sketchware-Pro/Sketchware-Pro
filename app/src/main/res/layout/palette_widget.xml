@@ -26,7 +26,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="28dp"
-                app:srcCompat="@drawable/ic_mtrl_plus" />
+                app:srcCompat="@drawable/ic_mtrl_add" />
 
             <TextView
                 android:layout_width="wrap_content"

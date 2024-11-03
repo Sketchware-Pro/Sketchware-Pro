@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.besome.sketch.SketchApplication;
+import pro.sketchware.SketchApplication;
 
 import java.io.File;
 import java.io.IOException;

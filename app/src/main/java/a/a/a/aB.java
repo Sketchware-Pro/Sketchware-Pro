@@ -16,7 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 
 import com.google.android.material.button.MaterialButton;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 /**
  * A Sketchware-styled dialog.

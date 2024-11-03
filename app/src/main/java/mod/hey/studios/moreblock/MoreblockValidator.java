@@ -3,7 +3,7 @@ package mod.hey.studios.moreblock;
 import android.content.Context;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;

@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 
@@ -13,7 +13,7 @@ public class IconGoogleSignInButton extends IconBase {
 
     public IconGoogleSignInButton(Context context) {
         super(context);
-        setWidgetImage(R.drawable.google_48);
+        setWidgetImage(R.drawable.ic_mtrl_login);
         setWidgetName("SignInButton");
     }
 

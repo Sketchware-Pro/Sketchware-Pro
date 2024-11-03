@@ -1,12 +1,8 @@
 package mod.agus.jcoderz.editor.manage.resource;
 
-import static mod.bobur.XmlToSvgConverter.xml2svg;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,35 +20,38 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.bobur.androidsvg.SVG;
 import com.bumptech.glide.Glide;
+
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
-import com.sketchware.remod.databinding.DialogInputLayoutBinding;
-import com.sketchware.remod.databinding.ManageFileBinding;
-import com.sketchware.remod.databinding.ManageJavaItemHsBinding;
+
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
+import pro.sketchware.databinding.DialogInputLayoutBinding;
+import pro.sketchware.databinding.ManageFileBinding;
+import pro.sketchware.databinding.ManageJavaItemHsBinding;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import pro.sketchware.activities.coloreditor.ColorEditorActivity;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileResConfig;
+import pro.sketchware.utility.FileUtil;
 import mod.bobur.StringEditorActivity;
-import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileResConfig;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
 
 @SuppressLint("SetTextI18n")
 public class ManageResourceActivity extends BaseAppCompatActivity {
@@ -173,6 +172,8 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             }
         } catch (IndexOutOfBoundsException ignored) {
         }
+        setResult(RESULT_OK);
+        finish();
         super.onBackPressed();
     }
 
@@ -320,6 +321,12 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             intent.putExtra("content", frc.listFileResource.get(position));
             intent.putExtra("xml", "");
             startActivity(intent);
+        } else if (frc.listFileResource.get(position).endsWith("colors.xml")) {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), ColorEditorActivity.class);
+            intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
+            intent.putExtra("content", frc.listFileResource.get(position));
+            startActivity(intent);
         } else if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
@@ -335,7 +342,6 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             SketchwareUtil.toast("Only XML files can be edited");
         }
     }
-
     private void goEdit2(int position) {
         if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
@@ -352,7 +358,6 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             SketchwareUtil.toast("Only XML files can be edited");
         }
     }
-
     private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
         private final ArrayList<String> data;
@@ -377,19 +382,16 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             binding.title.setText(Uri.parse(path).getLastPathSegment());
 
             if (FileUtil.isDirectory(path)) {
-                binding.icon.setImageResource(R.drawable.ic_folder_24);
+                binding.icon.setImageResource(R.drawable.ic_mtrl_folder);
             } else {
                 try {
                     if (FileUtil.isImageFile(path)) {
                         Glide.with(ManageResourceActivity.this).load(new File(path)).into(binding.icon);
                     } else {
-                        String svg_content = xml2svg(FileUtil.readFile(path));
-                        SVG svg = SVG.getFromString(svg_content);
-                        PictureDrawable drawable = new PictureDrawable(svg.renderToPicture());
-                        binding.icon.setImageDrawable(drawable);
+                        binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                     }
                 } catch (Exception ignored) {
-                    binding.icon.setImageResource(R.drawable.ic_file_24);
+                    binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                 }
             }
 

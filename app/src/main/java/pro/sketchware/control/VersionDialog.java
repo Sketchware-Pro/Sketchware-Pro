@@ -4,8 +4,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 
 import com.besome.sketch.projects.MyProjectSettingActivity;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.DialogAdvancedVersionControlBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogAdvancedVersionControlBinding;
 
 import a.a.a.aB;
 import a.a.a.mB;

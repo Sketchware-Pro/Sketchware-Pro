@@ -70,7 +70,7 @@
                 android:layout_height="match_parent"
                 android:insetBottom="0dp"
                 android:text="@string/common_word_reset"
-                app:icon="@drawable/ic_reset_24"
+                app:icon="@drawable/ic_mtrl_reset"
                 app:iconGravity="textStart"
                 app:iconSize="20dp" />
         </LinearLayout>
@@ -136,5 +136,5 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="20dp"
         android:text="@string/local_library_manager_download"
-        app:icon="@drawable/ic_download" />
+        app:icon="@drawable/ic_mtrl_download" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

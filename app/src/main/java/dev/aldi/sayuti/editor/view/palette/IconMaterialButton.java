@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 
@@ -15,7 +15,7 @@ public class IconMaterialButton extends IconBase {
 
     public IconMaterialButton(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_material_button);
+        setWidgetImage(R.drawable.ic_mtrl_button_click);
         setWidgetName("MaterialButton");
     }
 

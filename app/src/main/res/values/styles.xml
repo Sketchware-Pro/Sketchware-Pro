@@ -62,7 +62,7 @@
         <item name="checkedIconEnabled">true</item>
         <item name="chipCornerRadius">90dp</item>
         <item name="checkedIconTint">?colorSurfaceBright</item>
-        <item name="checkedIcon">@drawable/ic_done_24</item>
+        <item name="checkedIcon">@drawable/ic_mtrl_done</item>
         <item name="android:textColor">?colorSurfaceBright</item>
         <item name="chipBackgroundColor">?colorPrimary</item>
         <item name="closeIconEnabled">false</item>

@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 
@@ -13,7 +13,7 @@ public class IconCollapsingToolbar extends IconBase {
 
     public IconCollapsingToolbar(Context context) {
         super(context);
-        setWidgetImage(R.drawable.widget_collapsing_toolbar);
+        setWidgetImage(R.drawable.ic_mtrl_collapsing_toolbar);
         setWidgetName("CollapsingToolbar");
     }
 
