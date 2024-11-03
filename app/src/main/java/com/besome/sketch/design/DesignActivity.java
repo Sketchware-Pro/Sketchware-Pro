@@ -1133,6 +1133,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     cancelDialog.dismiss();
                 });
 
+                cancelDialog.setCancelable(false);
+                cancelDialog.setCanceledOnTouchOutside(false);
                 cancelDialog.show();
             });
         }
