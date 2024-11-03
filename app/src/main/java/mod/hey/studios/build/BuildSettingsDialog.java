@@ -123,13 +123,11 @@ public class BuildSettingsDialog {
             });
             radioGroup.addView(radioButton);
         }
-        radioGroup.setTag(key);
     }
 
     private void setCheckboxValue(CheckBox checkBox, String key, boolean defaultValue) {
         String value = settings.getValue(key, defaultValue ? "true" : "false");
         checkBox.setChecked(value.equals("true"));
-        checkBox.setTag(key);
 
         if (key.equals(SETTING_NO_HTTP_LEGACY)) {
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
