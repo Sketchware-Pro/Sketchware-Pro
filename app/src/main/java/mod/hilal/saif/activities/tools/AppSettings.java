@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -36,7 +37,7 @@ import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
-import mod.alucard.tn.apksigner.ApkSigner;
+import mod.yamenher.ApkSignerUtils;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
@@ -233,19 +234,20 @@ public class AppSettings extends BaseAppCompatActivity {
         AlertDialog building_dialog = new MaterialAlertDialogBuilder(this)
                 .setView(building_root)
                 .create();
-
-        ApkSigner signer = new ApkSigner();
+        
         new Thread() {
             @Override
             public void run() {
                 super.run();
-
-                ApkSigner.LogCallback callback = line -> runOnUiThread(() ->
-                        tv_log.setText(tv_log.getText().toString() + line));
-
+                
                 if (useTestkey) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        signer.signWithTestKey(inputApkPath, outputApkPath, callback);
+                        try {
+                            ApkSignerUtils.signWithTestKey(inputApkPath, "/sdcard/sketchware/signed_apk/"
+                                        + Uri.fromFile(new File(outputApkPath)).getLastPathSegment());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         try {
                             ZipSigner zipSigner = new ZipSigner();
@@ -257,12 +259,16 @@ public class AppSettings extends BaseAppCompatActivity {
                         }
                     }
                 } else {
-                    signer.signWithKeyStore(inputApkPath, outputApkPath,
-                            keyStorePath, keyStorePassword, keyStoreKeyAlias, keyPassword, callback);
-                }
+                    
+                    try {
+                        ApkSignerUtils.signWithReleaseKeystore(inputApkPath, outputApkPath, keyStorePath, keyStorePassword, keyStoreKeyAlias, keyPassword);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }   
 
                 runOnUiThread(() -> {
-                    if (callback.errorCount.get() == 0) {
+                    if (ApkSignerUtils.getErrorsCount() == 0) {
                         building_dialog.dismiss();
                         SketchwareUtil.toast("Successfully saved signed APK to: /Internal storage/sketchware/signed_apk/"
                                         + Uri.fromFile(new File(outputApkPath)).getLastPathSegment(),

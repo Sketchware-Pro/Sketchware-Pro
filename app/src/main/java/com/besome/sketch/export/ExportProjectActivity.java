@@ -59,6 +59,7 @@ import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
+import mod.yamenher.ApkSignerUtils;
 
 public class ExportProjectActivity extends BaseAppCompatActivity {
 
@@ -614,21 +615,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                             Uri.fromFile(new File(createdBundlePath)).getLastPathSegment();
 
                     if (signWithTestkey) {
-                        ZipSigner signer = new ZipSigner();
-                        signer.setKeymode(ZipSigner.KEY_TESTKEY);
-                        signer.signZip(createdBundlePath, outputPath);
+                        TestkeySignBridge.signWithTestkey(createdBundlePath, outputPath);
                     } else if (isResultJarSigningEnabled()) {
-                        Security.addProvider(new BouncyCastleProvider());
-                        CustomKeySigner.signZip(
-                                new ZipSigner(),
-                                signingKeystorePath,
-                                signingKeystorePassword,
-                                signingAliasName,
-                                signingAliasPassword,
-                                signingAlgorithm,
-                                createdBundlePath,
-                                outputPath
-                        );
+                        ApkSignerUtils.signWithReleaseKeystore(createdBundlePath,outputPath,signingKeystorePath, new String(signingKeystorePassword), signingAliasName, new String(signingAliasPassword));
+                        
                     } else {
                         FileUtil.copyFile(createdBundlePath, getCorrectResultFilename(outputPath));
                     }
@@ -652,17 +642,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     if (signWithTestkey) {
                         TestkeySignBridge.signWithTestkey(builder.yq.unsignedAlignedApkPath, outputLocation);
                     } else if (isResultJarSigningEnabled()) {
-                        Security.addProvider(new BouncyCastleProvider());
-                        CustomKeySigner.signZip(
-                                new ZipSigner(),
-                                wq.j(),
-                                signingKeystorePassword,
-                                signingAliasName,
-                                signingKeystorePassword,
-                                signingAlgorithm,
-                                builder.yq.unsignedAlignedApkPath,
-                                outputLocation
-                        );
+                        ApkSignerUtils.signWithReleaseKeystore(builder.yq.unsignedAlignedApkPath, outputLocation, signingKeystorePath, new String(signingKeystorePassword), signingAliasName, new String(signingAliasPassword));
                     } else {
                         FileUtil.copyFile(builder.yq.unsignedAlignedApkPath, outputLocation);
                     }
