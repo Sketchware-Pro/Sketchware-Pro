@@ -227,8 +227,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 startActivity(intent);
             }
         });
-        /* Set the text color to yellow */
-        snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
 
@@ -1135,6 +1133,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     cancelDialog.dismiss();
                 });
 
+                cancelDialog.setCancelable(false);
+                cancelDialog.setCanceledOnTouchOutside(false);
                 cancelDialog.show();
             });
         }
