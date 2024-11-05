@@ -64,14 +64,18 @@ public class Fx {
             } else {
                 type = 3;
             }
+            String parameter = a(param, type, bean.opCode);
 
-            params.add(a(param, type, bean.opCode));
+            if (parameter.isEmpty()) {
+                return "";
+            }
+
+            params.add(parameter);
         }
 
         int blockId = -1;
         String opcode = bean.opCode;
         int hash = opcode.hashCode();
-        String var8 = "false";
         switch (hash) {
             case -2135695280:
                 if (opcode.equals("webViewLoadUrl")) {
@@ -1719,738 +1723,166 @@ public class Fx {
                 }
         }
 
-        String var9;
-        opcode = "0";
-        var9 = "";
-        String var10;
-        String var11;
-        String var12;
-        String var16;
-        StringBuilder var24;
-        StringBuilder var25;
-        StringBuilder var26;
-        StringBuilder var27;
+        String moreBlock = "";
 
-        String var18 = mceb.getCodeExtraBlock(bean, "\"\"");
-        opcode = var18;
+        opcode = mceb.getCodeExtraBlock(bean, "\"\"");
         switch (blockId) {
             case 0:
-                if (bean.parameters.size() <= 0) {
-                    hash = bean.spec.indexOf(" ");
-                    if (hash < 0) {
-                        opcode = bean.type;
-                        var18 = "_" + bean.spec + "()" + ReturnMoreblockManager.getMbEnd(bean.type);
-                    } else {
-                        opcode = bean.type;
-                        var18 = "_" + bean.spec.substring(0, hash) + "()" + ReturnMoreblockManager.getMbEnd(bean.type);
-                    }
+                hash = bean.spec.indexOf(" ");
+                if (bean.parameters.isEmpty()) {
+                    opcode = bean.type;
+                    moreBlock = "_" + (hash < 0 ? bean.spec : bean.spec.substring(0, hash)) + "()" + ReturnMoreblockManager.getMbEnd(bean.type);
                 } else {
-                    hash = bean.spec.indexOf(" ");
-                    opcode = bean.spec.substring(0, hash);
-                    opcode = "_" + opcode + "(";
-                    hash = 0;
-                    boolean var17 = false;
+                    opcode = "_" + bean.spec.substring(0, hash) + "(";
+                    boolean hasStringParam = false;
 
-                    for (boolean var13 = true; hash < params.size(); var13 = false) {
-                        var18 = opcode;
-                        if (!var13) {
-                            var26 = new StringBuilder();
-                            var26.append(opcode);
-                            var26.append(", ");
-                            var18 = opcode + ", ";
-                        }
-
-                        var9 = params.get(hash);
-                        if (var9.length() <= 0) {
-                            Gx var20 = bean.getParamClassInfo().get(hash);
-                            if (var20.b("boolean")) {
-                                opcode = var18 + "true";
-                            } else if (var20.b("double")) {
-                                opcode = var18 + "0";
-                            } else {
-                                opcode = var18;
-                                if (var20.b("String")) {
-                                    var17 = true;
-                                    opcode = var18;
-                                }
+                    for (int i = 0; i < params.size(); i++) {
+                        if (i > 0) opcode += ", ";
+                        String param = params.get(i);
+                        if (param.isEmpty()) {
+                            Gx paramInfo = bean.getParamClassInfo().get(i);
+                            if (paramInfo.b("boolean")) {
+                                opcode += "true";
+                            } else if (paramInfo.b("double")) {
+                                opcode += "0";
+                            } else if (paramInfo.b("String")) {
+                                hasStringParam = true;
                             }
                         } else {
-                            opcode = var18 + var9;
+                            opcode += param;
                         }
-
-                        ++hash;
                     }
 
-                    var9 = bean.type;
-                    var18 = opcode + ")" + ReturnMoreblockManager.getMbEnd(var9);
-                    opcode = var9;
-                    if (var17) {
-                        var18 = var9;
-                        break;
-                    }
+                    moreBlock = opcode + ")" + ReturnMoreblockManager.getMbEnd(bean.type);
+                    if (hasStringParam) moreBlock = bean.type;
                 }
 
-                var9 = var18;
-                var18 = opcode;
-                opcode = var9;
+                String op = opcode;
+                opcode = moreBlock;
+                moreBlock = op;
                 break;
             case 1:
-                opcode = bean.spec;
-                var26 = new StringBuilder();
-                var26.append("_");
-                var26.append(opcode);
-                opcode = var26.toString();
-                var18 = var9;
+                opcode = "_" + bean.spec;
                 break;
             case 2:
                 opcode = bean.spec;
-                var18 = var9;
                 break;
-            case 3:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "false";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s = %s;", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
-                break;
-            case 4:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s = %s;", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+            case 3, 4:
+                opcode = String.format("%s = %s;", params.get(0), params.get(1));
                 break;
             case 5:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s++;", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s++;", params.get(0));
                 break;
             case 6:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s--;", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s--;", params.get(0));
                 break;
             case 7:
-                opcode = params.get(0);
-                var18 = params.get(1);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s = %s;", opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s = %s;", params.get(0), params.get(1));
                 break;
             case 8:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s = new HashMap<>();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s = new HashMap<>();", params.get(0));
                 break;
             case 9:
-                var11 = params.get(0);
-                var18 = params.get(1);
-                var8 = params.get(2);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "";
-                }
-
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "";
-                }
-
-                if (!var11.isEmpty()) {
-                    opcode = String.format("%s.put(%s, %s);", var11, opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.put(%s, %s);", params.get(0), params.get(1), params.get(2));
                 break;
             case 10:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.get(%s).toString()", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.get(%s).toString()", params.get(0), params.get(1));
                 break;
             case 11:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.containsKey(%s)", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.containsKey(%s)", params.get(0), params.get(1));
                 break;
             case 12:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.remove(%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.remove(%s);", params.get(0), params.get(1));
                 break;
-            case 13:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.size()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+            case 13, 36:
+                opcode = String.format("%s.size()", params.get(0));
                 break;
-            case 14:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.clear();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+            case 14, 37:
+                opcode = String.format("%s.clear();", params.get(0));
                 break;
             case 15:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.isEmpty()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.isEmpty()", params.get(0));
                 break;
             case 16:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("SketchwareUtil.getAllKeysFromMap(%s, %s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("SketchwareUtil.getAllKeysFromMap(%s, %s);", params.get(0), params.get(1));
                 break;
             case 17:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.add(Double.valueOf(%s));", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.add(Double.valueOf(%s));", params.get(1), params.get(0));
                 break;
             case 18:
-                var8 = params.get(0);
-                opcode = params.get(1);
-                var11 = params.get(2);
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    var18 = var9;
-                    if (!opcode.isEmpty()) {
-                        if (!var11.isEmpty()) {
-                            opcode = String.format("%s.add((int)(%s), Double.valueOf(%s));", var11, opcode, var8);
-                            var18 = var9;
-                            break;
-                        }
-
-                        var18 = var9;
-                    }
-                }
+                opcode = String.format("%s.add((int)(%s), Double.valueOf(%s));", params.get(2), params.get(1), params.get(0));
                 break;
             case 19:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.get((int)(%s)).doubleValue()", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.get((int)(%s)).doubleValue()", params.get(1), params.get(0));
                 break;
-            case 20:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.indexOf(%s)", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+            case 20, 25:
+                opcode = String.format("%s.indexOf(%s)", params.get(1), params.get(0));
                 break;
-            case 21:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.contains(%s)", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+            case 21, 26:
+                opcode = String.format("%s.contains(%s)", params.get(0), params.get(1));
                 break;
-            case 22:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.add(%s);", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+            case 22, 32:
+                opcode = String.format("%s.add(%s);", params.get(1), params.get(0));
                 break;
             case 23:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var11 = params.get(2);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    var18 = var9;
-                    if (!var8.isEmpty()) {
-                        if (!var11.isEmpty()) {
-                            opcode = String.format("%s.add((int)(%s), %s);", var11, var8, opcode);
-                            var18 = var9;
-                            break;
-                        }
-
-                        var18 = var9;
-                    }
-                }
+                opcode = String.format("%s.add((int)(%s), %s);", params.get(2), params.get(1), params.get(0));
                 break;
             case 24:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.get((int)(%s))", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
-                break;
-            case 25:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.indexOf(%s)", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
-                break;
-            case 26:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.contains(%s)", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.get((int)(%s))", params.get(1), params.get(0));
                 break;
             case 27:
-                var18 = params.get(0);
-                var8 = params.get(1);
-                var11 = params.get(2);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "";
-                }
-
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "";
-                }
-
-                if (!var11.isEmpty()) {
-                    var25 = new StringBuilder();
-                    var25.append("{\r\n");
-                    var25.append("HashMap<String, Object> _item = new HashMap<>();");
-                    var25.append("\r\n");
-                    var25.append(String.format("_item.put(%s, %s);", opcode, var18));
-                    var25.append("\r\n");
-                    var25.append(String.format("%s.add(_item);", var11));
-                    var25.append("\r\n");
-                    var25.append("}");
-                    var25.append("\r\n");
-                    opcode = var25.toString();
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("{\r\nHashMap<String, Object> _item = new HashMap<>();\r\n_item.put(%s, %s);\r\n%s.add(_item);\r\n}", params.get(0), params.get(1), params.get(2));
                 break;
             case 28:
-                var8 = params.get(0);
-                var10 = params.get(1);
-                var11 = params.get(2);
-                var16 = params.get(3);
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "";
-                }
-
-                var8 = var10;
-                if (var10.length() <= 0) {
-                    var8 = "";
-                }
-
-                if (!var11.isEmpty()) {
-                    opcode = var11;
-                }
-
-                if (!var16.isEmpty()) {
-                    var24 = new StringBuilder();
-                    var24.append("{\r\n");
-                    var24.append("HashMap<String, Object> _item = new HashMap<>();");
-                    var24.append("\r\n");
-                    var24.append(String.format("_item.put(%s, %s);", var18, var8));
-                    var24.append("\r\n");
-                    var24.append(String.format("%s.add((int)%s, _item);", var16, opcode));
-                    var24.append("\r\n");
-                    var24.append("}");
-                    var24.append("\r\n");
-                    opcode = var24.toString();
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("{\r\nHashMap<String, Object> _item = new HashMap<>();\r\n_item.put(%s, %s);\r\n%s.add((int)%s, _item);\r\n}", params.get(0), params.get(1), params.get(3), params.get(2));
                 break;
             case 29:
-                var18 = params.get(0);
-                var8 = params.get(1);
-                var11 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "";
-                }
-
-                if (!var11.isEmpty()) {
-                    opcode = String.format("%s.get((int)%s).get(%s).toString()", var11, opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.get((int)%s).get(%s).toString()", params.get(2), params.get(0), params.get(1));
                 break;
             case 30:
-                var8 = params.get(0);
-                var10 = params.get(1);
-                var11 = params.get(2);
-                var16 = params.get(3);
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "";
-                }
-
-                var8 = var10;
-                if (var10.length() <= 0) {
-                    var8 = "";
-                }
-
-                if (!var11.isEmpty()) {
-                    opcode = var11;
-                }
-
-                if (!var16.isEmpty()) {
-                    opcode = String.format("%s.get((int)%s).put(%s, %s);", var16, opcode, var18, var8);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.get((int)%s).put(%s, %s);", params.get(3), params.get(2), params.get(0), params.get(1));
                 break;
             case 31:
-                var11 = params.get(0);
-                var18 = params.get(1);
-                var8 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "";
-                }
-
-                if (!var11.isEmpty()) {
-                    opcode = String.format("%s.get((int)%s).containsKey(%s)", var11, opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
-                break;
-            case 32:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.add(%s);", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.get((int)%s).containsKey(%s)", params.get(0), params.get(1), params.get(2));
                 break;
             case 33:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                var11 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
+                opcode = String.format("%s.add((int)%s, %s);", params.get(2), params.get(1), params.get(0));
 
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!var11.isEmpty()) {
-                        opcode = String.format("%s.add((int)%s, %s);", var11, opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
                 break;
             case 34:
-                var18 = params.get(0);
-                var8 = params.get(1);
-                var11 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!var11.isEmpty()) {
-                        opcode = String.format("%s = %s.get((int)%s);", var11, var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s = %s.get((int)%s);", params.get(2), params.get(1), params.get(0));
                 break;
             case 35:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.remove((int)(%s));", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
-                break;
-            case 36:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.size()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
-                break;
-            case 37:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.clear();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.remove((int)(%s));", params.get(1), params.get(0));
                 break;
             case 38:
                 hash = bean.subStack1;
-                if (hash >= 0) {
-                    opcode = a(String.valueOf(hash), "");
-                } else {
-                    opcode = "";
-                }
-
-                opcode = String.format("while(true) {\r\n%s\r\n}", opcode);
-                var18 = var9;
+                opcode = String.format("while(true) {\r\n%s\r\n}", hash >= 0 ? a(String.valueOf(hash), "") : "");
                 break;
             case 39:
-                var8 = params.get(0);
                 hash = bean.subStack1;
-                if (hash >= 0) {
-                    var18 = a(String.valueOf(hash), "");
-                } else {
-                    var18 = "";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = var8;
-                }
-
-                var8 = "_repeat" + bean.id;
-                opcode = String.format("for(int %s = 0; %s < (int)(%s); %s++) {\r\n%s\r\n}", var8, var8, opcode, var8, var18);
-                var18 = var9;
+                opcode = String.format("for(int _repeat%d = 0; _repeat%d < (int)(%s); _repeat%d++) {\r\n%s\r\n}", bean.id, bean.id, params.get(0), bean.id, hash >= 0 ? a(String.valueOf(hash), "") : "");
                 break;
             case 40:
-                var8 = params.get(0);
                 hash = bean.subStack1;
-                if (hash >= 0) {
-                    opcode = a(String.valueOf(hash), "");
-                } else {
-                    opcode = "";
-                }
-
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "true";
-                }
-
-                opcode = String.format("if (%s) {\r\n%s\r\n}", var18, opcode);
-                var18 = var9;
+                opcode = String.format("if (%s) {\r\n%s\r\n}", params.get(0), hash >= 0 ? a(String.valueOf(hash), "") : "");
                 break;
             case 41:
-                var11 = params.get(0);
                 hash = bean.subStack1;
-                if (hash >= 0) {
-                    opcode = a(String.valueOf(hash), "");
-                } else {
-                    opcode = "";
-                }
-
+                String ifBlock = hash >= 0 ? a(String.valueOf(hash), "") : "";
                 hash = bean.subStack2;
-                if (hash >= 0) {
-                    var18 = a(String.valueOf(hash), "");
-                } else {
-                    var18 = "";
-                }
-
-                var8 = var11;
-                if (var11.length() <= 0) {
-                    var8 = "true";
-                }
-
-                opcode = String.format("if (%s) {\r\n%s\r\n}\r\nelse {\r\n%s\r\n}", var8, opcode, var18);
-                var18 = var9;
+                String elseBlock = hash >= 0 ? a(String.valueOf(hash), "") : "";
+                opcode = String.format("if (%s) {\r\n%s\r\n}\r\nelse {\r\n%s\r\n}", params.get(0), ifBlock, elseBlock);
                 break;
             case 42:
                 opcode = "break;";
-                var18 = var9;
                 break;
             case 43:
             case 44:
                 opcode = bean.opCode;
-                var18 = var9;
                 break;
             case 45:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("!%s", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("!%s", params.get(0));
                 break;
             case 46:
             case 47:
@@ -2459,3478 +1891,988 @@ public class Fx {
             case 50:
             case 51:
             case 52:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                var18 = var11;
-                if (var11.length() <= 0) {
-                    var18 = "0";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = var8;
-                }
-
-                opcode = String.format("%s %s %s", var18, bean.opCode, opcode);
-                var18 = var9;
+                opcode = String.format("%s %s %s", params.get(0), bean.opCode, params.get(1));
                 break;
             case 53:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                var18 = var11;
-                if (var11.length() <= 0) {
-                    var18 = "0";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = var8;
-                }
-
-                opcode = String.format("%s == %s", var18, opcode);
-                var18 = var9;
+                opcode = String.format("%s == %s", params.get(0), params.get(1));
                 break;
             case 54:
             case 55:
-                var18 = params.get(0);
-                var8 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "true";
-                }
-
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "true";
-                }
-
-                opcode = String.format("%s %s %s", opcode, bean.opCode, var18);
-                var18 = var9;
+                opcode = String.format("%s %s %s", params.get(0), bean.opCode, params.get(1));
                 break;
             case 56:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "0";
-                }
-
-                if (!var11.isEmpty()) {
-                    opcode = var11;
-                }
-
-                opcode = String.format("SketchwareUtil.getRandom((int)(%s), (int)(%s))", var18, opcode);
-                var18 = var9;
+                opcode = String.format("SketchwareUtil.getRandom((int)(%s), (int)(%s))", params.get(0), params.get(1));
                 break;
             case 57:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.length()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.length()", params.get(0));
                 break;
             case 58:
                 opcode = String.format("%s.concat(%s)", params.get(0), params.get(1));
-                var18 = var9;
                 break;
             case 59:
-                opcode = params.get(0);
-                opcode = String.format("%s.indexOf(%s)", params.get(1), opcode);
-                var18 = var9;
+                opcode = String.format("%s.indexOf(%s)", params.get(1), params.get(0));
                 break;
             case 60:
-                opcode = params.get(0);
-                opcode = String.format("%s.lastIndexOf(%s)", params.get(1), opcode);
-                var18 = var9;
+                opcode = String.format("%s.lastIndexOf(%s)", params.get(1), params.get(0));
                 break;
             case 61:
-                var10 = params.get(0);
-                var8 = params.get(1);
-                var11 = params.get(2);
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "0";
-                }
-
-                if (!var11.isEmpty()) {
-                    opcode = var11;
-                }
-
-                opcode = String.format("%s.substring((int)(%s), (int)(%s))", var10, var18, opcode);
-                var18 = var9;
+                opcode = String.format("%s.substring((int)(%s), (int)(%s))", params.get(0), params.get(1), params.get(2));
                 break;
             case 62:
                 opcode = String.format("%s.equals(%s)", params.get(0), params.get(1));
-                var18 = var9;
                 break;
             case 63:
                 opcode = String.format("%s.contains(%s)", params.get(0), params.get(1));
-                var18 = var9;
                 break;
             case 64:
                 opcode = String.format("%s.replace(%s, %s)", params.get(0), params.get(1), params.get(2));
-                var18 = var9;
                 break;
             case 65:
                 opcode = String.format("%s.replaceFirst(%s, %s)", params.get(0), params.get(1), params.get(2));
-                var18 = var9;
                 break;
             case 66:
                 opcode = String.format("%s.replaceAll(%s, %s)", params.get(0), params.get(1), params.get(2));
-                var18 = var9;
                 break;
             case 67:
-                var18 = params.get(0);
-                if (!var18.isEmpty() && !var18.equals("\"\"")) {
-                    opcode = var18;
-                } else {
-                    opcode = "\"0\"";
-                }
-                opcode = String.format("Double.parseDouble(%s)", opcode);
-                var18 = var9;
+                String doub = params.get(0);
+                doub = (!doub.equals("\"\"")) ? doub : "\"0\"";
+                opcode = String.format("Double.parseDouble(%s)", doub);
                 break;
             case 68:
                 opcode = "System.currentTimeMillis()";
-                var18 = var9;
                 break;
             case 69:
                 opcode = String.format("%s.trim()", params.get(0));
-                var18 = var9;
                 break;
             case 70:
                 opcode = String.format("%s.toUpperCase()", params.get(0));
-                var18 = var9;
                 break;
             case 71:
                 opcode = String.format("%s.toLowerCase()", params.get(0));
-                var18 = var9;
                 break;
             case 72:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("String.valueOf((long)(%s))", opcode);
-                var18 = var9;
+                opcode = String.format("String.valueOf((long)(%s))", params.get(0));
                 break;
             case 73:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("String.valueOf(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("String.valueOf(%s)", params.get(0));
                 break;
             case 74:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = var11;
-                if (var11.length() <= 0) {
-                    var18 = "";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = var8;
-                }
-
-                opcode = String.format("new DecimalFormat(%s).format(%s)", var18, opcode);
-                var18 = var9;
+                opcode = String.format("new DecimalFormat(%s).format(%s)", params.get(1), params.get(0));
                 break;
             case 75:
-                var8 = bean.parameters.get(0);
-                var18 = var9;
-                if (var8 != null) {
-                    var18 = var9;
-                    opcode = var8;
-                    if (!var8.isEmpty()) {
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                String asd = bean.parameters.get(0);
+                opcode = (asd != null) ? asd : opcode;
                 break;
             case 76:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s = new Gson().fromJson(%s, new TypeToken<HashMap<String, Object>>(){}.getType());", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s = new Gson().fromJson(%s, new TypeToken<HashMap<String, Object>>(){}.getType());", params.get(1), params.get(0));
                 break;
-            case 77:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("new Gson().toJson(%s)", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+            case 77, 79:
+                opcode = String.format("new Gson().toJson(%s)", params.get(0));
                 break;
             case 78:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s = new Gson().fromJson(%s, new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
+                opcode = String.format("%s = new Gson().fromJson(%s, new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());", params.get(1), params.get(0));
 
-                    var18 = var9;
-                }
-                break;
-            case 79:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("new Gson().toJson(%s)", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
                 break;
             case 80:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("SketchwareUtil.getDip(getApplicationContext(), (int)(%s))", opcode);
-                var18 = var9;
+                opcode = String.format("SketchwareUtil.getDip(getApplicationContext(), (int)(%s))", params.get(0));
                 break;
             case 81:
                 opcode = "SketchwareUtil.getDisplayWidthPixels(getApplicationContext())";
-                var18 = var9;
                 break;
             case 82:
                 opcode = "SketchwareUtil.getDisplayHeightPixels(getApplicationContext())";
-                var18 = var9;
                 break;
             case 83:
                 opcode = "Math.PI";
-                var18 = var9;
                 break;
             case 84:
                 opcode = "Math.E";
-                var18 = var9;
                 break;
             case 85:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = var11;
-                if (var11.length() <= 0) {
-                    var18 = "0";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = var8;
-                }
-
-                opcode = String.format("Math.pow(%s, %s)", opcode, var18);
-                var18 = var9;
+                opcode = String.format("Math.pow(%s, %s)", params.get(0), params.get(1));
                 break;
             case 86:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = var11;
-                if (var11.length() <= 0) {
-                    var18 = "0";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = var8;
-                }
-
-                opcode = String.format("Math.min(%s, %s)", opcode, var18);
-                var18 = var9;
+                opcode = String.format("Math.min(%s, %s)", params.get(0), params.get(1));
                 break;
             case 87:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = var11;
-                if (var11.length() <= 0) {
-                    var18 = "0";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = var8;
-                }
-
-                opcode = String.format("Math.max(%s, %s)", opcode, var18);
-                var18 = var9;
+                opcode = String.format("Math.max(%s, %s)", params.get(0), params.get(1));
                 break;
             case 88:
-                var18 = params.get(0);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "1";
-                }
-
-                opcode = String.format("Math.sqrt(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.sqrt(%s)", params.get(0));
                 break;
             case 89:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.abs(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.abs(%s)", params.get(0));
                 break;
             case 90:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.round(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.round(%s)", params.get(0));
                 break;
             case 91:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.ceil(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.ceil(%s)", params.get(0));
                 break;
             case 92:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.floor(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.floor(%s)", params.get(0));
                 break;
             case 93:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.sin(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.sin(%s)", params.get(0));
                 break;
             case 94:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.cos(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.cos(%s)", params.get(0));
                 break;
             case 95:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.tan(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.tan(%s)", params.get(0));
                 break;
             case 96:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.asin(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.asin(%s)", params.get(0));
                 break;
             case 97:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.acos(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.acos(%s)", params.get(0));
                 break;
             case 98:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.atan(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.atan(%s)", params.get(0));
                 break;
             case 99:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.exp(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.exp(%s)", params.get(0));
                 break;
             case 100:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.log(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.log(%s)", params.get(0));
                 break;
             case 101:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.log10(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.log10(%s)", params.get(0));
                 break;
             case 102:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.toRadians(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.toRadians(%s)", params.get(0));
                 break;
             case 103:
-                var18 = params.get(0);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                opcode = String.format("Math.toDegrees(%s)", opcode);
-                var18 = var9;
+                opcode = String.format("Math.toDegrees(%s)", params.get(0));
                 break;
             case 104:
-                var18 = params.get(0);
-                hash = bean.subStack1;
-                if (hash >= 0) {
-                    opcode = a(String.valueOf(hash), "");
-                } else {
-                    opcode = "";
-                }
-
-                if (!var18.isEmpty()) {
-                    opcode = String.format("%s.setOnClickListener(new View.OnClickListener() {\n@Override\npublic void onClick(View _view) {\n%s\n}\n});", var18, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                String listener = bean.subStack1 >= 0 ? a(String.valueOf(bean.subStack1), "") : "";
+                opcode = String.format("%s.setOnClickListener(new View.OnClickListener() {\n@Override\npublic void onClick(View _view) {\n%s\n}\n});", params.get(0), listener);
                 break;
             case 105:
-                if (!e.a(c).a) {
-                    var18 = var9;
-                    opcode = var8;
-                } else {
-                    opcode = "_drawer.isDrawerOpen(GravityCompat.START)";
-                    var18 = var9;
-                }
+                opcode = e.a(c).a ? "_drawer.isDrawerOpen(GravityCompat.START)" : "";
                 break;
             case 106:
-                if (e.a(c).a) {
-                    opcode = "_drawer.openDrawer(GravityCompat.START);";
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = e.a(c).a ? "_drawer.openDrawer(GravityCompat.START);" : "";
                 break;
             case 107:
-                if (e.a(c).a) {
-                    opcode = "_drawer.closeDrawer(GravityCompat.START);";
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = e.a(c).a ? "_drawer.closeDrawer(GravityCompat.START);" : "";
                 break;
             case 108:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "true";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setEnabled(%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setEnabled(%s);", params.get(0), params.get(1));
                 break;
             case 109:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.isEnabled()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.isEnabled()", params.get(0));
                 break;
             case 110:
-                opcode = params.get(0);
-                var18 = params.get(1);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.setText(%s);", opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setText(%s);", params.get(0), params.get(1));
                 break;
             case 111:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = params.get(2);
-                if (var18.length() <= 0) {
-                    var18 = opcode;
-                } else {
-                    Pair<Integer, String>[] var22 = sq.a("property_text_style");
-                    int var4 = var22.length;
-                    opcode = var18;
-                    hash = 0;
-
-                    while (true) {
-                        var18 = opcode;
-                        if (hash >= var4) {
-                            break;
-                        }
-
-                        Pair<Integer, String> var15 = var22[hash];
-                        var18 = opcode;
-                        if (var15.second.equals(opcode)) {
-                            var27 = new StringBuilder();
-                            var27.append(var15.first);
-                            var27.append("");
-                            var18 = var27.toString();
-                        }
-
-                        ++hash;
-                        opcode = var18;
-                    }
-                }
-
-                if (var11.length() <= 0) {
-                    var18 = var9;
-                } else {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setTypeface(Typeface.createFromAsset(getAssets(),\"fonts/%s.ttf\"), %s);", var8, var11, var18);
-                        var18 = var9;
+                String textStyle = params.get(2);
+                Pair<Integer, String>[] styles = sq.a("property_text_style");
+                for (Pair<Integer, String> style : styles) {
+                    if (style.second.equals(textStyle)) {
+                        opcode = String.valueOf(style.first);
                         break;
                     }
-
-                    var18 = var9;
                 }
+                opcode = String.format("%s.setTypeface(Typeface.createFromAsset(getAssets(),\"fonts/%s.ttf\"), %s);", params.get(0), params.get(1), opcode);
                 break;
             case 112:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getText().toString()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getText().toString()", params.get(0));
                 break;
             case 113:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "0xFF000000";
-                }
-
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!opcode.isEmpty()) {
-                        opcode = String.format("%s.setBackgroundColor(%s);", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setBackgroundColor(%s);", params.get(0), params.get(1));
                 break;
             case 114:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!var11.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        if (!var8.equals("NONE")) {
-                            opcode = var8;
-                            if (var8.endsWith(".9")) {
-                                opcode = var8.replaceAll("\\.9", "");
-                            }
-
-                            opcode = "R.drawable." + opcode;
-                        }
-
-                        opcode = String.format("%s.setBackgroundResource(%s);", var11, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = params.get(1).equals("NONE") ? "" : "R.drawable." + params.get(1).replaceAll("\\.9", "");
+                opcode = String.format("%s.setBackgroundResource(%s);", params.get(0), opcode);
                 break;
             case 115:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "0xFF000000";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setTextColor(%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setTextColor(%s);", params.get(0), params.get(1));
                 break;
             case 116:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.endsWith(".9")) {
-                    opcode = var18.replaceAll("\\.9", "");
-                }
-
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!opcode.isEmpty()) {
-                        opcode = String.format("%s.setImageResource(R.drawable.%s);", var8, opcode.toLowerCase());
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                String name = params.get(1).replaceAll("\\.9", "");
+                opcode = String.format("%s.setImageResource(R.drawable.%s);", params.get(0), name.toLowerCase());
                 break;
             case 117:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "0x00000000";
-                }
-
-                if (!var8.equals("\"\"")) {
-                    opcode = String.format("%s.setColorFilter(%s, PorterDuff.Mode.MULTIPLY);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setColorFilter(%s, PorterDuff.Mode.MULTIPLY);", params.get(0), params.get(1));
                 break;
             case 118:
-                opcode = params.get(0);
-                opcode = String.format("%s.requestFocus();", opcode);
-                var18 = var9;
+                opcode = String.format("%s.requestFocus();", params.get(0));
                 break;
             case 119:
                 opcode = String.format("SketchwareUtil.showMessage(getApplicationContext(), %s);", params.get(0));
-                var18 = var9;
                 break;
             case 120:
                 opcode = String.format("((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText(\"clipboard\", %s));", params.get(0));
-                var18 = var9;
                 break;
             case 121:
                 opcode = String.format("setTitle(%s);", params.get(0));
-                var18 = var9;
                 break;
             case 122:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                opcode = var18;
-                if (!var11.isEmpty()) {
-                    if (var11.equals("\"\"")) {
-                        opcode = var18;
-                    } else {
-                        opcode = "Intent." + var11;
-                    }
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setAction(%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setAction(%s);", params.get(0), (params.get(1).equals("\"\"") ? "" : "Intent." + params.get(1)));
                 break;
             case 123:
-                opcode = params.get(0);
-                var18 = params.get(1);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.setData(Uri.parse(%s));", opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setData(Uri.parse(%s));", params.get(0), params.get(1));
                 break;
             case 124:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!opcode.isEmpty()) {
-                        opcode = String.format("%s.setClass(getApplicationContext(), %s.class);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setClass(getApplicationContext(), %s.class);", params.get(0), params.get(1));
                 break;
             case 125:
-                var18 = params.get(0);
-                opcode = params.get(1);
-                var8 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = String.format("%s.putExtra(%s, %s);", var18, opcode, var8);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.putExtra(%s, %s);", params.get(0), params.get(1), params.get(2));
                 break;
             case 126:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (var18.length() <= 0) {
-                    opcode = "";
-                } else {
-                    opcode = "Intent.FLAG_ACTIVITY_" + var18;
-                }
-
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!opcode.isEmpty()) {
-                        opcode = String.format("%s.setFlags(%s);", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setFlags(%s);", params.get(0), "Intent.FLAG_ACTIVITY_" + params.get(0));
                 break;
             case 127:
                 opcode = String.format("getIntent().getStringExtra(%s)", params.get(0));
-                var18 = var9;
                 break;
             case 128:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("startActivity(%s);", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("startActivity(%s);", params.get(0));
                 break;
             case 129:
                 opcode = "finish();";
-                var18 = var9;
                 break;
             case 130:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s = getApplicationContext().getSharedPreferences(%s, Activity.MODE_PRIVATE);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s = getApplicationContext().getSharedPreferences(%s, Activity.MODE_PRIVATE);", params.get(0), params.get(1));
                 break;
             case 131:
-                opcode = params.get(0);
-                var18 = params.get(1);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getString(%s, \"\")", opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getString(%s, \"\")", params.get(0), params.get(1));
                 break;
             case 132:
-                opcode = params.get(0);
-                var18 = params.get(1);
-                var8 = params.get(2);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.edit().putString(%s, %s).commit();", opcode, var18, var8);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.edit().putString(%s, %s).commit();", params.get(0), params.get(1), params.get(2));
                 break;
             case 133:
-                opcode = params.get(0);
-                var18 = params.get(1);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.edit().remove(%s).commit();", opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.edit().remove(%s).commit();", params.get(0), params.get(1));
                 break;
             case 134:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s = Calendar.getInstance();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s = Calendar.getInstance();", params.get(0));
                 break;
             case 135:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                var18 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var9;
-                if (!var11.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.add(Calendar.%s, (int)(%s));", var11, var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.add(Calendar.%s, (int)(%s));", params.get(0), params.get(1), params.get(2));
                 break;
             case 136:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                var18 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var9;
-                if (!var11.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.set(Calendar.%s, (int)(%s));", var11, var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.set(Calendar.%s, (int)(%s));", params.get(0), params.get(1), params.get(2));
                 break;
             case 137:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = (!var18.isEmpty() && !var18.equals("\"\"")) ? var18 : "\"yyyy/MM/dd hh:mm:ss\"";
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("new SimpleDateFormat(%s).format(%s.getTime())", opcode, var8);
-                }
-
-                var18 = var9;
+                opcode = String.format("new SimpleDateFormat(%s).format(%s.getTime())", (!params.get(1).equals("\"\"")) ? params.get(1) : "\"yyyy/MM/dd hh:mm:ss\"", params.get(0));
                 break;
             case 138:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                if (!opcode.isEmpty() && !var8.isEmpty()) {
-                    opcode = String.format("(long)(%s.getTimeInMillis() - %s.getTimeInMillis())", opcode, var8);
-                    var18 = var9;
-                    break;
-                }
-                var18 = var9;
+                opcode = String.format("(long)(%s.getTimeInMillis() - %s.getTimeInMillis())", params.get(0), params.get(1));
                 break;
             case 139:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getTimeInMillis()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getTimeInMillis()", params.get(0));
                 break;
             case 140:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setTimeInMillis((long)(%s));", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setTimeInMillis((long)(%s));", params.get(0), params.get(1));
                 break;
             case 141:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "VISIBLE";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setVisibility(View.%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setVisibility(View.%s);", params.get(0), params.get(1));
                 break;
             case 142:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "true";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setClickable(%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setClickable(%s);", params.get(0), params.get(1));
                 break;
             case 143:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setRotation((float)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setRotation((float)(%s));", params.get(0), params.get(1));
                 break;
             case 144:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getRotation()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getRotation()", params.get(0));
                 break;
             case 145:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setAlpha((float)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setAlpha((float)(%s));", params.get(0), params.get(1));
                 break;
             case 146:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getAlpha()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getAlpha()", params.get(0));
                 break;
             case 147:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setTranslationX((float)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setTranslationX((float)(%s));", params.get(0), params.get(1));
                 break;
             case 148:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getTranslationX()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getTranslationX()", params.get(0));
                 break;
             case 149:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setTranslationY((float)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setTranslationY((float)(%s));", params.get(0), params.get(1));
                 break;
             case 150:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getTranslationY()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s.getTranslationY()", params.get(0));
                 break;
             case 151:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setScaleX((float)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setScaleX((float)(%s));", params.get(0), params.get(1));
                 break;
             case 152:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getScaleX()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getScaleX()", params.get(0));
                 break;
             case 153:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setScaleY((float)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setScaleY((float)(%s));", params.get(0), params.get(1));
                 break;
             case 154:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getScaleY()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getScaleY()", params.get(0));
                 break;
             case 155:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("SketchwareUtil.getLocationX(%s)", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("SketchwareUtil.getLocationX(%s)", params.get(0));
                 break;
             case 156:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("SketchwareUtil.getLocationY(%s)", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("SketchwareUtil.getLocationY(%s)", params.get(0));
                 break;
             case 157:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "false";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setChecked(%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setChecked(%s);", params.get(0), params.get(1));
                 break;
             case 158:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.isChecked()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.isChecked()", params.get(0));
                 break;
             case 159:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), %s, %s));", opcode, "android.R.layout.simple_list_item_1", var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, %s));", params.get(0), params.get(1));
                 break;
             case 160:
             case 325:
             case 326:
             case 327:
             case 328:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        var18 = Lx.a(opcode);
-                        String code = "%s.setAdapter(new " + var18 + "(%s));";
-                        opcode = String.format(code, opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setAdapter(new %s(%s));", params.get(0), Lx.a(params.get(0)), params.get(1));
                 break;
             case 161:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("((BaseAdapter)%s.getAdapter()).notifyDataSetChanged();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("((BaseAdapter)%s.getAdapter()).notifyDataSetChanged();", params.get(0));
                 break;
             case 162:
-                var11 = params.get(0);
-                var18 = params.get(1);
-                var8 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "false";
-                }
-
-                if (!var11.isEmpty()) {
-                    opcode = String.format("%s.setItemChecked((int)(%s), %s);", var11, opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setItemChecked((int)(%s), %s);", params.get(0), params.get(1), params.get(2));
                 break;
             case 163:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getCheckedItemPosition()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getCheckedItemPosition()", params.get(0));
                 break;
             case 164:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s = SketchwareUtil.getCheckedItemPositionsToArray(%s);", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s = SketchwareUtil.getCheckedItemPositionsToArray(%s);", params.get(1), params.get(0));
                 break;
             case 165:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getCheckedItemCount()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getCheckedItemCount()", params.get(0));
                 break;
             case 166:
-                opcode = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = String.format("%s.smoothScrollToPosition((int)(%s));", opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.smoothScrollToPosition((int)(%s));", params.get(0), params.get(1));
                 break;
             case 167:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, %s));", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, %s));", params.get(0), params.get(1));
                 break;
             case 168:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("((ArrayAdapter)%s.getAdapter()).notifyDataSetChanged();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("((ArrayAdapter)%s.getAdapter()).notifyDataSetChanged();", params.get(0));
                 break;
             case 169:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setSelection((int)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setSelection((int)(%s));", params.get(0), params.get(1));
                 break;
             case 170:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getSelectedItemPosition()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getSelectedItemPosition()", params.get(0));
                 break;
             case 171:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.loadUrl(%s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.loadUrl(%s);", params.get(0), params.get(1));
                 break;
             case 172:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getUrl()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getUrl()", params.get(0));
                 break;
             case 173:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "LOAD_DEFAULT";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.getSettings().setCacheMode(WebSettings.%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getSettings().setCacheMode(WebSettings.%s);", params.get(0), params.get(1));
                 break;
             case 174:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.canGoBack()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.canGoBack()", params.get(0));
                 break;
             case 175:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.canGoForward()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.canGoForward()", params.get(0));
                 break;
             case 176:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.goBack();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.goBack();", params.get(0));
                 break;
             case 177:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.goForward();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.goForward();", params.get(0));
                 break;
             case 178:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.clearCache(true);", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.clearCache(true);", params.get(0));
                 break;
             case 179:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.clearHistory();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.clearHistory();", params.get(0));
                 break;
             case 180:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.stopLoading();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.stopLoading();", params.get(0));
                 break;
             case 181:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.zoomIn();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.zoomIn();", params.get(0));
                 break;
             case 182:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.zoomOut();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.zoomOut();", params.get(0));
                 break;
             case 183:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getDate()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s.getDate()", params.get(0));
                 break;
             case 184:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setDate((long)(%s), true, true);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setDate((long)(%s), true, true);", params.get(0), params.get(1));
                 break;
             case 185:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setMinDate((long)(%s));", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setMinDate((long)(%s));", params.get(0), params.get(1));
                 break;
             case 186:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setMaxDate((long)(%s));", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setMaxDate((long)(%s));", params.get(0), params.get(1));
                 break;
             case 187:
-                var8 = params.get(0);
-                opcode = e.t.stream().map(device -> ".addTestDevice(\"" + device + "\")\n").collect(Collectors.joining());
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.loadAd(new AdRequest.Builder()%s.build());", var8, opcode);
-                }
-                var18 = var9;
+                opcode = String.format("%s.loadAd(new AdRequest.Builder()%s.build());", params.get(0), e.t.stream().map(device -> ".addTestDevice(\"" + device + "\")\n").collect(Collectors.joining()));
                 break;
             case 188:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = uq.q[0];
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("_%s_controller.setMapType(GoogleMap.%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("_%s_controller.setMapType(GoogleMap.%s);", params.get(0), params.get(1));
                 break;
             case 189:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = "0";
-                }
-
-                var8 = params.get(2);
-                if (!var8.isEmpty()) {
-                    opcode = var8;
-                }
-
-                if (!var11.isEmpty()) {
-                    opcode = String.format("_%s_controller.moveCamera(%s, %s);", var11, var18, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("_%s_controller.moveCamera(%s, %s);", params.get(0), params.get(1), params.get(2));
                 break;
             case 190:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("_%s_controller.zoomTo(%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("_%s_controller.zoomTo(%s);", params.get(0), params.get(1));
                 break;
             case 191:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("_%s_controller.zoomIn();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("_%s_controller.zoomIn();", params.get(0));
                 break;
             case 192:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("_%s_controller.zoomOut();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("_%s_controller.zoomOut();", params.get(0));
                 break;
             case 193:
-                var11 = params.get(0);
-                var10 = params.get(1);
-                var18 = params.get(2);
-                var8 = var18;
-                if (var18.length() <= 0) {
-                    var8 = "0";
-                }
-
-                var18 = params.get(3);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var9;
-                if (!var11.isEmpty()) {
-                    if (!var10.isEmpty()) {
-                        opcode = String.format("_%s_controller.addMarker(%s, %s, %s);", var11, var10, var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("_%s_controller.addMarker(%s, %s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 break;
             case 194:
-                opcode = params.get(0);
-                var11 = params.get(1);
-                var8 = params.get(2);
-                var10 = params.get(3);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var11.isEmpty()) {
-                        opcode = String.format("_%s_controller.setMarkerInfo(%s, %s, %s);", opcode, var11, var8, var10);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("_%s_controller.setMarkerInfo(%s, %s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 break;
             case 195:
-                var11 = params.get(0);
-                var10 = params.get(1);
-                var18 = params.get(2);
-                var8 = var18;
-                if (var18.length() <= 0) {
-                    var8 = "0";
-                }
-
-                var18 = params.get(3);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var9;
-                if (!var11.isEmpty()) {
-                    if (!var10.isEmpty()) {
-                        opcode = String.format("_%s_controller.setMarkerPosition(%s, %s, %s);", var11, var10, var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("_%s_controller.setMarkerPosition(%s, %s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 break;
             case 196:
-                var10 = params.get(0);
-                var11 = params.get(1);
-                var18 = params.get(2);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = uq.r[0];
-                }
-
-                var18 = params.get(3);
-                var8 = var18;
-                if (var18.length() <= 0) {
-                    var8 = "1";
-                }
-
-                var18 = var9;
-                if (!var10.isEmpty()) {
-                    if (!var11.isEmpty()) {
-                        opcode = String.format("_%s_controller.setMarkerColor(%s, BitmapDescriptorFactory.%s, %s);", var10, var11, opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("_%s_controller.setMarkerColor(%s, BitmapDescriptorFactory.%s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 break;
             case 197:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = params.get(2);
-                opcode = var18;
-                if (var18.endsWith(".9")) {
-                    opcode = var18.replaceAll("\\.9", "");
-                }
-
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    var18 = var9;
-                    if (!var11.isEmpty()) {
-                        if (!opcode.isEmpty()) {
-                            opcode = String.format("_%s_controller.setMarkerIcon(%s, R.drawable.%s);", var8, var11, opcode.toLowerCase());
-                            var18 = var9;
-                            break;
-                        }
-
-                        var18 = var9;
-                    }
-                }
+                name = params.get(2).endsWith(".9") ? params.get(2).replaceAll("\\.9", "") : params.get(2);
+                    opcode = String.format("_%s_controller.setMarkerIcon(%s, R.drawable.%s);", params.get(0), params.get(1), name.toLowerCase());
                 break;
             case 198:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = params.get(2);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "true";
-                }
-
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!var11.isEmpty()) {
-                        opcode = String.format("_%s_controller.setMarkerVisible(%s, %s);", var8, var11, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                    opcode = String.format("_%s_controller.setMarkerVisible(%s, %s);", params.get(2), params.get(1), params.get(2));
                 break;
             case 199:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.vibrate((long)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s.vibrate((long)(%s));", params.get(0), params.get(1));
                 break;
             case 200:
-                String timer = params.get(0);
-                var8 = params.get(1);
-                hash = bean.subStack1;
-                if (hash >= 0) {
-                    var18 = a(String.valueOf(hash), "");
-                } else {
-                    var18 = "";
-                }
+                String onRun = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
-                if (!var8.isEmpty()) {
-                    opcode = var8;
-                }
-
-                if (!timer.isEmpty()) {
-                    opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.schedule(%s, (int)(%s));", timer, var18, timer, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.schedule(%s, (int)(%s));", params.get(0), onRun, params.get(0), params.get(1));
                 break;
             case 201:
-                var12 = params.get(0);
-                var11 = params.get(1);
-                var10 = params.get(2);
-                hash = bean.subStack1;
-                var18 = (hash >= 0) ? a(String.valueOf(hash), "") : "";
+                onRun = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
-                var8 = var10.isEmpty() ? "0" : var10;
-                opcode = var11.isEmpty() ? opcode : var11;
-
-                if (!var12.isEmpty()) {
-                    opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.scheduleAtFixedRate(%s, (int)(%s), (int)(%s));", var12, var18, var12, opcode, var8);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.scheduleAtFixedRate(%s, (int)(%s), (int)(%s));", params.get(0), onRun, params.get(0), params.get(1), params.get(2));
                 break;
             case 202:
-                timer = params.get(0);
-                if (!timer.isEmpty()) {
-                    opcode = String.format("%s.cancel();", timer);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.cancel();", params.get(0));
                 break;
             case 203:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                var11 = params.get(2);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "";
-                }
-
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!var11.isEmpty()) {
-                        opcode = String.format("%s.child(%s).updateChildren(%s);", var8, opcode, var11);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.child(%s).updateChildren(%s);", params.get(0), params.get(1), params.get(2));
                 break;
             case 204:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.push().updateChildren(%s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.push().updateChildren(%s);", params.get(0), params.get(1));
                 break;
             case 205:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.push().getKey()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.push().getKey()", params.get(0));
                 break;
             case 206:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.child(%s).removeValue();", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.child(%s).removeValue();", params.get(0), params.get(1));
                 break;
             case 207:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                hash = bean.subStack1;
-                if (hash >= 0) {
-                    opcode = a(String.valueOf(hash), "");
-                } else {
-                    opcode = "";
-                }
-
-                var18 = var9;
-                if (!var11.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        var26 = new StringBuilder();
-                        var26.append(String.format("%s.addListenerForSingleValueEvent(new ValueEventListener() {", var8));
-                        var26.append("\n@Override\npublic void onDataChange(DataSnapshot _dataSnapshot) {\n");
-                        var26.append(String.format("%s = new ArrayList<>();", var11));
-                        var26.append("\ntry {\nGenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};\nfor (DataSnapshot _data : _dataSnapshot.getChildren()) {\nHashMap<String, Object> _map = _data.getValue(_ind);\n");
-                        var26.append(String.format("%s.add(_map);", var11));
-                        var26.append("\n}\n}\ncatch (Exception _e) {\n_e.printStackTrace();\n}\n");
-                        var26.append(opcode);
-                        var26.append("\n}\n@Override\npublic void onCancelled(DatabaseError _databaseError) {\n}\n});");
-                        opcode = var26.toString();
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("""
+                        %s.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot _dataSnapshot) {
+                        %s = new ArrayList<>();
+                        try {
+                        GenericTypeIndicator<HashMap<String, Object>> _ind = new GenericTypeIndicator<HashMap<String, Object>>() {};
+                        for (DataSnapshot _data : _dataSnapshot.getChildren()) {
+                        HashMap<String, Object> _map = _data.getValue(_ind);
+                        %s.add(_map);
+                        }
+                        } catch (Exception _e) {
+                        _e.printStackTrace();
+                        }
+                        %s
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError _databaseError) {
+                        }
+                        });""", params.get(0), params.get(1), params.get(1), (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "");
                 break;
             case 208:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var11 = params.get(2);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    var18 = var9;
-                    if (!var8.equals("\"\"")) {
-                        if (!var11.equals("\"\"")) {
-                            opcode = String.format("%s.createUserWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", opcode, var8, var11, c, "_" + opcode + "_create_user_listener");
-                            var18 = var9;
-                            break;
-                        }
-
-                        var18 = var9;
-                    }
+                if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
+                    opcode = String.format("%s.createUserWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", params.get(0), params.get(1), params.get(2), c, "_" + params.get(0) + "_create_user_listener");
                 }
                 break;
             case 209:
-                var8 = params.get(0);
-                opcode = params.get(1);
-                var11 = params.get(2);
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    var18 = var9;
-                    if (!opcode.equals("\"\"")) {
-                        if (!var11.equals("\"\"")) {
-                            opcode = String.format("%s.signInWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", var8, opcode, var11, c, "_" + var8 + "_sign_in_listener");
-                            var18 = var9;
-                            break;
-                        }
-
-                        var18 = var9;
-                    }
+                if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
+                    opcode = String.format("%s.signInWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", params.get(0), params.get(1), params.get(2), c, "_" + params.get(0) + "_sign_in_listener");
                 }
                 break;
             case 210:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.signInAnonymously().addOnCompleteListener(%s.this, %s);", opcode, c, "_" + opcode + "_sign_in_listener");
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s.signInAnonymously().addOnCompleteListener(%s.this, %s);", params.get(0), c, "_" + params.get(0) + "_sign_in_listener");
                 break;
             case 211:
-                var18 = var9;
-                opcode = var8;
-                if (e.a(c).b) {
-                    opcode = "(FirebaseAuth.getInstance().getCurrentUser() != null)";
-                    var18 = var9;
-                }
+                opcode = "(FirebaseAuth.getInstance().getCurrentUser() != null)";
                 break;
             case 212:
-                var18 = var9;
-                if (e.a(c).b) {
-                    opcode = "FirebaseAuth.getInstance().getCurrentUser().getEmail()";
-                    var18 = var9;
-                    break;
-                }
+                opcode = "FirebaseAuth.getInstance().getCurrentUser().getEmail()";
                 break;
             case 213:
-                var18 = var9;
-                if (e.a(c).b) {
-                    opcode = "FirebaseAuth.getInstance().getCurrentUser().getUid()";
-                    var18 = var9;
-                    break;
-                }
+                opcode = "FirebaseAuth.getInstance().getCurrentUser().getUid()";
                 break;
             case 214:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.equals("\"\"")) {
-                        opcode = String.format("%s.sendPasswordResetEmail(%s).addOnCompleteListener(%s);", opcode, var8, "_" + opcode + "_reset_password_listener");
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(1).equals("\"\"")) {
+                    opcode = String.format("%s.sendPasswordResetEmail(%s).addOnCompleteListener(%s);", params.get(0), params.get(1), "_" + params.get(0) + "_reset_password_listener");
                 }
                 break;
             case 215:
-                var18 = var9;
-                if (e.a(c).b) {
-                    opcode = "FirebaseAuth.getInstance().signOut();";
-                    var18 = var9;
-                    break;
-                }
+                opcode = "FirebaseAuth.getInstance().signOut();";
                 break;
             case 216:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.addChildEventListener(_%s_child_listener);", opcode, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.addChildEventListener(_%s_child_listener);", params.get(0), params.get(0));
                 break;
             case 217:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.removeEventListener(_%s_child_listener);", opcode, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.removeEventListener(_%s_child_listener);", params.get(0), params.get(0));
                 break;
             case 218:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.registerListener(_%s_sensor_listener, %s.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR), SensorManager.SENSOR_DELAY_NORMAL);", opcode, opcode, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.registerListener(_%s_sensor_listener, %s.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR), SensorManager.SENSOR_DELAY_NORMAL);", params.get(0), params.get(0), params.get(0));
                 break;
             case 219:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.unregisterListener(_%s_sensor_listener);", opcode, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.unregisterListener(_%s_sensor_listener);", params.get(0), params.get(0));
                 break;
             case 220:
-                String dialog = params.get(0);
-                String title = params.get(1);
-                title = (!title.isEmpty() && !title.equals("\"\"")) ? title : "\"Title\"";
-
-                if (!dialog.isEmpty()) {
-                    opcode = String.format("%s.setTitle(%s);", dialog, title);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s.setTitle(%s);", params.get(0), params.get(1));
                 break;
             case 221:
-                dialog = params.get(0);
-                String message = params.get(1);
-                opcode = (!message.isEmpty() && !message.equals("\"\"")) ? message : "\"Message\"";
-
-                if (!dialog.isEmpty()) {
-                    opcode = String.format("%s.setMessage(%s);", dialog, message);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setMessage(%s);", params.get(0), params.get(1));
                 break;
             case 222:
-                dialog = params.get(0);
-                if (!dialog.isEmpty()) {
-                    opcode = String.format("%s.create().show();", dialog);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.create().show();", params.get(0));
                 break;
             case 223:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                hash = bean.subStack1;
-                opcode = (hash >= 0) ? a(String.valueOf(hash), "") : "";
+                String onClick = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
-                var18 = (!var8.isEmpty() && var8.equals("\"\"")) ? "\"OK\"" : var8;
-
-                if (!var11.isEmpty()) {
-                    opcode = String.format("%s.setPositiveButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", var11, var18, opcode);
-                }
-                var18 = var9;
+                opcode = String.format("%s.setPositiveButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", params.get(0), params.get(1), onClick);
                 break;
             case 224:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                hash = bean.subStack1;
-                opcode = (hash >= 0) ? a(String.valueOf(hash), "") : "";
+                onClick = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
-                var18 = (!var8.isEmpty() && var8.equals("\"\"")) ? "\"Cancel\"" : var8;
-
-                if (!var11.isEmpty()) {
-                    opcode = String.format("%s.setNegativeButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", var11, var18, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s.setNegativeButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", params.get(0), params.get(1), onClick);
                 break;
             case 225:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                hash = bean.subStack1;
-                opcode = (hash >= 0) ? a(String.valueOf(hash), "") : "";
+                onClick = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
-                var18 = (!var8.isEmpty() && var8.equals("\"\"")) ? "\"Neutral\"" : var8;
-
-                if (!var11.isEmpty()) {
-                    opcode = String.format("%s.setNeutralButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", var11, var18, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setNeutralButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", params.get(0), params.get(1), onClick);
                 break;
             case 226:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s = MediaPlayer.create(getApplicationContext(), R.raw.%s);", opcode, var8.toLowerCase());
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s = MediaPlayer.create(getApplicationContext(), R.raw.%s);", params.get(0), params.get(1).toLowerCase());
                 break;
             case 227:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.start();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.start();", params.get(0));
                 break;
             case 228:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.pause();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.pause();", params.get(0));
                 break;
             case 229:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.seekTo((int)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.seekTo((int)(%s));", params.get(0), params.get(1));
                 break;
             case 230:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getCurrentPosition()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getCurrentPosition()", params.get(0));
                 break;
             case 231:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getDuration()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.getDuration()", params.get(0));
                 break;
             case 232:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.reset();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.reset()", params.get(0));
                 break;
             case 233:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.release();", opcode);
-                    var18 = var9;
-                    break;
-                }
+                opcode = String.format("%s.release()", params.get(0));
 
-                var18 = var9;
                 break;
             case 234:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.isPlaying()", opcode);
-                    var18 = var9;
-                    break;
-                }
+                opcode = String.format("%s.isPlaying()", params.get(0));
 
-                var18 = var9;
                 break;
             case 235:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "false";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setLooping(%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setLooping(%s)", params.get(0), params.get(1));
                 break;
             case 236:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.isLooping()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.isLooping()", params.get(0));
                 break;
             case 237:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "1";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s = new SoundPool((int)(%s), AudioManager.STREAM_MUSIC, 0);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s = new SoundPool((int)(%s), AudioManager.STREAM_MUSIC, 0)", params.get(0), params.get(1));
                 break;
             case 238:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!opcode.isEmpty()) {
-                        opcode = String.format("%s.load(getApplicationContext(), R.raw.%s, 1)", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.load(getApplicationContext(), R.raw.%s, 1)", params.get(0), params.get(1));
                 break;
             case 239:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                var18 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
+                opcode = String.format("%s.play((int)(%s), 1.0f, 1.0f, 1, (int)(%s), 1.0f)", params.get(0), params.get(1), params.get(2));
 
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!var11.isEmpty()) {
-                        opcode = String.format("%s.play((int)(%s), 1.0f, 1.0f, 1, (int)(%s), 1.0f)", var11, var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
                 break;
             case 240:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!opcode.isEmpty()) {
-                        opcode = String.format("%s.stop((int)(%s));", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.stop((int)(%s))", params.get(0), params.get(1));
                 break;
             case 241:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.endsWith(".9")) {
-                    opcode = var18.replaceAll("\\.9", "");
-                }
-
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!opcode.isEmpty()) {
-                        opcode = String.format("%s.setThumbResource(R.drawable.%s);", var8, opcode.toLowerCase());
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                name = params.get(1).replaceAll("\\.9", "");
+                opcode = String.format("%s.setThumbResource(R.drawable.%s)", params.get(0), name.toLowerCase());
                 break;
             case 242:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.endsWith(".9")) {
-                    opcode = var18.replaceAll("\\.9", "");
-                }
+                name = params.get(1).replaceAll("\\.9", "");
+                opcode = String.format("%s.setTrackResource(R.drawable.%s)", params.get(0), name.toLowerCase());
 
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    if (!opcode.isEmpty()) {
-                        opcode = String.format("%s.setTrackResource(R.drawable.%s);", var8, opcode.toLowerCase());
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
                 break;
             case 243:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
+                opcode = String.format("%s.setProgress((int)%s)", params.get(0), params.get(1));
 
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setProgress((int)%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
                 break;
             case 244:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getProgress()", opcode);
-                    var18 = var9;
-                    break;
-                }
+                opcode = String.format("%s.getProgress()", params.get(0));
 
-                var18 = var9;
                 break;
             case 245:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
+                opcode = String.format("%s.setMax((int)%s)", params.get(0), params.get(1));
 
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setMax((int)%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
                 break;
             case 246:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getMax()", opcode);
-                    var18 = var9;
-                    break;
-                }
+                opcode = String.format("%s.getMax()", params.get(0));
 
-                var18 = var9;
                 break;
             case 247:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setTarget(%s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
+                opcode = String.format("%s.setTarget(%s);", params.get(0), params.get(1));
 
-                    var18 = var9;
-                }
                 break;
             case 248:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setPropertyName(\"%s\");", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                    opcode = String.format("%s.setPropertyName(\"%s\");", params.get(0), params.get(1));
                 break;
             case 249:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setFloatValues((float)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s.setFloatValues((float)(%s));", params.get(0), params.get(1));
                 break;
             case 250:
-                var10 = params.get(0);
-                var8 = params.get(1);
-                var11 = params.get(2);
-                var18 = var11;
-                if (var11.length() <= 0) {
-                    var18 = "0";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = var8;
-                }
-
-                if (!var10.isEmpty()) {
-                    opcode = String.format("%s.setFloatValues((float)(%s), (float)(%s));", var10, opcode, var18);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s.setFloatValues((float)(%s), (float)(%s));", params.get(0), params.get(1), params.get(2));
                 break;
             case 251:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setDuration((int)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                    opcode = String.format("%s.setDuration((int)(%s));", params.get(0), params.get(1));
                 break;
             case 252:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setRepeatMode(ValueAnimator.%s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
+                opcode = String.format("%s.setRepeatMode(ValueAnimator.%s);", params.get(0), params.get(1));
 
-                    var18 = var9;
-                }
                 break;
             case 253:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setRepeatCount((int)(%s));", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setRepeatCount((int)(%s));", params.get(0), params.get(1));
                 break;
             case 254:
-                var18 = params.get(0);
-                var8 = params.get(1);
-                if (var8.equals("Accelerate")) {
-                    opcode = "new AccelerateInterpolator()";
-                } else {
-                    opcode = "new LinearInterpolator()";
-                }
-
-                if (var8.equals("Decelerate")) {
-                    opcode = "new DecelerateInterpolator()";
-                }
-
-                if (var8.equals("AccelerateDeccelerate")) {
-                    opcode = "new AccelerateDecelerateInterpolator()";
-                }
-
-                if (var8.equals("Bounce")) {
-                    opcode = "new BounceInterpolator()";
-                }
-
-                if (!var18.isEmpty()) {
-                    opcode = String.format("%s.setInterpolator(%s);", var18, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                String interpolator = switch (params.get(1)) {
+                    case "Accelerate" -> "new AccelerateInterpolator()";
+                    case "Decelerate" -> "new DecelerateInterpolator()";
+                    case "AccelerateDeccelerate" -> "new AccelerateDecelerateInterpolator()";
+                    case "Bounce" -> "new BounceInterpolator()";
+                    default -> "new LinearInterpolator()";
+                };
+                opcode = String.format("%s.setInterpolator(%s);", params.get(0), interpolator);
                 break;
             case 255:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.start();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.start();", params.get(0));
                 break;
             case 256:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.cancel();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.cancel();", params.get(0));
                 break;
             case 257:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.isRunning()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.isRunning()", params.get(0));
                 break;
             case 258:
             case 259:
             case 260:
                 opcode = "";
-                var18 = var9;
                 break;
             case 261:
-                var8 = params.get(0);
-                opcode = params.get(1);
-                var11 = params.get(2);
-
-                if (!var8.isEmpty() && !opcode.equals("\"\"") && !var11.equals("\"\"")) {
-                    opcode = String.format(
-                            "%s.child(%s).putFile(Uri.fromFile(new File(%s))).addOnFailureListener(_%s_failure_listener).addOnProgressListener(_%s_upload_progress_listener).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {\n@Override\npublic Task<Uri> then(Task<UploadTask.TaskSnapshot> task) throws Exception {\nreturn %s.child(%s).getDownloadUrl();\n}}).addOnCompleteListener(_%s_upload_success_listener);",
-                            var8, var11, opcode, var8, var8, var8, var11, var8
-                    );
-                    var18 = var9;
-                    break;
+                if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
+                    opcode = String.format("%s.child(%s).putFile(Uri.fromFile(new File(%s))).addOnFailureListener(_%s_failure_listener).addOnProgressListener(_%s_upload_progress_listener).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {\n@Override\npublic Task<Uri> then(Task<UploadTask.TaskSnapshot> task) throws Exception {\nreturn %s.child(%s).getDownloadUrl();\n}}).addOnCompleteListener(_%s_upload_success_listener);", params.get(0), params.get(2), params.get(1), params.get(0), params.get(0), params.get(0), params.get(2), params.get(0));
                 }
+                break;
             case 262:
-                var8 = params.get(0);
-                opcode = params.get(1);
-                var11 = params.get(2);
-                var18 = var9;
-
-                if (!var8.isEmpty() && !opcode.equals("\"\"") && !var11.equals("\"\"")) {
-                    opcode = String.format(
-                            "_firebase_storage.getReferenceFromUrl(%s).getFile(new File(%s)).addOnSuccessListener(_%s_download_success_listener).addOnFailureListener(_%s_failure_listener).addOnProgressListener(_%s_download_progress_listener);",
-                            opcode, var11, var8, var8, var8
-                    );
+                if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
+                    opcode = String.format("_firebase_storage.getReferenceFromUrl(%s).getFile(new File(%s)).addOnSuccessListener(_%s_download_success_listener).addOnFailureListener(_%s_failure_listener).addOnProgressListener(_%s_download_progress_listener);", params.get(1), params.get(2), params.get(0), params.get(0), params.get(0));
                 }
                 break;
             case 263:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.equals("\"\"")) {
-                        opcode = String.format("_firebase_storage.getReferenceFromUrl(%s).delete().addOnSuccessListener(_%s_delete_success_listener).addOnFailureListener(_%s_failure_listener);", var8, opcode, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(1).equals("\"\"")) {
+                    opcode = String.format("_firebase_storage.getReferenceFromUrl(%s).delete().addOnSuccessListener(_%s_delete_success_listener).addOnFailureListener(_%s_failure_listener);", params.get(1), params.get(0), params.get(0));
                 }
                 break;
             case 264:
-                opcode = params.get(0);
-                if (!opcode.equals("\"\"")) {
-                    opcode = String.format("FileUtil.readFile(%s)", opcode);
-                    var18 = var9;
-                    break;
-                }
 
-                var18 = var9;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("FileUtil.readFile(%s)", params.get(0));
+                }
                 break;
             case 265:
-                opcode = params.get(0);
-                var18 = params.get(1);
-                if (!var18.equals("\"\"")) {
-                    opcode = String.format("FileUtil.writeFile(%s, %s);", var18, opcode);
-                    var18 = var9;
-                    break;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("FileUtil.writeFile(%s, %s);", params.get(1), params.get(0));
                 }
-
-                var18 = var9;
                 break;
             case 266:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.equals("\"\"")) {
-                    if (!var8.equals("\"\"")) {
-                        opcode = String.format("FileUtil.copyFile(%s, %s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.copyFile(%s, %s);", params.get(0), params.get(1));
                 }
                 break;
             case 267:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.equals("\"\"")) {
-                    if (!var8.equals("\"\"")) {
-                        opcode = String.format("FileUtil.moveFile(%s, %s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.moveFile(%s, %s);", params.get(0), params.get(1));
                 }
                 break;
             case 268:
-                opcode = params.get(0);
-                if (!opcode.equals("\"\"")) {
-                    opcode = String.format("FileUtil.deleteFile(%s);", opcode);
-                    var18 = var9;
-                    break;
-                }
 
-                var18 = var9;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("FileUtil.deleteFile(%s);", params.get(0));
+                }
                 break;
             case 269:
-                opcode = params.get(0);
-                if (!opcode.equals("\"\"")) {
-                    opcode = String.format("FileUtil.isExistFile(%s)", opcode);
-                    var18 = var9;
-                    break;
-                }
 
-                var18 = var9;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("FileUtil.isExistFile(%s)", params.get(0));
+                }
                 break;
             case 270:
-                opcode = params.get(0);
-                if (!opcode.equals("\"\"")) {
-                    opcode = String.format("FileUtil.makeDir(%s);", opcode);
-                    var18 = var9;
-                    break;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("FileUtil.makeDir(%s);", params.get(0));
                 }
-
-                var18 = var9;
                 break;
             case 271:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.equals("\"\"")) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("FileUtil.listDir(%s, %s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("FileUtil.listDir(%s, %s);", params.get(0), params.get(1));
                 }
                 break;
             case 272:
-                opcode = params.get(0);
                 if (!opcode.equals("\"\"")) {
-                    opcode = String.format("FileUtil.isDirectory(%s)", opcode);
-                    var18 = var9;
-                    break;
+                    opcode = String.format("FileUtil.isDirectory(%s)", params.get(0));
                 }
-
-                var18 = var9;
                 break;
             case 273:
-                opcode = params.get(0);
-                if (!opcode.equals("\"\"")) {
-                    opcode = String.format("FileUtil.isFile(%s)", opcode);
-                    var18 = var9;
-                    break;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("FileUtil.isFile(%s)", params.get(0));
                 }
-
-                var18 = var9;
                 break;
             case 274:
-                opcode = params.get(0);
-                if (!opcode.equals("\"\"")) {
-                    opcode = String.format("FileUtil.getFileLength(%s)", opcode);
-                    var18 = var9;
-                    break;
-                }
 
-                var18 = var9;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("FileUtil.getFileLength(%s)", params.get(0));
+                }
                 break;
             case 275:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.equals("\"\"")) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.startsWith(%s)", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("%s.startsWith(%s)", params.get(0), params.get(1));
                 }
                 break;
             case 276:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.equals("\"\"")) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.endsWith(%s)", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("%s.endsWith(%s)", params.get(0), params.get(1));
                 }
                 break;
             case 277:
-                opcode = params.get(0);
-                if (!opcode.equals("\"\"")) {
-                    opcode = String.format("Uri.parse(%s).getLastPathSegment()", opcode);
-                    var18 = var9;
-                    break;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("Uri.parse(%s).getLastPathSegment()", params.get(0));
                 }
-
-                var18 = var9;
                 break;
             case 278:
                 opcode = "FileUtil.getExternalStorageDir()";
-                var18 = var9;
                 break;
             case 279:
                 opcode = "FileUtil.getPackageDataDir(getApplicationContext())";
-                var18 = var9;
                 break;
             case 280:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("FileUtil.getPublicDir(Environment.%s)", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("FileUtil.getPublicDir(Environment.%s)", params.get(0));
                 break;
             case 281:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = params.get(2);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "1024";
-                }
-
-                var18 = var9;
-                if (!var8.equals("\"\"")) {
-                    if (!var11.equals("\"\"")) {
-                        opcode = String.format("FileUtil.resizeBitmapFileRetainRatio(%s, %s, %s);", var8, var11, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.resizeBitmapFileRetainRatio(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
             case 282:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = params.get(2);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "1024";
-                }
-
-                var18 = var9;
-                if (!var8.equals("\"\"")) {
-                    if (!var11.equals("\"\"")) {
-                        opcode = String.format("FileUtil.resizeBitmapFileToSquare(%s, %s, %s);", var8, var11, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.resizeBitmapFileToSquare(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
             case 283:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.equals("\"\"")) {
-                    if (!var8.equals("\"\"")) {
-                        opcode = String.format("FileUtil.resizeBitmapFileToCircle(%s, %s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.resizeBitmapFileToCircle(%s, %s);", params.get(0), params.get(1));
                 }
                 break;
             case 284:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var9;
-                if (!var8.equals("\"\"")) {
-                    if (!var11.equals("\"\"")) {
-                        opcode = String.format("FileUtil.resizeBitmapFileWithRoundedBorder(%s, %s, %s);", var8, var11, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.resizeBitmapFileWithRoundedBorder(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
             case 285:
-                var10 = params.get(0);
-                var11 = params.get(1);
-                var8 = params.get(2);
-                var18 = params.get(3);
-                opcode = var8;
-                if (var8.length() <= 0) {
-                    opcode = "1024";
-                }
-
-                var8 = var18;
-                if (var18.length() <= 0) {
-                    var8 = "1024";
-                }
-
-                var18 = var9;
-                if (!var10.equals("\"\"")) {
-                    if (!var11.equals("\"\"")) {
-                        opcode = String.format("FileUtil.cropBitmapFileFromCenter(%s, %s, %s, %s);", var10, var11, opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.cropBitmapFileFromCenter(%s, %s, %s, %s);", params.get(0), params.get(1), params.get(3), params.get(2));
                 }
                 break;
             case 286:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var9;
-                if (!var8.equals("\"\"")) {
-                    if (!var11.equals("\"\"")) {
-                        opcode = String.format("FileUtil.rotateBitmapFile(%s, %s, %s);", var8, var11, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.rotateBitmapFile(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
             case 287:
-                var11 = params.get(0);
-                var10 = params.get(1);
-                var8 = params.get(2);
-                var18 = params.get(3);
-                opcode = var8;
-                if (var8.length() <= 0) {
-                    opcode = "1";
-                }
-
-                var8 = var18;
-                if (var18.length() <= 0) {
-                    var8 = "1";
-                }
-
-                var18 = var9;
-                if (!var11.equals("\"\"")) {
-                    if (!var10.equals("\"\"")) {
-                        opcode = String.format("FileUtil.scaleBitmapFile(%s, %s, %s, %s);", var11, var10, opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.scaleBitmapFile(%s, %s, %s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 }
                 break;
             case 288:
-                var12 = params.get(0);
-                var10 = params.get(1);
-                var18 = params.get(2);
-                var11 = params.get(3);
-                var8 = var18;
-                if (var18.length() <= 0) {
-                    var8 = "0";
-                }
-
-                if (!var11.isEmpty()) {
-                    opcode = var11;
-                }
-
-                var18 = var9;
-                if (!var12.equals("\"\"")) {
-                    if (!var10.equals("\"\"")) {
-                        opcode = String.format("FileUtil.skewBitmapFile(%s, %s, %s, %s);", var12, var10, var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.skewBitmapFile(%s, %s, %s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 }
                 break;
             case 289:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = params.get(2);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "0x00000000";
-                }
-
-                var18 = var9;
-                if (!var8.equals("\"\"")) {
-                    if (!var11.equals("\"\"")) {
-                        opcode = String.format("FileUtil.setBitmapFileColorFilter(%s, %s, %s);", var8, var11, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.setBitmapFileColorFilter(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
             case 290:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                var18 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var9;
-                if (!var11.equals("\"\"")) {
-                    if (!var8.equals("\"\"")) {
-                        opcode = String.format("FileUtil.setBitmapFileBrightness(%s, %s, %s);", var11, var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.setBitmapFileBrightness(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
             case 291:
-                var8 = params.get(0);
-                var11 = params.get(1);
-                var18 = params.get(2);
-                if (!var18.isEmpty()) {
-                    opcode = var18;
-                }
-
-                var18 = var9;
-                if (!var8.equals("\"\"")) {
-                    if (!var11.equals("\"\"")) {
-                        opcode = String.format("FileUtil.setBitmapFileContrast(%s, %s, %s);", var8, var11, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
+                    opcode = String.format("FileUtil.setBitmapFileContrast(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
             case 292:
-                opcode = params.get(0);
-                if (!opcode.equals("\"\"")) {
-                    opcode = String.format("FileUtil.getJpegRotate(%s)", opcode);
-                    var18 = var9;
-                    break;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("FileUtil.getJpegRotate(%s)", params.get(0));
                 }
-
-                var18 = var9;
                 break;
             case 293:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("startActivityForResult(%s, REQ_CD_%s);", opcode, opcode.toUpperCase());
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("startActivityForResult(%s, REQ_CD_%s);", params.get(0), params.get(0).toUpperCase());
                 break;
             case 294:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("startActivityForResult(%s, REQ_CD_%s);", opcode, opcode.toUpperCase());
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("startActivityForResult(%s, REQ_CD_%s);", params.get(0), params.get(0).toUpperCase());
                 break;
             case 295:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.equals("\"\"")) {
-                        opcode = String.format("%s.setImageBitmap(FileUtil.decodeSampleBitmapFromPath(%s, 1024, 1024));", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(1).equals("\"\"")) {
+                    opcode = String.format("%s.setImageBitmap(FileUtil.decodeSampleBitmapFromPath(%s, 1024, 1024));", params.get(0), params.get(1));
                 }
                 break;
             case 296:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.equals("\"\"")) {
-                        opcode = String.format("Glide.with(getApplicationContext()).load(Uri.parse(%s)).into(%s);", var8, opcode);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(1).equals("\"\"")) {
+                    opcode = String.format("Glide.with(getApplicationContext()).load(Uri.parse(%s)).into(%s);", params.get(1), params.get(0));
                 }
                 break;
             case 297:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.equals("\"\"")) {
-                        opcode = String.format("%s.setHint(%s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(0).equals("\"\"")) {
+                    opcode = String.format("%s.setHint(%s);", params.get(0), params.get(1));
                 }
                 break;
             case 298:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.equals("\"\"")) {
-                        opcode = String.format("%s.setHintTextColor(%s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
+                if (!params.get(1).equals("\"\"")) {
+                    opcode = String.format("%s.setHintTextColor(%s);", params.get(0), params.get(1));
                 }
                 break;
             case 299:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var11 = params.get(2);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    var18 = var9;
-                    if (!var8.isEmpty()) {
-                        if (!var11.isEmpty()) {
-                            opcode = String.format("%s.setParams(%s, RequestNetworkController.%s);", opcode, var8, var11);
-                            var18 = var9;
-                            break;
-                        }
-
-                        var18 = var9;
-                    }
-                }
+                opcode = String.format("%s.setParams(%s, RequestNetworkController.%s);", params.get(0), params.get(1), params.get(2));
                 break;
             case 300:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.setHeaders(%s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.setHeaders(%s);", params.get(0), params.get(1));
                 break;
             case 301:
-                var11 = params.get(0);
-                var8 = params.get(1);
-                opcode = params.get(2);
-                var10 = params.get(3);
-                var18 = var9;
-                if (!var11.isEmpty()) {
-                    var18 = var9;
-                    if (!var8.isEmpty()) {
-                        var18 = var9;
-                        if (!opcode.equals("\"\"")) {
-                            if (!var10.isEmpty()) {
-                                opcode = String.format("%s.startRequestNetwork(RequestNetworkController.%s, %s, %s, _%s_request_listener);", var11, var8, opcode, var10, var11);
-                                var18 = var9;
-                                break;
-                            }
-
-                            var18 = var9;
-                        }
-                    }
-                }
+                opcode = String.format("%s.startRequestNetwork(RequestNetworkController.%s, %s, %s, _%s_request_listener);", params.get(0), params.get(1), params.get(2), params.get(3), params.get(0));
                 break;
             case 302:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "false";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setIndeterminate(%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setIndeterminate(%s);", params.get(0), params.get(1));
                 break;
             case 303:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "1";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setPitch((float)%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setPitch((float)%s);", params.get(0), params.get(1));
                 break;
             case 304:
-                var8 = params.get(0);
-                var18 = params.get(1);
-                opcode = var18;
-                if (var18.length() <= 0) {
-                    opcode = "1";
-                }
-
-                if (!var8.isEmpty()) {
-                    opcode = String.format("%s.setSpeechRate((float)%s);", var8, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.setSpeechRate((float)%s);", params.get(0), params.get(1));
                 break;
             case 305:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.speak(%s, TextToSpeech.QUEUE_ADD, null);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.speak(%s, TextToSpeech.QUEUE_ADD, null);", params.get(0), params.get(1));
                 break;
             case 306:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.isSpeaking()", opcode);
-                    var18 = var9;
-                    break;
-                }
+                opcode = String.format("%s.isSpeaking()", params.get(0));
 
-                var18 = var9;
                 break;
             case 307:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.stop();", opcode);
-                    var18 = var9;
-                    break;
-                }
+                opcode = String.format("%s.stop();", params.get(0));
 
-                var18 = var9;
                 break;
             case 308:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.shutdown();", opcode);
-                    var18 = var9;
-                    break;
-                }
+                opcode = String.format("%s.shutdown();", params.get(0));
 
-                var18 = var9;
                 break;
             case 309:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("Intent _intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);\n_intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());\n%s.startListening(_intent);", opcode);
-                    var18 = var9;
-                    break;
-                }
+                opcode = String.format("Intent _intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);\n_intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());\n%s.startListening(_intent);", params.get(0));
 
-                var18 = var9;
                 break;
             case 310:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.stopListening();", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.stopListening();", params.get(0));
                 break;
             case 311:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.cancel();\n%s.destroy();", opcode, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.cancel();\n%s.destroy();", params.get(0), params.get(0));
                 break;
             case 312:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.readyConnection(_%s_bluetooth_connection_listener, %s);", opcode, opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.readyConnection(_%s_bluetooth_connection_listener, %s);", params.get(0), params.get(0), params.get(1));
                 break;
             case 313:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var11 = params.get(2);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    var18 = var9;
-                    if (!var8.isEmpty()) {
-                        if (!var11.isEmpty()) {
-                            opcode = String.format("%s.readyConnection(_%s_bluetooth_connection_listener, %s, %s);", opcode, opcode, var8, var11);
-                            var18 = var9;
-                            break;
-                        }
-
-                        var18 = var9;
-                    }
-                }
+                opcode = String.format("%s.readyConnection(_%s_bluetooth_connection_listener, %s, %s);", params.get(0), params.get(0), params.get(1), params.get(2));
                 break;
             case 314:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var11 = params.get(2);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    var18 = var9;
-                    if (!var8.isEmpty()) {
-                        if (!var11.isEmpty()) {
-                            opcode = String.format("%s.startConnection(_%s_bluetooth_connection_listener, %s, %s);", opcode, opcode, var8, var11);
-                            var18 = var9;
-                            break;
-                        }
-
-                        var18 = var9;
-                    }
-                }
+                opcode = String.format("%s.startConnection(_%s_bluetooth_connection_listener, %s, %s);", params.get(0), params.get(0), params.get(1), params.get(2));
                 break;
             case 315:
-                opcode = params.get(0);
-                var11 = params.get(1);
-                var8 = params.get(2);
-                var10 = params.get(3);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    var18 = var9;
-                    if (!var11.isEmpty()) {
-                        var18 = var9;
-                        if (!var8.isEmpty()) {
-                            if (!var10.isEmpty()) {
-                                opcode = String.format("%s.startConnection(_%s_bluetooth_connection_listener, %s, %s, %s);", opcode, opcode, var11, var8, var10);
-                                var18 = var9;
-                                break;
-                            }
-
-                            var18 = var9;
-                        }
-                    }
-                }
+                opcode = String.format("%s.startConnection(_%s_bluetooth_connection_listener, %s, %s, %s);", params.get(0), params.get(0), params.get(1), params.get(2), params.get(3));
                 break;
             case 316:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.stopConnection(_%s_bluetooth_connection_listener, %s);", opcode, opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
-
-                    var18 = var9;
-                }
+                opcode = String.format("%s.stopConnection(_%s_bluetooth_connection_listener, %s);", params.get(0), params.get(0), params.get(1));
                 break;
             case 317:
-                var8 = params.get(0);
-                opcode = params.get(1);
-                var11 = params.get(2);
-                var18 = var9;
-                if (!var8.isEmpty()) {
-                    var18 = var9;
-                    if (!opcode.isEmpty()) {
-                        if (!var11.isEmpty()) {
-                            opcode = String.format("%s.sendData(_%s_bluetooth_connection_listener, %s, %s);", var8, var8, opcode, var11);
-                            var18 = var9;
-                            break;
-                        }
-
-                        var18 = var9;
-                    }
-                }
+                opcode = String.format("%s.sendData(_%s_bluetooth_connection_listener, %s, %s);", params.get(0), params.get(0), params.get(1), params.get(2));
                 break;
             case 318:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.isBluetoothEnabled()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.isBluetoothEnabled()", params.get(0));
                 break;
             case 319:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.isBluetoothActivated()", opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = String.format("%s.isBluetoothActivated()", params.get(0));
                 break;
             case 320:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.activateBluetooth();", opcode);
-                    var18 = var9;
-                    break;
-                }
+                opcode = String.format("%s.activateBluetooth();", params.get(0));
 
-                var18 = var9;
                 break;
             case 321:
-                opcode = params.get(0);
-                var8 = params.get(1);
-                var18 = var9;
-                if (!opcode.isEmpty()) {
-                    if (!var8.isEmpty()) {
-                        opcode = String.format("%s.getPairedDevices(%s);", opcode, var8);
-                        var18 = var9;
-                        break;
-                    }
+                opcode = String.format("%s.getPairedDevices(%s);", params.get(0), params.get(1));
 
-                    var18 = var9;
-                }
                 break;
             case 322:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.getRandomUUID()", opcode);
-                    var18 = var9;
-                    break;
-                }
+                opcode = params.get(0) + ".getRandomUUID()";
 
-                var18 = var9;
                 break;
+
             case 323:
-                var10 = params.get(0);
-                var8 = params.get(1);
-                var18 = var8;
-                if (var8.length() <= 0) {
-                    var18 = uq.p[0];
+                String locationRequest = "%s.requestLocationUpdates(LocationManager.%s, %s, %s, _%s_location_listener);";
+                if (e.g) {
+                    opcode = String.format("if (ContextCompat.checkSelfPermission(%s.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n" + locationRequest + "\n}", c, params.get(0), params.get(1), params.get(2), params.get(3), params.get(0));
+                } else {
+                    opcode = String.format("if (Build.VERSION.SDK_INT >= 23) {if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n" + locationRequest + "\n}\n}\nelse {\n" + locationRequest + "\n}", params.get(0), params.get(1), params.get(2), params.get(3), params.get(0), params.get(0), params.get(1), params.get(2), opcode, params.get(0));
                 }
-
-                var11 = params.get(2);
-                var8 = var11;
-                if (var11.length() <= 0) {
-                    var8 = "1000";
-                }
-
-                var11 = params.get(3);
-                if (!var11.isEmpty()) {
-                    opcode = var11;
-                }
-
-                if (!var10.isEmpty()) {
-                    if (e.g) {
-                        opcode = String.format("if (ContextCompat.checkSelfPermission(%s.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n%s.requestLocationUpdates(LocationManager.%s, %s, %s, _%s_location_listener);\n}", c, var10, var18, var8, opcode, var10);
-                        var18 = var9;
-                    } else {
-                        opcode = String.format("if (Build.VERSION.SDK_INT >= 23) {if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n%s.requestLocationUpdates(LocationManager.%s, %s, %s, _%s_location_listener);\n}\n}\nelse {\n%s.requestLocationUpdates(LocationManager.%s, %s, %s, _%s_location_listener);\n}", var10, var18, var8, opcode, var10, var10, var18, var8, opcode, var10);
-                        var18 = var9;
-                    }
-                    break;
-                }
-
-                var18 = var9;
                 break;
+
             case 324:
-                opcode = params.get(0);
-                if (!opcode.isEmpty()) {
-                    opcode = String.format("%s.removeUpdates(_%s_location_listener);", opcode, opcode);
-                    var18 = var9;
-                    break;
-                }
-
-                var18 = var9;
+                opcode = params.get(0) + ".removeUpdates(_" + params.get(0) + "_location_listener);";
                 break;
         }
 
-        var9 = opcode;
-        StringBuilder var14;
+        String code = opcode;
         if (b(bean.opCode, var2)) {
-            var14 = new StringBuilder();
-            var14.append("(");
-            var14.append(opcode);
-            var14.append(")");
-            var9 = var14.toString();
+            code = "(" + opcode + ")";
         }
 
-        var2 = var9;
         if (bean.nextBlock >= 0) {
-            var14 = new StringBuilder();
-            var14.append(var9);
-            var14.append("\r\n");
-            var14.append(a(String.valueOf(bean.nextBlock), var18));
-            var2 = var14.toString();
+            code += "\r\n" + a(String.valueOf(bean.nextBlock), moreBlock);
         }
 
-        return var2;
+        return code;
     }
 
-    private final String escapeString(String input) {
+    private String escapeString(String input) {
         StringBuilder escapedString = new StringBuilder(4096);
         CharBuffer charBuffer = CharBuffer.wrap(input);
 
