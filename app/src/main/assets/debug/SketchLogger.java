@@ -29,10 +29,10 @@ public class SketchLogger {
                 Process process = Runtime.getRuntime().exec("logcat");
 
                 try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                    String logTxt;
-                    while (isRunning && (logTxt = bufferedReader.readLine()) != null) {
+                    String logTxt = bufferedReader.readLine();
+                    do {
                         broadcastLog(logTxt);
-                    }
+                    } while (isRunning && (logTxt = bufferedReader.readLine()) != null);
 
                     if (isRunning) {
                         broadcastLog("Logger got killed. Restarting.");
