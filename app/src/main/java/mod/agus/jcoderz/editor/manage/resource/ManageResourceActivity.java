@@ -3,6 +3,8 @@ package mod.agus.jcoderz.editor.manage.resource;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Picture;
+import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +22,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bobur.androidsvg.SVG;
 import com.bumptech.glide.Glide;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
@@ -28,6 +31,7 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import mod.bobur.XmlToSvgConverter;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
 import pro.sketchware.databinding.DialogInputLayoutBinding;
@@ -358,6 +362,20 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             SketchwareUtil.toast("Only XML files can be edited");
         }
     }
+    public static String getLastDirectory(String path) {
+        // Get the index of the last occurrence of '/' character
+        int lastSlashIndex = path.lastIndexOf('/');
+
+        // Get the substring from the start to the lastSlashIndex
+        String parentPath = path.substring(0, lastSlashIndex);
+
+        // Get the index of the last occurrence of '/' in the parentPath
+        lastSlashIndex = parentPath.lastIndexOf('/');
+
+        // Extract the last directory name
+        return parentPath.substring(lastSlashIndex + 1);
+    }
+
     private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
         private final ArrayList<String> data;
@@ -387,6 +405,10 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                 try {
                     if (FileUtil.isImageFile(path)) {
                         Glide.with(ManageResourceActivity.this).load(new File(path)).into(binding.icon);
+                    } else if (path.endsWith(".xml") && "drawable".equals(getLastDirectory(path))) {
+                        SVG svg = SVG.getFromString(XmlToSvgConverter.xml2svg(FileUtil.readFile(path)));
+                        Picture picture = svg.renderToPicture();
+                        binding.icon.setImageDrawable(new PictureDrawable(picture));
                     } else {
                         binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                     }

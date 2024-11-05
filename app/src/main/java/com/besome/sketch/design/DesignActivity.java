@@ -53,12 +53,12 @@ import com.besome.sketch.tools.CompileLogActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -90,10 +90,10 @@ import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import pro.sketchware.utility.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
-import pro.sketchware.utility.FileUtil;
+import mod.bobur.BoburUtils;
+import mod.bobur.StringEditorActivity;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
@@ -117,12 +117,16 @@ import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
 import mod.trindadedev.tools.apk.ApkSignatures;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ProgressMsgBoxBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
+    public static String sc_id;
     private ImageView xmlLayoutOrientation;
     private boolean B;
     private int currentTabNumber;
-    public static String sc_id;
     private CustomViewPager viewPager;
     private CoordinatorLayout coordinatorLayout;
     private DrawerLayout drawer;
@@ -341,14 +345,25 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             } else if (v.getId() == R.id.btn_compiler_opt) {
                 PopupMenu popupMenu = new PopupMenu(this, buildSettings);
                 Menu menu = popupMenu.getMenu();
+                // this code enables force show icon
+                try {
+                    Field mFieldPopup = PopupMenu.class.getDeclaredField("mPopup");
+                    mFieldPopup.setAccessible(true);
+                    Object mPopup = mFieldPopup.get(popupMenu);
+                    Class<?> classPopupHelper = Class.forName(mPopup.getClass().getName());
+                    Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                    setForceIcons.invoke(mPopup, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-                menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
-                menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
-                menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
-                menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
+                menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings").setIcon(R.drawable.ic_mtrl_settings);
+                menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files").setIcon(R.drawable.ic_mtrl_delete);
+                menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error").setIcon(R.drawable.ic_mtrl_bug_report);
+                menu.add(Menu.NONE, 5, Menu.NONE, "Show source code").setIcon(R.drawable.ic_mtrl_code);
                 if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
-                    menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
-                    menu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures");
+                    menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK").setIcon(R.drawable.ic_mtrl_download);
+                    menu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures").setIcon(R.drawable.ic_mtrl_fingerprint);
                 }
 
                 popupMenu.setOnMenuItemClickListener(item -> {
@@ -706,11 +721,15 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 editor.setText(!source.isEmpty() ? source : "Failed to generate source.");
                 editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
-                if (filename.endsWith(".xml")) {
+                if (BoburUtils.isDarkModeEnabled(getApplicationContext())) {
+                    editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+                } else {
                     editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                }
+
+                if (filename.endsWith(".xml")) {
                     editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
                 } else {
-                    editor.setColorScheme(new EditorColorScheme());
                     editor.setEditorLanguage(new JavaLanguage());
                 }
 
@@ -909,10 +928,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private static class BuildTask extends BaseTask implements DialogInterface.OnCancelListener, BuildProgressReceiver {
-        private volatile boolean canceled;
-        private volatile boolean isBuildFinished;
         private final BuildingDialog dialog;
         private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+        private volatile boolean canceled;
+        private volatile boolean isBuildFinished;
 
         public BuildTask(DesignActivity activity) {
             super(activity);
@@ -935,6 +954,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 activity.runProject.setClickable(false);
                 activity.r.a("P1I10", true);
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                StringEditorActivity.createDefaultString();
             });
         }
 

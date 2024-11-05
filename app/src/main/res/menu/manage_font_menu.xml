@@ -9,13 +9,13 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_font_delete"
-        android:icon="@drawable/ic_delete_24"
+        android:icon="@drawable/ic_mtrl_delete"
         android:orderInCategory="1"
         android:title="remove"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_font_add"
-        android:icon="@drawable/ic_add_24"
+        android:icon="@drawable/ic_mtrl_add"
         android:orderInCategory="1"
         android:title="add"
         android:visible="false"
