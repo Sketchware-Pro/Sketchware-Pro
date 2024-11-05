@@ -1,19 +1,31 @@
 package pro.sketchware.lib.highlighter;
 
+import android.content.Context;
 import android.graphics.Color;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import mod.bobur.BoburUtils;
+import pro.sketchware.SketchApplication;
+
 public class SyntaxScheme {
 
-    public static final String COMMENTS_COLOR = "#880000";
-    public static final String NOT_WORD_COLOR = "#656600";
-    public static final String NUMBERS_COLOR = "#006766";
-    public static final String PRIMARY_COLOR = "#000000";
-    public static final String QUOTES_COLOR = "#008800";
-    public static final String SECONDARY_COLOR = "#010088";
-    public static final String VARIABLE_COLOR = "#660066";
+    public static final String COMMENTS_COLOR_LIGHT = "#880000";
+    public static final String NOT_WORD_COLOR_LIGHT = "#656600";
+    public static final String NUMBERS_COLOR_LIGHT = "#006766";
+    public static final String PRIMARY_COLOR_LIGHT = "#000000";
+    public static final String QUOTES_COLOR_LIGHT = "#008800";
+    public static final String SECONDARY_COLOR_LIGHT = "#010088";
+    public static final String VARIABLE_COLOR_LIGHT = "#660066";
+
+    public static final String COMMENTS_COLOR_DARK = "#6A737D";
+    public static final String NOT_WORD_COLOR_DARK = "#C678DD";
+    public static final String NUMBERS_COLOR_DARK = "#B294BB";
+    public static final String PRIMARY_COLOR_DARK = "#ABB2BF";
+    public static final String QUOTES_COLOR_DARK = "#98C379";
+    public static final String SECONDARY_COLOR_DARK = "#D19A66";
+    public static final String VARIABLE_COLOR_DARK = "#56B6C2";
 
     private static final String[] mJavaPattern = new String[12];
     private static final String[] mXmlPattern = new String[4];
@@ -30,28 +42,38 @@ public class SyntaxScheme {
 
     public static ArrayList<SyntaxScheme> JAVA() {
         ArrayList<SyntaxScheme> arrayList = new ArrayList<>();
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[0] + mJavaPattern[1]), Color.parseColor(PRIMARY_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[2] + mJavaPattern[3] + mJavaPattern[4]), Color.parseColor(SECONDARY_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[5]), Color.parseColor(NUMBERS_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[11]), Color.parseColor(NOT_WORD_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[10]), Color.parseColor(VARIABLE_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[7]), Color.parseColor(NUMBERS_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[8]), Color.parseColor(QUOTES_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[9]), Color.parseColor(COMMENTS_COLOR)));
+        boolean isDarkMode = BoburUtils.isDarkModeEnabled(SketchApplication.getContext());
+
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[0] + mJavaPattern[1]), getColor(PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[2] + mJavaPattern[3] + mJavaPattern[4]), getColor(SECONDARY_COLOR_LIGHT, SECONDARY_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[5]), getColor(NUMBERS_COLOR_LIGHT, NUMBERS_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[11]), getColor(NOT_WORD_COLOR_LIGHT, NOT_WORD_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[6]), getColor(PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[10]), getColor(VARIABLE_COLOR_LIGHT, VARIABLE_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[7]), getColor(NUMBERS_COLOR_LIGHT, NUMBERS_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[8]), getColor(QUOTES_COLOR_LIGHT, QUOTES_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[9]), getColor(COMMENTS_COLOR_LIGHT, COMMENTS_COLOR_DARK, isDarkMode)));
+
         return arrayList;
     }
 
-    public static ArrayList<SyntaxScheme> XML() {
+    public static ArrayList<SyntaxScheme> XML(Context context) {
         ArrayList<SyntaxScheme> arrayList = new ArrayList<>();
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[0] + mJavaPattern[1]), Color.parseColor(PRIMARY_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[2]), Color.parseColor(SECONDARY_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[0]), Color.parseColor(VARIABLE_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[11]), Color.parseColor(NOT_WORD_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[3]), Color.parseColor(SECONDARY_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[1]), Color.parseColor(COMMENTS_COLOR)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[8]), Color.parseColor(QUOTES_COLOR)));
+        boolean isDarkMode = BoburUtils.isDarkModeEnabled(context);
+
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[0] + mJavaPattern[1]), getColor(PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[2]), getColor(SECONDARY_COLOR_LIGHT, SECONDARY_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[0]), getColor(VARIABLE_COLOR_LIGHT, VARIABLE_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[11]), getColor(NOT_WORD_COLOR_LIGHT, NOT_WORD_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[3]), getColor(SECONDARY_COLOR_LIGHT, SECONDARY_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[1]), getColor(COMMENTS_COLOR_LIGHT, COMMENTS_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[8]), getColor(QUOTES_COLOR_LIGHT, QUOTES_COLOR_DARK, isDarkMode)));
+
         return arrayList;
+    }
+
+    private static int getColor(String lightColor, String darkColor, boolean isDarkMode) {
+        return Color.parseColor(isDarkMode ? darkColor : lightColor);
     }
 
     private void initializeJavaPattern() {
@@ -77,7 +99,10 @@ public class SyntaxScheme {
     }
 
     public SyntaxScheme getPrimarySyntax() {
-        return new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR));
+        if (BoburUtils.isDarkModeEnabled(SketchApplication.getContext())) {
+            return new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR_DARK));
+        } else {
+            return new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR_LIGHT));
+        }
     }
-
 }
