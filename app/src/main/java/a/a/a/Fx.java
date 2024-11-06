@@ -73,1667 +73,17 @@ public class Fx {
             params.add(parameter);
         }
 
-        int blockId = -1;
-        String opcode = bean.opCode;
-        int hash = opcode.hashCode();
-        switch (hash) {
-            case -2135695280:
-                if (opcode.equals("webViewLoadUrl")) {
-                    blockId = 171;
-                }
-                break;
-            case -2120571577:
-                if (opcode.equals("mapIsEmpty")) {
-                    blockId = 15;
-                }
-                break;
-            case -2114384168:
-                if (opcode.equals("firebasestorageDownloadFile")) {
-                    blockId = 262;
-                }
-                break;
-            case -2055793167:
-                if (opcode.equals("fileutillistdir")) {
-                    blockId = 271;
-                }
-                break;
-            case -2037144358:
-                if (opcode.equals("bluetoothConnectStartConnectionToUuid")) {
-                    blockId = 315;
-                }
-                break;
-            case -2027093331:
-                if (opcode.equals("calendarViewSetDate")) {
-                    blockId = 184;
-                }
-                break;
-            case -2020761366:
-                if (opcode.equals("fileRemoveData")) {
-                    blockId = 133;
-                }
-                break;
-            case -1998407506:
-                if (opcode.equals("listSetData")) {
-                    blockId = 159;
-                }
-                break;
-            case -1989678633:
-                if (opcode.equals("mapViewSetMarkerVisible")) {
-                    blockId = 198;
-                }
-                break;
-            case -1979147952:
-                if (opcode.equals("stringContains")) {
-                    blockId = 63;
-                }
-                break;
-            case -1975568730:
-                if (opcode.equals("copyToClipboard")) {
-                    blockId = 120;
-                }
-                break;
-            case -1966668787:
-                if (opcode.equals("firebaseauthSignOutUser")) {
-                    blockId = 215;
-                }
-                break;
-            case -1937348542:
-                if (opcode.equals("firebaseStartListen")) {
-                    blockId = 216;
-                }
-                break;
-            case -1922362317:
-                if (opcode.equals("getExternalStorageDir")) {
-                    blockId = 278;
-                }
-                break;
-            case -1920517885:
-                if (opcode.equals("setVarBoolean")) {
-                    blockId = 3;
-                }
-                break;
-            case -1919300188:
-                if (opcode.equals("toNumber")) {
-                    blockId = 67;
-                }
-                break;
-            case -1910071024:
-                if (opcode.equals("objectanimatorSetDuration")) {
-                    blockId = 251;
-                }
-                break;
-            case -1886802639:
-                if (opcode.equals("soundpoolLoad")) {
-                    blockId = 238;
-                }
-                break;
-            case -1834369666:
-                if (opcode.equals("setBitmapFileBrightness")) {
-                    blockId = 290;
-                }
-                break;
-            case -1812313351:
-                if (opcode.equals("setColorFilter")) {
-                    blockId = 117;
-                }
-                break;
-            case -1778201036:
-                if (opcode.equals("listSmoothScrollTo")) {
-                    blockId = 166;
-                }
-                break;
-            case -1776922004:
-                if (opcode.equals("toString")) {
-                    blockId = 72;
-                }
-                break;
-            case -1749698255:
-                if (opcode.equals("mediaplayerPause")) {
-                    blockId = 228;
-                }
-                break;
-            case -1747734390:
-                if (opcode.equals("mediaplayerReset")) {
-                    blockId = 232;
-                }
-                break;
-            case -1746380899:
-                if (opcode.equals("mediaplayerStart")) {
-                    blockId = 227;
-                }
-                break;
-            case -1718917155:
-                if (opcode.equals("mediaplayerSeek")) {
-                    blockId = 229;
-                }
-                break;
-            case -1699631195:
-                if (opcode.equals("isDrawerOpen")) {
-                    blockId = 105;
-                }
-                break;
-            case -1699349926:
-                if (opcode.equals("objectanimatorSetRepeatMode")) {
-                    blockId = 252;
-                }
-                break;
-            case -1684072208:
-                if (opcode.equals("intentSetData")) {
-                    blockId = 123;
-                }
-                break;
-            case -1679834825:
-                if (opcode.equals("setTrackResource")) {
-                    blockId = 242;
-                }
-                break;
-            case -1678257956:
-                if (opcode.equals("gridSetCustomViewData")) {
-                    blockId = 160;
-                }
-                break;
-            case -1666623936:
-                if (opcode.equals("speechToTextShutdown")) {
-                    blockId = 311;
-                }
-                break;
-            case -1573371685:
-                if (opcode.equals("stringJoin")) {
-                    blockId = 58;
-                }
-                break;
-            case -1541653284:
-                if (opcode.equals("objectanimatorStart")) {
-                    blockId = 255;
-                }
-                break;
-            case -1530840255:
-                if (opcode.equals("stringIndex")) {
-                    blockId = 59;
-                }
-                break;
-            case -1528850031:
-                if (opcode.equals("startActivity")) {
-                    blockId = 128;
-                }
-                break;
-            case -1526161572:
-                if (opcode.equals("setBgColor")) {
-                    blockId = 113;
-                }
-                break;
-            case -1513446476:
-                if (opcode.equals("dialogCancelButton")) {
-                    blockId = 224;
-                }
-                break;
-            case -1512519571:
-                if (opcode.equals("definedFunc")) {
-                    blockId = 0;
-                }
-                break;
-            case -1483954587:
-                if (opcode.equals("fileutilisdir")) {
-                    blockId = 272;
-                }
-                break;
-            case -1477942289:
-                if (opcode.equals("mediaplayerIsLooping")) {
-                    blockId = 236;
-                }
-                break;
-            case -1471049951:
-                if (opcode.equals("fileutilwrite")) {
-                    blockId = 265;
-                }
-                break;
-            case -1440042085:
-                if (opcode.equals("spnSetSelection")) {
-                    blockId = 169;
-                }
-                break;
-            case -1438040951:
-                if (opcode.equals("seekBarGetMax")) {
-                    blockId = 246;
-                }
-                break;
-            case -1422112391:
-                if (opcode.equals("bluetoothConnectIsBluetoothEnabled")) {
-                    blockId = 318;
-                }
-                break;
-            case -1405157727:
-                if (opcode.equals("fileutilmakedir")) {
-                    blockId = 270;
-                }
-                break;
-            case -1385076635:
-                if (opcode.equals("dialogShow")) {
-                    blockId = 222;
-                }
-                break;
-            case -1384861688:
-                if (opcode.equals("getAtListInt")) {
-                    blockId = 19;
-                }
-                break;
-            case -1384858251:
-                if (opcode.equals("getAtListMap")) {
-                    blockId = 29;
-                }
-                break;
-            case -1384851894:
-                if (opcode.equals("getAtListStr")) {
-                    blockId = 24;
-                }
-                break;
-            case -1377080719:
-                if (opcode.equals("decreaseInt")) {
-                    blockId = 6;
-                }
-                break;
-            case -1376608975:
-                if (opcode.equals("calendarSetTime")) {
-                    blockId = 140;
-                }
-                break;
-            case -1361468284:
-                if (opcode.equals("viewOnClick")) {
-                    blockId = 104;
-                }
-                break;
-            case -1348085287:
-                if (opcode.equals("mapViewZoomIn")) {
-                    blockId = 191;
-                }
-                break;
-            case -1348084945:
-                if (opcode.equals("mapViewZoomTo")) {
-                    blockId = 190;
-                }
-                break;
-            case -1304067438:
-                if (opcode.equals("firebaseDelete")) {
-                    blockId = 206;
-                }
-                break;
-            case -1272546178:
-                if (opcode.equals("dialogSetTitle")) {
-                    blockId = 220;
-                }
-                break;
-            case -1271141237:
-                if (opcode.equals("clearList")) {
-                    blockId = 37;
-                }
-                break;
-            case -1249367264:
-                if (opcode.equals("getArg")) {
-                    blockId = 1;
-                }
-                break;
-            case -1249347599:
-                if (opcode.equals("getVar")) {
-                    blockId = 2;
-                }
-                break;
-            case -1217704075:
-                if (opcode.equals("objectanimatorSetValue")) {
-                    blockId = 249;
-                }
-                break;
-            case -1206794099:
-                if (opcode.equals("getLocationX")) {
-                    blockId = 155;
-                }
-                break;
-            case -1206794098:
-                if (opcode.equals("getLocationY")) {
-                    blockId = 156;
-                }
-                break;
-            case -1195899442:
-                if (opcode.equals("bluetoothConnectSendData")) {
-                    blockId = 317;
-                }
-                break;
-            case -1192544266:
-                if (opcode.equals("ifElse")) {
-                    blockId = 41;
-                }
-                break;
-            case -1185284274:
-                if (opcode.equals("gyroscopeStopListen")) {
-                    blockId = 219;
-                }
-                break;
-            case -1182878167:
-                if (opcode.equals("firebaseauthGetUid")) {
-                    blockId = 213;
-                }
-                break;
-            case -1160374245:
-                if (opcode.equals("bluetoothConnectReadyConnectionToUuid")) {
-                    blockId = 313;
-                }
-                break;
-            case -1149848189:
-                if (opcode.equals("toStringFormat")) {
-                    blockId = 74;
-                }
-                break;
-            case -1149458632:
-                if (opcode.equals("objectanimatorSetRepeatCount")) {
-                    blockId = 253;
-                }
-                break;
-            case -1143684675:
-                if (opcode.equals("firebaseauthGetCurrentUser")) {
-                    blockId = 212;
-                }
-                break;
-            case -1139353316:
-                if (opcode.equals("setListMap")) {
-                    blockId = 30;
-                }
-                break;
-            case -1137582698:
-                if (opcode.equals("toLowerCase")) {
-                    blockId = 71;
-                }
-                break;
-            case -1123431291:
-                if (opcode.equals("calnedarViewSetMaxDate")) {
-                    blockId = 186;
-                }
-                break;
-            case -1107376988:
-                if (opcode.equals("webViewGoForward")) {
-                    blockId = 177;
-                }
-                break;
-            case -1106141754:
-                if (opcode.equals("webViewCanGoBack")) {
-                    blockId = 174;
-                }
-                break;
-            case -1094491139:
-                if (opcode.equals("seekBarSetMax")) {
-                    blockId = 245;
-                }
-                break;
-            case -1083547183:
-                if (opcode.equals("spnSetCustomViewData")) {
-                    blockId = 160;
-                }
-                break;
-            case -1081400230:
-                if (opcode.equals("mapGet")) {
-                    blockId = 10;
-                }
-                break;
-            case -1081391085:
-                if (opcode.equals("mapPut")) {
-                    blockId = 9;
-                }
-                break;
-            case -1081250015:
-                if (opcode.equals("mathPi")) {
-                    blockId = 83;
-                }
-                break;
-            case -1069525505:
-                if (opcode.equals("pagerSetCustomViewData")) {
-                    blockId = 160;
-                }
-                break;
-            case -1063598745:
-                if (opcode.equals("resizeBitmapFileRetainRatio")) {
-                    blockId = 281;
-                }
-                break;
-            case -1043233275:
-                if (opcode.equals("mediaplayerGetDuration")) {
-                    blockId = 231;
-                }
-                break;
-            case -1033658254:
-                if (opcode.equals("mathGetDisplayWidth")) {
-                    blockId = 81;
-                }
-                break;
-            case -1021852352:
-                if (opcode.equals("objectanimatorCancel")) {
-                    blockId = 256;
-                }
-                break;
-            case -1007787615:
-                if (opcode.equals("mediaplayerSetLooping")) {
-                    blockId = 235;
-                }
-                break;
-            case -996870276:
-                if (opcode.equals("insertMapToList")) {
-                    blockId = 33;
-                }
-                break;
-            case -995908985:
-                if (opcode.equals("soundpoolCreate")) {
-                    blockId = 237;
-                }
-                break;
-            case -941420147:
-                if (opcode.equals("fileSetFileName")) {
-                    blockId = 130;
-                }
-                break;
-            case -938285885:
-                if (opcode.equals("random")) {
-                    blockId = 56;
-                }
-                break;
-            case -934531685:
-                if (opcode.equals("repeat")) {
-                    blockId = 39;
-                }
-                break;
-            case -918173448:
-                if (opcode.equals("listGetCheckedPosition")) {
-                    blockId = 163;
-                }
-                break;
-            case -917343271:
-                if (opcode.equals("getJpegRotate")) {
-                    blockId = 292;
-                }
-                break;
-            case -911199919:
-                if (opcode.equals("objectanimatorSetProperty")) {
-                    blockId = 248;
-                }
-                break;
-            case -903177036:
-                if (opcode.equals("resizeBitmapFileWithRoundedBorder")) {
-                    blockId = 284;
-                }
-                break;
-            case -883988307:
-                if (opcode.equals("dialogSetMessage")) {
-                    blockId = 221;
-                }
-                break;
-            case -869293886:
-                if (opcode.equals("finishActivity")) {
-                    blockId = 129;
-                }
-                break;
-            case -854558288:
-                if (opcode.equals("setVisible")) {
-                    blockId = 141;
-                }
-                break;
-            case -853550561:
-                if (opcode.equals("timerCancel")) {
-                    blockId = 202;
-                }
-                break;
-            case -831887360:
-                if (opcode.equals("textToSpeechShutdown")) {
-                    blockId = 308;
-                }
-                break;
-            case -733318734:
-                if (opcode.equals("strToListMap")) {
-                    blockId = 78;
-                }
-                break;
-            case -697616870:
-                if (opcode.equals("camerastarttakepicture")) {
-                    blockId = 294;
-                }
-                break;
-            case -677662361:
-                if (opcode.equals("forever")) {
-                    blockId = 38;
-                }
-                break;
-            case -668992194:
-                if (opcode.equals("stringReplaceAll")) {
-                    blockId = 66;
-                }
-                break;
-            case -664474111:
-                if (opcode.equals("intentSetFlags")) {
-                    blockId = 126;
-                }
-                break;
-            case -649691581:
-                if (opcode.equals("objectanimatorSetInterpolator")) {
-                    blockId = 254;
-                }
-                break;
-            case -636363854:
-                if (opcode.equals("webViewGetUrl")) {
-                    blockId = 172;
-                }
-                break;
-            case -628607128:
-                if (opcode.equals("webViewGoBack")) {
-                    blockId = 176;
-                }
-                break;
-            case -621198621:
-                if (opcode.equals("speechToTextStartListening")) {
-                    blockId = 309;
-                }
-                break;
-            case -602241037:
-                if (opcode.equals("fileutilcopy")) {
-                    blockId = 266;
-                }
-                break;
-            case -601942961:
-                if (opcode.equals("fileutilmove")) {
-                    blockId = 267;
-                }
-                break;
-            case -601804268:
-                if (opcode.equals("fileutilread")) {
-                    blockId = 264;
-                }
-                break;
-            case -578987803:
-                if (opcode.equals("setChecked")) {
-                    blockId = 157;
-                }
-                break;
-            case -509946902:
-                if (opcode.equals("spnRefresh")) {
-                    blockId = 168;
-                }
-                break;
-            case -439342016:
-                if (opcode.equals("webViewClearHistory")) {
-                    blockId = 179;
-                }
-                break;
-            case -437272040:
-                if (opcode.equals("bluetoothConnectGetRandomUuid")) {
-                    blockId = 322;
-                }
-                break;
-            case -425293664:
-                if (opcode.equals("setClickable")) {
-                    blockId = 142;
-                }
-                break;
-            case -418212114:
-                if (opcode.equals("firebaseGetChildren")) {
-                    blockId = 207;
-                }
-                break;
-            case -411705840:
-                if (opcode.equals("fileSetData")) {
-                    blockId = 132;
-                }
-                break;
-            case -399551817:
-                if (opcode.equals("toUpperCase")) {
-                    blockId = 70;
-                }
-                break;
-            case -390304998:
-                if (opcode.equals("mapViewAddMarker")) {
-                    blockId = 193;
-                }
-                break;
-            case -356866884:
-                if (opcode.equals("webViewSetCacheMode")) {
-                    blockId = 173;
-                }
-                break;
-            case -353129373:
-                if (opcode.equals("calendarDiff")) {
-                    blockId = 138;
-                }
-                break;
-            case -329562760:
-                if (opcode.equals("insertListInt")) {
-                    blockId = 18;
-                }
-                break;
-            case -329559323:
-                if (opcode.equals("insertListMap")) {
-                    blockId = 28;
-                }
-                break;
-            case -329552966:
-                if (opcode.equals("insertListStr")) {
-                    blockId = 23;
-                }
-                break;
-            case -322651344:
-                if (opcode.equals("stringEquals")) {
-                    blockId = 62;
-                }
-                break;
-            case -283328259:
-                if (opcode.equals("intentPutExtra")) {
-                    blockId = 125;
-                }
-                break;
-            case -258774775:
-                if (opcode.equals("closeDrawer")) {
-                    blockId = 107;
-                }
-                break;
-            case -247015294:
-                if (opcode.equals("mediaplayerRelease")) {
-                    blockId = 233;
-                }
-                break;
-            case -208762465:
-                if (opcode.equals("toStringWithDecimal")) {
-                    blockId = 73;
-                }
-                break;
-            case -189292433:
-                if (opcode.equals("stringSub")) {
-                    blockId = 61;
-                }
-                break;
-            case -152473824:
-                if (opcode.equals("firebaseauthIsLoggedIn")) {
-                    blockId = 211;
-                }
-                break;
-            case -149850417:
-                if (opcode.equals("fileutilisexist")) {
-                    blockId = 269;
-                }
-                break;
-            case -133532073:
-                if (opcode.equals("stringLength")) {
-                    blockId = 57;
-                }
-                break;
-            case -96313603:
-                if (opcode.equals("containListInt")) {
-                    blockId = 21;
-                }
-                break;
-            case -96310166:
-                if (opcode.equals("containListMap")) {
-                    blockId = 31;
-                }
-                break;
-            case -96303809:
-                if (opcode.equals("containListStr")) {
-                    blockId = 26;
-                }
-                break;
-            case -83301935:
-                if (opcode.equals("webViewZoomIn")) {
-                    blockId = 181;
-                }
-                break;
-            case -83186725:
-                if (opcode.equals("openDrawer")) {
-                    blockId = 106;
-                }
-                break;
-            case -75125341:
-                if (opcode.equals("getText")) {
-                    blockId = 112;
-                }
-                break;
-            case -60494417:
-                if (opcode.equals("vibratorAction")) {
-                    blockId = 199;
-                }
-                break;
-            case -60048101:
-                if (opcode.equals("firebaseauthResetPassword")) {
-                    blockId = 214;
-                }
-                break;
-            case -24451690:
-                if (opcode.equals("dialogOkButton")) {
-                    blockId = 223;
-                }
-                break;
-            case -14362103:
-                if (opcode.equals("bluetoothConnectIsBluetoothActivated")) {
-                    blockId = 319;
-                }
-                break;
-            case -10599306:
-                if (opcode.equals("firebaseauthCreateUser")) {
-                    blockId = 208;
-                }
-                break;
-            case -9742826:
-                if (opcode.equals("firebaseGetPushKey")) {
-                    blockId = 205;
-                }
-                break;
-            case 37:
-                if (opcode.equals("%")) {
-                    blockId = 50;
-                }
-                break;
-            case 42:
-                if (opcode.equals("*")) {
-                    blockId = 48;
-                }
-                break;
-            case 43:
-                if (opcode.equals("+")) {
-                    blockId = 46;
-                }
-                break;
-            case 45:
-                if (opcode.equals("-")) {
-                    blockId = 47;
-                }
-                break;
-            case 47:
-                if (opcode.equals("/")) {
-                    blockId = 49;
-                }
-                break;
-            case 60:
-                if (opcode.equals("<")) {
-                    blockId = 52;
-                }
-                break;
-            case 61:
-                if (opcode.equals("=")) {
-                    blockId = 53;
-                }
-                break;
-            case 62:
-                if (opcode.equals(">")) {
-                    blockId = 51;
-                }
-                break;
-            case 1216:
-                if (opcode.equals("&&")) {
-                    blockId = 54;
-                }
-                break;
-            case 3357:
-                if (opcode.equals("if")) {
-                    blockId = 40;
-                }
-                break;
-            case 3968:
-                if (opcode.equals("||")) {
-                    blockId = 55;
-                }
-                break;
-            case 109267:
-                if (opcode.equals("not")) {
-                    blockId = 45;
-                }
-                break;
-            case 3568674:
-                if (opcode.equals("trim")) {
-                    blockId = 69;
-                }
-                break;
-            case 3569038:
-                if (opcode.equals("true")) {
-                    blockId = 43;
-                }
-                break;
-            case 8255701:
-                if (opcode.equals("calendarFormat")) {
-                    blockId = 137;
-                }
-                break;
-            case 16308074:
-                if (opcode.equals("resizeBitmapFileToCircle")) {
-                    blockId = 283;
-                }
-                break;
-            case 25469951:
-                if (opcode.equals("bluetoothConnectActivateBluetooth")) {
-                    blockId = 320;
-                }
-                break;
-            case 27679870:
-                if (opcode.equals("calendarGetNow")) {
-                    blockId = 134;
-                }
-                break;
-            case 56167279:
-                if (opcode.equals("setBitmapFileContrast")) {
-                    blockId = 291;
-                }
-                break;
-            case 61585857:
-                if (opcode.equals("firebasePush")) {
-                    blockId = 204;
-                }
-                break;
-            case 94001407:
-                if (opcode.equals("break")) {
-                    blockId = 42;
-                }
-                break;
-            case 97196323:
-                if (opcode.equals("false")) {
-                    blockId = 44;
-                }
-                break;
-            case 103668285:
-                if (opcode.equals("mathE")) {
-                    blockId = 84;
-                }
-                break;
-            case 125431087:
-                if (opcode.equals("speechToTextStopListening")) {
-                    blockId = 310;
-                }
-                break;
-            case 134874756:
-                if (opcode.equals("listSetCustomViewData")) {
-                    blockId = 160;
-                }
-                break;
-            case 152967761:
-                if (opcode.equals("mapClear")) {
-                    blockId = 14;
-                }
-                break;
-            case 163812602:
-                if (opcode.equals("cropBitmapFileFromCenter")) {
-                    blockId = 285;
-                }
-                break;
-            case 168740282:
-                if (opcode.equals("mapToStr")) {
-                    blockId = 77;
-                }
-                break;
-            case 182549637:
-                if (opcode.equals("setEnable")) {
-                    blockId = 108;
-                }
-                break;
-            case 207764385:
-                if (opcode.equals("calendarViewGetDate")) {
-                    blockId = 183;
-                }
-                break;
-            case 255417137:
-                if (opcode.equals("adViewLoadAd")) {
-                    blockId = 187;
-                }
-                break;
-            case 262073061:
-                if (opcode.equals("bluetoothConnectReadyConnection")) {
-                    blockId = 312;
-                }
-                break;
-            case 276674391:
-                if (opcode.equals("mapViewMoveCamera")) {
-                    blockId = 189;
-                }
-                break;
-            case 297379706:
-                if (opcode.equals("textToSpeechSetSpeechRate")) {
-                    blockId = 304;
-                }
-                break;
-            case 300372142:
-                if (opcode.equals("mathAcos")) {
-                    blockId = 97;
-                }
-                break;
-            case 300387327:
-                if (opcode.equals("mathAsin")) {
-                    blockId = 96;
-                }
-                break;
-            case 300388040:
-                if (opcode.equals("mathAtan")) {
-                    blockId = 98;
-                }
-                break;
-            case 300433453:
-                if (opcode.equals("mathCeil")) {
-                    blockId = 91;
-                }
-                break;
-            case 300921928:
-                if (opcode.equals("mathSqrt")) {
-                    blockId = 88;
-                }
-                break;
-            case 317453636:
-                if (opcode.equals("textToSpeechIsSpeaking")) {
-                    blockId = 306;
-                }
-                break;
-            case 342026220:
-                if (opcode.equals("interstitialadShow")) {
-                    blockId = 260;
-                }
-                break;
-            case 348377823:
-                if (opcode.equals("soundpoolStreamPlay")) {
-                    blockId = 239;
-                }
-                break;
-            case 348475309:
-                if (opcode.equals("soundpoolStreamStop")) {
-                    blockId = 240;
-                }
-                break;
-            case 362605827:
-                if (opcode.equals("recyclerSetCustomViewData")) {
-                    blockId = 160;
-                }
-                break;
-            case 389111867:
-                if (opcode.equals("spnSetData")) {
-                    blockId = 167;
-                }
-                break;
-            case 397166713:
-                if (opcode.equals("getEnable")) {
-                    blockId = 109;
-                }
-                break;
-            case 401012285:
-                if (opcode.equals("getTranslationX")) {
-                    blockId = 148;
-                }
-                break;
-            case 401012286:
-                if (opcode.equals("getTranslationY")) {
-                    blockId = 150;
-                }
-                break;
-            case 404247683:
-                if (opcode.equals("calendarAdd")) {
-                    blockId = 135;
-                }
-                break;
-            case 404265028:
-                if (opcode.equals("calendarSet")) {
-                    blockId = 136;
-                }
-                break;
-            case 442768763:
-                if (opcode.equals("mapGetAllKeys")) {
-                    blockId = 16;
-                }
-                break;
-            case 463560551:
-                if (opcode.equals("mapContainKey")) {
-                    blockId = 11;
-                }
-                break;
-            case 463594049:
-                if (opcode.equals("objectanimatorSetFromTo")) {
-                    blockId = 250;
-                }
-                break;
-            case 470160234:
-                if (opcode.equals("fileutilGetLastSegmentPath")) {
-                    blockId = 277;
-                }
-                break;
-            case 475815924:
-                if (opcode.equals("setTextColor")) {
-                    blockId = 115;
-                }
-                break;
-            case 481850295:
-                if (opcode.equals("resizeBitmapFileToSquare")) {
-                    blockId = 282;
-                }
-                break;
-            case 490702942:
-                if (opcode.equals("filepickerstartpickfiles")) {
-                    blockId = 293;
-                }
-                break;
-            case 501171279:
-                if (opcode.equals("mathToDegree")) {
-                    blockId = 103;
-                }
-                break;
-            case 530759231:
-                if (opcode.equals("progressBarSetIndeterminate")) {
-                    blockId = 302;
-                }
-                break;
-            case 548860462:
-                if (opcode.equals("webViewClearCache")) {
-                    blockId = 178;
-                }
-                break;
-            case 556217437:
-                if (opcode.equals("setRotate")) {
-                    blockId = 143;
-                }
-                break;
-            case 571046965:
-                if (opcode.equals("scaleBitmapFile")) {
-                    blockId = 287;
-                }
-                break;
-            case 573208400:
-                if (opcode.equals("setScaleX")) {
-                    blockId = 151;
-                }
-                break;
-            case 573208401:
-                if (opcode.equals("setScaleY")) {
-                    blockId = 153;
-                }
-                break;
-            case 573295520:
-                if (opcode.equals("listGetCheckedCount")) {
-                    blockId = 165;
-                }
-                break;
-            case 601235430:
-                if (opcode.equals("currentTime")) {
-                    blockId = 68;
-                }
-                break;
-            case 610313513:
-                if (opcode.equals("getMapInList")) {
-                    blockId = 34;
-                }
-                break;
-            case 615286641:
-                if (opcode.equals("dialogNeutralButton")) {
-                    blockId = 225;
-                }
-                break;
-            case 657721930:
-                if (opcode.equals("setVarInt")) {
-                    blockId = 4;
-                }
-                break;
-            case 683193060:
-                if (opcode.equals("bluetoothConnectStartConnection")) {
-                    blockId = 314;
-                }
-                break;
-            case 725249532:
-                if (opcode.equals("intentSetAction")) {
-                    blockId = 122;
-                }
-                break;
-            case 726487524:
-                if (opcode.equals("mathFloor")) {
-                    blockId = 92;
-                }
-                break;
-            case 726877492:
-                if (opcode.equals("mapViewSetMarkerIcon")) {
-                    blockId = 197;
-                }
-                break;
-            case 726887785:
-                if (opcode.equals("mapViewSetMarkerInfo")) {
-                    blockId = 194;
-                }
-                break;
-            case 732108347:
-                if (opcode.equals("mathLog10")) {
-                    blockId = 101;
-                }
-                break;
-            case 737664870:
-                if (opcode.equals("mathRound")) {
-                    blockId = 90;
-                }
-                break;
-            case 738846120:
-                if (opcode.equals("textToSpeechSetPitch")) {
-                    blockId = 303;
-                }
-                break;
-            case 747168008:
-                if (opcode.equals("mapCreateNew")) {
-                    blockId = 8;
-                }
-                break;
-            case 754442829:
-                if (opcode.equals("increaseInt")) {
-                    blockId = 5;
-                }
-                break;
-            case 762282303:
-                if (opcode.equals("indexListInt")) {
-                    blockId = 20;
-                }
-                break;
-            case 762292097:
-                if (opcode.equals("indexListStr")) {
-                    blockId = 25;
-                }
-                break;
-            case 770834513:
-                if (opcode.equals("getRotate")) {
-                    blockId = 144;
-                }
-                break;
-            case 787825476:
-                if (opcode.equals("getScaleX")) {
-                    blockId = 152;
-                }
-                break;
-            case 787825477:
-                if (opcode.equals("getScaleY")) {
-                    blockId = 154;
-                }
-                break;
-            case 797861524:
-                if (opcode.equals("addMapToList")) {
-                    blockId = 32;
-                }
-                break;
-            case 836692861:
-                if (opcode.equals("mapSize")) {
-                    blockId = 13;
-                }
-                break;
-            case 840973386:
-                if (opcode.equals("mathAbs")) {
-                    blockId = 89;
-                }
-                break;
-            case 840975711:
-                if (opcode.equals("mathCos")) {
-                    blockId = 94;
-                }
-                break;
-            case 840977909:
-                if (opcode.equals("mathExp")) {
-                    blockId = 99;
-                }
-                break;
-            case 840984348:
-                if (opcode.equals("mathLog")) {
-                    blockId = 100;
-                }
-                break;
-            case 840984892:
-                if (opcode.equals("mathMax")) {
-                    blockId = 87;
-                }
-                break;
-            case 840985130:
-                if (opcode.equals("mathMin")) {
-                    blockId = 86;
-                }
-                break;
-            case 840988208:
-                if (opcode.equals("mathPow")) {
-                    blockId = 85;
-                }
-                break;
-            case 840990896:
-                if (opcode.equals("mathSin")) {
-                    blockId = 93;
-                }
-                break;
-            case 840991609:
-                if (opcode.equals("mathTan")) {
-                    blockId = 95;
-                }
-                break;
-            case 845089750:
-                if (opcode.equals("setVarString")) {
-                    blockId = 7;
-                }
-                break;
-            case 848786445:
-                if (opcode.equals("objectanimatorSetTarget")) {
-                    blockId = 247;
-                }
-                break;
-            case 858248741:
-                if (opcode.equals("calendarGetTime")) {
-                    blockId = 139;
-                }
-                break;
-            case 898187172:
-                if (opcode.equals("mathToRadian")) {
-                    blockId = 102;
-                }
-                break;
-            case 932259189:
-                if (opcode.equals("setBgResource")) {
-                    blockId = 114;
-                }
-                break;
-            case 937017988:
-                if (opcode.equals("gyroscopeStartListen")) {
-                    blockId = 218;
-                }
-                break;
-            case 948234497:
-                if (opcode.equals("webViewStopLoading")) {
-                    blockId = 180;
-                }
-                break;
-            case 950609198:
-                if (opcode.equals("setBitmapFileColorFilter")) {
-                    blockId = 289;
-                }
-                break;
-            case 1053179400:
-                if (opcode.equals("mapViewSetMarkerColor")) {
-                    blockId = 196;
-                }
-                break;
-            case 1068548733:
-                if (opcode.equals("mathGetDip")) {
-                    blockId = 80;
-                }
-                break;
-            case 1086207657:
-                if (opcode.equals("fileutildelete")) {
-                    blockId = 268;
-                }
-                break;
-            case 1088879149:
-                if (opcode.equals("setHintTextColor")) {
-                    blockId = 298;
-                }
-                break;
-            case 1090517587:
-                if (opcode.equals("getPackageDataDir")) {
-                    blockId = 279;
-                }
-                break;
-            case 1102670563:
-                if (opcode.equals("requestnetworkSetHeaders")) {
-                    blockId = 300;
-                }
-                break;
-            case 1129709718:
-                if (opcode.equals("setImageUrl")) {
-                    blockId = 296;
-                }
-                break;
-            case 1142897724:
-                if (opcode.equals("firebaseauthSignInUser")) {
-                    blockId = 209;
-                }
-                break;
-            case 1156598140:
-                if (opcode.equals("fileutilEndsWith")) {
-                    blockId = 276;
-                }
-                break;
-            case 1159035162:
-                if (opcode.equals("mapViewZoomOut")) {
-                    blockId = 192;
-                }
-                break;
-            case 1160674468:
-                if (opcode.equals("lengthList")) {
-                    blockId = 36;
-                }
-                break;
-            case 1162069698:
-                if (opcode.equals("setThumbResource")) {
-                    blockId = 241;
-                }
-                break;
-            case 1179719371:
-                if (opcode.equals("stringLastIndex")) {
-                    blockId = 60;
-                }
-                break;
-            case 1187505507:
-                if (opcode.equals("stringReplace")) {
-                    blockId = 64;
-                }
-                break;
-            case 1216249183:
-                if (opcode.equals("firebasestorageDelete")) {
-                    blockId = 263;
-                }
-                break;
-            case 1219071185:
-                if (opcode.equals("firebasestorageUploadFile")) {
-                    blockId = 261;
-                }
-                break;
-            case 1219299503:
-                if (opcode.equals("objectanimatorIsRunning")) {
-                    blockId = 257;
-                }
-                break;
-            case 1220078450:
-                if (opcode.equals("addSourceDirectly")) {
-                    blockId = 75;
-                }
-                break;
-            case 1236956449:
-                if (opcode.equals("mediaplayerCreate")) {
-                    blockId = 226;
-                }
-                break;
-            case 1240510514:
-                if (opcode.equals("intentSetScreen")) {
-                    blockId = 124;
-                }
-                break;
-            case 1242107556:
-                if (opcode.equals("fileutilisfile")) {
-                    blockId = 273;
-                }
-                break;
-            case 1252547704:
-                if (opcode.equals("listMapToStr")) {
-                    blockId = 79;
-                }
-                break;
-            case 1280029577:
-                if (opcode.equals("requestFocus")) {
-                    blockId = 118;
-                }
-                break;
-            case 1303367340:
-                if (opcode.equals("textToSpeechStop")) {
-                    blockId = 307;
-                }
-                break;
-            case 1305932583:
-                if (opcode.equals("spnGetSelection")) {
-                    blockId = 170;
-                }
-                break;
-            case 1311764809:
-                if (opcode.equals("setTranslationX")) {
-                    blockId = 147;
-                }
-                break;
-            case 1311764810:
-                if (opcode.equals("setTranslationY")) {
-                    blockId = 149;
-                }
-                break;
-            case 1313527577:
-                if (opcode.equals("setTypeface")) {
-                    blockId = 111;
-                }
-                break;
-            case 1315302372:
-                if (opcode.equals("fileutillength")) {
-                    blockId = 274;
-                }
-                break;
-            case 1330354473:
-                if (opcode.equals("firebaseauthSignInAnonymously")) {
-                    blockId = 210;
-                }
-                break;
-            case 1343794064:
-                if (opcode.equals("listSetItemChecked")) {
-                    blockId = 162;
-                }
-                break;
-            case 1348133645:
-                if (opcode.equals("stringReplaceFirst")) {
-                    blockId = 65;
-                }
-                break;
-            case 1387622940:
-                if (opcode.equals("setAlpha")) {
-                    blockId = 145;
-                }
-                break;
-            case 1395026457:
-                if (opcode.equals("setImage")) {
-                    blockId = 116;
-                }
-                break;
-            case 1397501021:
-                if (opcode.equals("listRefresh")) {
-                    blockId = 161;
-                }
-                break;
-            case 1405084438:
-                if (opcode.equals("setTitle")) {
-                    blockId = 121;
-                }
-                break;
-            case 1410284340:
-                if (opcode.equals("seekBarSetProgress")) {
-                    blockId = 243;
-                }
-                break;
-            case 1431171391:
-                if (opcode.equals("mapRemoveKey")) {
-                    blockId = 12;
-                }
-                break;
-            case 1437288110:
-                if (opcode.equals("getPublicDir")) {
-                    blockId = 280;
-                }
-                break;
-            case 1470831563:
-                if (opcode.equals("intentGetString")) {
-                    blockId = 127;
-                }
-                break;
-            case 1498864168:
-                if (opcode.equals("seekBarGetProgress")) {
-                    blockId = 244;
-                }
-                break;
-            case 1601394299:
-                if (opcode.equals("listGetCheckedPositions")) {
-                    blockId = 164;
-                }
-                break;
-            case 1633341847:
-                if (opcode.equals("timerAfter")) {
-                    blockId = 200;
-                }
-                break;
-            case 1635356258:
-                if (opcode.equals("requestnetworkStartRequestNetwork")) {
-                    blockId = 301;
-                }
-                break;
-            case 1637498582:
-                if (opcode.equals("timerEvery")) {
-                    blockId = 201;
-                }
-                break;
-            case 1695890133:
-                if (opcode.equals("fileutilStartsWith")) {
-                    blockId = 275;
-                }
-                break;
-            case 1712613410:
-                if (opcode.equals("webViewZoomOut")) {
-                    blockId = 182;
-                }
-                break;
-            case 1749552744:
-                if (opcode.equals("textToSpeechSpeak")) {
-                    blockId = 305;
-                }
-                break;
-            case 1764351209:
-                if (opcode.equals("deleteList")) {
-                    blockId = 35;
-                }
-                break;
-            case 1775620400:
-                if (opcode.equals("strToMap")) {
-                    blockId = 76;
-                }
-                break;
-            case 1779174257:
-                if (opcode.equals("getChecked")) {
-                    blockId = 158;
-                }
-                break;
-            case 1792552710:
-                if (opcode.equals("rotateBitmapFile")) {
-                    blockId = 286;
-                }
-                break;
-            case 1814870108:
-                if (opcode.equals("doToast")) {
-                    blockId = 119;
-                }
-                break;
-            case 1820536363:
-                if (opcode.equals("interstitialadCreate")) {
-                    blockId = 258;
-                }
-                break;
-            case 1823151876:
-                if (opcode.equals("fileGetData")) {
-                    blockId = 131;
-                }
-                break;
-            case 1848365301:
-                if (opcode.equals("mapViewSetMapType")) {
-                    blockId = 188;
-                }
-                break;
-            case 1873103950:
-                if (opcode.equals("locationManagerRemoveUpdates")) {
-                    blockId = 324;
-                }
-                break;
-            case 1883337723:
-                if (opcode.equals("mathGetDisplayHeight")) {
-                    blockId = 82;
-                }
-                break;
-            case 1885231494:
-                if (opcode.equals("webViewCanGoForward")) {
-                    blockId = 175;
-                }
-                break;
-            case 1908132964:
-                if (opcode.equals("mapViewSetMarkerPosition")) {
-                    blockId = 195;
-                }
-                break;
-            case 1908582864:
-                if (opcode.equals("firebaseStopListen")) {
-                    blockId = 217;
-                }
-                break;
-            case 1923980937:
-                if (opcode.equals("requestnetworkSetParams")) {
-                    blockId = 299;
-                }
-                break;
-            case 1941634330:
-                if (opcode.equals("firebaseAdd")) {
-                    blockId = 203;
-                }
-                break;
-            case 1948735400:
-                if (opcode.equals("getAlpha")) {
-                    blockId = 146;
-                }
-                break;
-            case 1964823036:
-                if (opcode.equals("bluetoothConnectStopConnection")) {
-                    blockId = 316;
-                }
-                break;
-            case 1973523807:
-                if (opcode.equals("mediaplayerIsPlaying")) {
-                    blockId = 234;
-                }
-                break;
-            case 1974249461:
-                if (opcode.equals("skewBitmapFile")) {
-                    blockId = 288;
-                }
-                break;
-            case 1976325370:
-                if (opcode.equals("setImageFilePath")) {
-                    blockId = 295;
-                }
-                break;
-            case 1984630281:
-                if (opcode.equals("setHint")) {
-                    blockId = 297;
-                }
-                break;
-            case 1984984239:
-                if (opcode.equals("setText")) {
-                    blockId = 110;
-                }
-                break;
-            case 2017929665:
-                if (opcode.equals("calendarViewSetMinDate")) {
-                    blockId = 185;
-                }
-                break;
-            case 2075310296:
-                if (opcode.equals("interstitialadLoadAd")) {
-                    blockId = 259;
-                }
-                break;
-            case 2090179216:
-                if (opcode.equals("addListInt")) {
-                    blockId = 17;
-                }
-                break;
-            case 2090182653:
-                if (opcode.equals("addListMap")) {
-                    blockId = 27;
-                }
-                break;
-            case 2090189010:
-                if (opcode.equals("addListStr")) {
-                    blockId = 22;
-                }
-                break;
-            case 2127377128:
-                if (opcode.equals("mediaplayerGetCurrent")) {
-                    blockId = 230;
-                }
-                break;
-            case 2130649194:
-                if (opcode.equals("bluetoothConnectGetPairedDevices")) {
-                    blockId = 321;
-                }
-                break;
-            case 2138225950:
-                if (opcode.equals("locationManagerRequestLocationUpdates")) {
-                    blockId = 323;
-                }
-        }
-
         String moreBlock = "";
 
-        opcode = mceb.getCodeExtraBlock(bean, "\"\"");
-        switch (blockId) {
-            case 0:
-                hash = bean.spec.indexOf(" ");
+        String opcode = mceb.getCodeExtraBlock(bean, "\"\"");
+        switch (bean.opCode) {
+            case "definedFunc":
+                int space = bean.spec.indexOf(" ");
                 if (bean.parameters.isEmpty()) {
                     opcode = bean.type;
-                    moreBlock = "_" + (hash < 0 ? bean.spec : bean.spec.substring(0, hash)) + "()" + ReturnMoreblockManager.getMbEnd(bean.type);
+                    moreBlock = "_" + (space < 0 ? bean.spec : bean.spec.substring(0, space)) + "()" + ReturnMoreblockManager.getMbEnd(bean.type);
                 } else {
-                    opcode = "_" + bean.spec.substring(0, hash) + "(";
+                    opcode = "_" + bean.spec.substring(0, space) + "(";
                     boolean hasStringParam = false;
 
                     for (int i = 0; i < params.size(); i++) {
@@ -1761,313 +111,310 @@ public class Fx {
                 opcode = moreBlock;
                 moreBlock = op;
                 break;
-            case 1:
+            case "getArg":
                 opcode = "_" + bean.spec;
                 break;
-            case 2:
+            case "getVar":
                 opcode = bean.spec;
                 break;
-            case 3, 4:
+            case "setVarBoolean", "setVarInt", "setVarString":
                 opcode = String.format("%s = %s;", params.get(0), params.get(1));
                 break;
-            case 5:
+            case "increaseInt":
                 opcode = String.format("%s++;", params.get(0));
                 break;
-            case 6:
+            case "decreaseInt":
                 opcode = String.format("%s--;", params.get(0));
                 break;
-            case 7:
-                opcode = String.format("%s = %s;", params.get(0), params.get(1));
-                break;
-            case 8:
+            case "mapCreateNew":
                 opcode = String.format("%s = new HashMap<>();", params.get(0));
                 break;
-            case 9:
+            case "mapPut":
                 opcode = String.format("%s.put(%s, %s);", params.get(0), params.get(1), params.get(2));
                 break;
-            case 10:
+            case "mapGet":
                 opcode = String.format("%s.get(%s).toString()", params.get(0), params.get(1));
                 break;
-            case 11:
+            case "mapContainKey":
                 opcode = String.format("%s.containsKey(%s)", params.get(0), params.get(1));
                 break;
-            case 12:
+            case "mapRemoveKey":
                 opcode = String.format("%s.remove(%s);", params.get(0), params.get(1));
                 break;
-            case 13, 36:
+            case "mapSize", "lengthList":
                 opcode = String.format("%s.size()", params.get(0));
                 break;
-            case 14, 37:
+            case "mapClear", "clearList":
                 opcode = String.format("%s.clear();", params.get(0));
                 break;
-            case 15:
+            case "mapIsEmpty":
                 opcode = String.format("%s.isEmpty()", params.get(0));
                 break;
-            case 16:
+            case "mapGetAllKeys":
                 opcode = String.format("SketchwareUtil.getAllKeysFromMap(%s, %s);", params.get(0), params.get(1));
                 break;
-            case 17:
+            case "addListInt":
                 opcode = String.format("%s.add(Double.valueOf(%s));", params.get(1), params.get(0));
                 break;
-            case 18:
+            case "insertListInt":
                 opcode = String.format("%s.add((int)(%s), Double.valueOf(%s));", params.get(2), params.get(1), params.get(0));
                 break;
-            case 19:
+            case "getAtListInt":
                 opcode = String.format("%s.get((int)(%s)).doubleValue()", params.get(1), params.get(0));
                 break;
-            case 20, 25:
+            case "indexListInt", "indexListStr":
                 opcode = String.format("%s.indexOf(%s)", params.get(1), params.get(0));
                 break;
-            case 21, 26:
+            case "containListInt", "containListStr":
                 opcode = String.format("%s.contains(%s)", params.get(0), params.get(1));
                 break;
-            case 22, 32:
+            case "addListStr", "addMapToList":
                 opcode = String.format("%s.add(%s);", params.get(1), params.get(0));
                 break;
-            case 23:
+            case "insertListStr":
                 opcode = String.format("%s.add((int)(%s), %s);", params.get(2), params.get(1), params.get(0));
                 break;
-            case 24:
+            case "getAtListStr":
                 opcode = String.format("%s.get((int)(%s))", params.get(1), params.get(0));
                 break;
-            case 27:
+            case "addListMap":
                 opcode = String.format("{\r\nHashMap<String, Object> _item = new HashMap<>();\r\n_item.put(%s, %s);\r\n%s.add(_item);\r\n}", params.get(0), params.get(1), params.get(2));
                 break;
-            case 28:
+            case "insertListMap":
                 opcode = String.format("{\r\nHashMap<String, Object> _item = new HashMap<>();\r\n_item.put(%s, %s);\r\n%s.add((int)%s, _item);\r\n}", params.get(0), params.get(1), params.get(3), params.get(2));
                 break;
-            case 29:
+            case "getAtListMap":
                 opcode = String.format("%s.get((int)%s).get(%s).toString()", params.get(2), params.get(0), params.get(1));
                 break;
-            case 30:
+            case "setListMap":
                 opcode = String.format("%s.get((int)%s).put(%s, %s);", params.get(3), params.get(2), params.get(0), params.get(1));
                 break;
-            case 31:
+            case "containListMap":
                 opcode = String.format("%s.get((int)%s).containsKey(%s)", params.get(0), params.get(1), params.get(2));
                 break;
-            case 33:
+            case "insertMapToList":
                 opcode = String.format("%s.add((int)%s, %s);", params.get(2), params.get(1), params.get(0));
 
                 break;
-            case 34:
+            case "getMapInList":
                 opcode = String.format("%s = %s.get((int)%s);", params.get(2), params.get(1), params.get(0));
                 break;
-            case 35:
+            case "deleteList":
                 opcode = String.format("%s.remove((int)(%s));", params.get(1), params.get(0));
                 break;
-            case 38:
-                hash = bean.subStack1;
-                opcode = String.format("while(true) {\r\n%s\r\n}", hash >= 0 ? a(String.valueOf(hash), "") : "");
+            case "forever":
+                int stack = bean.subStack1;
+                opcode = String.format("while(true) {\r\n%s\r\n}", stack >= 0 ? a(String.valueOf(stack), "") : "");
                 break;
-            case 39:
-                hash = bean.subStack1;
-                opcode = String.format("for(int _repeat%d = 0; _repeat%d < (int)(%s); _repeat%d++) {\r\n%s\r\n}", bean.id, bean.id, params.get(0), bean.id, hash >= 0 ? a(String.valueOf(hash), "") : "");
+            case "repeat":
+                stack = bean.subStack1;
+                opcode = String.format("for(int _repeat%d = 0; _repeat%d < (int)(%s); _repeat%d++) {\r\n%s\r\n}", bean.id, bean.id, params.get(0), bean.id, stack >= 0 ? a(String.valueOf(stack), "") : "");
                 break;
-            case 40:
-                hash = bean.subStack1;
-                opcode = String.format("if (%s) {\r\n%s\r\n}", params.get(0), hash >= 0 ? a(String.valueOf(hash), "") : "");
+            case "if":
+                stack = bean.subStack1;
+                opcode = String.format("if (%s) {\r\n%s\r\n}", params.get(0), stack >= 0 ? a(String.valueOf(stack), "") : "");
                 break;
-            case 41:
-                hash = bean.subStack1;
-                String ifBlock = hash >= 0 ? a(String.valueOf(hash), "") : "";
-                hash = bean.subStack2;
-                String elseBlock = hash >= 0 ? a(String.valueOf(hash), "") : "";
+            case "ifElse":
+                stack = bean.subStack1;
+                String ifBlock = stack >= 0 ? a(String.valueOf(stack), "") : "";
+                stack = bean.subStack2;
+                String elseBlock = stack >= 0 ? a(String.valueOf(stack), "") : "";
                 opcode = String.format("if (%s) {\r\n%s\r\n}\r\nelse {\r\n%s\r\n}", params.get(0), ifBlock, elseBlock);
                 break;
-            case 42:
+            case "break":
                 opcode = "break;";
                 break;
-            case 43:
-            case 44:
+            case "true":
+            case "false":
                 opcode = bean.opCode;
                 break;
-            case 45:
+            case "not":
                 opcode = String.format("!%s", params.get(0));
                 break;
-            case 46:
-            case 47:
-            case 48:
-            case 49:
-            case 50:
-            case 51:
-            case 52:
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+            case "%":
+            case ">":
+            case "<":
                 opcode = String.format("%s %s %s", params.get(0), bean.opCode, params.get(1));
                 break;
-            case 53:
+            case "=":
                 opcode = String.format("%s == %s", params.get(0), params.get(1));
                 break;
-            case 54:
-            case 55:
+            case "&&":
+            case "||":
                 opcode = String.format("%s %s %s", params.get(0), bean.opCode, params.get(1));
                 break;
-            case 56:
+            case "random":
                 opcode = String.format("SketchwareUtil.getRandom((int)(%s), (int)(%s))", params.get(0), params.get(1));
                 break;
-            case 57:
+            case "stringLength":
                 opcode = String.format("%s.length()", params.get(0));
                 break;
-            case 58:
+            case "stringJoin":
                 opcode = String.format("%s.concat(%s)", params.get(0), params.get(1));
                 break;
-            case 59:
+            case "stringIndex":
                 opcode = String.format("%s.indexOf(%s)", params.get(1), params.get(0));
                 break;
-            case 60:
+            case "stringLastIndex":
                 opcode = String.format("%s.lastIndexOf(%s)", params.get(1), params.get(0));
                 break;
-            case 61:
+            case "stringSub":
                 opcode = String.format("%s.substring((int)(%s), (int)(%s))", params.get(0), params.get(1), params.get(2));
                 break;
-            case 62:
+            case "stringEquals":
                 opcode = String.format("%s.equals(%s)", params.get(0), params.get(1));
                 break;
-            case 63:
+            case "stringContains":
                 opcode = String.format("%s.contains(%s)", params.get(0), params.get(1));
                 break;
-            case 64:
+            case "stringReplace":
                 opcode = String.format("%s.replace(%s, %s)", params.get(0), params.get(1), params.get(2));
                 break;
-            case 65:
+            case "stringReplaceFirst":
                 opcode = String.format("%s.replaceFirst(%s, %s)", params.get(0), params.get(1), params.get(2));
                 break;
-            case 66:
+            case "stringReplaceAll":
                 opcode = String.format("%s.replaceAll(%s, %s)", params.get(0), params.get(1), params.get(2));
                 break;
-            case 67:
+            case "toNumber":
                 String doub = params.get(0);
                 doub = (!doub.equals("\"\"")) ? doub : "\"0\"";
                 opcode = String.format("Double.parseDouble(%s)", doub);
                 break;
-            case 68:
+            case "currentTime":
                 opcode = "System.currentTimeMillis()";
                 break;
-            case 69:
+            case "trim":
                 opcode = String.format("%s.trim()", params.get(0));
                 break;
-            case 70:
+            case "toUpperCase":
                 opcode = String.format("%s.toUpperCase()", params.get(0));
                 break;
-            case 71:
+            case "toLowerCase":
                 opcode = String.format("%s.toLowerCase()", params.get(0));
                 break;
-            case 72:
+            case "toString":
                 opcode = String.format("String.valueOf((long)(%s))", params.get(0));
                 break;
-            case 73:
+            case "toStringWithDecimal":
                 opcode = String.format("String.valueOf(%s)", params.get(0));
                 break;
-            case 74:
+            case "toStringFormat":
                 opcode = String.format("new DecimalFormat(%s).format(%s)", params.get(1), params.get(0));
                 break;
-            case 75:
+            case "addSourceDirectly":
                 String asd = bean.parameters.get(0);
                 opcode = (asd != null) ? asd : opcode;
                 break;
-            case 76:
+            case "strToMap":
                 opcode = String.format("%s = new Gson().fromJson(%s, new TypeToken<HashMap<String, Object>>(){}.getType());", params.get(1), params.get(0));
                 break;
-            case 77, 79:
+            case "mapToStr", "listMapToStr":
                 opcode = String.format("new Gson().toJson(%s)", params.get(0));
                 break;
-            case 78:
+            case "strToListMap":
                 opcode = String.format("%s = new Gson().fromJson(%s, new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());", params.get(1), params.get(0));
 
                 break;
-            case 80:
+            case "mathGetDip":
                 opcode = String.format("SketchwareUtil.getDip(getApplicationContext(), (int)(%s))", params.get(0));
                 break;
-            case 81:
+            case "mathGetDisplayWidth":
                 opcode = "SketchwareUtil.getDisplayWidthPixels(getApplicationContext())";
                 break;
-            case 82:
+            case "mathGetDisplayHeight":
                 opcode = "SketchwareUtil.getDisplayHeightPixels(getApplicationContext())";
                 break;
-            case 83:
+            case "mathPi":
                 opcode = "Math.PI";
                 break;
-            case 84:
+            case "mathE":
                 opcode = "Math.E";
                 break;
-            case 85:
+            case "mathPow":
                 opcode = String.format("Math.pow(%s, %s)", params.get(0), params.get(1));
                 break;
-            case 86:
+            case "mathMin":
                 opcode = String.format("Math.min(%s, %s)", params.get(0), params.get(1));
                 break;
-            case 87:
+            case "mathMax":
                 opcode = String.format("Math.max(%s, %s)", params.get(0), params.get(1));
                 break;
-            case 88:
+            case "mathSqrt":
                 opcode = String.format("Math.sqrt(%s)", params.get(0));
                 break;
-            case 89:
+            case "mathAbs":
                 opcode = String.format("Math.abs(%s)", params.get(0));
                 break;
-            case 90:
+            case "mathRound":
                 opcode = String.format("Math.round(%s)", params.get(0));
                 break;
-            case 91:
+            case "mathCeil":
                 opcode = String.format("Math.ceil(%s)", params.get(0));
                 break;
-            case 92:
+            case "mathFloor":
                 opcode = String.format("Math.floor(%s)", params.get(0));
                 break;
-            case 93:
+            case "mathSin":
                 opcode = String.format("Math.sin(%s)", params.get(0));
                 break;
-            case 94:
+            case "mathCos":
                 opcode = String.format("Math.cos(%s)", params.get(0));
                 break;
-            case 95:
+            case "mathTan":
                 opcode = String.format("Math.tan(%s)", params.get(0));
                 break;
-            case 96:
+            case "mathAsin":
                 opcode = String.format("Math.asin(%s)", params.get(0));
                 break;
-            case 97:
+            case "mathAcos":
                 opcode = String.format("Math.acos(%s)", params.get(0));
                 break;
-            case 98:
+            case "mathAtan":
                 opcode = String.format("Math.atan(%s)", params.get(0));
                 break;
-            case 99:
+            case "mathExp":
                 opcode = String.format("Math.exp(%s)", params.get(0));
                 break;
-            case 100:
+            case "mathLog":
                 opcode = String.format("Math.log(%s)", params.get(0));
                 break;
-            case 101:
+            case "mathLog10":
                 opcode = String.format("Math.log10(%s)", params.get(0));
                 break;
-            case 102:
+            case "mathToRadian":
                 opcode = String.format("Math.toRadians(%s)", params.get(0));
                 break;
-            case 103:
+            case "mathToDegree":
                 opcode = String.format("Math.toDegrees(%s)", params.get(0));
                 break;
-            case 104:
+            case "viewOnClick":
                 String listener = bean.subStack1 >= 0 ? a(String.valueOf(bean.subStack1), "") : "";
                 opcode = String.format("%s.setOnClickListener(new View.OnClickListener() {\n@Override\npublic void onClick(View _view) {\n%s\n}\n});", params.get(0), listener);
                 break;
-            case 105:
+            case "isDrawerOpen":
                 opcode = e.a(c).a ? "_drawer.isDrawerOpen(GravityCompat.START)" : "";
                 break;
-            case 106:
+            case "openDrawer":
                 opcode = e.a(c).a ? "_drawer.openDrawer(GravityCompat.START);" : "";
                 break;
-            case 107:
+            case "closeDrawer":
                 opcode = e.a(c).a ? "_drawer.closeDrawer(GravityCompat.START);" : "";
                 break;
-            case 108:
+            case "setEnable":
                 opcode = String.format("%s.setEnabled(%s);", params.get(0), params.get(1));
                 break;
-            case 109:
+            case "getEnable":
                 opcode = String.format("%s.isEnabled()", params.get(0));
                 break;
-            case 110:
+            case "setText":
                 opcode = String.format("%s.setText(%s);", params.get(0), params.get(1));
                 break;
-            case 111:
+            case "setTypeface":
                 String textStyle = params.get(2);
                 Pair<Integer, String>[] styles = sq.a("property_text_style");
                 for (Pair<Integer, String> style : styles) {
@@ -2078,303 +425,299 @@ public class Fx {
                 }
                 opcode = String.format("%s.setTypeface(Typeface.createFromAsset(getAssets(),\"fonts/%s.ttf\"), %s);", params.get(0), params.get(1), opcode);
                 break;
-            case 112:
+            case "getText":
                 opcode = String.format("%s.getText().toString()", params.get(0));
                 break;
-            case 113:
+            case "setBgColor":
                 opcode = String.format("%s.setBackgroundColor(%s);", params.get(0), params.get(1));
                 break;
-            case 114:
+            case "setBgResource":
                 opcode = params.get(1).equals("NONE") ? "" : "R.drawable." + params.get(1).replaceAll("\\.9", "");
                 opcode = String.format("%s.setBackgroundResource(%s);", params.get(0), opcode);
                 break;
-            case 115:
+            case "setTextColor":
                 opcode = String.format("%s.setTextColor(%s);", params.get(0), params.get(1));
                 break;
-            case 116:
+            case "setImage":
                 String name = params.get(1).replaceAll("\\.9", "");
                 opcode = String.format("%s.setImageResource(R.drawable.%s);", params.get(0), name.toLowerCase());
                 break;
-            case 117:
+            case "setColorFilter":
                 opcode = String.format("%s.setColorFilter(%s, PorterDuff.Mode.MULTIPLY);", params.get(0), params.get(1));
                 break;
-            case 118:
+            case "requestFocus":
                 opcode = String.format("%s.requestFocus();", params.get(0));
                 break;
-            case 119:
+            case "doToast":
                 opcode = String.format("SketchwareUtil.showMessage(getApplicationContext(), %s);", params.get(0));
                 break;
-            case 120:
+            case "copyToClipboard":
                 opcode = String.format("((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText(\"clipboard\", %s));", params.get(0));
                 break;
-            case 121:
+            case "setTitle":
                 opcode = String.format("setTitle(%s);", params.get(0));
                 break;
-            case 122:
+            case "intentSetAction":
                 opcode = String.format("%s.setAction(%s);", params.get(0), (params.get(1).equals("\"\"") ? "" : "Intent." + params.get(1)));
                 break;
-            case 123:
+            case "intentSetData":
                 opcode = String.format("%s.setData(Uri.parse(%s));", params.get(0), params.get(1));
                 break;
-            case 124:
+            case "intentSetScreen":
                 opcode = String.format("%s.setClass(getApplicationContext(), %s.class);", params.get(0), params.get(1));
                 break;
-            case 125:
+            case "intentPutExtra":
                 opcode = String.format("%s.putExtra(%s, %s);", params.get(0), params.get(1), params.get(2));
                 break;
-            case 126:
+            case "intentSetFlags":
                 opcode = String.format("%s.setFlags(%s);", params.get(0), "Intent.FLAG_ACTIVITY_" + params.get(0));
                 break;
-            case 127:
+            case "intentGetString":
                 opcode = String.format("getIntent().getStringExtra(%s)", params.get(0));
                 break;
-            case 128:
+            case "startActivity":
                 opcode = String.format("startActivity(%s);", params.get(0));
                 break;
-            case 129:
+            case "finishActivity":
                 opcode = "finish();";
                 break;
-            case 130:
+            case "fileSetFileName":
                 opcode = String.format("%s = getApplicationContext().getSharedPreferences(%s, Activity.MODE_PRIVATE);", params.get(0), params.get(1));
                 break;
-            case 131:
+            case "fileGetData":
                 opcode = String.format("%s.getString(%s, \"\")", params.get(0), params.get(1));
                 break;
-            case 132:
+            case "fileSetData":
                 opcode = String.format("%s.edit().putString(%s, %s).commit();", params.get(0), params.get(1), params.get(2));
                 break;
-            case 133:
+            case "fileRemoveData":
                 opcode = String.format("%s.edit().remove(%s).commit();", params.get(0), params.get(1));
                 break;
-            case 134:
+            case "calendarGetNow":
                 opcode = String.format("%s = Calendar.getInstance();", params.get(0));
                 break;
-            case 135:
+            case "calendarAdd":
                 opcode = String.format("%s.add(Calendar.%s, (int)(%s));", params.get(0), params.get(1), params.get(2));
                 break;
-            case 136:
+            case "calendarSet":
                 opcode = String.format("%s.set(Calendar.%s, (int)(%s));", params.get(0), params.get(1), params.get(2));
                 break;
-            case 137:
+            case "calendarFormat":
                 opcode = String.format("new SimpleDateFormat(%s).format(%s.getTime())", (!params.get(1).equals("\"\"")) ? params.get(1) : "\"yyyy/MM/dd hh:mm:ss\"", params.get(0));
                 break;
-            case 138:
+            case "calendarDiff":
                 opcode = String.format("(long)(%s.getTimeInMillis() - %s.getTimeInMillis())", params.get(0), params.get(1));
                 break;
-            case 139:
+            case "calendarGetTime":
                 opcode = String.format("%s.getTimeInMillis()", params.get(0));
                 break;
-            case 140:
+            case "calendarSetTime":
                 opcode = String.format("%s.setTimeInMillis((long)(%s));", params.get(0), params.get(1));
                 break;
-            case 141:
+            case "setVisible":
                 opcode = String.format("%s.setVisibility(View.%s);", params.get(0), params.get(1));
                 break;
-            case 142:
+            case "setClickable":
                 opcode = String.format("%s.setClickable(%s);", params.get(0), params.get(1));
                 break;
-            case 143:
+            case "setRotate":
                 opcode = String.format("%s.setRotation((float)(%s));", params.get(0), params.get(1));
                 break;
-            case 144:
+            case "getRotate":
                 opcode = String.format("%s.getRotation()", params.get(0));
                 break;
-            case 145:
+            case "setAlpha":
                 opcode = String.format("%s.setAlpha((float)(%s));", params.get(0), params.get(1));
                 break;
-            case 146:
+            case "getAlpha":
                 opcode = String.format("%s.getAlpha()", params.get(0));
                 break;
-            case 147:
+            case "setTranslationX":
                 opcode = String.format("%s.setTranslationX((float)(%s));", params.get(0), params.get(1));
                 break;
-            case 148:
+            case "getTranslationX":
                 opcode = String.format("%s.getTranslationX()", params.get(0));
                 break;
-            case 149:
+            case "setTranslationY":
                 opcode = String.format("%s.setTranslationY((float)(%s));", params.get(0), params.get(1));
                 break;
-            case 150:
-                    opcode = String.format("%s.getTranslationY()", params.get(0));
+            case "getTranslationY":
+                opcode = String.format("%s.getTranslationY()", params.get(0));
                 break;
-            case 151:
+            case "setScaleX":
                 opcode = String.format("%s.setScaleX((float)(%s));", params.get(0), params.get(1));
                 break;
-            case 152:
+            case "getScaleX":
                 opcode = String.format("%s.getScaleX()", params.get(0));
                 break;
-            case 153:
+            case "setScaleY":
                 opcode = String.format("%s.setScaleY((float)(%s));", params.get(0), params.get(1));
                 break;
-            case 154:
+            case "getScaleY":
                 opcode = String.format("%s.getScaleY()", params.get(0));
                 break;
-            case 155:
+            case "getLocationX":
                 opcode = String.format("SketchwareUtil.getLocationX(%s)", params.get(0));
                 break;
-            case 156:
+            case "getLocationY":
                 opcode = String.format("SketchwareUtil.getLocationY(%s)", params.get(0));
                 break;
-            case 157:
+            case "setChecked":
                 opcode = String.format("%s.setChecked(%s);", params.get(0), params.get(1));
                 break;
-            case 158:
+            case "getChecked":
                 opcode = String.format("%s.isChecked()", params.get(0));
                 break;
-            case 159:
+            case "listSetData":
                 opcode = String.format("%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, %s));", params.get(0), params.get(1));
                 break;
-            case 160:
-            case 325:
-            case 326:
-            case 327:
-            case 328:
+            case "gridSetCustomViewData":
                 opcode = String.format("%s.setAdapter(new %s(%s));", params.get(0), Lx.a(params.get(0)), params.get(1));
                 break;
-            case 161:
+            case "listRefresh":
                 opcode = String.format("((BaseAdapter)%s.getAdapter()).notifyDataSetChanged();", params.get(0));
                 break;
-            case 162:
+            case "listSetItemChecked":
                 opcode = String.format("%s.setItemChecked((int)(%s), %s);", params.get(0), params.get(1), params.get(2));
                 break;
-            case 163:
+            case "listGetCheckedPosition":
                 opcode = String.format("%s.getCheckedItemPosition()", params.get(0));
                 break;
-            case 164:
+            case "listGetCheckedPositions":
                 opcode = String.format("%s = SketchwareUtil.getCheckedItemPositionsToArray(%s);", params.get(1), params.get(0));
                 break;
-            case 165:
+            case "listGetCheckedCount":
                 opcode = String.format("%s.getCheckedItemCount()", params.get(0));
                 break;
-            case 166:
+            case "listSmoothScrollTo":
                 opcode = String.format("%s.smoothScrollToPosition((int)(%s));", params.get(0), params.get(1));
                 break;
-            case 167:
+            case "spnSetData":
                 opcode = String.format("%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, %s));", params.get(0), params.get(1));
                 break;
-            case 168:
+            case "spnRefresh":
                 opcode = String.format("((ArrayAdapter)%s.getAdapter()).notifyDataSetChanged();", params.get(0));
                 break;
-            case 169:
+            case "spnSetSelection":
                 opcode = String.format("%s.setSelection((int)(%s));", params.get(0), params.get(1));
                 break;
-            case 170:
+            case "spnGetSelection":
                 opcode = String.format("%s.getSelectedItemPosition()", params.get(0));
                 break;
-            case 171:
+            case "webViewLoadUrl":
                 opcode = String.format("%s.loadUrl(%s);", params.get(0), params.get(1));
                 break;
-            case 172:
+            case "webViewGetUrl":
                 opcode = String.format("%s.getUrl()", params.get(0));
                 break;
-            case 173:
+            case "webViewSetCacheMode":
                 opcode = String.format("%s.getSettings().setCacheMode(WebSettings.%s);", params.get(0), params.get(1));
                 break;
-            case 174:
+            case "webViewCanGoBack":
                 opcode = String.format("%s.canGoBack()", params.get(0));
                 break;
-            case 175:
+            case "webViewCanGoForward":
                 opcode = String.format("%s.canGoForward()", params.get(0));
                 break;
-            case 176:
+            case "webViewGoBack":
                 opcode = String.format("%s.goBack();", params.get(0));
                 break;
-            case 177:
+            case "webViewGoForward":
                 opcode = String.format("%s.goForward();", params.get(0));
                 break;
-            case 178:
+            case "webViewClearCache":
                 opcode = String.format("%s.clearCache(true);", params.get(0));
                 break;
-            case 179:
+            case "webViewClearHistory":
                 opcode = String.format("%s.clearHistory();", params.get(0));
                 break;
-            case 180:
+            case "webViewStopLoading":
                 opcode = String.format("%s.stopLoading();", params.get(0));
                 break;
-            case 181:
+            case "webViewZoomIn":
                 opcode = String.format("%s.zoomIn();", params.get(0));
                 break;
-            case 182:
+            case "webViewZoomOut":
                 opcode = String.format("%s.zoomOut();", params.get(0));
                 break;
-            case 183:
-                    opcode = String.format("%s.getDate()", params.get(0));
+            case "calendarViewGetDate":
+                opcode = String.format("%s.getDate()", params.get(0));
                 break;
-            case 184:
+            case "calendarViewSetDate":
                 opcode = String.format("%s.setDate((long)(%s), true, true);", params.get(0), params.get(1));
                 break;
-            case 185:
+            case "calendarViewSetMinDate":
                 opcode = String.format("%s.setMinDate((long)(%s));", params.get(0), params.get(1));
                 break;
-            case 186:
+            case "calnedarViewSetMaxDate":
                 opcode = String.format("%s.setMaxDate((long)(%s));", params.get(0), params.get(1));
                 break;
-            case 187:
+            case "adViewLoadAd":
                 opcode = String.format("%s.loadAd(new AdRequest.Builder()%s.build());", params.get(0), e.t.stream().map(device -> ".addTestDevice(\"" + device + "\")\n").collect(Collectors.joining()));
                 break;
-            case 188:
+            case "mapViewSetMapType":
                 opcode = String.format("_%s_controller.setMapType(GoogleMap.%s);", params.get(0), params.get(1));
                 break;
-            case 189:
+            case "mapViewMoveCamera":
                 opcode = String.format("_%s_controller.moveCamera(%s, %s);", params.get(0), params.get(1), params.get(2));
                 break;
-            case 190:
+            case "mapViewZoomTo":
                 opcode = String.format("_%s_controller.zoomTo(%s);", params.get(0), params.get(1));
                 break;
-            case 191:
+            case "mapViewZoomIn":
                 opcode = String.format("_%s_controller.zoomIn();", params.get(0));
                 break;
-            case 192:
+            case "mapViewZoomOut":
                 opcode = String.format("_%s_controller.zoomOut();", params.get(0));
                 break;
-            case 193:
+            case "mapViewAddMarker":
                 opcode = String.format("_%s_controller.addMarker(%s, %s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 break;
-            case 194:
+            case "mapViewSetMarkerInfo":
                 opcode = String.format("_%s_controller.setMarkerInfo(%s, %s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 break;
-            case 195:
+            case "mapViewSetMarkerPosition":
                 opcode = String.format("_%s_controller.setMarkerPosition(%s, %s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 break;
-            case 196:
+            case "mapViewSetMarkerColor":
                 opcode = String.format("_%s_controller.setMarkerColor(%s, BitmapDescriptorFactory.%s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 break;
-            case 197:
+            case "mapViewSetMarkerIcon":
                 name = params.get(2).endsWith(".9") ? params.get(2).replaceAll("\\.9", "") : params.get(2);
-                    opcode = String.format("_%s_controller.setMarkerIcon(%s, R.drawable.%s);", params.get(0), params.get(1), name.toLowerCase());
+                opcode = String.format("_%s_controller.setMarkerIcon(%s, R.drawable.%s);", params.get(0), params.get(1), name.toLowerCase());
                 break;
-            case 198:
-                    opcode = String.format("_%s_controller.setMarkerVisible(%s, %s);", params.get(2), params.get(1), params.get(2));
+            case "mapViewSetMarkerVisible":
+                opcode = String.format("_%s_controller.setMarkerVisible(%s, %s);", params.get(2), params.get(1), params.get(2));
                 break;
-            case 199:
-                    opcode = String.format("%s.vibrate((long)(%s));", params.get(0), params.get(1));
+            case "vibratorAction":
+                opcode = String.format("%s.vibrate((long)(%s));", params.get(0), params.get(1));
                 break;
-            case 200:
+            case "timerAfter":
                 String onRun = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
-                    opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.schedule(%s, (int)(%s));", params.get(0), onRun, params.get(0), params.get(1));
+                opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.schedule(%s, (int)(%s));", params.get(0), onRun, params.get(0), params.get(1));
                 break;
-            case 201:
+            case "timerEvery":
                 onRun = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
-                    opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.scheduleAtFixedRate(%s, (int)(%s), (int)(%s));", params.get(0), onRun, params.get(0), params.get(1), params.get(2));
+                opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.scheduleAtFixedRate(%s, (int)(%s), (int)(%s));", params.get(0), onRun, params.get(0), params.get(1), params.get(2));
                 break;
-            case 202:
+            case "timerCancel":
                 opcode = String.format("%s.cancel();", params.get(0));
                 break;
-            case 203:
+            case "firebaseAdd":
                 opcode = String.format("%s.child(%s).updateChildren(%s);", params.get(0), params.get(1), params.get(2));
                 break;
-            case 204:
+            case "firebasePush":
                 opcode = String.format("%s.push().updateChildren(%s);", params.get(0), params.get(1));
                 break;
-            case 205:
+            case "firebaseGetPushKey":
                 opcode = String.format("%s.push().getKey()", params.get(0));
                 break;
-            case 206:
+            case "firebaseDelete":
                 opcode = String.format("%s.child(%s).removeValue();", params.get(0), params.get(1));
                 break;
-            case 207:
+            case "firebaseGetChildren":
                 opcode = String.format("""
                         %s.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -2396,169 +739,169 @@ public class Fx {
                         }
                         });""", params.get(0), params.get(1), params.get(1), (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "");
                 break;
-            case 208:
+            case "firebaseauthCreateUser":
                 if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
                     opcode = String.format("%s.createUserWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", params.get(0), params.get(1), params.get(2), c, "_" + params.get(0) + "_create_user_listener");
                 }
                 break;
-            case 209:
+            case "firebaseauthSignInUser":
                 if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
                     opcode = String.format("%s.signInWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", params.get(0), params.get(1), params.get(2), c, "_" + params.get(0) + "_sign_in_listener");
                 }
                 break;
-            case 210:
-                    opcode = String.format("%s.signInAnonymously().addOnCompleteListener(%s.this, %s);", params.get(0), c, "_" + params.get(0) + "_sign_in_listener");
+            case "firebaseauthSignInAnonymously":
+                opcode = String.format("%s.signInAnonymously().addOnCompleteListener(%s.this, %s);", params.get(0), c, "_" + params.get(0) + "_sign_in_listener");
                 break;
-            case 211:
+            case "firebaseauthIsLoggedIn":
                 opcode = "(FirebaseAuth.getInstance().getCurrentUser() != null)";
                 break;
-            case 212:
+            case "firebaseauthGetCurrentUser":
                 opcode = "FirebaseAuth.getInstance().getCurrentUser().getEmail()";
                 break;
-            case 213:
+            case "firebaseauthGetUid":
                 opcode = "FirebaseAuth.getInstance().getCurrentUser().getUid()";
                 break;
-            case 214:
+            case "firebaseauthResetPassword":
                 if (!params.get(1).equals("\"\"")) {
                     opcode = String.format("%s.sendPasswordResetEmail(%s).addOnCompleteListener(%s);", params.get(0), params.get(1), "_" + params.get(0) + "_reset_password_listener");
                 }
                 break;
-            case 215:
+            case "firebaseauthSignOutUser":
                 opcode = "FirebaseAuth.getInstance().signOut();";
                 break;
-            case 216:
+            case "firebaseStartListen":
                 opcode = String.format("%s.addChildEventListener(_%s_child_listener);", params.get(0), params.get(0));
                 break;
-            case 217:
+            case "firebaseStopListen":
                 opcode = String.format("%s.removeEventListener(_%s_child_listener);", params.get(0), params.get(0));
                 break;
-            case 218:
+            case "gyroscopeStartListen":
                 opcode = String.format("%s.registerListener(_%s_sensor_listener, %s.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR), SensorManager.SENSOR_DELAY_NORMAL);", params.get(0), params.get(0), params.get(0));
                 break;
-            case 219:
+            case "gyroscopeStopListen":
                 opcode = String.format("%s.unregisterListener(_%s_sensor_listener);", params.get(0), params.get(0));
                 break;
-            case 220:
-                    opcode = String.format("%s.setTitle(%s);", params.get(0), params.get(1));
+            case "dialogSetTitle":
+                opcode = String.format("%s.setTitle(%s);", params.get(0), params.get(1));
                 break;
-            case 221:
+            case "dialogSetMessage":
                 opcode = String.format("%s.setMessage(%s);", params.get(0), params.get(1));
                 break;
-            case 222:
+            case "dialogShow":
                 opcode = String.format("%s.create().show();", params.get(0));
                 break;
-            case 223:
+            case "dialogOkButton":
                 String onClick = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
                 opcode = String.format("%s.setPositiveButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", params.get(0), params.get(1), onClick);
                 break;
-            case 224:
+            case "dialogCancelButton":
                 onClick = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
-                    opcode = String.format("%s.setNegativeButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", params.get(0), params.get(1), onClick);
+                opcode = String.format("%s.setNegativeButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", params.get(0), params.get(1), onClick);
                 break;
-            case 225:
+            case "dialogNeutralButton":
                 onClick = (bean.subStack1 >= 0) ? a(String.valueOf(bean.subStack1), "") : "";
 
                 opcode = String.format("%s.setNeutralButton(%s, new DialogInterface.OnClickListener() {\n@Override\npublic void onClick(DialogInterface _dialog, int _which) {\n%s\n}\n});", params.get(0), params.get(1), onClick);
                 break;
-            case 226:
+            case "mediaplayerCreate":
                 opcode = String.format("%s = MediaPlayer.create(getApplicationContext(), R.raw.%s);", params.get(0), params.get(1).toLowerCase());
                 break;
-            case 227:
+            case "mediaplayerStart":
                 opcode = String.format("%s.start();", params.get(0));
                 break;
-            case 228:
+            case "mediaplayerPause":
                 opcode = String.format("%s.pause();", params.get(0));
                 break;
-            case 229:
+            case "mediaplayerSeek":
                 opcode = String.format("%s.seekTo((int)(%s));", params.get(0), params.get(1));
                 break;
-            case 230:
+            case "mediaplayerGetCurrent":
                 opcode = String.format("%s.getCurrentPosition()", params.get(0));
                 break;
-            case 231:
+            case "mediaplayerGetDuration":
                 opcode = String.format("%s.getDuration()", params.get(0));
                 break;
-            case 232:
+            case "mediaplayerReset":
                 opcode = String.format("%s.reset()", params.get(0));
                 break;
-            case 233:
+            case "mediaplayerRelease":
                 opcode = String.format("%s.release()", params.get(0));
 
                 break;
-            case 234:
+            case "mediaplayerIsPlaying":
                 opcode = String.format("%s.isPlaying()", params.get(0));
 
                 break;
-            case 235:
+            case "mediaplayerSetLooping":
                 opcode = String.format("%s.setLooping(%s)", params.get(0), params.get(1));
                 break;
-            case 236:
+            case "mediaplayerIsLooping":
                 opcode = String.format("%s.isLooping()", params.get(0));
                 break;
-            case 237:
+            case "soundpoolCreate":
                 opcode = String.format("%s = new SoundPool((int)(%s), AudioManager.STREAM_MUSIC, 0)", params.get(0), params.get(1));
                 break;
-            case 238:
+            case "soundpoolLoad":
                 opcode = String.format("%s.load(getApplicationContext(), R.raw.%s, 1)", params.get(0), params.get(1));
                 break;
-            case 239:
+            case "soundpoolStreamPlay":
                 opcode = String.format("%s.play((int)(%s), 1.0f, 1.0f, 1, (int)(%s), 1.0f)", params.get(0), params.get(1), params.get(2));
 
                 break;
-            case 240:
+            case "soundpoolStreamStop":
                 opcode = String.format("%s.stop((int)(%s))", params.get(0), params.get(1));
                 break;
-            case 241:
+            case "setThumbResource":
                 name = params.get(1).replaceAll("\\.9", "");
                 opcode = String.format("%s.setThumbResource(R.drawable.%s)", params.get(0), name.toLowerCase());
                 break;
-            case 242:
+            case "setTrackResource":
                 name = params.get(1).replaceAll("\\.9", "");
                 opcode = String.format("%s.setTrackResource(R.drawable.%s)", params.get(0), name.toLowerCase());
 
                 break;
-            case 243:
+            case "seekBarSetProgress":
                 opcode = String.format("%s.setProgress((int)%s)", params.get(0), params.get(1));
 
                 break;
-            case 244:
+            case "seekBarGetProgress":
                 opcode = String.format("%s.getProgress()", params.get(0));
 
                 break;
-            case 245:
+            case "seekBarSetMax":
                 opcode = String.format("%s.setMax((int)%s)", params.get(0), params.get(1));
 
                 break;
-            case 246:
+            case "seekBarGetMax":
                 opcode = String.format("%s.getMax()", params.get(0));
 
                 break;
-            case 247:
+            case "objectanimatorSetTarget":
                 opcode = String.format("%s.setTarget(%s);", params.get(0), params.get(1));
 
                 break;
-            case 248:
-                    opcode = String.format("%s.setPropertyName(\"%s\");", params.get(0), params.get(1));
+            case "objectanimatorSetProperty":
+                opcode = String.format("%s.setPropertyName(\"%s\");", params.get(0), params.get(1));
                 break;
-            case 249:
-                    opcode = String.format("%s.setFloatValues((float)(%s));", params.get(0), params.get(1));
+            case "objectanimatorSetValue":
+                opcode = String.format("%s.setFloatValues((float)(%s));", params.get(0), params.get(1));
                 break;
-            case 250:
-                    opcode = String.format("%s.setFloatValues((float)(%s), (float)(%s));", params.get(0), params.get(1), params.get(2));
+            case "objectanimatorSetFromTo":
+                opcode = String.format("%s.setFloatValues((float)(%s), (float)(%s));", params.get(0), params.get(1), params.get(2));
                 break;
-            case 251:
-                    opcode = String.format("%s.setDuration((int)(%s));", params.get(0), params.get(1));
+            case "objectanimatorSetDuration":
+                opcode = String.format("%s.setDuration((int)(%s));", params.get(0), params.get(1));
                 break;
-            case 252:
+            case "objectanimatorSetRepeatMode":
                 opcode = String.format("%s.setRepeatMode(ValueAnimator.%s);", params.get(0), params.get(1));
 
                 break;
-            case 253:
+            case "objectanimatorSetRepeatCount":
                 opcode = String.format("%s.setRepeatCount((int)(%s));", params.get(0), params.get(1));
                 break;
-            case 254:
+            case "objectanimatorSetInterpolator":
                 String interpolator = switch (params.get(1)) {
                     case "Accelerate" -> "new AccelerateInterpolator()";
                     case "Decelerate" -> "new DecelerateInterpolator()";
@@ -2568,285 +911,285 @@ public class Fx {
                 };
                 opcode = String.format("%s.setInterpolator(%s);", params.get(0), interpolator);
                 break;
-            case 255:
+            case "objectanimatorStart":
                 opcode = String.format("%s.start();", params.get(0));
                 break;
-            case 256:
+            case "objectanimatorCancel":
                 opcode = String.format("%s.cancel();", params.get(0));
                 break;
-            case 257:
+            case "objectanimatorIsRunning":
                 opcode = String.format("%s.isRunning()", params.get(0));
                 break;
-            case 258:
-            case 259:
-            case 260:
+            case "interstitialadCreate":
+            case "interstitialadLoadAd":
+            case "interstitialadShow":
                 opcode = "";
                 break;
-            case 261:
+            case "firebasestorageUploadFile":
                 if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
                     opcode = String.format("%s.child(%s).putFile(Uri.fromFile(new File(%s))).addOnFailureListener(_%s_failure_listener).addOnProgressListener(_%s_upload_progress_listener).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {\n@Override\npublic Task<Uri> then(Task<UploadTask.TaskSnapshot> task) throws Exception {\nreturn %s.child(%s).getDownloadUrl();\n}}).addOnCompleteListener(_%s_upload_success_listener);", params.get(0), params.get(2), params.get(1), params.get(0), params.get(0), params.get(0), params.get(2), params.get(0));
                 }
                 break;
-            case 262:
+            case "firebasestorageDownloadFile":
                 if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
                     opcode = String.format("_firebase_storage.getReferenceFromUrl(%s).getFile(new File(%s)).addOnSuccessListener(_%s_download_success_listener).addOnFailureListener(_%s_failure_listener).addOnProgressListener(_%s_download_progress_listener);", params.get(1), params.get(2), params.get(0), params.get(0), params.get(0));
                 }
                 break;
-            case 263:
+            case "firebasestorageDelete":
                 if (!params.get(1).equals("\"\"")) {
                     opcode = String.format("_firebase_storage.getReferenceFromUrl(%s).delete().addOnSuccessListener(_%s_delete_success_listener).addOnFailureListener(_%s_failure_listener);", params.get(1), params.get(0), params.get(0));
                 }
                 break;
-            case 264:
+            case "fileutilread":
 
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("FileUtil.readFile(%s)", params.get(0));
                 }
                 break;
-            case 265:
+            case "fileutilwrite":
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("FileUtil.writeFile(%s, %s);", params.get(1), params.get(0));
                 }
                 break;
-            case 266:
+            case "fileutilcopy":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.copyFile(%s, %s);", params.get(0), params.get(1));
                 }
                 break;
-            case 267:
+            case "fileutilmove":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.moveFile(%s, %s);", params.get(0), params.get(1));
                 }
                 break;
-            case 268:
+            case "fileutildelete":
 
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("FileUtil.deleteFile(%s);", params.get(0));
                 }
                 break;
-            case 269:
+            case "fileutilisexist":
 
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("FileUtil.isExistFile(%s)", params.get(0));
                 }
                 break;
-            case 270:
+            case "fileutilmakedir":
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("FileUtil.makeDir(%s);", params.get(0));
                 }
                 break;
-            case 271:
+            case "fileutillistdir":
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("FileUtil.listDir(%s, %s);", params.get(0), params.get(1));
                 }
                 break;
-            case 272:
+            case "fileutilisdir":
                 if (!opcode.equals("\"\"")) {
                     opcode = String.format("FileUtil.isDirectory(%s)", params.get(0));
                 }
                 break;
-            case 273:
+            case "fileutilisfile":
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("FileUtil.isFile(%s)", params.get(0));
                 }
                 break;
-            case 274:
+            case "fileutillength":
 
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("FileUtil.getFileLength(%s)", params.get(0));
                 }
                 break;
-            case 275:
+            case "fileutilStartsWith":
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("%s.startsWith(%s)", params.get(0), params.get(1));
                 }
                 break;
-            case 276:
+            case "fileutilEndsWith":
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("%s.endsWith(%s)", params.get(0), params.get(1));
                 }
                 break;
-            case 277:
+            case "fileutilGetLastSegmentPath":
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("Uri.parse(%s).getLastPathSegment()", params.get(0));
                 }
                 break;
-            case 278:
+            case "getExternalStorageDir":
                 opcode = "FileUtil.getExternalStorageDir()";
                 break;
-            case 279:
+            case "getPackageDataDir":
                 opcode = "FileUtil.getPackageDataDir(getApplicationContext())";
                 break;
-            case 280:
+            case "getPublicDir":
                 opcode = String.format("FileUtil.getPublicDir(Environment.%s)", params.get(0));
                 break;
-            case 281:
+            case "resizeBitmapFileRetainRatio":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.resizeBitmapFileRetainRatio(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
-            case 282:
+            case "resizeBitmapFileToSquare":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.resizeBitmapFileToSquare(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
-            case 283:
+            case "resizeBitmapFileToCircle":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.resizeBitmapFileToCircle(%s, %s);", params.get(0), params.get(1));
                 }
                 break;
-            case 284:
+            case "resizeBitmapFileWithRoundedBorder":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.resizeBitmapFileWithRoundedBorder(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
-            case 285:
+            case "cropBitmapFileFromCenter":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.cropBitmapFileFromCenter(%s, %s, %s, %s);", params.get(0), params.get(1), params.get(3), params.get(2));
                 }
                 break;
-            case 286:
+            case "rotateBitmapFile":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.rotateBitmapFile(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
-            case 287:
+            case "scaleBitmapFile":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.scaleBitmapFile(%s, %s, %s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 }
                 break;
-            case 288:
+            case "skewBitmapFile":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.skewBitmapFile(%s, %s, %s, %s);", params.get(0), params.get(1), params.get(2), params.get(3));
                 }
                 break;
-            case 289:
+            case "setBitmapFileColorFilter":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.setBitmapFileColorFilter(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
-            case 290:
+            case "setBitmapFileBrightness":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.setBitmapFileBrightness(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
-            case 291:
+            case "setBitmapFileContrast":
                 if (!params.get(0).equals("\"\"") && !params.get(1).equals("\"\"")) {
                     opcode = String.format("FileUtil.setBitmapFileContrast(%s, %s, %s);", params.get(0), params.get(1), params.get(2));
                 }
                 break;
-            case 292:
+            case "getJpegRotate":
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("FileUtil.getJpegRotate(%s)", params.get(0));
                 }
                 break;
-            case 293:
+            case "filepickerstartpickfiles":
                 opcode = String.format("startActivityForResult(%s, REQ_CD_%s);", params.get(0), params.get(0).toUpperCase());
                 break;
-            case 294:
+            case "camerastarttakepicture":
                 opcode = String.format("startActivityForResult(%s, REQ_CD_%s);", params.get(0), params.get(0).toUpperCase());
                 break;
-            case 295:
+            case "setImageFilePath":
                 if (!params.get(1).equals("\"\"")) {
                     opcode = String.format("%s.setImageBitmap(FileUtil.decodeSampleBitmapFromPath(%s, 1024, 1024));", params.get(0), params.get(1));
                 }
                 break;
-            case 296:
+            case "setImageUrl":
                 if (!params.get(1).equals("\"\"")) {
                     opcode = String.format("Glide.with(getApplicationContext()).load(Uri.parse(%s)).into(%s);", params.get(1), params.get(0));
                 }
                 break;
-            case 297:
+            case "setHint":
                 if (!params.get(0).equals("\"\"")) {
                     opcode = String.format("%s.setHint(%s);", params.get(0), params.get(1));
                 }
                 break;
-            case 298:
+            case "setHintTextColor":
                 if (!params.get(1).equals("\"\"")) {
                     opcode = String.format("%s.setHintTextColor(%s);", params.get(0), params.get(1));
                 }
                 break;
-            case 299:
+            case "requestnetworkSetParams":
                 opcode = String.format("%s.setParams(%s, RequestNetworkController.%s);", params.get(0), params.get(1), params.get(2));
                 break;
-            case 300:
+            case "requestnetworkSetHeaders":
                 opcode = String.format("%s.setHeaders(%s);", params.get(0), params.get(1));
                 break;
-            case 301:
+            case "requestnetworkStartRequestNetwork":
                 opcode = String.format("%s.startRequestNetwork(RequestNetworkController.%s, %s, %s, _%s_request_listener);", params.get(0), params.get(1), params.get(2), params.get(3), params.get(0));
                 break;
-            case 302:
+            case "progressBarSetIndeterminate":
                 opcode = String.format("%s.setIndeterminate(%s);", params.get(0), params.get(1));
                 break;
-            case 303:
+            case "textToSpeechSetPitch":
                 opcode = String.format("%s.setPitch((float)%s);", params.get(0), params.get(1));
                 break;
-            case 304:
+            case "textToSpeechSetSpeechRate":
                 opcode = String.format("%s.setSpeechRate((float)%s);", params.get(0), params.get(1));
                 break;
-            case 305:
+            case "textToSpeechSpeak":
                 opcode = String.format("%s.speak(%s, TextToSpeech.QUEUE_ADD, null);", params.get(0), params.get(1));
                 break;
-            case 306:
+            case "textToSpeechIsSpeaking":
                 opcode = String.format("%s.isSpeaking()", params.get(0));
 
                 break;
-            case 307:
+            case "textToSpeechStop":
                 opcode = String.format("%s.stop();", params.get(0));
 
                 break;
-            case 308:
+            case "textToSpeechShutdown":
                 opcode = String.format("%s.shutdown();", params.get(0));
 
                 break;
-            case 309:
+            case "speechToTextStartListening":
                 opcode = String.format("Intent _intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);\n_intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);\n_intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());\n%s.startListening(_intent);", params.get(0));
 
                 break;
-            case 310:
+            case "speechToTextStopListening":
                 opcode = String.format("%s.stopListening();", params.get(0));
                 break;
-            case 311:
+            case "speechToTextShutdown":
                 opcode = String.format("%s.cancel();\n%s.destroy();", params.get(0), params.get(0));
                 break;
-            case 312:
+            case "bluetoothConnectReadyConnection":
                 opcode = String.format("%s.readyConnection(_%s_bluetooth_connection_listener, %s);", params.get(0), params.get(0), params.get(1));
                 break;
-            case 313:
+            case "bluetoothConnectReadyConnectionToUuid":
                 opcode = String.format("%s.readyConnection(_%s_bluetooth_connection_listener, %s, %s);", params.get(0), params.get(0), params.get(1), params.get(2));
                 break;
-            case 314:
+            case "bluetoothConnectStartConnection":
                 opcode = String.format("%s.startConnection(_%s_bluetooth_connection_listener, %s, %s);", params.get(0), params.get(0), params.get(1), params.get(2));
                 break;
-            case 315:
+            case "bluetoothConnectStartConnectionToUuid":
                 opcode = String.format("%s.startConnection(_%s_bluetooth_connection_listener, %s, %s, %s);", params.get(0), params.get(0), params.get(1), params.get(2), params.get(3));
                 break;
-            case 316:
+            case "bluetoothConnectStopConnection":
                 opcode = String.format("%s.stopConnection(_%s_bluetooth_connection_listener, %s);", params.get(0), params.get(0), params.get(1));
                 break;
-            case 317:
+            case "bluetoothConnectSendData":
                 opcode = String.format("%s.sendData(_%s_bluetooth_connection_listener, %s, %s);", params.get(0), params.get(0), params.get(1), params.get(2));
                 break;
-            case 318:
+            case "bluetoothConnectIsBluetoothEnabled":
                 opcode = String.format("%s.isBluetoothEnabled()", params.get(0));
                 break;
-            case 319:
+            case "bluetoothConnectIsBluetoothActivated":
                 opcode = String.format("%s.isBluetoothActivated()", params.get(0));
                 break;
-            case 320:
+            case "bluetoothConnectActivateBluetooth":
                 opcode = String.format("%s.activateBluetooth();", params.get(0));
 
                 break;
-            case 321:
+            case "bluetoothConnectGetPairedDevices":
                 opcode = String.format("%s.getPairedDevices(%s);", params.get(0), params.get(1));
 
                 break;
-            case 322:
+            case "bluetoothConnectGetRandomUuid":
                 opcode = params.get(0) + ".getRandomUUID()";
 
                 break;
 
-            case 323:
+            case "locationManagerRequestLocationUpdates":
                 String locationRequest = "%s.requestLocationUpdates(LocationManager.%s, %s, %s, _%s_location_listener);";
                 if (e.g) {
                     opcode = String.format("if (ContextCompat.checkSelfPermission(%s.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n" + locationRequest + "\n}", c, params.get(0), params.get(1), params.get(2), params.get(3), params.get(0));
@@ -2855,7 +1198,7 @@ public class Fx {
                 }
                 break;
 
-            case 324:
+            case "locationManagerRemoveUpdates":
                 opcode = params.get(0) + ".removeUpdates(_" + params.get(0) + "_location_listener);";
                 break;
         }

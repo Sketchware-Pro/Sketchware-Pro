@@ -814,168 +814,170 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
                             if (!parameter.isEmpty()) {
                                 if (ss.b.equals("m")) {
+                                    eC eC = jC.a(B);
+
                                     switch (ss.c) {
                                         case "varInt":
-                                            jC.a(B).f(javaName, ExtraMenuBean.VARIABLE_TYPE_NUMBER, parameter);
+                                            eC.f(javaName, ExtraMenuBean.VARIABLE_TYPE_NUMBER, parameter);
                                             break;
 
                                         case "varBool":
-                                            jC.a(B).f(javaName, ExtraMenuBean.VARIABLE_TYPE_BOOLEAN, parameter);
+                                            eC.f(javaName, ExtraMenuBean.VARIABLE_TYPE_BOOLEAN, parameter);
                                             break;
 
                                         case "varStr":
-                                            jC.a(B).f(javaName, ExtraMenuBean.VARIABLE_TYPE_STRING, parameter);
+                                            eC.f(javaName, ExtraMenuBean.VARIABLE_TYPE_STRING, parameter);
                                             break;
 
                                         case "listInt":
-                                            jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_NUMBER, parameter);
+                                            eC.e(javaName, ExtraMenuBean.LIST_TYPE_NUMBER, parameter);
                                             break;
 
                                         case "listStr":
-                                            jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_STRING, parameter);
+                                            eC.e(javaName, ExtraMenuBean.LIST_TYPE_STRING, parameter);
                                             break;
 
                                         case "listMap":
-                                            jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_MAP, parameter);
+                                            eC.e(javaName, ExtraMenuBean.LIST_TYPE_MAP, parameter);
                                             break;
 
                                         case "list":
-                                            boolean b = jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_NUMBER, parameter);
+                                            boolean b = eC.e(javaName, ExtraMenuBean.LIST_TYPE_NUMBER, parameter);
                                             if (!b) {
-                                                b = jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_STRING, parameter);
+                                                b = eC.e(javaName, ExtraMenuBean.LIST_TYPE_STRING, parameter);
                                             }
 
                                             if (!b) {
-                                                jC.a(B).e(javaName, ExtraMenuBean.LIST_TYPE_MAP, parameter);
+                                                eC.e(javaName, ExtraMenuBean.LIST_TYPE_MAP, parameter);
                                             }
                                             break;
 
                                         case "view":
-                                            jC.a(B).h(xmlName, parameter);
+                                            eC.h(xmlName, parameter);
                                             break;
 
                                         case "textview":
-                                            jC.a(B).g(xmlName, parameter);
+                                            eC.g(xmlName, parameter);
                                             break;
 
                                         case "checkbox":
-                                            jC.a(B).e(xmlName, parameter);
+                                            eC.e(xmlName, parameter);
                                             break;
 
                                         case "imageview":
-                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW, parameter);
+                                            eC.g(xmlName, ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW, parameter);
                                             break;
 
                                         case "seekbar":
-                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_SEEKBAR, parameter);
+                                            eC.g(xmlName, ViewBean.VIEW_TYPE_WIDGET_SEEKBAR, parameter);
                                             break;
 
                                         case "calendarview":
-                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW, parameter);
+                                            eC.g(xmlName, ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW, parameter);
                                             break;
 
                                         case "adview":
-                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_ADVIEW, parameter);
+                                            eC.g(xmlName, ViewBean.VIEW_TYPE_WIDGET_ADVIEW, parameter);
                                             break;
 
                                         case "listview":
-                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_LISTVIEW, parameter);
+                                            eC.g(xmlName, ViewBean.VIEW_TYPE_WIDGET_LISTVIEW, parameter);
                                             break;
 
                                         case "spinner":
-                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_SPINNER, parameter);
+                                            eC.g(xmlName, ViewBean.VIEW_TYPE_WIDGET_SPINNER, parameter);
                                             break;
 
                                         case "webview":
-                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_WEBVIEW, parameter);
+                                            eC.g(xmlName, ViewBean.VIEW_TYPE_WIDGET_WEBVIEW, parameter);
                                             break;
 
                                         case "switch":
-                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_SWITCH, parameter);
+                                            eC.g(xmlName, ViewBean.VIEW_TYPE_WIDGET_SWITCH, parameter);
                                             break;
 
                                         case "progressbar":
-                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR, parameter);
+                                            eC.g(xmlName, ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR, parameter);
                                             break;
 
                                         case "mapview":
-                                            jC.a(B).g(xmlName, ViewBean.VIEW_TYPE_WIDGET_MAPVIEW, parameter);
+                                            eC.g(xmlName, ViewBean.VIEW_TYPE_WIDGET_MAPVIEW, parameter);
                                             break;
 
                                         case "intent":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_INTENT, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_INTENT, parameter);
                                             break;
 
                                         case "file":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_SHAREDPREF, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_SHAREDPREF, parameter);
                                             break;
 
                                         case "calendar":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_CALENDAR, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_CALENDAR, parameter);
                                             break;
 
                                         case "timer":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_TIMERTASK, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_TIMERTASK, parameter);
                                             break;
 
                                         case "vibrator":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_VIBRATOR, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_VIBRATOR, parameter);
                                             break;
 
                                         case "dialog":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_DIALOG, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_DIALOG, parameter);
                                             break;
 
                                         case "mediaplayer":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_MEDIAPLAYER, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_MEDIAPLAYER, parameter);
                                             break;
 
                                         case "soundpool":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_SOUNDPOOL, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_SOUNDPOOL, parameter);
                                             break;
 
                                         case "objectanimator":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_OBJECTANIMATOR, parameter);
                                             break;
 
                                         case "firebase":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE, parameter);
                                             break;
 
                                         case "firebaseauth":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH, parameter);
                                             break;
 
                                         case "firebasestorage":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_FIREBASE_STORAGE, parameter);
                                             break;
 
                                         case "gyroscope":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_GYROSCOPE, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_GYROSCOPE, parameter);
                                             break;
 
                                         case "interstitialad":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_INTERSTITIAL_AD, parameter);
                                             break;
 
                                         case "requestnetwork":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK, parameter);
                                             break;
 
                                         case "texttospeech":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH, parameter);
                                             break;
 
                                         case "speechtotext":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_SPEECH_TO_TEXT, parameter);
                                             break;
 
                                         case "bluetoothconnect":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_BLUETOOTH_CONNECT, parameter);
                                             break;
 
                                         case "locationmanager":
-                                            jC.a(B).d(javaName, ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER, parameter);
+                                            eC.d(javaName, ComponentBean.COMPONENT_TYPE_LOCATION_MANAGER, parameter);
                                             break;
 
                                         case "resource_bg":
@@ -1007,75 +1009,75 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                                             break;
 
                                         case "videoad":
-                                            jC.a(B).d(xmlName, ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD, parameter);
+                                            eC.d(xmlName, ComponentBean.COMPONENT_TYPE_REWARDED_VIDEO_AD, parameter);
                                             break;
 
                                         case "progressdialog":
-                                            jC.a(B).d(xmlName, ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG, parameter);
+                                            eC.d(xmlName, ComponentBean.COMPONENT_TYPE_PROGRESS_DIALOG, parameter);
                                             break;
 
                                         case "datepickerdialog":
-                                            jC.a(B).d(xmlName, ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG, parameter);
+                                            eC.d(xmlName, ComponentBean.COMPONENT_TYPE_DATE_PICKER_DIALOG, parameter);
                                             break;
 
                                         case "timepickerdialog":
-                                            jC.a(B).d(xmlName, ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG, parameter);
+                                            eC.d(xmlName, ComponentBean.COMPONENT_TYPE_TIME_PICKER_DIALOG, parameter);
                                             break;
 
                                         case "notification":
-                                            jC.a(B).d(xmlName, ComponentBean.COMPONENT_TYPE_NOTIFICATION, parameter);
+                                            eC.d(xmlName, ComponentBean.COMPONENT_TYPE_NOTIFICATION, parameter);
                                             break;
 
                                         case "radiobutton":
-                                            jC.a(B).g(xmlName, 19, parameter);
+                                            eC.g(xmlName, 19, parameter);
                                             break;
 
                                         case "ratingbar":
-                                            jC.a(B).g(xmlName, 20, parameter);
+                                            eC.g(xmlName, 20, parameter);
                                             break;
 
                                         case "videoview":
-                                            jC.a(B).g(xmlName, 21, parameter);
+                                            eC.g(xmlName, 21, parameter);
                                             break;
 
                                         case "searchview":
-                                            jC.a(B).g(xmlName, 22, parameter);
+                                            eC.g(xmlName, 22, parameter);
                                             break;
 
                                         case "actv":
-                                            jC.a(B).g(xmlName, 23, parameter);
+                                            eC.g(xmlName, 23, parameter);
                                             break;
 
                                         case "mactv":
-                                            jC.a(B).g(xmlName, 24, parameter);
+                                            eC.g(xmlName, 24, parameter);
                                             break;
 
                                         case "gridview":
-                                            jC.a(B).g(xmlName, 25, parameter);
+                                            eC.g(xmlName, 25, parameter);
                                             break;
 
                                         case "tablayout":
-                                            jC.a(B).g(xmlName, 30, parameter);
+                                            eC.g(xmlName, 30, parameter);
                                             break;
 
                                         case "viewpager":
-                                            jC.a(B).g(xmlName, 31, parameter);
+                                            eC.g(xmlName, 31, parameter);
                                             break;
 
                                         case "bottomnavigation":
-                                            jC.a(B).g(xmlName, 32, parameter);
+                                            eC.g(xmlName, 32, parameter);
                                             break;
 
                                         case "badgeview":
-                                            jC.a(B).g(xmlName, 33, parameter);
+                                            eC.g(xmlName, 33, parameter);
                                             break;
 
                                         case "patternview":
-                                            jC.a(B).g(xmlName, 34, parameter);
+                                            eC.g(xmlName, 34, parameter);
                                             break;
 
                                         case "sidebar":
-                                            jC.a(B).g(xmlName, 35, parameter);
+                                            eC.g(xmlName, 35, parameter);
                                             break;
 
                                         default:
@@ -1480,54 +1482,44 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         n.setLayoutParams(layoutParams);
         n.requestLayout();
     }
-
     public void f(Ss ss) {
         aB dialog = new aB(this);
-        View a2 = wB.a(this, R.layout.property_popup_selector_single);
-        ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
+        View customView = wB.a(this, R.layout.property_popup_selector_single);
+        ViewGroup viewGroup = customView.findViewById(R.id.rg_content);
         String xmlName = M.getXmlName();
-        String customViewName;
+
         if (D.equals("onBindCustomView")) {
             var eC = jC.a(B);
             var view = eC.c(xmlName, C);
             if (view == null) {
-                // Event is of a Drawer View
                 view = eC.c("_drawer_" + xmlName, C);
             }
-            if ((customViewName = view.customView) != null) {
-                xmlName = ProjectFileBean.getXmlName(customViewName);
+            if (view != null && view.customView != null) {
+                xmlName = ProjectFileBean.getXmlName(view.customView);
             }
         }
+
         dialog.b(getTranslatedString(R.string.logic_editor_title_select_view));
         ArrayList<ViewBean> views = jC.a(B).d(xmlName);
-        for (int i = 0, viewsSize = views.size(); i < viewsSize; i++) {
-            ViewBean viewBean = views.get(i);
-            String convert = viewBean.convert;
-            String typeName = convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(convert);
-            if (!convert.equals("include")) {
+        for (ViewBean viewBean : views) {
+            String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
+            if (!viewBean.convert.equals("include")) {
                 Set<String> toNotAdd = new Ox(new jq(), M).readAttributesToReplace(viewBean);
-                if (!toNotAdd.contains("android:id")) {
-                    String classInfo = ss.getClassInfo().a();
-                    if ((classInfo.equals("CheckBox") && viewBean.getClassInfo().a("CompoundButton")) || viewBean.getClassInfo().a(classInfo)) {
-                        viewGroup.addView(d(typeName, viewBean.id));
-                    }
+                if (!toNotAdd.contains("android:id") && ss.getClassInfo().a().equals(viewBean.getClassInfo().a())) {
+                    viewGroup.addView(d(typeName, viewBean.id));
                 }
             }
         }
-        int childCount = viewGroup.getChildCount();
-        int i = 0;
-        while (true) {
-            if (i >= childCount) {
-                break;
-            }
+
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
             RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
             if (ss.getArgValue().toString().equals(radioButton.getTag().toString())) {
                 radioButton.setChecked(true);
                 break;
             }
-            i++;
         }
-        dialog.a(a2);
+
+        dialog.a(customView);
         dialog.configureDefaultButton("Code Editor", v -> {
             AsdAllEditor editor = new AsdAllEditor(this);
             editor.setCon(ss.getArgValue().toString());
@@ -1537,25 +1529,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             dialog.dismiss();
         });
         dialog.b(getTranslatedString(R.string.common_word_select), v -> {
-            int childCount2 = viewGroup.getChildCount();
-            int j = 0;
-            while (true) {
-                if (j >= childCount2) {
-                    break;
-                }
-                RadioButton radioButton = (RadioButton) viewGroup.getChildAt(j);
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
                     a(ss, radioButton.getTag());
                     break;
                 }
-                j++;
             }
             dialog.dismiss();
         });
         dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
-
     public final void f(boolean z) {
         N.e(z);
     }
@@ -1800,13 +1785,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public boolean o() {
-        int childCount = o.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            View childAt = o.getChildAt(i);
-            if (childAt instanceof Rs) {
-                ((Rs) childAt).U.equals("Forever");
-            }
-        }
         return true;
     }
 
@@ -1834,7 +1812,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             return;
         }
         k();
-        if (!o() || !p()) {
+        if (!p()) {
             return;
         }
         L();
