@@ -22,40 +22,36 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bobur.androidsvg.SVG;
 import com.bumptech.glide.Glide;
-
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import mod.bobur.XmlToSvgConverter;
-import pro.sketchware.R;
-import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
-import pro.sketchware.databinding.DialogInputLayoutBinding;
-import pro.sketchware.databinding.ManageFileBinding;
-import pro.sketchware.databinding.ManageJavaItemHsBinding;
-
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import pro.sketchware.activities.coloreditor.ColorEditorActivity;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileResConfig;
-import pro.sketchware.utility.FileUtil;
 import mod.bobur.StringEditorActivity;
+import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
+import pro.sketchware.R;
+import pro.sketchware.activities.coloreditor.ColorEditorActivity;
+import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
+import pro.sketchware.databinding.DialogInputLayoutBinding;
+import pro.sketchware.databinding.ManageFileBinding;
+import pro.sketchware.databinding.ManageJavaItemHsBinding;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileResConfig;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 @SuppressLint("SetTextI18n")
 public class ManageResourceActivity extends BaseAppCompatActivity {
@@ -68,6 +64,20 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
     private String temp;
 
     private ManageFileBinding binding;
+
+    public static String getLastDirectory(String path) {
+        // Get the index of the last occurrence of '/' character
+        int lastSlashIndex = path.lastIndexOf('/');
+
+        // Get the substring from the start to the lastSlashIndex
+        String parentPath = path.substring(0, lastSlashIndex);
+
+        // Get the index of the last occurrence of '/' in the parentPath
+        lastSlashIndex = parentPath.lastIndexOf('/');
+
+        // Extract the last directory name
+        return parentPath.substring(lastSlashIndex + 1);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,7 +96,6 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         checkDir();
         initToolbar();
     }
-
 
     private void checkDir() {
         if (FileUtil.isExistFile(fpu.getPathResource(numProj))) {
@@ -163,6 +172,12 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                 .translationY(isHide ? 0 : 300)
                 .alpha(isHide ? 1 : 0)
                 .setInterpolator(new OvershootInterpolator());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.filesListRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -346,6 +361,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             SketchwareUtil.toast("Only XML files can be edited");
         }
     }
+
     private void goEdit2(int position) {
         if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
@@ -361,19 +377,6 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         } else {
             SketchwareUtil.toast("Only XML files can be edited");
         }
-    }
-    public static String getLastDirectory(String path) {
-        // Get the index of the last occurrence of '/' character
-        int lastSlashIndex = path.lastIndexOf('/');
-
-        // Get the substring from the start to the lastSlashIndex
-        String parentPath = path.substring(0, lastSlashIndex);
-
-        // Get the index of the last occurrence of '/' in the parentPath
-        lastSlashIndex = parentPath.lastIndexOf('/');
-
-        // Extract the last directory name
-        return parentPath.substring(lastSlashIndex + 1);
     }
 
     private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
