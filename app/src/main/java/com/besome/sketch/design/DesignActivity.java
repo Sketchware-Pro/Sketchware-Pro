@@ -90,6 +90,8 @@ import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
+import io.github.rosemoe.sora.widget.schemes.SchemeGitHub;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.bobur.BoburUtils;
@@ -362,7 +364,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error").setIcon(R.drawable.ic_mtrl_bug_report);
                 menu.add(Menu.NONE, 5, Menu.NONE, "Show source code").setIcon(R.drawable.ic_mtrl_code);
                 if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
-                    menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK").setIcon(R.drawable.ic_mtrl_download);
+                    menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK").setIcon(R.drawable.ic_mtrl_apk_install);
                     menu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures").setIcon(R.drawable.ic_mtrl_fingerprint);
                 }
 
@@ -721,16 +723,20 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 editor.setText(!source.isEmpty() ? source : "Failed to generate source.");
                 editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
-                if (BoburUtils.isDarkModeEnabled(getApplicationContext())) {
-                    editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
-                } else {
-                    editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
-                }
-
                 if (filename.endsWith(".xml")) {
                     editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
+                    if (BoburUtils.isDarkModeEnabled(getApplicationContext())) {
+                        editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+                    } else {
+                        editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                    }
                 } else {
                     editor.setEditorLanguage(new JavaLanguage());
+                    if (BoburUtils.isDarkModeEnabled(getApplicationContext())) {
+                        editor.setColorScheme(new SchemeDarcula());
+                    } else {
+                        editor.setColorScheme(new EditorColorScheme());
+                    }
                 }
 
                 AlertDialog dialog = dialogBuilder.create();

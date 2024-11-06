@@ -19,13 +19,13 @@ public class SyntaxScheme {
     public static final String SECONDARY_COLOR_LIGHT = "#010088";
     public static final String VARIABLE_COLOR_LIGHT = "#660066";
 
-    public static final String COMMENTS_COLOR_DARK = "#6A737D";
-    public static final String NOT_WORD_COLOR_DARK = "#C678DD";
-    public static final String NUMBERS_COLOR_DARK = "#B294BB";
-    public static final String PRIMARY_COLOR_DARK = "#ABB2BF";
+    public static final String COMMENTS_COLOR_DARK = "#808080";
+    public static final String NOT_WORD_COLOR_DARK = "#cc7832";
+    public static final String NUMBERS_COLOR_DARK = "#6897bb";
+    public static final String PRIMARY_COLOR_DARK = "#ffffff";
     public static final String QUOTES_COLOR_DARK = "#98C379";
-    public static final String SECONDARY_COLOR_DARK = "#D19A66";
-    public static final String VARIABLE_COLOR_DARK = "#56B6C2";
+    public static final String SECONDARY_COLOR_DARK = "#cc7832";
+    public static final String VARIABLE_COLOR_DARK = "#9876aa";
 
     private static final String[] mJavaPattern = new String[12];
     private static final String[] mXmlPattern = new String[4];
@@ -50,7 +50,7 @@ public class SyntaxScheme {
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[11]), getColor(NOT_WORD_COLOR_LIGHT, NOT_WORD_COLOR_DARK, isDarkMode)));
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[6]), getColor(PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK, isDarkMode)));
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[10]), getColor(VARIABLE_COLOR_LIGHT, VARIABLE_COLOR_DARK, isDarkMode)));
-        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[7]), getColor(NUMBERS_COLOR_LIGHT, NUMBERS_COLOR_DARK, isDarkMode)));
+        arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[7]), getColor("#9e880d", "#bbb529", isDarkMode)));
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[8]), getColor(QUOTES_COLOR_LIGHT, QUOTES_COLOR_DARK, isDarkMode)));
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[9]), getColor(COMMENTS_COLOR_LIGHT, COMMENTS_COLOR_DARK, isDarkMode)));
 
