@@ -125,16 +125,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private final Handler Z = new Handler();
     private final int[] v = new int[2];
     public ProjectFileBean M;
-    private PaletteSelector l;
-    private Toolbar k;
     public PaletteBlock m;
     public BlockPane o;
-    private ArrayList<MoreBlockCollectionBean> pa;
-    private int[] z = new int[2];
     public String B = "";
     public String C = "";
     public String D = "";
-    private DB H;
     private Vibrator F;
     private LinearLayout J, K;
     private FloatingActionButton openBlocksMenuButton;
@@ -146,7 +141,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private ViewDummy p;
     private Rs w;
     private float r, q, s, t;
-    private int A, S, e, x, y;
+    private int A, S, x, y;
     private int T = -30;
     private View Y;
     private boolean G, u, W, X, da, ea, ha, ia;
@@ -337,8 +332,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void I() {
-        pa = Pp.h().f();
-        new MoreblockImporterDialog(this, pa, this).show();
+        ArrayList<MoreBlockCollectionBean> moreBlocks = Pp.h().f();
+        new MoreblockImporterDialog(this, moreBlocks, this).show();
     }
 
     public final void J() {
@@ -625,8 +620,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         y = -1;
         x = 0;
         int[] iArr = new int[2];
-        z = iArr;
-        rs.getLocationOnScreen(iArr);
         Rs rs2 = rs.E;
         if (rs2 != null) {
             w = rs2;
@@ -702,7 +695,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 radioButton.setChecked(true);
             }
 
-            LinearLayout imageLinear = a(image, !((xq.a(B) || xq.b(B)) && !image.equals("default_image") && !"NONE".equals(image)));
+            if (!xq.a(B)) {
+                xq.b(B);
+            }
+            LinearLayout imageLinear = a(image, !(!image.equals("default_image") && !"NONE".equals(image)));
             imageLinear.setOnClickListener(v -> {
                 RadioButton button = (RadioButton) radioGroup.getChildAt(content.indexOfChild(v));
                 button.setChecked(true);
@@ -1624,11 +1620,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         ObjectAnimator var3;
         if (2 == i) {
-            U = ObjectAnimator.ofFloat(J, "TranslationX", 0.0F);
-            var3 = ObjectAnimator.ofFloat(J, "TranslationX", (float) ((int) wB.a(this, 320.0F)));
+            U = ObjectAnimator.ofFloat(J, View.TRANSLATION_X, 0.0F);
+            var3 = ObjectAnimator.ofFloat(J, View.TRANSLATION_X, (float) ((int) wB.a(this, 320.0F)));
         } else {
-            U = ObjectAnimator.ofFloat(J, "TranslationY", 0.0F);
-            var3 = ObjectAnimator.ofFloat(J, "TranslationY", (float) ((int) wB.a(this, 240.0F)));
+            U = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, 0.0F);
+            var3 = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, (float) ((int) wB.a(this, 240.0F)));
         }
 
         V = var3;
@@ -1884,14 +1880,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             parcelable = savedInstanceState.getParcelable("project_file");
         }
         M = (ProjectFileBean) parcelable;
-        H = new DB(this, "P1");
+        DB h = new DB(this, "P1");
         T = (int) wB.a(getBaseContext(), (float) T);
-        k = findViewById(R.id.toolbar);
-        setSupportActionBar(k);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        k.setNavigationOnClickListener(v -> {
+        toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
@@ -1911,8 +1907,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             stringExtra = ReturnMoreblockManager.getMbName(C) + " : " + stringExtra;
         }
         d.setTitle(stringExtra);
-        l = findViewById(R.id.palette_selector);
-        l.setOnBlockCategorySelectListener(this);
+        PaletteSelector paletteSelector = findViewById(R.id.palette_selector);
+        paletteSelector.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);
         p = findViewById(R.id.dummy);
         n = findViewById(R.id.editor);
@@ -2446,20 +2442,20 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public final void t() {
-        fa = ObjectAnimator.ofFloat(O, "TranslationX", 0.0f);
+        fa = ObjectAnimator.ofFloat(O, View.TRANSLATION_X, 0.0f);
         fa.setDuration(500L);
         fa.setInterpolator(new DecelerateInterpolator());
-        ga = ObjectAnimator.ofFloat(O, "TranslationX", O.getHeight());
+        ga = ObjectAnimator.ofFloat(O, View.TRANSLATION_X, O.getHeight());
         ga.setDuration(300L);
         ga.setInterpolator(new DecelerateInterpolator());
         ha = true;
     }
 
     public final void x() {
-        ba = ObjectAnimator.ofFloat(N, "TranslationY", 0.0f);
+        ba = ObjectAnimator.ofFloat(N, View.TRANSLATION_Y, 0.0f);
         ba.setDuration(500L);
         ba.setInterpolator(new DecelerateInterpolator());
-        ca = ObjectAnimator.ofFloat(N, "TranslationY", N.getHeight() * (-1));
+        ca = ObjectAnimator.ofFloat(N, View.TRANSLATION_Y, N.getHeight() * (-1));
         ca.setDuration(300L);
         ca.setInterpolator(new DecelerateInterpolator());
         da = true;
