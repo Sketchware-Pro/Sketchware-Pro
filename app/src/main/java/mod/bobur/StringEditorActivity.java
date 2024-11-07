@@ -363,34 +363,38 @@ public class StringEditorActivity extends AppCompatActivity {
         }
 
         public boolean isXmlStringUsed(String key) {
-            if ("app_name".equals(key)) return false;
-            String projectScId = sc_id;
-            if (projectScId == null) return false;
+            if ("app_name".equals(key) || sc_id == null) {
+                return false;
+            }
 
+            String projectScId = sc_id;
             eC projectDataManager = jC.a(projectScId);
 
+            return isStringUsedInJavaFiles(projectScId, projectDataManager, key) || isStringUsedInXmlFiles(projectScId, projectDataManager, key);
+        }
+
+        private boolean isStringUsedInJavaFiles(String projectScId, eC projectDataManager, String key) {
             for (String javaFileName : getAllJavaFileNames(projectScId)) {
                 for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
                     for (BlockBean block : entry.getValue()) {
-                        if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
+                        if ((block.opCode.equals("getResStr") && block.spec.equals(key)) ||
                                 (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
-
                             return true;
                         }
                     }
                 }
             }
+            return false;
+        }
 
+        private boolean isStringUsedInXmlFiles(String projectScId, eC projectDataManager, String key) {
             for (String xmlFileName : getAllXmlFileNames(projectScId)) {
                 for (ViewBean view : projectDataManager.d(xmlFileName)) {
-                    if (view.text.text.equals("@string/" + key) ||
-                            (view.text.hint.equals("@string/" + key))) {
-
+                    if (view.text.text.equals("@string/" + key) || view.text.hint.equals("@string/" + key)) {
                         return true;
                     }
                 }
             }
-
             return false;
         }
     }
