@@ -5,17 +5,16 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import pro.sketchware.SketchApplication;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import a.a.a.ProjectBuilder;
 import a.a.a.Jp;
 import a.a.a.KB;
+import a.a.a.ProjectBuilder;
 import a.a.a.oB;
+import pro.sketchware.SketchApplication;
 
 public class BuiltInLibraries {
     public static final File EXTRACTED_COMPILE_ASSETS_PATH = new File(SketchApplication.getContext().getFilesDir(), "libs");
@@ -98,8 +97,8 @@ public class BuiltInLibraries {
     public static String FIREBASE_MEASUREMENT_CONNECTOR = "firebase-measurement-connector-18.0.0";
     public static String FIREBASE_MESSAGING = "firebase-messaging-19.0.0";
     public static String FIREBASE_STORAGE = "firebase-storage-19.0.0";
-    public static String CIRCLE_IMAGEVIEW = "circle-imageview-v3.1.0";
-    public static String CODE_VIEW = "code-view";
+    public static String CIRCLE_IMAGEVIEW = "circleimageview-3.1.0";
+    public static String CODE_VIEW = "CodeView-0.4.0";
     public static String FACEBOOK_ADS_AUDIENCE_NETWORK_SDK = "audience-network-sdk-5.9.0";
     public static String GLIDE_ANNOTATIONS = "annotations-4.11.0";
     public static String GLIDE_DISKLRUCACHE = "disklrucache-4.11.0";
@@ -112,10 +111,10 @@ public class BuiltInLibraries {
     public static String JETBRAINS_ANNOTATIONS = "annotations-13.0";
     public static String KOTLIN_STDLIB = "kotlin-stdlib-1.4.30-M1-release-152";
     public static String KOTLIN_STDLIB_JDK7 = "kotlin-stdlib-jdk7-1.4.30-M1-release-152";
-    public static String LOTTIE = "Lottie-3.4.0";
+    public static String LOTTIE = "lottie-3.4.0";
     public static String MATERIAL = "material-1.6.1";
     public static String OKHTTP = "okhttp-3.9.1";
-    public static String OKIO = "Okio-1.17.4";
+    public static String OKIO = "okio-1.17.4";
     public static String ONESIGNAL = "OneSignal-3.14.0";
     public static String OTPVIEW = "OTPView-0.1.0";
     public static String PATTERN_LOCK_VIEW = "pattern-lock-view";

@@ -395,9 +395,10 @@ public class ExtraPaletteBlock {
 
         switch (paletteId) {
             case -1:
-                String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
+                String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
                 ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
-                convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+                convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
+
 
                 logicEditor.a("s", "getResString");
                 logicEditor.a("Saved Res Strings :", 0xff555555);

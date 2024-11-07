@@ -41,7 +41,7 @@ import mod.yamenher.ApkSignerUtils;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
-import mod.trindadedev.ui.activities.SettingsActivity;
+import pro.sketchware.activities.settings.SettingsActivity;
 
 public class AppSettings extends BaseAppCompatActivity {
 
@@ -123,7 +123,7 @@ public class AppSettings extends BaseAppCompatActivity {
 
     private void setupViews() {
         createToolsView(R.drawable.block_96_blue, "Block manager", "Manage your own blocks to use in Logic Editor", content, new ActivityLauncher(new Intent(getApplicationContext(), BlocksManager.class)), false);
-        createToolsView(R.drawable.pull_down_48, "Block selector menu manager", "Manage your own block selector menus", content, new ActivityLauncher(new Intent(getApplicationContext(), BlockSelectorActivity.class)), false);
+        createToolsView(R.drawable.pull_down_48, "Block selector menu manager", "Manage your own block selector menus", content, openSettingsActivity(SettingsActivity.BLOCK_SELECTOR_MANAGER_FRAGMENT), false);
         createToolsView(R.drawable.collage_48, "Component manager", "Manage your own components", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class)), false);
         createToolsView(R.drawable.event_on_item_clicked_48dp, "Event manager", "Manage your own events", content, openSettingsActivity(SettingsActivity.EVENTS_MANAGER_FRAGMENT), false);
         createToolsView(R.drawable.colored_box_96, "Local library manager", "Manage and download local libraries", content, new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system")), false);

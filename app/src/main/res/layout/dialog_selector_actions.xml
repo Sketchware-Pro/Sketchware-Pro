@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <LinearLayout 
+        android:layout_width="@dimen/dialog_action_size"
+        android:layout_height="@dimen/dialog_action_size"
+        android:padding="22dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="4dp"
+        android:id="@+id/edit"
+        android:gravity="center"
+        android:background="@drawable/shape_action_button"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:src="@drawable/ic_mtrl_edit" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textSize="16sp"/>
+    
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="@dimen/dialog_action_size"
+        android:layout_height="@dimen/dialog_action_size"
+        android:padding="22dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="4dp"
+        android:id="@+id/export"
+        android:gravity="center"
+        android:background="@drawable/shape_action_button"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:src="@drawable/ic_mtrl_export" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Export"
+            android:textSize="16sp"/>
+    
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="@dimen/dialog_action_size"
+        android:layout_height="@dimen/dialog_action_size"
+        android:padding="22dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="4dp"
+        android:id="@+id/delete"
+        android:background="@drawable/shape_action_button"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:src="@drawable/ic_mtrl_delete" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:textSize="16sp"/>
+    
+    </LinearLayout>
+    
+</LinearLayout>
