@@ -363,6 +363,7 @@ public class StringEditorActivity extends AppCompatActivity {
         }
 
         public boolean isXmlStringUsed(String key) {
+            if ("app_name".equals(key)) return false;
             String projectScId = sc_id;
             if (projectScId == null) return false;
 
