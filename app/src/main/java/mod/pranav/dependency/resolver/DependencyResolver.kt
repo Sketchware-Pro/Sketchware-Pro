@@ -3,7 +3,6 @@ package mod.pranav.dependency.resolver
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.util.Log
 import com.android.tools.r8.CompilationMode
 import com.android.tools.r8.D8
 import com.android.tools.r8.D8Command
@@ -56,13 +55,21 @@ class DependencyResolver(
             |    { 
             |        "url": "https://oss.sonatype.org/content/repositories/releases", 
             |        "name": "Sonatype" 
-            |    },
-            |    {
-            |        "url": "https://repo.maven.apache.org/maven2",
-            |        "name": "Apache Maven"
-            |    }
+            |    }, 
+            |    { 
+            |        "url": "https://repo.spring.io/plugins-release", 
+            |        "name": "Spring Plugins" 
+            |    }, 
+            |    { 
+            |        "url": "https://repo.spring.io/libs-milestone", 
+            |        "name": "Spring Milestone" 
+            |    }, 
+            |    { 
+            |        "url": "https://repo.maven.apache.org/maven2", 
+            |        "name": "Apache Maven" 
+            |    } 
             |]
-        """.trimMargin()
+            """.trimMargin()
     }
 
     private val downloadPath: String =
@@ -131,14 +138,15 @@ class DependencyResolver(
         val dependencies = mutableSetOf(dependency)
 
         callback.onResolutionComplete(dependency)
-        if (!skipDependencies) {
+        if (skipDependencies.not()) {
             runBlocking {
                 dependencies.addAll(dependency.resolve())
             }
         }
 
-        val latestDeps = dependencies.groupBy { it.groupId to it.artifactId }
-            .values.map { it.maxByOrNull { artifact -> artifact.version } }.toMutableList()
+        val latestDeps =
+            dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
+                .toMutableList()
 
         val libraryJars = immutableListOf(
             BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.toPath()
@@ -152,10 +160,12 @@ class DependencyResolver(
             )
         )
         val dependencyClasspath = mutableListOf<Path>()
+
         val classpath = buildSettings.getValue(BuildSettings.SETTING_CLASSPATH, "")
 
         classpath.split(":").forEach {
-            if (it.isNotEmpty()) dependencyClasspath.add(Paths.get(it))
+            if (it.isEmpty()) return@forEach
+            dependencyClasspath.add(Paths.get(it))
         }
 
         latestDeps.forEach { artifact ->
@@ -167,69 +177,71 @@ class DependencyResolver(
             val builder = factory.newDocumentBuilder()
             val doc = builder.parse(artifact.getPOM())
             val packaging = doc.getElementsByTagName("packaging").item(0)
-            artifact.extension = packaging?.textContent ?: "jar"
-
+            if (packaging != null) artifact.extension = packaging.textContent
             val ext = artifact.extension
             if (ext != "jar" && ext != "aar") {
                 callback.invalidPackaging(artifact)
                 return@forEach
             }
-
-            val path = Paths.get(
-                downloadPath,
-                "${artifact.artifactId}-v${artifact.version}",
-                "classes.${artifact.extension}"
-            )
-
+            val path =
+                Paths.get(
+                    downloadPath,
+                    "${artifact.artifactId}-v${artifact.version}",
+                    "classes.${artifact.extension}"
+                )
             if (Files.exists(path)) {
                 callback.onSkippingResolution(artifact)
-            } else {
-                Files.createDirectories(path.parent)
-                callback.onDownloadStart(artifact)
-
-                try {
-                    artifact.downloadTo(path.toFile())
-                    if (!path.toFile().exists()) {
-                        latestDeps.remove(artifact)
-                        callback.onDependenciesNotFound(artifact)
-                        return@forEach
-                    }
-
-                    dependencyClasspath.add(if (ext == "jar") path else
-                        Paths.get(downloadPath, "${artifact.artifactId}-v${artifact.version}", "classes.jar")
-                    )
-                } catch (e: Exception) {
-                    callback.onDownloadError(artifact, e)
-                }
-
-                if (!path.toFile().exists()) {
-                    callback.onDownloadError(artifact, Exception("Download failed"))
+            }
+            Files.createDirectories(path.parent)
+            callback.onDownloadStart(artifact)
+            try {
+                artifact.downloadTo(path.toFile())
+                if (path.toFile().exists().not()) {
+                    latestDeps.remove(artifact)
+                    callback.onDependenciesNotFound(artifact)
                     return@forEach
                 }
-
-                if (ext == "aar") {
-                    callback.unzipping(artifact)
-                    unzip(path)
-                    Files.delete(path)
-                    val packageName = findPackageName(path.parent.toAbsolutePath().toString(), artifact.groupId)
-                    path.parent.resolve("config").writeText(packageName)
-                }
-
-                val jar = if (ext == "jar") path else Paths.get(downloadPath, "${artifact.artifactId}-v${artifact.version}", "classes.jar")
-
-                if (Files.notExists(jar)) return@forEach
-
-                callback.dexing(artifact)
-                try {
-                    compileJar(jar, dependencyClasspath.toMutableList().apply { remove(jar) }, libraryJars)
-                    callback.onResolutionComplete(artifact)
-                } catch (e: Exception) {
-                    callback.dexingFailed(artifact, e)
-                    return@resolveDependency
-                }
+                dependencyClasspath.add(
+                    if (ext == "jar") path else
+                        Paths.get(
+                            downloadPath,
+                            "${artifact.artifactId}-v${artifact.version}",
+                            "classes.jar"
+                        )
+                )
+            } catch (e: Exception) {
+                callback.onDownloadError(artifact, e)
+            }
+            if (path.toFile().exists().not()) {
+                callback.onDownloadError(artifact, Exception("Download failed"))
+                return@forEach
+            }
+            if (ext == "aar") {
+                callback.unzipping(artifact)
+                unzip(path)
+                Files.delete(path)
+                val packageName =
+                    findPackageName(path.parent.toAbsolutePath().toString(), artifact.groupId)
+                path.parent.resolve("config").writeText(packageName)
+            }
+            val jar = if (ext == "jar") path else
+                Paths.get(
+                    downloadPath,
+                    "${artifact.artifactId}-v${artifact.version}",
+                    "classes.jar"
+                )
+            if (Files.notExists(jar)) {
+                return@forEach
+            }
+            callback.dexing(artifact)
+            try {
+                compileJar(jar, dependencyClasspath.toMutableList().apply { remove(jar) }, libraryJars)
+                callback.onResolutionComplete(artifact)
+            } catch (e: Exception) {
+                callback.dexingFailed(artifact, e)
+                return@resolveDependency
             }
         }
-
         callback.onTaskCompleted(latestDeps.map { "${it.artifactId}-v${it.version}" })
     }
 
@@ -244,48 +256,64 @@ class DependencyResolver(
                 val p = Pattern.compile("<manifest.*package=\"(.*?)\"", Pattern.DOTALL)
                 val m = p.matcher(content)
                 if (m.find()) {
-                    return m.group(1)
+                    return m.group(1)!!
                 }
             }
         }
+
+        // Method 2: screw manifest. use dependency
         return defaultValue
     }
 
     private fun unzip(path: Path) {
-        try {
-            ZipFile(path.toFile()).use { zipFile ->
-                zipFile.entries().asSequence().forEach { entry ->
-                    val entryDestination = path.parent.resolve(entry.name)
-                    if (entry.isDirectory) {
-                        Files.createDirectories(entryDestination)
-                    } else {
-                        Files.createDirectories(entryDestination.parent)
-                        zipFile.getInputStream(entry).use { input ->
-                            Files.newOutputStream(entryDestination).use { output ->
-                                input.copyTo(output)
-                            }
+        val zipFile = ZipFile(path.toFile())
+        zipFile.use { zip ->
+            zip.entries().asSequence().forEach { entry ->
+                val entryDestination = path.parent.resolve(entry.name)
+                if (entry.isDirectory) {
+                    Files.createDirectories(entryDestination)
+                } else {
+                    Files.createDirectories(entryDestination.parent)
+                    zip.getInputStream(entry).use { input ->
+                        Files.newOutputStream(entryDestination).use { output ->
+                            input.copyTo(output)
                         }
                     }
                 }
             }
-        } catch (e: Exception) {
-            Log.e("DependencyResolver", "Unzip failed for $path", e)
         }
     }
 
-    private fun compileJar(jar: Path, classpath: MutableList<Path>, libraryJars: List<Path>) {
-        val command = D8Command.builder()
-            .addProgramFiles(jar)
-            .setOutput(Paths.get(downloadPath), OutputMode.DexIndexed)
-            .addLibraryFiles(libraryJars)
-            .setCompilationMode(CompilationMode.RELEASE)
-            .build()
-
-        try {
-            D8.run(command)
-        } catch (e: Exception) {
-            Log.e("DependencyResolver", "Dexing failed for $jar", e)
-            throw e
+    private fun compileJar(jarFile: Path, jars: List<Path>, libraryJars: List<Path>) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            D8.run(
+                D8Command.builder()
+                    .setIntermediate(true)
+                    .setMode(CompilationMode.RELEASE)
+                    .addProgramFiles(jarFile)
+                    .addLibraryFiles(libraryJars)
+                    .addClasspathFiles(jars)
+                    .setOutput(jarFile.parent, OutputMode.DexIndexed)
+                    .build()
+            )
+            return
         }
+        Main.clearInternTables()
+        val arguments = Main.Arguments()
+
+        val parseMethod =
+            Main.Arguments::class.java.getDeclaredMethod("parse", Array<String>::class.java)
+        parseMethod.isAccessible = true
+        parseMethod.invoke(
+            arguments, arrayOf(
+                "--debug",
+                "--verbose",
+                "--multi-dex",
+                "--output=${jarFile.parent}",
+                jarFile.toString()
+            )
+        )
+
+        Main.run(arguments)
     }
 }
