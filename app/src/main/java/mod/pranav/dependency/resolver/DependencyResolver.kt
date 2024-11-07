@@ -127,10 +127,8 @@ class DependencyResolver(
         open fun invalidPackaging(artifact: Artifact) {}
     }
 
-
     fun resolveDependency(callback: DependencyResolverCallback) {
         eventReciever = callback
-        // this is pretty much the same as `Artifact.downloadArtifact()`, but with some modifications for checks and callbacks
         val dependency = getArtifact(groupId, artifactId, version)
 
         if (dependency == null) {
@@ -146,7 +144,6 @@ class DependencyResolver(
             }
         }
 
-        // basically, remove all the duplicates and keeps the latest among them
         val latestDeps =
             dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
                 .toMutableList()
@@ -163,16 +160,13 @@ class DependencyResolver(
             )
         )
         val dependencyClasspath = mutableListOf<Path>()
-
         val classpath = buildSettings.getValue(BuildSettings.SETTING_CLASSPATH, "")
 
         classpath.split(":").forEach {
             if (it.isEmpty()) return@forEach
-
             dependencyClasspath.add(Paths.get(it))
         }
 
-        // download all the dependencies
         latestDeps.forEach { artifact ->
             callback.onResolving(artifact, dependency)
             if (artifact.version.startsWith("[")) {
