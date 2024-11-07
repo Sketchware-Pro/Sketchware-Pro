@@ -1010,6 +1010,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_watch">Watch</string>
     <string name="common_word_widget">Widget</string>
     <string name="common_word_yes">Yes</string>
+    <string name="common_word_new">New</string>
     <string name="component_add_docs_button_title_go_to_docs">Read Documentation</string>
     <string name="component_add_message_docs_updated_soon">The docs page will be updated soon</string>
     <string name="component_context_menu_title">Component menu</string>
@@ -2162,11 +2163,12 @@ Please try again later"</string>
     <string name="settings_appearance_theme_system">System default</string>
     <string name="settings_appearance_theme_light">Light theme</string>
     <string name="settings_appearance_theme_dark">Dark theme</string>
-    <string name="tools_events_manager">Events manager</string>
-    <string name="tools_events_manager_activity_events">Activity events</string>
-    <string name="tools_events_manager_listeners">Listeners</string>
-    <string name="tools_events_manager_details">Events manager Details</string>
-
+    <string name="settings_events_manager">Events manager</string>
+    <string name="settings_events_manager_activity_events">Activity events</string>
+    <string name="settings_events_manager_listeners">Listeners</string>
+    <string name="settings_events_manager_details">Events manager Details</string>
+    <string name="settings_block_selector">Block Selector Manager</string>
+    
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
     <string name="assets_manager_options">Create or import</string>

@@ -877,11 +877,11 @@ public class ViewPane extends RelativeLayout {
     }
 
     public String getXmlString(String key) {
-        String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
+        String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
 
         ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
 
-        convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+        convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
         if (key.equals("@string/app_name") && !isXmlStringsContains(StringsListMap, "app_name")) {
             return yB.c(lC.b(sc_id), "my_app_name");

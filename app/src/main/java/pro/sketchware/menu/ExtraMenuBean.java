@@ -594,11 +594,9 @@ public class ExtraMenuBean {
             case "ResString":
                 title = "Select a ResString";
 
-                String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
-
+                String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
                 ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
-
-                convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+                convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
                 if (!isXmlStringsContains(StringsListMap, "app_name")) {
                     menus.add("R.string.app_name");

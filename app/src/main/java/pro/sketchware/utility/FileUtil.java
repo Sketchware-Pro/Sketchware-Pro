@@ -125,6 +125,22 @@ public class FileUtil {
         return sb.toString();
     }
 
+   public static String readFileIfExist(String path) {
+    StringBuilder sb = new StringBuilder();
+    try (FileReader fr = new FileReader(path)) {
+        char[] buff = new char[1024];
+        int length;
+
+        while ((length = fr.read(buff)) > 0) {
+            sb.append(new String(buff, 0, length));
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+    return sb.toString();
+  }
+
     public static void writeFile(String path, String str) {
         createNewFileIfNotPresent(path);
 
