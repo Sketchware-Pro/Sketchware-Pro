@@ -71,8 +71,9 @@
                              android:id="@+id/activity_events_icon"
                              android:layout_width="25dp"
                              android:layout_height="25dp"
-                             android:scaleType="fitXY"
-                             android:src="@drawable/widget_source" />
+                             android:src="@drawable/ic_mtrl_code"
+                             app:tint="?attr/colorPrimary"
+                             android:tintMode="src_in"/>
                      </LinearLayout>
                      
                      <LinearLayout
