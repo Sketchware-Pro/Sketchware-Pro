@@ -39,35 +39,35 @@ class DependencyResolver(
 ) {
     companion object {
         private val DEFAULT_REPOS = """
-            |[
-            |    {
-            |        "url": "https://repo.hortonworks.com/content/repositories/releases",
-            |        "name": "HortanWorks"
-            |    },
-            |    {
-            |        "url": "https://maven.atlassian.com/content/repositories/atlassian-public",
-            |        "name": "Atlassian"
-            |    },
-            |    {
-            |        "url": "https://jcenter.bintray.com",
-            |        "name": "JCenter"
-            |    },
-            |    {
-            |        "url": "https://oss.sonatype.org/content/repositories/releases",
-            |        "name": "Sonatype"
-            |    },
-            |    {
-            |        "url": "https://repo.spring.io/plugins-release",
-            |        "name": "Spring Plugins"
-            |    },
-            |    {
-            |        "url": "https://repo.spring.io/libs-milestone",
-            |        "name": "Spring Milestone"
-            |    },
-            |    {
-            |        "url": "https://repo.maven.apache.org/maven2",
-            |        "name": "Apache Maven"
-            |    }
+            |[ 
+            |    { 
+            |        "url": "https://repo.hortonworks.com/content/repositories/releases", 
+            |        "name": "HortanWorks" 
+            |    }, 
+            |    { 
+            |        "url": "https://maven.atlassian.com/content/repositories/atlassian-public", 
+            |        "name": "Atlassian" 
+            |    }, 
+            |    { 
+            |        "url": "https://jcenter.bintray.com", 
+            |        "name": "JCenter" 
+            |    }, 
+            |    { 
+            |        "url": "https://oss.sonatype.org/content/repositories/releases", 
+            |        "name": "Sonatype" 
+            |    }, 
+            |    { 
+            |        "url": "https://repo.spring.io/plugins-release", 
+            |        "name": "Spring Plugins" 
+            |    }, 
+            |    { 
+            |        "url": "https://repo.spring.io/libs-milestone", 
+            |        "name": "Spring Milestone" 
+            |    }, 
+            |    { 
+            |        "url": "https://repo.maven.apache.org/maven2", 
+            |        "name": "Apache Maven" 
+            |    } 
             |]
             """.trimMargin()
     }
@@ -127,10 +127,8 @@ class DependencyResolver(
         open fun invalidPackaging(artifact: Artifact) {}
     }
 
-
     fun resolveDependency(callback: DependencyResolverCallback) {
         eventReciever = callback
-        // this is pretty much the same as `Artifact.downloadArtifact()`, but with some modifications for checks and callbacks
         val dependency = getArtifact(groupId, artifactId, version)
 
         if (dependency == null) {
@@ -146,7 +144,6 @@ class DependencyResolver(
             }
         }
 
-        // basically, remove all the duplicates and keeps the latest among them
         val latestDeps =
             dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
                 .toMutableList()
@@ -168,11 +165,9 @@ class DependencyResolver(
 
         classpath.split(":").forEach {
             if (it.isEmpty()) return@forEach
-
             dependencyClasspath.add(Paths.get(it))
         }
 
-        // download all the dependencies
         latestDeps.forEach { artifact ->
             callback.onResolving(artifact, dependency)
             if (artifact.version.startsWith("[")) {
@@ -272,15 +267,17 @@ class DependencyResolver(
 
     private fun unzip(path: Path) {
         val zipFile = ZipFile(path.toFile())
-        zipFile.entries().asSequence().forEach { entry ->
-            val entryDestination = path.parent.resolve(entry.name)
-            if (entry.isDirectory) {
-                Files.createDirectories(entryDestination)
-            } else {
-                Files.createDirectories(entryDestination.parent)
-                zipFile.getInputStream(entry).use { input ->
-                    Files.newOutputStream(entryDestination).use { output ->
-                        input.copyTo(output)
+        zipFile.use { zip ->
+            zip.entries().asSequence().forEach { entry ->
+                val entryDestination = path.parent.resolve(entry.name)
+                if (entry.isDirectory) {
+                    Files.createDirectories(entryDestination)
+                } else {
+                    Files.createDirectories(entryDestination.parent)
+                    zip.getInputStream(entry).use { input ->
+                        Files.newOutputStream(entryDestination).use { output ->
+                            input.copyTo(output)
+                        }
                     }
                 }
             }
