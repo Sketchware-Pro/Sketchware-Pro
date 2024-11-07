@@ -6,23 +6,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
-import pro.sketchware.R;
-import pro.sketchware.databinding.DialogKeystoreCredentialsBinding;
-
 import java.io.File;
 import java.util.LinkedList;
 
 import a.a.a.aB;
 import a.a.a.wq;
-import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogKeystoreCredentialsBinding;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class GetKeyStoreCredentialsDialog {
 
     private final aB dialog;
     private CredentialsReceiver receiver;
     private SigningMode mode;
-    private static DialogKeystoreCredentialsBinding binding;
+    private final DialogKeystoreCredentialsBinding binding;
 
     public GetKeyStoreCredentialsDialog(Activity activity, int iconResourceId, String title, String noticeText) {
         dialog = new aB(activity);
@@ -131,7 +130,7 @@ public class GetKeyStoreCredentialsDialog {
         void gotCredentials(Credentials credentials);
     }
 
-    public static class Credentials {
+    public class Credentials {
 
         private final boolean signWithTestkey;
         private final String keyStorePassword;
@@ -172,7 +171,7 @@ public class GetKeyStoreCredentialsDialog {
         /**
          * @return {@link #keyStorePassword}
          */
-        public static String getKeyStorePassword() {
+        public String getKeyStorePassword() {
             return binding.etKeyPassword.getText().toString();
         }
 
