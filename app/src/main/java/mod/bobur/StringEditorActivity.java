@@ -1,5 +1,8 @@
 package mod.bobur;
 
+import static com.besome.sketch.design.DesignActivity.sc_id;
+import static com.besome.sketch.editor.LogicEditorActivity.getAllJavaFileNames;
+import static com.besome.sketch.editor.LogicEditorActivity.getAllXmlFileNames;
 import static pro.sketchware.utility.XmlUtil.replaceXml;
 
 import android.content.Intent;
@@ -13,7 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.beans.BlockBean;
+import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import a.a.a.eC;
+import a.a.a.jC;
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.StringEditorBinding;
 import pro.sketchware.databinding.StringEditorItemBinding;
@@ -230,6 +239,11 @@ public class StringEditorActivity extends AppCompatActivity {
                 return;
             }
 
+            if (isXmlStringsContains(listmap, key)) {
+                binding.stringKeyInputLayout.setError("\"" + key + "\" is already exist");
+                return;
+            }
+
             addString(key, value);
             dialog.dismiss();
         });
@@ -320,9 +334,13 @@ public class StringEditorActivity extends AppCompatActivity {
                 });
 
                 dialog.configureDefaultButton("Delete", v1 -> {
-                    data.remove(adapterPosition);
-                    notifyItemRemoved(adapterPosition);
-                    dialog.dismiss();
+                    if (isXmlStringUsed(key)) {
+                        SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_title_remove_xml_string_error));
+                    } else {
+                        data.remove(adapterPosition);
+                        notifyItemRemoved(adapterPosition);
+                        dialog.dismiss();
+                    }
                 });
                 dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
                 dialog.a(dialogBinding.getRoot());
@@ -342,6 +360,37 @@ public class StringEditorActivity extends AppCompatActivity {
                 super(binding.getRoot());
                 this.binding = binding;
             }
+        }
+
+        public boolean isXmlStringUsed(String key) {
+            String projectScId = sc_id;
+            if (projectScId == null) return false;
+
+            eC projectDataManager = jC.a(projectScId);
+
+            for (String javaFileName : getAllJavaFileNames(projectScId)) {
+                for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
+                    for (BlockBean block : entry.getValue()) {
+                        if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
+                                (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            for (String xmlFileName : getAllXmlFileNames(projectScId)) {
+                for (ViewBean view : projectDataManager.d(xmlFileName)) {
+                    if (view.text.text.equals("@string/" + key) ||
+                            (view.text.hint.equals("@string/" + key))) {
+
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
