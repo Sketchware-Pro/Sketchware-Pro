@@ -1,23 +1,21 @@
 package mod.yamenher;
 
-import android.sun.security.provider.JavaKeyStoreProvider;
-import android.util.Base64;
-import android.util.Log;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.sun.security.provider.JavaKeyStoreProvider;
+import android.util.Log;
+
 import com.android.apksig.ApkSigner;
 import com.android.apksig.util.DataSources;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -26,10 +24,14 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import pro.sketchware.SketchApplication;
 
 public class ApkSignerUtils {
 
@@ -37,7 +39,7 @@ public class ApkSignerUtils {
     private static int errors;
 
     public static void signWithReleaseKeystore(String inputFilePath, String outputFilePath, String keyStorePath, String keyStorePassword, String keyStoreKeyAlias, String keyPassword) {
-        errors =0 ;
+        errors = 0;
         try {
             keyStore = KeyStore.getInstance("JKS", new JavaKeyStoreProvider());
             loadKeystore(keyStorePath, keyPassword);
@@ -47,7 +49,6 @@ public class ApkSignerUtils {
 
             List<X509Certificate> certificateList = extractCertificates(certChain);
             ApkSigner.SignerConfig signerConfig = new ApkSigner.SignerConfig.Builder(keyStoreKeyAlias, privateKey, certificateList, true).build();
-            File outputApkFile = new File(outputFilePath);
 
             signApk(Collections.singletonList(signerConfig), inputFilePath, outputFilePath);
         } catch (Exception e) {
@@ -108,17 +109,18 @@ public class ApkSignerUtils {
     private static void executeInHandlerThread(Runnable task) {
         HandlerThread thread = new HandlerThread("SigningThread");
         thread.start();
-        new Handler(thread.getLooper()).post(() -> {
+        Handler handler = new Handler(thread.getLooper());
+        handler.post(() -> {
             task.run();
             thread.quitSafely();
         });
     }
 
     public static void signWithTestKey(String inputFilePath, String outputFilePath) {
-        errors=0;
+        errors = 0;
         try {
-            File pemFile = new File("/data/data/pro.sketchware/files/libs/testkey/testkey.x509.pem");
-            File pk8File = new File("/data/data/pro.sketchware/files/libs/testkey/testkey.pk8");
+            File pemFile = new File(SketchApplication.getContext().getFilesDir().getPath() + "/libs/testkey/testkey.x509.pem");
+            File pk8File = new File(SketchApplication.getContext().getFilesDir().getPath() + "/libs/testkey/testkey.pk8");
 
             List<X509Certificate> certs = loadCertificates(pemFile);
             PrivateKey privateKey = loadPrivateKey(pk8File);
@@ -145,7 +147,7 @@ public class ApkSignerUtils {
                     inCert = true;
                 } else if (line.startsWith("-----END CERTIFICATE-----")) {
                     inCert = false;
-                    byte[] certBytes = Base64.decode(pemContent.toString(), Base64.DEFAULT);
+                    byte[] certBytes = Base64.getDecoder().decode(pemContent.toString());
                     certificates.add((X509Certificate) certFactory.generateCertificate(new ByteArrayInputStream(certBytes)));
                     pemContent.setLength(0);
                 } else if (inCert) {
@@ -165,7 +167,7 @@ public class ApkSignerUtils {
                 buffer.write(data, 0, bytesRead);
             }
             byte[] keyBytes = buffer.toByteArray();
-            String keyContent = new String(keyBytes, "UTF-8");
+            String keyContent = new String(keyBytes, StandardCharsets.UTF_8);
 
             if (keyContent.contains("-----BEGIN")) {
                 keyBytes = decodePemKey(keyContent);
@@ -176,16 +178,16 @@ public class ApkSignerUtils {
         }
     }
 
-    private static byte[] decodePemKey(String pem) throws IOException {
+    private static byte[] decodePemKey(String pem) {
         Matcher matcher = Pattern.compile("-----BEGIN (.+?)-----\\s*(.*?)\\s*-----END (.+?)-----", Pattern.DOTALL).matcher(pem);
         if (matcher.find()) {
-            String base64Data = matcher.group(2).replaceAll("\\s", "");
-            return Base64.decode(base64Data, Base64.DEFAULT);
+            String base64Data = Objects.requireNonNull(matcher.group(2)).replaceAll("\\s", "");
+            return Base64.getDecoder().decode(base64Data);
         } else {
             throw new NullPointerException("Not a valid PEM key");
         }
     }
-    
+
     public static int getErrorsCount() {
         return errors;
     }

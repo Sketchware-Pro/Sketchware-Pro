@@ -134,7 +134,7 @@ public class AppSettings extends BaseAppCompatActivity {
         createToolsView(R.drawable.icons8_app_components, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)), false);
         createToolsView(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", content, new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class)), true);
     }
-    
+
     private View.OnClickListener openSettingsActivity(String fragmentTag) {
         return v -> {
             Intent intent = new Intent(v.getContext(), SettingsActivity.class);
@@ -234,17 +234,17 @@ public class AppSettings extends BaseAppCompatActivity {
         AlertDialog building_dialog = new MaterialAlertDialogBuilder(this)
                 .setView(building_root)
                 .create();
-        
+
         new Thread() {
             @Override
             public void run() {
                 super.run();
-                
+
                 if (useTestkey) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         try {
-                            ApkSignerUtils.signWithTestKey(inputApkPath, "/sdcard/sketchware/signed_apk/"
-                                        + Uri.fromFile(new File(outputApkPath)).getLastPathSegment());
+                            ApkSignerUtils.signWithTestKey(inputApkPath, Environment.getExternalStorageDirectory().getPath() + "/sketchware/signed_apk/"
+                                    + Uri.fromFile(new File(outputApkPath)).getLastPathSegment());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -255,22 +255,22 @@ public class AppSettings extends BaseAppCompatActivity {
                             zipSigner.signZip(inputApkPath, outputApkPath);
                         } catch (Exception e) {
                             tv_progress.setText("An error occurred. Check the log for more details.");
-                            tv_log.setText("Failed to sign APK with zipsigner: " + e);
+                            tv_log.setText("Failed to sign APK with ZipSigner: " + e);
                         }
                     }
                 } else {
-                    
+
                     try {
                         ApkSignerUtils.signWithReleaseKeystore(inputApkPath, outputApkPath, keyStorePath, keyStorePassword, keyStoreKeyAlias, keyPassword);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }   
+                }
 
                 runOnUiThread(() -> {
                     if (ApkSignerUtils.getErrorsCount() == 0) {
                         building_dialog.dismiss();
-                        SketchwareUtil.toast("Successfully saved signed APK to: /Internal storage/sketchware/signed_apk/"
+                        SketchwareUtil.toast("Successfully saved signed APK to: /sketchware/signed_apk/"
                                         + Uri.fromFile(new File(outputApkPath)).getLastPathSegment(),
                                 Toast.LENGTH_LONG);
                     } else {
