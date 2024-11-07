@@ -387,6 +387,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             HashMap<String, Object> map = new HashMap<>();
             map.put("key", key);
             map.put("text", value);
+            map.put("translatable", "true");
             StringsListMap.add(map);
             FileUtil.writeFile(filePath, convertListMapToXml(StringsListMap));
             l.performClickPalette(-1);
