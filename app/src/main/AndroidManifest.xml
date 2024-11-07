@@ -258,9 +258,6 @@
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="mod.hilal.saif.activities.tools.BlockSelectorActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="mod.hilal.saif.activities.tools.BlocksManager"
             android:configChanges="orientation|screenSize" />
         <activity
@@ -308,8 +305,10 @@
         <activity android:name="pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity"
             android:configChanges="orientation|screenSize" />
 
-        <activity android:name="mod.trindadedev.ui.activities.SettingsActivity" />
         <activity android:name="pro.sketchware.activities.coloreditor.ColorEditorActivity" />
+        
+        <activity android:name="pro.sketchware.activities.settings.SettingsActivity" />
+        
         <activity android:name="mod.bobur.StringEditorActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
