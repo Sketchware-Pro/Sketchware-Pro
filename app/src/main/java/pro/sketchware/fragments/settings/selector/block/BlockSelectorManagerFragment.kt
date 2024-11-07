@@ -1,51 +1,39 @@
 package pro.sketchware.fragments.settings.selector.block
 
+import a.a.a.aB
+import a.a.a.qA
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.EditText
-import android.widget.TextView
-import android.util.Log
-
 import androidx.lifecycle.lifecycleScope
-
-import pro.sketchware.R
-import pro.sketchware.databinding.FragmentBlockSelectorManagerBinding
-import pro.sketchware.databinding.DialogBlockConfigurationBinding as DialogCreateBinding
-import pro.sketchware.databinding.DialogSelectorActionsBinding
-
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
-
-import com.google.android.material.appbar.MaterialToolbar
-
+import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.launch
+import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog
+import pro.sketchware.R
+import pro.sketchware.databinding.DialogSelectorActionsBinding
+import pro.sketchware.databinding.FragmentBlockSelectorManagerBinding
+import pro.sketchware.fragments.settings.selector.block.details.BlockSelectorDetailsFragment
+import pro.sketchware.utility.FileUtil.getExternalStorageDir
+import pro.sketchware.utility.FileUtil.isExistFile
+import pro.sketchware.utility.FileUtil.writeFile
 import pro.sketchware.utility.SketchwareUtil.toast
 import pro.sketchware.utility.SketchwareUtil.toastError
-import pro.sketchware.utility.FileUtil.writeFile
-import pro.sketchware.utility.FileUtil.isExistFile
-import pro.sketchware.utility.FileUtil.getExternalStorageDir
-import pro.sketchware.fragments.settings.selector.block.details.BlockSelectorDetailsFragment
-
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlin.io.readText
-
 import java.io.File
-
-import a.a.a.aB
-import a.a.a.qA;
-
-import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog
+import kotlin.io.readText
+import pro.sketchware.databinding.DialogBlockConfigurationBinding as DialogCreateBinding
 
 class BlockSelectorManagerFragment : qA() {
-    
+
     private var _binding: FragmentBlockSelectorManagerBinding? = null
     private val binding get() = _binding!!
 
@@ -56,12 +44,12 @@ class BlockSelectorManagerFragment : qA() {
         _binding = FragmentBlockSelectorManagerBinding.inflate(inflater, container, false)
         return binding.root
     }
-    
+
     private var selectors: MutableList<Selector> = mutableListOf()
     private lateinit var adapter: BlockSelectorAdapter
 
     override fun onViewCreated(
-        view: View, 
+        view: View,
         saved: Bundle?
     ) {
         configureToolbar(binding.toolbar)
@@ -94,14 +82,14 @@ class BlockSelectorManagerFragment : qA() {
         }
         binding.list.adapter = adapter
         adapter.submitList(selectors)
-        
+
         binding.createNew.setOnClickListener {
             showCreateEditDialog()
         }
-        
+
         super.onViewCreated(view, saved)
     }
-    
+
     private fun parseJson(
         jsonString: String
     ): MutableList<Selector> {
@@ -109,49 +97,50 @@ class BlockSelectorManagerFragment : qA() {
         val listType = object : TypeToken<List<Selector>>() {}.type
         return gson.fromJson(jsonString, listType)
     }
-    
+
     private fun showCreateEditDialog(
         index: Int = 0,
         isEdit: Boolean = false
     ) {
-        val dialogBinding = DialogCreateBinding.inflate(LayoutInflater.from(requireContext())).apply {
-            tilPalettesPath.hint = "Selector name"
-            tilBlocksPath.hint = "Selector title (ex: Select View:)"
-            if (isEdit) {
-                palettesPath.setText(selectors.get(index).name)
-                blocksPath.setText(selectors.get(index).title)
-            }
-            palettesPath.setOnTextChanged(
-                onTextChanged = {
-                    if (itemAlreadyExists(it.toString())) {
-                        tilPalettesPath.setError("An item with this name already exists")
-                    } else {
-                        tilPalettesPath.setError(null)
+        val dialogBinding =
+            DialogCreateBinding.inflate(LayoutInflater.from(requireContext())).apply {
+                tilPalettesPath.hint = "Selector name"
+                tilBlocksPath.hint = "Selector title (ex: Select View:)"
+                if (isEdit) {
+                    palettesPath.setText(selectors.get(index).name)
+                    blocksPath.setText(selectors.get(index).title)
+                }
+                palettesPath.setOnTextChanged(
+                    onTextChanged = {
+                        if (itemAlreadyExists(it.toString())) {
+                            tilPalettesPath.setError("An item with this name already exists")
+                        } else {
+                            tilPalettesPath.setError(null)
+                        }
+                    }
+                )
+                if (palettesPath.text?.toString().equals("typeview")) {
+                    palettesPath.isEnabled = false
+                    tilPalettesPath.setOnClickListener {
+                        toast("You cannot change the name of this selector")
                     }
                 }
-            )
-            if (palettesPath.text?.toString().equals("typeview")) {
-                palettesPath.isEnabled = false
-                tilPalettesPath.setOnClickListener {
-                    toast("You cannot change the name of this selector")
-                }
             }
-        }
         val dialog = aB(requireActivity()).apply {
-            dialogTitleText = if (!isEdit) "New Selector" else "Edit Selector"
+            dialogTitleText = if (!isEdit) "New selector" else "Edit selector"
             dialogCustomView = dialogBinding.getRoot()
             dialogYesText = if (!isEdit) "Create" else "Save"
             dialogNoText = "Cancel"
             dialogYesListener = View.OnClickListener {
                 val selectorName = dialogBinding.palettesPath.text?.toString()
                 val selectorTitle = dialogBinding.blocksPath.text?.toString()
-                
+
                 if (selectorName.isNullOrEmpty()) {
-                    toast("Please type Selector name")
+                    toast("Please type the selector's name")
                     return@OnClickListener
                 }
                 if (selectorTitle.isNullOrEmpty()) {
-                    toast("Please type Selector title")
+                    toast("Please type the selector's title")
                     return@OnClickListener
                 }
                 if (!isEdit) {
@@ -177,17 +166,18 @@ class BlockSelectorManagerFragment : qA() {
                 adapter.notifyDataSetChanged()
                 dismiss()
             }
-            dialogNoListener= View.OnClickListener {
+            dialogNoListener = View.OnClickListener {
                 dismiss()
             }
         }
         dialog.show()
     }
-    
+
     private fun showActionsDialog(
         index: Int
     ) {
-        val dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext()))
+        val dialogBinding =
+            DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext()))
         val dialog = aB(requireActivity()).apply {
             dialogTitleText = "Actions"
             dialogCustomView = dialogBinding.root
@@ -206,11 +196,11 @@ class BlockSelectorManagerFragment : qA() {
                     selector = selectors.get(index)
                 )
             }
-            if(selectors.get(index).name.equals("typeview")) delete.visibility = View.GONE
+            if (selectors.get(index).name.equals("typeview")) delete.visibility = View.GONE
             delete.setOnClickListener {
                 dialog.dismiss()
                 showConfirmationDialog(
-                    message = "Are you sure you want to delete this Selector?",
+                    message = "Are you sure you want to delete this selector?",
                     onConfirm = {
                         selectors.removeAt(index)
                         saveAllSelectors()
@@ -225,7 +215,7 @@ class BlockSelectorManagerFragment : qA() {
         }
         dialog.show()
     }
-    
+
     private fun showConfirmationDialog(
         message: String,
         onConfirm: (aB) -> Unit,
@@ -246,7 +236,7 @@ class BlockSelectorManagerFragment : qA() {
         }
         dialog.show()
     }
-    
+
     override fun configureToolbar(toolbar: MaterialToolbar) {
         super.configureToolbar(toolbar)
         toolbar.setOnMenuItemClickListener { item ->
@@ -255,6 +245,7 @@ class BlockSelectorManagerFragment : qA() {
                     showImportSelectorDialog()
                     true
                 }
+
                 R.id.export_all_block_selector_menus -> {
                     saveAllSelectors(
                         path = BlockSelectorConsts.EXPORT_FILE.absolutePath,
@@ -262,11 +253,12 @@ class BlockSelectorManagerFragment : qA() {
                     )
                     true
                 }
+
                 else -> false
             }
         }
     }
-    
+
     /* not finished, for now, only only json objects are allowed,
      * like: 
      * {
@@ -278,22 +270,22 @@ class BlockSelectorManagerFragment : qA() {
     private fun showImportSelectorDialog() {
         val filePickerDialog = SketchFilePickerDialog(requireActivity())
             .allowExtension("json")
-            .setFilePath(getExternalStorageDir()) 
-            .setOnFileSelectedListener { dialog, file -> 
-                lifecycleScope.launch { 
+            .setFilePath(getExternalStorageDir())
+            .setOnFileSelectedListener { dialog, file ->
+                lifecycleScope.launch {
                     handleToImportFile(file)
                 }
                 dialog.dismiss()
             }
         filePickerDialog.setTitle("Select .json selector file")
-        filePickerDialog.a(R.drawable.file_48_blue) 
-        filePickerDialog.setOnDismissListener { dialog -> 
+        filePickerDialog.a(R.drawable.file_48_blue)
+        filePickerDialog.setOnDismissListener { dialog ->
             filePickerDialog.backPressed(dialog)
         }
         filePickerDialog.init()
         filePickerDialog.show()
     }
-   
+
     private fun saveAllSelectors(
         path: String = BlockSelectorConsts.BLOCK_SELECTORS_FILE.absolutePath,
         message: String = "Saved"
@@ -304,7 +296,7 @@ class BlockSelectorManagerFragment : qA() {
         )
         toast(message)
     }
-    
+
     private fun exportSelector(
         selector: Selector
     ) {
@@ -315,8 +307,8 @@ class BlockSelectorManagerFragment : qA() {
         )
         toast("Exported in ${path}")
     }
-    
-    private suspend fun handleToImportFile(
+
+    private fun handleToImportFile(
         file: File
     ) {
         try {
@@ -345,8 +337,8 @@ class BlockSelectorManagerFragment : qA() {
             toastError("Make sure you select a file that contains a selector item(s).")
         }
     }
-    
-    private suspend fun getSelectorFromFile(
+
+    private fun getSelectorFromFile(
         path: File
     ): Selector? {
         val json = path.readText(Charsets.UTF_8)
@@ -358,8 +350,8 @@ class BlockSelectorManagerFragment : qA() {
             null
         }
     }
-    
-    private suspend fun getSelectorsFromFile(
+
+    private fun getSelectorsFromFile(
         path: File
     ): List<Selector>? {
         val json = path.readText(Charsets.UTF_8)
@@ -372,7 +364,7 @@ class BlockSelectorManagerFragment : qA() {
             null
         }
     }
-    
+
     fun String.isObject(): Boolean {
         val jsonElement: JsonElement = JsonParser.parseString(this)
         return when {
@@ -381,17 +373,17 @@ class BlockSelectorManagerFragment : qA() {
             else -> false
         }
     }
-   
-    private fun getGson() : Gson = GsonBuilder()
+
+    private fun getGson(): Gson = GsonBuilder()
         .setPrettyPrinting()
         .create()
-    
+
     private fun itemAlreadyExists(
         toCompare: String
     ): Boolean = selectors.any {
         it.name.lowercase() == toCompare.lowercase()
     }
-    
+
     /*
      * A Default list of Selector Itens
      */
@@ -418,7 +410,7 @@ class BlockSelectorManagerFragment : qA() {
             "ProgressBar"
         )
     }
-    
+
     // big 😡
     private fun EditText.setOnTextChanged(
         onTextChanged: (CharSequence) -> Unit,
@@ -428,30 +420,32 @@ class BlockSelectorManagerFragment : qA() {
         this.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(
                 s: CharSequence?,
-                start: Int, 
-                before: Int, 
+                start: Int,
+                before: Int,
                 count: Int
             ) {
                 s?.let {
                     onTextChanged(it)
                 }
             }
+
             override fun beforeTextChanged(
-                s: CharSequence?, 
+                s: CharSequence?,
                 start: Int,
-                count: Int, 
+                count: Int,
                 after: Int
             ) {
                 s?.let {
                     beforeTextChanged(it)
                 }
             }
+
             override fun afterTextChanged(e: Editable?) {
                 afterTextChanged()
             }
         })
     }
-    
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
