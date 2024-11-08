@@ -1,5 +1,7 @@
 package a.a.a;
 
+import static pro.sketchware.activities.coloreditor.ColorEditorActivity.getColorValue;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -365,10 +367,10 @@ public class Zx extends PopupWindow {
                         break;
                     case XmlPullParser.END_TAG:
                         if (tagName.equals("color")) {
-                            if (colorName != null && isValidHexColor(colorValue)) {
+                            if (colorName != null && isValidHexColor(getColorValue(activity.getApplicationContext(), colorValue, 4))) {
                                 HashMap<String, Object> colors = new HashMap<>();
                                 colors.put("colorName", colorName);
-                                colors.put("colorValue", String.format("#%8s", colorValue.replaceFirst("#", "")).replaceAll(" ", "F"));
+                                colors.put("colorValue", String.format("#%8s", getColorValue(activity.getApplicationContext(), colorValue, 4).replaceFirst("#", "")).replaceAll(" ", "F"));
                                 color_res_list.add(colors);
                             }
                         }
