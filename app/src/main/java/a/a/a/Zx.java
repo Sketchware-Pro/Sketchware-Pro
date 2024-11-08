@@ -25,8 +25,6 @@ import pro.sketchware.databinding.ColorPickerBinding;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +32,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import pro.sketchware.utility.FileUtil;
-import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hey.studios.util.Helper;
 
 public class Zx extends PopupWindow {
