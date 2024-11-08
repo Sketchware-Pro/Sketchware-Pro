@@ -129,6 +129,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                 ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;
             }
+            tvValue.setText("Configure parent attributes");
             imgLeftIcon.setImageResource(icon);
         }
     }
