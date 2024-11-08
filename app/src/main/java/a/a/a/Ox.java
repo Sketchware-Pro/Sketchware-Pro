@@ -1,6 +1,6 @@
 package a.a.a;
 
-import static com.besome.sketch.editor.property.PropertyParentAttributesItem.RELATIVE_IDS;
+import static com.besome.sketch.editor.property.PropertyAttributesItem.RELATIVE_IDS;
 
 import android.annotation.SuppressLint;
 import android.view.Gravity;

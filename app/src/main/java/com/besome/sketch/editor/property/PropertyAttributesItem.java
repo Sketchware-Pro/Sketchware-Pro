@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @SuppressLint("ViewConstructor")
-public class PropertyParentAttributesItem extends LinearLayout implements View.OnClickListener {
+public class PropertyAttributesItem extends LinearLayout implements View.OnClickListener {
 
     private String key = "";
     private HashMap<String, String> value = new HashMap<>();
@@ -95,7 +95,7 @@ public class PropertyParentAttributesItem extends LinearLayout implements View.O
                     "android:layout_above",
                     "android:layout_below");
 
-    public PropertyParentAttributesItem(Context context, boolean z) {
+    public PropertyAttributesItem(Context context, boolean z) {
         super(context);
         initialize(context, z);
     }

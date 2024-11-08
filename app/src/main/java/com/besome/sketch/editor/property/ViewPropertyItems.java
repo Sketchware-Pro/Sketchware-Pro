@@ -88,7 +88,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             }
             case "property_layout_width" -> a(property, bean.layout.width, isNotAdview);
             case "property_layout_height" -> a(property, bean.layout.height, isNotAdview);
-            case "property_parent_attr" -> parentAttributes(property, bean.parentAttributes);
+            case "property_parent_attr" -> setupAttributes(property, bean.parentAttributes);
             case "property_margin" -> {
                 LayoutBean layoutBean = bean.layout;
                 a(property, layoutBean.marginLeft, layoutBean.marginTop, layoutBean.marginRight, layoutBean.marginBottom);
@@ -512,7 +512,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         addView(switchSingleLineItem);
     }
     
-    private void parentAttributes(String key, HashMap<String, String> value) {
+    private void setupAttributes(String key, HashMap<String, String> value) {
         ArrayList<ViewBean> viewBeans = jC.a(sc_id).d(e.getXmlName());
         List<String> ids = new ArrayList<>();
         for (ViewBean bean : viewBeans) {
@@ -520,9 +520,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                 ids.add(bean.id);
             }
         }
-        PropertyParentAttributesItem item = (PropertyParentAttributesItem) f.get(key);
+        PropertyAttributesItem item = (PropertyAttributesItem) f.get(key);
         if (item == null) {
-            item = new PropertyParentAttributesItem(getContext(), !b);
+            item = new PropertyAttributesItem(getContext(), !b);
             item.setOrientationItem(getOrientation());
             item.setKey(key);
             item.setValue(value);
@@ -810,7 +810,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                 if (vw.getKey().equals("property_text_font")) {
                     bean.text.textFont = vw.getValue();
                 }
-            } else if (view instanceof PropertyParentAttributesItem item) {
+            } else if (view instanceof PropertyAttributesItem item) {
                 if (item.getKey().equals("property_parent_attr")) {
                     bean.parentAttributes = item.getValue();
                 }
