@@ -1,4 +1,4 @@
-package mod.trindadedev.manage.theme;
+package pro.sketchware.utility.theme;
 
 import android.content.Context;
 import android.content.SharedPreferences;

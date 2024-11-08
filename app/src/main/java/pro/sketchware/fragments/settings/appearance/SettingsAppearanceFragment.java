@@ -1,4 +1,4 @@
-package mod.trindadedev.ui.fragments.settings.appearance;
+package pro.sketchware.fragments.settings.appearance;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,10 +10,11 @@ import androidx.annotation.NonNull;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentSettingsAppearanceBinding;
 
-import mod.trindadedev.manage.theme.ThemeManager;
-import mod.trindadedev.ui.fragments.BaseFragment;
+import pro.sketchware.utility.theme.ThemeManager;
 
-public class SettingsAppearanceFragment extends BaseFragment {
+import a.a.a.qA;
+
+public class SettingsAppearanceFragment extends qA {
 
     private FragmentSettingsAppearanceBinding binding;
 

@@ -1,4 +1,4 @@
-package mod.trindadedev.ui.fragments.events;
+package pro.sketchware.fragments.settings.events;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,19 +11,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentEventsManagerCreatorBinding;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.IconSelectorDialog;
 import mod.jbk.util.OldResourceIdMapper;
 
-public class EventsManagerCreatorFragment extends Fragment {
+import a.a.a.qA;
+
+public class EventsManagerCreatorFragment extends qA {
 
     private String _code;
     private String _desc;

@@ -197,7 +197,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = parcel.readString();
         convert = parcel.readString();
         progressStyle = parcel.readString();
-        isCustomWidget = parcel.readBoolean();
+        isCustomWidget = parcel.readInt() != 0;
     }
 
     public ViewBean(String id, int type) {
@@ -469,6 +469,6 @@ public class ViewBean extends nA implements Parcelable {
         dest.writeString(inject);
         dest.writeString(convert);
         dest.writeString(progressStyle);
-        dest.writeBoolean(isCustomWidget);
+        dest.writeInt(isCustomWidget ? 1 : 0);
     }
 }
