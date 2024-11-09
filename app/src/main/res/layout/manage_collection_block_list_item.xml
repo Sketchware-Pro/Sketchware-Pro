@@ -57,7 +57,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="#ff404040"
             android:textSize="16sp" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
