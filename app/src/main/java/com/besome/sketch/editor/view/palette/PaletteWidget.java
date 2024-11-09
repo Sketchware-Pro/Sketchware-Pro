@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.besome.sketch.lib.ui.CustomScrollView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.color.MaterialColors;
-import pro.sketchware.R;
 
 import java.util.HashMap;
 
@@ -49,6 +48,7 @@ import mod.agus.jcoderz.editor.view.palette.IconSearchView;
 import mod.agus.jcoderz.editor.view.palette.IconTimePicker;
 import mod.agus.jcoderz.editor.view.palette.IconVideoView;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 import pro.sketchware.widgets.WidgetsCreatorManager;
 
 public class PaletteWidget extends LinearLayout {

@@ -19,29 +19,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import a.a.a.Kw;
-import a.a.a.aB;
-import a.a.a.mB;
-import a.a.a.wB;
-
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.PropertyInputItemBinding;
-import com.sketchware.remod.databinding.PropertyPopupParentAttrBinding;
-import com.sketchware.remod.databinding.PropertySwitchItemSinglelineBinding;
-
-import mod.hey.studios.util.Helper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import a.a.a.Kw;
+import a.a.a.aB;
+import a.a.a.mB;
+import a.a.a.wB;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyInputItemBinding;
+import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
+import pro.sketchware.databinding.PropertySwitchItemSinglelineBinding;
+
 @SuppressLint("ViewConstructor")
 public class PropertyAttributesItem extends LinearLayout implements View.OnClickListener {
-
     private String key = "";
     private HashMap<String, String> value = new HashMap<>();
     private TextView tvName;
@@ -51,49 +49,47 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
     private ImageView imgLeftIcon;
     private int icon;
     private Kw valueChangeListener;
-    private String scId;
     private ViewBean bean;
     private List<String> ids = new ArrayList<>();
 
     private static final String[] PARENT_RELATIVE = {
-        "android:layout_centerInParent",
-        "android:layout_centerVertical",
-        "android:layout_centerHorizontal",
-        "android:layout_toStartOf",
-        "android:layout_toLeftOf",
-        "android:layout_toRightOf",
-        "android:layout_toEndOf",
-        "android:layout_above",
-        "android:layout_below",
-        "android:layout_alignStart",
-        "android:layout_alignLeft",
-        "android:layout_alignTop",
-        "android:layout_alignEnd",
-        "android:layout_alignRight",
-        "android:layout_alignBottom",
-        "android:layout_alignParentStart",
-        "android:layout_alignParentLeft",
-        "android:layout_alignParentTop",
-        "android:layout_alignParentEnd",
-        "android:layout_alignParentRight",
-        "android:layout_alignParentBottom",
-        "android:layout_alignBaseline"
+            "android:layout_centerInParent",
+            "android:layout_centerVertical",
+            "android:layout_centerHorizontal",
+            "android:layout_toStartOf",
+            "android:layout_toLeftOf",
+            "android:layout_toRightOf",
+            "android:layout_toEndOf",
+            "android:layout_above",
+            "android:layout_below",
+            "android:layout_alignStart",
+            "android:layout_alignLeft",
+            "android:layout_alignTop",
+            "android:layout_alignEnd",
+            "android:layout_alignRight",
+            "android:layout_alignBottom",
+            "android:layout_alignParentStart",
+            "android:layout_alignParentLeft",
+            "android:layout_alignParentTop",
+            "android:layout_alignParentEnd",
+            "android:layout_alignParentRight",
+            "android:layout_alignParentBottom",
+            "android:layout_alignBaseline"
     };
 
-    public static List<String> RELATIVE_IDS =
-            Arrays.asList(
-                    "android:layout_alignStart",
-                    "android:layout_alignLeft",
-                    "android:layout_alignTop",
-                    "android:layout_alignEnd",
-                    "android:layout_alignBottom",
-                    "android:layout_alignBaseline",
-                    "android:layout_toStartOf",
-                    "android:layout_toLeftOf",
-                    "android:layout_toEndOf",
-                    "android:layout_toRightOf",
-                    "android:layout_above",
-                    "android:layout_below");
+    public static List<String> RELATIVE_IDS = Arrays.asList(
+            "android:layout_alignStart",
+            "android:layout_alignLeft",
+            "android:layout_alignTop",
+            "android:layout_alignEnd",
+            "android:layout_alignBottom",
+            "android:layout_alignBaseline",
+            "android:layout_toStartOf",
+            "android:layout_toLeftOf",
+            "android:layout_toEndOf",
+            "android:layout_toRightOf",
+            "android:layout_above",
+            "android:layout_below");
 
     public PropertyAttributesItem(Context context, boolean z) {
         super(context);
@@ -143,15 +139,11 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
             propertyMenuItem.setVisibility(GONE);
         }
     }
-    
-    public void setScId(String id) {
-        scId = id;
-    }
 
     public void setBean(ViewBean bean) {
         this.bean = bean;
     }
-    
+
     public void setAvailableIds(List<String> ids) {
         this.ids = ids;
     }
@@ -174,87 +166,67 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
     }
 
     private void showParentAttributes() {
-        BottomSheetDialog dialog = new BottomSheetDialog((Activity) getContext());
+        BottomSheetDialog dialog = new BottomSheetDialog(getContext());
         var binding = PropertyPopupParentAttrBinding.inflate(LayoutInflater.from(getContext()));
         dialog.setContentView(binding.getRoot());
         dialog.show();
-        
+
         binding.viewId.setText(bean.id);
 
         var adapter = new AttributesAdapter();
         binding.recyclerView.setAdapter(adapter);
-        var dividerItemDecoration =
-                new DividerItemDecoration(
-                        binding.recyclerView.getContext(), LinearLayoutManager.VERTICAL);
+        var dividerItemDecoration = new DividerItemDecoration(binding.recyclerView.getContext(), LinearLayoutManager.VERTICAL);
         binding.recyclerView.addItemDecoration(dividerItemDecoration);
         List<String> keys = new ArrayList<>(value.keySet());
         adapter.submitList(keys);
 
-        binding.add.setOnClickListener(
-                v -> {
-                    List<String> list = new ArrayList<>();
-                    for (String attr : PARENT_RELATIVE) {
-                        if (!value.containsKey(attr)) {
-                            list.add(attr);
-                        }
-                    }
-                    new MaterialAlertDialogBuilder((Activity) getContext())
-                            .setTitle("Choose an attributes")
-                            .setAdapter(
-                                    new ArrayAdapter<>(
-                                            (Activity) getContext(),
-                                            android.R.layout.simple_list_item_1,
-                                            list),
-                                    (d, w) -> {
-                                        var attr = list.get(w);
-                                        if (RELATIVE_IDS.contains(attr)) {
-                                            new MaterialAlertDialogBuilder((Activity) getContext())
-                                                    .setTitle("Choose an id")
-                                                    .setAdapter(
-                                                            new ArrayAdapter<>(
-                                                                    (Activity) getContext(),
-                                                                    android.R.layout
-                                                                            .simple_list_item_1,
-                                                                    ids),
-                                                            (d2, w2) -> {
-                                                                var id = ids.get(w2);
-                                                                value.put(attr, id);
-                                                                if (valueChangeListener != null)
-                                                                    valueChangeListener.a(
-                                                                            key, value);
-                                                                adapter.submitList(
-                                                                        new ArrayList<>(
-                                                                                value.keySet()));
-                                                            })
-                                                    .setNegativeButton(
-                                                            "Cancel", (d2, which) -> d.dismiss())
-                                                    .show();
-                                        } else {
-                                            value.put(attr, "false");
-                                            adapter.submitList(new ArrayList<>(value.keySet()));
-                                        }
-                                    })
-                            .setNegativeButton("Cancel", (d, which) -> d.dismiss())
-                            .show();
-                });
+        binding.add.setOnClickListener(v -> {
+            List<String> list = new ArrayList<>();
+            for (String attr : PARENT_RELATIVE) {
+                if (!value.containsKey(attr)) {
+                    list.add(attr);
+                }
+            }
+            new MaterialAlertDialogBuilder(getContext())
+                    .setTitle("Choose an attributes")
+                    .setAdapter(
+                            new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, list), (d, w) -> {
+                                var attr = list.get(w);
+                                if (RELATIVE_IDS.contains(attr)) {
+                                    new MaterialAlertDialogBuilder(getContext())
+                                            .setTitle("Choose an id")
+                                            .setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, ids), (d2, w2) -> {
+                                                var id = ids.get(w2);
+                                                value.put(attr, id);
+                                                if (valueChangeListener != null)
+                                                    valueChangeListener.a(key, value);
+                                                adapter.submitList(new ArrayList<>(value.keySet()));
+                                            })
+                                            .setNegativeButton("Cancel", (d2, which) -> d.dismiss())
+                                            .show();
+                                } else {
+                                    value.put(attr, "false");
+                                    adapter.submitList(new ArrayList<>(value.keySet()));
+                                }
+                            })
+                    .setNegativeButton("Cancel", (d, which) -> d.dismiss())
+                    .show();
+        });
     }
 
     private class AttributesAdapter extends ListAdapter<String, RecyclerView.ViewHolder> {
 
-        private static final DiffUtil.ItemCallback<String> DIFF_CALLBACK =
-                new DiffUtil.ItemCallback<>() {
-                    @Override
-                    public boolean areItemsTheSame(
-                            @NonNull String oldItem, @NonNull String newItem) {
-                        return oldItem.equals(newItem);
-                    }
+        private static final DiffUtil.ItemCallback<String> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
+            @Override
+            public boolean areItemsTheSame(@NonNull String oldItem, @NonNull String newItem) {
+                return oldItem.equals(newItem);
+            }
 
-                    @Override
-                    public boolean areContentsTheSame(
-                            @NonNull String oldItem, @NonNull String newItem) {
-                        return true;
-                    }
-                };
+            @Override
+            public boolean areContentsTheSame(@NonNull String oldItem, @NonNull String newItem) {
+                return true;
+            }
+        };
 
         public AttributesAdapter() {
             super(DIFF_CALLBACK);
@@ -269,13 +241,10 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
             }
         }
 
+        @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             FrameLayout root = new FrameLayout(parent.getContext());
-            FrameLayout.LayoutParams _lp =
-                    new FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
             if (viewType == 1) {
                 return new IdsViewHolder(root);
             } else {
@@ -284,7 +253,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof IdsViewHolder idsHolder) {
                 idsHolder.bind(getItem(position));
             } else if (holder instanceof BooleanViewHolder booleanHolder) {
@@ -293,105 +262,85 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
         }
 
         private class IdsViewHolder extends RecyclerView.ViewHolder {
-
-            private PropertyInputItemBinding binding;
+            private final PropertyInputItemBinding binding;
 
             public IdsViewHolder(FrameLayout view) {
                 super(view);
-                binding =
-                        PropertyInputItemBinding.inflate(
-                                LayoutInflater.from(view.getContext()), view, true);
+                binding = PropertyInputItemBinding.inflate(LayoutInflater.from(view.getContext()), view, true);
             }
 
             void bind(String attr) {
                 binding.tvName.setText(attr);
                 binding.tvValue.setText("@id/" + value.get(attr));
-                binding.imgLeftIcon.setImageResource(R.drawable.ic_code_24);
+                binding.imgLeftIcon.setImageResource(R.drawable.ic_mtrl_code);
                 binding.getRoot().findViewById(R.id.property_menu_item).setVisibility(View.GONE);
-                itemView.setOnClickListener(
-                        v -> {
-                            var filteredIds = new ArrayList<>(ids);
-                            filteredIds.remove(value.get(attr));
-                            new MaterialAlertDialogBuilder((Activity) getContext())
-                                    .setTitle("Choose an id")
-                                    .setAdapter(
-                                            new ArrayAdapter<>(
-                                                    (Activity) getContext(),
-                                                    android.R.layout.simple_list_item_1,
-                                                    filteredIds),
-                                            (d, w) -> {
-                                                var id = filteredIds.get(w);
-                                                value.put(attr, id);
-                                                binding.tvValue.setText("@id/" + id);
-                                                if (valueChangeListener != null)
-                                                    valueChangeListener.a(key, value);
-                                            })
-                                    .setNegativeButton("Cancel", (d, which) -> d.dismiss())
-                                    .show();
-                        });
-                itemView.setOnLongClickListener(
-                        v -> {
-                            var dialog = new aB((Activity) getContext());
-                            dialog.b("Delete");
-                            dialog.a("Are you sure you want to delete " + attr + "?");
-                            dialog.b(
-                                    "Yes",
-                                    view -> {
-                                        value.remove(attr);
-                                        if (valueChangeListener != null)
-                                            valueChangeListener.a(key, value);
-                                        submitList(new ArrayList<>(value.keySet()));
-                                        dialog.dismiss();
-                                    });
-
-                            dialog.a("No", view -> dialog.dismiss());
-                            dialog.show();
-                            return true;
-                        });
+                itemView.setOnClickListener(v -> {
+                    var filteredIds = new ArrayList<>(ids);
+                    filteredIds.remove(value.get(attr));
+                    new MaterialAlertDialogBuilder(getContext())
+                            .setTitle("Choose an id")
+                            .setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, filteredIds), (d, w) -> {
+                                var id = filteredIds.get(w);
+                                value.put(attr, id);
+                                binding.tvValue.setText("@id/" + id);
+                                if (valueChangeListener != null)
+                                    valueChangeListener.a(key, value);
+                            })
+                            .setNegativeButton("Cancel", (d, which) -> d.dismiss())
+                            .show();
+                });
+                itemView.setOnLongClickListener(v -> {
+                    var dialog = new aB((Activity) getContext());
+                    dialog.b("Delete");
+                    dialog.a("Are you sure you want to delete " + attr + "?");
+                    dialog.b("Yes", view -> {
+                        value.remove(attr);
+                        if (valueChangeListener != null)
+                            valueChangeListener.a(key, value);
+                        submitList(new ArrayList<>(value.keySet()));
+                        dialog.dismiss();
+                    });
+                    dialog.a("No", view -> dialog.dismiss());
+                    dialog.show();
+                    return true;
+                });
             }
         }
 
         private class BooleanViewHolder extends RecyclerView.ViewHolder {
-
-            private PropertySwitchItemSinglelineBinding binding;
+            private final PropertySwitchItemSinglelineBinding binding;
 
             public BooleanViewHolder(FrameLayout view) {
                 super(view);
-                binding =
-                        PropertySwitchItemSinglelineBinding.inflate(
-                                LayoutInflater.from(view.getContext()), view, true);
+                binding = PropertySwitchItemSinglelineBinding.inflate(LayoutInflater.from(view.getContext()), view, true);
             }
 
             void bind(String attr) {
                 binding.tvName.setText(attr);
-                binding.imgLeftIcon.setImageResource(R.drawable.ic_code_24);
+                binding.imgLeftIcon.setImageResource(R.drawable.ic_mtrl_code);
                 binding.getRoot().findViewById(R.id.property_menu_item).setVisibility(View.GONE);
                 binding.switchValue.setChecked(Boolean.parseBoolean(value.get(attr)));
-                itemView.setOnClickListener(
-                        v -> {
-                            binding.switchValue.setChecked(!binding.switchValue.isChecked());
-                            value.put(attr, String.valueOf(binding.switchValue.isChecked()));
-                            if (valueChangeListener != null) valueChangeListener.a(key, value);
-                        });
-                itemView.setOnLongClickListener(
-                        v -> {
-                            var dialog = new aB((Activity) getContext());
-                            dialog.b("Delete");
-                            dialog.a("Are you sure you want to delete " + attr + "?");
-                            dialog.b(
-                                    "Yes",
-                                    view -> {
-                                        value.remove(attr);
-                                        if (valueChangeListener != null)
-                                            valueChangeListener.a(key, value);
-                                        submitList(new ArrayList<>(value.keySet()));
-                                        dialog.dismiss();
-                                    });
+                itemView.setOnClickListener(v -> {
+                    binding.switchValue.setChecked(!binding.switchValue.isChecked());
+                    value.put(attr, String.valueOf(binding.switchValue.isChecked()));
+                    if (valueChangeListener != null) valueChangeListener.a(key, value);
+                });
+                itemView.setOnLongClickListener(v -> {
+                    var dialog = new aB((Activity) getContext());
+                    dialog.b("Delete");
+                    dialog.a("Are you sure you want to delete " + attr + "?");
+                    dialog.b("Yes", view -> {
+                        value.remove(attr);
+                        if (valueChangeListener != null)
+                            valueChangeListener.a(key, value);
+                        submitList(new ArrayList<>(value.keySet()));
+                        dialog.dismiss();
+                    });
 
-                            dialog.a("No", view -> dialog.dismiss());
-                            dialog.show();
-                            return true;
-                        });
+                    dialog.a("No", view -> dialog.dismiss());
+                    dialog.show();
+                    return true;
+                });
             }
         }
     }

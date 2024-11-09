@@ -1,55 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:minHeight="200dp"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="16dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="8dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textAppearance="?attr/textAppearanceTitleLarge"
                 android:id="@+id/title"
-                android:text="Parent attributes" />
-            
-            <TextView
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textAppearance="?attr/textAppearanceLabelMedium"
-                android:id="@+id/view_id"/>
+                android:layout_height="wrap_content"
+                android:text="Parent attributes"
+                android:textAppearance="?attr/textAppearanceTitleLarge" />
+
+            <TextView
+                android:id="@+id/view_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceLabelMedium" />
 
         </LinearLayout>
 
         <ImageView
-            android:layout_height="wrap_content"
+            android:id="@+id/add"
             android:layout_width="wrap_content"
-            android:src="@drawable/ic_add_24"
-            android:layout_marginEnd="8dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:id="@+id/add" />
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_mtrl_add" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
         android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>

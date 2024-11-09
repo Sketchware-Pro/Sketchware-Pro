@@ -4,7 +4,8 @@ import android.content.Context;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
+
+import pro.sketchware.R;
 
 public class IconRelativeLayout extends IconBase {
     public IconRelativeLayout(Context context) {
@@ -13,7 +14,7 @@ public class IconRelativeLayout extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_relative_layout);
+        setWidgetImage(R.drawable.ic_mtrl_view_relative);
         setWidgetName("RelativeLayout");
     }
 
