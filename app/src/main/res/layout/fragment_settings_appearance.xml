@@ -3,10 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:background="?attr/colorSurface">
+    android:fitsSystemWindows="true">
 
-    <!-- AppBarLayout with CollapsingToolbar -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
@@ -16,12 +14,10 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:title="Appearance Settings"
-            app:expandedTitleMarginStart="16dp"
-            app:expandedTitleMarginBottom="24dp">
+            app:title="Appearance settings">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
@@ -32,78 +28,76 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Content Scroll View -->
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/content_nested"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Main Content Layout -->
         <LinearLayout
-            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
             android:paddingTop="24dp"
             android:paddingBottom="32dp">
 
-            <!-- Theme Settings Title -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Theme Settings"
+                android:layout_marginHorizontal="16dp"
+                android:text="Theme settings"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="?attr/colorPrimary" />
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold" />
 
-            <!-- Theme Settings Description -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
                 android:text="Choose how your app looks"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?attr/colorOnSurfaceVariant" />
 
-            <!-- System Theme Card -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/theme_system"
                 style="@style/Widget.Material3.CardView.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginTop="20dp"
                 android:checkable="true"
                 android:clickable="true"
-                app:cardCornerRadius="16dp">
+                android:focusable="true"
+                app:cardCornerRadius="16dp"
+                app:strokeWidth="0.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="20dp">
+                    android:padding="16dp">
 
-                    <com.google.android.material.imageview.ShapeableImageView
+                    <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:layout_gravity="center_vertical"
-                        android:background="?attr/colorSecondaryContainer"
-                        android:padding="8dp"
-                        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium"
-                        app:tint="?attr/colorOnSecondaryContainer" />
+                        android:padding="6dp"
+                        android:src="@drawable/ic_mtrl_palette"
+                        app:tint="?attr/colorPrimary" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="14dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="System Default"
-                            android:textAppearance="?attr/textAppearanceBodyLarge" />
+                            android:text="System default"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -117,31 +111,31 @@
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switch_system"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical" />
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Light and Dark Theme Cards Row -->
             <com.google.android.material.card.MaterialCardView
                 style="@style/Widget.Material3.CardView.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
                 android:layout_marginTop="24dp"
-                app:cardCornerRadius="16dp">
+                app:cardCornerRadius="16dp"
+                app:strokeWidth="0.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
+                    android:orientation="horizontal">
 
-                    <!-- Light Theme Card -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/theme_light"
-                        style="@style/Widget.Material3.CardView.Elevated"
+                        style="@style/Widget.Material3.CardView.Outlined"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="12dp"
+                        android:layout_marginStart="12dp"
                         android:layout_marginEnd="6dp"
                         android:layout_weight="1"
                         android:checkable="true"
@@ -151,33 +145,33 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:orientation="vertical"
                             android:padding="16dp">
 
                             <com.google.android.material.imageview.ShapeableImageView
                                 android:layout_width="100dp"
                                 android:layout_height="120dp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/preview_light_theme"
+                                android:background="@drawable/img_preview_light_theme"
                                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
                                 android:layout_marginTop="12dp"
-                                android:text="Light Theme"
+                                android:text="Light"
                                 android:textAppearance="?attr/textAppearanceBodyLarge" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Dark Theme Card -->
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/theme_dark"
-                        style="@style/Widget.Material3.CardView.Elevated"
+                        style="@style/Widget.Material3.CardView.Outlined"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="12dp"
                         android:layout_marginStart="6dp"
+                        android:layout_marginEnd="12dp"
                         android:layout_weight="1"
                         android:checkable="true"
                         android:clickable="true"
@@ -186,22 +180,21 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:orientation="vertical"
                             android:padding="16dp">
 
                             <com.google.android.material.imageview.ShapeableImageView
                                 android:layout_width="100dp"
                                 android:layout_height="120dp"
-                                android:layout_gravity="center"
-                                android:background="@drawable/preview_dark_theme"
+                                android:background="@drawable/img_preview_dark_theme"
                                 app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
                                 android:layout_marginTop="12dp"
-                                android:text="Dark Theme"
+                                android:text="Dark"
                                 android:textAppearance="?attr/textAppearanceBodyLarge" />
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>

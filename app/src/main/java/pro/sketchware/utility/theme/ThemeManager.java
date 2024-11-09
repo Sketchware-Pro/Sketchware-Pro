@@ -2,6 +2,8 @@ package pro.sketchware.utility.theme;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+
 import androidx.appcompat.app.AppCompatDelegate;
 
 public class ThemeManager {
@@ -34,6 +36,17 @@ public class ThemeManager {
 
     public static boolean isSystemTheme(Context context) {
         return getCurrentTheme(context) == THEME_SYSTEM;
+    }
+
+    public static int getSystemAppliedTheme(Context context) {
+        int nightModeFlags = context.getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK;
+
+        return switch (nightModeFlags) {
+            case Configuration.UI_MODE_NIGHT_NO -> THEME_LIGHT;
+            case Configuration.UI_MODE_NIGHT_YES -> THEME_DARK;
+            default -> THEME_SYSTEM;
+        };
     }
 
     private static void saveTheme(Context context, int theme) {

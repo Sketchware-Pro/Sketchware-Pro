@@ -4,14 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.card.MaterialCardView;
+
+import a.a.a.qA;
 import pro.sketchware.databinding.FragmentSettingsAppearanceBinding;
 import pro.sketchware.utility.theme.ThemeManager;
-import a.a.a.qA;
 
 public class SettingsAppearanceFragment extends qA {
-
     private FragmentSettingsAppearanceBinding binding;
     private MaterialCardView selectedThemeCard;
 
@@ -40,35 +42,29 @@ public class SettingsAppearanceFragment extends qA {
     }
 
     private void initializeThemeSettings() {
-        // Initialize system theme switch
         boolean isSystemTheme = ThemeManager.isSystemTheme(requireContext());
         binding.switchSystem.setChecked(isSystemTheme);
 
-        // Set the appropriate theme card selection
         updateThemeCardSelection(ThemeManager.getCurrentTheme(requireContext()));
 
-        // Disable theme cards if system theme is enabled
         setThemeCardsEnabled(!isSystemTheme);
     }
 
     private void setupClickListeners() {
-        // System theme card click listener
-        binding.themeSystem.setOnClickListener(v ->
-                binding.switchSystem.setChecked(!binding.switchSystem.isChecked())
-        );
+        binding.themeSystem.setOnClickListener(v -> binding.switchSystem.setChecked(!binding.switchSystem.isChecked()));
 
-        // System theme switch listener
         binding.switchSystem.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (buttonView.isPressed()) {
-                setThemeCardsEnabled(!isChecked);
-                if (isChecked) {
-                    clearThemeCardSelection();
-                    ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM);
-                }
+            unselectSelectedThemeCard();
+            setThemeCardsEnabled(!isChecked);
+            if (isChecked) {
+                ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM);
+                return;
             }
+            int theme = ThemeManager.getSystemAppliedTheme(requireContext());
+            ThemeManager.applyTheme(requireContext(), theme);
+            updateThemeCardSelection(theme);
         });
 
-        // Light theme card click listener
         binding.themeLight.setOnClickListener(v -> {
             if (!binding.switchSystem.isChecked()) {
                 updateThemeCardSelection(ThemeManager.THEME_LIGHT);
@@ -76,7 +72,6 @@ public class SettingsAppearanceFragment extends qA {
             }
         });
 
-        // Dark theme card click listener
         binding.themeDark.setOnClickListener(v -> {
             if (!binding.switchSystem.isChecked()) {
                 updateThemeCardSelection(ThemeManager.THEME_DARK);
@@ -86,17 +81,13 @@ public class SettingsAppearanceFragment extends qA {
     }
 
     private void updateThemeCardSelection(int theme) {
-        clearThemeCardSelection();
+        unselectSelectedThemeCard();
 
-        MaterialCardView newSelection = null;
-        switch (theme) {
-            case ThemeManager.THEME_LIGHT:
-                newSelection = binding.themeLight;
-                break;
-            case ThemeManager.THEME_DARK:
-                newSelection = binding.themeDark;
-                break;
-        }
+        MaterialCardView newSelection = switch (theme) {
+            case ThemeManager.THEME_LIGHT -> binding.themeLight;
+            case ThemeManager.THEME_DARK -> binding.themeDark;
+            default -> null;
+        };
 
         if (newSelection != null && !binding.switchSystem.isChecked()) {
             newSelection.setChecked(true);
@@ -104,7 +95,7 @@ public class SettingsAppearanceFragment extends qA {
         }
     }
 
-    private void clearThemeCardSelection() {
+    private void unselectSelectedThemeCard() {
         if (selectedThemeCard != null) {
             selectedThemeCard.setChecked(false);
             selectedThemeCard = null;
@@ -116,8 +107,8 @@ public class SettingsAppearanceFragment extends qA {
         binding.themeDark.setEnabled(enabled);
 
         float alpha = enabled ? 1.0f : 0.5f;
-        binding.themeLight.setAlpha(alpha);
-        binding.themeDark.setAlpha(alpha);
+        binding.themeLight.animate().alpha(alpha).start();
+        binding.themeDark.animate().alpha(alpha).start();
     }
 
     @Override
