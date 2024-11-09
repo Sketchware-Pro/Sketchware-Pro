@@ -23,6 +23,10 @@ public class InjectAttributeHandler {
     public InjectAttributeHandler(ViewBean viewBean) {
         this.viewBean = viewBean;
     }
+    
+    public ViewBean getBean() {
+        return viewBean;
+    }
 
     public String getAttributeValueOf(String name) {
         return getAttributeByName(name).orElse("");
