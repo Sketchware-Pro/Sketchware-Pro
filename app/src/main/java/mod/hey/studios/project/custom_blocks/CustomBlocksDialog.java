@@ -140,7 +140,10 @@ public class CustomBlocksDialog {
         ArrayList<HashMap<String, Object>> allBlocksList = loadJsonList(blocksDir);
         ArrayList<HashMap<String, Object>> paletteList = loadJsonList(paletteDir);
 
-        if (allBlocksList == null || paletteList == null) return;
+        if (paletteList.isEmpty()) {
+            showCreatePaletteDialog(context, paletteList, paletteDir, customBlocksManager, list, blocksList, allBlocksList, blocksDir);
+            return;
+        }
 
         ArrayList<String> paletteNames = new ArrayList<>();
         for (HashMap<String, Object> map : paletteList) {
@@ -173,11 +176,16 @@ public class CustomBlocksDialog {
     }
 
     private static ArrayList<HashMap<String, Object>> loadJsonList(String path) {
-        try {
-            return FileUtil.isExistFile(path) ? new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST) : null;
-        } catch (JsonParseException ignored) {
-            return null;
+        ArrayList<HashMap<String, Object>> result = new ArrayList<>();
+        if (FileUtil.isExistFile(path)) {
+            try {
+                String content = FileUtil.readFile(path);
+                if (!content.isEmpty()) {
+                    result = new Gson().fromJson(content, Helper.TYPE_MAP_LIST);
+                }
+            } catch (JsonParseException | NullPointerException ignored) {}
         }
+        return result;
     }
 
     private static void showCreatePaletteDialog(Context context, ArrayList<HashMap<String, Object>> paletteList, String paletteDir,
