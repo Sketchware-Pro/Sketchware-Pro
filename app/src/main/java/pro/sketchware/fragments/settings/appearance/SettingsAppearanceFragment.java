@@ -7,16 +7,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import pro.sketchware.R;
-import pro.sketchware.databinding.FragmentSettingsAppearanceBinding;
-
-import pro.sketchware.utility.theme.ThemeManager;
+import com.google.android.material.card.MaterialCardView;
 
 import a.a.a.qA;
+import pro.sketchware.databinding.FragmentSettingsAppearanceBinding;
+import pro.sketchware.utility.theme.ThemeManager;
 
 public class SettingsAppearanceFragment extends qA {
-
     private FragmentSettingsAppearanceBinding binding;
+    private MaterialCardView selectedThemeCard;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,35 +26,94 @@ public class SettingsAppearanceFragment extends qA {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        configureToolbar(binding.toolbar);
-        configureThemeController();
+        setupToolbar();
+        initializeThemeSettings();
+        setupClickListeners();
     }
-    
-    private void configureThemeController() {
-        switch (ThemeManager.getCurrentTheme(requireContext())) {
-            case ThemeManager.THEME_LIGHT:
-                binding.toggleThemes.check(R.id.theme_light);
-                break;
-            case ThemeManager.THEME_DARK:
-                binding.toggleThemes.check(R.id.theme_dark);
-                break;
-            default:
-                binding.toggleThemes.check(R.id.theme_system);
-                break;
-        }
 
-        binding.toggleThemes.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (isChecked) {
-                if (checkedId == R.id.theme_light) {
-                    ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_LIGHT);
-                } else if (checkedId == R.id.theme_system) {
-                    ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM);
-                } else if (checkedId == R.id.theme_dark) {
-                    ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_DARK);
-                } else {
-                    ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM);
-                }
+    private void setupToolbar() {
+        binding.toolbar.setNavigationOnClickListener(v -> {
+            if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                requireActivity().getSupportFragmentManager().popBackStack();
+            } else {
+                requireActivity().onBackPressed();
             }
         });
+    }
+
+    private void initializeThemeSettings() {
+        boolean isSystemTheme = ThemeManager.isSystemTheme(requireContext());
+        binding.switchSystem.setChecked(isSystemTheme);
+
+        updateThemeCardSelection(ThemeManager.getCurrentTheme(requireContext()));
+
+        setThemeCardsEnabled(!isSystemTheme);
+    }
+
+    private void setupClickListeners() {
+        binding.themeSystem.setOnClickListener(v -> binding.switchSystem.setChecked(!binding.switchSystem.isChecked()));
+
+        binding.switchSystem.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            unselectSelectedThemeCard();
+            setThemeCardsEnabled(!isChecked);
+            if (isChecked) {
+                ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM);
+                return;
+            }
+            int theme = ThemeManager.getSystemAppliedTheme(requireContext());
+            ThemeManager.applyTheme(requireContext(), theme);
+            updateThemeCardSelection(theme);
+        });
+
+        binding.themeLight.setOnClickListener(v -> {
+            if (!binding.switchSystem.isChecked()) {
+                updateThemeCardSelection(ThemeManager.THEME_LIGHT);
+                ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_LIGHT);
+            }
+        });
+
+        binding.themeDark.setOnClickListener(v -> {
+            if (!binding.switchSystem.isChecked()) {
+                updateThemeCardSelection(ThemeManager.THEME_DARK);
+                ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_DARK);
+            }
+        });
+    }
+
+    private void updateThemeCardSelection(int theme) {
+        unselectSelectedThemeCard();
+
+        MaterialCardView newSelection = switch (theme) {
+            case ThemeManager.THEME_LIGHT -> binding.themeLight;
+            case ThemeManager.THEME_DARK -> binding.themeDark;
+            default -> null;
+        };
+
+        if (newSelection != null && !binding.switchSystem.isChecked()) {
+            newSelection.setChecked(true);
+            selectedThemeCard = newSelection;
+        }
+    }
+
+    private void unselectSelectedThemeCard() {
+        if (selectedThemeCard != null) {
+            selectedThemeCard.setChecked(false);
+            selectedThemeCard = null;
+        }
+    }
+
+    private void setThemeCardsEnabled(boolean enabled) {
+        binding.themeLight.setEnabled(enabled);
+        binding.themeDark.setEnabled(enabled);
+
+        float alpha = enabled ? 1.0f : 0.5f;
+        binding.themeLight.animate().alpha(alpha).start();
+        binding.themeDark.animate().alpha(alpha).start();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
