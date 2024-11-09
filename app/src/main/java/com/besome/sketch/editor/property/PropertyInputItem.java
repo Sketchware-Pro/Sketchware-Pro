@@ -21,8 +21,8 @@ import android.widget.TextView;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.PropertyPopupInputTextBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -287,11 +287,10 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     }
 
     private void loadStringsListMap() {
-        FilePathUtil fpu = new FilePathUtil();
-        String filePath = fpu.getPathResource(sc_id) + "/values/strings.xml";
-        convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+        String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
+        convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
-        if (!isXmlStringsContains(StringsListMap, "app_name")) {
+        if (!isXmlStringsContains(StringsListMap, "app_name") && filePath != null) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("key", "app_name");
             map.put("text", yB.c(lC.b(sc_id), "my_app_name"));

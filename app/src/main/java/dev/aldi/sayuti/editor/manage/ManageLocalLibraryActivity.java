@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.sketchware.remod.databinding.ManageLocallibrariesBinding;
-import com.sketchware.remod.databinding.ViewItemLocalLibBinding;
+import pro.sketchware.databinding.ManageLocallibrariesBinding;
+import pro.sketchware.databinding.ViewItemLocalLibBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;

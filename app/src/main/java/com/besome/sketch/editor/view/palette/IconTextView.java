@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 public class IconTextView extends IconBase {
     public IconTextView(Context context) {
@@ -13,7 +13,7 @@ public class IconTextView extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_text_view);
+        setWidgetImage(R.drawable.ic_mtrl_formattext);
         setWidgetName("TextView");
     }
 

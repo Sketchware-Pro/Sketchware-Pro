@@ -39,7 +39,7 @@
             android:layout_height="30dp"
             android:padding="4dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_tune_24" />
+            android:src="@drawable/ic_mtrl_tune" />
 
         <TextView
             android:layout_width="0dp"
@@ -55,7 +55,7 @@
             android:layout_height="30dp"
             android:padding="4dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_arrow_right_24" />
+            android:src="@drawable/ic_mtrl_arrow_right" />
     </LinearLayout>
 
     <View
@@ -81,7 +81,7 @@
             android:layout_height="30dp"
             android:padding="4dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_history_24" />
+            android:src="@drawable/ic_mtrl_history" />
 
         <TextView
             android:layout_width="0dp"
@@ -97,7 +97,7 @@
             android:layout_height="30dp"
             android:padding="4dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_arrow_right_24" />
+            android:src="@drawable/ic_mtrl_arrow_right" />
     </LinearLayout>
 
     <View
@@ -123,7 +123,7 @@
             android:layout_height="30dp"
             android:padding="4dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_export_24" />
+            android:src="@drawable/ic_mtrl_export" />
 
         <TextView
             android:layout_width="0dp"
@@ -139,7 +139,7 @@
             android:layout_height="30dp"
             android:padding="4dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_arrow_right_24" />
+            android:src="@drawable/ic_mtrl_arrow_right" />
     </LinearLayout>
 
     <View
@@ -165,7 +165,7 @@
             android:layout_height="30dp"
             android:padding="4dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_toggle_24" />
+            android:src="@drawable/ic_mtrl_toggle" />
 
         <TextView
             android:layout_width="0dp"
@@ -181,7 +181,7 @@
             android:layout_height="30dp"
             android:padding="4dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_arrow_right_24" />
+            android:src="@drawable/ic_mtrl_arrow_right" />
     </LinearLayout>
 
     <View
@@ -207,7 +207,7 @@
             android:layout_height="30dp"
             android:padding="3dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_delete_24"
+            android:src="@drawable/ic_mtrl_delete"
             app:tint="#FF6262" />
 
         <TextView
@@ -225,7 +225,7 @@
             android:layout_height="30dp"
             android:padding="4dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_arrow_right_24" />
+            android:src="@drawable/ic_mtrl_arrow_right" />
     </LinearLayout>
 
     <View

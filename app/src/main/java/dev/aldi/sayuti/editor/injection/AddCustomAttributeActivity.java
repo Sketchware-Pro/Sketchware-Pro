@@ -15,9 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.AddCustomAttributeBinding;
-import com.sketchware.remod.databinding.CustomDialogAttributeBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.AddCustomAttributeBinding;
+import pro.sketchware.databinding.CustomDialogAttributeBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -171,11 +171,11 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                     popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
                 }
                 popupMenu.setOnMenuItemClickListener(item -> {
+                    int originalPosition = injections.indexOf(filtered.get(position));
+
                     if (item.getItemId() == 0) {
-                        dialog("edit", position);
+                        dialog("edit", originalPosition);
                     } else {
-                        int originalPosition = injections.indexOf(filtered.get(position));
-                        
                         if (originalPosition != -1) {
                             injections.remove(originalPosition);
                             filtered.remove(position);

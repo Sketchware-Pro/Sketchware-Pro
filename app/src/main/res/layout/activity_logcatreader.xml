@@ -154,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_scroller_24" />
+                    android:src="@drawable/ic_mtrl_scroller" />
 
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/autoScrollSwitch"
@@ -181,7 +181,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_filter_24" />
+                    android:src="@drawable/ic_mtrl_filter" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -195,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_arrow_right_24" />
+                    android:src="@drawable/ic_mtrl_arrow_right" />
             </LinearLayout>
 
             <LinearLayout
@@ -212,7 +212,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_clear_all_24" />
+                    android:src="@drawable/ic_mtrl_clear_all" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -226,7 +226,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_arrow_right_24" />
+                    android:src="@drawable/ic_mtrl_arrow_right" />
             </LinearLayout>
 
         </LinearLayout>

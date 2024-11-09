@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.Gravity;
@@ -20,8 +21,8 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.BlocksManagerCreatorBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.BlocksManagerCreatorBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -364,6 +365,15 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                 binding.spec2.setError("Invalid spec2 block data");
             }
         }
+        
+        Object importsObject = block.get("imports");
+        if (importsObject != null) {
+            if (importsObject instanceof String) {
+                binding.customImport.setText((String) importsObject);
+            } else {
+                binding.customImport.setError("Invalid imports block data");
+            }
+        }
 
         Object colorObject = block.get("color");
         if (colorObject != null) {
@@ -442,9 +452,12 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         }
         tempMap.put("typeName", binding.typename.getText().toString());
         tempMap.put("spec", binding.spec.getText().toString());
-        tempMap.put("color", binding.spec.getTag());
+        tempMap.put("color", binding.colour.getText().toString());
         if (binding.type.getText().toString().equals("e")) {
             tempMap.put("spec2", binding.spec2.getText().toString());
+        }
+        if (!TextUtils.isEmpty(binding.customImport.getText().toString())) {
+            tempMap.put("imports", binding.customImport.getText().toString());
         }
         tempMap.put("code", binding.code.getText().toString());
         tempMap.put("palette", String.valueOf(blockPosition));
@@ -464,9 +477,12 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         }
         tempMap.put("typeName", binding.typename.getText().toString());
         tempMap.put("spec", binding.spec.getText().toString());
-        tempMap.put("color", binding.spec.getTag());
+        tempMap.put("color", binding.colour.getText().toString());
         if (binding.type.getText().toString().equals("e")) {
             tempMap.put("spec2", binding.spec2.getText().toString());
+        }
+        if (!TextUtils.isEmpty(binding.customImport.getText().toString())) {
+            tempMap.put("imports", binding.customImport.getText().toString());
         }
         tempMap.put("code", binding.code.getText().toString());
         tempMap.put("palette", blocksList.get(position).get("palette"));
@@ -486,9 +502,12 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         }
         tempMap.put("typeName", binding.typename.getText().toString());
         tempMap.put("spec", binding.spec.getText().toString());
-        tempMap.put("color", binding.spec.getTag());
+        tempMap.put("color", binding.colour.getText().toString());
         if (binding.type.getText().toString().equals("e")) {
             tempMap.put("spec2", binding.spec2.getText().toString());
+        }
+        if (!TextUtils.isEmpty(binding.customImport.getText().toString())) {
+            tempMap.put("imports", binding.customImport.getText().toString());
         }
         tempMap.put("code", binding.code.getText().toString());
         FileUtil.writeFile(path, new Gson().toJson(blocksList));

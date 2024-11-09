@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 public class IconListView extends IconBase {
     public IconListView(Context context) {
@@ -13,7 +13,7 @@ public class IconListView extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_list_view);
+        setWidgetImage(R.drawable.ic_mtrl_list);
         setWidgetName("ListView");
     }
 

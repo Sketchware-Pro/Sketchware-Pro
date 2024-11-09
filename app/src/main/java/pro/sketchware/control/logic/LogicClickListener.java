@@ -1,7 +1,7 @@
 package pro.sketchware.control.logic;
 
 import static android.text.TextUtils.isEmpty;
-import static com.besome.sketch.SketchApplication.getContext;
+import static pro.sketchware.SketchApplication.getContext;
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 import static pro.sketchware.utility.SketchwareUtil.getDip;
 
@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

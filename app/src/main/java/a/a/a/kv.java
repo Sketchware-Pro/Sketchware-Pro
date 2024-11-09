@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.firebase.FirebaseActivity;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.util.Helper;

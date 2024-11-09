@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:scaleType="fitStart"
-            android:src="@drawable/ic_info_24" />
+            android:src="@drawable/ic_mtrl_info" />
 
         <TextView
             android:layout_width="wrap_content"

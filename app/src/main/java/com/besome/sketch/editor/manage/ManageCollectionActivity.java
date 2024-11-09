@@ -47,7 +47,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -368,12 +368,16 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
     @Override
     public void onBackPressed() {
-        if (hasDeletedWidget) {
-            setResult(RESULT_OK);
-            finish();
-        }
+        if (selectingToBeDeletedItems) {
+            changeDeletingItemsState(false);
+        } else {
+            if (hasDeletedWidget) {
+                setResult(RESULT_OK);
+                finish();
+            }
 
-        super.onBackPressed();
+            super.onBackPressed();
+        }
     }
 
     @Override

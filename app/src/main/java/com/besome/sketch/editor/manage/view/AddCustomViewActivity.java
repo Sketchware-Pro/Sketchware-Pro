@@ -11,7 +11,7 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -34,7 +34,7 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_screen_custom_view_add);
         e(Helper.getResString(R.string.design_manager_view_title_add_custom_view));
-        f(R.drawable.ic_add_24);
+        f(R.drawable.ic_mtrl_add);
         d(Helper.getResString(R.string.common_word_add));
         b(Helper.getResString(R.string.common_word_cancel));
 

@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 
@@ -13,7 +13,7 @@ public class IconOTPView extends IconBase {
 
     public IconOTPView(Context context) {
         super(context);
-        setWidgetImage(R.drawable.event_google_signin);
+        setWidgetImage(R.drawable.ic_mtrl_password);
         setWidgetName("OTPView");
     }
 

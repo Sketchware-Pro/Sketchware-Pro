@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundImportActivity;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.nio.file.Path;

@@ -1,5 +1,7 @@
 package a.a.a;
 
+import static dev.aldi.sayuti.block.ExtraBlockFile.getExtraBlockData;
+
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -74,6 +76,8 @@ public class Jx {
      * Filled with request code constants for FilePicker components
      */
     private final ArrayList<String> filePickerRequestCodes = new ArrayList<>();
+    
+    private final ArrayList<HashMap<String, Object>> extraBlocks;
     private Hx eventManager;
     private ArrayList<String> imports = new ArrayList<>();
     private String onCreateEventCode = "";
@@ -87,6 +91,7 @@ public class Jx {
         settings = new ProjectSettings(eCVar.a);
         permissionManager = new PermissionManager(eCVar.a, projectFileBean.getJavaName());
         ox = new Ox(buildConfig, projectFileBean);
+        extraBlocks = getExtraBlockData();
     }
 
     public String activityResult() {
@@ -885,9 +890,27 @@ public class Jx {
                         addImport("com.google.android.gms.ads.AdRequest");
                         addImport("com.google.android.gms.ads.LoadAdError");
                         break;
+                    default:
+                        var block = getExtraBlockByName(blockBean.opCode);
+                        if (block != null && block.containsKey("imports")) {
+                            var imports = block.get("imports").toString().split("\n");
+                            for (String importCode : imports) {
+                                addImport(importCode);
+                            }
+                        }
+                        break;
                 }
             }
         }
+    }
+    
+    private Map<String, Object> getExtraBlockByName(String name) {
+        for (Map<String, Object> block : extraBlocks) {
+            if (block.containsKey("name") && block.get("name").toString().equals(name)) {
+                return block;
+            }
+        }
+        return null;
     }
 
     /**

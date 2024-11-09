@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ColorBean;
 import com.besome.sketch.editor.view.ColorGroupItem;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ColorPickerBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ColorPickerBinding;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
@@ -300,27 +302,11 @@ public class Zx extends PopupWindow {
         return colorBeansResult;
     }
 
-    // didn't use jcoderz's "readfile" method because it creates an empty colors.xml which make problems while compiling, + i just copied whole method with some changes.
-    public static String readFile(String path) {
-        StringBuilder sb = new StringBuilder();
-        try (FileReader fr = new FileReader(path)) {
-            char[] buff = new char[1024];
-            int length;
-
-            while ((length = fr.read(buff)) > 0) {
-                sb.append(new String(buff, 0, length));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return sb.toString();
-    }
 
     private ColorBean[] geColorResBeans() {
         ColorBean[] colorBeansResult;
         String clrsPath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/colors.xml"));
-        parseColorsXML(readFile(clrsPath));
+        parseColorsXML(FileUtil.readFileIfExist(clrsPath));
 
         if (!color_res_list.isEmpty()) {
             ColorBean[] colorBeans = new ColorBean[color_res_list.size()];
@@ -378,11 +364,11 @@ public class Zx extends PopupWindow {
                         colorValue = parser.getText();
                         break;
                     case XmlPullParser.END_TAG:
-                        if ((tagName.equals("color") && (PropertiesUtil.isHexColor(colorValue)))) {
-                            if (colorName != null && colorValue != null) {
+                        if (tagName.equals("color")) {
+                            if (colorName != null && isValidHexColor(colorValue)) {
                                 HashMap<String, Object> colors = new HashMap<>();
                                 colors.put("colorName", colorName);
-                                colors.put("colorValue", colorValue);
+                                colors.put("colorValue", String.format("#%8s", colorValue.replaceFirst("#", "")).replaceAll(" ", "F"));
                                 color_res_list.add(colors);
                             }
                         }
@@ -392,6 +378,15 @@ public class Zx extends PopupWindow {
             }
         } catch (Exception ignored) {
         }
+    }
+
+     public static boolean isValidHexColor(String colorStr) {
+        if (colorStr == null) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile("^#([a-fA-F0-9]*)");
+        Matcher matcher = pattern.matcher(colorStr);
+        return matcher.matches();
     }
 
     private void smoothScrollToCurrentItem() {
@@ -447,7 +442,7 @@ public class Zx extends PopupWindow {
             } else {
                 holder.tvColorName.setText("");
             }
-            if (l == 1) {
+            if (l == 1 && sc_id != null) {
                 holder.tvColorName.setText(((ColorBean[]) colorGroups.get(l))[position].colorName);
             }
 
@@ -487,7 +482,7 @@ public class Zx extends PopupWindow {
                             colorPickerCallback.a(0);
                         } else if (tvColorCode.getText().toString().equals("NONE")) {
                             colorPickerCallback.a(0xffffff);
-                        } else if (l == 1) {
+                        } else if (l == 1 && sc_id != null) {
                             colorPickerCallback.a((String) tvColorName.getText(), Color.parseColor(tvColorCode.getText().toString()));
                         } else {
                             colorPickerCallback.a(Color.parseColor(tvColorCode.getText().toString()));

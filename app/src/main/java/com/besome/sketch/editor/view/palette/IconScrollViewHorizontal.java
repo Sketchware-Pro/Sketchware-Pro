@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 public class IconScrollViewHorizontal extends IconBase {
     public IconScrollViewHorizontal(Context context) {
@@ -13,7 +13,7 @@ public class IconScrollViewHorizontal extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_horizontalscrollview);
+        setWidgetImage(R.drawable.ic_mtrl_swipe_horizontal);
         setWidgetName("Scroll(H)");
     }
 

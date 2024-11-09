@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ActivityLogcatreaderBinding;
-import com.sketchware.remod.databinding.EasyDeleteEdittextBinding;
-import com.sketchware.remod.databinding.ViewLogcatItemBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ActivityLogcatreaderBinding;
+import pro.sketchware.databinding.EasyDeleteEdittextBinding;
+import pro.sketchware.databinding.ViewLogcatItemBinding;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
@@ -93,8 +94,12 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         binding.logsRecyclerView.setAdapter(new Adapter(new ArrayList<>()));
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.sketchware.remod.ACTION_NEW_DEBUG_LOG");
-        registerReceiver(logger, intentFilter);
+        intentFilter.addAction("pro.sketchware.ACTION_NEW_DEBUG_LOG");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(logger, intentFilter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(logger, intentFilter);
+        }
 
         final View decorView = getWindow().getDecorView();
         ViewCompat.setOnApplyWindowInsetsListener(decorView, (v, insets) -> {
@@ -233,7 +238,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         var builder = new MaterialAlertDialogBuilder(this)
                 .setTitle("Filter by package name")
                 .setMessage("For multiple package names, separate them with a comma (,).")
-                .setIcon(R.drawable.ic_filter_24)
+                .setIcon(R.drawable.ic_mtrl_filter)
                 .setView(view)
                 .setPositiveButton("Apply", (dialog, which) -> {
                     pkgFilter = dialogBinding.easyEdInput.getText().toString();

@@ -27,7 +27,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.lang.ref.WeakReference;

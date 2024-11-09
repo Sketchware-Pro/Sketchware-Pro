@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 public class IconAdView extends IconBase {
     public IconAdView(Context context) {
@@ -13,7 +13,7 @@ public class IconAdView extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_admob);
+        setWidgetImage(R.drawable.ic_mtrl_ad);
         setWidgetName("AdView");
     }
 

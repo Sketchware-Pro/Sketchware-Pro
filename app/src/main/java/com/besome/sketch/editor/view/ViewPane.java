@@ -61,7 +61,7 @@ import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -105,6 +105,7 @@ import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
 import mod.hey.studios.util.ProjectFile;
+import pro.sketchware.utility.SvgUtils;
 
 public class ViewPane extends RelativeLayout {
 
@@ -118,6 +119,7 @@ public class ViewPane extends RelativeLayout {
     private String sc_id;
     private final String stringsStart = "@string/";
 
+    private SvgUtils svgUtils;
     public ViewPane(Context context) {
         super(context);
         initialize();
@@ -130,6 +132,8 @@ public class ViewPane extends RelativeLayout {
 
     private void initialize() {
         context = new ContextThemeWrapper(getContext(), R.style.ThemeOverlay_SketchwarePro_ViewEditor);
+        svgUtils = new SvgUtils(context);
+        svgUtils.initImageLoader();
         setBackgroundColor(Color.WHITE);
         addRootLayout();
         initTextView();
@@ -430,9 +434,16 @@ public class ViewPane extends RelativeLayout {
                 ((ImageView) view).setImageResource(R.drawable.default_image);
             } else {
                 try {
-                    Bitmap decodeFile3 = BitmapFactory.decodeFile(resourcesManager.f(viewBean.image.resName));
+                    String imagelocation = resourcesManager.f(viewBean.image.resName);
+
                     int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
-                    ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                    if(imagelocation.endsWith(".xml")){
+                        FilePathUtil fpu = new FilePathUtil();
+                       svgUtils.loadScaledSvgIntoImageView( (ImageView) view,fpu.getSvgFullPath(sc_id,viewBean.image.resName),round3);
+                    }else {
+                        Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
+                        ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                    }
                 } catch (Exception unused2) {
                     ((ImageView) view).setImageResource(R.drawable.default_image);
                 }
@@ -1097,11 +1108,11 @@ public class ViewPane extends RelativeLayout {
     }
 
     public String getXmlString(String key) {
-        String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
+        String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
 
         ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
 
-        convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+        convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
         if (key.equals("@string/app_name") && !isXmlStringsContains(StringsListMap, "app_name")) {
             return yB.c(lC.b(sc_id), "my_app_name");

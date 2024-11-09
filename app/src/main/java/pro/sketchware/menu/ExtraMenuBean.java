@@ -22,7 +22,7 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -594,11 +594,9 @@ public class ExtraMenuBean {
             case "ResString":
                 title = "Select a ResString";
 
-                String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
-
+                String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
                 ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
-
-                convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+                convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
                 if (!isXmlStringsContains(StringsListMap, "app_name")) {
                     menus.add("R.string.app_name");

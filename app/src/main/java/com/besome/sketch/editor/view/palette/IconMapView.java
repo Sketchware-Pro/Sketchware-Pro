@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ViewBean;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 public class IconMapView extends IconBase {
     public IconMapView(Context context) {
@@ -13,7 +13,7 @@ public class IconMapView extends IconBase {
 
     public void a(Context context) {
         super.a(context);
-        setWidgetImage(R.drawable.widget_google_map);
+        setWidgetImage(R.drawable.ic_mtrl_map);
         setWidgetName("MapView");
     }
 

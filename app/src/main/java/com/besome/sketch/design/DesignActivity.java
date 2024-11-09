@@ -53,8 +53,8 @@ import com.besome.sketch.tools.CompileLogActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ProgressMsgBoxBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -90,10 +90,8 @@ import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import pro.sketchware.utility.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
@@ -116,7 +114,9 @@ import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
-import mod.trindadedev.tools.apk.ApkSignatures;
+import pro.sketchware.utility.apk.ApkSignatures;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 
 public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ImageView xmlLayoutOrientation;
@@ -166,6 +166,11 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private final ActivityResultLauncher<Intent> openCollectionManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             viewTabAdapter.j();
+        }
+    });
+    private final ActivityResultLauncher<Intent> openResourcesManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            viewTabAdapter.i();
         }
     });
     private rs eventTabAdapter;
@@ -222,8 +227,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 startActivity(intent);
             }
         });
-        /* Set the text color to yellow */
-        snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
 
@@ -543,7 +546,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     @Override
     public void onResume() {
         super.onResume();
-        reloadViewEditor();
         if (!isStoragePermissionGranted()) {
             finish();
         }
@@ -575,7 +577,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private void showSaveBeforeQuittingDialog() {
         aB dialog = new aB(this);
         dialog.b(Helper.getResString(R.string.design_quit_title_exit_projet));
-        dialog.a(R.drawable.ic_exit_24);
+        dialog.a(R.drawable.ic_mtrl_exit);
         dialog.a(Helper.getResString(R.string.design_quit_message_confirm_save));
         dialog.b(Helper.getResString(R.string.design_quit_button_save_and_exit), v -> {
             if (!mB.a()) {
@@ -622,7 +624,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private void askIfToRestoreOldUnsavedProjectData() {
         B = true;
         aB dialog = new aB(this);
-        dialog.a(R.drawable.ic_history_24);
+        dialog.a(R.drawable.ic_mtrl_history);
         dialog.b(Helper.getResString(R.string.design_restore_data_title));
         dialog.a(Helper.getResString(R.string.design_restore_data_message_confirm));
         dialog.b(Helper.getResString(R.string.common_word_restore), v -> {
@@ -808,7 +810,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      * Opens {@link ManageResourceActivity}.
      */
     void toResourceManager() {
-        launchActivity(ManageResourceActivity.class, null);
+        launchActivity(ManageResourceActivity.class, openResourcesManager);
     }
 
     /**
@@ -874,13 +876,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         }
         launchActivity(SrcViewerActivity.class, null, new Pair<>("current", current));
-    }
-
-    public void reloadViewEditor() {
-        if (viewPager.getCurrentItem() == 0
-                && viewTabAdapter != null) {
-            viewTabAdapter.i();
-        }
     }
 
     @SafeVarargs
@@ -1116,7 +1111,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 aB cancelDialog = new aB(activity);
                 cancelDialog.b(activity.getString(R.string.design_cancel_build_title));
                 cancelDialog.a(activity.getString(R.string.design_cancel_build_desc));
-                cancelDialog.a(R.drawable.ic_exit_24);
+                cancelDialog.a(R.drawable.ic_mtrl_exit);
 
                 cancelDialog.a(activity.getString(R.string.design_cancel_build_btn_stop), v -> {
                     if (!isBuildFinished) {
@@ -1138,6 +1133,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     cancelDialog.dismiss();
                 });
 
+                cancelDialog.setCancelable(false);
+                cancelDialog.setCanceledOnTouchOutside(false);
                 cancelDialog.show();
             });
         }

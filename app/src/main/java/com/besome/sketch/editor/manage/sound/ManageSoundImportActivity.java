@@ -27,7 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import java.io.IOException;
 import java.util.ArrayList;

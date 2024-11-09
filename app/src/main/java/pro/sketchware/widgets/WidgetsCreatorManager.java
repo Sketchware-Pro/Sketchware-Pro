@@ -25,8 +25,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.WidgetsCreatorDialogBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.WidgetsCreatorDialogBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,6 +115,7 @@ public class WidgetsCreatorManager extends IconBase {
                 break;
         }
         viewBean.inject = Objects.requireNonNull(MapInfo.get("inject")).toString();
+        viewBean.isCustomWidget = true;
         return viewBean;
     }
 
@@ -439,7 +440,7 @@ public class WidgetsCreatorManager extends IconBase {
     public static void deleteWidgetMap(Context context, int position) {
         aB aBDialog = new aB((Activity) context);
         aBDialog.b(xB.b().a(context, R.string.view_widget_favorites_delete_title));
-        aBDialog.a(R.drawable.ic_delete_24);
+        aBDialog.a(R.drawable.ic_mtrl_delete);
         aBDialog.a(xB.b().a(context, R.string.view_widget_favorites_delete_message));
         aBDialog.b(xB.b().a(context, R.string.common_word_delete), v -> {
             for (Iterator<HashMap<String, Object>> iterator = ListMap.iterator(); iterator.hasNext(); ) {
@@ -484,9 +485,8 @@ public class WidgetsCreatorManager extends IconBase {
     public static String substringCovert(String input) {
         int lastIndex = input.lastIndexOf('.');
         if (lastIndex != -1) {
-            return input.substring(lastIndex + 1);
-        } else {
-            return input;
+            input.substring(lastIndex + 1);
         }
+        return input.toLowerCase();
     }
 }

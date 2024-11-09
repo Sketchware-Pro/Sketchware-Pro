@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.besome.sketch.beans.ViewBean;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 import a.a.a.sy;
 import a.a.a.wB;
 import a.a.a.xB;

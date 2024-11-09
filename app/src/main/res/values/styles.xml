@@ -28,38 +28,6 @@
         <item name="android:minHeight">3dp</item>
     </style>
 
-    <style name="DesignTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
-        <item name="android:textSize">12sp</item>
-        <item name="textAllCaps">true</item>
-    </style>
-
-    <style name="MainTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@color/main_tab_background</item>
-        <item name="tabGravity">fill</item>
-        <item name="tabIndicatorColor">@color/main_tab_indicator_color</item>
-        <item name="tabIndicatorHeight">3dp</item>
-        <item name="tabMaxWidth">0dp</item>
-        <item name="tabMode">fixed</item>
-        <item name="tabSelectedTextColor">@color/main_tab_selected_text_color</item>
-        <item name="tabTextAppearance">@style/MainTabTextAppearance</item>
-    </style>
-
-    <style name="MainTabTextAppearance" parent="@style/TextAppearance.Design.Tab">
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/main_tab_text_color</item>
-        <item name="textAllCaps">true</item>
-    </style>
-
-    <style name="MyPageTabLayout" parent="@style/Widget.Design.TabLayout">
-        <item name="android:background">@color/main_tab_background</item>
-        <item name="tabGravity">fill</item>
-        <item name="tabIndicatorColor">@color/main_tab_indicator_color</item>
-        <item name="tabIndicatorHeight">3dp</item>
-        <item name="tabMaxWidth">0dp</item>
-        <item name="tabMode">fixed</item>
-        <item name="tabSelectedTextColor">@color/main_tab_selected_text_color</item>
-    </style>
-
     <style name="NumberPickerText" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColorPrimary">@color/scolor_blue_01</item>
         <item name="android:textSize">14sp</item>
@@ -94,7 +62,7 @@
         <item name="checkedIconEnabled">true</item>
         <item name="chipCornerRadius">90dp</item>
         <item name="checkedIconTint">?colorSurfaceBright</item>
-        <item name="checkedIcon">@drawable/ic_done_24</item>
+        <item name="checkedIcon">@drawable/ic_mtrl_done</item>
         <item name="android:textColor">?colorSurfaceBright</item>
         <item name="chipBackgroundColor">?colorPrimary</item>
         <item name="closeIconEnabled">false</item>
@@ -194,6 +162,7 @@
         <item name="android:textSize">15.0sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/tool_bar_text_color</item>
+        <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>
     </style>
 

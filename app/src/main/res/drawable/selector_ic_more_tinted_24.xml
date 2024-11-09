@@ -1,4 +1,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:alpha="0.5" android:drawable="@drawable/ic_more_vert_tinted" android:state_enabled="false" />
-    <item android:drawable="@drawable/ic_more_vert_tinted" />
+    <item android:alpha="0.5" android:drawable="@drawable/ic_mtrl_more_vertical" android:state_enabled="false" />
+    <item android:drawable="@drawable/ic_mtrl_more_vertical" />
 </selector>

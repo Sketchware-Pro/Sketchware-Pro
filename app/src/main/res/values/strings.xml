@@ -901,6 +901,7 @@
     <string name="collection_duplicated_name">Duplicate file name in my collection</string>
     <string name="collection_failed_to_copy">Failed to save to my collection</string>
     <string name="collection_no_exist_file">File does not exist</string>
+    <string name="color_editor_delete_color">Delete color</string>
     <string name="common_error_activity_not_found">Activity not found</string>
     <string name="common_error_an_error_occurred">An error occurred!</string>
     <string name="common_error_failed_to_connect_server">Failed to connect to the server</string>
@@ -1009,6 +1010,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_watch">Watch</string>
     <string name="common_word_widget">Widget</string>
     <string name="common_word_yes">Yes</string>
+    <string name="common_word_new">New</string>
     <string name="component_add_docs_button_title_go_to_docs">Read Documentation</string>
     <string name="component_add_message_docs_updated_soon">The docs page will be updated soon</string>
     <string name="component_context_menu_title">Component menu</string>
@@ -1219,8 +1221,8 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_sound_title_apply_same_naming">Apply same naming style to other available sounds</string>
     <string name="design_manager_sound_title_edit_sound">Edit Sound</string>
     <string name="design_manager_sound_title_edit_sound_name">Edit Sound Name</string>
-    <string name="design_manager_tab_title_my_collection">My Collection</string>
-    <string name="design_manager_tab_title_this_project">This Project</string>
+    <string name="design_manager_tab_title_my_collection">My collection</string>
+    <string name="design_manager_tab_title_this_project">This project</string>
     <string name="design_manager_title_add_to_collection">Add to My Collection</string>
     <string name="design_manager_view_description_guide_create_activity">To create a new Activity, add it here</string>
     <string name="design_manager_view_description_guide_create_custom_view">Create a new Custom View here</string>
@@ -1228,18 +1230,19 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_view_hint_enter_view_name">Enter view name</string>
     <string name="design_manager_view_message_no_view">No views to display</string>
     <string name="design_manager_view_message_slow_down">Including the drawer or the FAB may slow down the compilation time on certain devices.</string>
-    <string name="design_manager_view_title_activity_name">Activity Name :</string>
-    <string name="design_manager_view_title_activity_preset">Activity Preset</string>
-    <string name="design_manager_view_title_add_custom_view">New Custom View</string>
-    <string name="design_manager_view_title_add_view">New Activity</string>
-    <string name="design_manager_view_title_edit_activity">Edit Activity</string>
+    <string name="design_manager_view_title_activity_name">Activity name:</string>
+    <string name="design_manager_view_title_activity_preset">Activity preset</string>
+    <string name="design_manager_view_title_add_custom_view">New custom view</string>
+    <string name="design_manager_view_title_add_activity">New activity</string>
+    <string name="design_manager_view_title_add_view">New view</string>
+    <string name="design_manager_view_title_edit_activity">Edit activity</string>
     <string name="design_manager_view_title_edit_view">Edit view</string>
-    <string name="design_manager_view_title_empty_activity">Empty Activity</string>
-    <string name="design_manager_view_title_keyboad_settings">Keyboard Settings</string>
-    <string name="design_manager_view_title_screen_orientation">Screen Orientation</string>
-    <string name="design_manager_view_title_view_name">View Name :</string>
+    <string name="design_manager_view_title_empty_activity">Empty activity</string>
+    <string name="design_manager_view_title_keyboad_settings">Keyboard settings</string>
+    <string name="design_manager_view_title_screen_orientation">Screen orientation</string>
+    <string name="design_manager_view_title_view_name">View name:</string>
     <string name="design_manager_widget_hint_enter_widget_name">Enter widget name</string>
-    <string name="design_manager_widget_title_actionbar_title">Widget Details</string>
+    <string name="design_manager_widget_title_actionbar_title">Widget details</string>
     <string name="design_option_menu_title_save_project">Save project</string>
     <string name="design_property_recent_message_nodata">Recently used properties will be displayed</string>
     <string name="design_quit_button_save_and_exit">Save &amp; exit</string>
@@ -1578,8 +1581,8 @@ But, components should be added manually for working correctly."</string>
     <string name="picker_color_custom_color_not_found">No custom color found</string>
     <string name="picker_color_hint_enter_hex_color_code">Enter hex color code</string>
     <string name="picker_color_xml_is_empty">Colors.xml is empty</string>
-    <string name="picker_color_message_delete_all_custom_color">Are you sure? This operation can not be undone</string>
-    <string name="picker_color_message_delete_custom_color">Are you sure? This operation can not be undone</string>
+    <string name="picker_color_message_delete_all_custom_color">Are you sure you want to continue? This action can not be undone.</string>
+    <string name="picker_color_message_delete_custom_color">Are you sure you want to continue? This action can not be undone.</string>
     <string name="picker_color_title_delete_all_custom_color">Delete All Custom Colors</string>
     <string name="picker_color_title_delete_custom_color">Delete Custom Color</string>
     <string name="preset_setting_edit_warning">If you apply a Preset, exiting View data will be deleted. Continue?</string>
@@ -2159,11 +2162,12 @@ Please try again later"</string>
     <string name="settings_appearance_theme_system">System default</string>
     <string name="settings_appearance_theme_light">Light theme</string>
     <string name="settings_appearance_theme_dark">Dark theme</string>
-    <string name="tools_events_manager">Events manager</string>
-    <string name="tools_events_manager_activity_events">Activity events</string>
-    <string name="tools_events_manager_listeners">Listeners</string>
-    <string name="tools_events_manager_details">Events manager Details</string>
-
+    <string name="settings_events_manager">Events manager</string>
+    <string name="settings_events_manager_activity_events">Activity events</string>
+    <string name="settings_events_manager_listeners">Listeners</string>
+    <string name="settings_events_manager_details">Events manager Details</string>
+    <string name="settings_block_selector">Block Selector Manager</string>
+    
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
     <string name="assets_manager_options">Create or import</string>

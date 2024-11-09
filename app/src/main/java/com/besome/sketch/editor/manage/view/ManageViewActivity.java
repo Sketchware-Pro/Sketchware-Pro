@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -22,9 +21,11 @@ import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.sketchware.remod.R;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -39,13 +40,15 @@ import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.xw;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class ManageViewActivity extends BaseAppCompatActivity implements OnClickListener, ViewPager.OnPageChangeListener {
     private static final int TAB_COUNT = 2;
     private static final int REQUEST_CODE_ADD_ACTIVITY = 264;
     private static final int REQUEST_CODE_ADD_CUSTOM_VIEW = 266;
 
-    private LinearLayout actionButtonsContainer;
+    private MaterialCardView actionButtonsContainer;
     private boolean selecting = false;
     private String isAppCompatEnabled = "N";
     // signature mustn't be changed: used in La/a/a/Bw;->a(Landroidx/recyclerview/widget/RecyclerView;II)V, La/a/a/tw;->a(Landroidx/recyclerview/widget/RecyclerView;II)V
@@ -124,7 +127,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         invalidateOptionsMenu();
         if (selecting) {
             actionButtonsContainer.setVisibility(View.VISIBLE);
-            s.animate().translationY(-s.getHeight() + 20).setDuration(200L).start();
+            s.animate().translationY(-s.getHeight() + 80).setDuration(200L).start();
         } else {
             actionButtonsContainer.setVisibility(View.GONE);
             s.animate().translationY(0.0F).setDuration(200L).start();
@@ -262,15 +265,8 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
         }
 
         setContentView(R.layout.manage_view);
-        Toolbar m = findViewById(R.id.toolbar);
-        setSupportActionBar(m);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(getTranslatedString(R.string.design_actionbar_title_manager_view));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        m.setNavigationOnClickListener(view -> {
-            if (!mB.a()) onBackPressed();
-        });
+        MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
+        topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         actionButtonsContainer = findViewById(R.id.layout_btn_group);
         Button delete = findViewById(R.id.btn_delete);
@@ -369,7 +365,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
 
         public b(FragmentManager fragmentManager) {
             super(fragmentManager);
-            f = new String[]{getTranslatedString(R.string.common_word_view).toUpperCase(), getTranslatedString(R.string.common_word_custom_view).toUpperCase()};
+            f = new String[]{getTranslatedString(R.string.common_word_view), getTranslatedString(R.string.common_word_custom_view)};
         }
 
         @Override

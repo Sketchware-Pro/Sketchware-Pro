@@ -29,11 +29,11 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.DialogCreateNewFileLayoutBinding;
-import com.sketchware.remod.databinding.DialogInputLayoutBinding;
-import com.sketchware.remod.databinding.ManageFileBinding;
-import com.sketchware.remod.databinding.ManageJavaItemHsBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
+import pro.sketchware.databinding.DialogInputLayoutBinding;
+import pro.sketchware.databinding.ManageFileBinding;
+import pro.sketchware.databinding.ManageJavaItemHsBinding;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
@@ -286,16 +286,16 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
                 return false;
             });
             if (isFolder(position)) {
-                holder.binding.icon.setImageResource(R.drawable.ic_folder_24);
+                holder.binding.icon.setImageResource(R.drawable.ic_mtrl_folder);
             } else {
                 try {
                     if (FileUtil.isImageFile(item)) {
                         Glide.with(holder.binding.icon.getContext()).load(new File(item)).into(holder.binding.icon);
                     } else {
-                        holder.binding.icon.setImageResource(R.drawable.ic_file_24);
+                        holder.binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                     }
                 } catch (Exception ignored) {
-                    holder.binding.icon.setImageResource(R.drawable.ic_file_24);
+                    holder.binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                 }
             }
             Helper.applyRipple(holder.itemView.getContext(), holder.binding.more);

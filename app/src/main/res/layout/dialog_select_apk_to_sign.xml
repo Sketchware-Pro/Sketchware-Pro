@@ -49,7 +49,7 @@
         android:insetBottom="0dp"
         android:scaleType="fitCenter"
         app:cornerRadius="10dp"
-        app:icon="@drawable/ic_upload_24"
+        app:icon="@drawable/ic_mtrl_upload"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="22dp"

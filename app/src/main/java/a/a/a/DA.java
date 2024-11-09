@@ -5,7 +5,7 @@ import android.content.pm.PackageManager;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 public abstract class DA extends qA {
     public DA() {

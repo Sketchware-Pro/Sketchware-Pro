@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ManageFontImportBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageFontImportBinding;
 
 import java.util.ArrayList;
 

@@ -41,7 +41,7 @@
             android:layout_height="38dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_undo_24" />
+            android:src="@drawable/ic_mtrl_undo" />
 
         <ImageView
             android:id="@+id/menu_view_redo"
@@ -50,7 +50,7 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_redo_24" />
+            android:src="@drawable/ic_mtrl_redo" />
 
         <ImageView
             android:id="@+id/save"
@@ -59,7 +59,7 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_save_24" />
+            android:src="@drawable/ic_mtrl_save" />
 
         <ImageView
             android:id="@+id/more"
@@ -68,7 +68,7 @@
             android:layout_marginLeft="8dp"
             android:padding="6dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_morevert_24" />
+            android:src="@drawable/ic_mtrl_more_vertical" />
     </LinearLayout>
 
     <io.github.rosemoe.sora.widget.CodeEditor

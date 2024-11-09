@@ -15,7 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.sketchware.remod.R;
+import pro.sketchware.R;
 
 import a.a.a.mB;
 import a.a.a.wB;

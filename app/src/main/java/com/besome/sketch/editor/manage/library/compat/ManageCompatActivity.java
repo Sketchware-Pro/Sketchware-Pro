@@ -6,8 +6,8 @@ import android.view.View;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.sketchware.remod.R;
-import com.sketchware.remod.databinding.ManageLibraryManageCompatBinding;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryManageCompatBinding;
 
 import a.a.a.aB;
 import mod.hey.studios.util.Helper;
