@@ -368,12 +368,16 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
     @Override
     public void onBackPressed() {
-        if (hasDeletedWidget) {
-            setResult(RESULT_OK);
-            finish();
-        }
+        if (selectingToBeDeletedItems) {
+            changeDeletingItemsState(false);
+        } else {
+            if (hasDeletedWidget) {
+                setResult(RESULT_OK);
+                finish();
+            }
 
-        super.onBackPressed();
+            super.onBackPressed();
+        }
     }
 
     @Override
