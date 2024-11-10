@@ -219,7 +219,7 @@ public class Fx {
                 String ifBlock = stack >= 0 ? a(String.valueOf(stack), "") : "";
                 stack = bean.subStack2;
                 String elseBlock = stack >= 0 ? a(String.valueOf(stack), "") : "";
-                opcode = String.format("if (%s) {\r\n%s\r\n}\r\nelse {\r\n%s\r\n}", params.get(0), ifBlock, elseBlock);
+                opcode = String.format("if (%s) {\r\n%s\r\n} else {\r\n%s\r\n}", params.get(0), ifBlock, elseBlock);
                 break;
             case "break":
                 opcode = "break;";
