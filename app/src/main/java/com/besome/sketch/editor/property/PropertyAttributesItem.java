@@ -37,6 +37,7 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyInputItemBinding;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
 import pro.sketchware.databinding.PropertySwitchItemSinglelineBinding;
+import pro.sketchware.utility.SketchwareUtil;
 
 @SuppressLint("ViewConstructor")
 public class PropertyAttributesItem extends LinearLayout implements View.OnClickListener {
@@ -51,6 +52,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
     private Kw valueChangeListener;
     private ViewBean bean;
     private List<String> ids = new ArrayList<>();
+    private final ArrayList<ViewBean> beans = new ArrayList<>();
 
     private static final String[] PARENT_RELATIVE = {
             "android:layout_centerInParent",
@@ -144,6 +146,10 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
         this.bean = bean;
     }
 
+    public void setBeans(ArrayList<ViewBean> beans) {
+        this.beans.addAll(beans);
+    }
+
     public void setAvailableIds(List<String> ids) {
         this.ids = ids;
     }
@@ -197,10 +203,14 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                                             .setTitle("Choose an id")
                                             .setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, ids), (d2, w2) -> {
                                                 var id = ids.get(w2);
-                                                value.put(attr, id);
-                                                if (valueChangeListener != null)
-                                                    valueChangeListener.a(key, value);
-                                                adapter.submitList(new ArrayList<>(value.keySet()));
+                                                if (isItLegalState(id, attr)) {
+                                                    value.put(attr, id);
+                                                    if (valueChangeListener != null)
+                                                        valueChangeListener.a(key, value);
+                                                    adapter.submitList(new ArrayList<>(value.keySet()));
+                                                } else {
+                                                    SketchwareUtil.toastError("IllegalStateException : Circular dependencies cannot exist in RelativeLayout");
+                                                }
                                             })
                                             .setNegativeButton("Cancel", (d2, which) -> d.dismiss())
                                             .show();
@@ -212,6 +222,15 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                     .setNegativeButton("Cancel", (d, which) -> d.dismiss())
                     .show();
         });
+    }
+
+    private boolean isItLegalState(String targetId, String attr) {
+        for (ViewBean viewBean : beans) {
+            if (viewBean.id.equals(targetId) && viewBean.parentAttributes.containsKey(attr)) {
+                return !viewBean.parentAttributes.get(attr).equals(bean.id);
+            }
+        }
+        return true;
     }
 
     private class AttributesAdapter extends ListAdapter<String, RecyclerView.ViewHolder> {
