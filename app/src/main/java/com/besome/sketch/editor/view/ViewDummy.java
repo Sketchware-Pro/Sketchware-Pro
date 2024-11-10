@@ -84,7 +84,7 @@ public class ViewDummy extends RelativeLayout {
             case "n":
                 img_dummy.setImageResource(R.drawable.selected_block_integer);
                 break;
-            case "s":
+            case "s", "v", "p", "l", "a":
                 img_dummy.setImageResource(R.drawable.selected_block_string);
                 break;
             case "c":
@@ -95,12 +95,6 @@ public class ViewDummy extends RelativeLayout {
                 break;
             case "f":
                 img_dummy.setImageResource(R.drawable.selected_block_final);
-                break;
-            case "v":
-            case "p":
-            case "l":
-            case "a":
-                img_dummy.setImageResource(R.drawable.selected_block_string);
                 break;
             default:
                 img_dummy.setImageResource(R.drawable.selected_block_command);

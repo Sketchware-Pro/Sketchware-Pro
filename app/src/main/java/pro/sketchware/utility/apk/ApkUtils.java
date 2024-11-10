@@ -1,4 +1,4 @@
-package mod.trindadedev.tools.apk;
+package pro.sketchware.utility.apk;
 
 import java.io.FileInputStream;
 import java.io.IOException;

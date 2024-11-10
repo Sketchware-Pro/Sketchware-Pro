@@ -121,7 +121,7 @@ public class Lx {
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.GSON, excludedLibraries) && metadata.isGsonUsed) {
-            content.append("implementation 'com.google.code.gson:gson:2.11.0''\r\n");
+            content.append("implementation 'com.google.code.gson:gson:2.11.0'\r\n");
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.OKHTTP, excludedLibraries) && metadata.isHttp3Used) {

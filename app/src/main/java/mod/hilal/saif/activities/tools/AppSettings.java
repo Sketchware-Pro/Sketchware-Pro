@@ -28,22 +28,21 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogSelectApkToSignBinding;
 
 import java.io.File;
 
 import a.a.a.aB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.alucard.tn.apksigner.ApkSigner;
-import mod.bobur.BoburUtils;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
-import mod.trindadedev.ui.activities.SettingsActivity;
-import pro.sketchware.R;
-import pro.sketchware.databinding.DialogSelectApkToSignBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.activities.settings.SettingsActivity;
 
 public class AppSettings extends BaseAppCompatActivity {
 
@@ -136,7 +135,7 @@ public class AppSettings extends BaseAppCompatActivity {
         createToolsView(R.drawable.ic_mtrl_article, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)), false);
         createToolsView(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", content, new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class)), true);
     }
-
+    
     private View.OnClickListener openSettingsActivity(String fragmentTag) {
         return v -> {
             Intent intent = new Intent(v.getContext(), SettingsActivity.class);

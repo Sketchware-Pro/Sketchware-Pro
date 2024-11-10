@@ -171,11 +171,11 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
                     popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
                 }
                 popupMenu.setOnMenuItemClickListener(item -> {
+                    int originalPosition = injections.indexOf(filtered.get(position));
+
                     if (item.getItemId() == 0) {
-                        dialog("edit", position);
+                        dialog("edit", originalPosition);
                     } else {
-                        int originalPosition = injections.indexOf(filtered.get(position));
-                        
                         if (originalPosition != -1) {
                             injections.remove(originalPosition);
                             filtered.remove(position);

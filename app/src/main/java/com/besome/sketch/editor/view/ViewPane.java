@@ -50,6 +50,7 @@ import com.besome.sketch.editor.view.item.ItemListView;
 import com.besome.sketch.editor.view.item.ItemMapView;
 import com.besome.sketch.editor.view.item.ItemProgressBar;
 import com.besome.sketch.editor.view.item.ItemRecyclerView;
+import com.besome.sketch.editor.view.item.ItemRelativeLayout;
 import com.besome.sketch.editor.view.item.ItemSearchView;
 import com.besome.sketch.editor.view.item.ItemSeekBar;
 import com.besome.sketch.editor.view.item.ItemSignInButton;
@@ -100,6 +101,7 @@ import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.InvokeUtil;
 import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
@@ -240,6 +242,7 @@ public class ViewPane extends RelativeLayout {
                  ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT,
                  ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT,
                  ViewBeans.VIEW_TYPE_LAYOUT_RADIOGROUP -> new ItemLinearLayout(context);
+            case ViewBean.VIEW_TYPE_LAYOUT_RELATIVE -> new ItemRelativeLayout(context);
             case ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW -> new ItemCardView(context);
             case ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW -> new ItemHorizontalScrollView(context);
             case ViewBean.VIEW_TYPE_WIDGET_BUTTON -> new ItemButton(context);
@@ -404,6 +407,9 @@ public class ViewPane extends RelativeLayout {
             if (view instanceof ItemLinearLayout) {
                 ((ItemLinearLayout) view).setLayoutGravity(viewBean.layout.gravity);
             }
+        }
+        if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
+            updateRelative(view, injectHandler);
         }
         if (classInfo.a("TextView")) {
             TextView textView = (TextView) view;
@@ -586,6 +592,12 @@ public class ViewPane extends RelativeLayout {
                 viewBean.parent = view.getTag().toString();
                 viewBean.parentType = ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
                 viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            } else if (view instanceof ItemRelativeLayout) {
+                viewBean.preIndex = viewBean.index;
+                viewBean.index = viewInfo.getIndex();
+                viewBean.preParent = viewBean.parent;
+                viewBean.parent = view.getTag().toString();
+                viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_RELATIVE;
             }
         } else {
             viewBean.preIndex = viewBean.index;
@@ -747,6 +759,28 @@ public class ViewPane extends RelativeLayout {
                     a(view, (ViewGroup) child);
                 } else if (child instanceof ItemCardView) {
                     a(view, (ViewGroup) child);
+                } else if (child instanceof ItemRelativeLayout relativeLayout) {
+                    addDroppableForViewGroup(view, relativeLayout);
+                }
+            }
+        }
+    }
+
+    private void addDroppableForViewGroup(ViewBean viewBean, ViewGroup viewGroup) {
+        addViewInfo(getRectFor(viewGroup), viewGroup, -1, calculateViewDepth(viewGroup));
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View childAt = viewGroup.getChildAt(i);
+            if (childAt != null && childAt.getTag() != null && ((viewBean == null || viewBean.id == null || !childAt.getTag().equals(viewBean.id)) && childAt.getVisibility() == View.VISIBLE)) {
+                if (childAt instanceof ItemLinearLayout) {
+                    a(viewBean, (ItemLinearLayout) childAt);
+                } else if (childAt instanceof ItemHorizontalScrollView) {
+                    a(viewBean, (ViewGroup) childAt);
+                } else if (childAt instanceof ItemVerticalScrollView) {
+                    a(viewBean, (ViewGroup) childAt);
+                } else if (childAt instanceof ItemCardView) {
+                    a(viewBean, (ViewGroup) childAt);
+                } else if (childAt instanceof ItemRelativeLayout relativeLayout) {
+                    addDroppableForViewGroup(viewBean, relativeLayout);
                 }
             }
         }
@@ -767,6 +801,8 @@ public class ViewPane extends RelativeLayout {
                     a(viewBean, (ViewGroup) childAt);
                 } else if (childAt instanceof ItemCardView) {
                     a(viewBean, (ViewGroup) childAt);
+                } else if (childAt instanceof ItemRelativeLayout relativeLayout) {
+                    addDroppableForViewGroup(viewBean, relativeLayout);
                 }
             }
         }
@@ -791,6 +827,9 @@ public class ViewPane extends RelativeLayout {
         ViewBean bean = ((sy) view).getBean();
         ViewGroup viewGroup = rootLayout.findViewWithTag(bean.parent);
         viewGroup.addView(view, bean.index);
+        if (bean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
+            updateRelativeParentViews(view, new InjectAttributeHandler(bean));
+        }
         if (viewGroup instanceof ty) {
             ((ty) viewGroup).a();
         }
@@ -830,6 +869,15 @@ public class ViewPane extends RelativeLayout {
             }
             layoutParams2.weight = viewBean.layout.weight;
             view.setLayoutParams(layoutParams2);
+        } else if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
+            RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(width, height);
+            layoutParams2.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
+            layoutParams2.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
+            layoutParams2.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
+            layoutParams2.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
+            LayoutBean layoutBean3 = viewBean.layout;
+            view.setPadding(layoutBean3.paddingLeft, layoutBean3.paddingTop, layoutBean3.paddingRight, layoutBean3.paddingBottom);
+            view.setLayoutParams(layoutParams2);
         } else {
             FrameLayout.LayoutParams layoutParams3 = new FrameLayout.LayoutParams(width, height);
             layoutParams3.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
@@ -844,6 +892,189 @@ public class ViewPane extends RelativeLayout {
             }
             view.setLayoutParams(layoutParams3);
         }
+    }
+    
+    private void updateRelativeParentViews(View view, InjectAttributeHandler handler) {
+        var viewBean = handler.getBean();
+        updateRelative(view, handler);
+        
+        ViewGroup parent = rootLayout.findViewWithTag(viewBean.parent);
+        if (parent == null) {
+            return;
+        }
+        
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            var child = parent.getChildAt(i);
+            if (child instanceof sy editorItem) {
+                updateRelative(child, new InjectAttributeHandler(editorItem.getBean()));
+            }
+        }
+    }
+
+    private void updateRelative(View view, InjectAttributeHandler handler) {
+        String layout_centerInParent = handler.getAttributeValueOf("layout_centerInParent");
+        String layout_centerVertical = handler.getAttributeValueOf("layout_centerVertical");
+        String layout_centerHorizontal = handler.getAttributeValueOf("layout_centerHorizontal");
+
+        var bean = handler.getBean();
+        var parent = bean.parentAttributes;
+        if (Boolean.parseBoolean(layout_centerInParent)
+                || (parent.containsKey("android:layout_centerInParent")
+                        && Boolean.parseBoolean(parent.get("android:layout_centerInParent"))))
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.CENTER_IN_PARENT);
+
+        if (Boolean.parseBoolean(layout_centerVertical)
+                || (parent.containsKey("android:layout_centerVertical")
+                        && Boolean.parseBoolean(parent.get("android:layout_centerVertical"))))
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.CENTER_VERTICAL);
+
+        if (Boolean.parseBoolean(layout_centerHorizontal)
+                || (parent.containsKey("android:layout_centerHorizontal")
+                        && Boolean.parseBoolean(parent.get("android:layout_centerHorizontal"))))
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.CENTER_HORIZONTAL);
+
+        String layout_alignParentStart = handler.getAttributeValueOf("layout_alignParentStart");
+        String layout_alignParentRight = handler.getAttributeValueOf("layout_alignParentRight");
+        String layout_alignParentTop = handler.getAttributeValueOf("layout_alignParentTop");
+        String layout_alignParentEnd = handler.getAttributeValueOf("layout_alignParentEnd");
+        String layout_alignParentLeft = handler.getAttributeValueOf("layout_alignParentLeft");
+        String layout_alignParentBottom = handler.getAttributeValueOf("layout_alignParentBottom");
+
+        if (Boolean.parseBoolean(layout_alignParentStart)
+                || (parent.containsKey("android:layout_alignParentStart")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentStart")))) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_START);
+        }
+
+        if (Boolean.parseBoolean(layout_alignParentRight)
+                || (parent.containsKey("android:layout_alignParentRight")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentRight")))) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_RIGHT);
+        }
+
+        if (Boolean.parseBoolean(layout_alignParentTop)
+                || (parent.containsKey("android:layout_alignParentTop")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentTop")))) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_TOP);
+        }
+
+        if (Boolean.parseBoolean(layout_alignParentEnd)
+                || (parent.containsKey("android:layout_alignParentEnd")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentEnd")))) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_END);
+        }
+
+        if (Boolean.parseBoolean(layout_alignParentLeft)
+                || (parent.containsKey("android:layout_alignParentLeft")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentLeft")))) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_LEFT);
+        }
+
+        if (Boolean.parseBoolean(layout_alignParentBottom)
+                || (parent.containsKey("android:layout_alignParentBottom")
+                        && Boolean.parseBoolean(parent.get("android:layout_alignParentBottom")))) {
+            InvokeUtil.invoke(
+                    view.getLayoutParams(),
+                    "addRule",
+                    new Class[] {int.class},
+                    RelativeLayout.ALIGN_PARENT_BOTTOM);
+        }
+
+        if (parent.containsKey("android:layout_alignStart")) {
+            setRelativeRule(view, parent.get("android:layout_alignStart"), RelativeLayout.ALIGN_START);
+        } else setRelativeRule(view, handler, "layout_alignStart", RelativeLayout.ALIGN_START);
+        if (parent.containsKey("android:layout_alignRight")) {
+            setRelativeRule(view, parent.get("android:layout_alignRight"), RelativeLayout.ALIGN_RIGHT);
+        } else setRelativeRule(view, handler, "layout_alignRight", RelativeLayout.ALIGN_RIGHT);
+        if (parent.containsKey("android:layout_alignTop")) {
+            setRelativeRule(view, parent.get("android:layout_alignTop"), RelativeLayout.ALIGN_TOP);
+        } else setRelativeRule(view, handler, "layout_alignTop", RelativeLayout.ALIGN_TOP);
+        if (parent.containsKey("android:layout_alignEnd")) {
+            setRelativeRule(view, parent.get("android:layout_alignEnd"), RelativeLayout.ALIGN_END);
+        } else setRelativeRule(view, handler, "layout_alignEnd", RelativeLayout.ALIGN_END);
+        if (parent.containsKey("android:layout_alignLeft")) {
+            setRelativeRule(view, parent.get("android:layout_alignLeft"), RelativeLayout.ALIGN_LEFT);
+        } else setRelativeRule(view, handler, "layout_alignLeft", RelativeLayout.ALIGN_LEFT);
+        if (parent.containsKey("android:layout_alignBottom")) {
+            setRelativeRule(view, parent.get("android:layout_alignBottom"), RelativeLayout.ALIGN_BOTTOM);
+        } else setRelativeRule(view, handler, "layout_alignBottom", RelativeLayout.ALIGN_BOTTOM);
+        if (parent.containsKey("android:layout_alignBaseline")) {
+            setRelativeRule(view, parent.get("android:layout_alignBaseline"), RelativeLayout.ALIGN_BASELINE);
+        } else setRelativeRule(view, handler, "layout_alignBaseline", RelativeLayout.ALIGN_BASELINE);
+
+        if (parent.containsKey("android:layout_above")) {
+            setRelativeRule(view, parent.get("android:layout_above"), RelativeLayout.ABOVE);
+        } else setRelativeRule(view, handler, "layout_above", RelativeLayout.ABOVE);
+        if (parent.containsKey("android:layout_below")) {
+            setRelativeRule(view, parent.get("android:layout_below"), RelativeLayout.BELOW);
+        } else setRelativeRule(view, handler, "layout_below", RelativeLayout.BELOW);
+        if (parent.containsKey("android:layout_toStartOf")) {
+            setRelativeRule(view, parent.get("android:layout_toStartOf"), RelativeLayout.START_OF);
+        } else setRelativeRule(view, handler, "layout_toStartOf", RelativeLayout.START_OF);
+        if (parent.containsKey("android:layout_toRightOf")) {
+            setRelativeRule(view, parent.get("android:layout_toRightOf"), RelativeLayout.RIGHT_OF);
+        } else setRelativeRule(view, handler, "layout_toRightOf", RelativeLayout.RIGHT_OF);
+        if (parent.containsKey("android:layout_toEndOf")) {
+            setRelativeRule(view, parent.get("android:layout_toEndOf"), RelativeLayout.END_OF);
+        } else setRelativeRule(view, handler, "layout_toEndOf", RelativeLayout.END_OF);
+        if (parent.containsKey("android:layout_toLeftOf")) {
+            setRelativeRule(view, parent.get("android:layout_toLeftOf"), RelativeLayout.LEFT_OF);
+        } else setRelativeRule(view, handler, "layout_toLeftOf", RelativeLayout.LEFT_OF);
+    }
+
+    private void setRelativeRule(
+            View view, InjectAttributeHandler handler, String attribute, int rule) {
+        String referenceId = handler.getAttributeValueOf(attribute);
+        if (referenceId != null && !referenceId.isEmpty()) {
+            var reference = PropertiesUtil.getUnitOrPrefix(referenceId);
+            if (reference != null) {
+                setRelativeRule(view, reference.second, rule);
+            }
+        }
+    }
+    
+    private void setRelativeRule(View view, String id, int rule) {
+        View refView = rootLayout.findViewWithTag(id);
+                if (refView != null) {
+                    InvokeUtil.invoke(
+                            view.getLayoutParams(),
+                            "addRule",
+                            new Class[] {int.class, int.class},
+                            rule,
+                            refView.getId());
+                }
     }
 
     private void updateTextView(TextView textView, ViewBean viewBean) {
@@ -878,11 +1109,11 @@ public class ViewPane extends RelativeLayout {
     }
 
     public String getXmlString(String key) {
-        String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
+        String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
 
         ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
 
-        convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+        convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
         if (key.equals("@string/app_name") && !isXmlStringsContains(StringsListMap, "app_name")) {
             return yB.c(lC.b(sc_id), "my_app_name");

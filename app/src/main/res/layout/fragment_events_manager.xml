@@ -25,7 +25,7 @@
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/abc_ic_ab_back_material"
                 app:menu="@menu/events_manager_menu"
-                app:title="@string/tools_events_manager" />
+                app:title="@string/settings_events_manager" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -89,7 +89,7 @@
                          <TextView
                               android:layout_width="match_parent"
                               android:layout_height="wrap_content"
-                              android:text="@string/tools_events_manager_activity_events"
+                              android:text="@string/settings_events_manager_activity_events"
                               android:textAppearance="?textAppearanceBodyLarge"
                               android:textColor="?colorOnSurface"
                               android:textSize="16sp" />
@@ -112,7 +112,7 @@
                  android:paddingTop="8dp"
                  android:paddingEnd="8dp"
                  android:paddingBottom="8dp"
-                 android:text="@string/tools_events_manager_listeners"
+                 android:text="@string/settings_events_manager_listeners"
                  android:textAppearance="?textAppearanceBodyLarge"
                  android:textColor="?colorOnSurface"
                  android:textSize="18sp" />

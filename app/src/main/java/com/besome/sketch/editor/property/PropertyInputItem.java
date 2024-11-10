@@ -1,15 +1,16 @@
 package com.besome.sketch.editor.property;
 
-import static mod.bobur.StringEditorActivity.convertListMapToXml;
 import static mod.bobur.StringEditorActivity.convertXmlToListMap;
 import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -288,26 +289,11 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     }
 
     private void loadStringsListMap() {
-        FilePathUtil fpu = new FilePathUtil();
-        String filePath = fpu.getPathResource(sc_id) + "/values/strings.xml";
-        convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+        String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
+        convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
-        if (StringsListMap.isEmpty()) {
-            // Create app_name string if the strings.xml is empty
+        if (!isXmlStringsContains(StringsListMap, "app_name") && filePath != null) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("key", "app_name");
-            map.put("text", yB.c(lC.b(sc_id), "my_app_name"));
-            StringsListMap.add(0, map);
-            FileUtil.writeFile(filePath, convertListMapToXml(StringsListMap));
-        }
-
-        if (!isXmlStringsContains(StringsListMap, "app_name")) {
-            HashMap<String, Object> map = null;
-            try {
-                map = new HashMap<>();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
             map.put("key", "app_name");
             map.put("text", yB.c(lC.b(sc_id), "my_app_name"));
             StringsListMap.add(0, map);

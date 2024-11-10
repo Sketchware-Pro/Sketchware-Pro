@@ -118,11 +118,11 @@ import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
-import mod.trindadedev.tools.apk.ApkSignatures;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.apk.ApkSignatures;
 
 public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public static String sc_id;
@@ -934,10 +934,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private static class BuildTask extends BaseTask implements DialogInterface.OnCancelListener, BuildProgressReceiver {
-        private final BuildingDialog dialog;
-        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
         private volatile boolean canceled;
         private volatile boolean isBuildFinished;
+        private final BuildingDialog dialog;
+        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
         public BuildTask(DesignActivity activity) {
             super(activity);
@@ -960,7 +960,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 activity.runProject.setClickable(false);
                 activity.r.a("P1I10", true);
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                StringEditorActivity.createDefaultString();
             });
         }
 
@@ -1161,6 +1160,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     cancelDialog.dismiss();
                 });
 
+                cancelDialog.setCancelable(false);
+                cancelDialog.setCanceledOnTouchOutside(false);
                 cancelDialog.show();
             });
         }

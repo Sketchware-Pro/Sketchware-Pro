@@ -302,27 +302,11 @@ public class Zx extends PopupWindow {
         return colorBeansResult;
     }
 
-    // didn't use jcoderz's "readfile" method because it creates an empty colors.xml which make problems while compiling, + i just copied whole method with some changes.
-    public static String readFile(String path) {
-        StringBuilder sb = new StringBuilder();
-        try (FileReader fr = new FileReader(path)) {
-            char[] buff = new char[1024];
-            int length;
-
-            while ((length = fr.read(buff)) > 0) {
-                sb.append(new String(buff, 0, length));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return sb.toString();
-    }
 
     private ColorBean[] geColorResBeans() {
         ColorBean[] colorBeansResult;
         String clrsPath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/colors.xml"));
-        parseColorsXML(readFile(clrsPath));
+        parseColorsXML(FileUtil.readFileIfExist(clrsPath));
 
         if (!color_res_list.isEmpty()) {
             ColorBean[] colorBeans = new ColorBean[color_res_list.size()];

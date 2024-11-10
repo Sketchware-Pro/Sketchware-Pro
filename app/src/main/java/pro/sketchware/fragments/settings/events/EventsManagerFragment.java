@@ -1,4 +1,4 @@
-package mod.trindadedev.ui.fragments.events;
+package pro.sketchware.fragments.settings.events;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,10 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogAddNewListenerBinding;
 import pro.sketchware.databinding.FragmentEventsManagerBinding;
 import pro.sketchware.databinding.LayoutEventItemBinding;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,12 +30,12 @@ import java.util.HashMap;
 
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
-import mod.hey.studios.util.Helper;
-import mod.trindadedev.ui.fragments.BaseFragment;
 
-public class EventsManagerFragment extends BaseFragment {
+import mod.hey.studios.util.Helper;
+
+import a.a.a.qA;
+
+public class EventsManagerFragment extends qA {
 
     private FragmentEventsManagerBinding binding;
     private ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();

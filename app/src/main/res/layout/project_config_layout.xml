@@ -5,54 +5,48 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/project_config_pref_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_android_jar_path"
+            android:id="@+id/til_android_jar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            android:hint="Custom android.jar">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edittext_android_jar_path"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Custom android.jar"
                 android:inputType="text" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_classpath"
+            android:id="@+id/til_classpath"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            android:hint="Classpath 'separated by :'">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edittext_classpath"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Classpath 'separated by :'"
                 android:inputType="text" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/title_dexer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
             android:text="Dexer"
             android:textSize="14sp"
             android:textStyle="bold" />
 
         <RadioGroup
-            android:id="@+id/radiogroup_dexer"
+            android:id="@+id/rg_dexer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
@@ -61,39 +55,38 @@
             android:id="@+id/title_java_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
             android:text="Java version"
             android:textSize="14sp"
             android:textStyle="bold" />
 
         <RadioGroup
-            android:id="@+id/radiogroup_java_version"
+            android:id="@+id/rg_java_version"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" />
 
         <CheckBox
-            android:id="@+id/checkbox_no_warnings"
+            android:id="@+id/cb_no_warnings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Hide warnings in error log" />
 
         <CheckBox
-            android:id="@+id/checkbox_no_http_legacy"
+            android:id="@+id/cb_no_http_legacy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Don't include http-legacy-28.dex" />
 
         <CheckBox
-            android:id="@+id/checkbox_enable_logcat"
+            android:id="@+id/cb_enable_logcat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs." />
 
     </LinearLayout>
-
 </ScrollView>

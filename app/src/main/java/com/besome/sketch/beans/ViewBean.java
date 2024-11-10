@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.Expose;
 import pro.sketchware.R;
 
+import java.util.HashMap;
+
 import a.a.a.Gx;
 import a.a.a.nA;
 import mod.agus.jcoderz.beans.ViewBeans;
@@ -130,6 +132,7 @@ public class ViewBean extends nA implements Parcelable {
     @Expose
     public int type;
     @Expose
+    public HashMap<String, String> parentAttributes;
     public boolean isCustomWidget;
 
     public ViewBean() {
@@ -159,6 +162,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = "";
         convert = "";
         progressStyle = PROGRESSBAR_STYLE_CIRCLE;
+        parentAttributes = new HashMap<>();
         isCustomWidget = false;
     }
 
@@ -197,7 +201,14 @@ public class ViewBean extends nA implements Parcelable {
         inject = parcel.readString();
         convert = parcel.readString();
         progressStyle = parcel.readString();
-        isCustomWidget = parcel.readBoolean();
+        int size = parcel.readInt();
+        parentAttributes = new HashMap<>(size);
+        for (int i = 0; i < size; i++) {
+            String key = parcel.readString();
+            String value = parcel.readString();
+            parentAttributes.put(key, value);
+        }
+        isCustomWidget = parcel.readInt() != 0;
     }
 
     public ViewBean(String id, int type) {
@@ -214,6 +225,7 @@ public class ViewBean extends nA implements Parcelable {
 
     public static int getViewTypeByTypeName(String typeName) {
         return switch (typeName) {
+            case "RelativeLayout" -> VIEW_TYPE_LAYOUT_RELATIVE;
             case "Switch" -> VIEW_TYPE_WIDGET_SWITCH;
             case "MapView" -> VIEW_TYPE_WIDGET_MAPVIEW;
             case "ProgressBar" -> VIEW_TYPE_WIDGET_PROGRESSBAR;
@@ -238,6 +250,7 @@ public class ViewBean extends nA implements Parcelable {
     public static String getViewTypeName(int type) {
         return switch (type) {
             case VIEW_TYPE_LAYOUT_LINEAR -> "LinearLayout";
+            case VIEW_TYPE_LAYOUT_RELATIVE -> "RelativeLayout";
             case VIEW_TYPE_LAYOUT_HSCROLLVIEW -> "HScrollView";
             case VIEW_TYPE_WIDGET_BUTTON -> "Button";
             case VIEW_TYPE_WIDGET_TEXTVIEW -> "TextView";
@@ -286,13 +299,7 @@ public class ViewBean extends nA implements Parcelable {
     public Gx buildClassInfo(int type) {
         String name = switch (type) {
             case VIEW_TYPE_LAYOUT_LINEAR -> "LinearLayout";
-
-            // RIP RelativeLayout
-         /* case VIEW_TYPE_LAYOUT_RELATIVE:
-                name = "RelativeLayout";
-                break;
-         */
-
+            case VIEW_TYPE_LAYOUT_RELATIVE -> "RelativeLayout";
             case VIEW_TYPE_LAYOUT_HSCROLLVIEW -> "HorizontalScrollView";
             case VIEW_TYPE_WIDGET_BUTTON -> "Button";
             case VIEW_TYPE_WIDGET_TEXTVIEW -> "TextView";
@@ -363,6 +370,7 @@ public class ViewBean extends nA implements Parcelable {
         inject = other.inject;
         convert = other.convert;
         progressStyle = other.progressStyle;
+        parentAttributes = other.parentAttributes;
         isCustomWidget = other.isCustomWidget;
     }
 
@@ -469,6 +477,11 @@ public class ViewBean extends nA implements Parcelable {
         dest.writeString(inject);
         dest.writeString(convert);
         dest.writeString(progressStyle);
-        dest.writeBoolean(isCustomWidget);
+        dest.writeInt(parentAttributes.size());
+        for (HashMap.Entry<String, String> entry : parentAttributes.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
+        dest.writeInt(isCustomWidget ? 1 : 0);
     }
 }
