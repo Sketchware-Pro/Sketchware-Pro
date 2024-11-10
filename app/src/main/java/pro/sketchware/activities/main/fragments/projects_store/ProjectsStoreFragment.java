@@ -72,19 +72,19 @@ public class ProjectsStoreFragment extends Fragment {
         sketchHubAPI.getEditorsChoicerProjects(1, projectModel -> {
             var activity = getActivity();
             if (projectModel != null && activity != null) {
-                binding.editorsChoiceProjectsRecyclerView.setAdapter(new StorePagerProjectsAdapter(projectModel.getProjects(), activity);
+                binding.editorsChoiceProjectsRecyclerView.setAdapter(new StorePagerProjectsAdapter(projectModel.getProjects(), activity));
             }
         });
         sketchHubAPI.getMostDownloadedProjects(1, projectModel -> {
             var activity = getActivity();
             if (projectModel != null && activity != null) {
-                binding.mostDownloadedProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), activity);
+                binding.mostDownloadedProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), activity));
             }
         });
         sketchHubAPI.getRecentProjects(1, projectModel -> {
             var activity = getActivity();
             if (projectModel != null && activity != null) {
-                binding.recentProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), activity);
+                binding.recentProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), activity));
             }
         });
     }
