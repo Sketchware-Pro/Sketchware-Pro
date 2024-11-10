@@ -100,6 +100,29 @@ public class CustomBlocksManager {
         
     }
 
+    public String getCustomBlockCode(String opCode) {
+        try {
+            for (ExtraBlockInfo info :custom_blocks) {
+                if (info.getName().equals(opCode)) {
+                    return info.getCode();
+                }
+            }
+        } catch (Exception ignored) {}
+        return "";
+    }
+
+    public String getCustomBlockSpec2(String opCode) {
+        try {
+            for (ExtraBlockInfo info : custom_blocks) {
+                if (info.getName().equals(opCode)) {
+                    return info.getSpec2();
+                }
+            }
+        } catch (Exception ignored) {}
+        return "";
+    }
+
+
     /*public String getCustomBlocksJsonPath() {
         return new File(
             Environment.getExternalStorageDirectory(),
