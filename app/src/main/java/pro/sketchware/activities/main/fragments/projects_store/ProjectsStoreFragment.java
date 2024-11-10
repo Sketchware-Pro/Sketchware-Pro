@@ -72,6 +72,7 @@ public class ProjectsStoreFragment extends Fragment {
     }
 
     private void fetchData() {
+        var activity = getActivity();
         sketchHubAPI.getEditorsChoicerProjects(1, projectModel -> {
             if (projectModel != null) {
                 binding.editorsChoiceProjectsRecyclerView.setAdapter(new StorePagerProjectsAdapter(projectModel.getProjects(), activity));
