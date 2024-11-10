@@ -8,6 +8,7 @@ import android.view.ViewParent;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,18 +70,21 @@ public class ProjectsStoreFragment extends Fragment {
 
     private void fetchData() {
         sketchHubAPI.getEditorsChoicerProjects(1, projectModel -> {
-            if (projectModel != null) {
-                binding.editorsChoiceProjectsRecyclerView.setAdapter(new StorePagerProjectsAdapter(projectModel.getProjects(), requireActivity()));
+            var activity = getActivity();
+            if (projectModel != null && activity != null) {
+                binding.editorsChoiceProjectsRecyclerView.setAdapter(new StorePagerProjectsAdapter(projectModel.getProjects(), activity);
             }
         });
         sketchHubAPI.getMostDownloadedProjects(1, projectModel -> {
-            if (projectModel != null) {
-                binding.mostDownloadedProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), requireActivity()));
+            var activity = getActivity();
+            if (projectModel != null && activity != null) {
+                binding.mostDownloadedProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), activity);
             }
         });
         sketchHubAPI.getRecentProjects(1, projectModel -> {
-            if (projectModel != null) {
-                binding.recentProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), requireActivity()));
+            var activity = getActivity();
+            if (projectModel != null && activity != null) {
+                binding.recentProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), activity);
             }
         });
     }
