@@ -15,13 +15,14 @@ import mod.hey.studios.editor.manage.block.code.ExtraBlockCode;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
 public class Fx {
-    public String[] a = new String[]{"repeat", "+", "-", "*", "/", "%", ">", "=", "<", "&&", "||", "not"};
-    public String[] b = new String[]{"+", "-", "*", "/", "%", ">", "=", "<", "&&", "||"};
+
+    public String[] a = {"repeat", "+", "-", "*", "/", "%", ">", "=", "<", "&&", "||", "not"};
+    public String[] b = {"+", "-", "*", "/", "%", ">", "=", "<", "&&", "||"};
     public String c;
     public String d;
     public jq e;
     public ArrayList<BlockBean> f;
-    public Map<String, BlockBean> g = null;
+    public Map<String, BlockBean> g;
     public ExtraBlockCode mceb;
 
     public Fx(String var1, jq var2, String var3, ArrayList<BlockBean> var4) {
