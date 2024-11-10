@@ -1,7 +1,6 @@
 package pro.sketchware.widgets;
 
 import static com.besome.sketch.beans.ViewBean.getViewTypeResId;
-
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.app.Activity;
@@ -25,8 +24,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import pro.sketchware.R;
-import pro.sketchware.databinding.WidgetsCreatorDialogBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +37,8 @@ import a.a.a.ViewEditorFragment;
 import a.a.a.aB;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.WidgetsCreatorDialogBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -126,6 +125,7 @@ public class WidgetsCreatorManager extends IconBase {
                 }.getType());
                 checkWidgetsListMap();
             } catch (Exception e) {
+                SketchwareUtil.toastError("Error loading widgets: " + e.getMessage());
                 createWidgetsFile();
             }
         } else {
@@ -144,13 +144,13 @@ public class WidgetsCreatorManager extends IconBase {
     }
 
     public static void checkWidgetsListMap() {
-        int position = 0;
-        for (HashMap<String, Object> map : ListMap) {
+        Iterator<HashMap<String, Object>> iterator = ListMap.iterator();
+        while (iterator.hasNext()) {
+            HashMap<String, Object> map = iterator.next();
             if (!canAddWidget(map)) {
-                ListMap.remove(position);
-                SketchwareUtil.toastError("Failed to get custom widget " + position + "#");
+                iterator.remove();
+                SketchwareUtil.toastError("Failed to get custom widget " + map.get("title"));
             }
-            position++;
         }
     }
 
@@ -170,14 +170,6 @@ public class WidgetsCreatorManager extends IconBase {
 
     public static void createWidgetsFile() {
         if (ListMap != null) ListMap.clear();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("Class", "Layouts");
-        map.put("title", "RelativeLayout");
-        map.put("name", "RelativeLayout");
-        map.put("inject", "");
-        map.put("type", 0);
-        map.put("position", 0);
-        ListMap.add(map);
         FileUtil.writeFile(widgetFilePath, new Gson().toJson(ListMap));
     }
 
@@ -412,13 +404,17 @@ public class WidgetsCreatorManager extends IconBase {
         if (value == null) {
             return false;
         }
-        String stringValue = String.valueOf(value);
-        boolean isContainedInTypes = types_array.contains(stringValue);
-        if (value instanceof Double) {
-            double doubleValue = (double) value;
-            int intValue = (int) doubleValue;
-            isContainedInTypes = isContainedInTypes || types_array.contains(String.valueOf(intValue));
+        int intValue;
+        if (value instanceof Number) {
+            intValue = ((Number) value).intValue();
+        } else {
+            try {
+                intValue = Integer.parseInt(value.toString());
+            } catch (NumberFormatException e) {
+                return false;
+            }
         }
+        boolean isContainedInTypes = types_array.contains(String.valueOf(intValue));
         return isContainedInTypes && containsAllKeys;
     }
 
