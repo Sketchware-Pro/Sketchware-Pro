@@ -4,10 +4,10 @@ import dev.aldi.sayuti.block.ExtraBlockClassInfo;
 
 public class kq {
     public static int a(String opcode, String blockType) {
-        int viewType = -11899692;
+        int viewType = 0xff4a6cd4;
 
         if (blockType.equals("h")) {
-            return -3636432;
+            return 0xffc88330;
         }
 
         switch (opcode) {
@@ -15,9 +15,9 @@ public class kq {
                 if (blockType.equals("v")) {
                     return viewType;
                 } else if (blockType.equals("p")) {
-                    return -13851166;
+                    return 0xff2ca5e2;
                 } else if (!blockType.equals("l")) {
-                    return -1147626;
+                    return 0xffee7d16;
                 }
                 break;
             case "addListInt":
@@ -41,7 +41,7 @@ public class kq {
             case "addMapToList":
             case "insertMapToList":
             case "getMapInList":
-                return -3384542;
+                return 0xffcc5b22;
             case "setVarBoolean":
             case "setVarInt":
             case "increaseInt":
@@ -56,13 +56,13 @@ public class kq {
             case "mapIsEmpty":
             case "mapClear":
             case "mapGetAllKeys":
-                return -1147626;
+                return 0xffee7d16;
             case "repeat":
             case "forever":
             case "break":
             case "if":
             case "ifElse":
-                return -1988310;
+                return 0xffe1a92a;
             case "true":
             case "false":
             case "<":
@@ -99,7 +99,7 @@ public class kq {
             case "mapToStr":
             case "strToListMap":
             case "listMapToStr":
-                return -10701022;
+                return 0xff5cb722;
             case "mathGetDip":
             case "mathGetDisplayWidth":
             case "mathGetDisplayHeight":
@@ -124,7 +124,7 @@ public class kq {
             case "mathLog10":
             case "mathToRadian":
             case "mathToDegree":
-                return -14435927;
+                return 0xff23b9a9;
             case "viewOnClick":
             case "isDrawerOpen":
             case "openDrawer":
@@ -318,7 +318,7 @@ public class kq {
             case "bluetoothConnectGetRandomUuid":
             case "locationManagerRequestLocationUpdates":
             case "locationManagerRemoveUpdates":
-                return -13851166;
+                return 0xff2ca5e2;
             case "fileutildelete":
             case "fileutilcopy":
             case "fileutilwrite":
@@ -348,9 +348,9 @@ public class kq {
             case "setBitmapFileBrightness":
             case "setBitmapFileContrast":
             case "getJpegRotate":
-                return -6190977;
+                return 0xffa1887f;
             default:
-                return -7711273;
+                return 0xff8a55d7;
         }
 
         return viewType;
