@@ -2415,7 +2415,6 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "get String from %m.ResString");
         arrayList.add(hashMap);
-        }
     }
 
     private static void checkDir() {
