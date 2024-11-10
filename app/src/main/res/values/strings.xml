@@ -947,6 +947,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_custom_view">Custom View</string>
     <string name="common_word_decrypt">Decrypt</string>
     <string name="common_word_delete">Delete</string>
+    <string name="common_word_dismiss">Dismiss</string>
     <string name="common_word_deprecated">*deprecated</string>
     <string name="common_word_description">Description</string>
     <string name="common_word_detail">Detail</string>
@@ -963,6 +964,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_go_to_documentation">Go To Documentation</string>
     <string name="common_word_goback">Go Back</string>
     <string name="common_word_image">Image</string>
+    <string name="common_word_import_all">Import all</string>
     <string name="common_word_import">Import</string>
     <string name="common_word_import_count">Import %s Item(s)</string>
     <string name="common_word_information">Information</string>
@@ -1650,6 +1652,7 @@ ACTION_VIEW
     <string name="property_max">Max</string>
     <string name="property_orientation">Orientation</string>
     <string name="property_padding">Padding</string>
+    <string name="property_parent_attr">Parent attributes</string>
     <string name="property_progress">Progress</string>
     <string name="property_progressbar_style">Progress bar style</string>
     <string name="property_resource">Resource</string>
@@ -2009,7 +2012,7 @@ Please try again later"</string>
     <string name="shared_project_detail_button_open_project">OPEN PROJECT</string>
     <string name="shared_project_detail_comment_complete_deleted_comment">Deleted Comment</string>
     <string name="shared_project_detail_comment_complete_deleted_project">Deleted Project</string>
-    <string name="shared_project_detail_comment_error_failed_comment">"Failed to comment 
+    <string name="shared_project_detail_comment_error_failed_comment">"Failed to comment
  Please try again later"</string>
     <string name="shared_project_detail_comment_hint_enter_comment">Enter your comment</string>
     <string name="shared_project_detail_comments_confirm_delete_comment">Are you sure you want to delete this comment?</string>
@@ -2018,7 +2021,7 @@ Please try again later"</string>
     <string name="shared_project_detail_comments_context_menu_title_comment_delete">Delete Comment</string>
     <string name="shared_project_detail_comments_error_failed_delete_comment">"Deleting comment failed
 Please try again later"</string>
-    <string name="shared_project_detail_comments_error_failed_load_comment">"Failed to load comments 
+    <string name="shared_project_detail_comments_error_failed_load_comment">"Failed to load comments
  Please try again later"</string>
     <string name="shared_project_detail_comments_hint_enter_comment">Enter your comment</string>
     <string name="shared_project_detail_comments_message_already_delete_comment">This comment was already deleted</string>
@@ -2028,9 +2031,9 @@ Please try again later"</string>
     <string name="shared_project_detail_dialog_last_version_title">Update Required</string>
     <string name="shared_project_detail_dialog_share_project_confirm">Would you like to share this project?</string>
     <string name="shared_project_detail_dialog_share_project_title">Share Project</string>
-    <string name="shared_project_detail_error_failed_like_project">"Like failed 
+    <string name="shared_project_detail_error_failed_like_project">"Like failed
  Please try again later"</string>
-    <string name="shared_project_detail_error_failed_unlike_project">"Unlike failed 
+    <string name="shared_project_detail_error_failed_unlike_project">"Unlike failed
  Please try again later"</string>
     <string name="shared_project_detail_message_already_liked_project">You already liked this project</string>
     <string name="shared_project_detail_message_liked">Liked</string>
@@ -2223,5 +2226,7 @@ Please try again later"</string>
     <string name="widget_type_title">Widget type</string>
     <string name="new_class">Or create a new category</string>
     <string name="add_to">Add to category</string>
+
+    <string name="used_custom_blocks">Used Custom Blocks</string>
 
 </resources>

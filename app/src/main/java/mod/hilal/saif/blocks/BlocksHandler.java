@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.blocks.ExtraBlocks;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import pro.sketchware.blocks.ExtraBlocks;
+import pro.sketchware.utility.FileUtil;
 
 public class BlocksHandler {
 
@@ -2415,6 +2415,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "get String from %m.ResString");
         arrayList.add(hashMap);
+        }
     }
 
     private static void checkDir() {
