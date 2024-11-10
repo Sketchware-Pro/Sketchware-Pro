@@ -144,6 +144,10 @@ public class Gx {
             case "LinearLayout":
                 classInfos = "View.Clickable.ViewGroup.LinearLayout";
                 break;
+                
+            case "RelativeLayout":
+                classInfos = "View.Clickable.ViewGroup.RelativeLayout";
+                break;
 
             case "ScrollView":
                 classInfos = "View.ViewGroup.FrameLayout.ScrollView";
