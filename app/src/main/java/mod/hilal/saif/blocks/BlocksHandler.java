@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.blocks.ExtraBlocks;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import pro.sketchware.blocks.ExtraBlocks;
+import pro.sketchware.utility.FileUtil;
 
 public class BlocksHandler {
 
@@ -2432,7 +2431,7 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "app_name");
         arrayList.add(hashMap);
-        
+
         if (sc_id != null) {
             String filePath = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/resource/values/strings.xml";
             ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
@@ -2444,9 +2443,9 @@ public class BlocksHandler {
                 hashMap.put("type", "s");
                 hashMap.put("code", "getString(R.string." + key + ")");
                 hashMap.put("color", "#7C83DB");
-               hashMap.put("palette", "-1");
-               hashMap.put("spec", key);
-               arrayList.add(hashMap);
+                hashMap.put("palette", "-1");
+                hashMap.put("spec", key);
+                arrayList.add(hashMap);
             }
         }
     }
