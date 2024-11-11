@@ -155,6 +155,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private ExtraPaletteBlock extraPaletteBlock;
     private ViewLogicEditor n;
     private ViewDummy p;
+    private PaletteSelector paletteSelector;
     private Rs w;
     private float r, q, s, t;
     private int A, S, x, y;
@@ -166,7 +167,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     private final ActivityResultLauncher<Intent> openStringEditor = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
-            l.performClickPalette(-1);
+            paletteSelector.performClickPalette(-1);
         }
     });
 
@@ -385,7 +386,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             map.put("translatable", "true");
             StringsListMap.add(map);
             FileUtil.writeFile(filePath, convertListMapToXml(StringsListMap));
-            l.performClickPalette(-1);
+            paletteSelector.performClickPalette(-1);
             dialog.dismiss();
         });
         dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
@@ -428,7 +429,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
             FileUtil.writeFile(filePath, convertListMapToXml(stringsList));
 
-            l.performClickPalette(-1);
+            paletteSelector.performClickPalette(-1);
             dialog.dismiss();
         });
 
@@ -2159,7 +2160,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             stringExtra = ReturnMoreblockManager.getMbName(C) + " : " + stringExtra;
         }
         d.setTitle(stringExtra);
-        PaletteSelector paletteSelector = findViewById(R.id.palette_selector);
+        paletteSelector = findViewById(R.id.palette_selector);
         paletteSelector.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);
         p = findViewById(R.id.dummy);
