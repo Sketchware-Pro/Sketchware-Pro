@@ -56,11 +56,11 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
                     break;
 
                 case "property_indeterminate":
-                    icon = R.drawable.event_on_accuracy_changed_48dp;
+                    icon = R.drawable.ic_mtrl_property_indeterminate;
                     break;
 
                 case "property_scale_type":
-                    icon = R.drawable.enlarge_48;
+                    icon = R.drawable.ic_mtrl_property_scale2;
                     break;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {

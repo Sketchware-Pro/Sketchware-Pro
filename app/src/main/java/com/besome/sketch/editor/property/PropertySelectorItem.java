@@ -52,28 +52,28 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             tvName.setText(Helper.getResString(identifier));
             switch (this.key) {
                 case "property_orientation":
-                    icon = R.drawable.grid_3_48;
+                    icon = R.drawable.ic_mtrl_property_orientation;
                     break;
 
                 case "property_text_style":
-                    icon = R.drawable.abc_96_color;
+                    icon = R.drawable.ic_mtrl_property_text_style;
                     break;
 
                 case "property_text_size":
-                    icon = R.drawable.text_width_96;
+                    icon = R.drawable.ic_mtrl_property_text_size;
                     break;
 
                 case "property_ime_option":
                 case "property_input_type":
-                    icon = R.drawable.keyboard_48;
+                    icon = R.drawable.ic_mtrl_property_input_type;
                     break;
 
                 case "property_spinner_mode":
-                    icon = R.drawable.pull_down_48;
+                    icon = R.drawable.ic_mtrl_property_spinner_mode;
                     break;
 
                 case "property_choice_mode":
-                    icon = R.drawable.multiple_choice_48;
+                    icon = R.drawable.ic_mtrl_property_choice_mode;
                     break;
 
                 case "property_first_day_of_week":

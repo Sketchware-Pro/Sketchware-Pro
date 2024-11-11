@@ -44,9 +44,9 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
 
     private void setIcon(ImageView imageView) {
         if (key.equals("property_layout_width")) {
-            imgLeftIconDrawableResId = R.drawable.width_96;
+            imgLeftIconDrawableResId = R.drawable.ic_mtrl_property_width;
         } else if (key.equals("property_layout_height")) {
-            imgLeftIconDrawableResId = R.drawable.height_96;
+            imgLeftIconDrawableResId = R.drawable.ic_mtrl_property_height;
         }
         imageView.setImageResource(imgLeftIconDrawableResId);
     }

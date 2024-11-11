@@ -54,11 +54,11 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         if (identifier > 0) {
             tvName.setText(Helper.getResString(identifier));
             if (propertyMenuItem.getVisibility() == VISIBLE) {
-                ((ImageView) findViewById(R.id.img_icon)).setImageResource(R.drawable.color_palette_48);
+                ((ImageView) findViewById(R.id.img_icon)).setImageResource(R.drawable.ic_mtrl_property_color);
                 ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
                 return;
             }
-            imgLeftIcon.setImageResource(R.drawable.color_palette_48);
+            imgLeftIcon.setImageResource(R.drawable.ic_mtrl_property_color);
         }
     }
 
