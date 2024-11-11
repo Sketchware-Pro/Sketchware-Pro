@@ -15,13 +15,14 @@ import mod.hey.studios.editor.manage.block.code.ExtraBlockCode;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
 public class Fx {
-    public String[] a = new String[]{"repeat", "+", "-", "*", "/", "%", ">", "=", "<", "&&", "||", "not"};
-    public String[] b = new String[]{"+", "-", "*", "/", "%", ">", "=", "<", "&&", "||"};
+
+    public String[] a = {"repeat", "+", "-", "*", "/", "%", ">", "=", "<", "&&", "||", "not"};
+    public String[] b = {"+", "-", "*", "/", "%", ">", "=", "<", "&&", "||"};
     public String c;
     public String d;
     public jq e;
     public ArrayList<BlockBean> f;
-    public Map<String, BlockBean> g = null;
+    public Map<String, BlockBean> g;
     public ExtraBlockCode mceb;
 
     public Fx(String var1, jq var2, String var3, ArrayList<BlockBean> var4) {
@@ -116,9 +117,6 @@ public class Fx {
                 break;
             case "getVar":
                 opcode = bean.spec;
-                break;
-            case "getResStr":
-                opcode = "getString(R.string." + bean.spec + ")";
                 break;
             case "setVarBoolean", "setVarInt", "setVarString":
                 opcode = String.format("%s = %s;", params.get(0), params.get(1));
@@ -222,7 +220,7 @@ public class Fx {
                 String ifBlock = stack >= 0 ? a(String.valueOf(stack), "") : "";
                 stack = bean.subStack2;
                 String elseBlock = stack >= 0 ? a(String.valueOf(stack), "") : "";
-                opcode = String.format("if (%s) {\r\n%s\r\n}\r\nelse {\r\n%s\r\n}", params.get(0), ifBlock, elseBlock);
+                opcode = String.format("if (%s) {\r\n%s\r\n} else {\r\n%s\r\n}", params.get(0), ifBlock, elseBlock);
                 break;
             case "break":
                 opcode = "break;";
