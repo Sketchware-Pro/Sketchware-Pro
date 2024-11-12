@@ -118,6 +118,9 @@ public class Fx {
             case "getVar":
                 opcode = bean.spec;
                 break;
+            case "getResStr":
+                opcode = "getString(R.string." + bean.spec + ")";
+                break;
             case "setVarBoolean", "setVarInt", "setVarString":
                 opcode = String.format("%s = %s;", params.get(0), params.get(1));
                 break;
