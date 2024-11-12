@@ -212,7 +212,12 @@ public class Fx {
                 break;
             case "repeat":
                 stack = bean.subStack1;
-                opcode = String.format("for(int _repeat%d = 0; _repeat%d < (int)(%s); _repeat%d++) {\r\n%s\r\n}", bean.id, bean.id, params.get(0), bean.id, stack >= 0 ? a(String.valueOf(stack), "") : "");
+                opcode = String.format("""
+                                for(int _repeat%s = 0; _repeat%s < (int)(%s); _repeat%s++) {
+                                %s
+                                }""",
+                        bean.id, bean.id, params.get(0), bean.id,
+                        stack >= 0 ? a(String.valueOf(stack), "") : "");
                 break;
             case "if":
                 stack = bean.subStack1;
