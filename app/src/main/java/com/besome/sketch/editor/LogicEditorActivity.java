@@ -1498,10 +1498,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.b(getTranslatedString(R.string.logic_editor_title_select_view));
         ArrayList<ViewBean> views = jC.a(B).d(xmlName);
         for (ViewBean viewBean : views) {
-            String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
-            if (!viewBean.convert.equals("include")) {
+            String convert = viewBean.convert;
+            String typeName = convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(convert);
+            if (!convert.equals("include")) {
                 Set<String> toNotAdd = new Ox(new jq(), M).readAttributesToReplace(viewBean);
-                if (!toNotAdd.contains("android:id") && ss.getClassInfo().a().equals(viewBean.getClassInfo().a())) {
+                if (!toNotAdd.contains("android:id") && viewBean.getClassInfo().a(ss.getClassInfo().a())) {
                     viewGroup.addView(d(typeName, viewBean.id));
                 }
             }
