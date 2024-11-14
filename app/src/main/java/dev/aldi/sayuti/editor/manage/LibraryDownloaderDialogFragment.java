@@ -22,6 +22,7 @@ import org.cosmic.ide.dependency.resolver.api.Artifact;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
@@ -212,7 +213,7 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
                             var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);
                             enabledLibs.addAll(dependencies.stream()
                                     .map(name -> ManageLocalLibraryActivity.createLibraryMap(name, dependencyName))
-                                    .toList());
+                                    .collect(Collectors.toList())); // Replaced toList() with collect(Collectors.toList())
                             FileUtil.writeFile(local_lib_file, gson.toJson(enabledLibs));
                         }
                         if (getActivity() == null) return;
@@ -234,4 +235,3 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
         setCancelable(!downloading);
     }
 }
-
