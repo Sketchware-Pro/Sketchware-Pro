@@ -56,7 +56,6 @@ public class CustomBlocksManager {
     }
 
     private void load() {
-
         blocks = new ArrayList<>();
 
         ArrayList<String> usedBlocks = new ArrayList<>();
@@ -65,11 +64,8 @@ public class CustomBlocksManager {
         eC ec = jC.a(sc_id);
 
         for (ProjectFileBean bean : hc.b()) {
-
             for (Map.Entry<String, ArrayList<BlockBean>> entry : ec.b(bean.getJavaName()).entrySet()) {
-
                 for (BlockBean block : entry.getValue()) {
-
                     if (!(block.opCode.equals("definedFunc")
                         || block.opCode.equals("getVar")
                         || block.opCode.equals("getArg"))) {
@@ -99,6 +95,29 @@ public class CustomBlocksManager {
         }
         
     }
+
+    public String getCustomBlockCode(String opCode) {
+        try {
+            for (ExtraBlockInfo info :custom_blocks) {
+                if (info.getName().equals(opCode)) {
+                    return info.getCode();
+                }
+            }
+        } catch (Exception ignored) {}
+        return "";
+    }
+
+    public String getCustomBlockSpec2(String opCode) {
+        try {
+            for (ExtraBlockInfo info : custom_blocks) {
+                if (info.getName().equals(opCode)) {
+                    return info.getSpec2();
+                }
+            }
+        } catch (Exception ignored) {}
+        return "";
+    }
+
 
     /*public String getCustomBlocksJsonPath() {
         return new File(

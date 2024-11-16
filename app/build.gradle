@@ -81,7 +81,7 @@ android {
     }
 
     androidResources {
-        additionalParameters.addAll("--stable-ids", "public-stable-ids.txt")
+        additionalParameters.addAll("--stable-ids", "${rootDir}/public-stable-ids.txt")
     }
 
     signingConfigs {
