@@ -37,6 +37,7 @@ import a.a.a.bB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
+import pro.sketchware.databinding.AddCustomVariableBinding;
 import pro.sketchware.utility.SketchwareUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
 import mod.elfilibustero.sketch.lib.valid.VariableModifierValidator;
@@ -97,69 +98,51 @@ public class LogicClickListener implements View.OnClickListener {
         dialog.a(R.drawable.abc_96_color);
         dialog.b("Add a new custom variable");
 
-        LinearLayout root = new LinearLayout(logicEditor);
-        root.setOrientation(LinearLayout.VERTICAL);
+        AddCustomVariableBinding binding = AddCustomVariableBinding.inflate(logicEditor.getLayoutInflater());
 
-        TextInputLayout modifierLayout = commonTextInputLayout();
-        EditText modifier = commonEditText("private, public or public static (optional)");
-        modifierLayout.addView(modifier);
-        modifierLayout.setHelperText("Enter modifier e.g. private, public, public static, or empty (package private).");
-        modifierLayout.setPadding(0, 0, 0, (int) getDip(8));
-        root.addView(modifierLayout);
-        VariableModifierValidator modifiersValidator = new VariableModifierValidator(getContext(), modifierLayout);
-        modifier.addTextChangedListener(modifiersValidator);
+        binding.modifierLayout.setHelperText("Enter modifier e.g. private, public, public static, or empty (package private).");
 
-        TextInputLayout typeLayout = commonTextInputLayout();
-        EditText type = commonEditText("Type, e.g. File");
-        typeLayout.addView(type);
-        root.addView(typeLayout);
-        VariableTypeValidator varTypeValidator = new VariableTypeValidator(getContext(), typeLayout);
-        type.addTextChangedListener(varTypeValidator);
+        VariableModifierValidator modifiersValidator = new VariableModifierValidator(getContext(), binding.modifierLayout);
+        binding.modifier.addTextChangedListener(modifiersValidator);
 
-        TextInputLayout nameLayout = commonTextInputLayout();
-        EditText name = commonEditText("Name, e.g. file");
-        nameLayout.addView(name);
-        root.addView(nameLayout);
 
-        TextInputLayout initializerLayout = commonTextInputLayout();
-        EditText initializer = commonEditText("Initializer, e.g. new File() (optional)");
-        initializerLayout.addView(initializer);
-        root.addView(initializerLayout);
+        VariableTypeValidator varTypeValidator = new VariableTypeValidator(getContext(), binding.typeLayout);
+        binding.type.addTextChangedListener(varTypeValidator);
 
-        ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
+        ZB validator = new ZB(getContext(), binding.nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
-        dialog.a(root);
+        dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_add), v -> {
-            String variableModifier = modifier.getText().toString().trim();
-            String variableType = type.getText().toString().trim();
-            String variableName = name.getText().toString().trim();
-            String variableInitializer = initializer.getText().toString().trim();
+            String variableModifier = binding.modifier.getText().toString().trim();
+            String variableType = binding.type.getText().toString().trim();
+            String variableName = binding.name.getText().toString().trim();
+            String variableInitializer = binding.initializer.getText().toString().trim();
 
             boolean isValidModifier = modifiersValidator.isValid() || variableModifier.isEmpty();
             boolean isValidType = varTypeValidator.isValid();
             boolean isValidName = validator.b();
 
             if (!isValidModifier) {
-                modifierLayout.requestFocus();
+                binding.modifierLayout.requestFocus();
                 return;
             }
 
             if (isValidType) {
-                typeLayout.setError(null);
+                binding.typeLayout.setError(null);
             } else {
-                typeLayout.requestFocus();
+                binding.typeLayout.requestFocus();
                 if (variableType.isEmpty()) {
-                    typeLayout.setError("Type can't be empty");
+                    binding.typeLayout.setError("Type can't be empty");
                 }
                 return;
             }
 
             if (isValidName) {
-                nameLayout.setError(null);
+                binding.nameLayout.setError(null);
             } else {
-                nameLayout.requestFocus();
+                binding.nameLayout.requestFocus();
                 if (variableName.isEmpty()) {
-                    nameLayout.setError("Name can't be empty");
+                    binding.nameLayout.setError("Name can't be empty");
                 }
                 return;
             }
@@ -176,7 +159,7 @@ public class LogicClickListener implements View.OnClickListener {
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        modifierLayout.requestFocus();
+        binding.modifierLayout.requestFocus();
     }
 
     private void removeVariable() {
@@ -363,9 +346,7 @@ public class LogicClickListener implements View.OnClickListener {
                 (int) getDip(8)
         );
         editText.setTextSize(16f);
-        editText.setTextColor(0xff000000);
         editText.setHint(hint);
-        editText.setHintTextColor(0xff607d8b);
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
         editText.setPrivateImeOptions("defaultInputmode=english;");
         return editText;
