@@ -80,8 +80,8 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private ArrayList<String> alreadyAddedImageNames;
     private SvgUtils svgUtils;
     private String selected_icon_type = ICON_TYPE_ROUND;
-    private int selected_color = Color.parseColor("#FFFFFF");
-    private String selected_color_hex = "#FFFFFF";
+    private int selected_color = Color.parseColor("#9E9E9E");
+    private String selected_color_hex = "#9E9E9E";
     private int selectedIconPosition = -1;
 
     private static final String ICON_TYPE_OUTLINE = "outline";
@@ -127,7 +127,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         binding = ImportIconBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        colorpicker = new Zx(this, 0xFFFFFFFF, false, false);
+        colorpicker = new Zx(this, 0xFF9E9E9E, false, false);
         svgUtils = new SvgUtils(this);
         Toolbar toolbar = binding.toolbar.toolbar;
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
