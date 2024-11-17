@@ -8,13 +8,17 @@ import android.os.AsyncTask.Status;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.android.annotations.NonNull;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import dev.chrisbanes.insetter.Insetter;
 
 import java.util.ArrayList;
 
@@ -154,5 +158,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
             return parent.onOptionsItemSelected(item);
         }
         return false;
+    }
+
+    public void handleInsetts(View root) {
+        Insetter.builder()
+            .padding(WindowInsetsCompat.Type.navigationBars())
+            .applyToView(root);
     }
 }
