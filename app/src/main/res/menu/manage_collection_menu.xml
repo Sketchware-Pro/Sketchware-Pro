@@ -2,14 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_collection_edit"
-        android:icon="@drawable/ic_edit_white_48dp"
+        android:icon="@drawable/ic_mtrl_edit"
         android:orderInCategory="1"
         android:title="edit"
         android:visible="false"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_collection_delete"
-        android:icon="@drawable/ic_delete_white_24dp"
+        android:icon="@drawable/ic_mtrl_delete"
         android:orderInCategory="1"
         android:title="remove"
         app:showAsAction="always" />
