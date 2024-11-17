@@ -533,6 +533,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             item.setValue(value);
         }
         item.setBean(c);
+        item.setBeans(viewBeans);
         item.setAvailableIds(ids);
 
         addView(item);

@@ -873,7 +873,7 @@ public class Fx {
 
                 break;
             case "seekBarSetProgress":
-                opcode = String.format("%s.setProgress((int)%s)", params.get(0), params.get(1));
+                opcode = String.format("%s.setProgress((int)%s);", params.get(0), params.get(1));
 
                 break;
             case "seekBarGetProgress":
@@ -881,7 +881,7 @@ public class Fx {
 
                 break;
             case "seekBarSetMax":
-                opcode = String.format("%s.setMax((int)%s)", params.get(0), params.get(1));
+                opcode = String.format("%s.setMax((int)%s);", params.get(0), params.get(1));
 
                 break;
             case "seekBarGetMax":
