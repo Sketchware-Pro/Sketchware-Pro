@@ -163,7 +163,7 @@ public class BlockSelectorManagerFragment extends qA {
     private void showActionsDialog(int index) {
         DialogSelectorActionsBinding dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext()));
         aB dialog = new aB(requireActivity());
-        dialog.setTitle("Actions");
+        dialog.b("Actions");
         dialog.a(dialogBinding.getRoot());
 
         dialogBinding.edit.setOnClickListener(v -> {
