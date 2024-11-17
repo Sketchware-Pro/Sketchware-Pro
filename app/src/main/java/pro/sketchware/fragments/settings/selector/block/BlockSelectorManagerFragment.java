@@ -69,8 +69,8 @@ public class BlockSelectorManagerFragment extends qA {
             } else {
                 selectors.add(
                         new Selector(
-                                "typeview",
                                 "Select typeview:",
+                                "typeview",
                                 getTypeViewList()
                         )
                 );
@@ -199,7 +199,7 @@ public class BlockSelectorManagerFragment extends qA {
             CancelListener onCancel
     ) {
         aB dialog = new aB(requireActivity());
-        dialog.setTitle("Attention");
+        dialog.b("Attention");
         dialog.a(message);
         dialog.b("Yes", v -> onConfirm.onConfirm(dialog));
         dialog.a("Cancel", v -> onCancel.onCancel(dialog));
