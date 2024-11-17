@@ -61,6 +61,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         EdgeToEdge.enable(this);
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.manage_custom_component);
+        handleInsetts(findViewById(R.id.root));
         init();
     }
 
