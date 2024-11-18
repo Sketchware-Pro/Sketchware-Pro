@@ -851,7 +851,7 @@ public class Fx {
                 opcode = String.format("%s.isLooping()", params.get(0));
                 break;
             case "soundpoolCreate":
-                opcode = String.format("%s = new SoundPool((int)(%s), AudioManager.STREAM_MUSIC, 0)", params.get(0), params.get(1));
+                opcode = String.format("%s = new SoundPool((int)(%s), AudioManager.STREAM_MUSIC, 0);", params.get(0), params.get(1));
                 break;
             case "soundpoolLoad":
                 opcode = String.format("%s.load(getApplicationContext(), R.raw.%s, 1)", params.get(0), params.get(1));
@@ -861,7 +861,7 @@ public class Fx {
 
                 break;
             case "soundpoolStreamStop":
-                opcode = String.format("%s.stop((int)(%s))", params.get(0), params.get(1));
+                opcode = String.format("%s.stop((int)(%s));", params.get(0), params.get(1));
                 break;
             case "setThumbResource":
                 name = params.get(1).replaceAll("\\.9", "");
