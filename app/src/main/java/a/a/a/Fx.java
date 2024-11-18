@@ -577,6 +577,10 @@ public class Fx {
             case "listSetData":
                 opcode = String.format("%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, %s));", params.get(0), params.get(1));
                 break;
+            case "listSetCustomViewData":
+            case "recyclerSetCustomViewData":
+            case "spnSetCustomViewData":
+            case "pagerSetCustomViewData":
             case "gridSetCustomViewData":
                 opcode = String.format("%s.setAdapter(new %s(%s));", params.get(0), Lx.a(params.get(0)), params.get(1));
                 break;
