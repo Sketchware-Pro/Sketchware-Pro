@@ -192,8 +192,18 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             project_metadata.a(iCVar, hCVar, eCVar, true);
             builder.buildBuiltInLibraryInformation();
             project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
+            Log.d("TAG", "exportSrc: ");
             if (yB.a(lC.b(sc_id), "custom_icon")) {
-                project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
+                project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
+                if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
+                    project_metadata.cf("""
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
+                            <background android:drawable="@mipmap/ic_launcher_background"/>
+                            <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+                            <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
+                            </adaptive-icon>""");
+                }
             }
             project_metadata.a();
             kCVar.b(project_metadata.resDirectoryPath + File.separator + "drawable-xhdpi");
@@ -507,7 +517,16 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     return;
                 }
                 if (yB.a(lC.b(sc_id), "custom_icon")) {
-                    project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
+                    project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
+                    if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
+                        project_metadata.cf("""
+                                <?xml version="1.0" encoding="utf-8"?>
+                                <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
+                                <background android:drawable="@mipmap/ic_launcher_background"/>
+                                <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+                                <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
+                                </adaptive-icon>""");
+                    }
                 }
                 project_metadata.a();
                 kCVar.b(project_metadata.resDirectoryPath + File.separator + "drawable-xhdpi");

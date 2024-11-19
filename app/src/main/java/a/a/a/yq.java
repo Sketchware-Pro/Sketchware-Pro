@@ -333,7 +333,30 @@ public class yq {
      */
     public void a(String iconPath) {
         try {
-            fileUtil.a(iconPath, resDirectoryPath + File.separator + "drawable-xhdpi" + File.separator + "app_icon.png");
+            fileUtil.a(iconPath, resDirectoryPath + File.separator + "mipmap-xhdpi" + File.separator + "ic_launcher.png");
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+    }
+    /**
+     * Copies a mipMaps folder to the project's app icon path, {@link yq#resDirectoryPath}/mipmap
+     */
+
+    public void aa(String iconPath) {
+        try {
+            FileUtil.copyDirectory(new File(iconPath),new File(resDirectoryPath + File.separator));
+        } catch (Exception e2) {
+            e2.printStackTrace();
+        }
+    }
+
+    /**
+     * creates ic_launcher.xml to the project's app icon path, {@link yq#resDirectoryPath}/mipmap-anydpi-v26
+     */
+
+    public void cf(String content) {
+        try {
+            fileUtil.b(resDirectoryPath + File.separator + "mipmap-anydpi-v26" + File.separator + "ic_launcher.xml", content);
         } catch (Exception e2) {
             e2.printStackTrace();
         }
