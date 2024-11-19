@@ -6,51 +6,45 @@ import android.text.InputFilter;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-public class TB extends MB {
-    public int f;
-    public int g;
+import java.util.Locale;
 
-    public TB(Context var1, TextInputLayout var2, int var3, int var4) {
-        super(var1, var2);
-        this.f = var3;
-        this.g = var4;
-        super.c = var2.getEditText();
+public class TB extends MB {
+    public int minValue;
+    public int maxValue;
+
+    public TB(Context context, TextInputLayout textInputLayout, int minValue, int maxValue) {
+        super(context, textInputLayout);
+        this.minValue = minValue;
+        this.maxValue = maxValue;
+        super.c = textInputLayout.getEditText();
         super.c.setFilters(new InputFilter[]{this});
         super.c.addTextChangedListener(this);
     }
 
-    public void afterTextChanged(Editable var1) {
+    @Override
+    public void afterTextChanged(Editable editable) {
     }
 
-    public void onTextChanged(CharSequence var1, int var2, int var3, int var4) {
-        String var7 = var1.toString();
-        TextInputLayout var5;
-        String var8;
-        if (var7.isEmpty()) {
-            super.b.setErrorEnabled(true);
-            var5 = super.b;
-            var8 = String.format("%d ~ %d", this.f, this.g);
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        String inputString = s.toString();
+        if (inputString.isEmpty()) {
+            super.b.setError(String.format(Locale.US, "%d ~ %d", minValue, maxValue));
+            super.d = false;
         } else {
             try {
-                var2 = Integer.parseInt(var7);
-                if (var2 >= this.f && var2 <= this.g) {
-                    super.b.setErrorEnabled(false);
+                int inputNumber = Integer.parseInt(inputString);
+                if (inputNumber >= minValue && inputNumber <= maxValue) {
+                    super.b.setError(null);
                     super.d = true;
                 } else {
-                    super.b.setErrorEnabled(true);
-                    super.b.setError(String.format("%d ~ %d", this.f, this.g));
+                    super.b.setError(String.format(Locale.US, "%d ~ %d", minValue, maxValue));
                     super.d = false;
                 }
-
-                return;
-            } catch (NumberFormatException var6) {
-                super.b.setErrorEnabled(true);
-                var5 = super.b;
-                var8 = String.format("%d ~ %d", this.f, this.g);
+            } catch (NumberFormatException e) {
+                super.b.setError(String.format(Locale.US, "%d ~ %d", minValue, maxValue));
+                super.d = false;
             }
         }
-
-        var5.setError(var8);
-        super.d = false;
     }
 }
