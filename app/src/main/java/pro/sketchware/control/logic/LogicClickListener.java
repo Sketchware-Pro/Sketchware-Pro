@@ -218,7 +218,7 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void addCustomList() {
         aB dialog = new aB(logicEditor);
-        dialog.a(R.drawable.add_96_blue);
+        dialog.a(R.drawable.ic_mtrl_add);
         dialog.b("Add a new custom List");
 
         AddCustomListBinding listBinding = AddCustomListBinding.inflate(logicEditor.getLayoutInflater());

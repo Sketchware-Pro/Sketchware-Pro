@@ -210,7 +210,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     // if you change method name, you need also change it in layout
     public void showAddActivityDialog(View view) {
         aB dialog = new aB(this);
-        dialog.a(R.drawable.add_96_blue);
+        dialog.a(R.drawable.ic_mtrl_add);
         dialog.b(Helper.getResString(R.string.common_word_add_activtiy));
         View inflate = wB.a(this, R.layout.dialog_add_custom_activity);
 

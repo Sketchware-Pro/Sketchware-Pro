@@ -265,7 +265,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public final void G() {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_add_new_list));
-        aBVar.a(R.drawable.add_96_blue);
+        aBVar.a(R.drawable.ic_mtrl_add);
         View a2 = wB.a(this, R.layout.logic_popup_add_list);
         RadioGroup radioGroup = a2.findViewById(R.id.rg_type);
         EditText editText = a2.findViewById(R.id.ed_input);
@@ -299,7 +299,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private void showAddNewVariableDialog() {
         aB dialog = new aB(this);
         dialog.b(getTranslatedString(R.string.logic_editor_title_add_new_variable));
-        dialog.a(R.drawable.add_96_blue);
+        dialog.a(R.drawable.ic_mtrl_add);
 
         View customView = wB.a(this, R.layout.logic_popup_add_variable);
         RadioGroup radioGroup = customView.findViewById(R.id.rg_type);
