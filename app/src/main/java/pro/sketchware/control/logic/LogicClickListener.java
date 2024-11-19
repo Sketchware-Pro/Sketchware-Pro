@@ -37,6 +37,7 @@ import a.a.a.bB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
+import pro.sketchware.databinding.AddCustomListBinding;
 import pro.sketchware.databinding.AddCustomVariableBinding;
 import pro.sketchware.utility.SketchwareUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
@@ -223,44 +224,32 @@ public class LogicClickListener implements View.OnClickListener {
         dialog.a(R.drawable.add_96_blue);
         dialog.b("Add a new custom List");
 
-        LinearLayout root = new LinearLayout(logicEditor);
-        root.setOrientation(LinearLayout.VERTICAL);
+        AddCustomListBinding listBinding = AddCustomListBinding.inflate(logicEditor.getLayoutInflater());
 
-        TextInputLayout typeLayout = commonTextInputLayout();
-        EditText type = commonEditText("Type, e.g. ArrayList<Data>");
-        typeLayout.addView(type);
+        ZB validator = new ZB(getContext(), listBinding.nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
-        TextInputLayout nameLayout = commonTextInputLayout();
-        EditText name = commonEditText("Name, e.g. dataList");
-        nameLayout.addView(name);
-
-        root.addView(typeLayout);
-        root.addView(nameLayout);
-
-        ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
-
-        dialog.a(root);
+        dialog.a(listBinding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_add), v -> {
-            String variableType = type.getText().toString();
-            String variableName = name.getText().toString();
+            String variableType = listBinding.type.getText().toString();
+            String variableName = listBinding.name.getText().toString();
 
             boolean validType = !isEmpty(variableType);
             boolean validName = !isEmpty(variableName);
 
             if (validType) {
-                typeLayout.setError(null);
+                listBinding.typeLayout.setError(null);
             } else {
-                if (validName) typeLayout.requestFocus();
-                typeLayout.setError("Type can't be empty");
+                if (validName) listBinding.typeLayout.requestFocus();
+                listBinding.typeLayout.setError("Type can't be empty");
             }
 
-            CharSequence nameError = nameLayout.getError();
+            CharSequence nameError = listBinding.nameLayout.getError();
             if (nameError == null || "Name can't be empty".contentEquals(nameError)) {
                 if (validName) {
-                    nameLayout.setError(null);
+                    listBinding.nameLayout.setError(null);
                 } else {
-                    nameLayout.requestFocus();
-                    nameLayout.setError("Name can't be empty");
+                    listBinding.nameLayout.requestFocus();
+                    listBinding.nameLayout.setError("Name can't be empty");
                 }
             }
 
@@ -273,7 +262,7 @@ public class LogicClickListener implements View.OnClickListener {
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        typeLayout.requestFocus();
+        listBinding.typeLayout.requestFocus();
     }
 
     private void removeList() {
