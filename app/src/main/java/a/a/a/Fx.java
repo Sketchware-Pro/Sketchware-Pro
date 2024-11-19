@@ -580,6 +580,10 @@ public class Fx {
             case "listSetData":
                 opcode = String.format("%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, %s));", params.get(0), params.get(1));
                 break;
+            case "listSetCustomViewData":
+            case "recyclerSetCustomViewData":
+            case "spnSetCustomViewData":
+            case "pagerSetCustomViewData":
             case "gridSetCustomViewData":
                 opcode = String.format("%s.setAdapter(new %s(%s));", params.get(0), Lx.a(params.get(0)), params.get(1));
                 break;
@@ -850,7 +854,7 @@ public class Fx {
                 opcode = String.format("%s.isLooping()", params.get(0));
                 break;
             case "soundpoolCreate":
-                opcode = String.format("%s = new SoundPool((int)(%s), AudioManager.STREAM_MUSIC, 0)", params.get(0), params.get(1));
+                opcode = String.format("%s = new SoundPool((int)(%s), AudioManager.STREAM_MUSIC, 0);", params.get(0), params.get(1));
                 break;
             case "soundpoolLoad":
                 opcode = String.format("%s.load(getApplicationContext(), R.raw.%s, 1)", params.get(0), params.get(1));
@@ -860,7 +864,7 @@ public class Fx {
 
                 break;
             case "soundpoolStreamStop":
-                opcode = String.format("%s.stop((int)(%s))", params.get(0), params.get(1));
+                opcode = String.format("%s.stop((int)(%s));", params.get(0), params.get(1));
                 break;
             case "setThumbResource":
                 name = params.get(1).replaceAll("\\.9", "");
@@ -872,7 +876,7 @@ public class Fx {
 
                 break;
             case "seekBarSetProgress":
-                opcode = String.format("%s.setProgress((int)%s)", params.get(0), params.get(1));
+                opcode = String.format("%s.setProgress((int)%s);", params.get(0), params.get(1));
 
                 break;
             case "seekBarGetProgress":
@@ -880,7 +884,7 @@ public class Fx {
 
                 break;
             case "seekBarSetMax":
-                opcode = String.format("%s.setMax((int)%s)", params.get(0), params.get(1));
+                opcode = String.format("%s.setMax((int)%s);", params.get(0), params.get(1));
 
                 break;
             case "seekBarGetMax":

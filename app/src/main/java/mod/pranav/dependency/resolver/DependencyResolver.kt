@@ -8,27 +8,27 @@ import com.android.tools.r8.D8
 import com.android.tools.r8.D8Command
 import com.android.tools.r8.OutputMode
 import com.google.gson.Gson
+import kotlinx.coroutines.runBlocking
 import mod.agus.jcoderz.dx.command.dexer.Main
-import pro.sketchware.utility.FileUtil
 import mod.hey.studios.build.BuildSettings
 import mod.hey.studios.util.Helper
 import mod.jbk.build.BuiltInLibraries
+import okhttp3.internal.immutableListOf
 import org.cosmic.ide.dependency.resolver.api.Artifact
 import org.cosmic.ide.dependency.resolver.api.EventReciever
 import org.cosmic.ide.dependency.resolver.api.Repository
+import org.cosmic.ide.dependency.resolver.eventReciever
 import org.cosmic.ide.dependency.resolver.getArtifact
 import org.cosmic.ide.dependency.resolver.repositories
+import pro.sketchware.utility.FileUtil
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.regex.Pattern
 import java.util.zip.ZipFile
+import javax.xml.parsers.DocumentBuilderFactory
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
-import kotlinx.coroutines.runBlocking
-import okhttp3.internal.immutableListOf
-import org.cosmic.ide.dependency.resolver.eventReciever
-import javax.xml.parsers.DocumentBuilderFactory
 
 class DependencyResolver(
     private val groupId: String,
@@ -39,37 +39,16 @@ class DependencyResolver(
 ) {
     companion object {
         private val DEFAULT_REPOS = """
-            |[
-            |    {
-            |        "url": "https://repo.hortonworks.com/content/repositories/releases",
-            |        "name": "HortanWorks"
-            |    },
-            |    {
-            |        "url": "https://maven.atlassian.com/content/repositories/atlassian-public",
-            |        "name": "Atlassian"
-            |    },
-            |    {
-            |        "url": "https://jcenter.bintray.com",
-            |        "name": "JCenter"
-            |    },
-            |    {
-            |        "url": "https://oss.sonatype.org/content/repositories/releases",
-            |        "name": "Sonatype"
-            |    },
-            |    {
-            |        "url": "https://repo.spring.io/plugins-release",
-            |        "name": "Spring Plugins"
-            |    },
-            |    {
-            |        "url": "https://repo.spring.io/libs-milestone",
-            |        "name": "Spring Milestone"
-            |    },
-            |    {
-            |        "url": "https://repo.maven.apache.org/maven2",
-            |        "name": "Apache Maven"
-            |    }
-            |]
-            """.trimMargin()
+          |[
+          |    {"url": "https://repo.hortonworks.com/content/repositories/releases", "name": "HortanWorks"},
+          |    {"url": "https://maven.atlassian.com/content/repositories/atlassian-public", "name": "Atlassian"},
+          |    {"url": "https://jcenter.bintray.com", "name": "JCenter"},
+          |    {"url": "https://oss.sonatype.org/content/repositories/releases", "name": "Sonatype"},
+          |    {"url": "https://repo.spring.io/plugins-release", "name": "Spring Plugins"},
+          |    {"url": "https://repo.spring.io/libs-milestone", "name": "Spring Milestone"},
+          |    {"url": "https://repo.maven.apache.org/maven2", "name": "Apache Maven"}
+          |]
+        """.trimMargin()
     }
 
     private val downloadPath: String =
@@ -77,7 +56,9 @@ class DependencyResolver(
 
     private val repositoriesJson = Paths.get(
         Environment.getExternalStorageDirectory().absolutePath,
-        ".sketchware", "libs", "repositories.json"
+        ".sketchware",
+        "libs",
+        "repositories.json"
     )
 
     init {
@@ -127,7 +108,6 @@ class DependencyResolver(
         open fun invalidPackaging(artifact: Artifact) {}
     }
 
-
     fun resolveDependency(callback: DependencyResolverCallback) {
         eventReciever = callback
         // this is pretty much the same as `Artifact.downloadArtifact()`, but with some modifications for checks and callbacks
@@ -146,19 +126,16 @@ class DependencyResolver(
             }
         }
 
-        // basically, remove all the duplicates and keeps the latest among them
         val latestDeps =
             dependencies.groupBy { it.groupId to it.artifactId }.values.map { artifact -> artifact.maxBy { it.version } }
                 .toMutableList()
 
         val libraryJars = immutableListOf(
             BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.toPath()
-                .resolve("core-lambda-stubs.jar"),
-            Paths.get(
+                .resolve("core-lambda-stubs.jar"), Paths.get(
                 buildSettings.getValue(
                     BuildSettings.SETTING_ANDROID_JAR_PATH,
-                    BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH
-                        .resolve("android.jar").absolutePath
+                    BuiltInLibraries.EXTRACTED_COMPILE_ASSETS_PATH.resolve("android.jar").absolutePath
                 )
             )
         )
@@ -168,11 +145,9 @@ class DependencyResolver(
 
         classpath.split(":").forEach {
             if (it.isEmpty()) return@forEach
-
             dependencyClasspath.add(Paths.get(it))
         }
 
-        // download all the dependencies
         latestDeps.forEach { artifact ->
             callback.onResolving(artifact, dependency)
             if (artifact.version.startsWith("[")) {
@@ -188,12 +163,11 @@ class DependencyResolver(
                 callback.invalidPackaging(artifact)
                 return@forEach
             }
-            val path =
-                Paths.get(
-                    downloadPath,
-                    "${artifact.artifactId}-v${artifact.version}",
-                    "classes.${artifact.extension}"
-                )
+            val path = Paths.get(
+                downloadPath,
+                "${artifact.artifactId}-v${artifact.version}",
+                "classes.${artifact.extension}"
+            )
             if (Files.exists(path)) {
                 callback.onSkippingResolution(artifact)
             }
@@ -207,12 +181,9 @@ class DependencyResolver(
                     return@forEach
                 }
                 dependencyClasspath.add(
-                    if (ext == "jar") path else
-                        Paths.get(
-                            downloadPath,
-                            "${artifact.artifactId}-v${artifact.version}",
-                            "classes.jar"
-                        )
+                    if (ext == "jar") path else Paths.get(
+                        downloadPath, "${artifact.artifactId}-v${artifact.version}", "classes.jar"
+                    )
                 )
             } catch (e: Exception) {
                 callback.onDownloadError(artifact, e)
@@ -229,18 +200,17 @@ class DependencyResolver(
                     findPackageName(path.parent.toAbsolutePath().toString(), artifact.groupId)
                 path.parent.resolve("config").writeText(packageName)
             }
-            val jar = if (ext == "jar") path else
-                Paths.get(
-                    downloadPath,
-                    "${artifact.artifactId}-v${artifact.version}",
-                    "classes.jar"
-                )
+            val jar = if (ext == "jar") path else Paths.get(
+                downloadPath, "${artifact.artifactId}-v${artifact.version}", "classes.jar"
+            )
             if (Files.notExists(jar)) {
                 return@forEach
             }
             callback.dexing(artifact)
             try {
-                compileJar(jar, dependencyClasspath.toMutableList().apply { remove(jar) }, libraryJars)
+                compileJar(
+                    jar, dependencyClasspath.toMutableList().apply { remove(jar) }, libraryJars
+                )
                 callback.onResolutionComplete(artifact)
             } catch (e: Exception) {
                 callback.dexingFailed(artifact, e)
@@ -253,8 +223,6 @@ class DependencyResolver(
     private fun findPackageName(path: String, defaultValue: String): String {
         val files = ArrayList<String>()
         FileUtil.listDir(path, files)
-
-        // Method 1: use manifest
         for (f in files) {
             if (Uri.parse(f).lastPathSegment == "AndroidManifest.xml") {
                 val content = FileUtil.readFile(f)
@@ -265,22 +233,22 @@ class DependencyResolver(
                 }
             }
         }
-
-        // Method 2: screw manifest. use dependency
         return defaultValue
     }
 
     private fun unzip(path: Path) {
         val zipFile = ZipFile(path.toFile())
-        zipFile.entries().asSequence().forEach { entry ->
-            val entryDestination = path.parent.resolve(entry.name)
-            if (entry.isDirectory) {
-                Files.createDirectories(entryDestination)
-            } else {
-                Files.createDirectories(entryDestination.parent)
-                zipFile.getInputStream(entry).use { input ->
-                    Files.newOutputStream(entryDestination).use { output ->
-                        input.copyTo(output)
+        zipFile.use { zip ->
+            zip.entries().asSequence().forEach { entry ->
+                val entryDestination = path.parent.resolve(entry.name)
+                if (entry.isDirectory) {
+                    Files.createDirectories(entryDestination)
+                } else {
+                    Files.createDirectories(entryDestination.parent)
+                    zip.getInputStream(entry).use { input ->
+                        Files.newOutputStream(entryDestination).use { output ->
+                            input.copyTo(output)
+                        }
                     }
                 }
             }
@@ -290,14 +258,9 @@ class DependencyResolver(
     private fun compileJar(jarFile: Path, jars: List<Path>, libraryJars: List<Path>) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             D8.run(
-                D8Command.builder()
-                    .setIntermediate(true)
-                    .setMode(CompilationMode.RELEASE)
-                    .addProgramFiles(jarFile)
-                    .addLibraryFiles(libraryJars)
-                    .addClasspathFiles(jars)
-                    .setOutput(jarFile.parent, OutputMode.DexIndexed)
-                    .build()
+                D8Command.builder().setIntermediate(true).setMode(CompilationMode.RELEASE)
+                    .addProgramFiles(jarFile).addLibraryFiles(libraryJars).addClasspathFiles(jars)
+                    .setOutput(jarFile.parent, OutputMode.DexIndexed).build()
             )
             return
         }

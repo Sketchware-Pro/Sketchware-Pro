@@ -120,7 +120,7 @@ public class OldResourceIdMapper {
             case 2131165295 -> R.drawable.activity_preset_3;
             case 2131165296 -> R.drawable.activity_preset_4;
             case 2131165297 -> R.drawable.ad_label;
-            case 2131165298 -> R.drawable.add_96_blue;
+            case 2131165298 -> R.drawable.ic_mtrl_add;
             case 2131165299 -> R.drawable.add_new_48_gray;
             case 2131165300 -> R.drawable.add_new_48_orange;
             case 2131165301 -> R.drawable.add_white_space_48;

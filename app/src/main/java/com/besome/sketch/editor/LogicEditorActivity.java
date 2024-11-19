@@ -17,7 +17,6 @@ import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -71,10 +70,8 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import pro.sketchware.R;
-import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
-import pro.sketchware.databinding.ViewStringEditorAddBinding;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -124,6 +121,7 @@ import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.bobur.StringEditorActivity;
 import pro.sketchware.menu.ExtraMenuBean;
+
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
@@ -131,9 +129,15 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
+
+import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
+import pro.sketchware.databinding.ViewStringEditorAddBinding;
+import pro.sketchware.menu.ExtraMenuBean;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.SvgUtils;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -287,16 +291,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public final void G() {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_add_new_list));
-        aBVar.a(R.drawable.add_96_blue);
+        aBVar.a(R.drawable.ic_mtrl_add);
         View a2 = wB.a(this, R.layout.logic_popup_add_list);
         RadioGroup radioGroup = a2.findViewById(R.id.rg_type);
-        EditText editText = a2.findViewById(R.id.ed_input);
-        ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.logic_editor_hint_enter_variable_name));
-        ((TextView) a2.findViewById(R.id.rb_int)).setText(getTranslatedString(R.string.logic_variable_type_number));
-        ((TextView) a2.findViewById(R.id.rb_string)).setText(getTranslatedString(R.string.logic_variable_type_string));
-        ((TextView) a2.findViewById(R.id.rb_map)).setText(getTranslatedString(R.string.logic_variable_type_map));
+        TextInputEditText editText = a2.findViewById(R.id.ed_input);
         ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
-        editText.setPrivateImeOptions("defaultInputmode=english;");
         aBVar.a(a2);
         aBVar.b(getTranslatedString(R.string.common_word_add), v -> {
             if (zb.b()) {
@@ -321,17 +320,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private void showAddNewVariableDialog() {
         aB dialog = new aB(this);
         dialog.b(getTranslatedString(R.string.logic_editor_title_add_new_variable));
-        dialog.a(R.drawable.add_96_blue);
+        dialog.a(R.drawable.ic_mtrl_add);
 
         View customView = wB.a(this, R.layout.logic_popup_add_variable);
         RadioGroup radioGroup = customView.findViewById(R.id.rg_type);
-        EditText editText = customView.findViewById(R.id.ed_input);
-        ((TextInputLayout) customView.findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.logic_editor_hint_enter_variable_name));
-        editText.setPrivateImeOptions("defaultInputmode=english;");
-        ((TextView) customView.findViewById(R.id.rb_boolean)).setText(getTranslatedString(R.string.logic_variable_type_boolean));
-        ((TextView) customView.findViewById(R.id.rb_int)).setText(getTranslatedString(R.string.logic_variable_type_number));
-        ((TextView) customView.findViewById(R.id.rb_string)).setText(getTranslatedString(R.string.logic_variable_type_string));
-        ((TextView) customView.findViewById(R.id.rb_map)).setText(getTranslatedString(R.string.logic_variable_type_map));
+        TextInputEditText editText = customView.findViewById(R.id.ed_input);
         ZB nameValidator = new ZB(getContext(), customView.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
         dialog.a(customView);
         dialog.b(getTranslatedString(R.string.common_word_add), v -> {
@@ -572,7 +565,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public final void J() {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_remove_list));
-        aBVar.a(R.drawable.delete_96);
+        aBVar.a(R.drawable.ic_mtrl_delete);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         for (Pair<Integer, String> list : jC.a(B).j(M.getJavaName())) {
@@ -604,7 +597,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public final void K() {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_remove_variable));
-        aBVar.a(R.drawable.delete_96);
+        aBVar.a(R.drawable.ic_mtrl_delete);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         for (Pair<Integer, String> next : jC.a(B).k(M.getJavaName())) {
@@ -743,17 +736,23 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             if (z) {
                 imageView.setImageResource(getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
             } else {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    fromFile = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".provider", new File(jC.d(B).f(str)));
+                File file = new File(jC.d(B).f(str));
+                if (file.exists()) {
+                    Context context = getContext();
+                    fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
+                    if (file.getAbsolutePath().endsWith(".xml")) {
+                        SvgUtils svgUtils = new SvgUtils(this);
+                        FilePathUtil fpu = new FilePathUtil();
+                        svgUtils.loadImage(imageView, fpu.getSvgFullPath(B, str));
+                    } else {
+                        Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
+                    }
                 } else {
-                    fromFile = Uri.fromFile(new File(jC.d(B).f(str)));
+                    imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 }
-                Glide.with(this).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
             }
-            imageView.setBackgroundColor(0xffbdbdbd);
-        } else {
-            imageView.setBackgroundColor(Color.WHITE);
         }
+        imageView.setBackgroundResource(R.drawable.bg_outline);
         linearLayout.addView(imageView);
         return linearLayout;
     }
@@ -1725,6 +1724,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         n.setLayoutParams(layoutParams);
         n.requestLayout();
     }
+
     public void f(Ss ss) {
         aB dialog = new aB(this);
         View customView = wB.a(this, R.layout.property_popup_selector_single);
@@ -1785,6 +1785,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
+
     public final void f(boolean z) {
         N.e(z);
     }

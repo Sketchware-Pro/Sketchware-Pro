@@ -14,7 +14,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.tabs.TabLayout;
-import pro.sketchware.R;
 
 import java.lang.ref.WeakReference;
 
@@ -24,6 +23,7 @@ import a.a.a.St;
 import a.a.a.Zt;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class ManageFontActivity extends BaseAppCompatActivity {
 
@@ -112,8 +112,8 @@ public class ManageFontActivity extends BaseAppCompatActivity {
 
         public TabLayoutAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
-            labels[0] = Helper.getResString(R.string.design_manager_tab_title_this_project).toUpperCase();
-            labels[1] = Helper.getResString(R.string.design_manager_tab_title_my_collection).toUpperCase();
+            labels[0] = Helper.getResString(R.string.design_manager_tab_title_this_project);
+            labels[1] = Helper.getResString(R.string.design_manager_tab_title_my_collection);
         }
 
         @Override

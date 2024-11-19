@@ -14,14 +14,12 @@ public class kq {
             case "getResStr":
                     return 0xff7c83db;
             case "getVar":
-                if (blockType.equals("v")) {
-                    return viewType;
-                } else if (blockType.equals("p")) {
-                    return 0xff2ca5e2;
-                } else if (!blockType.equals("l")) {
-                    return 0xffee7d16;
-                }
-                break;
+                return switch (blockType) {
+                    case "v" -> viewType;
+                    case "p" -> 0xff2ca5e2;
+                    case "l" -> 0xffcc5b22;
+                    default -> 0xffee7d16;
+                };
             case "addListInt":
             case "insertListInt":
             case "deleteList":
@@ -355,7 +353,6 @@ public class kq {
                 return 0xff8a55d7;
         }
 
-        return viewType;
     }
     public static String a(int listType) {
         return switch (listType) {

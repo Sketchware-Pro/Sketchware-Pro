@@ -11,7 +11,6 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,8 +20,6 @@ import android.widget.TextView;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
-import pro.sketchware.R;
-import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -36,15 +33,16 @@ import a.a.a.SB;
 import a.a.a.TB;
 import a.a.a._B;
 import a.a.a.aB;
-import a.a.a.lC;
-import a.a.a.yB;
 import a.a.a.jC;
+import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wB;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
+import a.a.a.yB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyPopupInputTextBinding;
+import pro.sketchware.utility.FileUtil;
 
 @SuppressLint("ViewConstructor")
 public class PropertyInputItem extends RelativeLayout implements View.OnClickListener {
@@ -126,7 +124,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         if (!mB.a()) {
             switch (key) {
                 case "property_id" -> showViewIdDialog();
-                case "property_text", "property_hint" -> showTextInputDialog(9999 , false);
+                case "property_text", "property_hint" -> showTextInputDialog(9999, false);
                 case "property_weight", "property_weight_sum", "property_rotate", "property_lines",
                      "property_max", "property_progress" -> showNumberInputDialog();
                 case "property_alpha" -> showNumberDecimalInputDialog(0, 1);
@@ -174,10 +172,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.a(icon);
         View view = wB.a(getContext(), R.layout.property_popup_input_text);
         EditText input = view.findViewById(R.id.ed_input);
-        input.setPrivateImeOptions("defaultInputmode=english;");
         input.setLines(1);
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        input.setImeOptions(EditorInfo.IME_ACTION_DONE);
         _B validator = new _B(context, view.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
         validator.a(value);
         dialog.a(view);
@@ -322,10 +317,12 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     public void setupTextWatcher(TextInputLayout textAutoCompleteInput, MaterialAutoCompleteTextView editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
