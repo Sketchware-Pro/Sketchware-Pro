@@ -118,6 +118,8 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.SvgUtils;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -510,17 +512,23 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             if (z) {
                 imageView.setImageResource(getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
             } else {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    fromFile = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".provider", new File(jC.d(B).f(str)));
+                File file = new File(jC.d(B).f(str));
+                if (file.exists()) {
+                    Context context = getContext();
+                    fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
+                    if (file.getAbsolutePath().endsWith(".xml")) {
+                        SvgUtils svgUtils = new SvgUtils(this);
+                        FilePathUtil fpu = new FilePathUtil();
+                        svgUtils.loadImage(imageView, fpu.getSvgFullPath(B, str));
+                    } else {
+                        Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
+                    }
                 } else {
-                    fromFile = Uri.fromFile(new File(jC.d(B).f(str)));
+                    imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 }
-                Glide.with(this).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
             }
-            imageView.setBackgroundColor(0xffbdbdbd);
-        } else {
-            imageView.setBackgroundColor(Color.WHITE);
         }
+        imageView.setBackgroundResource(R.drawable.bg_outline);
         linearLayout.addView(imageView);
         return linearLayout;
     }
