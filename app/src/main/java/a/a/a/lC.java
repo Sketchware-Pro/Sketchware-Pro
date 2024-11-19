@@ -4,22 +4,24 @@ import android.content.Context;
 import android.util.Log;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 public class lC {
     public static DB a;
 
-    public static class a implements Comparator<String> {
-        public int a(Integer num, Integer num2) {
-            return num.compareTo(num2);
+    public static class a implements Comparator<Integer> {
+        public a() {
         }
 
+        public int a(Integer var1, Integer var2) {
+            return var1.compareTo(var2);
+        }
 
         @Override
-        public int compare(String o1, String o2) {
+        public int compare(Integer o1, Integer o2) {
             return 0;
         }
     }
@@ -219,43 +221,47 @@ public class lC {
     }
 
     public static String c() {
-        ArrayList<HashMap<String, Object>> a = a();
-        ArrayList<String> arrayList  = new ArrayList<>();
-        Iterator it = a.iterator();
-        while (true) {
-            String str = "NewProject";
-            if (!it.hasNext()) {
+        ArrayList var0 = a();
+        ArrayList var1 = new ArrayList();
+        Iterator var7 = var0.iterator();
+
+        while(var7.hasNext()) {
+            String var2 = yB.c((HashMap)var7.next(), "my_ws_name");
+            if (var2.equals("NewProject")) {
+                var1.add(1);
+            } else if (var2.indexOf("NewProject") == 0) {
+                try {
+                    var1.add(Integer.parseInt(var2.substring(10)));
+                } catch (Exception var6) {
+                }
+            }
+        }
+
+        Collections.sort(var1, new a());
+        int var3 = 0;
+        Iterator var8 = var1.iterator();
+
+        while(var8.hasNext()) {
+            int var4 = (Integer)var8.next();
+            int var5 = var3 + 1;
+            if (var4 == var5) {
+                var3 = var5;
+            } else {
+                if (var4 == var3) {
+                    continue;
+                }
                 break;
             }
-            String c = yB.c((Map<String, Object>) it.next(), "my_ws_name");
-            if (c.equals(str)) {
-                arrayList.add(c);
-            } else if (c.indexOf(str) == 0) {
-                try {
-                    arrayList.add(String.valueOf(Integer.parseInt(c.substring(10))));
-                } catch (Exception ignored) {
-                }
-            }
         }
-        arrayList.sort(new a());
-        it = ((ArrayList<?>) arrayList).iterator();
-        int i = 0;
-        while (it.hasNext()) {
-            int intValue = (Integer) it.next();
-            int i2 = i + 1;
-            if (intValue != i2) {
-                if (intValue != i) {
-                    break;
-                }
-            } else {
-                i = i2;
-            }
+
+        if (var3 == 0) {
+            return "NewProject";
+        } else {
+            StringBuilder var9 = new StringBuilder();
+            var9.append("NewProject");
+            var9.append(var3 + 1);
+            return var9.toString();
         }
-        String str = arrayList.get(i);
-        if (i == 0) {
-            return str;
-        }
-        return str +  (i + 1);
     }
 
     public static void d() {
