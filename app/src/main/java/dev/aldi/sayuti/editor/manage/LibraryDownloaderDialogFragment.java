@@ -213,7 +213,7 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
                             var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);
                             enabledLibs.addAll(dependencies.stream()
                                     .map(name -> ManageLocalLibraryActivity.createLibraryMap(name, dependencyName))
-                                    .collect(Collectors.toList())); // Replaced toList() with collect(Collectors.toList())
+                                    .collect(Collectors.toList()));
                             FileUtil.writeFile(local_lib_file, gson.toJson(enabledLibs));
                         }
                         if (getActivity() == null) return;
