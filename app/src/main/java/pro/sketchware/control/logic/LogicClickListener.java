@@ -3,16 +3,13 @@ package pro.sketchware.control.logic;
 import static android.text.TextUtils.isEmpty;
 import static pro.sketchware.SketchApplication.getContext;
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
-import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.content.Context;
-import android.text.InputType;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.editor.LogicEditorActivity;
-import com.google.android.material.textfield.TextInputLayout;
+
 import pro.sketchware.R;
 
 import java.util.ArrayList;
@@ -306,39 +303,6 @@ public class LogicClickListener implements View.OnClickListener {
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
-    }
-
-    private TextInputLayout commonTextInputLayout() {
-        TextInputLayout textInputLayout = new TextInputLayout(logicEditor);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(
-                (int) getDip(8),
-                0,
-                (int) getDip(8),
-                0
-        );
-        textInputLayout.setLayoutParams(layoutParams);
-        return textInputLayout;
-    }
-
-    private EditText commonEditText(String hint) {
-        EditText editText = new EditText(logicEditor);
-        editText.setLayoutParams(new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT));
-        editText.setPadding(
-                (int) getDip(4),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8)
-        );
-        editText.setTextSize(16f);
-        editText.setHint(hint);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
-        editText.setPrivateImeOptions("defaultInputmode=english;");
-        return editText;
     }
 
     private static class RemoveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
