@@ -15,7 +15,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
-import pro.sketchware.databinding.LibraryDownloaderDialogBinding;
 
 import org.cosmic.ide.dependency.resolver.api.Artifact;
 
@@ -24,12 +23,13 @@ import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuiltInLibraries;
 import mod.pranav.dependency.resolver.DependencyResolver;
+import pro.sketchware.databinding.LibraryDownloaderDialogBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class LibraryDownloaderDialogFragment extends DialogFragment {
     private LibraryDownloaderDialogBinding binding;
@@ -44,7 +44,7 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        binding = LibraryDownloaderDialogBinding.inflate(LayoutInflater.from(getContext()));
+        binding = LibraryDownloaderDialogBinding.inflate(getLayoutInflater());
         initVariables();
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());

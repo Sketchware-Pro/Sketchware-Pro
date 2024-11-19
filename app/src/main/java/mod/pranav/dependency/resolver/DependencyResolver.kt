@@ -39,7 +39,8 @@ class DependencyResolver(
 ) {
     companion object {
         private val DEFAULT_REPOS = """
-          |[|    {"url": "https://repo.hortonworks.com/content/repositories/releases", "name": "HortanWorks"},
+          |[
+          |    {"url": "https://repo.hortonworks.com/content/repositories/releases", "name": "HortanWorks"},
           |    {"url": "https://maven.atlassian.com/content/repositories/atlassian-public", "name": "Atlassian"},
           |    {"url": "https://jcenter.bintray.com", "name": "JCenter"},
           |    {"url": "https://oss.sonatype.org/content/repositories/releases", "name": "Sonatype"},
