@@ -15,20 +15,21 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
-import pro.sketchware.databinding.LibraryDownloaderDialogBinding;
 
 import org.cosmic.ide.dependency.resolver.api.Artifact;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuiltInLibraries;
 import mod.pranav.dependency.resolver.DependencyResolver;
+import pro.sketchware.databinding.LibraryDownloaderDialogBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class LibraryDownloaderDialogFragment extends DialogFragment {
     private LibraryDownloaderDialogBinding binding;
@@ -43,7 +44,7 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        binding = LibraryDownloaderDialogBinding.inflate(LayoutInflater.from(getContext()));
+        binding = LibraryDownloaderDialogBinding.inflate(getLayoutInflater());
         initVariables();
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
@@ -212,7 +213,7 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
                             var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);
                             enabledLibs.addAll(dependencies.stream()
                                     .map(name -> ManageLocalLibraryActivity.createLibraryMap(name, dependencyName))
-                                    .toList());
+                                    .collect(Collectors.toList()));
                             FileUtil.writeFile(local_lib_file, gson.toJson(enabledLibs));
                         }
                         if (getActivity() == null) return;
@@ -234,4 +235,3 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
         setCancelable(!downloading);
     }
 }
-
