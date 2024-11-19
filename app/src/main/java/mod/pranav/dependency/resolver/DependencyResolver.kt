@@ -129,6 +129,7 @@ class DependencyResolver(
 
     fun resolveDependency(callback: DependencyResolverCallback) {
         eventReciever = callback
+        // this is pretty much the same as `Artifact.downloadArtifact()`, but with some modifications for checks and callbacks
         val dependency = getArtifact(groupId, artifactId, version)
 
         if (dependency == null) {
