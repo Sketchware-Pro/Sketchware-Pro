@@ -184,11 +184,10 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
     private void showLauncherActDialog(String actnamr) {
         aB dialog = new aB(this);
-        dialog.a(R.drawable.recycling_48);
+        dialog.a(R.drawable.ic_mtrl_lifecycle);
         dialog.b(Helper.getResString(R.string.change_launcher_activity_dialog_title));
-        View view = wB.a(this, R.layout.dialog_change_launcher_activity);
+        View view = wB.a(this, R.layout.dialog_add_custom_activity);
 
-        final TextInputLayout activity_name_input_layout = view.findViewById(R.id.activity_name_input_layout);
         final TextInputEditText activity_name_input = view.findViewById(R.id.activity_name_input);
 
         activity_name_input.setText(actnamr);
@@ -210,11 +209,10 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     // if you change method name, you need also change it in layout
     public void showAddActivityDialog(View view) {
         aB dialog = new aB(this);
-        dialog.a(R.drawable.add_96_blue);
+        dialog.a(R.drawable.ic_mtrl_add);
         dialog.b(Helper.getResString(R.string.common_word_add_activtiy));
         View inflate = wB.a(this, R.layout.dialog_add_custom_activity);
 
-        final TextInputLayout activity_name_input_layout = inflate.findViewById(R.id.activity_name_input_layout);
         final TextInputEditText activity_name_input = inflate.findViewById(R.id.activity_name_input);
 
         activity_name_input.setText(activityName);

@@ -79,7 +79,7 @@ public class AddAppIdStepView extends LinearLayout implements Uu, View.OnClickLi
     private void showAddAppIdDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_app_id));
-        dialog.a(R.drawable.add_96_blue);
+        dialog.a(R.drawable.ic_mtrl_add);
         ManageLibrarySettingAdmobAppIdAddBinding addBinding = ManageLibrarySettingAdmobAppIdAddBinding.inflate(dialog.getLayoutInflater());
         EditText edAppId = addBinding.edAppId;
         edAppId.setText(appId);
