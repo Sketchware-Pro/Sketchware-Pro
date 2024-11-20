@@ -1,5 +1,7 @@
 package mod.jbk.editor.manage.library;
 
+import static pro.sketchware.utility.SketchwareUtil.getDip;
+
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Environment;
@@ -274,6 +276,12 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
         aB dialog = new aB(this);
         dialog.b("Select built-in libraries");
         RecyclerView list = new RecyclerView(this);
+        list.setPadding(
+            (int) getDip(20),
+            (int) getDip(8),
+            (int) getDip(20),
+            (int) getDip(0)
+        );
 
         // magic to initialize scrollbars even without android:scrollbars defined in XML
         // https://stackoverflow.com/a/48698300/10929762
