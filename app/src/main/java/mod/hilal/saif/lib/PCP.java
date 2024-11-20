@@ -30,22 +30,12 @@ public class PCP implements Zx.b {
     public void a(int i) {
         if (ii) {
             e.setText(String.format("#%08X", i));
-            return;
         }
-        if (dialog != null) {
-            dialog.show();
-        }
-        e.setText(String.format("#%08X", i));
     }
      @Override
-    public void a(String i, int i2) {
+    public void a(String i2, int i) {
         if (ii) {
             e.setText(String.format("#%08X", i));
-            return;
         }
-        if (dialog != null) {
-            dialog.show();
-        }
-        e.setText(String.format("#%08X", i));
     }
 }
