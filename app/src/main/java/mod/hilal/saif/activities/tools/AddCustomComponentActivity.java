@@ -46,6 +46,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
         super.onCreate(_savedInstanceState);
         binding = ManageCustomComponentAddBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        handleInsetts(binding.getRoot());
         init();
     }
 

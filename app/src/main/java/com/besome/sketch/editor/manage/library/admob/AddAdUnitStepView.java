@@ -48,7 +48,7 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
     private void createAdUnit() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(Helper.getResString(R.string.design_library_admob_dialog_add_adunit_title));
-        dialog.a(R.drawable.add_96_blue);
+        dialog.a(R.drawable.ic_mtrl_add);
         View rootView = wB.a(getContext(), R.layout.manage_library_setting_admob_adunit_add);
 
         TextInputLayout tiName = rootView.findViewById(R.id.ti_name);
