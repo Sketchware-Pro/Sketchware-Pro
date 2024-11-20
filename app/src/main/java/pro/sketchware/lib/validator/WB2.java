@@ -45,15 +45,12 @@ public class WB2 extends MB {
         int i4;
         String trim = charSequence.toString().trim();
         if (trim.length() < 3) {
-            this.b.setErrorEnabled(true);
             textInputLayout = this.b;
             a2 = xB.b().a(this.a, R.string.invalid_value_min_lenth, 3);
         } else if (trim.length() > 70) {
-            this.b.setErrorEnabled(true);
             textInputLayout = this.b;
             a2 = xB.b().a(this.a, R.string.invalid_value_max_lenth, 70);
         } else if (trim.equals("default_image") || "NONE".equalsIgnoreCase(trim) || (!trim.equals(this.h) && (fontNames != null && this.fontNames.contains(trim)))) {
-            this.b.setErrorEnabled(true);
             textInputLayout = this.b;
             a2 = xB.b().a(this.a, R.string.common_message_name_unavailable);
         } else {
@@ -63,7 +60,6 @@ public class WB2 extends MB {
             while (true) {
                 if (i5 < length) {
                     if (charSequence.toString().equals(strArr[i5])) {
-                        this.b.setErrorEnabled(true);
                         textInputLayout = this.b;
                         b = xB.b();
                         context = this.a;
@@ -73,16 +69,14 @@ public class WB2 extends MB {
                     i5++;
                 } else if (Character.isLetter(charSequence.charAt(0))) {
                     if (this.pattern.matcher(charSequence.toString()).matches()) {
-                        this.b.setErrorEnabled(false);
+                        this.b.setError(null);
                         this.d = true;
                         return;
                     }
-                    this.b.setErrorEnabled(true);
                     this.b.setError(xB.b().a(this.a, R.string.invalid_value_rule_4));
                     this.d = false;
                     return;
                 } else {
-                    this.b.setErrorEnabled(true);
                     textInputLayout = this.b;
                     b = xB.b();
                     context = this.a;
