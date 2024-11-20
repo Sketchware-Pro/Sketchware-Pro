@@ -1,5 +1,7 @@
 package mod.elfilibustero.sketch.lib.ui;
 
+import static pro.sketchware.utility.SketchwareUtil.getDip;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -95,6 +97,12 @@ public class SketchFilePickerDialog extends aB {
 
     public void init() {
         var recyclerView = new RecyclerView(activity);
+        recyclerView.setPadding(
+            (int) getDip(20),
+            (int) getDip(8),
+            (int) getDip(20),
+            (int) getDip(0)
+        );
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         adapter = new FileAdapter(fileList);
         recyclerView.setAdapter(adapter);
