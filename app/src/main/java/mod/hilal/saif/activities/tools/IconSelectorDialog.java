@@ -1,37 +1,34 @@
 package mod.hilal.saif.activities.tools;
 
-import static pro.sketchware.utility.SketchwareUtil.getDip;
-
 import android.app.Activity;
-import android.os.Bundle;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
-import pro.sketchware.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import mod.jbk.util.OldResourceIdMapper;
+import pro.sketchware.databinding.DialogIconSelectorBinding;
+import pro.sketchware.databinding.ItemIconSelectorBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import a.a.a.aB;
-import mod.jbk.util.OldResourceIdMapper;
+public class IconSelectorDialog {
 
-public class IconSelectorDialog extends aB {
-
+    private final Activity activity;
     private final List<Integer> data;
-    private final EditText ed;
-    private ViewGroup base;
+    private final TextView toSetText;
+    private AlertDialog builder;
 
-    public IconSelectorDialog(Activity activity, EditText editText) {
-        super(activity);
-        ed = editText;
+    public IconSelectorDialog(Activity activity, TextView toSetText) {
+        this.activity = activity;
+        this.toSetText = toSetText;
 
         data = new ArrayList<>(OldResourceIdMapper.HIGHEST_ID - OldResourceIdMapper.LOWEST_ID);
         for (int i = OldResourceIdMapper.LOWEST_ID; i < OldResourceIdMapper.HIGHEST_ID; i++) {
@@ -39,57 +36,27 @@ public class IconSelectorDialog extends aB {
         }
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_events);
+    public void show() {
+        DialogIconSelectorBinding dialogBinding = DialogIconSelectorBinding.inflate(LayoutInflater.from(activity));
 
-        RecyclerView dump = findViewById(R.id.list_events);
-        base = (ViewGroup) dump.getParent();
-        base.removeView(dump);
-        setUpViews();
-    }
-
-    public void setUpViews() {
-        GridView gridView = new GridView(getContext());
-        gridView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));
-        gridView.setNumColumns(6);
-        gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-        gridView.setOnItemClickListener((parent, view, position, id) -> {
-            ed.setText(String.valueOf(data.get(position)));
-            dismiss();
-        });
-        base.addView(gridView);
+        GridView gridView = dialogBinding.gridView;
         gridView.setAdapter(new IconListAdapter(data));
-        ((BaseAdapter) gridView.getAdapter()).notifyDataSetChanged();
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            toSetText.setText(String.valueOf(data.get(position)));
+            builder.dismiss();
+        });
 
-        String iconIdInput = ed.getText().toString();
+        String iconIdInput = toSetText.getText().toString();
         if (!iconIdInput.isEmpty() && OldResourceIdMapper.isValidIconId(iconIdInput)) {
             gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(iconIdInput)));
         }
-    }
 
-    private View createIcon(int oldResourceId) {
-        LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT));
-        linearLayout.setGravity(Gravity.CENTER);
-        ImageView imageView = new ImageView(getContext());
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(
-                (int) getDip(50),
-                (int) getDip(50)));
-        imageView.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(oldResourceId));
-        imageView.setPadding(
-                (int) getDip(4),
-                (int) getDip(4),
-                (int) getDip(4),
-                (int) getDip(4)
-        );
-        linearLayout.addView(imageView);
-        return linearLayout;
+        builder = new MaterialAlertDialogBuilder(activity)
+            .setTitle("Select an icon")
+            .setView(dialogBinding.getRoot())
+            .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+            .create();
+        builder.show();
     }
 
     private class IconListAdapter extends BaseAdapter {
@@ -117,7 +84,21 @@ public class IconSelectorDialog extends aB {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            return createIcon(getItem(position));
+            ItemIconSelectorBinding itemBinding;
+            if (convertView == null) {
+                itemBinding = ItemIconSelectorBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+                convertView = itemBinding.getRoot();
+                convertView.setTag(itemBinding);
+            } else {
+                itemBinding = (ItemIconSelectorBinding) convertView.getTag();
+            }
+
+            int oldResourceId = getItem(position);
+            itemBinding.iconImage.setImageResource(
+                OldResourceIdMapper.getDrawableFromOldResourceId(oldResourceId)
+            );
+
+            return convertView;
         }
     }
 }
