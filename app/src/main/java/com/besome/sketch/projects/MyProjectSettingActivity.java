@@ -71,6 +71,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private int projectVersionNameSecondPart;
     private boolean shownPackageNameChangeWarning;
     private boolean isIconAdaptive;
+    private Bitmap icon;
     private String sc_id;
 
     @Override
@@ -198,9 +199,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
         if (requestCode == REQUEST_CODE_CREATE_ICON && resultCode == RESULT_OK) {
             if (data.getParcelableExtra("appIco") != null) {
-                Bitmap bitmap = data.getParcelableExtra("appIco");
+                Bitmap icon = data.getParcelableExtra("appIco");
                 isIconAdaptive = data.getBooleanExtra("isIconAdaptive", false);
-                saveBitmapTo(bitmap,getCustomIconPath());
                 binding.appIcon.setImageBitmap(data.getParcelableExtra("appIco"));
                 projectHasCustomIcon = true;
             }
@@ -220,6 +220,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             mB.a(v);
             if (isInputValid()) {
                 new SaveProjectAsyncTask(getApplicationContext()).execute();
+                saveBitmapTo(icon ,getCustomIconPath());
             }
         } else if (id == R.id.cancel) {
             finish();
