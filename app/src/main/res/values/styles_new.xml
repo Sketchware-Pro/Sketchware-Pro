@@ -111,6 +111,7 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">14dp</item>
     </style>
+    <!--    end AutoCompleteTextInputEditTextStyle    -->
 
     <style name="ChipStyle.SWPro.Chip.Rounded" parent="">
         <item name="chipCornerRadius">5dp</item>
@@ -139,7 +140,6 @@
         <item name="android:minHeight">48dp</item>
     </style>
 
-
     <style name="error_appearance" parent="@android:style/TextAppearance">
         <item name="android:textSize">12sp</item>
     </style>
@@ -149,5 +149,15 @@
         <item name="android:fontFamily">@font/gilroy</item>
         <item name="fontFamily">@font/gilroy</item>
     </style>
-    <!--    end AutoCompleteTextInputEditTextStyle    -->
+
+    <style name="RoundedCornersDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="dialogCornerRadius">16dp</item>
+        <item name="android:background">?attr/colorSurfaceContainer</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
 </resources>
