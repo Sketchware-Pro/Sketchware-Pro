@@ -374,7 +374,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         });
 
         binding.openColorPalette.setOnClickListener(v1 -> {
-            final Zx zx = new Zx(this, 0, true, false);
+            final Zx zx = new Zx(this, 0, false, false);
             zx.a(new PCP(this, binding.colorEditText, dialog));
             zx.showAtLocation(binding.openColorPalette, Gravity.CENTER, 0, 0);
         });
