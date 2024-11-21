@@ -400,15 +400,19 @@ public class ExtraPaletteBlock {
                 convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
 
+                logicEditor.b("Add new String", "XmlString.Add");
+                logicEditor.b("Remove String(s)", "XmlString.remove");
+                logicEditor.b("Open String editor", "openStringEditor");
+
                 logicEditor.a("s", "getResString");
                 logicEditor.a("Saved Res Strings :", 0xff555555);
                 if (!isXmlStringsContains(StringsListMap, "app_name")) {
-                    logicEditor.a("s", "getAppName");
+                    logicEditor.a("app_name", "s", "getResStr").setTag("S98ZCSapp_name");
                 }
 
-                for (HashMap<String, Object> map : StringsListMap) {
-                    String key = map.get("key").toString();
-                    logicEditor.a("s", "S98ZCS" + key);
+                for (int i = 0; i < StringsListMap.size(); i++) {
+                    String key = StringsListMap.get(i).get("key").toString();
+                    logicEditor.a(key, "s", "getResStr").setTag("S98ZCS" + key);
                 }
                 return;
             case 0:

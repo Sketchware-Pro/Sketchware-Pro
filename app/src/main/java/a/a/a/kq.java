@@ -11,6 +11,8 @@ public class kq {
         }
 
         switch (opcode) {
+            case "getResStr":
+                    return 0xff7c83db;
             case "getVar":
                 return switch (blockType) {
                     case "v" -> viewType;

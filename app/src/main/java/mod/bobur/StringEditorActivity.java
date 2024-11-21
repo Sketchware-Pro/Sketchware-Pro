@@ -1,5 +1,8 @@
 package mod.bobur;
 
+import static com.besome.sketch.design.DesignActivity.sc_id;
+import static com.besome.sketch.editor.LogicEditorActivity.getAllJavaFileNames;
+import static com.besome.sketch.editor.LogicEditorActivity.getAllXmlFileNames;
 import static pro.sketchware.utility.XmlUtil.replaceXml;
 
 import android.content.Intent;
@@ -13,7 +16,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.beans.BlockBean;
+import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import a.a.a.eC;
+import a.a.a.jC;
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.StringEditorBinding;
 import pro.sketchware.databinding.StringEditorItemBinding;
@@ -50,7 +59,7 @@ public class StringEditorActivity extends AppCompatActivity {
     private MaterialAlertDialogBuilder dialog;
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
-    private boolean isComingFromAnotherActivity = false;
+    private boolean isComingFromSrcCodeEditor = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,24 +80,19 @@ public class StringEditorActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isComingFromAnotherActivity) {
+        if (isComingFromSrcCodeEditor) {
             convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
             adapter = new RecyclerViewAdapter(listmap);
             binding.recyclerView.setAdapter(adapter);
         }
-        isComingFromAnotherActivity = false;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        isComingFromAnotherActivity = true;
+        isComingFromSrcCodeEditor = false;
     }
 
     @Override
     public void onBackPressed() {
         if (replaceXml(FileUtil.readFile(getIntent().getStringExtra("content")))
                 .equals(replaceXml(convertListMapToXml(listmap))) || listmap.isEmpty()) {
+            setResult(RESULT_OK);
             finish();
         } else {
             dialog.setTitle("Warning")
@@ -136,6 +140,7 @@ public class StringEditorActivity extends AppCompatActivity {
             convertXmlToListMap(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(getIntent().getStringExtra("content")))), listmap);
             adapter.notifyDataSetChanged();
         } else if (id == 3) {
+            isComingFromSrcCodeEditor = true;
             XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
@@ -191,7 +196,7 @@ public class StringEditorActivity extends AppCompatActivity {
         return false;
     }
 
-    public String convertListMapToXml(final ArrayList<HashMap<String, Object>> listmap) {
+    public static String convertListMapToXml(final ArrayList<HashMap<String, Object>> listmap) {
         StringBuilder xmlString = new StringBuilder();
         xmlString.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n");
         for (HashMap<String, Object> map : listmap) {
@@ -210,7 +215,7 @@ public class StringEditorActivity extends AppCompatActivity {
         return xmlString.toString();
     }
 
-    private String escapeXml(String text) {
+    public static String escapeXml(String text) {
         if (text == null) return "";
         return text.replace("&", "&amp;")
                 .replace("<", "&lt;")
@@ -220,7 +225,6 @@ public class StringEditorActivity extends AppCompatActivity {
                 .replace("\n", "&#10;")
                 .replace("\r", "&#13;");
     }
-
 
     public void addStringDialog() {
         aB dialog = new aB(this);
@@ -232,6 +236,11 @@ public class StringEditorActivity extends AppCompatActivity {
 
             if (key.isEmpty() || value.isEmpty()) {
                 SketchwareUtil.toast("Please fill in all fields", Toast.LENGTH_SHORT);
+                return;
+            }
+
+            if (isXmlStringsContains(listmap, key)) {
+                binding.stringKeyInputLayout.setError("\"" + key + "\" is already exist");
                 return;
             }
 
@@ -325,9 +334,13 @@ public class StringEditorActivity extends AppCompatActivity {
                 });
 
                 dialog.configureDefaultButton("Delete", v1 -> {
-                    data.remove(adapterPosition);
-                    notifyItemRemoved(adapterPosition);
-                    dialog.dismiss();
+                    if (isXmlStringUsed(key)) {
+                        SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_title_remove_xml_string_error));
+                    } else {
+                        data.remove(adapterPosition);
+                        notifyItemRemoved(adapterPosition);
+                        dialog.dismiss();
+                    }
                 });
                 dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
                 dialog.a(dialogBinding.getRoot());
@@ -347,6 +360,42 @@ public class StringEditorActivity extends AppCompatActivity {
                 super(binding.getRoot());
                 this.binding = binding;
             }
+        }
+
+        public boolean isXmlStringUsed(String key) {
+            if ("app_name".equals(key) || sc_id == null) {
+                return false;
+            }
+
+            String projectScId = sc_id;
+            eC projectDataManager = jC.a(projectScId);
+
+            return isStringUsedInJavaFiles(projectScId, projectDataManager, key) || isStringUsedInXmlFiles(projectScId, projectDataManager, key);
+        }
+
+        private boolean isStringUsedInJavaFiles(String projectScId, eC projectDataManager, String key) {
+            for (String javaFileName : getAllJavaFileNames(projectScId)) {
+                for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
+                    for (BlockBean block : entry.getValue()) {
+                        if ((block.opCode.equals("getResStr") && block.spec.equals(key)) ||
+                                (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private boolean isStringUsedInXmlFiles(String projectScId, eC projectDataManager, String key) {
+            for (String xmlFileName : getAllXmlFileNames(projectScId)) {
+                for (ViewBean view : projectDataManager.d(xmlFileName)) {
+                    if (view.text.text.equals("@string/" + key) || view.text.hint.equals("@string/" + key)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }
