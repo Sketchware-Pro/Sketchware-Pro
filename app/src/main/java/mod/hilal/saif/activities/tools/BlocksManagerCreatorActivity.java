@@ -160,7 +160,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         });
 
         binding.openColorPalette.setOnClickListener(v -> {
-            Zx zx = new Zx(this, 0, true, false);
+            Zx zx = new Zx(this, 0, false, false);
             zx.a(new PCP(binding.colour));
             zx.showAtLocation(v, Gravity.CENTER, 0, 0);
         });
