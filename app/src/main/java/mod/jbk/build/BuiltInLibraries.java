@@ -307,6 +307,8 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_WORK_RUNTIME, List.of(ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_LIVEDATA,
                     ANDROIDX_LIFECYCLE_SERVICE, ANDROIDX_ROOM_RUNTIME, ANDROIDX_SQLITE, ANDROIDX_SQLITE_FRAMEWORK,
                     ANDROIDX_STARTUP_RUNTIME), "androidx.work"),
+            new BuiltInLibrary(ANDROIDX_WORK_RUNTIME_KTX, List.of(ANDROIDX_WORK_RUNTIME, KOTLIN_STDLIB,
+                    KOTLIN_COROUTINES_ANDROID)),
 
             new BuiltInLibrary(CIRCLE_IMAGEVIEW, List.of(ANDROIDX_ANNOTATION), "de.hdodenhof.circleimageview"),
             new BuiltInLibrary(CODE_VIEW, List.of(), "br.tiagohm.codeview"),
