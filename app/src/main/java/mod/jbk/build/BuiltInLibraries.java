@@ -348,6 +348,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(GLIDE_DISKLRUCACHE),
             new BuiltInLibrary(GLIDE_GIFDECODER, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(GOOGLE_AUTO_VALUE_ANNOTATIONS),
+            new BuiltInLibrary(GOOGLE_ERROR_PRONE_ANNOTATIONS),
             new BuiltInLibrary(GOOGLE_RECAPTCHA, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, PLAY_INTEGRITY,
                     KOTLIN_STDLIB, KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_PLAY_SERVICES)),
             new BuiltInLibrary(GSON, List.of(GOOGLE_ERROR_PRONE_ANNOTATIONS)),
