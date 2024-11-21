@@ -199,9 +199,10 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
         if (requestCode == REQUEST_CODE_CREATE_ICON && resultCode == RESULT_OK) {
             if (data.getParcelableExtra("appIco") != null) {
-                Bitmap icon = data.getParcelableExtra("appIco");
+                icon = data.getParcelableExtra("appIco");
+
                 isIconAdaptive = data.getBooleanExtra("isIconAdaptive", false);
-                binding.appIcon.setImageBitmap(data.getParcelableExtra("appIco"));
+                binding.appIcon.setImageBitmap(icon);
                 projectHasCustomIcon = true;
             }
         }
@@ -220,7 +221,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             mB.a(v);
             if (isInputValid()) {
                 new SaveProjectAsyncTask(getApplicationContext()).execute();
-                saveBitmapTo(icon ,getCustomIconPath());
+                if (icon != null) saveBitmapTo(icon ,getCustomIconPath());
             }
         } else if (id == R.id.cancel) {
             finish();
