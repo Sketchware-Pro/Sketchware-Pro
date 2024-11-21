@@ -127,7 +127,6 @@ public class BuiltInLibraries {
     public static String GOOGLE_TRANSPORT_BACKEND_CCT = "transport-backend-cct-3.1.9";
     public static String GOOGLE_TRANSPORT_RUNTIME = "transport-runtime-3.1.9";
     public static String GSON = "gson-2.11.0";
-    public static String GUAVA_LISTENABLEFUTURE = "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava";
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
     public static String JETBRAINS_ANNOTATIONS = "annotations-23.0.0";
     public static String KOTLIN_STDLIB = "kotlin-stdlib-2.0.21";
@@ -192,15 +191,16 @@ public class BuiltInLibraries {
                     ANDROIDX_VECTORDRAWABLE_ANIMATED), "androidx.appcompat.resources"),
 
             new BuiltInLibrary(ANDROIDX_ASYNCLAYOUTINFLATER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE)),
-            new BuiltInLibrary(ANDROIDX_BROWSER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_COLLECTION, ANDROIDX_CONCURRENT_FUTURES, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR,
-                    GUAVA_LISTENABLEFUTURE), "androidx.browser"),
+            new BuiltInLibrary(ANDROIDX_BROWSER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL,
+                    ANDROIDX_COLLECTION, ANDROIDX_CONCURRENT_FUTURES, ANDROIDX_CORE, ANDROIDX_INTERPOLATOR),
+                    "androidx.browser"),
 
             new BuiltInLibrary(ANDROIDX_CREDENTIALS, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CREDENTIALS_PLAY_SERVICES_AUTH,
                     KOTLIN_STDLIB, KOTLIN_COROUTINES_CORE_JVM)),
 
             new BuiltInLibrary(ANDROIDX_CARDVIEW, List.of(ANDROIDX_ANNOTATION), "androidx.cardview"),
             new BuiltInLibrary(ANDROIDX_COLLECTION, List.of(ANDROIDX_ANNOTATION)),
-            new BuiltInLibrary(ANDROIDX_CONCURRENT_FUTURES, List.of(ANDROIDX_ANNOTATION, GUAVA_LISTENABLEFUTURE)),
+            new BuiltInLibrary(ANDROIDX_CONCURRENT_FUTURES, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_CONSTRAINTLAYOUT, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE,
                     ANDROIDX_PROFILEINSTALLER, ANDROIDX_CONSTRAINTLAYOUT_CORE),
                     "androidx.constraintlayout.widget"),
@@ -269,7 +269,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_MULTIDEX),
             new BuiltInLibrary(ANDROIDX_PRINT, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_PROFILEINSTALLER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CONCURRENT_FUTURES,
-                    ANDROIDX_STARTUP_RUNTIME, GUAVA_LISTENABLEFUTURE)),
+                    ANDROIDX_STARTUP_RUNTIME)),
             new BuiltInLibrary(ANDROIDX_RECYCLERVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION,
                     ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW, ANDROIDX_CUSTOMVIEW_POOLINGCONTAINER,
                     ANDROIDX_VIEWPAGER2, ANDROIDX_LEGACY_SUPPORT_CORE_UI),
@@ -305,8 +305,8 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_WINDOW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE,
                     KOTLIN_STDLIB, KOTLIN_COROUTINES_ANDROID)),
             new BuiltInLibrary(ANDROIDX_WORK_RUNTIME, List.of(ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_LIVEDATA,
-                    ANDROIDX_LIFECYCLE_SERVICE, ANDROIDX_ROOM_RUNTIME, ANDROIDX_SQLITE, ANDROIDX_SQLITE_FRAMEWORK, ANDROIDX_STARTUP_RUNTIME,
-                    GUAVA_LISTENABLEFUTURE), "androidx.work"),
+                    ANDROIDX_LIFECYCLE_SERVICE, ANDROIDX_ROOM_RUNTIME, ANDROIDX_SQLITE, ANDROIDX_SQLITE_FRAMEWORK,
+                    ANDROIDX_STARTUP_RUNTIME), "androidx.work"),
 
             new BuiltInLibrary(CIRCLE_IMAGEVIEW, List.of(ANDROIDX_ANNOTATION), "de.hdodenhof.circleimageview"),
             new BuiltInLibrary(CODE_VIEW, List.of(), "br.tiagohm.codeview"),
@@ -347,7 +347,6 @@ public class BuiltInLibraries {
             new BuiltInLibrary(GOOGLE_RECAPTCHA, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, PLAY_INTEGRITY,
                     KOTLIN_STDLIB, KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_PLAY_SERVICES)),
             new BuiltInLibrary(GSON, List.of(GOOGLE_ERROR_PRONE_ANNOTATIONS)),
-            new BuiltInLibrary(GUAVA_LISTENABLEFUTURE),
             new BuiltInLibrary(HTTP_LEGACY_ANDROID_28),
             new BuiltInLibrary(JETBRAINS_ANNOTATIONS),
             new BuiltInLibrary(KOTLIN_STDLIB, List.of(JETBRAINS_ANNOTATIONS)),
