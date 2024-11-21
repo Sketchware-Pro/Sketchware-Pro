@@ -130,8 +130,6 @@ public class BuiltInLibraries {
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
     public static String JETBRAINS_ANNOTATIONS = "annotations-23.0.0";
     public static String KOTLIN_STDLIB = "kotlin-stdlib-2.0.21";
-    public static String KOTLIN_STDLIB_JDK7 = "kotlin-stdlib-jdk7-2.0.21";
-    public static String KOTLIN_STDLIB_JDK8 = "kotlin-stdlib-jdk8-1.9.10";
     public static String KOTLIN_COROUTINES_ANDROID = "kotlinx-coroutines-android-1.7.3";
     public static String KOTLIN_COROUTINES_CORE_JVM = "kotlinx-coroutines-core-jvm-1.7.3";
     public static String KOTLIN_COROUTINES_PLAY_SERVICES = "kotlinx-coroutines-play-services-1.7.3";
@@ -355,8 +353,6 @@ public class BuiltInLibraries {
             new BuiltInLibrary(HTTP_LEGACY_ANDROID_28),
             new BuiltInLibrary(JETBRAINS_ANNOTATIONS),
             new BuiltInLibrary(KOTLIN_STDLIB, List.of(JETBRAINS_ANNOTATIONS)),
-            new BuiltInLibrary(KOTLIN_STDLIB_JDK7, List.of(KOTLIN_STDLIB)),
-            new BuiltInLibrary(KOTLIN_STDLIB_JDK8),
             new BuiltInLibrary(KOTLIN_COROUTINES_ANDROID),
             new BuiltInLibrary(KOTLIN_COROUTINES_CORE_JVM),
             new BuiltInLibrary(LOTTIE, List.of(ANDROIDX_APPCOMPAT, OKIO), "com.airbnb.lottie"),
@@ -370,14 +366,14 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ONESIGNAL, List.of(ONESIGNAL_CORE, ONESIGNAL_IN_APP_MESSAGING, ONESIGNAL_LOCATION,
                     ONESIGNAL_NOTIFICATIONS), "com.onesignal"),
 
-            new BuiltInLibrary(ONESIGNAL_CORE, List.of(ANDROIDX_APPCOMPAT, KOTLIN_STDLIB_JDK7, KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_CORE_JVM)),
+            new BuiltInLibrary(ONESIGNAL_CORE, List.of(ANDROIDX_APPCOMPAT, KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_CORE_JVM)),
             new BuiltInLibrary(ONESIGNAL_IN_APP_MESSAGING, List.of(ANDROIDX_BROWSER, ANDROIDX_CARDVIEW, ONESIGNAL_CORE, ONESIGNAL_NOTIFICATIONS,
-                    KOTLIN_STDLIB_JDK7, KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_CORE_JVM)),
-            new BuiltInLibrary(ONESIGNAL_LOCATION, List.of(ONESIGNAL_CORE, KOTLIN_STDLIB_JDK7, KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_CORE_JVM)),
+                    KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_CORE_JVM)),
+            new BuiltInLibrary(ONESIGNAL_LOCATION, List.of(ONESIGNAL_CORE, KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_CORE_JVM)),
             new BuiltInLibrary(ONESIGNAL_NOTIFICATIONS, List.of(ANDROIDX_WORK_RUNTIME_KTX, ANDROIDX_WORK_RUNTIME, FIREBASE_MESSAGING, ONESIGNAL_CORE,
-                    KOTLIN_STDLIB_JDK7, KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_CORE_JVM)),
+                    KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_CORE_JVM)),
 
-            new BuiltInLibrary(OTPVIEW, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE_KTX, KOTLIN_STDLIB_JDK7),
+            new BuiltInLibrary(OTPVIEW, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE_KTX),
                     "affan.ahmad.otp"),
 
             new BuiltInLibrary(PATTERN_LOCK_VIEW, List.of(ANDROIDX_CORE, JETBRAINS_ANNOTATIONS), "com.andrognito.patternlockview"),
@@ -425,7 +421,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(UMP_USER_MESSAGING_PLATFORM, List.of(ANDROIDX_ANNOTATION, PLAY_SERVICES_ADS_IDENTIFIER,
                     PLAY_SERVICES_BASEMENT)),
             new BuiltInLibrary(WAVE_SIDE_BAR, List.of(), "com.sayuti.lib"),
-            new BuiltInLibrary(YOUTUBE_PLAYER, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_RECYCLERVIEW, KOTLIN_STDLIB_JDK7),
+            new BuiltInLibrary(YOUTUBE_PLAYER, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_RECYCLERVIEW),
                     "com.pierfrancescosoffritti.androidyoutubeplayer"),
     };
 
