@@ -57,8 +57,6 @@ import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -91,11 +89,8 @@ import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
-import io.github.rosemoe.sora.widget.schemes.SchemeGitHub;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
-import mod.bobur.BoburUtils;
-import mod.bobur.StringEditorActivity;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
@@ -118,6 +113,7 @@ import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
+import mod.remaker.util.ThemeUtils;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.utility.FileUtil;
@@ -347,25 +343,14 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             } else if (v.getId() == R.id.btn_compiler_opt) {
                 PopupMenu popupMenu = new PopupMenu(this, buildSettings);
                 Menu menu = popupMenu.getMenu();
-                // this code enables force show icon
-                try {
-                    Field mFieldPopup = PopupMenu.class.getDeclaredField("mPopup");
-                    mFieldPopup.setAccessible(true);
-                    Object mPopup = mFieldPopup.get(popupMenu);
-                    Class<?> classPopupHelper = Class.forName(mPopup.getClass().getName());
-                    Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
-                    setForceIcons.invoke(mPopup, true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-                menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings").setIcon(R.drawable.ic_mtrl_settings);
-                menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files").setIcon(R.drawable.ic_mtrl_delete);
-                menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error").setIcon(R.drawable.ic_mtrl_bug_report);
-                menu.add(Menu.NONE, 5, Menu.NONE, "Show source code").setIcon(R.drawable.ic_mtrl_code);
+                menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
+                menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
+                menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
+                menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
                 if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
-                    menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK").setIcon(R.drawable.ic_mtrl_apk_install);
-                    menu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures").setIcon(R.drawable.ic_mtrl_fingerprint);
+                    menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
+                    menu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures");
                 }
 
                 popupMenu.setOnMenuItemClickListener(item -> {
@@ -725,14 +710,14 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
                 if (filename.endsWith(".xml")) {
                     editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
-                    if (BoburUtils.isDarkModeEnabled(getApplicationContext())) {
+                    if (ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
                         editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
                     } else {
                         editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
                     }
                 } else {
                     editor.setEditorLanguage(new JavaLanguage());
-                    if (BoburUtils.isDarkModeEnabled(getApplicationContext())) {
+                    if (ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
                         editor.setColorScheme(new SchemeDarcula());
                     } else {
                         editor.setColorScheme(new EditorColorScheme());
@@ -934,10 +919,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private static class BuildTask extends BaseTask implements DialogInterface.OnCancelListener, BuildProgressReceiver {
-        private volatile boolean canceled;
-        private volatile boolean isBuildFinished;
         private final BuildingDialog dialog;
         private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+        private volatile boolean canceled;
+        private volatile boolean isBuildFinished;
 
         public BuildTask(DesignActivity activity) {
             super(activity);

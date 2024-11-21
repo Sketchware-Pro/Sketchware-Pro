@@ -37,10 +37,21 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyInputItemBinding;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
 import pro.sketchware.databinding.PropertySwitchItemSinglelineBinding;
-import pro.sketchware.utility.SketchwareUtil;
 
 @SuppressLint("ViewConstructor")
 public class PropertyAttributesItem extends LinearLayout implements View.OnClickListener {
+    private String key = "";
+    private HashMap<String, String> value = new HashMap<>();
+    private TextView tvName;
+    private TextView tvValue;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private ImageView imgLeftIcon;
+    private int icon;
+    private Kw valueChangeListener;
+    private ViewBean bean;
+    private List<String> ids = new ArrayList<>();
+
     private static final String[] PARENT_RELATIVE = {
             "android:layout_centerInParent",
             "android:layout_centerVertical",
@@ -65,6 +76,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
             "android:layout_alignParentBottom",
             "android:layout_alignBaseline"
     };
+
     public static List<String> RELATIVE_IDS = Arrays.asList(
             "android:layout_alignStart",
             "android:layout_alignLeft",
@@ -78,17 +90,6 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
             "android:layout_toRightOf",
             "android:layout_above",
             "android:layout_below");
-    private String key = "";
-    private HashMap<String, String> value = new HashMap<>();
-    private TextView tvName;
-    private TextView tvValue;
-    private View propertyItem;
-    private View propertyMenuItem;
-    private ImageView imgLeftIcon;
-    private int icon;
-    private Kw valueChangeListener;
-    private ViewBean bean;
-    private List<String> ids = new ArrayList<>();
 
     public PropertyAttributesItem(Context context, boolean z) {
         super(context);
@@ -288,9 +289,6 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                             .setNegativeButton("Cancel", (d, which) -> d.dismiss())
                             .show();
                 });
-                if (attr.equals("property_id")) {
-                    SketchwareUtil.toast("Id");
-                }
                 itemView.setOnLongClickListener(v -> {
                     var dialog = new aB((Activity) getContext());
                     dialog.b("Delete");

@@ -46,7 +46,7 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
         int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
         if (identifier > 0) {
             tvName.setText(Helper.getResString(identifier));
-            icon = R.drawable.ic_mtrl_property_gravity;
+            icon = R.drawable.gravity_96;
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
                 ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));

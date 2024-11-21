@@ -715,7 +715,6 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                     case "property_max" -> bean.max = Integer.parseInt(inputItem.getValue());
                     case "property_progress" ->
                             bean.progress = Integer.parseInt(inputItem.getValue());
-                    case "property_layoutza aZaZAaaaa_height" -> Integer.parseInt(inputItem.getValue());
                 }
             } else if (view instanceof PropertyMeasureItem measureItem) {
                 if (measureItem.getKey().equals("property_layout_width")) {

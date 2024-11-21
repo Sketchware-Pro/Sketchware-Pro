@@ -6,7 +6,7 @@ import android.graphics.Color;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import mod.bobur.BoburUtils;
+import mod.remaker.util.ThemeUtils;
 import pro.sketchware.SketchApplication;
 
 public class SyntaxScheme {
@@ -42,7 +42,7 @@ public class SyntaxScheme {
 
     public static ArrayList<SyntaxScheme> JAVA() {
         ArrayList<SyntaxScheme> arrayList = new ArrayList<>();
-        boolean isDarkMode = BoburUtils.isDarkModeEnabled(SketchApplication.getContext());
+        boolean isDarkMode = ThemeUtils.isDarkThemeEnabled(SketchApplication.getContext());
 
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[0] + mJavaPattern[1]), getColor(PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK, isDarkMode)));
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[2] + mJavaPattern[3] + mJavaPattern[4]), getColor(SECONDARY_COLOR_LIGHT, SECONDARY_COLOR_DARK, isDarkMode)));
@@ -59,7 +59,7 @@ public class SyntaxScheme {
 
     public static ArrayList<SyntaxScheme> XML(Context context) {
         ArrayList<SyntaxScheme> arrayList = new ArrayList<>();
-        boolean isDarkMode = BoburUtils.isDarkModeEnabled(context);
+        boolean isDarkMode = ThemeUtils.isDarkThemeEnabled(context);
 
         arrayList.add(new SyntaxScheme(Pattern.compile(mJavaPattern[0] + mJavaPattern[1]), getColor(PRIMARY_COLOR_LIGHT, PRIMARY_COLOR_DARK, isDarkMode)));
         arrayList.add(new SyntaxScheme(Pattern.compile(mXmlPattern[2]), getColor(SECONDARY_COLOR_LIGHT, SECONDARY_COLOR_DARK, isDarkMode)));
@@ -99,7 +99,7 @@ public class SyntaxScheme {
     }
 
     public SyntaxScheme getPrimarySyntax() {
-        if (BoburUtils.isDarkModeEnabled(SketchApplication.getContext())) {
+        if (ThemeUtils.isDarkThemeEnabled(SketchApplication.getContext())) {
             return new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR_DARK));
         } else {
             return new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR_LIGHT));

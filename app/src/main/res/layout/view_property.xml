@@ -27,7 +27,6 @@
             android:id="@+id/img_save"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:scaleType="centerInside"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_mtrl_save" />
     </LinearLayout>

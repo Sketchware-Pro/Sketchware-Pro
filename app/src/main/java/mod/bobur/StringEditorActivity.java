@@ -1,8 +1,5 @@
 package mod.bobur;
 
-import static com.besome.sketch.design.DesignActivity.sc_id;
-import static pro.sketchware.utility.XmlUtil.replaceXml;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,17 +31,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import a.a.a.aB;
-import a.a.a.lC;
-import a.a.a.yB;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import pro.sketchware.R;
-import pro.sketchware.databinding.SortProjectDialogBinding;
 import pro.sketchware.databinding.StringEditorBinding;
 import pro.sketchware.databinding.StringEditorItemBinding;
 import pro.sketchware.databinding.ViewStringEditorAddBinding;
-import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
@@ -52,10 +45,12 @@ import pro.sketchware.utility.XmlUtil;
 public class StringEditorActivity extends AppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> listmap = new ArrayList<>();
+    private final ArrayList<HashMap<String, Object>> cache = new ArrayList<>();
     private MaterialAlertDialogBuilder dialog;
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
     private boolean isComingFromAnotherActivity = false;
+    private boolean isSaved = false;
 
     public static void convertXmlToListMap(final String xmlString, final ArrayList<HashMap<String, Object>> listmap) {
         try {
@@ -121,31 +116,9 @@ public class StringEditorActivity extends AppCompatActivity {
         return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;").replace("\n", "&#10;").replace("\r", "&#13;");
     }
 
-    public static void createDefaultString() {
-        String filePath = new FilePathUtil().getPathResource(sc_id) + "/values/strings.xml";
-
-        if (!FileUtil.isExistFile(new FilePathUtil().getPathResource(sc_id) + "/anim")) {
-            FileUtil.makeDir(new FilePathUtil().getPathResource(sc_id) + "/anim");
-        }
-        if (!FileUtil.isExistFile(new FilePathUtil().getPathResource(sc_id) + "/drawable")) {
-            FileUtil.makeDir(new FilePathUtil().getPathResource(sc_id) + "/drawable");
-        }
-        if (!FileUtil.isExistFile(new FilePathUtil().getPathResource(sc_id) + "/layout")) {
-            FileUtil.makeDir(new FilePathUtil().getPathResource(sc_id) + "/layout");
-        }
-        if (!FileUtil.isExistFile(new FilePathUtil().getPathResource(sc_id) + "/menu")) {
-            FileUtil.makeDir(new FilePathUtil().getPathResource(sc_id) + "/menu");
-        }
-        ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
-        if (StringsListMap.isEmpty()) {
-            // Create app_name string if the strings.xml is empty
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("key", "app_name");
-            map.put("text", yB.c(lC.b(sc_id), "my_app_name"));
-            StringsListMap.add(0, map);
-            FileUtil.writeFile(filePath, convertListMapToXml(StringsListMap));
-        }
-    }
+//    public void sortStrings(ArrayList<HashMap<String, Object>> myList) {
+//        SketchwareUtil.sortListMap(myList, "key", false, true);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,14 +155,19 @@ public class StringEditorActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (replaceXml(FileUtil.readFile(getIntent().getStringExtra("content"))).equals(replaceXml(convertListMapToXml(listmap))) || listmap.isEmpty()) {
+        ArrayList<HashMap<String, Object>> cache = new ArrayList<>();
+        convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), cache);
+
+        String currentXml = convertListMapToXml(listmap);
+        String cachedXml = convertListMapToXml(cache);
+
+        if (isSaved || currentXml.equals(cachedXml) || listmap.isEmpty()) {
             finish();
         } else {
             dialog.setTitle("Warning").setMessage("You have unsaved changes. Are you sure you want to exit?").setPositiveButton("Exit", (dialog, which) -> super.onBackPressed()).setNegativeButton("Cancel", null).create().show();
         }
         if (listmap.isEmpty() && (!FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
             XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
-
         }
     }
 
@@ -212,6 +190,7 @@ public class StringEditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         int id = item.getItemId();
         if (id == 1) {
+            isSaved = true;
             XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
         } else if (id == 0) {
             addStringDialog();
@@ -219,6 +198,7 @@ public class StringEditorActivity extends AppCompatActivity {
             convertXmlToListMap(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(getIntent().getStringExtra("content")))), listmap);
             adapter.notifyDataSetChanged();
         } else if (id == 3) {
+            isSaved = true;
             XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
@@ -230,8 +210,6 @@ public class StringEditorActivity extends AppCompatActivity {
             intent.putExtra("content", getIntent().getStringExtra("content"));
             intent.putExtra("xml", getIntent().getStringExtra("xml"));
             startActivity(intent);
-        } else if (id == 4) {
-            sortDialog();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -250,53 +228,12 @@ public class StringEditorActivity extends AppCompatActivity {
             }
 
             addString(key, value);
+
             dialog.dismiss();
         });
         dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
         dialog.a(binding.getRoot());
         dialog.show();
-    }
-
-    public void sortDialog() {
-        aB dialog = new aB(this);
-        SortProjectDialogBinding binding = SortProjectDialogBinding.inflate(LayoutInflater.from(this));
-        dialog.b("Sort options");
-        binding.sortByName.setText("Sort by value");
-        binding.sortByID.setText("Sort by key");
-
-        dialog.b("Save", v1 -> {
-            if (binding.sortByName.isChecked() && binding.sortOrderAsc.isChecked()) {
-                sortStrings(1);
-                dialog.dismiss();
-            } else if (binding.sortByName.isChecked() && binding.sortOrderDesc.isChecked()) {
-                sortStrings(2);
-                dialog.dismiss();
-            } else if (binding.sortByID.isChecked() && binding.sortOrderAsc.isChecked()) {
-                sortStrings(3);
-                dialog.dismiss();
-            } else if (binding.sortByID.isChecked() && binding.sortOrderDesc.isChecked()) {
-                sortStrings(4);
-                dialog.dismiss();
-            } else {
-                SketchwareUtil.toast("Please select a sort option", Toast.LENGTH_SHORT);
-            }
-        });
-        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
-        dialog.a(binding.getRoot());
-        dialog.show();
-    }
-
-    public void sortStrings(double type) {
-        if (type == 1) {
-            SketchwareUtil.sortListMap(listmap, "text", false, true);
-        } else if (type == 2) {
-            SketchwareUtil.sortListMap(listmap, "text", false, false);
-        } else if (type == 3) {
-            SketchwareUtil.sortListMap(listmap, "key", false, true);
-        } else if (type == 4) {
-            SketchwareUtil.sortListMap(listmap, "key", false, false);
-        }
-        adapter.notifyDataSetChanged();
     }
 
     public void addString(final String key, final String text) {
@@ -315,6 +252,7 @@ public class StringEditorActivity extends AppCompatActivity {
                 return;
             }
         }
+        isSaved = false;
         listmap.add(map);
         adapter.notifyItemInserted(listmap.size() - 1);
     }
@@ -377,10 +315,12 @@ public class StringEditorActivity extends AppCompatActivity {
                     currentItem.put("key", keyInput);
                     currentItem.put("text", valueInput);
                     notifyItemChanged(adapterPosition);
+                    isSaved = false;
                     dialog.dismiss();
                 });
 
                 dialog.configureDefaultButton("Delete", v1 -> {
+                    isSaved = false;
                     data.remove(adapterPosition);
                     notifyItemRemoved(adapterPosition);
                     dialog.dismiss();

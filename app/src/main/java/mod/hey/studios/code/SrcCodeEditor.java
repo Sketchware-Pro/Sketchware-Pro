@@ -21,7 +21,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
-import mod.bobur.BoburUtils;
 import mod.remaker.util.ThemeUtils;
 import pro.sketchware.R;
 
@@ -223,7 +222,7 @@ public class SrcCodeEditor extends AppCompatActivity {
             languageId = 1;
         } else if (title.endsWith(".xml")) {
             editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
-            if(BoburUtils.isDarkModeEnabled(getApplicationContext())) {
+            if(ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
                 editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
             } else {
                 editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));

@@ -81,9 +81,9 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         if (identifier > 0) {
             this.e.setText(xB.b().a(getResources(), identifier));
             if ("property_image".equals(b)) {
-                m = R.drawable.ic_mtrl_image;
+                m = R.drawable.ic_picture_48dp;
             } else if ("property_background_resource".equals(b)) {
-                m = R.drawable.ic_mtrl_image;
+                m = R.drawable.variation_48;
             }
             if (this.l.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(this.m);
