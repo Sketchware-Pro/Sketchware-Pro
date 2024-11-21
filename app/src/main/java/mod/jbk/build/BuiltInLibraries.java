@@ -47,7 +47,7 @@ public class BuiltInLibraries {
     public static String ANDROIDX_CUSTOMVIEW_POOLINGCONTAINER = "customview-poolingcontainer-1.1.0";
     public static String ANDROIDX_DOCUMENTFILE = "documentfile-1.0.1";
     public static String ANDROIDX_DRAWERLAYOUT = "drawerlayout-1.2.0";
-    public static String ANDROIDX_DYNAMIC_ANIMATION = "dynamic-animation-1.1.0-alpha03";
+    public static String ANDROIDX_DYNAMIC_ANIMATION = "dynamicanimation-1.1.0-alpha03";
     public static String ANDROIDX_EMOJI2 = "emoji2-1.5.0";
     public static String ANDROIDX_EMOJI2_VIEWS_HELPER = "emoji2-views-helper-1.5.0";
     public static String ANDROIDX_EXIFINTERFACE = "exifinterface-1.3.7";
@@ -70,7 +70,7 @@ public class BuiltInLibraries {
     public static String ANDROIDX_MEDIA = "media-1.7.0";
     public static String ANDROIDX_MULTIDEX = "multidex-2.0.1";
     public static String ANDROIDX_PRINT = "print-1.0.0";
-    public static String ANDROIDX_PROFILEINSTALLER = "profileinstaller-1.3.1";
+    public static String ANDROIDX_PROFILEINSTALLER = "profileinstaller-1.4.0";
     public static String ANDROIDX_RECYCLERVIEW = "recyclerview-1.3.2";
     public static String ANDROIDX_RESOURCEINSPECTION_ANNOTATION = "resourceinspection-annotation-1.0.1";
     public static String ANDROIDX_ROOM_COMMON = "room-common-2.6.1";
@@ -127,7 +127,7 @@ public class BuiltInLibraries {
     public static String GOOGLE_TRANSPORT_BACKEND_CCT = "transport-backend-cct-3.1.9";
     public static String GOOGLE_TRANSPORT_RUNTIME = "transport-runtime-3.1.9";
     public static String GSON = "gson-2.11.0";
-    public static String GUAVA_LISTENABLEFUTURE = "listenablefuture-1.0.0";
+    public static String GUAVA_LISTENABLEFUTURE = "listenablefuture-9999.0-empty-to-avoid-conflict-with-guava";
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
     public static String JETBRAINS_ANNOTATIONS = "annotations-23.0.0";
     public static String KOTLIN_STDLIB = "kotlin-stdlib-2.0.21";
@@ -218,6 +218,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_CORE_RUNTIME, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE_COMMON)),
             new BuiltInLibrary(ANDROIDX_CURSORADAPTER, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_CUSTOMVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE)),
+            new BuiltInLibrary(ANDROIDX_CUSTOMVIEW_POOLINGCONTAINER, List.of(ANDROIDX_CORE_KTX, KOTLIN_STDLIB)),
             new BuiltInLibrary(ANDROIDX_DOCUMENTFILE, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_DRAWERLAYOUT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW),
                     "androidx.drawerlayout"),
@@ -267,6 +268,8 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_MEDIA, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_VERSIONEDPARCELABLE), "androidx.media"),
             new BuiltInLibrary(ANDROIDX_MULTIDEX),
             new BuiltInLibrary(ANDROIDX_PRINT, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_PROFILEINSTALLER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CONCURRENT_FUTURES,
+                    ANDROIDX_STARTUP_RUNTIME, GUAVA_LISTENABLEFUTURE)),
             new BuiltInLibrary(ANDROIDX_RECYCLERVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION,
                     ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW, ANDROIDX_CUSTOMVIEW_POOLINGCONTAINER,
                     ANDROIDX_VIEWPAGER2, ANDROIDX_LEGACY_SUPPORT_CORE_UI),
@@ -298,10 +301,13 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_VIEWPAGER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW)),
             new BuiltInLibrary(ANDROIDX_VIEWPAGER2, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL,
                     ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_FRAGMENT, ANDROIDX_RECYCLERVIEW), "androidx.viewpager2"),
-
+            new BuiltInLibrary(ANDROIDX_WEBKIT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE)),
+            new BuiltInLibrary(ANDROIDX_WINDOW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE,
+                    KOTLIN_STDLIB, KOTLIN_COROUTINES_ANDROID)),
             new BuiltInLibrary(ANDROIDX_WORK_RUNTIME, List.of(ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_LIVEDATA,
                     ANDROIDX_LIFECYCLE_SERVICE, ANDROIDX_ROOM_RUNTIME, ANDROIDX_SQLITE, ANDROIDX_SQLITE_FRAMEWORK, ANDROIDX_STARTUP_RUNTIME,
                     GUAVA_LISTENABLEFUTURE), "androidx.work"),
+
             new BuiltInLibrary(CIRCLE_IMAGEVIEW, List.of(ANDROIDX_ANNOTATION), "de.hdodenhof.circleimageview"),
             new BuiltInLibrary(CODE_VIEW, List.of(), "br.tiagohm.codeview"),
             new BuiltInLibrary(FACEBOOK_ADS_AUDIENCE_NETWORK_SDK, List.of(PLAY_SERVICES_BASE)),
@@ -346,6 +352,9 @@ public class BuiltInLibraries {
             new BuiltInLibrary(JETBRAINS_ANNOTATIONS),
             new BuiltInLibrary(KOTLIN_STDLIB, List.of(JETBRAINS_ANNOTATIONS)),
             new BuiltInLibrary(KOTLIN_STDLIB_JDK7, List.of(KOTLIN_STDLIB)),
+            new BuiltInLibrary(KOTLIN_STDLIB_JDK8),
+            new BuiltInLibrary(KOTLIN_COROUTINES_ANDROID),
+            new BuiltInLibrary(KOTLIN_COROUTINES_CORE_JVM),
             new BuiltInLibrary(LOTTIE, List.of(ANDROIDX_APPCOMPAT, OKIO), "com.airbnb.lottie"),
             new BuiltInLibrary(MATERIAL, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_APPCOMPAT, ANDROIDX_CARDVIEW,
                     ANDROIDX_CONSTRAINTLAYOUT, ANDROIDX_COORDINATORLAYOUT, ANDROIDX_CORE, ANDROIDX_DRAWERLAYOUT, ANDROIDX_DYNAMIC_ANIMATION,
