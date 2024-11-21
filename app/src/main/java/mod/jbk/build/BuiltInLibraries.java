@@ -44,7 +44,7 @@ public class BuiltInLibraries {
     public static String ANDROIDX_CREDENTIALS_PLAY_SERVICES_AUTH = "credentials-play-services-auth-1.2.0-rc01";
     public static String ANDROIDX_CURSORADAPTER = "cursoradapter-1.0.0";
     public static String ANDROIDX_CUSTOMVIEW = "customview-1.1.0";
-    public static String ANDROIDX_CUSTOMVIEW_POOLINGCONTAINER = "customview-poolingcontainer-1.1.0";
+    public static String ANDROIDX_CUSTOMVIEW_POOLINGCONTAINER = "customview-poolingcontainer-1.0.0";
     public static String ANDROIDX_DOCUMENTFILE = "documentfile-1.0.1";
     public static String ANDROIDX_DRAWERLAYOUT = "drawerlayout-1.2.0";
     public static String ANDROIDX_DYNAMIC_ANIMATION = "dynamicanimation-1.1.0-alpha03";
