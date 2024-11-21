@@ -3,16 +3,13 @@ package pro.sketchware.control.logic;
 import static android.text.TextUtils.isEmpty;
 import static pro.sketchware.SketchApplication.getContext;
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
-import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.content.Context;
-import android.text.InputType;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.editor.LogicEditorActivity;
-import com.google.android.material.textfield.TextInputLayout;
+
 import pro.sketchware.R;
 
 import java.util.ArrayList;
@@ -37,6 +34,7 @@ import a.a.a.bB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
+import pro.sketchware.databinding.AddCustomListBinding;
 import pro.sketchware.databinding.AddCustomVariableBinding;
 import pro.sketchware.utility.SketchwareUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
@@ -220,47 +218,35 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void addCustomList() {
         aB dialog = new aB(logicEditor);
-        dialog.a(R.drawable.add_96_blue);
+        dialog.a(R.drawable.ic_mtrl_add);
         dialog.b("Add a new custom List");
 
-        LinearLayout root = new LinearLayout(logicEditor);
-        root.setOrientation(LinearLayout.VERTICAL);
+        AddCustomListBinding listBinding = AddCustomListBinding.inflate(logicEditor.getLayoutInflater());
 
-        TextInputLayout typeLayout = commonTextInputLayout();
-        EditText type = commonEditText("Type, e.g. ArrayList<Data>");
-        typeLayout.addView(type);
+        ZB validator = new ZB(getContext(), listBinding.nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
-        TextInputLayout nameLayout = commonTextInputLayout();
-        EditText name = commonEditText("Name, e.g. dataList");
-        nameLayout.addView(name);
-
-        root.addView(typeLayout);
-        root.addView(nameLayout);
-
-        ZB validator = new ZB(getContext(), nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
-
-        dialog.a(root);
+        dialog.a(listBinding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_add), v -> {
-            String variableType = type.getText().toString();
-            String variableName = name.getText().toString();
+            String variableType = listBinding.type.getText().toString();
+            String variableName = listBinding.name.getText().toString();
 
             boolean validType = !isEmpty(variableType);
             boolean validName = !isEmpty(variableName);
 
             if (validType) {
-                typeLayout.setError(null);
+                listBinding.typeLayout.setError(null);
             } else {
-                if (validName) typeLayout.requestFocus();
-                typeLayout.setError("Type can't be empty");
+                if (validName) listBinding.typeLayout.requestFocus();
+                listBinding.typeLayout.setError("Type can't be empty");
             }
 
-            CharSequence nameError = nameLayout.getError();
+            CharSequence nameError = listBinding.nameLayout.getError();
             if (nameError == null || "Name can't be empty".contentEquals(nameError)) {
                 if (validName) {
-                    nameLayout.setError(null);
+                    listBinding.nameLayout.setError(null);
                 } else {
-                    nameLayout.requestFocus();
-                    nameLayout.setError("Name can't be empty");
+                    listBinding.nameLayout.requestFocus();
+                    listBinding.nameLayout.setError("Name can't be empty");
                 }
             }
 
@@ -273,7 +259,7 @@ public class LogicClickListener implements View.OnClickListener {
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        typeLayout.requestFocus();
+        listBinding.typeLayout.requestFocus();
     }
 
     private void removeList() {
@@ -317,39 +303,6 @@ public class LogicClickListener implements View.OnClickListener {
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
-    }
-
-    private TextInputLayout commonTextInputLayout() {
-        TextInputLayout textInputLayout = new TextInputLayout(logicEditor);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(
-                (int) getDip(8),
-                0,
-                (int) getDip(8),
-                0
-        );
-        textInputLayout.setLayoutParams(layoutParams);
-        return textInputLayout;
-    }
-
-    private EditText commonEditText(String hint) {
-        EditText editText = new EditText(logicEditor);
-        editText.setLayoutParams(new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT));
-        editText.setPadding(
-                (int) getDip(4),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8)
-        );
-        editText.setTextSize(16f);
-        editText.setHint(hint);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT);
-        editText.setPrivateImeOptions("defaultInputmode=english;");
-        return editText;
     }
 
     private static class RemoveAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

@@ -135,7 +135,7 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
     private void showAddTestDeviceDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_title));
-        dialog.a(R.drawable.add_96_blue);
+        dialog.a(R.drawable.ic_mtrl_add);
         View content = wB.a(getContext(), R.layout.manage_library_setting_admob_test_device_add);
         EditText edDeviceId = content.findViewById(R.id.ed_device_id);
         ((TextInputLayout) content.findViewById(R.id.ti_device_id)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_hint_device_id));

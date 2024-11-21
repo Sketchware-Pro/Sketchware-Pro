@@ -2,13 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_firebase_help"
-        android:icon="@drawable/ic_help_white_50dp"
+        android:icon="@drawable/ic_mtrl_help"
         android:orderInCategory="1"
         android:title="Settings"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_firebase_settings"
-        android:icon="@drawable/side_menu_setting_icon_over_white"
+        android:icon="@drawable/ic_mtrl_settings"
         android:orderInCategory="1"
         android:title="Settings"
         app:showAsAction="always" />

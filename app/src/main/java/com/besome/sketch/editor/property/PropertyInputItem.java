@@ -11,7 +11,6 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,10 +20,10 @@ import android.widget.TextView;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
-import pro.sketchware.R;
-import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,20 +33,22 @@ import a.a.a.SB;
 import a.a.a.TB;
 import a.a.a._B;
 import a.a.a.aB;
-import a.a.a.lC;
-import a.a.a.yB;
 import a.a.a.jC;
+import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wB;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
+import a.a.a.yB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyPopupInputTextBinding;
+import pro.sketchware.utility.FileUtil;
 
 @SuppressLint("ViewConstructor")
 public class PropertyInputItem extends RelativeLayout implements View.OnClickListener {
 
     private Context context;
+    private String typeView = "";
     private String key = "";
     private String value = "";
     private final String stringsStart = "@string/";
@@ -87,6 +88,10 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         imageView.setImageResource(icon);
     }
 
+    public void setTypeView(String typeView) {
+        this.typeView = typeView;
+    }
+
     public String getKey() {
         return key;
     }
@@ -119,7 +124,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         if (!mB.a()) {
             switch (key) {
                 case "property_id" -> showViewIdDialog();
-                case "property_text", "property_hint" -> showTextInputDialog(9999 , false);
+                case "property_text", "property_hint" -> showTextInputDialog(9999, false);
                 case "property_weight", "property_weight_sum", "property_rotate", "property_lines",
                      "property_max", "property_progress" -> showNumberInputDialog();
                 case "property_alpha" -> showNumberDecimalInputDialog(0, 1);
@@ -127,7 +132,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                         showNumberDecimalInputDialog(-9999, 9999);
                 case "property_scale_x", "property_scale_y" -> showNumberDecimalInputDialog(0, 99);
                 case "property_convert" ->
-                        showAutoCompleteDialog(getResources().getStringArray(R.array.property_convert_options));
+                        showAutoCompleteDialog();
                 case "property_inject" -> showTextInputDialog(1000, true);
             }
         }
@@ -167,10 +172,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.a(icon);
         View view = wB.a(getContext(), R.layout.property_popup_input_text);
         EditText input = view.findViewById(R.id.ed_input);
-        input.setPrivateImeOptions("defaultInputmode=english;");
         input.setLines(1);
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        input.setImeOptions(EditorInfo.IME_ACTION_DONE);
         _B validator = new _B(context, view.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
         validator.a(value);
         dialog.a(view);
@@ -281,8 +283,22 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             } else {
                 setValue(autoCompleteTextView.getText().toString());
             }
-            if (valueChangeListener != null) valueChangeListener.a(key, value);
-            dialog.dismiss();
+            if (valueChangeListener != null) {
+                String inputText = autoCompleteTextView.getText().toString();
+
+                if (inputText.equals(stringsStart)) {
+
+                    String errorMessage = MessageFormat.format(
+                            "Please select a String\n" +
+                                    "or remove \"{0}\" and add the value directly",
+                            stringsStart
+                    );
+                    textAutoCompleteInput.setError(errorMessage);
+                } else {
+                    valueChangeListener.a(key, value);
+                    dialog.dismiss();
+                }
+            }
         }
     }
 
@@ -301,29 +317,23 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     public void setupTextWatcher(TextInputLayout textAutoCompleteInput, MaterialAutoCompleteTextView editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
                 String text = s.toString().trim();
-                boolean foundMatch = false;
-
-                if (!text.startsWith(stringsStart)) {
+                if (!text.startsWith(stringsStart) || text.equals(stringsStart)) {
                     textAutoCompleteInput.setError(null);
                     return;
                 }
 
-                for (String str : keysList) {
-                    if (str.startsWith(text)) {
-                        foundMatch = true;
-                        break;
-                    }
-                }
-
-                textAutoCompleteInput.setError(foundMatch ? null : "Not found in strings.xml");
+                boolean isExactMatch = keysList.contains(text);
+                textAutoCompleteInput.setError(isExactMatch ? null : "Not found in strings.xml");
             }
         });
     }
@@ -351,14 +361,14 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.show();
     }
 
-    private void showAutoCompleteDialog(String[] options) {
+    private void showAutoCompleteDialog() {
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
         MaterialAutoCompleteTextView input = binding.edTiAutoCompleteInput;
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, options);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, getPrioritizedSuggestions(typeView));
         input.setText(value);
         input.setAdapter(adapter);
         binding.tiInput.setVisibility(View.GONE);
@@ -375,6 +385,132 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
+    }
+
+    public List<String> getPrioritizedSuggestions(String typeView) {
+        List<String> prioritizedSuggestions = new ArrayList<>();
+
+        switch (typeView) {
+            case "0":  // LinearLayout
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "LinearLayout", "FrameLayout", "RelativeLayout",
+                        "androidx.constraintlayout.widget.ConstraintLayout",
+                        "TableLayout", "GridLayout",
+                        "androidx.coordinatorlayout.widget.CoordinatorLayout",
+                        "Space"
+                ));
+                break;
+
+            case "2":  // HorizontalScrollView
+            case "12": // VerticalScrollView
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "HorizontalScrollView", "VerticalScrollView", "ScrollView",
+                        "androidx.core.widget.NestedScrollView"
+                ));
+                break;
+
+            case "9":  // ListView
+            case "25": // GridView
+            case "48": // RecyclerView
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "ListView", "GridView", "androidx.recyclerview.widget.RecyclerView",
+                        "ExpandableListView", "androidx.viewpager2.widget.ViewPager2"
+                ));
+                break;
+
+            case "3":  // Button
+            case "41": // MaterialButton
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "Button", "com.google.android.material.button.MaterialButton",
+                        "ImageButton", "ToggleButton", "CompoundButton",
+                        "androidx.appcompat.widget.AppCompatButton"
+                ));
+                break;
+
+            case "4":  // TextView
+            case "5":  // EditText
+            case "38": // TextInputLayout
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "TextView", "EditText",
+                        "com.google.android.material.textfield.TextInputLayout",
+                        "com.google.android.material.textfield.TextInputEditText",
+                        "AutoCompleteTextView",
+                        "androidx.appcompat.widget.AppCompatTextView",
+                        "androidx.appcompat.widget.AppCompatEditText"
+                ));
+                break;
+
+            case "21": // VideoView
+            case "7":  // WebView
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "VideoView", "android.webkit.WebView",
+                        "androidx.media.widget.VideoView",
+                        "android.webkit.WebViewClient", "android.webkit.WebChromeClient"
+                ));
+                break;
+
+            case "8":  // ProgressBar
+            case "14": // SeekBar
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "ProgressBar", "SeekBar",
+                        "HorizontalScrollBar", "VerticalSeekBar",
+                        "IndeterminateProgressBar"
+                ));
+                break;
+
+            case "11": // CheckBox
+            case "19": // RadioButton
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "CheckBox", "RadioButton",
+                        "androidx.appcompat.widget.AppCompatCheckBox",
+                        "androidx.appcompat.widget.AppCompatRadioButton"
+                ));
+                break;
+
+            case "30": // TabLayout
+            case "31": // ViewPager
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "com.google.android.material.tabs.TabLayout",
+                        "androidx.viewpager.widget.ViewPager",
+                        "androidx.viewpager2.widget.ViewPager2",
+                        "androidx.fragment.app.FragmentPagerAdapter",
+                        "androidx.fragment.app.FragmentStatePagerAdapter",
+                        "com.google.android.material.tabs.TabLayoutMediator"
+                ));
+                break;
+
+            case "32": // BottomNavigationView
+                prioritizedSuggestions.add("com.google.android.material.bottomnavigation.BottomNavigationView");
+                break;
+
+            case "36": // CardView
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "androidx.cardview.widget.CardView",
+                        "com.google.android.material.card.MaterialCardView"
+                ));
+                break;
+
+            case "39": // SwipeRefreshLayout
+                prioritizedSuggestions.addAll(Arrays.asList(
+                        "androidx.swiperefreshlayout.widget.SwipeRefreshLayout",
+                        "com.google.android.material.progressindicator.CircularProgressIndicator",
+                        "com.google.android.material.progressindicator.LinearProgressIndicator"
+                ));
+                break;
+        }
+
+        List<String> allSuggestions = new ArrayList<>(getFullSuggestions());
+
+        allSuggestions.removeAll(prioritizedSuggestions);
+
+        List<String> finalSuggestions = new ArrayList<>(prioritizedSuggestions);
+        finalSuggestions.addAll(allSuggestions);
+
+        return finalSuggestions;
+    }
+
+    public List<String> getFullSuggestions() {
+        return Arrays.asList(getResources().getStringArray(R.array.property_convert_options));
     }
 
 }
