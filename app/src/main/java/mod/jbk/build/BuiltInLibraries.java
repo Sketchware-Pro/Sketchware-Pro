@@ -66,7 +66,7 @@ public class BuiltInLibraries {
     public static String ANDROIDX_LIFECYCLE_VIEWMODEL = "lifecycle-viewmodel-release";
     public static String ANDROIDX_LIFECYCLE_VIEWMODEL_SAVEDSTATE = "lifecycle-viewmodel-savedstate-2.8.7";
     public static String ANDROIDX_LOADER = "loader-1.1.0";
-    public static String ANDROIDX_LOCALBROADCASTMANAGER = "localbroadcastmanager-1.0.0";
+    public static String ANDROIDX_LOCALBROADCASTMANAGER = "localbroadcastmanager-1.1.0";
     public static String ANDROIDX_MEDIA = "media-1.7.0";
     public static String ANDROIDX_MULTIDEX = "multidex-2.0.1";
     public static String ANDROIDX_PRINT = "print-1.0.0";
