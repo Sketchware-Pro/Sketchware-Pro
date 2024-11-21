@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 
 import a.a.a.aB;
 import a.a.a.wq;
+import mod.jbk.util.OldResourceIdMapper;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.editor.component.CollapsibleCustomComponentLayout;
@@ -340,7 +341,8 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
             public void bind(HashMap<String, Object> item) {
                 type.setText((String) item.get("name"));
                 id.setText((String) item.get("id"));
-                icon.setImageResource(Integer.parseInt((String) item.get("icon")));
+                int imgRes = Integer.parseInt((String) item.get("icon"));
+                icon.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(imgRes));
             }
 
             @Override
