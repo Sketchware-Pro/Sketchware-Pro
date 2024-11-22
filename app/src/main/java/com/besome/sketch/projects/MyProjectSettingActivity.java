@@ -506,6 +506,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 new oB().b(wq.b(sc_id));
             }
             try {
+                FileUtil.deleteFile(getTempIconsFolderPath("mipmaps" + File.separator));
                 FileUtil.copyDirectory(new File(getTempIconsFolderPath("temp_icons" + File.separator)), new File(getIconsFolderPath()));
                 FileUtil.deleteFile(getTempIconsFolderPath("temp_icons" + File.separator));
             } catch (Exception e) {
