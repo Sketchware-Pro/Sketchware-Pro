@@ -24,14 +24,14 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="wrap_content"
             android:background="?selectableItemBackground">
 
             <ImageView
                 android:id="@+id/img_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="24dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="24dp"
                 android:contentDescription="@null" />
@@ -46,15 +46,17 @@
                 tools:text="Firebase DB" />
 
             <TextView
-                android:id="@+id/tv_component_id"
+                android:id="@+id/tv_component_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_component_type"
                 android:layout_marginLeft="72dp"
                 android:layout_marginRight="16dp"
+                android:layout_marginBottom="12dp"
+                android:alpha="0.6"
                 android:gravity="center_vertical"
-                android:textSize="14sp"
-                tools:text="36" />
+                android:textSize="12sp"
+                tools:text="description" />
 
             <LinearLayout
                 android:id="@+id/events_preview"

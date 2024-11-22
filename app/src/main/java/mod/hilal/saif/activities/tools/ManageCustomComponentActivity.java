@@ -288,7 +288,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
             public final LinearLayout optionLayout;
             public final ImageView icon;
             public final TextView type;
-            public final TextView id;
+            public final TextView description;
             public final ImageView menu;
             public final CollapsibleCustomComponentLayout collapsibleComponentLayout;
 
@@ -297,7 +297,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
                 root = (MaterialCardView) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 type = itemView.findViewById(R.id.tv_component_type);
-                id = itemView.findViewById(R.id.tv_component_id);
+                description = itemView.findViewById(R.id.tv_component_description);
                 menu = itemView.findViewById(R.id.img_menu);
                 optionLayout = itemView.findViewById(R.id.component_option_layout);
                 collapsibleComponentLayout = itemView.findViewById(R.id.component_option);
@@ -340,7 +340,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
             public void bind(HashMap<String, Object> item) {
                 type.setText((String) item.get("name"));
-                id.setText((String) item.get("id"));
+                description.setText((String) item.get("description"));
                 int imgRes = Integer.parseInt((String) item.get("icon"));
                 icon.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(imgRes));
             }
