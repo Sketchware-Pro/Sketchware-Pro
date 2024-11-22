@@ -6,7 +6,8 @@ def get_git_commit_info():
     commit_author = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%an']).decode('utf-8')
     commit_message = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%s']).decode('utf-8')
     commit_hash = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%H']).decode('utf-8')
-    return commit_author, commit_message, commit_hash
+    commit_hash_short = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%h']).decode('utf-8')
+    return commit_author, commit_message, commit_hash, commit_hash_short
 
 # Telegram API credentials
 api_id = int(os.getenv("API_ID"))
@@ -19,7 +20,7 @@ apk_min_api21 = os.getenv("APK_MIN_API21")
 apk_min_api26 = os.getenv("APK_MIN_API26")
 
 # Get the latest commit info
-commit_author, commit_message, commit_hash = get_git_commit_info()
+commit_author, commit_message, commit_hash, commit_hash_short = get_git_commit_info()
 
 # Create the client with bot token directly
 client = TelegramClient('bot_session', api_id, api_hash).start(bot_token=bot_token)
@@ -50,7 +51,7 @@ async def send_file(file_path, version):
     message = (
         f"**Commit by:** {commit_author}\n"
         f"**Commit message:** {commit_message}\n"
-        f"**Commit hash:** #{commit_hash}\n"
+        f"**Commit hash:** #{commit_hash_short}\n"
         f"**Version:** Android {'< 8' if version == 21 else '>= 8'}"
     )
 
