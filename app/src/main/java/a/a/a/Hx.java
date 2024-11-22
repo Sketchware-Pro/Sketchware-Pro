@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.components.ComponentExtraCode;
 
 public class Hx {
@@ -26,10 +27,14 @@ public class Hx {
     private final HashMap<String, String> j = new HashMap<>();
     public String k = "";
     public String l = "";
+    private final Boolean isViewBindingEnabled;
 
     public Hx(jq jq, ProjectFileBean projectFileBean, eC eC) {
         this.jq = jq;
         this.projectFileBean = projectFileBean;
+
+        ProjectSettings projectSettings = new ProjectSettings(jq.sc_id);
+        isViewBindingEnabled = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "false").equals("true");
 
         ArrayList<ViewBean> views = new ArrayList<>(eC.d(projectFileBean.getXmlName()));
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
@@ -285,7 +290,7 @@ public class Hx {
                 sb.append(Jx.EOL);
                 sb.append(Jx.EOL);
             }
-            if (!a2.isEmpty()) {
+            if (isViewBindingEnabled &&!a2.isEmpty()) {
                 sb.append("binding.");
             }
             sb.append(a2);
