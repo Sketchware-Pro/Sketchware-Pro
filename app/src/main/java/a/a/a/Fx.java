@@ -1227,7 +1227,7 @@ public class Fx {
         }
 
         if (bean.nextBlock >= 0) {
-            code += "\r\n" + a(String.valueOf(bean.nextBlock), moreBlock);
+            code += (code.isEmpty() ? "" : "\r\n") + a(String.valueOf(bean.nextBlock), moreBlock);
         }
 
         return code;
