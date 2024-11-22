@@ -65,13 +65,7 @@ public class Fx {
             } else {
                 type = 3;
             }
-            String parameter = a(param, type, bean.opCode);
-
-            if (parameter.isEmpty()) {
-                return "";
-            }
-
-            params.add(parameter);
+            params.add(a(param, type, bean.opCode));
         }
 
         String moreBlock = "";
@@ -1269,16 +1263,28 @@ public class Fx {
         } else if (type == 2) {
             return "\"" + escapeString(param) + "\"";
         } else if (type == 1) {
+            /**
+             * Ideally, a.a.aFx#a(BlockBean, String) should be responsible for parsing the input properly. 
+             * However, upon decompiling this class, it seems to completely ignore this case. 
+             * This is the solution for now to prevent errors during code generation.
+             */
             try {
-                Integer.parseInt(param);
-                return param;
-            } catch (NumberFormatException e1) {
-                try {
+                if (param.isEmpty()) {
+                    return "0";
+                }
+                if (param.contains(".")) {
                     Double.parseDouble(param);
                     return param + "d";
-                } catch (NumberFormatException e2) {
-                    return param;
                 }
+                Integer.parseInt(param);
+                return param;
+            } catch (NumberFormatException e) {
+                return param;
+            }
+        } else if (type == 0) {
+            //the same with type == 1
+            if (param.isEmpty()) {
+                return "true";
             }
         }
         return param;
