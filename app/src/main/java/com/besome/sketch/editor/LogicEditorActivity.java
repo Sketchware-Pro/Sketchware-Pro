@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.InputType;
 import android.util.Pair;
@@ -133,7 +134,6 @@ import mod.jbk.util.BlockUtil;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 import pro.sketchware.databinding.ViewStringEditorAddBinding;
-import pro.sketchware.menu.ExtraMenuBean;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.FilePathUtil;
@@ -943,18 +943,15 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         dialog.a(customView);
         dialog.b(getTranslatedString(R.string.common_word_save), v -> {
-            int childCount = radioGroup.getChildCount();
-            int i = 0;
-            while (true) {
-                if (i >= childCount) {
-                    break;
+            for (int i = 0; i < radioGroup.getChildCount(); i++) {
+                View child = radioGroup.getChildAt(i);
+                if (child instanceof RadioButton) {
+                    RadioButton radioButton = (RadioButton) child;
+                    if (radioButton.isChecked()) {
+                        a(ss, radioButton.getTag());
+                        break;
+                    }
                 }
-                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
-                if (radioButton.isChecked()) {
-                    a(ss, radioButton.getTag());
-                    break;
-                }
-                i++;
             }
             dialog.dismiss();
         });
@@ -1586,10 +1583,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return linearLayout;
     }
 
-    public final RadioButton d(String str, String str2) {
+    public final RadioButton d(String type, String id) {
         RadioButton radioButton = new RadioButton(this);
-        radioButton.setText(str + " : " + str2);
-        radioButton.setTag(str2);
+        radioButton.setText(type + " : " + id);
+        radioButton.setTag("binding." + id);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (wB.a(this, 1.0f) * 40.0f));
         radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
@@ -1706,16 +1703,16 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         int a2;
         int i2 = ViewGroup.LayoutParams.MATCH_PARENT;
         if (X) {
-            int i3 = getResources().getDisplayMetrics().widthPixels;
-            int i4 = getResources().getDisplayMetrics().heightPixels;
-            if (i3 <= i4) {
-                i3 = i4;
+            int width = getResources().getDisplayMetrics().widthPixels;
+            int height = getResources().getDisplayMetrics().heightPixels;
+            if (width <= height) {
+                width = height;
             }
             if (2 == i) {
-                i2 = i3 - ((int) wB.a(this, 320.0f));
+                i2 = width - ((int) wB.a(this, 320.0f));
                 a2 = ViewGroup.LayoutParams.MATCH_PARENT;
             } else {
-                a2 = ((i3 - GB.a(getContext())) - GB.f(getContext())) - ((int) wB.a(this, 240.0f));
+                a2 = ((width - GB.a(getContext())) - GB.f(getContext())) - ((int) wB.a(this, 240.0f));
             }
             layoutParams = new LinearLayout.LayoutParams(i2, a2);
         } else {
@@ -2135,7 +2132,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             parcelable = savedInstanceState.getParcelable("project_file");
         }
         M = (ProjectFileBean) parcelable;
-        DB h = new DB(this, "P1");
         T = (int) wB.a(getBaseContext(), (float) T);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -2673,7 +2669,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             Configuration configuration = getResources().getConfiguration();
-            boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
+            boolean isDarkTheme = configuration.isNightModeActive();
             if (isDarkTheme) {
                 codeEditor.setColorScheme(new SchemeDarcula());
             } else {
