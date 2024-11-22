@@ -192,7 +192,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             project_metadata.a(iCVar, hCVar, eCVar, true);
             builder.buildBuiltInLibraryInformation();
             project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
-            Log.d("TAG", "exportSrc: ");
             if (yB.a(lC.b(sc_id), "custom_icon")) {
                 project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
                 if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
