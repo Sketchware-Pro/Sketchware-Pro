@@ -22,8 +22,8 @@ def main():
 
     message = (
         f"A new [build](https://github.com/Sketchware-Pro/Sketchware-Pro/commit/{commit_hash}) has been triggered by *{commit_author}*.\n\n"
-        f"*Commit message:*\n>{commit_message}\n"
-        f"*Commit hash:*\n`{commit_hash}`\n\n"
+        f"*Commit hash:* #{commit_hash}\n"
+        f"*Commit message:*\n>{commit_message}\n\n"
         f"I will send you the APKs here if the build is successful."
     )
     
