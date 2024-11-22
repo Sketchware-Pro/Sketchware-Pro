@@ -834,10 +834,10 @@ public class Fx {
                 opcode = String.format("%s.getDuration()", params.get(0));
                 break;
             case "mediaplayerReset":
-                opcode = String.format("%s.reset()", params.get(0));
+                opcode = String.format("%s.reset();", params.get(0));
                 break;
             case "mediaplayerRelease":
-                opcode = String.format("%s.release()", params.get(0));
+                opcode = String.format("%s.release();", params.get(0));
 
                 break;
             case "mediaplayerIsPlaying":
@@ -845,7 +845,7 @@ public class Fx {
 
                 break;
             case "mediaplayerSetLooping":
-                opcode = String.format("%s.setLooping(%s)", params.get(0), params.get(1));
+                opcode = String.format("%s.setLooping(%s);", params.get(0), params.get(1));
                 break;
             case "mediaplayerIsLooping":
                 opcode = String.format("%s.isLooping()", params.get(0));
@@ -854,10 +854,10 @@ public class Fx {
                 opcode = String.format("%s = new SoundPool((int)(%s), AudioManager.STREAM_MUSIC, 0);", params.get(0), params.get(1));
                 break;
             case "soundpoolLoad":
-                opcode = String.format("%s.load(getApplicationContext(), R.raw.%s, 1)", params.get(0), params.get(1));
+                opcode = String.format("%s.load(getApplicationContext(), R.raw.%s, 1);", params.get(0), params.get(1));
                 break;
             case "soundpoolStreamPlay":
-                opcode = String.format("%s.play((int)(%s), 1.0f, 1.0f, 1, (int)(%s), 1.0f)", params.get(0), params.get(1), params.get(2));
+                opcode = String.format("%s.play((int)(%s), 1.0f, 1.0f, 1, (int)(%s), 1.0f);", params.get(0), params.get(1), params.get(2));
 
                 break;
             case "soundpoolStreamStop":
