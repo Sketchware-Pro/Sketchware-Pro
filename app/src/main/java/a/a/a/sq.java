@@ -91,7 +91,7 @@ public class sq {
         I = new ColorBean[]{new ColorBean("#000000", "BLACK", "#ffffff", R.drawable.checked_white_32)};
         J = new ColorBean[]{new ColorBean("#ffffff", "WHITE", "#212121", R.drawable.checked_grey_32)};
         K = new ColorBean[]{new ColorBean(Color.TRANSPARENT, "TRANSPARENT", Color.parseColor("#9E9E9E"), R.drawable.checked_grey_32)};
-        L = new ColorBean[]{new ColorBean(0xffffff, "NONE", Color.parseColor("#212121"), R.drawable.checked_grey_32)};
+        L = new ColorBean[]{new ColorBean(0xffffff, "NONE", Color.parseColor("#9E9E9E"), R.drawable.checked_grey_32)};
         M = new int[]{R.color.scolor_blue_01, R.color.scolor_red_02, R.color.scolor_green_02, R.color.scolor_dark_yellow_01};
     }
 
