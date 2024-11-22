@@ -4,18 +4,23 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Window;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import pro.sketchware.activities.main.fragments.projects_store.adapters.ProjectScreenshotsAdapter;
-import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
+import androidx.transition.ChangeBounds;
+import androidx.transition.TransitionManager;
+
 import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.google.gson.Gson;
-import pro.sketchware.databinding.FragmentStoreProjectPreviewBinding;
-import pro.sketchware.utility.UI;
 
 import java.util.ArrayList;
+
+import pro.sketchware.activities.main.fragments.projects_store.adapters.ProjectScreenshotsAdapter;
+import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
+import pro.sketchware.databinding.FragmentStoreProjectPreviewBinding;
+import pro.sketchware.utility.UI;
 
 public class ProjectPreviewActivity extends AppCompatActivity {
     private FragmentStoreProjectPreviewBinding binding;
@@ -55,9 +60,21 @@ public class ProjectPreviewActivity extends AppCompatActivity {
         binding.projectDescription.setMaxLines(4);
         binding.seeMore.setOnClickListener(v -> {
             if (binding.projectDescription.getMaxLines() == 4) {
+                ChangeBounds changeBounds = new ChangeBounds();
+
+                changeBounds.addTarget(binding.projectDescription);
+                changeBounds.setDuration(300);
+                TransitionManager.beginDelayedTransition(binding.getRoot(), changeBounds);
+
                 binding.projectDescription.setMaxLines(Integer.MAX_VALUE);
                 binding.seeMore.setText("See less");
             } else {
+                ChangeBounds changeBounds = new ChangeBounds();
+
+                changeBounds.addTarget(binding.projectDescription);
+                changeBounds.setDuration(300);
+                TransitionManager.beginDelayedTransition(binding.getRoot(), changeBounds);
+
                 binding.projectDescription.setMaxLines(4);
                 binding.seeMore.setText("See more");
             }

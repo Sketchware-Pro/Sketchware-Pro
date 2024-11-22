@@ -20,13 +20,13 @@ import java.util.regex.Pattern;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
-import mod.pranav.viewbinding.ViewBindingBuilder;
-import pro.sketchware.control.logic.PermissionManager;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.hilal.saif.events.LogicHandler;
+import mod.pranav.viewbinding.ViewBindingBuilder;
+import pro.sketchware.control.logic.PermissionManager;
 
 public class Jx {
 
@@ -39,6 +39,7 @@ public class Jx {
     private final eC projectDataManager;
     private final jq buildConfig;
     private final Ox ox;
+    private final Boolean isViewBindingEnabled;
     /**
      * Fields with static initializer that added Components need,
      * e.g. {"private Timer _timer = new Timer();"}
@@ -93,6 +94,8 @@ public class Jx {
         permissionManager = new PermissionManager(eCVar.a, projectFileBean.getJavaName());
         ox = new Ox(buildConfig, projectFileBean);
         extraBlocks = getExtraBlockData();
+        isViewBindingEnabled = settings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
+                .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
     }
 
     public String activityResult() {
@@ -338,17 +341,24 @@ public class Jx {
                 sb.append("public View onCreateView(LayoutInflater _inflater, ViewGroup _container, " +
                         "Bundle _savedInstanceState) {").append(EOL);
             }
-            sb.append("binding = ").append(bindingName).append(".inflate(_inflater, _container, false);").append(EOL);
-            //sb.append("View _view = _inflater.inflate(R.layout.").append(projectFileBean.fileName).append(", _container, false);").append(EOL);
-            sb.append("initialize(_savedInstanceState, binding.getRoot());");
+            if (isViewBindingEnabled) {
+                sb.append("binding = ").append(bindingName).append(".inflate(_inflater, _container, false);").append(EOL);
+                sb.append("initialize(_savedInstanceState, binding.getRoot());");
+            } else {
+                sb.append("View _view = _inflater.inflate(R.layout.").append(projectFileBean.fileName).append(", _container, false);").append(EOL);
+                sb.append("initialize(_savedInstanceState, _view);");
+            }
         } else {
             sb.append("@Override").append(EOL);
             sb.append("protected void onCreate(Bundle _savedInstanceState) {").append(EOL);
             sb.append("super.onCreate(_savedInstanceState);").append(EOL);
 
-            sb.append("binding = ").append(bindingName).append(".inflate(getLayoutInflater());").append(EOL);
-            sb.append("setContentView(binding.getRoot());").append(EOL);
-            //sb.append("setContentView(R.layout.").append(projectFileBean.fileName).append(");").append(EOL);
+            if (isViewBindingEnabled) {
+                sb.append("binding = ").append(bindingName).append(".inflate(getLayoutInflater());").append(EOL);
+                sb.append("setContentView(binding.getRoot());").append(EOL);
+            } else {
+                sb.append("setContentView(R.layout.").append(projectFileBean.fileName).append(");").append(EOL);
+            }
             sb.append("initialize(_savedInstanceState);");
         }
         sb.append(EOL);
@@ -399,8 +409,12 @@ public class Jx {
             // Adds initializeLogic() call too, don't worry
             sb.append(permissionManager.writePermission(buildConfig.g, buildConfig.a(projectFileBean.getActivityName()).c));
         } else {
-            sb.append("initializeLogic();").append(EOL)
-                    .append("return binding.getRoot();").append(EOL);
+            sb.append("initializeLogic();").append(EOL);
+            if (isViewBindingEnabled) {
+                sb.append("return binding.getRoot();").append(EOL);
+            } else {
+                sb.append("return _view;").append(EOL);
+            }
         }
         sb.append("}").append(EOL);
 
@@ -709,7 +723,9 @@ public class Jx {
         } else {
             addImport("android.app.Activity");
         }
-        fields.add("private " + ViewBindingBuilder.generateFileNameForLayout(projectFileBean.fileName) + " binding;");
+        if (isViewBindingEnabled) {
+            fields.add("private " + ViewBindingBuilder.generateFileNameForLayout(projectFileBean.fileName) + " binding;");
+        }
 
         if (buildConfig.g) {
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) && !projectFileBean.fileName.contains("_fragment")) {
@@ -720,44 +736,76 @@ public class Jx {
                 fields.add("private Toolbar _toolbar;");
                 fields.add("private AppBarLayout _app_bar;");
                 fields.add("private CoordinatorLayout _coordinator;");
-                initializeMethodCode.add(
-                                "setSupportActionBar(binding._toolbar);" + EOL +
-                                "getSupportActionBar().setDisplayHomeAsUpEnabled(true);" + EOL +
-                                "getSupportActionBar().setHomeButtonEnabled(true);" + EOL +
-                                "binding._toolbar.setNavigationOnClickListener(new View.OnClickListener() {" + EOL +
-                                "@Override" + EOL +
-                                "public void onClick(View _v) {" + EOL +
-                                "onBackPressed();" + EOL +
-                                "}" + EOL +
-                                "});"
-                );
+                if (isViewBindingEnabled) {
+                    initializeMethodCode.add(
+                            "setSupportActionBar(binding._toolbar);" + EOL +
+                                    "getSupportActionBar().setDisplayHomeAsUpEnabled(true);" + EOL +
+                                    "getSupportActionBar().setHomeButtonEnabled(true);" + EOL +
+                                    "binding._toolbar.setNavigationOnClickListener(new View.OnClickListener() {" + EOL +
+                                    "@Override" + EOL +
+                                    "public void onClick(View _v) {" + EOL +
+                                    "onBackPressed();" + EOL +
+                                    "}" + EOL +
+                                    "});"
+                    );
+                } else {
+                    initializeMethodCode.add(
+                            "_app_bar = findViewById(R.id._app_bar);" + EOL +
+                                    "_coordinator = findViewById(R.id._coordinator);" + EOL +
+                                    "_toolbar = findViewById(R.id._toolbar);" + EOL +
+                                    "setSupportActionBar(_toolbar);" + EOL +
+                                    "getSupportActionBar().setDisplayHomeAsUpEnabled(true);" + EOL +
+                                    "getSupportActionBar().setHomeButtonEnabled(true);" + EOL +
+                                    "_toolbar.setNavigationOnClickListener(new View.OnClickListener() {" + EOL +
+                                    "@Override" + EOL +
+                                    "public void onClick(View _v) {" + EOL +
+                                    "onBackPressed();" + EOL +
+                                    "}" + EOL +
+                                    "});"
+                    );
+                }
             }
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
                 addImport("com.google.android.material.floatingactionbutton.FloatingActionButton");
 
                 fields.add("private FloatingActionButton _fab;");
-                initializeMethodCode.add(
-                        (projectFileBean.fileName.contains("_fragment") ?
-                                "binding._fab = _view.findViewById(R.id._fab);" :
-                                "binding._fab = findViewById(R.id._fab);") + EOL
-                );
+                if (isViewBindingEnabled) {
+                    initializeMethodCode.add("_fab = binding._fab");
+                } else {
+                    initializeMethodCode.add("_fab = findViewById(R.id._fab);");
+                }
             }
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) && !projectFileBean.fileName.contains("_fragment")) {
                 addImport("androidx.core.view.GravityCompat");
                 addImport("androidx.drawerlayout.widget.DrawerLayout");
                 addImport("androidx.appcompat.app.ActionBarDrawerToggle");
 
-                initializeMethodCode.add(
-                        "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
-                        projectFileBean.getActivityName() + ".this, binding._drawer, " +
 
-                        (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ?
-                                "binding._toolbar, " : "") +
+                if (isViewBindingEnabled) {
+                    initializeMethodCode.add(
+                            "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
+                                    projectFileBean.getActivityName() + ".this, binding._drawer, " +
 
-                        "R.string.app_name, R.string.app_name);" + EOL +
-                        "binding._drawer.addDrawerListener(_toggle);" + EOL +
-                        "_toggle.syncState();" + EOL
-                );
+                                    (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ?
+                                            "binding._toolbar, " : "") +
+
+                                    "R.string.app_name, R.string.app_name);" + EOL +
+                                    "binding._drawer.addDrawerListener(_toggle);" + EOL +
+                                    "_toggle.syncState();" + EOL
+                    );
+                } else {
+                    fields.add("private DrawerLayout _drawer;");
+                    initializeMethodCode.add("_drawer = findViewById(R.id._drawer);" + EOL +
+                            "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
+                            projectFileBean.getActivityName() + ".this, _drawer, " +
+                            (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ?
+                                    "_toolbar, " : "") +
+                            "R.string.app_name, R.string.app_name);" + EOL +
+                            "_drawer.addDrawerListener(_toggle);" + EOL +
+                            "_toggle.syncState();" + EOL + EOL +
+                            "LinearLayout _nav_view = findViewById(R.id._nav_view);" + EOL
+                    );
+                }
                 addImports(mq.getImportsByTypeName("LinearLayout", null));
             }
         }
@@ -818,9 +866,9 @@ public class Jx {
             replaceAll = viewBean.getClassInfo().a();
         }
         if (projectFileBean.fileName.contains("_fragment")) {
-            return Lx.getViewInitializer(replaceAll, viewBean.id, true);
+            return Lx.getViewInitializer(replaceAll, viewBean.id, true, isViewBindingEnabled);
         }
-        return Lx.getViewInitializer(replaceAll, viewBean.id, false);
+        return Lx.getViewInitializer(replaceAll, viewBean.id, false, isViewBindingEnabled);
     }
 
     private void addMoreBlockCodes() {
@@ -921,22 +969,24 @@ public class Jx {
      */
     private void addDrawerComponentInitializer() {
         ArrayList<ViewBean> viewBeans = projectDataManager.d(projectFileBean.getXmlName());
-        for (ViewBean viewBean : viewBeans) {
-            if (!viewBean.convert.equals("include")) {
-                //Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
-                //if (!toNotAdd.contains("android:id")) {
-                //    initializeMethodCode.add(getViewInitializer(viewBean));
-                //}
-            }
-        }
-        if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-            ArrayList<ViewBean> drawerBeans = projectDataManager.d(projectFileBean.getDrawerXmlName());
-            for (ViewBean viewBean : drawerBeans) {
+        if (!isViewBindingEnabled) {
+            for (ViewBean viewBean : viewBeans) {
                 if (!viewBean.convert.equals("include")) {
-                    //Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
-                    //if (!toNotAdd.contains("android:id")) {
-                    //    initializeMethodCode.add(getDrawerViewInitializer(viewBean));
-                    //}
+                    Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                    if (!toNotAdd.contains("android:id")) {
+                        initializeMethodCode.add(getViewInitializer(viewBean));
+                    }
+                }
+            }
+            if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
+                ArrayList<ViewBean> drawerBeans = projectDataManager.d(projectFileBean.getDrawerXmlName());
+                for (ViewBean viewBean : drawerBeans) {
+                    if (!viewBean.convert.equals("include")) {
+                        Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                        if (!toNotAdd.contains("android:id")) {
+                            initializeMethodCode.add(getDrawerViewInitializer(viewBean));
+                        }
+                    }
                 }
             }
         }
@@ -980,11 +1030,13 @@ public class Jx {
         for (Pair<Integer, String> next2 : projectDataManager.j(javaName)) {
             lists.add(getListDeclarationAndAddImports(next2.first, next2.second));
         }
-        for (ViewBean viewBean : projectDataManager.d(projectFileBean.getXmlName())) {
-            if (!viewBean.convert.equals("include")) {
-                Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
-                if (!toNotAdd.contains("android:id")) {
-                    //views.add(getViewDeclarationAndAddImports(viewBean));
+        if (!isViewBindingEnabled) {
+            for (ViewBean viewBean : projectDataManager.d(projectFileBean.getXmlName())) {
+                if (!viewBean.convert.equals("include")) {
+                    Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                    if (!toNotAdd.contains("android:id")) {
+                        views.add(getViewDeclarationAndAddImports(viewBean));
+                    }
                 }
             }
         }
