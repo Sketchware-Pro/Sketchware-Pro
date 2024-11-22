@@ -65,13 +65,7 @@ public class Fx {
             } else {
                 type = 3;
             }
-            String parameter = a(param, type, bean.opCode);
-
-            if (parameter.isEmpty()) {
-                return "";
-            }
-
-            params.add(parameter);
+            params.add(a(param, type, bean.opCode));
         }
 
         String moreBlock = "";
