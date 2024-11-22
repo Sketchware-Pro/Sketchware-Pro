@@ -23,10 +23,6 @@ import androidx.transition.TransitionManager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
-import pro.sketchware.R;
-import pro.sketchware.activities.iconcreator.IconCreatorActivity;
-import pro.sketchware.databinding.MyprojectSettingBinding;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,11 +43,14 @@ import a.a.a.oB;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.control.VersionDialog;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import pro.sketchware.R;
+import pro.sketchware.activities.iconcreator.IconCreatorActivity;
+import pro.sketchware.control.VersionDialog;
+import pro.sketchware.databinding.MyprojectSettingBinding;
+import pro.sketchware.utility.FileUtil;
 
 public class MyProjectSettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -221,7 +220,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             mB.a(v);
             if (isInputValid()) {
                 new SaveProjectAsyncTask(getApplicationContext()).execute();
-                if (icon != null) saveBitmapTo(icon ,getCustomIconPath());
+                if (icon != null) saveBitmapTo(icon, getCustomIconPath());
             }
         } else if (id == R.id.cancel) {
             finish();
@@ -372,7 +371,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 projectThemeColors[colorIndex] = var2;
                 syncThemeColors();
             }
-         }
+        }
         ));
         zx.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
     }
@@ -509,7 +508,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             try {
                 FileUtil.copyDirectory(new File(getTempIconsFolderPath("temp_icons" + File.separator)), new File(getIconsFolderPath()));
                 FileUtil.deleteFile(getTempIconsFolderPath("temp_icons" + File.separator));
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

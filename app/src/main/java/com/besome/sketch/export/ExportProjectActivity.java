@@ -19,8 +19,6 @@ import androidx.core.content.FileProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import pro.sketchware.BuildConfig;
-import pro.sketchware.R;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
@@ -47,9 +45,6 @@ import a.a.a.yq;
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import kellinwood.security.zipsigner.optional.LoadKeystoreException;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
@@ -59,6 +54,11 @@ import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
+import pro.sketchware.BuildConfig;
+import pro.sketchware.R;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ExportProjectActivity extends BaseAppCompatActivity {
 
@@ -192,7 +192,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             project_metadata.a(iCVar, hCVar, eCVar, true);
             builder.buildBuiltInLibraryInformation();
             project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
-            Log.d("TAG", "exportSrc: ");
             if (yB.a(lC.b(sc_id), "custom_icon")) {
                 project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
                 if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
@@ -347,7 +346,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             confirmationDialog.a("""
                     To sign an APK, you need a keystore. Use your already created one, and copy it to \
                     /Internal storage/sketchware/keystore/release_key.jks and enter the alias's password.
-
+                    
                     Note that this only signs your APK using signing scheme V1, to target Android 11+ for example, \
                     use a 3rd-party tool (for now).""");
             confirmationDialog.a(R.drawable.ic_mtrl_info);
