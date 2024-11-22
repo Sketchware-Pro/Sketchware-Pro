@@ -97,7 +97,7 @@ public class PatternBackgroundView extends View {
             drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
             drawable.draw(canvas);
             return bitmap;
-        }else{
+        } else {
             throw new IllegalArgumentException("not VectorDrawable");
         }
     }

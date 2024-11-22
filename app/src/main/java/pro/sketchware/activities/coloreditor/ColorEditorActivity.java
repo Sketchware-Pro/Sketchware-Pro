@@ -68,7 +68,7 @@ public class ColorEditorActivity extends AppCompatActivity {
         if (colorValue.startsWith("@color/")) {
             return getColorValueFromXml(context, colorValue.substring(7), referencingLimit - 1);
 
-        }else if (colorValue.startsWith("@android:color/")) {
+        } else if (colorValue.startsWith("@android:color/")) {
             return getColorValueFromSystem(colorValue, context);
         }
         return "#ffffff";
@@ -100,7 +100,7 @@ public class ColorEditorActivity extends AppCompatActivity {
                         String colorValue = parser.nextText().trim();
                         if (colorValue.startsWith("@")) {
                             return getColorValue(context, colorValue, referencingLimit - 1);
-                        }else{
+                        } else {
                             return colorValue;
                         }
                     }
@@ -198,7 +198,7 @@ public class ColorEditorActivity extends AppCompatActivity {
         String newXml = convertListToXml(colorList);
         if (!Objects.equals(XmlUtil.replaceXml(newXml), XmlUtil.replaceXml(originalXml))) {
             showExitDialog();
-        }else{
+        } else {
             super.onBackPressed();
         }
         if (colorList.isEmpty() && (!originalXml.contains("</resources>"))) {
@@ -223,12 +223,12 @@ public class ColorEditorActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == MENU_SAVE) {
             XmlUtil.saveXml(contentPath, convertListToXml(colorList));
-        }else if (id == MENU_OPEN_IN_EDITOR) {
+        } else if (id == MENU_OPEN_IN_EDITOR) {
             XmlUtil.saveXml(contentPath, convertListToXml(colorList));
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-            }else{
+            } else {
                 intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             }
             intent.putExtra("title", title);
@@ -322,7 +322,7 @@ public class ColorEditorActivity extends AppCompatActivity {
                 dialogBinding.colorValueInput.setEnabled(false);
                 dialogBinding.hash.setEnabled(false);
                 dialogBinding.colorValueInputLayout.setError(null);
-            }else{
+            } else {
                 dialogBinding.colorValueInput.setText(colorItem.getColorValue().replace("#", ""));
                 dialogBinding.hash.setText("#");
 
@@ -330,7 +330,7 @@ public class ColorEditorActivity extends AppCompatActivity {
 
             dialog.b("Edit color");
 
-        }else{
+        } else {
             dialog.b("Add new color");
             dialogBinding.colorPreview.setBackgroundColor(0xFFFFFF);
         }
@@ -356,12 +356,12 @@ public class ColorEditorActivity extends AppCompatActivity {
 
                 if (dialogBinding.hash.equals("@")) {
                     colorItem.setColorValue("@" + value);
-                }else{
+                } else {
                     colorItem.setColorValue("#" + value);
                 }
 
                 adapter.notifyItemChanged(position);
-            }else{
+            } else {
                 addColor(key, value);
             }
             dialog.dismiss();
