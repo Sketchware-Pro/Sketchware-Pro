@@ -18,21 +18,24 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuProvider;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pro.sketchware.activities.main.activities.MainActivity;
 import com.besome.sketch.adapters.ProjectsAdapter;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import pro.sketchware.R;
-import pro.sketchware.databinding.MyprojectsBinding;
-import pro.sketchware.databinding.SortProjectDialogBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 
 import a.a.a.DA;
 import a.a.a.DB;
@@ -42,13 +45,18 @@ import dev.chrisbanes.insetter.Insetter;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.activities.main.activities.MainActivity;
+import pro.sketchware.databinding.MyprojectsBinding;
+import pro.sketchware.databinding.SortProjectDialogBinding;
 
 public class ProjectsFragment extends DA implements View.OnClickListener {
     private MyprojectsBinding binding;
-    private final ArrayList<HashMap<String, Object>> projectsList = new ArrayList<>();
     private ProjectsAdapter projectsAdapter;
     private DB preference;
     private SearchView projectsSearchView;
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final List<HashMap<String, Object>> projectsList = new ArrayList<>();
 
     @Override
     public void b(int requestCode) {
@@ -66,7 +74,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     public void c(int requestCode) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
-        startActivityForResult(intent, requestCode);
+        startActivity(intent);
     }
 
     @Override
@@ -83,12 +91,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         }
     }
 
-    public int getProjectsCount() {
-        synchronized (projectsList) {
-            return projectsList.size();
-        }
-    }
-
     public void toProjectSettingsActivity() {
         Intent intent = new Intent(getActivity(), MyProjectSettingActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -101,50 +103,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        int viewId = v.getId();
-
-        if (viewId == R.id.create_new_project) {
+        if (v.getId() == R.id.create_new_project) {
             toProjectSettingsActivity();
         }
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.projects_fragment_menu, menu);
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(@NonNull Menu menu) {
-        projectsSearchView = (SearchView) menu.findItem(R.id.searchProjects).getActionView();
-        if (projectsSearchView == null) return;
-        projectsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextChange(String s) {
-                projectsAdapter.filterData(s);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-        });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.sortProject) {
-            showProjectSortingDialog();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         binding = MyprojectsBinding.inflate(inflater, parent, false);
-        setHasOptionsMenu(true);
         return binding.getRoot();
     }
 
@@ -166,17 +132,14 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
         binding.swipeRefresh.setOnRefreshListener(this::refreshProjectsList);
 
-        binding.myprojects.setHasFixedSize(true);
-
-        projectsAdapter = new ProjectsAdapter(this, new ArrayList<>(projectsList));
+        projectsAdapter = new ProjectsAdapter(this, projectsList);
         binding.myprojects.setAdapter(projectsAdapter);
 
-        binding.myprojects.post(this::refreshProjectsList); // wait for recyclerview to be ready
+        binding.myprojects.post(this::refreshProjectsList); // wait for RecyclerView to be ready
 
         binding.myprojects.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
                 if (dy > 2) {
                     fab.shrink();
                 } else if (dy < -2) {
@@ -186,18 +149,56 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         });
 
         binding.specialAction.getRoot().setOnClickListener(v -> restoreProject());
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.projects_fragment_menu, menu);
+                projectsSearchView = (SearchView) menu.findItem(R.id.searchProjects).getActionView();
+                if (projectsSearchView != null) {
+                    projectsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextChange(String s) {
+                            projectsAdapter.filterData(s);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextSubmit(String s) {
+                            return false;
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.sortProject) {
+                    showProjectSortingDialog();
+                    return true;
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
-    public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == Activity.RESULT_OK) {
-            Intent data = result.getData();
-            assert data != null;
-            refreshProjectsList();
-            if (data.getBooleanExtra("is_new", false)) {
-                toDesignActivity(data.getStringExtra("sc_id"));
+    public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        String sc_id = data.getStringExtra("sc_id");
+                        if (data.getBooleanExtra("is_new", false)) {
+                            toDesignActivity(sc_id);
+                            addProject(sc_id);
+                        } else {
+                            updateProject(sc_id);
+                        }
+                    }
+                }
             }
-        }
-    });
+    );
 
     public void refreshProjectsList() {
         // Don't load project list without having permissions
@@ -207,12 +208,11 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             return;
         }
 
-        new Thread(() -> {
-            synchronized (projectsList) {
-                projectsList.clear();
-                projectsList.addAll(lC.a());
-                projectsList.sort(new ProjectComparator(preference.d("sortBy")));
-            }
+        executorService.execute(() -> {
+            List<HashMap<String, Object>> loadedProjects = lC.a();
+            loadedProjects.sort(new ProjectComparator(preference.d("sortBy")));
+
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProjectDiffCallback(projectsList, loadedProjects));
 
             requireActivity().runOnUiThread(() -> {
                 if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
@@ -220,15 +220,40 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                     binding.loading3balls.setVisibility(View.GONE);
                     binding.myprojects.setVisibility(View.VISIBLE);
                 }
-                projectsAdapter.setAllProjects(new ArrayList<>(projectsList));
+                projectsList.clear();
+                projectsList.addAll(loadedProjects);
+                diffResult.dispatchUpdatesTo(projectsAdapter);
                 if (projectsSearchView != null)
                     projectsAdapter.filterData(projectsSearchView.getQuery().toString());
-
-                binding.myprojects.scrollToPosition(0);
             });
-        }).start();
+        });
     }
 
+    private void addProject(String sc_id) {
+        executorService.execute(() -> {
+            HashMap<String, Object> newProject = lC.b(sc_id);
+            if (newProject != null) {
+                requireActivity().runOnUiThread(() -> {
+                    projectsList.add(0, newProject);
+                    projectsAdapter.notifyItemInserted(0);
+                    binding.myprojects.scrollToPosition(0);
+                });
+            }
+        });
+    }
+
+    private void updateProject(String sc_id) {
+        executorService.execute(() -> {
+            HashMap<String, Object> updatedProject = lC.b(sc_id);
+            if (updatedProject != null) {
+                int index = IntStream.range(0, projectsList.size()).filter(i -> projectsList.get(i).get("sc_id").equals(sc_id)).findFirst().orElse(-1);
+                if (index != -1) {
+                    projectsList.set(index, updatedProject);
+                    requireActivity().runOnUiThread(() -> projectsAdapter.notifyItemChanged(index));
+                }
+            }
+        });
+    }
 
     private void showProjectSortingDialog() {
         aB dialog = new aB(requireActivity());
@@ -243,14 +268,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         int storedValue = preference.a("sortBy", ProjectComparator.DEFAULT);
         if ((storedValue & ProjectComparator.SORT_BY_NAME) == ProjectComparator.SORT_BY_NAME) {
             sortByName.setChecked(true);
-        }
-        if ((storedValue & ProjectComparator.SORT_BY_ID) == ProjectComparator.SORT_BY_ID) {
+        } else if ((storedValue & ProjectComparator.SORT_BY_ID) == ProjectComparator.SORT_BY_ID) {
             sortByID.setChecked(true);
         }
         if ((storedValue & ProjectComparator.SORT_ORDER_ASCENDING) == ProjectComparator.SORT_ORDER_ASCENDING) {
             sortOrderAsc.setChecked(true);
-        }
-        if ((storedValue & ProjectComparator.SORT_ORDER_DESCENDING) == ProjectComparator.SORT_ORDER_DESCENDING) {
+        } else if ((storedValue & ProjectComparator.SORT_ORDER_DESCENDING) == ProjectComparator.SORT_ORDER_DESCENDING) {
             sortOrderDesc.setChecked(true);
         }
 
@@ -275,5 +298,39 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         });
         dialog.a("Cancel", Helper.getDialogDismissListener(dialog));
         dialog.show();
+    }
+
+    private static class ProjectDiffCallback extends DiffUtil.Callback {
+        private final List<HashMap<String, Object>> oldList;
+        private final List<HashMap<String, Object>> newList;
+
+        public ProjectDiffCallback(List<HashMap<String, Object>> oldList, List<HashMap<String, Object>> newList) {
+            this.oldList = oldList;
+            this.newList = newList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldList.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newList.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            String oldId = (String) oldList.get(oldItemPosition).get("sc_id");
+            String newId = (String) newList.get(newItemPosition).get("sc_id");
+            return oldId.equals(newId);
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            HashMap<String, Object> oldItem = oldList.get(oldItemPosition);
+            HashMap<String, Object> newItem = newList.get(newItemPosition);
+            return oldItem.equals(newItem);
+        }
     }
 }

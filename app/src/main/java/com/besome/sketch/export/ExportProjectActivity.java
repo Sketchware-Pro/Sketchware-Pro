@@ -19,14 +19,9 @@ import androidx.core.content.FileProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import pro.sketchware.BuildConfig;
-import pro.sketchware.R;
-
-import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,12 +39,7 @@ import a.a.a.wq;
 import a.a.a.xq;
 import a.a.a.yB;
 import a.a.a.yq;
-import kellinwood.security.zipsigner.ZipSigner;
-import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import kellinwood.security.zipsigner.optional.LoadKeystoreException;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
@@ -60,6 +50,11 @@ import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
 import mod.yamenher.ApkSignerUtils;
+import pro.sketchware.BuildConfig;
+import pro.sketchware.R;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ExportProjectActivity extends BaseAppCompatActivity {
 
@@ -194,7 +189,16 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             builder.buildBuiltInLibraryInformation();
             project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
             if (yB.a(lC.b(sc_id), "custom_icon")) {
-                project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
+                project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
+                if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
+                    project_metadata.cf("""
+                            <?xml version="1.0" encoding="utf-8"?>
+                            <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
+                            <background android:drawable="@mipmap/ic_launcher_background"/>
+                            <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+                            <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
+                            </adaptive-icon>""");
+                }
             }
             project_metadata.a();
             kCVar.b(project_metadata.resDirectoryPath + File.separator + "drawable-xhdpi");
@@ -338,7 +342,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             confirmationDialog.a("""
                     To sign an APK, you need a keystore. Use your already created one, and copy it to \
                     /Internal storage/sketchware/keystore/release_key.jks and enter the alias's password.
-
+                    
                     Note that this only signs your APK using signing scheme V1, to target Android 11+ for example, \
                     use a 3rd-party tool (for now).""");
             confirmationDialog.a(R.drawable.ic_mtrl_info);
@@ -508,7 +512,16 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     return;
                 }
                 if (yB.a(lC.b(sc_id), "custom_icon")) {
-                    project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
+                    project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
+                    if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
+                        project_metadata.cf("""
+                                <?xml version="1.0" encoding="utf-8"?>
+                                <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
+                                <background android:drawable="@mipmap/ic_launcher_background"/>
+                                <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+                                <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
+                                </adaptive-icon>""");
+                    }
                 }
                 project_metadata.a();
                 kCVar.b(project_metadata.resDirectoryPath + File.separator + "drawable-xhdpi");
@@ -617,8 +630,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     if (signWithTestkey) {
                         TestkeySignBridge.signWithTestkey(createdBundlePath, outputPath);
                     } else if (isResultJarSigningEnabled()) {
-                        ApkSignerUtils.signWithReleaseKeystore(createdBundlePath,outputPath,signingKeystorePath, new String(signingKeystorePassword), signingAliasName, new String(signingAliasPassword));
-                        
+                        ApkSignerUtils.signWithReleaseKeystore(createdBundlePath, outputPath, signingKeystorePath, new String(signingKeystorePassword), signingAliasName, new String(signingAliasPassword));
+
                     } else {
                         FileUtil.copyFile(createdBundlePath, getCorrectResultFilename(outputPath));
                     }

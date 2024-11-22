@@ -9,13 +9,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import mod.hey.studios.editor.manage.block.code.ExtraBlockCode;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
 public class Fx {
-
+    
+    private static final Pattern PARAM_PATTERN = Pattern.compile("%m(?!\\.[\\w]+)");
     public String[] a = {"repeat", "+", "-", "*", "/", "%", ">", "=", "<", "&&", "||", "not"};
     public String[] b = {"+", "-", "*", "/", "%", ">", "=", "<", "&&", "||"};
     public String c;
@@ -65,13 +68,7 @@ public class Fx {
             } else {
                 type = 3;
             }
-            String parameter = a(param, type, bean.opCode);
-
-            if (parameter.isEmpty()) {
-                return "";
-            }
-
-            params.add(parameter);
+            params.add(a(param, type, bean.opCode));
         }
 
         String moreBlock = "";
@@ -441,7 +438,7 @@ public class Fx {
                 opcode = String.format("%s.setBackgroundColor(%s);", params.get(0), params.get(1));
                 break;
             case "setBgResource":
-                opcode = params.get(1).equals("NONE") ? "" : "R.drawable." + params.get(1).replaceAll("\\.9", "");
+                opcode = params.get(1).equals("NONE") ? "0" : "R.drawable." + params.get(1).replaceAll("\\.9", "");
                 opcode = String.format("%s.setBackgroundResource(%s);", params.get(0), opcode);
                 break;
             case "setTextColor":
@@ -1215,17 +1212,53 @@ public class Fx {
                 opcode = params.get(0) + ".removeUpdates(_" + params.get(0) + "_location_listener);";
                 break;
         }
-
         String code = opcode;
+        /**
+         * switch block above should be responsible for handling %m param. 
+         * However, upon decompiling this class, it completely ignore this case. 
+         * This is the solution for now to prevent errors during code generation.
+         */
+        if (hasEmptySelectorParam(params, bean.spec)) {
+            code = "";
+        }
+
         if (b(bean.opCode, var2)) {
             code = "(" + opcode + ")";
         }
 
         if (bean.nextBlock >= 0) {
-            code += "\r\n" + a(String.valueOf(bean.nextBlock), moreBlock);
+            code += (code.isEmpty() ? "" : "\r\n") + a(String.valueOf(bean.nextBlock), moreBlock);
         }
 
         return code;
+    }
+    
+    private boolean hasEmptySelectorParam(ArrayList<String> params, String spec) {
+        var matcher = PARAM_PATTERN.matcher(spec);
+        if (!matcher.find()) {
+            var paramMatcher = Pattern.compile("%[bdsm]").matcher(spec);
+            int count = 0;
+            ArrayList<Integer> selectorParamPositions = new ArrayList<>();
+            while (paramMatcher.find()) {
+                String param = paramMatcher.group();
+                if ("%m".equals(param)) {
+                    selectorParamPositions.add(count);
+                }
+                count++;
+            }
+            if (!selectorParamPositions.isEmpty()) {
+                for (int position : selectorParamPositions) {
+                    if (position >= params.size()) {
+                        continue;
+                    }
+                    var param = params.get(position);
+                    if (param == null || param.isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private String escapeString(String input) {
@@ -1269,16 +1302,28 @@ public class Fx {
         } else if (type == 2) {
             return "\"" + escapeString(param) + "\"";
         } else if (type == 1) {
+            /**
+             * Ideally, a.a.aFx#a(BlockBean, String) should be responsible for parsing the input properly. 
+             * However, upon decompiling this class, it seems to completely ignore this case. 
+             * This is the solution for now to prevent errors during code generation.
+             */
             try {
-                Integer.parseInt(param);
-                return param;
-            } catch (NumberFormatException e1) {
-                try {
+                if (param.isEmpty()) {
+                    return "0";
+                }
+                if (param.contains(".")) {
                     Double.parseDouble(param);
                     return param + "d";
-                } catch (NumberFormatException e2) {
-                    return param;
                 }
+                Integer.parseInt(param);
+                return param;
+            } catch (NumberFormatException e) {
+                return param;
+            }
+        } else if (type == 0) {
+            //the same with type == 1
+            if (param.isEmpty()) {
+                return "true";
             }
         }
         return param;
