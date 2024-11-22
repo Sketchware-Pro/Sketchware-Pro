@@ -51,6 +51,8 @@
                 android:alpha="0.6"
                 android:gravity="center_vertical"
                 android:textSize="12sp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 tools:text="description" />
 
             <LinearLayout
