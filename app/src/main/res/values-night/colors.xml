@@ -19,7 +19,7 @@
     <color name="view_property_background_color">#292929</color>
     <color name="view_property_tab_active">#525252</color>
     <color name="view_property_tab_deactive">#60525252</color>
-    <color name="view_property_tab_active_text">#ffffffff</color>
+    <color name="view_property_tab_active_text">#ff000000</color>
     <color name="view_property_tab_deactive_text">#ffffffff</color>
     <color name="view_property_grid_background">#60525252</color>
     <color name="view_property_spinner_filter">#ffffffff</color>

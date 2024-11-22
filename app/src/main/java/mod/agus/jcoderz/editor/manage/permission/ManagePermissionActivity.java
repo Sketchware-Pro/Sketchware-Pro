@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
@@ -111,9 +112,8 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
     }
 
     public void initButtons() {
-        var scrollToTopButton = binding.scrollToTopButton;
-        MaterialButton resetPermissions = findViewById(R.id.resetPermissions);
-        resetPermissions.setOnClickListener(view -> new AlertDialog.Builder(ManagePermissionActivity.this)
+        binding.resetPermissions.setOnClickListener(view -> {
+            new MaterialAlertDialogBuilder(this)
                 .setTitle("Reset permissions")
                 .setMessage("Are you sure you want to reset all permissions? This cannot be undone!")
                 .setPositiveButton("Reset", (dialog, which) -> {
@@ -121,9 +121,12 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
                     //As FileResConfig only refreshes permissions during <init>()V, this is required.
                     frc = new FileResConfig(numProj);
                     setItems();
-                }));
-        scrollToTopButton.setOnClickListener(view -> {
-            scrollToTopButton.hide();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .show();
+        });
+        binding.scrollToTopButton.setOnClickListener(view -> {
+            binding.scrollToTopButton.hide();
             binding.appBarLayout.setExpanded(true);
             binding.recyclerView.smoothScrollToPosition(0);
         });
