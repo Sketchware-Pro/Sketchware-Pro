@@ -476,7 +476,7 @@ public class Fx {
                 opcode = String.format("%s.putExtra(%s, %s);", params.get(0), params.get(1), params.get(2));
                 break;
             case "intentSetFlags":
-                opcode = String.format("%s.setFlags(%s);", params.get(0), "Intent.FLAG_ACTIVITY_" + params.get(0));
+                opcode = String.format("%s.setFlags(%s);", params.get(0), "Intent.FLAG_ACTIVITY_" + params.get(1));
                 break;
             case "intentGetString":
                 opcode = String.format("getIntent().getStringExtra(%s)", params.get(0));
