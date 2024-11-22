@@ -21,7 +21,6 @@ import a.a.a.kq;
 import a.a.a.Ox;
 import pro.sketchware.utility.SketchwareUtil;
 import mod.agus.jcoderz.beans.ViewBeans;
-import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileResConfig;
 import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
@@ -266,7 +265,7 @@ public class ExtraPaletteBlock {
 
                     if (!customView.convert.equals("include")) {
                         String typeName = customView.convert.isEmpty() ? ViewBean.getViewTypeName(customView.type) : IdGenerator.getLastPath(customView.convert);
-                        logicEditor.a(customView.id, "v", typeName, "getVar").setTag(customView.id);
+                        logicEditor.a(customView.id, "v", typeName, "getVar").setTag("binding." + customView.id);
                     }
                 }
             }
@@ -289,7 +288,7 @@ public class ExtraPaletteBlock {
             if (!view.convert.equals("include")) {
                 if (!toNotAdd.contains("android:id")) {
                     String typeName = view.convert.isEmpty() ? ViewBean.getViewTypeName(view.type) : IdGenerator.getLastPath(view.convert);
-                    logicEditor.a(view.id, "v", typeName, "getVar").setTag(view.id);
+                    logicEditor.a("binding." + view.id, "v", typeName, "getVar").setTag("binding." + view.id);
                 }
             }
         }
