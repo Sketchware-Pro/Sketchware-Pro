@@ -3,7 +3,7 @@ package com.besome.sketch.editor.view;
 
 import static pro.sketchware.widgets.WidgetsCreatorManager.showWidgetsCreatorDialog;
 import static pro.sketchware.widgets.WidgetsCreatorManager.deleteWidgetMap;
-import static pro.sketchware.widgets.WidgetsCreatorManager.substringCovert;
+import static pro.sketchware.widgets.WidgetsCreatorManager.generateCustomWidgetId;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -896,7 +896,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public final String a(ViewBean bean) {
         int i = bean.type;
-        String b2 = !bean.isCustomWidget ? wq.b(i) : substringCovert(bean.convert);
+        String b2 = !bean.isCustomWidget ? wq.b(i) : generateCustomWidgetId(bean.convert);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
         int i2 = e[i] + 1;

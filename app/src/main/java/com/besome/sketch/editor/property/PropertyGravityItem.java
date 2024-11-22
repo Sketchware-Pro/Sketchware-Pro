@@ -108,6 +108,7 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
+
         View view = wB.a(getContext(), R.layout.property_popup_selector_gravity);
         CheckBox chk_left = view.findViewById(R.id.chk_left);
         CheckBox chk_right = view.findViewById(R.id.chk_right);
@@ -115,45 +116,62 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
         CheckBox chk_top = view.findViewById(R.id.chk_top);
         CheckBox chk_bottom = view.findViewById(R.id.chk_bottom);
         CheckBox chk_vcenter = view.findViewById(R.id.chk_vcenter);
-        int verticalGravity = gravityValue & Gravity.FILL_VERTICAL;
-        int horizontalGravity = gravityValue & Gravity.FILL_HORIZONTAL;
-        if (horizontalGravity == Gravity.CENTER_HORIZONTAL) {
-            chk_hcenter.setChecked(true);
+        CheckBox chk_center = view.findViewById(R.id.chk_center); 
+        
+        if (gravityValue == Gravity.CENTER) {
+            chk_center.setChecked(true);
         } else {
-            if ((horizontalGravity & Gravity.LEFT) == Gravity.LEFT) {
-                chk_left.setChecked(true);
+            int verticalGravity = gravityValue & Gravity.FILL_VERTICAL;
+            int horizontalGravity = gravityValue & Gravity.FILL_HORIZONTAL;
+            
+            if (horizontalGravity == Gravity.CENTER_HORIZONTAL) {
+                chk_hcenter.setChecked(true);
+            } else {
+                if ((horizontalGravity & Gravity.LEFT) == Gravity.LEFT) {
+                    chk_left.setChecked(true);
+                }
+                if ((horizontalGravity & Gravity.RIGHT) == Gravity.RIGHT) {
+                    chk_right.setChecked(true);
+                }
             }
-            if ((horizontalGravity & Gravity.RIGHT) == Gravity.RIGHT) {
-                chk_right.setChecked(true);
+            if (verticalGravity == Gravity.CENTER_VERTICAL) {
+                chk_vcenter.setChecked(true);
+            } else {
+                if ((verticalGravity & Gravity.TOP) == Gravity.TOP) {
+                    chk_top.setChecked(true);
+                }
+                if ((verticalGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
+                    chk_bottom.setChecked(true);
+                }
             }
         }
-        if (verticalGravity == Gravity.CENTER_VERTICAL) {
-            chk_vcenter.setChecked(true);
-        } else {
-            if ((verticalGravity & Gravity.TOP) == Gravity.TOP) {
-                chk_top.setChecked(true);
-            }
-            if ((verticalGravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
-                chk_bottom.setChecked(true);
-            }
-        }
+        
         dialog.a(view);
+        
         dialog.b(Helper.getResString(R.string.common_word_select), v -> {
-            int value = chk_left.isChecked() ? Gravity.LEFT : Gravity.NO_GRAVITY;
-            if (chk_right.isChecked()) {
-                value |= Gravity.RIGHT;
-            }
-            if (chk_hcenter.isChecked()) {
-                value |= Gravity.CENTER_HORIZONTAL;
-            }
-            if (chk_top.isChecked()) {
-                value |= Gravity.TOP;
-            }
-            if (chk_bottom.isChecked()) {
-                value |= Gravity.BOTTOM;
-            }
-            if (chk_vcenter.isChecked()) {
-                value |= Gravity.CENTER_VERTICAL;
+            int value = Gravity.NO_GRAVITY;
+
+            if (chk_center.isChecked()) {
+                value = Gravity.CENTER;
+            } else {
+                if (chk_left.isChecked()) {
+                    value |= Gravity.LEFT;
+                }
+                if (chk_right.isChecked()) {
+                    value |= Gravity.RIGHT;
+                }
+                if (chk_hcenter.isChecked()) {
+                    value |= Gravity.CENTER_HORIZONTAL;
+                }
+                if (chk_top.isChecked()) {
+                    value |= Gravity.TOP;
+                }
+                if (chk_bottom.isChecked()) {
+                    value |= Gravity.BOTTOM;
+                }
+                if (chk_vcenter.isChecked()) {
+                    value |= Gravity.CENTER_VERTICAL;
+                }
             }
             setValue(value);
             if (valueChangeListener != null) {

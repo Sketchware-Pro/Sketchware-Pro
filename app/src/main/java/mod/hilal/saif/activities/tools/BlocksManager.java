@@ -27,6 +27,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -170,8 +173,8 @@ public class BlocksManager extends BaseAppCompatActivity {
                 (String) ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH));
         blocks_dir = FileUtil.getExternalStorageDir() + ConfigActivity.getStringSettingValueOrSetAndGet(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
                 (String) ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH));
-
-        if (FileUtil.isExistFile(blocks_dir)) {
+                
+        if (FileUtil.isExistFile(blocks_dir) && isValidJson(FileUtil.readFile(blocks_dir))) {
             try {
                 all_blocks_list = new Gson().fromJson(FileUtil.readFile(blocks_dir), Helper.TYPE_MAP_LIST);
 
@@ -184,6 +187,15 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
 
             SketchwareUtil.showFailedToParseJsonDialog(this, new File(blocks_dir), "Custom Blocks", v -> readSettings());
+        }
+    }
+   
+    private Boolean isValidJson(String json) {
+        try {
+            JsonElement element = JsonParser.parseString(json);
+            return element.isJsonObject() || element.isJsonArray();
+        } catch (JsonSyntaxException e) {
+            return false;  
         }
     }
 

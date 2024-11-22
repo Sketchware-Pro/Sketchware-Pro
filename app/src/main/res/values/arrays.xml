@@ -2,8 +2,72 @@
     <!--  properties  -->
     <string-array name="property_convert_options">
         <item>LinearLayout</item>
-        <item>RelativeLayout</item>
         <item>FrameLayout</item>
+        <item>RelativeLayout</item>
+        <item>androidx.constraintlayout.widget.ConstraintLayout</item>
+        <item>TableLayout</item>
+        <item>GridLayout</item>
+        <item>androidx.coordinatorlayout.widget.CoordinatorLayout</item>
+        <item>Space</item>
+
         <item>HorizontalScrollView</item>
+        <item>VerticalScrollView</item>
+        <item>ScrollView</item>
+        <item>androidx.core.widget.NestedScrollView</item>
+        <item>androidx.recyclerview.widget.RecyclerView</item>
+
+        <item>ListView</item>
+        <item>GridView</item>
+        <item>ExpandableListView</item>
+        <item>androidx.viewpager2.widget.ViewPager2</item>
+
+        <item>Button</item>
+        <item>com.google.android.material.button.MaterialButton</item>
+        <item>ImageButton</item>
+        <item>ToggleButton</item>
+        <item>CompoundButton</item>
+        <item>androidx.appcompat.widget.AppCompatButton</item>
+
+        <item>TextView</item>
+        <item>EditText</item>
+        <item>com.google.android.material.textfield.TextInputLayout</item>
+        <item>com.google.android.material.textfield.TextInputEditText</item>
+        <item>AutoCompleteTextView</item>
+        <item>androidx.appcompat.widget.AppCompatTextView</item>
+        <item>androidx.appcompat.widget.AppCompatEditText</item>
+
+        <item>VideoView</item>
+        <item>android.webkit.WebView</item>
+        <item>androidx.media.widget.VideoView</item>
+        <item>android.webkit.WebViewClient</item>
+        <item>android.webkit.WebChromeClient</item>
+
+        <item>ProgressBar</item>
+        <item>SeekBar</item>
+        <item>HorizontalScrollBar</item>
+        <item>VerticalSeekBar</item>
+        <item>IndeterminateProgressBar</item>
+
+        <item>CheckBox</item>
+        <item>RadioButton</item>
+        <item>androidx.appcompat.widget.AppCompatCheckBox</item>
+        <item>androidx.appcompat.widget.AppCompatRadioButton</item>
+
+        <item>com.google.android.material.tabs.TabLayout</item>
+        <item>androidx.viewpager.widget.ViewPager</item>
+        <item>androidx.viewpager2.widget.ViewPager2</item>
+        <item>androidx.fragment.app.FragmentPagerAdapter</item>
+        <item>androidx.fragment.app.FragmentStatePagerAdapter</item>
+        <item>com.google.android.material.tabs.TabLayoutMediator</item>
+
+        <item>com.google.android.material.bottomnavigation.BottomNavigationView</item>
+        <item>com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener</item>
+
+        <item>androidx.cardview.widget.CardView</item>
+        <item>com.google.android.material.card.MaterialCardView</item>
+
+        <item>androidx.swiperefreshlayout.widget.SwipeRefreshLayout</item>
+        <item>com.google.android.material.progressindicator.CircularProgressIndicator</item>
+        <item>com.google.android.material.progressindicator.LinearProgressIndicator</item>
     </string-array>
 </resources>

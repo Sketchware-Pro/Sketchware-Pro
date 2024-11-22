@@ -206,11 +206,6 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name="com.besome.sketch.editor.component.ShowFilePickerTypesActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
             android:name="com.besome.sketch.editor.manage.library.admob.AdmobActivity"
             android:configChanges="orientation|screenSize" />
         <activity

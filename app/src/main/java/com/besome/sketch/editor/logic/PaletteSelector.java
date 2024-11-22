@@ -108,6 +108,17 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         }
     }
 
+    public void performClickPalette(int tag) {
+        try {
+            if (paletteContainer != null && paletteContainer.getChildCount() > 0) {
+                View view = paletteContainer.findViewWithTag(String.valueOf(tag));
+                if (view != null) {
+                    view.performClick();
+                }
+            }
+        } catch (Exception ignored) {}
+    }
+
     private void addPaletteWithMap(int id, String title, int color) {
         addPalette(id, title, color);
         allPalettes.add(createPaletteMap(id, title, color));
