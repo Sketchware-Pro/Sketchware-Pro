@@ -101,8 +101,8 @@ public class IconCreatorActivity extends AppCompatActivity {
     public static Bitmap captureForeground(View view, int size, boolean score, boolean pattern, View pattView, View scoreView, View bg) {
 
         bg.setVisibility(View.INVISIBLE);
-        if (! score) scoreView.setVisibility(View.INVISIBLE);
-        if (! pattern) pattView.setVisibility(View.INVISIBLE);
+        if (!score) scoreView.setVisibility(View.INVISIBLE);
+        if (!pattern) pattView.setVisibility(View.INVISIBLE);
 
         int padding = 75;
 
@@ -117,7 +117,7 @@ public class IconCreatorActivity extends AppCompatActivity {
 
         if (bgDrawable != null) {
             bgDrawable.draw(canvas);
-        }else{
+        } else {
             view.draw(canvas);
         }
 
@@ -177,7 +177,7 @@ public class IconCreatorActivity extends AppCompatActivity {
             if (isChecked) {
                 binding.appIcoScore.setVisibility(View.VISIBLE);
                 eff_score = true;
-            }else{
+            } else {
                 binding.appIcoScore.setVisibility(View.GONE);
                 eff_score = false;
             }
@@ -188,7 +188,7 @@ public class IconCreatorActivity extends AppCompatActivity {
                 binding.appIcoTexture.setVisibility(View.VISIBLE);
                 binding.textureCont.setVisibility(View.VISIBLE);
                 eff_texture = true;
-            }else{
+            } else {
                 binding.appIcoTexture.setVisibility(View.GONE);
                 binding.textureCont.setVisibility(View.GONE);
                 eff_texture = false;
@@ -216,7 +216,7 @@ public class IconCreatorActivity extends AppCompatActivity {
                 if (checkedId == R.id.bg_color) {
                     binding.linearClr.setVisibility(View.VISIBLE);
                     binding.linearGrad.setVisibility(View.GONE);
-                }else{
+                } else {
                     binding.linearGrad.setVisibility(View.VISIBLE);
                     binding.linearClr.setVisibility(View.GONE);
                 }
@@ -273,19 +273,19 @@ public class IconCreatorActivity extends AppCompatActivity {
                 int checked = checkedIds.get(0);
                 if (checked == R.id.chip_trbl) {
                     gradDirection = GradientDrawable.Orientation.TR_BL;
-                }else if (checked == R.id.chip_lt) {
+                } else if (checked == R.id.chip_lt) {
                     gradDirection = GradientDrawable.Orientation.LEFT_RIGHT;
-                }else if (checked == R.id.chip_top) {
+                } else if (checked == R.id.chip_top) {
                     gradDirection = GradientDrawable.Orientation.TOP_BOTTOM;
-                }else if (checked == R.id.chip_bltr) {
+                } else if (checked == R.id.chip_bltr) {
                     gradDirection = GradientDrawable.Orientation.BL_TR;
-                }else if (checked == R.id.chip_rt) {
+                } else if (checked == R.id.chip_rt) {
                     gradDirection = GradientDrawable.Orientation.RIGHT_LEFT;
-                }else if (checked == R.id.chip_tlrb) {
+                } else if (checked == R.id.chip_tlrb) {
                     gradDirection = GradientDrawable.Orientation.TL_BR;
-                }else if (checked == R.id.chip_bt) {
+                } else if (checked == R.id.chip_bt) {
                     gradDirection = GradientDrawable.Orientation.BOTTOM_TOP;
-                }else{
+                } else {
                     gradDirection = GradientDrawable.Orientation.TR_BL;
                 }
             }
@@ -304,7 +304,7 @@ public class IconCreatorActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 0) {
                     binding.appIcoText.setVisibility(View.GONE);
-                }else{
+                } else {
                     binding.appIcoText.setVisibility(View.VISIBLE);
                     binding.appIcoText.setText(s);
                 }
@@ -328,7 +328,7 @@ public class IconCreatorActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 0) {
                     binding.appIcoBadge.setVisibility(View.GONE);
-                }else{
+                } else {
                     binding.appIcoBadge.setVisibility(View.VISIBLE);
                     binding.badgeText.setText(s);
                 }
@@ -362,7 +362,7 @@ public class IconCreatorActivity extends AppCompatActivity {
 
                 }
             }
-        }else{
+        } else {
             Bundle extras = data.getExtras();
             if (requestCode == REQUEST_CODE_PICK_CROPPED_ICON && resultCode == RESULT_OK && extras != null) {
                 try {
@@ -467,7 +467,7 @@ public class IconCreatorActivity extends AppCompatActivity {
         Uri uri;
         if (Build.VERSION.SDK_INT >= 24) {
             uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon());
-        }else{
+        } else {
             uri = Uri.fromFile(getCustomIcon());
         }
 
@@ -489,7 +489,7 @@ public class IconCreatorActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        }else{
+        } else {
             uri = Uri.fromFile(getCustomIcon());
         }
 
@@ -538,17 +538,17 @@ public class IconCreatorActivity extends AppCompatActivity {
     }
 
     private void saveForegroundToRes() {
-        saveBitmapTo(captureForeground(binding.appIcoItems, 108, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore , binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 152, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore , binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 176, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore , binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 284, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore , binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 392, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore , binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_foreground.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, 108, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_foreground.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, 152, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_foreground.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, 176, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_foreground.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, 284, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_foreground.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, 392, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_foreground.png"));
 
-        saveBitmapTo(captureForeground(binding.appIcoItems, 108, false, false, binding.appIcoTexture, binding.appIcoScore , binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 152, false, false, binding.appIcoTexture, binding.appIcoScore , binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 176, false, false, binding.appIcoTexture, binding.appIcoScore , binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 284, false, false, binding.appIcoTexture, binding.appIcoScore , binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 392, false, false, binding.appIcoTexture, binding.appIcoScore , binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_monochrome.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, 108, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_monochrome.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, 152, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_monochrome.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, 176, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_monochrome.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, 284, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_monochrome.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, 392, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_monochrome.png"));
 
         saveBitmapTo(captureAppIco(binding.appIcoBg, 108), getIconPath("mipmap-mdpi", "ic_launcher_background.png"));
         saveBitmapTo(captureAppIco(binding.appIcoBg, 162), getIconPath("mipmap-hdpi", "ic_launcher_background.png"));
