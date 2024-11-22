@@ -98,6 +98,7 @@ public class BuiltInLibraries {
     public static String FIREBASE_AUTH = "firebase-auth-23.1.0";
     public static String FIREBASE_AUTH_INTEROP = "firebase-auth-interop-20.0.0";
     public static String FIREBASE_COMMON = "firebase-common-21.0.0";
+    public static String FIREBASE_COMMON_KTX = "firebase-common-ktx-21.0.0";
     public static String FIREBASE_COMPONENTS = "firebase-components-18.0.1";
     public static String FIREBASE_DATABASE = "firebase-database-21.0.0";
     public static String FIREBASE_DATABASE_COLLECTION = "firebase-database-collection-18.0.1";
@@ -128,6 +129,7 @@ public class BuiltInLibraries {
     public static String GOOGLE_TRANSPORT_RUNTIME = "transport-runtime-3.1.9";
     public static String GSON = "gson-2.11.0";
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
+    public static String JAVAX_INJECT = "javax.inject-1";
     public static String JETBRAINS_ANNOTATIONS = "annotations-23.0.0";
     public static String KOTLIN_STDLIB = "kotlin-stdlib-2.0.21";
     public static String KOTLIN_COROUTINES_ANDROID = "kotlinx-coroutines-android-1.7.3";
@@ -185,8 +187,8 @@ public class BuiltInLibraries {
                     ANDROIDX_SAVEDSTATE, KOTLIN_STDLIB),
                     "androidx.appcompat"),
 
-            new BuiltInLibrary(ANDROIDX_APPCOMPAT_RESOURCES, List.of(ANDROIDX_ANNOTATION, ANDROIDX_APPCOMPAT, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_VECTORDRAWABLE,
-                    ANDROIDX_VECTORDRAWABLE_ANIMATED), "androidx.appcompat.resources"),
+            new BuiltInLibrary(ANDROIDX_APPCOMPAT_RESOURCES, List.of(ANDROIDX_ANNOTATION, ANDROIDX_APPCOMPAT, ANDROIDX_COLLECTION, ANDROIDX_CORE,
+                    ANDROIDX_VECTORDRAWABLE, ANDROIDX_VECTORDRAWABLE_ANIMATED), "androidx.appcompat.resources"),
 
             new BuiltInLibrary(ANDROIDX_ASYNCLAYOUTINFLATER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE)),
             new BuiltInLibrary(ANDROIDX_BROWSER, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL,
@@ -195,6 +197,7 @@ public class BuiltInLibraries {
 
             new BuiltInLibrary(ANDROIDX_CREDENTIALS, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CREDENTIALS_PLAY_SERVICES_AUTH,
                     KOTLIN_STDLIB, KOTLIN_COROUTINES_CORE_JVM)),
+            new BuiltInLibrary(ANDROIDX_CREDENTIALS_PLAY_SERVICES_AUTH),
 
             new BuiltInLibrary(ANDROIDX_CARDVIEW, List.of(ANDROIDX_ANNOTATION), "androidx.cardview"),
             new BuiltInLibrary(ANDROIDX_COLLECTION, List.of(ANDROIDX_ANNOTATION, KOTLIN_STDLIB)),
@@ -204,8 +207,8 @@ public class BuiltInLibraries {
                     "androidx.constraintlayout.widget"),
 
             new BuiltInLibrary(ANDROIDX_CONSTRAINTLAYOUT_CORE, List.of(ANDROIDX_ANNOTATION)),
-            new BuiltInLibrary(ANDROIDX_COORDINATORLAYOUT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW),
-                    "androidx.coordinatorlayout"),
+            new BuiltInLibrary(ANDROIDX_COORDINATORLAYOUT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE,
+                    ANDROIDX_CUSTOMVIEW), "androidx.coordinatorlayout"),
 
             new BuiltInLibrary(ANDROIDX_CORE, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_COLLECTION,
                     ANDROIDX_CONCURRENT_FUTURES, ANDROIDX_CORE_KTX, ANDROIDX_INTERPOLATOR, ANDROIDX_LIFECYCLE_RUNTIME,
@@ -272,8 +275,7 @@ public class BuiltInLibraries {
                     ANDROIDX_STARTUP_RUNTIME)),
             new BuiltInLibrary(ANDROIDX_RECYCLERVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION,
                     ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW, ANDROIDX_CUSTOMVIEW_POOLINGCONTAINER,
-                    ANDROIDX_VIEWPAGER2, ANDROIDX_LEGACY_SUPPORT_CORE_UI),
-                    "androidx.recyclerview"),
+                    ANDROIDX_VIEWPAGER2), "androidx.recyclerview"),
 
             new BuiltInLibrary(ANDROIDX_RESOURCEINSPECTION_ANNOTATION, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_ROOM_COMMON, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ROOM_RUNTIME, KOTLIN_STDLIB)),
@@ -313,26 +315,34 @@ public class BuiltInLibraries {
             new BuiltInLibrary(CIRCLE_IMAGEVIEW, List.of(ANDROIDX_ANNOTATION), "de.hdodenhof.circleimageview"),
             new BuiltInLibrary(CODE_VIEW, List.of(), "br.tiagohm.codeview"),
             new BuiltInLibrary(FACEBOOK_ADS_AUDIENCE_NETWORK_SDK, List.of(PLAY_SERVICES_BASE)),
+
+            new BuiltInLibrary(FIREBASE_ANNOTATIONS, List.of(JAVAX_INJECT)),
+            new BuiltInLibrary(FIREBASE_APPCHECK_INTEROP),
             new BuiltInLibrary(FIREBASE_AUTH, List.of(ANDROIDX_BROWSER, ANDROIDX_COLLECTION, ANDROIDX_CREDENTIALS_PLAY_SERVICES_AUTH,
                     ANDROIDX_CREDENTIALS, ANDROIDX_FRAGMENT, ANDROIDX_LOCALBROADCASTMANAGER, PLAY_SERVICES_AUTH_API_PHONE,
                     PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, PLAY_INTEGRITY, GOOGLE_RECAPTCHA, FIREBASE_ANNOTATIONS,
                     FIREBASE_APPCHECK_INTEROP, FIREBASE_AUTH_INTEROP, FIREBASE_COMMON, FIREBASE_COMPONENTS, KOTLIN_STDLIB)),
 
-            new BuiltInLibrary(FIREBASE_AUTH_INTEROP, List.of(FIREBASE_COMMON, PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
-            new BuiltInLibrary(FIREBASE_COMMON, List.of(FIREBASE_COMPONENTS, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
-            new BuiltInLibrary(FIREBASE_COMPONENTS, List.of(ANDROIDX_ANNOTATION)),
-            new BuiltInLibrary(FIREBASE_DATABASE, List.of(FIREBASE_AUTH_INTEROP, FIREBASE_COMMON, FIREBASE_COMPONENTS, FIREBASE_DATABASE_COLLECTION, ANDROIDX_ANNOTATION,
-                    PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
+            new BuiltInLibrary(FIREBASE_AUTH_INTEROP, List.of(FIREBASE_COMMON, FIREBASE_ANNOTATIONS, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
+            new BuiltInLibrary(FIREBASE_COMMON_KTX, List.of(FIREBASE_ANNOTATIONS, FIREBASE_COMMON, FIREBASE_COMPONENTS)),
+            new BuiltInLibrary(FIREBASE_COMMON, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CONCURRENT_FUTURES,
+                    FIREBASE_ANNOTATIONS, FIREBASE_COMPONENTS, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS,
+                    KOTLIN_STDLIB, KOTLIN_COROUTINES_PLAY_SERVICES)),
+            new BuiltInLibrary(FIREBASE_COMPONENTS, List.of(ANDROIDX_ANNOTATION, GOOGLE_ERROR_PRONE_ANNOTATIONS, FIREBASE_ANNOTATIONS)),
+            new BuiltInLibrary(FIREBASE_DATABASE, List.of(ANDROIDX_ANNOTATION, FIREBASE_AUTH_INTEROP, FIREBASE_COMMON,
+                    FIREBASE_COMMON_KTX, FIREBASE_COMPONENTS, FIREBASE_DATABASE_COLLECTION, KOTLIN_STDLIB,
+                    KOTLIN_COROUTINES_CORE_JVM, PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
 
-            new BuiltInLibrary(FIREBASE_DATABASE_COLLECTION),
-            new BuiltInLibrary(FIREBASE_DYNAMIC_LINKS, List.of(FIREBASE_COMMON, FIREBASE_MEASUREMENT_CONNECTOR, PLAY_SERVICES_BASE,
-                    PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
+            new BuiltInLibrary(FIREBASE_DATABASE_COLLECTION, List.of(PLAY_SERVICES_BASE)),
+            new BuiltInLibrary(FIREBASE_DYNAMIC_LINKS, List.of(ANDROIDX_ANNOTATION, PLAY_SERVICES_BASE,
+                    PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, FIREBASE_AUTH_INTEROP, FIREBASE_COMMON_KTX,
+                    FIREBASE_COMMON, FIREBASE_COMPONENTS, FIREBASE_MEASUREMENT_CONNECTOR, KOTLIN_STDLIB)),
 
             new BuiltInLibrary(FIREBASE_IID, List.of(FIREBASE_COMMON, FIREBASE_IID_INTEROP, ANDROIDX_COLLECTION, ANDROIDX_CORE,
                     ANDROIDX_LEGACY_SUPPORT_CORE_UTILS, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_STATS, PLAY_SERVICES_TASKS)),
 
             new BuiltInLibrary(FIREBASE_IID_INTEROP, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT)),
-            new BuiltInLibrary(FIREBASE_MEASUREMENT_CONNECTOR, List.of(PLAY_SERVICES_BASEMENT)),
+            new BuiltInLibrary(FIREBASE_MEASUREMENT_CONNECTOR, List.of(PLAY_SERVICES_BASEMENT, FIREBASE_ANNOTATIONS)),
             new BuiltInLibrary(FIREBASE_MESSAGING, List.of(FIREBASE_COMMON, FIREBASE_IID, FIREBASE_MEASUREMENT_CONNECTOR, ANDROIDX_COLLECTION,
                     ANDROIDX_CORE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS), "com.google.firebase.messaging"),
 
@@ -351,10 +361,12 @@ public class BuiltInLibraries {
                     KOTLIN_STDLIB, KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_PLAY_SERVICES)),
             new BuiltInLibrary(GSON, List.of(GOOGLE_ERROR_PRONE_ANNOTATIONS)),
             new BuiltInLibrary(HTTP_LEGACY_ANDROID_28),
+            new BuiltInLibrary(JAVAX_INJECT),
             new BuiltInLibrary(JETBRAINS_ANNOTATIONS),
             new BuiltInLibrary(KOTLIN_STDLIB, List.of(JETBRAINS_ANNOTATIONS)),
-            new BuiltInLibrary(KOTLIN_COROUTINES_ANDROID),
-            new BuiltInLibrary(KOTLIN_COROUTINES_CORE_JVM),
+            new BuiltInLibrary(KOTLIN_COROUTINES_ANDROID, List.of(KOTLIN_COROUTINES_CORE_JVM)),
+            new BuiltInLibrary(KOTLIN_COROUTINES_CORE_JVM, List.of(JETBRAINS_ANNOTATIONS)),
+            new BuiltInLibrary(KOTLIN_COROUTINES_PLAY_SERVICES, List.of(PLAY_SERVICES_TASKS, KOTLIN_COROUTINES_CORE_JVM)),
             new BuiltInLibrary(LOTTIE, List.of(ANDROIDX_APPCOMPAT, OKIO), "com.airbnb.lottie"),
             new BuiltInLibrary(MATERIAL, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_APPCOMPAT, ANDROIDX_CARDVIEW,
                     ANDROIDX_CONSTRAINTLAYOUT, ANDROIDX_COORDINATORLAYOUT, ANDROIDX_CORE, ANDROIDX_DRAWERLAYOUT, ANDROIDX_DYNAMIC_ANIMATION,
@@ -362,7 +374,7 @@ public class BuiltInLibraries {
                     ANDROIDX_VIEWPAGER2), "com.google.android.material"),
 
             new BuiltInLibrary(OKHTTP, List.of(OKIO)),
-            new BuiltInLibrary(OKIO),
+            new BuiltInLibrary(OKIO, List.of(KOTLIN_STDLIB)),
             new BuiltInLibrary(ONESIGNAL, List.of(ONESIGNAL_CORE, ONESIGNAL_IN_APP_MESSAGING, ONESIGNAL_LOCATION,
                     ONESIGNAL_NOTIFICATIONS), "com.onesignal"),
 
@@ -377,6 +389,7 @@ public class BuiltInLibraries {
                     "affan.ahmad.otp"),
 
             new BuiltInLibrary(PATTERN_LOCK_VIEW, List.of(ANDROIDX_CORE, JETBRAINS_ANNOTATIONS), "com.andrognito.patternlockview"),
+            new BuiltInLibrary(PLAY_CORE_COMMON),
             new BuiltInLibrary(PLAY_INTEGRITY, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, PLAY_CORE_COMMON)),
             new BuiltInLibrary(PLAY_SERVICES_ADS, List.of(PLAY_SERVICES_ADS_BASE, PLAY_SERVICES_ADS_IDENTIFIER,
                     PLAY_SERVICES_ADS_LITE, PLAY_SERVICES_APPSET, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS,
@@ -392,25 +405,26 @@ public class BuiltInLibraries {
             new BuiltInLibrary(PLAY_SERVICES_AUTH, List.of(PLAY_SERVICES_AUTH_API_PHONE, PLAY_SERVICES_AUTH_BASE, PLAY_SERVICES_BASE,
                     PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, ANDROIDX_FRAGMENT, ANDROIDX_LOADER), "com.google.android.gms.auth.api"),
 
-            new BuiltInLibrary(PLAY_SERVICES_AUTH_API_PHONE),
-            new BuiltInLibrary(PLAY_SERVICES_AUTH_BASE),
+            new BuiltInLibrary(PLAY_SERVICES_AUTH_API_PHONE, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
+            new BuiltInLibrary(PLAY_SERVICES_AUTH_BASE, List.of(ANDROIDX_COLLECTION, PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
             new BuiltInLibrary(PLAY_SERVICES_BASE, List.of(PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, ANDROIDX_COLLECTION, ANDROIDX_CORE,
                     ANDROIDX_FRAGMENT), "com.google.android.gms.base"),
 
             new BuiltInLibrary(PLAY_SERVICES_BASEMENT, List.of(ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_FRAGMENT),
                     "com.google.android.gms.common"),
 
-            new BuiltInLibrary(PLAY_SERVICES_GASS, List.of(PLAY_SERVICES_ADS_BASE, PLAY_SERVICES_BASEMENT)),
+            new BuiltInLibrary(PLAY_SERVICES_GASS, List.of(PLAY_SERVICES_ADS_BASE, PLAY_SERVICES_ADS_IDENTIFIER,
+                    PLAY_SERVICES_ADS_LITE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS)),
             new BuiltInLibrary(PLAY_SERVICES_GCM, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_IID, PLAY_SERVICES_STATS,
                     ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_LEGACY_SUPPORT_CORE_UTILS), "com.google.android.gms.gcm"),
 
             new BuiltInLibrary(PLAY_SERVICES_IID, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_STATS, PLAY_SERVICES_TASKS,
                     ANDROIDX_COLLECTION, ANDROIDX_CORE)),
 
-            new BuiltInLibrary(PLAY_SERVICES_LOCATION, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_PLACES_PLACEREPORT,
-                    PLAY_SERVICES_TASKS)),
+            new BuiltInLibrary(PLAY_SERVICES_LOCATION, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT,
+                    KOTLIN_STDLIB, KOTLIN_COROUTINES_ANDROID, KOTLIN_COROUTINES_CORE_JVM, PLAY_SERVICES_TASKS)),
 
-            new BuiltInLibrary(PLAY_SERVICES_MAPS, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, ANDROIDX_FRAGMENT),
+            new BuiltInLibrary(PLAY_SERVICES_MAPS, List.of(PLAY_SERVICES_BASE, PLAY_SERVICES_BASEMENT, PLAY_SERVICES_TASKS, ANDROIDX_FRAGMENT),
                     "com.google.android.gms.maps"),
 
             new BuiltInLibrary(PLAY_SERVICES_MEASUREMENT_BASE, List.of(PLAY_SERVICES_BASEMENT)),
@@ -418,8 +432,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(PLAY_SERVICES_PLACES_PLACEREPORT, List.of(PLAY_SERVICES_BASEMENT)),
             new BuiltInLibrary(PLAY_SERVICES_STATS, List.of(PLAY_SERVICES_BASEMENT, ANDROIDX_LEGACY_SUPPORT_CORE_UTILS)),
             new BuiltInLibrary(PLAY_SERVICES_TASKS, List.of(PLAY_SERVICES_BASEMENT)),
-            new BuiltInLibrary(UMP_USER_MESSAGING_PLATFORM, List.of(ANDROIDX_ANNOTATION, PLAY_SERVICES_ADS_IDENTIFIER,
-                    PLAY_SERVICES_BASEMENT)),
+            new BuiltInLibrary(UMP_USER_MESSAGING_PLATFORM, List.of(ANDROIDX_ANNOTATION, PLAY_SERVICES_BASEMENT)),
             new BuiltInLibrary(WAVE_SIDE_BAR, List.of(), "com.sayuti.lib"),
             new BuiltInLibrary(YOUTUBE_PLAYER, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_RECYCLERVIEW),
                     "com.pierfrancescosoffritti.androidyoutubeplayer"),
