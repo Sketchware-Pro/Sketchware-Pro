@@ -1557,6 +1557,7 @@ But, components should be added manually for working correctly."</string>
     <string name="myprojects_settings_context_menu_title_choose_gallery_default">Change to Default Icon</string>
     <string name="myprojects_settings_context_menu_title_choose_gallery_with_crop">Choose from Gallery (with Crop)</string>
     <string name="myprojects_settings_description_change_icon">Tap to change Icon</string>
+    <string name="myprojects_settings_description_create_icon">Tap to create new Icon</string>
     <string name="myprojects_settings_hint_enter_application_name">Enter application name</string>
     <string name="myprojects_settings_hint_enter_package_name">Package name</string>
     <string name="myprojects_settings_hint_enter_project_name">Project name</string>
