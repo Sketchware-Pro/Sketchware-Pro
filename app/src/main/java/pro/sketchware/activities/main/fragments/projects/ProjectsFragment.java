@@ -21,6 +21,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuProvider;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.Lifecycle;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.adapters.ProjectsAdapter;
@@ -34,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.IntStream;
 
 import a.a.a.DA;
 import a.a.a.DB;
@@ -54,10 +56,10 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     private DB preference;
     private SearchView projectsSearchView;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private final List<HashMap<String, Object>> projectsList = new ArrayList<>();
 
     @Override
     public void b(int requestCode) {
-
     }
 
     public void toDesignActivity(String sc_id) {
@@ -130,7 +132,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
 
         binding.swipeRefresh.setOnRefreshListener(this::refreshProjectsList);
 
-        projectsAdapter = new ProjectsAdapter(this, new ArrayList<>());
+        projectsAdapter = new ProjectsAdapter(this, projectsList);
         binding.myprojects.setAdapter(projectsAdapter);
 
         binding.myprojects.post(this::refreshProjectsList); // wait for RecyclerView to be ready
@@ -186,9 +188,12 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Intent data = result.getData();
                     if (data != null) {
-                        refreshProjectsList();
+                        String sc_id = data.getStringExtra("sc_id");
                         if (data.getBooleanExtra("is_new", false)) {
-                            toDesignActivity(data.getStringExtra("sc_id"));
+                            toDesignActivity(sc_id);
+                            addProject(sc_id);
+                        } else {
+                            updateProject(sc_id);
                         }
                     }
                 }
@@ -207,19 +212,46 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
             List<HashMap<String, Object>> loadedProjects = lC.a();
             loadedProjects.sort(new ProjectComparator(preference.d("sortBy")));
 
+            DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new ProjectDiffCallback(projectsList, loadedProjects));
+
             requireActivity().runOnUiThread(() -> {
                 if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
                 if (binding.loading3balls.getVisibility() == View.VISIBLE) {
                     binding.loading3balls.setVisibility(View.GONE);
                     binding.myprojects.setVisibility(View.VISIBLE);
                 }
-                projectsAdapter.setAllProjects(loadedProjects);
-                projectsAdapter.notifyDataSetChanged();
+                projectsList.clear();
+                projectsList.addAll(loadedProjects);
+                diffResult.dispatchUpdatesTo(projectsAdapter);
                 if (projectsSearchView != null)
                     projectsAdapter.filterData(projectsSearchView.getQuery().toString());
-
-                binding.myprojects.scrollToPosition(0);
             });
+        });
+    }
+
+    private void addProject(String sc_id) {
+        executorService.execute(() -> {
+            HashMap<String, Object> newProject = lC.b(sc_id);
+            if (newProject != null) {
+                requireActivity().runOnUiThread(() -> {
+                    projectsList.add(0, newProject);
+                    projectsAdapter.notifyItemInserted(0);
+                    binding.myprojects.scrollToPosition(0);
+                });
+            }
+        });
+    }
+
+    private void updateProject(String sc_id) {
+        executorService.execute(() -> {
+            HashMap<String, Object> updatedProject = lC.b(sc_id);
+            if (updatedProject != null) {
+                int index = IntStream.range(0, projectsList.size()).filter(i -> projectsList.get(i).get("sc_id").equals(sc_id)).findFirst().orElse(-1);
+                if (index != -1) {
+                    projectsList.set(index, updatedProject);
+                    requireActivity().runOnUiThread(() -> projectsAdapter.notifyItemChanged(index));
+                }
+            }
         });
     }
 
@@ -266,5 +298,39 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         });
         dialog.a("Cancel", Helper.getDialogDismissListener(dialog));
         dialog.show();
+    }
+
+    private static class ProjectDiffCallback extends DiffUtil.Callback {
+        private final List<HashMap<String, Object>> oldList;
+        private final List<HashMap<String, Object>> newList;
+
+        public ProjectDiffCallback(List<HashMap<String, Object>> oldList, List<HashMap<String, Object>> newList) {
+            this.oldList = oldList;
+            this.newList = newList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return oldList.size();
+        }
+
+        @Override
+        public int getNewListSize() {
+            return newList.size();
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            String oldId = (String) oldList.get(oldItemPosition).get("sc_id");
+            String newId = (String) newList.get(newItemPosition).get("sc_id");
+            return oldId.equals(newId);
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            HashMap<String, Object> oldItem = oldList.get(oldItemPosition);
+            HashMap<String, Object> newItem = newList.get(newItemPosition);
+            return oldItem.equals(newItem);
+        }
     }
 }
