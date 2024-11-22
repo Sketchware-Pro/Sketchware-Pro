@@ -26,8 +26,6 @@ import androidx.transition.TransitionManager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import pro.sketchware.R;
-import pro.sketchware.databinding.MyprojectSettingBinding;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -51,11 +49,14 @@ import a.a.a.oB;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.control.VersionDialog;
+import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.activities.tools.ConfigActivity;
+import pro.sketchware.R;
+import pro.sketchware.control.VersionDialog;
+import pro.sketchware.databinding.MyprojectSettingBinding;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class MyProjectSettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -577,6 +578,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 lC.a(sc_id, data);
                 wq.a(getApplicationContext(), sc_id);
                 new oB().b(wq.b(sc_id));
+                ProjectSettings projectSettings = new ProjectSettings(sc_id);
+                projectSettings.setValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "true");
             }
         }
 

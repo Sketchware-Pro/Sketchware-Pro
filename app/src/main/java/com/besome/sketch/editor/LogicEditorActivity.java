@@ -20,7 +20,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.text.InputType;
 import android.util.Pair;
@@ -121,22 +120,21 @@ import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.bobur.StringEditorActivity;
-import pro.sketchware.menu.ExtraMenuBean;
-
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
+import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
-
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 import pro.sketchware.databinding.ViewStringEditorAddBinding;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
+import pro.sketchware.menu.ExtraMenuBean;
 import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.SvgUtils;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
@@ -168,6 +166,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private boolean G, u, W, X, da, ea, ha, ia;
     private final Runnable aa = this::r;
     private ArrayList<BlockBean> savedBlockBean = new ArrayList<>();
+    private Boolean isViewBindingEnabled;
 
     private final ActivityResultLauncher<Intent> openStringEditor = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
@@ -1586,7 +1585,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public final RadioButton d(String type, String id) {
         RadioButton radioButton = new RadioButton(this);
         radioButton.setText(type + " : " + id);
-        radioButton.setTag("binding." + id);
+        radioButton.setTag(isViewBindingEnabled ? "binding." + id : id);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (wB.a(this, 1.0f) * 40.0f));
         radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
@@ -2131,6 +2130,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             D = savedInstanceState.getString("event");
             parcelable = savedInstanceState.getParcelable("project_file");
         }
+        isViewBindingEnabled = new ProjectSettings(B).getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "false").equals("true");
         M = (ProjectFileBean) parcelable;
         T = (int) wB.a(getBaseContext(), (float) T);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -2170,7 +2170,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         openBlocksMenuButton.setOnClickListener(v -> e(!X));
         N = findViewById(R.id.top_menu);
         O = findViewById(R.id.right_drawer);
-        extraPaletteBlock = new ExtraPaletteBlock(this);
+        extraPaletteBlock = new ExtraPaletteBlock(this, isViewBindingEnabled);
     }
 
     @Override

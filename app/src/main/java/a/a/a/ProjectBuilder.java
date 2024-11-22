@@ -21,7 +21,6 @@ import com.android.sdklib.build.ApkBuilder;
 import com.android.sdklib.build.ApkCreationException;
 import com.android.sdklib.build.DuplicateFileException;
 import com.android.sdklib.build.SealedApkException;
-import pro.sketchware.SketchApplication;
 import com.github.megatronking.stringfog.plugin.StringFogClassInjector;
 import com.github.megatronking.stringfog.plugin.StringFogMappingPrinter;
 import com.iyxan23.zipalignjava.InvalidZipException;
@@ -46,11 +45,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import mod.pranav.viewbinding.ViewBindingBuilder;
-import pro.sketchware.utility.SketchwareUtil;
 import mod.agus.jcoderz.dex.Dex;
 import mod.agus.jcoderz.dex.FieldId;
 import mod.agus.jcoderz.dex.MethodId;
@@ -61,8 +57,6 @@ import mod.agus.jcoderz.dx.merge.CollisionPolicy;
 import mod.agus.jcoderz.dx.merge.DexMerger;
 import mod.agus.jcoderz.editor.library.ExtLibSelected;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.ProjectSettings;
@@ -76,6 +70,11 @@ import mod.jbk.util.LogUtil;
 import mod.jbk.util.TestkeySignBridge;
 import mod.pranav.build.JarBuilder;
 import mod.pranav.build.R8Compiler;
+import mod.pranav.viewbinding.ViewBindingBuilder;
+import pro.sketchware.SketchApplication;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 import proguard.Configuration;
 import proguard.ConfigurationParser;
 import proguard.ParseException;
@@ -161,6 +160,10 @@ public class ProjectBuilder {
     }
 
     public void generateViewBinding() throws IOException, SAXException {
+        if (settings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, ProjectSettings.SETTING_GENERIC_VALUE_FALSE)
+                .equals(ProjectSettings.SETTING_GENERIC_VALUE_FALSE)) {
+            return;
+        }
         File outputDirectory = new File(yq.javaFilesPath + File.separator + yq.packageName.replace(".", File.separator) + File.separator + "databinding");
         outputDirectory.mkdirs();
 
@@ -325,9 +328,7 @@ public class ProjectBuilder {
             Object nameObject = localLibrary.get("name");
             Object jarPathObject = localLibrary.get("jarPath");
 
-            if (nameObject instanceof String && jarPathObject instanceof String) {
-                String name = (String) nameObject;
-                String jarPath = (String) jarPathObject;
+            if (nameObject instanceof String name && jarPathObject instanceof String jarPath) {
 
                 if (localLibrary.containsKey("jarPath") && proguard.libIsProguardFMEnabled(name)) {
                     localLibraryJarsWithFullModeOn.add(jarPath);
