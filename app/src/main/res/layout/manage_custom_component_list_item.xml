@@ -28,6 +28,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="24dp"
+                android:layout_centerVertical="true"
                 android:contentDescription="@null" />
 
             <TextView
