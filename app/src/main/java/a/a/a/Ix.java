@@ -552,7 +552,7 @@ public class Ix {
 
         XmlBuilder applicationTag = new XmlBuilder("application");
         applicationTag.addAttribute("android", "allowBackup", "true");
-        applicationTag.addAttribute("android", "icon", "@drawable/app_icon");
+        applicationTag.addAttribute("android", "icon", "@mipmap/ic_launcher");
         applicationTag.addAttribute("android", "label", "@string/app_name");
 
         String applicationClassName = settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication");

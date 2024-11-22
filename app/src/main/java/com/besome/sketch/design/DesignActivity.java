@@ -5,7 +5,6 @@ import static pro.sketchware.utility.SketchwareUtil.getDip;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -53,8 +52,6 @@ import com.besome.sketch.tools.CompileLogActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -114,15 +111,17 @@ import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
-import pro.sketchware.utility.apk.ApkSignatures;
-import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.apk.ApkSignatures;
 
 public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
+    public static String sc_id;
     private ImageView xmlLayoutOrientation;
     private boolean B;
     private int currentTabNumber;
-    public static String sc_id;
     private CustomViewPager viewPager;
     private CoordinatorLayout coordinatorLayout;
     private DrawerLayout drawer;
@@ -907,10 +906,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private static class BuildTask extends BaseTask implements DialogInterface.OnCancelListener, BuildProgressReceiver {
-        private volatile boolean canceled;
-        private volatile boolean isBuildFinished;
         private final BuildingDialog dialog;
         private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+        private volatile boolean canceled;
+        private volatile boolean isBuildFinished;
 
         public BuildTask(DesignActivity activity) {
             super(activity);
@@ -942,7 +941,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
             try {
                 var q = activity.q;
-                var sc_id = activity.sc_id;
+                var sc_id = DesignActivity.sc_id;
                 onProgress("Deleting temporary files...");
                 FileUtil.deleteFile(q.projectMyscPath);
 
@@ -950,10 +949,18 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 q.a();
                 q.a(activity.getApplicationContext(), wq.e("600"));
                 if (yB.a(lC.b(sc_id), "custom_icon")) {
-                    q.a(wq.e()
-                            + File.separator + sc_id
-                            + File.separator + "icon.png");
+                    q.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
+                    if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
+                        q.cf("""
+                                <?xml version="1.0" encoding="utf-8"?>
+                                <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
+                                <background android:drawable="@mipmap/ic_launcher_background"/>
+                                <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+                                <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
+                                </adaptive-icon>""");
+                    }
                 }
+
 
                 kC kC = jC.d(sc_id);
                 kC.b(q.resDirectoryPath + File.separator + "drawable-xhdpi");
@@ -1205,7 +1212,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private void doInBackground() {
             DesignActivity activity = getActivity();
             if (activity != null) {
-                var sc_id = activity.sc_id;
+                var sc_id = DesignActivity.sc_id;
                 jC.d(sc_id).v();
                 jC.d(sc_id).w();
                 jC.d(sc_id).u();
@@ -1232,7 +1239,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private void doInBackground() {
             DesignActivity activity = getActivity();
             if (activity != null) {
-                var sc_id = activity.sc_id;
+                var sc_id = DesignActivity.sc_id;
                 jC.d(sc_id).a();
                 jC.b(sc_id).m();
                 jC.a(sc_id).j();
@@ -1265,7 +1272,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private void doInBackground() {
             DesignActivity activity = getActivity();
             if (activity != null) {
-                var sc_id = activity.sc_id;
+                var sc_id = DesignActivity.sc_id;
                 jC.d(sc_id).a();
                 jC.b(sc_id).m();
                 jC.a(sc_id).j();
@@ -1296,7 +1303,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private void doInBackground() {
             DesignActivity activity = getActivity();
             if (activity != null) {
-                jC.a(activity.sc_id).k();
+                jC.a(sc_id).k();
             }
         }
     }
