@@ -33,6 +33,7 @@ import pro.sketchware.databinding.SortProjectDialogBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import a.a.a.DA;
 import a.a.a.DB;
@@ -218,9 +219,11 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
                 if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
                 if (binding.loading3balls.getVisibility() == View.VISIBLE) {
                     binding.loading3balls.setVisibility(View.GONE);
+
                     binding.myprojects.setVisibility(View.VISIBLE);
                 }
                 projectsAdapter.setAllProjects(new ArrayList<>(projectsList));
+                Objects.requireNonNull(binding.myprojects.getAdapter()).notifyDataSetChanged();
                 if (projectsSearchView != null)
                     projectsAdapter.filterData(projectsSearchView.getQuery().toString());
 
