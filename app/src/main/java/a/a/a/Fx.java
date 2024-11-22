@@ -438,7 +438,7 @@ public class Fx {
                 opcode = String.format("%s.setBackgroundColor(%s);", params.get(0), params.get(1));
                 break;
             case "setBgResource":
-                opcode = params.get(1).equals("NONE") ? "" : "R.drawable." + params.get(1).replaceAll("\\.9", "");
+                opcode = params.get(1).equals("NONE") ? "0" : "R.drawable." + params.get(1).replaceAll("\\.9", "");
                 opcode = String.format("%s.setBackgroundResource(%s);", params.get(0), opcode);
                 break;
             case "setTextColor":
