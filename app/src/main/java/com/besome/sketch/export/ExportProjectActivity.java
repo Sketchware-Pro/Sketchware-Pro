@@ -49,7 +49,7 @@ import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
-import mod.yamenher.ApkSignerUtils;
+import pro.sketchware.utility.apk.ApkSignerUtils;
 import pro.sketchware.BuildConfig;
 import pro.sketchware.R;
 import pro.sketchware.utility.FilePathUtil;

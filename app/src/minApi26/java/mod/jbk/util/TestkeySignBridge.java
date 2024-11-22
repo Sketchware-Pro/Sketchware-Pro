@@ -1,9 +1,6 @@
 package mod.jbk.util;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
-import mod.yamenher.ApkSignerUtils;
+import pro.sketchware.utility.apk.ApkSignerUtils;
 
 public class TestkeySignBridge {
     private TestkeySignBridge() {
