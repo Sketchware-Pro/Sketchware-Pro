@@ -244,6 +244,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             binding.tiInput.setVisibility(View.GONE);
 
             dialog.a(binding.getRoot());
+            dialog.setDismissOnDefaultButtonClick(false);
             dialog.configureDefaultButton(context.getString(R.string.strings_xml), v -> {
                 binding.edTiAutoCompleteInput.setText(stringsStart);
                 binding.edTiAutoCompleteInput.setSelection(stringsStart.length());
