@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import pro.sketchware.R;
 import pro.sketchware.databinding.CustomDialogAttributeBinding;
 import pro.sketchware.databinding.ActivityManageCustomAttributeBinding;
+import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
@@ -133,16 +134,14 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
     private void showDial(int pos) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle("Edit Value");
-        CustomDialogAttributeBinding attributeBinding = CustomDialogAttributeBinding.inflate(getLayoutInflater());
+        DialogCreateNewFileLayoutBinding attributeBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
+        attributeBinding.chipGroupTypes.setVisibility(View.GONE);
         dialog.setView(attributeBinding.getRoot());
 
-        attributeBinding.inputRes.setVisibility(View.GONE);
-        attributeBinding.inputAttr.setVisibility(View.GONE);
-
-        attributeBinding.inputValue.setText((String) listMap.get(pos).get("value"));
-        attributeBinding.inputValue.setHint("android:attr=\"value\"");
+        attributeBinding.inputText.setText((String) listMap.get(pos).get("value"));
+        attributeBinding.inputText.setHint("android:attr=\"value\"");
         dialog.setPositiveButton(R.string.common_word_save, (dialog1, which) -> {
-            listMap.get(pos).put("value", attributeBinding.inputValue.getText().toString());
+            listMap.get(pos).put("value", attributeBinding.inputText.getText().toString());
             applyChange();
         });
 
