@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import pro.sketchware.R;
 import pro.sketchware.databinding.CustomDialogAttributeBinding;
+import pro.sketchware.databinding.ActivityManageCustomAttributeBinding;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
@@ -37,16 +38,18 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
 
     private static String ATTRIBUTES_FILE_PATH;
     private final ArrayList<HashMap<String, Object>> listMap = new ArrayList<>();
-    private ListView listView;
     private String src_id;
     private String activityName;
     private String type;
     private String constant;
 
+    private ActivityManageCustomAttributeBinding binding;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_custom_attribute);
+        binding = ActivityManageCustomAttributeBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name") && getIntent().hasExtra("type")) {
             src_id = getIntent().getStringExtra("sc_id");
@@ -80,9 +83,7 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
     }
 
     private void setupViews() {
-        FloatingActionButton fab = findViewById(R.id.add_attr_fab);
-        fab.setOnClickListener(v -> showAddDial());
-        listView = findViewById(R.id.add_attr_listview);
+        binding.addAttrFab.setOnClickListener(v -> showAddDial());
         refreshList();
     }
 
@@ -91,27 +92,37 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
         ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(ATTRIBUTES_FILE_PATH)) {
             data = new Gson().fromJson(FileUtil.readFile(ATTRIBUTES_FILE_PATH), Helper.TYPE_MAP_LIST);
-            for (int i = 0; i < data.size(); i++) {
-                String str = (String) data.get(i).get("name");
+            for (HashMap<String, Object> item : data) {
+                String str = (String) item.get("name");
                 if (str.equals(constant)) {
-                    listMap.add(data.get(i));
+                    listMap.add(item);
                 }
             }
-            listView.setAdapter(new ListAdapter(listMap));
-            ((BaseAdapter) listView.getAdapter()).notifyDataSetChanged();
+            binding.addAttrListview.setAdapter(new ListAdapter(listMap));
+            ((BaseAdapter) binding.addAttrListview.getAdapter()).notifyDataSetChanged();
         }
     }
 
-    private void a(View view, int i2, int i3) {
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setShape(GradientDrawable.RECTANGLE);
-        gradientDrawable.setCornerRadii(new float[]{(float) i2, (float) i2, (float) i2 / 2, (float) i2 / 2, (float) i2, (float) i2, (float) i2 / 2, (float) i2 / 2});
-        gradientDrawable.setColor(Color.parseColor("#ffffff"));
-        RippleDrawable rippleDrawable = new RippleDrawable(new ColorStateList(new int[][]{new int[0]}, new int[]{Color.parseColor("#20008DCD")}), gradientDrawable, null);
-        view.setElevation((float) i3);
-        view.setBackground(rippleDrawable);
-        view.setClickable(true);
-        view.setFocusable(true);
+    private void setToolbar() {
+        String str = switch (type) {
+            case "all" -> "Attributes for all activities";
+            case "application" -> "Application Attributes";
+            case "permission" -> "Application Permissions";
+            default -> activityName;
+        };
+        binding.toolbar.setTitle(str);
+
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+
+        if (!str.equals("Attributes for all activities") && !str.equals("Application Attributes") && !str.equals("Application Permissions")) {
+            TextView actComponent = newText("Components ASD", 15, Color.parseColor("#ffffff"), -2, -2, 0);
+            actComponent.setTypeface(Typeface.DEFAULT_BOLD);
+            ((ViewGroup) binding.txToolbarTitle.getParent()).addView(actComponent);
+            actComponent.setOnClickListener(v -> {
+                ActComponentsDialog acd = new ActComponentsDialog(this, src_id, activityName);
+                acd.show();
+            });
+        }
     }
 
     private void showDial(int pos) {
@@ -184,32 +195,7 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
         return temp_card;
     }
 
-    private void setToolbar() {
-        String str = switch (type) {
-            case "all" -> "Attributes for all activities";
-            case "application" -> "Application Attributes";
-            case "permission" -> "Application Permissions";
-            default -> activityName;
-        };
-        ((TextView) findViewById(R.id.tx_toolbar_title)).setText(str);
-        ViewGroup par = (ViewGroup) findViewById(R.id.tx_toolbar_title).getParent();
-        ImageView _img = findViewById(R.id.ig_toolbar_back);
-        _img.setOnClickListener(Helper.getBackPressedClickListener(this));
-        if (!str.equals("Attributes for all activities") && !str.equals("Application Attributes") && !str.equals("Application Permissions")) {
-            // Feature description: allows to inject anything into the {@code activity} tag of the Activity
-            // (yes, Command Blocks can do that too, but removing features is bad.)
-            TextView actComponent = newText("Components ASD", 15, Color.parseColor("#ffffff"), -2, -2, 0);
-            actComponent.setTypeface(Typeface.DEFAULT_BOLD);
-            par.addView(actComponent);
-            actComponent.setOnClickListener(v -> {
-                ActComponentsDialog acd = new ActComponentsDialog(this, src_id, activityName);
-                acd.show();
-            });
-        }
-    }
-
     private class ListAdapter extends BaseAdapter {
-
         private final ArrayList<HashMap<String, Object>> _data;
 
         public ListAdapter(ArrayList<HashMap<String, Object>> _arr) {
