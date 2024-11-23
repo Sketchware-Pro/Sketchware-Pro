@@ -3,8 +3,14 @@ package com.besome.sketch.design;
 import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -28,6 +34,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -87,11 +94,13 @@ import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
 import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
+import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.build.BuildSettingsDialog;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
@@ -111,6 +120,7 @@ import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
+import mod.remaker.util.ThemeUtils;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.utility.FileUtil;
@@ -174,6 +184,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     });
     private rs eventTabAdapter;
     private br componentTabAdapter;
+    private BuildTask currentBuildTask;
+    private BuildSettings build_settings;
+    private boolean isBuildingInTheBackground = false;
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -334,6 +347,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         if (!mB.a()) {
             if (v.getId() == R.id.btn_execute) {
                 BuildTask buildTask = new BuildTask(this);
+                currentBuildTask = buildTask;
                 buildTask.execute();
             } else if (v.getId() == R.id.btn_compiler_opt) {
                 PopupMenu popupMenu = new PopupMenu(this, buildSettings);
@@ -501,7 +515,34 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         });
         viewPager.getAdapter().notifyDataSetChanged();
         ((TabLayout) findViewById(R.id.tab_layout)).setupWithViewPager(viewPager);
+
+        IntentFilter filter = new IntentFilter(BuildTask.ACTION_CANCEL_BUILD);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(buildCancelReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(buildCancelReceiver, filter);
+        }
+
+        build_settings = new BuildSettings(sc_id);
+        isBuildingInTheBackground = build_settings.getValue(BuildSettings.SETTING_ENABLE_BACKGROUND_BUILDING, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(buildCancelReceiver);
+    }
+
+    private final BroadcastReceiver buildCancelReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (BuildTask.ACTION_CANCEL_BUILD.equals(intent.getAction())) {
+                if (currentBuildTask != null) {
+                    currentBuildTask.cancelBuild();
+                }
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -704,11 +745,19 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
                 if (filename.endsWith(".xml")) {
-                    editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
                     editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
+                    if (ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
+                        editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+                    } else {
+                        editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                    }
                 } else {
-                    editor.setColorScheme(new EditorColorScheme());
                     editor.setEditorLanguage(new JavaLanguage());
+                    if (ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
+                        editor.setColorScheme(new SchemeDarcula());
+                    } else {
+                        editor.setColorScheme(new EditorColorScheme());
+                    }
                 }
 
                 AlertDialog dialog = dialogBuilder.create();
@@ -906,16 +955,20 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private static class BuildTask extends BaseTask implements DialogInterface.OnCancelListener, BuildProgressReceiver {
+        public static final String ACTION_CANCEL_BUILD = "com.besome.sketch.design.ACTION_CANCEL_BUILD";
         private final BuildingDialog dialog;
         private final ExecutorService executorService = Executors.newSingleThreadExecutor();
         private volatile boolean canceled;
         private volatile boolean isBuildFinished;
+        private final NotificationManager notificationManager;
+        private final int notificationId = 1;
+        private boolean isShowingNotification = false;
+        private static final String CHANNEL_ID = "build_notification_channel";
 
         public BuildTask(DesignActivity activity) {
             super(activity);
+            notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
             dialog = new BuildingDialog(activity);
-            maybeShow();
-            dialog.setIsCancelableOnBackPressed(false);
         }
 
         public void execute() {
@@ -932,6 +985,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 activity.runProject.setClickable(false);
                 activity.r.a("P1I10", true);
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+                if (activity.isBuildingInTheBackground) {
+                    maybeShowNotification();
+                } else {
+                    maybeShowDialog();
+                    dialog.setIsCancelableOnBackPressed(false);
+                }
             });
         }
 
@@ -1087,8 +1147,12 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             if (activity == null) return;
 
             activity.runOnUiThread(() -> {
-                if (dialog.isShowing()) {
-                    dialog.setProgress(progress);
+                if (activity.isBuildingInTheBackground) {
+                    updateNotification(progress);
+                } else {
+                    if (dialog.isShowing()) {
+                        dialog.setProgress(progress);
+                    }
                 }
             });
         }
@@ -1099,8 +1163,15 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
             activity.runOnUiThread(() -> {
                 if (!activity.isDestroyed()) {
-                    if (dialog.isShowing()) {
-                        dialog.dismiss();
+                    if (activity.isBuildingInTheBackground) {
+                        if (isShowingNotification) {
+                            notificationManager.cancel(notificationId);
+                            isShowingNotification = false;
+                        }
+                    } else {
+                        if (dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
                     }
                     activity.runProject.setText(Helper.getResString(R.string.common_word_run));
                     activity.runProject.setClickable(true);
@@ -1114,39 +1185,57 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             DesignActivity activity = getActivity();
             if (activity == null) return;
 
-            activity.runOnUiThread(() -> {
-                aB cancelDialog = new aB(activity);
-                cancelDialog.b(activity.getString(R.string.design_cancel_build_title));
-                cancelDialog.a(activity.getString(R.string.design_cancel_build_desc));
-                cancelDialog.a(R.drawable.ic_mtrl_exit);
+            if (!activity.isBuildingInTheBackground) {
+                activity.runOnUiThread(() -> {
+                    aB cancelDialog = new aB(activity);
+                    cancelDialog.b(activity.getString(R.string.design_cancel_build_title));
+                    cancelDialog.a(activity.getString(R.string.design_cancel_build_desc));
+                    cancelDialog.a(R.drawable.ic_mtrl_exit);
 
-                cancelDialog.a(activity.getString(R.string.design_cancel_build_btn_stop), v -> {
-                    if (!isBuildFinished) {
-                        if (!dialog.isCancelableOnBackPressed()) {
-                            dialog.setIsCancelableOnBackPressed(true);
-                            maybeShow();
-                            canceled = true;
+                    cancelDialog.a(activity.getString(R.string.design_cancel_build_btn_stop), v -> {
+                        if (!isBuildFinished) {
+                            if (!dialog.isCancelableOnBackPressed()) {
+                                dialog.setIsCancelableOnBackPressed(true);
+                                maybeShowDialog();
+                                canceled = true;
+                            }
+                            dialog.show();
+                            activity.runProject.setText("Canceling build...");
+                            onProgress("Canceling build...");
                         }
-                        dialog.show();
-                        activity.runProject.setText("Canceling build...");
-                        onProgress("Canceling build...");
-                    }
-                    cancelDialog.dismiss();
-                });
+                        cancelDialog.dismiss();
+                    });
 
-                cancelDialog.b(activity.getString(R.string.design_cancel_build_btn_continue), v -> {
-                    if (!isBuildFinished)
-                        dialog.show();
-                    cancelDialog.dismiss();
-                });
+                    cancelDialog.b(activity.getString(R.string.design_cancel_build_btn_continue), v -> {
+                        if (!isBuildFinished)
+                            dialog.show();
+                        cancelDialog.dismiss();
+                    });
 
-                cancelDialog.setCancelable(false);
-                cancelDialog.setCanceledOnTouchOutside(false);
-                cancelDialog.show();
-            });
+                    cancelDialog.setCancelable(false);
+                    cancelDialog.setCanceledOnTouchOutside(false);
+                    cancelDialog.show();
+                });
+            }
         }
 
-        private void maybeShow() {
+        public void cancelBuild() {
+            canceled = true;
+            if (isShowingNotification) {
+                notificationManager.cancel(notificationId);
+                isShowingNotification = false;
+            }
+            DesignActivity activity = getActivity();
+            if (activity != null) {
+                activity.runOnUiThread(() -> {
+                    activity.runProject.setText(Helper.getResString(R.string.common_word_run));
+                    activity.runProject.setClickable(true);
+                    activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                });
+            }
+        }
+
+        private void maybeShowDialog() {
             DesignActivity activity = getActivity();
             if (activity == null) return;
 
@@ -1156,6 +1245,63 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     dialog.show();
                 }
             });
+        }
+
+        private void maybeShowNotification() {
+            DesignActivity activity = getActivity();
+            if (activity == null) return;
+
+            if (!isShowingNotification) {
+                createNotificationChannelIfNeeded();
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_mtrl_code)
+                        .setContentTitle("Building project")
+                        .setContentText("Starting build...")
+                        .setOngoing(true)
+                        .setProgress(0, 0, true)
+                        .addAction(R.drawable.ic_cancel_white_96dp, "Cancel build", getCancelPendingIntent());
+
+                notificationManager.notify(notificationId, builder.build());
+                isShowingNotification = true;
+            }
+        }
+
+        private void updateNotification(String progress) {
+            DesignActivity activity = getActivity();
+            if (activity == null) return;
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_mtrl_code)
+                    .setContentTitle("Building project")
+                    .setContentText(progress)
+                    .setOngoing(true)
+                    .setProgress(0, 0, true)
+                    .addAction(R.drawable.ic_cancel_white_96dp, "Cancel Build", getCancelPendingIntent());
+
+            notificationManager.notify(notificationId, builder.build());
+        }
+
+        private PendingIntent getCancelPendingIntent() {
+            DesignActivity activity = getActivity();
+            if (activity == null) return null;
+
+            Intent cancelIntent = new Intent(BuildTask.ACTION_CANCEL_BUILD);
+            return PendingIntent.getBroadcast(activity, 0, cancelIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+        private void createNotificationChannelIfNeeded() {
+            DesignActivity activity = getActivity();
+            if (activity == null) return;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                CharSequence name = "Build Notifications";
+                String description = "Notifications for build progress";
+                int importance = NotificationManager.IMPORTANCE_LOW;
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+                channel.setDescription(description);
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
 

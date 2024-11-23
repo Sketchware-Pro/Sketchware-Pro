@@ -14,6 +14,7 @@ public class BuildSettings extends ProjectSettings implements Serializable {
     public static final String SETTING_NO_HTTP_LEGACY = "no_http_legacy";
     public static final String SETTING_NO_WARNINGS = "no_warn";
     public static final String SETTING_ENABLE_LOGCAT = "enable_logcat";
+    public static final String SETTING_ENABLE_BACKGROUND_BUILDING = "enable_background_building";
 
     public static final String SETTING_DEXER_D8 = "D8";
     public static final String SETTING_DEXER_DX = "Dx";
