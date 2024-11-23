@@ -143,7 +143,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         PropertyPopupInputIndentBinding binding = PropertyPopupInputIndentBinding.inflate(LayoutInflater.from(getContext()));
         View view = binding.getRoot();
 
-        binding.tiAll.setHint(String.format("Enter %s value", propertyType.toLowerCase()));
+        binding.tiAll.setHint(String.format(Helper.getResString(R.string.property_enter_value), propertyType.toLowerCase()));
         binding.chkPtyAll.setText(String.format("%s on all sides", propertyType));
 
         TB ti_all = new TB(context, binding.tiAll, 0, 999);

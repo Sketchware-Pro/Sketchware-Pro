@@ -170,15 +170,18 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View view = wB.a(getContext(), R.layout.property_popup_input_text);
-        EditText input = view.findViewById(R.id.ed_input);
-        input.setLines(1);
-        _B validator = new _B(context, view.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
+
+        PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
+
+        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), "widget ID"));
+
+        binding.edInput.setLines(1);
+        _B validator = new _B(context, binding.tiInput.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
         validator.a(value);
-        dialog.a(view);
+        dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(input.getText().toString());
+                setValue(binding.edInput.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
@@ -196,16 +199,20 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View view = wB.a(getContext(), R.layout.property_popup_input_text);
-        EditText input = view.findViewById(R.id.ed_input);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
-        input.setText(value);
-        TB validator = new TB(context, view.findViewById(R.id.ti_input), 0,
+
+        PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
+        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), tvName.getText().toString()));
+
+        binding.edInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        binding.edInput.setText(value);
+
+        TB validator = new TB(context, binding.tiInput, 0,
                 (key.equals("property_max") || key.equals("property_progress")) ? 0x7fffffff : 999);
-        dialog.a(view);
+
+        dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(input.getText().toString());
+                setValue(binding.edInput.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
@@ -219,37 +226,36 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
 
-        View view = wB.a(getContext(), R.layout.property_popup_input_text);
-        EditText input = view.findViewById(R.id.ed_input);
-        TextInputLayout textInputLayout = view.findViewById(R.id.ti_input);
-        TextInputLayout textAutoCompleteInput = view.findViewById(R.id.ti_auto_complete_input);
-        MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.ed_ti_auto_complete_input);
+        PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
+
+        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), tvName.getText().toString()));
+
         SB lengthValidator;
 
         if (isInject) {
-            lengthValidator = new SB(context, textInputLayout, 0, maxValue);
-            textAutoCompleteInput.setVisibility(View.GONE);
+            lengthValidator = new SB(context, binding.tiInput, 0, maxValue);
+            binding.tiAutoCompleteInput.setVisibility(View.GONE);
         } else {
             loadStringsListMap();
-            setupTextWatcher(textAutoCompleteInput, autoCompleteTextView);
+            setupTextWatcher(binding.tiAutoCompleteInput, binding.edTiAutoCompleteInput);
 
-            lengthValidator = new SB(context, textAutoCompleteInput, 0, maxValue);
-            textAutoCompleteInput.setVisibility(View.VISIBLE);
-            textInputLayout.setVisibility(View.GONE);
+            lengthValidator = new SB(context, binding.tiAutoCompleteInput, 0, maxValue);
+            binding.tiAutoCompleteInput.setVisibility(View.VISIBLE);
+            binding.tiInput.setVisibility(View.GONE);
 
-            dialog.a(view);
+            dialog.a(binding.getRoot());
             dialog.configureDefaultButton(context.getString(R.string.strings_xml), v -> {
-                autoCompleteTextView.setText(stringsStart);
-                autoCompleteTextView.setSelection(stringsStart.length());
-                autoCompleteTextView.requestFocus();
+                binding.edTiAutoCompleteInput.setText(stringsStart);
+                binding.edTiAutoCompleteInput.setSelection(stringsStart.length());
+                binding.edTiAutoCompleteInput.requestFocus();
             });
 
-            setupAutoCompleteTextView(autoCompleteTextView);
+            setupAutoCompleteTextView(binding.edTiAutoCompleteInput);
         }
 
         lengthValidator.a(value);
-        dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> handleSave(lengthValidator, input, autoCompleteTextView, textAutoCompleteInput, isInject, dialog));
+        dialog.a(binding.getRoot());
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> handleSave(lengthValidator, binding.edInput, binding.edTiAutoCompleteInput, binding.tiAutoCompleteInput, isInject, dialog));
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
@@ -342,17 +348,22 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         aB dialog = new aB((Activity) getContext());
         dialog.b(tvName.getText().toString());
         dialog.a(icon);
-        View view = wB.a(getContext(), R.layout.property_popup_input_text);
-        EditText input = view.findViewById(R.id.ed_input);
-        input.setInputType(minValue < 0 ?
-                InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL
+
+        PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
+        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), tvName.getText().toString()));
+
+        binding.edInput.setInputType((minValue < 0)
+                ? InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL
                 : InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        input.setText(value);
-        OB validator = new OB(context, view.findViewById(R.id.ti_input), minValue, maxValue);
-        dialog.a(view);
+
+        binding.edInput.setText(value);
+
+        OB validator = new OB(context, binding.tiInput, minValue, maxValue);
+
+        dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(input.getText().toString());
+                setValue(binding.edInput.getText().toString());
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
