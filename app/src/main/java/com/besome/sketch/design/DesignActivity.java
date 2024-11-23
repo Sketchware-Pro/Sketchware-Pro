@@ -1057,6 +1057,12 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     return;
                 }
 
+                onProgress("Generating view binding...");
+                builder.generateViewBinding();
+                if (canceled) {
+                    return;
+                }
+
                 KotlinCompilerBridge.compileKotlinCodeIfPossible(this, builder);
                 if (canceled) {
                     return;

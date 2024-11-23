@@ -13,13 +13,13 @@ import java.util.Set;
 
 import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
+import pro.sketchware.utility.FileUtil;
 
 public class Lx {
 
@@ -1103,13 +1103,19 @@ public class Lx {
     /**
      * @return Initializer of a View to be added to _initialize(Bundle)
      */
-    public static String getViewInitializer(String type, String name, boolean isInFragment) {
+    public static String getViewInitializer(String type, String name, boolean isInFragment, boolean viewBinding) {
         String initializer = "";
 
         if (!type.equals("include") && !type.equals("#")) {
-            initializer = name + " = " +
-                    (isInFragment ? "_view.findViewById(R.id." : "findViewById(R.id.") +
-                    name + ");";
+            if (viewBinding) {
+                initializer = name + " = " +
+                        "binding." +
+                        name + ";";
+            } else {
+                initializer = name + " = " +
+                        (isInFragment ? "_view.findViewById(R.id." : "findViewById(R.id.") +
+                        name + ");";
+            }
         }
 
         return switch (type) {

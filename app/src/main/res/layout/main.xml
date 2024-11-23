@@ -46,7 +46,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager2.widget.ViewPager2
