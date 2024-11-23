@@ -405,7 +405,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(sc_id);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
         drawer = findViewById(R.id.drawer_layout);
         Insetter.builder()
                 .margin(WindowInsetsCompat.Type.navigationBars())
