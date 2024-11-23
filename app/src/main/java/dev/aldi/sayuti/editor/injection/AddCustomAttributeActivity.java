@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import pro.sketchware.R;
-import pro.sketchware.databinding.AddCustomAttributeBinding;
+import pro.sketchware.databinding.ActivityManageCustomAttributeBinding;
 import pro.sketchware.databinding.CustomDialogAttributeBinding;
 
 import java.util.ArrayList;
@@ -39,25 +39,24 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
     
     private static final String ATTR_REGEX_TEMPLATE = "(android|app)\\s*:\\s*%s";
 
-    private AddCustomAttributeBinding binding;
+    private ActivityManageCustomAttributeBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = AddCustomAttributeBinding.inflate(getLayoutInflater());
+        binding = ActivityManageCustomAttributeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         binding.addAttrFab.setOnClickListener(v -> dialog("create", 0));
 
-        Helper.applyRippleToToolbarView(binding.igToolbarBack);
-        binding.igToolbarBack.setOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name") && getIntent().hasExtra("widget_type")) {
             String sc_id = getIntent().getStringExtra("sc_id");
             String activityFilename = getIntent().getStringExtra("file_name");
             widgetType = getIntent().getStringExtra("widget_type");
 
-            binding.txToolbarTitle.setText(widgetType);
+            binding.toolbar.setTitle(widgetType);
 
             activityInjectionsFilePath = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/injection/appcompat/" + activityFilename;
             if (!FileUtil.isExistFile(activityInjectionsFilePath) || FileUtil.readFile(activityInjectionsFilePath).isEmpty()) {
