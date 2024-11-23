@@ -7,7 +7,8 @@ def get_git_commit_info():
     commit_author = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%an']).decode('utf-8')
     commit_message = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%s']).decode('utf-8')
     commit_hash = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%H']).decode('utf-8')
-    return commit_author, commit_message, commit_hash
+    commit_hash_short = subprocess.check_output(['git', 'log', '-1', '--pretty=format:%h']).decode('utf-8')
+    return commit_author, commit_message, commit_hash, commit_hash_short
 
 def escape_markdown_v2(text):
     escape_chars = r'_~`#+-=|{}.!'
@@ -18,12 +19,12 @@ def main():
     chat_id = os.environ['CHAT_ID']
     topic_id = os.environ.get('TOPIC_ID')
     
-    commit_author, commit_message, commit_hash = get_git_commit_info()
+    commit_author, commit_message, commit_hash, commit_hash_short = get_git_commit_info()
 
     message = (
-        f"A new [build](https://github.com/Sketchware-Pro/Sketchware-Pro/commit/{commit_hash}) has been triggered by *{commit_author}*.\n\n"
-        f"*Commit message:*\n>{commit_message}\n\n"
-        f"I will send you the APKs here if the build is successful."
+        f"A new [commit](https://github.com/Sketchware-Pro/Sketchware-Pro/commit/{commit_hash}) has been merged to the repository by *{commit_author}*.\n\n"
+        f"*What has changed:*\n>{commit_message}\n\n"
+        f"I'm currently building it and will send you the APKs here within ~6 mins if the build is successful.\n\n#{commit_hash_short}"
     )
     
     escaped_message = escape_markdown_v2(message)

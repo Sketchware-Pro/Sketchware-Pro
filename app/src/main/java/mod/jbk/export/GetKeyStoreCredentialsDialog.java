@@ -6,16 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
-import pro.sketchware.R;
-import pro.sketchware.databinding.DialogKeystoreCredentialsBinding;
-
 import java.io.File;
 import java.util.LinkedList;
 
 import a.a.a.aB;
 import a.a.a.wq;
-import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogKeystoreCredentialsBinding;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class GetKeyStoreCredentialsDialog {
 
@@ -60,7 +59,7 @@ public class GetKeyStoreCredentialsDialog {
         boolean signingWithKeyStore = mode == SigningMode.OWN_KEY_STORE;
         binding.tilAlias.setEnabled(signingWithKeyStore);
         binding.tilPassword.setEnabled(signingWithKeyStore);
-        binding.tilSigningAlgorithm.setEnabled(signingWithKeyStore);
+        binding.tilKeyPassword.setEnabled(signingWithKeyStore);
     }
 
     private void onNextButtonClick(View v) {
@@ -69,8 +68,8 @@ public class GetKeyStoreCredentialsDialog {
                 if (validateInputs()) {
                     dialog.dismiss();
                     receiver.gotCredentials(new Credentials(
-                            binding.etSigningAlgorithm.getText().toString(),
-                            binding.etPassword.getText().toString(),
+                            "null",
+                            binding.etKeyPassword.getText().toString(),
                             binding.etAlias.getText().toString(),
                             binding.etPassword.getText().toString()
                     ));
@@ -80,7 +79,7 @@ public class GetKeyStoreCredentialsDialog {
             }
         } else if (mode == SigningMode.TESTKEY) {
             dialog.dismiss();
-            receiver.gotCredentials(new Credentials(binding.etSigningAlgorithm.getText().toString()));
+            receiver.gotCredentials(new Credentials(binding.etKeyPassword.getText().toString()));
         } else if (mode == SigningMode.DONT_SIGN) {
             dialog.dismiss();
             receiver.gotCredentials(null);
@@ -104,11 +103,11 @@ public class GetKeyStoreCredentialsDialog {
             binding.tilPassword.setError(null);
         }
 
-        if (TextUtils.isEmpty(binding.etSigningAlgorithm.getText())) {
-            binding.tilSigningAlgorithm.setError("Algorithm can't be empty");
+        if (TextUtils.isEmpty(binding.etKeyPassword.getText())) {
+            binding.tilKeyPassword.setError("Keystore password cannot be empty'");
             isValid = false;
         } else {
-            binding.tilSigningAlgorithm.setError(null);
+            binding.tilKeyPassword.setError(null);
         }
 
         return isValid;
@@ -131,7 +130,7 @@ public class GetKeyStoreCredentialsDialog {
         void gotCredentials(Credentials credentials);
     }
 
-    public static class Credentials {
+    public class Credentials {
 
         private final boolean signWithTestkey;
         private final String keyStorePassword;
@@ -173,7 +172,7 @@ public class GetKeyStoreCredentialsDialog {
          * @return {@link #keyStorePassword}
          */
         public String getKeyStorePassword() {
-            return keyStorePassword;
+            return binding.etKeyPassword.getText().toString();
         }
 
         /**
