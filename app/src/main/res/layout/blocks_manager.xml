@@ -39,8 +39,9 @@
                         android:id="@+id/recycle_icon"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/icon_delete_active" />
+                        app:tint="?attr/colorPrimary"
+                        android:tintMode="src_in"
+                        android:src="@drawable/ic_mtrl_delete" />
                 </LinearLayout>
 
                 <LinearLayout

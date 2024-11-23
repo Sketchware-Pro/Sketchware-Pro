@@ -317,7 +317,7 @@
         <activity android:name="pro.sketchware.activities.settings.SettingsActivity" />
         
         <activity android:name="mod.bobur.StringEditorActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

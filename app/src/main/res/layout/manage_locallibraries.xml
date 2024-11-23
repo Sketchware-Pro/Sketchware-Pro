@@ -37,17 +37,15 @@
             android:layout_marginTop="4dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <!--   search gotta be implemented fr, ez but eh    -->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/searchInputLayout"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:hint="Search for permissions"
+                android:hint="Search for libraries"
                 android:importantForAutofill="noExcludeDescendants"
                 app:boxCornerRadiusBottomEnd="50dp"
                 app:boxCornerRadiusBottomStart="50dp"
@@ -63,16 +61,6 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/resetPermissions"
-                style="?attr/materialIconButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:insetBottom="0dp"
-                android:text="@string/common_word_reset"
-                app:icon="@drawable/ic_mtrl_reset"
-                app:iconGravity="textStart"
-                app:iconSize="20dp" />
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

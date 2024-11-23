@@ -59,77 +59,77 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                 .applyToView(bottomMenusLayout);
         /* Add collection item */
         bottomMenusLayout.addView(addDrawerItem(1, false,
-                R.drawable.ic_bookmark_red_48dp, R.string.design_drawer_menu_title_collection, R.string.design_drawer_menu_description_collection
+                R.drawable.ic_mtrl_bookmark, R.string.design_drawer_menu_title_collection, R.string.design_drawer_menu_description_collection
         ));
         /* Add built-in Library Manager (AppCompat, Firebase, AdMob, Google Maps SDK) */
         /* INCLUDES SECTION SEPARATOR */
         menusLayout.addView(addDrawerItem(3, true,
-                R.drawable.categorize_48, R.string.design_drawer_menu_title_library, R.string.design_drawer_menu_description_library
+                R.drawable.ic_mtrl_category, R.string.design_drawer_menu_title_library, R.string.design_drawer_menu_description_library
         ));
         /* Add View Manager */
         menusLayout.addView(addDrawerItem(4, false,
-                R.drawable.multiple_devices_48, R.string.design_drawer_menu_title_view, R.string.design_drawer_menu_description_view
+                R.drawable.ic_mtrl_devices, R.string.design_drawer_menu_title_view, R.string.design_drawer_menu_description_view
         ));
         /* Add Image Manager */
         menusLayout.addView(addDrawerItem(5, false,
-                R.drawable.ic_picture_48dp, R.string.design_drawer_menu_title_image, R.string.design_drawer_menu_description_image
+                R.drawable.ic_mtrl_image, R.string.design_drawer_menu_title_image, R.string.design_drawer_menu_description_image
         ));
         /* Add Sound Manager */
         menusLayout.addView(addDrawerItem(6, false,
-                R.drawable.ic_sound_wave_48dp, R.string.design_drawer_menu_title_sound, R.string.design_drawer_menu_description_sound
+                R.drawable.ic_mtrl_music, R.string.design_drawer_menu_title_sound, R.string.design_drawer_menu_description_sound
         ));
         /* Add Font Manager */
         menusLayout.addView(addDrawerItem(7, false,
-                R.drawable.ic_font_48dp, R.string.design_drawer_menu_title_font, R.string.design_drawer_menu_description_font
+                R.drawable.ic_mtrl_font, R.string.design_drawer_menu_title_font, R.string.design_drawer_menu_description_font
         ));
         /* Add Java Manager */
         menusLayout.addView(addDrawerItem(8, false,
-                R.drawable.java_96, R.string.text_title_menu_java, R.string.text_subtitle_menu_java
+                R.drawable.ic_mtrl_java, R.string.text_title_menu_java, R.string.text_subtitle_menu_java
         ));
         /* Add Resource Manager */
         menusLayout.addView(addDrawerItem(9, false,
-                R.drawable.file_app_icon, R.string.text_title_menu_resource, R.string.text_subtitle_menu_resource
+                R.drawable.ic_mtrl_folder_code, R.string.text_title_menu_resource, R.string.text_subtitle_menu_resource
         ));
         /* Add Asset Manager */
         menusLayout.addView(addDrawerItem(10, false,
-                R.drawable.file_48_blue, R.string.text_title_menu_assets, R.string.text_subtitle_menu_assets
+                R.drawable.ic_mtrl_file_present, R.string.text_title_menu_assets, R.string.text_subtitle_menu_assets
         ));
         /* Add Permission Manager */
         menusLayout.addView(addDrawerItem(11, false,
-                R.drawable.plugin_purple_96, R.string.text_title_menu_permission, R.string.text_subtitle_menu_permission
+                R.drawable.ic_mtrl_shield_check, R.string.text_title_menu_permission, R.string.text_subtitle_menu_permission
         ));
         /* Add AppCompat Injection Manager */
         menusLayout.addView(addDrawerItem(12, false,
-                R.drawable.ic_property_inject, R.string.design_drawer_menu_injection, R.string.design_drawer_menu_injection_subtitle
+                R.drawable.ic_mtrl_inject, R.string.design_drawer_menu_injection, R.string.design_drawer_menu_injection_subtitle
         ));
         /* Add AndroidManifest Manager */
         menusLayout.addView(addDrawerItem(13, false,
-                R.drawable.icon8_code_am, R.string.design_drawer_menu_androidmanifest, R.string.design_drawer_menu_androidmanifest_subtitle
+                R.drawable.ic_mtrl_deployed_code, R.string.design_drawer_menu_androidmanifest, R.string.design_drawer_menu_androidmanifest_subtitle
         ));
         /* Add Used Custom Blocks */
         menusLayout.addView(addDrawerItem(20, false,
-                R.drawable.block_96_blue, R.string.design_drawer_menu_customblocks, R.string.design_drawer_menu_customblocks_subtitle
+                R.drawable.ic_mtrl_block, R.string.design_drawer_menu_customblocks, R.string.design_drawer_menu_customblocks_subtitle
         ));
         /* Add Local library Manager */
         menusLayout.addView(addDrawerItem(14, false,
-                R.drawable.open_box_48, R.string.text_title_menu_local_library, R.string.text_subtitle_menu_local_library
+                R.drawable.ic_mtrl_box, R.string.text_title_menu_local_library, R.string.text_subtitle_menu_local_library
         ));
         /* Add Native library Manager */
         menusLayout.addView(addDrawerItem(19, false,
-                R.drawable.cpp, R.string.design_drawer_menu_nativelibs, R.string.design_drawer_menu_nativelibs_subtitle));
+                R.drawable.ic_mtrl_settings_input, R.string.design_drawer_menu_nativelibs, R.string.design_drawer_menu_nativelibs_subtitle));
         /* Add ProGuard Manager */
         menusLayout.addView(addDrawerItem(17, false,
-                R.drawable.connected_96, R.string.design_drawer_menu_proguard, R.string.design_drawer_menu_proguard_subtitle));
+                R.drawable.ic_mtrl_shield_lock, R.string.design_drawer_menu_proguard, R.string.design_drawer_menu_proguard_subtitle));
         /* Add StringFog Manager */
         /* INCLUDES SECTION SEPARATOR */
         menusLayout.addView(addDrawerItem(18, true,
-                R.drawable.color_lock_96, R.string.design_drawer_menu_stringfog, R.string.design_drawer_menu_stringfog_subtitle));
+                R.drawable.ic_mtrl_regular_expression, R.string.design_drawer_menu_stringfog, R.string.design_drawer_menu_stringfog_subtitle));
         /* Add Source Code Viewer */
         menusLayout.addView(addDrawerItem(16, false,
-                R.drawable.code_icon, R.string.design_drawer_menu_title_source_code, R.string.design_drawer_menu_description_source_code));
+                R.drawable.ic_mtrl_frame_source, R.string.design_drawer_menu_title_source_code, R.string.design_drawer_menu_description_source_code));
         /* Add Logcat Reader */
         menusLayout.addView(addDrawerItem(22, false,
-                R.drawable.icons8_app_components, R.string.design_drawer_menu_title_logcat_reader, R.string.design_drawer_menu_subtitle_logcat_reader));
+                R.drawable.ic_mtrl_article, R.string.design_drawer_menu_title_logcat_reader, R.string.design_drawer_menu_subtitle_logcat_reader));
     }
 
     @Override

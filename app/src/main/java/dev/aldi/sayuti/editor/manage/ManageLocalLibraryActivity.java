@@ -3,6 +3,10 @@ package dev.aldi.sayuti.editor.manage;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -17,104 +21,38 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
-import pro.sketchware.databinding.ManageLocallibrariesBinding;
-import pro.sketchware.databinding.ViewItemLocalLibBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLocallibrariesBinding;
+import pro.sketchware.databinding.ViewItemLocalLibBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ManageLocalLibraryActivity extends AppCompatActivity implements View.OnClickListener {
+    private static String local_libs_path = "";
     private boolean notAssociatedWithProject = false;
     private String local_lib_file = "";
-    private static String local_libs_path = "";
     private ArrayList<HashMap<String, Object>> lookup_list = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
     private BuildSettings buildSettings;
-
+    private ArrayList<String> arrayList = new ArrayList<>();
     private ManageLocallibrariesBinding binding;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
-        super.onCreate(savedInstanceState);
-        binding = ManageLocallibrariesBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        ViewCompat.setOnApplyWindowInsetsListener(binding.downloadLibraryButton,
-                new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
-
-        initButtons();
-        if (getIntent().hasExtra("sc_id")) {
-            String sc_id = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
-            buildSettings = new BuildSettings(sc_id);
-            notAssociatedWithProject = sc_id.equals("system");
-            local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
-        }
-        local_libs_path = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
-        loadFiles();
-    }
-
-    private void initButtons() {
-        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        binding.downloadLibraryButton.setOnClickListener(this);
-    }
-
-    @Override
-    @SuppressLint("SetTextI18n")
-    public void onClick(View v) {
-
-        LibraryDownloaderDialogFragment dialogFragment = new LibraryDownloaderDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("notAssociatedWithProject", notAssociatedWithProject);
-        bundle.putSerializable("buildSettings", buildSettings);
-        bundle.putString("local_lib_file", local_lib_file);
-        dialogFragment.setArguments(bundle);
-        if (getSupportFragmentManager().findFragmentByTag("library_downloader_dialog") != null)
-            return;
-        dialogFragment.setListener(this::loadFiles);
-        dialogFragment.show(getSupportFragmentManager(), "library_downloader_dialog");
-    }
-
-    private void loadFiles() {
-        project_used_libs.clear();
-        lookup_list.clear();
-        if (!notAssociatedWithProject) {
-            String fileContent;
-            if (!FileUtil.isExistFile(local_lib_file) || (fileContent = FileUtil.readFile(local_lib_file)).isEmpty()) {
-                FileUtil.writeFile(local_lib_file, "[]");
-            } else {
-                project_used_libs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
-            }
-        }
-        ArrayList<String> arrayList = new ArrayList<>();
-        FileUtil.listDir(local_libs_path, arrayList);
-        arrayList.sort(String.CASE_INSENSITIVE_ORDER);
-
-        List<String> localLibraryNames = new LinkedList<>();
-        for (String filename : arrayList) {
-            if (FileUtil.isDirectory(filename)) {
-                localLibraryNames.add(Uri.parse(filename).getLastPathSegment());
-            }
-        }
-        if (localLibraryNames.isEmpty()) {
-            binding.noContentLayout.setVisibility(View.VISIBLE);
-        } else {
-            binding.noContentLayout.setVisibility(View.GONE);
-        }
-        binding.librariesList.setLayoutManager(new LinearLayoutManager(this));
-        binding.librariesList.setAdapter(new LibraryAdapter(localLibraryNames));
-    }
-
+    private LibraryAdapter adapter;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable searchRunnable;
     public static HashMap<String, Object> createLibraryMap(String name, String dependency) {
         String configPath = local_libs_path + name + "/config";
         String resPath = local_libs_path + name + "/res";
@@ -153,6 +91,140 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         return localLibrary;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
+        super.onCreate(savedInstanceState);
+        binding = ManageLocallibrariesBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.downloadLibraryButton, new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
+
+        initButtons();
+        if (getIntent().hasExtra("sc_id")) {
+            String sc_id = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
+            buildSettings = new BuildSettings(sc_id);
+            notAssociatedWithProject = sc_id.equals("system");
+            local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
+        }
+        local_libs_path = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
+        loadFiles();
+        setUpSearchView();
+    }
+
+    private void initButtons() {
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.downloadLibraryButton.setOnClickListener(this);
+    }
+
+    @Override
+    @SuppressLint("SetTextI18n")
+    public void onClick(View v) {
+
+        LibraryDownloaderDialogFragment dialogFragment = new LibraryDownloaderDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("notAssociatedWithProject", notAssociatedWithProject);
+        bundle.putSerializable("buildSettings", buildSettings);
+        bundle.putString("local_lib_file", local_lib_file);
+        dialogFragment.setArguments(bundle);
+        if (getSupportFragmentManager().findFragmentByTag("library_downloader_dialog") != null)
+            return;
+        dialogFragment.setListener(this::loadFiles);
+        dialogFragment.show(getSupportFragmentManager(), "library_downloader_dialog");
+    }
+
+    private void setUpSearchView() {
+        TextInputEditText searchEditText = findViewById(R.id.searchInput);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String value = s.toString().trim();
+
+                if (searchRunnable != null) {
+                    handler.removeCallbacks(searchRunnable);
+                }
+
+                searchRunnable = () -> {
+                    ExecutorService executorService = Executors.newSingleThreadExecutor();
+                    executorService.execute(() -> {
+                        FileUtil.listDir(local_libs_path, arrayList);
+                        arrayList.sort(String.CASE_INSENSITIVE_ORDER);
+
+                        List<String> localLibraryNames = new LinkedList<>();
+                        for (String filename : arrayList) {
+                            if (FileUtil.isDirectory(filename)) {
+                                String name = Uri.parse(filename).getLastPathSegment();
+                                localLibraryNames.add(name);
+                            }
+                        }
+
+                        List<String> filteredLibraryNames = new ArrayList<>();
+                        for (String filename : localLibraryNames) {
+                            String name = filename.replace(local_libs_path, "").toLowerCase();
+                            if (name.contains(value.toLowerCase())) {
+                                filteredLibraryNames.add(filename);
+                            }
+                        }
+
+                        runOnUiThread(() -> {
+                            if (filteredLibraryNames.isEmpty()) {
+                                binding.noContentLayout.setVisibility(View.VISIBLE);
+                            } else {
+                                binding.noContentLayout.setVisibility(View.GONE);
+                            }
+
+                            LibraryAdapter adapter = new LibraryAdapter(filteredLibraryNames);
+                            binding.librariesList.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        });
+                    });
+                };
+
+                handler.postDelayed(searchRunnable, 200);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence newText, int start, int before, int count) {
+                if (newText.toString().isEmpty()) {
+                    loadFiles();
+                }
+            }
+        });
+    }
+
+    private void loadFiles() {
+        project_used_libs.clear();
+        lookup_list.clear();
+        if (!notAssociatedWithProject) {
+            String fileContent;
+            if (!FileUtil.isExistFile(local_lib_file) || (fileContent = FileUtil.readFile(local_lib_file)).isEmpty()) {
+                FileUtil.writeFile(local_lib_file, "[]");
+            } else {
+                project_used_libs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
+            }
+        }
+
+        FileUtil.listDir(local_libs_path, arrayList);
+        arrayList.sort(String.CASE_INSENSITIVE_ORDER);
+
+        List<String> localLibraryNames = new LinkedList<>();
+        for (String filename : arrayList) {
+            if (FileUtil.isDirectory(filename)) {
+                localLibraryNames.add(Uri.parse(filename).getLastPathSegment());
+            }
+        }
+        if (localLibraryNames.isEmpty()) {
+            binding.noContentLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.noContentLayout.setVisibility(View.GONE);
+        }
+        binding.librariesList.setLayoutManager(new LinearLayoutManager(this));
+        binding.librariesList.setAdapter(new LibraryAdapter(localLibraryNames));
+    }
 
     public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
 
