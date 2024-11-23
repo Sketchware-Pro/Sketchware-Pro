@@ -1,7 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,11 +12,13 @@ import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
 
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.gson.Gson;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageCustomComponentAddBinding;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -27,7 +29,6 @@ import a.a.a.wq;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
-import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
 import pro.sketchware.tools.ComponentHelper;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
@@ -182,22 +183,21 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
     }
 
     private void showFilePickerDialog() {
-        SketchFilePickerDialog dialog = new SketchFilePickerDialog(this)
-                .allowExtension("json")
-                .setFilePath(FileUtil.getExternalStorageDir())
-                .setOnFileSelectedListener((DialogInterface d, File file) -> {
-                    try {
-                        selectComponentToImport(file.getAbsolutePath());
-                    } catch (Exception e) {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
-                    }
-                    d.dismiss();
-                });
-        dialog.setTitle(Helper.getResString(R.string.common_word_import));
-        dialog.a(R.drawable.file_48_blue);
-        dialog.setOnDismissListener(d -> dialog.backPressed(d));
-        dialog.init();
-        dialog.show();
+        DialogProperties properties = new DialogProperties();
+
+        properties.selection_mode = DialogConfigs.SINGLE_MODE;
+        properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.root = Environment.getExternalStorageDirectory();
+        properties.error_dir = Environment.getExternalStorageDirectory();
+        properties.offset = Environment.getExternalStorageDirectory();
+        properties.extensions = new String[]{"json"};
+
+        FilePickerDialog pickerDialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
+
+        pickerDialog.setTitle("Select json file");
+        pickerDialog.setDialogSelectionListener(selections -> selectComponentToImport(selections[0]));
+
+        pickerDialog.show();
     }
 
     private void selectComponentToImport(String path) {
