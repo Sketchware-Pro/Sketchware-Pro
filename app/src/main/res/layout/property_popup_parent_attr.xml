@@ -41,7 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_mtrl_add" />
+            android:src="@drawable/ic_mtrl_add"
+            android:background="?selectableItemBackgroundBorderless"/>
 
     </LinearLayout>
 

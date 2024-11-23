@@ -6,13 +6,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pro.sketchware.databinding.PalletCustomviewBinding;
-
 import java.util.ArrayList;
 
 import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import pro.sketchware.activities.coloreditor.ColorEditorActivity;
 import pro.sketchware.activities.coloreditor.models.ColorItem;
+import pro.sketchware.databinding.PalletCustomviewBinding;
 
 public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ViewHolder> {
 
@@ -36,14 +35,14 @@ public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ViewHolder
         ColorItem colorItem = data.get(position);
         String colorName = colorItem.getColorName();
         String colorValue = colorItem.getColorValue();
+        String valueHex = ColorEditorActivity.getColorValue(activity.getApplicationContext(), colorValue, 4);
 
-        if (ColorEditorActivity.isValidHexColor(colorValue)) {
-            holder.itemBinding.title.setHint(colorName);
-            holder.itemBinding.sub.setText(colorValue.toUpperCase());
-            holder.itemBinding.color.setBackgroundColor(PropertiesUtil.parseColor(colorValue));
-        } else {
-            data.remove(position);
-            notifyItemRemoved(position);
+
+        holder.itemBinding.title.setHint(colorName);
+        holder.itemBinding.sub.setText(colorValue);
+
+        if (ColorEditorActivity.isValidHexColor(valueHex)) {
+            holder.itemBinding.color.setBackgroundColor(PropertiesUtil.parseColor(valueHex));
         }
 
         holder.itemBinding.backgroundCard.setOnClickListener(v -> activity.showColorEditDialog(colorItem, position));

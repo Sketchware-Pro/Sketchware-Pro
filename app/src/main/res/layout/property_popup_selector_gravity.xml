@@ -6,9 +6,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="8dp"
-        android:paddingRight="8dp"
-        android:paddingBottom="8dp">
+        android:paddingHorizontal="16dp"
+        android:paddingTop="14dp">
 
         <CheckBox
             android:id="@+id/chk_left"
@@ -26,6 +25,15 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="right"
+            android:textSize="16sp" />
+            
+        <CheckBox
+            android:id="@+id/chk_center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="center"
             android:textSize="16sp" />
 
         <CheckBox

@@ -5,7 +5,6 @@ import static pro.sketchware.utility.SketchwareUtil.getDip;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
@@ -88,7 +87,6 @@ import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
@@ -113,7 +111,6 @@ import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
-import mod.remaker.util.ThemeUtils;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.utility.FileUtil;
@@ -229,8 +226,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 startActivity(intent);
             }
         });
-        /* Set the text color to yellow */
-        snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
 
@@ -954,7 +949,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
             try {
                 var q = activity.q;
-                var sc_id = activity.sc_id;
+                var sc_id = DesignActivity.sc_id;
                 onProgress("Deleting temporary files...");
                 FileUtil.deleteFile(q.projectMyscPath);
 
@@ -962,10 +957,18 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 q.a();
                 q.a(activity.getApplicationContext(), wq.e("600"));
                 if (yB.a(lC.b(sc_id), "custom_icon")) {
-                    q.a(wq.e()
-                            + File.separator + sc_id
-                            + File.separator + "icon.png");
+                    q.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
+                    if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
+                        q.cf("""
+                                <?xml version="1.0" encoding="utf-8"?>
+                                <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
+                                <background android:drawable="@mipmap/ic_launcher_background"/>
+                                <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
+                                <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
+                                </adaptive-icon>""");
+                    }
                 }
+
 
                 kC kC = jC.d(sc_id);
                 kC.b(q.resDirectoryPath + File.separator + "drawable-xhdpi");
@@ -1217,7 +1220,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private void doInBackground() {
             DesignActivity activity = getActivity();
             if (activity != null) {
-                var sc_id = activity.sc_id;
+                var sc_id = DesignActivity.sc_id;
                 jC.d(sc_id).v();
                 jC.d(sc_id).w();
                 jC.d(sc_id).u();
@@ -1244,7 +1247,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private void doInBackground() {
             DesignActivity activity = getActivity();
             if (activity != null) {
-                var sc_id = activity.sc_id;
+                var sc_id = DesignActivity.sc_id;
                 jC.d(sc_id).a();
                 jC.b(sc_id).m();
                 jC.a(sc_id).j();
@@ -1277,7 +1280,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private void doInBackground() {
             DesignActivity activity = getActivity();
             if (activity != null) {
-                var sc_id = activity.sc_id;
+                var sc_id = DesignActivity.sc_id;
                 jC.d(sc_id).a();
                 jC.b(sc_id).m();
                 jC.a(sc_id).j();
@@ -1308,7 +1311,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private void doInBackground() {
             DesignActivity activity = getActivity();
             if (activity != null) {
-                jC.a(activity.sc_id).k();
+                jC.a(sc_id).k();
             }
         }
     }

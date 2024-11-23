@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/menu_screen_edit"
-        android:icon="@drawable/ic_edit_white_48dp"
+        android:icon="@drawable/ic_mtrl_edit"
         android:orderInCategory="1"
         android:title="edit"
         android:visible="false"

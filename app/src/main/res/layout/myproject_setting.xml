@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@string/myprojects_settings_description_change_icon"
+                    android:text="@string/myprojects_settings_description_create_icon"
                     android:textSize="12sp" />
             </LinearLayout>
 

@@ -20,6 +20,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.StringRes;
+import androidx.activity.ComponentActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -86,8 +87,8 @@ public class Helper {
         return String.format(getResString(resId), formatArgs);
     }
 
-    public static View.OnClickListener getBackPressedClickListener(final Activity activity) {
-        return v -> activity.onBackPressed();
+    public static View.OnClickListener getBackPressedClickListener(final ComponentActivity activity) {
+        return v -> activity.getOnBackPressedDispatcher().onBackPressed();
     }
 
     public static DialogDismissListener getDialogDismissListener(final DialogInterface dialog) {

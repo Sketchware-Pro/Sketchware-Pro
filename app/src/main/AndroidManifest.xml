@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -25,6 +26,11 @@
         android:theme="@style/Theme.SketchwarePro"
         android:usesCleartextTraffic="true"
         tools:targetApi="p">
+        <activity
+            android:name=".activities.iconcreator.IconCreatorActivity"
+            android:exported="false"
+            android:label="@string/title_activity_icon_creator"
+            android:theme="@style/Theme.SketchwarePro" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -84,6 +90,7 @@
             android:theme="@style/Theme.SketchwarePro.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -195,11 +202,6 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.besome.sketch.editor.manage.font.AddFontCollectionActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name="com.besome.sketch.editor.component.ShowFilePickerTypesActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
             android:windowSoftInputMode="adjustResize|stateHidden" />
@@ -320,6 +322,6 @@
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
-
     </application>
+
 </manifest>

@@ -1,16 +1,16 @@
 package mod.jbk.util;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
-import mod.alucard.tn.apksigner.ApkSigner;
+import pro.sketchware.utility.apk.ApkSignerUtils;
 
 public class TestkeySignBridge {
     private TestkeySignBridge() {
     }
 
-    public static void signWithTestkey(String inputPath, String outputPath) throws GeneralSecurityException, IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        ApkSigner signer = new ApkSigner();
-        signer.signWithTestKey(inputPath, outputPath, null);
+    public static void signWithTestkey(String inputPath, String outputPath) {
+        try {
+            ApkSignerUtils.signWithTestKey(inputPath, outputPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

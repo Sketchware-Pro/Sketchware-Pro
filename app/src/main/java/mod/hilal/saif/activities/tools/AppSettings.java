@@ -4,7 +4,6 @@ import static com.besome.sketch.editor.view.ViewEditor.shakeView;
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,22 +26,21 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogSelectApkToSignBinding;
 
 import java.io.File;
 
 import a.a.a.aB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
-import mod.alucard.tn.apksigner.ApkSigner;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.apk.ApkSignerUtils;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
-import mod.remaker.util.ThemeUtils;
-import pro.sketchware.R;
 import pro.sketchware.activities.settings.SettingsActivity;
-import pro.sketchware.databinding.DialogSelectApkToSignBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
 
 public class AppSettings extends BaseAppCompatActivity {
 
@@ -70,35 +68,53 @@ public class AppSettings extends BaseAppCompatActivity {
         properties.root = getFilesDir().getParentFile();
         properties.error_dir = getExternalCacheDir();
         properties.extensions = null;
-        FilePickerDialog dialog = new FilePickerDialog(this, properties);
+        FilePickerDialog dialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
         dialog.setTitle("Select an entry to modify");
         dialog.setDialogSelectionListener(files -> {
             final boolean isDirectory = new File(files[0]).isDirectory();
             if (files.length > 1 || isDirectory) {
-                new MaterialAlertDialogBuilder(this).setTitle("Select an action").setSingleChoiceItems(new String[]{"Delete"}, -1, (actionDialog, which) -> {
-                    new MaterialAlertDialogBuilder(this).setTitle("Delete " + (isDirectory ? "folder" : "file") + "?").setMessage("Are you sure you want to delete this " + (isDirectory ? "folder" : "file") + " permanently? This cannot be undone.").setPositiveButton(R.string.common_word_delete, (deleteConfirmationDialog, pressedButton) -> {
-                        for (String file : files) {
-                            FileUtil.deleteFile(file);
-                            deleteConfirmationDialog.dismiss();
-                        }
-                    }).setNegativeButton(R.string.common_word_cancel, null).show();
-                    actionDialog.dismiss();
-                }).show();
+                new MaterialAlertDialogBuilder(this)
+                        .setTitle("Select an action")
+                        .setSingleChoiceItems(new String[]{"Delete"}, -1, (actionDialog, which) -> {
+                            new MaterialAlertDialogBuilder(this)
+                                    .setTitle("Delete " + (isDirectory ? "folder" : "file") + "?")
+                                    .setMessage("Are you sure you want to delete this " + (isDirectory ? "folder" : "file") + " permanently? This cannot be undone.")
+                                    .setPositiveButton(R.string.common_word_delete, (deleteConfirmationDialog, pressedButton) -> {
+                                        for (String file : files) {
+                                            FileUtil.deleteFile(file);
+                                            deleteConfirmationDialog.dismiss();
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.common_word_cancel, null)
+                                    .show();
+                            actionDialog.dismiss();
+                        })
+                        .show();
             } else {
-                new MaterialAlertDialogBuilder(this).setTitle("Select an action").setSingleChoiceItems(new String[]{"Edit", "Delete"}, -1, (actionDialog, which) -> {
-                    switch (which) {
-                        case 0 -> {
-                            Intent intent = new Intent(getApplicationContext(), ConfigActivity.isLegacyCeEnabled() ? SrcCodeEditorLegacy.class : mod.hey.studios.code.SrcCodeEditor.class);
-                            intent.putExtra("title", Uri.parse(files[0]).getLastPathSegment());
-                            intent.putExtra("content", files[0]);
-                            intent.putExtra("xml", "");
-                            startActivity(intent);
-                        }
-                        case 1 ->
-                                new MaterialAlertDialogBuilder(this).setTitle("Delete file?").setMessage("Are you sure you want to delete this file permanently? This cannot be undone.").setPositiveButton(R.string.common_word_delete, (deleteDialog, pressedButton) -> FileUtil.deleteFile(files[0])).setNegativeButton(R.string.common_word_cancel, null).show();
-                    }
-                    actionDialog.dismiss();
-                }).show();
+                new MaterialAlertDialogBuilder(this)
+                        .setTitle("Select an action")
+                        .setSingleChoiceItems(new String[]{"Edit", "Delete"}, -1, (actionDialog, which) -> {
+                            switch (which) {
+                                case 0 -> {
+                                    Intent intent = new Intent(getApplicationContext(), ConfigActivity.isLegacyCeEnabled() ?
+                                            SrcCodeEditorLegacy.class
+                                            : mod.hey.studios.code.SrcCodeEditor.class);
+                                    intent.putExtra("title", Uri.parse(files[0]).getLastPathSegment());
+                                    intent.putExtra("content", files[0]);
+                                    intent.putExtra("xml", "");
+                                    startActivity(intent);
+                                }
+                                case 1 -> new MaterialAlertDialogBuilder(this)
+                                        .setTitle("Delete file?")
+                                        .setMessage("Are you sure you want to delete this file permanently? This cannot be undone.")
+                                        .setPositiveButton(R.string.common_word_delete, (deleteDialog, pressedButton) ->
+                                                FileUtil.deleteFile(files[0]))
+                                        .setNegativeButton(R.string.common_word_cancel, null)
+                                        .show();
+                            }
+                            actionDialog.dismiss();
+                        })
+                        .show();
             }
         });
         dialog.show();
@@ -137,7 +153,11 @@ public class AppSettings extends BaseAppCompatActivity {
         item.description.setText(desc);
         toView.addView(item);
         item.setOnClickListener(listener);
-        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.0f);
+        LinearLayout.LayoutParams itemParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.0f
+        );
         itemParams.bottomMargin = lastItem ? dpToPx(25) : dpToPx(0);
         item.setLayoutParams(itemParams);
     }
@@ -156,7 +176,7 @@ public class AppSettings extends BaseAppCompatActivity {
             properties.selection_mode = DialogConfigs.SINGLE_MODE;
             properties.selection_type = DialogConfigs.FILE_SELECT;
             properties.extensions = new String[]{"apk"};
-            FilePickerDialog dialog = new FilePickerDialog(this, properties);
+            FilePickerDialog dialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
             dialog.setDialogSelectionListener(files -> {
                 isAPKSelected[0] = true;
                 apk_path_txt.setText(files[0]);
@@ -172,7 +192,8 @@ public class AppSettings extends BaseAppCompatActivity {
             }
             String input_apk_path = apk_path_txt.getText().toString();
             String output_apk_file_name = Uri.fromFile(new File(input_apk_path)).getLastPathSegment();
-            String output_apk_path = new File(Environment.getExternalStorageDirectory(), "sketchware/signed_apk/" + output_apk_file_name).getAbsolutePath();
+            String output_apk_path = new File(Environment.getExternalStorageDirectory(),
+                    "sketchware/signed_apk/" + output_apk_file_name).getAbsolutePath();
 
             if (new File(output_apk_path).exists()) {
                 aB confirmOverwrite = new aB(this);
@@ -183,11 +204,13 @@ public class AppSettings extends BaseAppCompatActivity {
                 confirmOverwrite.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(confirmOverwrite));
                 confirmOverwrite.b("Overwrite", view -> {
                     confirmOverwrite.dismiss();
-                    signApkFileWithDialog(input_apk_path, output_apk_path, true, null, null, null, null);
+                    signApkFileWithDialog(input_apk_path, output_apk_path, true,
+                            null, null, null, null);
                 });
                 confirmOverwrite.show();
             } else {
-                signApkFileWithDialog(input_apk_path, output_apk_path, true, null, null, null, null);
+                signApkFileWithDialog(input_apk_path, output_apk_path, true,
+                        null, null, null, null);
             }
         });
 
@@ -210,19 +233,23 @@ public class AppSettings extends BaseAppCompatActivity {
 
         tv_progress.setText("Signing APK...");
 
-        AlertDialog building_dialog = new MaterialAlertDialogBuilder(this).setView(building_root).create();
+        AlertDialog building_dialog = new MaterialAlertDialogBuilder(this)
+                .setView(building_root)
+                .create();
 
-        ApkSigner signer = new ApkSigner();
         new Thread() {
             @Override
             public void run() {
                 super.run();
 
-                ApkSigner.LogCallback callback = line -> runOnUiThread(() -> tv_log.setText(tv_log.getText().toString() + line));
-
                 if (useTestkey) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        signer.signWithTestKey(inputApkPath, outputApkPath, callback);
+                        try {
+                            ApkSignerUtils.signWithTestKey(inputApkPath, Environment.getExternalStorageDirectory().getPath() + "/sketchware/signed_apk/"
+                                    + Uri.fromFile(new File(outputApkPath)).getLastPathSegment());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         try {
                             ZipSigner zipSigner = new ZipSigner();
@@ -230,17 +257,24 @@ public class AppSettings extends BaseAppCompatActivity {
                             zipSigner.signZip(inputApkPath, outputApkPath);
                         } catch (Exception e) {
                             tv_progress.setText("An error occurred. Check the log for more details.");
-                            tv_log.setText("Failed to sign APK with zipsigner: " + e);
+                            tv_log.setText("Failed to sign APK with ZipSigner: " + e);
                         }
                     }
                 } else {
-                    signer.signWithKeyStore(inputApkPath, outputApkPath, keyStorePath, keyStorePassword, keyStoreKeyAlias, keyPassword, callback);
+
+                    try {
+                        ApkSignerUtils.signWithReleaseKeystore(inputApkPath, outputApkPath, keyStorePath, keyStorePassword, keyStoreKeyAlias, keyPassword);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 runOnUiThread(() -> {
-                    if (callback.errorCount.get() == 0) {
+                    if (ApkSignerUtils.getErrorsCount() == 0) {
                         building_dialog.dismiss();
-                        SketchwareUtil.toast("Successfully saved signed APK to: /Internal storage/sketchware/signed_apk/" + Uri.fromFile(new File(outputApkPath)).getLastPathSegment(), Toast.LENGTH_LONG);
+                        SketchwareUtil.toast("Successfully saved signed APK to: /sketchware/signed_apk/"
+                                        + Uri.fromFile(new File(outputApkPath)).getLastPathSegment(),
+                                Toast.LENGTH_LONG);
                     } else {
                         tv_progress.setText("An error occurred. Check the log for more details.");
                     }

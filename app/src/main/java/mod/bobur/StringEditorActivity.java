@@ -1,5 +1,10 @@
 package mod.bobur;
 
+import static com.besome.sketch.design.DesignActivity.sc_id;
+import static com.besome.sketch.editor.LogicEditorActivity.getAllJavaFileNames;
+import static com.besome.sketch.editor.LogicEditorActivity.getAllXmlFileNames;
+import static pro.sketchware.utility.XmlUtil.replaceXml;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +16,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.beans.BlockBean;
+import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import a.a.a.eC;
+import a.a.a.jC;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.StringEditorBinding;
+import pro.sketchware.databinding.StringEditorItemBinding;
+import pro.sketchware.databinding.ViewStringEditorAddBinding;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,26 +46,114 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import a.a.a.aB;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hilal.saif.activities.tools.ConfigActivity;
-import pro.sketchware.R;
-import pro.sketchware.databinding.StringEditorBinding;
-import pro.sketchware.databinding.StringEditorItemBinding;
-import pro.sketchware.databinding.ViewStringEditorAddBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
 
 public class StringEditorActivity extends AppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> listmap = new ArrayList<>();
-    private final ArrayList<HashMap<String, Object>> cache = new ArrayList<>();
     private MaterialAlertDialogBuilder dialog;
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
-    private boolean isComingFromAnotherActivity = false;
-    private boolean isSaved = false;
+    private boolean isComingFromSrcCodeEditor = true;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = StringEditorBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        initialize();
+    }
+
+    private void initialize() {
+        setSupportActionBar(binding.toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        binding.toolbar.setNavigationOnClickListener(_v -> onBackPressed());
+        dialog = new MaterialAlertDialogBuilder(this);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (isComingFromSrcCodeEditor) {
+            convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
+            adapter = new RecyclerViewAdapter(listmap);
+            binding.recyclerView.setAdapter(adapter);
+        }
+        isComingFromSrcCodeEditor = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (replaceXml(FileUtil.readFile(getIntent().getStringExtra("content")))
+                .equals(replaceXml(convertListMapToXml(listmap))) || listmap.isEmpty()) {
+            setResult(RESULT_OK);
+            finish();
+        } else {
+            dialog.setTitle("Warning")
+                    .setMessage("You have unsaved changes. Are you sure you want to exit?")
+                    .setPositiveButton("Exit", (dialog, which) -> super.onBackPressed())
+                    .setNegativeButton("Cancel", null)
+                    .create()
+                    .show();
+        }
+        if (listmap.isEmpty() && (! FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
+            XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
+
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        menu.add(0, 0, 0, "Add a new string")
+                .setIcon(R.drawable.ic_mtrl_add)
+                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        menu.add(0, 1, 0, "Save")
+                .setIcon(R.drawable.ic_mtrl_save)
+                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        if (!checkDefaultString(getIntent().getStringExtra("content"))) {
+            menu.add(0, 2, 0, "Get default strings")
+                    .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
+        }
+
+        menu.add(0, 3, 0, "Open in editor")
+                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        int id = item.getItemId();
+        if (id == 1) {
+            XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
+        } else if (id == 0) {
+            addStringDialog();
+        } else if (id == 2) {
+            convertXmlToListMap(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(getIntent().getStringExtra("content")))), listmap);
+            adapter.notifyDataSetChanged();
+        } else if (id == 3) {
+            XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
+            Intent intent = new Intent();
+            if (ConfigActivity.isLegacyCeEnabled()) {
+                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
+            } else {
+                intent.setClass(getApplicationContext(), SrcCodeEditor.class);
+            }
+            intent.putExtra("title", getIntent().getStringExtra("title"));
+            intent.putExtra("content", getIntent().getStringExtra("content"));
+            intent.putExtra("xml", getIntent().getStringExtra("xml"));
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     public static void convertXmlToListMap(final String xmlString, final ArrayList<HashMap<String, Object>> listmap) {
         try {
@@ -111,107 +214,15 @@ public class StringEditorActivity extends AppCompatActivity {
         return xmlString.toString();
     }
 
-    private static String escapeXml(String text) {
+    public static String escapeXml(String text) {
         if (text == null) return "";
-        return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;").replace("'", "&apos;").replace("\n", "&#10;").replace("\r", "&#13;");
-    }
-
-//    public void sortStrings(ArrayList<HashMap<String, Object>> myList) {
-//        SketchwareUtil.sortListMap(myList, "key", false, true);
-//    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = StringEditorBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        initialize();
-    }
-
-    private void initialize() {
-        setSupportActionBar(binding.toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        binding.toolbar.setNavigationOnClickListener(_v -> onBackPressed());
-        dialog = new MaterialAlertDialogBuilder(this);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!isComingFromAnotherActivity) {
-            convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
-            adapter = new RecyclerViewAdapter(listmap);
-            binding.recyclerView.setAdapter(adapter);
-        }
-        isComingFromAnotherActivity = false;
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        isComingFromAnotherActivity = true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        ArrayList<HashMap<String, Object>> cache = new ArrayList<>();
-        convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), cache);
-
-        String currentXml = convertListMapToXml(listmap);
-        String cachedXml = convertListMapToXml(cache);
-
-        if (isSaved || currentXml.equals(cachedXml) || listmap.isEmpty()) {
-            finish();
-        } else {
-            dialog.setTitle("Warning").setMessage("You have unsaved changes. Are you sure you want to exit?").setPositiveButton("Exit", (dialog, which) -> super.onBackPressed()).setNegativeButton("Cancel", null).create().show();
-        }
-        if (listmap.isEmpty() && (!FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
-            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        menu.add(0, 0, 0, "Add a new string").setIcon(R.drawable.ic_mtrl_add).setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-        menu.add(0, 1, 0, "Save").setIcon(R.drawable.ic_mtrl_save).setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-        if (!checkDefaultString(getIntent().getStringExtra("content"))) {
-            menu.add(0, 2, 0, "Get default strings").setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
-        }
-
-        menu.add(0, 3, 0, "Open in editor").setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
-        menu.add(0, 4, 0, "Sort").setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        int id = item.getItemId();
-        if (id == 1) {
-            isSaved = true;
-            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
-        } else if (id == 0) {
-            addStringDialog();
-        } else if (id == 2) {
-            convertXmlToListMap(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(getIntent().getStringExtra("content")))), listmap);
-            adapter.notifyDataSetChanged();
-        } else if (id == 3) {
-            isSaved = true;
-            XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
-            Intent intent = new Intent();
-            if (ConfigActivity.isLegacyCeEnabled()) {
-                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-            } else {
-                intent.setClass(getApplicationContext(), SrcCodeEditor.class);
-            }
-            intent.putExtra("title", getIntent().getStringExtra("title"));
-            intent.putExtra("content", getIntent().getStringExtra("content"));
-            intent.putExtra("xml", getIntent().getStringExtra("xml"));
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
+        return text.replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&apos;")
+                .replace("\n", "&#10;")
+                .replace("\r", "&#13;");
     }
 
     public void addStringDialog() {
@@ -227,8 +238,12 @@ public class StringEditorActivity extends AppCompatActivity {
                 return;
             }
 
-            addString(key, value);
+            if (isXmlStringsContains(listmap, key)) {
+                binding.stringKeyInputLayout.setError("\"" + key + "\" is already exist");
+                return;
+            }
 
+            addString(key, value);
             dialog.dismiss();
         });
         dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
@@ -252,7 +267,6 @@ public class StringEditorActivity extends AppCompatActivity {
                 return;
             }
         }
-        isSaved = false;
         listmap.add(map);
         adapter.notifyItemInserted(listmap.size() - 1);
     }
@@ -315,15 +329,17 @@ public class StringEditorActivity extends AppCompatActivity {
                     currentItem.put("key", keyInput);
                     currentItem.put("text", valueInput);
                     notifyItemChanged(adapterPosition);
-                    isSaved = false;
                     dialog.dismiss();
                 });
 
                 dialog.configureDefaultButton("Delete", v1 -> {
-                    isSaved = false;
-                    data.remove(adapterPosition);
-                    notifyItemRemoved(adapterPosition);
-                    dialog.dismiss();
+                    if (isXmlStringUsed(key)) {
+                        SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_title_remove_xml_string_error));
+                    } else {
+                        data.remove(adapterPosition);
+                        notifyItemRemoved(adapterPosition);
+                        dialog.dismiss();
+                    }
                 });
                 dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
                 dialog.a(dialogBinding.getRoot());
@@ -343,6 +359,42 @@ public class StringEditorActivity extends AppCompatActivity {
                 super(binding.getRoot());
                 this.binding = binding;
             }
+        }
+
+        public boolean isXmlStringUsed(String key) {
+            if ("app_name".equals(key) || sc_id == null) {
+                return false;
+            }
+
+            String projectScId = sc_id;
+            eC projectDataManager = jC.a(projectScId);
+
+            return isStringUsedInJavaFiles(projectScId, projectDataManager, key) || isStringUsedInXmlFiles(projectScId, projectDataManager, key);
+        }
+
+        private boolean isStringUsedInJavaFiles(String projectScId, eC projectDataManager, String key) {
+            for (String javaFileName : getAllJavaFileNames(projectScId)) {
+                for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
+                    for (BlockBean block : entry.getValue()) {
+                        if ((block.opCode.equals("getResStr") && block.spec.equals(key)) ||
+                                (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        private boolean isStringUsedInXmlFiles(String projectScId, eC projectDataManager, String key) {
+            for (String xmlFileName : getAllXmlFileNames(projectScId)) {
+                for (ViewBean view : projectDataManager.d(xmlFileName)) {
+                    if (view.text.text.equals("@string/" + key) || view.text.hint.equals("@string/" + key)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

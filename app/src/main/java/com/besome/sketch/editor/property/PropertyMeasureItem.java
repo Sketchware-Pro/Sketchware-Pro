@@ -3,15 +3,11 @@ package com.besome.sketch.editor.property;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import pro.sketchware.R;
 
 import a.a.a.Kw;
 import a.a.a.TB;
@@ -20,6 +16,8 @@ import a.a.a.mB;
 import a.a.a.sq;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyPopupMeasurementBinding;
 
 @SuppressLint("ViewConstructor")
 public class PropertyMeasureItem extends RelativeLayout implements View.OnClickListener {
@@ -129,75 +127,42 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         dialog.b(tvName.getText().toString());
         dialog.a(imgLeftIconDrawableResId);
 
-        View view = wB.a(getContext(), R.layout.property_popup_measurement);
-        EditText ed_input = view.findViewById(R.id.ed_input);
-        RadioGroup rg_width_height = view.findViewById(R.id.rg_width_height);
-        TB tb = new TB(getContext(), view.findViewById(R.id.ti_input), 0, 999);
+        PropertyPopupMeasurementBinding binding = PropertyPopupMeasurementBinding.inflate(LayoutInflater.from(getContext()));
+        TB tb = new TB(getContext(), binding.tiInput, 0, 999);
 
-        RadioButton rb_matchparent = view.findViewById(R.id.rb_matchparent);
-        View tv_matchparent = view.findViewById(R.id.tv_matchparent);
-        RadioButton rb_wrapcontent = view.findViewById(R.id.rb_wrapcontent);
-        TextView tv_wrapcontent = view.findViewById(R.id.tv_wrapcontent);
-        RadioButton rb_directinput = view.findViewById(R.id.rb_directinput);
-        View direct_input = view.findViewById(R.id.direct_input);
-        TextView tv_input_dp = view.findViewById(R.id.tv_input_dp);
-
-        rg_width_height.setOnCheckedChangeListener((group, checkedId) -> {
+        binding.rgWidthHeight.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rb_directinput) {
-                ed_input.setEnabled(true);
-                tb.a(ed_input.getText().toString());
+                binding.directInput.setVisibility(VISIBLE);
+                tb.a(binding.edInput.getText().toString());
             } else {
-                ed_input.setEnabled(false);
+                binding.directInput.setVisibility(GONE);
             }
         });
-        ed_input.setEnabled(false);
-        rg_width_height.clearCheck();
+        binding.rgWidthHeight.clearCheck();
         if (measureValue >= 0) {
             if (isCustomValue) {
-                rg_width_height.check(R.id.rb_directinput);
-                ed_input.setEnabled(true);
+                binding.rgWidthHeight.check(R.id.rb_directinput);
                 tb.a(String.valueOf(measureValue));
+                binding.directInput.setVisibility(VISIBLE);
             } else {
-                rg_width_height.check(R.id.rb_wrapcontent);
+                binding.rgWidthHeight.check(R.id.rb_wrapcontent);
             }
         } else if (measureValue == LayoutParams.MATCH_PARENT) {
-            rg_width_height.check(R.id.rb_matchparent);
+            binding.rgWidthHeight.check(R.id.rb_matchparent);
         } else if (isWrapContent) {
-            rg_width_height.check(R.id.rb_wrapcontent);
+            binding.rgWidthHeight.check(R.id.rb_wrapcontent);
         } else {
-            rg_width_height.check(R.id.rb_matchparent);
+            binding.rgWidthHeight.check(R.id.rb_matchparent);
         }
-        tv_matchparent.setOnClickListener(v -> rb_matchparent.setChecked(true));
-        if (isWrapContent) {
-            rb_matchparent.setEnabled(true);
-            tv_wrapcontent.setClickable(true);
-            tv_wrapcontent.setTextColor(0xff757575);
-            tv_wrapcontent.setOnClickListener(v -> rb_wrapcontent.setChecked(true));
-        } else {
-            rb_matchparent.setEnabled(false);
-            tv_wrapcontent.setClickable(false);
-            tv_wrapcontent.setTextColor(0xffdddddd);
-        }
-        if (isCustomValue) {
-            rb_directinput.setEnabled(true);
-            direct_input.setClickable(true);
-            tv_input_dp.setTextColor(0xff757575);
-            direct_input.setOnClickListener(v -> rb_directinput.setChecked(true));
-        } else {
-            rb_directinput.setEnabled(false);
-            direct_input.setClickable(false);
-            tv_input_dp.setTextColor(0xffdddddd);
-        }
-        dialog.a(view);
+        dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_select), v -> {
-            int checkedRadioButtonId = rg_width_height.getCheckedRadioButtonId();
-
+            int checkedRadioButtonId = binding.rgWidthHeight.getCheckedRadioButtonId();
             if (checkedRadioButtonId == R.id.rb_matchparent) {
                 setValue(LayoutParams.MATCH_PARENT);
             } else if (checkedRadioButtonId == R.id.rb_wrapcontent) {
                 setValue(LayoutParams.WRAP_CONTENT);
             } else if (tb.b()) {
-                setValue(Integer.parseInt(ed_input.getText().toString()));
+                setValue(Integer.parseInt(binding.edInput.getText().toString()));
             } else {
                 return;
             }

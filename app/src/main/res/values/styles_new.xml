@@ -111,7 +111,34 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">14dp</item>
     </style>
+    <!--    end AutoCompleteTextInputEditTextStyle    -->
 
+    <style name="ChipStyle.SWPro.Chip.Rounded" parent="">
+        <item name="chipCornerRadius">5dp</item>
+        <item name="checkedIconEnabled">false</item>
+        <item name="chipStrokeWidth">0.5dp</item>
+        <item name="chipIconVisible">true</item>
+        <item name="textEndPadding">0dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="textStartPadding">1dp</item>
+        <item name="chipIconTint">?attr/colorOutline</item>
+        <item name="chipStrokeColor">?attr/colorOutline</item>
+        <item name="chipBackgroundColor">@color/bg_chip_states</item>
+        <item name="chipStartPadding">2dp</item>
+        <item name="chipMinTouchTargetSize">32dp</item>
+    </style>
+
+    <style name="Widget.App.Button.OutlinedButton.IconOnly" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="iconPadding">0dp</item>
+        <item name="cornerRadius">5dp</item>
+        <item name="iconSize">30dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
 
     <style name="error_appearance" parent="@android:style/TextAppearance">
         <item name="android:textSize">12sp</item>
@@ -122,5 +149,15 @@
         <item name="android:fontFamily">@font/gilroy</item>
         <item name="fontFamily">@font/gilroy</item>
     </style>
-    <!--    end AutoCompleteTextInputEditTextStyle    -->
+
+    <style name="RoundedCornersDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="dialogCornerRadius">16dp</item>
+        <item name="android:background">?attr/colorSurfaceContainer</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
 </resources>

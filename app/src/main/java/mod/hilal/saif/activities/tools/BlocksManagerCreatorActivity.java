@@ -89,10 +89,9 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String string = s.toString();
                 if (!id_detector.contains(string)) {
-                    binding.nameLayout.setErrorEnabled(false);
+                    binding.nameLayout.setError(null);
                     binding.save.setEnabled(true);
                 } else if (!mode.equals("edit")) {
-                    binding.nameLayout.setErrorEnabled(true);
                     binding.nameLayout.setError("Block name already in use");
                     binding.save.setEnabled(false);
                 } else {
@@ -100,7 +99,6 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                     Object blockNameObject = savedBlocksListBlock.get("name");
 
                     if (!string.equals(blockNameObject)) {
-                        binding.nameLayout.setErrorEnabled(true);
                         binding.nameLayout.setError("Block name already in use");
                         binding.save.setEnabled(false);
                     }
@@ -162,7 +160,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         });
 
         binding.openColorPalette.setOnClickListener(v -> {
-            Zx zx = new Zx(this, 0, true, false);
+            Zx zx = new Zx(this, 0, false, false);
             zx.a(new PCP(binding.colour));
             zx.showAtLocation(v, Gravity.CENTER, 0, 0);
         });

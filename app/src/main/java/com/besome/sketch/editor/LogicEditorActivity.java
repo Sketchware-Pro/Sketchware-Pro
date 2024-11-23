@@ -1,6 +1,10 @@
 package com.besome.sketch.editor;
 
+import static mod.bobur.StringEditorActivity.convertListMapToXml;
+import static mod.bobur.StringEditorActivity.convertXmlToListMap;
+import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 import static pro.sketchware.utility.SketchwareUtil.getDip;
+import static pro.sketchware.widgets.WidgetsCreatorManager.clearErrorOnTextChanged;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -13,7 +17,6 @@ import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -21,6 +24,7 @@ import android.os.Vibrator;
 import android.text.InputType;
 import android.util.Pair;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -29,6 +33,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,6 +43,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -63,14 +70,16 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import pro.sketchware.R;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import a.a.a.DB;
@@ -110,7 +119,9 @@ import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
+import mod.bobur.StringEditorActivity;
 import pro.sketchware.menu.ExtraMenuBean;
+
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
@@ -118,6 +129,15 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
+
+import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
+import pro.sketchware.databinding.ViewStringEditorAddBinding;
+import pro.sketchware.menu.ExtraMenuBean;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.SvgUtils;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -139,6 +159,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private ExtraPaletteBlock extraPaletteBlock;
     private ViewLogicEditor n;
     private ViewDummy p;
+    private PaletteSelector paletteSelector;
     private Rs w;
     private float r, q, s, t;
     private int A, S, x, y;
@@ -146,6 +167,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private View Y;
     private boolean G, u, W, X, da, ea, ha, ia;
     private final Runnable aa = this::r;
+    private ArrayList<BlockBean> savedBlockBean = new ArrayList<>();
+
+    private final ActivityResultLauncher<Intent> openStringEditor = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            paletteSelector.performClickPalette(-1);
+        }
+    });
 
     private void loadEventBlocks() {
         ArrayList<BlockBean> eventBlocks = jC.a(B).a(M.getJavaName(), C + "_" + D);
@@ -263,16 +291,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public final void G() {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_add_new_list));
-        aBVar.a(R.drawable.add_96_blue);
+        aBVar.a(R.drawable.ic_mtrl_add);
         View a2 = wB.a(this, R.layout.logic_popup_add_list);
         RadioGroup radioGroup = a2.findViewById(R.id.rg_type);
-        EditText editText = a2.findViewById(R.id.ed_input);
-        ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.logic_editor_hint_enter_variable_name));
-        ((TextView) a2.findViewById(R.id.rb_int)).setText(getTranslatedString(R.string.logic_variable_type_number));
-        ((TextView) a2.findViewById(R.id.rb_string)).setText(getTranslatedString(R.string.logic_variable_type_string));
-        ((TextView) a2.findViewById(R.id.rb_map)).setText(getTranslatedString(R.string.logic_variable_type_map));
+        TextInputEditText editText = a2.findViewById(R.id.ed_input);
         ZB zb = new ZB(getContext(), a2.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
-        editText.setPrivateImeOptions("defaultInputmode=english;");
         aBVar.a(a2);
         aBVar.b(getTranslatedString(R.string.common_word_add), v -> {
             if (zb.b()) {
@@ -297,17 +320,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private void showAddNewVariableDialog() {
         aB dialog = new aB(this);
         dialog.b(getTranslatedString(R.string.logic_editor_title_add_new_variable));
-        dialog.a(R.drawable.add_96_blue);
+        dialog.a(R.drawable.ic_mtrl_add);
 
         View customView = wB.a(this, R.layout.logic_popup_add_variable);
         RadioGroup radioGroup = customView.findViewById(R.id.rg_type);
-        EditText editText = customView.findViewById(R.id.ed_input);
-        ((TextInputLayout) customView.findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.logic_editor_hint_enter_variable_name));
-        editText.setPrivateImeOptions("defaultInputmode=english;");
-        ((TextView) customView.findViewById(R.id.rb_boolean)).setText(getTranslatedString(R.string.logic_variable_type_boolean));
-        ((TextView) customView.findViewById(R.id.rb_int)).setText(getTranslatedString(R.string.logic_variable_type_number));
-        ((TextView) customView.findViewById(R.id.rb_string)).setText(getTranslatedString(R.string.logic_variable_type_string));
-        ((TextView) customView.findViewById(R.id.rb_map)).setText(getTranslatedString(R.string.logic_variable_type_map));
+        TextInputEditText editText = customView.findViewById(R.id.ed_input);
         ZB nameValidator = new ZB(getContext(), customView.findViewById(R.id.ti_input), uq.b, uq.a(), jC.a(B).a(M));
         dialog.a(customView);
         dialog.b(getTranslatedString(R.string.common_word_add), v -> {
@@ -331,6 +348,215 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.show();
     }
 
+    private void showAddNewXmlStringDialog() {
+        aB dialog = new aB(this);
+        ViewStringEditorAddBinding binding = ViewStringEditorAddBinding.inflate(LayoutInflater.from(this));
+        dialog.b("Create new string");
+        dialog.b("Create", v1 -> {
+
+            String filePath = new FilePathUtil().getPathResource(B) + "/values/strings.xml";
+            ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
+            convertXmlToListMap(FileUtil.readFile(filePath), StringsListMap);
+
+            clearErrorOnTextChanged(binding.stringKeyInput, binding.stringKeyInputLayout);
+
+            String key = Objects.requireNonNull(binding.stringKeyInput.getText()).toString();
+            String value = Objects.requireNonNull(binding.stringValueInput.getText()).toString();
+
+            if (isXmlStringsContains(StringsListMap, key)) {
+                binding.stringKeyInputLayout.setError("\"" + key + "\" is already exist");
+                return;
+            }
+
+            if (key.isEmpty() || value.isEmpty()) {
+                SketchwareUtil.toastError("Please fill in all fields");
+                return;
+            }
+
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("key", key);
+            map.put("text", value);
+            map.put("translatable", "true");
+            StringsListMap.add(map);
+            FileUtil.writeFile(filePath, convertListMapToXml(StringsListMap));
+            paletteSelector.performClickPalette(-1);
+            dialog.dismiss();
+        });
+        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
+        dialog.a(binding.getRoot());
+        dialog.show();
+    }
+
+    private void showRemoveXmlStringDialog() {
+        String filePath = new FilePathUtil().getPathResource(B) + "/values/strings.xml";
+
+        ArrayList<HashMap<String, Object>> stringsList = new ArrayList<>();
+        convertXmlToListMap(FileUtil.readFile(filePath), stringsList);
+
+        aB dialog = new aB(this);
+        dialog.b(getTranslatedString(R.string.logic_editor_title_remove_xml_strings));
+        dialog.a(R.drawable.delete_96);
+
+        PropertyPopupSelectorSingleBinding binding = PropertyPopupSelectorSingleBinding.inflate(LayoutInflater.from(this));
+        ViewGroup viewGroup = binding.rgContent;
+
+        for (HashMap<String, Object> map : stringsList) {
+            String key = Objects.requireNonNull(map.get("key")).toString();
+            CheckBox checkBox = createCheckBox(key);
+            checkBox.setTag(key);
+            setOnCheckedListener(checkBox);
+            viewGroup.addView(checkBox);
+        }
+
+        dialog.a(binding.getRoot());
+
+        dialog.b(getTranslatedString(R.string.common_word_remove), v -> {
+            int childCount = viewGroup.getChildCount();
+
+            for (int i = 0; i < childCount; i++) {
+                CheckBox checkBox = (CheckBox) viewGroup.getChildAt(i);
+                if (checkBox.isChecked()) {
+                    removeItem(stringsList, checkBox.getText().toString());
+                }
+            }
+
+            FileUtil.writeFile(filePath, convertListMapToXml(stringsList));
+
+            paletteSelector.performClickPalette(-1);
+            dialog.dismiss();
+        });
+
+        dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
+    }
+
+    public void setOnCheckedListener(CheckBox checkBox) {
+        checkBox.setOnCheckedChangeListener((view, isChecked) -> {
+            if (isChecked && isXmlStringUsed(B, checkBox.getText().toString())) {
+                checkBox.setChecked(false);
+            }
+        });
+    }
+
+    public void removeItem(ArrayList<HashMap<String, Object>> listMap, String key) {
+        listMap.removeIf(map -> key.equals(map.get("key")));
+    }
+
+    private boolean isXmlStringUsed(String projectScId, String key) {
+        if ("app_name".equals(key)) {
+            return false;
+        }
+        eC projectDataManager = jC.a(projectScId);
+
+        return isKeyHasNonSavedUsage(key) || isKeyUsedInJavaFiles(projectDataManager, projectScId, key) || isKeyUsedInXmlFiles(projectDataManager, projectScId, key);
+    }
+
+    private boolean isKeyHasNonSavedUsage(String key) {
+        for (BlockBean block : o.getBlocks()) {
+            if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
+                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+
+                showToastError();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isKeyHasSavedUsage(String key) {
+        for (BlockBean block : savedBlockBean) {
+            if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
+                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isKeyUsedInJavaFiles(eC projectDataManager, String projectScId, String key) {
+
+        if ((getStringUsageLengthInJava(projectDataManager, projectScId, key) == 1) && isKeyHasSavedUsage(key) && !isKeyHasNonSavedUsage(key)) {
+            return false;
+        }
+
+        for (String javaFileName : getAllJavaFileNames(projectScId)) {
+            for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
+                for (BlockBean block : entry.getValue()) {
+                    if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
+                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+
+                        showToastError();
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isKeyUsedInXmlFiles(eC projectDataManager, String projectScId, String key) {
+        for (String xmlFileName : getAllXmlFileNames(projectScId)) {
+            for (ViewBean view : projectDataManager.d(xmlFileName)) {
+                if (view.text.text.equals("@string/" + key) ||
+                        (view.text.hint.equals("@string/" + key))) {
+
+                    showToastError();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void showToastError() {
+        SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_title_remove_xml_string_error));
+    }
+
+    private int getStringUsageLengthInJava(eC projectDataManager, String projectScId, String key) {
+        int length = 0;
+        for (String javaFileName : getAllJavaFileNames(projectScId)) {
+            for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
+                for (BlockBean block : entry.getValue()) {
+                    if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
+                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+
+                        length++;
+                    }
+                }
+            }
+        }
+        return length;
+    }
+
+    public static ArrayList<String> getAllJavaFileNames(String projectScId) {
+        ArrayList<String> javaFileNames = new ArrayList<>();
+        for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
+            javaFileNames.add(projectFile.getJavaName());
+        }
+        return javaFileNames;
+    }
+
+    public static ArrayList<String> getAllXmlFileNames(String projectScId) {
+        ArrayList<String> xmlFileNames = new ArrayList<>();
+        for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
+            String xmlName = projectFile.getXmlName();
+            if (xmlName != null && !xmlName.isEmpty()) {
+                xmlFileNames.add(xmlName);
+            }
+        }
+        return xmlFileNames;
+    }
+
+    public void openStringEditor() {
+        Intent intent = new Intent();
+        intent.setClass(getApplicationContext(), StringEditorActivity.class);
+        intent.putExtra("title", "strings.xml");
+        intent.putExtra("content", new FilePathUtil().getPathResource(B) + "/values/strings.xml");
+        intent.putExtra("xml", "");
+        openStringEditor.launch(intent);
+    }
+
     public final void I() {
         ArrayList<MoreBlockCollectionBean> moreBlocks = Pp.h().f();
         new MoreblockImporterDialog(this, moreBlocks, this).show();
@@ -339,7 +565,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public final void J() {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_remove_list));
-        aBVar.a(R.drawable.delete_96);
+        aBVar.a(R.drawable.ic_mtrl_delete);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         for (Pair<Integer, String> list : jC.a(B).j(M.getJavaName())) {
@@ -371,7 +597,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public final void K() {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_remove_variable));
-        aBVar.a(R.drawable.delete_96);
+        aBVar.a(R.drawable.ic_mtrl_delete);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         for (Pair<Integer, String> next : jC.a(B).k(M.getJavaName())) {
@@ -510,17 +736,23 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             if (z) {
                 imageView.setImageResource(getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
             } else {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    fromFile = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".provider", new File(jC.d(B).f(str)));
+                File file = new File(jC.d(B).f(str));
+                if (file.exists()) {
+                    Context context = getContext();
+                    fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
+                    if (file.getAbsolutePath().endsWith(".xml")) {
+                        SvgUtils svgUtils = new SvgUtils(this);
+                        FilePathUtil fpu = new FilePathUtil();
+                        svgUtils.loadImage(imageView, fpu.getSvgFullPath(B, str));
+                    } else {
+                        Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
+                    }
                 } else {
-                    fromFile = Uri.fromFile(new File(jC.d(B).f(str)));
+                    imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
                 }
-                Glide.with(this).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
             }
-            imageView.setBackgroundColor(0xffbdbdbd);
-        } else {
-            imageView.setBackgroundColor(Color.WHITE);
         }
+        imageView.setBackgroundResource(R.drawable.bg_outline);
         linearLayout.addView(imageView);
         return linearLayout;
     }
@@ -623,6 +855,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         Rs rs2 = rs.E;
         if (rs2 != null) {
             w = rs2;
+            if (savedBlockBean.isEmpty()) {
+                savedBlockBean = o.getBlocks();
+            }
         }
         Rs rs3 = w;
         if (rs3 == null) {
@@ -1416,6 +1651,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return radioButton;
     }
 
+    public final CheckBox createCheckBox(String str) {
+        CheckBox checkBox = new CheckBox(this);
+        checkBox.setText(str);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.topMargin = (int) wB.a(getContext(), 4.0f);
+        layoutParams.bottomMargin = (int) wB.a(getContext(), 4.0f);
+        checkBox.setGravity(Gravity.CENTER | Gravity.LEFT);
+        checkBox.setLayoutParams(layoutParams);
+        return checkBox;
+    }
+
     public void e(Ss ss) {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_enter_data_value));
@@ -1478,6 +1724,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         n.setLayoutParams(layoutParams);
         n.requestLayout();
     }
+
     public void f(Ss ss) {
         aB dialog = new aB(this);
         View customView = wB.a(this, R.layout.property_popup_selector_single);
@@ -1498,10 +1745,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.b(getTranslatedString(R.string.logic_editor_title_select_view));
         ArrayList<ViewBean> views = jC.a(B).d(xmlName);
         for (ViewBean viewBean : views) {
-            String typeName = viewBean.convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(viewBean.convert);
-            if (!viewBean.convert.equals("include")) {
+            String convert = viewBean.convert;
+            String typeName = convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(convert);
+            if (!convert.equals("include")) {
                 Set<String> toNotAdd = new Ox(new jq(), M).readAttributesToReplace(viewBean);
-                if (!toNotAdd.contains("android:id") && ss.getClassInfo().a().equals(viewBean.getClassInfo().a())) {
+                if (!toNotAdd.contains("android:id") && viewBean.getClassInfo().a(ss.getClassInfo().a())) {
                     viewGroup.addView(d(typeName, viewBean.id));
                 }
             }
@@ -1537,6 +1785,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
+
     public final void f(boolean z) {
         N.e(z);
     }
@@ -1823,6 +2072,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     showAddNewVariableDialog();
                 } else if (tag.equals("variableRemove")) {
                     K();
+                } else if (tag.equals("XmlString.Add")) {
+                    showAddNewXmlStringDialog();
+                } else if (tag.equals("XmlString.remove")) {
+                    showRemoveXmlStringDialog();
+                } else if (tag.equals("openStringEditor")) {
+                    openStringEditor();
                 } else if (tag.equals("listAdd")) {
                     G();
                 } else if (tag.equals("listRemove")) {
@@ -1907,7 +2162,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             stringExtra = ReturnMoreblockManager.getMbName(C) + " : " + stringExtra;
         }
         d.setTitle(stringExtra);
-        PaletteSelector paletteSelector = findViewById(R.id.palette_selector);
+        paletteSelector = findViewById(R.id.palette_selector);
         paletteSelector.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);
         p = findViewById(R.id.dummy);
