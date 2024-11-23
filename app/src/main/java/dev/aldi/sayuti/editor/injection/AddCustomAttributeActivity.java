@@ -50,7 +50,8 @@ public class AddCustomAttributeActivity extends AppCompatActivity {
         binding.addAttrFab.setOnClickListener(v -> dialog("create", 0));
 
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-
+        binding.toolbar.getMenu().clear();
+        
         if (getIntent().hasExtra("sc_id") && getIntent().hasExtra("file_name") && getIntent().hasExtra("widget_type")) {
             String sc_id = getIntent().getStringExtra("sc_id");
             String activityFilename = getIntent().getStringExtra("file_name");
