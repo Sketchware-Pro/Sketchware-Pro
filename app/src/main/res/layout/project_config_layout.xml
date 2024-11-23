@@ -39,8 +39,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:text="Dexer"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -55,8 +55,8 @@
             android:id="@+id/title_java_version"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
             android:text="Java version"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -87,6 +87,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs." />
+
+        <CheckBox
+            android:id="@+id/cb_enable_background_build"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Enable building the project in the background" />
 
     </LinearLayout>
 </ScrollView>
