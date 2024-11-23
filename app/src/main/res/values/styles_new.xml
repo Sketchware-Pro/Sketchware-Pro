@@ -150,7 +150,7 @@
         <item name="fontFamily">@font/gilroy</item>
     </style>
 
-    <style name="RoundedCornersDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="RoundedCornersDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="dialogCornerRadius">16dp</item>
         <item name="android:background">?attr/colorSurfaceContainer</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded</item>
