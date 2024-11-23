@@ -16,6 +16,7 @@ import androidx.annotation.StringRes;
 import pro.sketchware.R;
 
 public class CollapsibleButton extends LinearLayout {
+
     private int id;
     private ImageView icon;
     private TextView label;
@@ -53,5 +54,9 @@ public class CollapsibleButton extends LinearLayout {
 
     public TextView getLabel() {
         return label;
+    }
+    
+    public ImageView getIcon() {
+        return icon;
     }
 }
