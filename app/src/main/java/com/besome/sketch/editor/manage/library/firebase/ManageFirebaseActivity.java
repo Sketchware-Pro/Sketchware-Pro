@@ -281,7 +281,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
         properties.offset = Environment.getExternalStorageDirectory();
         properties.extensions = new String[]{"json"};
 
-        FilePickerDialog pickerDialog = new FilePickerDialog(this, properties);
+        FilePickerDialog pickerDialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
 
         pickerDialog.setTitle("Select your google-services.json");
         pickerDialog.setDialogSelectionListener(selections -> {
