@@ -2232,5 +2232,6 @@ Please try again later"</string>
     <string name="title_activity_icon_creator">IconCreatorActivity</string>
 
     <string name="used_custom_blocks">Used Custom Blocks</string>
+    <string name="property_enter_value">Enter %s value</string>
 
 </resources>
