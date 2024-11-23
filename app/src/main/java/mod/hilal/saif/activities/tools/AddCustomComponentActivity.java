@@ -2,6 +2,8 @@ package mod.hilal.saif.activities.tools;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,6 +57,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.btnCancel.setOnClickListener(Helper.getBackPressedClickListener(this));
         if (getIntent().hasExtra("pos")) {
             isEditMode = true;
             position = getIntent().getIntExtra("pos", 0);
@@ -69,6 +72,21 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, 0, 0, "Import");
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == 0) {
+            showFilePickerDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void fillUp() {
         if (FileUtil.isExistFile(path)) {
             ArrayList<HashMap<String, Object>> list = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
@@ -78,7 +96,6 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
     }
 
     private void getViewsById() {
-        binding.btnImport.setOnClickListener(this);
         binding.btnSave.setOnClickListener(this);
         binding.pick.setOnClickListener(this);
     }
@@ -101,8 +118,6 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
             } else {
                 SketchwareUtil.toastError(Helper.getResString(R.string.invalid_required_fields));
             }
-        } else if (id == R.id.btn_import) {
-            showFilePickerDialog();
         } else if (id == R.id.pick) {
             showIconSelectorDialog();
         }
