@@ -115,13 +115,18 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         if (!str.equals("Attributes for all activities") && !str.equals("Application Attributes") && !str.equals("Application Permissions")) {
-            TextView actComponent = newText("Components ASD", 15, Color.parseColor("#ffffff"), -2, -2, 0);
-            actComponent.setTypeface(Typeface.DEFAULT_BOLD);
-            ((ViewGroup) binding.txToolbarTitle.getParent()).addView(actComponent);
-            actComponent.setOnClickListener(v -> {
-                ActComponentsDialog acd = new ActComponentsDialog(this, src_id, activityName);
-                acd.show();
+            binding.toolbar.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.asd_components:
+                        ActComponentsDialog acd = new ActComponentsDialog(this, src_id, activityName);
+                        acd.show();
+                        return true;
+                    default: 
+                        return false;
+                }
             });
+        } else {
+            binding.toolbar.getMenu().clear();
         }
     }
 
