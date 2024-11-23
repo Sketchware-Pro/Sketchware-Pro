@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.view;
 
-import static mod.bobur.StringEditorActivity.convertListMapToXml;
 import static mod.bobur.StringEditorActivity.convertXmlToListMap;
 import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 
