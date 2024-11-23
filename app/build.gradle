@@ -153,8 +153,8 @@ dependencies {
     implementation "com.squareup.okio:okio:3.1.0"
 
     implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
-    minApi26Implementation 'com.github.MuntashirAkon:sun-security-android:1.0'
-    minApi26Implementation 'com.github.MuntashirAkon:apksig-android:4.4.0'
+    implementation 'com.github.MuntashirAkon:sun-security-android:1.0'
+    implementation 'com.github.MuntashirAkon:apksig-android:4.4.0'
 
     minApi21Implementation "net.sf.proguard:proguard-base:6.0.3"
     minApi26Implementation files('libs/proguard-base-7.2.2.jar')
