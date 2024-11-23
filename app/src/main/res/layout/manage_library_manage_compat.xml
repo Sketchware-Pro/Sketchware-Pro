@@ -11,7 +11,7 @@
         android:layout_height="?attr/actionBarSize"
         android:contentInsetStart="0dp"
         app:contentInsetStart="0dp"
-        tools:title="AppCompat and Design" />
+        app:title="@string/design_library_title_appcompat_and_design" />
 
     <LinearLayout
         android:layout_width="match_parent"
