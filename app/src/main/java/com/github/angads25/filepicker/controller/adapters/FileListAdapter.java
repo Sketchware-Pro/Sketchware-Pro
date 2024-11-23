@@ -101,12 +101,6 @@ public class FileListAdapter extends BaseAdapter{
         }
         if (item.isDirectory()) {
             holder.type_icon.setImageResource(pro.sketchware.R.drawable.ic_mtrl_folder);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                holder.type_icon.setColorFilter(context.getResources().getColor(R.color.colorPrimary,context.getTheme()));
-            }
-            else
-            {   holder.type_icon.setColorFilter(context.getResources().getColor(R.color.colorPrimary));
-            }
             if(properties.selection_type == DialogConfigs.FILE_SELECT)
             {   holder.fmark.setVisibility(View.INVISIBLE);
             }
