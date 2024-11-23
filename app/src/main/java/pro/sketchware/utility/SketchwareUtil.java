@@ -21,6 +21,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -60,8 +64,7 @@ public class SketchwareUtil {
         try {
             bB.a(getContext(), message, length).show();
         } catch (RuntimeException e) {
-            LogUtil.e("SketchwareUtil", "Failed to toast regular message, " +
-                    "Toast's message was: \"" + message + "\"", e);
+            LogUtil.e("SketchwareUtil", "Failed to toast regular message, " + "Toast's message was: \"" + message + "\"", e);
         }
     }
 
@@ -84,8 +87,7 @@ public class SketchwareUtil {
         try {
             bB.b(getContext(), message, length).show();
         } catch (RuntimeException e) {
-            LogUtil.e("SketchwareUtil", "Failed to toast regular message, " +
-                    "Toast's message was: \"" + message + "\"", e);
+            LogUtil.e("SketchwareUtil", "Failed to toast regular message, " + "Toast's message was: \"" + message + "\"", e);
         }
     }
 
@@ -116,8 +118,7 @@ public class SketchwareUtil {
     }
 
     public static Optional<String> doSingleStringContentQuery(Uri uri, String columnName) {
-        try (Cursor cursor = getContext().getContentResolver().query(uri,
-                new String[]{columnName}, null, null, null)) {
+        try (Cursor cursor = getContext().getContentResolver().query(uri, new String[]{columnName}, null, null, null)) {
             if (cursor.moveToFirst() && !cursor.isNull(0)) {
                 return Optional.of(cursor.getString(0));
             } else {
@@ -131,11 +132,9 @@ public class SketchwareUtil {
 
     public static void copySafDocumentToTempFile(Uri document, Activity context, String tempFileExtension, Consumer<File> tempFileConsumer, Consumer<IOException> exceptionHandler) {
         new Thread(() -> {
-            try (ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(document, "r");
-                 FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor())) {
+            try (ParcelFileDescriptor parcelFileDescriptor = context.getContentResolver().openFileDescriptor(document, "r"); FileInputStream inputStream = new FileInputStream(parcelFileDescriptor.getFileDescriptor())) {
                 File temporaryFile = File.createTempFile("document", "." + tempFileExtension);
-                try (FileOutputStream outputStream = new FileOutputStream(temporaryFile);
-                     BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
+                try (FileOutputStream outputStream = new FileOutputStream(temporaryFile); BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream)) {
                     byte[] buffer = new byte[4096];
                     int length;
                     while ((length = inputStream.read(buffer)) > 0) {
@@ -157,8 +156,7 @@ public class SketchwareUtil {
         aB dialog = new aB(context);
         dialog.a(R.drawable.break_warning_96_red);
         dialog.b("Couldn't get " + componentLabel);
-        dialog.a("Failed to parse " + componentLabel + " from file " + json + ". Fix by renaming old file to " + json.getName() + ".bak? " +
-                "If not, no " + componentLabel + " will be used.");
+        dialog.a("Failed to parse " + componentLabel + " from file " + json + ". Fix by renaming old file to " + json.getName() + ".bak? " + "If not, no " + componentLabel + " will be used.");
         dialog.b("Rename", v -> {
             FileUtil.renameFile(json.getAbsolutePath(), json.getAbsolutePath() + ".bak");
             afterRenameLogic.accept(null);
@@ -176,4 +174,27 @@ public class SketchwareUtil {
         builder.setPositiveButton("Okay", null);
         builder.show();
     }
+
+    public static void sortListMap(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
+        Collections.sort(listMap, new Comparator<HashMap<String, Object>>() {
+            public int compare(HashMap<String, Object> _compareMap1, HashMap<String, Object> _compareMap2) {
+                if (isNumber) {
+                    int _count1 = Integer.valueOf(_compareMap1.get(key).toString());
+                    int _count2 = Integer.valueOf(_compareMap2.get(key).toString());
+                    if (ascending) {
+                        return _count1 < _count2 ? -1 : _count1 < _count2 ? 1 : 0;
+                    } else {
+                        return _count1 > _count2 ? -1 : _count1 > _count2 ? 1 : 0;
+                    }
+                } else {
+                    if (ascending) {
+                        return (_compareMap1.get(key).toString()).compareTo(_compareMap2.get(key).toString());
+                    } else {
+                        return (_compareMap2.get(key).toString()).compareTo(_compareMap1.get(key).toString());
+                    }
+                }
+            }
+        });
+    }
+
 }

@@ -1531,6 +1531,8 @@ But, components should be added manually for working correctly."</string>
 %s"</string>
     <string name="message_strings_xml_loaded">Your \"strings.xml\" file has been successfully loaded!</string>
     <string name="myprojects_confirm_project_delete">Are you sure you want to delete this project?</string>
+    <string name="myprojects_customize_icon">Customize icon</string>
+
     <string name="myprojects_export_project_actionbar_title">Export Project</string>
     <string name="myprojects_export_project_button_export_src">Export Source Code</string>
     <string name="myprojects_export_project_button_send_src_zip">Send Source Code Zip File</string>
@@ -1555,6 +1557,7 @@ But, components should be added manually for working correctly."</string>
     <string name="myprojects_settings_context_menu_title_choose_gallery_default">Change to Default Icon</string>
     <string name="myprojects_settings_context_menu_title_choose_gallery_with_crop">Choose from Gallery (with Crop)</string>
     <string name="myprojects_settings_description_change_icon">Tap to change Icon</string>
+    <string name="myprojects_settings_description_create_icon">Tap to create new Icon</string>
     <string name="myprojects_settings_hint_enter_application_name">Enter application name</string>
     <string name="myprojects_settings_hint_enter_package_name">Package name</string>
     <string name="myprojects_settings_hint_enter_project_name">Project name</string>
@@ -2171,7 +2174,7 @@ Please try again later"</string>
     <string name="settings_events_manager_listeners">Listeners</string>
     <string name="settings_events_manager_details">Events manager Details</string>
     <string name="settings_block_selector">Block Selector Manager</string>
-    
+
     <!--  files manager screen  -->
     <string name="assets_manager_title">Assets Manager</string>
     <string name="assets_manager_options">Create or import</string>
@@ -2226,7 +2229,9 @@ Please try again later"</string>
     <string name="widget_type_title">Widget type</string>
     <string name="new_class">Or create a new category</string>
     <string name="add_to">Add to category</string>
+    <string name="title_activity_icon_creator">IconCreatorActivity</string>
 
     <string name="used_custom_blocks">Used Custom Blocks</string>
+    <string name="property_enter_value">Enter %s value</string>
 
 </resources>

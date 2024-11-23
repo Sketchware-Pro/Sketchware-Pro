@@ -3,6 +3,8 @@ package mod.agus.jcoderz.editor.manage.resource;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Picture;
+import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,38 +22,36 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.bobur.androidsvg.SVG;
 import com.bumptech.glide.Glide;
-
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import pro.sketchware.R;
-import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
-import pro.sketchware.databinding.DialogInputLayoutBinding;
-import pro.sketchware.databinding.ManageFileBinding;
-import pro.sketchware.databinding.ManageJavaItemHsBinding;
-
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import pro.sketchware.activities.coloreditor.ColorEditorActivity;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileResConfig;
-import pro.sketchware.utility.FileUtil;
 import mod.bobur.StringEditorActivity;
+import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
+import pro.sketchware.R;
+import pro.sketchware.activities.coloreditor.ColorEditorActivity;
+import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
+import pro.sketchware.databinding.DialogInputLayoutBinding;
+import pro.sketchware.databinding.ManageFileBinding;
+import pro.sketchware.databinding.ManageJavaItemHsBinding;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileResConfig;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 @SuppressLint("SetTextI18n")
 public class ManageResourceActivity extends BaseAppCompatActivity {
@@ -64,6 +64,20 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
     private String temp;
 
     private ManageFileBinding binding;
+
+    public static String getLastDirectory(String path) {
+        // Get the index of the last occurrence of '/' character
+        int lastSlashIndex = path.lastIndexOf('/');
+
+        // Get the substring from the start to the lastSlashIndex
+        String parentPath = path.substring(0, lastSlashIndex);
+
+        // Get the index of the last occurrence of '/' in the parentPath
+        lastSlashIndex = parentPath.lastIndexOf('/');
+
+        // Extract the last directory name
+        return parentPath.substring(lastSlashIndex + 1);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +96,6 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         checkDir();
         initToolbar();
     }
-
 
     private void checkDir() {
         if (FileUtil.isExistFile(fpu.getPathResource(numProj))) {
@@ -159,6 +172,12 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                 .translationY(isHide ? 0 : 300)
                 .alpha(isHide ? 1 : 0)
                 .setInterpolator(new OvershootInterpolator());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.filesListRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -246,7 +265,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         properties.error_dir = Environment.getExternalStorageDirectory();
         properties.offset = Environment.getExternalStorageDirectory();
         properties.extensions = null;
-        dialog = new FilePickerDialog(this, properties);
+        dialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
         dialog.setTitle("Select a resource file");
         dialog.setDialogSelectionListener(selections -> {
             for (String path : selections) {
@@ -327,7 +346,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
             intent.putExtra("content", frc.listFileResource.get(position));
             startActivity(intent);
-        }else if (frc.listFileResource.get(position).endsWith("xml")) {
+        } else if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
@@ -342,6 +361,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             SketchwareUtil.toast("Only XML files can be edited");
         }
     }
+
     private void goEdit2(int position) {
         if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
@@ -358,6 +378,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             SketchwareUtil.toast("Only XML files can be edited");
         }
     }
+
     private class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
         private final ArrayList<String> data;
@@ -387,6 +408,10 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                 try {
                     if (FileUtil.isImageFile(path)) {
                         Glide.with(ManageResourceActivity.this).load(new File(path)).into(binding.icon);
+                    } else if (path.endsWith(".xml") && "drawable".equals(getLastDirectory(path))) {
+                        SVG svg = SVG.getFromString(XmlToSvgConverter.xml2svg(FileUtil.readFile(path)));
+                        Picture picture = svg.renderToPicture();
+                        binding.icon.setImageDrawable(new PictureDrawable(picture));
                     } else {
                         binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                     }

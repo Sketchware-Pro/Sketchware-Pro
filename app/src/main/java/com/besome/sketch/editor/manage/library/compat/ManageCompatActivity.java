@@ -79,7 +79,6 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
-        binding.toolbar.setTitle(Helper.getResString(R.string.design_library_title_appcompat_and_design));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));

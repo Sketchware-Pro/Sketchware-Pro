@@ -128,6 +128,8 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         dialog.a(imgLeftIconDrawableResId);
 
         PropertyPopupMeasurementBinding binding = PropertyPopupMeasurementBinding.inflate(LayoutInflater.from(getContext()));
+        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), tvName.getText().toString()));
+
         TB tb = new TB(getContext(), binding.tiInput, 0, 999);
 
         binding.rgWidthHeight.setOnCheckedChangeListener((group, checkedId) -> {

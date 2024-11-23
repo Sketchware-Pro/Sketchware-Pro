@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
-import androidx.exifinterface.media.ExifInterface;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
@@ -34,14 +31,12 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import a.a.a.GB;
-import a.a.a.HB;
 import a.a.a.LB;
 import a.a.a.MA;
 import a.a.a.UB;
 import a.a.a.VB;
 import a.a.a.Zx;
 import a.a.a.aB;
-import a.a.a.iB;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.nB;
@@ -54,16 +49,17 @@ import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import pro.sketchware.R;
+import pro.sketchware.activities.iconcreator.IconCreatorActivity;
 import pro.sketchware.control.VersionDialog;
 import pro.sketchware.databinding.MyprojectSettingBinding;
+import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class MyProjectSettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     public MyprojectSettingBinding binding;
 
-    private static final int REQUEST_CODE_PICK_CROPPED_ICON = 216;
-    private static final int REQUEST_CODE_PICK_ICON = 207;
+    private static final int REQUEST_CODE_CREATE_ICON = 200212;
     private final String[] themeColorKeys = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
     private final String[] themeColorLabels = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
     private final int[] projectThemeColors = new int[themeColorKeys.length];
@@ -76,6 +72,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private int projectVersionNameFirstPart;
     private int projectVersionNameSecondPart;
     private boolean shownPackageNameChangeWarning;
+    private boolean isIconAdaptive;
+    private Bitmap icon;
     private String sc_id;
 
     @Override
@@ -198,48 +196,34 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data == null) {
-            SketchwareUtil.toast("Received invalid data");
-            finish();
             return;
         }
-        Uri uri = data.getData();
-        if (requestCode == REQUEST_CODE_PICK_ICON) {
-            if (resultCode == RESULT_OK && uri != null) {
-                String filename = HB.a(getApplicationContext(), uri);
-                Bitmap bitmap = iB.a(filename, 96, 96);
-                try {
-                    int attributeInt = new ExifInterface(filename).getAttributeInt("Orientation", -1);
-                    Bitmap newBitmap = iB.a(bitmap, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
-                    binding.appIcon.setImageBitmap(newBitmap);
-                    saveBitmapTo(newBitmap, getCustomIconPath());
-                    projectHasCustomIcon = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            Bundle extras = data.getExtras();
-            if (requestCode == REQUEST_CODE_PICK_CROPPED_ICON && resultCode == RESULT_OK && extras != null) {
-                try {
-                    Bitmap bitmap = extras.getParcelable("data");
-                    binding.appIcon.setImageBitmap(bitmap);
-                    projectHasCustomIcon = true;
-                    saveBitmapTo(bitmap, getCustomIconPath());
-                } catch (Exception ignored) {
-                }
+
+        if (requestCode == REQUEST_CODE_CREATE_ICON && resultCode == RESULT_OK) {
+            if (data.getParcelableExtra("appIco") != null) {
+                icon = data.getParcelableExtra("appIco");
+
+                isIconAdaptive = data.getBooleanExtra("isIconAdaptive", false);
+                binding.appIcon.setImageBitmap(icon);
+                projectHasCustomIcon = true;
             }
         }
+
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.app_icon_layout) {
-            showCustomIconOptions();
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), IconCreatorActivity.class);
+            intent.putExtra("sc_id", sc_id);
+            startActivityForResult(intent, REQUEST_CODE_CREATE_ICON);
         } else if (id == R.id.ok_button) {
             mB.a(v);
             if (isInputValid()) {
                 new SaveProjectAsyncTask(getApplicationContext()).execute();
+                if (icon != null) saveBitmapTo(icon, getCustomIconPath());
             }
         } else if (id == R.id.cancel) {
             finish();
@@ -262,7 +246,6 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     @Override
     public void onResume() {
         super.onResume();
-
         if (!isStoragePermissionGranted()) {
             finish();
         }
@@ -391,7 +374,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 projectThemeColors[colorIndex] = var2;
                 syncThemeColors();
             }
-         }
+        }
         ));
         zx.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
     }
@@ -418,73 +401,17 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         return wq.e() + File.separator + sc_id + File.separator + "icon.png";
     }
 
+
+    private String getTempIconsFolderPath(String foldername) {
+        return wq.e() + File.separator + sc_id + File.separator + foldername;
+    }
+
+    private String getIconsFolderPath() {
+        return wq.e() + File.separator + sc_id + File.separator + "mipmaps" + File.separator;
+    }
+
     private boolean isInputValid() {
         return projectPackageNameValidator.b() && projectNameValidator.b() && projectAppNameValidator.b();
-    }
-
-    private void pickCustomIcon() {
-        Uri uri;
-        if (Build.VERSION.SDK_INT >= 24) {
-            uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon());
-        } else {
-            uri = Uri.fromFile(getCustomIcon());
-        }
-
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-        intent.putExtra("output", uri);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
-        intent.putExtra("return-data", true);
-        startActivityForResult(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)),
-                REQUEST_CODE_PICK_ICON);
-    }
-
-    private void pickAndCropCustomIcon() {
-        Uri uri;
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        if (Build.VERSION.SDK_INT >= 24) {
-            Context applicationContext = getApplicationContext();
-            uri = FileProvider.getUriForFile(applicationContext, getApplicationContext().getPackageName() + ".provider", getCustomIcon());
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        } else {
-            uri = Uri.fromFile(getCustomIcon());
-        }
-
-        intent.setDataAndType(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, "image/*");
-        intent.putExtra("crop", "true");
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 96);
-        intent.putExtra("outputY", 96);
-        intent.putExtra("scale", true);
-        intent.putExtra("output", uri);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());
-        intent.putExtra("return-data", true);
-        startActivityForResult(Intent.createChooser(intent, Helper.getResString(R.string.common_word_choose)),
-                REQUEST_CODE_PICK_CROPPED_ICON);
-    }
-
-    private void showCustomIconOptions() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(Helper.getResString(R.string.myprojects_settings_context_menu_title_choose));
-        builder.setItems(new String[]{
-                Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery),
-                Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_with_crop),
-                Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_default)
-        }, (dialog, which) -> {
-            switch (which) {
-                case 0 -> pickCustomIcon();
-                case 1 -> pickAndCropCustomIcon();
-                case 2 -> {
-                    if (projectHasCustomIcon) showResetIconConfirmation();
-                }
-            }
-        });
-        AlertDialog create = builder.create();
-        create.setCanceledOnTouchOutside(true);
-        create.show();
     }
 
     private void showPackageNameChangeWarning() {
@@ -505,7 +432,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         }
     }
 
-    private void saveBitmapTo(Bitmap bitmap, String path) {
+    public static void saveBitmapTo(Bitmap bitmap, String path) {
         try (FileOutputStream fileOutputStream = new FileOutputStream(path)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
             fileOutputStream.flush();
@@ -559,6 +486,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             data.put("my_app_name", binding.etAppName.getText().toString());
             if (updatingExistingProject) {
                 data.put("custom_icon", projectHasCustomIcon);
+                data.put("isIconAdaptive", isIconAdaptive);
                 data.put("sc_ver_code", binding.verCode.getText().toString());
                 data.put("sc_ver_name", binding.verName.getText().toString());
                 data.put("sketchware_ver", GB.d(getApplicationContext()));
@@ -569,6 +497,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             } else {
                 data.put("my_sc_reg_dt", new nB().a("yyyyMMddHHmmss"));
                 data.put("custom_icon", projectHasCustomIcon);
+                data.put("isIconAdaptive", isIconAdaptive);
                 data.put("sc_ver_code", binding.verCode.getText().toString());
                 data.put("sc_ver_name", binding.verName.getText().toString());
                 data.put("sketchware_ver", GB.d(getApplicationContext()));
@@ -581,6 +510,14 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 ProjectSettings projectSettings = new ProjectSettings(sc_id);
                 projectSettings.setValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "true");
             }
+            try {
+                FileUtil.deleteFile(getTempIconsFolderPath("mipmaps" + File.separator));
+                FileUtil.copyDirectory(new File(getTempIconsFolderPath("temp_icons" + File.separator)), new File(getIconsFolderPath()));
+                FileUtil.deleteFile(getTempIconsFolderPath("temp_icons" + File.separator));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
 
         @Override

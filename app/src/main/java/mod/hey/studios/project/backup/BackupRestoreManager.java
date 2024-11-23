@@ -140,7 +140,7 @@ public class BackupRestoreManager {
         properties.offset = new File(BackupFactory.getBackupDir());
         properties.extensions = new String[]{BackupFactory.EXTENSION};
 
-        FilePickerDialog fpd = new FilePickerDialog(act, properties);
+        FilePickerDialog fpd = new FilePickerDialog(act, properties, R.style.RoundedCornersDialog);
         fpd.setTitle("Select backups to restore (" + BackupFactory.EXTENSION + ")");
         fpd.setDialogSelectionListener(files -> {
             for (int i = 0; i < files.length; i++) {
