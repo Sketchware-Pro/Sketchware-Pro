@@ -61,7 +61,7 @@ public class WidgetsCreatorManager extends IconBase {
             "32", "3", "36", "11", "47", "5", "25",
             "2", "6", "0", "9", "41", "8", "19",
             "48", "14", "10", "39", "30", "38",
-            "4", "12", "21", "31", "7"
+            "4", "12", "21", "31", "7", "13"
     );
     private final HashMap<String, Object> MapInfo = new HashMap<>();
     public String f = "";
