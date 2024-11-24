@@ -1,11 +1,13 @@
 package pro.sketchware.menu;
 
 import static android.text.TextUtils.isEmpty;
-import static pro.sketchware.utility.SketchwareUtil.getDip;
 import static mod.bobur.StringEditorActivity.convertXmlToListMap;
 import static mod.bobur.StringEditorActivity.isXmlStringsContains;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.annotation.SuppressLint;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,7 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-import pro.sketchware.R;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,16 +41,17 @@ import a.a.a.uq;
 import a.a.a.wB;
 import dev.aldi.sayuti.block.ExtraMenuBlock;
 import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileResConfig;
-import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
-import pro.sketchware.lib.highlighter.SimpleHighlighter;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.hilal.saif.asd.old.AsdOldDialog;
+import pro.sketchware.R;
+import pro.sketchware.lib.highlighter.SimpleHighlighter;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileResConfig;
+import pro.sketchware.utility.FileUtil;
 
 public class ExtraMenuBean {
 
@@ -89,6 +92,46 @@ public class ExtraMenuBean {
         extraMenuBlock = new ExtraMenuBlock(logicA);
         projectDataManager = jC.a(logicA.B);
         javaName = logicA.M.getJavaName();
+    }
+
+    public static void setupSearchView(View view, ViewGroup viewGroup) {
+        EditText searchInput = view.findViewById(R.id.searchInput);
+        TextInputLayout textInputLayout = view.findViewById(R.id.searchInputLayout);
+        textInputLayout.setVisibility(View.VISIBLE);
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                    View childView = viewGroup.getChildAt(i);
+
+                    if (childView instanceof RadioButton) {
+                        RadioButton radioButton = (RadioButton) childView;
+                        if (radioButton.getText().toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                            radioButton.setVisibility(View.VISIBLE);
+                        } else {
+                            radioButton.setVisibility(View.GONE);
+                        }
+                    } else if (childView instanceof TextView) {
+                        TextView textView = (TextView) childView;
+                        if (textView.getText().toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                            textView.setVisibility(View.VISIBLE);
+                        } else {
+                            textView.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void codeMenu(Ss menu) {
@@ -555,12 +598,7 @@ public class ExtraMenuBean {
                     if (!activityMenu.isEmpty()) {
                         TextView txt = new TextView(logicEditor);
                         txt.setText("Custom Activities");
-                        txt.setPadding(
-                                (int) getDip(2),
-                                (int) getDip(4),
-                                (int) getDip(4),
-                                (int) getDip(4)
-                        );
+                        txt.setPadding((int) getDip(2), (int) getDip(4), (int) getDip(4), (int) getDip(4));
                         txt.setTextSize(14f);
                         viewGroup.addView(txt);
                     }
@@ -568,6 +606,7 @@ public class ExtraMenuBean {
                         viewGroup.addView(logicEditor.e(activity));
                     }
                 }
+                setupSearchView(rootView, viewGroup);
                 break;
 
             case "customViews":
@@ -723,6 +762,7 @@ public class ExtraMenuBean {
         for (String menuArg : menus) {
             viewGroup.addView(logicEditor.e(menuArg));
         }
+        setupSearchView(rootView, viewGroup);
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             if (viewGroup.getChildAt(i) instanceof RadioButton rb) {
                 if (menu.getArgValue().toString().equals(rb.getText().toString())) {

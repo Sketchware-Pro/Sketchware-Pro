@@ -42,24 +42,24 @@
             <!--   search gotta be implemented fr, ez but eh    -->
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/searchInputLayout"
+            android:id="@+id/searchInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search for libraries"
+            android:importantForAutofill="noExcludeDescendants"
+            app:boxCornerRadiusBottomEnd="50dp"
+            app:boxCornerRadiusBottomStart="50dp"
+            app:boxCornerRadiusTopEnd="50dp"
+            app:boxCornerRadiusTopStart="50dp"
+            app:startIconDrawable="@drawable/search_icon_grey">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Search for libraries"
-                android:importantForAutofill="noExcludeDescendants"
-                app:boxCornerRadiusBottomEnd="50dp"
-                app:boxCornerRadiusBottomStart="50dp"
-                app:boxCornerRadiusTopEnd="50dp"
-                app:boxCornerRadiusTopStart="50dp"
-                app:startIconDrawable="@drawable/search_icon_grey">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/searchInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionDone"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:imeOptions="actionDone"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>

@@ -224,20 +224,37 @@ public class ViewProperty extends LinearLayout implements Kw {
         layoutPropertySeeAll = findViewById(R.id.layout_property_see_all);
         viewEvent = findViewById(R.id.view_event);
         hcvProperty.setHorizontalScrollBarEnabled(false);
-        hcvProperty.setOnScrollChangedListener((l, t, oldl, oldt) -> {
-            if (Math.abs(l - oldt) <= 5) {
+        hcvProperty.setOnScrollChangedListener((scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (Math.abs(scrollX - oldScrollY) <= 5) {
                 return;
             }
-            if (l > oldt) {
+            int maxScrollX = hcvProperty.getChildAt(0).getWidth() - hcvProperty.getWidth();
+            if (scrollX > 100 && scrollX < maxScrollX) {
+                if (scrollX > oldScrollX) {
+                    if (showAllVisible) {
+                        showAllVisible = false;
+                        cancelSeeAllAnimations();
+                        showAllHider.start();
+                    }
+                } else {
+                    if (!showAllVisible) {
+                        showAllVisible = true;
+                        cancelSeeAllAnimations();
+                        showAllShower.start();
+                    }
+                }
+            } else if (scrollX >= maxScrollX) {
                 if (showAllVisible) {
                     showAllVisible = false;
                     cancelSeeAllAnimations();
                     showAllHider.start();
                 }
-            } else if (!(showAllVisible)) {
-                showAllVisible = true;
-                cancelSeeAllAnimations();
-                showAllShower.start();
+            } else {
+                if (!showAllVisible) {
+                    showAllVisible = true;
+                    cancelSeeAllAnimations();
+                    showAllShower.start();
+                }
             }
         });
         imgSave = findViewById(R.id.img_save);

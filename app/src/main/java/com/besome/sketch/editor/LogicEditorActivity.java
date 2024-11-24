@@ -133,7 +133,6 @@ import mod.jbk.util.BlockUtil;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 import pro.sketchware.databinding.ViewStringEditorAddBinding;
-import pro.sketchware.menu.ExtraMenuBean;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.FilePathUtil;
@@ -1752,6 +1751,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 if (!toNotAdd.contains("android:id") && viewBean.getClassInfo().a(ss.getClassInfo().a())) {
                     viewGroup.addView(d(typeName, viewBean.id));
                 }
+                ExtraMenuBean.setupSearchView(customView, viewGroup);
             }
         }
 
