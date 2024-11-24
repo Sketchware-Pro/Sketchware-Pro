@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -17,12 +16,13 @@ import mod.hey.studios.editor.manage.block.code.ExtraBlockCode;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
 public class Fx {
-    
+
     private static final Pattern PARAM_PATTERN = Pattern.compile("%m(?!\\.[\\w]+)");
     public String[] a = {"repeat", "+", "-", "*", "/", "%", ">", "=", "<", "&&", "||", "not"};
     public String[] b = {"+", "-", "*", "/", "%", ">", "=", "<", "&&", "||"};
     public String c;
     public String d;
+    public String moreBlock = "";
     public jq e;
     public ArrayList<BlockBean> f;
     public Map<String, BlockBean> g;
@@ -52,8 +52,139 @@ public class Fx {
     }
 
     public final String a(BlockBean bean, String var2) {
-        ArrayList<String> params = new ArrayList<>();
+        ArrayList<String> params = getBlockParams(bean);
 
+        String opcode = getBlockCode(bean, params);
+
+        String code = opcode;
+        /**
+         * switch block above should be responsible for handling %m param.
+         * However, upon decompiling this class, it completely ignore this case.
+         * This is the solution for now to prevent errors during code generation.
+         */
+        if (hasEmptySelectorParam(params, bean.spec)) {
+            code = "";
+        }
+
+        if (b(bean.opCode, var2)) {
+            code = "(" + opcode + ")";
+        }
+
+        if (bean.nextBlock >= 0) {
+            code += (code.isEmpty() ? "" : "\r\n") + a(String.valueOf(bean.nextBlock), moreBlock);
+        }
+
+        return code;
+    }
+
+    private boolean hasEmptySelectorParam(ArrayList<String> params, String spec) {
+        var matcher = PARAM_PATTERN.matcher(spec);
+        if (!matcher.find()) {
+            var paramMatcher = Pattern.compile("%[bdsm]").matcher(spec);
+            int count = 0;
+            ArrayList<Integer> selectorParamPositions = new ArrayList<>();
+            while (paramMatcher.find()) {
+                String param = paramMatcher.group();
+                if ("%m".equals(param)) {
+                    selectorParamPositions.add(count);
+                }
+                count++;
+            }
+            if (!selectorParamPositions.isEmpty()) {
+                for (int position : selectorParamPositions) {
+                    if (position >= params.size()) {
+                        continue;
+                    }
+                    var param = params.get(position);
+                    if (param == null || param.isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private String escapeString(String input) {
+        StringBuilder escapedString = new StringBuilder(4096);
+        CharBuffer charBuffer = CharBuffer.wrap(input);
+
+        for (int i = 0; i < charBuffer.length(); ++i) {
+            char currentChar = charBuffer.get(i);
+            if (currentChar == '"') {
+                escapedString.append("\\\"");
+            } else if (currentChar == '\\') {
+                if (i < charBuffer.length() - 1) {
+                    int nextIndex = i + 1;
+                    currentChar = charBuffer.get(nextIndex);
+                    if (currentChar != 'n' && currentChar != 't') {
+                        escapedString.append("\\\\");
+                    } else {
+                        escapedString.append("\\").append(currentChar);
+                        i = nextIndex;
+                    }
+                } else {
+                    escapedString.append("\\\\");
+                }
+            } else if (currentChar == '\n') {
+                escapedString.append("\\n");
+            } else {
+                escapedString.append(currentChar);
+            }
+        }
+
+        return escapedString.toString();
+    }
+
+    public final String a(String param, int type, String opcode) {
+        if (!param.isEmpty() && param.charAt(0) == '@') {
+            opcode = a(param.substring(1), opcode);
+            if (type == 2 && opcode.isEmpty()) {
+                return "\"\"";
+            }
+            return opcode;
+        } else if (type == 2) {
+            return "\"" + escapeString(param) + "\"";
+        } else if (type == 1) {
+            /**
+             * Ideally, a.a.aFx#a(BlockBean, String) should be responsible for parsing the input properly. 
+             * However, upon decompiling this class, it seems to completely ignore this case. 
+             * This is the solution for now to prevent errors during code generation.
+             */
+            try {
+                if (param.isEmpty()) {
+                    return "0";
+                }
+                if (param.contains(".")) {
+                    Double.parseDouble(param);
+                    return param + "d";
+                }
+                Integer.parseInt(param);
+                return param;
+            } catch (NumberFormatException e) {
+                return param;
+            }
+        } else if (type == 0) {
+            //the same with type == 1
+            if (param.isEmpty()) {
+                return "true";
+            }
+        }
+        return param;
+    }
+
+    public final String a(String var1, String var2) {
+        return !g.containsKey(var1) ? "" : a(g.get(var1), var2);
+    }
+
+    public final boolean b(String var1, String var2) {
+        boolean var11 = Arrays.asList(a).contains(var2);
+        boolean var10 = Arrays.asList(b).contains(var1);
+        return var11 && var10;
+    }
+
+    public ArrayList<String> getBlockParams(BlockBean bean) {
+        ArrayList<String> params = new ArrayList<>();
         for (int i = 0; i < bean.parameters.size(); i++) {
             String param = bean.parameters.get(i);
             Gx paramInfo = bean.getParamClassInfo().get(i);
@@ -70,10 +201,11 @@ public class Fx {
             }
             params.add(a(param, type, bean.opCode));
         }
+        return params;
+    }
 
-        String moreBlock = "";
-
-        String opcode = mceb.getCodeExtraBlock(bean, "\"\"");
+    private String getBlockCode(BlockBean bean, ArrayList<String> params) {
+        String opcode = "";
         switch (bean.opCode) {
             case "definedFunc":
                 int space = bean.spec.indexOf(" ");
@@ -1211,131 +1343,9 @@ public class Fx {
             case "locationManagerRemoveUpdates":
                 opcode = params.get(0) + ".removeUpdates(_" + params.get(0) + "_location_listener);";
                 break;
+            default:
+                opcode = mceb.getCodeExtraBlock(bean, "\"\"");
         }
-        String code = opcode;
-        /**
-         * switch block above should be responsible for handling %m param. 
-         * However, upon decompiling this class, it completely ignore this case. 
-         * This is the solution for now to prevent errors during code generation.
-         */
-        if (hasEmptySelectorParam(params, bean.spec)) {
-            code = "";
-        }
-
-        if (b(bean.opCode, var2)) {
-            code = "(" + opcode + ")";
-        }
-
-        if (bean.nextBlock >= 0) {
-            code += (code.isEmpty() ? "" : "\r\n") + a(String.valueOf(bean.nextBlock), moreBlock);
-        }
-
-        return code;
-    }
-    
-    private boolean hasEmptySelectorParam(ArrayList<String> params, String spec) {
-        var matcher = PARAM_PATTERN.matcher(spec);
-        if (!matcher.find()) {
-            var paramMatcher = Pattern.compile("%[bdsm]").matcher(spec);
-            int count = 0;
-            ArrayList<Integer> selectorParamPositions = new ArrayList<>();
-            while (paramMatcher.find()) {
-                String param = paramMatcher.group();
-                if ("%m".equals(param)) {
-                    selectorParamPositions.add(count);
-                }
-                count++;
-            }
-            if (!selectorParamPositions.isEmpty()) {
-                for (int position : selectorParamPositions) {
-                    if (position >= params.size()) {
-                        continue;
-                    }
-                    var param = params.get(position);
-                    if (param == null || param.isEmpty()) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private String escapeString(String input) {
-        StringBuilder escapedString = new StringBuilder(4096);
-        CharBuffer charBuffer = CharBuffer.wrap(input);
-
-        for (int i = 0; i < charBuffer.length(); ++i) {
-            char currentChar = charBuffer.get(i);
-            if (currentChar == '"') {
-                escapedString.append("\\\"");
-            } else if (currentChar == '\\') {
-                if (i < charBuffer.length() - 1) {
-                    int nextIndex = i + 1;
-                    currentChar = charBuffer.get(nextIndex);
-                    if (currentChar != 'n' && currentChar != 't') {
-                        escapedString.append("\\\\");
-                    } else {
-                        escapedString.append("\\").append(currentChar);
-                        i = nextIndex;
-                    }
-                } else {
-                    escapedString.append("\\\\");
-                }
-            } else if (currentChar == '\n') {
-                escapedString.append("\\n");
-            } else {
-                escapedString.append(currentChar);
-            }
-        }
-
-        return escapedString.toString();
-    }
-
-    public final String a(String param, int type, String opcode) {
-        if (!param.isEmpty() && param.charAt(0) == '@') {
-            opcode = a(param.substring(1), opcode);
-            if (type == 2 && opcode.isEmpty()) {
-                return "\"\"";
-            }
-            return opcode;
-        } else if (type == 2) {
-            return "\"" + escapeString(param) + "\"";
-        } else if (type == 1) {
-            /**
-             * Ideally, a.a.aFx#a(BlockBean, String) should be responsible for parsing the input properly. 
-             * However, upon decompiling this class, it seems to completely ignore this case. 
-             * This is the solution for now to prevent errors during code generation.
-             */
-            try {
-                if (param.isEmpty()) {
-                    return "0";
-                }
-                if (param.contains(".")) {
-                    Double.parseDouble(param);
-                    return param + "d";
-                }
-                Integer.parseInt(param);
-                return param;
-            } catch (NumberFormatException e) {
-                return param;
-            }
-        } else if (type == 0) {
-            //the same with type == 1
-            if (param.isEmpty()) {
-                return "true";
-            }
-        }
-        return param;
-    }
-
-    public final String a(String var1, String var2) {
-        return !g.containsKey(var1) ? "" : a(g.get(var1), var2);
-    }
-
-    public final boolean b(String var1, String var2) {
-        boolean var11 = Arrays.asList(a).contains(var2);
-        boolean var10 = Arrays.asList(b).contains(var1);
-        return var11 && var10;
+        return opcode;
     }
 }
