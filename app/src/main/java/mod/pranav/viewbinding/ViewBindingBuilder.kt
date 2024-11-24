@@ -29,7 +29,7 @@ public final class $name {
     public final ${rootView.name} rootView;
 ${views.joinToString("\n") { "    public final ${it.name} ${it.id};" }}
 
-    private $name(${rootView.name} rootView, ${views.joinToString { "${it.name} ${it.id}" }}) {
+    private $name(${rootView.name} rootView${if (views.isNotEmpty()) views.joinToString(prefix=", ") { "${it.name} ${it.id}" } else ""}) {
         this.rootView = rootView;
 ${views.joinToString("\n") { "        this.${it.id} = ${it.id};" }}
     }
@@ -93,7 +93,7 @@ ${views.joinToString("\n") { "        ${it.name} ${it.id} = findChildViewById(vi
         return View(
             element.nodeName.substringAfterLast("."),
             if (element.nodeName.contains(".")) element.nodeName else "android.widget.${element.nodeName}",
-            element.attributes?.getNamedItem("android:id")?.nodeValue?.substringAfter("/") ?: ""
+            generateId(element.attributes?.getNamedItem("android:id")?.nodeValue?.substringAfter("/") ?: "")
         )
     }
 
@@ -112,7 +112,7 @@ ${views.joinToString("\n") { "        ${it.name} ${it.id} = findChildViewById(vi
                     View(
                         node.nodeName.substringAfterLast("."),
                         if (node.nodeName.contains(".")) node.nodeName else "android.widget.${node.nodeName}",
-                        id.nodeValue.substringAfter("/")
+                        generateId(id.nodeValue.substringAfter("/"))
                     )
                 )
             }
@@ -125,6 +125,12 @@ ${views.joinToString("\n") { "        ${it.name} ${it.id} = findChildViewById(vi
     data class View(val name: String, val fullName: String, val id: String)
 
     companion object {
+        @JvmStatic
+        fun generateId(name: String): String {
+            return name.split("_")
+                .joinToString("") { part -> part.replaceFirstChar { it.uppercaseChar() } }
+        }
+
         @JvmStatic
         fun generateFileNameForLayout(layoutName: String): String {
             return layoutName.split("_")
