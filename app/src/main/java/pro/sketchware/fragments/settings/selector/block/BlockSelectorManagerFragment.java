@@ -140,8 +140,8 @@ public class BlockSelectorManagerFragment extends qA {
                 if (!itemAlreadyExists(selectorName)) {
                     selectors.add(
                             new Selector(
-                                    selectorName,
                                     selectorTitle,
+                                    selectorName,
                                     new ArrayList<>()
                             )
                     );

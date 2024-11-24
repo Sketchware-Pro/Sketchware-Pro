@@ -19,6 +19,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
+import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.utility.FileUtil;
 
 public class Lx {
@@ -594,7 +595,7 @@ public class Lx {
         } else {
             String initializer = getInitializer(typeName, parameters);
             String builtInType = mq.e(typeName);
-            if (initializer.length() <= 0) {
+            if (initializer.isEmpty()) {
                 if (!(builtInType.isEmpty() || builtInType.equals("RewardedVideoAd") || builtInType.equals("FirebaseCloudMessage") || builtInType.equals("FragmentStatePagerAdapter"))) {
                     fieldDeclaration += " " + builtInType + " " + typeInstanceName + ";";
                 } else {
@@ -1110,7 +1111,7 @@ public class Lx {
             if (viewBinding) {
                 initializer = name + " = " +
                         "binding." +
-                        name + ";";
+                        ViewBindingBuilder.generateId(name) + ";";
             } else {
                 initializer = name + " = " +
                         (isInFragment ? "_view.findViewById(R.id." : "findViewById(R.id.") +
