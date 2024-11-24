@@ -4,13 +4,14 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:gravity="center|left"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="10dp">
 
     <TextView
         android:id="@+id/tv_favorites_guide"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/scolor_black_02"
         android:textSize="12sp" />
 
     <com.google.android.material.textfield.TextInputLayout
