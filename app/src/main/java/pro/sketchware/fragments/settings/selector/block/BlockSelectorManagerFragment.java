@@ -4,6 +4,7 @@ import static mod.hey.studios.util.Helper.addBasicTextChangedListener;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,7 +32,6 @@ import java.util.concurrent.Executors;
 
 import a.a.a.aB;
 import a.a.a.qA;
-import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogBlockConfigurationBinding;
 import pro.sketchware.databinding.DialogSelectorActionsBinding;
@@ -226,18 +229,21 @@ public class BlockSelectorManagerFragment extends qA {
     }
 
     private void showImportSelectorDialog() {
-        SketchFilePickerDialog filePickerDialog = new SketchFilePickerDialog(requireActivity())
-                .allowExtension("json")
-                .setFilePath(FileUtil.getExternalStorageDir())
-                .setOnFileSelectedListener((dialog, file) -> {
-                    executorService.execute(() -> handleToImportFile(file));
-                    dialog.dismiss();
-                });
-        filePickerDialog.setTitle("Select .json selector file");
-        filePickerDialog.a(R.drawable.file_48_blue); // Custom method, need to adjust
-        filePickerDialog.setOnDismissListener(filePickerDialog::backPressed);
-        filePickerDialog.init();
-        filePickerDialog.show();
+        DialogProperties properties = new DialogProperties();
+
+        properties.selection_mode = DialogConfigs.SINGLE_MODE;
+        properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.root = Environment.getExternalStorageDirectory();
+        properties.error_dir = Environment.getExternalStorageDirectory();
+        properties.offset = Environment.getExternalStorageDirectory();
+        properties.extensions = new String[]{"json"};
+
+        FilePickerDialog pickerDialog = new FilePickerDialog(requireContext(), properties, R.style.RoundedCornersDialog);
+
+        pickerDialog.setTitle("Select .json selector file");
+        pickerDialog.setDialogSelectionListener(selections -> handleToImportFile(new File(selections[0])));
+
+        pickerDialog.show();
     }
 
     private void saveAllSelectors() {

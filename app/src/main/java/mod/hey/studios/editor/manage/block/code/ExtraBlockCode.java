@@ -3,8 +3,10 @@ package mod.hey.studios.editor.manage.block.code;
 import com.besome.sketch.beans.BlockBean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import a.a.a.Fx;
+import a.a.a.Gx;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 
@@ -26,11 +28,13 @@ public class ExtraBlockCode {
     public int getBlockType(BlockBean blockBean, int parameterIndex) {
         int blockType;
 
-        if (blockBean.getParamClassInfo().get(parameterIndex).b("boolean")) {
+        Gx paramClassInfo = blockBean.getParamClassInfo().get(parameterIndex);
+
+        if (paramClassInfo.b("boolean")) {
             blockType = 0;
-        } else if (blockBean.getParamClassInfo().get(parameterIndex).b("double")) {
+        } else if (paramClassInfo.b("double")) {
             blockType = 1;
-        } else if (blockBean.getParamClassInfo().get(parameterIndex).b("String")) {
+        } else if (paramClassInfo.b("String")) {
             blockType = 2;
         } else {
             blockType = 3;

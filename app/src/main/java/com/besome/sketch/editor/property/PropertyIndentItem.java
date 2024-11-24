@@ -134,12 +134,17 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
     }
 
     private void showDialog() {
+        String propertyType = tvName.getText().toString();
+
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(propertyType);
         dialog.a(icon);
 
         PropertyPopupInputIndentBinding binding = PropertyPopupInputIndentBinding.inflate(LayoutInflater.from(getContext()));
         View view = binding.getRoot();
+
+        binding.tiAll.setHint(String.format(Helper.getResString(R.string.property_enter_value), propertyType.toLowerCase()));
+        binding.chkPtyAll.setText(String.format("%s on all sides", propertyType));
 
         TB ti_all = new TB(context, binding.tiAll, 0, 999);
         TB ti_left = new TB(context, binding.tiLeft, 0, 999);

@@ -1,8 +1,8 @@
 package mod.hilal.saif.activities.tools;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -24,6 +24,9 @@ import androidx.activity.EdgeToEdge;
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
@@ -43,7 +46,6 @@ import mod.jbk.util.OldResourceIdMapper;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.editor.component.CollapsibleCustomComponentLayout;
-import mod.elfilibustero.sketch.lib.ui.SketchFilePickerDialog;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 
@@ -133,22 +135,21 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
     }
 
     private void showFilePickerDialog() {
-        SketchFilePickerDialog filePickerDialog = new SketchFilePickerDialog(this)
-                .allowExtension("json")
-                .setFilePath(FileUtil.getExternalStorageDir())
-                .setOnFileSelectedListener((DialogInterface dialog, File file) -> {
-                    try {
-                        selectComponentToImport(file.getAbsolutePath());
-                    } catch (Exception e) {
-                        SketchwareUtil.toastError(Helper.getResString(R.string.publish_message_dialog_invalid_json));
-                    }
-                    dialog.dismiss();
-                });
-        filePickerDialog.setTitle(Helper.getResString(R.string.common_word_import));
-        filePickerDialog.a(R.drawable.file_48_blue);
-        filePickerDialog.setOnDismissListener(filePickerDialog::backPressed);
-        filePickerDialog.init();
-        filePickerDialog.show();
+        DialogProperties properties = new DialogProperties();
+
+        properties.selection_mode = DialogConfigs.SINGLE_MODE;
+        properties.selection_type = DialogConfigs.FILE_SELECT;
+        properties.root = Environment.getExternalStorageDirectory();
+        properties.error_dir = Environment.getExternalStorageDirectory();
+        properties.offset = Environment.getExternalStorageDirectory();
+        properties.extensions = new String[]{"json"};
+
+        FilePickerDialog pickerDialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
+
+        pickerDialog.setTitle("Select .json selector file");
+        pickerDialog.setDialogSelectionListener(selections -> selectComponentToImport(selections[0]));
+
+        pickerDialog.show();
     }
 
     private void selectComponentToImport(String path) {
@@ -288,7 +289,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
             public final LinearLayout optionLayout;
             public final ImageView icon;
             public final TextView type;
-            public final TextView id;
+            public final TextView description;
             public final ImageView menu;
             public final CollapsibleCustomComponentLayout collapsibleComponentLayout;
 
@@ -297,7 +298,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
                 root = (MaterialCardView) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 type = itemView.findViewById(R.id.tv_component_type);
-                id = itemView.findViewById(R.id.tv_component_id);
+                description = itemView.findViewById(R.id.tv_component_description);
                 menu = itemView.findViewById(R.id.img_menu);
                 optionLayout = itemView.findViewById(R.id.component_option_layout);
                 collapsibleComponentLayout = itemView.findViewById(R.id.component_option);
@@ -340,7 +341,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
             public void bind(HashMap<String, Object> item) {
                 type.setText((String) item.get("name"));
-                id.setText((String) item.get("id"));
+                description.setText((String) item.get("description"));
                 int imgRes = Integer.parseInt((String) item.get("icon"));
                 icon.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(imgRes));
             }

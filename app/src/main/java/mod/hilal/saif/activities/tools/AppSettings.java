@@ -39,7 +39,7 @@ import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.apk.ApkSignerUtils;
+import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
@@ -136,7 +136,7 @@ public class AppSettings extends BaseAppCompatActivity {
         createToolsView(R.drawable.ic_mtrl_article, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), content, new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)), false);
         createToolsView(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", content, new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class)), true);
     }
-
+    
     private View.OnClickListener openSettingsActivity(String fragmentTag) {
         return v -> {
             Intent intent = new Intent(v.getContext(), SettingsActivity.class);
@@ -240,19 +240,18 @@ public class AppSettings extends BaseAppCompatActivity {
                 .setView(building_root)
                 .create();
 
+        ApkSigner signer = new ApkSigner();
         new Thread() {
             @Override
             public void run() {
                 super.run();
 
+                ApkSigner.LogCallback callback = line -> runOnUiThread(() ->
+                        tv_log.setText(tv_log.getText().toString() + line));
+
                 if (useTestkey) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        try {
-                            ApkSignerUtils.signWithTestKey(inputApkPath, Environment.getExternalStorageDirectory().getPath() + "/sketchware/signed_apk/"
-                                    + Uri.fromFile(new File(outputApkPath)).getLastPathSegment());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        signer.signWithTestKey(inputApkPath, outputApkPath, callback);
                     } else {
                         try {
                             ZipSigner zipSigner = new ZipSigner();
@@ -260,22 +259,18 @@ public class AppSettings extends BaseAppCompatActivity {
                             zipSigner.signZip(inputApkPath, outputApkPath);
                         } catch (Exception e) {
                             tv_progress.setText("An error occurred. Check the log for more details.");
-                            tv_log.setText("Failed to sign APK with ZipSigner: " + e);
+                            tv_log.setText("Failed to sign APK with zipsigner: " + e);
                         }
                     }
                 } else {
-
-                    try {
-                        ApkSignerUtils.signWithReleaseKeystore(inputApkPath, outputApkPath, keyStorePath, keyStorePassword, keyStoreKeyAlias, keyPassword);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    signer.signWithKeyStore(inputApkPath, outputApkPath,
+                            keyStorePath, keyStorePassword, keyStoreKeyAlias, keyPassword, callback);
                 }
 
                 runOnUiThread(() -> {
-                    if (ApkSignerUtils.getErrorsCount() == 0) {
+                    if (callback.errorCount.get() == 0) {
                         building_dialog.dismiss();
-                        SketchwareUtil.toast("Successfully saved signed APK to: /sketchware/signed_apk/"
+                        SketchwareUtil.toast("Successfully saved signed APK to: /Internal storage/sketchware/signed_apk/"
                                         + Uri.fromFile(new File(outputApkPath)).getLastPathSegment(),
                                 Toast.LENGTH_LONG);
                     } else {

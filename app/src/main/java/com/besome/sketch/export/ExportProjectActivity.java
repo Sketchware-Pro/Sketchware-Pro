@@ -20,8 +20,11 @@ import androidx.core.content.FileProvider;
 import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -39,6 +42,8 @@ import a.a.a.wq;
 import a.a.a.xq;
 import a.a.a.yB;
 import a.a.a.yq;
+import kellinwood.security.zipsigner.ZipSigner;
+import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import kellinwood.security.zipsigner.optional.LoadKeystoreException;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.proguard.ProguardHandler;
@@ -49,7 +54,6 @@ import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
-import pro.sketchware.utility.apk.ApkSignerUtils;
 import pro.sketchware.BuildConfig;
 import pro.sketchware.R;
 import pro.sketchware.utility.FilePathUtil;
@@ -628,10 +632,21 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                             Uri.fromFile(new File(createdBundlePath)).getLastPathSegment();
 
                     if (signWithTestkey) {
-                        TestkeySignBridge.signWithTestkey(createdBundlePath, outputPath);
+                        ZipSigner signer = new ZipSigner();
+                        signer.setKeymode(ZipSigner.KEY_TESTKEY);
+                        signer.signZip(createdBundlePath, outputPath);
                     } else if (isResultJarSigningEnabled()) {
-                        ApkSignerUtils.signWithReleaseKeystore(createdBundlePath, outputPath, signingKeystorePath, new String(signingKeystorePassword), signingAliasName, new String(signingAliasPassword));
-
+                        Security.addProvider(new BouncyCastleProvider());
+                        CustomKeySigner.signZip(
+                                new ZipSigner(),
+                                signingKeystorePath,
+                                signingKeystorePassword,
+                                signingAliasName,
+                                signingAliasPassword,
+                                signingAlgorithm,
+                                createdBundlePath,
+                                outputPath
+                        );
                     } else {
                         FileUtil.copyFile(createdBundlePath, getCorrectResultFilename(outputPath));
                     }
@@ -655,7 +670,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     if (signWithTestkey) {
                         TestkeySignBridge.signWithTestkey(builder.yq.unsignedAlignedApkPath, outputLocation);
                     } else if (isResultJarSigningEnabled()) {
-                        ApkSignerUtils.signWithReleaseKeystore(builder.yq.unsignedAlignedApkPath, outputLocation, signingKeystorePath, new String(signingKeystorePassword), signingAliasName, new String(signingAliasPassword));
+                        Security.addProvider(new BouncyCastleProvider());
+                        CustomKeySigner.signZip(
+                                new ZipSigner(),
+                                wq.j(),
+                                signingKeystorePassword,
+                                signingAliasName,
+                                signingKeystorePassword,
+                                signingAlgorithm,
+                                builder.yq.unsignedAlignedApkPath,
+                                outputLocation
+                        );
                     } else {
                         FileUtil.copyFile(builder.yq.unsignedAlignedApkPath, outputLocation);
                     }
