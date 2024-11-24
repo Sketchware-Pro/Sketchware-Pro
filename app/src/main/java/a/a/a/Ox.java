@@ -25,7 +25,6 @@ import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -127,7 +126,7 @@ public class Ox {
                 }
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                     XmlBuilder drawerLayoutTag = new XmlBuilder("androidx.drawerlayout.widget.DrawerLayout");
-                    drawerLayoutTag.addAttribute("android", "id", "@+id/_drawer");
+                    drawerLayoutTag.addAttribute("android", "id", "@+id/drawer_layout");
                     aci.inject(drawerLayoutTag, "DrawerLayout");
                     drawerLayoutTag.a(rootLayout);
                     XmlBuilder linearLayoutTag = new XmlBuilder("LinearLayout");
@@ -135,6 +134,7 @@ public class Ox {
                     aci.inject(linearLayoutTag, "NavigationDrawer");
                     XmlBuilder includeTag = new XmlBuilder("include", true);
                     includeTag.addAttribute("", "layout", "@layout/_drawer_" + projectFile.fileName);
+                    includeTag.addAttribute("android", "id", "@+id/drawer");
                     linearLayoutTag.a(includeTag);
                     drawerLayoutTag.a(linearLayoutTag);
                     rootLayout = drawerLayoutTag;
