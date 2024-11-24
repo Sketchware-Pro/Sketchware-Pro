@@ -26,15 +26,15 @@ package $packageName;
 ${generateImports(views, rootView)}
 
 public final class $name {
-    public final ${rootView.name} rootView;
-${views.joinToString("\n") { "    public final ${it.name} ${it.id};" }}
+    public final ${rootView.type} rootView;
+${views.joinToString("\n") { "    public final ${it.type} ${it.name};" }}
 
-    private $name(${rootView.name} rootView${if (views.isNotEmpty()) views.joinToString(prefix=", ") { "${it.name} ${it.id}" } else ""}) {
+    private $name(${rootView.type} rootView${if (views.isNotEmpty()) views.joinToString(prefix=", ") { "${it.type} ${it.name}" } else ""}) {
         this.rootView = rootView;
-${views.joinToString("\n") { "        this.${it.id} = ${it.id};" }}
+${views.joinToString("\n") { "        this.${it.name} = ${it.name};" }}
     }
 
-    public ${rootView.name} getRoot() {
+    public ${rootView.type} getRoot() {
         return rootView;
     }
 
@@ -45,16 +45,18 @@ ${views.joinToString("\n") { "        this.${it.id} = ${it.id};" }}
     public static $name inflate(LayoutInflater inflater, ViewGroup parent, boolean attachToParent) {
         View root = inflater.inflate(R.layout.${layoutFile.nameWithoutExtension}, parent, false);
         if (attachToParent) parent.addView(root);
-            return bind(root);
+        return bind(root);
     }
 
     public static $name bind(View view) {
-        ${rootView.name} rootView = (${rootView.name}) view;
-${views.joinToString("\n") { "        ${it.name} ${it.id} = findChildViewById(view, R.id.${it.id});" }}
-        if (${views.joinToString(" || ") { "${it.id} == null" }}) {
+        ${rootView.type} rootView = (${rootView.type}) view;
+${views.filterNot { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.name} = findChildViewById(view, R.id.${it.id});" }}
+${views.filter { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.name} = ${it.fullName}.bind(findChildViewById(view, R.id.${it.id}));" }}
+        if (${views.joinToString(" || ") { "${it.name} == null" }}) {
              throw new IllegalStateException("Required views are missing");
         }
-        return new $name(rootView, ${views.joinToString { it.id }});
+
+        return new $name(rootView, ${views.joinToString { it.name }});
     }
 
     private static <T extends View> T findChildViewById(View rootView, int id) {
@@ -75,7 +77,7 @@ ${views.joinToString("\n") { "        ${it.name} ${it.id} = findChildViewById(vi
 
     private fun generateImports(views: List<View>, rootView: View): String {
         val copy = views.toMutableSet().filterNot {
-            it.name == "View" || it.name == "ViewGroup"
+            it.type == "View" || it.type == "ViewGroup"
         }.distinctBy { it.fullName }
         val imports = mutableSetOf(
             "import android.view.View;",
@@ -101,20 +103,37 @@ ${views.joinToString("\n") { "        ${it.name} ${it.id} = findChildViewById(vi
         val views = mutableListOf<View>()
         val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(layoutFile)
         parseNode(document.documentElement, views)
-        return views
+        return views.filterNot { it.isInclude } + views.filter { it.isInclude }
     }
 
     private fun parseNode(node: Node, views: MutableList<View>) {
         if (node.nodeType == Node.ELEMENT_NODE) {
             val id = node.attributes?.getNamedItem("android:id")
             if (id != null) {
-                views.add(
-                    View(
-                        node.nodeName.substringAfterLast("."),
-                        if (node.nodeName.contains(".")) node.nodeName else "android.widget.${node.nodeName}",
-                        id.nodeValue.substringAfter("/")
+                if (node.nodeName == "include") {
+                    val layout = node.attributes?.getNamedItem("layout")?.nodeValue?.substringAfter("/")
+                    if (layout != null) {
+                        val id = node.attributes?.getNamedItem("android:id")
+                        if (id != null) {
+                            views.add(
+                                View(
+                                    generateFileNameForLayout(layout),
+                                    packageName + "." + generateFileNameForLayout(layout),
+                                    id.nodeValue.substringAfter("/"),
+                                    true
+                                )
+                            )
+                        }
+                    }
+                } else {
+                    views.add(
+                        View(
+                            node.nodeName.substringAfterLast("."),
+                            if (node.nodeName.contains(".")) node.nodeName else "android.widget.${node.nodeName}",
+                            id.nodeValue.substringAfter("/")
+                        )
                     )
-                )
+                }
             }
             for (i in 0 until node.childNodes.length) {
                 parseNode(node.childNodes.item(i), views)
@@ -122,12 +141,21 @@ ${views.joinToString("\n") { "        ${it.name} ${it.id} = findChildViewById(vi
         }
     }
 
-    data class View(val name: String, val fullName: String, val id: String)
+    data class View(val type: String, val fullName: String, val id: String, val isInclude: Boolean = false) {
+        val name = generateId(id)
+    }
 
     companion object {
+
+        @JvmStatic
+        fun generateId(name: String): String {
+            return if (name.contains('_')) name.substringBefore('_') + name.substringAfter('_').split('_')
+                .joinToString("") { part -> part.replaceFirstChar { it.uppercaseChar() } } else name
+        }
+
         @JvmStatic
         fun generateFileNameForLayout(layoutName: String): String {
-            return layoutName.split("_")
+            return layoutName.split('_')
                 .joinToString("") { part -> part.replaceFirstChar { it.uppercaseChar() } } + "Binding"
         }
     }
