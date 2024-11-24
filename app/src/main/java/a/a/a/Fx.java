@@ -17,7 +17,7 @@ import mod.hey.studios.editor.manage.block.code.ExtraBlockCode;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
 public class Fx {
-    
+
     private static final Pattern PARAM_PATTERN = Pattern.compile("%m(?!\\.[\\w]+)");
     public String[] a = {"repeat", "+", "-", "*", "/", "%", ">", "=", "<", "&&", "||", "not"};
     public String[] b = {"+", "-", "*", "/", "%", ">", "=", "<", "&&", "||"};
@@ -73,7 +73,7 @@ public class Fx {
 
         String moreBlock = "";
 
-        String opcode = mceb.getCodeExtraBlock(bean, "\"\"");
+        String opcode = "";
         switch (bean.opCode) {
             case "definedFunc":
                 int space = bean.spec.indexOf(" ");
@@ -1211,11 +1211,13 @@ public class Fx {
             case "locationManagerRemoveUpdates":
                 opcode = params.get(0) + ".removeUpdates(_" + params.get(0) + "_location_listener);";
                 break;
+            default:
+                opcode = mceb.getCodeExtraBlock(bean, "\"\"");
         }
         String code = opcode;
         /**
-         * switch block above should be responsible for handling %m param. 
-         * However, upon decompiling this class, it completely ignore this case. 
+         * switch block above should be responsible for handling %m param.
+         * However, upon decompiling this class, it completely ignore this case.
          * This is the solution for now to prevent errors during code generation.
          */
         if (hasEmptySelectorParam(params, bean.spec)) {
