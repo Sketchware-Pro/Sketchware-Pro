@@ -55,7 +55,7 @@ public class WidgetsCreatorManager extends IconBase {
             "BottomNavigationView", "Button", "CardView", "CheckBox", "CodeView", "EditText", "GridView",
             "HorizontalScrollView", "ImageView", "LinearLayout", "ListView", "MaterialButton", "ProgressBar",
             "RadioButton", "RecyclerView", "SeekBar", "Spinner", "SwipeRefreshLayout", "TabLayout",
-            "TextInputLayout", "TextView", "VerticalScrollView", "VideoView", "ViewPager", "WebView"
+            "TextInputLayout", "TextView", "VerticalScrollView", "VideoView", "ViewPager", "WebView", "Switch"
     );
     public static List<String> types_array = Arrays.asList(
             "32", "3", "36", "11", "47", "5", "25",
