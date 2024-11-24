@@ -120,21 +120,22 @@ import io.github.rosemoe.sora.widget.component.Magnifier;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.bobur.StringEditorActivity;
+import pro.sketchware.menu.ExtraMenuBean;
+
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
-import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 import pro.sketchware.databinding.ViewStringEditorAddBinding;
-import pro.sketchware.menu.ExtraMenuBean;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.SvgUtils;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
@@ -166,7 +167,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private boolean G, u, W, X, da, ea, ha, ia;
     private final Runnable aa = this::r;
     private ArrayList<BlockBean> savedBlockBean = new ArrayList<>();
-    private Boolean isViewBindingEnabled;
 
     private final ActivityResultLauncher<Intent> openStringEditor = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
@@ -281,13 +281,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         invalidateOptionsMenu();
     }
 
-    public void E() {
+    public final void E() {
         eC a2 = jC.a(B);
         String javaName = M.getJavaName();
         a2.a(javaName, C + "_" + D, o.getBlocks());
     }
 
-    public void G() {
+    public final void G() {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_add_new_list));
         aBVar.a(R.drawable.ic_mtrl_add);
@@ -556,12 +556,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         openStringEditor.launch(intent);
     }
 
-    public void I() {
+    public final void I() {
         ArrayList<MoreBlockCollectionBean> moreBlocks = Pp.h().f();
         new MoreblockImporterDialog(this, moreBlocks, this).show();
     }
 
-    public void J() {
+    public final void J() {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_remove_list));
         aBVar.a(R.drawable.ic_mtrl_delete);
@@ -593,7 +593,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.show();
     }
 
-    public void K() {
+    public final void K() {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_remove_variable));
         aBVar.a(R.drawable.ic_mtrl_delete);
@@ -846,7 +846,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         a(1, 0xffcc5b22);
     }
 
-    public void a(Rs rs) {
+    public final void a(Rs rs) {
         w = null;
         y = -1;
         x = 0;
@@ -893,7 +893,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         C();
     }
 
-    public void pickImage(Ss ss, String str) {
+    public final void pickImage(Ss ss, String str) {
         boolean selectingBackgroundImage = "property_background_resource".equals(str);
         boolean selectingImage = !selectingBackgroundImage && "property_image".equals(str);
         aB dialog = new aB(this);
@@ -942,15 +942,18 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         dialog.a(customView);
         dialog.b(getTranslatedString(R.string.common_word_save), v -> {
-            for (int i = 0; i < radioGroup.getChildCount(); i++) {
-                View child = radioGroup.getChildAt(i);
-                if (child instanceof RadioButton) {
-                    RadioButton radioButton = (RadioButton) child;
-                    if (radioButton.isChecked()) {
-                        a(ss, radioButton.getTag());
-                        break;
-                    }
+            int childCount = radioGroup.getChildCount();
+            int i = 0;
+            while (true) {
+                if (i >= childCount) {
+                    break;
                 }
+                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
+                if (radioButton.isChecked()) {
+                    a(ss, radioButton.getTag());
+                    break;
+                }
+                i++;
             }
             dialog.dismiss();
         });
@@ -1004,7 +1007,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.show();
     }
 
-    public void a(BlockBean blockBean, boolean z) {
+    public final void a(BlockBean blockBean, boolean z) {
         Rs block = o.a(blockBean.id);
         if (block != null) {
             block.ia = -1;
@@ -1352,11 +1355,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    public void a(String str, int i) {
+    public final void a(String str, int i) {
         m.a(str, i);
     }
 
-    public void a(String str, Rs rs) {
+    public final void a(String str, Rs rs) {
         ArrayList<String> arrayList;
         ArrayList<Rs> allChildren = rs.getAllChildren();
         ArrayList<BlockBean> arrayList2 = new ArrayList<>();
@@ -1404,7 +1407,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    public void a(boolean z) {
+    public final void a(boolean z) {
         N.a(z);
     }
 
@@ -1452,7 +1455,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         o.b(rs);
     }
 
-    public void b(Ss ss) {
+    public final void b(Ss ss) {
         Zx zx = new Zx(this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false, B);
         zx.a(new Zx.b() {
             @Override
@@ -1472,21 +1475,21 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         zx.showAtLocation(ss, Gravity.CENTER, 0, 0);
     }
 
-    public void b(String str, String str2) {
+    public final void b(String str, String str2) {
         TextView a2 = m.a(str);
         a2.setTag(str2);
         a2.setSoundEffectsEnabled(true);
         a2.setOnClickListener(this);
     }
 
-    public void b(String str, String str2, View.OnClickListener onClickListener) {
+    public final void b(String str, String str2, View.OnClickListener onClickListener) {
         TextView a2 = m.a(str);
         a2.setTag(str2);
         a2.setSoundEffectsEnabled(true);
         a2.setOnClickListener(onClickListener);
     }
 
-    public void b(boolean z) {
+    public final void b(boolean z) {
         N.b(z);
     }
 
@@ -1494,7 +1497,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return N.b(f, f2);
     }
 
-    public void c(Rs rs) {
+    public final void c(Rs rs) {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_block_favorites_save_title));
         aBVar.a(R.drawable.ic_bookmark_red_48dp);
@@ -1542,7 +1545,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         a(8, 0xff8a55d7);
     }
 
-    public void c(boolean z) {
+    public final void c(boolean z) {
         N.c(z);
     }
 
@@ -1582,17 +1585,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return linearLayout;
     }
 
-    public RadioButton d(String type, String id) {
+    public final RadioButton d(String str, String str2) {
         RadioButton radioButton = new RadioButton(this);
-        radioButton.setText(type + " : " + id);
-        radioButton.setTag(isViewBindingEnabled ? "binding." + id : id);
+        radioButton.setText(str + " : " + str2);
+        radioButton.setTag(str2);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (wB.a(this, 1.0f) * 40.0f));
         radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
         return radioButton;
     }
 
-    public void d(Ss ss) {
+    public final void d(Ss ss) {
         aB dialog = new aB(this);
         dialog.b(getTranslatedString(R.string.logic_editor_title_select_font));
         dialog.a(R.drawable.abc_96_color);
@@ -1628,7 +1631,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.show();
     }
 
-    public void d(boolean z) {
+    public final void d(boolean z) {
         N.d(z);
     }
 
@@ -1697,21 +1700,21 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         f(getResources().getConfiguration().orientation);
     }
 
-    public void f(int i) {
+    public final void f(int i) {
         LinearLayout.LayoutParams layoutParams;
         int a2;
         int i2 = ViewGroup.LayoutParams.MATCH_PARENT;
         if (X) {
-            int width = getResources().getDisplayMetrics().widthPixels;
-            int height = getResources().getDisplayMetrics().heightPixels;
-            if (width <= height) {
-                width = height;
+            int i3 = getResources().getDisplayMetrics().widthPixels;
+            int i4 = getResources().getDisplayMetrics().heightPixels;
+            if (i3 <= i4) {
+                i3 = i4;
             }
             if (2 == i) {
-                i2 = width - ((int) wB.a(this, 320.0f));
+                i2 = i3 - ((int) wB.a(this, 320.0f));
                 a2 = ViewGroup.LayoutParams.MATCH_PARENT;
             } else {
-                a2 = ((width - GB.a(getContext())) - GB.f(getContext())) - ((int) wB.a(this, 240.0f));
+                a2 = ((i3 - GB.a(getContext())) - GB.f(getContext())) - ((int) wB.a(this, 240.0f));
             }
             layoutParams = new LinearLayout.LayoutParams(i2, a2);
         } else {
@@ -1748,13 +1751,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 if (!toNotAdd.contains("android:id") && viewBean.getClassInfo().a(ss.getClassInfo().a())) {
                     viewGroup.addView(d(typeName, viewBean.id));
                 }
+                ExtraMenuBean.setupSearchView(customView, viewGroup);
             }
         }
 
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
-            String argValue = ss.getArgValue().toString();
-            if (argValue.equals(radioButton.getTag().toString())) {
+            if (ss.getArgValue().toString().equals(radioButton.getTag().toString())) {
                 radioButton.setChecked(true);
                 break;
             }
@@ -1783,7 +1786,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.show();
     }
 
-    public void f(boolean z) {
+    public final void f(boolean z) {
         N.e(z);
     }
 
@@ -1797,40 +1800,40 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return getApplicationContext();
     }
 
-    public void g(int i) {
+    public final void g(int i) {
         RelativeLayout.LayoutParams layoutParams;
-        int orientation;
+        int i2;
         if (2 == i) {
             K.setLayoutParams(new LinearLayout.LayoutParams((int) wB.a(this, 320.0f), ViewGroup.LayoutParams.MATCH_PARENT));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.gravity = Gravity.CENTER | Gravity.BOTTOM;
+            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams2.gravity = Gravity.CENTER | Gravity.BOTTOM;
             int dimension = (int) getResources().getDimension(R.dimen.action_button_margin);
-            params.setMargins(dimension, dimension, dimension, dimension);
-            openBlocksMenuButton.setLayoutParams(params);
+            layoutParams2.setMargins(dimension, dimension, dimension, dimension);
+            openBlocksMenuButton.setLayoutParams(layoutParams2);
             layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             layoutParams.topMargin = GB.a(getContext());
-            orientation = LinearLayout.HORIZONTAL;
+            i2 = LinearLayout.HORIZONTAL;
         } else {
             K.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) wB.a(this, 240.0f)));
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.gravity = Gravity.CENTER | Gravity.RIGHT;
+            LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams3.gravity = Gravity.CENTER | Gravity.RIGHT;
             int dimension2 = (int) getResources().getDimension(R.dimen.action_button_margin);
-            params.setMargins(dimension2, dimension2, dimension2, dimension2);
-            openBlocksMenuButton.setLayoutParams(params);
+            layoutParams3.setMargins(dimension2, dimension2, dimension2, dimension2);
+            openBlocksMenuButton.setLayoutParams(layoutParams3);
             layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            orientation = LinearLayout.VERTICAL;
+            i2 = LinearLayout.VERTICAL;
         }
-        J.setOrientation(orientation);
+        J.setOrientation(i2);
         J.setLayoutParams(layoutParams);
         h(i);
         f(i);
     }
 
-    public void g(boolean z) {
+    public final void g(boolean z) {
         if (!ha) {
             t();
         }
@@ -1841,33 +1844,39 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    public void h(int i) {
-        boolean var2 = X;
-        if (i == 2) {
-            if (!var2) {
-                J.setTranslationX(wB.a(this, 320.0F));
-            } else {
+    public final void h(int i) {
+        label24:
+        {
+            label23:
+            {
+                boolean var2 = X;
+                if (2 == i) {
+                    if (!var2) {
+                        J.setTranslationX((float) ((int) wB.a(this, 320.0F)));
+                        break label23;
+                    }
+                } else if (!var2) {
+                    J.setTranslationX(0.0F);
+                    J.setTranslationY((float) ((int) wB.a(this, 240.0F)));
+                    break label24;
+                }
+
                 J.setTranslationX(0.0F);
             }
+
             J.setTranslationY(0.0F);
-        } else {
-            if (!var2) {
-                J.setTranslationX(0.0F);
-                J.setTranslationY(wB.a(this, 240.0F));
-            } else {
-                J.setTranslationX(0.0F);
-                J.setTranslationY(0.0F);
-            }
         }
 
-        if (i == 2) {
+        ObjectAnimator var3;
+        if (2 == i) {
             U = ObjectAnimator.ofFloat(J, View.TRANSLATION_X, 0.0F);
-            V = ObjectAnimator.ofFloat(J, View.TRANSLATION_X, wB.a(this, 320.0F));
+            var3 = ObjectAnimator.ofFloat(J, View.TRANSLATION_X, (float) ((int) wB.a(this, 320.0F)));
         } else {
             U = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, 0.0F);
-            V = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, wB.a(this, 240.0F));
+            var3 = ObjectAnimator.ofFloat(J, View.TRANSLATION_Y, (float) ((int) wB.a(this, 240.0F)));
         }
 
+        V = var3;
         U.setDuration(500L);
         U.setInterpolator(new DecelerateInterpolator());
         V.setDuration(300L);
@@ -1875,7 +1884,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         W = true;
     }
 
-    public void h(Ss ss) {
+    public final void h(Ss ss) {
         aB dialog = new aB(this);
         dialog.b(getTranslatedString(R.string.logic_editor_title_select_sound));
         dialog.a(R.drawable.music_48);
@@ -1913,7 +1922,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.show();
     }
 
-    public void h(boolean z) {
+    public final void h(boolean z) {
         N.b(false);
         N.a(false);
         N.d(false);
@@ -1929,7 +1938,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         (z ? ba : ca).start();
     }
 
-    public void i(Ss ss) {
+    public final void i(Ss ss) {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_editor_title_select_typeface));
         aBVar.a(R.drawable.abc_96_color);
@@ -1945,21 +1954,25 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.a(a3);
         aBVar.b(getTranslatedString(R.string.common_word_save), v -> {
             int childCount = radioGroup.getChildCount();
-            for (int i = 0; i < childCount; i++) {
+            int i = 0;
+            while (true) {
+                if (i >= childCount) {
+                    break;
+                }
                 RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
                     a(ss, radioButton.getText().toString());
                     break;
                 }
+                i++;
             }
-
             aBVar.dismiss();
         });
         aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
         aBVar.show();
     }
 
-    public void l() {
+    public final void l() {
         if (fa.isRunning()) {
             fa.cancel();
         }
@@ -1973,7 +1986,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         a(1, 0xffcc5b22);
     }
 
-    public void m() {
+    public final void m() {
         if (ba.isRunning()) {
             ba.cancel();
         }
@@ -1987,7 +2000,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         a(0, 0xffee7d16);
     }
 
-    public void n() {
+    public final void n() {
         if (U.isRunning()) {
             U.cancel();
         }
@@ -1996,7 +2009,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
-    public void n(String str) {
+    public final void n(String str) {
         aB aBVar = new aB(this);
         aBVar.b(getTranslatedString(R.string.logic_block_favorites_delete_title));
         aBVar.a(R.drawable.high_priority_96_red);
@@ -2121,8 +2134,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             D = savedInstanceState.getString("event");
             parcelable = savedInstanceState.getParcelable("project_file");
         }
-        isViewBindingEnabled = new ProjectSettings(B).getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "false").equals("true");
         M = (ProjectFileBean) parcelable;
+        DB h = new DB(this, "P1");
         T = (int) wB.a(getBaseContext(), (float) T);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -2161,7 +2174,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         openBlocksMenuButton.setOnClickListener(v -> e(!X));
         N = findViewById(R.id.top_menu);
         O = findViewById(R.id.right_drawer);
-        extraPaletteBlock = new ExtraPaletteBlock(this, isViewBindingEnabled);
+        extraPaletteBlock = new ExtraPaletteBlock(this);
     }
 
     @Override
@@ -2660,7 +2673,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
             Configuration configuration = getResources().getConfiguration();
-            boolean isDarkTheme = configuration.isNightModeActive();
+            boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
             if (isDarkTheme) {
                 codeEditor.setColorScheme(new SchemeDarcula());
             } else {
@@ -2683,7 +2696,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.show();
     }
 
-    public void t() {
+    public final void t() {
         fa = ObjectAnimator.ofFloat(O, View.TRANSLATION_X, 0.0f);
         fa.setDuration(500L);
         fa.setInterpolator(new DecelerateInterpolator());
@@ -2693,7 +2706,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         ha = true;
     }
 
-    public void x() {
+    public final void x() {
         ba = ObjectAnimator.ofFloat(N, View.TRANSLATION_Y, 0.0f);
         ba.setDuration(500L);
         ba.setInterpolator(new DecelerateInterpolator());
@@ -2703,7 +2716,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         da = true;
     }
 
-    public void z() {
+    public final void z() {
         O.a();
         for (BlockCollectionBean next : Mp.h().f()) {
             O.a(next.name, next.blocks).setOnTouchListener(this);
