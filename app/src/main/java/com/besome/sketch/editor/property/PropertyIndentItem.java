@@ -3,6 +3,7 @@ package com.besome.sketch.editor.property;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -198,7 +199,21 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                 ti_bottom.a(binding.etAll.getText().toString());
             }
         });
-
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.tvDpAll.setVisibility(View.GONE);
+            binding.tvDpBottom.setVisibility(View.GONE);
+            binding.tvDpLeft.setVisibility(View.GONE);
+            binding.tvDpRight.setVisibility(View.GONE);
+            binding.tvDpTop.setVisibility(View.GONE);
+            
+            binding.tiAll.setSuffixText("dp");
+            binding.tiBottom.setSuffixText("dp");
+            binding.tiLeft.setSuffixText("dp");
+            binding.tiRight.setSuffixText("dp");
+            binding.tiTop.setSuffixText("dp");
+        }
+        
         dialog.a(view);
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (binding.chkPtyAll.isChecked()) {
@@ -228,5 +243,4 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.show();
     }
-
 }
