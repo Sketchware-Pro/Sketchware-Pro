@@ -1020,8 +1020,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                                 </adaptive-icon>""");
                     }
                 }
-
-
+                
+                onProgress("Generating source code...");
                 kC kC = jC.d(sc_id);
                 kC.b(q.resDirectoryPath + File.separator + "drawable-xhdpi");
                 kC = jC.d(sc_id);

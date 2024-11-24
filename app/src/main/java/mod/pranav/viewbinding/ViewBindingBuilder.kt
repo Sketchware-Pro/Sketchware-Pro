@@ -29,7 +29,7 @@ public final class $name {
     public final ${rootView.name} rootView;
 ${views.joinToString("\n") { "    public final ${it.name} ${it.id};" }}
 
-    private $name(${rootView.name} rootView, ${views.joinToString { "${it.name} ${it.id}" }}) {
+    private $name(${rootView.name} rootView${if (views.isNotEmpty()) views.joinToString(prefix=", ") { "${it.name} ${it.id}" } else ""}) {
         this.rootView = rootView;
 ${views.joinToString("\n") { "        this.${it.id} = ${it.id};" }}
     }
