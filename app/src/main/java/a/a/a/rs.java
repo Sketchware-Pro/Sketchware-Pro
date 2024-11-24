@@ -404,7 +404,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 holder.type.setBackgroundResource(oq.a(eventBean.eventName));
                 holder.name.setText(eventBean.eventName);
                 holder.description.setText(oq.a(eventBean.eventName, requireContext()));
-                holder.icon.setImageResource(R.drawable.widget_source);
+                holder.icon.setImageResource(R.drawable.ic_mtrl_code);
                 holder.preview.setVisibility(View.GONE);
                 holder.targetType.setVisibility(View.GONE);
             } else {
@@ -416,7 +416,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 } else if (eventBean.eventType == EventBean.EVENT_TYPE_COMPONENT) {
                     holder.targetType.setText(ComponentBean.getComponentName(requireContext(), eventBean.targetType));
                 } else if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
-                    holder.icon.setImageResource(R.drawable.widget_source);
+                    holder.icon.setImageResource(R.drawable.ic_mtrl_code);
                     holder.targetType.setVisibility(View.GONE);
                     holder.preview.setVisibility(View.GONE);
                 }

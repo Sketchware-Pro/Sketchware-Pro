@@ -140,7 +140,6 @@ public class StringEditorActivity extends AppCompatActivity {
             convertXmlToListMap(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(getIntent().getStringExtra("content")))), listmap);
             adapter.notifyDataSetChanged();
         } else if (id == 3) {
-            isComingFromSrcCodeEditor = true;
             XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {

@@ -15,9 +15,9 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.util.HashMap;
 
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
+import pro.sketchware.utility.FileUtil;
 
 public class ProjectSettings {
 
@@ -32,6 +32,11 @@ public class ProjectSettings {
      * Setting to make the app's main theme inherit from fully material-styled themes, and not *.Bridge ones
      */
     public static final String SETTING_ENABLE_BRIDGELESS_THEMES = "enable_bridgeless_themes";
+
+    /**
+     * Setting to enable view binding in the project
+     */
+    public static final String SETTING_ENABLE_VIEWBINDING = "enable_viewbinding";
 
     /**
      * Setting for the final app's {@link Application} class
@@ -58,8 +63,8 @@ public class ProjectSettings {
     public String sc_id;
     private HashMap<String, String> hashmap;
 
-    public ProjectSettings(String s) {
-        sc_id = s;
+    public ProjectSettings(String scId) {
+        sc_id = scId;
 
         path = getPath();
 
@@ -130,6 +135,11 @@ public class ProjectSettings {
                 hashmap.put(key, value);
             }
         }
+        save();
+    }
+
+    public void setValue(String key, String value) {
+        hashmap.put(key, value);
         save();
     }
 

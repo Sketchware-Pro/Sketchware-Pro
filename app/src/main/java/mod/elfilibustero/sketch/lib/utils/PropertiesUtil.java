@@ -32,11 +32,15 @@ public class PropertiesUtil {
     }
 
     public static int resolveSize(String value, int defaultValue) {
-        var reference = getUnitOrPrefix(value);
-        if (TextUtils.isEmpty(value) || reference == null) {
+        try {
+            var reference = getUnitOrPrefix(value);
+            if (TextUtils.isEmpty(value) || reference == null) {
+                return defaultValue;
+            }
+            return Integer.parseInt(reference.second);
+        } catch (NumberFormatException e) {
             return defaultValue;
         }
-        return Integer.parseInt(reference.second);
     }
 
     public static Pair<String, String> getUnitOrPrefix(String value) {

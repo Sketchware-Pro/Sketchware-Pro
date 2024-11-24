@@ -15,22 +15,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
+import a.a.a.Ox;
 import a.a.a.jC;
 import a.a.a.jq;
 import a.a.a.kq;
-import a.a.a.Ox;
-import pro.sketchware.utility.SketchwareUtil;
 import mod.agus.jcoderz.beans.ViewBeans;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileResConfig;
-import pro.sketchware.utility.FileUtil;
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
-import pro.sketchware.blocks.ExtraBlocks;
-import pro.sketchware.control.logic.LogicClickListener;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.blocks.BlocksHandler;
+import pro.sketchware.blocks.ExtraBlocks;
+import pro.sketchware.control.logic.LogicClickListener;
+import pro.sketchware.utility.FileResConfig;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ExtraPaletteBlock {
 
@@ -45,8 +44,9 @@ public class ExtraPaletteBlock {
     private final HashMap<String, Object> mapSave = new HashMap<>();
     private final ProjectFileBean projectFile;
     public LogicEditorActivity logicEditor;
+    private final Boolean isViewBindingEnabled;
 
-    public ExtraPaletteBlock(LogicEditorActivity logicEditorActivity) {
+    public ExtraPaletteBlock(LogicEditorActivity logicEditorActivity, Boolean isViewBindingEnabled) {
         logicEditor = logicEditorActivity;
         eventName = logicEditorActivity.D;
 
@@ -54,6 +54,7 @@ public class ExtraPaletteBlock {
         javaName = projectFile.getJavaName();
         xmlName = projectFile.getXmlName();
         sc_id = logicEditor.B;
+        this.isViewBindingEnabled = isViewBindingEnabled;
 
         frc = new FileResConfig(sc_id);
         extraBlocks = new ExtraBlocks(logicEditor);
@@ -266,7 +267,7 @@ public class ExtraPaletteBlock {
 
                     if (!customView.convert.equals("include")) {
                         String typeName = customView.convert.isEmpty() ? ViewBean.getViewTypeName(customView.type) : IdGenerator.getLastPath(customView.convert);
-                        logicEditor.a(customView.id, "v", typeName, "getVar").setTag(customView.id);
+                        logicEditor.a(customView.id, "v", typeName, "getVar").setTag(isViewBindingEnabled ? "binding." + customView.id : customView.id);
                     }
                 }
             }
@@ -289,7 +290,7 @@ public class ExtraPaletteBlock {
             if (!view.convert.equals("include")) {
                 if (!toNotAdd.contains("android:id")) {
                     String typeName = view.convert.isEmpty() ? ViewBean.getViewTypeName(view.type) : IdGenerator.getLastPath(view.convert);
-                    logicEditor.a(view.id, "v", typeName, "getVar").setTag(view.id);
+                    logicEditor.a(isViewBindingEnabled ? "binding." + view.id : view.id, "v", typeName, "getVar").setTag(isViewBindingEnabled ? "binding." + view.id : view.id);
                 }
             }
         }

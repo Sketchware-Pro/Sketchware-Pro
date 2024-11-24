@@ -1,4 +1,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/bookmark_48_white" android:state_selected="true" />
-    <item android:drawable="@drawable/ic_bookmark_red_48dp" android:state_selected="false" />
+    <item android:drawable="@drawable/ic_mtrl_bookmark" android:state_selected="false" />
 </selector>

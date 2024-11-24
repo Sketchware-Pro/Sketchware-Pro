@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -20,7 +21,6 @@
                 android:id="@+id/tv_warning_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ff7d7d7d"
                 android:textSize="13sp"
                 tools:text="@string/common_message_confirm" />
         </LinearLayout>
@@ -45,15 +45,12 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginRight="8dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_checkmark_green_48dp" />
+                    android:src="@drawable/ic_mtrl_check" />
 
                 <TextView
                     android:id="@+id/confirm_yes_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@null"
-                    android:textColor="#ff757575"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -72,14 +69,14 @@
                     android:layout_height="18dp"
                     android:layout_marginRight="8dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/delete_96" />
+                    app:tint="?colorError"
+                    android:src="@drawable/ic_mtrl_close" />
 
                 <TextView
                     android:id="@+id/confirm_no_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@null"
-                    android:textColor="#ff757575"
+                    android:textColor="?colorError"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>

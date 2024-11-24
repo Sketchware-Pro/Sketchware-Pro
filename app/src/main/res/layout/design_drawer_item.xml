@@ -24,7 +24,9 @@
             android:id="@+id/img_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_margin="8dp" />
+            android:tintMode="src_in"
+            android:layout_margin="8dp"
+            app:tint="?android:attr/colorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
