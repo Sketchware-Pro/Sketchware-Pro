@@ -116,7 +116,8 @@
                             android:layout_height="25dp"
                             android:layout_marginLeft="8dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_mtrl_add" />
+                            android:src="@drawable/ic_mtrl_add" 
+                            android:background="?selectableItemBackgroundBorderless"/>
                     </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
