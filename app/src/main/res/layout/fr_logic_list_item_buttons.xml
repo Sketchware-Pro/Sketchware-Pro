@@ -45,13 +45,15 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginRight="8dp"
-                    android:src="@drawable/ic_mtrl_check" />
+                    android:src="@drawable/ic_mtrl_check"
+                    app:tint="?colorError" />
 
                 <TextView
                     android:id="@+id/confirm_yes_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:textColor="?colorError" />
             </LinearLayout>
 
             <LinearLayout
@@ -69,14 +71,12 @@
                     android:layout_height="18dp"
                     android:layout_marginRight="8dp"
                     android:contentDescription="@null"
-                    app:tint="?colorError"
                     android:src="@drawable/ic_mtrl_close" />
 
                 <TextView
                     android:id="@+id/confirm_no_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?colorError"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
