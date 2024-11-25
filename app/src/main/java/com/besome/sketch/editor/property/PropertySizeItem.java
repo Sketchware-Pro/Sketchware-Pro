@@ -46,7 +46,7 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         int identifier = getResources().getIdentifier(str, "string", getContext().getPackageName());
         if (identifier > 0) {
             tvName.setText(Helper.getResString(identifier));
-            icon = R.drawable.expand_48;
+            icon = R.drawable.ic_mtrl_expand;
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
                 ((TextView) findViewById(R.id.tv_title)).setText(Helper.getResString(identifier));
