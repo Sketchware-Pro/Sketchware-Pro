@@ -1,0 +1,6 @@
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromDegrees="270">
+  <layer-list>
+    <item android:drawable="@drawable/ic_mtrl_move_x"/>
+  </layer-list>
+</rotate>
