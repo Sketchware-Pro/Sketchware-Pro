@@ -128,6 +128,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
+import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 import pro.sketchware.databinding.ViewStringEditorAddBinding;
@@ -1583,6 +1584,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public RadioButton d(String type, String id) {
+        if (isViewBindingEnabled) {
+            id = ViewBindingBuilder.generateId(id);
+        }
         RadioButton radioButton = new RadioButton(this);
         radioButton.setText(type + " : " + id);
         radioButton.setTag(isViewBindingEnabled ? "binding." + id : id);

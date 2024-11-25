@@ -39,6 +39,7 @@ import a.a.a.oq;
 import a.a.a.tx;
 import a.a.a.xB;
 import mod.hey.studios.project.ProjectSettings;
+import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.R;
 
 public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickListener {
@@ -888,14 +889,14 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                         for (BlockBean blockBean : blockBeans) {
                             Gx classInfo = blockBean.getClassInfo();
 
-                            if (classInfo != null && classInfo.d() && blockBean.spec.equals((viewBinding ? "binding." : "") + bean.preId)) {
-                                blockBean.spec = (viewBinding ? "binding." : "") + bean.id;
+                            if (classInfo != null && classInfo.d() && blockBean.spec.equals(viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.preId) : bean.preId)) {
+                                blockBean.spec = viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.id) : bean.id;
                             } else {
                                 ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
                                 if (paramClassInfo != null && !paramClassInfo.isEmpty()) {
                                     for (int i = 0; i < paramClassInfo.size(); ++i) {
-                                        if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals((viewBinding ? "binding." : "") + bean.preId)) {
-                                            blockBean.parameters.set(i, (viewBinding ? "binding." : "") + bean.id);
+                                        if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.preId) : bean.preId)) {
+                                            blockBean.parameters.set(i, viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.id) : bean.id);
                                         }
                                     }
                                 }
@@ -924,14 +925,14 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                         for (BlockBean blockBean : blockBeans) {
                             Gx classInfo = blockBean.getClassInfo();
 
-                            if (classInfo != null && classInfo.d() && blockBean.spec.equals((viewBinding ? "binding." : "") +bean.preId)) {
-                                blockBean.spec = (viewBinding ? "binding." : "") + bean.id;
+                            if (classInfo != null && classInfo.d() && blockBean.spec.equals(viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.preId) : bean.preId)) {
+                                blockBean.spec = viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.id) : bean.id;
                             } else {
                                 ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
                                 if (paramClassInfo != null && !paramClassInfo.isEmpty()) {
                                     for (int i = 0; i < paramClassInfo.size(); ++i) {
-                                        if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals((viewBinding ? "binding." : "") + bean.preId)) {
-                                            blockBean.parameters.set(i, (viewBinding ? "binding." : "") + bean.id);
+                                        if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.preId) : bean.preId)) {
+                                            blockBean.parameters.set(i, viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.id) : bean.id);
                                         }
                                     }
                                 }
