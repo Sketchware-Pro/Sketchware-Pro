@@ -331,40 +331,42 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
 
     public static int getIconResource(int type) {
         return switch (type) {
-            case COMPONENT_TYPE_INTENT -> R.drawable.widget_intent;
-            case COMPONENT_TYPE_SHAREDPREF -> R.drawable.widget_shared_preference;
-            case COMPONENT_TYPE_CALENDAR -> R.drawable.widget_calendar;
-            case COMPONENT_TYPE_VIBRATOR -> R.drawable.widget_vibrator;
-            case COMPONENT_TYPE_TIMERTASK -> R.drawable.widget_timer;
-            case COMPONENT_TYPE_FIREBASE, COMPONENT_TYPE_FIREBASE_AUTH,
-                 COMPONENT_TYPE_FIREBASE_STORAGE -> R.drawable.widget_firebase;
-            case COMPONENT_TYPE_DIALOG -> R.drawable.widget_alertdialog;
-            case COMPONENT_TYPE_MEDIAPLAYER -> R.drawable.widget_mediaplayer;
-            case COMPONENT_TYPE_SOUNDPOOL -> R.drawable.widget_soundpool;
-            case COMPONENT_TYPE_OBJECTANIMATOR -> R.drawable.widget_objectanimator;
-            case COMPONENT_TYPE_GYROSCOPE -> R.drawable.widget_gyroscope;
-            case COMPONENT_TYPE_INTERSTITIAL_AD -> R.drawable.widget_admob;
-            case COMPONENT_TYPE_CAMERA -> R.drawable.widget_camera;
-            case COMPONENT_TYPE_FILE_PICKER -> R.drawable.widget_file;
-            case COMPONENT_TYPE_REQUEST_NETWORK -> R.drawable.widget_network_request;
-            case COMPONENT_TYPE_TEXT_TO_SPEECH -> R.drawable.widget_text_to_speech;
-            case COMPONENT_TYPE_SPEECH_TO_TEXT -> R.drawable.widget_speech_to_text;
-            case COMPONENT_TYPE_BLUETOOTH_CONNECT -> R.drawable.widget_bluetooth;
-            case COMPONENT_TYPE_LOCATION_MANAGER -> R.drawable.widget_location;
-            case COMPONENT_TYPE_REWARDED_VIDEO_AD -> R.drawable.widget_media_controller;
-            case COMPONENT_TYPE_PROGRESS_DIALOG -> R.drawable.widget_progress_dialog;
-            case COMPONENT_TYPE_DATE_PICKER_DIALOG -> R.drawable.widget_date_picker_dialog;
-            case COMPONENT_TYPE_TIME_PICKER_DIALOG -> R.drawable.widget_time_picker_dialog;
-            case COMPONENT_TYPE_NOTIFICATION -> R.drawable.widget_notification;
-            case COMPONENT_TYPE_FRAGMENT_ADAPTER -> R.drawable.widget_fragment;
-            case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> R.drawable.widget_phone_auth;
-            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> R.drawable.component_dynamic_link;
-            case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> R.drawable.component_fcm;
-            case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> R.drawable.component_firebase_google;
-            case COMPONENT_TYPE_ONESIGNAL -> R.drawable.component_firebase_admin;
-            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> R.drawable.component_fbads_banner;
-            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL ->
-                    R.drawable.component_fbads_interstitial;
+            case COMPONENT_TYPE_INTENT -> R.drawable.ic_mtrl_version_control;
+            case COMPONENT_TYPE_SHAREDPREF -> R.drawable.ic_mtrl_save;
+            case COMPONENT_TYPE_CALENDAR -> R.drawable.ic_mtrl_calendar;
+            case COMPONENT_TYPE_VIBRATOR -> R.drawable.ic_mtrl_vibration;
+            case COMPONENT_TYPE_TIMERTASK -> R.drawable.ic_mtrl_timer;
+            case COMPONENT_TYPE_FIREBASE_AUTH-> R.drawable.ic_mtrl_firebase_auth;
+            case COMPONENT_TYPE_FIREBASE_STORAGE -> R.drawable.ic_mtrl_firebase_storage;
+            case COMPONENT_TYPE_FIREBASE -> R.drawable.ic_mtrl_firebase_rtdb;
+            case COMPONENT_TYPE_DIALOG -> R.drawable.ic_mtrl_dialog;
+            case COMPONENT_TYPE_MEDIAPLAYER -> R.drawable.ic_mtrl_video;
+            case COMPONENT_TYPE_SOUNDPOOL -> R.drawable.ic_mtrl_volume;
+            case COMPONENT_TYPE_OBJECTANIMATOR -> R.drawable.ic_mtrl_animation;
+            case COMPONENT_TYPE_GYROSCOPE -> R.drawable.ic_mtrl_sensors;
+            case COMPONENT_TYPE_INTERSTITIAL_AD -> R.drawable.ic_mtrl_admob;
+            case COMPONENT_TYPE_CAMERA -> R.drawable.ic_mtrl_camera;
+            case COMPONENT_TYPE_FILE_PICKER -> R.drawable.ic_mtrl_file;
+            case COMPONENT_TYPE_REQUEST_NETWORK -> R.drawable.ic_mtrl_wifi;
+            case COMPONENT_TYPE_TEXT_TO_SPEECH -> R.drawable.ic_mtrl_tts;
+            case COMPONENT_TYPE_SPEECH_TO_TEXT -> R.drawable.ic_mtrl_stt;
+            case COMPONENT_TYPE_BLUETOOTH_CONNECT -> R.drawable.ic_mtrl_bluetooth;
+            case COMPONENT_TYPE_LOCATION_MANAGER -> R.drawable.ic_mtrl_location;
+            case COMPONENT_TYPE_REWARDED_VIDEO_AD -> R.drawable.ic_mtrl_screen_play;
+            case COMPONENT_TYPE_PROGRESS_DIALOG -> R.drawable.ic_mtrl_progress;
+            case COMPONENT_TYPE_DATE_PICKER_DIALOG -> R.drawable.ic_mtrl_calendar_add;
+            case COMPONENT_TYPE_TIME_PICKER_DIALOG -> R.drawable.ic_mtrl_time;
+            case COMPONENT_TYPE_NOTIFICATION -> R.drawable.ic_mtrl_notifications;
+            case COMPONENT_TYPE_FRAGMENT_ADAPTER -> R.drawable.ic_mtrl_viewpager;
+            case COMPONENT_TYPE_FIREBASE_AUTH_PHONE -> R.drawable.ic_mtrl_firebase_sms;
+            case COMPONENT_TYPE_FIREBASE_DYNAMIC_LINKS -> R.drawable.ic_mtrl_firebase_dl;
+            case COMPONENT_TYPE_FIREBASE_CLOUD_MESSAGE -> R.drawable.ic_mtrl_firebase_cloud;
+            case COMPONENT_TYPE_FIREBASE_AUTH_GOOGLE_LOGIN -> R.drawable.ic_mtrl_firebase_google;
+            case COMPONENT_TYPE_ONESIGNAL -> R.drawable.ic_mtrl_firebase_onesignal;
+            case 36 -> R.drawable.ic_mtrl_sync;
+            case COMPONENT_TYPE_FACEBOOK_ADS_BANNER -> R.drawable.ic_mtrl_fbads_banner;
+            case COMPONENT_TYPE_FACEBOOK_ADS_INTERSTITIAL -> R.drawable.ic_mtrl_fbads_banner;
+
             default -> ComponentsHandler.icon(type);
         };
     }
