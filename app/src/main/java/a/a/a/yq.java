@@ -8,7 +8,6 @@ import android.content.Context;
 import android.util.Log;
 import android.util.Pair;
 
-import pro.sketchware.SketchApplication;
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
@@ -25,11 +24,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.blocks.CommandBlock;
+import pro.sketchware.SketchApplication;
+import pro.sketchware.utility.FileUtil;
 
 public class yq {
 
@@ -503,7 +503,7 @@ public class yq {
         }
         for (ProjectFileBean activity : projectFileManager.b()) {
             if (activity.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-                N.a(activity.getActivityName()).a = true;
+                N.a(activity.getActivityName()).hasDrawer = true;
             }
             for (ComponentBean component : projectDataManager.e(activity.getJavaName())) {
                 switch (component.type) {
@@ -531,7 +531,7 @@ public class yq {
                             N.addPermission(activity.getActivityName(), jq.PERMISSION_VIBRATE);
                     case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH -> {
                         N.isFirebaseAuthUsed = true;
-                        N.a(activity.getActivityName()).b = true;
+                        N.a(activity.getActivityName()).usesFirebaseAuth = true;
                     }
                     case ComponentBean.COMPONENT_TYPE_REQUEST_NETWORK -> {
                         N.isGsonUsed = true;

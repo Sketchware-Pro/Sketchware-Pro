@@ -310,20 +310,17 @@ public class jq {
         /**
          * True if Activity contains a Drawer.
          */
-        public boolean a = false;
+        public boolean hasDrawer = false;
 
         /**
          * True if Activity uses Firebase Auth.
          */
-        public boolean b = false;
+        public boolean usesFirebaseAuth = false;
 
         /**
          * The permissions bitfield.
          */
         public int c = 0;
-
-        public a() {
-        }
 
         public void a(int i) {
             c = i | c;
