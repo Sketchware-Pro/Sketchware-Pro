@@ -18,49 +18,49 @@ import mod.hey.studios.moreblock.ReturnMoreblockManager;
 public class Fx {
 
     private static final Pattern PARAM_PATTERN = Pattern.compile("%m(?!\\.[\\w]+)");
-    public String[] a = {"repeat", "+", "-", "*", "/", "%", ">", "=", "<", "&&", "||", "not"};
-    public String[] b = {"+", "-", "*", "/", "%", ">", "=", "<", "&&", "||"};
-    public String c;
-    public String d;
+    public final boolean isViewBindingEnabled;
+    public String[] operators = {"repeat", "+", "-", "*", "/", "%", ">", "=", "<", "&&", "||", "not"};
+    public String[] arithmetic = {"+", "-", "*", "/", "%", ">", "=", "<", "&&", "||"};
     public String moreBlock = "";
-    public jq e;
-    public ArrayList<BlockBean> f;
-    public Map<String, BlockBean> g;
+    public String activityName;
+    public jq buildConfig;
+    public ArrayList<BlockBean> eventBlocks;
     public ExtraBlockCode mceb;
+    public Map<String, BlockBean> blockMap;
 
-    public Fx(String var1, jq var2, String var3, ArrayList<BlockBean> var4) {
-        c = var1;
-        e = var2;
-        d = var3;
-        f = var4;
+    public Fx(String activityName, jq buildConfig, ArrayList<BlockBean> eventBlocks, boolean isViewBindingEnabled) {
+        this.activityName = activityName;
+        this.buildConfig = buildConfig;
+        this.eventBlocks = eventBlocks;
+        this.isViewBindingEnabled = isViewBindingEnabled;
         mceb = new ExtraBlockCode(this);
     }
 
     public String a() {
-        g = new HashMap<>();
-        ArrayList<BlockBean> beans = f;
+        blockMap = new HashMap<>();
+        ArrayList<BlockBean> beans = eventBlocks;
 
         if (beans != null && !beans.isEmpty()) {
-            for (BlockBean bean : f) {
-                g.put(bean.id, bean);
+            for (BlockBean bean : eventBlocks) {
+                blockMap.put(bean.id, bean);
             }
 
-            return a(f.get(0), "");
+            return generateBlock(eventBlocks.get(0), "");
         } else {
             return "";
         }
     }
 
-    public final String a(BlockBean bean, String var2) {
+    public final String generateBlock(BlockBean bean, String var2) {
         ArrayList<String> params = getBlockParams(bean);
 
         String opcode = getBlockCode(bean, params);
 
         String code = opcode;
-        /**
-         * switch block above should be responsible for handling %m param.
-         * However, upon decompiling this class, it completely ignore this case.
-         * This is the solution for now to prevent errors during code generation.
+        /*
+          switch block above should be responsible for handling %m param.
+          However, upon decompiling this class, it completely ignore this case.
+          This is the solution for now to prevent errors during code generation.
          */
         if (hasEmptySelectorParam(params, bean.spec)) {
             code = "";
@@ -147,8 +147,8 @@ public class Fx {
             return "\"" + escapeString(param) + "\"";
         } else if (type == 1) {
             /**
-             * Ideally, a.a.aFx#a(BlockBean, String) should be responsible for parsing the input properly. 
-             * However, upon decompiling this class, it seems to completely ignore this case. 
+             * Ideally, a.a.aFx#a(BlockBean, String) should be responsible for parsing the input properly.
+             * However, upon decompiling this class, it seems to completely ignore this case.
              * This is the solution for now to prevent errors during code generation.
              */
             try {
@@ -173,14 +173,12 @@ public class Fx {
         return param;
     }
 
-    public final String a(String var1, String var2) {
-        return !g.containsKey(var1) ? "" : a(g.get(var1), var2);
+    public final String a(String blockId, String var2) {
+        return !blockMap.containsKey(blockId) ? "" : generateBlock(blockMap.get(blockId), var2);
     }
 
     public final boolean b(String var1, String var2) {
-        boolean var11 = Arrays.asList(a).contains(var2);
-        boolean var10 = Arrays.asList(b).contains(var1);
-        return var11 && var10;
+        return Arrays.asList(operators).contains(var2) && Arrays.asList(arithmetic).contains(var1);
     }
 
     public ArrayList<String> getBlockParams(BlockBean bean) {
@@ -535,13 +533,25 @@ public class Fx {
                 opcode = String.format("%s.setOnClickListener(new View.OnClickListener() {\n@Override\npublic void onClick(View _view) {\n%s\n}\n});", params.get(0), listener);
                 break;
             case "isDrawerOpen":
-                opcode = e.a(c).a ? "_drawer.isDrawerOpen(GravityCompat.START)" : "";
+                if (buildConfig.a(activityName).hasDrawer) {
+                    opcode = isViewBindingEnabled ? "binding.drawerLayout.isDrawerOpen(GravityCompat.START);" : "_drawer.isDrawerOpen(GravityCompat.START);";
+                } else {
+                    opcode = "";
+                }
                 break;
             case "openDrawer":
-                opcode = e.a(c).a ? "_drawer.openDrawer(GravityCompat.START);" : "";
+                if (buildConfig.a(activityName).hasDrawer) {
+                    opcode = isViewBindingEnabled ? "binding.drawerLayout.openDrawer(GravityCompat.START);" : "_drawer.openDrawer(GravityCompat.START);";
+                } else {
+                    opcode = "";
+                }
                 break;
             case "closeDrawer":
-                opcode = e.a(c).a ? "_drawer.closeDrawer(GravityCompat.START);" : "";
+                if (buildConfig.a(activityName).hasDrawer) {
+                    opcode = isViewBindingEnabled ? "binding.drawerLayout.closeDrawer(GravityCompat.START);" : "_drawer.closeDrawer(GravityCompat.START);";
+                } else {
+                    opcode = "";
+                }
                 break;
             case "setEnable":
                 opcode = String.format("%s.setEnabled(%s);", params.get(0), params.get(1));
@@ -795,7 +805,7 @@ public class Fx {
                 opcode = String.format("%s.setMaxDate((long)(%s));", params.get(0), params.get(1));
                 break;
             case "adViewLoadAd":
-                opcode = String.format("%s.loadAd(new AdRequest.Builder()%s.build());", params.get(0), e.t.stream().map(device -> ".addTestDevice(\"" + device + "\")\n").collect(Collectors.joining()));
+                opcode = String.format("%s.loadAd(new AdRequest.Builder()%s.build());", params.get(0), buildConfig.t.stream().map(device -> ".addTestDevice(\"" + device + "\")\n").collect(Collectors.joining()));
                 break;
             case "mapViewSetMapType":
                 opcode = String.format("_%s_controller.setMapType(GoogleMap.%s);", params.get(0), params.get(1));
@@ -883,16 +893,16 @@ public class Fx {
                 break;
             case "firebaseauthCreateUser":
                 if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
-                    opcode = String.format("%s.createUserWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", params.get(0), params.get(1), params.get(2), c, "_" + params.get(0) + "_create_user_listener");
+                    opcode = String.format("%s.createUserWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", params.get(0), params.get(1), params.get(2), activityName, "_" + params.get(0) + "_create_user_listener");
                 }
                 break;
             case "firebaseauthSignInUser":
                 if (!params.get(1).equals("\"\"") && !params.get(2).equals("\"\"")) {
-                    opcode = String.format("%s.signInWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", params.get(0), params.get(1), params.get(2), c, "_" + params.get(0) + "_sign_in_listener");
+                    opcode = String.format("%s.signInWithEmailAndPassword(%s, %s).addOnCompleteListener(%s.this, %s);", params.get(0), params.get(1), params.get(2), activityName, "_" + params.get(0) + "_sign_in_listener");
                 }
                 break;
             case "firebaseauthSignInAnonymously":
-                opcode = String.format("%s.signInAnonymously().addOnCompleteListener(%s.this, %s);", params.get(0), c, "_" + params.get(0) + "_sign_in_listener");
+                opcode = String.format("%s.signInAnonymously().addOnCompleteListener(%s.this, %s);", params.get(0), activityName, "_" + params.get(0) + "_sign_in_listener");
                 break;
             case "firebaseauthIsLoggedIn":
                 opcode = "(FirebaseAuth.getInstance().getCurrentUser() != null)";
@@ -1333,8 +1343,8 @@ public class Fx {
 
             case "locationManagerRequestLocationUpdates":
                 String locationRequest = "%s.requestLocationUpdates(LocationManager.%s, %s, %s, _%s_location_listener);";
-                if (e.g) {
-                    opcode = String.format("if (ContextCompat.checkSelfPermission(%s.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n" + locationRequest + "\n}", c, params.get(0), params.get(1), params.get(2), params.get(3), params.get(0));
+                if (buildConfig.g) {
+                    opcode = String.format("if (ContextCompat.checkSelfPermission(%s.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n" + locationRequest + "\n}", activityName, params.get(0), params.get(1), params.get(2), params.get(3), params.get(0));
                 } else {
                     opcode = String.format("if (Build.VERSION.SDK_INT >= 23) {if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {\n" + locationRequest + "\n}\n}\nelse {\n" + locationRequest + "\n}", params.get(0), params.get(1), params.get(2), params.get(3), params.get(0), params.get(0), params.get(1), params.get(2), opcode, params.get(0));
                 }

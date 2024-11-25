@@ -100,12 +100,12 @@ public class Jx {
 
     public String activityResult() {
         ArrayList<BlockBean> blocks = jC.a(projectDataManager.a).a(projectFileBean.getJavaName(), "onActivityResult_onActivityResult");
-        return Lx.j(new Fx(projectFileBean.getActivityName(), buildConfig, "", blocks).a(), false);
+        return Lx.j(new Fx(projectFileBean.getActivityName(), buildConfig, blocks, isViewBindingEnabled).a(), false);
     }
 
     public String initializeLogic() {
         ArrayList<BlockBean> blocks = jC.a(projectDataManager.a).a(projectFileBean.getJavaName(), "initializeLogic_initializeLogic");
-        return Lx.j(new Fx(projectFileBean.getActivityName(), buildConfig, "", blocks).a(), false);
+        return Lx.j(new Fx(projectFileBean.getActivityName(), buildConfig, blocks, isViewBindingEnabled).a(), false);
     }
 
     private void extraVariables() {
@@ -166,7 +166,6 @@ public class Jx {
     /**
      * @return Generated Java code of the current View (not Widget)
      */
-    @SuppressWarnings("DynamicRegexReplaceableByCompiledPattern")
     public String generateCode() {
         boolean isDialogFragment = projectFileBean.fileName.contains("_dialog_fragment");
         boolean isBottomDialogFragment = projectFileBean.fileName.contains("_bottomdialog_fragment");
@@ -830,7 +829,7 @@ public class Jx {
         addImport("java.util.regex.*");
         addImport("java.text.*");
         addImport("org.json.*");
-        onCreateEventCode = new Fx(projectFileBean.getActivityName(), buildConfig, "onCreate_initializeLogic", projectDataManager.a(projectFileBean.getJavaName(), "onCreate_initializeLogic")).a();
+        onCreateEventCode = new Fx(projectFileBean.getActivityName(), buildConfig, projectDataManager.a(projectFileBean.getJavaName(), "onCreate_initializeLogic"), isViewBindingEnabled).a();
     }
 
     private String getDrawerViewInitializer(ViewBean viewBean) {
@@ -846,7 +845,7 @@ public class Jx {
             String xmlName = ProjectFileBean.getXmlName(viewBean.customView);
             projectFileBean.getJavaName();
             String eventName = viewBean.id + "_onBindCustomView";
-            String adapterLogic = new Fx(projectFileBean.getActivityName(), buildConfig, eventName, projectDataManager.a(projectFileBean.getJavaName(), eventName)).a();
+            String adapterLogic = new Fx(projectFileBean.getActivityName(), buildConfig, projectDataManager.a(projectFileBean.getJavaName(), eventName), isViewBindingEnabled).a();
             String adapterCode;
             if (viewBean.type == ViewBeans.VIEW_TYPE_LAYOUT_VIEWPAGER) {
                 adapterCode = Lx.pagerAdapter(ox, viewBean.id, viewBean.customView, projectDataManager.d(xmlName), adapterLogic);
@@ -876,7 +875,7 @@ public class Jx {
         for (int index = 0, pairsSize = pairs.size(); index < pairsSize; index++) {
             Pair<String, String> next = pairs.get(index);
             String name = next.first + "_moreBlock";
-            String code = Lx.getMoreBlockCode(next.first, next.second, new Fx(projectFileBean.getActivityName(), buildConfig, name, projectDataManager.a(javaName, name)).a());
+            String code = Lx.getMoreBlockCode(next.first, next.second, new Fx(projectFileBean.getActivityName(), buildConfig, projectDataManager.a(javaName, name), isViewBindingEnabled).a());
             if (index < (pairsSize - 1)) {
                 moreBlocks.add(code);
             } else {
