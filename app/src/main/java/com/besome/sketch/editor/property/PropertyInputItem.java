@@ -71,19 +71,21 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void setIcon(ImageView imageView) {
         switch (key) {
-            case "property_id" -> icon = R.drawable.rename_96_blue;
-            case "property_text" -> icon = R.drawable.abc_96;
-            case "property_hint" -> icon = R.drawable.help_96_blue;
-            case "property_weight", "property_weight_sum" -> icon = R.drawable.one_to_many_48;
-            case "property_rotate" -> icon = R.drawable.ic_reset_color_32dp;
-            case "property_lines", "property_max", "property_progress" ->
-                    icon = R.drawable.numbers_48;
-            case "property_alpha" -> icon = R.drawable.opacity_48;
-            case "property_translation_x" -> icon = R.drawable.swipe_right_48;
-            case "property_translation_y" -> icon = R.drawable.swipe_down_48;
-            case "property_scale_x", "property_scale_y" -> icon = R.drawable.resize_48;
-            case "property_inject" -> icon = R.drawable.ic_property_inject;
-            case "property_convert" -> icon = R.drawable.ic_property_convert;
+            case "property_id" -> icon = R.drawable.ic_mtrl_id;
+            case "property_text" -> icon = R.drawable.ic_mtrl_type;
+            case "property_hint" -> icon = R.drawable.ic_mtrl_bulb;
+            case "property_weight", "property_weight_sum" -> icon = R.drawable.ic_mtrl_weight;
+            case "property_rotate" -> icon = R.drawable.ic_mtrl_rotate_90;
+            case "property_lines" -> icon = R.drawable.ic_mtrl_numbers;
+            case "property_progress" -> icon = R.drawable.ic_mtrl_prog_min;
+            case "property_max" -> icon = R.drawable.ic_mtrl_circle;
+            case "property_alpha" -> icon = R.drawable.ic_mtrl_opacity_full;
+            case "property_translation_x" -> icon = R.drawable.ic_mtrl_move_x;
+            case "property_translation_y" -> icon = R.drawable.ic_mtrl_move_y;
+            case "property_scale_y" -> icon = R.drawable.ic_mtrl_scale_y;
+            case "property_scale_x" -> icon = R.drawable.ic_mtrl_scale_x;
+            case "property_inject" -> icon = R.drawable.ic_mtrl_code;
+            case "property_convert" -> icon = R.drawable.ic_mtrl_switch;
         }
         imageView.setImageResource(icon);
     }
