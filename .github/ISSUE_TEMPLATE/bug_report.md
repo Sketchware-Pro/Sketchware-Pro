@@ -1,32 +1,55 @@
----
-name: Bug report
-about: Create a report to help us improve Sketchware Pro
-title: ''
-labels: ''
-assignees: ''
-
----
-
-**Describe the bug**
-Please give us a clear and concise description of what the bug is.
-
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Step 1
-2. Step 2
-3. Step 3
-...
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
-
-Device and Sketchware Pro-related info:
- - Device: [e.g. Xiaomi Note 10]
- - OS: [e.g. Android 13]
- - Sketchware Pro version: [e.g. v6.4.0-SNAPSHOT-3d484a9-minApi26]
-
-**Additional context**
-Add any other context about the problem here.
+name: "Bug Report"
+description: Report Bug To Help Improvements.
+title: "‎ "
+labels: [
+  "bug"
+]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "Bug Submission"
+      description: Please Explain the bug which you exprienced in detail
+      placeholder: Optionally you can Attach screenshots , video , etc...
+    validations:
+      required: true
+  - type: dropdown
+    id: osh
+    attributes:
+      label: "Android Version"
+      description: Please Select Your Android Version
+      multiple: true
+      options:
+        - Any Android
+        - Android 6
+        - Android 7
+        - Android 8
+        - Android 9
+        - Android 10
+        - Android 11
+        - Android 12
+        - Android 13
+        - Android 14
+        - Android 15
+    validations:
+      required: true
+  - type: textarea
+    id: reprod
+    attributes:
+      label: "Comments or Extra Info"
+      description: Please enter Comments or Other information which you want to tell
+      value: 
+      render: bash
+    validations:
+      required: false
+  - type: dropdown
+    id: os
+    attributes:
+      label: "App Version"
+      description: 
+      multiple: true
+      options:
+        - Latest v3.6
+        - v3.5
+    validations:
+      required: false
