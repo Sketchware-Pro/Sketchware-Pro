@@ -1,6 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,9 +78,14 @@ public class IconSelectorDialog {
             }
 
             int oldResourceId = getItem(position);
-            itemBinding.iconImage.setImageResource(
-                    OldResourceIdMapper.getDrawableFromOldResourceId(oldResourceId)
-            );
+            try {
+                itemBinding.iconImage.setImageResource(
+                        OldResourceIdMapper.getDrawableFromOldResourceId(oldResourceId)
+                );
+            } catch (Resources.NotFoundException e) {
+                iconsList.remove(position);
+                notifyDataSetChanged();
+            }
 
             return convertView;
         }
