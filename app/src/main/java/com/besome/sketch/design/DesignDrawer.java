@@ -110,13 +110,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         menusLayout.addView(addDrawerItem(20, false,
                 R.drawable.ic_mtrl_block, R.string.design_drawer_menu_customblocks, R.string.design_drawer_menu_customblocks_subtitle
         ));
-        /* Add Local library Manager */
-        menusLayout.addView(addDrawerItem(14, false,
-                R.drawable.ic_mtrl_box, R.string.text_title_menu_local_library, R.string.text_subtitle_menu_local_library
-        ));
-        /* Add Native library Manager */
-        menusLayout.addView(addDrawerItem(19, false,
-                R.drawable.ic_mtrl_settings_input, R.string.design_drawer_menu_nativelibs, R.string.design_drawer_menu_nativelibs_subtitle));
         /* Add ProGuard Manager */
         menusLayout.addView(addDrawerItem(17, false,
                 R.drawable.ic_mtrl_shield_lock, R.string.design_drawer_menu_proguard, R.string.design_drawer_menu_proguard_subtitle));
@@ -185,10 +178,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
                         activity.toAndroidManifestManager();
                         return;
 
-                    case 14:
-                        activity.toLocalLibraryManager();
-                        return;
-
                     case 16:
                         activity.toSourceCodeViewer();
                         return;
@@ -199,10 +188,6 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
                     case 18:
                         activity.toStringFogManager();
-                        return;
-
-                    case 19:
-                        activity.toNativeLibraryManager();
                         return;
 
                     case 20:
