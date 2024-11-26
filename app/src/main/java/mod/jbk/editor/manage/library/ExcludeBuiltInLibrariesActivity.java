@@ -63,6 +63,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
     private String sc_id;
     private boolean isExcludingEnabled;
     private List<BuiltInLibraries.BuiltInLibrary> excludedLibraries;
+    private Pair<Boolean, List<BuiltInLibraries.BuiltInLibrary>> config;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
         enabled = findViewById(R.id.lib_switch);
         enabled.setOnCheckedChangeListener((buttonView, isChecked) -> isExcludingEnabled = isChecked);
         preview = findViewById(R.id.item_desc);
+        config = readConfig(sc_id);
     }
 
     @Override
@@ -121,13 +123,16 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        k();
-        try {
-            new Handler(Looper.myLooper()).postDelayed(() ->
-                    new SaveConfigTask(this).execute(), 500);
-        } catch (Exception e) {
-            onSaveError(e);
+        if (config.first.equals(isExcludingEnabled) && config.second.equals(excludedLibraries)) {
+            super.onBackPressed();
+        } else {
+            k();
+            try {
+                new Handler(Looper.myLooper()).postDelayed(() ->
+                        new SaveConfigTask(this).execute(), 500);
+            } catch (Exception e) {
+                onSaveError(e);
+            }
         }
     }
 
