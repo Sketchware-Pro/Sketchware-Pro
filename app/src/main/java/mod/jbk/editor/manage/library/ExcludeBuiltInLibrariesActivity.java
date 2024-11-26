@@ -253,7 +253,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
     @NonNull
     public static List<BuiltInLibraries.BuiltInLibrary> getExcludedLibraries(String sc_id) {
         Pair<Boolean, List<BuiltInLibraries.BuiltInLibrary>> config = readConfig(sc_id);
-        if (config != null && config.first) {
+        if (config != null) {
             return config.second;
         } else {
             return Collections.emptyList();
