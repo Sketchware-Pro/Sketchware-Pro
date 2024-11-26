@@ -135,7 +135,7 @@ public class Hx {
         for (EventBean eventBean : events) {
             ArrayList<BlockBean> eventLogicBlocks = logicBlocks.get(eventBean.targetId + "_" + eventBean.eventName);
             String eventLogic = (eventLogicBlocks == null || eventLogicBlocks.isEmpty()) ? "" :
-                    new Fx(projectFileBean.getActivityName(), jq, eventBean.eventName, eventLogicBlocks).a();
+                    new Fx(projectFileBean.getActivityName(), jq, eventLogicBlocks, isViewBindingEnabled).a();
 
             switch (eventBean.eventType) {
                 case EventBean.EVENT_TYPE_VIEW:
@@ -402,7 +402,7 @@ public class Hx {
                     if (a.name.equals(eventName)) {
                         a.setLogic(eventLogic);
                         a.setTargetId(
-                                isViewBindingEnabled ? "binding." + ViewBindingBuilder.generateId(targetId) : targetId
+                                targetId
                         );
                         d.b = true;
                     }

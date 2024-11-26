@@ -2651,7 +2651,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void showSourceCode() {
         yq yq = new yq(this, B);
         yq.a(jC.c(B), jC.b(B), jC.a(B), false);
-        String code = new Fx(M.getActivityName(), yq.N, "", o.getBlocks()).a();
+        String code = new Fx(M.getActivityName(), yq.N, o.getBlocks(), isViewBindingEnabled).a();
 
         CodeEditor codeEditor = new CodeEditor(this);
         codeEditor.setEditable(false);

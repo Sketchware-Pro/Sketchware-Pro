@@ -3,7 +3,6 @@ package mod.hey.studios.editor.manage.block.code;
 import com.besome.sketch.beans.BlockBean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import a.a.a.Fx;
 import a.a.a.Gx;
@@ -98,7 +97,7 @@ public class ExtraBlockCode {
         ExtraBlockInfo blockInfo = BlockLoader.getBlockInfo(blockBean.opCode);
 
         if (blockInfo.isMissing) {
-            blockInfo = BlockLoader.getBlockFromProject(fx.e.sc_id, blockBean.opCode);
+            blockInfo = BlockLoader.getBlockFromProject(fx.buildConfig.sc_id, blockBean.opCode);
         }
 
         String formattedCode;
