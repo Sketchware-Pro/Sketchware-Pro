@@ -17,7 +17,8 @@
             android:layout_centerInParent="true"
             app:lottie_autoPlay="true"
             app:lottie_fileName="anim/loading_3balls.json"
-            app:lottie_loop="true" />
+            app:lottie_loop="true"
+            app:lottie_colorFilter="?colorPrimary"/>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
