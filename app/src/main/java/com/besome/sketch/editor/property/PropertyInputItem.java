@@ -53,7 +53,7 @@ import pro.sketchware.utility.FileUtil;
 public class PropertyInputItem extends RelativeLayout implements View.OnClickListener {
 
     private final String stringsStart = "@string/";
-    private final ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
+    private final ArrayList<HashMap<String, Object>> stringsListMap = new ArrayList<>();
     private Context context;
     private String typeView = "";
     private String key = "";
@@ -304,7 +304,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         keysList = new ArrayList<>();
         List<String> mergedList = new ArrayList<>();
 
-        for (HashMap<String, Object> map : StringsListMap) {
+        for (HashMap<String, Object> map : stringsListMap) {
             String keyValue = map.get("key").toString();
             keysList.add(stringsStart + keyValue);
             mergedList.add(stringsStart + keyValue + " ( " + map.get("text") + " )");
@@ -350,13 +350,13 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void loadStringsListMap() {
         String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
-        convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
+        convertXmlToListMap(FileUtil.readFileIfExist(filePath), stringsListMap);
 
-        if (!isXmlStringsContains(StringsListMap, "app_name") && filePath != null) {
+        if (!isXmlStringsContains(stringsListMap, "app_name") && filePath != null) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("key", "app_name");
             map.put("text", yB.c(lC.b(sc_id), "my_app_name"));
-            StringsListMap.add(0, map);
+            stringsListMap.add(0, map);
         }
     }
 
