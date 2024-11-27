@@ -50,13 +50,15 @@ ${views.joinToString("\n") { "        this.${it.name} = ${it.name};" }}
 
     public static $name bind(View view) {
         ${rootView.type} rootView = (${rootView.type}) view;
-${views.filterNot { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.name} = findChildViewById(view, R.id.${it.id});" }}
+        ${if (views.isNotEmpty()) {
+"""${views.filterNot { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.name} = findChildViewById(view, R.id.${it.id});" }}
 ${views.filter { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.name} = ${it.fullName}.bind(findChildViewById(view, R.id.${it.id}));" }}
+        
         if (${views.joinToString(" || ") { "${it.name} == null" }}) {
              throw new IllegalStateException("Required views are missing");
-        }
+        }"""} else ""}
 
-        return new $name(rootView, ${views.joinToString { it.name }});
+        return new $name(rootView${if (views.isNotEmpty()) ", " + views.joinToString { it.name } else ""});
     }
 
     private static <T extends View> T findChildViewById(View rootView, int id) {

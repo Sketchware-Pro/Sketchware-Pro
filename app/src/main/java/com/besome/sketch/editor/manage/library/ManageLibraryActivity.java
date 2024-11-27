@@ -2,6 +2,7 @@ package com.besome.sketch.editor.manage.library;
 
 import static android.text.TextUtils.isEmpty;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,11 @@ import com.besome.sketch.editor.manage.library.compat.ManageCompatActivity;
 import com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity;
 import com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+
+import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
+
+import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
+
 import pro.sketchware.R;
 
 import java.lang.ref.WeakReference;
@@ -54,6 +60,8 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private String originalAdmobUseYn = "N";
     private String originalGoogleMapUseYn = "N";
 
+    private TextView externalLib;
+
     private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean) {
         LibraryItemView libraryItemView;
         if (libraryBean != null) {
@@ -71,6 +79,14 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             title.setText("Advanced");
             ((ViewGroup) title.getParent()).removeView(title);
             libraryItemLayout.addView(title);
+        } else if (libraryBean.libType == ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB || libraryBean.libType == ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB) {
+            libraryItemView.setHideEnabled();
+            if (externalLib == null) {
+                externalLib = findViewById(R.id.external_lib);
+                externalLib.setText("External libraries");
+                ((ViewGroup) externalLib.getParent()).removeView(externalLib);
+                libraryItemLayout.addView(externalLib);
+            }
         }
         libraryItemLayout.addView(libraryItemView);
     }
@@ -143,6 +159,13 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
         startActivityForResult(intent, REQUEST_CODE_EXCLUDE_BUILTIN_LIBRARIES_ACTIVITY);
+    }
+
+    private void launchActivity(Class<? extends Activity> toLaunch) {
+        Intent intent = new Intent(getApplicationContext(), toLaunch);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", sc_id);
+        startActivity(intent);
     }
 
     private void saveLibraryConfiguration() {
@@ -229,6 +252,12 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                     case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
                         toGoogleMapActivity(googleMapLibraryBean);
                         break;
+                    case ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB:
+                        launchActivity(ManageLocalLibraryActivity.class);
+                        break;
+                    case ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB:
+                        launchActivity(ManageNativelibsActivity.class);
+                        break;
                 }
             } else {
                 toExcludeBuiltinLibrariesActivity();
@@ -302,6 +331,8 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         addLibraryItem(firebaseLibraryBean);
         addLibraryItem(admobLibraryBean);
         addLibraryItem(googleMapLibraryBean);
+        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB));
+        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB));
         // Exclude built-in libraries
         addLibraryItem(null);
     }

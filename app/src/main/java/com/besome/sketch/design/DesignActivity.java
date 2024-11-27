@@ -88,7 +88,6 @@ import a.a.a.yB;
 import a.a.a.yq;
 import a.a.a.zy;
 import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
-import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import dev.chrisbanes.insetter.Insetter;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
@@ -99,7 +98,6 @@ import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
-import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.build.BuildSettingsDialog;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
@@ -824,20 +822,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     void toJavaManager() {
         launchActivity(ManageJavaActivity.class, null,
                 new Pair<>("pkgName", q.packageName));
-    }
-
-    /**
-     * Opens {@link ManageLocalLibraryActivity}.
-     */
-    void toLocalLibraryManager() {
-        launchActivity(ManageLocalLibraryActivity.class, null);
-    }
-
-    /**
-     * Opens {@link ManageNativelibsActivity}.
-     */
-    void toNativeLibraryManager() {
-        launchActivity(ManageNativelibsActivity.class, null);
     }
 
     /**

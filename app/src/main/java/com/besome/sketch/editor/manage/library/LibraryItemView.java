@@ -48,6 +48,10 @@ public class LibraryItemView extends FrameLayout {
         enabled.setSelected(enabledChecked);
     }
 
+    public void setHideEnabled() {
+        enabled.setVisibility(View.GONE);
+    }
+
     @Override
     public void setOnClickListener(View.OnClickListener listener) {
         container.setOnClickListener(listener);
