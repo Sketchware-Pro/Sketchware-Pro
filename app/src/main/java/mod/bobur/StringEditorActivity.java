@@ -181,7 +181,6 @@ public class StringEditorActivity extends AppCompatActivity {
                     }
                     map.put("key", key);
                     map.put("text", value);
-                    map.put("translatable", translatable);
                     listmap.add(map);
                 }
             }
