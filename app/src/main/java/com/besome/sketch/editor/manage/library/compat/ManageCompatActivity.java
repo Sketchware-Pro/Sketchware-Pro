@@ -81,7 +81,7 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         compatLibraryBean = getIntent().getParcelableExtra("compat");
         firebaseLibraryBean = getIntent().getParcelableExtra("firebase");
