@@ -95,6 +95,9 @@ public class ExtraMenuBean {
     }
 
     public static void setupSearchView(View view, ViewGroup viewGroup) {
+        if (viewGroup.getChildCount() == 0) {
+            return;
+        }
         EditText searchInput = view.findViewById(R.id.searchInput);
         TextInputLayout textInputLayout = view.findViewById(R.id.searchInputLayout);
         textInputLayout.setVisibility(View.VISIBLE);
@@ -111,19 +114,12 @@ public class ExtraMenuBean {
 
             @Override
             public void afterTextChanged(Editable s) {
+                String filterText = s.toString().toLowerCase();
                 for (int i = 0; i < viewGroup.getChildCount(); i++) {
                     View childView = viewGroup.getChildAt(i);
-
-                    if (childView instanceof RadioButton) {
-                        RadioButton radioButton = (RadioButton) childView;
-                        if (radioButton.getText().toString().toLowerCase().contains(s.toString().toLowerCase())) {
-                            radioButton.setVisibility(View.VISIBLE);
-                        } else {
-                            radioButton.setVisibility(View.GONE);
-                        }
-                    } else if (childView instanceof TextView) {
-                        TextView textView = (TextView) childView;
-                        if (textView.getText().toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                    if (childView instanceof TextView textView) {
+                        String itemText = textView.getText().toString().toLowerCase();
+                        if (itemText.contains(filterText)) {
                             textView.setVisibility(View.VISIBLE);
                         } else {
                             textView.setVisibility(View.GONE);

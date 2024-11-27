@@ -163,11 +163,11 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.property);
-
-	content = findViewById(R.id.content);
-	layoutAds = findViewById(R.id.layout_ads);
-	scrollView = findViewById(R.id.scroll_view);
-	propertyGroupList = findViewById(R.id.property_group_list);
+        
+        content = findViewById(R.id.content);
+        layoutAds = findViewById(R.id.layout_ads);
+        scrollView = findViewById(R.id.scroll_view);
+        propertyGroupList = findViewById(R.id.property_group_list);
 
         if (!j()) {
             finish();
@@ -181,7 +181,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         getSupportActionBar().setTitle(Helper.getResString(R.string.edit_view_properties_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         propertyGroups.add(1);
         propertyGroups.add(2);
