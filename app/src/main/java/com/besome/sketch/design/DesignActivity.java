@@ -1002,6 +1002,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                                 <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
                                 <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
                                 </adaptive-icon>""");
+                    } else {
+                        q.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
                     }
                 }
                 

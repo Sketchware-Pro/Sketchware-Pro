@@ -329,6 +329,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
             } else {
                 settings.put(key, value);
             }
+            persist();
         }
 
         @Nullable
@@ -344,6 +345,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
         @Override
         public void putBoolean(String key, boolean value) {
             settings.put(key, value);
+            persist();
         }
 
         @Override

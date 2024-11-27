@@ -51,7 +51,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         if (identifier > 0) {
             tvName.setText(Helper.getResString(identifier));
             if (key.equals("property_progressbar_style")) {
-                icon = R.drawable.style_48dp;
+                icon = R.drawable.ic_mtrl_style;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);

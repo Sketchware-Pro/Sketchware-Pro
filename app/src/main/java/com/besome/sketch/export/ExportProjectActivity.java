@@ -525,6 +525,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                                 <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
                                 <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
                                 </adaptive-icon>""");
+                    } else {
+                        project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
                     }
                 }
                 project_metadata.a();
