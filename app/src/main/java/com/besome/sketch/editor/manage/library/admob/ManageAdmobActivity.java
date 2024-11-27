@@ -195,7 +195,7 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         getSupportActionBar().setTitle(Helper.getResString(R.string.design_library_admob_title_admob_manager));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         A = new DB(getApplicationContext(), "P1");
         admobLibraryBean = getIntent().getParcelableExtra("admob");
