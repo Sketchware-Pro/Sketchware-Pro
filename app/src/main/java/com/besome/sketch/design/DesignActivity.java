@@ -166,7 +166,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private final ActivityResultLauncher<Intent> openViewManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (viewTabAdapter != null) {
-                viewTabAdapter.i();
+                projectFileSelector.syncState();
             }
         }
     });
