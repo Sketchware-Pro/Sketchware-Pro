@@ -258,7 +258,6 @@ public class StringEditorActivity extends AppCompatActivity {
         HashMap<String, Object> map = new HashMap<>();
         map.put("key", key);
         map.put("text", text);
-        map.put("translatable", "true");
         if (listmap.isEmpty()) {
             listmap.add(map);
             adapter.notifyItemInserted(0);
