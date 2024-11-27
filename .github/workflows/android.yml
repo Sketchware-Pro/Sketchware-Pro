@@ -14,6 +14,8 @@ on:
       - 'gradlew.bat'
       - 'public-stable-ids.txt'
       - 'settings.gradle'
+    branches-ignore:
+      - 'wip/**'
   workflow_dispatch:
 
 jobs:
