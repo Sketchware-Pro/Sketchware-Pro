@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.manage.view;
 
+import static pro.sketchware.utility.SketchwareUtil.dpToPx;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -125,9 +127,13 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     public void a(boolean var1) {
         selecting = var1;
         invalidateOptionsMenu();
+        
         if (selecting) {
             actionButtonsContainer.setVisibility(View.VISIBLE);
-            s.animate().translationY(-s.getHeight() + 80).setDuration(200L).start();
+            actionButtonsContainer.post(() -> {
+                float offset = dpToPx(actionButtonsContainer.getHeight());
+                s.animate().translationY(offset).setDuration(200L).start();
+            });
         } else {
             actionButtonsContainer.setVisibility(View.GONE);
             s.animate().translationY(0.0F).setDuration(200L).start();
