@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+
+import mod.remaker.util.ThemeUtils;
 import pro.sketchware.R;
 import pro.sketchware.databinding.CustomDialogAttributeBinding;
 import pro.sketchware.databinding.ActivityManageCustomAttributeBinding;
@@ -226,10 +228,14 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
             CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
             try {
+                int violet = ThemeUtils.getColor(attributeView, R.attr.colorViolet);
+                int onSurface = ThemeUtils.getColor(attributeView, R.attr.colorOnSurface);
+                int green = ThemeUtils.getColor(attributeView, R.attr.colorGreen);
+
                 SpannableString spannableString = new SpannableString((String) _data.get(position).get("value"));
-                spannableString.setSpan(new ForegroundColorSpan(0xff7a2e8c), 0, ((String) _data.get(position).get("value")).indexOf(":"), 33);
-                spannableString.setSpan(new ForegroundColorSpan(0xff212121), ((String) _data.get(position).get("value")).indexOf(":"), ((String) _data.get(position).get("value")).indexOf("=") + 1, 33);
-                spannableString.setSpan(new ForegroundColorSpan(0xff45a245), ((String) _data.get(position).get("value")).indexOf("\""), ((String) _data.get(position).get("value")).length(), 33);
+                spannableString.setSpan(new ForegroundColorSpan(violet), 0, ((String) _data.get(position).get("value")).indexOf(":"), 33);
+                spannableString.setSpan(new ForegroundColorSpan(onSurface), ((String) _data.get(position).get("value")).indexOf(":"), ((String) _data.get(position).get("value")).indexOf("=") + 1, 33);
+                spannableString.setSpan(new ForegroundColorSpan(green), ((String) _data.get(position).get("value")).indexOf("\""), ((String) _data.get(position).get("value")).length(), 33);
                 attributeView.getTextView().setText(spannableString);
             } catch (Exception e) {
                 attributeView.getTextView().setText((String) _data.get(position).get("value"));
