@@ -123,7 +123,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (config.first.equals(isExcludingEnabled) && config.second.equals(excludedLibraries)) {
+        if (config != null && config.first.equals(isExcludingEnabled) && config.second.equals(excludedLibraries)) {
             super.onBackPressed();
         } else {
             k();
