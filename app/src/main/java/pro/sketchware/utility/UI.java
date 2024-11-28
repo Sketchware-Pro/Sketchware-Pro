@@ -10,6 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.bumptech.glide.Glide;
 
 public class UI {
@@ -47,5 +51,25 @@ public class UI {
         GG.setColor(focus);
         RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{pressed}), GG, null);
         view.setBackground(RE);
+    }
+
+    public static void addSystemWindowInsetToPadding(
+            View view, boolean left, boolean top, boolean right, boolean bottom) {
+        final int initialLeft = view.getPaddingLeft();
+        final int initialTop = view.getPaddingTop();
+        final int initialRight = view.getPaddingRight();
+        final int initialBottom = view.getPaddingBottom();
+
+        ViewCompat.setOnApplyWindowInsetsListener(
+                view,
+                (v, windowInsets) -> {
+                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+                    view.setPadding(
+                            initialLeft + (left ? insets.left : 0),
+                            initialTop + (top ? insets.top : 0),
+                            initialRight + (right ? insets.right : 0),
+                            initialBottom + (bottom ? insets.bottom : 0));
+                    return windowInsets;
+                });
     }
 }
