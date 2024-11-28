@@ -59,7 +59,7 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
             tvName.setText(Helper.getResString(identifier));
             switch (this.key) {
                 case "property_checked":
-                    icon = R.drawable.ok_48;
+                    icon = R.drawable.ic_mtrl_check;
                     break;
 
                 case "property_single_line":
@@ -67,11 +67,11 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
                     break;
 
                 case "property_enabled":
-                    icon = R.drawable.light_on_48;
+                    icon = R.drawable.ic_mtrl_bulb;
                     break;
 
                 case "property_clickable":
-                    icon = R.drawable.natural_user_interface2_48;
+                    icon = R.drawable.ic_mtrl_touch;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);

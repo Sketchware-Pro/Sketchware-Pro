@@ -87,7 +87,6 @@ import a.a.a.wq;
 import a.a.a.yB;
 import a.a.a.yq;
 import a.a.a.zy;
-import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.chrisbanes.insetter.Insetter;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
@@ -120,6 +119,7 @@ import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
 import mod.remaker.util.ThemeUtils;
 import pro.sketchware.R;
+import pro.sketchware.activities.appcompat.ManageAppCompatActivity;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -166,7 +166,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private final ActivityResultLauncher<Intent> openViewManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (viewTabAdapter != null) {
-                viewTabAdapter.i();
+                projectFileSelector.syncState();
             }
         }
     });
@@ -183,8 +183,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private rs eventTabAdapter;
     private br componentTabAdapter;
     private BuildTask currentBuildTask;
-    private BuildSettings build_settings;
-    private boolean isBuildingInTheBackground = false;
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -521,8 +519,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             registerReceiver(buildCancelReceiver, filter);
         }
 
-        build_settings = new BuildSettings(sc_id);
-        isBuildingInTheBackground = build_settings.getValue(BuildSettings.SETTING_ENABLE_BACKGROUND_BUILDING, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
+    }
+
+    private boolean isBuildingInTheBackground() {
+        return new BuildSettings(sc_id).getValue(BuildSettings.SETTING_ENABLE_BACKGROUND_BUILDING, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
     }
 
     @Override
@@ -798,7 +798,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      * Opens {@link ManageCustomAttributeActivity}.
      */
     void toAppCompatInjectionManager() {
-        launchActivity(ManageCustomAttributeActivity.class, null,
+        launchActivity(ManageAppCompatActivity.class, null,
                 new Pair<>("file_name", projectFileSelector.currentXmlFileName));
     }
 
@@ -970,7 +970,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 activity.r.a("P1I10", true);
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-                if (activity.isBuildingInTheBackground) {
+                if (activity.isBuildingInTheBackground()) {
                     maybeShowNotification();
                 } else {
                     maybeShowDialog();
@@ -1002,6 +1002,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                                 <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
                                 <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
                                 </adaptive-icon>""");
+                    } else {
+                        q.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
                     }
                 }
                 
@@ -1137,7 +1139,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             if (activity == null) return;
 
             activity.runOnUiThread(() -> {
-                if (activity.isBuildingInTheBackground) {
+                if (activity.isBuildingInTheBackground()) {
                     updateNotification(progress);
                 } else {
                     if (dialog.isShowing()) {
@@ -1153,7 +1155,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
             activity.runOnUiThread(() -> {
                 if (!activity.isDestroyed()) {
-                    if (activity.isBuildingInTheBackground) {
+                    if (activity.isBuildingInTheBackground()) {
                         if (isShowingNotification) {
                             notificationManager.cancel(notificationId);
                             isShowingNotification = false;
@@ -1175,7 +1177,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             DesignActivity activity = getActivity();
             if (activity == null) return;
 
-            if (!activity.isBuildingInTheBackground) {
+            if (!activity.isBuildingInTheBackground()) {
                 activity.runOnUiThread(() -> {
                     aB cancelDialog = new aB(activity);
                     cancelDialog.b(activity.getString(R.string.design_cancel_build_title));
