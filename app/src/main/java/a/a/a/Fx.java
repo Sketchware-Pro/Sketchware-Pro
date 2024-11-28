@@ -184,18 +184,7 @@ public class Fx {
         ArrayList<String> params = new ArrayList<>();
         for (int i = 0; i < bean.parameters.size(); i++) {
             String param = bean.parameters.get(i);
-            Gx paramInfo = bean.getParamClassInfo().get(i);
-            int type;
-
-            if (paramInfo.b("boolean")) {
-                type = 0;
-            } else if (paramInfo.b("double")) {
-                type = 1;
-            } else if (paramInfo.b("String")) {
-                type = 2;
-            } else {
-                type = 3;
-            }
+            int type = getBlockType(bean, i);
             params.add(a(param, type, bean.opCode));
         }
         return params;
