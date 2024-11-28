@@ -56,14 +56,6 @@ public class Fx {
         String opcode = getBlockCode(bean, params);
 
         String code = opcode;
-        /*
-          switch block above should be responsible for handling %m param.
-          However, upon decompiling this class, it completely ignore this case.
-          This is the solution for now to prevent errors during code generation.
-         */
-        if (hasEmptySelectorParam(params, bean.spec)) {
-            code = "";
-        }
 
         if (b(bean.opCode, var2)) {
             code = "(" + opcode + ")";
@@ -1343,6 +1335,15 @@ public class Fx {
                 break;
             default:
                 opcode = getCodeExtraBlock(bean, "\"\"");
+        }
+        
+        /*
+          switch block above should be responsible for handling %m param.
+          However, upon decompiling this class, it completely ignore this case.
+          This is the solution for now to prevent errors during code generation.
+         */
+        if (hasEmptySelectorParam(params, bean.spec)) {
+            opcode = "";
         }
         return opcode;
     }
