@@ -285,8 +285,6 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                         HashMap<String, Object> map = new HashMap<>();
                         map.put("type", tabSelected);
                         map.put("value", newValue);
-                        if (type.equals("edit")) {}
-
                         if (type.equals("create")) {
                             activityInjections.add(map);
                             SketchwareUtil.toast("Added");
