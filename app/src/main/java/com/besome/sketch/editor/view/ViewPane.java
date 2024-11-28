@@ -287,7 +287,7 @@ public class ViewPane extends RelativeLayout {
             case ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW -> new ItemOTPView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW -> new ItemCodeView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW -> new ItemRecyclerView(context);
-            default -> null;
+            default -> getUnknownItemView(viewBean);
         };
         assert item != null;
         item.setId(++b);
@@ -295,6 +295,13 @@ public class ViewPane extends RelativeLayout {
         ((sy) item).setBean(viewBean);
         updateItemView(item, viewBean);
         return item;
+    }
+    
+    private View getUnknownItemView(ViewBean bean) {
+        ItemTextView view = new ItemTextView(context);
+        view.setText("Unknown type:" + bean.convert);
+        view.setTextColor(Color.RED);
+        return view;
     }
 
     public void setScId(String str) {
