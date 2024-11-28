@@ -100,11 +100,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                 item -> {
                     PopupMenu popupMenu = new PopupMenu(ManageAppCompatActivity.this, item.first);
                     popupMenu.getMenu().add(Menu.NONE, 0, Menu.NONE, "Edit");
-                    var value = item.second.get("value").toString();
-                    if (!value.startsWith("android:layout_height")
-                            && !value.startsWith("android:layout_width")) {
-                        popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
-                    }
+                    popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
                     popupMenu.setOnMenuItemClickListener(
                             itemMenu -> {
                                 int position = adapter.getCurrentList().indexOf(item.second);
