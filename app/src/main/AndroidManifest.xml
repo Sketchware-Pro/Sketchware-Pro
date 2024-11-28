@@ -224,12 +224,6 @@
             android:name="com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="dev.aldi.sayuti.editor.injection.AddCustomAttributeActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity"
             android:configChanges="orientation|screenSize" />
         <activity
@@ -316,6 +310,10 @@
         
         <activity android:name="pro.sketchware.activities.settings.SettingsActivity" />
         
+        <activity
+            android:name=".activities.appcompat.ManageAppCompatActivity"
+            android:configChanges="orientation|screenSize" />
+
         <activity android:name="mod.bobur.StringEditorActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
 
