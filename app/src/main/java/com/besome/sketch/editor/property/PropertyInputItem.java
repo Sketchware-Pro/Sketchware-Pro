@@ -8,7 +8,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -26,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import a.a.a.Kw;
 import a.a.a.OB;
@@ -40,6 +44,7 @@ import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.yB;
 import mod.hey.studios.util.Helper;
+import mod.remaker.util.ThemeUtils;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 import pro.sketchware.utility.FileUtil;
@@ -47,11 +52,12 @@ import pro.sketchware.utility.FileUtil;
 @SuppressLint("ViewConstructor")
 public class PropertyInputItem extends RelativeLayout implements View.OnClickListener {
 
+    private final String stringsStart = "@string/";
+    private final ArrayList<HashMap<String, Object>> stringsListMap = new ArrayList<>();
     private Context context;
     private String typeView = "";
     private String key = "";
     private String value = "";
-    private final String stringsStart = "@string/";
     private ImageView imgLeftIcon;
     private int icon;
     private TextView tvName;
@@ -62,7 +68,6 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     private ProjectFileBean projectFileBean;
     private Kw valueChangeListener;
     private List<String> keysList = new ArrayList<>();
-    private final ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
 
     public PropertyInputItem(Context context, boolean z) {
         super(context);
@@ -71,19 +76,21 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void setIcon(ImageView imageView) {
         switch (key) {
-            case "property_id" -> icon = R.drawable.rename_96_blue;
-            case "property_text" -> icon = R.drawable.abc_96;
-            case "property_hint" -> icon = R.drawable.help_96_blue;
-            case "property_weight", "property_weight_sum" -> icon = R.drawable.one_to_many_48;
-            case "property_rotate" -> icon = R.drawable.ic_reset_color_32dp;
-            case "property_lines", "property_max", "property_progress" ->
-                    icon = R.drawable.numbers_48;
-            case "property_alpha" -> icon = R.drawable.opacity_48;
-            case "property_translation_x" -> icon = R.drawable.swipe_right_48;
-            case "property_translation_y" -> icon = R.drawable.swipe_down_48;
-            case "property_scale_x", "property_scale_y" -> icon = R.drawable.resize_48;
-            case "property_inject" -> icon = R.drawable.ic_property_inject;
-            case "property_convert" -> icon = R.drawable.ic_property_convert;
+            case "property_id" -> icon = R.drawable.ic_mtrl_id;
+            case "property_text" -> icon = R.drawable.ic_mtrl_type;
+            case "property_hint" -> icon = R.drawable.ic_mtrl_bulb;
+            case "property_weight", "property_weight_sum" -> icon = R.drawable.ic_mtrl_weight;
+            case "property_rotate" -> icon = R.drawable.ic_mtrl_rotate_90;
+            case "property_lines" -> icon = R.drawable.ic_mtrl_numbers;
+            case "property_progress" -> icon = R.drawable.ic_mtrl_prog_min;
+            case "property_max" -> icon = R.drawable.ic_mtrl_circle;
+            case "property_alpha" -> icon = R.drawable.ic_mtrl_opacity_full;
+            case "property_translation_x" -> icon = R.drawable.ic_mtrl_move_x;
+            case "property_translation_y" -> icon = R.drawable.ic_mtrl_move_y;
+            case "property_scale_y" -> icon = R.drawable.ic_mtrl_scale_y;
+            case "property_scale_x" -> icon = R.drawable.ic_mtrl_scale_x;
+            case "property_inject" -> icon = R.drawable.ic_mtrl_code;
+            case "property_convert" -> icon = R.drawable.ic_mtrl_switch;
         }
         imageView.setImageResource(icon);
     }
@@ -131,8 +138,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                 case "property_translation_x", "property_translation_y" ->
                         showNumberDecimalInputDialog(-9999, 9999);
                 case "property_scale_x", "property_scale_y" -> showNumberDecimalInputDialog(0, 99);
-                case "property_convert" ->
-                        showAutoCompleteDialog();
+                case "property_convert" -> showAutoCompleteDialog();
                 case "property_inject" -> showTextInputDialog(1000, true);
             }
         }
@@ -235,6 +241,41 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         if (isInject) {
             lengthValidator = new SB(context, binding.tiInput, 0, maxValue);
             binding.tiAutoCompleteInput.setVisibility(View.GONE);
+            int violet = ThemeUtils.getColor(binding.edInput, R.attr.colorViolet);
+            int onSurface = ThemeUtils.getColor(binding.edInput, R.attr.colorOnSurface);
+            int green = ThemeUtils.getColor(binding.edInput, R.attr.colorGreen);
+            // Set highlight for XML
+            binding.edInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    ForegroundColorSpan[] spans = s.getSpans(0, s.length(), ForegroundColorSpan.class);
+                    for (ForegroundColorSpan span : spans) {
+                        s.removeSpan(span);
+                    }
+
+                    s.setSpan(new ForegroundColorSpan(onSurface), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    String text = s.toString();
+                    Pattern pattern = Pattern.compile("(\\b\\w+\\b)(\\s*=\\s*)(\"[^\"]*\")?");
+                    Matcher matcher = pattern.matcher(text);
+
+                    while (matcher.find()) {
+                        s.setSpan(new ForegroundColorSpan(violet), matcher.start(1), matcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        s.setSpan(new ForegroundColorSpan(onSurface), matcher.start(2), matcher.end(2), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        if (matcher.group(3) != null) {
+                            s.setSpan(new ForegroundColorSpan(green), matcher.start(3), matcher.end(3), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        }
+                    }
+                }
+            });
         } else {
             loadStringsListMap();
             setupTextWatcher(binding.tiAutoCompleteInput, binding.edTiAutoCompleteInput);
@@ -265,7 +306,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         keysList = new ArrayList<>();
         List<String> mergedList = new ArrayList<>();
 
-        for (HashMap<String, Object> map : StringsListMap) {
+        for (HashMap<String, Object> map : stringsListMap) {
             String keyValue = map.get("key").toString();
             keysList.add(stringsStart + keyValue);
             mergedList.add(stringsStart + keyValue + " ( " + map.get("text") + " )");
@@ -311,13 +352,13 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void loadStringsListMap() {
         String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
-        convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
+        convertXmlToListMap(FileUtil.readFileIfExist(filePath), stringsListMap);
 
-        if (!isXmlStringsContains(StringsListMap, "app_name") && filePath != null) {
+        if (!isXmlStringsContains(stringsListMap, "app_name") && filePath != null) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("key", "app_name");
             map.put("text", yB.c(lC.b(sc_id), "my_app_name"));
-            StringsListMap.add(0, map);
+            stringsListMap.add(0, map);
         }
     }
 

@@ -208,7 +208,7 @@
             android:padding="3dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_mtrl_delete"
-            app:tint="#FF6262" />
+            app:tint="?colorError" />
 
         <TextView
             android:layout_width="0dp"
@@ -216,7 +216,7 @@
             android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
             android:text="Delete project"
-            android:textColor="#FF6262"
+            android:textColor="?colorError"
             android:textSize="16sp"
             android:textStyle="bold" />
 

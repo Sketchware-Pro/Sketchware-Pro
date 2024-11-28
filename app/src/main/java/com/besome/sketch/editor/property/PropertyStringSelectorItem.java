@@ -52,15 +52,15 @@ public class PropertyStringSelectorItem extends RelativeLayout implements View.O
             tvName.setText(Helper.getResString(identifier));
             switch (key) {
                 case "property_ad_size":
-                    icon = R.drawable.widget_admob;
+                    icon = R.drawable.ic_mtrl_admob;
                     break;
 
                 case "property_indeterminate":
-                    icon = R.drawable.event_on_accuracy_changed_48dp;
+                    icon = R.drawable.ic_mtrl_indeterminate;
                     break;
 
                 case "property_scale_type":
-                    icon = R.drawable.enlarge_48;
+                    icon = R.drawable.ic_mtrl_enlarge;
                     break;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {

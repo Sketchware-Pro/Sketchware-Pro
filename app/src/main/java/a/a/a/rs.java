@@ -72,11 +72,11 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
 
     public static int a(int i) {
         return switch (i) {
-            case 0 -> R.drawable.ic_cycle_color_48dp;
-            case 1 -> R.drawable.multiple_devices_48;
-            case 2 -> R.drawable.component_96;
-            case 3 -> R.drawable.ic_drawer_color_48dp;
-            case 4 -> R.drawable.more_block_96dp;
+            case 0 -> R.drawable.ic_mtrl_lifecycle;
+            case 1 -> R.drawable.ic_mtrl_devices;
+            case 2 -> R.drawable.ic_mtrl_component;
+            case 3 -> R.drawable.ic_drawer;
+            case 4 -> R.drawable.ic_mtrl_block;
             default -> 0;
         };
     }
