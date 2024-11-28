@@ -256,7 +256,6 @@ public class ViewProperty extends LinearLayout implements Kw {
             }
         });
         imgSave = findViewById(R.id.img_save);
-        imgSave.setColorFilter(getResources().getColor(R.color.color_accent), PorterDuff.Mode.SRC_ATOP);
         imgSave.setOnClickListener(v -> {
             if (!mB.a()) {
                 showSaveToCollectionDialog();
