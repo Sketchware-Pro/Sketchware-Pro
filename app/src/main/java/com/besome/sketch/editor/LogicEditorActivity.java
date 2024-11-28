@@ -1749,8 +1749,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             String typeName = convert.isEmpty() ? ViewBean.getViewTypeName(viewBean.type) : IdGenerator.getLastPath(convert);
             if (!convert.equals("include")) {
                 Set<String> toNotAdd = new Ox(new jq(), M).readAttributesToReplace(viewBean);
-                if (!toNotAdd.contains("android:id") && viewBean.getClassInfo().a(ss.getClassInfo().a())) {
-                    viewGroup.addView(d(typeName, viewBean.id));
+                if (!toNotAdd.contains("android:id")) {
+                    String classInfo = ss.getClassInfo().a();
+                    if ((classInfo.equals("CheckBox") && viewBean.getClassInfo().a("CompoundButton")) || viewBean.getClassInfo().a(classInfo)) {
+                        viewGroup.addView(d(typeName, viewBean.id));
+                    }
                 }
                 ExtraMenuBean.setupSearchView(customView, viewGroup);
             }
