@@ -22,11 +22,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.github.angads25.filepicker.R;
+import androidx.annotation.NonNull;
 
 import com.google.android.material.color.MaterialColors;
 
@@ -37,7 +36,6 @@ import com.google.android.material.color.MaterialColors;
  */
 
 public class MaterialCheckbox extends View {
-    private Context context;
     private int minDim;
     private Paint paint;
     private RectF bounds;
@@ -47,61 +45,55 @@ public class MaterialCheckbox extends View {
 
     public MaterialCheckbox(Context context) {
         super(context);
-        initView(context);
+        initView();
     }
 
     public MaterialCheckbox(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView(context);
+        initView();
     }
 
     public MaterialCheckbox(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView(context);
+        initView();
     }
 
-    public void initView(Context context) {
-        this.context = context;
+    public void initView() {
         checked = false;
         tick = new Path();
         paint = new Paint();
         bounds = new RectF();
-        OnClickListener onClickListener = new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setChecked(!checked);
-                onCheckedChangeListener.onCheckedChanged(MaterialCheckbox.this, isChecked());
-            }
+        OnClickListener onClickListener = v -> {
+            setChecked(!checked);
+            onCheckedChangeListener.onCheckedChanged(this, isChecked());
         };
 
         setOnClickListener(onClickListener);
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        if(isChecked()) {
+        if (isChecked()) {
             paint.reset();
             paint.setAntiAlias(true);
-            bounds.set(minDim / 10, minDim / 10, minDim - (minDim/10), minDim - (minDim/10));
+            bounds.set((float) minDim / 10, (float) minDim / 10, minDim - ((float) minDim / 10), minDim - ((float) minDim / 10));
             paint.setColor(MaterialColors.getColor(this, com.google.android.material.R.attr.colorPrimary));
-            canvas.drawRoundRect(bounds, minDim / 8, minDim / 8, paint);
+            canvas.drawRoundRect(bounds, (float) minDim / 8, (float) minDim / 8, paint);
 
             paint.setColor(Color.parseColor("#FFFFFF"));
-            paint.setStrokeWidth(minDim/10);
+            paint.setStrokeWidth((float) minDim / 10);
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeJoin(Paint.Join.BEVEL);
             canvas.drawPath(tick, paint);
-        }
-        else {
+        } else {
             paint.reset();
             paint.setAntiAlias(true);
-            bounds.set(minDim / 10, minDim / 10, minDim - (minDim/10), minDim - (minDim/10));
+            bounds.set((float) minDim / 10, (float) minDim / 10, minDim - ((float) minDim / 10), minDim - ((float) minDim / 10));
             paint.setColor(Color.parseColor("#C1C1C1"));
-            canvas.drawRoundRect(bounds, minDim / 8, minDim / 8, paint);
+            canvas.drawRoundRect(bounds, (float) minDim / 8, (float) minDim / 8, paint);
 
-            bounds.set(minDim / 5, minDim / 5, minDim - (minDim/5), minDim - (minDim/5));
+            bounds.set((float) minDim / 5, (float) minDim / 5, minDim - ((float) minDim / 5), minDim - ((float) minDim / 5));
             paint.setColor(Color.parseColor("#FFFFFF"));
             canvas.drawRect(bounds, paint);
         }
@@ -113,12 +105,12 @@ public class MaterialCheckbox extends View {
         int height = getMeasuredHeight();
         int width = getMeasuredWidth();
         minDim = Math.min(width, height);
-        bounds.set(minDim / 10, minDim / 10, minDim - (minDim/10), minDim - (minDim/10));
-        tick.moveTo(minDim / 4, minDim / 2);
-        tick.lineTo(minDim / 2.5f, minDim - (minDim / 3));
+        bounds.set((float) minDim / 10, (float) minDim / 10, minDim - ((float) minDim / 10), minDim - ((float) minDim / 10));
+        tick.moveTo((float) minDim / 4, (float) minDim / 2);
+        tick.lineTo(minDim / 2.5f, minDim - ((float) minDim / 3));
 
         tick.moveTo(minDim / 2.75f, minDim - (minDim / 3.25f));
-        tick.lineTo(minDim - (minDim / 4), minDim / 3);
+        tick.lineTo(minDim - ((float) minDim / 4), (float) minDim / 3);
         setMeasuredDimension(width, height);
     }
 
