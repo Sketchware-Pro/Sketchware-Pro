@@ -25,6 +25,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.content.res.AppCompatResources;
+
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
@@ -38,6 +40,7 @@ import com.besome.sketch.editor.view.palette.IconLinearVertical;
 import com.besome.sketch.editor.view.palette.IconMapView;
 import com.besome.sketch.editor.view.palette.PaletteFavorite;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
+
 import pro.sketchware.R;
 
 import java.io.File;
@@ -297,7 +300,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     if (draggingListener != null) {
                         draggingListener.d();
                     }
-                    b(false);
+                    b(false, false);
                     dummyView.setDummyVisibility(View.GONE);
                     viewPane.clearViews();
                     handler.removeCallbacks(ea);
@@ -317,10 +320,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 dummyView.a(view, motionEvent.getRawX(), motionEvent.getRawY(), u, v);
                 if (a(motionEvent.getRawX(), motionEvent.getRawY())) {
                     dummyView.setAllow(true);
-                    updateDeleteIcon(true);
+                    updateDeleteIcon(true, r instanceof IconCustomWidget);
                     return true;
                 }
-                if (D) updateDeleteIcon(false);
+                if (D) updateDeleteIcon(false, r instanceof IconCustomWidget);
                 if (b(motionEvent.getRawX(), motionEvent.getRawY())) {
                     dummyView.setAllow(true);
                     boolean isNotIcon = !isViewAnIconBase(r);
@@ -363,7 +366,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     break lol;
                 }
                 if (D && r instanceof IconCustomWidget) {
-                    widgetsCreatorManager.deleteWidgetMap(getContext(), (int) view.getTag());
+                    widgetsCreatorManager.showActionsDialog((int) view.getTag());
                     break lol;
                 }
                 viewPane.resetView(false);
@@ -441,7 +444,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             if (draggingListener != null) {
                 draggingListener.d();
             }
-            b(false);
+            b(false, false);
             dummyView.setDummyVisibility(View.GONE);
             r = null;
             viewPane.clearViews();
@@ -556,7 +559,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         isVibrationEnabled = new DB(context, "P12").a("P12I0", true);
         scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        paletteWidget.cardView.setOnClickListener(view -> widgetsCreatorManager.showWidgetsCreatorDialog());
+        paletteWidget.cardView.setOnClickListener(view -> widgetsCreatorManager.showWidgetsCreatorDialog(-1));
     }
 
     public void b(ArrayList<ViewBean> arrayList, boolean z) {
@@ -643,15 +646,15 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         dummyView.a(G);
         if (isViewAnIconBase(r)) {
             if (r instanceof uy || r instanceof IconCustomWidget) {
-                b(true);
+                b(true, r instanceof IconCustomWidget);
                 viewPane.addRootLayout(null);
             } else {
-                b(false);
+                b(false, false);
                 viewPane.addRootLayout(null);
             }
         } else {
             r.setVisibility(View.GONE);
-            b(true);
+            b(true, r instanceof IconCustomWidget);
             viewPane.addRootLayout(((sy) r).getBean());
         }
         if (b(u, v)) {
@@ -735,7 +738,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         toolbar.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY));
     }
 
-    private void b(boolean z) {
+    private void b(boolean z, boolean isCustomWidget) {
+        if (isCustomWidget) {
+            deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_edit));
+            deleteText.setText("Drag here to see the Actions");
+        } else if (z) {
+            deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_delete));
+            deleteText.setText("Drag here to delete");
+        }
         deleteView.bringToFront();
         if (!isAnimating) {
             animateUpDown();
@@ -981,16 +991,22 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         return x > locationOnScreen[0] && x < locationOnScreen[0] + deleteView.getWidth() && y > locationOnScreen[1] && y < (locationOnScreen[1] + deleteView.getHeight());
     }
 
-    private void updateDeleteIcon(boolean z) {
+    private void updateDeleteIcon(boolean z, boolean isCustomWidget) {
         if (D == z) return;
         D = z;
         if (D) {
-            rippleRound(deleteView, "#FF5D5D", "#ff0000", 200);
+            rippleRound(deleteView, isCustomWidget ? "#26A59A" :"#FF5D5D", "#ff0000", 200);
             shakeView(deleteView);
         } else {
             rippleRound(deleteView, "#696969", "#ffffff", 200);
         }
-        deleteText.setText(D ? "Release to delete" : "Drag here to delete");
+        if (isCustomWidget) {
+            deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_edit));
+            deleteText.setText(D ? "Release to see the actions" : "Drag here to see the Actions");
+        } else {
+            deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_delete));
+            deleteText.setText(D ? "Release to delete" : "Drag here to delete");
+        }
     }
 
     private void rippleRound(View view, String focus, String pressed, double round) {

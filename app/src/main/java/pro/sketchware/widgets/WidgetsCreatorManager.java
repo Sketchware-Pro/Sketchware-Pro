@@ -4,6 +4,7 @@ import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,15 +14,20 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewEditor;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,6 +41,7 @@ import a.a.a.aB;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.DialogSelectorActionsBinding;
 import pro.sketchware.databinding.WidgetsCreatorDialogBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -42,7 +49,9 @@ import pro.sketchware.utility.SketchwareUtil;
 public class WidgetsCreatorManager {
 
     private ArrayList<HashMap<String, Object>> widgetsListMap = new ArrayList<>();
-    private final String widgetsFilePath = "/storage/emulated/0/.sketchware/resources/widgets/widgets.json";
+    private final String widgetsResourcesFilePath = "/storage/emulated/0/.sketchware/resources/widgets/";
+    private final String widgetsFilePath = widgetsResourcesFilePath + "widgets.json";
+    private final String widgetsExportFilePath = widgetsResourcesFilePath + "export/";
     private final ArrayList<String> categoriesList = new ArrayList<>();
     private final ArrayList<String> mainCategories = new ArrayList<>(Arrays.asList(
             "Layouts", "AndroidX", "Widgets", "List", "Library", "Google", "Date & Time"
@@ -142,9 +151,10 @@ public class WidgetsCreatorManager {
         FileUtil.writeFile(widgetsFilePath, new Gson().toJson(widgetsListMap));
     }
 
-    public void showWidgetsCreatorDialog() {
+    public void showWidgetsCreatorDialog(int position) {
+        boolean isEditing = position != -1;
         aB dialog = new aB((Activity) context);
-        dialog.b(Helper.getResString(R.string.create_new_widget));
+        dialog.b(isEditing ? Helper.getResString(R.string.widget_editor) :Helper.getResString(R.string.create_new_widget));
         WidgetsCreatorDialogBinding binding = WidgetsCreatorDialogBinding.inflate(LayoutInflater.from(context));
         View inflate = binding.getRoot();
 
@@ -153,10 +163,22 @@ public class WidgetsCreatorManager {
         clearErrorOnTextChanged(binding.widgetTitle, binding.inputTitle);
         clearErrorOnTextChanged(binding.addWidgetTo, binding.inputClass);
 
+        if (isEditing) {
+            HashMap<String, Object> map = widgetsListMap.get(position);
+            binding.widgetType.setText(map.get("type").toString());
+            binding.widgetName.setText(map.get("name").toString());
+            binding.widgetTitle.setText(map.get("title").toString());
+            binding.addWidgetTo.setText(map.get("Class").toString());
+            binding.injectCode.setText(map.get("inject").toString());
+        } else {
+            dialog.setDismissOnDefaultButtonClick(false);
+            dialog.configureDefaultButton(Helper.getResString(R.string.common_word_see_more), view -> showMorePopUp(dialog, view));
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 binding.widgetName.getContext(),
                 android.R.layout.simple_dropdown_item_1line,
-                getSuggestions(context)
+                getSuggestions()
         );
 
         binding.widgetName.setAdapter(adapter);
@@ -170,7 +192,7 @@ public class WidgetsCreatorManager {
             showCategorySelectorDialog(types, binding.addWidgetTo);
         });
 
-        dialog.b(Helper.getResString(R.string.create), v -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             try {
                 String widgetTitle = Objects.requireNonNull(binding.widgetTitle.getText()).toString().trim();
                 String widgetName = Objects.requireNonNull(binding.widgetName.getText()).toString().trim();
@@ -201,17 +223,13 @@ public class WidgetsCreatorManager {
                 map.put("name", widgetName);
                 map.put("inject", widgetInject);
                 map.put("type", Integer.parseInt(widgetType));
-                Object positionObject = widgetsListMap.isEmpty() ? 0 : widgetsListMap.get(widgetsListMap.size() - 1).get("position");
-                int position;
-                if (positionObject instanceof Number) {
-                    position = ((Number) positionObject).intValue();
+                if (isEditing) {
+                    map.put("position", position);
+                    widgetsListMap.set(position, map);
                 } else {
-                    position = Integer.parseInt(Objects.requireNonNull(positionObject).toString());
+                    map.put("position", widgetsListMap.size());
+                    widgetsListMap.add(map);
                 }
-
-                map.put("position", position + 1);
-
-                widgetsListMap.add(map);
                 FileUtil.writeFile(widgetsFilePath, new Gson().toJson(widgetsListMap));
                 if (!categoriesList.contains(widgetClass)) {
                     categoriesList.add(widgetClass);
@@ -227,6 +245,68 @@ public class WidgetsCreatorManager {
 
         dialog.a(inflate);
         dialog.show();
+    }
+
+    private void showMorePopUp(aB dialog, View anchorView) {
+        PopupMenu popupMenu = new PopupMenu(context, anchorView);
+        popupMenu.getMenuInflater().inflate(R.menu.widget_creator_menu_more, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(menuItem -> {
+            dialog.dismiss();
+            if (menuItem.getItemId() == R.id.import_widgets) {
+                DialogProperties properties = new DialogProperties();
+
+                properties.selection_mode = DialogConfigs.SINGLE_MODE;
+                properties.selection_type = DialogConfigs.FILE_SELECT;
+                properties.root = Environment.getExternalStorageDirectory();
+                properties.error_dir = Environment.getExternalStorageDirectory();
+                properties.offset = Environment.getExternalStorageDirectory();
+                properties.extensions = new String[]{"json"};
+
+                FilePickerDialog pickerDialog = new FilePickerDialog(context, properties, R.style.RoundedCornersDialog);
+
+                pickerDialog.setTitle("Select .json widget(s) file");
+                pickerDialog.setDialogSelectionListener(selections -> importWidgets(selections[0]));
+
+                pickerDialog.show();
+            } else {
+                String exportFilePath = widgetsExportFilePath + "allWidgets.json";
+                FileUtil.writeFile(exportFilePath, new Gson().toJson(widgetsListMap));
+                SketchwareUtil.toast("Exported in " + exportFilePath);
+            }
+            return true;
+        });
+
+        popupMenu.show();
+    }
+
+    private void importWidgets(String path) {
+        String value = FileUtil.readFile(path);
+
+        try {
+            Type listType = new TypeToken<ArrayList<HashMap<String, Object>>>() {
+            }.getType();
+            ArrayList<HashMap<String, Object>> importedWidgets = new Gson().fromJson(value, listType);
+
+            for (HashMap<String, Object> widget : importedWidgets) {
+                if (!canAddWidget(widget)) return;
+                widget.put("position", widgetsListMap.size());
+                widgetsListMap.add(widget);
+                String widgetClass = widget.get("Class").toString();
+                if (!categoriesList.contains(widgetClass)) {
+                    categoriesList.add(widgetClass);
+                }
+            }
+            if (!importedWidgets.isEmpty()) {
+                FileUtil.writeFile(widgetsFilePath, new Gson().toJson(widgetsListMap));
+                viewEditorFragment.e();
+                SketchwareUtil.toast("Imported!");
+                return;
+            }
+
+        } catch (Exception ignored) {}
+        SketchwareUtil.toast("The imported widgets file is empty or invalid.");
+
     }
 
     public static void clearErrorOnTextChanged(final EditText editText, final TextInputLayout textInputLayout) {
@@ -386,34 +466,65 @@ public class WidgetsCreatorManager {
         }
     }
 
-    public void deleteWidgetMap(Context context, int position) {
-        aB aBDialog = new aB((Activity) context);
-        aBDialog.b(xB.b().a(context, R.string.view_widget_favorites_delete_title));
-        aBDialog.a(R.drawable.ic_mtrl_delete);
-        aBDialog.a(xB.b().a(context, R.string.view_widget_favorites_delete_message));
-        aBDialog.b(xB.b().a(context, R.string.common_word_delete), v -> {
-            for (Iterator<HashMap<String, Object>> iterator = widgetsListMap.iterator(); iterator.hasNext(); ) {
-                HashMap<String, Object> map = iterator.next();
-                Object positionValue = map.get("position");
+    public void showActionsDialog(int tag) {
+        Activity activity = viewEditorFragment.requireActivity();
+        DialogSelectorActionsBinding dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(activity));
+        aB dialog = new aB(activity);
+        dialog.b("Actions");
+        dialog.a(dialogBinding.getRoot());
 
-                if (positionValue != null) {
-                    int positionIntValue = (positionValue instanceof Double) ? ((Double) positionValue).intValue() : (int) positionValue;
-                    if (positionIntValue == position) {
-                        iterator.remove();
-                        String Class = Objects.requireNonNull(map.get("Class")).toString();
-                        if (isClassEmpty(Class) && !mainCategories.contains(Class)) {
-                            categoriesList.remove(Class);
-                        }
-                        break;
-                    }
-                }
+        int position = getWidgetPosition(tag);
+
+        dialogBinding.edit.setOnClickListener(v -> {
+            showWidgetsCreatorDialog(position);
+            dialog.dismiss();
+        });
+        dialogBinding.export.setOnClickListener(v -> {
+            HashMap<String, Object> mapToExport = widgetsListMap.get(position);
+            String exportFilePath = widgetsExportFilePath + mapToExport.get("title") + ".json";
+            FileUtil.writeFile(exportFilePath, "[" + new Gson().toJson(mapToExport) + "]");
+            SketchwareUtil.toast("Exported in " + exportFilePath);
+            dialog.dismiss();
+        });
+        dialogBinding.delete.setOnClickListener(v -> {
+            deleteWidgetMap(position);
+            dialog.dismiss();
+        });
+        dialog.show();
+    }
+
+    private void deleteWidgetMap(int position) {
+        aB dialog = new aB((Activity) context);
+        dialog.b(xB.b().a(context, R.string.view_widget_favorites_delete_title));
+        dialog.a(R.drawable.ic_mtrl_delete);
+        dialog.a(xB.b().a(context, R.string.view_widget_favorites_delete_message));
+        dialog.b(xB.b().a(context, R.string.common_word_delete), v -> {
+            String Class = Objects.requireNonNull(widgetsListMap.get(position).get("Class")).toString();
+            widgetsListMap.remove(position);
+            if (isClassEmpty(Class) && !mainCategories.contains(Class)) {
+                categoriesList.remove(Class);
             }
             FileUtil.writeFile(widgetsFilePath, new Gson().toJson(widgetsListMap));
             viewEditorFragment.e();
-            aBDialog.dismiss();
+            dialog.dismiss();
         });
-        aBDialog.a(xB.b().a(context, R.string.common_word_cancel), Helper.getDialogDismissListener(aBDialog));
-        aBDialog.show();
+        dialog.a(xB.b().a(context, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
+    }
+
+    private int getWidgetPosition(int targetPosition) {
+        for (int i = 0; i < widgetsListMap.size(); i++) {
+            HashMap<String, Object> widget = widgetsListMap.get(i);
+            Object positionValue = widget.get("position");
+
+            if (positionValue != null) {
+                int positionIntValue = ((Number) positionValue).intValue();
+                if (positionIntValue == targetPosition) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 
     private boolean isClassEmpty(String str) {
@@ -438,7 +549,7 @@ public class WidgetsCreatorManager {
         return input.substring(0, 1).toLowerCase() + input.substring(1);
     }
 
-    private List<String> getSuggestions(Context context) {
+    private List<String> getSuggestions() {
         return Arrays.asList(context.getResources().getStringArray(R.array.property_convert_options));
     }
 
