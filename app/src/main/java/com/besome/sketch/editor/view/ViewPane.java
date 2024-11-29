@@ -577,12 +577,14 @@ public class ViewPane extends RelativeLayout {
                 viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
+                viewBean.preParentType = viewBean.parentType;
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
             } else if (view instanceof ItemVerticalScrollView) {
                 viewBean.preIndex = viewBean.index;
                 viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
+                viewBean.preParentType = viewBean.parentType;
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW;
                 viewBean.layout.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             } else if (view instanceof ItemHorizontalScrollView) {
@@ -597,6 +599,7 @@ public class ViewPane extends RelativeLayout {
                 viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
+                viewBean.preParentType = viewBean.parentType;
                 viewBean.parentType = ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
                 viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
             } else if (view instanceof ItemRelativeLayout) {
@@ -604,12 +607,14 @@ public class ViewPane extends RelativeLayout {
                 viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
+                viewBean.preParentType = viewBean.parentType;
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_RELATIVE;
             }
         } else {
             viewBean.preIndex = viewBean.index;
             viewBean.preParent = viewBean.parent;
             viewBean.parent = "root";
+            viewBean.preParentType = viewBean.parentType;
             viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
             viewBean.index = -1;
         }
