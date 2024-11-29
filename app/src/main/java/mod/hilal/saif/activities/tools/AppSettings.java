@@ -4,7 +4,6 @@ import static com.besome.sketch.editor.view.ViewEditor.shakeView;
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import mod.remaker.util.ThemeUtils;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogSelectApkToSignBinding;
 
