@@ -108,7 +108,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:1.7.0"
     implementation "androidx.core:core-splashscreen:1.0.1"
-    implementation "androidx.activity:activity:1.9.1"
+    implementation "androidx.activity:activity:1.9.3"
     implementation "androidx.recyclerview:recyclerview:1.3.2"
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.viewpager:viewpager:1.0.0"
@@ -117,12 +117,12 @@ dependencies {
     implementation "com.airbnb.android:lottie:6.5.2"
     implementation "com.google.android.flexbox:flexbox:3.0.0"
 
-    implementation "androidx.annotation:annotation:1.8.0"
-    implementation "com.android.tools:annotations:31.5.1"
+    implementation "androidx.annotation:annotation:1.9.1"
+    implementation "com.android.tools:annotations:31.7.2"
     implementation "com.google.guava:guava:32.0.1-jre"
     implementation 'androidx.exifinterface:exifinterface:1.3.7'
-    implementation "androidx.preference:preference:1.2.0"
-    implementation files('libs\\android-svg.jar')
+    implementation "androidx.preference:preference:1.2.1"
+    implementation files('libs/android-svg.jar')
 
     def editorGroupId = "io.github.Rosemoe.sora-editor"
     implementation platform("$editorGroupId:bom:0.23.4-467c137-SNAPSHOT")
@@ -142,7 +142,7 @@ dependencies {
     minApi26Implementation "com.google.protobuf:protobuf-java:3.19.2"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
-    implementation "com.android.tools:r8:8.3.37"
+    implementation "com.android.tools:r8:8.5.35"
     implementation "com.github.Iyxan23:zipalign-java:1.2.0"
 
     implementation "com.google.code.gson:gson:2.11.0"
@@ -158,7 +158,7 @@ dependencies {
     minApi21Implementation "net.sf.proguard:proguard-base:6.0.3"
     minApi26Implementation files('libs/proguard-base-7.2.2.jar')
     minApi26Implementation 'com.guardsquare:proguard-core:9.0.2'
-    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.20'
+    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.21'
 
     //noinspection GradleDependency
     minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"
@@ -173,7 +173,7 @@ dependencies {
     if (analyticsEnabled) {
         new File("$projectDir/google-services.json").text = secrets
     }
-    implementation platform("com.google.firebase:firebase-bom:33.2.0")
+    implementation platform("com.google.firebase:firebase-bom:33.6.0")
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.0.4"
