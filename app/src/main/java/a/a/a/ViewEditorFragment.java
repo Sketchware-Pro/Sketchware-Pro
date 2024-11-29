@@ -402,6 +402,8 @@ public class ViewEditorFragment extends qA {
                     viewBean.index = movedData.preIndex;
                     viewBean.parent = movedData.preParent;
                     viewBean.preParent = movedData.parent;
+                    viewBean.parentType = movedData.preParentType;
+                    viewBean.preParentType = movedData.parentType;
                     viewEditor.a(viewEditor.b(viewBean, false), false);
                 }
             }
