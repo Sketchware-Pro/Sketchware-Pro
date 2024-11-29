@@ -233,7 +233,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     eventAdapter.notifyDataSetChanged();
                     return true;
                 });
-        fab = paletteView.getHeaderView().findViewById(R.id.fab);
+        fab = parent.findViewById(R.id.fab);
         noEvents.setVisibility(View.GONE);
         noEvents.setText(xB.b().a(requireContext(), R.string.event_message_no_events));
         eventList.setLayoutManager(new LinearLayoutManager(null, RecyclerView.VERTICAL, false));
