@@ -37,7 +37,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigationrail.NavigationRailView;
-import pro.sketchware.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +46,7 @@ import java.util.Set;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.jbk.editor.manage.MoreblockImporter;
+import pro.sketchware.R;
 
 public class rs extends qA implements View.OnClickListener, MoreblockImporterDialog.CallBack {
 
@@ -93,14 +93,18 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
     
     private int getPaletteIndex(int id) {
-        return switch (id) {
-            case R.id.activity -> 0;
-            case R.id.view -> 1;
-            case R.id.component -> 2;
-            case R.id.drawer -> 3;
-            case R.id.moreblock -> 4;
-            default -> -1;
-        };
+        if (id == R.id.activity) {
+            return 0;
+        } else if (id == R.id.view) {
+            return 1;
+        } else if (id == R.id.component) {
+            return 2;
+        } else if (id == R.id.drawer) {
+            return 3;
+        } else if (id == R.id.moreblock) {
+            return 4;
+        }
+        return -1;
     }
     
     private int getPaletteIndex() {
