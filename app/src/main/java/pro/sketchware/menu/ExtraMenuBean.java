@@ -7,7 +7,6 @@ import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.annotation.SuppressLint;
 import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +47,7 @@ import mod.hilal.saif.asd.AsdDialog;
 import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.hilal.saif.asd.old.AsdOldDialog;
 import pro.sketchware.R;
+import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.lib.highlighter.SimpleHighlighter;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileResConfig;
@@ -101,17 +101,7 @@ public class ExtraMenuBean {
         EditText searchInput = view.findViewById(R.id.searchInput);
         TextInputLayout textInputLayout = view.findViewById(R.id.searchInputLayout);
         textInputLayout.setVisibility(View.VISIBLE);
-        searchInput.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
+        searchInput.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
                 String filterText = s.toString().toLowerCase();
