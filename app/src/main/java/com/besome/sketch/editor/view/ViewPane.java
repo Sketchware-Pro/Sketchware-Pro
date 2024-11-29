@@ -287,7 +287,7 @@ public class ViewPane extends RelativeLayout {
             case ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW -> new ItemOTPView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW -> new ItemCodeView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW -> new ItemRecyclerView(context);
-            default -> null;
+            default -> getUnknownItemView(viewBean);
         };
         assert item != null;
         item.setId(++b);
@@ -295,6 +295,13 @@ public class ViewPane extends RelativeLayout {
         ((sy) item).setBean(viewBean);
         updateItemView(item, viewBean);
         return item;
+    }
+    
+    private View getUnknownItemView(ViewBean bean) {
+        ItemTextView view = new ItemTextView(context);
+        view.setText("Unknown type:" + bean.convert);
+        view.setTextColor(Color.RED);
+        return view;
     }
 
     public void setScId(String str) {
@@ -570,12 +577,14 @@ public class ViewPane extends RelativeLayout {
                 viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
+                viewBean.preParentType = viewBean.parentType;
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
             } else if (view instanceof ItemVerticalScrollView) {
                 viewBean.preIndex = viewBean.index;
                 viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
+                viewBean.preParentType = viewBean.parentType;
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW;
                 viewBean.layout.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             } else if (view instanceof ItemHorizontalScrollView) {
@@ -590,6 +599,7 @@ public class ViewPane extends RelativeLayout {
                 viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
+                viewBean.preParentType = viewBean.parentType;
                 viewBean.parentType = ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
                 viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
             } else if (view instanceof ItemRelativeLayout) {
@@ -597,12 +607,14 @@ public class ViewPane extends RelativeLayout {
                 viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
+                viewBean.preParentType = viewBean.parentType;
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_RELATIVE;
             }
         } else {
             viewBean.preIndex = viewBean.index;
             viewBean.preParent = viewBean.parent;
             viewBean.parent = "root";
+            viewBean.preParentType = viewBean.parentType;
             viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
             viewBean.index = -1;
         }

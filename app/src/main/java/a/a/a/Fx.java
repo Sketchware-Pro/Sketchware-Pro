@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import mod.hey.studios.editor.manage.block.code.ExtraBlockCode;
+import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
+import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 
 public class Fx {
@@ -25,7 +26,6 @@ public class Fx {
     public String activityName;
     public jq buildConfig;
     public ArrayList<BlockBean> eventBlocks;
-    public ExtraBlockCode mceb;
     public Map<String, BlockBean> blockMap;
 
     public Fx(String activityName, jq buildConfig, ArrayList<BlockBean> eventBlocks, boolean isViewBindingEnabled) {
@@ -33,7 +33,6 @@ public class Fx {
         this.buildConfig = buildConfig;
         this.eventBlocks = eventBlocks;
         this.isViewBindingEnabled = isViewBindingEnabled;
-        mceb = new ExtraBlockCode(this);
     }
 
     public String a() {
@@ -57,14 +56,6 @@ public class Fx {
         String opcode = getBlockCode(bean, params);
 
         String code = opcode;
-        /*
-          switch block above should be responsible for handling %m param.
-          However, upon decompiling this class, it completely ignore this case.
-          This is the solution for now to prevent errors during code generation.
-         */
-        if (hasEmptySelectorParam(params, bean.spec)) {
-            code = "";
-        }
 
         if (b(bean.opCode, var2)) {
             code = "(" + opcode + ")";
@@ -185,18 +176,7 @@ public class Fx {
         ArrayList<String> params = new ArrayList<>();
         for (int i = 0; i < bean.parameters.size(); i++) {
             String param = bean.parameters.get(i);
-            Gx paramInfo = bean.getParamClassInfo().get(i);
-            int type;
-
-            if (paramInfo.b("boolean")) {
-                type = 0;
-            } else if (paramInfo.b("double")) {
-                type = 1;
-            } else if (paramInfo.b("String")) {
-                type = 2;
-            } else {
-                type = 3;
-            }
+            int type = getBlockType(bean, i);
             params.add(a(param, type, bean.opCode));
         }
         return params;
@@ -534,21 +514,21 @@ public class Fx {
                 break;
             case "isDrawerOpen":
                 if (buildConfig.a(activityName).hasDrawer) {
-                    opcode = isViewBindingEnabled ? "binding.drawerLayout.isDrawerOpen(GravityCompat.START);" : "_drawer.isDrawerOpen(GravityCompat.START);";
+                    opcode = isViewBindingEnabled ? "binding.Drawer.isDrawerOpen(GravityCompat.START)" : "_drawer.isDrawerOpen(GravityCompat.START)";
                 } else {
                     opcode = "";
                 }
                 break;
             case "openDrawer":
                 if (buildConfig.a(activityName).hasDrawer) {
-                    opcode = isViewBindingEnabled ? "binding.drawerLayout.openDrawer(GravityCompat.START);" : "_drawer.openDrawer(GravityCompat.START);";
+                    opcode = isViewBindingEnabled ? "binding.Drawer.openDrawer(GravityCompat.START);" : "_drawer.openDrawer(GravityCompat.START);";
                 } else {
                     opcode = "";
                 }
                 break;
             case "closeDrawer":
                 if (buildConfig.a(activityName).hasDrawer) {
-                    opcode = isViewBindingEnabled ? "binding.drawerLayout.closeDrawer(GravityCompat.START);" : "_drawer.closeDrawer(GravityCompat.START);";
+                    opcode = isViewBindingEnabled ? "binding.Drawer.closeDrawer(GravityCompat.START);" : "_drawer.closeDrawer(GravityCompat.START);";
                 } else {
                     opcode = "";
                 }
@@ -1354,8 +1334,107 @@ public class Fx {
                 opcode = params.get(0) + ".removeUpdates(_" + params.get(0) + "_location_listener);";
                 break;
             default:
-                opcode = mceb.getCodeExtraBlock(bean, "\"\"");
+                opcode = getCodeExtraBlock(bean, "\"\"");
+        }
+        
+        /*
+          switch block above should be responsible for handling %m param.
+          However, upon decompiling this class, it completely ignore this case.
+          This is the solution for now to prevent errors during code generation.
+         */
+        if (hasEmptySelectorParam(params, bean.spec)) {
+            opcode = "";
         }
         return opcode;
+    }
+    
+    private String getCodeExtraBlock(BlockBean blockBean, String var2) {
+        ArrayList<String> parameters = new ArrayList<>();
+
+        for (int i = 0; i < blockBean.parameters.size(); i++) {
+            String parameterValue = blockBean.parameters.get(i);
+
+            switch (getBlockType(blockBean, i)) {
+                case 0:
+                    if (parameterValue.isEmpty()) {
+                        parameters.add("true");
+                    } else {
+                        parameters.add(a(parameterValue, getBlockType(blockBean, i), blockBean.opCode));
+                    }
+                    break;
+
+                case 1:
+                    if (parameterValue.isEmpty()) {
+                        parameters.add("0");
+                    } else {
+                        parameters.add(a(parameterValue, getBlockType(blockBean, i), blockBean.opCode));
+                    }
+                    break;
+
+                case 2:
+                    if (parameterValue.isEmpty()) {
+                        parameters.add("\"\"");
+                    } else {
+                        parameters.add(a(parameterValue, getBlockType(blockBean, i), blockBean.opCode));
+                    }
+                    break;
+
+                default:
+                    if (parameterValue.isEmpty()) {
+                        parameters.add("");
+                    } else {
+                        parameters.add(a(parameterValue, getBlockType(blockBean, i), blockBean.opCode));
+                    }
+            }
+        }
+
+        if (blockBean.subStack1 >= 0) {
+            parameters.add(a(String.valueOf(blockBean.subStack1), var2));
+        } else {
+            parameters.add(" ");
+        }
+
+        if (blockBean.subStack2 >= 0) {
+            parameters.add(a(String.valueOf(blockBean.subStack2), var2));
+        } else {
+            parameters.add(" ");
+        }
+
+        ExtraBlockInfo blockInfo = BlockLoader.getBlockInfo(blockBean.opCode);
+
+        if (blockInfo.isMissing) {
+            blockInfo = BlockLoader.getBlockFromProject(buildConfig.sc_id, blockBean.opCode);
+        }
+
+        String formattedCode;
+        if (!parameters.isEmpty()) {
+            try {
+                formattedCode = String.format(blockInfo.getCode(), parameters.toArray(new Object[0]));
+            } catch (Exception e) {
+                formattedCode = "/* Failed to resolve Custom Block's code: " + e + " */";
+            }
+        } else {
+            formattedCode = blockInfo.getCode();
+        }
+
+        return formattedCode;
+    }
+    
+    private int getBlockType(BlockBean blockBean, int parameterIndex) {
+        int blockType;
+
+        Gx paramClassInfo = blockBean.getParamClassInfo().get(parameterIndex);
+
+        if (paramClassInfo.b("boolean")) {
+            blockType = 0;
+        } else if (paramClassInfo.b("double")) {
+            blockType = 1;
+        } else if (paramClassInfo.b("String")) {
+            blockType = 2;
+        } else {
+            blockType = 3;
+        }
+
+        return blockType;
     }
 }

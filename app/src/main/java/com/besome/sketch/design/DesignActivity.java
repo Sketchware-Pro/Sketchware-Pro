@@ -87,7 +87,6 @@ import a.a.a.wq;
 import a.a.a.yB;
 import a.a.a.yq;
 import a.a.a.zy;
-import dev.aldi.sayuti.editor.manage.ManageCustomAttributeActivity;
 import dev.chrisbanes.insetter.Insetter;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
@@ -120,6 +119,7 @@ import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
 import mod.remaker.util.ThemeUtils;
 import pro.sketchware.R;
+import pro.sketchware.activities.appcompat.ManageAppCompatActivity;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -798,7 +798,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      * Opens {@link ManageCustomAttributeActivity}.
      */
     void toAppCompatInjectionManager() {
-        launchActivity(ManageCustomAttributeActivity.class, null,
+        launchActivity(ManageAppCompatActivity.class, null,
                 new Pair<>("file_name", projectFileSelector.currentXmlFileName));
     }
 
