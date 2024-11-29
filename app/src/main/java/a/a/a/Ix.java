@@ -12,7 +12,6 @@ import android.util.Pair;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.gson.Gson;
-import com.sketchware.remod.xml.XmlBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,6 +27,7 @@ import mod.jbk.build.BuiltInLibraries;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileResConfig;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.xml.XmlBuilder;
 
 public class Ix {
     public XmlBuilder a = new XmlBuilder("manifest");
