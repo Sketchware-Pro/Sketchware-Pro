@@ -126,7 +126,7 @@ public class Ox {
                 }
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
                     XmlBuilder drawerLayoutTag = new XmlBuilder("androidx.drawerlayout.widget.DrawerLayout");
-                    drawerLayoutTag.addAttribute("android", "id", "@+id/drawer_layout");
+                    drawerLayoutTag.addAttribute("android", "id", "@+id/_drawer");
                     aci.inject(drawerLayoutTag, "DrawerLayout");
                     drawerLayoutTag.a(rootLayout);
                     XmlBuilder linearLayoutTag = new XmlBuilder("LinearLayout");

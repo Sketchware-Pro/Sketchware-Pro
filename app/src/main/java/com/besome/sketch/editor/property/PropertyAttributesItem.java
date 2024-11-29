@@ -143,7 +143,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
     }
 
     public void setBean(ViewBean bean) {
-        this.bean = bean;
+        this.bean = bean.clone();
     }
 
     public void setBeans(ArrayList<ViewBean> beans) {
@@ -163,7 +163,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
     }
 
     public void setValue(HashMap<String, String> value) {
-        this.value = value;
+        this.value = new HashMap<>(value);
     }
 
     @Override
@@ -216,6 +216,8 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                                             .show();
                                 } else {
                                     value.put(attr, "false");
+                                    if (valueChangeListener != null)
+                                        valueChangeListener.a(key, value);
                                     adapter.submitList(new ArrayList<>(value.keySet()));
                                 }
                             })

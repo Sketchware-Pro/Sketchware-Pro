@@ -407,7 +407,7 @@ public class ViewBean extends nA implements Parcelable {
                 !adUnitId.equals(viewBean.adUnitId) || !text.isEqual(viewBean.text) || !layout.isEqual(viewBean.layout) ||
                 !image.isEqual(viewBean.image) || !indeterminate.equals(viewBean.indeterminate) ||
                 !inject.equals(viewBean.inject) || !convert.equals(viewBean.convert) ||
-                !progressStyle.equals(viewBean.progressStyle)) {
+                !progressStyle.equals(viewBean.progressStyle) || !parentAttributes.equals(viewBean.parentAttributes)) {
             return false;
         }
 

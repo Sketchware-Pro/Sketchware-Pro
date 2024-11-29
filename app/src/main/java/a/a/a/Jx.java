@@ -514,7 +514,7 @@ public class Jx {
         }
 
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) && !isViewBindingEnabled) {
-            eventManager.addLifecycleEvent("onBackPressed", "DrawerLayout", "_drawer_layout");
+            eventManager.addLifecycleEvent("onBackPressed", "DrawerLayout", "_drawer");
         }
 
         ArrayList<ViewBean> beans = projectDataManager.d(projectFileBean.getXmlName());
@@ -782,24 +782,24 @@ public class Jx {
                 if (isViewBindingEnabled) {
                     initializeMethodCode.add(
                             "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
-                                    projectFileBean.getActivityName() + ".this, binding.drawerLayout, " +
+                                    projectFileBean.getActivityName() + ".this, binding.Drawer, " +
 
                                     (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ?
                                             "binding.Toolbar, " : "") +
 
                                     "R.string.app_name, R.string.app_name);" + EOL +
-                                    "binding.drawerLayout.addDrawerListener(_toggle);" + EOL +
+                                    "binding.Drawer.addDrawerListener(_toggle);" + EOL +
                                     "_toggle.syncState();" + EOL
                     );
                 } else {
-                    fields.add("private DrawerLayout _drawer_layout;");
-                    initializeMethodCode.add("_drawer_layout = findViewById(R.id.drawer_layout);" + EOL +
+                    fields.add("private DrawerLayout _drawer;");
+                    initializeMethodCode.add("_drawer = findViewById(R.id._drawer);" + EOL +
                             "ActionBarDrawerToggle _toggle = new ActionBarDrawerToggle(" +
-                            projectFileBean.getActivityName() + ".this, _drawer_layout, " +
+                            projectFileBean.getActivityName() + ".this, _drawer, " +
                             (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) ?
                                     "_toolbar, " : "") +
                             "R.string.app_name, R.string.app_name);" + EOL +
-                            "_drawer_layout.addDrawerListener(_toggle);" + EOL +
+                            "_drawer.addDrawerListener(_toggle);" + EOL +
                             "_toggle.syncState();" + EOL + EOL +
                             "LinearLayout _nav_view = findViewById(R.id._nav_view);" + EOL
                     );
