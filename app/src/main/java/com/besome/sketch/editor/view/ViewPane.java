@@ -107,6 +107,7 @@ import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
 import mod.hey.studios.util.ProjectFile;
 import pro.sketchware.utility.SvgUtils;
+import pro.sketchware.handlers.ConvertHandler;
 
 public class ViewPane extends RelativeLayout {
 
@@ -236,6 +237,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     public View createItemView(ViewBean viewBean) {
+        viewBean.type = ConvertHandler.getTypeByConvert(viewBean);
         View item = switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_LAYOUT_LINEAR,
                  ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
@@ -325,6 +327,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void updateItemView(View view, ViewBean viewBean) {
+        viewBean.type = ConvertHandler.getTypeByConvert(viewBean);
         ImageBean imageBean;
         String str;
         var injectHandler = new InjectAttributeHandler(viewBean);
