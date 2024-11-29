@@ -1,10 +1,5 @@
 package com.besome.sketch.editor.view;
 
-
-import static pro.sketchware.widgets.WidgetsCreatorManager.showWidgetsCreatorDialog;
-import static pro.sketchware.widgets.WidgetsCreatorManager.deleteWidgetMap;
-import static pro.sketchware.widgets.WidgetsCreatorManager.generateCustomWidgetId;
-
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -66,6 +61,8 @@ import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
+
+import pro.sketchware.widgets.IconCustomWidget;
 import pro.sketchware.widgets.WidgetsCreatorManager;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
@@ -121,6 +118,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private LinearLayout deleteView;
     private ObjectAnimator animatorTranslateY;
     private final Runnable ea = this::e;
+
+    public WidgetsCreatorManager widgetsCreatorManager;
 
     public ViewEditor(Context context) {
         super(context);
@@ -363,8 +362,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     deleteWidgetFromCollection(collectionWidget.getName());
                     break lol;
                 }
-                if (D && r instanceof WidgetsCreatorManager) {
-                    deleteWidgetMap(getContext(), (int) view.getTag());
+                if (D && r instanceof IconCustomWidget) {
+                    widgetsCreatorManager.deleteWidgetMap(getContext(), (int) view.getTag());
                     break lol;
                 }
                 viewPane.resetView(false);
@@ -557,7 +556,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         isVibrationEnabled = new DB(context, "P12").a("P12I0", true);
         scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-        paletteWidget.cardView.setOnClickListener(view -> showWidgetsCreatorDialog(getContext()));
+        paletteWidget.cardView.setOnClickListener(view -> widgetsCreatorManager.showWidgetsCreatorDialog());
     }
 
     public void b(ArrayList<ViewBean> arrayList, boolean z) {
@@ -643,7 +642,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         dummyView.a(r, u, v, u, v);
         dummyView.a(G);
         if (isViewAnIconBase(r)) {
-            if (r instanceof uy || r instanceof WidgetsCreatorManager) {
+            if (r instanceof uy || r instanceof IconCustomWidget) {
                 b(true);
                 viewPane.addRootLayout(null);
             } else {
@@ -896,7 +895,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public final String a(ViewBean bean) {
         int i = bean.type;
-        String b2 = !bean.isCustomWidget ? wq.b(i) : generateCustomWidgetId(bean.convert);
+        String b2 = !bean.isCustomWidget ? wq.b(i) : widgetsCreatorManager.generateCustomWidgetId(bean.convert);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
         int i2 = e[i] + 1;
