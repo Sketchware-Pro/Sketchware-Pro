@@ -424,122 +424,150 @@ public class ViewPane extends RelativeLayout {
             updateRelative(view, injectHandler);
         }
         if (classInfo.a("TextView")) {
-            TextView textView = (TextView) view;
-            updateTextView(textView, viewBean);
-            if (!classInfo.b("Button") && !classInfo.b("Switch")) {
-                textView.setGravity(viewBean.layout.gravity);
-            } else {
-                int gravity = viewBean.layout.gravity;
-                if (gravity == LayoutBean.GRAVITY_NONE) {
-                    textView.setGravity(Gravity.CENTER);
+            if (view instanceof TextView) {
+                TextView textView = (TextView) view;
+                updateTextView(textView, viewBean);
+                if (!classInfo.b("Button") && !classInfo.b("Switch")) {
+                    textView.setGravity(viewBean.layout.gravity);
                 } else {
-                    textView.setGravity(gravity);
+                    int gravity = viewBean.layout.gravity;
+                    if (gravity == LayoutBean.GRAVITY_NONE) {
+                        textView.setGravity(Gravity.CENTER);
+                    } else {
+                        textView.setGravity(gravity);
+                    }
                 }
             }
         }
         if (classInfo.a("EditText")) {
-            updateEditText((EditText) view, viewBean);
+            if (view instanceof EditText) {
+                updateEditText((EditText) view, viewBean);
+            }
         }
         if (classInfo.a("ImageView")) {
-            if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
-                ((ImageView) view).setImageResource(getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName()));
-            } else if (viewBean.image.resName.equals("default_image")) {
-                ((ImageView) view).setImageResource(R.drawable.default_image);
-            } else {
-                try {
-                    String imagelocation = resourcesManager.f(viewBean.image.resName);
+            if(viewBean.image.resName != null) {
+                if (view instanceof ImageView) {
+                    if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                        ((ImageView) view).setImageResource(getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName()));
+                    } else if (viewBean.image.resName.equals("default_image")) {
+                        ((ImageView) view).setImageResource(R.drawable.default_image);
+                    } else {
+                        try {
+                            String imagelocation = resourcesManager.f(viewBean.image.resName);
 
-                    int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
-                    if(imagelocation.endsWith(".xml")){
-                        FilePathUtil fpu = new FilePathUtil();
-                       svgUtils.loadScaledSvgIntoImageView( (ImageView) view,fpu.getSvgFullPath(sc_id,viewBean.image.resName),round3);
-                    }else {
-                        Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
-                        ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                            int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
+                            if (imagelocation.endsWith(".xml")) {
+                                FilePathUtil fpu = new FilePathUtil();
+                                svgUtils.loadScaledSvgIntoImageView( (ImageView) view,fpu.getSvgFullPath(sc_id,viewBean.image.resName),round3);
+                            } else {
+                                Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
+                                ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                            }
+                        } catch (Exception unused2) {
+                            ((ImageView) view).setImageResource(R.drawable.default_image);
+                        }
                     }
-                } catch (Exception unused2) {
-                    ((ImageView) view).setImageResource(R.drawable.default_image);
                 }
-            }
-            if (classInfo.b("CircleImageView")) {
-                updateCircleImageView((ItemCircleImageView) view, injectHandler);
-            } else {
-                ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
+                if (view instanceof ItemCircleImageView) {
+                    if (classInfo.b("CircleImageView")) {
+                        updateCircleImageView((ItemCircleImageView) view, injectHandler);
+                    } else {
+                        ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
+                    }
+                }
             }
         }
         if (classInfo.a("CompoundButton")) {
-            ((CompoundButton) view).setChecked(viewBean.checked != 0);
+            if (view instanceof CompoundButton) {
+                ((CompoundButton) view).setChecked(viewBean.checked != 0);
+            }
         }
         if (classInfo.b("SeekBar")) {
-            SeekBar seekBar = (SeekBar) view;
-            seekBar.setProgress(viewBean.progress);
-            seekBar.setMax(viewBean.max);
+            if (view instanceof SeekBar) {
+                SeekBar seekBar = (SeekBar) view;
+                seekBar.setProgress(viewBean.progress);
+                seekBar.setMax(viewBean.max);
+            }
         }
         if (classInfo.b("ProgressBar")) {
-            ((ItemProgressBar) view).setProgressBarStyle(viewBean.progressStyle);
+            if (view instanceof ItemProgressBar) {
+                ((ItemProgressBar) view).setProgressBarStyle(viewBean.progressStyle);
+            }
         }
         if (classInfo.b("CalendarView")) {
-            ((CalendarView) view).setFirstDayOfWeek(viewBean.firstDayOfWeek);
+            if (view instanceof CalendarView) {
+                ((CalendarView) view).setFirstDayOfWeek(viewBean.firstDayOfWeek);
+            }
         }
         if (classInfo.b("AdView")) {
-            ((ItemAdView) view).setAdSize(viewBean.adSize);
+            if (view instanceof ItemAdView) {
+                ((ItemAdView) view).setAdSize(viewBean.adSize);
+            }
         }
         if (classInfo.b("CardView")) {
-            var cardView = (ItemCardView) view;
-            cardView.setContentPadding(
-                    viewBean.layout.paddingLeft,
-                    viewBean.layout.paddingTop,
-                    viewBean.layout.paddingRight,
-                    viewBean.layout.paddingBottom);
-            updateCardView(cardView, injectHandler);
+            if (view instanceof ItemCardView) {
+                var cardView = (ItemCardView) view;
+                cardView.setContentPadding(
+                        viewBean.layout.paddingLeft,
+                        viewBean.layout.paddingTop,
+                        viewBean.layout.paddingRight,
+                        viewBean.layout.paddingBottom);
+                updateCardView(cardView, injectHandler);
+            }
         }
         if (classInfo.b("TabLayout")) {
-            updateTabLayout((ItemTabLayout) view, injectHandler);
+            if (view instanceof ItemTabLayout) {
+                updateTabLayout((ItemTabLayout) view, injectHandler);
+            }
         }
         if (classInfo.b("MaterialButton")){
-            updateMaterialButton((ItemMaterialButton) view, injectHandler);
+            if (view instanceof ItemMaterialButton) {
+                updateMaterialButton((ItemMaterialButton) view, injectHandler);
+            }
         }
         if (classInfo.b("SignInButton")) {
-            ItemSignInButton button = (ItemSignInButton) view;
-            boolean hasButtonSize = false;
-            boolean hasColorScheme = false;
-            for (String line : viewBean.inject.split("\n")) {
-                if (line.contains("buttonSize")) {
-                    String buttonSize = extractAttrValue(line, "app:buttonSize");
-                    if (!buttonSize.startsWith("@")) {
-                        hasButtonSize = true;
-                        switch (buttonSize) {
-                            case "icon_only":
-                                button.setSize(ItemSignInButton.ButtonSize.ICON_ONLY);
-                                break;
-                            case "wide":
-                                button.setSize(ItemSignInButton.ButtonSize.WIDE);
-                                break;
-                            case "standard":
-                            default:
-                                button.setSize(ItemSignInButton.ButtonSize.STANDARD);
-                                break;
+            if (view instanceof ItemSignInButton) {
+                ItemSignInButton button = (ItemSignInButton) view;
+                boolean hasButtonSize = false;
+                boolean hasColorScheme = false;
+                for (String line : viewBean.inject.split("\n")) {
+                    if (line.contains("buttonSize")) {
+                        String buttonSize = extractAttrValue(line, "app:buttonSize");
+                        if (!buttonSize.startsWith("@")) {
+                            hasButtonSize = true;
+                            switch (buttonSize) {
+                                case "icon_only":
+                                    button.setSize(ItemSignInButton.ButtonSize.ICON_ONLY);
+                                    break;
+                                case "wide":
+                                    button.setSize(ItemSignInButton.ButtonSize.WIDE);
+                                    break;
+                                case "standard":
+                                default:
+                                    button.setSize(ItemSignInButton.ButtonSize.STANDARD);
+                                    break;
+                            }
                         }
                     }
-                }
-                if (line.contains("colorScheme")) {
-                    String colorScheme = extractAttrValue(line, "app:colorScheme");
-                    if (!colorScheme.startsWith("@")) {
-                        hasColorScheme = true;
-                        switch (colorScheme) {
-                            case "dark":
-                                button.setColorScheme(ItemSignInButton.ColorScheme.DARK);
-                                break;
-                            case "auto":
-                            case "light":
-                            default:
-                                button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
-                                break;
+                    if (line.contains("colorScheme")) {
+                        String colorScheme = extractAttrValue(line, "app:colorScheme");
+                        if (!colorScheme.startsWith("@")) {
+                            hasColorScheme = true;
+                            switch (colorScheme) {
+                                case "dark":
+                                    button.setColorScheme(ItemSignInButton.ColorScheme.DARK);
+                                    break;
+                                case "auto":
+                                case "light":
+                                default:
+                                    button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
+                                    break;
+                            }
                         }
                     }
+                    if (!hasButtonSize) button.setSize(ItemSignInButton.ButtonSize.STANDARD);
+                    if (!hasColorScheme) button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
                 }
-                if (!hasButtonSize) button.setSize(ItemSignInButton.ButtonSize.STANDARD);
-                if (!hasColorScheme) button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
             }
         }
         view.setVisibility(VISIBLE);
