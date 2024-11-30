@@ -169,6 +169,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void removeView(ViewBean viewBean) {
+        refreshType(viewBean);
         ViewGroup viewGroup = rootLayout.findViewWithTag(viewBean.parent);
         viewGroup.removeView(rootLayout.findViewWithTag(viewBean.id));
         if (viewGroup instanceof ty) {
@@ -237,7 +238,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     public View createItemView(ViewBean viewBean) {
-        viewBean.type = ConvertHandler.getTypeByConvert(viewBean);
+        refreshType(viewBean);
         View item = switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_LAYOUT_LINEAR,
                  ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
@@ -301,6 +302,10 @@ public class ViewPane extends RelativeLayout {
         return item;
     }
     
+    private void refreshType(ViewBean bean) {
+        bean.type = ConvertHandler.getTypeByConvert(bean);
+    }
+    
     private View getUnknownItemView(ViewBean bean) {
         ItemTextView view = new ItemTextView(context);
         view.setText("Unknown type:" + bean.convert);
@@ -327,7 +332,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void updateItemView(View view, ViewBean viewBean) {
-        viewBean.type = ConvertHandler.getTypeByConvert(viewBean);
+        refreshType(viewBean);
         ImageBean imageBean;
         String str;
         var injectHandler = new InjectAttributeHandler(viewBean);
@@ -413,9 +418,11 @@ public class ViewPane extends RelativeLayout {
         }
         Gx classInfo = viewBean.getClassInfo();
         if (classInfo.a("LinearLayout")) {
-            LinearLayout linearLayout = (LinearLayout) view;
-            linearLayout.setOrientation(viewBean.layout.orientation);
-            linearLayout.setWeightSum(viewBean.layout.weightSum);
+            if (view instanceof LinearLayout) {
+                LinearLayout linearLayout = (LinearLayout) view;
+                linearLayout.setOrientation(viewBean.layout.orientation);
+                linearLayout.setWeightSum(viewBean.layout.weightSum);
+            }
             if (view instanceof ItemLinearLayout) {
                 ((ItemLinearLayout) view).setLayoutGravity(viewBean.layout.gravity);
             }
