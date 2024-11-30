@@ -204,7 +204,6 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
 
     private ArrayList<String> getReservedImageNames() {
         var names = new ArrayList<String>();
-        names.add("app_icon");
         for (var existingImage : existingImages) {
             names.add(existingImage.resName);
         }

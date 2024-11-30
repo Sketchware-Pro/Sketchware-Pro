@@ -3,7 +3,7 @@ package mod.agus.jcoderz.editor.manifest;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.sketchware.remod.xml.XmlBuilder;
+import pro.sketchware.xml.XmlBuilder;
 
 /**
  * A helper class to add various elements to AndroidManifest.xml if components have been added,

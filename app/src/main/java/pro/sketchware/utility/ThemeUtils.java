@@ -1,4 +1,4 @@
-package mod.remaker.util;
+package pro.sketchware.utility;
 
 import android.content.Context;
 import android.content.res.Configuration;

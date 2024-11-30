@@ -1,5 +1,4 @@
 <resources>
-    <attr name="circleCrop" format="boolean" />
     <attr name="circle_color" format="color" />
     <attr name="circle_fill" format="color" />
     <attr name="circle_progress_color" format="color" />
@@ -14,16 +13,9 @@
     <attr name="defaultIntentData" format="string" />
     <attr name="documentMaxAgeSecs" format="integer" />
     <attr name="end_angle" format="float" />
-    <attr name="imageAspectRatio" format="float" />
-    <attr name="imageAspectRatioAdjust">
-        <enum name="adjust_height" value="2" />
-        <enum name="adjust_width" value="1" />
-        <enum name="none" value="0" />
-    </attr>
     <attr name="indexPrefixes" format="boolean" />
     <attr name="inputEnabled" format="boolean" />
     <attr name="lock_enabled" format="boolean" />
-
     <attr name="maintain_equal_circle" format="boolean" />
     <attr name="max" format="integer" />
     <attr name="move_outside_circle" format="boolean" />
@@ -40,7 +32,6 @@
     <attr name="pointer_radius" format="dimension" />
     <attr name="progress" format="integer" />
     <attr name="schemaOrgProperty" format="string" />
-    <attr name="scopeUris" format="reference|string" />
     <attr name="searchEnabled" format="boolean" />
     <attr name="searchLabel" format="string" />
     <attr name="sectionContent" format="string" />

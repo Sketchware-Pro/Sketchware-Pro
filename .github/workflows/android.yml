@@ -5,8 +5,6 @@ on:
     paths:
       - '.github/workflows/android.yml'
       - 'app/**'
-      - 'build-logic/**'
-      - 'kotlinc/**'
       - 'gradle/**'
       - 'build.gradle'
       - 'gradle.properties'
@@ -69,16 +67,16 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Build debug APK
+      - name: Build Release APK
         env:
           SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
-        run: gradle assembleMinApi${{ matrix.apiLevel }}Debug
+        run: gradle assembleMinApi${{ matrix.apiLevel }}Release
 
-      - name: Upload debug APK
+      - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: apk-minApi${{ matrix.apiLevel }}-debug
-          path: app/build/outputs/apk/minApi${{ matrix.apiLevel }}/debug
+          name: apk-minApi${{ matrix.apiLevel }}-release
+          path: app/build/outputs/apk/minApi${{ matrix.apiLevel }}/release
 
   aggregateAndSend:
     name: Send APKs to Telegram
@@ -90,13 +88,13 @@ jobs:
       - name: Download Artifacts for API 21
         uses: actions/download-artifact@v4
         with:
-          name: apk-minApi21-debug
+          name: apk-minApi21-release
           path: ./downloaded-artifact/minApi21
 
       - name: Download Artifacts for API 26
         uses: actions/download-artifact@v4
         with:
-          name: apk-minApi26-debug
+          name: apk-minApi26-release
           path: ./downloaded-artifact/minApi26
 
       - name: Set up Python 3
@@ -127,8 +125,8 @@ jobs:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-          APK_MIN_API21: ./downloaded-artifact/minApi21/app-minApi21-debug.apk
-          APK_MIN_API26: ./downloaded-artifact/minApi26/app-minApi26-debug.apk
+          APK_MIN_API21: ./downloaded-artifact/minApi21/app-minApi21-release.apk
+          APK_MIN_API26: ./downloaded-artifact/minApi26/app-minApi26-release.apk
         run: |
           python ./.github/workflows/deploy_artifacts.py
         continue-on-error: true

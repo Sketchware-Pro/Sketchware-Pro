@@ -6,8 +6,8 @@ import android.graphics.Color;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import mod.remaker.util.ThemeUtils;
 import pro.sketchware.SketchApplication;
+import pro.sketchware.utility.ThemeUtils;
 
 public class SyntaxScheme {
 

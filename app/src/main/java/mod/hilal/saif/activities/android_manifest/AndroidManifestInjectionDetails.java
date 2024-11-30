@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
-import mod.remaker.util.ThemeUtils;
+import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.R;
 import pro.sketchware.databinding.CustomDialogAttributeBinding;
 import pro.sketchware.databinding.ActivityManageCustomAttributeBinding;

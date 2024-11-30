@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import mod.remaker.util.ThemeUtils;
+import pro.sketchware.utility.ThemeUtils;
 
 import pro.sketchware.R;
 import pro.sketchware.databinding.CustomViewAttributeBinding;

@@ -1,57 +1,76 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
-
-    <com.google.android.material.navigationrail.NavigationRailView
-        android:id="@+id/palette"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        app:headerLayout="@layout/fab"
-        app:itemPaddingBottom="25dp"
-        android:fitsSystemWindows="false"
-        app:labelVisibilityMode="labeled"
-        app:elevation="0.2dp"
-        app:menu="@menu/logic_palette" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/tv_import"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="4dp"
-            android:layout_marginTop="4dp"
-            android:text="@string/logic_button_import_more_block"
-            android:textColor="?colorPrimary"
-            android:textSize="14sp"
-            app:backgroundTint="?android:colorBackground"
-            app:strokeColor="?colorPrimary"
-            app:strokeWidth="1dp" />
-
-        <TextView
-            android:id="@+id/tv_no_events"
-            android:layout_width="match_parent"
+        <com.google.android.material.navigationrail.NavigationRailView
+            android:id="@+id/palette"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="12sp"
-            android:visibility="gone" />
+            android:fitsSystemWindows="false"
+            app:elevation="0.2dp"
+            app:itemPaddingBottom="25dp"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/logic_palette" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/event_list"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="80dp"
-            android:scrollbars="vertical"
-            android:splitMotionEvents="false"
-            tools:itemCount="5"
-            tools:listitem="@layout/fr_logic_list_item" />
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_import"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/logic_button_import_more_block"
+                android:textColor="?colorPrimary"
+                android:textSize="14sp"
+                app:backgroundTint="?android:colorBackground"
+                app:strokeColor="?colorPrimary"
+                app:strokeWidth="1dp" />
+
+            <TextView
+                android:id="@+id/tv_no_events"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/event_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="80dp"
+                android:scrollbars="vertical"
+                android:splitMotionEvents="false"
+                tools:itemCount="5"
+                tools:listitem="@layout/fr_logic_list_item" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
-</LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_add_white_36dp"
+        tools:ignore="ContentDescription" />
+</RelativeLayout>
+
+
