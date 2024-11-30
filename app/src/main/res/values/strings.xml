@@ -2224,7 +2224,9 @@ Please try again later"</string>
     <string name="xml_strings">XML Strings</string>
 
     <string name="create_new_widget">Create a widget</string>
-    <string name="create">Create</string>
+    <string name="import_widgets">Import Widgets</string>
+    <string name="export_widgets">Export Widgets</string>
+    <string name="widget_editor">Widget editor</string>
     <string name="var_is_required">%s is required</string>
     <string name="widget_type_title">Widget type</string>
     <string name="new_class">Or create a new category</string>
