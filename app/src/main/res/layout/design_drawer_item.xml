@@ -1,6 +1,6 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/root"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
@@ -11,8 +11,7 @@
     app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="24dp"
     app:contentPadding="4dp"
-    app:rippleColor="?attr/colorControlHighlight"
-    app:strokeWidth="0dp">
+    app:rippleColor="?attr/colorControlHighlight">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +25,7 @@
             android:layout_height="24dp"
             android:tintMode="src_in"
             android:layout_margin="8dp"
-            app:tint="?android:attr/colorPrimary" />
+            app:tint="?attr/colorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,8 +52,9 @@
                     android:id="@+id/tv_sub_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:ellipsize="end"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:textAppearance="?attr/textAppearanceBodySmall" />
             </LinearLayout>
 
@@ -62,8 +62,7 @@
                 android:id="@+id/img_more"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/selector_ic_chevron_right_grey_48"
-                app:tint="?attr/colorControlNormal" />
+                android:src="@drawable/ic_mtrl_chevron_right_24" />
         </LinearLayout>
     </LinearLayout>
 
