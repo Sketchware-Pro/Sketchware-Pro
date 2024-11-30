@@ -149,7 +149,7 @@ public class EventsManagerFragment extends qA {
         dialogProperties.error_dir = file;
         dialogProperties.offset = file;
         dialogProperties.extensions = null;
-        FilePickerDialog filePickerDialog = new FilePickerDialog(requireContext(), dialogProperties, R.style.RoundedCornersDialog);
+        FilePickerDialog filePickerDialog = new FilePickerDialog(requireContext(), dialogProperties);
         filePickerDialog.setTitle("Select a .txt file");
         filePickerDialog.setDialogSelectionListener(selections -> {
             if (FileUtil.readFile(selections[0]).isEmpty()) {
