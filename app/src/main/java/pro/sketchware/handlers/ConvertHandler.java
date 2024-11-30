@@ -39,7 +39,7 @@ public class ConvertHandler {
             case "com.google.android.material.tabs.TabLayout" -> ViewBeans.VIEW_TYPE_LAYOUT_TABLAYOUT;
             case "androidx.viewpager.widget.ViewPager" -> ViewBeans.VIEW_TYPE_LAYOUT_VIEWPAGER;
             case "com.google.android.material.bottomnavigation.BottomNavigationView" -> ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW;
-            case "BadgeView" -> ViewBeans.VIEW_TYPE_WIDGET_BADGEVIEW;
+            case "com.allenliu.badgeview.BadgeView" -> ViewBeans.VIEW_TYPE_WIDGET_BADGEVIEW;
             case "com.andrognito.patternlockview.PatternLockView" -> ViewBeans.VIEW_TYPE_WIDGET_PATTERNLOCKVIEW;
             case "com.sayuti.lib.WaveSideBar" -> ViewBeans.VIEW_TYPE_WIDGET_WAVESIDEBAR;
             case "androidx.cardview.widget.CardView" -> ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
