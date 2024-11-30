@@ -152,7 +152,6 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         tv_samename.setText(xB.b().a(getApplicationContext(), R.string.design_manager_image_title_apply_same_naming));
         adapter = new ItemAdapter();
         RecyclerView recycler_list = findViewById(R.id.recycler_list);
-        recycler_list.setHasFixedSize(true);
         recycler_list.setAdapter(adapter);
         recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
         projectImages = getIntent().getParcelableArrayListExtra("project_images");
