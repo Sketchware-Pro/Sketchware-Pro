@@ -241,7 +241,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
         properties.offset = externalStorageDir;
         properties.extensions = new String[]{"so"};
 
-        filePicker = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
+        filePicker = new FilePickerDialog(this, properties);
         filePicker.setTitle("Select a native library (.so)");
         filePicker.setDialogSelectionListener(selections -> {
             for (String path : selections) {
