@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textAppearance="?attr/textAppearanceBodyLarge"
                 tools:text="@string/design_drawer_menu_title" />
 
             <com.google.android.material.divider.MaterialDivider
@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:textAppearance="?textAppearanceBodyMedium"
+            android:textAppearance="?textAppearanceBodyLarge"
             tools:text="@string/design_drawer_menu_bottom_title" />
     </LinearLayout>
 
@@ -60,5 +60,6 @@
         android:id="@+id/layout_bottom_menus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
         android:orientation="vertical" />
 </LinearLayout>
