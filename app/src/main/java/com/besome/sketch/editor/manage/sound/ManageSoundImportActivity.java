@@ -170,7 +170,6 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         tv_samename.setText(xB.b().a(getApplicationContext(), R.string.design_manager_sound_title_apply_same_naming));
         adapter = new ItemAdapter();
         RecyclerView recycler_list = findViewById(R.id.recycler_list);
-        recycler_list.setHasFixedSize(true);
         recycler_list.setAdapter(adapter);
         recycler_list.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL, false));
         projectSounds = getIntent().getParcelableArrayListExtra("project_sounds");
