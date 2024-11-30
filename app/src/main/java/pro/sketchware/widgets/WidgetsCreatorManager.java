@@ -31,7 +31,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -48,19 +47,19 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class WidgetsCreatorManager {
 
-    private ArrayList<HashMap<String, Object>> widgetsListMap = new ArrayList<>();
-    private final String widgetsResourcesFilePath = "/storage/emulated/0/.sketchware/resources/widgets/";
-    private final String widgetsFilePath = widgetsResourcesFilePath + "widgets.json";
-    private final String widgetsExportFilePath = widgetsResourcesFilePath + "export/";
-    private final ArrayList<String> categoriesList = new ArrayList<>();
+    private ArrayList<HashMap<String, Object>> widgetConfigurationsList = new ArrayList<>();
+    private final String widgetResourcesDirectoryPath = "/storage/emulated/0/.sketchware/resources/widgets/";
+    private final String widgetsJsonFilePath = widgetResourcesDirectoryPath + "widgets.json";
+    private final String widgetExportDirectoryPath = widgetResourcesDirectoryPath + "export/";
+    private final ArrayList<String> allCategories = new ArrayList<>();
     private final ArrayList<String> mainCategories = new ArrayList<>(Arrays.asList(
             "Layouts", "AndroidX", "Widgets", "List", "Library", "Google", "Date & Time"
     ));
     private final List<String> availableWidgetsNames = Arrays.asList(
             "BottomNavigationView", "Button", "CardView", "CheckBox", "CodeView", "EditText", "GridView",
             "HScrollView", "ImageView", "LinearLayout", "ListView", "MapView", "MaterialButton", "ProgressBar",
-            "RadioButton", "RecyclerView", "RelativeLayout", "ScrollView", "SeekBar", "Spinner", "Switch", "SwipeRefreshLayout", "TabLayout",
-            "TextInputLayout", "TextView", "VideoView", "ViewPager", "WebView"
+            "RadioButton", "RecyclerView", "RelativeLayout", "ScrollView", "SeekBar", "Spinner", "Switch",
+            "SwipeRefreshLayout", "TabLayout", "TextInputLayout", "TextView", "VideoView", "ViewPager", "WebView"
     );
     private final List<String> availableWidgetsTypes = new ArrayList<>();
     private final ViewEditor viewEditor;
@@ -76,58 +75,49 @@ public class WidgetsCreatorManager {
 
     public void initialize() {
         initializeAvailableWidgetTypesList();
-        initializeCategoriesList();
-        if (FileUtil.isExistFile(widgetsFilePath)) {
+        if (FileUtil.isExistFile(widgetsJsonFilePath)) {
             loadCustomWidgets();
         } else {
             createWidgetsFile();
         }
+        initializeCategoriesList();
     }
 
     private void loadCustomWidgets() {
         try {
-            widgetsListMap = new Gson().fromJson(
-                    FileUtil.readFile(widgetsFilePath),
+            widgetConfigurationsList = new Gson().fromJson(
+                    FileUtil.readFile(widgetsJsonFilePath),
                     new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType()
             );
-            validateWidgets();
+            widgetConfigurationsList.removeIf(this::isInvalidWidget);
         } catch (Exception e) {
             SketchwareUtil.toastError("Error loading widgets: " + e.getMessage());
             createWidgetsFile();
         }
     }
 
-    private void validateWidgets() {
-        Iterator<HashMap<String, Object>> iterator = widgetsListMap.iterator();
-        while (iterator.hasNext()) {
-            HashMap<String, Object> widget = iterator.next();
-            if (!canAddWidget(widget)) {
-                iterator.remove();
-                SketchwareUtil.toastError("Failed to get custom widget " + widget.get("title"));
-            }
+    private boolean isInvalidWidget(HashMap<String, Object> widgetData) {
+        List<String> requiredKeys = Arrays.asList("Class", "title", "name", "inject", "type", "position");
+
+        if (!widgetData.keySet().containsAll(requiredKeys)) {
+            SketchwareUtil.toastError("Missing required keys for widget: " + widgetData.get("title"));
+            return true;
         }
+
+        try {
+            int typeId = ((Number) widgetData.get("type")).intValue();
+            if (!availableWidgetsTypes.contains(String.valueOf(typeId))) {
+                SketchwareUtil.toastError("Invalid widget type: " + widgetData.get("title"));
+                return true;
+            }
+        } catch (Exception e) {
+            SketchwareUtil.toastError("Invalid type format for widget: " + widgetData.get("title"));
+            return true;
+        }
+
+        return false;
     }
 
-    private boolean canAddWidget(HashMap<String, Object> map) {
-        List<String> keysToCheck = Arrays.asList("Class", "title", "name", "inject", "type", "position");
-        boolean containsAllKeys = map.keySet().containsAll(keysToCheck);
-        Object value = map.get("type");
-        if (value == null) {
-            return false;
-        }
-        int intValue;
-        if (value instanceof Number) {
-            intValue = ((Number) value).intValue();
-        } else {
-            try {
-                intValue = Integer.parseInt(value.toString());
-            } catch (NumberFormatException e) {
-                return false;
-            }
-        }
-        boolean isContainedInTypes = availableWidgetsTypes.contains(String.valueOf(intValue));
-        return isContainedInTypes && containsAllKeys;
-    }
 
     private void initializeAvailableWidgetTypesList() {
         for (String widgetName : availableWidgetsNames) {
@@ -136,19 +126,19 @@ public class WidgetsCreatorManager {
     }
 
     private void initializeCategoriesList() {
-        categoriesList.clear();
-        Objects.requireNonNull(categoriesList).addAll(mainCategories);
-        for (HashMap<String, Object> map : widgetsListMap) {
+        allCategories.clear();
+        Objects.requireNonNull(allCategories).addAll(mainCategories);
+        for (HashMap<String, Object> map : widgetConfigurationsList) {
             String Class = map.get("Class").toString();
-            if (!categoriesList.contains(Class)) {
-                categoriesList.add(Class);
+            if (!allCategories.contains(Class)) {
+                allCategories.add(Class);
             }
         }
     }
 
     private void createWidgetsFile() {
-        if (widgetsListMap != null) widgetsListMap.clear();
-        FileUtil.writeFile(widgetsFilePath, new Gson().toJson(widgetsListMap));
+        if (widgetConfigurationsList != null) widgetConfigurationsList.clear();
+        FileUtil.writeFile(widgetsJsonFilePath, new Gson().toJson(widgetConfigurationsList));
     }
 
     public void showWidgetsCreatorDialog(int position) {
@@ -164,7 +154,7 @@ public class WidgetsCreatorManager {
         clearErrorOnTextChanged(binding.addWidgetTo, binding.inputClass);
 
         if (isEditing) {
-            HashMap<String, Object> map = widgetsListMap.get(position);
+            HashMap<String, Object> map = widgetConfigurationsList.get(position);
             binding.widgetType.setText(map.get("type").toString());
             binding.widgetName.setText(map.get("name").toString());
             binding.widgetTitle.setText(map.get("title").toString());
@@ -188,7 +178,7 @@ public class WidgetsCreatorManager {
 
         binding.widgetType.setOnClickListener(v -> showTypeViewSelectorDialog(availableWidgetsNames, availableWidgetsTypes, binding.widgetType));
         binding.addWidgetTo.setOnClickListener(v -> {
-            List<String> types = new ArrayList<>(categoriesList);
+            List<String> types = new ArrayList<>(allCategories);
             showCategorySelectorDialog(types, binding.addWidgetTo);
         });
 
@@ -225,14 +215,14 @@ public class WidgetsCreatorManager {
                 map.put("type", Integer.parseInt(widgetType));
                 if (isEditing) {
                     map.put("position", position);
-                    widgetsListMap.set(position, map);
+                    widgetConfigurationsList.set(position, map);
                 } else {
-                    map.put("position", widgetsListMap.size());
-                    widgetsListMap.add(map);
+                    map.put("position", widgetConfigurationsList.size());
+                    widgetConfigurationsList.add(map);
                 }
-                FileUtil.writeFile(widgetsFilePath, new Gson().toJson(widgetsListMap));
-                if (!categoriesList.contains(widgetClass)) {
-                    categoriesList.add(widgetClass);
+                FileUtil.writeFile(widgetsJsonFilePath, new Gson().toJson(widgetConfigurationsList));
+                if (!allCategories.contains(widgetClass)) {
+                    allCategories.add(widgetClass);
                 }
                 viewEditorFragment.e();
                 dialog.dismiss();
@@ -270,8 +260,8 @@ public class WidgetsCreatorManager {
 
                 pickerDialog.show();
             } else {
-                String exportFilePath = widgetsExportFilePath + "allWidgets.json";
-                FileUtil.writeFile(exportFilePath, new Gson().toJson(widgetsListMap));
+                String exportFilePath = widgetExportDirectoryPath + "allWidgets.json";
+                FileUtil.writeFile(exportFilePath, new Gson().toJson(widgetConfigurationsList));
                 SketchwareUtil.toast("Exported in " + exportFilePath);
             }
             return true;
@@ -289,16 +279,16 @@ public class WidgetsCreatorManager {
             ArrayList<HashMap<String, Object>> importedWidgets = new Gson().fromJson(value, listType);
 
             for (HashMap<String, Object> widget : importedWidgets) {
-                if (!canAddWidget(widget)) return;
-                widget.put("position", widgetsListMap.size());
-                widgetsListMap.add(widget);
+                if (isInvalidWidget(widget)) return;
+                widget.put("position", widgetConfigurationsList.size());
+                widgetConfigurationsList.add(widget);
                 String widgetClass = widget.get("Class").toString();
-                if (!categoriesList.contains(widgetClass)) {
-                    categoriesList.add(widgetClass);
+                if (!allCategories.contains(widgetClass)) {
+                    allCategories.add(widgetClass);
                 }
             }
             if (!importedWidgets.isEmpty()) {
-                FileUtil.writeFile(widgetsFilePath, new Gson().toJson(widgetsListMap));
+                FileUtil.writeFile(widgetsJsonFilePath, new Gson().toJson(widgetConfigurationsList));
                 viewEditorFragment.e();
                 SketchwareUtil.toast("Imported!");
                 return;
@@ -438,7 +428,7 @@ public class WidgetsCreatorManager {
     }
 
     public void addWidgetsByTitle(String title) {
-        for (HashMap<String, Object> map : widgetsListMap) {
+        for (HashMap<String, Object> map : widgetConfigurationsList) {
             try {
                 if (Objects.requireNonNull(map.get("Class")).toString().equals(title)) {
                     Object typeObj = map.get("type");
@@ -453,7 +443,7 @@ public class WidgetsCreatorManager {
     }
 
     public void addExtraClasses() {
-        ArrayList<String> myArrayListCopy = new ArrayList<>(categoriesList);
+        ArrayList<String> myArrayListCopy = new ArrayList<>(allCategories);
         myArrayListCopy.removeAll(mainCategories);
 
         if (!myArrayListCopy.isEmpty()) {
@@ -480,8 +470,8 @@ public class WidgetsCreatorManager {
             dialog.dismiss();
         });
         dialogBinding.export.setOnClickListener(v -> {
-            HashMap<String, Object> mapToExport = widgetsListMap.get(position);
-            String exportFilePath = widgetsExportFilePath + mapToExport.get("title") + ".json";
+            HashMap<String, Object> mapToExport = widgetConfigurationsList.get(position);
+            String exportFilePath = widgetExportDirectoryPath + mapToExport.get("title") + ".json";
             FileUtil.writeFile(exportFilePath, "[" + new Gson().toJson(mapToExport) + "]");
             SketchwareUtil.toast("Exported in " + exportFilePath);
             dialog.dismiss();
@@ -499,12 +489,12 @@ public class WidgetsCreatorManager {
         dialog.a(R.drawable.ic_mtrl_delete);
         dialog.a(xB.b().a(context, R.string.view_widget_favorites_delete_message));
         dialog.b(xB.b().a(context, R.string.common_word_delete), v -> {
-            String Class = Objects.requireNonNull(widgetsListMap.get(position).get("Class")).toString();
-            widgetsListMap.remove(position);
+            String Class = Objects.requireNonNull(widgetConfigurationsList.get(position).get("Class")).toString();
+            widgetConfigurationsList.remove(position);
             if (isClassEmpty(Class) && !mainCategories.contains(Class)) {
-                categoriesList.remove(Class);
+                allCategories.remove(Class);
             }
-            FileUtil.writeFile(widgetsFilePath, new Gson().toJson(widgetsListMap));
+            FileUtil.writeFile(widgetsJsonFilePath, new Gson().toJson(widgetConfigurationsList));
             viewEditorFragment.e();
             dialog.dismiss();
         });
@@ -513,8 +503,8 @@ public class WidgetsCreatorManager {
     }
 
     private int getWidgetPosition(int targetPosition) {
-        for (int i = 0; i < widgetsListMap.size(); i++) {
-            HashMap<String, Object> widget = widgetsListMap.get(i);
+        for (int i = 0; i < widgetConfigurationsList.size(); i++) {
+            HashMap<String, Object> widget = widgetConfigurationsList.get(i);
             Object positionValue = widget.get("position");
 
             if (positionValue != null) {
@@ -528,8 +518,8 @@ public class WidgetsCreatorManager {
     }
 
     private boolean isClassEmpty(String str) {
-        if (!widgetsListMap.isEmpty()) {
-            for (HashMap<String, Object> map : widgetsListMap) {
+        if (!widgetConfigurationsList.isEmpty()) {
+            for (HashMap<String, Object> map : widgetConfigurationsList) {
                 if (map.containsKey("Class")) {
                     String classNameValue = (String) map.get("Class");
                     if (Objects.requireNonNull(classNameValue).equals(str)) {
