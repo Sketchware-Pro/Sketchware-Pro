@@ -246,7 +246,7 @@ public class WidgetsCreatorManager {
             if (menuItem.getItemId() == R.id.import_widgets) {
                 DialogProperties properties = new DialogProperties();
 
-                properties.selection_mode = DialogConfigs.SINGLE_MODE;
+                properties.selection_mode = DialogConfigs.MULTI_MODE;
                 properties.selection_type = DialogConfigs.FILE_SELECT;
                 properties.root = Environment.getExternalStorageDirectory();
                 properties.error_dir = Environment.getExternalStorageDirectory();
@@ -255,8 +255,8 @@ public class WidgetsCreatorManager {
 
                 FilePickerDialog pickerDialog = new FilePickerDialog(context, properties, R.style.RoundedCornersDialog);
 
-                pickerDialog.setTitle("Select .json widget(s) file");
-                pickerDialog.setDialogSelectionListener(selections -> importWidgets(selections[0]));
+                pickerDialog.setTitle("Select .json widgets files");
+                pickerDialog.setDialogSelectionListener(this::importWidgets);
 
                 pickerDialog.show();
             } else {
@@ -270,33 +270,41 @@ public class WidgetsCreatorManager {
         popupMenu.show();
     }
 
-    private void importWidgets(String path) {
-        String value = FileUtil.readFile(path);
+    private void importWidgets(String[] paths) {
+        String ERROR_MESSAGE = "The imported widgets file #%s is empty or invalid";
+        for (int i = 0; i < paths.length; i++) {
+            String path = paths[i];
+            String value = FileUtil.readFile(path);
 
-        try {
-            Type listType = new TypeToken<ArrayList<HashMap<String, Object>>>() {
-            }.getType();
-            ArrayList<HashMap<String, Object>> importedWidgets = new Gson().fromJson(value, listType);
+            try {
+                Type listType = new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType();
+                ArrayList<HashMap<String, Object>> importedWidgets = new Gson().fromJson(value, listType);
 
-            for (HashMap<String, Object> widget : importedWidgets) {
-                if (isInvalidWidget(widget)) return;
-                widget.put("position", widgetConfigurationsList.size());
-                widgetConfigurationsList.add(widget);
-                String widgetClass = widget.get("Class").toString();
-                if (!allCategories.contains(widgetClass)) {
-                    allCategories.add(widgetClass);
+                if (importedWidgets.isEmpty()) {
+                    SketchwareUtil.toastError(String.format(ERROR_MESSAGE, i + 1));
+                    continue;
                 }
-            }
-            if (!importedWidgets.isEmpty()) {
-                FileUtil.writeFile(widgetsJsonFilePath, new Gson().toJson(widgetConfigurationsList));
-                viewEditorFragment.e();
-                SketchwareUtil.toast("Imported!");
-                return;
-            }
 
-        } catch (Exception ignored) {}
-        SketchwareUtil.toast("The imported widgets file is empty or invalid.");
+                for (HashMap<String, Object> widget : importedWidgets) {
+                    if (isInvalidWidget(widget)) return;
+                    widget.put("position", widgetConfigurationsList.size());
+                    widgetConfigurationsList.add(widget);
+                    String widgetClass = widget.get("Class").toString();
+                    if (!allCategories.contains(widgetClass)) {
+                        allCategories.add(widgetClass);
+                    }
+                }
 
+            } catch (Exception e) {
+                SketchwareUtil.toastError(String.format(ERROR_MESSAGE, i + 1));
+            }
+        }
+
+        if (!widgetConfigurationsList.isEmpty()) {
+            FileUtil.writeFile(widgetsJsonFilePath, new Gson().toJson(widgetConfigurationsList));
+            viewEditorFragment.e();
+            SketchwareUtil.toast("Imported!");
+        }
     }
 
     public static void clearErrorOnTextChanged(final EditText editText, final TextInputLayout textInputLayout) {
