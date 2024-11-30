@@ -704,7 +704,15 @@ public class Fx {
             case "spnSetCustomViewData":
             case "pagerSetCustomViewData":
             case "gridSetCustomViewData":
-                opcode = String.format("%s.setAdapter(new %s(%s));", params.get(0), Lx.a(params.get(0)), params.get(1));
+                var param = params.get(0);
+                if (param.isEmpty()) {
+                    break;
+                }
+                var paramAdapter = param;
+                if (isViewBindingEnabled && paramAdapter.startsWith("binding.")) {
+                    paramAdapter = paramAdapter.substring("binding.".length());
+                }
+                opcode = String.format("%s.setAdapter(new %s(%s));", param, Lx.a(paramAdapter), params.get(1));
                 break;
             case "listRefresh":
                 opcode = String.format("((BaseAdapter)%s.getAdapter()).notifyDataSetChanged();", params.get(0));
