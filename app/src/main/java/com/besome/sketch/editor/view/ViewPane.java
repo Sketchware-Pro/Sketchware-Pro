@@ -59,7 +59,6 @@ import com.besome.sketch.editor.view.item.ItemTabLayout;
 import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
-import com.besome.sketch.editor.view.item.ItemMaterialSwitch;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import pro.sketchware.R;
@@ -108,6 +107,7 @@ import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
 import mod.hey.studios.util.ProjectFile;
 import pro.sketchware.utility.SvgUtils;
 import pro.sketchware.handlers.ConvertHandler;
+import pro.sketchware.editor.view.item.ItemMaterialSwitch;
 
 public class ViewPane extends RelativeLayout {
 
