@@ -717,4 +717,15 @@ public class ViewBeanFactory {
         }
         return null;
     }
+
+    public static int getConsideredTypeViewByName(String name, int def) {
+        return switch (name) {
+            //Add more here
+            case "MaterialSwitch" -> ViewBean.VIEW_TYPE_WIDGET_SWITCH;
+            //idk should I use ImageView or ImageButton?
+            case "ImageButton" -> ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW;
+            case "NestedScrollView" -> ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW;
+            default -> def;
+        };
+    }
 }

@@ -91,11 +91,8 @@ public class ViewBeanParser {
 
                     int type = ViewBean.getViewTypeByTypeName(className);
 
-                    // Special case for NestedScrollView, as it can be treated as ScrollView
-                    // (VScrollView)
-                    if (className.equals("NestedScrollView")) {
-                        type = ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW;
-                    }
+                    // Special case for other views that can be considered built-in views by type
+                    type = ViewBeanFactory.getConsideredTypeViewByName(className, type);
 
                     // Get view ID, either from attributes or generate a unique ID
                     String attrId = parser.getAttributeValue(null, "android:id");
