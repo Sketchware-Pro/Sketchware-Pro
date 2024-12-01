@@ -574,6 +574,8 @@ public class ViewBeanFactory {
             } else {
                 injectAttributes.put("android:src", src);
             }
+        } else {
+            bean.resName = "default_image";
         }
 
         var scaleType = attributes.getOrDefault("android:scaleType", null);
