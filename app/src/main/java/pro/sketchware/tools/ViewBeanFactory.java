@@ -631,6 +631,8 @@ public class ViewBeanFactory {
                 bean.backgroundResColor = parseReferName(background, "/");
             } else if (background.startsWith("@drawable/")) {
                 bean.backgroundResource = parseReferName(background, "/");
+            } else if (background.equals("@android:color/transparent")) {
+                bean.backgroundColor = 0;
             } else {
                 injectAttributes.put(name, background);
             }
