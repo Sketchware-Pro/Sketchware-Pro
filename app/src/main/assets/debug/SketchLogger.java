@@ -47,7 +47,7 @@ public class SketchLogger {
         }
     };
 
-    public static void startLogging() {
+    public static synchronized void startLogging() {
         if (!isRunning) {
             loggerThread.start();
         } else {
@@ -55,7 +55,7 @@ public class SketchLogger {
         }
     }
 
-    public static void stopLogging() {
+    public static synchronized void stopLogging() {
         if (isRunning) {
             isRunning = false;
             broadcastLog("Stopping logger by user request.");
