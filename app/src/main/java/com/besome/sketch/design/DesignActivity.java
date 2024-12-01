@@ -71,6 +71,7 @@ import java.util.concurrent.Executors;
 
 import a.a.a.DB;
 import a.a.a.GB;
+import a.a.a.Ox;
 import a.a.a.ProjectBuilder;
 import a.a.a.ViewEditorFragment;
 import a.a.a.aB;
@@ -78,6 +79,7 @@ import a.a.a.bB;
 import a.a.a.bC;
 import a.a.a.br;
 import a.a.a.cC;
+import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.kC;
 import a.a.a.lC;
@@ -120,6 +122,7 @@ import mod.khaled.logcat.LogReaderActivity;
 import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.R;
 import pro.sketchware.activities.appcompat.ManageAppCompatActivity;
+import pro.sketchware.activities.editor.view.ViewCodeEditorActivity;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -178,6 +181,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private final ActivityResultLauncher<Intent> openResourcesManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             viewTabAdapter.i();
+        }
+    });
+    private final ActivityResultLauncher<Intent> openViewCodeEditor = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            if (viewTabAdapter != null) {
+                viewTabAdapter.i();
+            }
         }
     });
     private rs eventTabAdapter;
@@ -765,6 +775,29 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                         (int) getDip(24),
                         (int) getDip(0));
                 dialog.show();
+            });
+        }).start();
+    }
+
+    /**
+     * Opens {@link ViewCodeEditor}.
+     */
+    void toViewCodeEditor() {
+        k();
+        new Thread(() -> {
+            String filename = projectFileSelector.getFileName();
+            // var yq = new yq(getApplicationContext(), sc_id);
+            var xmlGenerator = new Ox(q.N, jC.b(sc_id).b(filename));
+            var projectDataManager = jC.a(sc_id);
+            var viewBeans = projectDataManager.d(filename);
+            var viewFab = projectDataManager.h(filename);
+            xmlGenerator.setExcludeAppCompat(true);
+            xmlGenerator.a(eC.a(viewBeans), viewFab);
+            final String content = xmlGenerator.b();
+            runOnUiThread(() -> {
+                if (isFinishing()) return;
+                h();
+                launchActivity(ViewCodeEditorActivity.class, openViewCodeEditor, new Pair<>("title", projectFileSelector.getFileName()), new Pair<>("content", content));
             });
         }).start();
     }
