@@ -1,11 +1,14 @@
 package pro.sketchware.activities.editor.view;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -36,6 +39,8 @@ import pro.sketchware.utility.SketchwareUtil;
 public class ViewCodeEditorActivity extends BaseAppCompatActivity {
     private ViewCodeEditorBinding binding;
     private CodeEditor editor;
+
+    private SharedPreferences prefs;
 
     private String sc_id;
 
@@ -91,6 +96,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ViewCodeEditorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        prefs = getSharedPreferences("dce", Activity.MODE_PRIVATE);
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
         } else {
@@ -110,6 +116,14 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
         editor.setTextSize(14);
         editor.setText(content);
         loadColorScheme();
+        if (projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY
+                && projectLibrary.isEnabled()) {
+            setNote("Use AppCompat Manager to modify attributes for CoordinatorLayout, Toolbar, and other appcompat layout/widget.");
+        }
+        binding.close.setOnClickListener(v -> {
+            prefs.edit().putInt("note_" + sc_id, 1).apply();
+            setNote(null);
+        });
     }
 
     @Override
@@ -162,6 +176,18 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
                 return super.onOptionsItemSelected(item);
             }
         }
+    }
+
+    private void setNote(String note) {
+        if (prefs.getInt("note_" + sc_id, 0) < 1 && (note != null && !note.isEmpty())) {
+            binding.noteCard.setVisibility(View.VISIBLE);
+        } else {
+            binding.noteCard.setVisibility(View.GONE);
+            return;
+        }
+        binding.noteCard.setVisibility(View.VISIBLE);
+        binding.note.setText(note);
+        binding.note.setSelected(true);
     }
     
     private void loadColorScheme() {
