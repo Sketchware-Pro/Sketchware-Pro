@@ -97,7 +97,7 @@ public class ViewBeanParser {
                     // Get view ID, either from attributes or generate a unique ID
                     String attrId = parser.getAttributeValue(null, "android:id");
                     String id =
-                            attrId != null
+                            attrId != null && !isIdInUse(beans, parseReferName(attrId, "/"))
                                     ? parseReferName(attrId, "/")
                                     : generateUniqueId(beans, type, className);
 
