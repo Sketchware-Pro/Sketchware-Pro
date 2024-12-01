@@ -67,4 +67,16 @@ public class PropertiesUtil {
                 .mapToObj(i -> prefix + " " + i)
                 .collect(Collectors.toList());
     }
+
+    public static String parseReferName(String reference, String sep) {
+        if (reference == null) {
+            return null;
+        }
+        int index = reference.indexOf(sep);
+        if (index >= 0 && index < reference.length() - 1) {
+            return reference.substring(index + 1);
+        } else {
+            return reference;
+        }
+    }
 }
