@@ -165,7 +165,7 @@ public class ViewBeanParser {
             if (prefix == "linear"
                     && type == ViewBean.VIEW_TYPE_LAYOUT_LINEAR
                     && !name.equals(className)) {
-                prefix = className.toLowerCase();
+                prefix = getSnakeCaseId(className);
             }
         }
         int count = ++viewsCount[type];
@@ -186,6 +186,22 @@ public class ViewBeanParser {
             }
         }
         return false;
+    }
+
+    private String getSnakeCaseId(String id) {
+        StringBuilder snakeCaseId = new StringBuilder();
+        for (int i = 0; i < id.length(); i++) {
+            char c = id.charAt(i);
+            if (Character.isUpperCase(c)) {
+                if (i != 0) {
+                    snakeCaseId.append("_");
+                }
+                snakeCaseId.append(Character.toLowerCase(c));
+            } else {
+                snakeCaseId.append(c);
+            }
+        }
+        return snakeCaseId.toString();
     }
 
     private String getNameFromTag(@NonNull String s) {
