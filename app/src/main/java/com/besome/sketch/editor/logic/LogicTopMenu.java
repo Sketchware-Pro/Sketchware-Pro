@@ -1,7 +1,9 @@
 package com.besome.sketch.editor.logic;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
@@ -9,6 +11,7 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.LogicEditorTopMenuBinding;
 
 import a.a.a.xB;
+import pro.sketchware.utility.ThemeUtils;
 
 public class LogicTopMenu extends LinearLayout {
 
@@ -16,6 +19,9 @@ public class LogicTopMenu extends LinearLayout {
     private boolean j;
     private boolean k;
     private boolean l;
+    private int colorSurfaceContainerHigh;
+    private int colorDefault;
+    private int colorOnDrag;
 
     private LogicEditorTopMenuBinding binding;
 
@@ -32,21 +38,26 @@ public class LogicTopMenu extends LinearLayout {
     private void initialize(Context context) {
         binding = LogicEditorTopMenuBinding.inflate(LayoutInflater.from(context), this, true);
         binding.tvDelete.setText(xB.b().a(getContext(), R.string.common_word_delete));
-        binding.tvCopy.setText(xB.b().a(getContext(), R.string.common_word_copy));
+        binding.tvCopy.setText(xB.b().a(getContext(), R.string.common_word_duplicate));
         binding.tvFavorite.setText(xB.b().a(getContext(), R.string.common_word_collection));
         binding.tvDetail.setText(xB.b().a(getContext(), R.string.common_word_detail));
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.colorSurfaceContainerHigh, typedValue, true);
+        colorSurfaceContainerHigh = typedValue.data;
+        colorDefault = getResources().getColor(R.color.view_property_tab_deactive_text);
+        colorOnDrag = Color.WHITE;
     }
 
     public void a(boolean var1) {
         j = var1;
         if (var1) {
-            binding.layoutCopy.setBackgroundColor(getResources().getColor(R.color.scolor_green_normal));
-            binding.tvCopy.setTextColor(0xffffffff);
-            binding.ivCopy.setImageResource(R.drawable.copy_48_white);
+            binding.layoutCopy.setCardBackgroundColor(getResources().getColor(R.color.scolor_green_normal));
+            binding.tvCopy.setTextColor(colorOnDrag);
+            binding.ivCopy.setColorFilter(colorOnDrag);
         } else {
-            binding.layoutCopy.setBackgroundColor(0xfffefefe);
-            binding.tvCopy.setTextColor(0xff7d7d7d);
-            binding.ivCopy.setImageResource(R.drawable.copy_48_gray);
+            binding.layoutCopy.setCardBackgroundColor(colorSurfaceContainerHigh);
+            binding.tvCopy.setTextColor(colorDefault);
+            binding.ivCopy.setColorFilter(colorDefault);
         }
 
     }
@@ -84,13 +95,13 @@ public class LogicTopMenu extends LinearLayout {
     public void b(boolean var1) {
         i = var1;
         if (var1) {
-            binding.layoutDelete.setBackgroundColor(getResources().getColor(R.color.scolor_red_02));
-            binding.tvDelete.setTextColor(-1);
-            binding.ivTrash.setImageResource(R.drawable.ic_trashcan_white_48dp);
+            binding.layoutDelete.setCardBackgroundColor(getResources().getColor(R.color.scolor_red_02));
+            binding.tvDelete.setTextColor(colorOnDrag);
+            binding.ivTrash.setColorFilter(colorOnDrag);
         } else {
-            binding.layoutDelete.setBackgroundColor(0xfffefefe);
-            binding.tvDelete.setTextColor(0xff7d7d7d);
-            binding.ivTrash.setImageResource(R.drawable.icon_delete);
+            binding.layoutDelete.setCardBackgroundColor(colorSurfaceContainerHigh);
+            binding.tvDelete.setTextColor(colorDefault);
+            binding.ivTrash.setColorFilter(colorDefault);
         }
 
     }
@@ -128,13 +139,13 @@ public class LogicTopMenu extends LinearLayout {
     public void c(boolean var1) {
         l = var1;
         if (var1) {
-            binding.layoutDetail.setBackgroundColor(getResources().getColor(R.color.scolor_blue_01));
-            binding.tvDetail.setTextColor(0xffffffff);
-            binding.ivDetail.setImageResource(R.drawable.block_96_white);
+            binding.layoutDetail.setCardBackgroundColor(getResources().getColor(R.color.scolor_green_violet));
+            binding.tvDetail.setTextColor(colorOnDrag);
+            binding.ivDetail.setColorFilter(colorOnDrag);
         } else {
-            binding.layoutDetail.setBackgroundColor(0xfffefefe);
-            binding.tvDetail.setTextColor(0xff7d7d7d);
-            binding.ivDetail.setImageResource(R.drawable.block_flled_grey);
+            binding.layoutDetail.setCardBackgroundColor(colorSurfaceContainerHigh);
+            binding.tvDetail.setTextColor(colorDefault);
+            binding.ivDetail.setColorFilter(colorDefault);
         }
 
     }
@@ -172,13 +183,13 @@ public class LogicTopMenu extends LinearLayout {
     public void d(boolean var1) {
         k = var1;
         if (var1) {
-            binding.layoutFavorite.setBackgroundColor(getResources().getColor(R.color.scolor_blue_01));
-            binding.tvFavorite.setTextColor(0xffffffff);
-            binding.ivBookmark.setImageResource(R.drawable.bookmark_48_white);
+            binding.layoutFavorite.setCardBackgroundColor(getResources().getColor(R.color.scolor_blue_01));
+            binding.tvFavorite.setTextColor(colorOnDrag);
+            binding.ivBookmark.setColorFilter(colorOnDrag);
         } else {
-            binding.layoutFavorite.setBackgroundColor(0xfffefefe);
-            binding.tvFavorite.setTextColor(0xff7d7d7d);
-            binding.ivBookmark.setImageResource(R.drawable.ic_bookmark_red_48dp);
+            binding.layoutFavorite.setCardBackgroundColor(colorSurfaceContainerHigh);
+            binding.tvFavorite.setTextColor(colorDefault);
+            binding.ivBookmark.setColorFilter(colorDefault);
         }
 
     }
