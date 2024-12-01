@@ -367,6 +367,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
                     menu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures");
                 }
+                if (viewPager.getCurrentItem() == 0) {
+                    menu.add(Menu.NONE, 7, Menu.NONE, "Direct code editor");
+                }
 
                 popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
@@ -388,6 +391,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                         case 6 -> {
                             ApkSignatures apkSignatures = new ApkSignatures(this, q.finalToInstallApkPath);
                             apkSignatures.showSignaturesDialog();
+                        }
+                        case 7 -> {
+                            toViewCodeEditor();
                         }
                         default -> {
                             return false;
