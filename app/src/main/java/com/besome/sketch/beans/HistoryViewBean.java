@@ -11,6 +11,7 @@ public class HistoryViewBean extends nA {
     public static final int ACTION_TYPE_MOVE = 3;
     public static final int ACTION_TYPE_REMOVE = 2;
     public static final int ACTION_TYPE_UPDATE = 1;
+    public static final int ACTION_TYPE_OVERRIDE = 4;
     public int actionType;
     public ArrayList<ViewBean> addedData;
     public ViewBean currentUpdateData;
@@ -50,6 +51,12 @@ public class HistoryViewBean extends nA {
         prevUpdateData.copy(viewBean);
         currentUpdateData = new ViewBean();
         currentUpdateData.copy(viewBean2);
+    }
+
+    public void actionOverride(ArrayList<ViewBean> beans, ArrayList<ViewBean> beans2) {
+        actionAdd(beans);
+        actionRemove(beans2);
+        actionType = ACTION_TYPE_OVERRIDE;
     }
 
     public void copy(HistoryViewBean historyViewBean) {
