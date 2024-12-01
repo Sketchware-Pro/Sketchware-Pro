@@ -49,7 +49,7 @@ import mod.agus.jcoderz.editor.view.palette.IconTimePicker;
 import mod.agus.jcoderz.editor.view.palette.IconVideoView;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
-import pro.sketchware.widgets.WidgetsCreatorManager;
+import pro.sketchware.widgets.IconCustomWidget;
 
 public class PaletteWidget extends LinearLayout {
 
@@ -81,13 +81,13 @@ public class PaletteWidget extends LinearLayout {
         if (map.get("Class").toString().equals("Layouts")) {
             LinearLayout iconBase;
             Context context = getContext();
-            iconBase = new WidgetsCreatorManager(map, context);
+            iconBase = new IconCustomWidget(map, context);
             layoutContainer.addView(iconBase);
             return iconBase;
         } else {
             IconBase iconBase;
             Context context = getContext();
-            iconBase = new WidgetsCreatorManager(map, context);
+            iconBase = new IconCustomWidget(map, context);
             iconBase.setText(title);
             iconBase.setName(name);
             if (map.get("Class").toString().equals("AndroidX")) {

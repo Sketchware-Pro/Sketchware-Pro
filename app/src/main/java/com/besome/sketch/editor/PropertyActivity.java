@@ -188,7 +188,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         propertyGroups.add(3);
         propertyGroups.add(4);
 
-        propertyGroupList.setHasFixedSize(true);
         propertyGroupList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
         propertyGroupList.setAdapter(new ItemAdapter());
 

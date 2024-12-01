@@ -47,20 +47,20 @@ public class SketchLogger {
         }
     };
 
-    public static void startLogging() {
+    public static synchronized void startLogging() {
         if (!isRunning) {
             loggerThread.start();
         } else {
-            throw new IllegalStateException("Logger already running");
+            broadcastLog("Logger already running");
         }
     }
 
-    public static void stopLogging() {
+    public static synchronized void stopLogging() {
         if (isRunning) {
             isRunning = false;
             broadcastLog("Stopping logger by user request.");
         } else {
-            throw new IllegalStateException("Logger not running");
+            broadcastLog("Logger not running");
         }
     }
 

@@ -206,7 +206,7 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
         getSupportActionBar().setTitle(Helper.getResString(R.string.change_firebase_config_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         if (savedInstanceState != null) {
             sc_id = savedInstanceState.getString("sc_id");

@@ -266,7 +266,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         properties.error_dir = Environment.getExternalStorageDirectory();
         properties.offset = Environment.getExternalStorageDirectory();
         properties.extensions = null;
-        dialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
+        dialog = new FilePickerDialog(this, properties);
         dialog.setTitle("Select a resource file");
         dialog.setDialogSelectionListener(selections -> {
             for (String path : selections) {
