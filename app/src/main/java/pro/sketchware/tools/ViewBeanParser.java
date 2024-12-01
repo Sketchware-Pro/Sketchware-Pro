@@ -164,7 +164,7 @@ public class ViewBeanParser {
             // update the prefix to the lowercase version of className.
             if (prefix == "linear"
                     && type == ViewBean.VIEW_TYPE_LAYOUT_LINEAR
-                    && name != className) {
+                    && !name.equals(className)) {
                 prefix = className.toLowerCase();
             }
         }
