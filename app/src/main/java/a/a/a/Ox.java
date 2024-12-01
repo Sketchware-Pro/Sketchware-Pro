@@ -48,6 +48,7 @@ public class Ox {
     private ArrayList<ViewBean> views;
     private XmlBuilder rootLayout = null;
     private XmlBuilder collapsingToolbarLayout = null;
+    private boolean excludeAppCompat;
 
     public Ox(jq jq, ProjectFileBean projectFileBean) {
         buildConfig = jq;
@@ -78,6 +79,10 @@ public class Ox {
         return result.toString();
     }
 
+    public void setExcludeAppCompat(boolean exclude) {
+        excludeAppCompat = exclude;
+    }
+
     private void writeRootLayout() {
         var root = rootManager.getLayoutByName(projectFile.getXmlName());
         XmlBuilder nx = new XmlBuilder(root.getClassName());
@@ -90,7 +95,7 @@ public class Ox {
                 writeWidget(nx, viewBean);
             }
         }
-        if (buildConfig.g) {
+        if (!excludeAppCompat && buildConfig.g) {
             if (projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
                     if (!root.getAttributes().containsKey("app:layout_behavior")) {
