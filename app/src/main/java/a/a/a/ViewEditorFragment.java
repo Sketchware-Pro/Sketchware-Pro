@@ -350,6 +350,7 @@ public class ViewEditorFragment extends qA {
     }
 
     public void i() {
+        invalidateOptionsMenu();
         if (projectFileBean != null) {
             b(jC.a(sc_id).d(projectFileBean.getXmlName()));
             a(jC.a(sc_id).h(projectFileBean.getXmlName()));
