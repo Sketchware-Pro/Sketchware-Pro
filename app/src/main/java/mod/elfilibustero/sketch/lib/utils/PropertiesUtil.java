@@ -14,7 +14,7 @@ public class PropertiesUtil {
 
     public static final Pattern COLOR_PATTERN = Pattern.compile("(#)([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})");
     public static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^#([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
-    public static final Pattern UNIT_PATTERN = Pattern.compile("(-?\\d+)(dp|sp|px|mm|pt|in)$");
+    public static final Pattern UNIT_PATTERN = Pattern.compile("(-?\\d+(?:\\.\\d+)?)(dp|sp|px|mm|pt|in)$");
     public static final Pattern PREFIX_PATTERN = Pattern.compile("([@?][^/]+/)(.*)");
 
     public static boolean isHexColor(String color) {
