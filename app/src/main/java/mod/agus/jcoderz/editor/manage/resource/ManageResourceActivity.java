@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bobur.androidsvg.SVG;
 import com.bumptech.glide.Glide;
+import com.elfilibustero.uidesigner.lib.drawable.AlphaPatternDrawable;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import mod.bobur.StringEditorActivity;
-import mod.bobur.XmlToSvgConverter;
+import mod.bobur.helpers.XmlToSvgConverter;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
@@ -414,6 +415,11 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                         binding.icon.setImageDrawable(new PictureDrawable(picture));
                     } else {
                         binding.icon.setImageResource(R.drawable.ic_mtrl_file);
+                    }
+                    // Make background checkerboard
+                    if (FileUtil.isImageFile(path) || path.endsWith(".xml") && "drawable".equals(getLastDirectory(path))){
+                        AlphaPatternDrawable drawable = AlphaPatternDrawable.create(30);
+                        binding.icon.setBackground(drawable);
                     }
                 } catch (Exception ignored) {
                     binding.icon.setImageResource(R.drawable.ic_mtrl_file);

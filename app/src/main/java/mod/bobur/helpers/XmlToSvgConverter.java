@@ -1,4 +1,4 @@
-package mod.bobur;
+package mod.bobur.helpers;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
