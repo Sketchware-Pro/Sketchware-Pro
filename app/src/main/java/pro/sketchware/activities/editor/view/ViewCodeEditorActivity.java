@@ -50,7 +50,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
 
     private ProjectFileBean projectFile;
     private ProjectLibraryBean projectLibrary;
-    
+
     private InjectRootLayoutManager rootLayoutManager;
 
     private OnBackPressedCallback onBackPressedCallback =
@@ -124,6 +124,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
             prefs.edit().putInt("note_" + sc_id, 1).apply();
             setNote(null);
         });
+        binding.noteCard.setOnClickListener(v -> toAppCompat());
     }
 
     @Override
@@ -161,11 +162,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
                 return true;
             }
             case 3 -> {
-                var intent =
-                        new Intent(getApplicationContext(), ManageAppCompatActivity.class);
-                intent.putExtra("sc_id", sc_id);
-                intent.putExtra("file_name", getIntent().getStringExtra("title"));
-                startActivity(intent);
+                toAppCompat();
                 return true;
             }
             case 4 -> {
@@ -176,6 +173,13 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
                 return super.onOptionsItemSelected(item);
             }
         }
+    }
+
+    private void toAppCompat() {
+        var intent = new Intent(getApplicationContext(), ManageAppCompatActivity.class);
+        intent.putExtra("sc_id", sc_id);
+        intent.putExtra("file_name", getIntent().getStringExtra("title"));
+        startActivity(intent);
     }
 
     private void setNote(String note) {
@@ -189,7 +193,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
         binding.note.setText(note);
         binding.note.setSelected(true);
     }
-    
+
     private void loadColorScheme() {
         editor.setEditorLanguage(
             CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
