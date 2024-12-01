@@ -215,6 +215,7 @@ public class yq {
     public yq(Context context, String myscFolderPath, HashMap<String, Object> metadata) {
         N = new jq();
         sc_id = yB.c(metadata, "sc_id");
+        N.sc_id = sc_id;
         projectMyscPath = myscFolderPath.endsWith(File.separator) ? myscFolderPath : myscFolderPath + File.separator;
         packageName = yB.c(metadata, "my_sc_pkg_name");
         projectName = yB.c(metadata, "my_ws_name");
