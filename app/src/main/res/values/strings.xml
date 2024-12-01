@@ -952,6 +952,7 @@ Please click on Settings to allow permission for Storage. Without this permissio
     <string name="common_word_description">Description</string>
     <string name="common_word_detail">Detail</string>
     <string name="common_word_download">Download</string>
+    <string name="common_word_duplicate">Duplicate</string>
     <string name="common_word_drawer">Drawer</string>
     <string name="common_word_edit">Edit</string>
     <string name="common_word_ended">Ended</string>
