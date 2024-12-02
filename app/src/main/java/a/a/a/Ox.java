@@ -86,7 +86,14 @@ public class Ox {
     private void writeRootLayout() {
         var root = rootManager.getLayoutByName(projectFile.getXmlName());
         XmlBuilder nx = new XmlBuilder(root.getClassName());
-        for (Map.Entry<String, String> entry : root.getAttributes().entrySet()) {
+        var rootAttributes = root.getAttributes();
+        if (!rootAttributes.containsKey("android:layout_width")) {
+            nx.addAttribute("android", "layout_width", "match_parent");
+        }
+        if (!rootAttributes.containsKey("android:layout_height")) {
+            nx.addAttribute("android", "layout_height", "match_parent");
+        }
+        for (Map.Entry<String, String> entry : rootAttributes.entrySet()) {
             nx.addAttribute(null, entry.getKey(), entry.getValue());
         }
         for (ViewBean viewBean : views) {
