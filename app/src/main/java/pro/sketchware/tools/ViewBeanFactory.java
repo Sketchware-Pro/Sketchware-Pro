@@ -572,6 +572,7 @@ public class ViewBeanFactory {
             if (src.startsWith("@drawable/")) {
                 bean.resName = parseReferName(src, "/");
             } else {
+                bean.resName = "default_image";
                 injectAttributes.put("android:src", src);
             }
         } else {
