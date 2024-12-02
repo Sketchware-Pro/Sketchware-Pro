@@ -122,7 +122,7 @@ public class ViewBeanParser {
                                     ? ViewBean.VIEW_TYPE_LAYOUT_LINEAR
                                     : parent.type;
                     bean.index = index;
-                    Map<String, String> attributes = new HashMap<>();
+                    Map<String, String> attributes = new LinkedHashMap<>();
                     for (int i = 0; i < parser.getAttributeCount(); i++) {
                         if (!parser.getAttributeName(i).startsWith("xmlns")) {
                             attributes.put(parser.getAttributeName(i), parser.getAttributeValue(i));
