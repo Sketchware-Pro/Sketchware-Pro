@@ -169,11 +169,15 @@ public class ViewPane extends RelativeLayout {
     }
 
     public void removeView(ViewBean viewBean) {
-        refreshType(viewBean);
-        ViewGroup viewGroup = rootLayout.findViewWithTag(viewBean.parent);
-        viewGroup.removeView(rootLayout.findViewWithTag(viewBean.id));
-        if (viewGroup instanceof ty) {
-            ((ty) viewGroup).a();
+        try {
+            refreshType(viewBean);
+            ViewGroup viewGroup = rootLayout.findViewWithTag(viewBean.parent);
+            viewGroup.removeView(rootLayout.findViewWithTag(viewBean.id));
+            if (viewGroup instanceof ty) {
+                ((ty) viewGroup).a();
+            }
+        } catch(ClassCastException e) {
+            Log.e("ViewPane#removeView", e.getMessage(), e);
         }
     }
 
