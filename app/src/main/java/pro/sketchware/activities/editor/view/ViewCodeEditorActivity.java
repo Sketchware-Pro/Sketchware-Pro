@@ -128,6 +128,12 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString("sc_id", sc_id);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(Menu.NONE, 0, Menu.NONE, "Undo")
                 .setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_undo))
