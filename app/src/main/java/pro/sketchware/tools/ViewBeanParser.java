@@ -20,6 +20,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -61,7 +62,10 @@ public class ViewBeanParser {
     }
 
     public ArrayList<ViewBean> parse() throws XmlPullParserException, IOException {
-        Set<String> ids = new HashSet<>();
+        Set<String> ids =
+                new HashSet<>(
+                        Arrays.asList(
+                                "root", "_coordinator", "_app_bar", "_toolbar", "_fab", "_drawer"));
         ArrayList<ViewBean> beans = new ArrayList<>();
         Map<String, Map<String, String>> beansAttributes = new HashMap<>();
         Stack<ViewBean> viewStack = new Stack<>();
