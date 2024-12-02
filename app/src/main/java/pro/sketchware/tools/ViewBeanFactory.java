@@ -726,6 +726,7 @@ public class ViewBeanFactory {
         return switch (name) {
             //Add more here
             case "MaterialSwitch" -> ViewBean.VIEW_TYPE_WIDGET_SWITCH;
+            case "MaterialCardView" -> ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
             //idk should I use ImageView or ImageButton?
             case "ImageButton" -> ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW;
             case "NestedScrollView" -> ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW;
