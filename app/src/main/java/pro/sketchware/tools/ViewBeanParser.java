@@ -22,8 +22,10 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 public class ViewBeanParser {
@@ -59,6 +61,7 @@ public class ViewBeanParser {
     }
 
     public ArrayList<ViewBean> parse() throws XmlPullParserException, IOException {
+        Set<String> ids = new HashSet<>();
         ArrayList<ViewBean> beans = new ArrayList<>();
         Map<String, Map<String, String>> beansAttributes = new HashMap<>();
         Stack<ViewBean> viewStack = new Stack<>();
@@ -97,9 +100,9 @@ public class ViewBeanParser {
                     // Get view ID, either from attributes or generate a unique ID
                     String attrId = parser.getAttributeValue(null, "android:id");
                     String id =
-                            attrId != null && !isIdInUse(beans, parseReferName(attrId, "/"))
+                            attrId != null && !ids.contains(parseReferName(attrId, "/"))
                                     ? parseReferName(attrId, "/")
-                                    : generateUniqueId(beans, type, className);
+                                    : generateUniqueId(ids, type, className);
 
                     // Special case for 'include' tag with layout reference, treated as ID in
                     // ViewBean
@@ -130,6 +133,7 @@ public class ViewBeanParser {
                     }
                     beansAttributes.put(id, attributes);
                     beans.add(bean);
+                    ids.add(id);
                     viewStack.push(bean);
                     index++;
                     break;
@@ -153,7 +157,7 @@ public class ViewBeanParser {
         return beans;
     }
 
-    private String generateUniqueId(ArrayList<ViewBean> beans, int type, String className) {
+    private String generateUniqueId(Set<String> ids, int type, String className) {
         String prefix = wq.b(type);
         var name = ViewBean.getViewTypeName(type);
         // Skip these types as they're the only ones with a different view type name: VScrollView
@@ -171,21 +175,12 @@ public class ViewBeanParser {
         int count = ++viewsCount[type];
         String id = prefix + count;
 
-        while (isIdInUse(beans, id)) {
+        while (ids.contains(id)) {
             count = ++viewsCount[type];
             id = prefix + count;
         }
 
         return id;
-    }
-
-    private boolean isIdInUse(ArrayList<ViewBean> beans, String id) {
-        for (ViewBean view : beans) {
-            if (id.equals(view.id)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private String getSnakeCaseId(String id) {
