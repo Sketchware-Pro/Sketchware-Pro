@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.widget.SearchView;
 
@@ -17,7 +16,6 @@ public class ItemSearchView extends SearchView implements sy {
 
     private final Paint paint;
     private final int paddingFactor;
-    private final Drawable background;
     private final Rect rect;
     private ViewBean viewBean;
     private boolean hasSelection;
@@ -34,7 +32,6 @@ public class ItemSearchView extends SearchView implements sy {
         setFocusableInTouchMode(false);
         setIconifiedByDefault(false);
         setClickable(false);
-        background = getBackground();
     }
 
     @Override
@@ -73,15 +70,6 @@ public class ItemSearchView extends SearchView implements sy {
             canvas.drawRect(rect, paint);
         }
         super.onDraw(canvas);
-    }
-
-    @Override
-    public void setBackgroundColor(int i) {
-        if (i == 0xffffff) {
-            setBackground(background);
-        } else {
-            super.setBackgroundColor(i);
-        }
     }
 
     @Override
