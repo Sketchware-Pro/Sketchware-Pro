@@ -110,6 +110,11 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("Code Editor");
         getSupportActionBar().setSubtitle(title);
+        binding.toolbar.setNavigationOnClickListener(v -> {
+            if (onBackPressedCallback.isEnabled()) {
+                onBackPressedCallback.handleOnBackPressed();
+            }
+        });
         content = getIntent().getStringExtra("content");
         editor = binding.editor;
         editor.setTypefaceText(Typeface.MONOSPACE);

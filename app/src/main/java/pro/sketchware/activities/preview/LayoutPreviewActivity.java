@@ -8,6 +8,7 @@ import androidx.activity.EdgeToEdge;
 import a.a.a.Op;
 import a.a.a.Rp;
 import a.a.a.kC;
+import a.a.a.mB;
 import a.a.a.sy;
 import a.a.a.wq;
 
@@ -42,6 +43,11 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
         getSupportActionBar().setSubtitle(getIntent().getStringExtra("title"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> {
+            if (!mB.a()) {
+                onBackPressed();
+            }
+        });
         content = getIntent().getStringExtra("content");
         pane = binding.pane;
         pane.setVerticalScrollBarEnabled(true);
