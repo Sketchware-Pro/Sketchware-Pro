@@ -75,6 +75,7 @@ import a.a.a.lC;
 import a.a.a.sy;
 import a.a.a.ty;
 import a.a.a.wB;
+import a.a.a.wq;
 import a.a.a.yB;
 import a.a.a.zB;
 import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
@@ -1124,7 +1125,7 @@ public class ViewPane extends RelativeLayout {
         if (sc_id == null) {
             return key;
         }
-        String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
+        String filePath = wq.b(sc_id) + "/files/resource/values/strings.xml";
 
         ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
 
