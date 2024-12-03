@@ -16,7 +16,6 @@ import pro.sketchware.databinding.ActivityLayoutPreviewBinding;
 import pro.sketchware.tools.ViewBeanParser;
 import pro.sketchware.utility.SketchwareUtil;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class LayoutPreviewActivity extends BaseAppCompatActivity {
@@ -44,7 +43,7 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
                 onBackPressed();
             }
         });
-        content = getIntent().getStringExtra("content");
+        content = getIntent().getStringExtra("xml");
         var sc_id = getIntent().getStringExtra("sc_id");
         pane = binding.pane;
         pane.setScId(sc_id);
@@ -57,7 +56,7 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
         super.onPostCreate(savedInstanceState);
         if (content != null) {
             try {
-                var parser = new ViewBeanParser(new File(content));
+                var parser = new ViewBeanParser(content);
                 loadViews(parser.parse());
             } catch (Exception e) {
                 SketchwareUtil.toastError(e.toString());
