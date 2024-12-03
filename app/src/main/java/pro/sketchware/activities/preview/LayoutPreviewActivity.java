@@ -15,6 +15,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import pro.sketchware.databinding.ActivityLayoutPreviewBinding;
 import pro.sketchware.tools.ViewBeanParser;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.UI;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,7 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
         pane.setScId(sc_id);
         pane.setVerticalScrollBarEnabled(true);
         pane.setResourceManager(jC.d(sc_id));
+        UI.addSystemWindowInsetToPadding(binding.pane, false, false, false, true);
     }
 
     @Override
