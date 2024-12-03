@@ -1,16 +1,12 @@
 package pro.sketchware.activities.preview;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 
-import a.a.a.Op;
-import a.a.a.Rp;
-import a.a.a.kC;
+import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.sy;
-import a.a.a.wq;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
@@ -53,9 +49,7 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
         pane = binding.pane;
         pane.setScId(sc_id);
         pane.setVerticalScrollBarEnabled(true);
-        kC kCVar = new kC("", wq.a() + "/image/data/", "", "");
-        kCVar.b(Op.g().f());
-        pane.setResourceManager(kCVar);
+        pane.setResourceManager(jC.d(sc_id));
     }
 
     @Override
