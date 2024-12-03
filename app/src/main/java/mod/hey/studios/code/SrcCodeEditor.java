@@ -448,6 +448,7 @@ public class SrcCodeEditor extends AppCompatActivity {
     private void toLayoutPreview() {
         Intent intent = new Intent(getApplicationContext(), LayoutPreviewActivity.class);
         intent.putExtras(getIntent());
+        intent.putExtra("xml", editor.getText().toString());
         startActivity(intent);
     }
 }

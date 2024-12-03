@@ -49,7 +49,9 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
             }
         });
         content = getIntent().getStringExtra("content");
+        var sc_id = getIntent().getStringExtra("sc_id");
         pane = binding.pane;
+        pane.setScId(sc_id);
         pane.setVerticalScrollBarEnabled(true);
         kC kCVar = new kC("", wq.a() + "/image/data/", "", "");
         kCVar.b(Op.g().f());
