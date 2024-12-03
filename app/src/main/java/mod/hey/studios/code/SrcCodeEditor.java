@@ -272,7 +272,7 @@ public class SrcCodeEditor extends AppCompatActivity {
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Undo").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_undo)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Redo").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_redo)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Save").setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_save)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            if (isFileInLayoutFolder()) {
+            if (isFileInLayoutFolder() && getIntent().hasExtra("sc_id")) {
                 toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Layout Preview");
             }
             toolbarMenu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Find & Replace");
