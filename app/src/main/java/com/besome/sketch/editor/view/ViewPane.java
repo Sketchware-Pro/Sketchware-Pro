@@ -1121,6 +1121,9 @@ public class ViewPane extends RelativeLayout {
     }
 
     public String getXmlString(String key) {
+        if (sc_id == null) {
+            return key;
+        }
         String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
 
         ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
