@@ -52,7 +52,7 @@ public class ExtraBlockClassInfo {
             } catch (JSONException e) {
             }
         }
-        return getDefaultName(str);
+        return str;
     }
 
     public static String getType(String str) {
@@ -67,41 +67,6 @@ public class ExtraBlockClassInfo {
             }
         }
         return getDefaultType(str);
-    }
-
-    private static String getDefaultName(String str) {
-        return switch (str) {
-            case "circleimageview" -> "CircleImageView";
-            case "onesignal" -> "OneSignal";
-            case "customViews" -> "CustomView";
-            case "asynctask" -> "AsyncTask";
-            case "activity" -> "Context";
-            case "otpview" -> "OTPView";
-            case "lottie" -> "LottieAnimation";
-            case "phoneauth" -> "FirebasePhoneAuth";
-            case "fbadbanner" -> "FBAdsBanner";
-            case "codeview" -> "CodeView";
-            case "recyclerview" -> "RecyclerView";
-            case "resource" -> "Image";
-            case "googlelogin" -> "FirebaseGoogleSignIn";
-            case "dynamiclink" -> "FirebaseDynamicLink";
-            case "youtubeview" -> "YoutubePlayer";
-            case "cardview" -> "CardView";
-            case "radiogroup" -> "RadioGroup";
-            case "color" -> "Color";
-            case "fbadinterstitial" -> "FBAdsInterstitial";
-            case "textinputlayout" -> "TextInputLayout";
-            case "collapsingtoolbar" -> "CollapsingToolbarLayout";
-            case "cloudmessage" -> "FirebaseCloudMessage";
-            case "resource_bg" -> "BackgroundImage";
-            case "datepicker" -> "DatePicker";
-            case "timepicker" -> "TimePicker";
-            case "swiperefreshlayout" -> "SwipeRefreshLayout";
-            case "signinbutton" -> "SignInButton";
-            case "materialButton" -> "MaterialButton";
-            case "fragmentAdapter" -> "FragmentAdapter";
-            default -> str;
-        };
     }
 
     private static String getDefaultType(String str) {
