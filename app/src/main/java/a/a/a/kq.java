@@ -1,7 +1,5 @@
 package a.a.a;
 
-import dev.aldi.sayuti.block.ExtraBlockClassInfo;
-
 import pro.sketchware.menu.DefaultExtraMenuBean;
 
 public class kq {
@@ -367,10 +365,10 @@ public class kq {
     public static String a(String blockName) {
         return switch (blockName) {
             case "spinner", "adview", "textview", "switch", "imageview", "calendarview", "view", "progressbar", "webview", "listview", "checkbox", "edittext", "mapview" -> "v";
-            case "soundpool", "requestnetwork", "objectanimator", "dialog", "texttospeech", "intent", "locationmanager", "firebase", "speechtotext", "calendar", "file", "firebaseauth", "timer", "gyroscope", "mediaplayer", "bluetoothconnect", "vibrator", "firebasestorage" -> "p";
+            case "soundpool", "requestnetwork", "objectanimator", "dialog", "texttospeech", "intent", "locationmanager", "firebase", "speechtotext", "calendar", "file", "firebaseauth", "timer", "gyroscope", "mediaplayer", "bluetoothconnect", "vibrator", "firebasestorage", "onesignal", "phoneauth", "fbadbanner", "googlelogin", "dynamiclink", "fbadinterstitial", "cloudmessage" -> "p";
             case "varMap" -> "a";
             case "listInt", "listMap", "listStr" -> "l";
-            default -> ExtraBlockClassInfo.getType(blockName);
+            default -> "v";
         };
     }
 
