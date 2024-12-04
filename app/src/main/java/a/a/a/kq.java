@@ -378,8 +378,11 @@ public class kq {
         return var0 == 3 ? "Map" : "";
     }
 
-    public static String b(String opcode) {
-        return switch (opcode) {
+    /**
+     * @return The placeholder name for block menu from its type name
+     */
+    public static String b(String typeName) {
+        return switch (typeName) {
             case "spinner" -> "Spinner";
             case "tablayout" -> "TabLayout";
             case "soundpool" -> "SoundPool";
@@ -471,7 +474,7 @@ public class kq {
             case "signinbutton" -> "SignInButton";
             case "materialButton" -> "MaterialButton";
             case "fragmentAdapter" -> "FragmentAdapter";
-            default -> DefaultExtraMenuBean.getName(opcode);
+            default -> DefaultExtraMenuBean.getName(typeName);
         };
     }
 }

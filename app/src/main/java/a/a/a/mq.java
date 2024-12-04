@@ -132,6 +132,9 @@ public class mq {
         };
     }
 
+    /**
+     * @return The internal type name of a variable(e.g. View, Component), from its type name(%m.typename), as displayed in the moreblock code.
+     */
     public static String b(String name) {
         return switch (name) {
             case "intent", "Intent" -> "Intent";
@@ -776,6 +779,9 @@ public class mq {
         }
     }
 
+    /**
+     * @return The actual class info from its internal type name, as displayed in the generated code.
+     */
     public static String e(String typeName) {
         return switch (typeName) {
             case "double", "double.SelectDouble" -> "double";
