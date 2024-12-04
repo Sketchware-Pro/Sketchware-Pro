@@ -14,7 +14,7 @@ public class PropertiesUtil {
 
     public static final Pattern COLOR_PATTERN = Pattern.compile("(#)([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})");
     public static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^#([A-Fa-f0-9]{8}|[A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
-    public static final Pattern UNIT_PATTERN = Pattern.compile("(-?\\d+)(dp|sp|px|mm|pt|in)$");
+    public static final Pattern UNIT_PATTERN = Pattern.compile("(-?\\d+(?:\\.\\d+)?)(dp|sp|px|mm|pt|in)$");
     public static final Pattern PREFIX_PATTERN = Pattern.compile("([@?][^/]+/)(.*)");
 
     public static boolean isHexColor(String color) {
@@ -66,5 +66,17 @@ public class PropertiesUtil {
         return IntStream.rangeClosed(1, itemCount)
                 .mapToObj(i -> prefix + " " + i)
                 .collect(Collectors.toList());
+    }
+
+    public static String parseReferName(String reference, String sep) {
+        if (reference == null) {
+            return null;
+        }
+        int index = reference.indexOf(sep);
+        if (index >= 0 && index < reference.length() - 1) {
+            return reference.substring(index + 1);
+        } else {
+            return reference;
+        }
     }
 }

@@ -317,6 +317,14 @@
         <activity android:name="mod.bobur.StringEditorActivity"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
 
+        <activity
+            android:name=".activities.editor.view.ViewCodeEditorActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".activities.preview.LayoutPreviewActivity"
+            android:configChanges="orientation|screenSize" />
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />

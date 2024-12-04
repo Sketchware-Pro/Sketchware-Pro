@@ -340,6 +340,9 @@ public class ViewEditorFragment extends qA {
                     ViewBean viewBean = jC.a(sc_id).c(projectFileBean.getXmlName(), movedData.id);
                     viewBean.copy(movedData);
                     viewEditor.a(viewEditor.b(viewBean, false), false);
+                } else if (actionType == HistoryViewBean.ACTION_TYPE_OVERRIDE) {
+                    jC.a(sc_id).c.put(projectFileBean.getXmlName(), historyViewBean.getAddedData());
+                    i();
                 }
             }
             invalidateOptionsMenu();
@@ -347,6 +350,7 @@ public class ViewEditorFragment extends qA {
     }
 
     public void i() {
+        invalidateOptionsMenu();
         if (projectFileBean != null) {
             b(jC.a(sc_id).d(projectFileBean.getXmlName()));
             a(jC.a(sc_id).h(projectFileBean.getXmlName()));
@@ -405,6 +409,9 @@ public class ViewEditorFragment extends qA {
                     viewBean.parentType = movedData.preParentType;
                     viewBean.preParentType = movedData.parentType;
                     viewEditor.a(viewEditor.b(viewBean, false), false);
+                } else if (actionType == HistoryViewBean.ACTION_TYPE_OVERRIDE) {
+                    jC.a(sc_id).c.put(projectFileBean.getXmlName(), historyViewBean.getRemovedData());
+                    i();
                 }
             }
             invalidateOptionsMenu();

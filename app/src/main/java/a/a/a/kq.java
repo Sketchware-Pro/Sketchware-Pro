@@ -1,6 +1,6 @@
 package a.a.a;
 
-import dev.aldi.sayuti.block.ExtraBlockClassInfo;
+import pro.sketchware.menu.DefaultExtraMenuBean;
 
 public class kq {
     public static int a(String opcode, String blockType) {
@@ -365,10 +365,10 @@ public class kq {
     public static String a(String blockName) {
         return switch (blockName) {
             case "spinner", "adview", "textview", "switch", "imageview", "calendarview", "view", "progressbar", "webview", "listview", "checkbox", "edittext", "mapview" -> "v";
-            case "soundpool", "requestnetwork", "objectanimator", "dialog", "texttospeech", "intent", "locationmanager", "firebase", "speechtotext", "calendar", "file", "firebaseauth", "timer", "gyroscope", "mediaplayer", "bluetoothconnect", "vibrator", "firebasestorage" -> "p";
+            case "soundpool", "requestnetwork", "objectanimator", "dialog", "texttospeech", "intent", "locationmanager", "firebase", "speechtotext", "calendar", "file", "firebaseauth", "timer", "gyroscope", "mediaplayer", "bluetoothconnect", "vibrator", "firebasestorage", "onesignal", "phoneauth", "fbadbanner", "googlelogin", "dynamiclink", "fbadinterstitial", "cloudmessage" -> "p";
             case "varMap" -> "a";
             case "listInt", "listMap", "listStr" -> "l";
-            default -> ExtraBlockClassInfo.getType(blockName);
+            default -> "v";
         };
     }
 
@@ -376,8 +376,11 @@ public class kq {
         return var0 == 3 ? "Map" : "";
     }
 
-    public static String b(String opcode) {
-        return switch (opcode) {
+    /**
+     * @return The placeholder name for block menu from its type name
+     */
+    public static String b(String typeName) {
+        return switch (typeName) {
             case "spinner" -> "Spinner";
             case "tablayout" -> "TabLayout";
             case "soundpool" -> "SoundPool";
@@ -440,7 +443,36 @@ public class kq {
             case "seekbar" -> "SeekBar";
             case "sidebar" -> "WaveSideBar";
             case "badgeview" -> "BadgeView";
-            default -> ExtraBlockClassInfo.getName(opcode);
+            case "circleimageview" -> "CircleImageView";
+            case "onesignal" -> "OneSignal";
+            case "customViews" -> "CustomView";
+            case "asynctask" -> "AsyncTask";
+            case "activity" -> "Context";
+            case "otpview" -> "OTPView";
+            case "lottie" -> "LottieAnimation";
+            case "phoneauth" -> "FirebasePhoneAuth";
+            case "fbadbanner" -> "FBAdsBanner";
+            case "codeview" -> "CodeView";
+            case "recyclerview" -> "RecyclerView";
+            case "resource" -> "Image";
+            case "googlelogin" -> "FirebaseGoogleSignIn";
+            case "dynamiclink" -> "FirebaseDynamicLink";
+            case "youtubeview" -> "YoutubePlayer";
+            case "cardview" -> "CardView";
+            case "radiogroup" -> "RadioGroup";
+            case "color" -> "Color";
+            case "fbadinterstitial" -> "FBAdsInterstitial";
+            case "textinputlayout" -> "TextInputLayout";
+            case "collapsingtoolbar" -> "CollapsingToolbarLayout";
+            case "cloudmessage" -> "FirebaseCloudMessage";
+            case "resource_bg" -> "BackgroundImage";
+            case "datepicker" -> "DatePicker";
+            case "timepicker" -> "TimePicker";
+            case "swiperefreshlayout" -> "SwipeRefreshLayout";
+            case "signinbutton" -> "SignInButton";
+            case "materialButton" -> "MaterialButton";
+            case "fragmentAdapter" -> "FragmentAdapter";
+            default -> DefaultExtraMenuBean.getName(typeName);
         };
     }
 }

@@ -38,8 +38,7 @@ import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;
-import dev.aldi.sayuti.block.ExtraMenuBlock;
-import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
+
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
@@ -72,7 +71,7 @@ public class ExtraMenuBean {
 
     private final String ASSETS_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/assets/";
     private final String NATIVE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/native_libs/";
-    private final ExtraMenuBlock extraMenuBlock;
+    private final DefaultExtraMenuBean defaultExtraMenu;
     private final FilePathUtil fpu;
     private final FilePickerDialog fpd;
     private final FileResConfig frc;
@@ -89,7 +88,7 @@ public class ExtraMenuBean {
         sc_id = logicA.B;
         fpu = new FilePathUtil();
         frc = new FileResConfig(logicA.B);
-        extraMenuBlock = new ExtraMenuBlock(logicA);
+        defaultExtraMenu = new DefaultExtraMenuBean(logicA);
         projectDataManager = jC.a(logicA.B);
         javaName = logicA.M.getJavaName();
     }
@@ -715,34 +714,9 @@ public class ExtraMenuBean {
                 break;
 
             default:
-                Pair<String, String[]> menuPair = BlockMenu.getMenu(menu.getMenuName());
+                Pair<String, ArrayList<String>> menuPair = defaultExtraMenu.getMenu(menu);
                 title = menuPair.first;
-                menus = new ArrayList<>(Arrays.asList(menuPair.second));
-                extraMenuBlock.a(menu, dialog, menus);
-
-                for (String s : projectDataManager.e(javaName, 5)) {
-                    Matcher matcher2 = Pattern.compile("^(\\w+)[\\s]+(\\w+)").matcher(s);
-                    while (matcher2.find()) {
-                        if (menuName.equals(matcher2.group(1))) {
-                            title = "Select a " + matcher2.group(1) + " Variable";
-                            menus.add(matcher2.group(2));
-                        }
-                    }
-                }
-                for (String variable : projectDataManager.e(javaName, 6)) {
-                    String variableType = CustomVariableUtil.getVariableType(variable);
-                    String variableName = CustomVariableUtil.getVariableName(variable);
-                    if (menuName.equals(variableType)) {
-                        title = "Select a " + variableType + " Variable";
-                        menus.add(variableName);
-                    }
-                }
-                for (ComponentBean componentBean : projectDataManager.e(javaName)) {
-                    if (componentBean.type > 36 && menuName.equals(ComponentBean.getComponentTypeName(componentBean.type))) {
-                        title = "Select a " + ComponentBean.getComponentTypeName(componentBean.type);
-                        menus.add(componentBean.componentId);
-                    }
-                }
+                menus = new ArrayList<>(menuPair.second);
         }
 
         for (String menuArg : menus) {

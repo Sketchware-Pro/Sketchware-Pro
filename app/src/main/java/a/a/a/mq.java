@@ -4,9 +4,10 @@ import com.besome.sketch.beans.ComponentBean;
 
 import java.util.ArrayList;
 
-import dev.aldi.sayuti.block.ExtraBlockClassInfo;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.hilal.saif.events.EventsHandler;
+
+import pro.sketchware.menu.DefaultExtraMenuBean;
 
 public class mq {
     /**
@@ -48,7 +49,7 @@ public class mq {
                 return new Gx(b(typeName));
 
             default:
-                return ExtraBlockClassInfo.getTypeVar(type, typeName);
+                return null;
         }
     }
 
@@ -130,6 +131,9 @@ public class mq {
         };
     }
 
+    /**
+     * @return The internal type name of a variable(e.g. View, Component), from its type name(%m.typename), as displayed in the moreblock code.
+     */
     public static String b(String name) {
         return switch (name) {
             case "intent", "Intent" -> "Intent";
@@ -195,7 +199,36 @@ public class mq {
             case "bottomnavigation" -> "BottomNavigationView";
             case "patternview" -> "PatternLockView";
             case "sidebar" -> "WaveSideBar";
-            default -> ExtraBlockClassInfo.getName(name);
+            case "circleimageview" -> "CircleImageView";
+            case "onesignal" -> "OneSignal";
+            case "customViews" -> "CustomView";
+            case "asynctask" -> "AsyncTask";
+            case "activity" -> "Context";
+            case "otpview" -> "OTPView";
+            case "lottie" -> "LottieAnimation";
+            case "phoneauth" -> "FirebasePhoneAuth";
+            case "fbadbanner" -> "FBAdsBanner";
+            case "codeview" -> "CodeView";
+            case "recyclerview" -> "RecyclerView";
+            case "resource" -> "Image";
+            case "googlelogin" -> "FirebaseGoogleSignIn";
+            case "dynamiclink" -> "FirebaseDynamicLink";
+            case "youtubeview" -> "YoutubePlayer";
+            case "cardview" -> "CardView";
+            case "radiogroup" -> "RadioGroup";
+            case "color" -> "Color";
+            case "fbadinterstitial" -> "FBAdsInterstitial";
+            case "textinputlayout" -> "TextInputLayout";
+            case "collapsingtoolbar" -> "CollapsingToolbarLayout";
+            case "cloudmessage" -> "FirebaseCloudMessage";
+            case "resource_bg" -> "BackgroundImage";
+            case "datepicker" -> "DatePicker";
+            case "timepicker" -> "TimePicker";
+            case "swiperefreshlayout" -> "SwipeRefreshLayout";
+            case "signinbutton" -> "SignInButton";
+            case "materialButton" -> "MaterialButton";
+            case "fragmentAdapter" -> "FragmentAdapter";
+            default -> DefaultExtraMenuBean.getName(name);
         };
     }
 
@@ -745,6 +778,9 @@ public class mq {
         }
     }
 
+    /**
+     * @return The actual class info from its internal type name, as displayed in the generated code.
+     */
     public static String e(String typeName) {
         return switch (typeName) {
             case "double", "double.SelectDouble" -> "double";

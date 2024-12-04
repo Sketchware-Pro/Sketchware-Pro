@@ -20,12 +20,15 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import pro.sketchware.managers.inject.InjectRootLayoutManager;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -38,16 +41,19 @@ import mod.jbk.util.LogUtil;
 public class Ox {
 
     private final jq buildConfig;
+    private final InjectRootLayoutManager rootManager;
     private final AppCompatInjection aci;
     private final ProjectFileBean projectFile;
     private ViewBean fab;
     private ArrayList<ViewBean> views;
     private XmlBuilder rootLayout = null;
     private XmlBuilder collapsingToolbarLayout = null;
+    private boolean excludeAppCompat;
 
     public Ox(jq jq, ProjectFileBean projectFileBean) {
         buildConfig = jq;
         projectFile = projectFileBean;
+        rootManager = new InjectRootLayoutManager(jq.sc_id);
         aci = new AppCompatInjection(jq, projectFileBean);
     }
 
@@ -73,21 +79,35 @@ public class Ox {
         return result.toString();
     }
 
+    public void setExcludeAppCompat(boolean exclude) {
+        excludeAppCompat = exclude;
+    }
+
     private void writeRootLayout() {
-        XmlBuilder nx = new XmlBuilder("LinearLayout");
-        nx.addAttribute("android", "layout_width", "match_parent");
-        nx.addAttribute("android", "layout_height", "match_parent");
-        nx.addAttribute("android", "orientation", "vertical");
+        var root = rootManager.getLayoutByName(projectFile.getXmlName());
+        XmlBuilder nx = new XmlBuilder(root.getClassName());
+        var rootAttributes = root.getAttributes();
+        if (!rootAttributes.containsKey("android:layout_width")) {
+            nx.addAttribute("android", "layout_width", "match_parent");
+        }
+        if (!rootAttributes.containsKey("android:layout_height")) {
+            nx.addAttribute("android", "layout_height", "match_parent");
+        }
+        for (Map.Entry<String, String> entry : rootAttributes.entrySet()) {
+            nx.addAttribute(null, entry.getKey(), entry.getValue());
+        }
         for (ViewBean viewBean : views) {
             String parent = viewBean.parent;
             if (parent == null || parent.isEmpty() || parent.equals("root")) {
                 writeWidget(nx, viewBean);
             }
         }
-        if (buildConfig.g) {
+        if (!excludeAppCompat && buildConfig.g) {
             if (projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
-                    nx.addAttribute("app", "layout_behavior", "@string/appbar_scrolling_view_behavior");
+                    if (!root.getAttributes().containsKey("app:layout_behavior")) {
+                        nx.addAttribute("app", "layout_behavior", "@string/appbar_scrolling_view_behavior");
+                    }
                 }
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)
                         || projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
