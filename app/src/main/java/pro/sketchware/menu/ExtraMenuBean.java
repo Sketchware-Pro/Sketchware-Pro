@@ -38,7 +38,7 @@ import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
 import a.a.a.wB;
-import dev.aldi.sayuti.block.ExtraMenuBlock;
+
 import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
@@ -72,7 +72,6 @@ public class ExtraMenuBean {
     private final String ASSETS_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/assets/";
     private final String NATIVE_PATH = FileUtil.getExternalStorageDir() + "/.sketchware/data/%s/files/native_libs/";
     private final DefaultExtraMenuBean defaultExtraMenu;
-    private final ExtraMenuBlock extraMenuBlock;
     private final FilePathUtil fpu;
     private final FilePickerDialog fpd;
     private final FileResConfig frc;
@@ -90,7 +89,6 @@ public class ExtraMenuBean {
         fpu = new FilePathUtil();
         frc = new FileResConfig(logicA.B);
         defaultExtraMenu = new DefaultExtraMenuBean(logicA);
-        extraMenuBlock = new ExtraMenuBlock(logicA);
         projectDataManager = jC.a(logicA.B);
         javaName = logicA.M.getJavaName();
     }
@@ -719,7 +717,6 @@ public class ExtraMenuBean {
                 Pair<String, ArrayList<String>> menuPair = defaultExtraMenu.getMenu(menu);
                 title = menuPair.first;
                 menus = new ArrayList<>(menuPair.second);
-                extraMenuBlock.a(menu, dialog, menus);
         }
 
         for (String menuArg : menus) {
