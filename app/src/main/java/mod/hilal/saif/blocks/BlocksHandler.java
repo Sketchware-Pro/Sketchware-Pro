@@ -2417,14 +2417,6 @@ public class BlocksHandler {
         arrayList.add(hashMap);
     }
 
-    private static void checkDir() {
-        String extraBlocksPath = ExtraBlockFile.EXTRA_MENU_BLOCK_FILE.getAbsolutePath();
-
-        if (!ExtraBlockFile.EXTRA_BLOCKS_DATA_FILE.exists() || FileUtil.readFile(extraBlocksPath).isEmpty()) {
-            FileUtil.writeFile(extraBlocksPath, "[]");
-        }
-    }
-
     private static boolean showAll() {
         return ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_ALWAYS_SHOW_BLOCKS)
                 || ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_EVERY_SINGLE_BLOCK);
@@ -2436,9 +2428,6 @@ public class BlocksHandler {
     }
 
     public static void primaryBlocksA(LogicEditorActivity logicEditorActivity, boolean isBoolUsed, boolean isIntUsed, boolean isStrUsed, boolean isMapUsed) {
-        if (showBuiltIn()) {
-            checkDir();
-        }
         logicEditorActivity.a("Blocks", 0xff555555);
         if (showAll() || isBoolUsed) {
             logicEditorActivity.a(" ", "setVarBoolean");
@@ -2491,9 +2480,6 @@ public class BlocksHandler {
         String eventName = logicEditorActivity.D;
         boolean inOnBindCustomViewEvent = eventName.equals("onBindCustomView");
         boolean inOnFilesPickedEvent = eventName.equals("onFilesPicked");
-        if (showBuiltIn()) {
-            checkDir();
-        }
         if (showAll() || isListNumUsed) {
             logicEditorActivity.a("List Number", 0xff555555);
             logicEditorActivity.a("b", "containListInt");
@@ -2556,9 +2542,6 @@ public class BlocksHandler {
     }
 
     public static void primaryBlocksC(LogicEditorActivity logicEditorActivity) {
-        if (showBuiltIn()) {
-            checkDir();
-        }
         logicEditorActivity.a("c", "repeat");
         if (showBuiltIn()) {
             logicEditorActivity.a("c", "repeatKnownNum");
@@ -2596,9 +2579,6 @@ public class BlocksHandler {
     }
 
     public static void primaryBlocksD(LogicEditorActivity logicEditorActivity) {
-        if (showBuiltIn()) {
-            checkDir();
-        }
         logicEditorActivity.a("b", "true");
         logicEditorActivity.a("b", "false");
         logicEditorActivity.a("b", "<");
