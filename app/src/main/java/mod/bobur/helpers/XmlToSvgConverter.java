@@ -1,14 +1,18 @@
 package mod.bobur.helpers;
 
+import android.net.Uri;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import pro.sketchware.utility.FileUtil;
 
 /**
  * This class is converts XML vector drawables to SVG (Only vector drawables are supported)
@@ -30,7 +34,7 @@ public class XmlToSvgConverter {
             String height = parseDimension(root.getAttribute("android:height"));
 
             if (root.getTagName().equals("vector")) {
-                svg.append("width=\"").append(width).append("px\" height=\"").append(height).append("px\" ");
+                svg.append("width=\"").append("150").append("px\" height=\"").append("150").append("px\" ");
                 svg.append("viewBox=\"0 0 ").append(width.isEmpty() ? "100" : width)
                         .append(" ").append(height.isEmpty() ? "100" : height).append("\" ");
             } else {
@@ -121,5 +125,29 @@ public class XmlToSvgConverter {
 
     private static String parseDimension(String value) {
         return value.replaceAll("[^\\d.]", "");
+    }
+
+    public static ArrayList<String> getVectorDrawables(String sc_id) {
+        ArrayList<String> cache = new ArrayList<>();
+        FileUtil.listDir("/storage/emulated/0/.sketchware/data/" + sc_id + "/files/resource/drawable/", cache);
+
+        ArrayList<String> files = new ArrayList<>();
+        for (String vectorPath : cache) {
+            String fileName = Uri.parse(vectorPath).getLastPathSegment();
+            if (fileName != null && fileName.endsWith(".xml")) {
+                try {
+                    String content = FileUtil.readFile(vectorPath);
+                    if (content.contains("<vector")) { // Check if it's a vector drawable
+                        files.add(fileName.substring(0, fileName.length() - 4)); // Exclude ".xml"
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        return files;
+    }
+
+    public static String getSvgFullPath(String sc_id, String fileName) {
+        return "/storage/emulated/0/.sketchware/data/" + sc_id + "/files/resource/drawable/" + fileName + ".xml";
     }
 }
