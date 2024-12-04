@@ -41,20 +41,6 @@ public class ExtraBlockClassInfo {
         return null;
     }
 
-    public static String getName(String str) {
-        loadIfNull();
-        for (int i = 0; i < jSONArray.length(); i++) {
-            try {
-                JSONObject jSONObject = jSONArray.getJSONObject(i);
-                if (str.equals(jSONObject.getString("id")) && jSONObject.has("name")) {
-                    return jSONObject.getString("name");
-                }
-            } catch (JSONException e) {
-            }
-        }
-        return str;
-    }
-
     public static String getType(String str) {
         loadIfNull();
         for (int i = 0; i < jSONArray.length(); i++) {

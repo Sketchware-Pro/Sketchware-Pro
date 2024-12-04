@@ -8,6 +8,8 @@ import dev.aldi.sayuti.block.ExtraBlockClassInfo;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.hilal.saif.events.EventsHandler;
 
+import pro.sketchware.menu.DefaultExtraMenuBean;
+
 public class mq {
     /**
      * @return A built class info ({@link Gx} object)
@@ -224,7 +226,7 @@ public class mq {
             case "signinbutton" -> "SignInButton";
             case "materialButton" -> "MaterialButton";
             case "fragmentAdapter" -> "FragmentAdapter";
-            default -> ExtraBlockClassInfo.getName(name);
+            default -> DefaultExtraMenuBean.getName(name);
         };
     }
 

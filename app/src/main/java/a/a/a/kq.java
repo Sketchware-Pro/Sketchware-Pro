@@ -2,6 +2,8 @@ package a.a.a;
 
 import dev.aldi.sayuti.block.ExtraBlockClassInfo;
 
+import pro.sketchware.menu.DefaultExtraMenuBean;
+
 public class kq {
     public static int a(String opcode, String blockType) {
         int viewType = 0xff4a6cd4;
@@ -440,7 +442,36 @@ public class kq {
             case "seekbar" -> "SeekBar";
             case "sidebar" -> "WaveSideBar";
             case "badgeview" -> "BadgeView";
-            default -> ExtraBlockClassInfo.getName(opcode);
+            case "circleimageview" -> "CircleImageView";
+            case "onesignal" -> "OneSignal";
+            case "customViews" -> "CustomView";
+            case "asynctask" -> "AsyncTask";
+            case "activity" -> "Context";
+            case "otpview" -> "OTPView";
+            case "lottie" -> "LottieAnimation";
+            case "phoneauth" -> "FirebasePhoneAuth";
+            case "fbadbanner" -> "FBAdsBanner";
+            case "codeview" -> "CodeView";
+            case "recyclerview" -> "RecyclerView";
+            case "resource" -> "Image";
+            case "googlelogin" -> "FirebaseGoogleSignIn";
+            case "dynamiclink" -> "FirebaseDynamicLink";
+            case "youtubeview" -> "YoutubePlayer";
+            case "cardview" -> "CardView";
+            case "radiogroup" -> "RadioGroup";
+            case "color" -> "Color";
+            case "fbadinterstitial" -> "FBAdsInterstitial";
+            case "textinputlayout" -> "TextInputLayout";
+            case "collapsingtoolbar" -> "CollapsingToolbarLayout";
+            case "cloudmessage" -> "FirebaseCloudMessage";
+            case "resource_bg" -> "BackgroundImage";
+            case "datepicker" -> "DatePicker";
+            case "timepicker" -> "TimePicker";
+            case "swiperefreshlayout" -> "SwipeRefreshLayout";
+            case "signinbutton" -> "SignInButton";
+            case "materialButton" -> "MaterialButton";
+            case "fragmentAdapter" -> "FragmentAdapter";
+            default -> DefaultExtraMenuBean.getName(opcode);
         };
     }
 }
