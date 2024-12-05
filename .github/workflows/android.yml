@@ -149,7 +149,7 @@ jobs:
           pip install requests
 
       - name: Run Update App Script
-        run: python ./.github/workflows/update_app_info.py
+        run: python .github/workflows/update_app_info.py
 
       - name: Commit and Push Changes
         env:
