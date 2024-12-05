@@ -504,9 +504,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         if (binding.type.getText().toString().equals("e")) {
             tempMap.put("spec2", binding.spec2.getText().toString());
         }
-        if (!TextUtils.isEmpty(binding.customImport.getText().toString())) {
-            tempMap.put("imports", binding.customImport.getText().toString());
-        }
+        tempMap.put("imports", binding.customImport.getText().toString());
         tempMap.put("code", binding.code.getText().toString());
         FileUtil.writeFile(path, new Gson().toJson(blocksList));
         SketchwareUtil.toast("Saved");
