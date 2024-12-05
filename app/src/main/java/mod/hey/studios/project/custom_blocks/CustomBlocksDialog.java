@@ -92,9 +92,6 @@ public class CustomBlocksDialog {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        tw.setTextColor(0xff424242);
-        tw.setTextSize(14f);
-
         String append = "";
 
         if (BlockLoader.getBlockInfo(bean.opCode).isMissing /*getCode().equals(BlockLoader.NOT_FOUND)*/) {

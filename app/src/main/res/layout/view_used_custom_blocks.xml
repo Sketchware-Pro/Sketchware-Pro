@@ -3,8 +3,8 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="8dp"
-    android:paddingBottom="12dp"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="10dp"
     android:requiresFadingEdge="vertical">
 
     <LinearLayout
