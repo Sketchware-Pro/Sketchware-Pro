@@ -48,12 +48,9 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
             holder.binding.tvUserName.setText(contributorUsername);
         }
 
-        String contributorDescription = member.getMemberDescription();
-        if (contributorDescription != null) {
-            holder.binding.tvDescription.setText(contributorDescription);
-        }
+        holder.binding.tvDescription.setText(member.getDescription());
 
-        boolean isTitled = member.isTitled();
+        boolean isTitled = position == 0 || !(member.getTitle().equals(team.get(position - 1).getTitle()));
         if (isTitled) {
             String titleText = member.getTitle();
             if (titleText != null) {
@@ -66,7 +63,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
             holder.binding.tvTitle.setVisibility(View.GONE);
         }
 
-        boolean isMainModder = member.isMainModder();
+        boolean isMainModder = member.isCoreTeamMember();
         if (isMainModder) {
             advancedCorners(holder.binding.viewLeftline, MaterialColors.getColor(holder.binding.viewLeftline, com.google.android.material.R.attr.colorPrimary));
         } else {

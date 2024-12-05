@@ -148,6 +148,8 @@ dependencies {
     implementation "com.google.code.gson:gson:2.11.0"
     implementation "com.madgag:scpkix-jdk15on:1.47.0.2"
 
+    implementation 'io.noties.markwon:core:4.6.2'
+
     //noinspection GradleDependency
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
     //noinspection GradleDependency
