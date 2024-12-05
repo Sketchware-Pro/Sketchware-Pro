@@ -19,7 +19,7 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.ActivityAboutAppBinding;
 
 import pro.sketchware.activities.about.fragments.ChangeLogFragment;
-import pro.sketchware.activities.about.fragments.MajorChangesFragment;
+import pro.sketchware.activities.about.fragments.BetaChangesFragment;
 import pro.sketchware.activities.about.fragments.TeamFragment;
 import pro.sketchware.activities.about.models.AboutAppViewModel;
 import pro.sketchware.activities.about.models.AboutResponseModel;
@@ -63,7 +63,7 @@ public class AboutActivity extends AppCompatActivity {
         String[] tabTitles = new String[]{
                 getString(R.string.about_team_title),
                 getString(R.string.about_changelog_title),
-                getString(R.string.about_majorchanges_title)
+                getString(R.string.about_beta_changes_title)
         };
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
@@ -83,7 +83,7 @@ public class AboutActivity extends AppCompatActivity {
         if (toSelect != null) {
             if ("changelog".equals(toSelect)) {
                 binding.viewPager.setCurrentItem(1);
-            } else if ("majorChanges".equals(toSelect)) {
+            } else if ("betaChanges".equals(toSelect)) {
                 binding.viewPager.setCurrentItem(2);
             }
         }
@@ -118,7 +118,7 @@ public class AboutActivity extends AppCompatActivity {
         public Fragment createFragment(int position) {
             return switch (position) {
                 case 1 -> new ChangeLogFragment();
-                case 2 -> new MajorChangesFragment();
+                case 2 -> new BetaChangesFragment();
                 default -> new TeamFragment();
             };
         }
