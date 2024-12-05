@@ -15,6 +15,7 @@
         android:padding="8dp"
         android:id="@+id/tv_variant"
         android:textAppearance="?attr/textAppearanceLabelLarge"
+        android:textStyle="bold"
         tools:text="Official / Beta" />
 
     <LinearLayout
