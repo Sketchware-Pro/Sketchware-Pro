@@ -20,11 +20,14 @@
         tools:text="Main contributors" />
 
     <LinearLayout
+        android:id="@+id/member_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
         android:gravity="center_vertical"
+        android:clickable="true"
+        android:background="?selectableItemBackground"
         android:orientation="horizontal">
 
         <LinearLayout
