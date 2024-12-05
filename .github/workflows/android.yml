@@ -130,3 +130,36 @@ jobs:
         run: |
           python ./.github/workflows/deploy_artifacts.py
         continue-on-error: true
+
+  updateAppData:
+    name: Update App Data
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests
+
+      - name: Run Update App Script
+        run: python ./.github/workflows/update_app_info.py
+
+      - name: Commit and Push Changes
+        env:
+          GH_ABOUT_APP_WORKFLOW_TOKEN: ${{ secrets.GH_ABOUT_APP_WORKFLOW_TOKEN }}
+        run: |
+          git checkout host
+          git config --global user.name "Sketchware Pro Actions"
+          git config --global user.email "hello@sketchware.pro"
+          git add about.json
+          git commit -m "feat: Update app about screen data"
+          git push
+        continue-on-error: true
+      
