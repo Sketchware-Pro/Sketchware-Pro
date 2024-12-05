@@ -42,6 +42,7 @@ import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogSelectorActionsBinding;
 import pro.sketchware.databinding.WidgetsCreatorDialogBinding;
+import pro.sketchware.lib.highlighter.SyntaxScheme;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -152,6 +153,8 @@ public class WidgetsCreatorManager {
         clearErrorOnTextChanged(binding.widgetName, binding.inputName);
         clearErrorOnTextChanged(binding.widgetTitle, binding.inputTitle);
         clearErrorOnTextChanged(binding.addWidgetTo, binding.inputClass);
+
+        SyntaxScheme.setXMLHighlighter(binding.injectCode);
 
         if (isEditing) {
             HashMap<String, Object> map = widgetConfigurationsList.get(position);
