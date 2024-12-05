@@ -2190,7 +2190,7 @@ Please try again later"</string>
     <string name="about_team_title">The team</string>
     <string name="about_specialthanks_title">Special Thanks</string>
     <string name="about_changelog_title">Changelog</string>
-    <string name="about_majorchanges_title">Major changes</string>
+    <string name="about_beta_changes_title">Beta Changes</string>
     <string name="about_loading_title">Getting data…</string>
     <string name="about_loading_subtitle">Don\'t worry, it won\'t take more than a second.</string>
     <string name="about_joindiscord">Join our Discord server</string>
@@ -2201,7 +2201,8 @@ Please try again later"</string>
     <string name="link_ideas_url">https://discord.gg/4uxhMwCt</string>
     <string name="link_discord_invite">https://discord.gg/kq39yhT4rX</string>
     <string name="link_telegram_invite">https://t.me/sketchwarepro</string>
-    <string name="link_about_team">https://sketchware-pro.github.io/Sketchware-Pro/aboutus.json</string>
+    <string name="link_about_team">https://sketchware-pro.github.io/Sketchware-Pro/about.json</string>
+    <string name="link_github_commits_url"><![CDATA[https://api.github.com/repos/Sketchware-Pro/Sketchware-Pro/commits?per_page=%s&page=%s]]></string>
     <string name="link_github_url">https://github.com/Sketchware-Pro/Sketchware-Pro</string>
     <string name="change_launcher_activity_dialog_title">Launcher Activity</string>
     <string name="common_word_add_activtiy">Add Activity</string>
