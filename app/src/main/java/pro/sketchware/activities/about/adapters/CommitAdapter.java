@@ -122,7 +122,7 @@ public class CommitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private boolean isCoreTeamMember(String userName) {
         ArrayList<String> coreTeam = aboutAppViewModel.getCoreTeamMembers();
-        return coreTeam.contains(userName.toLowerCase());
+        return coreTeam.contains(userName);
     }
 
     public void showLoading() {

@@ -71,32 +71,26 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
             holder.binding.tvTitle.setVisibility(View.GONE);
         }
 
-        boolean isCoreTeamMember = member.isCoreTeamMember();
-        if (isCoreTeamMember) {
+        if (member.isCoreTeamMember()) {
             advancedCorners(holder.binding.viewLeftline, MaterialColors.getColor(holder.binding.viewLeftline, com.google.android.material.R.attr.colorPrimary));
         } else {
             advancedCorners(holder.binding.viewLeftline, MaterialColors.getColor(holder.binding.viewLeftline, R.attr.colorGreen));
         }
 
-        if (isCoreTeamMember) {
-            holder.binding.tvStatus.setVisibility(View.VISIBLE);
-            boolean isActive = member.isActive();
-            int activeBackgroundColor;
-            int activeBackgroundTextColor;
-            if (isActive) {
-                holder.binding.tvStatus.setText("Active");
-                activeBackgroundColor = MaterialColors.getColor(holder.binding.tvStatus, R.attr.colorCoolGreenContainer);
-                activeBackgroundTextColor = MaterialColors.getColor(holder.binding.tvStatus, R.attr.colorOnCoolGreenContainer);
-            } else {
-                holder.binding.tvStatus.setText("Inactive");
-                activeBackgroundColor = MaterialColors.getColor(holder.binding.tvStatus, R.attr.colorAmberContainer);
-                activeBackgroundTextColor = MaterialColors.getColor(holder.binding.tvStatus, R.attr.colorOnAmberContainer);
-            }
-            rippleRound(holder.binding.tvStatus, activeBackgroundColor, activeBackgroundColor, 100);
-            holder.binding.tvStatus.setTextColor(activeBackgroundTextColor);
+        holder.binding.tvStatus.setVisibility(View.VISIBLE);
+        int activeBackgroundColor;
+        int activeBackgroundTextColor;
+        if (member.isActive()) {
+            holder.binding.tvStatus.setText("Active");
+            activeBackgroundColor = MaterialColors.getColor(holder.binding.tvStatus, R.attr.colorCoolGreenContainer);
+            activeBackgroundTextColor = MaterialColors.getColor(holder.binding.tvStatus, R.attr.colorOnCoolGreenContainer);
         } else {
-            holder.binding.tvStatus.setVisibility(View.GONE);
+            holder.binding.tvStatus.setText("Inactive");
+            activeBackgroundColor = MaterialColors.getColor(holder.binding.tvStatus, R.attr.colorAmberContainer);
+            activeBackgroundTextColor = MaterialColors.getColor(holder.binding.tvStatus, R.attr.colorOnAmberContainer);
         }
+        rippleRound(holder.binding.tvStatus, activeBackgroundColor, activeBackgroundColor, 100);
+        holder.binding.tvStatus.setTextColor(activeBackgroundTextColor);
 
         holder.binding.memberLayout.setOnClickListener(view -> openMemberGithubProfile(view.getContext(), member.getMemberUsername()));
     }
