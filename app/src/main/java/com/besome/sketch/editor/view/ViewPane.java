@@ -8,10 +8,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.NinePatch;
+import android.graphics.Picture;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
+import android.graphics.drawable.PictureDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -34,6 +36,7 @@ import com.besome.sketch.beans.ImageBean;
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.view.item.ItemAdView;
 import com.besome.sketch.editor.view.item.ItemBottomNavigationView;
 import com.besome.sketch.editor.view.item.ItemButton;
@@ -59,8 +62,12 @@ import com.besome.sketch.editor.view.item.ItemTabLayout;
 import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
+import com.bobur.androidsvg.SVG;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
+import a.a.a.jC;
+import mod.bobur.helpers.XmlToSvgConverter;
 import pro.sketchware.R;
 
 import java.io.File;
@@ -444,14 +451,24 @@ public class ViewPane extends RelativeLayout {
             } else {
                 try {
                     String imagelocation = resourcesManager.f(viewBean.image.resName);
-
-                    int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
-                    if(imagelocation.endsWith(".xml")){
-                        FilePathUtil fpu = new FilePathUtil();
-                       svgUtils.loadScaledSvgIntoImageView( (ImageView) view,fpu.getSvgFullPath(sc_id,viewBean.image.resName),round3);
-                    }else {
-                        Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
-                        ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                    File file = new File(imagelocation);
+                    if (file.exists()) {
+                        int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
+                        if(imagelocation.endsWith(".xml")){
+                            FilePathUtil fpu = new FilePathUtil();
+                            svgUtils.loadScaledSvgIntoImageView( (ImageView) view,fpu.getSvgFullPath(sc_id,viewBean.image.resName),round3);
+                        }else {
+                            Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
+                            ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                        }
+                    } else {
+                        try {
+                            SVG svg = SVG.getFromString(XmlToSvgConverter.xml2svg(FileUtil.readFile(XmlToSvgConverter.getSvgFullPath(DesignActivity.sc_id, viewBean.image.resName))));
+                            Picture picture = svg.renderToPicture();
+                            ((ImageView) view).setImageDrawable(new PictureDrawable(picture));
+                        } catch (Exception e) {
+                            ((ImageView) view).setImageResource(R.drawable.default_image);
+                        }
                     }
                 } catch (Exception unused2) {
                     ((ImageView) view).setImageResource(R.drawable.default_image);

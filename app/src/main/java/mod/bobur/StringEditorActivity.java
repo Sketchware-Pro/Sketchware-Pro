@@ -61,6 +61,7 @@ public class StringEditorActivity extends AppCompatActivity {
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
     private boolean isComingFromSrcCodeEditor = true;
+    private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class StringEditorActivity extends AppCompatActivity {
         binding = StringEditorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initialize();
+        path = getIntent().getStringExtra("content");
     }
 
     private void initialize() {
@@ -76,13 +78,24 @@ public class StringEditorActivity extends AppCompatActivity {
         binding.toolbar.setNavigationOnClickListener(_v -> onBackPressed());
         dialog = new MaterialAlertDialogBuilder(this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.addStringButton.setOnClickListener(v -> {
+            addStringDialog();
+        });
+
+        binding.recyclerView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > oldScrollY) {
+                binding.addStringButton.hide();
+            } else {
+                binding.addStringButton.show();
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (isComingFromSrcCodeEditor) {
-            convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
+            convertXmlToListMap(FileUtil.readFile(path), listmap);
             adapter = new RecyclerViewAdapter(listmap);
             binding.recyclerView.setAdapter(adapter);
         }
@@ -92,7 +105,7 @@ public class StringEditorActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         ArrayList<HashMap<String, Object>> cache = new ArrayList<>();
-        convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), cache);
+        convertXmlToListMap(FileUtil.readFile(path), cache);
         String cacheString = new Gson().toJson(cache);
         String cacheListmap = new Gson().toJson(listmap);
         if (cacheListmap.equals(cacheString) || listmap.isEmpty()) {
@@ -106,23 +119,19 @@ public class StringEditorActivity extends AppCompatActivity {
                     .create()
                     .show();
         }
-        if (listmap.isEmpty() && (! FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
-            XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
+        if (listmap.isEmpty() && (! FileUtil.readFile(path).contains("</resources>"))) {
+            XmlUtil.saveXml(path,convertListMapToXml(listmap));
 
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
-        menu.add(0, 0, 0, "Add a new string")
-                .setIcon(R.drawable.ic_mtrl_add)
-                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
-
         menu.add(0, 1, 0, "Save")
                 .setIcon(R.drawable.ic_mtrl_save)
                 .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-        if (!checkDefaultString(getIntent().getStringExtra("content"))) {
+        if (!checkDefaultString(path)) {
             menu.add(0, 2, 0, "Get default strings")
                     .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
         }
@@ -137,15 +146,13 @@ public class StringEditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(android.view.MenuItem item) {
         int id = item.getItemId();
         if (id == 1) {
-            XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
-        } else if (id == 0) {
-            addStringDialog();
+            XmlUtil.saveXml(path, convertListMapToXml(listmap));
         } else if (id == 2) {
-            convertXmlToListMap(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(getIntent().getStringExtra("content")))), listmap);
+            convertXmlToListMap(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(path))), listmap);
             adapter.notifyDataSetChanged();
         } else if (id == 3) {
             isComingFromSrcCodeEditor = true;
-            XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
+            XmlUtil.saveXml(path,convertListMapToXml(listmap));
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
@@ -153,7 +160,7 @@ public class StringEditorActivity extends AppCompatActivity {
                 intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             }
             intent.putExtra("title", getIntent().getStringExtra("title"));
-            intent.putExtra("content", getIntent().getStringExtra("content"));
+            intent.putExtra("content", path);
             intent.putExtra("xml", getIntent().getStringExtra("xml"));
             startActivity(intent);
         }

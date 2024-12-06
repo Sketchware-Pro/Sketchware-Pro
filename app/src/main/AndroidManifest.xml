@@ -315,7 +315,7 @@
             android:configChanges="orientation|screenSize" />
 
         <activity android:name="mod.bobur.StringEditorActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
 
         <activity
             android:name=".activities.editor.view.ViewCodeEditorActivity"
