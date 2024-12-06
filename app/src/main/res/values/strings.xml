@@ -2204,6 +2204,7 @@ Please try again later"</string>
     <string name="link_about_team">https://sketchware-pro.github.io/Sketchware-Pro/about.json</string>
     <string name="link_github_commits_url"><![CDATA[https://api.github.com/repos/Sketchware-Pro/Sketchware-Pro/commits?per_page=%s&page=%s]]></string>
     <string name="github_api_error_message">Something went wrong. Please wait and try again.</string>
+    <string name="github_api_date_unavailable">Date unavailable</string>
     <string name="link_github_url">https://github.com/Sketchware-Pro/Sketchware-Pro</string>
     <string name="change_launcher_activity_dialog_title">Launcher Activity</string>
     <string name="common_word_add_activtiy">Add Activity</string>
