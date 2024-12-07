@@ -219,6 +219,14 @@ public class CommandBlock {
         }
     }
 
+    public static String getInputName(String input) {
+        String firstLine = getFirstLine(input);
+        if (firstLine.startsWith(">")) {
+            firstLine = firstLine.substring(1).trim();
+        }
+        return firstLine;
+    }
+
     public static String CBForXml(String c) {
         String OC = c;
         String RC = OC;
