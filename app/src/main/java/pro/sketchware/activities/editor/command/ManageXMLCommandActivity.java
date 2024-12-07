@@ -1,13 +1,20 @@
 package pro.sketchware.activities.editor.command;
 
+import static pro.sketchware.utility.SketchwareUtil.getDip;
+
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.PopupMenu;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import a.a.a.Jx;
 import a.a.a.hC;
@@ -23,16 +30,25 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import io.github.rosemoe.sora.widget.CodeEditor;
+import io.github.rosemoe.sora.widget.component.Magnifier;
+import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
+import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
+
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.blocks.CommandBlock;
+import mod.jbk.code.CodeEditorColorSchemes;
+import mod.jbk.code.CodeEditorLanguages;
 
 import pro.sketchware.R;
 import pro.sketchware.activities.editor.command.adapters.XMLCommandAdapter;
-import pro.sketchware.databinding.ManageXmlCommandBinding;
 import pro.sketchware.databinding.ManageXmlCommandAddBinding;
+import pro.sketchware.databinding.ManageXmlCommandBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.utility.UI;
 
 import java.util.ArrayList;
@@ -125,7 +141,9 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                                             (d, w) -> {
                                                 if (position != -1) {
                                                     commands.remove(position);
-                                                    FileUtil.writeFile(commandPath, new Gson().toJson(commands));
+                                                    FileUtil.writeFile(
+                                                            commandPath,
+                                                            new Gson().toJson(commands));
                                                     adapter.submitList(new ArrayList<>(commands));
                                                 }
                                             });
@@ -140,6 +158,33 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         binding.list.setAdapter(adapter);
         fetchCommand();
         generateCommand();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, 0, Menu.NONE, R.string.design_actionbar_title_show_source_code)
+                .setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_code))
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0 -> {
+                new MaterialAlertDialogBuilder(this)
+                        .setTitle("Select an XML")
+                        .setAdapter(
+                                new ArrayAdapter<String>(
+                                        this, android.R.layout.simple_list_item_1, xmlFiles),
+                                (d, w) -> showSourceCode(xmlFiles.get(w)))
+                        .show();
+                return true;
+            }
+            default -> {
+                return super.onOptionsItemSelected(item);
+            }
+        }
     }
 
     private void save() {
@@ -255,6 +300,67 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         dialog.setNegativeButton(R.string.common_word_exit, (d, w) -> finish());
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+    private void showSourceCode(String filename) {
+        k();
+        Executors.newSingleThreadExecutor()
+                .execute(
+                        () -> {
+                            final String source =
+                                    new yq(getApplicationContext(), sc_id)
+                                            .getFileSrc(
+                                                    filename,
+                                                    jC.b(sc_id),
+                                                    jC.a(sc_id),
+                                                    jC.c(sc_id));
+
+                            var dialogBuilder =
+                                    new MaterialAlertDialogBuilder(this)
+                                            .setTitle(filename)
+                                            .setCancelable(false)
+                                            .setPositiveButton("Dismiss", null);
+
+                            runOnUiThread(
+                                    () -> {
+                                        if (isFinishing()) return;
+                                        h();
+
+                                        CodeEditor editor = new CodeEditor(this);
+                                        editor.setTypefaceText(Typeface.MONOSPACE);
+                                        editor.setEditable(false);
+                                        editor.setTextSize(14);
+                                        editor.setText(
+                                                !source.isEmpty()
+                                                        ? source
+                                                        : "Failed to generate source.");
+                                        editor.getComponent(Magnifier.class)
+                                                .setWithinEditorForcibly(true);
+
+                                        editor.setEditorLanguage(
+                                                CodeEditorLanguages.loadTextMateLanguage(
+                                                        CodeEditorLanguages.SCOPE_NAME_XML));
+                                        if (ThemeUtils.isDarkThemeEnabled(
+                                                getApplicationContext())) {
+                                            editor.setColorScheme(
+                                                    CodeEditorColorSchemes.loadTextMateColorScheme(
+                                                            CodeEditorColorSchemes.THEME_DRACULA));
+                                        } else {
+                                            editor.setColorScheme(
+                                                    CodeEditorColorSchemes.loadTextMateColorScheme(
+                                                            CodeEditorColorSchemes.THEME_GITHUB));
+                                        }
+
+                                        AlertDialog dialog = dialogBuilder.create();
+                                        dialog.setView(
+                                                editor,
+                                                (int) getDip(24),
+                                                (int) getDip(20),
+                                                (int) getDip(24),
+                                                (int) getDip(0));
+                                        dialog.show();
+                                    });
+                        });
     }
 
     private void fetchCommand() {
