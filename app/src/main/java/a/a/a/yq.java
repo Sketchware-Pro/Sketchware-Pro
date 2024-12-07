@@ -871,6 +871,14 @@ public class yq {
             }
         }
 
+        if (filename.equals("strings.xml")) {
+            return getXMLString();
+        } else if (filename.equals("colors.xml")) {
+            return getXMLColor();
+        } else if (filename.equals("styles.xml")) {
+            return getXMLStyle();
+        }
+
         if (isManifestFile) {
             ProjectBuilder builder = new ProjectBuilder(SketchApplication.getContext(), this);
             builder.buildBuiltInLibraryInformation();
