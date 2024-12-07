@@ -14,6 +14,7 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
 import com.besome.sketch.beans.ViewBean;
+import com.google.gson.Gson;
 import pro.sketchware.xml.XmlBuilder;
 
 import java.io.File;
@@ -26,6 +27,7 @@ import java.util.regex.Pattern;
 
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
+import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.blocks.CommandBlock;
 import pro.sketchware.SketchApplication;
@@ -758,6 +760,12 @@ public class yq {
             }
         }
 
+        var path = wq.b(sc_id) + "/command";
+        var newXMLCommand = Boolean.parseBoolean(projectSettings.getValue(ProjectSettings.SETTING_NEW_XML_COMMAND, ProjectSettings.SETTING_GENERIC_VALUE_FALSE));
+        if (newXMLCommand && FileUtil.isExistFile(path)) {
+            FileUtil.copyFile(path, FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands"));
+        }
+
         // Generate layouts unless a custom version of it exists already
         // at /Internal storage/.sketchware/data/<sc_id>/files/resource/layout/
         {
@@ -911,13 +919,18 @@ public class yq {
         boolean isManifestFile = filename.equals("AndroidManifest.xml");
         ArrayList<ProjectFileBean> files = new ArrayList<>(projectFileManager.b());
         files.addAll(new ArrayList<>(projectFileManager.c()));
-
         if (isXmlFile) {
-            /*
-             Generating every java file is necessary to make command blocks for xml work
-             */
-            for (ProjectFileBean file : files) {
-                CommandBlock.CBForXml(new Jx(N, file, projectDataManager).generateCode());
+            var path = wq.b(sc_id) + "/command";
+            var newXMLCommand = Boolean.parseBoolean(projectSettings.getValue(ProjectSettings.SETTING_NEW_XML_COMMAND, ProjectSettings.SETTING_GENERIC_VALUE_FALSE));
+            if (newXMLCommand && FileUtil.isExistFile(path)) {
+                FileUtil.copyFile(path, FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands"));
+            } else {
+                /*
+                 Generating every java file is necessary to make command blocks for xml work
+                 */
+                for (ProjectFileBean file : files) {
+                    CommandBlock.CBForXml(new Jx(N, file, projectDataManager).generateCode());
+                }
             }
         }
 
