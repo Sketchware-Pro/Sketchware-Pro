@@ -2,6 +2,10 @@ import requests
 import json
 from datetime import datetime, timedelta, timezone
 import os
+import logging
+
+# Logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Constants
 GITHUB_REPO = "Sketchware-Pro/Sketchware-Pro"
@@ -17,44 +21,59 @@ HEADERS = {
 }
 
 def get_collaborators():
+  logging.info("Fetching collaborators")
   url = f"{GITHUB_API_BASE}/repos/{GITHUB_REPO}/collaborators"
   response = requests.get(url, headers=HEADERS)
   if response.status_code != 200:
+    logging.error(f"Failed to fetch collaborators: {response.status_code}")
     return None
+  logging.info("Collaborators fetched successfully")
   return response.json()
 
 def get_contributors():
+  logging.info("Fetching contributors")
   url = f"{GITHUB_API_BASE}/repos/{GITHUB_REPO}/contributors"
   response = requests.get(url, headers=HEADERS)
   if response.status_code != 200:
+    logging.error(f"Failed to fetch contributors: {response.status_code}")
     return None
+  logging.info("Contributors fetched successfully")
   return response.json()
 
 def get_user_bio(username):
+  logging.info(f"Fetching bio for user: {username}")
   url = f"{GITHUB_API_BASE}/users/{username}"
   response = requests.get(url, headers=HEADERS)
   if response.status_code == 200:
+    logging.info(f"Bio fetched for user: {username}")
     return response.json().get("bio")
+  logging.error(f"Failed to fetch bio for user: {username}")
   return ""
 
 def has_recent_activity(username):
+  logging.info(f"Checking recent activity for user: {username}")
   url = f"{GITHUB_API_BASE}/repos/{GITHUB_REPO}/commits"
   params = {"author": username, "since": (datetime.now(timezone.utc) - timedelta(days=30)).isoformat() + "Z"}
   response = requests.get(url, headers=HEADERS, params=params)
   if response.status_code == 200:
+    logging.info(f"Recent activity checked for user: {username}")
     return len(response.json()) > 0
   else:
+    logging.error(f"Failed to check recent activity for user: {username}")
     return False
 
 def update_team_data(collaborators, contributors):
   try:
+    logging.info("Fetching current team data")
     response = requests.get(GITHUB_ABOUT_APP_URL)
     if response.status_code != 200:
+      logging.error(f"Failed to fetch current team data: {response.status_code}")
       return
 
     data = response.json()
     updated_team = []
 
+    logging.info("Updating team data with collaborators")
     for user in collaborators:
       updated_team.append({
         "user_username": user.get("login"),
@@ -65,6 +84,7 @@ def update_team_data(collaborators, contributors):
       })
 
     collaborator_usernames = {user["user_username"] for user in updated_team}
+    logging.info("Updating team data with contributors")
     for user in contributors:
       if user.get("login") not in collaborator_usernames:
         updated_team.append({
@@ -77,18 +97,21 @@ def update_team_data(collaborators, contributors):
 
     data["team"] = updated_team
 
+    logging.info("Writing updated team data to file")
     with open(GITHUB_ABOUT_APP_FILE, "w") as file:
       json.dump(data, file, indent=2)
+    logging.info("Team data updated successfully")
 
   except Exception as e:
-    pass
+    logging.error(f"An error occurred while updating team data: {e}")
 
 def main():
+  logging.info("Starting update_app_data script")
   collaborators = get_collaborators()
   contributors = get_contributors()
   if collaborators is not None and contributors is not None:
     update_team_data(collaborators, contributors)
-
+  logging.info("Finished update_app_data script")
 
 if __name__ == "__main__":
   main()
