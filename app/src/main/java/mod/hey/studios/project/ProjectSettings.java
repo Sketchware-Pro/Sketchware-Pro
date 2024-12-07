@@ -56,6 +56,10 @@ public class ProjectSettings {
      * Setting to disable showing deprecated methods included in every generated class, e.g. showMessage(String)
      */
     public static final String SETTING_DISABLE_OLD_METHODS = "disable_old_methods";
+    /**
+     * Setting to use new xml command
+     */
+    public static final String SETTING_NEW_XML_COMMAND = "xml_command";
     public static final String SETTING_GENERIC_VALUE_TRUE = "true";
     public static final String SETTING_GENERIC_VALUE_FALSE = "false";
     private static final String TAG = "ProjectSettings";
