@@ -122,6 +122,7 @@ import mod.khaled.logcat.LogReaderActivity;
 import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.R;
 import pro.sketchware.activities.appcompat.ManageAppCompatActivity;
+import pro.sketchware.activities.editor.command.ManageXMLCommandActivity;
 import pro.sketchware.activities.editor.view.ViewCodeEditorActivity;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.utility.FileUtil;
@@ -363,15 +364,19 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 PopupMenu popupMenu = new PopupMenu(this, buildSettings);
                 Menu menu = popupMenu.getMenu();
 
+                var isViewTab = viewPager.getCurrentItem() == 0;
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
                 menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
+                if (isViewTab) {
+                    menu.add(Menu.NONE, 8, Menu.NONE, "XML Command");
+                }
                 menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
                 if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
                     menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
                     menu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures");
                 }
-                if (viewPager.getCurrentItem() == 0) {
+                if (isViewTab) {
                     menu.add(Menu.NONE, 7, Menu.NONE, "Direct code editor");
                 }
 
@@ -399,6 +404,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                         case 7 -> {
                             toViewCodeEditor();
                         }
+                        case 8 -> toXMLCommandManager();
                         default -> {
                             return false;
                         }
@@ -951,6 +957,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         }
         launchActivity(SrcViewerActivity.class, null, new Pair<>("current", current));
+    }
+
+    /**
+     * Opens {@link ManageXMLCommandActivity}.
+     */
+    void toXMLCommandManager() {
+        launchActivity(ManageXMLCommandActivity.class, null);
     }
 
     @SafeVarargs
