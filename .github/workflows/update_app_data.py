@@ -44,11 +44,18 @@ def get_user_bio(username):
   logging.info(f"Fetching bio for user: {username}")
   url = f"{GITHUB_API_BASE}/users/{username}"
   response = requests.get(url, headers=HEADERS)
+  bio = None
+
   if response.status_code == 200:
     logging.info(f"Bio fetched for user: {username}")
-    return response.json().get("bio")
-  logging.error(f"Failed to fetch bio for user: {username}")
-  return ""
+    bio = response.json().get("bio")
+    if bio is None:
+      created_at = datetime.strptime(response.json().get("created_at"), "%Y-%m-%dT%H:%M:%SZ").strftime("%m/%Y")
+      bio = f"Joined GitHub on {created_at} with {response.json().get('public_repos')} public repositories, and {response.json().get('followers')} followers."
+  else:
+    logging.error(f"Failed to fetch bio for user: {username}")
+
+  return bio
 
 def has_recent_activity(username):
   logging.info(f"Checking recent activity for user: {username}")
