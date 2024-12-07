@@ -103,7 +103,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         projectFile = jC.b(sc_id);
         xmlFiles = new ArrayList<>(projectFile.e());
         xmlFiles.addAll(
-                Arrays.asList("string.xml", "colors.xml", "styles.xml", "AndroidManifest.xml"));
+                Arrays.asList("strings.xml", "colors.xml", "styles.xml", "AndroidManifest.xml"));
         settings = new ProjectSettings(sc_id);
         adapter = new XMLCommandAdapter();
         adapter.setOnItemClickListener(
