@@ -368,9 +368,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
                 menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
                 menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
-                if (isViewTab) {
-                    menu.add(Menu.NONE, 8, Menu.NONE, "XML Command");
-                }
                 menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
                 if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
                     menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
@@ -404,7 +401,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                         case 7 -> {
                             toViewCodeEditor();
                         }
-                        case 8 -> toXMLCommandManager();
                         default -> {
                             return false;
                         }
