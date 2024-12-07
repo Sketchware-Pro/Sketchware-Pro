@@ -30,6 +30,13 @@ def get_contributors():
     return None
   return response.json()
 
+def get_user_bio(username):
+  url = f"{GITHUB_API_BASE}/users/{username}"
+  response = requests.get(url, headers=HEADERS)
+  if response.status_code == 200:
+    return response.json().get("bio")
+  return ""
+
 def has_recent_activity(username):
   url = f"{GITHUB_API_BASE}/repos/{GITHUB_REPO}/commits"
   params = {"author": username, "since": (datetime.now(timezone.utc) - timedelta(days=30)).isoformat() + "Z"}
@@ -52,6 +59,7 @@ def update_team_data(collaborators, contributors):
       updated_team.append({
         "user_username": user.get("login"),
         "user_img": user.get("avatar_url"),
+        "description": get_user_bio(user.get("login")),
         "is_core_team": True,
         "is_active": has_recent_activity(user.get("login")),
       })
@@ -62,6 +70,7 @@ def update_team_data(collaborators, contributors):
         updated_team.append({
           "user_username": user.get("login"),
           "user_img": user.get("avatar_url"),
+          "description": get_user_bio(user.get("login")),
           "is_core_team": False,
           "is_active": has_recent_activity(user.get("login")),
         })
