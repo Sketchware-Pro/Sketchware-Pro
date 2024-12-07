@@ -192,7 +192,7 @@ public class CommandBlock {
         return res;
     }
 
-    private static String getExceptFirstLine(String c) {
+    public static String getExceptFirstLine(String c) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         String res = "";
         if (!a.isEmpty()) {
