@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import mod.bobur.StringEditorActivity;
-import mod.bobur.XmlToSvgConverter;
+import mod.bobur.helpers.XmlToSvgConverter;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
@@ -346,7 +346,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
             intent.putExtra("content", frc.listFileResource.get(position));
             startActivity(intent);
-        }else if (frc.listFileResource.get(position).endsWith("xml")) {
+        } else if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
             if (ConfigActivity.isLegacyCeEnabled()) {
                 intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
