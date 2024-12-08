@@ -24,6 +24,29 @@ public class ViewBeanFactory {
 
     public void applyAttributes(Map<String, String> attributes) {
         Map<String, String> injectAttributes = new LinkedHashMap<>();
+        // Skip processing if the convert type is "include,"
+        // because a.a.a.Ox doesn't generate all the attributes below.
+        // Instead, the `inject` property will handle the attributes.
+        if ("include".equals(bean.convert)) {
+            StringBuilder injectProperty = new StringBuilder();
+            for (Map.Entry<String, String> entry : attributes.entrySet()) {
+                var attrName = entry.getKey();
+                var attrValue = entry.getValue();
+                // Skip this because ViewBeanParser has already handled it as the ID of the include for ViewBean.
+                if (attrName.equals("layout")) {
+                    continue;
+                }
+                injectProperty
+                        .append(attrName)
+                        .append("=\"")
+                        .append(attrValue)
+                        .append("\"")
+                        .append("\n");
+            }
+            bean.inject = injectProperty.toString().trim();
+            return;
+        }
+
         var layoutBean = bean.layout;
         var width = attributes.getOrDefault("android:layout_width", null);
         if (width != null) {
@@ -115,6 +138,7 @@ public class ViewBeanFactory {
                 injectAttributes.put(attrName, attrValue);
             }
         }
+
         StringBuilder injectProperty = new StringBuilder();
         injectAttributes
                 .entrySet()
