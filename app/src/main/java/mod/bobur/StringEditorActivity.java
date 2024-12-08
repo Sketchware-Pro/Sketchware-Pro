@@ -3,15 +3,19 @@ package mod.bobur;
 import static com.besome.sketch.design.DesignActivity.sc_id;
 import static com.besome.sketch.editor.LogicEditorActivity.getAllJavaFileNames;
 import static com.besome.sketch.editor.LogicEditorActivity.getAllXmlFileNames;
-import static pro.sketchware.utility.XmlUtil.replaceXml;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,8 +27,11 @@ import com.google.gson.Gson;
 
 import a.a.a.eC;
 import a.a.a.jC;
+import mod.bobur.helpers.Translator;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.DialogTranslateBinding;
+import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.databinding.StringEditorBinding;
 import pro.sketchware.databinding.StringEditorItemBinding;
 import pro.sketchware.databinding.ViewStringEditorAddBinding;
@@ -39,7 +46,9 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -61,6 +70,8 @@ public class StringEditorActivity extends AppCompatActivity {
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
     private boolean isComingFromSrcCodeEditor = true;
+    private boolean isRunning;
+    private int currentIndex;
     private String path;
 
     @Override
@@ -133,11 +144,12 @@ public class StringEditorActivity extends AppCompatActivity {
 
         if (!checkDefaultString(path)) {
             menu.add(0, 2, 0, "Get default strings")
-                    .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+            menu.add(0, 4, 0, "Auto Translate");
         }
-
+        menu.add(0, 5, 0, "Create languages");
         menu.add(0, 3, 0, "Open in editor")
-                .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_NEVER);
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -163,6 +175,10 @@ public class StringEditorActivity extends AppCompatActivity {
             intent.putExtra("content", path);
             intent.putExtra("xml", getIntent().getStringExtra("xml"));
             startActivity(intent);
+        } else if (id == 4) {
+            autoTranslateDialog();
+        } else if (id == 5) {
+            createLanguagesDialog();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -182,7 +198,7 @@ public class StringEditorActivity extends AppCompatActivity {
                     Element element = (Element) node;
                     HashMap<String, Object> map = new HashMap<>();
                     String key = element.getAttribute("name");
-                    String value = element.getTextContent();
+                    String value = element.getTextContent().replace("\\", "");
                     String translatable = element.getAttribute("translatable");
                     if (translatable.isEmpty()) {
                         translatable = "true";
@@ -195,6 +211,47 @@ public class StringEditorActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void createLanguagesDialog() {
+        String[] cache = getLanguages();
+        ArrayList<String> languagesList = new ArrayList<>(Arrays.asList(cache));
+        languagesList.removeAll(getValuesFolders(path));
+        String[] languages = languagesList.toArray(new String[0]);
+        boolean[] checkedItems = new boolean[languagesList.size()];
+
+        MaterialAlertDialogBuilder dialog2 = new MaterialAlertDialogBuilder(this);
+        dialog2.setTitle("Create languages")
+                .setMultiChoiceItems(languages, checkedItems, (dialog2_c, which, isChecked) -> {
+                    checkedItems[which] = isChecked;
+                })
+                .setPositiveButton("Create", (dialog1, which) -> {
+                    for (int i = 0; i < checkedItems.length; i++) {
+                        if (checkedItems[i]) {
+                            String defaultString = FileUtil.readFile(getDefaultStringPath(path));
+                            FileUtil.writeFile(getResFolder(path) + "/" + languagesList.get(i) + "/strings.xml", defaultString);
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    public ArrayList<String> getValuesFolders(final String _path) {
+        ArrayList<String> cache = new ArrayList<>();
+        FileUtil.listDir(_path.substring(0, _path.substring(0, _path.lastIndexOf("/")).lastIndexOf("/")), cache);
+        ArrayList<String> real = new ArrayList<>();
+        for (int i = 0; i < cache.size(); i++) {
+            if (Objects.requireNonNull(Uri.parse(cache.get(i)).getLastPathSegment()).startsWith("values")) {
+                real.add(Uri.parse(cache.get(i)).getLastPathSegment());
+            }
+        }
+        return real;
+    }
+
+    public String getResFolder(final String _path) {
+        return (_path.substring(0, _path.substring(0, _path.lastIndexOf("/")).lastIndexOf("/")));
     }
 
     public static boolean isXmlStringsContains(ArrayList<HashMap<String, Object>> listMap, String value) {
@@ -231,9 +288,92 @@ public class StringEditorActivity extends AppCompatActivity {
                 .replace("<", "&lt;")
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;")
-                .replace("'", "&apos;")
+                .replace("'", "\\'")
                 .replace("\n", "&#10;")
                 .replace("\r", "&#13;");
+    }
+
+    public static String[] getLanguages() {
+        Locale[] locales = Locale.getAvailableLocales();
+
+        return Arrays.stream(locales)
+                .map(locale -> {
+                    String language = locale.getLanguage();
+                    String country = locale.getCountry();
+                    return country.isEmpty() ? "values-" + language : "values-" + language;
+                })
+                .distinct()
+                .toArray(String[]::new);
+    }
+
+    private void autoTranslateDialog() {
+        DialogTranslateBinding dialogBinding = DialogTranslateBinding.inflate(getLayoutInflater());
+        dialogBinding.edToLanguage.setText(getLanguageCode(Objects.requireNonNull(path)));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line);
+        adapter.add("Google Translate");
+        // adapter.add("Yandex Translate");
+        dialogBinding.edSource.setAdapter(adapter);
+        if (dialogBinding.edFromLanguage.getText().toString().isEmpty() || dialogBinding.edToLanguage.getText().toString().isEmpty()) {
+            SketchwareUtil.toast("Please fill in all fields", Toast.LENGTH_SHORT);
+            return;
+        }
+
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle("Auto Translate")
+                .setView(dialogBinding.getRoot())
+                .setPositiveButton("Translate", (dialog1, which) -> autoTranslate(dialogBinding.edSource.getText().toString(), dialogBinding.edFromLanguage.getText().toString(), dialogBinding.edToLanguage.getText().toString()))
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    public void autoTranslate(String source, String fromLanguage, String toLanguage) {
+        ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(getLayoutInflater());
+        loadingDialogBinding.tvProgress.setText("Translating string 1/" + listmap.size());
+        var loadingDialog = new MaterialAlertDialogBuilder(this)
+                .setTitle("Please wait")
+                .setCancelable(false)
+                .setView(loadingDialogBinding.getRoot())
+                .create();
+        loadingDialog.show();
+
+        isRunning = true;
+        translateNext(loadingDialog, loadingDialogBinding, source, fromLanguage, toLanguage);
+    }
+
+    private void translateNext(AlertDialog loadingDialog, ProgressMsgBoxBinding loadingDialogBinding, String source, String fromLanguage, String toLanguage) {
+        if (currentIndex >= listmap.size() || !isRunning) {
+            loadingDialog.dismiss();
+            adapter.notifyDataSetChanged();
+            isRunning = false;
+            return;
+        }
+
+        String text = (String) listmap.get(currentIndex).get("text");
+
+        Translator.translate(text, fromLanguage, toLanguage, source, new Translator.TranslateListener() {
+            @Override
+            public void onTranslateSuccess(String result) {
+                listmap.get(currentIndex).put("text", result);
+                loadingDialogBinding.tvProgress.setText("Translating string " + (currentIndex + 1) + "/" + listmap.size());
+                currentIndex++;
+                translateNext(loadingDialog, loadingDialogBinding, source, fromLanguage, toLanguage);
+            }
+
+            @Override
+            public void onTranslateError(String errorMessage) {
+                isRunning = false;
+                loadingDialog.setMessage("Error: Failed to translate");
+
+                new MaterialAlertDialogBuilder(loadingDialog.getContext()).setTitle("Error").setMessage("Failed to translate").setPositiveButton("Retry", (dialog, which) -> {
+                    isRunning = true;
+                    translateNext(loadingDialog, loadingDialogBinding, source, fromLanguage, toLanguage);
+                }).setNegativeButton("Cancel", (dialog, which) -> {
+                    loadingDialog.dismiss();
+                }).setCancelable(false).show();
+            }
+        });
     }
 
     public void addStringDialog() {
@@ -286,6 +426,10 @@ public class StringEditorActivity extends AppCompatActivity {
         File file = new File(path);
         String parentFolder = Objects.requireNonNull(file.getParentFile()).getName();
         return parentFolder.equals("values");
+    }
+
+    public String getLanguageCode(final String path) {
+        return path.replaceFirst(".*/values-([a-z]{2}).*", "$1");
     }
 
     public String getDefaultStringPath(final String path) {
