@@ -23,6 +23,7 @@ import pro.sketchware.databinding.FragmentBetaChangesBinding;
 
 import pro.sketchware.activities.about.models.AboutAppViewModel;
 import pro.sketchware.utility.Network;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class BetaChangesFragment extends Fragment {
 
@@ -78,17 +79,22 @@ public class BetaChangesFragment extends Fragment {
                 100, // 100 ==> commits per page
                 page);
 
-        new Network().get(commitsUrl, response -> {
-            isLoading = false;
+        try {
 
-            if (response != null) {
-                Gson gson = new Gson();
-                AboutResponseModel.CommitDetails[] commitDetailsArray = gson.fromJson(response, AboutResponseModel.CommitDetails[].class);
-                if (commitDetailsArray != null) {
-                    aboutAppData.setCommitDetailsList(new ArrayList<>(Arrays.asList(commitDetailsArray)));
-                    nextPage++;
+            new Network().get(commitsUrl, response -> {
+                isLoading = false;
+
+                if (response != null) {
+                    Gson gson = new Gson();
+                    AboutResponseModel.CommitDetails[] commitDetailsArray = gson.fromJson(response, AboutResponseModel.CommitDetails[].class);
+                    if (commitDetailsArray != null) {
+                        aboutAppData.setCommitDetailsList(new ArrayList<>(Arrays.asList(commitDetailsArray)));
+                        nextPage++;
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception ignored) {
+            SketchwareUtil.toastError(Helper.getResString(R.string.github_api_error_message));
+        }
     }
 }

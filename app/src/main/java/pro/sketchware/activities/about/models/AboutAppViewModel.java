@@ -25,15 +25,42 @@ public class AboutAppViewModel extends ViewModel {
     }
 
     public void setTeamMembers(ArrayList<AboutResponseModel.TeamMember> teamMembers) {
-        this.teamMembers.setValue(teamMembers);
+        ArrayList<AboutResponseModel.TeamMember> coreTeamActive = new ArrayList<>();
+        ArrayList<AboutResponseModel.TeamMember> coreTeamInactive = new ArrayList<>();
+        ArrayList<AboutResponseModel.TeamMember> activeContributors = new ArrayList<>();
+        ArrayList<AboutResponseModel.TeamMember> inactiveContributors = new ArrayList<>();
+
+        for (AboutResponseModel.TeamMember member : teamMembers) {
+            if (member.isCoreTeamMember()) {
+                if (member.isActive()) {
+                    coreTeamActive.add(member);
+                } else {
+                    coreTeamInactive.add(member);
+                }
+            } else if (member.isActive()) {
+                activeContributors.add(member);
+            } else {
+                inactiveContributors.add(member);
+            }
+        }
+
+        ArrayList<AboutResponseModel.TeamMember> sortedTeamMembers = new ArrayList<>();
+        sortedTeamMembers.addAll(coreTeamActive);
+        sortedTeamMembers.addAll(coreTeamInactive);
+        sortedTeamMembers.addAll(activeContributors);
+        sortedTeamMembers.addAll(inactiveContributors);
+
+        this.teamMembers.setValue(sortedTeamMembers);
     }
+
+
 
     public ArrayList<String> getCoreTeamMembers() {
         ArrayList<String> coreTeam = new ArrayList<>();
         if (teamMembers.getValue() != null) {
             for (AboutResponseModel.TeamMember teamMember : teamMembers.getValue()) {
                 if (teamMember.isCoreTeamMember()) {
-                    coreTeam.add(teamMember.getMemberUsername().toLowerCase());
+                    coreTeam.add(teamMember.getMemberUsername());
                 }
             }
         }

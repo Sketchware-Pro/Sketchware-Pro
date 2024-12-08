@@ -696,6 +696,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         return a2;
     }
 
+    public void addDeprecatedBlock(String message, String type, String opCode) {
+        m.addDeprecatedBlock(message, type, opCode);
+    }
+
     public View a(String str, String str2) {
         Ts a2 = m.a("", str, str2);
         a2.setTag(str2);

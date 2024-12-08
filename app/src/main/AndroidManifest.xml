@@ -318,6 +318,10 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
 
         <activity
+            android:name=".activities.editor.command.ManageXMLCommandActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
             android:name=".activities.editor.view.ViewCodeEditorActivity"
             android:configChanges="orientation|screenSize" />
 

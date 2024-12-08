@@ -126,6 +126,9 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
         addLayoutMenu(16, R.drawable.ic_mtrl_frame_source, R.string.design_drawer_menu_title_source_code,
             R.string.design_drawer_menu_description_source_code);
 
+        addLayoutMenu(14, R.drawable.ic_mtrl_code, R.string.design_drawer_menu_title_xml_command,
+            R.string.design_drawer_menu_description_xml_command);
+
         addLayoutMenu(22, R.drawable.ic_mtrl_article, R.string.design_drawer_menu_title_logcat_reader,
             R.string.design_drawer_menu_subtitle_logcat_reader);
     }
@@ -181,6 +184,10 @@ public class DesignDrawer extends LinearLayout implements View.OnClickListener {
 
                     case 13:
                         activity.toAndroidManifestManager();
+                        return;
+
+                    case 14:
+                        activity.toXMLCommandManager();
                         return;
 
                     case 16:

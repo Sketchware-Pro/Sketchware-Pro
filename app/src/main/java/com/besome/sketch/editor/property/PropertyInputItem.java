@@ -8,9 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.Spanned;
 import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -28,8 +26,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import a.a.a.Kw;
 import a.a.a.OB;
@@ -44,9 +40,9 @@ import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.yB;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupInputTextBinding;
+import pro.sketchware.lib.highlighter.SyntaxScheme;
 import pro.sketchware.utility.FileUtil;
 
 @SuppressLint("ViewConstructor")
@@ -241,41 +237,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         if (isInject) {
             lengthValidator = new SB(context, binding.tiInput, 0, maxValue);
             binding.tiAutoCompleteInput.setVisibility(View.GONE);
-            int violet = ThemeUtils.getColor(binding.edInput, R.attr.colorViolet);
-            int onSurface = ThemeUtils.getColor(binding.edInput, R.attr.colorOnSurface);
-            int green = ThemeUtils.getColor(binding.edInput, R.attr.colorGreen);
-            // Set highlight for XML
-            binding.edInput.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    ForegroundColorSpan[] spans = s.getSpans(0, s.length(), ForegroundColorSpan.class);
-                    for (ForegroundColorSpan span : spans) {
-                        s.removeSpan(span);
-                    }
-
-                    s.setSpan(new ForegroundColorSpan(onSurface), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                    String text = s.toString();
-                    Pattern pattern = Pattern.compile("(\\b\\w+\\b)(\\s*=\\s*)(\"[^\"]*\")?");
-                    Matcher matcher = pattern.matcher(text);
-
-                    while (matcher.find()) {
-                        s.setSpan(new ForegroundColorSpan(violet), matcher.start(1), matcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        s.setSpan(new ForegroundColorSpan(onSurface), matcher.start(2), matcher.end(2), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        if (matcher.group(3) != null) {
-                            s.setSpan(new ForegroundColorSpan(green), matcher.start(3), matcher.end(3), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        }
-                    }
-                }
-            });
+            SyntaxScheme.setXMLHighlighter(binding.edInput);
         } else {
             loadStringsListMap();
             setupTextWatcher(binding.tiAutoCompleteInput, binding.edTiAutoCompleteInput);

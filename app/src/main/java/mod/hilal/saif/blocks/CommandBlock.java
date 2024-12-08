@@ -37,7 +37,7 @@ public class CommandBlock {
                 //writeLog("get gson from file is done");
                 for (int i = 0; i < data.size(); i++) {
                     //writeLog("element : " + i);
-                    if (getFirstLine((String) data.get(i).get("input")).contains(fileName)) {
+                    if (getInputName((String) data.get(i).get("input")).equals(fileName)) {
                         //writeLog("element : " + i + " > find a target !!");
                         str = N(str, data.get(i));
                         //writeLog("element : " + i + " > N is done :l");
@@ -192,7 +192,7 @@ public class CommandBlock {
         return res;
     }
 
-    private static String getExceptFirstLine(String c) {
+    public static String getExceptFirstLine(String c) {
         ArrayList<String> a = new ArrayList<>(Arrays.asList(c.split("\n")));
         String res = "";
         if (!a.isEmpty()) {
@@ -217,6 +217,14 @@ public class CommandBlock {
         } else {
             return "";
         }
+    }
+
+    public static String getInputName(String input) {
+        String firstLine = getFirstLine(input);
+        if (firstLine.startsWith(">")) {
+            firstLine = firstLine.substring(1).trim();
+        }
+        return firstLine;
     }
 
     public static String CBForXml(String c) {

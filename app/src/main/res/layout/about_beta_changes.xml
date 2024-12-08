@@ -16,6 +16,7 @@
         android:padding="8dp"
         android:text="@string/about_team_title"
         android:textAppearance="?attr/textAppearanceLabelLarge"
+        android:textStyle="bold"
         tools:text="Today Changes" />
 
     <LinearLayout

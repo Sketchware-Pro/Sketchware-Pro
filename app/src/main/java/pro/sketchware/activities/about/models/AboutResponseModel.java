@@ -9,6 +9,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+
 public class AboutResponseModel {
     private String discordInviteLink;
     private ArrayList<TeamMember> team;
@@ -86,7 +89,6 @@ public class AboutResponseModel {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static class CommitDetails {
 
         private final LinkedTreeMap<String, Object> commit = new LinkedTreeMap<>();
@@ -94,31 +96,48 @@ public class AboutResponseModel {
         private String sha;
 
         public String getCommitterName() {
-            return author.containsKey("login") ? author.get("login").toString() : "";
+            String commiterName = safeGetValueFromMap(author, "login");
+            return commiterName.isEmpty() ? "Deleted Account" : commiterName;
         }
 
         public String getCommitterImage() {
-            return author.containsKey("avatar_url") ? author.get("avatar_url").toString() : "";
+            return safeGetValueFromMap(author, "avatar_url");
         }
 
         public String getDescription() {
-            return commit.containsKey("message") ? commit.get("message").toString() : "";
+            return safeGetValueFromMap(commit, "message");
         }
 
         public String getSha() {
-            return sha;
+            return sha != null ? sha : "";
         }
 
         public String getCommitDate() {
-            LinkedTreeMap<String, String> authorDetails = (LinkedTreeMap<String, String>) commit.get("committer");
-            if (authorDetails == null) {
-                return "Date unavailable";
-            }
+            try {
+                LinkedTreeMap<?, ?> committerDetails = (LinkedTreeMap<?, ?>) commit.get("committer");
+                if (committerDetails == null) {
+                    return Helper.getResString(R.string.github_api_date_unavailable);
+                }
 
-            String commitDateString = authorDetails.get("date");
-            OffsetDateTime commitDateTime = OffsetDateTime.parse(commitDateString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            LocalDate commitDate = commitDateTime.toLocalDate();
-            return formatCommitDate(commitDate);
+                String commitDateString = (String) committerDetails.get("date");
+                if (commitDateString == null || commitDateString.isEmpty()) {
+                    return Helper.getResString(R.string.github_api_date_unavailable);
+                }
+
+                OffsetDateTime commitDateTime = OffsetDateTime.parse(commitDateString, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                LocalDate commitDate = commitDateTime.toLocalDate();
+                return formatCommitDate(commitDate);
+            } catch (Exception e) {
+                return Helper.getResString(R.string.github_api_date_unavailable);
+            }
+        }
+
+        private String safeGetValueFromMap(LinkedTreeMap<String, Object> map, String key) {
+            if (map == null || !map.containsKey(key)) {
+                return "";
+            }
+            Object value = map.get(key);
+            return value != null ? value.toString() : "";
         }
 
         private String formatCommitDate(LocalDate commitDate) {

@@ -1069,6 +1069,7 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_drawer_menu_description_source_code">View Java and XML files</string>
     <string name="design_drawer_menu_description_theme">Color theme</string>
     <string name="design_drawer_menu_description_view">Manage multiple screens</string>
+    <string name="design_drawer_menu_description_xml_command">Modify built-in XML files.</string>
     <string name="design_drawer_menu_title">Configuration</string>
     <string name="design_drawer_menu_title_collection">Collection</string>
     <string name="design_drawer_menu_title_font">Font</string>
@@ -1078,6 +1079,7 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_drawer_menu_title_source_code">Show Source Code</string>
     <string name="design_drawer_menu_title_theme">Theme</string>
     <string name="design_drawer_menu_title_view">View</string>
+    <string name="design_drawer_menu_title_xml_command">XML Command</string>
     <string name="design_file_selector_title_java">Available Java files</string>
     <string name="design_library_admob_button_goto_console">Open AdMob Console</string>
     <string name="design_library_admob_button_goto_setting">Open AdMob Setting</string>
@@ -2203,6 +2205,8 @@ Please try again later"</string>
     <string name="link_telegram_invite">https://t.me/sketchwarepro</string>
     <string name="link_about_team">https://sketchware-pro.github.io/Sketchware-Pro/about.json</string>
     <string name="link_github_commits_url"><![CDATA[https://api.github.com/repos/Sketchware-Pro/Sketchware-Pro/commits?per_page=%s&page=%s]]></string>
+    <string name="github_api_error_message">Something went wrong. Please wait and try again.</string>
+    <string name="github_api_date_unavailable">Date unavailable</string>
     <string name="link_github_url">https://github.com/Sketchware-Pro/Sketchware-Pro</string>
     <string name="change_launcher_activity_dialog_title">Launcher Activity</string>
     <string name="common_word_add_activtiy">Add Activity</string>

@@ -1,12 +1,12 @@
 package mod.jbk.editor.manage.library;
 
-import static pro.sketchware.utility.SketchwareUtil.getDip;
-
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 
 import a.a.a.MA;
 import a.a.a.aB;
+import pro.sketchware.databinding.DialogSelectLibrariesBinding;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
@@ -278,15 +279,10 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
     }
 
     private void showSelectBuiltInLibrariesDialog() {
+        DialogSelectLibrariesBinding binding = DialogSelectLibrariesBinding.inflate(getLayoutInflater());
+
         aB dialog = new aB(this);
         dialog.b("Select built-in libraries");
-        RecyclerView list = new RecyclerView(this);
-        list.setPadding(
-            (int) getDip(20),
-            (int) getDip(8),
-            (int) getDip(20),
-            (int) getDip(0)
-        );
 
         // magic to initialize scrollbars even without android:scrollbars defined in XML
         // https://stackoverflow.com/a/48698300/10929762
@@ -295,24 +291,41 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
             //noinspection JavaReflectionMemberAccess
             Method method = View.class.getDeclaredMethod("initializeScrollbars", TypedArray.class);
             method.setAccessible(true);
-            method.invoke(list, typedArray);
+            method.invoke(binding.recyclerView, typedArray);
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
             LogUtil.e(TAG, "Couldn't add scrollbars to RecyclerView", e);
         }
         typedArray.recycle();
-        list.setVerticalScrollBarEnabled(true);
+        binding.recyclerView.setVerticalScrollBarEnabled(true);
 
-        list.setLayoutManager(new LinearLayoutManager(null));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(null));
         BuiltInLibraryAdapter adapter = new BuiltInLibraryAdapter(excludedLibraries);
         adapter.setHasStableIds(true);
-        list.setAdapter(adapter);
-        dialog.a(list);
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        binding.recyclerView.setAdapter(adapter);
+
+        binding.searchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             excludedLibraries = adapter.getSelectedBuiltInLibraries();
             dialog.dismiss();
             refreshPreview();
         });
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+
         dialog.show();
     }
 
@@ -347,10 +360,12 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
     private static class BuiltInLibraryAdapter extends RecyclerView.Adapter<BuiltInLibraryAdapter.ViewHolder> {
         private final List<BuiltInLibraries.BuiltInLibrary> libraries;
         private final Map<Integer, Void> checkedIndices;
+        private List<BuiltInLibraries.BuiltInLibrary> filteredLibraries;
 
         public BuiltInLibraryAdapter(List<BuiltInLibraries.BuiltInLibrary> excludedLibraries) {
             libraries = Arrays.asList(BuiltInLibraries.KNOWN_BUILT_IN_LIBRARIES);
             libraries.sort(Comparator.comparing(BuiltInLibraries.BuiltInLibrary::getName, String.CASE_INSENSITIVE_ORDER));
+            filteredLibraries = new ArrayList<>(libraries);
             checkedIndices = new HashMap<>();
 
             for (BuiltInLibraries.BuiltInLibrary excludedLibrary : excludedLibraries) {
@@ -363,12 +378,12 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return libraries.size();
+            return filteredLibraries.size();
         }
 
         @Override
         public long getItemId(int position) {
-            return position;
+            return libraries.indexOf(filteredLibraries.get(position));
         }
 
         @Override
@@ -379,8 +394,9 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            BuiltInLibraries.BuiltInLibrary library = libraries.get(position);
-            holder.selected.setChecked(checkedIndices.containsKey(position));
+            BuiltInLibraries.BuiltInLibrary library = filteredLibraries.get(position);
+            int originalPosition = libraries.indexOf(library);
+            holder.selected.setChecked(checkedIndices.containsKey(originalPosition));
             holder.name.setText(library.getName());
             Optional<String> packageName = library.getPackageName();
             if (packageName.isPresent()) {
@@ -397,9 +413,9 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
                 }
 
                 if (selected.isChecked()) {
-                    checkedIndices.put(position, null);
+                    checkedIndices.put(originalPosition, null);
                 } else {
-                    checkedIndices.remove(position);
+                    checkedIndices.remove(originalPosition);
                 }
             };
             holder.selected.setOnClickListener(selectingListener);
@@ -413,6 +429,16 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
                 selectedLibraries.add(libraries.get(i));
             }
             return selectedLibraries;
+        }
+
+        public void filter(String query) {
+            filteredLibraries = new ArrayList<>();
+            for (BuiltInLibraries.BuiltInLibrary library : libraries) {
+                if (library.getName().toLowerCase().contains(query.toLowerCase())) {
+                    filteredLibraries.add(library);
+                }
+            }
+            notifyDataSetChanged();
         }
 
         private static class ViewHolder extends RecyclerView.ViewHolder {

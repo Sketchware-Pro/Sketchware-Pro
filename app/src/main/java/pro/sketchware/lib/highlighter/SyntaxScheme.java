@@ -2,10 +2,17 @@ package pro.sketchware.lib.highlighter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Editable;
+import android.text.Spanned;
+import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import pro.sketchware.R;
 import pro.sketchware.SketchApplication;
 import pro.sketchware.utility.ThemeUtils;
 
@@ -105,4 +112,43 @@ public class SyntaxScheme {
             return new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR_LIGHT));
         }
     }
+
+    public static void setXMLHighlighter(EditText editText) {
+
+        int violet = ThemeUtils.getColor(editText, R.attr.colorViolet);
+        int onSurface = ThemeUtils.getColor(editText, R.attr.colorOnSurface);
+        int green = ThemeUtils.getColor(editText, R.attr.colorGreen);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                ForegroundColorSpan[] spans = s.getSpans(0, s.length(), ForegroundColorSpan.class);
+                for (ForegroundColorSpan span : spans) {
+                    s.removeSpan(span);
+                }
+
+                s.setSpan(new ForegroundColorSpan(onSurface), 0, s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                String text = s.toString();
+                Pattern pattern = Pattern.compile("(\\b\\w+\\b)(\\s*=\\s*)(\"[^\"]*\")?");
+                Matcher matcher = pattern.matcher(text);
+
+                while (matcher.find()) {
+                    s.setSpan(new ForegroundColorSpan(violet), matcher.start(1), matcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    s.setSpan(new ForegroundColorSpan(onSurface), matcher.start(2), matcher.end(2), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    if (matcher.group(3) != null) {
+                        s.setSpan(new ForegroundColorSpan(green), matcher.start(3), matcher.end(3), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    }
+                }
+            }
+        });
+    }
+
 }

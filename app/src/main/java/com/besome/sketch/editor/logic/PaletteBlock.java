@@ -114,6 +114,15 @@ public class PaletteBlock extends LinearLayout {
         blockBuilder.addView(textView);
     }
 
+    public void addDeprecatedBlock(String message, String type, String opCode) {
+        if (message != null && !message.isEmpty()) {
+            a(message, 0xff555555);
+        }
+        Ts blockView = a("", type, opCode);
+        blockView.e = 0xFFBDBDBD;
+        blockView.setTag(opCode);
+    }
+
     public void setDragEnabled(boolean dragEnabled) {
         if (dragEnabled) {
             customScrollView.b();
