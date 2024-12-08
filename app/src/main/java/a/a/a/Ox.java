@@ -813,7 +813,17 @@ public class Ox {
         if (1.0f != scaleY && !toNotAdd.contains("android:scaleY") && !injectHandler.contains("scaleY")) {
             nx.addAttribute("android", "scaleY", String.valueOf(scaleY));
         }
-
+        var visibility = viewBean.visibility;
+        var visibilityName = switch (visibility) {
+            case View.GONE -> "gone";
+            case View.INVISIBLE -> "invisible";
+            case View.VISIBLE -> "visible";
+            default -> null;
+        };
+        if (View.VISIBLE != visibility && !toNotAdd.contains("android:visibility") && !injectHandler.contains("visibility") && visibilityName != null) {
+            nx.addAttribute("android", "visibility", visibilityName);
+        }
+        
         switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_WIDGET_CHECKBOX:
             case ViewBean.VIEW_TYPE_WIDGET_SWITCH:

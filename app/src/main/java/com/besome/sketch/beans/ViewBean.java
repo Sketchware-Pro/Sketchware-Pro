@@ -2,6 +2,7 @@ package com.besome.sketch.beans;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -134,6 +135,8 @@ public class ViewBean extends nA implements Parcelable {
     @Expose
     public HashMap<String, String> parentAttributes;
     public boolean isCustomWidget;
+    @Expose
+    public int visibility;
 
     public ViewBean() {
         parent = null;
@@ -164,6 +167,7 @@ public class ViewBean extends nA implements Parcelable {
         progressStyle = PROGRESSBAR_STYLE_CIRCLE;
         parentAttributes = new HashMap<>();
         isCustomWidget = false;
+        visibility = View.VISIBLE;
     }
 
     public ViewBean(Parcel parcel) {
@@ -209,6 +213,7 @@ public class ViewBean extends nA implements Parcelable {
             parentAttributes.put(key, value);
         }
         isCustomWidget = parcel.readInt() != 0;
+        visibility = parcel.readInt();
     }
 
     public ViewBean(String id, int type) {
@@ -372,6 +377,7 @@ public class ViewBean extends nA implements Parcelable {
         progressStyle = other.progressStyle;
         parentAttributes = other.parentAttributes;
         isCustomWidget = other.isCustomWidget;
+        visibility = other.visibility;
     }
 
     @Override
@@ -407,7 +413,7 @@ public class ViewBean extends nA implements Parcelable {
                 !adUnitId.equals(viewBean.adUnitId) || !text.isEqual(viewBean.text) || !layout.isEqual(viewBean.layout) ||
                 !image.isEqual(viewBean.image) || !indeterminate.equals(viewBean.indeterminate) ||
                 !inject.equals(viewBean.inject) || !convert.equals(viewBean.convert) ||
-                !progressStyle.equals(viewBean.progressStyle) || !parentAttributes.equals(viewBean.parentAttributes)) {
+                !progressStyle.equals(viewBean.progressStyle) || !parentAttributes.equals(viewBean.parentAttributes) || visibility != viewBean.visibility) {
             return false;
         }
 
@@ -483,5 +489,6 @@ public class ViewBean extends nA implements Parcelable {
             dest.writeString(entry.getValue());
         }
         dest.writeInt(isCustomWidget ? 1 : 0);
+        dest.writeInt(visibility);
     }
 }

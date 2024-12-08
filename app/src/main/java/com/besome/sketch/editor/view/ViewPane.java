@@ -372,9 +372,9 @@ public class ViewPane extends RelativeLayout {
             view.setTranslationY(wB.a(getContext(), viewBean.translationY));
             view.setScaleX(viewBean.scaleX);
             view.setScaleY(viewBean.scaleY);
-            view.setVisibility(View.VISIBLE);
             return;
         }
+        view.setVisibility(viewBean.visibility);
         updateLayout(view, viewBean);
         view.setRotation(viewBean.image.rotate);
         view.setAlpha(viewBean.alpha);
@@ -538,7 +538,6 @@ public class ViewPane extends RelativeLayout {
                 if (!hasColorScheme) button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
             }
         }
-        view.setVisibility(VISIBLE);
         if (view instanceof EditorListItem listItem) {
             String listitem = injectHandler.getAttributeValueOf("listitem");
             String itemCount = injectHandler.getAttributeValueOf("itemCount");

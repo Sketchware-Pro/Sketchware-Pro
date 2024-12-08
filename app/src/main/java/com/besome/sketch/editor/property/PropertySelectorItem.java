@@ -79,6 +79,9 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
                 case "property_first_day_of_week":
                     icon = R.drawable.ic_mtrl_calendar;
                     break;
+                case "property_visibility":
+                    icon = R.drawable.ic_mtrl_visibility;
+                    break;
             }
             if (propertyMenuItem.getVisibility() == VISIBLE) {
                 ((ImageView) findViewById(R.id.img_icon)).setImageResource(icon);
@@ -110,6 +113,7 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
                 case "property_spinner_mode":
                 case "property_choice_mode":
                 case "property_first_day_of_week":
+                case "property_visibility":
                     showDialog();
             }
         }
