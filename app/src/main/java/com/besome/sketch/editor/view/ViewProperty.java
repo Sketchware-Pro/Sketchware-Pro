@@ -23,6 +23,7 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.ctrls.ViewIdSpinnerItem;
 import com.besome.sketch.editor.property.ViewPropertyItems;
 import com.besome.sketch.lib.ui.CustomHorizontalScrollView;
+import com.besome.sketch.design.structure.LayoutStructureAdapter;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.color.MaterialColors;
 
@@ -50,8 +51,7 @@ public class ViewProperty extends LinearLayout implements Kw {
     private final ArrayList<ViewBean> projectActivityViews = new ArrayList<>();
     private String sc_id;
     private ProjectFileBean projectFile;
-    private Spinner spnWidget;
-    private ViewIdsAdapter idsAdapter;
+    private LayoutStructureAdapter layoutStructureAdapter;
     private Jw propertyTargetChangeListener = null;
     private LinearLayout layoutPropertySeeAll;
     private ViewPropertyItems viewPropertyItems;
@@ -79,6 +79,10 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     @Override
     public void a(String str, Object obj) {
+    }
+    
+    public void setLayoutStructureAdapter(LayoutStructureAdapter layoutStructureAdapter) {
+        this.layoutStructureAdapter = layoutStructureAdapter;
     }
 
     public void setOnEventClickListener(Qs onEventClickListener) {
@@ -144,8 +148,8 @@ public class ViewProperty extends LinearLayout implements Kw {
                 item.animate().scaleX(0.8f).scaleY(0.8f).start();
             }
         }
-        if (idsAdapter.getSelectedItemPosition() < projectActivityViews.size()) {
-            ViewBean viewBean = projectActivityViews.get(idsAdapter.getSelectedItemPosition());
+        if (layoutStructureAdapter.getSelectedItemPosition() < projectActivityViews.size()) {
+            ViewBean viewBean = projectActivityViews.get(layoutStructureAdapter.getSelectedItemPosition());
             if (selectedGroupId == 0) {
                 propertyLayout.setVisibility(VISIBLE);
                 layoutPropertySeeAll.setVisibility(VISIBLE);
@@ -181,7 +185,7 @@ public class ViewProperty extends LinearLayout implements Kw {
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (!mB.a() && validator.b()) {
                 String widgetName = editText.getText().toString();
-                ArrayList<ViewBean> viewBeans = jC.a(sc_id).b(projectFile.getXmlName(), projectActivityViews.get(idsAdapter.getSelectedItemPosition()));
+                ArrayList<ViewBean> viewBeans = jC.a(sc_id).b(projectFile.getXmlName(), projectActivityViews.get(layoutStructureAdapter.getSelectedItemPosition()));
                 for (ViewBean viewBean : viewBeans) {
                     String backgroundResource = viewBean.layout.backgroundResource;
                     String resName = viewBean.image.resName;
@@ -261,28 +265,13 @@ public class ViewProperty extends LinearLayout implements Kw {
                 showSaveToCollectionDialog();
             }
         });
-        spnWidget = findViewById(R.id.spn_widget);
-        idsAdapter = new ViewIdsAdapter(context, projectActivityViews);
-        spnWidget.setAdapter(idsAdapter);
-        spnWidget.setSelection(0);
-        spnWidget.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                idsAdapter.setPosition(position);
-                selectView(projectActivityViews.get(position));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
         initializeGroups();
         initializeSeeAllAnimations();
         viewPropertyItems = new ViewPropertyItems(getContext());
         viewPropertyItems.setOrientation(HORIZONTAL);
         propertyContents.addView(viewPropertyItems);
     }
-
+    
     public void selectView(ViewBean viewBean) {
         if (propertyTargetChangeListener != null) {
             propertyTargetChangeListener.a(viewBean.id);
@@ -305,7 +294,7 @@ public class ViewProperty extends LinearLayout implements Kw {
     public void a(String str) {
         for (int i = 0; i < projectActivityViews.size(); i++) {
             if (projectActivityViews.get(i).id.equals(str)) {
-                spnWidget.setSelection(i);
+                layoutStructureAdapter.setSelectedItemPosition(i);
                 return;
             }
         }
@@ -317,7 +306,7 @@ public class ViewProperty extends LinearLayout implements Kw {
         if (fab != null) {
             projectActivityViews.add(0, fab);
         }
-        idsAdapter.notifyDataSetChanged();
+        layoutStructureAdapter.notifyDataSetChanged();
     }
 
     private void initializeGroups() {
@@ -342,70 +331,6 @@ public class ViewProperty extends LinearLayout implements Kw {
             return;
         }
         seeAll.setView(viewBean);
-    }
-
-    private static class ViewIdsAdapter extends BaseAdapter {
-
-        private final Context context;
-        private final ArrayList<ViewBean> views;
-        private int selectedItemPosition;
-
-        public ViewIdsAdapter(Context context, ArrayList<ViewBean> arrayList) {
-            this.context = context;
-            views = arrayList;
-        }
-
-        private void setPosition(int position) {
-            selectedItemPosition = position;
-        }
-
-        @Override
-        public int getCount() {
-            if (views == null) {
-                return 0;
-            } else {
-                return views.size();
-            }
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return getSpinnerItem(position, convertView, selectedItemPosition == position, true);
-        }
-
-        @Override
-        public ViewBean getItem(int position) {
-            return views.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return getSpinnerItem(position, convertView, false, false);
-        }
-
-        private int getSelectedItemPosition() {
-            return selectedItemPosition;
-        }
-
-        private ViewIdSpinnerItem getSpinnerItem(int position, View convertView, boolean isSelected, boolean isDropDownView) {
-            ViewIdSpinnerItem item;
-            if (convertView != null) {
-                item = (ViewIdSpinnerItem) convertView;
-            } else {
-                item = new ViewIdSpinnerItem(context);
-                item.setTextSize(R.dimen.text_size_body_small);
-            }
-            item.setDropDown(isDropDownView);
-
-            ViewBean view = views.get(position);
-            item.a(ViewBean.getViewTypeResId(view.type), view.id, isSelected);
-            return item;
-        }
     }
 
     private class GroupItem extends LinearLayout implements View.OnClickListener {

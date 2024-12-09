@@ -342,6 +342,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         }
     }
+    
+    public LayoutStructureSheet getLayoutStructureSheet() {
+        return structureSheet;
+    }
 
     private void saveChangesAndCloseProject() {
         k();

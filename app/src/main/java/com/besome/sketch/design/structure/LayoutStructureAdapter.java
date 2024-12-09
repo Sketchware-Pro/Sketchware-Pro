@@ -17,6 +17,7 @@ import pro.sketchware.databinding.LayoutStructureItemBinding;
 public class LayoutStructureAdapter extends ListAdapter<ViewBean, LayoutStructureAdapter.LayoutStructureAdapterViewHolder> {
     
     private LayoutStructureItemListener layoutStructureItemListener;
+    private int selectedItemPosition;
     
     public LayoutStructureAdapter() {
         super(new LayoutStructureAdapterDiffCallback());
@@ -24,6 +25,14 @@ public class LayoutStructureAdapter extends ListAdapter<ViewBean, LayoutStructur
     
     public void setLayoutStructureItemListener(LayoutStructureItemListener layoutStructureItemListener) {
         this.layoutStructureItemListener = layoutStructureItemListener;
+    }
+    
+    public void setSelectedItemPosition(int selectedItemPosition) {
+        this.selectedItemPosition = selectedItemPosition;
+    }
+    
+    public int getSelectedItemPosition() {
+        return selectedItemPosition;
     }
     
     @NonNull
@@ -38,6 +47,7 @@ public class LayoutStructureAdapter extends ListAdapter<ViewBean, LayoutStructur
         var bean = getItem(position);
         var imgRes = ViewBean.getViewTypeResId(bean.type);
         holder.binding.getRoot().setOnClickListener(v -> {
+            setSelectedItemPosition(position);
             if (layoutStructureItemListener != null) layoutStructureItemListener.onClick(bean);
         });
         holder.binding.viewIcon.setImageResource(imgRes);

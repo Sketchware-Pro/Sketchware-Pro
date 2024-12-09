@@ -53,6 +53,8 @@ public class ViewEditorFragment extends qA {
         widgetsCreatorManager = new WidgetsCreatorManager(this);
         viewEditor.widgetsCreatorManager = widgetsCreatorManager;
         viewProperty = requireActivity().findViewById(R.id.view_property);
+        viewProperty.setLayoutStructureAdapter(((DesignActivity) requireActivity()).getLayoutStructureSheet().getAdapter());
+        
         viewProperty.setOnPropertyListener(new Iw() {
             @Override
             public void a() {

@@ -19,6 +19,7 @@ import pro.sketchware.databinding.LayoutStructureSheetBinding;
 public class LayoutStructureSheet extends SideSheetDialog {
 
     private LayoutStructureSheetBinding binding;
+    private LayoutStructureAdapter adapter;
     
     public LayoutStructureSheet(Context context, ArrayList<ViewBean> viewsList) {
         super(context);
@@ -26,13 +27,17 @@ public class LayoutStructureSheet extends SideSheetDialog {
         setContentView(binding.getRoot());
         setSheetEdge(Gravity.END);
         binding.close.setOnClickListener(v -> hide());
-        var adapter = new LayoutStructureAdapter();
+        adapter = new LayoutStructureAdapter();
         adapter.setLayoutStructureItemListener(bean -> {
             var prop = getViewProperty(context);
             if (prop != null) prop.selectView(bean);
         });
         binding.list.setAdapter(adapter);
         adapter.submitList(viewsList);
+    }
+    
+    public LayoutStructureAdapter getAdapter() {
+        return adapter;
     }
     
     private ViewProperty getViewProperty(Context context) {
