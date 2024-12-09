@@ -32,14 +32,25 @@ public class XmlToSvgConverter {
             svg.append("<svg xmlns=\"http://www.w3.org/2000/svg\" ");
 
             Element root = document.getDocumentElement();
+            String width = root.getAttribute("android:width");
+            String height = root.getAttribute("android:height");
             String viewportWidth = root.getAttribute("android:viewportWidth");
             String viewportHeight = root.getAttribute("android:viewportHeight");
 
             if (root.getTagName().equals("vector")) {
-                svg.append("width=\"150").append("px\" ");
-                svg.append("height=\"150").append("px\" ");
-                svg.append("viewBox=\"0 0 ").append(viewportWidth.isEmpty() ? "100" : viewportWidth)
-                        .append(" ").append(viewportHeight.isEmpty() ? "100" : viewportHeight).append("\" ");
+                if (!width.isEmpty() || !height.isEmpty()) {
+                    if (parseNumber(width) > 40 || parseNumber(height) > 40) {
+                        svg.append("width=\"").append(width.isEmpty() ? "150" : width).append("px\" ");
+                        svg.append("height=\"").append(height.isEmpty() ? "150" : height).append("px\" ");
+                    } else {
+                        svg.append("width=\"150").append("px\" ");
+                        svg.append("height=\"150").append("px\" ");
+                    }
+                } else {
+                    svg.append("width=\"150").append("px\" ");
+                    svg.append("height=\"150").append("px\" ");
+                }
+                svg.append("viewBox=\"0 0 ").append(viewportWidth.isEmpty() ? "100" : viewportWidth).append(" ").append(viewportHeight.isEmpty() ? "100" : viewportHeight).append("\" ");
             } else {
                 return "NOT_SUPPORTED_YET";
             }
@@ -51,6 +62,13 @@ public class XmlToSvgConverter {
         } catch (Exception e) {
             return "NOT_SUPPORTED";
         }
+    }
+
+    private static double parseNumber(String input) {
+        if (input == null || input.trim().isEmpty()) {
+            return 0;
+        }
+        return Double.parseDouble(input.replaceAll("[^0-9.]", ""));
     }
 
     private static void processElement(Element element, StringWriter svg) {
