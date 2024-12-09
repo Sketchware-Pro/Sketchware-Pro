@@ -14,14 +14,29 @@
         android:gravity="center_vertical"
         android:paddingHorizontal="8dp">
 
-        <Spinner
-            android:id="@+id/spn_widget"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:backgroundTint="?attr/colorOnSurface"
-            android:spinnerMode="dropdown" />
+            android:background="?selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <ImageView
+                android:id="@+id/view_icon"
+                android:layout_width="16dp"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:id="@+id/view_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textSize="16dp" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/img_save"
