@@ -551,6 +551,42 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         return Arrays.asList(getResources().getStringArray(R.array.property_convert_options));
     }
 
+    /**
+     * Populates additional attributes for specific view types.
+     * 
+     * You can add more attributes directly to this list instead of introducing 
+     * another variable in the ViewBean class. Use the ViewBean#type field 
+     * or getClassInfo methods to identify the type of view and add attributes accordingly.
+     * 
+     * Examples:
+     * 
+     * // Using ViewBean#type
+     * if (bean.type == ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW) {
+     *     attrs.add("android:text");
+     * }
+     * 
+     * // Using getClassInfo
+     * if (bean.getClassInfo().a("TextView")) {
+     *     attrs.add("android:text");
+     * }
+     * if (bean.getClassInfo().b("LinearLayout")) {
+     *     attrs.add("android:orientation");
+     * }
+     * 
+     * Notes for getClassInfo:
+     * - a(String): Similar to instanceof for view class names.
+     * - b(String): Represents the actual type of the view, I think?. 
+     *   Idk if there's a difference between ViewBean#type and this.
+     * 
+     * @return A list of additional attributes for the specified view type.
+     */
+    private List<String> populateAttributes() {
+        List<String> attrs = new ArrayList<>();
+        attrs.add("android:elevation");
+        // Add more attributes here based on the view type
+        return attrs;
+    }
+
     private void showInjectDialog() {
         BottomSheetDialog dialog = new BottomSheetDialog(getContext());
         var binding = PropertyPopupParentAttrBinding.inflate(LayoutInflater.from(getContext()));
@@ -617,13 +653,23 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         PropertyPopupInputTextBinding binding =
                 PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
 
-        binding.tiInput.setHint("Enter new attribute");
+        var input = binding.edTiAutoCompleteInput;
+        binding.tiInput.setVisibility(View.GONE);
+        binding.tiAutoCompleteInput.setVisibility(View.VISIBLE);
+        binding.tiAutoCompleteInput.setHint("Enter new attribute");
+        input.setAdapter(
+                new ArrayAdapter<>(
+                        getContext(),
+                        android.R.layout.simple_list_item_1,
+                        populateAttributes().stream()
+                                .filter(attr -> !attributes.containsKey(attr))
+                                .collect(Collectors.toList())));
 
         builder.setView(binding.getRoot());
         builder.setPositiveButton(
                 R.string.common_word_next,
                 (d, w) -> {
-                    setAttributeValue(binding.edInput.getText().toString(), attributes);
+                    setAttributeValue(input.getText().toString(), attributes);
                 });
         builder.setNegativeButton(R.string.common_word_cancel, (d, w) -> d.cancel());
         var dialog = builder.create();
