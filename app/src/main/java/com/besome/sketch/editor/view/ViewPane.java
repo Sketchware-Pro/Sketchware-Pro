@@ -555,6 +555,10 @@ public class ViewPane extends RelativeLayout {
                 if (!hasColorScheme) button.setColorScheme(ItemSignInButton.ColorScheme.LIGHT);
             }
         }
+        var elevation = injectHandler.getAttributeValueOf("elevation");
+        if (!elevation.isEmpty()) {
+            view.setElevation(PropertiesUtil.resolveSize(elevation, 0));
+        }
         view.setVisibility(VISIBLE);
         if (view instanceof EditorListItem listItem) {
             String listitem = injectHandler.getAttributeValueOf("listitem");

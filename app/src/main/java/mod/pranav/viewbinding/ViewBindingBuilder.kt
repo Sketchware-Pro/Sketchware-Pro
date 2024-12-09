@@ -16,7 +16,9 @@ class ViewBindingBuilder(
     private fun generateBindingForLayout(layoutFile: File) {
         val name = generateFileNameForLayout(layoutFile.nameWithoutExtension)
         val rootView = getTopLevelView(layoutFile)
-        val views = parseViews(layoutFile)
+        val parsed = parseViews(layoutFile)
+        val views = if (parsed.first() == rootView) parsed.drop(1) else parsed
+
         val file = File(outputDir, "$name.java")
 
         val content = """
@@ -26,16 +28,16 @@ package $packageName;
 ${generateImports(views, rootView)}
 
 public final class $name {
-    public final ${rootView.type} rootView;
+    public final ${rootView.type} ${rootView.name};
 ${views.joinToString("\n") { "    public final ${it.type} ${it.name};" }}
 
-    private $name(${rootView.type} rootView${if (views.isNotEmpty()) views.joinToString(prefix=", ") { "${it.type} ${it.name}" } else ""}) {
-        this.rootView = rootView;
+    private $name(${rootView.type} ${rootView.name}${if (views.isNotEmpty()) views.joinToString(prefix = ", ") { "${it.type} ${it.name}" } else ""}) {
+        this.${rootView.name} = ${rootView.name};
 ${views.joinToString("\n") { "        this.${it.name} = ${it.name};" }}
     }
 
     public ${rootView.type} getRoot() {
-        return rootView;
+        return ${rootView.name};
     }
 
     public static $name inflate(LayoutInflater inflater) {
@@ -49,16 +51,24 @@ ${views.joinToString("\n") { "        this.${it.name} = ${it.name};" }}
     }
 
     public static $name bind(View view) {
-        ${rootView.type} rootView = (${rootView.type}) view;
-        ${if (views.isNotEmpty()) {
-"""${views.filterNot { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.name} = findChildViewById(view, R.id.${it.id});" }}
-${views.filter { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.name} = ${it.fullName}.bind(findChildViewById(view, R.id.${it.id}));" }}
-        
+        ${rootView.type} ${rootView.name} = (${rootView.type}) view;
+${
+            if (views.isNotEmpty()) {
+                """${
+                    views.filterNot { it.isInclude }
+                        .joinToString("\n") { "        ${it.type} ${it.name} = findChildViewById(view, R.id.${it.id});" }
+                }
+${
+                    views.filter { it.isInclude }
+                        .joinToString("\n") { "        ${it.type} ${it.name} = ${it.fullType}.bind(findChildViewById(view, R.id.${it.id}));" }
+                }
         if (${views.joinToString(" || ") { "${it.name} == null" }}) {
              throw new IllegalStateException("Required views are missing");
-        }"""} else ""}
+        }"""
+            } else ""
+        }
 
-        return new $name(rootView${if (views.isNotEmpty()) ", " + views.joinToString { it.name } else ""});
+        return new $name(${rootView.name}${if (views.isNotEmpty()) ", " + views.joinToString { it.name } else ""});
     }
 
     private static <T extends View> T findChildViewById(View rootView, int id) {
@@ -80,14 +90,14 @@ ${views.filter { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.na
     private fun generateImports(views: List<View>, rootView: View): String {
         val copy = views.toMutableSet().filterNot {
             it.type == "View" || it.type == "ViewGroup"
-        }.distinctBy { it.fullName }
+        }.distinctBy { it.fullType }
         val imports = mutableSetOf(
             "import android.view.View;",
             "import android.view.LayoutInflater;",
             "import android.view.ViewGroup;",
-            "import ${rootView.fullName};"
+            "import ${rootView.fullType};"
         )
-        copy.forEach { imports.add("import ${it.fullName};") }
+        copy.forEach { imports.add("import ${it.fullType};") }
         return imports.sorted().joinToString("\n")
     }
 
@@ -97,7 +107,8 @@ ${views.filter { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.na
         return View(
             element.nodeName.substringAfterLast("."),
             if (element.nodeName.contains(".")) element.nodeName else "android.widget.${element.nodeName}",
-            element.attributes?.getNamedItem("android:id")?.nodeValue?.substringAfter("/") ?: ""
+            element.attributes?.getNamedItem("android:id")?.nodeValue?.substringAfter("/")
+                ?: "rootView"
         )
     }
 
@@ -105,7 +116,7 @@ ${views.filter { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.na
         val views = mutableListOf<View>()
         val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(layoutFile)
         parseNode(document.documentElement, views)
-        return views.filterNot { it.isInclude } + views.filter { it.isInclude }
+        return (views.filterNot { it.isInclude } + views.filter { it.isInclude })
     }
 
     private fun parseNode(node: Node, views: MutableList<View>) {
@@ -113,7 +124,8 @@ ${views.filter { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.na
             val id = node.attributes?.getNamedItem("android:id")
             if (id != null) {
                 if (node.nodeName == "include") {
-                    val layout = node.attributes?.getNamedItem("layout")?.nodeValue?.substringAfter("/")
+                    val layout =
+                        node.attributes?.getNamedItem("layout")?.nodeValue?.substringAfter("/")
                     if (layout != null) {
                         val id = node.attributes?.getNamedItem("android:id")
                         if (id != null) {
@@ -143,16 +155,25 @@ ${views.filter { it.isInclude }.joinToString("\n") { "        ${it.type} ${it.na
         }
     }
 
-    data class View(val type: String, val fullName: String, val id: String, val isInclude: Boolean = false) {
-        val name = generateId(id)
+    data class View(
+        val type: String,
+        val fullType: String,
+        val id: String,
+        val isInclude: Boolean = false
+    ) {
+        val name = generateParameterFromId(id)
+
+        override fun toString(): String {
+            return "${type}(fullName='$fullType', id='$id', name='$name', isInclude=$isInclude)"
+        }
     }
 
     companion object {
-
         @JvmStatic
-        fun generateId(name: String): String {
-            return if (name.contains('_')) name.substringBefore('_') + name.substringAfter('_').split('_')
-                .joinToString("") { part -> part.replaceFirstChar { it.uppercaseChar() } } else name
+        fun generateParameterFromId(id: String): String {
+            return if (id.contains('_')) id.substringBefore('_') + id.substringAfter('_')
+                .split('_')
+                .joinToString("") { part -> part.replaceFirstChar { it.uppercaseChar() } } else id
         }
 
         @JvmStatic

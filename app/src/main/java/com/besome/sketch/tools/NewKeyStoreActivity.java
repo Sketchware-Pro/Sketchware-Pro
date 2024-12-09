@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.textfield.TextInputLayout;
-import pro.sketchware.R;
 
 import a.a.a.RB;
 import a.a.a.SB;
@@ -23,6 +22,7 @@ import a.a.a.iI;
 import a.a.a.mB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClickListener {
     private RB organizationValidator;
@@ -32,7 +32,7 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     private RB commonNameValidator;
     private RB organizationalUnitValidator;
     private iI E;
-    private int validityInYears = 25;
+    private final int validityInYears = 25;
     private EditText alias;
     private EditText password;
     private EditText passwordConfirm;

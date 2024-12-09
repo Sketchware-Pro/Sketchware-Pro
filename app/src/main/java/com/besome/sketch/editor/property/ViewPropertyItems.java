@@ -889,14 +889,14 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                         for (BlockBean blockBean : blockBeans) {
                             Gx classInfo = blockBean.getClassInfo();
 
-                            if (classInfo != null && classInfo.d() && blockBean.spec.equals(viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.preId) : bean.preId)) {
-                                blockBean.spec = viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.id) : bean.id;
+                            if (classInfo != null && classInfo.d() && blockBean.spec.equals(viewBinding ? "binding." + ViewBindingBuilder.generateParameterFromId(bean.preId) : bean.preId)) {
+                                blockBean.spec = viewBinding ? "binding." + ViewBindingBuilder.generateParameterFromId(bean.id) : bean.id;
                             } else {
                                 ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
                                 if (paramClassInfo != null && !paramClassInfo.isEmpty()) {
                                     for (int i = 0; i < paramClassInfo.size(); ++i) {
-                                        if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.preId) : bean.preId)) {
-                                            blockBean.parameters.set(i, viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.id) : bean.id);
+                                        if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(viewBinding ? "binding." + ViewBindingBuilder.generateParameterFromId(bean.preId) : bean.preId)) {
+                                            blockBean.parameters.set(i, viewBinding ? "binding." + ViewBindingBuilder.generateParameterFromId(bean.id) : bean.id);
                                         }
                                     }
                                 }
@@ -925,14 +925,14 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                         for (BlockBean blockBean : blockBeans) {
                             Gx classInfo = blockBean.getClassInfo();
 
-                            if (classInfo != null && classInfo.d() && blockBean.spec.equals(viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.preId) : bean.preId)) {
-                                blockBean.spec = viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.id) : bean.id;
+                            if (classInfo != null && classInfo.d() && blockBean.spec.equals(viewBinding ? "binding." + ViewBindingBuilder.generateParameterFromId(bean.preId) : bean.preId)) {
+                                blockBean.spec = viewBinding ? "binding." + ViewBindingBuilder.generateParameterFromId(bean.id) : bean.id;
                             } else {
                                 ArrayList<Gx> paramClassInfo = blockBean.getParamClassInfo();
                                 if (paramClassInfo != null && !paramClassInfo.isEmpty()) {
                                     for (int i = 0; i < paramClassInfo.size(); ++i) {
-                                        if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.preId) : bean.preId)) {
-                                            blockBean.parameters.set(i, viewBinding ? "binding." + ViewBindingBuilder.generateId(bean.id) : bean.id);
+                                        if (paramClassInfo.get(i).d() && blockBean.parameters.get(i).equals(viewBinding ? "binding." + ViewBindingBuilder.generateParameterFromId(bean.preId) : bean.preId)) {
+                                            blockBean.parameters.set(i, viewBinding ? "binding." + ViewBindingBuilder.generateParameterFromId(bean.id) : bean.id);
                                         }
                                     }
                                 }

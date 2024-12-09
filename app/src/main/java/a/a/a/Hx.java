@@ -43,7 +43,7 @@ public class Hx {
             views.add(fab);
         }
         for (ViewBean view : views) {
-            viewEvents.add(new Event(this, isViewBindingEnabled ? "binding." + ViewBindingBuilder.generateId(view.id) : view.id, view.getClassInfo(), isViewBindingEnabled));
+            viewEvents.add(new Event(this, isViewBindingEnabled ? "binding." + ViewBindingBuilder.generateParameterFromId(view.id) : view.id, view.getClassInfo(), isViewBindingEnabled));
         }
 
         ArrayList<ComponentBean> components = eC.e(projectFileBean.getJavaName());
@@ -59,7 +59,7 @@ public class Hx {
         if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
             ArrayList<ViewBean> drawerViews = eC.d(projectFileBean.getDrawerXmlName());
             for (ViewBean view : drawerViews) {
-                drawerViewEvents.add(new Event(this, isViewBindingEnabled ? "binding.drawer." + ViewBindingBuilder.generateId(view.id) : "_drawer_" + view.id, view.getClassInfo(), isViewBindingEnabled));
+                drawerViewEvents.add(new Event(this, isViewBindingEnabled ? "binding.drawer." + ViewBindingBuilder.generateParameterFromId(view.id) : "_drawer_" + view.id, view.getClassInfo(), isViewBindingEnabled));
             }
         }
 
@@ -127,7 +127,7 @@ public class Hx {
 
     public void addLifecycleEvent(String eventName, String viewType, String viewId) {
         if (!activityLifecycleEvents.containsKey(eventName)) {
-            activityLifecycleEvents.put(eventName, Lx.getDefaultActivityLifecycleCode(eventName, viewType, isViewBindingEnabled ? ViewBindingBuilder.generateId(viewId) : viewId));
+            activityLifecycleEvents.put(eventName, Lx.getDefaultActivityLifecycleCode(eventName, viewType, isViewBindingEnabled ? ViewBindingBuilder.generateParameterFromId(viewId) : viewId));
         }
     }
 
@@ -224,7 +224,7 @@ public class Hx {
 
     private void addDrawerEvents(String targetId, String eventName, String eventLogic) {
         for (Event next : drawerViewEvents) {
-            if (next.id.equals(isViewBindingEnabled ? "binding.drawer." + ViewBindingBuilder.generateId(targetId) : "_drawer_" + targetId)) {
+            if (next.id.equals(isViewBindingEnabled ? "binding.drawer." + ViewBindingBuilder.generateParameterFromId(targetId) : "_drawer_" + targetId)) {
                 next.addEvent(targetId, eventName, eventLogic);
                 return;
             }
@@ -262,7 +262,7 @@ public class Hx {
 
     private void addViewListeners(String targetId, String eventName, String eventLogic) {
         for (Event next : viewEvents) {
-            if (next.id.equals(isViewBindingEnabled ? "binding." + ViewBindingBuilder.generateId(targetId) : targetId)) {
+            if (next.id.equals(isViewBindingEnabled ? "binding." + ViewBindingBuilder.generateParameterFromId(targetId) : targetId)) {
                 next.addEvent(targetId, eventName, eventLogic);
                 return;
             }
