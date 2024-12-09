@@ -24,5 +24,15 @@
             android:layout_height="match_parent"
             android:padding="5dp"
             tools:listitem="@layout/string_editor_item" />
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/addStringButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:text="Add new string"
+            app:icon="@drawable/ic_mtrl_add" />
     </RelativeLayout>
 </LinearLayout>
