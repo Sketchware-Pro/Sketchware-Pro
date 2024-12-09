@@ -952,8 +952,13 @@ public class ProjectBuilder {
 
         Configuration configuration = new Configuration();
 
-        try (ConfigurationParser parser = new ConfigurationParser(args.toArray(new String[0]), System.getProperties())) {
-            parser.parse(configuration);
+        try {
+            ConfigurationParser parser = new ConfigurationParser(args.toArray(new String[0]), System.getProperties());
+            try {
+                parser.parse(configuration);
+            } finally {
+                parser.close();
+            }
         } catch (ParseException e) {
             throw new IOException(e);
         }

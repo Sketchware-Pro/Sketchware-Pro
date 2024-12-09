@@ -157,7 +157,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private Vibrator F;
     private LinearLayout J, K;
     private FloatingActionButton openBlocksMenuButton;
-    private LogicTopMenu N;
+    private LogicTopMenu logicTopMenu;
     private LogicEditorDrawer O;
     private ObjectAnimator U, V, ba, ca, fa, ga;
     private ExtraPaletteBlock extraPaletteBlock;
@@ -1423,11 +1423,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void a(boolean z) {
-        N.a(z);
+        logicTopMenu.setCopyActive(z);
     }
 
     public final boolean a(float f, float f2) {
-        return N.a(f, f2);
+        return logicTopMenu.isInsideCopyArea(f, f2);
     }
 
     public final boolean a(BlockBean blockBean) {
@@ -1505,11 +1505,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void b(boolean z) {
-        N.b(z);
+        logicTopMenu.setDeleteActive(z);
     }
 
     public final boolean b(float f, float f2) {
-        return N.b(f, f2);
+        return logicTopMenu.isInsideDeleteArea(f, f2);
     }
 
     public void c(Rs rs) {
@@ -1561,11 +1561,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void c(boolean z) {
-        N.c(z);
+        logicTopMenu.setDetailActive(z);
     }
 
     public final boolean c(float f, float f2) {
-        return N.c(f, f2);
+        return logicTopMenu.isInsideDetailArea(f, f2);
     }
 
     private LinearLayout getFontPreview(String fontName) {
@@ -1650,11 +1650,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void d(boolean z) {
-        N.d(z);
+        logicTopMenu.setFavoriteActive(z);
     }
 
     public final boolean d(float f, float f2) {
-        return N.d(f, f2);
+        return logicTopMenu.isInsideFavoriteArea(f, f2);
     }
 
     public final RadioButton e(String str) {
@@ -1809,7 +1809,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void f(boolean z) {
-        N.e(z);
+        logicTopMenu.toggleLayoutVisibility(z);
     }
 
     @Override
@@ -1939,10 +1939,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void h(boolean z) {
-        N.b(false);
-        N.a(false);
-        N.d(false);
-        N.c(false);
+        logicTopMenu.setDeleteActive(false);
+        logicTopMenu.setCopyActive(false);
+        logicTopMenu.setFavoriteActive(false);
+        logicTopMenu.setDetailActive(false);
         if (!da) {
             x();
         }
@@ -2184,7 +2184,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         K = findViewById(R.id.area_palette);
         openBlocksMenuButton = findViewById(R.id.fab_toggle_palette);
         openBlocksMenuButton.setOnClickListener(v -> e(!X));
-        N = findViewById(R.id.top_menu);
+        logicTopMenu = findViewById(R.id.top_menu);
         O = findViewById(R.id.right_drawer);
         extraPaletteBlock = new ExtraPaletteBlock(this, isViewBindingEnabled);
     }
@@ -2394,7 +2394,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                 }
                 q();
-            } else if (N.b()) {
+            } else if (logicTopMenu.isDeleteActive) {
                 Rs rs5 = (Rs) v;
                 if (rs5.getBlockType() == 2) {
                     g(true);
@@ -2432,7 +2432,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     bC.d(B).b(s(), arrayList, ((int) s) - oLocationOnScreen[0], ((int) t) - oLocationOnScreen[1], blockBean2, blockBean3);
                     C();
                 }
-            } else if (N.d()) {
+            } else if (logicTopMenu.isFavoriteActive) {
                 d(false);
                 Rs rs7 = (Rs) v;
                 o.a(rs7, 0);
@@ -2455,12 +2455,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     rs7.p().k();
                 }
                 c(rs7);
-            } else if (N.c()) {
+            } else if (logicTopMenu.isDetailActive) {
                 c(false);
                 if (v instanceof Us) {
                     o(((Us) v).T);
                 }
-            } else if (N.a()) {
+            } else if (logicTopMenu.isCopyActive) {
                 a(false);
                 Rs rs10 = (Rs) v;
                 o.a(rs10, 0);
@@ -2719,10 +2719,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void x() {
-        ba = ObjectAnimator.ofFloat(N, View.TRANSLATION_Y, 0.0f);
+        ba = ObjectAnimator.ofFloat(logicTopMenu, View.TRANSLATION_Y, 0.0f);
         ba.setDuration(500L);
         ba.setInterpolator(new DecelerateInterpolator());
-        ca = ObjectAnimator.ofFloat(N, View.TRANSLATION_Y, N.getHeight() * (-1));
+        ca = ObjectAnimator.ofFloat(logicTopMenu, View.TRANSLATION_Y, logicTopMenu.getHeight() * (-1));
         ca.setDuration(300L);
         ca.setInterpolator(new DecelerateInterpolator());
         da = true;

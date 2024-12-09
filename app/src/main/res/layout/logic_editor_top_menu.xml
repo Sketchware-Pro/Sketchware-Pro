@@ -2,8 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="48dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
-    android:background="@macro/m3_comp_top_app_bar_small_container_color"
+    android:background="?colorSurface"
     android:paddingVertical="8dp">
 
     <com.google.android.material.card.MaterialCardView
@@ -61,7 +62,8 @@
                 android:layout_height="18dp"
                 android:layout_marginLeft="4dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/abc_ic_menu_copy_mtrl_am_alpha" />
+                android:src="@drawable/abc_ic_menu_copy_mtrl_am_alpha"
+                tools:tint="?attr/colorControlNormal" />
 
             <TextView
                 android:id="@+id/tv_copy"

@@ -178,7 +178,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         properties.offset = Environment.getExternalStorageDirectory();
         properties.extensions = null;
 
-        FilePickerDialog dialog = new FilePickerDialog(this, properties);
+        FilePickerDialog dialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
         dialog.setTitle("Select an asset file");
         dialog.setDialogSelectionListener(selections -> {
             for (String path : selections) {
