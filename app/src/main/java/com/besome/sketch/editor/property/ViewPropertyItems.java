@@ -138,6 +138,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             case "property_indeterminate" -> d(property, bean.indeterminate);
             case "property_inject" -> b(property, bean.inject);
             case "property_convert" -> b(property, bean.convert, String.valueOf(bean.type));
+            case "property_visibility" -> c(property, bean.visibility);
         }
     }
 
@@ -421,6 +422,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         }
         a(bean, "property_padding");
         a(bean, "property_margin");
+        a(bean, "property_visibility");
         if (classInfo.a("LinearLayout")) {
             a(bean, "property_orientation");
             a(bean, "property_weight_sum");
@@ -741,8 +743,8 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                     case "property_input_type" -> bean.text.inputType = selectorItem.getValue();
                     case "property_ime_option" -> bean.text.imeOption = selectorItem.getValue();
                     case "property_spinner_mode" -> bean.spinnerMode = selectorItem.getValue();
-                    case "property_first_day_of_week" ->
-                            bean.firstDayOfWeek = selectorItem.getValue();
+                    case "property_first_day_of_week" -> bean.firstDayOfWeek = selectorItem.getValue();
+                    case "property_visibility" -> bean.visibility = selectorItem.getValue();
                 }
             } else if (view instanceof PropertyStringSelectorItem stringSelectorItem) {
                 switch (stringSelectorItem.getKey()) {

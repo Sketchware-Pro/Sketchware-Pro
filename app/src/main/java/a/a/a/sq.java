@@ -2,6 +2,7 @@ package a.a.a;
 
 import android.graphics.Color;
 import android.util.Pair;
+import android.view.View;
 import android.view.Gravity;
 
 import com.besome.sketch.beans.ColorBean;
@@ -35,6 +36,7 @@ public class sq {
     public static Pair<Integer, String>[] g;
     public static Pair<Integer, String>[] h;
     public static Pair<Integer, String>[] i;
+    public static Pair<Integer, String>[] visibilities;
     public static String[] j;
     public static String[] k;
     public static String[] l;
@@ -93,6 +95,7 @@ public class sq {
         K = new ColorBean[]{new ColorBean(Color.TRANSPARENT, "TRANSPARENT", Color.parseColor("#9E9E9E"), R.drawable.checked_grey_32)};
         L = new ColorBean[]{new ColorBean(0xffffff, "NONE", Color.parseColor("#9E9E9E"), R.drawable.checked_grey_32)};
         M = new int[]{R.color.scolor_blue_01, R.color.scolor_red_02, R.color.scolor_green_02, R.color.scolor_dark_yellow_01};
+        visibilities = new Pair[]{ new Pair<>(View.VISIBLE, "visible"), new Pair<>(View.INVISIBLE, "invisible"), new Pair<>(View.GONE, "gone") };
     }
 
     public static String a(int gravity) {
@@ -161,6 +164,7 @@ public class sq {
             case "property_spinner_mode" -> f;
             case "property_choice_mode" -> g;
             case "property_first_day_of_week" -> h;
+            case "property_visibility" -> visibilities;
             default -> new Pair[0];
         };
     }
