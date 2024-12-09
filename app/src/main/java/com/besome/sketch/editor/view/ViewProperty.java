@@ -66,6 +66,8 @@ public class ViewProperty extends LinearLayout implements Kw {
     private ObjectAnimator showAllShower;
     private ObjectAnimator showAllHider;
     private boolean showAllVisible = true;
+    private TextView viewName;
+    private ImageView viewIcon;
 
     public ViewProperty(Context context) {
         super(context);
@@ -219,6 +221,8 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     private void initialize(Context context) {
         wB.a(context, this, R.layout.view_property);
+        viewName = findViewById(R.id.view_name);
+        viewIcon = findViewById(R.id.view_icon);
         layoutPropertyGroup = findViewById(R.id.layout_property_group);
         CustomHorizontalScrollView hcvProperty = findViewById(R.id.hcv_property);
         propertyLayout = findViewById(R.id.property_layout);
@@ -273,6 +277,8 @@ public class ViewProperty extends LinearLayout implements Kw {
     }
     
     public void selectView(ViewBean viewBean) {
+        viewName.setText(viewBean.id);
+        viewIcon.setImageResource(ViewBean.getViewTypeResId(viewBean.type));
         if (propertyTargetChangeListener != null) {
             propertyTargetChangeListener.a(viewBean.id);
         }
