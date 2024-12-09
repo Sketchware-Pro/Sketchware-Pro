@@ -31,6 +31,7 @@ import a.a.a.Rs;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.ThemeUtils;
 
 public class CustomBlocksDialog {
     public static void show(Activity context, String sc_id) {
@@ -91,7 +92,7 @@ public class CustomBlocksDialog {
         tw.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-
+        tw.setTextColor(ThemeUtils.getColor(tw, R.attr.colorOnSurface));
         String append = "";
 
         if (BlockLoader.getBlockInfo(bean.opCode).isMissing /*getCode().equals(BlockLoader.NOT_FOUND)*/) {
