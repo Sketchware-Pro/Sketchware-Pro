@@ -277,8 +277,6 @@ public class ViewProperty extends LinearLayout implements Kw {
     }
     
     public void selectView(ViewBean viewBean) {
-        viewName.setText(viewBean.id);
-        viewIcon.setImageResource(ViewBean.getViewTypeResId(viewBean.type));
         if (propertyTargetChangeListener != null) {
             propertyTargetChangeListener.a(viewBean.id);
         }
@@ -300,7 +298,9 @@ public class ViewProperty extends LinearLayout implements Kw {
     public void a(String str) {
         for (int i = 0; i < projectActivityViews.size(); i++) {
             if (projectActivityViews.get(i).id.equals(str)) {
-                layoutStructureAdapter.setSelectedItemPosition(i);
+                var viewBean = projectActivityViews.get(i);
+                viewName.setText(viewBean.id);
+                viewIcon.setImageResource(ViewBean.getViewTypeResId(viewBean.type));
                 return;
             }
         }
