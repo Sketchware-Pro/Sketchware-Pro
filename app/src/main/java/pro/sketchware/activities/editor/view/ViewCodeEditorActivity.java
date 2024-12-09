@@ -21,6 +21,7 @@ import a.a.a.jC;
 import com.besome.sketch.beans.HistoryViewBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
+import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import io.github.rosemoe.sora.widget.CodeEditor;
@@ -36,6 +37,7 @@ import pro.sketchware.databinding.ViewCodeEditorBinding;
 import pro.sketchware.managers.inject.InjectRootLayoutManager;
 import pro.sketchware.tools.ViewBeanParser;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.relativelayout.CircularDependencyDetector;
 
 public class ViewCodeEditorActivity extends BaseAppCompatActivity {
     private ViewCodeEditorBinding binding;
@@ -241,13 +243,38 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
     }
 
     private void save() {
-        if (isContentModified()) {
-            content = editor.getText().toString();
-            if (!isEdited) {
-                isEdited = true;
+        try {
+            if (isContentModified()) {
+                // Parse content to validate circular dependencies
+                var parser = new ViewBeanParser(editor.getText().toString());
+                parser.setSkipRoot(true);
+
+                var parsedLayout = parser.parse();
+                for (ViewBean viewBean : parsedLayout) {
+                    CircularDependencyDetector detector = new CircularDependencyDetector(parsedLayout, viewBean);
+                    for (String attr : viewBean.parentAttributes.keySet()) {
+                        String targetId = viewBean.parentAttributes.get(attr);
+                        if (!detector.isLegalAttribute(targetId, attr)) {
+                            SketchwareUtil.toastError("Circular dependency found in \"" + viewBean.name + "\"\n" +
+                                    "Please resolve the issue before saving");
+                            return;
+                        }
+                    }
+                }
+
+                // Update content only after validation
+                content = editor.getText().toString();
+                if (!isEdited) {
+                    isEdited = true;
+                }
+                SketchwareUtil.toast("Saved");
+            } else {
+                SketchwareUtil.toast("No changes to save");
             }
+        } catch (Exception e) {
+            SketchwareUtil.toastError(e.toString());
         }
-        SketchwareUtil.toast("Saved");
+
     }
 
     private boolean isContentModified() {

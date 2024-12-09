@@ -38,6 +38,7 @@ import pro.sketchware.databinding.PropertyInputItemBinding;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
 import pro.sketchware.databinding.PropertySwitchItemSinglelineBinding;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.relativelayout.CircularDependencyDetector;
 
 @SuppressLint("ViewConstructor")
 public class PropertyAttributesItem extends LinearLayout implements View.OnClickListener {
@@ -203,7 +204,7 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                                             .setTitle("Choose an id")
                                             .setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, ids), (d2, w2) -> {
                                                 var id = ids.get(w2);
-                                                if (isItLegalState(id, attr)) {
+                                                if (new CircularDependencyDetector(beans, bean).isLegalAttribute(id, attr)) {
                                                     value.put(attr, id);
                                                     if (valueChangeListener != null)
                                                         valueChangeListener.a(key, value);
@@ -224,15 +225,6 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                     .setNegativeButton("Cancel", (d, which) -> d.dismiss())
                     .show();
         });
-    }
-
-    private boolean isItLegalState(String targetId, String attr) {
-        for (ViewBean viewBean : beans) {
-            if (viewBean.id.equals(targetId) && viewBean.parentAttributes.containsKey(attr)) {
-                return !viewBean.parentAttributes.get(attr).equals(bean.id);
-            }
-        }
-        return true;
     }
 
     private class AttributesAdapter extends ListAdapter<String, RecyclerView.ViewHolder> {
