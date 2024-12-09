@@ -719,7 +719,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
         builder.setView(binding.getRoot());
         builder.setPositiveButton(
-                R.string.common_word_add,
+                R.string.common_word_save,
                 (d, w) -> {
                     var inputValue = input.getText().toString().trim();
                     if (!inputValue.isEmpty()) {
