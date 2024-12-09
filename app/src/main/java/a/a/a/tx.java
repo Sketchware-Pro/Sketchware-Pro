@@ -30,6 +30,7 @@ import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import mod.hey.studios.util.Helper;
 import pro.sketchware.utility.FileUtil;
