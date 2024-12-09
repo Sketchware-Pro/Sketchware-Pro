@@ -770,7 +770,9 @@ public class Jx {
 
                 if (!isViewBindingEnabled) {
                     fields.add("private FloatingActionButton _fab;");
-                    initializeMethodCode.add("_fab = findViewById(R.id._fab);");
+                    initializeMethodCode.add("_fab = " +
+                            (projectFileBean.fileName.contains("_fragment") ? "_view." : "") +
+                            "findViewById(R.id._fab);");
                 }
             }
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER) && !projectFileBean.fileName.contains("_fragment")) {
