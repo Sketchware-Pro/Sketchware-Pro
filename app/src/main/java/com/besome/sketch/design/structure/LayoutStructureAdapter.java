@@ -15,9 +15,15 @@ import pro.sketchware.databinding.LayoutStructureItemBinding;
 
 
 public class LayoutStructureAdapter extends ListAdapter<ViewBean, LayoutStructureAdapter.LayoutStructureAdapterViewHolder> {
-     
+    
+    private LayoutStructureItemListener layoutStructureItemListener;
+    
     public LayoutStructureAdapter() {
         super(new LayoutStructureAdapterDiffCallback());
+    }
+    
+    public void setLayoutStructureItemListener(LayoutStructureItemListener layoutStructureItemListener) {
+        this.layoutStructureItemListener = layoutStructureItemListener;
     }
     
     @NonNull
@@ -31,6 +37,9 @@ public class LayoutStructureAdapter extends ListAdapter<ViewBean, LayoutStructur
     public void onBindViewHolder(@NonNull LayoutStructureAdapterViewHolder holder, int position) {
         var bean = getItem(position);
         var imgRes = ViewBean.getViewTypeResId(bean.type);
+        holder.binding.getRoot().setOnClickListener(v -> {
+            if (layoutStructureItemListener != null) layoutStructureItemListener.onClick(bean);
+        });
         holder.binding.viewIcon.setImageResource(imgRes);
         holder.binding.viewName.setText(bean.id);
     }
