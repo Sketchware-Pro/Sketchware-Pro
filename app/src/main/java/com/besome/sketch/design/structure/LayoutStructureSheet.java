@@ -31,6 +31,7 @@ public class LayoutStructureSheet extends SideSheetDialog {
         adapter.setLayoutStructureItemListener(bean -> {
             var prop = getViewProperty(context);
             if (prop != null) prop.selectView(bean);
+            hide();
         });
         binding.list.setAdapter(adapter);
         adapter.submitList(viewsList);
