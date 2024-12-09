@@ -126,7 +126,7 @@ dependencies {
     implementation files('libs/android-svg.jar')
 
     def editorGroupId = "io.github.Rosemoe.sora-editor"
-    implementation platform("$editorGroupId:bom:0.23.4-467c137-SNAPSHOT")
+    implementation platform("$editorGroupId:bom:0.23.5")
     implementation "$editorGroupId:editor"
     implementation "$editorGroupId:language-java"
     implementation "$editorGroupId:language-textmate"
