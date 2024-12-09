@@ -44,6 +44,16 @@
             android:src="@drawable/ic_mtrl_add"
             android:background="?selectableItemBackgroundBorderless"/>
 
+        <ImageView
+            android:id="@+id/source_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_mtrl_code"
+            android:visibility="gone"
+            android:background="?selectableItemBackgroundBorderless"/>
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
