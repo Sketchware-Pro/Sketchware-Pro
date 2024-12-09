@@ -1,14 +1,16 @@
 package mod.hey.studios.project.custom_blocks;
 
-import static pro.sketchware.utility.SketchwareUtil.getDip;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.CompoundButton;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.BlockBean;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -16,15 +18,18 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
 import a.a.a.Zx;
+import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogPaletteBinding;
+import pro.sketchware.databinding.ItemCustomBlockBinding;
 import pro.sketchware.databinding.ViewUsedCustomBlocksBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
 
 import a.a.a.aB;
 import a.a.a.Rs;
@@ -33,35 +38,50 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class CustomBlocksDialog {
-    public static void show(Activity context, String sc_id) {
+
+    private final HashMap<Integer, Boolean> selectedBlocks = new HashMap<>();
+    private String sc_id;
+
+    public void show(Activity context, String sc_id) {
+        this.sc_id = sc_id;
         ViewUsedCustomBlocksBinding dialogBinding = ViewUsedCustomBlocksBinding.inflate(context.getLayoutInflater());
-        var blockContainer = dialogBinding.customBlocksContainer;
-        var subtitle = "You haven't used any custom blocks in this project.";
-
-        CustomBlocksManager customBlocksManager = new CustomBlocksManager(sc_id);
-
-        ArrayList<BlockBean> list = customBlocksManager.getUsedBlocks();
-
-        if (!list.isEmpty()) {
-            subtitle = "You have used " + list.size() + " custom block(s) in this project.";
-            for (int i = 0; i < list.size(); i++) {
-                BlockBean block = list.get(i);
-
-                dialogBinding.customBlocksContainer.addView(createBlockInfo(context, block, sc_id));
-                blockContainer.addView(createBlock(context, block));
-
-                if (i != (list.size() - 1)) blockContainer.addView(createSpace(context));
-            }
-        }
 
         aB dialog = new aB(context);
         dialog.b(Helper.getResString(R.string.used_custom_blocks));
 
-        if (list.isEmpty()) {
+        String subtitle = "You haven't used any custom blocks in this project.";
+
+        CustomBlocksManager customBlocksManager = new CustomBlocksManager(sc_id);
+
+        ArrayList<BlockBean> customBlocks = customBlocksManager.getUsedBlocks();
+
+        if (!customBlocks.isEmpty()) {
+            subtitle = "You have used " + customBlocks.size() + " custom block(s) in this project.";
+
+            dialogBinding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            BlocksAdapter adapter = new BlocksAdapter(customBlocks, selectedBlocks::put);
+
+            dialogBinding.recyclerView.setAdapter(adapter);
+        }
+
+        if (customBlocks.isEmpty()) {
             dialog.a(subtitle);
         } else {
-            dialog.b(Helper.getResString(R.string.common_word_import_all), v -> {
-                importAll(context, customBlocksManager, list);
+            dialog.b(Helper.getResString(R.string.common_word_import), v -> {
+                ArrayList<BlockBean> selectedBeans = new ArrayList<>();
+                for (int i = 0; i < customBlocks.size(); i++) {
+                    if (Boolean.TRUE.equals(selectedBlocks.getOrDefault(i, false))) {
+                        selectedBeans.add(customBlocks.get(i));
+                    }
+                }
+
+                if (selectedBeans.isEmpty()) {
+                    SketchwareUtil.toastError("Please Select at least one block to import");
+                    return;
+                }
+
+                importAll(context, customBlocksManager, selectedBeans);
                 dialog.dismiss();
             });
             dialog.a(dialogBinding.getRoot());
@@ -71,65 +91,7 @@ public class CustomBlocksDialog {
         dialog.show();
     }
 
-    // Helpers
-
-    private static LinearLayout createSpace(Context c) {
-        LinearLayout lin = new LinearLayout(c);
-        LinearLayout.LayoutParams prm = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) getDip(1));
-
-        prm.setMargins(0, (int) getDip(10), 0, (int) getDip(0));
-
-        lin.setLayoutParams(prm);
-        lin.setBackgroundColor(Color.parseColor("#9E9E9E"));
-        lin.setOrientation(LinearLayout.VERTICAL);
-
-        return lin;
-    }
-
-    private static TextView createBlockInfo(Context c, BlockBean bean, String sc_id) {
-        TextView tw = new TextView(c);
-        tw.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        String append = "";
-
-        if (BlockLoader.getBlockInfo(bean.opCode).isMissing /*getCode().equals(BlockLoader.NOT_FOUND)*/) {
-            // This block is missing
-            if (BlockLoader.getBlockFromProject(sc_id, bean.opCode).isMissing) {
-                append = " (Missing)";
-            } else {
-                append = " (Found in data/" + sc_id + "/custom_blocks)";
-            }
-        }
-
-        tw.setText(bean.opCode + append);
-        tw.setPadding(
-                0,
-                (int) getDip(10),
-                0,
-                (int) getDip(10)
-        );
-
-        return tw;
-    }
-
-    private static Rs createBlock(Context c, BlockBean var1) {
-        Rs var2 =
-                new Rs(
-                        c,
-                        Integer.parseInt(var1.id),
-                        var1.spec,
-                        var1.type,
-                        var1.typeName,
-                        var1.opCode
-                );
-        var2.e = var1.color;
-
-        return var2;
-    }
-
-    private static void importAll(Context context, CustomBlocksManager customBlocksManager, ArrayList<BlockBean> list) {
+    private void importAll(Context context, CustomBlocksManager customBlocksManager, ArrayList<BlockBean> list) {
         ArrayList<HashMap<String, Object>> blocksList = new ArrayList<>();
         String paletteDir = getConfigPath(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH);
         String blocksDir = getConfigPath(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH);
@@ -162,17 +124,18 @@ public class CustomBlocksDialog {
                     addBlocksToList(customBlocksManager, list, blocksList, selectedPalette.get() + 9);
                     allBlocksList.addAll(blocksList);
                     FileUtil.writeFile(blocksDir, new Gson().toJson(allBlocksList));
+                    BlockLoader.refresh();
                     SketchwareUtil.toast("Blocks imported!");
                 })
                 .show();
     }
 
-    private static String getConfigPath(String settingKey) {
+    private String getConfigPath(String settingKey) {
         return FileUtil.getExternalStorageDir() + ConfigActivity.getStringSettingValueOrSetAndGet(
                 settingKey, (String) ConfigActivity.getDefaultValue(settingKey));
     }
 
-    private static ArrayList<HashMap<String, Object>> loadJsonList(String path) {
+    private ArrayList<HashMap<String, Object>> loadJsonList(String path) {
         ArrayList<HashMap<String, Object>> result = new ArrayList<>();
         if (FileUtil.isExistFile(path)) {
             try {
@@ -185,7 +148,7 @@ public class CustomBlocksDialog {
         return result;
     }
 
-    private static void showCreatePaletteDialog(Context context, ArrayList<HashMap<String, Object>> paletteList, String paletteDir,
+    private void showCreatePaletteDialog(Context context, ArrayList<HashMap<String, Object>> paletteList, String paletteDir,
                                                 CustomBlocksManager customBlocksManager, ArrayList<BlockBean> list, ArrayList<HashMap<String, Object>> blocksList,
                                                 ArrayList<HashMap<String, Object>> allBlocksList, String blocksDir) {
 
@@ -226,6 +189,7 @@ public class CustomBlocksDialog {
             addBlocksToList(customBlocksManager, list, blocksList, paletteList.size() + 8);
             allBlocksList.addAll(blocksList);
             FileUtil.writeFile(blocksDir, new Gson().toJson(allBlocksList));
+            BlockLoader.refresh();
             SketchwareUtil.toast("Blocks imported!");
             dialog.dismiss();
         });
@@ -233,7 +197,7 @@ public class CustomBlocksDialog {
         dialog.show();
     }
 
-    private static boolean validateInput(DialogPaletteBinding binding, String name, String color) {
+    private boolean validateInput(DialogPaletteBinding binding, String name, String color) {
         if (name.isEmpty()) {
             binding.name.setError("Name cannot be empty");
             binding.name.requestFocus();
@@ -254,7 +218,7 @@ public class CustomBlocksDialog {
         return true;
     }
 
-    private static void addBlocksToList(CustomBlocksManager customBlocksManager, ArrayList<BlockBean> list,
+    private void addBlocksToList(CustomBlocksManager customBlocksManager, ArrayList<BlockBean> list,
                                         ArrayList<HashMap<String, Object>> blocksList, int paletteIndex) {
 
         for (BlockBean block : list) {
@@ -273,8 +237,114 @@ public class CustomBlocksDialog {
         }
     }
 
-    private static String getHexColor(int color) {
+    private String getHexColor(int color) {
         return String.format("#%06X", (0xFFFFFF & color));
+    }
+
+    public class BlocksAdapter extends RecyclerView.Adapter<BlocksAdapter.ViewHolder> {
+
+        private final ArrayList<BlockBean> blockBeans;
+        private final BiConsumer<Integer, Boolean> onCheckedChangeListener;
+
+        public BlocksAdapter(ArrayList<BlockBean> blockBeans, BiConsumer<Integer, Boolean> onCheckedChangeListener) {
+            this.blockBeans = blockBeans;
+            this.onCheckedChangeListener = onCheckedChangeListener;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ItemCustomBlockBinding binding = ItemCustomBlockBinding.inflate(
+                    LayoutInflater.from(parent.getContext()), parent, false
+            );
+            return new ViewHolder(binding);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.bind(blockBeans.get(position), position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return blockBeans.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            private final ItemCustomBlockBinding binding;
+
+            public ViewHolder(@NonNull ItemCustomBlockBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+            }
+
+            public void bind(@NonNull BlockBean block, int position) {
+                String blockInfo = getBlockInfo(block);
+                binding.tvBlockId.setText(blockInfo);
+                addCustomBlockView(binding.customBlocksContainer, itemView.getContext(), block);
+
+                setupCheckBox(block, position);
+                setupClickListener(block, blockInfo);
+            }
+
+            private void addCustomBlockView(ViewGroup container, Context context, BlockBean block) {
+                container.addView(createBlock(context, block));
+            }
+
+            private void setupCheckBox(@NonNull BlockBean block, int position) {
+                boolean canImport = isBlockImportable(block);
+                binding.checkBox.setEnabled(canImport);
+
+                if (canImport) {
+                    binding.checkBox.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+                        if (onCheckedChangeListener != null) {
+                            onCheckedChangeListener.accept(position, isChecked);
+                        }
+                    });
+                }
+            }
+
+            private void setupClickListener(@NonNull BlockBean block, String blockInfo) {
+                boolean canImport = isBlockImportable(block);
+
+                binding.transparentOverlay.setOnClickListener(view -> {
+                    if (canImport) {
+                        binding.checkBox.setChecked(!binding.checkBox.isChecked());
+                    } else if (blockInfo.equals("Missing")) {
+                        SketchwareUtil.toastError("This block is Missing");
+                    } else {
+                        SketchwareUtil.toastError("This block already exists in your collection");
+                    }
+                });
+            }
+
+            private boolean isBlockImportable(@NonNull BlockBean block) {
+                ExtraBlockInfo blockInfo = BlockLoader.getBlockInfo(block.opCode);
+                return blockInfo.isMissing && !BlockLoader.getBlockFromProject(sc_id, block.opCode).isMissing;
+            }
+
+            private String getBlockInfo(@NonNull BlockBean block) {
+                ExtraBlockInfo blockInfo = BlockLoader.getBlockInfo(block.opCode);
+                if (BlockLoader.getBlockFromProject(sc_id, block.opCode).isMissing && blockInfo.isMissing) {
+                    return "Missing";
+                }
+                return block.opCode;
+            }
+        }
+
+        private Rs createBlock(Context context, BlockBean blockBean) {
+            Rs block = new Rs(
+                    context,
+                    Integer.parseInt(blockBean.id),
+                    blockBean.spec,
+                    blockBean.type,
+                    blockBean.typeName,
+                    blockBean.opCode
+            );
+            block.e = blockBean.color;
+            return block;
+        }
     }
 
 }

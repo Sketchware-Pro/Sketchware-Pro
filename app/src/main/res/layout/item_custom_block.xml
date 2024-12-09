@@ -1,0 +1,60 @@
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="6dp"
+    app:cardBackgroundColor="?colorSurfaceContainerHigh"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="0.5dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/tv_block_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/checkBox"
+                android:paddingVertical="8dp"
+                android:paddingLeft="4dp"
+                android:singleLine="true"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                tools:text="Block ID" />
+
+            <LinearLayout
+                android:id="@+id/customBlocksContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_block_id"
+                android:layout_alignStart="@id/tv_block_id"
+                android:orientation="horizontal"
+                android:paddingLeft="4dp"
+                android:paddingBottom="8dp"/>
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/transparentOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:clickable="true" />
+
+    </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>

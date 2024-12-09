@@ -858,7 +858,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      * Shows a {@link CustomBlocksDialog}.
      */
     void toCustomBlocksViewer() {
-        CustomBlocksDialog.show(this, sc_id);
+        new CustomBlocksDialog().show(this, sc_id);
     }
 
     /**
