@@ -780,7 +780,7 @@ public class Lx {
                                     parameterSpec.substring(lastIndexOfPeriod + 1);
                             break;
                         } else {
-                            continue processingParameters;
+                            continue;
                         }
                 }
 
@@ -796,7 +796,7 @@ public class Lx {
     /**
      * @return Code of an adapter for a ListView
      */
-    public static String getListAdapterCode(Ox ox, String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic) {
+    public static String getListAdapterCode(Ox ox, String widgetName, String itemResourceName, ArrayList<ViewBean> views, String onBindCustomViewLogic, boolean isViewBindingEnabled) {
         String className = a(widgetName);
 
         String initializers = "";
@@ -831,18 +831,26 @@ public class Lx {
                 "public long getItemId(int _index) {\r\n" +
                 "return _index;\r\n" +
                 "}\r\n" +
-                "\r\n" +
-                "@Override\r\n" +
-                "public View getView(final int _position, View _v, ViewGroup _container) {\r\n" +
-                "LayoutInflater _inflater = getLayoutInflater();\r\n" +
-                "View _view = _v;\r\n" +
-                "if (_view == null) {\r\n" +
-                "_view = _inflater.inflate(R.layout." + itemResourceName + ", null);\r\n" +
-                "}\r\n";
+                "\r\n";
+        if (isViewBindingEnabled) {
+            String bindingName = ViewBindingBuilder.generateFileNameForLayout(itemResourceName);
+            baseCode += "@Override\r\n" +
+                    "public View getView(final int _position, View _v, ViewGroup _container) {\r\n" +
+                    bindingName + "binding = " + bindingName + ".inflate(getLayoutInflater());\r\n" +
+                    "View _view = binding.getRoot();\r\n";
+        } else {
+            baseCode += "@Override\r\n" +
+                    "public View getView(final int _position, View _v, ViewGroup _container) {\r\n" +
+                    "LayoutInflater _inflater = getLayoutInflater();\r\n" +
+                    "View _view = _v;\r\n" +
+                    "if (_view == null) {\r\n" +
+                    "_view = _inflater.inflate(R.layout." + itemResourceName + ", null);\r\n" +
+                    "}\r\n";
 
-        if (!TextUtils.isEmpty(initializers)) {
-            baseCode += "\r\n" +
-                    initializers;
+            if (!TextUtils.isEmpty(initializers)) {
+                baseCode += "\r\n" +
+                        initializers;
+            }
         }
 
         if (!TextUtils.isEmpty(onBindCustomViewLogic.trim())) {
@@ -1111,7 +1119,7 @@ public class Lx {
             if (viewBinding) {
                 initializer = name + " = " +
                         "binding." +
-                        ViewBindingBuilder.generateId(name) + ";";
+                        ViewBindingBuilder.generateParameterFromId(name) + ";";
             } else {
                 initializer = name + " = " +
                         (isInFragment ? "_view.findViewById(R.id." : "findViewById(R.id.") +
@@ -3126,7 +3134,7 @@ public class Lx {
         return formattedCode.toString();
     }
 
-    public static String pagerAdapter(Ox ox, String pagerName, String pagerItemLayoutName, ArrayList<ViewBean> pagerItemViews, String onBindCustomViewLogic) {
+    public static String pagerAdapter(Ox ox, String pagerName, String pagerItemLayoutName, ArrayList<ViewBean> pagerItemViews, String onBindCustomViewLogic, boolean isViewBindingEnabled) {
         String adapterName = a(pagerName);
 
         String viewsInitializer = "";
@@ -3178,14 +3186,21 @@ public class Lx {
                 "public CharSequence getPageTitle(int pos) {\r\n" +
                 "return onTabLayoutNewTabAdded(pos);\r\n" +
                 "}\r\n" +
-                "\r\n" +
-                "@Override\r\n" +
-                "public Object instantiateItem(ViewGroup _container,  final int _position) {\r\n" +
-                "View _view = LayoutInflater.from(_context).inflate(R.layout." + pagerItemLayoutName + ", _container, false);\r\n";
+                "\r\n";
+        if (isViewBindingEnabled) {
+            String bindingName = ViewBindingBuilder.generateFileNameForLayout(pagerItemLayoutName);
+            baseCode += "@Override\r\n" +
+                    "public Object instantiateItem(ViewGroup _container, final int _position) {\r\n" +
+                    bindingName + " binding = " + bindingName + ".inflate(LayoutInflater.from(_context), _container, false);\r\n";
+        } else {
+            baseCode += "@Override\r\n" +
+                    "public Object instantiateItem(ViewGroup _container,  final int _position) {\r\n" +
+                    "View _view = LayoutInflater.from(_context).inflate(R.layout." + pagerItemLayoutName + ", _container, false);\r\n";
 
-        if (!TextUtils.isEmpty(viewsInitializer)) {
-            baseCode += "\r\n" +
-                    viewsInitializer;
+            if (!TextUtils.isEmpty(viewsInitializer)) {
+                baseCode += "\r\n" +
+                        viewsInitializer;
+            }
         }
 
         if (!TextUtils.isEmpty(onBindCustomViewLogic)) {
@@ -3201,7 +3216,7 @@ public class Lx {
                 "}\r\n";
     }
 
-    public static String recyclerViewAdapter(Ox ox, String recyclerViewName, String itemLayoutName, ArrayList<ViewBean> itemViews, String onBindCustomViewLogic) {
+    public static String recyclerViewAdapter(Ox ox, String recyclerViewName, String itemLayoutName, ArrayList<ViewBean> itemViews, String onBindCustomViewLogic, boolean isViewBindingEnabled) {
         String adapterName = a(recyclerViewName);
         String viewsInitializer = "";
         StringBuilder viewInitBuilder = new StringBuilder(viewsInitializer);
@@ -3229,14 +3244,22 @@ public class Lx {
                 "_v.setLayoutParams(_lp);\r\n" +
                 "return new ViewHolder(_v);\r\n" +
                 "}\r\n" +
-                "\r\n" +
-                "@Override\r\n" +
-                "public void onBindViewHolder(ViewHolder _holder, final int _position) {\r\n" +
-                "View _view = _holder.itemView;\r\n";
+                "\r\n";
+        if (isViewBindingEnabled) {
+            String bindingName = ViewBindingBuilder.generateFileNameForLayout(itemLayoutName);
+            baseCode += "@Override\r\n" +
+                    "public void onBindViewHolder(ViewHolder _holder, final int _position) {\r\n" +
+                    "View _view = _holder.itemView;\r\n" +
+                    bindingName + " binding = " + bindingName + ".bind(_view);\r\n";
+        } else {
+            baseCode += "@Override\r\n" +
+                    "public void onBindViewHolder(ViewHolder _holder, final int _position) {\r\n" +
+                    "View _view = _holder.itemView;\r\n";
 
-        if (!TextUtils.isEmpty(viewsInitializer)) {
-            baseCode += "\r\n" +
-                    viewsInitializer;
+            if (!TextUtils.isEmpty(viewsInitializer)) {
+                baseCode += "\r\n" +
+                        viewsInitializer;
+            }
         }
 
         if (!TextUtils.isEmpty(onBindCustomViewLogic)) {

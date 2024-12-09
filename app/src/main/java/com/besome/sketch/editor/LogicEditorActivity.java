@@ -1589,7 +1589,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public RadioButton d(String type, String id) {
         if (isViewBindingEnabled) {
-            id = ViewBindingBuilder.generateId(id);
+            id = ViewBindingBuilder.generateParameterFromId(id);
         }
         RadioButton radioButton = new RadioButton(this);
         radioButton.setText(type + " : " + id);
