@@ -108,7 +108,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
         projectLibrary = jC.c(sc_id).c();
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setTitle("Code Editor");
+        getSupportActionBar().setTitle("XML Editor");
         getSupportActionBar().setSubtitle(title);
         binding.toolbar.setNavigationOnClickListener(v -> {
             if (onBackPressedCallback.isEnabled()) {

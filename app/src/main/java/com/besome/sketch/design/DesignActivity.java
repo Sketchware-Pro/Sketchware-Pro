@@ -374,7 +374,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     menu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures");
                 }
                 if (isViewTab) {
-                    menu.add(Menu.NONE, 7, Menu.NONE, "Direct code editor");
+                    menu.add(Menu.NONE, 7, Menu.NONE, "Direct XML editor");
                 }
 
                 popupMenu.setOnMenuItemClickListener(item -> {
