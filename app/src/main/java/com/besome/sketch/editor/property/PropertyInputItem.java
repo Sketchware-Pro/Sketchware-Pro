@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -65,6 +66,7 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyInputItemBinding;
 import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
+import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.lib.highlighter.SyntaxScheme;
 import pro.sketchware.utility.FileUtil;
 
@@ -669,11 +671,34 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         builder.setPositiveButton(
                 R.string.common_word_next,
                 (d, w) -> {
-                    setAttributeValue(input.getText().toString(), attributes);
+                    var inputValue = input.getText().toString().trim();
+                    if (!inputValue.isEmpty()) {
+                        setAttributeValue(inputValue, attributes);
+                    } else {
+                        d.cancel();
+                    }
                 });
         builder.setNegativeButton(R.string.common_word_cancel, (d, w) -> d.cancel());
         var dialog = builder.create();
         dialog.setOnCancelListener(d -> showInjectDialog());
+        dialog.setOnShowListener(
+                d -> {
+                    var positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setEnabled(!input.getText().toString().trim().isEmpty());
+
+                    input.addTextChangedListener(
+                            new BaseTextWatcher() {
+                                @Override
+                                public void onTextChanged(
+                                        CharSequence charSequence,
+                                        int start,
+                                        int before,
+                                        int after) {
+                                    positiveButton.setEnabled(
+                                            !input.getText().toString().trim().isEmpty());
+                                }
+                            });
+                });
         dialog.show();
     }
 
@@ -684,8 +709,9 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         PropertyPopupInputTextBinding binding =
                 PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
 
+        var input = binding.edInput;
         if (attributes.containsKey(attr)) {
-            binding.edInput.setText(attributes.get(attr));
+            input.setText(attributes.get(attr));
         }
 
         binding.tiInput.setHint(
@@ -695,11 +721,34 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         builder.setPositiveButton(
                 R.string.common_word_add,
                 (d, w) -> {
-                    attributes.put(attr, binding.edInput.getText().toString());
-                    saveAttributes(attributes);
+                    var inputValue = input.getText().toString().trim();
+                    if (!inputValue.isEmpty()) {
+                        attributes.put(attr, inputValue);
+                        saveAttributes(attributes);
+                    } else {
+                        d.cancel();
+                    }
                 });
         builder.setNegativeButton(R.string.common_word_cancel, null);
         var dialog = builder.create();
+        dialog.setOnShowListener(
+                d -> {
+                    var positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setEnabled(!input.getText().toString().trim().isEmpty());
+
+                    input.addTextChangedListener(
+                            new BaseTextWatcher() {
+                                @Override
+                                public void onTextChanged(
+                                        CharSequence charSequence,
+                                        int start,
+                                        int before,
+                                        int after) {
+                                    positiveButton.setEnabled(
+                                            !input.getText().toString().trim().isEmpty());
+                                }
+                            });
+                });
         dialog.show();
         dialog.setOnDismissListener(d -> showInjectDialog());
     }
