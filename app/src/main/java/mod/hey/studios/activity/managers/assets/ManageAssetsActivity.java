@@ -258,12 +258,15 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
 
     public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetsViewHolder> {
         
-        private static final String[] textExtensions = { 
-            ".txt", ".xml", ".java", ".json", ".csv", ".html", ".css", ".js", 
-            ".md", ".rtf", ".log", ".sql", ".yml", ".yaml", ".properties", ".ini",
-            ".kt", ".toml", ".kts", ".php", ".py", ".ts", ".md", ".sh", ".c", ".h",
-            ".hpp", ".cpp"
-        };
+        private static final String[] textExtensions = {  
+    ".txt", ".xml", ".java", ".json", ".csv", ".html", ".css", ".js",  
+    ".md", ".rtf", ".log", ".sql", ".yml", ".yaml", ".properties", ".ini",  
+    ".kt", ".toml", ".kts", ".php", ".py", ".ts", ".sh", ".c", ".h",  
+    ".hpp", ".cpp", ".bat", ".gradle", ".make", ".swift", ".vb", ".pl",  
+    ".rb", ".asm", ".lua", ".go", ".rs", ".r", ".tex", ".scss", ".less",  
+    ".mm", ".fs", ".ex", ".awk", ".vbscript", ".gml", ".xhtml", ".mkd",  
+    ".markdown", ".json5", ".cmd", ".tsx", ".jsx", ".sass", ".nim"  
+};
         
         @NonNull
         @Override
