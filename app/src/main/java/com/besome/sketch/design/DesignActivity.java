@@ -1017,7 +1017,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             if (activity == null) return;
 
             activity.runOnUiThread(() -> {
-                activity.runProject.setText("Building APK file...");
+                activity.runProject.setText("Building...");
                 activity.runProject.setClickable(false);
                 activity.r.a("P1I10", true);
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
