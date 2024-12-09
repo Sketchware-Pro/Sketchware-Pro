@@ -85,6 +85,7 @@
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
                 android:textAppearance="?attr/textAppearanceBodySmall"
+                android:maxLines="2"
                 tools:text="Their description" />
 
             <TextView

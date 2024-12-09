@@ -32,6 +32,7 @@ public class AboutResponseModel {
 
     public static class TeamMember {
         private String user_username;
+        private String description;
         private String user_img;
         private boolean is_core_team;
         private boolean is_active;
@@ -57,7 +58,7 @@ public class AboutResponseModel {
         }
 
         public String getDescription() {
-            return is_core_team ? "Core Team Member" : "Contributor";
+            return description.trim();
         }
     }
 
