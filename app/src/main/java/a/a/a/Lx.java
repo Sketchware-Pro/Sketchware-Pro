@@ -836,7 +836,7 @@ public class Lx {
             String bindingName = ViewBindingBuilder.generateFileNameForLayout(itemResourceName);
             baseCode += "@Override\r\n" +
                     "public View getView(final int _position, View _v, ViewGroup _container) {\r\n" +
-                    bindingName + "binding = " + bindingName + ".inflate(getLayoutInflater());\r\n" +
+                    bindingName + " binding = " + bindingName + ".inflate(getLayoutInflater());\r\n" +
                     "View _view = binding.getRoot();\r\n";
         } else {
             baseCode += "@Override\r\n" +

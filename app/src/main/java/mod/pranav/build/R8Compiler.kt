@@ -1,15 +1,13 @@
 package mod.pranav.build
 
 import a.a.a.yq
-
 import com.android.tools.r8.CompilationMode
 import com.android.tools.r8.OutputMode
 import com.android.tools.r8.R8
 import com.android.tools.r8.R8Command
 import com.android.tools.r8.origin.Origin
-
-import java.nio.file.Paths
 import java.nio.file.Files
+import java.nio.file.Paths
 
 class R8Compiler(
     private val rules: MutableList<String>,
@@ -33,6 +31,7 @@ class R8Compiler(
             .setOutput(output, OutputMode.DexIndexed)
             .setMode(CompilationMode.RELEASE)
             .build()
+
         R8.run(command)
     }
 }
