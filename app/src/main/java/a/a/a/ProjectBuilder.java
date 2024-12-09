@@ -951,14 +951,11 @@ public class ProjectBuilder {
         LogUtil.d(TAG, "About to run ProGuard with these arguments: " + args);
 
         Configuration configuration = new Configuration();
-        ConfigurationParser parser = new ConfigurationParser(args.toArray(new String[0]), System.getProperties());
 
-        try {
+        try (ConfigurationParser parser = new ConfigurationParser(args.toArray(new String[0]), System.getProperties())) {
             parser.parse(configuration);
         } catch (ParseException e) {
             throw new IOException(e);
-        } finally {
-            parser.close();
         }
 
         try {

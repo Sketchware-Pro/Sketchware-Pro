@@ -11,13 +11,25 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.besome.sketch.beans.ProjectFileBean;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -25,7 +37,17 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import java.io.IOException;
+import java.io.StringReader;
+
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import a.a.a.Kw;
 import a.a.a.OB;
@@ -41,7 +63,10 @@ import a.a.a.wB;
 import a.a.a.yB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyInputItemBinding;
 import pro.sketchware.databinding.PropertyPopupInputTextBinding;
+import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
+import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.lib.highlighter.SyntaxScheme;
 import pro.sketchware.utility.FileUtil;
 
@@ -135,7 +160,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                         showNumberDecimalInputDialog(-9999, 9999);
                 case "property_scale_x", "property_scale_y" -> showNumberDecimalInputDialog(0, 99);
                 case "property_convert" -> showAutoCompleteDialog();
-                case "property_inject" -> showTextInputDialog(1000, true);
+                case "property_inject" -> showInjectDialog();
             }
         }
     }
@@ -528,4 +553,314 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         return Arrays.asList(getResources().getStringArray(R.array.property_convert_options));
     }
 
+    /**
+     * Populates additional attributes for specific view types.
+     * 
+     * You can add more attributes directly to this list instead of introducing 
+     * another variable in the ViewBean class. Use the ViewBean#type field 
+     * or getClassInfo methods to identify the type of view and add attributes accordingly.
+     * 
+     * Examples:
+     * 
+     * // Using ViewBean#type
+     * if (bean.type == ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW) {
+     *     attrs.add("android:text");
+     * }
+     * 
+     * // Using getClassInfo
+     * if (bean.getClassInfo().a("TextView")) {
+     *     attrs.add("android:text");
+     * }
+     * if (bean.getClassInfo().b("LinearLayout")) {
+     *     attrs.add("android:orientation");
+     * }
+     * 
+     * Notes for getClassInfo:
+     * - a(String): Similar to instanceof for view class names.
+     * - b(String): Represents the actual type of the view, I think?. 
+     *   Idk if there's a difference between ViewBean#type and this.
+     * 
+     * @return A list of additional attributes for the specified view type.
+     */
+    private List<String> populateAttributes() {
+        List<String> attrs = new ArrayList<>();
+        attrs.add("android:elevation");
+        // Add more attributes here based on the view type
+        return attrs;
+    }
+
+    private void showInjectDialog() {
+        BottomSheetDialog dialog = new BottomSheetDialog(getContext());
+        var binding = PropertyPopupParentAttrBinding.inflate(LayoutInflater.from(getContext()));
+        dialog.setContentView(binding.getRoot());
+        dialog.show();
+
+        binding.title.setText(tvName.getText().toString());
+
+        var adapter = new AttributesAdapter();
+        adapter.setOnItemClickListener(
+                new AttributesAdapter.ItemClickListener() {
+                    @Override
+                    public void onItemClick(Map<String, String> attributes, String attr) {
+                        setAttributeValue(attr, attributes);
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onItemLongClick(Map<String, String> attributes, String attr) {
+                        dialog.dismiss();
+                        var builder =
+                                new MaterialAlertDialogBuilder(getContext())
+                                        .setTitle("Delete")
+                                        .setMessage("Are you sure you want to delete " + attr + "?")
+                                        .setPositiveButton(
+                                                R.string.common_word_yes,
+                                                (d, w) -> {
+                                                    attributes.remove(attr);
+                                                    saveAttributes(attributes);
+                                                })
+                                        .setNegativeButton(R.string.common_word_no, null);
+                        var deleteDialog = builder.create();
+                        deleteDialog.setOnDismissListener(d -> showInjectDialog());
+                        deleteDialog.show();
+                    }
+                });
+        binding.recyclerView.setAdapter(adapter);
+        var dividerItemDecoration =
+                new DividerItemDecoration(
+                        binding.recyclerView.getContext(), LinearLayoutManager.VERTICAL);
+        binding.recyclerView.addItemDecoration(dividerItemDecoration);
+        var attributes = readAttributes();
+        adapter.setAttributes(attributes);
+        List<String> keys = new ArrayList<>(attributes.keySet());
+        adapter.submitList(keys);
+
+        binding.add.setOnClickListener(
+                v -> {
+                    addNewAttribute(attributes);
+                    dialog.dismiss();
+                });
+        binding.sourceCode.setVisibility(View.VISIBLE);
+        binding.sourceCode.setOnClickListener(
+                v -> {
+                    showTextInputDialog(9999, true);
+                    dialog.dismiss();
+                });
+    }
+
+    private void addNewAttribute(Map<String, String> attributes) {
+        var builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle("Add new attribute");
+
+        PropertyPopupInputTextBinding binding =
+                PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
+
+        var input = binding.edTiAutoCompleteInput;
+        binding.tiInput.setVisibility(View.GONE);
+        binding.tiAutoCompleteInput.setVisibility(View.VISIBLE);
+        binding.tiAutoCompleteInput.setHint("Enter new attribute");
+        input.setAdapter(
+                new ArrayAdapter<>(
+                        getContext(),
+                        android.R.layout.simple_list_item_1,
+                        populateAttributes().stream()
+                                .filter(attr -> !attributes.containsKey(attr))
+                                .collect(Collectors.toList())));
+
+        builder.setView(binding.getRoot());
+        builder.setPositiveButton(
+                R.string.common_word_next,
+                (d, w) -> {
+                    var inputValue = input.getText().toString().trim();
+                    if (!inputValue.isEmpty()) {
+                        setAttributeValue(inputValue, attributes);
+                    } else {
+                        d.cancel();
+                    }
+                });
+        builder.setNegativeButton(R.string.common_word_cancel, (d, w) -> d.cancel());
+        var dialog = builder.create();
+        dialog.setOnCancelListener(d -> showInjectDialog());
+        dialog.setOnShowListener(
+                d -> {
+                    var positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setEnabled(!input.getText().toString().trim().isEmpty());
+
+                    input.addTextChangedListener(
+                            new BaseTextWatcher() {
+                                @Override
+                                public void onTextChanged(
+                                        CharSequence charSequence,
+                                        int start,
+                                        int before,
+                                        int after) {
+                                    positiveButton.setEnabled(
+                                            !input.getText().toString().trim().isEmpty());
+                                }
+                            });
+                });
+        dialog.show();
+    }
+
+    private void setAttributeValue(String attr, Map<String, String> attributes) {
+        var builder = new MaterialAlertDialogBuilder(getContext());
+        builder.setTitle(attr);
+
+        PropertyPopupInputTextBinding binding =
+                PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
+
+        var input = binding.edInput;
+        if (attributes.containsKey(attr)) {
+            input.setText(attributes.get(attr));
+        }
+
+        binding.tiInput.setHint(
+                String.format(Helper.getResString(R.string.property_enter_value), attr));
+
+        builder.setView(binding.getRoot());
+        builder.setPositiveButton(
+                R.string.common_word_save,
+                (d, w) -> {
+                    var inputValue = input.getText().toString().trim();
+                    if (!inputValue.isEmpty()) {
+                        attributes.put(attr, inputValue);
+                        saveAttributes(attributes);
+                    } else {
+                        d.cancel();
+                    }
+                });
+        builder.setNegativeButton(R.string.common_word_cancel, null);
+        var dialog = builder.create();
+        dialog.setOnShowListener(
+                d -> {
+                    var positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setEnabled(!input.getText().toString().trim().isEmpty());
+
+                    input.addTextChangedListener(
+                            new BaseTextWatcher() {
+                                @Override
+                                public void onTextChanged(
+                                        CharSequence charSequence,
+                                        int start,
+                                        int before,
+                                        int after) {
+                                    positiveButton.setEnabled(
+                                            !input.getText().toString().trim().isEmpty());
+                                }
+                            });
+                });
+        dialog.show();
+        dialog.setOnDismissListener(d -> showInjectDialog());
+    }
+
+    private void saveAttributes(Map<String, String> attributes) {
+        String result =
+                attributes.entrySet().stream()
+                        .map(entry -> entry.getKey() + "=\"" + entry.getValue() + "\"")
+                        .collect(Collectors.joining("\n"));
+        setValue(result);
+        if (valueChangeListener != null) valueChangeListener.a(key, value);
+    }
+
+    private Map<String, String> readAttributes() {
+        Map<String, String> attributes = new LinkedHashMap<>();
+
+        try {
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = factory.newPullParser();
+            parser.setInput(new StringReader("<tag " + value + "></tag>"));
+
+            int eventType = parser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_TAG) {
+                    for (int i = 0; i < parser.getAttributeCount(); i++) {
+                        attributes.put(parser.getAttributeName(i), parser.getAttributeValue(i));
+                    }
+                }
+                eventType = parser.next();
+            }
+        } catch (XmlPullParserException | IOException | RuntimeException ignored) {
+        }
+
+        return attributes;
+    }
+
+    private class AttributesAdapter extends ListAdapter<String, AttributesAdapter.ViewHolder> {
+
+        private static final DiffUtil.ItemCallback<String> DIFF_CALLBACK =
+                new DiffUtil.ItemCallback<>() {
+                    @Override
+                    public boolean areItemsTheSame(
+                            @NonNull String oldItem, @NonNull String newItem) {
+                        return oldItem.equals(newItem);
+                    }
+
+                    @Override
+                    public boolean areContentsTheSame(
+                            @NonNull String oldItem, @NonNull String newItem) {
+                        return true;
+                    }
+                };
+
+        public AttributesAdapter() {
+            super(DIFF_CALLBACK);
+        }
+
+        private Map<String, String> attributes;
+        private ItemClickListener listener;
+
+        public void setAttributes(Map<String, String> attributes) {
+            this.attributes = attributes;
+        }
+
+        public void setOnItemClickListener(ItemClickListener listener) {
+            this.listener = listener;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            FrameLayout root = new FrameLayout(parent.getContext());
+            return new ViewHolder(root);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.bind(getItem(position));
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            private final PropertyInputItemBinding binding;
+
+            public ViewHolder(FrameLayout view) {
+                super(view);
+                binding =
+                        PropertyInputItemBinding.inflate(
+                                LayoutInflater.from(view.getContext()), view, true);
+            }
+
+            void bind(String attr) {
+                binding.tvName.setText(attr);
+                binding.tvValue.setText(attributes.get(attr));
+                binding.imgLeftIcon.setImageResource(R.drawable.ic_mtrl_code);
+                binding.getRoot().findViewById(R.id.property_menu_item).setVisibility(View.GONE);
+                itemView.setOnClickListener(
+                        view -> {
+                            if (listener != null) listener.onItemClick(attributes, attr);
+                        });
+                itemView.setOnLongClickListener(
+                        v -> {
+                            if (listener != null) listener.onItemLongClick(attributes, attr);
+                            return true;
+                        });
+            }
+        }
+
+        private interface ItemClickListener {
+
+            void onItemClick(Map<String, String> attributes, String item);
+
+            void onItemLongClick(Map<String, String> attributes, String item);
+        }
+    }
 }

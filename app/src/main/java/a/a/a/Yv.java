@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundImportActivity;
-import pro.sketchware.R;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -31,6 +30,7 @@ import java.util.ArrayList;
 
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
+import pro.sketchware.R;
 
 public class Yv extends qA implements View.OnClickListener {
     private RecyclerView soundsList;
@@ -105,13 +105,13 @@ public class Yv extends qA implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
-        soundsList = (RecyclerView) viewGroup2.findViewById(R.id.sound_list);
+        soundsList = viewGroup2.findViewById(R.id.sound_list);
         soundsList.setLayoutManager(new LinearLayoutManager(null, LinearLayoutManager.VERTICAL, false));
         adapter = new Adapter();
         soundsList.setAdapter(adapter);
-        noSoundsText = (TextView) viewGroup2.findViewById(R.id.tv_guide);
+        noSoundsText = viewGroup2.findViewById(R.id.tv_guide);
         noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
-        importSounds = (Button) viewGroup2.findViewById(R.id.btn_import);
+        importSounds = viewGroup2.findViewById(R.id.btn_import);
         importSounds.setText(xB.b().a(getContext(), R.string.common_word_import).toUpperCase());
         importSounds.setOnClickListener(this);
         importSounds.setVisibility(View.GONE);

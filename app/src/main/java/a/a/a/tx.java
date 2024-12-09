@@ -30,14 +30,16 @@ import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import mod.hey.studios.util.Helper;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SvgUtils;
 import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.SvgUtils;
 
 public class tx extends RelativeLayout implements View.OnClickListener {
+    private final SvgUtils svgUtils;
+    private final FilePathUtil fpu = new FilePathUtil();
     public String a;
     public String b;
     public String c;
@@ -53,10 +55,6 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     public int m;
     public Kw n;
 
-    private final SvgUtils svgUtils;
-
-    private final FilePathUtil fpu = new FilePathUtil();
-
     public tx(Context context, boolean z, String str, boolean z2) {
         super(context);
         this.d = false;
@@ -68,18 +66,6 @@ public class tx extends RelativeLayout implements View.OnClickListener {
 
     public String getKey() {
         return this.b;
-    }
-
-    public String getValue() {
-        return this.c;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (mB.a()) {
-            return;
-        }
-        a();
     }
 
     public void setKey(String str) {
@@ -101,18 +87,8 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         }
     }
 
-    public void setOnPropertyValueChangeListener(Kw kw) {
-        this.n = kw;
-    }
-
-    public void setOrientationItem(int i) {
-        if (i == 0) {
-            this.k.setVisibility(GONE);
-            this.l.setVisibility(VISIBLE);
-            return;
-        }
-        this.k.setVisibility(VISIBLE);
-        this.l.setVisibility(GONE);
+    public String getValue() {
+        return this.c;
     }
 
     public void setValue(String str) {
@@ -154,6 +130,28 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         this.g.setBackgroundColor(Color.WHITE);
     }
 
+    @Override
+    public void onClick(View view) {
+        if (mB.a()) {
+            return;
+        }
+        a();
+    }
+
+    public void setOnPropertyValueChangeListener(Kw kw) {
+        this.n = kw;
+    }
+
+    public void setOrientationItem(int i) {
+        if (i == 0) {
+            this.k.setVisibility(GONE);
+            this.l.setVisibility(VISIBLE);
+            return;
+        }
+        this.k.setVisibility(VISIBLE);
+        this.l.setVisibility(GONE);
+    }
+
     public final void a(Context context, boolean z, boolean z2) {
         wB.a(context, this, R.layout.property_resource_item);
         this.e = findViewById(R.id.tv_name);
@@ -170,7 +168,6 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     }
 
     public final void a() {
-        LinearLayout a2;
         aB aBVar = new aB((Activity) getContext());
         aBVar.b(this.e.getText().toString());
         aBVar.a(this.m);
@@ -190,29 +187,14 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         }
         Iterator<String> it = m.iterator();
         RadioButton radioButton = null;
-        while (it.hasNext()) {
-            String next = it.next();
+        for (String next : m) {
             RadioButton a4 = a(next);
             this.i.addView(a4);
             if (next.equals(this.c)) {
                 a4.setChecked(true);
                 radioButton = a4;
             }
-            if (xq.a(this.a)) {
-                if (next.equals("default_image")) {
-                    a2 = a(next, true);
-                } else {
-                    a2 = a(next, false);
-                }
-            } else if (xq.b(this.a)) {
-                if (next.equals("default_image")) {
-                    a2 = a(next, true);
-                } else {
-                    a2 = a(next, false);
-                }
-            } else {
-                a2 = a(next, true);
-            }
+            LinearLayout a2 = a(next, next.equals("default_image"));
             a2.setOnClickListener(v -> ((RadioButton) i.getChildAt(j.indexOfChild(v))).setChecked(true));
             this.j.addView(a2);
         }
@@ -244,9 +226,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         RadioButton radioButton = new RadioButton(getContext());
         radioButton.setText("");
         radioButton.setTag(str);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                (int) (wB.a(getContext(), 1.0f) * 60.0f));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, (int) (wB.a(getContext(), 1.0f) * 60.0f));
         radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
         return radioButton;
@@ -256,15 +236,11 @@ public class tx extends RelativeLayout implements View.OnClickListener {
         Uri fromFile;
         float a2 = wB.a(getContext(), 1.0f);
         LinearLayout linearLayout = new LinearLayout(getContext());
-        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                (int) (60.0f * a2)));
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (60.0f * a2)));
         linearLayout.setGravity(Gravity.CENTER | Gravity.LEFT);
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         TextView textView = new TextView(getContext());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.weight = 1.0f;
         layoutParams.rightMargin = (int) (8.0f * a2);
         textView.setLayoutParams(layoutParams);
