@@ -84,11 +84,10 @@ public class LayoutHierarchyAdapter extends ListAdapter<ViewBean, LayoutHierarch
                     ObjectAnimator.ofFloat(holder.binding.expandToggle, "rotation", 0f, 180f).start();
                 }
                 expandedStateMap.put(position, !currentlyExpanded);
-            } else {
-                setSelectedItemPosition(getViewBeanPosition(bean));
-                if (layoutHierarchyItemListener != null) {
-                    layoutHierarchyItemListener.onClick(bean);
-                }
+            }
+            setSelectedItemPosition(getViewBeanPosition(bean));
+            if (layoutHierarchyItemListener != null) {
+                layoutHierarchyItemListener.onClick(bean);
             }
         });
 
