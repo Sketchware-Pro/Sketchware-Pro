@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -289,6 +288,7 @@ public class CustomBlocksDialog {
             }
 
             private void addCustomBlockView(ViewGroup container, Context context, BlockBean block) {
+                container.removeAllViews();
                 container.addView(createBlock(context, block));
             }
 
@@ -297,11 +297,13 @@ public class CustomBlocksDialog {
                 binding.checkBox.setEnabled(canImport);
 
                 if (canImport) {
-                    binding.checkBox.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
-                        if (onCheckedChangeListener != null) {
-                            onCheckedChangeListener.accept(position, isChecked);
-                        }
+                    binding.checkBox.setChecked(Boolean.TRUE.equals(selectedBlocks.getOrDefault(position, false)));
+                    binding.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                        onCheckedChangeListener.accept(position, isChecked);
                     });
+                } else {
+                    binding.checkBox.setOnCheckedChangeListener(null);
+                    binding.checkBox.setChecked(false);
                 }
             }
 
