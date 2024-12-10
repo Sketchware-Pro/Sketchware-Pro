@@ -92,9 +92,9 @@ public class LogicTopMenu extends LinearLayout {
     }
 
     public void toggleLayoutVisibility(boolean isBlockCollection) {
-        binding.layoutFavorite.setVisibility(isBlockCollection ? GONE : VISIBLE);
-        binding.layoutCopy.setVisibility(isBlockCollection ? GONE : VISIBLE);
-        binding.layoutDetail.setVisibility(isBlockCollection ? VISIBLE : GONE);
+        binding.layoutFavorite.setVisibility(isBlockCollection ? VISIBLE : GONE);
+        binding.layoutCopy.setVisibility(isBlockCollection ? VISIBLE : GONE);
+        binding.layoutDetail.setVisibility(isBlockCollection ? GONE : VISIBLE);
     }
 
     private void updateLayoutAppearance(
