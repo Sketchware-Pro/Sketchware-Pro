@@ -1,4 +1,4 @@
-package com.besome.sketch.design.structure;
+package com.besome.sketch.design.hierarchy;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -14,21 +14,21 @@ import com.google.android.material.sidesheet.SideSheetDialog;
 import java.util.ArrayList;
 
 import pro.sketchware.R;
-import pro.sketchware.databinding.LayoutStructureSheetBinding;
+import pro.sketchware.databinding.LayoutHierarchySheetBinding;
 
-public class LayoutStructureSheet extends SideSheetDialog {
+public class LayoutHierarchySheet extends SideSheetDialog {
 
-    private LayoutStructureSheetBinding binding;
-    private LayoutStructureAdapter adapter;
+    private LayoutHierarchySheetBinding binding;
+    private LayoutHierarchyAdapter adapter;
     
-    public LayoutStructureSheet(Context context, ArrayList<ViewBean> viewsList) {
+    public LayoutHierarchySheet(Context context, ArrayList<ViewBean> viewsList) {
         super(context);
-        binding = LayoutStructureSheetBinding.inflate(LayoutInflater.from(context));
+        binding = LayoutHierarchySheetBinding.inflate(LayoutInflater.from(context));
         setContentView(binding.getRoot());
         setSheetEdge(Gravity.END);
         binding.close.setOnClickListener(v -> hide());
-        adapter = new LayoutStructureAdapter(viewsList);
-        adapter.setLayoutStructureItemListener(bean -> {
+        adapter = new LayoutHierarchyAdapter(viewsList);
+        adapter.setLayoutHierarchyItemListener(bean -> {
             var prop = getViewProperty(context);
             if (prop != null) {
                 prop.selectView(bean);
@@ -47,7 +47,7 @@ public class LayoutStructureSheet extends SideSheetDialog {
         adapter.submitList(viewsList2);
     }
     
-    public LayoutStructureAdapter getAdapter() {
+    public LayoutHierarchyAdapter getAdapter() {
         return adapter;
     }
     

@@ -56,7 +56,7 @@ import com.besome.sketch.editor.view.ProjectFileSelector;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
-import com.besome.sketch.design.structure.LayoutStructureSheet;
+import com.besome.sketch.design.hierarchy.LayoutHierarchySheet;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -199,7 +199,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private rs eventTabAdapter;
     private br componentTabAdapter;
     private BuildTask currentBuildTask;
-    private LayoutStructureSheet structureSheet;
+    private LayoutHierarchySheet hierarchySheet;
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -343,8 +343,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         }
     }
     
-    public LayoutStructureSheet getLayoutStructureSheet() {
-        return structureSheet;
+    public LayoutHierarchySheet getLayoutHierarchySheet() {
+        return hierarchySheet;
     }
 
     private void saveChangesAndCloseProject() {
@@ -550,7 +550,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         var projectDataManager = jC.a(sc_id);
         var fileName = projectFileSelector.getFileName();
         var viewBeans = projectDataManager.d(fileName);
-        structureSheet = new LayoutStructureSheet(this, viewBeans);
+        hierarchySheet = new LayoutHierarchySheet(this, viewBeans);
     }
 
     private boolean isBuildingInTheBackground() {
@@ -589,8 +589,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             saveProject();
-        } else if (itemId == R.id.design_option_menu_title_show_structure) {
-            structureSheet.show();
+        } else if (itemId == R.id.design_option_menu_title_show_hierarchy) {
+            hierarchySheet.show();
         }
 
         return super.onOptionsItemSelected(item);

@@ -1249,8 +1249,8 @@ You must enter the API key to operate the map normally."</string>
     <string name="design_manager_widget_hint_enter_widget_name">Enter widget name</string>
     <string name="design_manager_widget_title_actionbar_title">Widget details</string>
     <string name="design_option_menu_title_save_project">Save project</string>
-    <string name="design_option_menu_title_show_structure">Show Structure</string>
-    <string name="design_structure_sheet_layout_structure">Layout Structure</string>
+    <string name="design_option_menu_title_show_hierarchy">Show Hierarchy</string>
+    <string name="design_hierarchy_sheet_layout_hierarchy">Layout Hierarchy</string>
     <string name="design_property_recent_message_nodata">Recently used properties will be displayed</string>
     <string name="design_quit_button_save_and_exit">Save &amp; exit</string>
     <string name="design_quit_message_confirm_save">Do you want to save your changes before quitting?</string>
