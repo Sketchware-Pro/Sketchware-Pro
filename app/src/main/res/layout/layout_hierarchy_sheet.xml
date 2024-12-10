@@ -16,7 +16,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="start|center_vertical"
-            android:text="@string/design_structure_sheet_layout_structure"
+            android:text="@string/design_hierarchy_sheet_layout_hierarchy"
             android:textSize="18sp"
             android:paddingStart="16dp" />
 
