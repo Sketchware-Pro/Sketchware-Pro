@@ -283,7 +283,7 @@ public class ViewProperty extends LinearLayout implements Kw {
         propertyContents.addView(viewPropertyItems);
     }
 
-    private void selectView(ViewBean viewBean) {
+    public void selectView(ViewBean viewBean) {
         if (propertyTargetChangeListener != null) {
             propertyTargetChangeListener.a(viewBean.id);
         }
