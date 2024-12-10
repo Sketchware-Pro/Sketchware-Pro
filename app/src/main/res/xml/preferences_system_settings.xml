@@ -2,6 +2,7 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SwitchPreferenceCompat
+        app:defaultValue="true"
         app:iconSpaceReserved="false"
         app:key="P12I0"
         app:summary="@string/system_settings_description_setting_vibration"
