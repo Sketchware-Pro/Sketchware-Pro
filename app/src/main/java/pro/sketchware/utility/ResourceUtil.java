@@ -1,13 +1,13 @@
-package mod.elfilibustero.sketch.lib.utils;
+package pro.sketchware.utility;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import pro.sketchware.beans.ResourceBean;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
-import mod.elfilibustero.sketch.beans.ResourceBean;
 
 public class ResourceUtil {
     private final String sc_id;

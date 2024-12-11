@@ -1,4 +1,4 @@
-package mod.hilal.saif.activities.tools;
+package pro.sketchware.activities.editor.component;
 
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,27 +12,30 @@ import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
 
+import a.a.a.aB;
+import a.a.a.wq;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.gson.Gson;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageCustomComponentAddBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-import a.a.a.aB;
-import a.a.a.wq;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.tools.ComponentHelper;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.IconSelectorDialog;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.util.OldResourceIdMapper;
+
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageCustomComponentAddBinding;
+import pro.sketchware.tools.ComponentHelper;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.FileUtil;
 
 public class AddCustomComponentActivity extends BaseAppCompatActivity implements View.OnClickListener {
 

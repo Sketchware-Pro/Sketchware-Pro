@@ -19,7 +19,7 @@ import com.besome.sketch.editor.view.EditorListItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
+import pro.sketchware.utility.PropertiesUtil;
 
 import a.a.a.sy;
 import a.a.a.wB;

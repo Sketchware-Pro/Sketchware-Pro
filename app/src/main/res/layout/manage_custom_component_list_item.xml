@@ -89,7 +89,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:background="?colorSecondary" />
 
-            <mod.elfilibustero.sketch.editor.component.CollapsibleCustomComponentLayout
+            <pro.sketchware.activities.editor.component.CollapsibleCustomComponentLayout
                 android:id="@+id/component_option"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

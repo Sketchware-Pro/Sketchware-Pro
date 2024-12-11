@@ -268,14 +268,6 @@
             android:name="mod.hilal.saif.activities.tools.BlocksManagerDetailsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="mod.hilal.saif.activities.tools.ManageCustomComponentActivity"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name="mod.hilal.saif.activities.tools.AddCustomComponentActivity"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name="mod.hilal.saif.activities.tools.ConfigActivity"
             android:configChanges="orientation|screenSize" />
         <activity
@@ -320,6 +312,16 @@
         <activity
             android:name=".activities.editor.command.ManageXMLCommandActivity"
             android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".activities.editor.component.ManageCustomComponentActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name=".activities.editor.component.AddCustomComponentActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".activities.editor.view.ViewCodeEditorActivity"

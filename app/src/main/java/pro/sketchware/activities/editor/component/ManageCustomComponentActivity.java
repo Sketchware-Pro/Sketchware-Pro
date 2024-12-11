@@ -1,4 +1,4 @@
-package mod.hilal.saif.activities.tools;
+package pro.sketchware.activities.editor.component;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,7 +30,6 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
-import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,12 +41,14 @@ import java.util.stream.Collectors;
 
 import a.a.a.aB;
 import a.a.a.wq;
-import mod.jbk.util.OldResourceIdMapper;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
-import mod.elfilibustero.sketch.editor.component.CollapsibleCustomComponentLayout;
+
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
+import mod.jbk.util.OldResourceIdMapper;
+
+import pro.sketchware.R;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 

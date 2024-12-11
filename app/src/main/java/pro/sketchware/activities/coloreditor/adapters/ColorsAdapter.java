@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import pro.sketchware.activities.coloreditor.ColorEditorActivity;
 import pro.sketchware.activities.coloreditor.models.ColorItem;
 import pro.sketchware.databinding.PalletCustomviewBinding;
+import pro.sketchware.utility.PropertiesUtil;
 
 public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ViewHolder> {
 
@@ -41,7 +41,7 @@ public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ViewHolder
         holder.itemBinding.title.setHint(colorName);
         holder.itemBinding.sub.setText(colorValue);
 
-        if (ColorEditorActivity.isValidHexColor(valueHex)) {
+        if (PropertiesUtil.isHexColor(valueHex)) {
             holder.itemBinding.color.setBackgroundColor(PropertiesUtil.parseColor(valueHex));
         }
 

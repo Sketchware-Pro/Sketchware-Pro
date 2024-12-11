@@ -1,4 +1,4 @@
-package mod.elfilibustero.sketch.beans;
+package pro.sketchware.beans;
 
 public class ResourceBean {
 	private String resPath;

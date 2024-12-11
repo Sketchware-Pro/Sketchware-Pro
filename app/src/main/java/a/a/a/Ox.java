@@ -15,6 +15,8 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.TextBean;
 import com.besome.sketch.beans.ViewBean;
 
+import dev.aldi.sayuti.editor.injection.AppCompatInjection;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -29,11 +31,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import dev.aldi.sayuti.editor.injection.AppCompatInjection;
 import mod.agus.jcoderz.beans.ViewBeans;
-import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
 import mod.jbk.util.LogUtil;
+
 import pro.sketchware.managers.inject.InjectRootLayoutManager;
+import pro.sketchware.utility.InjectAttributeHandler;
 import pro.sketchware.xml.XmlBuilder;
 
 @SuppressLint("RtlHardcoded")

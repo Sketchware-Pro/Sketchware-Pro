@@ -13,7 +13,6 @@ import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 
 import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
-import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
 import mod.hey.studios.util.Helper;
 
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import pro.sketchware.utility.CustomVariableUtil;
 import pro.sketchware.utility.FileUtil;
 
 public class DefaultExtraMenuBean {
