@@ -27,16 +27,19 @@ public class LayoutHierarchySheet extends SideSheetDialog {
         setContentView(binding.getRoot());
         setSheetEdge(Gravity.END);
         binding.close.setOnClickListener(v -> hide());
+        
         adapter = new LayoutHierarchyAdapter(viewsList);
         adapter.setLayoutHierarchyItemListener(bean -> {
             var prop = getViewProperty(context);
+            var isViewGroup = bean.getClassInfo().a("ViewGroup");
             if (prop != null) {
                 prop.selectView(bean);
                 prop.e();
             }
-            hide();
+            if (!isViewGroup) hide();
         });
         binding.list.setAdapter(adapter);
+        
         ArrayList<ViewBean> viewsList2 = new ArrayList<>();
         for (ViewBean viewBean : viewsList) {
             String parent = viewBean.parent;
