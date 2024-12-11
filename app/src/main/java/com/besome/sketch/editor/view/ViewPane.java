@@ -85,6 +85,7 @@ import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
 import a.a.a.zB;
+
 import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
 import dev.aldi.sayuti.editor.view.item.ItemCodeView;
@@ -95,6 +96,7 @@ import dev.aldi.sayuti.editor.view.item.ItemPatternLockView;
 import dev.aldi.sayuti.editor.view.item.ItemViewPager;
 import dev.aldi.sayuti.editor.view.item.ItemWaveSideBar;
 import dev.aldi.sayuti.editor.view.item.ItemYoutubePlayer;
+
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.view.item.ItemAnalogClock;
 import mod.agus.jcoderz.editor.view.item.ItemAutoCompleteTextView;
@@ -106,13 +108,15 @@ import mod.agus.jcoderz.editor.view.item.ItemRadioButton;
 import mod.agus.jcoderz.editor.view.item.ItemRatingBar;
 import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
+import mod.hey.studios.util.ProjectFile;
+
+import pro.sketchware.R;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.InjectAttributeHandler;
 import pro.sketchware.utility.InvokeUtil;
-import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
-import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
-import mod.elfilibustero.sketch.lib.utils.ResourceUtil;
-import mod.hey.studios.util.ProjectFile;
+import pro.sketchware.utility.PropertiesUtil;
+import pro.sketchware.utility.ResourceUtil;
 import pro.sketchware.utility.SvgUtils;
 
 public class ViewPane extends RelativeLayout {
@@ -1173,12 +1177,15 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void updateCardView(ItemCardView cardView, InjectAttributeHandler handler) {
+        var bean = handler.getBean();
+        String cardBackgroundColor = handler.getAttributeValueOf("cardBackgroundColor");
         String cardElevation = handler.getAttributeValueOf("cardElevation");
         String cardCornerRadius = handler.getAttributeValueOf("cardCornerRadius");
         String compatPadding = handler.getAttributeValueOf("cardUseCompatPadding");
         String strokeColor = handler.getAttributeValueOf("strokeColor");
         String strokeWidth = handler.getAttributeValueOf("strokeWidth");
 
+        cardView.setCardBackgroundColor(PropertiesUtil.isHexColor(cardBackgroundColor) ? PropertiesUtil.parseColor(cardBackgroundColor) : bean.layout.backgroundColor);
         cardView.setCardElevation(PropertiesUtil.resolveSize(cardElevation, 4));
         cardView.setRadius(PropertiesUtil.resolveSize(cardCornerRadius, 8));
         cardView.setUseCompatPadding(Boolean.parseBoolean(TextUtils.isEmpty(compatPadding) ? "false" : compatPadding));

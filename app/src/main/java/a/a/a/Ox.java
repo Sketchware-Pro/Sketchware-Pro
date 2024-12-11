@@ -15,6 +15,8 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.TextBean;
 import com.besome.sketch.beans.ViewBean;
 
+import dev.aldi.sayuti.editor.injection.AppCompatInjection;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -29,11 +31,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import dev.aldi.sayuti.editor.injection.AppCompatInjection;
 import mod.agus.jcoderz.beans.ViewBeans;
-import mod.elfilibustero.sketch.lib.utils.InjectAttributeHandler;
 import mod.jbk.util.LogUtil;
+
 import pro.sketchware.managers.inject.InjectRootLayoutManager;
+import pro.sketchware.utility.InjectAttributeHandler;
 import pro.sketchware.xml.XmlBuilder;
 
 @SuppressLint("RtlHardcoded")
@@ -197,7 +199,7 @@ public class Ox {
                         } else if (!toNotAdd.contains("app:backgroundTint") && !injectHandler.contains("backgroundTint")) {
                             nx.addAttribute("app", "backgroundTint", formatColor(color));
                         }
-                    } else if (nx.c().equals("CardView")) {
+                    } else if (nx.c().equals("CardView") || nx.c().equals("MaterialCardView")) {
                         if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor") && backgroundResColor != null) {
                             nx.addAttribute("app", "cardBackgroundColor", colorPath);
                         } else if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor")) {
@@ -223,6 +225,10 @@ public class Ox {
                 } else if (nx.c().equals("CollapsingToolbarLayout")) {
                     if (!toNotAdd.contains("app:contentScrim") && !injectHandler.contains("contentScrim")) {
                         nx.addAttribute("app", "contentScrim", "?attr/colorPrimary");
+                    }
+                } else if (nx.c().equals("CardView") || nx.c().equals("MaterialCardView")) {
+                    if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor")) {
+                        nx.addAttribute("app", "cardBackgroundColor", "@android:color/transparent");
                     }
                 } else {
                     if (!toNotAdd.contains("android:background") && !injectHandler.contains("background")) {

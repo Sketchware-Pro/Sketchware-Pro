@@ -1,4 +1,4 @@
-package mod.elfilibustero.sketch.editor.component;
+package pro.sketchware.activities.editor.component;
 
 import android.content.Context;
 import android.util.AttributeSet;

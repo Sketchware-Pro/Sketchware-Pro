@@ -1,4 +1,4 @@
-package mod.elfilibustero.sketch.lib.utils;
+package pro.sketchware.utility;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

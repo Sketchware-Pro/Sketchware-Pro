@@ -29,7 +29,6 @@ import a.a.a.XB;
 import a.a.a.Zx;
 import a.a.a.aB;
 import a.a.a.xB;
-import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hilal.saif.activities.tools.ConfigActivity;
@@ -38,6 +37,7 @@ import pro.sketchware.activities.coloreditor.adapters.ColorsAdapter;
 import pro.sketchware.activities.coloreditor.models.ColorItem;
 import pro.sketchware.databinding.ColorEditorActivityBinding;
 import pro.sketchware.databinding.ColorEditorAddBinding;
+import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
@@ -145,15 +145,6 @@ public class ColorEditorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public static boolean isValidHexColor(String colorStr) {
-        if (colorStr == null) {
-            return false;
-        }
-        Pattern pattern = Pattern.compile("^#([a-fA-F0-9]{1,8})");
-        Matcher matcher = pattern.matcher(colorStr);
-        return matcher.matches();
     }
 
     @Override
@@ -282,7 +273,7 @@ public class ColorEditorActivity extends AppCompatActivity {
                         break;
                     case XmlPullParser.END_TAG:
                         if ("color".equals(tagName)) {
-                            if ((colorName != null) && isValidHexColor(getColorValue(getApplicationContext(), colorValue, 4))) {
+                            if ((colorName != null) && PropertiesUtil.isHexColor(getColorValue(getApplicationContext(), colorValue, 4))) {
                                 colorList.add(new ColorItem(colorName, colorValue));
                             }
                         }
@@ -348,7 +339,7 @@ public class ColorEditorActivity extends AppCompatActivity {
             }
 
             if (value.startsWith("#")) {
-                if (!isValidHexColor(value)) {
+                if (!PropertiesUtil.isHexColor(value)) {
                     SketchwareUtil.toast("Please enter a valid HEX color", Toast.LENGTH_SHORT);
                 }
                 return;

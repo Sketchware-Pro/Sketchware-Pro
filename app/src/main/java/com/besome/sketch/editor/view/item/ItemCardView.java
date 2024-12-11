@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -22,7 +21,6 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
     private boolean isSelected;
     private boolean isFixed;
     private Paint paint;
-    private Drawable mBackground;
     private final Rect rect = new Rect();
 
     public ItemCardView(Context context) {
@@ -46,7 +44,6 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
         setMinimumWidth((int) wB.a(context, 32.0f));
         setMinimumHeight((int) wB.a(context, 32.0f));
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mBackground = getBackground();
     }
 
     @Override
@@ -88,11 +85,7 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
     }
 
     public void setBackgroundColor(int color) {
-        if (color == 0x00FFFFFF) {
-            setBackground(mBackground);
-        } else {
-            super.setBackgroundColor(color);
-        }
+        super.setCardBackgroundColor(color == 0x00FFFFFF ? 0xFFFFFFFF : color);
     }
 
     @Override
