@@ -224,6 +224,10 @@ public class Ox {
                     if (!toNotAdd.contains("app:contentScrim") && !injectHandler.contains("contentScrim")) {
                         nx.addAttribute("app", "contentScrim", "?attr/colorPrimary");
                     }
+                } else if (nx.c().equals("CardView")) {
+                    if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor")) {
+                        nx.addAttribute("app", "cardBackgroundColor", "@android:color/transparent");
+                    }
                 } else {
                     if (!toNotAdd.contains("android:background") && !injectHandler.contains("background")) {
                         nx.addAttribute("android", "background", "@android:color/transparent");
