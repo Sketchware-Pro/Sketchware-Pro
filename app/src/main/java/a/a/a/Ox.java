@@ -197,7 +197,7 @@ public class Ox {
                         } else if (!toNotAdd.contains("app:backgroundTint") && !injectHandler.contains("backgroundTint")) {
                             nx.addAttribute("app", "backgroundTint", formatColor(color));
                         }
-                    } else if (nx.c().equals("CardView")) {
+                    } else if (nx.c().equals("CardView") || nx.c().equals("MaterialCardView")) {
                         if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor") && backgroundResColor != null) {
                             nx.addAttribute("app", "cardBackgroundColor", colorPath);
                         } else if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor")) {
@@ -224,7 +224,7 @@ public class Ox {
                     if (!toNotAdd.contains("app:contentScrim") && !injectHandler.contains("contentScrim")) {
                         nx.addAttribute("app", "contentScrim", "?attr/colorPrimary");
                     }
-                } else if (nx.c().equals("CardView")) {
+                } else if (nx.c().equals("CardView") || nx.c().equals("MaterialCardView")) {
                     if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor")) {
                         nx.addAttribute("app", "cardBackgroundColor", "@android:color/transparent");
                     }
