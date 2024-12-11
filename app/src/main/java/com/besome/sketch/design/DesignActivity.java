@@ -199,7 +199,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private rs eventTabAdapter;
     private br componentTabAdapter;
     private BuildTask currentBuildTask;
-    private LayoutHierarchySheet hierarchySheet;
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -341,10 +340,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 showSaveBeforeQuittingDialog();
             }
         }
-    }
-    
-    public LayoutHierarchySheet getLayoutHierarchySheet() {
-        return hierarchySheet;
     }
 
     private void saveChangesAndCloseProject() {
@@ -546,11 +541,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         } else {
             registerReceiver(buildCancelReceiver, filter);
         }
-        
-        var projectDataManager = jC.a(sc_id);
-        var fileName = projectFileSelector.getFileName();
-        var viewBeans = projectDataManager.d(fileName);
-        hierarchySheet = new LayoutHierarchySheet(this, viewBeans);
     }
 
     private boolean isBuildingInTheBackground() {
@@ -590,7 +580,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             saveProject();
         } else if (itemId == R.id.design_option_menu_title_show_hierarchy) {
-            hierarchySheet.show();
+            toLayoutHierarchySheet();
         }
 
         return super.onOptionsItemSelected(item);
@@ -973,7 +963,18 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     void toXMLCommandManager() {
         launchActivity(ManageXMLCommandActivity.class, null);
     }
-
+    
+    /**
+     * Opens {@link LayoutHierarchySheet}.
+     */
+    void toLayoutHierarchySheet() {
+        var projectDataManager = jC.a(sc_id);
+        var fileName = projectFileSelector.getFileName();
+        var viewBeans = projectDataManager.d(fileName);
+        var hierarchySheet = new LayoutHierarchySheet(this, viewBeans);
+        hierarchySheet.show();
+    }
+    
     @SafeVarargs
     private void launchActivity(Class<? extends Activity> toLaunch, ActivityResultLauncher<Intent> optionalLauncher, Pair<String, String>... extras) {
         Intent intent = new Intent(getApplicationContext(), toLaunch);
