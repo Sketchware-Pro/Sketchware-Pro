@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -89,6 +90,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     private ProjectFileBean projectFileBean;
     private Kw valueChangeListener;
     private List<String> keysList = new ArrayList<>();
+    private ViewBean bean;
 
     public PropertyInputItem(Context context, boolean z) {
         super(context);
@@ -145,6 +147,10 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     public void setValue(String value) {
         this.value = value;
         tvValue.setText(value);
+    }
+
+    public void setBean(ViewBean bean) {
+        this.bean = bean;
     }
 
     @Override
