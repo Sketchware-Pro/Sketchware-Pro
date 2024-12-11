@@ -56,6 +56,7 @@ import com.besome.sketch.editor.view.ProjectFileSelector;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
+import com.besome.sketch.design.hierarchy.LayoutHierarchySheet;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -431,7 +432,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
         r = new DB(getApplicationContext(), "P1");
         t = new DB(getApplicationContext(), "P12");
-
+        
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(sc_id);
         setSupportActionBar(toolbar);
@@ -540,7 +541,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         } else {
             registerReceiver(buildCancelReceiver, filter);
         }
-
     }
 
     private boolean isBuildingInTheBackground() {
@@ -579,6 +579,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             saveProject();
+        } else if (itemId == R.id.design_option_menu_title_show_hierarchy) {
+            toLayoutHierarchySheet();
         }
 
         return super.onOptionsItemSelected(item);
@@ -961,7 +963,18 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     void toXMLCommandManager() {
         launchActivity(ManageXMLCommandActivity.class, null);
     }
-
+    
+    /**
+     * Opens {@link LayoutHierarchySheet}.
+     */
+    void toLayoutHierarchySheet() {
+        var projectDataManager = jC.a(sc_id);
+        var fileName = projectFileSelector.getFileName();
+        var viewBeans = projectDataManager.d(fileName);
+        var hierarchySheet = new LayoutHierarchySheet(this, viewBeans);
+        hierarchySheet.show();
+    }
+    
     @SafeVarargs
     private void launchActivity(Class<? extends Activity> toLaunch, ActivityResultLauncher<Intent> optionalLauncher, Pair<String, String>... extras) {
         Intent intent = new Intent(getApplicationContext(), toLaunch);
