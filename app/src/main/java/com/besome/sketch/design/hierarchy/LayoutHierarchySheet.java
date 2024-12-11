@@ -36,6 +36,7 @@ public class LayoutHierarchySheet extends SideSheetDialog {
             var prop = getViewProperty(context);
             var isViewGroup = bean.getClassInfo().a("ViewGroup");
             if (prop != null) {
+                prop.selectView(bean);
                 prop.a(bean.id);
                 showViewProperty(prop);
             }
