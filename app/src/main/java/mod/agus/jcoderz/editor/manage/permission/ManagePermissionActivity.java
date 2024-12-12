@@ -64,7 +64,7 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
     }
 
     private void initViews() {
-        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.topAppBar.setNavigationOnClickListener(v -> onBackPressed());
         ViewCompat.setOnApplyWindowInsetsListener(binding.scrollToTopButton,
                 new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
     }
