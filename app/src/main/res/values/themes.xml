@@ -13,6 +13,7 @@
             @style/Preference.SketchwarePro.SwitchPreferenceCompat
         </item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.SketchwarePro.BottomSheetDialog</item>
+        <item name="android:popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
     </style>
 
     <style name="Theme.SketchwarePro.Main">
