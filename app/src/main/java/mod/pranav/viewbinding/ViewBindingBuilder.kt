@@ -143,8 +143,11 @@ ${
                     views.add(
                         View(
                             node.nodeName.substringAfterLast("."),
-                            if (node.nodeName.contains(".")) node.nodeName else "android.widget.${node.nodeName}",
-                            id.nodeValue.substringAfter("/")
+                             when (node.nodeName) {
+                            "WebView" -> "android.webkit.WebView"
+                            else -> if (node.nodeName.contains(".")) node.nodeName else "android.widget.${node.nodeName}"
+                        },
+                        id.nodeValue.substringAfter("/")
                         )
                     )
                 }
