@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/variables"
+        android:enabled="true"
+        android:icon="@drawable/ic_mtrl_category"
+        android:title="Variables" />
+
+    <item
+        android:id="@+id/views"
+        android:enabled="true"
+        android:icon="@drawable/ic_mtrl_view_vertical"
+        android:title="Views" />
+
+    <item
+        android:id="@+id/components"
+        android:enabled="true"
+        android:icon="@drawable/ic_mtrl_component"
+        android:title="Components" />
+
+</menu>
