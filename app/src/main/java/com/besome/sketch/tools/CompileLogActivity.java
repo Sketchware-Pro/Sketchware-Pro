@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +17,16 @@ import androidx.activity.EdgeToEdge;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import pro.sketchware.databinding.CompileLogBinding;
-
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-
-import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.util.CompileLogHelper;
 import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
+import pro.sketchware.databinding.CompileLogBinding;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class CompileLogActivity extends BaseAppCompatActivity {
 
@@ -128,8 +128,13 @@ public class CompileLogActivity extends BaseAppCompatActivity {
         binding.optionsLayout.setVisibility(View.VISIBLE);
         binding.noContentLayout.setVisibility(View.GONE);
 
-        binding.tvCompileLog.setText(CompileLogHelper.getColoredLogs(this, error));
+        if (ConfigActivity.isNewCompileLogEnabled()) {
+            binding.tvCompileLog.setText(CompileLogHelper.getColoredLogsNew(this, error, true));
+        } else {
+            binding.tvCompileLog.setText(CompileLogHelper.getColoredLogs(this, error));
+        }
         binding.tvCompileLog.setTextIsSelectable(true);
+        binding.tvCompileLog.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void applyLogViewerPreferences() {

@@ -54,6 +54,12 @@
         app:summary="Enables syntax highlighting while editing blocks' text parameters."
         app:title="Enable block text input highlighting" />
 
+    <SwitchPreferenceCompat
+        app:iconSpaceReserved="false"
+        app:key="new-compile-log"
+        app:summary="Enables new compile log format to easily open file"
+        app:title="Enable new compile log format" />
+
     <Preference
         app:iconSpaceReserved="false"
         app:key="backup-filename"

@@ -55,7 +55,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
     public static final String SETTING_CRITICAL_UPDATE_REMINDER = "critical-update-reminder";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
-
+    public static final String SETTING_NEW_COMPILE_LOG = "new-compile-log";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
@@ -105,6 +105,10 @@ public class ConfigActivity extends BaseAppCompatActivity {
 
     public static boolean isSettingEnabled(String keyName) {
         return DataStore.getInstance().getBoolean(keyName, false);
+    }
+
+    public static boolean isNewCompileLogEnabled() {
+        return DataStore.getInstance().getBoolean(SETTING_NEW_COMPILE_LOG, false);
     }
 
     public static void setSetting(String key, Object value) {
@@ -162,7 +166,8 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 SETTING_USE_NEW_VERSION_CONTROL,
                 SETTING_USE_ASD_HIGHLIGHTER,
                 SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH,
-                SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH);
+                SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH,
+                SETTING_NEW_COMPILE_LOG);
 
         for (String key : keys) {
             settings.put(key, getDefaultValue(key));
@@ -175,7 +180,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
             case SETTING_ALWAYS_SHOW_BLOCKS, SETTING_LEGACY_CODE_EDITOR,
                  SETTING_ROOT_AUTO_INSTALL_PROJECTS, SETTING_SHOW_BUILT_IN_BLOCKS,
                  SETTING_SHOW_EVERY_SINGLE_BLOCK, SETTING_USE_NEW_VERSION_CONTROL,
-                 SETTING_USE_ASD_HIGHLIGHTER -> false;
+                 SETTING_USE_ASD_HIGHLIGHTER, SETTING_NEW_COMPILE_LOG -> false;
             case SETTING_BACKUP_DIRECTORY -> "/.sketchware/backups/";
             case SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING -> true;
             case SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH ->
