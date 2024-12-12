@@ -8,12 +8,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.NinePatch;
-import android.graphics.Picture;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.NinePatchDrawable;
-import android.graphics.drawable.PictureDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -62,11 +60,9 @@ import com.besome.sketch.editor.view.item.ItemTabLayout;
 import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
-import com.bobur.androidsvg.SVG;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
-import a.a.a.jC;
 import mod.bobur.helpers.XmlToSvgConverter;
 import pro.sketchware.R;
 
@@ -110,7 +106,6 @@ import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.hey.studios.util.ProjectFile;
 
-import pro.sketchware.R;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.InjectAttributeHandler;
@@ -466,13 +461,7 @@ public class ViewPane extends RelativeLayout {
                             ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
                         }
                     } else {
-                        try {
-                            SVG svg = SVG.getFromString(XmlToSvgConverter.xml2svg(FileUtil.readFile(XmlToSvgConverter.getSvgFullPath(DesignActivity.sc_id, viewBean.image.resName))));
-                            Picture picture = svg.renderToPicture();
-                            ((ImageView) view).setImageDrawable(new PictureDrawable(picture));
-                        } catch (Exception e) {
-                            ((ImageView) view).setImageResource(R.drawable.default_image);
-                        }
+                        XmlToSvgConverter.setImageVectorFromFile(((ImageView) view), XmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                     }
                 } catch (Exception unused2) {
                     ((ImageView) view).setImageResource(R.drawable.default_image);

@@ -3,8 +3,6 @@ package a.a.a;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Picture;
-import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.view.Gravity;
@@ -22,7 +20,6 @@ import androidx.core.content.FileProvider;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.design.DesignActivity;
-import com.bobur.androidsvg.SVG;
 import com.bumptech.glide.Glide;
 
 import mod.bobur.helpers.XmlToSvgConverter;
@@ -33,10 +30,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import mod.hey.studios.util.Helper;
-import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SvgUtils;
 import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.SvgUtils;
 
 public class tx extends RelativeLayout implements View.OnClickListener {
     private final SvgUtils svgUtils;
@@ -271,13 +266,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                         Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
                     }
                 } else {
-                    try {
-                        SVG svg = SVG.getFromString(XmlToSvgConverter.xml2svg(FileUtil.readFile(XmlToSvgConverter.getSvgFullPath(DesignActivity.sc_id, str))));
-                        Picture picture = svg.renderToPicture();
-                        imageView.setImageDrawable(new PictureDrawable(picture));
-                    } catch (Exception e) {
-                        imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
-                    }
+                    XmlToSvgConverter.setImageVectorFromFile(imageView, XmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, str));
                 }
             }
             imageView.setBackgroundResource(R.drawable.bg_outline);

@@ -13,9 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.Picture;
 import android.graphics.Typeface;
-import android.graphics.drawable.PictureDrawable;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.net.Uri;
@@ -70,7 +68,6 @@ import com.besome.sketch.editor.manage.ShowBlockCollectionActivity;
 import com.besome.sketch.editor.view.ViewDummy;
 import com.besome.sketch.editor.view.ViewLogicEditor;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.bobur.androidsvg.SVG;
 import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -757,13 +754,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
                     }
                 } else {
-                    try {
-                        SVG svg = SVG.getFromString(XmlToSvgConverter.xml2svg(FileUtil.readFile(XmlToSvgConverter.getSvgFullPath(DesignActivity.sc_id, str))));
-                        Picture picture = svg.renderToPicture();
-                        imageView.setImageDrawable(new PictureDrawable(picture));
-                    } catch (Exception e) {
-                        imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
-                    }
+                    XmlToSvgConverter.setImageVectorFromFile(imageView, XmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, str));
                 }
             }
         }

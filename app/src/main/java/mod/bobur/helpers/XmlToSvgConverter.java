@@ -1,7 +1,14 @@
 package mod.bobur.helpers;
 
 import static com.besome.sketch.design.DesignActivity.sc_id;
+
+import android.graphics.Picture;
+import android.graphics.drawable.PictureDrawable;
 import android.net.Uri;
+import android.widget.ImageView;
+
+import com.bobur.androidsvg.SVG;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -12,6 +19,8 @@ import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import pro.sketchware.R;
 import pro.sketchware.SketchApplication;
 import pro.sketchware.activities.coloreditor.ColorEditorActivity;
 import pro.sketchware.utility.FileUtil;
@@ -140,13 +149,44 @@ public class XmlToSvgConverter {
     private static void handlePath(Element path, StringWriter svg) {
         String pathData = path.getAttribute("android:pathData");
         String fillColor = getVectorColor(path);
-        String strokeColor = getVectorColor(path);
-        String strokeWidth = parseDimension(path.getAttribute("android:strokeWidth"));
+        String strokeColor = path.getAttribute("android:strokeColor");
+        String strokeWidth = path.getAttribute("android:strokeWidth");
+        String strokeLineCap = path.getAttribute("android:strokeLineCap");
+        String strokeLineJoin = path.getAttribute("android:strokeLineJoin");
+        String strokeMiterLimit = path.getAttribute("android:strokeMiterLimit");
+        String fillAlpha = path.getAttribute("android:fillAlpha");
+        String strokeAlpha = path.getAttribute("android:strokeAlpha");
 
         svg.append("<path d=\"").append(pathData).append("\" ");
-        if (!fillColor.isEmpty()) svg.append("fill=\"").append(fillColor).append("\" ");
-        if (!strokeColor.isEmpty()) svg.append("stroke=\"").append(strokeColor).append("\" ");
-        if (!strokeWidth.isEmpty()) svg.append("stroke-width=\"").append(strokeWidth).append("\" ");
+
+        if (!fillColor.isEmpty()) {
+            svg.append("fill=\"").append(ColorEditorActivity.getColorValue(SketchApplication.getContext(), fillColor, 4)).append("\" ");
+            if (!fillAlpha.isEmpty()) {
+                svg.append("fill-opacity=\"").append(fillAlpha).append("\" ");
+            }
+        } else {
+            svg.append("fill=\"none\" ");
+        }
+
+        if (!strokeColor.isEmpty()) {
+            svg.append("stroke=\"").append(ColorEditorActivity.getColorValue(SketchApplication.getContext(), strokeColor, 4)).append("\" ");
+            if (!strokeWidth.isEmpty()) {
+                svg.append("stroke-width=\"").append(parseDimension(strokeWidth)).append("\" ");
+            }
+            if (!strokeAlpha.isEmpty()) {
+                svg.append("stroke-opacity=\"").append(strokeAlpha).append("\" ");
+            }
+            if (!strokeLineCap.isEmpty()) {
+                svg.append("stroke-linecap=\"").append(strokeLineCap.toLowerCase()).append("\" ");
+            }
+            if (!strokeLineJoin.isEmpty()) {
+                svg.append("stroke-linejoin=\"").append(strokeLineJoin.toLowerCase()).append("\" ");
+            }
+            if (!strokeMiterLimit.isEmpty()) {
+                svg.append("stroke-miterlimit=\"").append(strokeMiterLimit).append("\" ");
+            }
+        }
+
         svg.append("/>\n");
     }
 
@@ -170,7 +210,7 @@ public class XmlToSvgConverter {
         return files;
     }
 
-    public static String getSvgFullPath(String sc_id, String fileName) {
+    public static String getVectorFullPath(String sc_id, String fileName) {
         return "/storage/emulated/0/.sketchware/data/" + sc_id + "/files/resource/drawable/" + fileName + ".xml";
     }
 
@@ -187,6 +227,15 @@ public class XmlToSvgConverter {
         } else {
             String fillColor = vectorElement.getAttribute("android:fillColor");
             return ColorEditorActivity.getColorValue(SketchApplication.getContext(), fillColor, 4);
+        }
+    }
+    public static void setImageVectorFromFile(ImageView imageView, String filePath) {
+        try {
+            SVG svg = SVG.getFromString(XmlToSvgConverter.xml2svg(FileUtil.readFile(filePath)));
+            Picture picture = svg.renderToPicture();
+            imageView.setImageDrawable(new PictureDrawable(picture));
+        } catch (Exception e) {
+            imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
         }
     }
 }
