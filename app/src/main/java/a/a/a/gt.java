@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.tabs.TabLayout;
-
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.VarTypeItemBinding;
@@ -139,51 +137,41 @@ public class gt extends LinearLayout {
         });
     }
     // New Ui For Type Var Dialog 
-  private void showVarTypeSelectorDialog(Activity activity) {
+    private void showVarTypeSelectorDialog(Activity activity) {
 
-    dialog = new aB(activity);
-    VarTypeSelectorDialogBinding binding =
-        VarTypeSelectorDialogBinding.inflate(LayoutInflater.from(activity));
+        dialog = new aB(activity);
+        VarTypeSelectorDialogBinding binding =
+            VarTypeSelectorDialogBinding.inflate(LayoutInflater.from(activity));
 
-    dialog.b(Helper.getResString(R.string.logic_editor_more_block_title_add_variable_type));
+        dialog.b(Helper.getResString(R.string.logic_editor_more_block_title_add_variable_type));
 
-    VariableItemAdapter adapter = new VariableItemAdapter();
-    binding.list.setLayoutManager(new LinearLayoutManager(activity));
-    binding.list.setAdapter(adapter);
+        VariableItemAdapter adapter = new VariableItemAdapter();
+        binding.list.setLayoutManager(new LinearLayoutManager(activity));
+        binding.list.setAdapter(adapter);
 
-    adapter.setData(variableItems);
-    adapter.notifyDataSetChanged();
-       
-    binding.navRail.setOnItemSelectedListener(
-        item -> {
-          switch (item.getItemId()) {
-            case R.id.variables:
-              // variables list
-              adapter.setData(variableItems);
-              adapter.notifyDataSetChanged();
-              return true;
+        adapter.setData(variableItems);
+        adapter.notifyDataSetChanged();
 
-            case R.id.views:
-              // views list
-              adapter.setData(viewsVariableList);
-              adapter.notifyDataSetChanged();
-              return true;
+        binding.navRail.setOnItemSelectedListener(
+            item -> {
+                int itemId = item.getItemId();
+                if (itemId == R.id.variables) {
+                    // variables list
+                    adapter.setData(variableItems);
+                } else if (itemId == R.id.views) {
+                    // views list
+                    adapter.setData(viewsVariableList);
+                } else {
+                    // components list
+                    adapter.setData(componentsVariableList);
+                }
+                adapter.notifyDataSetChanged();
+                return true;
+            });
 
-            case R.id.components:
-              // components list
-              adapter.setData(componentsVariableList);
-              adapter.notifyDataSetChanged();
-              return true;
-
-            default:
-              return false;
-          }
-        });
-
-    
-    dialog.a(binding.getRoot());
-    dialog.show();
-  }
+        dialog.a(binding.getRoot());
+        dialog.show();
+    }
 
     private void initializeVariableItems() {
         variableItems.add(new VariableItem("b", "", R.drawable.ic_true_false_color_48dp));
