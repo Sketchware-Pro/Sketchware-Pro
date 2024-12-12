@@ -754,7 +754,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
                     }
                 } else {
-                    XmlToSvgConverter.setImageVectorFromFile(imageView, XmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, str));
+                    try {
+                        XmlToSvgConverter.setImageVectorFromFile(imageView, XmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, str));
+                    } catch (Exception e) {
+                        imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
+                    }
                 }
             }
         }

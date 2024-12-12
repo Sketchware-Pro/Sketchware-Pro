@@ -229,13 +229,9 @@ public class XmlToSvgConverter {
             return ColorEditorActivity.getColorValue(SketchApplication.getContext(), fillColor, 4);
         }
     }
-    public static void setImageVectorFromFile(ImageView imageView, String filePath) {
-        try {
-            SVG svg = SVG.getFromString(XmlToSvgConverter.xml2svg(FileUtil.readFile(filePath)));
-            Picture picture = svg.renderToPicture();
-            imageView.setImageDrawable(new PictureDrawable(picture));
-        } catch (Exception e) {
-            imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
-        }
+    public static void setImageVectorFromFile(ImageView imageView, String filePath) throws Exception {
+        SVG svg = SVG.getFromString(XmlToSvgConverter.xml2svg(FileUtil.readFile(filePath)));
+        Picture picture = svg.renderToPicture();
+        imageView.setImageDrawable(new PictureDrawable(picture));
     }
 }
