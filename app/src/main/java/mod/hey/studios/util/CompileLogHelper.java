@@ -105,7 +105,7 @@ public class CompileLogHelper {
                 ClickableSpan clickableSpan = new ClickableSpan() {
                     @Override
                     public void onClick(@NonNull View widget) {
-                        showCode(context, fullPath, displayText, Double.parseDouble(lineNumber));
+                        showCode(context, fullPath, displayText, Double.parseDouble(lineNumber) - 1);
                     }
                 };
 
