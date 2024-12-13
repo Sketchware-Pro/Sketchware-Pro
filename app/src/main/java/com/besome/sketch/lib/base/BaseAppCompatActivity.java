@@ -22,9 +22,10 @@ import dev.chrisbanes.insetter.Insetter;
 
 import java.util.ArrayList;
 
+import pro.sketchware.dialogs.ProgressDialog;
+
 import a.a.a.MA;
 import a.a.a.ZA;
-import a.a.a._A;
 import a.a.a.lC;
 import a.a.a.xB;
 
@@ -35,7 +36,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Deprecated
     public Context e;
     public Activity parent;
-    protected _A progressDialog;
+    protected ProgressDialog progressDialog;
     private ZA lottieDialog;
     private ArrayList<MA> taskList;
 
@@ -56,7 +57,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     public void a(String var1) {
         if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.a(var1);
+            progressDialog.setMessage(var1);
         }
     }
 
@@ -87,7 +88,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
             }
         } catch (Exception var2) {
             progressDialog = null;
-            progressDialog = new _A(this);
+            progressDialog = new ProgressDialog(this);
         }
 
     }
@@ -113,7 +114,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         taskList = new ArrayList<>();
         lottieDialog = new ZA(this);
         lC.a(getApplicationContext(), false);
-        progressDialog = new _A(this);
+        progressDialog = new ProgressDialog(this);
         mAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
