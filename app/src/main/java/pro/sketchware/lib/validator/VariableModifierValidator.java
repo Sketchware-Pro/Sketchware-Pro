@@ -1,4 +1,4 @@
-package mod.elfilibustero.sketch.lib.valid;
+package pro.sketchware.lib.validator;
 
 import android.content.Context;
 

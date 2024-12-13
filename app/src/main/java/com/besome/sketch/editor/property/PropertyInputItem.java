@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -49,6 +50,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import a.a.a.Jx;
 import a.a.a.Kw;
 import a.a.a.OB;
 import a.a.a.SB;
@@ -89,6 +91,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     private ProjectFileBean projectFileBean;
     private Kw valueChangeListener;
     private List<String> keysList = new ArrayList<>();
+    private ViewBean bean;
 
     public PropertyInputItem(Context context, boolean z) {
         super(context);
@@ -145,6 +148,10 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     public void setValue(String value) {
         this.value = value;
         tvValue.setText(value);
+    }
+
+    public void setBean(ViewBean bean) {
+        this.bean = bean;
     }
 
     @Override
@@ -585,8 +592,26 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     private List<String> populateAttributes() {
         List<String> attrs = new ArrayList<>();
         attrs.add("android:elevation");
+        if (bean != null) {
+            var simpleName = getSimpleName(bean);
+            var classInfo = bean.getClassInfo();
+            if (classInfo.b("CardView")) {
+                attrs.add("app:cardBackgroundColor");
+                attrs.add("app:cardElevation");
+                attrs.add("app:cardCornerRadius");
+                attrs.add("app:cardUseCompatPadding");
+                if (simpleName.equals("MaterialCardView")) {
+                    attrs.add("app:strokeColor");
+                    attrs.add("app:strokeWidth");
+                }
+            }
+        }
         // Add more attributes here based on the view type
         return attrs;
+    }
+
+    private String getSimpleName(ViewBean bean) {
+        return Jx.WIDGET_NAME_PATTERN.matcher(bean.convert).replaceAll("");
     }
 
     private void showInjectDialog() {

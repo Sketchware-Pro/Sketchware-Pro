@@ -1,6 +1,7 @@
 package pro.sketchware.control.logic;
 
 import static android.text.TextUtils.isEmpty;
+
 import static pro.sketchware.SketchApplication.getContext;
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
@@ -18,30 +19,31 @@ import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.besome.sketch.beans.ProjectFileBean;
-import com.besome.sketch.editor.LogicEditorActivity;
-
-import pro.sketchware.R;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Function;
-
 import a.a.a.ZB;
 import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
+
+import com.besome.sketch.beans.ProjectFileBean;
+import com.besome.sketch.editor.LogicEditorActivity;
+
+import mod.hey.studios.util.Helper;
+
+import pro.sketchware.R;
 import pro.sketchware.databinding.AddCustomListBinding;
 import pro.sketchware.databinding.AddCustomVariableBinding;
-import pro.sketchware.utility.SketchwareUtil;
-import mod.elfilibustero.sketch.lib.utils.CustomVariableUtil;
-import mod.elfilibustero.sketch.lib.valid.VariableModifierValidator;
-import mod.elfilibustero.sketch.lib.valid.VariableTypeValidator;
+import pro.sketchware.lib.validator.VariableModifierValidator;
+import pro.sketchware.lib.validator.VariableTypeValidator;
 import pro.sketchware.menu.ExtraMenuBean;
-import mod.hey.studios.util.Helper;
+import pro.sketchware.utility.CustomVariableUtil;
+import pro.sketchware.utility.SketchwareUtil;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Function;
 
 public class LogicClickListener implements View.OnClickListener {
 

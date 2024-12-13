@@ -1,6 +1,6 @@
 package pro.sketchware.tools;
 
-import static mod.elfilibustero.sketch.lib.utils.PropertiesUtil.parseReferName;
+import static pro.sketchware.utility.PropertiesUtil.parseReferName;
 
 import android.util.Pair;
 

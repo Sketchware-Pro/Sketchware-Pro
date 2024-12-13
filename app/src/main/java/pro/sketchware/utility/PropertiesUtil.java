@@ -1,4 +1,4 @@
-package mod.elfilibustero.sketch.lib.utils;
+package pro.sketchware.utility;
 
 import android.graphics.Color;
 import android.text.TextUtils;

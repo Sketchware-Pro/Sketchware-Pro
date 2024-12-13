@@ -1,15 +1,15 @@
 package pro.sketchware.tools;
 
-import static mod.elfilibustero.sketch.lib.utils.PropertiesUtil.parseReferName;
+import static pro.sketchware.utility.PropertiesUtil.parseReferName;
 
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.TextBean;
 import com.besome.sketch.beans.ViewBean;
 
 import mod.agus.jcoderz.beans.ViewBeans;
-import mod.elfilibustero.sketch.lib.utils.PropertiesUtil;
 
 import pro.sketchware.utility.AttributeConstants;
+import pro.sketchware.utility.PropertiesUtil;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
