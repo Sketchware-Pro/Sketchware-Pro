@@ -1,22 +1,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
-    android:layout_width="match_parent"
     android:layout_height="48dp"
+    android:layout_width="match_parent"
     android:background="?selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tv_preview"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_width="0dp"
         android:layout_weight="1" />
 
     <ImageView
-        android:layout_width="16dp"
         android:layout_height="16dp"
+        android:layout_width="16dp"
         android:src="@drawable/ic_arrow_drop_down_24px" />
+
 </LinearLayout>
