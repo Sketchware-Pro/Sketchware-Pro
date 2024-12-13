@@ -1,4 +1,4 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,14 +7,17 @@
     android:layout_marginTop="2dp"
     android:layout_marginRight="4dp"
     android:layout_marginBottom="2dp"
-    android:elevation="8dp"
-    app:cardBackgroundColor="#ffffffff">
+    style="?attr/materialCardViewFilledStyle"
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:cardElevation="8dp">
 
     <LinearLayout
         android:id="@+id/project_layout"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -26,7 +29,6 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/circle_bg_white"
                 android:contentDescription="@null" />
 
             <com.besome.sketch.lib.ui.CircleImageView
@@ -54,7 +56,7 @@
                     android:id="@+id/project_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#ff404040"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp"
                     tools:text="InternalDemo" />
 
@@ -68,7 +70,7 @@
                         android:id="@+id/app_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#ff9a9a9a"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="12sp"
                         tools:text="Sketchware Pro Demo" />
 
@@ -77,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
-                        android:textColor="#ff9a9a9a"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="10sp"
                         tools:text="1.0(1)" />
                 </LinearLayout>
@@ -86,7 +88,7 @@
                     android:id="@+id/package_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#ff9a9a9a"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="12sp"
                     tools:text="com.jbk.internal.demo" />
             </LinearLayout>
@@ -97,10 +99,9 @@
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_gravity="right"
                 android:padding="8dp"
                 android:src="@drawable/ic_checkmark_green_48dp"
                 android:visibility="gone" />
         </RelativeLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

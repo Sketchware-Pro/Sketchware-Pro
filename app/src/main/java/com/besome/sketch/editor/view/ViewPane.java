@@ -1174,7 +1174,7 @@ public class ViewPane extends RelativeLayout {
         String strokeColor = handler.getAttributeValueOf("strokeColor");
         String strokeWidth = handler.getAttributeValueOf("strokeWidth");
 
-        cardView.setCardBackgroundColor(PropertiesUtil.isHexColor(cardBackgroundColor) ? PropertiesUtil.parseColor(cardBackgroundColor) : bean.layout.backgroundColor);
+        cardView.setBackgroundColor(PropertiesUtil.isHexColor(cardBackgroundColor) ? PropertiesUtil.parseColor(cardBackgroundColor) : bean.layout.backgroundColor);
         cardView.setCardElevation(PropertiesUtil.resolveSize(cardElevation, 4));
         cardView.setRadius(PropertiesUtil.resolveSize(cardCornerRadius, 8));
         cardView.setUseCompatPadding(Boolean.parseBoolean(TextUtils.isEmpty(compatPadding) ? "false" : compatPadding));

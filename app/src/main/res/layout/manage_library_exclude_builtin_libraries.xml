@@ -83,7 +83,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:textColor="#ff757575"
+                        android:textColor="?colorAmber"
                         android:textSize="14sp"
                         tools:text="This might break your project if you don't know what you're doing!" />
                 </LinearLayout>
