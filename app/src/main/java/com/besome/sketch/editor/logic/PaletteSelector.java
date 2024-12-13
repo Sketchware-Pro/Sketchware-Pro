@@ -221,7 +221,7 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         }));
     }
 
-    private record SimpleTextWatcher(
+    public record SimpleTextWatcher(
             java.util.function.Consumer<CharSequence> onTextChanged) implements android.text.TextWatcher {
 
         @Override
