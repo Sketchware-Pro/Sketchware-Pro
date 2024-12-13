@@ -24,6 +24,7 @@ import a.a.a.jC;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
@@ -145,7 +146,7 @@ public class StringEditorActivity extends AppCompatActivity {
         if (id == 1) {
             XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
         } else if (id == 0) {
-            addStringSearchDialog(0);
+            addStringDialog();
         } else if (id == 2) {
             convertXmlToListMap(FileUtil.readFile(getDefaultStringPath(Objects.requireNonNull(getIntent().getStringExtra("content")))), listmap);
             adapter.notifyDataSetChanged();
@@ -162,9 +163,9 @@ public class StringEditorActivity extends AppCompatActivity {
             intent.putExtra("content", getIntent().getStringExtra("content"));
             intent.putExtra("xml", getIntent().getStringExtra("xml"));
             startActivity(intent);
-         } else if (id == 4) {
-            addStringSearchDialog(1);
-         }
+        } else if (id == 4) {
+            showSearchDialog();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -237,60 +238,47 @@ public class StringEditorActivity extends AppCompatActivity {
                 .replace("\r", "&#13;");
     }
 
-    public void addStringSearchDialog(int mod) {
-        
+    private void addStringDialog() {
         aB dialog = new aB(this);
-        ViewStringEditorAddBinding binding =
-                ViewStringEditorAddBinding.inflate(LayoutInflater.from(this));
-        
-        if (mod == 0) {
-
-            dialog.b("Create new string");
-            dialog.b(
-                    "Create",
-                    v1 -> {
-                       String key = Objects.requireNonNull(binding.stringKeyInput.getText()).toString();
-                       String value =
-                                Objects.requireNonNull(binding.stringValueInput.getText())
-                                        .toString();
-
-                        if (key.isEmpty() || value.isEmpty()) {
-                            SketchwareUtil.toast("Please fill in all fields", Toast.LENGTH_SHORT);
-                            return;
-                        }
-
-                        if (isXmlStringsContains(listmap, key)) {
-                            binding.stringKeyInputLayout.setError(
-                                    "\"" + key + "\" is already exist");
-                            return;
-                        }
-
-                        addString(key, value);
-                        dialog.dismiss();
-                    });
-
-        } else {
-            /* I don't wanna make new dialog
-             so that's why I put this ifelse here
-             and I hide some views
-            */
-            binding.stringValueInputLayout.setVisibility(View.GONE);
-            binding.stringKeyInputLayout.setHint("Search...");
-            dialog.b("Search For String");
-            // text watcher to search in the adapter using filter func 
-            binding.stringKeyInput.addTextChangedListener(
-                    new com.besome.sketch.editor.logic.PaletteSelector.SimpleTextWatcher(
-                            s -> adapter.filter(s.toString())));
-            dialog.configureDefaultButton(
-                    "Restore",
-                    v1 -> {
-                        //make it empty to restore the originalData
-                        adapter.filter("");
-                        dialog.dismiss();
-                    });
-        }
-
+        ViewStringEditorAddBinding binding = ViewStringEditorAddBinding.inflate(LayoutInflater.from(this));
+        dialog.b("Create new string");
+        dialog.b("Create", v1 -> {
+            String key = Objects.requireNonNull(binding.stringKeyInput.getText()).toString();
+            String value = Objects.requireNonNull(binding.stringValueInput.getText()).toString();
+            
+            if (key.isEmpty() || value.isEmpty()) {
+                SketchwareUtil.toast("Please fill in all fields", Toast.LENGTH_SHORT);
+                return;
+            }
+            
+            if (isXmlStringsContains(listmap, key)) {
+                binding.stringKeyInputLayout.setError("\"" + key + "\" is already exist");
+                return;
+            }
+            addString(key, value);
+            dialog.dismiss();
+        });
         dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
+        dialog.a(binding.getRoot());
+        dialog.show();
+    }
+    
+    private void showSearchDialog() {
+        var dialog = new aB(this);
+        var binding = ViewStringEditorAddBinding.inflate(LayoutInflater.from(this));
+        binding.stringValueInputLayout.setVisibility(View.GONE);
+        binding.stringKeyInputLayout.setHint("Search...");
+        // text watcher to search in the adapter using filter func 
+        binding.stringKeyInput.addTextChangedListener(
+            new SimpleTextWatcher(s -> adapter.filter(s.toString()))
+        );
+        dialog.b("Search for String");
+        dialog.configureDefaultButton("Restore", v -> {
+            //make it empty to restore the originalData
+            adapter.filter("");
+            dialog.dismiss();
+        });
+        dialog.a(getString(R.string.cancel), v -> dialog.dismiss());
         dialog.a(binding.getRoot());
         dialog.show();
     }
@@ -315,8 +303,6 @@ public class StringEditorActivity extends AppCompatActivity {
         adapter.notifyItemInserted(listmap.size() - 1);
     }
     
-    
-
     public boolean checkDefaultString(final String path) {
         File file = new File(path);
         String parentFolder = Objects.requireNonNull(file.getParentFile()).getName();
