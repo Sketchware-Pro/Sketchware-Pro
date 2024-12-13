@@ -29,6 +29,42 @@
       "title": null
     },
     {
+      "modder_username": "Aquiles Trindade",
+      "modder_description": "Main modder",
+      "modder_img": "https://avatars.githubusercontent.com/u/171992413",
+      "isTitled": false,
+      "isMainModder": true,
+      "isActive": true,
+      "title": null
+    },
+    {
+      "modder_username": "Edward-NewGate-KOC",
+      "modder_description": "Main modder",
+      "modder_img": "https://avatars.githubusercontent.com/u/174376858?v=4",
+      "isTitled": false,
+      "isMainModder": true,
+      "isActive": true,
+      "title": null
+    },
+    {
+      "modder_username": "PranavPurwar",
+      "modder_description": "Main modder",
+      "modder_img": "https://avatars.githubusercontent.com/u/75154889?v=4",
+      "isTitled": false,
+      "isMainModder": true,
+      "isActive": true,
+      "title": null
+    },
+    {
+      "modder_username": "Aikr",
+      "modder_description": "Main modder",
+      "modder_img": "https://avatars.githubusercontent.com/u/95296093?v=4",
+      "isTitled": false,
+      "isMainModder": true,
+      "isActive": true,
+      "title": null
+    },
+    {
       "modder_username": "Agus JCoderz",
       "modder_description": "Main modder",
       "modder_img": "https://i.imgur.com/N2mJVX3.jpg",
@@ -65,22 +101,13 @@
       "title": null
     },
     {
-      "modder_username": "Aquiles Trindade",
-      "modder_description": "I love cats",
-      "modder_img": "https://avatars.githubusercontent.com/u/171992413",
+      "modder_username": "NiceSapien",
+      "modder_description": "Created the website and docs. Visit: https://nicesapien.is-a.dev",
+      "modder_img": "https://avatars.githubusercontent.com/u/71333407",
       "isTitled": true,
       "isMainModder": false,
       "isActive": true,
       "title": "Contributors"
-    },
-    {
-      "modder_username": "NiceSapien",
-      "modder_description": "Created the website and docs. Visit: https://nicesapien.is-a.dev",
-      "modder_img": "https://avatars.githubusercontent.com/u/71333407",
-      "isTitled": false,
-      "isMainModder": false,
-      "isActive": true,
-      "title": null
     },
     {
       "modder_username": "Ilyasse",
@@ -140,15 +167,6 @@
       "modder_username": "Zirus",
       "modder_description": "Backup dialog design improvement",
       "modder_img": "https://avatars.githubusercontent.com/u/70142054",
-      "isTitled": false,
-      "isMainModder": false,
-      "isActive": false,
-      "title": null
-    },
-    {
-      "modder_username": "Pranav Purwar",
-      "modder_description": "Visit my best work: https://rb.gy/enaq3a",
-      "modder_img": "https://avatars.githubusercontent.com/u/75154889",
       "isTitled": false,
       "isMainModder": false,
       "isActive": false,
