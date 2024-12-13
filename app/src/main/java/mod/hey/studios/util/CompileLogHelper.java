@@ -32,6 +32,7 @@ import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
 import pro.sketchware.R;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.ThemeUtils;
 
 public class CompileLogHelper {
@@ -66,6 +67,7 @@ public class CompileLogHelper {
             int warningColor = MaterialColors.getColor(context, R.attr.colorAmber, TAG);
             Map<String, String> pathMapping = new HashMap<>();
             String processedLogs = logs;
+
             if (hidePath) {
                 Pattern filePattern = Pattern.compile("/storage/[^\\s\n]+");
                 Matcher fileMatcher = filePattern.matcher(logs);
@@ -91,16 +93,21 @@ public class CompileLogHelper {
 
             Pattern filePattern = Pattern.compile(hidePath ? "[\\w.-]+\\.(java|xml)" : "/storage/[^\\s\n]+");
             Matcher fileMatcher = filePattern.matcher(processedLogs);
-            Pattern linePattern = Pattern.compile("\\(at line (\\d+)\\)");
 
             while (fileMatcher.find()) {
                 final String displayText = fileMatcher.group();
                 final String fullPath = hidePath ? pathMapping.get(displayText) : displayText;
 
-                String surroundingText = logs.substring(Math.max(0, logs.indexOf(fullPath) - 50),
-                        Math.min(logs.length(), logs.indexOf(fullPath) + 150));
-                Matcher lineMatcher = linePattern.matcher(surroundingText);
-                final String lineNumber = lineMatcher.find() ? lineMatcher.group(1) : "";
+                // Find the corresponding error block for this file
+                String beforeFile = processedLogs.substring(0, fileMatcher.start());
+                int lastErrorStart = beforeFile.lastIndexOf("----------\n");
+                if (lastErrorStart == -1) continue;
+
+                String errorBlock = processedLogs.substring(lastErrorStart,
+                        Math.min(processedLogs.length(), lastErrorStart + 500));
+
+                Matcher lineMatcher = linePattern.matcher(errorBlock);
+                final String lineNumber = lineMatcher.find() ? lineMatcher.group(1) : "1";
 
                 ClickableSpan clickableSpan = new ClickableSpan() {
                     @Override
@@ -109,14 +116,17 @@ public class CompileLogHelper {
                     }
                 };
 
-                spannable.setSpan(clickableSpan, fileMatcher.start(), fileMatcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannable.setSpan(new StyleSpan(Typeface.BOLD), fileMatcher.start(), fileMatcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                spannable.setSpan(new ForegroundColorSpan(fileColor), fileMatcher.start(), fileMatcher.end(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(clickableSpan, fileMatcher.start(), fileMatcher.end(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(new StyleSpan(Typeface.BOLD), fileMatcher.start(), fileMatcher.end(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                spannable.setSpan(new ForegroundColorSpan(fileColor), fileMatcher.start(), fileMatcher.end(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
 
             return spannable;
         } catch (Exception e) {
-             return getColoredLogs(context, logs);
+            return getColoredLogs(context, logs);
         }
     }
 
@@ -135,40 +145,48 @@ public class CompileLogHelper {
     }
 
     private static void showCode(Context context, String filePath, String fileName, double line) {
-        String source = FileUtil.readFile(filePath);
-        CodeEditor editor = new CodeEditor(context);
-        editor.setTypefaceText(Typeface.MONOSPACE);
-        editor.setEditable(true);
-        editor.setTextSize(14);
-        editor.setText(source);
-        editor.post(() -> {
-            editor.setHighlightCurrentLine(true);
-            editor.jumpToLine((int) line);
-        });
-        editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
-
-        if (fileName.endsWith(".xml")) {
-            editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
-            if (ThemeUtils.isDarkThemeEnabled(context)) {
-                editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
-            } else {
-                editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
-            }
+        if (!FileUtil.isExistFile(filePath)) {
+            SketchwareUtil.toast("File not found");
         } else {
-            editor.setEditorLanguage(new JavaLanguage());
-            if (ThemeUtils.isDarkThemeEnabled(context)) {
-                editor.setColorScheme(new SchemeDarcula());
-            } else {
-                editor.setColorScheme(new EditorColorScheme());
-            }
-        }
-        var dialogBuilder = new MaterialAlertDialogBuilder(context)
-                .setTitle(fileName)
-                .setCancelable(false)
-                .setPositiveButton("Dismiss", null);
+            String source = FileUtil.readFile(filePath);
+            CodeEditor editor = new CodeEditor(context);
+            editor.setTypefaceText(Typeface.MONOSPACE);
+            editor.setEditable(true);
+            editor.setTextSize(14);
+            editor.setText(source);
+            editor.post(() -> {
+                try {
+                    editor.setHighlightCurrentLine(true);
+                    editor.jumpToLine((int) line);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
 
-        AlertDialog dialog = dialogBuilder.create();
-        dialog.setView(editor, (int) getDip(24), (int) getDip(20), (int) getDip(24), (int) getDip(0));
-        dialog.show();
+            if (fileName.endsWith(".xml")) {
+                editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
+                if (ThemeUtils.isDarkThemeEnabled(context)) {
+                    editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+                } else {
+                    editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                }
+            } else {
+                editor.setEditorLanguage(new JavaLanguage());
+                if (ThemeUtils.isDarkThemeEnabled(context)) {
+                    editor.setColorScheme(new SchemeDarcula());
+                } else {
+                    editor.setColorScheme(new EditorColorScheme());
+                }
+            }
+            var dialogBuilder = new MaterialAlertDialogBuilder(context)
+                    .setTitle(fileName)
+                    .setCancelable(false)
+                    .setPositiveButton("Dismiss", null);
+
+            AlertDialog dialog = dialogBuilder.create();
+            dialog.setView(editor, (int) getDip(24), (int) getDip(20), (int) getDip(24), (int) getDip(0));
+            dialog.show();
+        }
     }
 }
