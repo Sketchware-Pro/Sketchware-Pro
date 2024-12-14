@@ -2080,8 +2080,11 @@ public class Lx {
                 "                final String id = DocumentsContract.getDocumentId(uri);\r\n" +
                 "\r\n" +
                 "                if (!TextUtils.isEmpty(id)) {\r\n" +
-                "                    if (id.startsWith(\"raw:\")) {\r\n" +
-                "                        return id.replaceFirst(\"raw:\", \"\");\r\n" +
+                "                    if (id.contains(\":\")) {\r\n" +
+                "                        String[] split = id.split(\":\");\r\n" +
+                "                        if (split.length > 1) {\r\n" +
+                "                            return split[1];\r\n" +
+                "                        }\r\n" +
                 "                    }\r\n" +
                 "                }\r\n" +
                 "\r\n" +
