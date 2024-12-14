@@ -1,121 +1,65 @@
 package mod.hey.studios.moreblock.importer;
 
-import static pro.sketchware.utility.SketchwareUtil.getDip;
-
 import android.app.Activity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.SearchView;
 
-import androidx.core.content.res.ResourcesCompat;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.MoreBlockCollectionBean;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageCollectionPopupImportMoreBlockListItemBinding;
 
 import java.util.ArrayList;
 
-import a.a.a.aB;
-import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.BlockUtil;
 
+import a.a.a.aB;
+
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageCollectionPopupImportMoreBlockListItemBinding;
+import pro.sketchware.databinding.MoreBlockImporterDialogBinding;
+import pro.sketchware.utility.SketchwareUtil;
+
 public class MoreblockImporterDialog extends aB {
 
-    private final Activity act;
-    private ArrayList<MoreBlockCollectionBean> list;
+    private final ArrayList<MoreBlockCollectionBean> moreBlockCollectionList;
+    private final MoreBlockAdapter adapter;
 
-    public MoreblockImporterDialog(Activity act, ArrayList<MoreBlockCollectionBean> beanList, CallBack callback) {
-        super(act);
-        this.act = act;
-        list = new ArrayList<>(beanList);
+    public MoreblockImporterDialog(Activity activity, ArrayList<MoreBlockCollectionBean> beanList, CallBack callback) {
+        super(activity);
 
-        Adapter la = new Adapter();
+        MoreBlockImporterDialogBinding binding = MoreBlockImporterDialogBinding.inflate(getLayoutInflater());
+
+        moreBlockCollectionList = new ArrayList<>(beanList);
+        adapter = new MoreBlockAdapter(moreBlockCollectionList);
 
         b("Select a more block");
         a(R.drawable.more_block_96dp);
 
-        SearchView searchView = new SearchView(act);
-
-        searchView.setQueryHint("Search...");
-        searchView.setIconifiedByDefault(false);
-        searchView.setFocusable(false);
-        searchView.setFocusableInTouchMode(true);
-
-        {
-            LinearLayout.LayoutParams searchViewParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            searchViewParams.setMargins(
-                    0,
-                    (int) getDip(5),
-                    0,
-                    (int) getDip(10)
-            );
-            searchView.setLayoutParams(searchViewParams);
-        }
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.searchInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public boolean onQueryTextChange(String query) {
-                if (query.isEmpty()) {
-                    //just return the bean list
-                    list = new ArrayList<>(beanList);
-                } else {
-                    list = new ArrayList<>();
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
-                    for (MoreBlockCollectionBean bean : beanList) {
-                        if (bean.name.toLowerCase().contains(query.toLowerCase())
-                                || bean.spec.toLowerCase().contains(query.toLowerCase())) {
-                            list.add(bean);
-                        }
-                    }
-                }
-
-                la.resetPos();
-                la.notifyDataSetChanged();
-
-                return false;
+            @Override
+            public void afterTextChanged(Editable s) {
+                String query = s.toString().toLowerCase();
+                filterList(query, beanList);
             }
         });
 
-        ListView lw = new ListView(act);
-        {
-            LinearLayout.LayoutParams listViewParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            listViewParams.setMargins(
-                    0,
-                    0,
-                    0,
-                    (int) getDip(18)
-            );
-            lw.setLayoutParams(listViewParams);
-            lw.setDivider(ResourcesCompat.getDrawable(act.getResources(), android.R.color.transparent, act.getTheme()));
-            lw.setDividerHeight((int) getDip(10));
-        }
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        binding.recyclerView.setAdapter(adapter);
 
-        LinearLayout ln = new LinearLayout(act);
-        ln.setOrientation(LinearLayout.VERTICAL);
-        ln.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        ln.addView(searchView);
-        ln.addView(lw);
-
-        lw.setAdapter(la);
-
-        a(ln);
-        b(act.getString(R.string.common_word_select), v -> {
-            MoreBlockCollectionBean selectedBean = la.getSelectedItem();
+        b(activity.getString(R.string.common_word_select), v -> {
+            MoreBlockCollectionBean selectedBean = adapter.getSelectedItem();
 
             if (selectedBean == null) {
                 SketchwareUtil.toastError("Select a more block");
@@ -124,68 +68,87 @@ public class MoreblockImporterDialog extends aB {
                 dismiss();
             }
         });
-        a(act.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(this));
+
+        a(activity.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(this));
+        a(binding.getRoot());
+    }
+
+    private void filterList(String query, ArrayList<MoreBlockCollectionBean> beanList) {
+        moreBlockCollectionList.clear();
+
+        if (query.isEmpty()) {
+            moreBlockCollectionList.addAll(beanList);
+        } else {
+            for (MoreBlockCollectionBean bean : beanList) {
+                if (bean.name.toLowerCase().contains(query) || bean.spec.toLowerCase().contains(query)) {
+                    moreBlockCollectionList.add(bean);
+                }
+            }
+        }
+
+        adapter.resetSelectedPosition();
+        adapter.notifyDataSetChanged();
     }
 
     public interface CallBack {
         void onSelected(MoreBlockCollectionBean bean);
     }
 
-    private class Adapter extends BaseAdapter {
+    private static class MoreBlockAdapter extends RecyclerView.Adapter<MoreBlockAdapter.ViewHolder> {
 
-        private int selectedPos = -1;
+        private final ArrayList<MoreBlockCollectionBean> collectionList;
+        private int selectedPosition = -1;
+
+        public MoreBlockAdapter(ArrayList<MoreBlockCollectionBean> collectionList) {
+            this.collectionList = collectionList;
+        }
 
         public MoreBlockCollectionBean getSelectedItem() {
-            return selectedPos != -1 ? getItem(selectedPos) : null;
+            return selectedPosition != -1 ? collectionList.get(selectedPosition) : null;
         }
 
-        public void resetPos() {
-            selectedPos = -1;
+        public void resetSelectedPosition() {
+            selectedPosition = -1;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ManageCollectionPopupImportMoreBlockListItemBinding binding = ManageCollectionPopupImportMoreBlockListItemBinding.inflate(
+                    LayoutInflater.from(parent.getContext()), parent, false
+            );
+            return new ViewHolder(binding);
         }
 
         @Override
-        public int getCount() {
-            return list.size();
-        }
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            MoreBlockCollectionBean bean = collectionList.get(position);
 
-        @Override
-        public MoreBlockCollectionBean getItem(int position) {
-            return list.get(position);
-        }
+            holder.binding.imgSelected.setVisibility(position == selectedPosition ? View.VISIBLE : View.GONE);
+            holder.binding.tvBlockName.setText(bean.name);
 
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
+            holder.binding.blockArea.removeAllViews();
+            BlockUtil.loadMoreblockPreview(holder.binding.blockArea, bean.spec);
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ManageCollectionPopupImportMoreBlockListItemBinding binding;
-
-            if (convertView == null) {
-                binding = ManageCollectionPopupImportMoreBlockListItemBinding.inflate(act.getLayoutInflater(), parent, false);
-                convertView = binding.getRoot();
-                convertView.setTag(binding);
-            } else {
-                binding = (ManageCollectionPopupImportMoreBlockListItemBinding) convertView.getTag();
-            }
-
-            binding.imgSelected.setVisibility(position == selectedPos ? View.VISIBLE : View.GONE);
-
-            binding.tvBlockName.setText(getItem(position).name);
-            binding.blockArea.removeAllViews();
-            BlockUtil.loadMoreblockPreview(binding.blockArea, getItem(position).spec);
-
-            View.OnClickListener listener = v -> {
-                selectedPos = position;
+            holder.binding.transparentOverlay.setOnClickListener(v -> {
+                selectedPosition = holder.getAbsoluteAdapterPosition();
                 notifyDataSetChanged();
-            };
-
-            binding.getRoot().setOnClickListener(listener);
-            binding.blockArea.setOnClickListener(listener);
-
-            return convertView;
+            });
         }
 
+        @Override
+        public int getItemCount() {
+            return collectionList.size();
+        }
+
+        static class ViewHolder extends RecyclerView.ViewHolder {
+
+            final ManageCollectionPopupImportMoreBlockListItemBinding binding;
+
+            public ViewHolder(@NonNull ManageCollectionPopupImportMoreBlockListItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+            }
+        }
     }
 }

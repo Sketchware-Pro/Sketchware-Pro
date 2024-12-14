@@ -1,20 +1,16 @@
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_item"
     android:layout_width="match_parent"
-    android:layout_height="75dp"
-    android:layout_marginHorizontal="4dp"
-    android:layout_marginVertical="2dp"
-    android:elevation="0dp"
-    app:cardBackgroundColor="#00000000">
+    android:layout_height="wrap_content"
+    android:paddingVertical="3dp">
 
-    <RelativeLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="75dp"
+        android:elevation="0dp"
+        app:cardBackgroundColor="#00000000">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,28 +28,19 @@
                 android:textSize="16sp"
                 tools:text="gaming Block" />
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:scrollbars="none"
-                android:layout_height="match_parent"
-                android:fadingEdge="horizontal"
-                android:requiresFadingEdge="horizontal"
+            <FrameLayout
+                android:id="@+id/block_area"
                 android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp">
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
 
-                <FrameLayout
-                    android:id="@+id/block_area"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
-            </HorizontalScrollView>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/img_selected"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:background="@drawable/shadow_gradient_right"
             android:gravity="center|end"
             android:visibility="gone"
@@ -67,6 +54,13 @@
                 android:src="@drawable/ic_checked_24" />
         </LinearLayout>
 
+        <View
+            android:id="@+id/transparentOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?selectableItemBackground"
+            android:orientation="horizontal" />
 
-    </RelativeLayout>
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>
