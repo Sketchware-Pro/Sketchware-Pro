@@ -5,13 +5,13 @@
     android:orientation="horizontal">
 
     <com.besome.sketch.lib.ui.CustomScrollView
-        android:id="@+id/scv"
+        android:id="@+id/scroll"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
         <com.besome.sketch.lib.ui.CustomHorizontalScrollView
-            android:id="@+id/hscv"
+            android:id="@+id/scroll_horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

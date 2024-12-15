@@ -7,14 +7,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 
-import com.besome.sketch.lib.ui.CustomHorizontalScrollView;
-import com.besome.sketch.lib.ui.CustomScrollView;
 import pro.sketchware.R;
+import pro.sketchware.databinding.PaletteBlockBinding;
 
 import a.a.a.Rs;
 import a.a.a.Ts;
@@ -22,10 +22,8 @@ import a.a.a.wB;
 
 public class PaletteBlock extends LinearLayout {
 
-    private Context a;
-    private CustomScrollView customScrollView;
-    private CustomHorizontalScrollView horizontalScrollView;
-    private LinearLayout blockBuilder;
+    private PaletteBlockBinding binding;
+    private Context context;
     public float f = 0.0F;
 
     public PaletteBlock(Context context) {
@@ -37,39 +35,42 @@ public class PaletteBlock extends LinearLayout {
         super(context, attrs);
         initialize(context);
     }
+    
+    private void initialize(final Context context) {
+        this.context = context;
+        binding = PaletteBlockBinding.inflate(LayoutInflater.from(context), this, true);
+        f = wB.a(context, 1.0F);
+    }
 
     public Ts a(String var1, String var2, String var3) {
-        View view = new View(a);
-        view.setLayoutParams(new LayoutParams(-1, (int) (f * 8.0F)));
-        blockBuilder.addView(view);
-        Rs blockView = new Rs(a, -1, var1, var2, var3);
+        View view = new View(context);
+        view.setLayoutParams(getLayoutParams(8.0F));
+        binding.blockBuilder.addView(view);
+        Rs blockView = new Rs(context, -1, var1, var2, var3);
         blockView.setBlockType(1);
-        blockBuilder.addView(blockView);
+        binding.blockBuilder.addView(blockView);
         return blockView;
     }
 
     public Ts a(String var1, String var2, String var3, String var4) {
-        View view = new View(a);
-        view.setLayoutParams(new LayoutParams(-1, (int) (f * 8.0F)));
-        blockBuilder.addView(view);
-        Rs blockView = new Rs(a, -1, var1, var2, var3, var4);
+        View view = new View(context);
+        view.setLayoutParams(getLayoutParams(8.0F));
+        binding.blockBuilder.addView(view);
+        Rs blockView = new Rs(context, -1, var1, var2, var3, var4);
         blockView.setBlockType(1);
-        blockBuilder.addView(blockView);
+        binding.blockBuilder.addView(blockView);
         return blockView;
     }
-
+    
     public TextView a(String title) {
-        TextView textView = new TextView(a);
-        textView.setLayoutParams(new LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, 
-           (int) (f * 30.0F)
-        ));
+        var textView = new TextView(context);
+        textView.setLayoutParams(getLayoutParams(30.0F));
         textView.setText(title);
         textView.setTextSize(10.0F);
         textView.setGravity(Gravity.CENTER);
         textView.setPadding((int) (f * 8.0F), 0, (int) (f * 8.0F), 0);
         
-        var cardView = new MaterialCardView(a);
+        var cardView = new MaterialCardView(context);
         var params = new LayoutParams(
              ViewGroup.LayoutParams.MATCH_PARENT,
              ViewGroup.LayoutParams.WRAP_CONTENT
@@ -81,39 +82,29 @@ public class PaletteBlock extends LinearLayout {
         cardView.setRadius(12.0f);
         cardView.setStrokeWidth(0);
         cardView.addView(textView);
-        blockBuilder.addView(cardView);
+        binding.blockBuilder.addView(cardView);
         return textView;
     }
 
     public void a() {
-        blockBuilder.removeAllViews();
-    }
-
-    private void initialize(Context context) {
-        a = context;
-        wB.a(context, this, R.layout.palette_block);
-        PaletteSelector paletteSelector = findViewById(R.id.palette_selector);
-        customScrollView = findViewById(R.id.scv);
-        horizontalScrollView = findViewById(R.id.hscv);
-        blockBuilder = findViewById(R.id.block_builder);
-        f = wB.a(a, 1.0F);
+        binding.blockBuilder.removeAllViews();
     }
 
     public void a(String title, int color) {
-        TextView textView = new TextView(a);
-        LayoutParams layoutParams = new LayoutParams(-1, (int) (f * 16.0F));
+        TextView textView = new TextView(context);
+        LayoutParams layoutParams = getLayoutParams(16.0F);
         layoutParams.topMargin = (int) (f * 16.0F);
         textView.setLayoutParams(layoutParams);
         textView.setBackgroundColor(color);
         textView.setText(title);
-        textView.setTextColor(-1);
+        textView.setTextColor(Color.WHITE);
         textView.setTextSize(9.0F);
         textView.setTypeface(null, Typeface.BOLD);
-        textView.setGravity(19);
+        textView.setGravity(Gravity.TOP | Gravity.LEFT);
         textView.setPadding((int) (f * 12.0F), 0, (int) (f * 12.0F), 0);
-        blockBuilder.addView(textView);
+        binding.blockBuilder.addView(textView);
     }
-
+    
     public void addDeprecatedBlock(String message, String type, String opCode) {
         if (message != null && !message.isEmpty()) {
             a(message, 0xff555555);
@@ -122,25 +113,32 @@ public class PaletteBlock extends LinearLayout {
         blockView.e = 0xFFBDBDBD;
         blockView.setTag(opCode);
     }
+    
+    private LinearLayout.LayoutParams getLayoutParams(float heightMultiplier) {
+        return new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            (int) (f * heightMultiplier)
+        );
+    }
 
     public void setDragEnabled(boolean dragEnabled) {
         if (dragEnabled) {
-            customScrollView.b();
-            horizontalScrollView.b();
+            binding.scroll.b();
+            binding.scrollHorizontal.b();
         } else {
-            customScrollView.a();
-            horizontalScrollView.a();
+            binding.scroll.a();
+            binding.scrollHorizontal.a();
         }
     }
 
     public void setMinWidth(int minWidth) {
-        customScrollView.setMinimumWidth(minWidth - (int) (f * 5.0F));
-        horizontalScrollView.setMinimumWidth(minWidth - (int) (f * 5.0F));
+        binding.scroll.setMinimumWidth(minWidth - (int) (f * 5.0F));
+        binding.scrollHorizontal.setMinimumWidth(minWidth - (int) (f * 5.0F));
         getLayoutParams().width = minWidth;
     }
 
     public void setUseScroll(boolean useScroll) {
-        customScrollView.setUseScroll(useScroll);
-        horizontalScrollView.setUseScroll(useScroll);
+        binding.scroll.setUseScroll(useScroll);
+        binding.scrollHorizontal.setUseScroll(useScroll);
     }
 }
