@@ -38,7 +38,7 @@ public class DebugActivity extends Activity {
             String[] split = errorMessage.split("\n");
 
             String exceptionType = split[0];
-            String message = exceptionMap.getOrDefault(exceptionType, "");
+            String message = exceptionMap.containsKey(exceptionType) ? exceptionMap.get(exceptionType) : "";
 
             if (!message.isEmpty()) {
                 formattedMessage.append(message);
