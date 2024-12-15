@@ -22,7 +22,7 @@ import a.a.a.aB;
 
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageCollectionPopupImportMoreBlockListItemBinding;
-import pro.sketchware.databinding.MoreBlockImporterDialogBinding;
+import pro.sketchware.databinding.SearchWithRecyclerViewBinding;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class MoreblockImporterDialog extends aB {
@@ -33,7 +33,7 @@ public class MoreblockImporterDialog extends aB {
     public MoreblockImporterDialog(Activity activity, ArrayList<MoreBlockCollectionBean> beanList, CallBack callback) {
         super(activity);
 
-        MoreBlockImporterDialogBinding binding = MoreBlockImporterDialogBinding.inflate(getLayoutInflater());
+        SearchWithRecyclerViewBinding binding = SearchWithRecyclerViewBinding.inflate(getLayoutInflater());
 
         moreBlockCollectionList = new ArrayList<>(beanList);
         adapter = new MoreBlockAdapter(moreBlockCollectionList);
