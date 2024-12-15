@@ -64,17 +64,13 @@ public class PaletteBlock extends LinearLayout {
     
     public TextView a(String title) {
         var textView = new TextView(context);
-        textView.setLayoutParams(getLayoutParams(30.0F));
         textView.setText(title);
         textView.setTextSize(10.0F);
         textView.setGravity(Gravity.CENTER);
         textView.setPadding((int) (f * 8.0F), 0, (int) (f * 8.0F), 0);
         
         var cardView = new MaterialCardView(context);
-        var params = new LayoutParams(
-             ViewGroup.LayoutParams.MATCH_PARENT,
-             ViewGroup.LayoutParams.WRAP_CONTENT
-        );
+        var params = getLayoutParams(30.0F);
         params.setMargins(0, 0, 3, 3);
         cardView.setLayoutParams(params);
         
@@ -82,12 +78,13 @@ public class PaletteBlock extends LinearLayout {
         cardView.setRadius(12.0f);
         cardView.setStrokeWidth(0);
         cardView.addView(textView);
-        binding.blockBuilder.addView(cardView);
+        binding.actionsContainer.addView(cardView);
         return textView;
     }
 
     public void a() {
         binding.blockBuilder.removeAllViews();
+        binding.actionsContainer.removeAllViews();
     }
 
     public void a(String title, int color) {
