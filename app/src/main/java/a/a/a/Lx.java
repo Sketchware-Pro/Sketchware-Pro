@@ -1844,6 +1844,7 @@ public class Lx {
                 "import android.graphics.RectF;\r\n" +
                 "import android.media.ExifInterface;\r\n" +
                 "import android.net.Uri;\r\n" +
+                "import android.os.Build;\r\n" +
                 "import android.os.Environment;\r\n" +
                 "import android.provider.DocumentsContract;\r\n" +
                 "import android.provider.MediaStore;\r\n" +
@@ -2077,21 +2078,27 @@ public class Lx {
                 "                    path = Environment.getExternalStorageDirectory() + \"/\" + split[1];\r\n" +
                 "                }\r\n" +
                 "            } else if (isDownloadsDocument(uri)) {\r\n" +
-                "                final String id = DocumentsContract.getDocumentId(uri);\r\n" +
+                "                final String docId = DocumentsContract.getDocumentId(uri);\r\n" +
+                "                final String[] split = docId.split(\":\");\r\n" +
+                "                final String type = split[0];\r\n" +
                 "\r\n" +
-                "                if (!TextUtils.isEmpty(id)) {\r\n" +
-                "                    if (id.contains(\":\")) {\r\n" +
-                "                        String[] split = id.split(\":\");\r\n" +
-                "                        if (split.length > 1) {\r\n" +
-                "                            return split[1];\r\n" +
-                "                        }\r\n" +
-                "                    }\r\n" +
+                "                if (\"raw\".equalsIgnoreCase(type)) {\r\n" +
+                "                    return split[1];\r\n" +
+                //referenced from: https://github.com/Javernaut/WhatTheCodec/issues/2
+                "                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && \"msf\".equalsIgnoreCase(type)) {\r\n" +
+                "                    final String selection = \"_id=?\";\r\n" +
+                "                    final String[] selectionArgs = new String[]{\r\n" +
+                "                            split[1]\r\n" +
+                "                    };\r\n" +
+                "\r\n" +
+                "                    path = getDataColumn(context, MediaStore.Downloads.EXTERNAL_CONTENT_URI, selection, selectionArgs);\r\n" +
+                "                } else {\r\n" +
+                "\r\n" +
+                "                    final Uri contentUri = ContentUris\r\n" +
+                "                            .withAppendedId(Uri.parse(\"content://downloads/public_downloads\"), Long.valueOf(docId));\r\n" +
+                "\r\n" +
+                "                    path = getDataColumn(context, contentUri, null, null);\r\n" +
                 "                }\r\n" +
-                "\r\n" +
-                "                final Uri contentUri = ContentUris\r\n" +
-                "                        .withAppendedId(Uri.parse(\"content://downloads/public_downloads\"), Long.valueOf(id));\r\n" +
-                "\r\n" +
-                "                path = getDataColumn(context, contentUri, null, null);\r\n" +
                 "            } else if (isMediaDocument(uri)) {\r\n" +
                 "                final String docId = DocumentsContract.getDocumentId(uri);\r\n" +
                 "                final String[] split = docId.split(\":\");\r\n" +
