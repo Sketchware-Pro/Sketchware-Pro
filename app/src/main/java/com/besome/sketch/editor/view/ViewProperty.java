@@ -296,6 +296,10 @@ public class ViewProperty extends LinearLayout implements Kw {
         e();
     }
 
+    public boolean isProjectActivityViewsListEmpty() {
+        return projectActivityViews.isEmpty();
+    }
+
     public void a(String sc_id, ProjectFileBean projectFileBean) {
         this.sc_id = sc_id;
         projectFile = projectFileBean;

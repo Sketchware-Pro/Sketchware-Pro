@@ -974,6 +974,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         var hierarchySheet = new LayoutHierarchySheet(this, viewBeans);
         hierarchySheet.show();
     }
+
+    public void initializeProjectActivityViews() {
+        viewTabAdapter.n();
+    }
     
     @SafeVarargs
     private void launchActivity(Class<? extends Activity> toLaunch, ActivityResultLauncher<Intent> optionalLauncher, Pair<String, String>... extras) {

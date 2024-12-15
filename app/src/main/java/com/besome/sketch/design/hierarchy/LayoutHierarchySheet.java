@@ -1,8 +1,6 @@
 package com.besome.sketch.design.hierarchy;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.Gravity;
@@ -24,18 +22,21 @@ public class LayoutHierarchySheet extends SideSheetDialog {
     private LayoutHierarchySheetBinding binding;
     private LayoutHierarchyAdapter adapter;
     
-    public LayoutHierarchySheet(Context context, ArrayList<ViewBean> viewsList) {
-        super(context);
-        binding = LayoutHierarchySheetBinding.inflate(LayoutInflater.from(context));
+    public LayoutHierarchySheet(DesignActivity designAct, ArrayList<ViewBean> viewsList) {
+        super(designAct);
+        binding = LayoutHierarchySheetBinding.inflate(LayoutInflater.from(designAct));
         setContentView(binding.getRoot());
         setSheetEdge(Gravity.END);
         binding.close.setOnClickListener(v -> hide());
         
         adapter = new LayoutHierarchyAdapter(viewsList);
         adapter.setLayoutHierarchyItemListener(bean -> {
-            var prop = getViewProperty(context);
+            var prop = getViewProperty(designAct);
             var isViewGroup = bean.getClassInfo().a("ViewGroup");
             if (prop != null) {
+                if (prop.isProjectActivityViewsListEmpty()) {
+                    designAct.initializeProjectActivityViews();
+                }
                 prop.selectView(bean);
                 prop.a(bean.id);
                 showViewProperty(prop);
@@ -65,8 +66,7 @@ public class LayoutHierarchySheet extends SideSheetDialog {
         return adapter;
     }
     
-    private ViewProperty getViewProperty(Context context) {
-        if (context instanceof DesignActivity designAct) return designAct.findViewById(R.id.view_property);
-        return null;
+    private ViewProperty getViewProperty(DesignActivity designAct) {
+        return designAct.findViewById(R.id.view_property);
     }
 }
