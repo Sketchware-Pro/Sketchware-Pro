@@ -272,7 +272,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
 
         setContentView(R.layout.manage_view);
         MaterialToolbar topAppBar = findViewById(R.id.topAppBar);
-        topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        topAppBar.setNavigationOnClickListener(v -> onBackPressed());
 
         actionButtonsContainer = findViewById(R.id.layout_btn_group);
         Button delete = findViewById(R.id.btn_delete);

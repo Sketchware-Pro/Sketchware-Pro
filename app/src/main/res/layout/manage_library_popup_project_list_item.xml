@@ -8,8 +8,7 @@
     android:layout_marginRight="4dp"
     android:layout_marginBottom="2dp"
     style="?attr/materialCardViewFilledStyle"
-    app:cardBackgroundColor="?attr/colorSurfaceContainer"
-    app:cardElevation="8dp">
+    app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
     <LinearLayout
         android:id="@+id/project_layout"

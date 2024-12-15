@@ -6,7 +6,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginTop="4dp"
     android:layout_marginRight="8dp"
-    android:background="@drawable/selector_toggle_list_view">
+    android:background="?selectableItemBackground">
 
     <ImageView
         android:id="@+id/img_icon"
