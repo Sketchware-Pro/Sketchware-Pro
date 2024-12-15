@@ -62,38 +62,50 @@ public class LayoutHierarchyAdapter extends ListAdapter<ViewBean, LayoutHierarch
         holder.binding.recyclerView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.binding.expandToggle.setRotation(isExpanded ? 180f : 0f);
 
-        holder.binding.getRoot().setOnClickListener(v -> {
-            if (isViewGroup) {
-                ArrayList<ViewBean> childViews = new ArrayList<>();
-                for (ViewBean viewBean : viewBeansList) {
-                    if (viewBean.parent != null && viewBean.parent.equals(bean.id)) {
-                        childViews.add(viewBean);
-                    }
-                }
-                LayoutHierarchyAdapter adapter = new LayoutHierarchyAdapter(viewBeansList);
-                holder.binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                holder.binding.recyclerView.setAdapter(adapter);
-                adapter.submitList(childViews);
-
-                boolean currentlyExpanded = Boolean.TRUE.equals(expandedStateMap.getOrDefault(position, false));
-                if (currentlyExpanded) {
-                    holder.binding.recyclerView.setVisibility(View.GONE);
-                    ObjectAnimator.ofFloat(holder.binding.expandToggle, "rotation", 180f, 0f).start();
-                } else {
-                    holder.binding.recyclerView.setVisibility(View.VISIBLE);
-                    ObjectAnimator.ofFloat(holder.binding.expandToggle, "rotation", 0f, 180f).start();
-                }
-                expandedStateMap.put(position, !currentlyExpanded);
-            }
-            setSelectedItemPosition(getViewBeanPosition(bean));
-            if (layoutHierarchyItemListener != null) {
-                layoutHierarchyItemListener.onClick(bean);
-            }
-        });
+        holder.binding.getRoot().setOnClickListener(v -> handleItemClick(holder, bean, position, isViewGroup));
 
         holder.binding.expandToggle.setVisibility(isViewGroup ? View.VISIBLE : View.GONE);
         holder.binding.viewIcon.setImageResource(imgRes);
         holder.binding.viewName.setText(bean.id);
+    }
+
+    private void handleItemClick(LayoutHierarchyAdapterViewHolder holder, ViewBean bean, int position, boolean isViewGroup) {
+        if (isViewGroup) {
+            toggleExpandCollapse(holder, bean, position);
+        }
+        setSelectedItemPosition(getViewBeanPosition(bean));
+        if (layoutHierarchyItemListener != null) {
+            layoutHierarchyItemListener.onClick(bean);
+        }
+    }
+
+    private void toggleExpandCollapse(LayoutHierarchyAdapterViewHolder holder, ViewBean bean, int position) {
+        ArrayList<ViewBean> childViews = getChildViews(bean.id);
+
+        LayoutHierarchyAdapter adapter = new LayoutHierarchyAdapter(viewBeansList);
+        boolean currentlyExpanded = Boolean.TRUE.equals(expandedStateMap.getOrDefault(position, false));
+        if (currentlyExpanded) {
+            holder.binding.recyclerView.setVisibility(View.GONE);
+            ObjectAnimator.ofFloat(holder.binding.expandToggle, "rotation", 180f, 0f).start();
+        } else {
+            adapter.submitList(childViews);
+            adapter.setLayoutHierarchyItemListener(layoutHierarchyItemListener);
+            holder.binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            holder.binding.recyclerView.setAdapter(adapter);
+            holder.binding.recyclerView.setVisibility(View.VISIBLE);
+            ObjectAnimator.ofFloat(holder.binding.expandToggle, "rotation", 0f, 180f).start();
+        }
+        expandedStateMap.put(position, !currentlyExpanded);
+    }
+
+    private ArrayList<ViewBean> getChildViews(String parentId) {
+        ArrayList<ViewBean> childViews = new ArrayList<>();
+        for (ViewBean viewBean : viewBeansList) {
+            if (viewBean.parent != null && viewBean.parent.equals(parentId)) {
+                childViews.add(viewBean);
+            }
+        }
+        return childViews;
     }
 
     private int getViewBeanPosition(ViewBean viewBean) {
