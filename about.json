@@ -58,6 +58,13 @@
       "is_active": true
     },
     {
+      "user_username": "NiceSapien",
+      "user_img": "https://avatars.githubusercontent.com/u/71333407",
+      "description": "Created the website and docs. Visit https://nicesapien.dev",
+      "is_core_team": false,
+      "is_active": false
+    },
+    {
       "user_username": "khaled-0",
       "user_img": "https://avatars.githubusercontent.com/u/74397286?v=4",
       "description": "Joined GitHub on 11/2020 with 13 public repositories, and 27 followers.",
@@ -209,6 +216,36 @@
       "user_img": "https://avatars.githubusercontent.com/u/55049569?v=4",
       "description": "Creator of cursed stuff.",
       "is_core_team": false,
+      "is_active": false
+    }
+  ],
+  "archived_team": [
+        {
+      "user_username": "Agus JCoderz",
+      "user_img": "https://i.imgur.com/N2mJVX3.jpg",
+      "description": "Main Modder",
+      "is_core_team": true,
+      "is_active": false
+    },
+        {
+      "user_username": "Hilal Saif",
+      "user_img": "https://i.imgur.com/uAudAvd.jpg",
+      "description": "Main Modder",
+      "is_core_team": true,
+      "is_active": false
+    },
+        {
+      "user_username": "Aldi Sayuti",
+      "user_img": "https://i.imgur.com/08zcyKH.png",
+      "description": "Main Modder",
+      "is_core_team": true,
+      "is_active": false
+    },
+        {
+      "user_username": "Mike Anderson",
+      "user_img": "https://i.imgur.com/c5Vetpo.jpg",
+      "description": "Main Modder",
+      "is_core_team": true,
       "is_active": false
     }
   ],
