@@ -348,22 +348,15 @@ public class WidgetsCreatorManager {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
 
         ListView listView = new ListView(context);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_single_choice, choices);
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listView.setItemChecked(choice.get(), true);
-
-        int maxHeightPx = dpToPx(350);
-
-        LinearLayout.LayoutParams listParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                maxHeightPx
-        );
-
-        listParams.setMargins(0, dpToPx(15), 0, dpToPx(10));
-        listView.setLayoutParams(listParams);
 
         if (listView.getParent() != null) {
             ((ViewGroup) listView.getParent()).removeView(listView);
