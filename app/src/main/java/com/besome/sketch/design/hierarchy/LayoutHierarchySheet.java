@@ -41,6 +41,7 @@ public class LayoutHierarchySheet extends SideSheetDialog {
                 prop.a(bean.id);
                 showViewProperty(prop);
             }
+            designAct.updateViewPropertiesMenuState();
             if (!isViewGroup) hide();
         });
         binding.list.setAdapter(adapter);
