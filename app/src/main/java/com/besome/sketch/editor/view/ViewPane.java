@@ -600,6 +600,7 @@ public class ViewPane extends RelativeLayout {
                 viewBean.index = viewInfo.getIndex();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
+                viewBean.preParentType = viewBean.parentType;
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW;
                 viewBean.layout.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             } else if (view instanceof ItemCardView) {
@@ -855,6 +856,24 @@ public class ViewPane extends RelativeLayout {
         }
     }
 
+    private int getActualParentType(View view, int defaultValue) {
+        var parent = (ViewGroup) view.getParent();
+        if (parent != null) {
+            if (parent instanceof ItemLinearLayout) {
+                return ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
+            } else if (parent instanceof ItemRelativeLayout) {
+                return ViewBean.VIEW_TYPE_LAYOUT_RELATIVE;
+            } else if (parent instanceof ItemCardView) {
+                return ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
+            } else if (parent instanceof ItemHorizontalScrollView) {
+                return ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW;
+            } else if (parent instanceof ItemVerticalScrollView) {
+                return ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW;
+            }
+        }
+        return defaultValue;
+    }
+
     private void updateLayout(View view, ViewBean viewBean) {
         LayoutBean layoutBean = viewBean.layout;
         int width = layoutBean.width;
@@ -865,6 +884,7 @@ public class ViewPane extends RelativeLayout {
         if (height > 0) {
             height = (int) wB.a(getContext(), (float) viewBean.layout.height);
         }
+        viewBean.parentType = getActualParentType(view, viewBean.parentType);
         view.setBackgroundColor(viewBean.layout.backgroundColor);
         if (viewBean.id.equals("root")) {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height);
