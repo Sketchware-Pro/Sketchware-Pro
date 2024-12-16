@@ -83,7 +83,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
-            android:id="@+id/paletteCount"
+            android:id="@+id/palletCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="12dp"
@@ -95,7 +95,7 @@
             android:textColor="?attr/colorOnSurface"
             android:textSize="18sp" />
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_pallete"
+            android:id="@+id/palletRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:listitem="@layout/pallet_customview" />
