@@ -27,7 +27,7 @@ public class LayoutHierarchySheet extends SideSheetDialog {
         binding = LayoutHierarchySheetBinding.inflate(LayoutInflater.from(designAct));
         setContentView(binding.getRoot());
         setSheetEdge(Gravity.END);
-        binding.close.setOnClickListener(v -> hide());
+        binding.close.setOnClickListener(v -> dismiss());
         
         adapter = new LayoutHierarchyAdapter(viewsList);
         adapter.setLayoutHierarchyItemListener(bean -> {
@@ -42,7 +42,7 @@ public class LayoutHierarchySheet extends SideSheetDialog {
                 showViewProperty(prop);
             }
             designAct.updateViewPropertiesMenuState();
-            if (!isViewGroup) hide();
+            if (!isViewGroup) dismiss();
         });
         binding.list.setAdapter(adapter);
         
