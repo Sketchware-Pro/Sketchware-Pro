@@ -1,9 +1,12 @@
 package mod.hilal.saif.activities.tools;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -55,19 +59,22 @@ public class BlocksManager extends BaseAppCompatActivity {
     private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private String blocks_dir;
     private String pallet_dir;
-    int n;
     private int oldPos;
     private int newPos;
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
 
     private BlocksManagerBinding binding;
+    private Vibrator vibrator;
+    PaletteLayoutManager layoutManager;
 
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
         binding = BlocksManagerBinding.inflate(getLayoutInflater());
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
         setContentView(binding.getRoot());
 
         initialize();
@@ -86,8 +93,12 @@ public class BlocksManager extends BaseAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setNavigationOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
 
-        binding.palletRecycler.setLayoutManager(new LinearLayoutManager(this));
-        binding.palletRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
+        layoutManager = new PaletteLayoutManager(this);
+
+        binding.paletteRecycler.setLayoutManager(layoutManager);
+
+        binding.paletteRecycler.setLayoutManager(new LinearLayoutManager(this));
+        binding.paletteRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
 
         binding.fab.setOnClickListener(v -> showPaletteDialog(false, null, null, "#ffffff", null));
 
@@ -100,15 +111,18 @@ public class BlocksManager extends BaseAppCompatActivity {
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 oldPos = viewHolder.getBindingAdapterPosition();
                 newPos = target.getBindingAdapterPosition();
-                Collections.swap(pallet_listmap, oldPos, newPos);
-                Objects.requireNonNull(binding.palletRecycler.getAdapter()).notifyItemMoved(oldPos, newPos);
-
-                if ((newPos == 0 || newPos == pallet_listmap.size() - 1) & (oldPos == 0 || oldPos == pallet_listmap.size() - 1)) {
-                    n = 0;
+                if (oldPos < newPos) {
+                    for (int i = oldPos; i < newPos; i++) {
+                        Collections.swap(pallet_listmap, i, i + 1);
+                    }
                 }else{
-                    n = 9;
+                    for (int i = oldPos; i > newPos; i--) {
+                        Collections.swap(pallet_listmap, i, i - 1);
+                    }
                 }
-                swapRelatedBlocks(oldPos + n, newPos + n);
+                Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemMoved(oldPos, newPos);
+
+                swapRelatedBlocks(oldPos + 9, newPos + 9);
 
                 return false;
             }
@@ -120,16 +134,13 @@ public class BlocksManager extends BaseAppCompatActivity {
 
             @Override
             public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int action) {
-                switch (action) {
-                    case (ItemTouchHelper.ACTION_STATE_IDLE):
-                        FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
-                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                        break;
-
-                    case (ItemTouchHelper.ACTION_STATE_DRAG):
-                        viewHolder.itemView.setAlpha(0.7f);
-                        break;
+                if (action == ItemTouchHelper.ACTION_STATE_DRAG) {
+                    viewHolder.itemView.setAlpha(0.7f);
+                    binding.background.setClipChildren(false);
+                }else{
+                    binding.background.setClipChildren(true);
                 }
+                super.onSelectedChanged(viewHolder, action);
             }
 
             @Override
@@ -140,11 +151,51 @@ public class BlocksManager extends BaseAppCompatActivity {
             @Override
             public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
                 viewHolder.itemView.setAlpha(1f);
+                FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
+                FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+
+                readSettings();
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+                if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                    View draggedView = viewHolder.itemView;
+
+                    if (isItInTrash(draggedView, binding.recycleBin)) {
+                        int pos = viewHolder.getBindingAdapterPosition();
+                        layoutManager.setScrollEnabled(false);
+                        binding.recycleBinCard.setAlpha(0.5f);
+                        if (!isCurrentlyActive && pos != RecyclerView.NO_POSITION && pos < pallet_listmap.size()) {
+                            vibrator.vibrate(40L);
+                            draggedView.setVisibility(View.GONE);
+                            pallet_listmap.remove(pos);
+                            Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemRemoved(pos);
+                            Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemChanged(pos);
+                            moveRelatedBlocksToRecycleBin(pos + 9);
+                            removeRelatedBlocks(pos + 9);
+                            refreshCount();
+                        }
+                    }else{
+                        binding.recycleBinCard.setAlpha(1f);
+                        layoutManager.setScrollEnabled(true);
+                    }
+                }
+            }
+
+            @Override
+            public int interpolateOutOfBoundsScroll(@NonNull RecyclerView recyclerView, int viewSize,
+                                                    int viewSizeOutOfBounds, int totalSize, long msSinceStartScroll) {
+                final int direction = (int) Math.signum(viewSizeOutOfBounds);
+                final float distanceRatio = Math.min(1.0f, Math.abs((float) viewSizeOutOfBounds) / viewSize);
+                return (int) (direction * distanceRatio * 10);
             }
 
         });
 
-        itemTouchHelper.attachToRecyclerView(binding.palletRecycler);
+        itemTouchHelper.attachToRecyclerView(binding.paletteRecycler);
     }
 
     @Override
@@ -259,7 +310,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             pallet_listmap = new ArrayList<>();
         }
 
-        binding.palletRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
+        binding.paletteRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
         binding.recycleSub.setText("Blocks: " + (long) (getN(-1)));
         refreshCount();
     }
@@ -278,9 +329,9 @@ public class BlocksManager extends BaseAppCompatActivity {
 
     private void refreshCount() {
         if (pallet_listmap.isEmpty()) {
-            binding.palletCount.setText("No palettes");
+            binding.paletteCount.setText("No palettes");
         }else{
-            binding.palletCount.setText(pallet_listmap.size() + " Palettes");
+            binding.paletteCount.setText(pallet_listmap.size() + " Palettes");
         }
     }
 
@@ -319,7 +370,6 @@ public class BlocksManager extends BaseAppCompatActivity {
         }
         FileUtil.writeFile(blocks_dir, new Gson().toJson(newBlocks));
         readSettings();
-        refresh_list();
     }
 
     private void swapRelatedBlocks(final double f, final double s) {
@@ -403,22 +453,21 @@ public class BlocksManager extends BaseAppCompatActivity {
         dialog.a(dialogBinding.getRoot());
 
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
-            try {
-                String nameInput = Objects.requireNonNull(dialogBinding.nameEditText.getText()).toString();
-                String colorInput = Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
+            String nameInput = Objects.requireNonNull(dialogBinding.nameEditText.getText()).toString();
+            String colorInput = Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
 
-                if (nameInput.isEmpty()) {
-                    dialogBinding.name.setError("Name cannot be empty");
-                    return;
-                }
+            if (nameInput.isEmpty()) {
+                SketchwareUtil.toast("Name cannot be empty", Toast.LENGTH_SHORT);
+                return;
+            }
 
-                if (colorInput.isEmpty()) {
-                    dialogBinding.color.setError("Color cannot be empty");
-                    return;
-                }
+            if (!PropertiesUtil.isHexColor(colorInput)) {
+                SketchwareUtil.toast("Please enter a valid HEX color", Toast.LENGTH_SHORT);
+                return;
+            }
 
+            if (PropertiesUtil.isHexColor(colorInput)) {
                 Color.parseColor(colorInput);
-
                 if (!isEditing) {
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("name", nameInput);
@@ -427,13 +476,13 @@ public class BlocksManager extends BaseAppCompatActivity {
                     if (insertAtPosition == null) {
                         pallet_listmap.add(map);
                         FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                        Objects.requireNonNull(binding.palletRecycler.getAdapter()).notifyItemInserted(pallet_listmap.size() - 1);
+                        Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(pallet_listmap.size() - 1);
                         readSettings();
                     }else{
                         pallet_listmap.add(insertAtPosition, map);
                         FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
                         readSettings();
-                        Objects.requireNonNull(binding.palletRecycler.getAdapter()).notifyItemInserted(insertAtPosition);
+                        Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(insertAtPosition);
                         insertBlocksAt(insertAtPosition + 9);
                     }
                 }else{
@@ -444,15 +493,24 @@ public class BlocksManager extends BaseAppCompatActivity {
                     refresh_list();
                 }
                 dialog.dismiss();
-            } catch (IllegalArgumentException | StringIndexOutOfBoundsException e) {
-                dialogBinding.color.setError("Malformed hexadecimal color");
-                dialogBinding.color.requestFocus();
             }
         });
 
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-
+        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
+        dialog.a(dialogBinding.getRoot());
         dialog.show();
+    }
+
+    private boolean isItInTrash(View draggedView, View trash) {
+        int[] trashLocation = new int[2];
+        trash.getLocationOnScreen(trashLocation);
+
+        int[] draggedLocation = new int[2];
+        draggedView.getLocationOnScreen(draggedLocation);
+
+        int draggedY = draggedLocation[1];
+
+        return draggedY <= (trashLocation[1] + draggedView.getMeasuredHeight() / 2) && draggedY >= ((trashLocation[1] - draggedView.getMeasuredHeight() / 2));
     }
 
 
@@ -479,6 +537,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             assert paletteColorValue != null;
             int backgroundColor = PropertiesUtil.parseColor(paletteColorValue);
 
+            holder.itemView.setVisibility(View.VISIBLE);
             holder.itemBinding.title.setText(Objects.requireNonNull(pallet_listmap.get(position).get("name")).toString());
             holder.itemBinding.sub.setText("Blocks: " + (long) (getN(position + 9)));
             holder.itemBinding.color.setBackgroundColor(backgroundColor);
@@ -551,7 +610,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
             holder.itemBinding.backgroundCard.setOnClickListener(v -> {
                 Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
-                intent.putExtra("position", String.valueOf((long) (position + 9)));
+                intent.putExtra("position", String.valueOf((long) (holder.getAbsoluteAdapterPosition() + 9)));
                 intent.putExtra("dirB", blocks_dir);
                 intent.putExtra("dirP", pallet_dir);
                 startActivity(intent);
@@ -571,6 +630,23 @@ public class BlocksManager extends BaseAppCompatActivity {
                 super(itemBinding.getRoot());
                 this.itemBinding = itemBinding;
             }
+        }
+    }
+
+    public static class PaletteLayoutManager extends LinearLayoutManager {
+        private boolean isScrollEnabled = true;
+
+        public PaletteLayoutManager(Context context) {
+            super(context);
+        }
+
+        public void setScrollEnabled(boolean flag) {
+            this.isScrollEnabled = flag;
+        }
+
+        @Override
+        public boolean canScrollVertically() {
+            return isScrollEnabled && super.canScrollVertically();
         }
     }
 }
