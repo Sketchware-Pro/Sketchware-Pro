@@ -98,13 +98,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="TextDropDownLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="boxStrokeColor">@color/input_layout_selector</item>
+    <style name="TextDropDownLayoutStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="errorTextAppearance">@style/error_appearance</item>
         <item name="hintTextAppearance">@style/hint_appearance</item>
-        <item name="shapeAppearanceOverlay">
-            @style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded
-        </item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded" parent="">
