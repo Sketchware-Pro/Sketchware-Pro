@@ -323,6 +323,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         startActivity(intent);
     }
 
+    public void updateViewPropertiesMenuState() {
+        viewTabAdapter.a(true);
+    }
+
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.END)) {
