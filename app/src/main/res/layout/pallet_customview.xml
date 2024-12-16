@@ -58,4 +58,13 @@
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+    <LinearLayout
+        android:id="@+id/drag_handler"
+        android:layout_width="35dp"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:background="@drawable/ic_mtrl_drag"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="12dp"
+        android:layout_alignParentEnd="true" />
 </LinearLayout>
