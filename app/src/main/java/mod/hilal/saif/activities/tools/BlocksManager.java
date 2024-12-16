@@ -86,8 +86,8 @@ public class BlocksManager extends BaseAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setNavigationOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
 
-        binding.listPallete.setLayoutManager(new LinearLayoutManager(this));
-        binding.listPallete.setAdapter(new PaletteAdapter(pallet_listmap));
+        binding.palletRecycler.setLayoutManager(new LinearLayoutManager(this));
+        binding.palletRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
 
         binding.fab.setOnClickListener(v -> showPaletteDialog(false, null, null, "#ffffff", null));
 
@@ -101,7 +101,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                 oldPos = viewHolder.getBindingAdapterPosition();
                 newPos = target.getBindingAdapterPosition();
                 Collections.swap(pallet_listmap, oldPos, newPos);
-                Objects.requireNonNull(binding.listPallete.getAdapter()).notifyItemMoved(oldPos, newPos);
+                Objects.requireNonNull(binding.palletRecycler.getAdapter()).notifyItemMoved(oldPos, newPos);
 
                 if ((newPos == 0 || newPos == pallet_listmap.size() - 1) & (oldPos == 0 || oldPos == pallet_listmap.size() - 1)) {
                     n = 0;
@@ -144,7 +144,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
         });
 
-        itemTouchHelper.attachToRecyclerView(binding.listPallete);
+        itemTouchHelper.attachToRecyclerView(binding.palletRecycler);
     }
 
     @Override
@@ -259,7 +259,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             pallet_listmap = new ArrayList<>();
         }
 
-        binding.listPallete.setAdapter(new PaletteAdapter(pallet_listmap));
+        binding.palletRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
         binding.recycleSub.setText("Blocks: " + (long) (getN(-1)));
         refreshCount();
     }
@@ -278,9 +278,9 @@ public class BlocksManager extends BaseAppCompatActivity {
 
     private void refreshCount() {
         if (pallet_listmap.isEmpty()) {
-            binding.paletteCount.setText("No palettes");
+            binding.palletCount.setText("No palettes");
         }else{
-            binding.paletteCount.setText(pallet_listmap.size() + " Palettes");
+            binding.palletCount.setText(pallet_listmap.size() + " Palettes");
         }
     }
 
@@ -427,13 +427,13 @@ public class BlocksManager extends BaseAppCompatActivity {
                     if (insertAtPosition == null) {
                         pallet_listmap.add(map);
                         FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                        Objects.requireNonNull(binding.listPallete.getAdapter()).notifyItemInserted(pallet_listmap.size() - 1);
+                        Objects.requireNonNull(binding.palletRecycler.getAdapter()).notifyItemInserted(pallet_listmap.size() - 1);
                         readSettings();
                     }else{
                         pallet_listmap.add(insertAtPosition, map);
                         FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
                         readSettings();
-                        Objects.requireNonNull(binding.listPallete.getAdapter()).notifyItemInserted(insertAtPosition);
+                        Objects.requireNonNull(binding.palletRecycler.getAdapter()).notifyItemInserted(insertAtPosition);
                         insertBlocksAt(insertAtPosition + 9);
                     }
                 }else{
