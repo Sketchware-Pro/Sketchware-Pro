@@ -14,10 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -35,6 +31,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import pro.sketchware.R;
 
@@ -50,15 +47,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import pro.sketchware.databinding.FrManageImageListBinding;
+import pro.sketchware.databinding.ManageImageListItemBinding;
 import pro.sketchware.utility.SvgUtils;
 import pro.sketchware.utility.FilePathUtil;
 
-public class pu extends qA implements View.OnClickListener {
+public class pu extends qA {
+
+    private FrManageImageListBinding binding;
     private String sc_id;
-    private RecyclerView recyclerView;
     private ArrayList<ProjectResourceBean> images;
-    private LinearLayout actionButtonContainer;
-    private TextView guide;
+    private MaterialCardView actionButtonContainer;
     private FloatingActionButton fab;
     private String projectImagesDirectory = "";
     private Adapter adapter = null;
@@ -252,11 +251,11 @@ public class pu extends qA implements View.OnClickListener {
 
     private void updateGuideVisibility() {
         if (images.isEmpty()) {
-            guide.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
+            binding.tvGuide.setVisibility(View.VISIBLE);
+            binding.imageList.setVisibility(View.GONE);
         } else {
-            recyclerView.setVisibility(View.VISIBLE);
-            guide.setVisibility(View.GONE);
+            binding.imageList.setVisibility(View.VISIBLE);
+            binding.tvGuide.setVisibility(View.GONE);
         }
     }
 
@@ -292,35 +291,12 @@ public class pu extends qA implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
-        if (!mB.a()) {
-            int id = v.getId();
-            if (id == R.id.btn_accept) {
-                if (isSelecting) {
-                    deleteSelected();
-                    a(false);
-                    updateGuideVisibility();
-                    bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
-                    fab.show();
-                }
-            } else if (id == R.id.btn_cancel) {
-                if (isSelecting) {
-                    a(false);
-                }
-            } else if (id == R.id.fab) {
-                a(false);
-                showAddImageDialog();
-            }
-        }
-    }
-
-    @Override
     public void onConfigurationChanged(@NonNull Configuration configuration) {
         super.onConfigurationChanged(configuration);
-        if (recyclerView.getLayoutManager() instanceof GridLayoutManager manager) {
+        if (binding.imageList.getLayoutManager() instanceof GridLayoutManager manager) {
             manager.setSpanCount(ManageImageActivity.getImageGridColumnCount(requireContext()));
         }
-        recyclerView.requestLayout();
+        binding.imageList.requestLayout();
     }
 
     @Override
@@ -332,28 +308,39 @@ public class pu extends qA implements View.OnClickListener {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fr_manage_image_list, container, false);
+        binding = FrManageImageListBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
         images = new ArrayList<>();
-        recyclerView = root.findViewById(R.id.image_list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
-        adapter = new Adapter(recyclerView);
-        recyclerView.setAdapter(adapter);
-        guide = root.findViewById(R.id.tv_guide);
-        guide.setText(xB.b().a(requireContext(), R.string.design_manager_image_description_guide_add_image));
-        actionButtonContainer = root.findViewById(R.id.layout_btn_group);
-        MaterialButton delete = root.findViewById(R.id.btn_accept);
-        MaterialButton cancel = root.findViewById(R.id.btn_cancel);
-        delete.setText(xB.b().a(requireContext(), R.string.common_word_delete));
-        cancel.setText(xB.b().a(requireContext(), R.string.common_word_cancel));
-        delete.setOnClickListener(this);
-        cancel.setOnClickListener(this);
-        fab = root.findViewById(R.id.fab);
+        binding.imageList.setHasFixedSize(true);
+        binding.imageList.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
+        adapter = new Adapter(binding.imageList);
+        binding.imageList.setAdapter(adapter);
+        binding.tvGuide.setText(xB.b().a(requireContext(), R.string.design_manager_image_description_guide_add_image));
+        actionButtonContainer = requireActivity().findViewById(R.id.layout_btn_group);
+        MaterialButton delete = requireActivity().findViewById(R.id.btn_delete);
+        MaterialButton cancel = requireActivity().findViewById(R.id.btn_cancel);
+        delete.setOnClickListener(view -> {
+            if (isSelecting) {
+                deleteSelected();
+                a(false);
+                updateGuideVisibility();
+                bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_complete_delete), bB.TOAST_WARNING).show();
+                fab.show();
+            }
+        });
+        cancel.setOnClickListener(view -> {
+            if (isSelecting) {
+                a(false);
+            }
+        });
+        fab = requireActivity().findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
-        fab.setOnClickListener(this);
+        fab.setOnClickListener(view -> {
+            a(false);
+            showAddImageDialog();
+        });
         kC.z();
-        return root;
+        return binding.getRoot();
     }
 
     @Override
@@ -377,36 +364,29 @@ public class pu extends qA implements View.OnClickListener {
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final CheckBox checkBox;
-            public final TextView name;
-            public final ImageView image;
-            public final ImageView delete;
-            public final ImageView ninePatch;
-            public final LinearLayout deleteContainer;
+            private final ManageImageListItemBinding binding;
 
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                name = itemView.findViewById(R.id.tv_image_name);
-                image = itemView.findViewById(R.id.img);
-                delete = itemView.findViewById(R.id.img_delete);
-                ninePatch = itemView.findViewById(R.id.img_nine_patch);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
-                image.setOnClickListener(v -> {
+            public ViewHolder(@NonNull ManageImageListItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+
+                binding.img.setOnClickListener(v -> {
                     if (!isSelecting) {
-                        if (!(images.get(getLayoutPosition()).resFullName.endsWith(".svg") || images.get(getLayoutPosition()).resFullName.endsWith(".xml"))) {
+                        if (!(images.get(getLayoutPosition()).resFullName.endsWith(".svg") ||
+                                images.get(getLayoutPosition()).resFullName.endsWith(".xml"))) {
                             showImageDetailsDialog(images.get(getLayoutPosition()));
                         }
                     } else {
-                        checkBox.setChecked(!checkBox.isChecked());
-                        images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+                        binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                        images.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
                         notifyItemChanged(getLayoutPosition());
                     }
                 });
-                image.setOnLongClickListener(v -> {
+
+                binding.img.setOnLongClickListener(v -> {
                     a(true);
-                    checkBox.setChecked(!checkBox.isChecked());
-                    images.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+                    binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                    images.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
                     return true;
                 });
             }
@@ -436,20 +416,19 @@ public class pu extends qA implements View.OnClickListener {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean image = images.get(position);
 
-            holder.deleteContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
-            holder.ninePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
-            holder.delete.setImageResource(image.isSelected ? R.drawable.ic_checkmark_green_48dp
+            holder.binding.deleteImgContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
+            holder.binding.imgNinePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
+            holder.binding.imgDelete.setImageResource(image.isSelected ? R.drawable.ic_checkmark_green_48dp
                     : R.drawable.ic_trashcan_white_48dp);
-            holder.checkBox.setChecked(image.isSelected);
-            holder.name.setText(image.resName);
-
+            holder.binding.chkSelect.setChecked(image.isSelected);
+            holder.binding.tvImageName.setText(image.resName);
 
             if (colorMap.get(position) != null) {
                 int color = Objects.requireNonNullElse((int) colorMap.get(position).get("color"), 0xFFFFFFFF);
-                Log.d("Applying filter to " + String.valueOf(position), String.valueOf(color));
-                holder.image.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                Log.d("Applying filter to " + position, String.valueOf(color));
+                holder.binding.img.setColorFilter(color, PorterDuff.Mode.SRC_IN);
             } else {
-                holder.image.clearColorFilter();
+                holder.binding.img.clearColorFilter();
             }
 
             if (svgUtils == null) {
@@ -458,10 +437,10 @@ public class pu extends qA implements View.OnClickListener {
             }
 
             if (image.resFullName.endsWith(".svg")) {
-                svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));
+                svgUtils.loadImage(holder.binding.img, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));
             } else if (image.resFullName.endsWith(".xml")) {
                 Log.d("loading converted vector: ", fpu.getSvgFullPath(sc_id, image.resName));
-                svgUtils.loadImage(holder.image, image.isNew ? image.resFullName : fpu.getSvgFullPath(sc_id, image.resName));
+                svgUtils.loadImage(holder.binding.img, image.isNew ? image.resFullName : fpu.getSvgFullPath(sc_id, image.resName));
             } else {
                 Glide.with(requireActivity())
                         .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
@@ -470,20 +449,20 @@ public class pu extends qA implements View.OnClickListener {
                         .centerCrop()
                         .signature(kC.n())
                         .error(R.drawable.ic_remove_grey600_24dp)
-                        .into(new BitmapImageViewTarget(holder.image) {
+                        .into(new BitmapImageViewTarget(holder.binding.img) {
                             @Override
                             public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
                                 super.onResourceReady(iB.a(bitmap, image.rotate, image.flipHorizontal, image.flipVertical), glideAnimation);
                             }
                         });
             }
-
         }
 
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
+            ManageImageListItemBinding binding = ManageImageListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new ViewHolder(binding);
         }
 
         @Override
@@ -528,7 +507,7 @@ public class pu extends qA implements View.OnClickListener {
             }
         }
         addImages(imagesToAdd);
-        if (duplicateNames.size() > 0) {
+        if (!duplicateNames.isEmpty()) {
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n" +
                     "[" + String.join(", ", duplicateNames) + "]", bB.TOAST_WARNING).show();
         } else {
