@@ -66,8 +66,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
     private BlocksManagerBinding binding;
     private Vibrator vibrator;
-    PaletteLayoutManager layoutManager;
-
+    View draggedView;
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
@@ -93,11 +92,9 @@ public class BlocksManager extends BaseAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setNavigationOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
 
-        layoutManager = new PaletteLayoutManager(this);
-
-        binding.paletteRecycler.setLayoutManager(layoutManager);
 
         binding.paletteRecycler.setLayoutManager(new LinearLayoutManager(this));
+
         binding.paletteRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
 
         binding.fab.setOnClickListener(v -> showPaletteDialog(false, null, null, "#ffffff", null));
@@ -111,6 +108,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 oldPos = viewHolder.getBindingAdapterPosition();
                 newPos = target.getBindingAdapterPosition();
+
                 if (oldPos < newPos) {
                     for (int i = oldPos; i < newPos; i++) {
                         Collections.swap(pallet_listmap, i, i + 1);
@@ -120,8 +118,8 @@ public class BlocksManager extends BaseAppCompatActivity {
                         Collections.swap(pallet_listmap, i, i - 1);
                     }
                 }
-                Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemMoved(oldPos, newPos);
 
+                Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemMoved(oldPos, newPos);
                 swapRelatedBlocks(oldPos + 9, newPos + 9);
 
                 return false;
@@ -136,9 +134,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int action) {
                 if (action == ItemTouchHelper.ACTION_STATE_DRAG) {
                     viewHolder.itemView.setAlpha(0.7f);
-                    binding.background.setClipChildren(false);
-                }else{
-                    binding.background.setClipChildren(true);
+                    draggedView = viewHolder.itemView;
                 }
                 super.onSelectedChanged(viewHolder, action);
             }
@@ -160,34 +156,31 @@ public class BlocksManager extends BaseAppCompatActivity {
             @Override
             public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
                 if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
-                    View draggedView = viewHolder.itemView;
-
+                    binding.background.setClipChildren(!isItNearTrash(draggedView, binding.recycleBin));
                     if (isItInTrash(draggedView, binding.recycleBin)) {
                         int pos = viewHolder.getBindingAdapterPosition();
-                        layoutManager.setScrollEnabled(false);
                         binding.recycleBinCard.setAlpha(0.5f);
                         if (!isCurrentlyActive && pos != RecyclerView.NO_POSITION && pos < pallet_listmap.size()) {
                             vibrator.vibrate(40L);
                             draggedView.setVisibility(View.GONE);
+                            binding.background.setClipChildren(true);
                             pallet_listmap.remove(pos);
                             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemRemoved(pos);
                             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemChanged(pos);
                             moveRelatedBlocksToRecycleBin(pos + 9);
                             removeRelatedBlocks(pos + 9);
                             refreshCount();
+                            draggedView = null;
                         }
-                    }else{
-                        binding.recycleBinCard.setAlpha(1f);
-                        layoutManager.setScrollEnabled(true);
+                        return;
                     }
                 }
+                binding.recycleBinCard.setAlpha(1f);
             }
 
             @Override
-            public int interpolateOutOfBoundsScroll(@NonNull RecyclerView recyclerView, int viewSize,
-                                                    int viewSizeOutOfBounds, int totalSize, long msSinceStartScroll) {
+            public int interpolateOutOfBoundsScroll(@NonNull RecyclerView recyclerView, int viewSize, int viewSizeOutOfBounds, int totalSize, long msSinceStartScroll) {
                 final int direction = (int) Math.signum(viewSizeOutOfBounds);
                 final float distanceRatio = Math.min(1.0f, Math.abs((float) viewSizeOutOfBounds) / viewSize);
                 return (int) (direction * distanceRatio * 10);
@@ -502,6 +495,8 @@ public class BlocksManager extends BaseAppCompatActivity {
     }
 
     private boolean isItInTrash(View draggedView, View trash) {
+        if (draggedView == null) return false;
+
         int[] trashLocation = new int[2];
         trash.getLocationOnScreen(trashLocation);
 
@@ -511,6 +506,20 @@ public class BlocksManager extends BaseAppCompatActivity {
         int draggedY = draggedLocation[1];
 
         return draggedY <= (trashLocation[1] + draggedView.getMeasuredHeight() / 2) && draggedY >= ((trashLocation[1] - draggedView.getMeasuredHeight() / 2));
+    }
+
+    private boolean isItNearTrash(View draggedView, View trash) {
+        if (draggedView == null) return false;
+
+        int[] trashLocation = new int[2];
+        trash.getLocationOnScreen(trashLocation);
+
+        int[] draggedLocation = new int[2];
+        draggedView.getLocationOnScreen(draggedLocation);
+
+        int draggedY = draggedLocation[1];
+
+        return draggedY <= (trashLocation[1] + (draggedView.getMeasuredHeight() * 2) / 2) && draggedY >= ((trashLocation[1] - (draggedView.getMeasuredHeight() * 2) / 2));
     }
 
 
@@ -632,21 +641,5 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
         }
     }
-
-    public static class PaletteLayoutManager extends LinearLayoutManager {
-        private boolean isScrollEnabled = true;
-
-        public PaletteLayoutManager(Context context) {
-            super(context);
-        }
-
-        public void setScrollEnabled(boolean flag) {
-            this.isScrollEnabled = flag;
-        }
-
-        @Override
-        public boolean canScrollVertically() {
-            return isScrollEnabled && super.canScrollVertically();
-        }
-    }
 }
+
