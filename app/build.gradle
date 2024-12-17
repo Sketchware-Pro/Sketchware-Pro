@@ -29,14 +29,14 @@ android {
         //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
         targetSdkVersion 28
         versionCode 150
-        versionName "v6.4.0-SNAPSHOT-" + getCommitHash()
+        versionName "v7.0.0-SNAPSHOT-" + getCommitHash()
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
         buildConfigField("String", "FLAVOR_NAME_WITH_AABS", "\"minApi26\"")
         buildConfigField("String", "FLAVOR_NAME_WITHOUT_AABS", "\"minApi21\"")
 
-        buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v6.4.0-SNAPSHOT-${getCommitHash()}\"")
+        buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v7.0.0-SNAPSHOT-${getCommitHash()}\"")
 
         buildConfigField("String", "SKETCHUB_API_KEY", "\"${System.getenv("SKETCHUB_API_KEY")}\"")
     }
