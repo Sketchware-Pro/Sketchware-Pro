@@ -46,8 +46,8 @@ public class ManageFontActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (myCollectionFontsFragment.l) {
-            myCollectionFontsFragment.a(false);
+        if (myCollectionFontsFragment.isSelecting) {
+            myCollectionFontsFragment.setSelectingMode(false);
         } else {
             k();
             try {
@@ -169,7 +169,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
 
         @Override
         public void b() {
-            activityWeakReference.get().myCollectionFontsFragment.g();
+            activityWeakReference.get().myCollectionFontsFragment.processResources();
         }
 
         @Override
