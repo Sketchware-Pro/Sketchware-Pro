@@ -29,25 +29,25 @@ public class ManageFontActivity extends BaseAppCompatActivity {
 
     private String sc_id;
     private ViewPager pager;
-    private Zt myCollectionFontsFragment;
-    private St thisProjectFontsFragment;
+    private Zt projectFontsFragment;
+    private St collectionFontsFragment;
 
     public void f(int i) {
         pager.setCurrentItem(i);
     }
 
     public St l() {
-        return thisProjectFontsFragment;
+        return collectionFontsFragment;
     }
 
     public Zt m() {
-        return myCollectionFontsFragment;
+        return projectFontsFragment;
     }
 
     @Override
     public void onBackPressed() {
-        if (myCollectionFontsFragment.isSelecting) {
-            myCollectionFontsFragment.setSelectingMode(false);
+        if (projectFontsFragment.isSelecting) {
+            projectFontsFragment.setSelectingMode(false);
         } else {
             k();
             try {
@@ -126,9 +126,9 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             if (position == 0) {
-                myCollectionFontsFragment = (Zt) fragment;
+                projectFontsFragment = (Zt) fragment;
             } else {
-                thisProjectFontsFragment = (St) fragment;
+                collectionFontsFragment = (St) fragment;
             }
             return fragment;
         }
@@ -169,7 +169,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
 
         @Override
         public void b() {
-            activityWeakReference.get().myCollectionFontsFragment.processResources();
+            activityWeakReference.get().projectFontsFragment.processResources();
         }
 
         @Override
