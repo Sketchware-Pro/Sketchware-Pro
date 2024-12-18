@@ -23,7 +23,7 @@ public class BuiltInLibraries {
 
     // None final so that field values won't be optimized into code, and to allow easy changing of library names due to that
 
-    public static String ANDROIDX_ACTIVITY = "activity-1.8.0";
+    public static String ANDROIDX_ACTIVITY = "activity-1.6.1";
     public static String ANDROIDX_ANNOTATION = "annotation-1.3.0";
     public static String ANDROIDX_ANNOTATION_EXPERIMENTAL = "annotation-experimental-1.3.0";
     public static String ANDROIDX_APPCOMPAT = "appcompat-1.6.1";
@@ -111,7 +111,7 @@ public class BuiltInLibraries {
     public static String GUAVA_LISTENABLEFUTURE = "listenablefuture-1.0.0";
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
     public static String JETBRAINS_ANNOTATIONS = "annotations-13.0";
-    public static String KOTLIN_STDLIB = "kotlin-stdlib-1.8.22";
+    public static String KOTLIN_STDLIB = "kotlin-stdlib-1.6.21";
     public static String KOTLIN_STDLIB_JDK7 = "kotlin-stdlib-jdk7-1.6.21";
     public static String KOTLIN_STDLIB_JDK8 = "kotlin-stdlib-jdk8-1.6.21";
     public static String LOTTIE = "lottie-3.4.0";
@@ -299,8 +299,8 @@ public class BuiltInLibraries {
             new BuiltInLibrary(MATERIAL, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_ACTIVITY, ANDROIDX_RESOURCEINSPECTION_ANNOTATION, ANDROIDX_APPCOMPAT, ANDROIDX_CARDVIEW,
                     ANDROIDX_CONSTRAINTLAYOUT, ANDROIDX_COORDINATORLAYOUT, ANDROIDX_CORE, ANDROIDX_DRAWERLAYOUT, ANDROIDX_DYNAMIC_ANIMATION,
                     ANDROIDX_FRAGMENT, ANDROIDX_LIFECYCLE_RUNTIME, ANDROIDX_RECYCLERVIEW, ANDROIDX_TRANSITION, ANDROIDX_VECTORDRAWABLE,
-                    ANDROIDX_VIEWPAGER2), "com.google.android.material"),
-
+                    ANDROIDX_VIEWPAGER2, KOTLIN_STDLIB), "com.google.android.material"),
+            new BuiltInLibrary(KOTLIN_STDLIB),
             new BuiltInLibrary(OKHTTP, List.of(OKIO)),
             new BuiltInLibrary(OKIO),
             new BuiltInLibrary(ONESIGNAL, List.of(ANDROIDX_BROWSER, ANDROIDX_CARDVIEW, ANDROIDX_FRAGMENT, ANDROIDX_MEDIA, FIREBASE_MESSAGING,
