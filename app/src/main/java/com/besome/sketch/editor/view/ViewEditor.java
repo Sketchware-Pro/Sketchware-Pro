@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.view;
 
+import static pro.sketchware.utility.ThemeUtils.getColor;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -506,7 +508,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         g();
         findViewById(R.id.btn_editproperties).setOnClickListener(this);
         findViewById(R.id.img_close).setOnClickListener(this);
-        rippleRound(deleteView, "#696969", "#ffffff", 200);
+        initialDeleteViewUi();
         f = wB.a(context, 1.0f);
         I = (int) (I * f);
         J = (int) (J * f);
@@ -998,7 +1000,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             rippleRound(deleteView, isCustomWidget ? "#26A59A" :"#FF5D5D", "#ff0000", 200);
             shakeView(deleteView);
         } else {
-            rippleRound(deleteView, "#696969", "#ffffff", 200);
+            initialDeleteViewUi();
         }
         if (isCustomWidget) {
             deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_edit));
@@ -1009,11 +1011,21 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
+    private void initialDeleteViewUi() {
+        int focus = getColor(deleteView, R.attr.colorSurfaceContainer);
+        int pressed = getColor(deleteView, R.attr.colorOnSurfaceVariant);
+        rippleRound(deleteView, focus, pressed, 200);
+    }
+
     private void rippleRound(View view, String focus, String pressed, double round) {
+        rippleRound(view, Color.parseColor(focus), Color.parseColor(pressed), round);
+    }
+
+    private void rippleRound(View view, int focus, int pressed, double round) {
         GradientDrawable GG = new GradientDrawable();
-        GG.setColor(Color.parseColor(focus));
+        GG.setColor(focus);
         GG.setCornerRadius((float) round);
-        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
+        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{pressed}), GG, null);
         view.setBackground(RE);
     }
 
