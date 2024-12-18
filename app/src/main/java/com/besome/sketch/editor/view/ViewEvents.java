@@ -33,34 +33,32 @@ import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 
 public class ViewEvents extends LinearLayout {
+    private ArrayList<EventBean> events = new ArrayList<>();
+    private EventAdapter eventAdapter = new EventAdapter();
+
     private String sc_id;
     private ProjectFileBean projectFileBean;
-    private ArrayList<EventBean> events;
-    private Qs eventClickListener;
-    private EventAdapter eventAdapter;
+    private Qs onEventClickListener;
 
     public ViewEvents(Context context) {
-        super(context);
-        initialize(context);
+        this(context, null);
     }
 
-    public ViewEvents(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
+    public ViewEvents(Context context, AttributeSet attrs) {
+        super(context, attrs);
         initialize(context);
     }
 
     private void initialize(Context context) {
         wB.a(context, this, R.layout.view_events);
-        events = new ArrayList<>();
         RecyclerView eventsList = findViewById(R.id.list_events);
         eventsList.setHasFixedSize(true);
-        eventAdapter = new EventAdapter();
         eventsList.setAdapter(eventAdapter);
         eventsList.setItemAnimator(new DefaultItemAnimator());
     }
 
     public void setOnEventClickListener(Qs listener) {
-        eventClickListener = listener;
+        onEventClickListener = listener;
     }
 
     void setData(String sc_id, ProjectFileBean projectFileBean, ViewBean viewBean) {
@@ -95,13 +93,12 @@ public class ViewEvents extends LinearLayout {
             eventAdapter.notifyItemChanged(eventPosition);
             bB.a(getContext(), xB.b().a(getContext(), R.string.event_message_new_event), 0).show();
         }
-        if (eventClickListener != null) {
-            eventClickListener.a(eventBean);
+        if (onEventClickListener != null) {
+            onEventClickListener.a(eventBean);
         }
     }
 
     private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
-
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final MaterialCardView container;
             public final ImageView icon;
