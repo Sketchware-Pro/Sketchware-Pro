@@ -6,9 +6,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -17,8 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
-import com.google.android.material.card.MaterialCardView;
+
 import pro.sketchware.R;
+import pro.sketchware.databinding.EventGridItemBinding;
 
 import java.util.ArrayList;
 
@@ -64,8 +63,10 @@ public class ViewEvents extends LinearLayout {
     void setData(String sc_id, ProjectFileBean projectFileBean, ViewBean viewBean) {
         this.sc_id = sc_id;
         this.projectFileBean = projectFileBean;
+
         String[] viewEvents = oq.c(viewBean.getClassInfo());
         events.clear();
+
         ArrayList<EventBean> alreadyAddedEvents = jC.a(sc_id).g(projectFileBean.getJavaName());
         for (String event : viewEvents) {
             boolean eventAlreadyInActivity = false;
@@ -82,6 +83,7 @@ public class ViewEvents extends LinearLayout {
                 events.add(eventBean);
             }
         }
+
         eventAdapter.notifyDataSetChanged();
     }
 
@@ -100,56 +102,57 @@ public class ViewEvents extends LinearLayout {
 
     private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final MaterialCardView container;
-            public final ImageView icon;
-            public final ImageView addAvailableIcon;
-            public final TextView name;
+            public final EventGridItemBinding binding;
 
-            public ViewHolder(View itemView) {
-                super(itemView);
-                container = itemView.findViewById(R.id.container);
-                icon = itemView.findViewById(R.id.img_icon);
-                addAvailableIcon = itemView.findViewById(R.id.img_used_event);
-                name = itemView.findViewById(R.id.tv_title);
-                container.setOnClickListener(v -> createEvent(getLayoutPosition()));
+            public ViewHolder(EventGridItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+            }
+
+            public void bind(EventBean event, int position) {
+                binding.container.setOnClickListener(v -> createEvent(getLayoutPosition()));
+                binding.imgIcon.setImageResource(oq.a(event.eventName));
+                binding.tvTitle.setText(event.eventName);
+
+                if (event.isSelected) {
+                    mB.a(binding.imgIcon, 1);
+                    binding.imgUsedEvent.setVisibility(View.GONE);
+                    binding.container.setOnLongClickListener(v -> {
+                        aB dialog = new aB((Activity) itemView.getContext());
+                        dialog.a(R.drawable.delete_96);
+                        dialog.b("Confirm Delete");
+                        dialog.a("Click on Confirm to delete the selected Event.");
+
+                        dialog.b(Helper.getResString(R.string.common_word_delete), view -> {
+                            dialog.dismiss();
+                            EventBean.deleteEvent(sc_id, event, projectFileBean);
+                            bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
+                            event.isSelected = false;
+                            eventAdapter.notifyItemChanged(position);
+                        });
+                        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+                        dialog.show();
+                        return true;
+                    });
+                } else {
+                    binding.imgUsedEvent.setVisibility(View.VISIBLE);
+                    mB.a(binding.imgIcon, 0);
+                }
             }
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             EventBean eventBean = events.get(position);
-            if (eventBean.isSelected) {
-                holder.addAvailableIcon.setVisibility(View.GONE);
-                mB.a(holder.icon, 1);
-                holder.container.setOnLongClickListener(v -> {
-                    aB dialog = new aB((Activity) getContext());
-                    dialog.a(R.drawable.delete_96);
-                    dialog.b("Confirm Delete");
-                    dialog.a("Click on Confirm to delete the selected Event.");
-
-                    dialog.b(Helper.getResString(R.string.common_word_delete), view -> {
-                        dialog.dismiss();
-                        EventBean.deleteEvent(sc_id, eventBean, projectFileBean);
-                        bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
-                        eventBean.isSelected = false;
-                        eventAdapter.notifyItemChanged(position);
-                    });
-                    dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-                    dialog.show();
-                    return true;
-                });
-            } else {
-                holder.addAvailableIcon.setVisibility(View.VISIBLE);
-                mB.a(holder.icon, 0);
-            }
-            holder.icon.setImageResource(oq.a(eventBean.eventName));
-            holder.name.setText(eventBean.eventName);
+            holder.bind(eventBean, position);
         }
 
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.event_grid_item, parent, false));
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            EventGridItemBinding binding = EventGridItemBinding.inflate(inflater, parent, false);
+            return new ViewHolder(binding);
         }
 
         @Override
