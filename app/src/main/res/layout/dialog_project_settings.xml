@@ -118,7 +118,7 @@
                     android:padding="12dp">
 
                     <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/cb_remove_old_methods"
+                        android:id="@+id/sw_remove_old_methods"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="0dp"
@@ -152,7 +152,7 @@
                     android:padding="12dp">
 
                     <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/cb_use_new_material3_app_theme"
+                        android:id="@+id/sw_use_new_material3_app_theme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="0dp"
@@ -160,6 +160,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/desc_use_new_material3_app_theme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
@@ -186,7 +187,7 @@
                     android:padding="12dp">
 
                     <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/cb_use_dynamic_colors"
+                        android:id="@+id/sw_use_dynamic_colors"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="0dp"
@@ -194,6 +195,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/desc_use_dynamic_colors"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
