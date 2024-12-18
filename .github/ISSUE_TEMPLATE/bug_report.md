@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve Sketchware Pro
+about: Please report a bug so we can improve Sketchware Pro
 title: ''
 labels: ''
 assignees: ''
@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 **Describe the bug**
-Please give us a clear and concise description of what the bug is.
+Please describe with all details about this bug
 
 **To Reproduce**
 Steps to reproduce the behavior:
