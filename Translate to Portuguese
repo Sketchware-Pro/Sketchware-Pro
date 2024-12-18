@@ -1,0 +1,35 @@
+import os
+import xml.etree.ElementTree as ET
+from googletrans import Translator
+
+def traduzir_strings_xml(arquivo_xml, idioma_destino="pt"):
+    # Inicializa o tradutor
+    tradutor = Translator()
+    
+    # Lê o arquivo XML
+    tree = ET.parse(arquivo_xml)
+    root = tree.getroot()
+    
+    for string in root.findall('string'):
+        texto_original = string.text
+        if texto_original:
+            try:
+                # Tradução para o idioma de destino
+                texto_traduzido = tradutor.translate(texto_original, dest=idioma_destino).text
+                string.text = texto_traduzido
+                print(f"Traduzido: {texto_original} -> {texto_traduzido}")
+            except Exception as e:
+                print(f"Erro ao traduzir '{texto_original}': {e}")
+
+    # Salva as strings traduzidas em um novo arquivo
+    novo_arquivo = "strings_traduzidos.xml"
+    tree.write(novo_arquivo, encoding="utf-8", xml_declaration=True)
+    print(f"Tradução concluída. Arquivo salvo como {novo_arquivo}")
+
+# Caminho para o arquivo strings.xml
+arquivo_strings = "res/values/strings.xml"
+
+if os.path.exists(arquivo_strings):
+    traduzir_strings_xml(arquivo_strings)
+else:
+    print(f"Arquivo {arquivo_strings} não encontrado.")
