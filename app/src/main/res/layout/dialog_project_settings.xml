@@ -139,11 +139,11 @@
 
 
                 <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/cb_use_new_material_components_app_theme"
+                    android:id="@+id/cb_use_new_material3_app_theme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
-                    android:text="Use MaterialComponents"
+                    android:text="Use Material3"
                     android:textStyle="bold" />
 
                 <TextView
@@ -151,7 +151,40 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="26dp"
-                    android:text="This will replace e.g. Button with MaterialButton, be careful!"
+                    android:text="This will use material design 3 in your app"
+                    android:textColor="?android:attr/textColorSecondary" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainer">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/cb_use_dynamic_colors"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="0dp"
+                    android:text="Use Dynamic Colors"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="26dp"
+                    android:text="The app will use android color palette, in devices with Android 12+"
                     android:textColor="?android:attr/textColorSecondary" />
 
             </LinearLayout>
