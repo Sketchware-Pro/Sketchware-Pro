@@ -45,7 +45,7 @@ public class BuiltInLibraries {
     public static String ANDROIDX_CUSTOMVIEW = "customview-1.1.0";
     public static String ANDROIDX_DOCUMENTFILE = "documentfile-1.0.1";
     public static String ANDROIDX_DRAWERLAYOUT = "drawerlayout-1.1.1";
-    public static String ANDROIDX_DYNAMIC_ANIMATION = "dynamic-animation-1.1.0";
+    public static String ANDROIDX_DYNAMIC_ANIMATION = "dynamicanimation-1.1.0-alpha03";
     public static String ANDROIDX_EMOJI2 = "emoji2-1.2.0";
     public static String ANDROIDX_EMOJI2_VIEWS_HELPER = "emoji2-views-helper-1.2.0";
     public static String ANDROIDX_EXIFINTERFACE = "exifinterface-1.0.0";
@@ -166,9 +166,9 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_CARDVIEW, List.of(ANDROIDX_ANNOTATION), "androidx.cardview"),
             new BuiltInLibrary(ANDROIDX_COLLECTION, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_CONCURRENT_FUTURES, List.of(ANDROIDX_ANNOTATION, GUAVA_LISTENABLEFUTURE)),
-            new BuiltInLibrary(ANDROIDX_CONSTRAINTLAYOUT, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE, ANDROIDX_CONSTRAINTLAYOUT_CORE, ANDROIDX_CONSTRAINTLAYOUT_SOLVER),
+            new BuiltInLibrary(ANDROIDX_CONSTRAINTLAYOUT, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE, ANDROIDX_CONSTRAINTLAYOUT_CORE),
                     "androidx.constraintlayout.widget"),
-
+            new BuiltInLibrary(ANDROIDX_CONSTRAINTLAYOUT_SOLVER),
             new BuiltInLibrary(ANDROIDX_CONSTRAINTLAYOUT_CORE),
             new BuiltInLibrary(ANDROIDX_COORDINATORLAYOUT, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_CUSTOMVIEW),
                     "androidx.coordinatorlayout"),
@@ -224,9 +224,9 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_MEDIA, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_VERSIONEDPARCELABLE), "androidx.media"),
             new BuiltInLibrary(ANDROIDX_MULTIDEX),
             new BuiltInLibrary(ANDROIDX_PRINT, List.of(ANDROIDX_ANNOTATION)),
-            new BuiltInLibrary(ANDROIDX_RECYCLERVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_LEGACY_SUPPORT_CORE_UI, ANDROIDX_RECYCLERVIEW_SELECTION),
+            new BuiltInLibrary(ANDROIDX_RECYCLERVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_LEGACY_SUPPORT_CORE_UI),
                     "androidx.recyclerview"),
-
+            new BuiltInLibrary(ANDROIDX_RECYCLERVIEW_SELECTION),
             new BuiltInLibrary(ANDROIDX_RESOURCEINSPECTION_ANNOTATION, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_ROOM_COMMON, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_ROOM_RUNTIME, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE_RUNTIME, ANDROIDX_ROOM_COMMON,
