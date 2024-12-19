@@ -306,7 +306,7 @@ public class ow extends qA {
             holder.binding.tvSoundName.setText(bean.resName);
 
             boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
-            holder.binding.imgPlay.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
+            holder.binding.imgPlay.setImageResource(playing ? R.drawable.ic_mtrl_circle_pause : R.drawable.ic_mtrl_circle_play);
             holder.binding.progPlaytime.setMax(bean.totalSoundDuration / 100);
             holder.binding.progPlaytime.setProgress(bean.curSoundPosition / 100);
         }
