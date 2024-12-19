@@ -3,12 +3,10 @@ package a.a.a;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -17,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
@@ -27,6 +24,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
@@ -35,11 +33,11 @@ import pro.sketchware.databinding.FrManageSoundListBinding;
 import pro.sketchware.databinding.ManageSoundBinding;
 import pro.sketchware.databinding.ManageSoundListItemBinding;
 
-public class Yv extends qA implements View.OnClickListener {
+public class Yv extends qA {
     private String sc_id;
     private ArrayList<ProjectResourceBean> sounds;
-    private String h = "";
-    private Adapter adapter = null;
+    private String dirPath = "";
+    private Adapter adapter;
 
     private FrManageSoundListBinding binding;
     private ManageSoundBinding actBinding;
@@ -47,12 +45,7 @@ public class Yv extends qA implements View.OnClickListener {
     private ActivityResultLauncher<Intent> importSoundsHandler;
 
     private void updateImportSoundsText() {
-        int selectedSounds = 0;
-        for (ProjectResourceBean projectResourceBean : sounds) {
-            if (projectResourceBean.isSelected) {
-                selectedSounds++;
-            }
-        }
+        int selectedSounds = (int) sounds.stream().filter(projectResourceBean -> projectResourceBean.isSelected).count();
         if (selectedSounds > 0) {
             actBinding.btnImport.setText(xB.b().a(getContext(), R.string.common_word_import_count, selectedSounds).toUpperCase());
             actBinding.layoutBtnImport.setVisibility(View.VISIBLE);
@@ -65,48 +58,25 @@ public class Yv extends qA implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         oB fileUtil = new oB();
         // create dirs if they don't exist
-        fileUtil.f(h);
+        fileUtil.f(dirPath);
         if (savedInstanceState == null) {
             sc_id = requireActivity().getIntent().getStringExtra("sc_id");
-            h = requireActivity().getIntent().getStringExtra("dir_path");
+            dirPath = requireActivity().getIntent().getStringExtra("dir_path");
         } else {
             sc_id = savedInstanceState.getString("sc_id");
-            h = savedInstanceState.getString("dir_path");
+            dirPath = savedInstanceState.getString("dir_path");
         }
-        e();
+        loadProjectSounds();
 
         importSoundsHandler = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                a(result.getData().getParcelableArrayListExtra("results"));
+                handleImportedSounds(result.getData().getParcelableArrayListExtra("results"));
             }
         });
     }
 
     @Override
-    public void onClick(View v) {
-        if (!mB.a() && v.getId() == R.id.btn_import) {
-            actBinding.layoutBtnImport.setVisibility(View.GONE);
-            d();
-            ArrayList<ProjectResourceBean> arrayList = new ArrayList<>();
-            for (ProjectResourceBean next : sounds) {
-                if (next.isSelected) {
-                    arrayList.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, next.resName, wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + next.resFullName));
-                }
-            }
-            if (!arrayList.isEmpty()) {
-                ArrayList<ProjectResourceBean> d = ((ManageSoundActivity) requireActivity()).m().d();
-                Intent intent = new Intent(requireActivity(), ManageSoundImportActivity.class);
-                intent.putParcelableArrayListExtra("project_sounds", d);
-                intent.putParcelableArrayListExtra("selected_collections", arrayList);
-                importSoundsHandler.launch(intent);
-            }
-            unselectAll();
-            adapter.notifyDataSetChanged();
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         actBinding = ((ManageSoundActivity) requireActivity()).binding;
         binding = FrManageSoundListBinding.inflate(inflater, container, false);
@@ -115,7 +85,25 @@ public class Yv extends qA implements View.OnClickListener {
         adapter = new Adapter();
         binding.soundList.setAdapter(adapter);
         binding.tvGuide.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
-        actBinding.btnImport.setOnClickListener(this);
+        actBinding.btnImport.setOnClickListener(view -> {
+            if (!mB.a()) {
+                stopPlayback();
+                ArrayList<ProjectResourceBean> arrayList = new ArrayList<>();
+                for (ProjectResourceBean next : sounds) {
+                    if (next.isSelected) {
+                        arrayList.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, next.resName, wq.a() + File.separator + "sound" + File.separator + "data" + File.separator + next.resFullName));
+                    }
+                }
+                if (!arrayList.isEmpty()) {
+                    ArrayList<ProjectResourceBean> d = ((ManageSoundActivity) requireActivity()).projectSounds.sounds;
+                    Intent intent = new Intent(requireActivity(), ManageSoundImportActivity.class);
+                    intent.putParcelableArrayListExtra("project_sounds", d);
+                    intent.putParcelableArrayListExtra("selected_collections", arrayList);
+                    importSoundsHandler.launch(intent);
+                }
+                resetSelection();
+            }
+        });
         return binding.getRoot();
     }
 
@@ -123,7 +111,7 @@ public class Yv extends qA implements View.OnClickListener {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("sc_id", sc_id);
-        outState.putString("dir_path", h);
+        outState.putString("dir_path", dirPath);
     }
 
     private class Adapter extends SoundPlayingAdapter<Adapter.ViewHolder> {
@@ -158,11 +146,13 @@ public class Yv extends qA implements View.OnClickListener {
                     }
                 });
 
-                binding.chkSelect.setOnClickListener(v -> {
+                binding.getRoot().setOnClickListener(v -> binding.chkSelect.setChecked(!binding.chkSelect.isChecked()));
+
+                binding.chkSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     int position = getLayoutPosition();
-                    sounds.get(position).isSelected = binding.chkSelect.isChecked();
+                    sounds.get(position).isSelected = isChecked;
                     updateImportSoundsText();
-                    notifyItemChanged(position);
+                    new Handler().post(() -> notifyItemChanged(position));
                 });
             }
 
@@ -191,9 +181,9 @@ public class Yv extends qA implements View.OnClickListener {
             }
 
             int positionInS = bean.curSoundPosition / 1000;
-            holder.binding.tvCurrenttime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
+            holder.binding.tvCurrenttime.setText(String.format(Locale.US, "%d:%02d", positionInS / 60, positionInS % 60));
             int durationInS = bean.totalSoundDuration / 1000;
-            holder.binding.tvEndtime.setText(String.format("%d:%02d", durationInS / 60, durationInS % 60));
+            holder.binding.tvEndtime.setText(String.format(Locale.US, "%d:%02d", durationInS / 60, durationInS % 60));
             holder.binding.chkSelect.setChecked(bean.isSelected);
             holder.binding.tvSoundName.setText(bean.resName);
             boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
@@ -215,20 +205,24 @@ public class Yv extends qA implements View.OnClickListener {
         }
     }
 
-    public void d() {
+    public void stopPlayback() {
         adapter.stopPlayback();
     }
 
-    public void e() {
+    public void loadProjectSounds() {
         sounds = Qp.g().f();
         adapter.notifyDataSetChanged();
         showOrHideNoSoundsText();
     }
 
-    private void unselectAll() {
-        for (ProjectResourceBean projectResourceBean : sounds) {
-            projectResourceBean.isSelected = false;
-        }
+    public void resetSelection() {
+        sounds.forEach(projectResourceBean -> projectResourceBean.isSelected = false);
+        adapter.notifyDataSetChanged();
+        actBinding.layoutBtnImport.setVisibility(View.GONE);
+    }
+
+    public boolean isSelecting() {
+        return sounds.stream().anyMatch(resource -> resource.isSelected);
     }
 
     private void showOrHideNoSoundsText() {
@@ -241,14 +235,14 @@ public class Yv extends qA implements View.OnClickListener {
         }
     }
 
-    private void a(ArrayList<ProjectResourceBean> arrayList) {
-        ArrayList<ProjectResourceBean> arrayList2 = new ArrayList<>();
-        for (ProjectResourceBean next : arrayList) {
-            arrayList2.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, next.resName, next.resFullName));
+    private void handleImportedSounds(ArrayList<ProjectResourceBean> resourceBeans) {
+        ArrayList<ProjectResourceBean> beans = new ArrayList<>();
+        for (ProjectResourceBean next : resourceBeans) {
+            beans.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, next.resName, next.resFullName));
         }
-        if (!arrayList2.isEmpty()) {
-            ((ManageSoundActivity) requireActivity()).m().a(arrayList2);
-            ((ManageSoundActivity) requireActivity()).f(0);
+        if (!beans.isEmpty()) {
+            ((ManageSoundActivity) requireActivity()).projectSounds.handleImportedResources(beans);
+            ((ManageSoundActivity) requireActivity()).binding.viewPager.setCurrentItem(0);
         }
     }
 }

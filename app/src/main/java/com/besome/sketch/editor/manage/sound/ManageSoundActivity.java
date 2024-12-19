@@ -2,7 +2,6 @@ package com.besome.sketch.editor.manage.sound;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -28,8 +27,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     private final int TAB_COUNT = 2;
     private String sc_id;
     public ManageSoundBinding binding;
-    private ow projectSounds;
-    private Yv collectionSounds;
+    public ow projectSounds;
+    public Yv collectionSounds;
 
     @Override
     public void onPageScrollStateChanged(int state) {
@@ -39,32 +38,21 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
-    public void f(int i) {
-        binding.viewPager.setCurrentItem(i);
-    }
-
-    public Yv l() {
-        return collectionSounds;
-    }
-
-    public ow m() {
-        return projectSounds;
-    }
-
     @Override
     public void onBackPressed() {
-        if (projectSounds.k) {
-            projectSounds.a(false);
-            return;
-        }
-        k();
-        try {
-            projectSounds.f();
-            collectionSounds.d();
-            new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
-        } catch (Exception e) {
-            e.printStackTrace();
-            h();
+        if (projectSounds.isSelecting) {
+            projectSounds.setSelecting(false);
+        } else if (collectionSounds.isSelecting()) {
+            collectionSounds.resetSelection();
+        } else {
+            k();
+            try {
+                projectSounds.stopPlayback();
+                collectionSounds.stopPlayback();
+                new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
+            } catch (Exception e) {
+                h();
+            }
         }
     }
 
@@ -87,11 +75,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
                 onBackPressed();
             }
         });
-        if (savedInstanceState == null) {
-            sc_id = getIntent().getStringExtra("sc_id");
-        } else {
-            sc_id = savedInstanceState.getString("sc_id");
-        }
+        sc_id = savedInstanceState == null ? getIntent().getStringExtra("sc_id") : savedInstanceState.getString("sc_id");
 
         binding.viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
         binding.viewPager.setOffscreenPageLimit(TAB_COUNT);
@@ -115,14 +99,16 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void onPageSelected(int position) {
+        projectSounds.setSelecting(false);
+        collectionSounds.resetSelection();
         if (position == 0) {
             binding.fab.animate().translationY(0F).setDuration(200L).start();
             binding.fab.show();
-            collectionSounds.d();
+            collectionSounds.stopPlayback();
         } else {
             binding.fab.animate().translationY(4000F).setDuration(200L).start();
             binding.fab.hide();
-            projectSounds.f();
+            projectSounds.stopPlayback();
         }
     }
 
@@ -156,10 +142,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         @Override
         @NonNull
         public Fragment getItem(int position) {
-            if (position != 0) {
-                return new Yv();
-            }
-            return new ow();
+            return position == 0 ? new ow() : new Yv();
         }
 
         @Override
