@@ -54,14 +54,9 @@ public class St extends qA {
 
         if (!processedResources.isEmpty()) {
             ManageFontActivity activity = (ManageFontActivity) requireActivity();
-            activity.m().handleResourceImport(processedResources);
-            activity.f(0);
+            activity.projectFontsFragment.handleResourceImport(processedResources);
+            activity.binding.viewPager.setCurrentItem(0);
         }
-    }
-
-    public final void initializeDirPathAndScId() {
-        sc_id = requireActivity().getIntent().getStringExtra("sc_id");
-        dirPath = requireActivity().getIntent().getStringExtra("dir_path");
     }
 
     public void loadProjectResources() {
@@ -78,11 +73,9 @@ public class St extends qA {
     }
 
     public final void resetSelection() {
-        for (ProjectResourceBean resource : projectResourceBeans) {
-            resource.isSelected = false;
-        }
+        projectResourceBeans.forEach(resource -> resource.isSelected = false);
         adapter.notifyDataSetChanged();
-        requireActivity().findViewById(R.id.layout_btn_import).setVisibility(View.GONE);
+        actBinding.layoutBtnImport.setVisibility(View.GONE);
     }
 
     public boolean isSelecting() {
@@ -90,13 +83,7 @@ public class St extends qA {
     }
 
     public final void updateImportButtonVisibility() {
-        int selectedCount = 0;
-
-        for (ProjectResourceBean resource : projectResourceBeans) {
-            if (resource.isSelected) {
-                selectedCount++;
-            }
-        }
+        int selectedCount = (int) projectResourceBeans.stream().filter(resource -> resource.isSelected).count();
 
         if (selectedCount > 0) {
             actBinding.btnImport.setText(Helper.getResString(R.string.common_word_import_count, selectedCount).toUpperCase());
@@ -125,7 +112,7 @@ public class St extends qA {
         }
 
         if (!selectedFonts.isEmpty()) {
-            ArrayList<ProjectResourceBean> fontCollection = ((ManageFontActivity) requireActivity()).m().getProjectResourceBeans();
+            ArrayList<ProjectResourceBean> fontCollection = ((ManageFontActivity) requireActivity()).projectFontsFragment.getProjectResourceBeans();
             Intent intent = new Intent(getActivity(), ManageFontImportActivity.class);
             intent.putParcelableArrayListExtra("project_fonts", fontCollection);
             intent.putParcelableArrayListExtra("selected_collections", selectedFonts);
@@ -138,9 +125,12 @@ public class St extends qA {
 
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
+
         new oB().f(dirPath);
+
         if (bundle == null) {
-            initializeDirPathAndScId();
+            sc_id = requireActivity().getIntent().getStringExtra("sc_id");
+            dirPath = requireActivity().getIntent().getStringExtra("dir_path");
         } else {
             sc_id = bundle.getString("sc_id");
             dirPath = bundle.getString("dir_path");
@@ -166,12 +156,7 @@ public class St extends qA {
         adapter = new fontAdapter();
         binding.fontList.setAdapter(adapter);
 
-        binding.tvGuide.setText(Helper.getResString(R.string.design_manager_font_description_guide_add_font));
-
-        actBinding.btnImport.setText(Helper.getResString(R.string.common_word_import).toUpperCase());
-        actBinding.btnImport.setOnClickListener(view -> {
-            importSelectedFonts();
-        });
+        actBinding.btnImport.setOnClickListener(v -> importSelectedFonts());
 
         return binding.getRoot();
     }
@@ -187,7 +172,7 @@ public class St extends qA {
         bundle.putString("dir_path", dirPath);
     }
 
-    public class fontAdapter extends RecyclerView.Adapter<fontAdapter.MyViewHolder> {
+    public class fontAdapter extends RecyclerView.Adapter<fontAdapter.fontHolder> {
         private int selectedPosition = -1;
 
         @Override
@@ -196,7 +181,7 @@ public class St extends qA {
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(fontHolder holder, int position) {
             ProjectResourceBean resource = projectResourceBeans.get(position);
 
             String fontPath = wq.a() + File.separator + "font" + File.separator + "data" + File.separator + resource.resFullName;
@@ -207,22 +192,21 @@ public class St extends qA {
 
             try {
                 holder.binding.tvFontPreview.setTypeface(Typeface.createFromFile(fontPath));
-                holder.binding.tvFontPreview.setText(Helper.getResString(R.string.design_manager_font_description_example_sentence));
             } catch (Exception ignored) {
             }
         }
 
         @NonNull
         @Override
-        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public fontHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             ManageFontListItemBinding binding = ManageFontListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new MyViewHolder(binding);
+            return new fontHolder(binding);
         }
 
-        public class MyViewHolder extends RecyclerView.ViewHolder {
+        public class fontHolder extends RecyclerView.ViewHolder {
             public ManageFontListItemBinding binding;
 
-            public MyViewHolder(ManageFontListItemBinding binding) {
+            public fontHolder(ManageFontListItemBinding binding) {
                 super(binding.getRoot());
                 this.binding = binding;
 

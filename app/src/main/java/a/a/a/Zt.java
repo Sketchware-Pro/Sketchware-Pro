@@ -1,5 +1,6 @@
 package a.a.a;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
@@ -212,22 +213,20 @@ public class Zt extends qA {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         ProjectResourceBean resourceBean;
-        if (requestCode != 271) {
-            if (requestCode == 272 && resultCode == -1) {
-                resourceBean = intent.getParcelableExtra("resource_bean");
-                projectResourceBeans.set(adapter.selectedPosition, resourceBean);
-                adapter.notifyDataSetChanged();
-                toggleEmptyStateVisibility();
-                ((ManageFontActivity) requireActivity()).l().loadProjectResources();
-                bB.a(getActivity(), Helper.getResString(R.string.design_manager_message_edit_complete), 1).show();
-            }
-        } else if (resultCode == -1) {
+        if (requestCode == 271 && resultCode == Activity.RESULT_OK) {
             resourceBean = intent.getParcelableExtra("resource_bean");
             projectResourceBeans.add(resourceBean);
             adapter.notifyDataSetChanged();
             toggleEmptyStateVisibility();
-            ((ManageFontActivity) requireActivity()).l().loadProjectResources();
-            bB.a(getActivity(), Helper.getResString(R.string.design_manager_message_add_complete), 1).show();
+            ((ManageFontActivity) requireActivity()).collectionFontsFragment.loadProjectResources();
+            SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_add_complete));
+        } else if (requestCode == 272 && resultCode == Activity.RESULT_OK) {
+            resourceBean = intent.getParcelableExtra("resource_bean");
+            projectResourceBeans.set(adapter.selectedPosition, resourceBean);
+            adapter.notifyDataSetChanged();
+            toggleEmptyStateVisibility();
+            ((ManageFontActivity) requireActivity()).collectionFontsFragment.loadProjectResources();
+            SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_edit_complete));
         }
 
     }
@@ -262,7 +261,7 @@ public class Zt extends qA {
                 setSelectingMode(false);
                 toggleEmptyStateVisibility();
                 SketchwareUtil.toast(Helper.getResString(R.string.common_message_complete_delete));
-                actBinding.fab.show();
+                ((ManageFontActivity) requireActivity()).changeFabState(true);
             }
         });
 

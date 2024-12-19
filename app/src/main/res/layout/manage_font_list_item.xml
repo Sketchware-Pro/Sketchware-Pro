@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?attr/textAppearanceBodySmall"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                tools:text="The quick brown fox jumps over the lazy dog" />
+                android:text="@string/design_manager_font_description_example_sentence" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
