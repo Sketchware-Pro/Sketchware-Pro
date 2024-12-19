@@ -10,29 +10,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.editor.manage.font.ManageFontActivity;
 import com.besome.sketch.editor.manage.sound.AddSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import pro.sketchware.databinding.FrManageSoundListBinding;
 import pro.sketchware.databinding.ManageSoundBinding;
@@ -40,19 +36,20 @@ import pro.sketchware.databinding.ManageSoundListItemBinding;
 import pro.sketchware.utility.FileUtil;
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
+import pro.sketchware.utility.SketchwareUtil;
 
-public class ow extends qA implements View.OnClickListener {
-    private oB fileUtil;
-    private ArrayList<ProjectResourceBean> sounds;
+public class ow extends qA {
+
+    public ArrayList<ProjectResourceBean> sounds;
     private String sc_id;
-    public boolean k = false;
-    private Adapter adapter = null;
-    private String A = "";
+    public boolean isSelecting = false;
+    private Adapter adapter;
+    private String dirPath = "";
 
     private FrManageSoundListBinding binding;
     private ManageSoundBinding actBinding;
 
-    private void i() {
+    private void updateNoSoundsTextVisibility() {
         if (sounds.isEmpty()) {
             binding.tvGuide.setVisibility(View.VISIBLE);
             binding.soundList.setVisibility(View.GONE);
@@ -63,19 +60,19 @@ public class ow extends qA implements View.OnClickListener {
     }
 
     private void addSound() {
-        f();
+        stopPlayback();
         Intent intent = new Intent(getContext(), AddSoundActivity.class);
         intent.putExtra("sc_id", sc_id);
-        intent.putExtra("dir_path", A);
-        intent.putExtra("sound_names", c());
+        intent.putExtra("dir_path", dirPath);
+        intent.putExtra("sound_names", getSoundsNames());
         startActivityForResult(intent, 269);
     }
 
     private void editSound() {
         Intent intent = new Intent(getContext(), AddSoundActivity.class);
         intent.putExtra("sc_id", sc_id);
-        intent.putExtra("dir_path", A);
-        intent.putExtra("sound_names", c());
+        intent.putExtra("dir_path", dirPath);
+        intent.putExtra("sound_names", getSoundsNames());
         intent.putExtra("request_code", 270);
         intent.putExtra("project_resource", sounds.get(adapter.lastSelectedSound));
         startActivityForResult(intent, 270);
@@ -84,12 +81,11 @@ public class ow extends qA implements View.OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        fileUtil = new oB();
-        fileUtil.f(A);
+        new oB().f(dirPath);
         sounds = new ArrayList<>();
         if (savedInstanceState == null) {
             sc_id = requireActivity().getIntent().getStringExtra("sc_id");
-            A = jC.d(sc_id).o();
+            dirPath = jC.d(sc_id).o();
             ArrayList<ProjectResourceBean> arrayList = jC.d(sc_id).c;
             if (arrayList != null) {
                 for (ProjectResourceBean projectResourceBean : arrayList) {
@@ -98,60 +94,29 @@ public class ow extends qA implements View.OnClickListener {
             }
         } else {
             sc_id = savedInstanceState.getString("sc_id");
-            A = savedInstanceState.getString("dir_path");
+            dirPath = savedInstanceState.getString("dir_path");
             sounds = savedInstanceState.getParcelableArrayList("sounds");
         }
         adapter.notifyDataSetChanged();
-        i();
+        updateNoSoundsTextVisibility();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 269) {
-            if (resultCode == Activity.RESULT_OK) {
-                sounds.add((ProjectResourceBean) data.getParcelableExtra("project_resource"));
-                bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_add_complete), 1).show();
-                adapter.notifyDataSetChanged();
-                i();
-                ((ManageSoundActivity) requireActivity()).l().e();
-            }
-        } else if (requestCode == 270 && resultCode == Activity.RESULT_OK) {
-            sounds.set(adapter.lastSelectedSound, (ProjectResourceBean) data.getParcelableExtra("project_resource"));
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_edit_complete), 1).show();
-            adapter.notifyDataSetChanged();
-            i();
-            ((ManageSoundActivity) requireActivity()).l().e();
-        }
-    }
+        if (requestCode == 269 &&resultCode == Activity.RESULT_OK) {
+            sounds.add(data.getParcelableExtra("project_resource"));
+            SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_add_complete));
 
-    @Override
-    public void onClick(View v) {
-        if (!mB.a() && k) {
-            int id = v.getId();
-            if (id == R.id.btn_cancel) {
-                a(false);
-            } else if (id == R.id.btn_delete) {
-                int size = sounds.size();
-                while (true) {
-                    size--;
-                    if (size < 0) {
-                        adapter.notifyDataSetChanged();
-                        adapter.stopPlayback();
-                        a(false);
-                        i();
-                        bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_complete_delete), 1).show();
-                        actBinding.fab.show();
-                        break;
-                    } else {
-                        ProjectResourceBean projectResourceBean = sounds.get(size);
-                        projectResourceBean.curSoundPosition = 0;
-                        if (projectResourceBean.isSelected) {
-                            sounds.remove(size);
-                        }
-                    }
-                }
-            }
+            adapter.notifyDataSetChanged();
+            updateNoSoundsTextVisibility();
+            ((ManageSoundActivity) requireActivity()).collectionSounds.loadProjectSounds();
+        } else if (requestCode == 270 && resultCode == Activity.RESULT_OK) {
+            sounds.set(adapter.lastSelectedSound, data.getParcelableExtra("project_resource"));
+            SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_edit_complete));
+            adapter.notifyDataSetChanged();
+            updateNoSoundsTextVisibility();
+            ((ManageSoundActivity) requireActivity()).collectionSounds.loadProjectSounds();
         }
     }
 
@@ -164,24 +129,41 @@ public class ow extends qA implements View.OnClickListener {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.manage_sound_menu, menu);
-        menu.findItem(R.id.menu_sound_delete).setVisible(!k);
+        menu.findItem(R.id.menu_sound_delete).setVisible(!isSelecting);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
         actBinding = ((ManageSoundActivity) requireActivity()).binding;
         binding = FrManageSoundListBinding.inflate(inflater, container, false);
 
-        actBinding.btnDelete.setOnClickListener(this);
-        actBinding.btnCancel.setOnClickListener(this);
+        actBinding.btnDelete.setOnClickListener(view -> {
+            if (!mB.a() && isSelecting) {
+                for (int i = sounds.size() - 1; i >= 0; i--) {
+                    ProjectResourceBean projectResourceBean = sounds.get(i);
+                    projectResourceBean.curSoundPosition = 0;
+                    if (projectResourceBean.isSelected) {
+                        sounds.remove(i);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+                adapter.stopPlayback();
+                setSelecting(false);
+                updateNoSoundsTextVisibility();
+                SketchwareUtil.toast(Helper.getResString(R.string.common_message_complete_delete));
+                actBinding.fab.show();
+            }
+        });
+
+        actBinding.btnCancel.setOnClickListener(view -> setSelecting(false));
         binding.soundList.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
         adapter = new Adapter(binding.soundList);
         binding.soundList.setAdapter(adapter);
         actBinding.fab.setOnClickListener(v -> {
             if (!mB.a()) {
-                a(false);
+                setSelecting(false);
                 addSound();
             }
         });
@@ -192,10 +174,10 @@ public class ow extends qA implements View.OnClickListener {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.menu_sound_add) {
-            a(false);
+            setSelecting(false);
             addSound();
         } else if (itemId == R.id.menu_sound_delete) {
-            a(!k);
+            setSelecting(!isSelecting);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -203,7 +185,7 @@ public class ow extends qA implements View.OnClickListener {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
-        outState.putString("dir_path", A);
+        outState.putString("dir_path", dirPath);
         outState.putParcelableArrayList("sounds", sounds);
         super.onSaveInstanceState(outState);
     }
@@ -238,7 +220,7 @@ public class ow extends qA implements View.OnClickListener {
         @Override
         public Path getAudio(int position) {
             var bean = sounds.get(position);
-            return Paths.get(bean.isNew ? bean.resFullName : a(bean));
+            return Paths.get(bean.isNew ? bean.resFullName : getFilePathFromResource(bean));
         }
 
         private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
@@ -249,10 +231,12 @@ public class ow extends qA implements View.OnClickListener {
                 super(binding.getRoot());
                 this.binding = binding;
 
+                binding.chkSelect.setVisibility(View.GONE);
+
                 binding.imgPlay.setOnClickListener(v -> {
                     if (!mB.a()) {
                         lastSelectedSound = getLayoutPosition();
-                        if (!k) {
+                        if (!isSelecting) {
                             soundPlayer.onPlayPressed(lastSelectedSound);
                         }
                     }
@@ -262,18 +246,18 @@ public class ow extends qA implements View.OnClickListener {
                     if (!mB.a()) {
                         lastSelectedSound = getLayoutPosition();
                     }
-                    if (k) {
+                    if (isSelecting) {
                         binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
                         sounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
                         notifyItemChanged(lastSelectedSound);
                     } else {
-                        f();
+                        stopPlayback();
                         editSound();
                     }
                 });
 
                 binding.layoutItem.setOnLongClickListener(v -> {
-                    ow.this.a(true);
+                    setSelecting(true);
                     lastSelectedSound = getLayoutPosition();
                     binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
                     sounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
@@ -296,7 +280,7 @@ public class ow extends qA implements View.OnClickListener {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean bean = sounds.get(position);
 
-            if (!k) {
+            if (!isSelecting) {
                 var audioMetadata = holder.audioMetadata;
                 var audio = getAudio(position);
                 if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
@@ -315,8 +299,8 @@ public class ow extends qA implements View.OnClickListener {
 
             int positionInS = bean.curSoundPosition / 1000;
             int totalDurationInS = bean.totalSoundDuration / 1000;
-            holder.binding.tvCurrenttime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
-            holder.binding.tvEndtime.setText(String.format("%d:%02d", totalDurationInS / 60, totalDurationInS % 60));
+            holder.binding.tvCurrenttime.setText(String.format(Locale.US, "%d:%02d", positionInS / 60, positionInS % 60));
+            holder.binding.tvEndtime.setText(String.format(Locale.US, "%d:%02d", totalDurationInS / 60, totalDurationInS % 60));
 
             holder.binding.chkSelect.setChecked(bean.isSelected);
             holder.binding.tvSoundName.setText(bean.resName);
@@ -340,11 +324,7 @@ public class ow extends qA implements View.OnClickListener {
         }
     }
 
-    public ArrayList<ProjectResourceBean> d() {
-        return sounds;
-    }
-
-    public void f() {
+    public void stopPlayback() {
         adapter.stopPlayback();
     }
 
@@ -357,10 +337,10 @@ public class ow extends qA implements View.OnClickListener {
     public void saveSounds() {
         for (ProjectResourceBean sound : sounds) {
             if (sound.isNew) {
-                String temporarySoundPath = a(sound.resFullName);
+                String temporarySoundPath = getFilePathFromName(sound.resFullName);
                 FileUtil.deleteFile(temporarySoundPath);
 
-                String soundPath = a(sound);
+                String soundPath = getFilePathFromResource(sound);
                 FileUtil.deleteFile(soundPath);
                 FileUtil.copyFile(sound.resFullName, soundPath);
             }
@@ -379,11 +359,7 @@ public class ow extends qA implements View.OnClickListener {
         jC.a(sc_id).k();
     }
 
-    private void b(ArrayList<ProjectResourceBean> arrayList) {
-        sounds.addAll(arrayList);
-    }
-
-    private boolean c(String str) {
+    private boolean isResourceUnavailable(String str) {
         for (ProjectResourceBean projectResourceBean : sounds) {
             if (projectResourceBean.resName.equals(str)) {
                 return true;
@@ -392,12 +368,12 @@ public class ow extends qA implements View.OnClickListener {
         return false;
     }
 
-    public void a(boolean z) {
-        k = z;
+    public void setSelecting(boolean state) {
+        isSelecting = state;
         requireActivity().invalidateOptionsMenu();
         unselectAll();
-        if (k) {
-            f();
+        if (isSelecting) {
+            stopPlayback();
             actBinding.layoutBtnGroup.setVisibility(View.VISIBLE);
         } else {
             actBinding.layoutBtnGroup.setVisibility(View.GONE);
@@ -405,7 +381,7 @@ public class ow extends qA implements View.OnClickListener {
         adapter.notifyDataSetChanged();
     }
 
-    private ArrayList<String> c() {
+    private ArrayList<String> getSoundsNames() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("app_icon");
         for (ProjectResourceBean projectResourceBean : sounds) {
@@ -414,42 +390,47 @@ public class ow extends qA implements View.OnClickListener {
         return arrayList;
     }
 
-    public void a(ArrayList<ProjectResourceBean> arrayList) {
-        ArrayList<ProjectResourceBean> arrayList2 = new ArrayList<>();
-        ArrayList<String> arrayList3 = new ArrayList<>();
-        for (ProjectResourceBean next : arrayList) {
-            if (c(next.resName)) {
-                arrayList3.add(next.resName);
+    public void handleImportedResources(ArrayList<ProjectResourceBean> resourceList) {
+        ArrayList<ProjectResourceBean> newResources = new ArrayList<>();
+        ArrayList<String> unavailableResourceNames = new ArrayList<>();
+
+        for (ProjectResourceBean resource : resourceList) {
+            if (isResourceUnavailable(resource.resName)) {
+                unavailableResourceNames.add(resource.resName);
             } else {
-                ProjectResourceBean projectResourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, next.resName, next.resFullName);
-                projectResourceBean.isNew = true;
-                arrayList2.add(projectResourceBean);
+                ProjectResourceBean newResource = new ProjectResourceBean(
+                        ProjectResourceBean.PROJECT_RES_TYPE_FILE, resource.resName, resource.resFullName
+                );
+                newResource.isNew = true;
+                newResources.add(newResource);
             }
         }
-        if (!arrayList3.isEmpty()) {
-            String str2 = "";
-            for (String str3 : arrayList3) {
-                if (!str2.isEmpty()) {
-                    str2 = str2 + ", ";
+
+        if (!unavailableResourceNames.isEmpty()) {
+            StringBuilder unavailableNames = new StringBuilder();
+            for (String name : unavailableResourceNames) {
+                if (unavailableNames.length() > 0) {
+                    unavailableNames.append(", ");
                 }
-                str2 = str2 + str3;
+                unavailableNames.append(name);
             }
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_name_unavailable) + "\n[" + str2 + "]", 1).show();
+            SketchwareUtil.toast(Helper.getResString(R.string.common_message_name_unavailable) + "\n[" + unavailableNames + "]");
         } else {
-            bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_import_complete), 1).show();
-            b(arrayList2);
+            SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_import_complete));
+            sounds.addAll(newResources);
             adapter.notifyDataSetChanged();
         }
-        i();
+
+        updateNoSoundsTextVisibility();
     }
 
-    private String a(String str) {
-        return A + File.separator + str;
+    private String getFilePathFromName(String str) {
+        return dirPath + File.separator + str;
     }
 
-    private String a(ProjectResourceBean projectResourceBean) {
+    private String getFilePathFromResource(ProjectResourceBean projectResourceBean) {
         String str = projectResourceBean.resFullName;
         String substring = str.substring(str.lastIndexOf("."));
-        return A + File.separator + projectResourceBean.resName + substring;
+        return dirPath + File.separator + projectResourceBean.resName + substring;
     }
 }
