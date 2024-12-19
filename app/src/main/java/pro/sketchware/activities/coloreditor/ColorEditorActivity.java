@@ -64,7 +64,9 @@ public class ColorEditorActivity extends AppCompatActivity {
         if (colorValue.startsWith("#")) {
             return colorValue;
         }
-
+        if (colorValue.startsWith("?attr/")) {
+            return getColorValueFromXml(context, colorValue.substring(6), referencingLimit - 1);
+        }
         if (colorValue.startsWith("@color/")) {
             return getColorValueFromXml(context, colorValue.substring(7), referencingLimit - 1);
 

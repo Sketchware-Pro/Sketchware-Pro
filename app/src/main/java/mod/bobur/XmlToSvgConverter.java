@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import pro.sketchware.R;
 import pro.sketchware.SketchApplication;
 import pro.sketchware.activities.coloreditor.ColorEditorActivity;
 import pro.sketchware.utility.FileUtil;
@@ -221,7 +220,15 @@ public class XmlToSvgConverter {
     public static String getVectorColor(Element vectorElement) {
         Element root = vectorElement.getOwnerDocument().getDocumentElement();
         String tint = root.getAttribute("android:tint");
-        ColorEditorActivity.contentPath = "/storage/emulated/0/.sketchware/data/" + sc_id + "/files/resource/values/colors.xml";
+        // check colors file
+        String filePath = "/storage/emulated/0/.sketchware/data/" + sc_id + "/files/resource/values/colors.xml";
+        if (!FileUtil.isExistFile(filePath)) {
+            filePath = "/storage/emulated/0/.sketchware/mysc/" +sc_id + "/app/src/main/res/values/colors.xml";
+            if (!FileUtil.isExistFile(filePath)) {
+                return "#FFFFFF";
+            }
+        }
+        ColorEditorActivity.contentPath = filePath;
         if (!tint.isEmpty()) {
             return ColorEditorActivity.getColorValue(SketchApplication.getContext(), tint, 4);
         } else {
