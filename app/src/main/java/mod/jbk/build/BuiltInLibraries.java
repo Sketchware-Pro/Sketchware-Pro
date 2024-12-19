@@ -227,6 +227,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_MEDIA, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_VERSIONEDPARCELABLE), "androidx.media"),
             new BuiltInLibrary(ANDROIDX_MULTIDEX),
             new BuiltInLibrary(ANDROIDX_PRINT, List.of(ANDROIDX_ANNOTATION)),
+            new BuiltInLibrary(ANDROIDX_RECYCLERVIEW_SELECTION),
             new BuiltInLibrary(ANDROIDX_RECYCLERVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_LEGACY_SUPPORT_CORE_UI, ANDROIDX_CUSTOMVIEW, ANDROIDX_RECYCLERVIEW_SELECTION),
                     "androidx.recyclerview"),
             new BuiltInLibrary(ANDROIDX_RESOURCEINSPECTION_ANNOTATION, List.of(ANDROIDX_ANNOTATION)),
