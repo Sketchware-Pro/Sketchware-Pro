@@ -31,15 +31,16 @@ import java.util.ArrayList;
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageSoundBinding;
 
 public class Yv extends qA implements View.OnClickListener {
     private RecyclerView soundsList;
     private String sc_id;
     private ArrayList<ProjectResourceBean> sounds;
     private TextView noSoundsText;
-    private Button importSounds;
     private String h = "";
     private Adapter adapter = null;
+    private ManageSoundBinding actBinding;
 
     private ActivityResultLauncher<Intent> importSoundsHandler;
 
@@ -51,10 +52,10 @@ public class Yv extends qA implements View.OnClickListener {
             }
         }
         if (selectedSounds > 0) {
-            importSounds.setText(xB.b().a(getContext(), R.string.common_word_import_count, selectedSounds).toUpperCase());
-            importSounds.setVisibility(View.VISIBLE);
+            actBinding.btnImport.setText(xB.b().a(getContext(), R.string.common_word_import_count, selectedSounds).toUpperCase());
+            actBinding.layoutBtnImport.setVisibility(View.VISIBLE);
         } else {
-            importSounds.setVisibility(View.GONE);
+            actBinding.layoutBtnImport.setVisibility(View.GONE);
         }
     }
 
@@ -82,7 +83,7 @@ public class Yv extends qA implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (!mB.a() && v.getId() == R.id.btn_import) {
-            importSounds.setVisibility(View.GONE);
+            actBinding.layoutBtnImport.setVisibility(View.GONE);
             d();
             ArrayList<ProjectResourceBean> arrayList = new ArrayList<>();
             for (ProjectResourceBean next : sounds) {
@@ -105,17 +106,16 @@ public class Yv extends qA implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
+
+        actBinding = ((ManageSoundActivity) requireActivity()).binding;
+
         soundsList = viewGroup2.findViewById(R.id.sound_list);
         soundsList.setLayoutManager(new LinearLayoutManager(null, LinearLayoutManager.VERTICAL, false));
         adapter = new Adapter();
         soundsList.setAdapter(adapter);
         noSoundsText = viewGroup2.findViewById(R.id.tv_guide);
         noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
-        importSounds = viewGroup2.findViewById(R.id.btn_import);
-        importSounds.setText(xB.b().a(getContext(), R.string.common_word_import).toUpperCase());
-        importSounds.setOnClickListener(this);
-        importSounds.setVisibility(View.GONE);
-        viewGroup2.findViewById(R.id.fab).setVisibility(View.GONE);
+        actBinding.btnImport.setOnClickListener(this);
         return viewGroup2;
     }
 

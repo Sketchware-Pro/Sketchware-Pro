@@ -78,13 +78,11 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         binding = ManageSoundBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
-        binding.layoutMainLogo.setVisibility(View.GONE);
-        getSupportActionBar().setTitle(getTranslatedString(R.string.design_actionbar_title_manager_sound));
+        setSupportActionBar(binding.topAppBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        binding.toolbar.setNavigationOnClickListener(v -> {
+        binding.topAppBar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
@@ -118,8 +116,12 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     @Override
     public void onPageSelected(int position) {
         if (position == 0) {
+            binding.fab.animate().translationY(0F).setDuration(200L).start();
+            binding.fab.show();
             collectionSounds.d();
         } else {
+            binding.fab.animate().translationY(4000F).setDuration(200L).start();
+            binding.fab.hide();
             projectSounds.f();
         }
     }
@@ -130,8 +132,8 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public PagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
             titles = new String[TAB_COUNT];
-            titles[0] = getTranslatedString(R.string.design_manager_tab_title_this_project).toUpperCase();
-            titles[1] = getTranslatedString(R.string.design_manager_tab_title_my_collection).toUpperCase();
+            titles[0] = getTranslatedString(R.string.design_manager_tab_title_this_project);
+            titles[1] = getTranslatedString(R.string.design_manager_tab_title_my_collection);
         }
 
         @Override
