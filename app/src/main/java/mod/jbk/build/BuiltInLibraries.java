@@ -43,6 +43,7 @@ public class BuiltInLibraries {
     public static String ANDROIDX_CORE_RUNTIME = "core-runtime-2.1.0";
     public static String ANDROIDX_CURSORADAPTER = "cursoradapter-1.0.0";
     public static String ANDROIDX_CUSTOMVIEW = "customview-1.1.0";
+    public static String ANDROIDX_CUSTOMVIEW_PC = "customview-poolingcontainer-1.0.0";
     public static String ANDROIDX_DOCUMENTFILE = "documentfile-1.0.1";
     public static String ANDROIDX_DRAWERLAYOUT = "drawerlayout-1.1.1";
     public static String ANDROIDX_DYNAMIC_ANIMATION = "dynamicanimation-1.1.0-alpha03";
@@ -225,9 +226,8 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_MEDIA, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_VERSIONEDPARCELABLE), "androidx.media"),
             new BuiltInLibrary(ANDROIDX_MULTIDEX),
             new BuiltInLibrary(ANDROIDX_PRINT, List.of(ANDROIDX_ANNOTATION)),
-            new BuiltInLibrary(ANDROIDX_RECYCLERVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_LEGACY_SUPPORT_CORE_UI),
+            new BuiltInLibrary(ANDROIDX_RECYCLERVIEW, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE, ANDROIDX_LEGACY_SUPPORT_CORE_UI, ANDROIDX_CUSTOMVIEW, ANDROIDX_CUSTOMVIEW_PC, ANDROIDX_RECYCLERVIEW_SELECTION),
                     "androidx.recyclerview"),
-            new BuiltInLibrary(ANDROIDX_RECYCLERVIEW_SELECTION),
             new BuiltInLibrary(ANDROIDX_RESOURCEINSPECTION_ANNOTATION, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_ROOM_COMMON, List.of(ANDROIDX_ANNOTATION)),
             new BuiltInLibrary(ANDROIDX_ROOM_RUNTIME, List.of(ANDROIDX_ANNOTATION, ANDROIDX_CORE_RUNTIME, ANDROIDX_ROOM_COMMON,
@@ -299,7 +299,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(LOTTIE, List.of(ANDROIDX_APPCOMPAT, OKIO), "com.airbnb.lottie"),
             new BuiltInLibrary(MATERIAL, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_ACTIVITY, ANDROIDX_RESOURCEINSPECTION_ANNOTATION, ANDROIDX_APPCOMPAT, ANDROIDX_CARDVIEW,
                     ANDROIDX_CONSTRAINTLAYOUT, ANDROIDX_COORDINATORLAYOUT, ANDROIDX_CORE, ANDROIDX_DRAWERLAYOUT, ANDROIDX_DYNAMIC_ANIMATION,
-                    ANDROIDX_FRAGMENT, ANDROIDX_LIFECYCLE_RUNTIME, ANDROIDX_RECYCLERVIEW, ANDROIDX_TRANSITION, ANDROIDX_VECTORDRAWABLE,
+                    ANDROIDX_FRAGMENT, ANDROIDX_LIFECYCLE_RUNTIME, ANDROIDX_RECYCLERVIEW, ANDROIDX_CUSTOMVIEW, ANDROIDX_TRANSITION, ANDROIDX_VECTORDRAWABLE,
                     ANDROIDX_VIEWPAGER2, KOTLIN_STDLIB), "com.google.android.material"),
             new BuiltInLibrary(OKHTTP, List.of(OKIO)),
             new BuiltInLibrary(OKIO),
