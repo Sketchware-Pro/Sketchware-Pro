@@ -52,14 +52,16 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_xml"
-        android:layout_width="wrap_content"
+        android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/options_selector"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="4"
-        tools:listitem="@layout/file_selector_popup_select_xml_activity_item" />
+        tools:listitem="@layout/file_selector_popup_select_xml_activity_item"
+        android:clipToPadding="false"
+        android:paddingBottom="100dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -30,6 +30,7 @@ import a.a.a.xB;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
 import pro.sketchware.databinding.FileSelectorPopupSelectXmlBinding;
+import pro.sketchware.utility.ThemeUtils;
 
 public class ViewSelectorActivity extends BaseAppCompatActivity {
     private ViewSelectorAdapter viewSelectorAdapter;
@@ -228,6 +229,27 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         });
         binding.container.setOnClickListener(v -> finish());
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+
+        // scroll to selected activity
+        int position = 0;
+        if (selectedTab == TAB_ACTIVITY) {
+            ArrayList<ProjectFileBean> activities = jC.b(sc_id).b();
+            for (int i = 0; i < activities.size(); i++) {
+                if (currentXml.equals(activities.get(i).getXmlName())) {
+                    position = i;
+                    break;
+                }
+            }
+        } else {
+            ArrayList<ProjectFileBean> customViews = jC.b(sc_id).c();
+            for (int i = 0; i < customViews.size(); i++) {
+                if (currentXml.equals(customViews.get(i).getXmlName())) {
+                    position = i;
+                    break;
+                }
+            }
+        }
+        binding.listXml.smoothScrollToPosition(position);
     }
 
     @Override

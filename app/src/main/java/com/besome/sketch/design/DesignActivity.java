@@ -717,7 +717,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     jC.a(sc_id).a(jC.b(sc_id));
                 }
                 if (q) {
-                    jC.a(sc_id).b(jC.d(sc_id));
+                    // This method is replaces not exist images to default_image, I removed it because it changes vector images to default_images
+                    // jC.a(sc_id).b(jC.d(sc_id));
                     jC.a(sc_id).c(jC.d(sc_id));
                     jC.a(sc_id).a(jC.d(sc_id));
                 }
@@ -1017,7 +1018,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             if (activity == null) return;
 
             activity.runOnUiThread(() -> {
-                activity.runProject.setText("Building APK file...");
+                activity.runProject.setText("Building APK...");
                 activity.runProject.setClickable(false);
                 activity.r.a("P1I10", true);
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

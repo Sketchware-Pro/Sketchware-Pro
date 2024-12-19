@@ -437,7 +437,7 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
                 goEditFile(position);
             });
             binding.getRoot().setOnLongClickListener(view -> {
-                itemContextMenu(view, position, Gravity.CENTER);
+                itemContextMenu(binding.more, position, Gravity.CENTER);
                 return true;
             });
 

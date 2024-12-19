@@ -186,6 +186,14 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         RecyclerView recyclerView = customView.findViewById(R.id.file_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(new JavaFileAdapter());
+        int position = 0;
+        for (ProjectFileBean projectFileBean : jC.b(sc_id).b()) {
+            String javaName = projectFileBean.getJavaName();
+            if (javaName.equals(currentJavaFileName)){
+                recyclerView.smoothScrollToPosition(position);
+            }
+            position++;
+        }
         availableFilesDialog.a(customView);
         availableFilesDialog.show();
     }
@@ -221,11 +229,12 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final TextView javaFileName;
             public final TextView xmlFileName;
-
+            public final LinearLayout linearFileSelector;
             public ViewHolder(View itemView) {
                 super(itemView);
                 javaFileName = itemView.findViewById(R.id.tv_filename);
                 xmlFileName = itemView.findViewById(R.id.tv_linked_filename);
+                linearFileSelector = itemView.findViewById(R.id.linear_file_selector);
                 itemView.setOnClickListener(v -> {
                     ProjectFileBean projectFileBean = jC.b(sc_id).b().get(getLayoutPosition());
                     setJavaFileName(projectFileBean.getJavaName());
@@ -247,6 +256,13 @@ public class ProjectFileSelector extends LinearLayout implements View.OnClickLis
             String xmlName = projectFileBean.getXmlName();
             holder.javaFileName.setText(javaName);
             holder.xmlFileName.setText(xmlName);
+            if (getItemCount() > 1) {
+                if (javaName.equals(currentJavaFileName)) {
+                    holder.linearFileSelector.setSelected(true);
+                } else {
+                    holder.linearFileSelector.setSelected(false);
+                }
+            }
         }
 
         @Override

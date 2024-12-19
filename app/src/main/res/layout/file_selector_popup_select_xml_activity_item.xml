@@ -12,11 +12,9 @@
 
     <LinearLayout
         android:id="@+id/container"
-        android:layout_width="wrap_content"
+        android:layout_width="325dp"
         android:layout_height="90dp"
         android:baselineAligned="false"
-        android:maxWidth="325dp"
-        android:minWidth="300dp"
         android:orientation="horizontal">
 
 

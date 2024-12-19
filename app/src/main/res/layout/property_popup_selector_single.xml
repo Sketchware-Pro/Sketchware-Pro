@@ -18,7 +18,9 @@
         app:boxCornerRadiusBottomStart="50dp"
         app:boxCornerRadiusTopEnd="50dp"
         app:boxCornerRadiusTopStart="50dp"
-        app:startIconDrawable="@drawable/search_icon_grey">
+        app:startIconDrawable="@drawable/search_icon_grey"
+        app:endIconDrawable="@drawable/ic_mtrl_close"
+        app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/searchInput"

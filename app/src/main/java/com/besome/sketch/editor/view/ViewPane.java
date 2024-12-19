@@ -34,6 +34,7 @@ import com.besome.sketch.beans.ImageBean;
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.view.item.ItemAdView;
 import com.besome.sketch.editor.view.item.ItemBottomNavigationView;
@@ -62,6 +63,9 @@ import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
+import mod.bobur.helpers.XmlToSvgConverter;
+import pro.sketchware.R;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -105,7 +109,6 @@ import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.hey.studios.util.ProjectFile;
 import mod.hey.studios.project.ProjectSettings;
 
-import pro.sketchware.R;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.InjectAttributeHandler;
@@ -463,14 +466,18 @@ public class ViewPane extends RelativeLayout {
             } else {
                 try {
                     String imagelocation = resourcesManager.f(viewBean.image.resName);
-
-                    int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
-                    if(imagelocation.endsWith(".xml")){
-                        FilePathUtil fpu = new FilePathUtil();
-                       svgUtils.loadScaledSvgIntoImageView( (ImageView) view,fpu.getSvgFullPath(sc_id,viewBean.image.resName),round3);
-                    }else {
-                        Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
-                        ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                    File file = new File(imagelocation);
+                    if (file.exists()) {
+                        int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
+                        if(imagelocation.endsWith(".xml")){
+                            FilePathUtil fpu = new FilePathUtil();
+                            svgUtils.loadScaledSvgIntoImageView( (ImageView) view,fpu.getSvgFullPath(sc_id,viewBean.image.resName),round3);
+                        }else {
+                            Bitmap decodeFile3 = BitmapFactory.decodeFile(imagelocation);
+                            ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
+                        }
+                    } else {
+                        XmlToSvgConverter.setImageVectorFromFile(((ImageView) view), XmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                     }
                 } catch (Exception unused2) {
                     ((ImageView) view).setImageResource(R.drawable.default_image);
