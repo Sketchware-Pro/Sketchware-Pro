@@ -9,8 +9,7 @@
     android:layout_marginTop="10dp"
     android:focusable="true"
     android:clickable="true"
-    app:cardBackgroundColor="?attr/colorSurfaceContainer"
-    app:strokeWidth="0.5dp">
+    app:cardBackgroundColor="?attr/colorSurfaceContainer">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
