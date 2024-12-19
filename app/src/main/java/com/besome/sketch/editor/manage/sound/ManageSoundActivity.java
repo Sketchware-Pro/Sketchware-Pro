@@ -77,11 +77,6 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         }
         setContentView(R.layout.manage_sound);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(getTranslatedString(R.string.design_actionbar_title_manager_sound));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();

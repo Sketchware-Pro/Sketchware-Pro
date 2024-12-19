@@ -35,7 +35,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                app:cardCornerRadius="18dp"
+                app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
                 app:strokeWidth="0.5dp">
 
                 <com.google.android.material.tabs.TabLayout

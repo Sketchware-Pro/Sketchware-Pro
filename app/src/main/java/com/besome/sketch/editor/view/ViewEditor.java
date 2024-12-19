@@ -1022,7 +1022,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void initialDeleteViewUi() {
-        int focus = getColor(deleteView, R.attr.colorSurfaceContainer);
+        int focus = getColor(deleteView, R.attr.colorSurfaceInverse);
         int pressed = getColor(deleteView, R.attr.colorOnSurfaceVariant);
         rippleRound(deleteView, focus, pressed, 200);
     }
