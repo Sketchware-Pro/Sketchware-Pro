@@ -29,11 +29,12 @@ public class ProjectPreviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+
         binding = FragmentStoreProjectPreviewBinding.inflate(getLayoutInflater());
 
         EdgeToEdge.enable(this);
-
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
         setContentView(binding.getRoot());
 
