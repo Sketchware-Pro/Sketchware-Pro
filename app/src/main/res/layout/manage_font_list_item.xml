@@ -2,36 +2,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
-    style="?attr/materialCardViewOutlinedStyle"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp"
-    android:clickable="true"
-    android:focusable="true">
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:strokeWidth="0.5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:minHeight="72dp"
+        android:layout_marginLeft="16dp"
         android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/chk_select"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:minWidth="0dp" />
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/img_font"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_marginLeft="16dp"
-            android:padding="8dp"
+            android:padding="4dp"
             android:visibility="gone"
-            tools:src="@drawable/ic_font_48dp"
+            android:src="@drawable/ic_mtrl_font"
+            app:tint="?attr/colorPrimary"
             tools:visibility="visible" />
 
         <LinearLayout
@@ -43,10 +40,9 @@
 
             <ImageView
                 android:id="@+id/img_delete"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="16dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
                 android:src="@drawable/ic_trashcan_white_48dp"
                 app:tint="?attr/colorPrimary" />
         </LinearLayout>
