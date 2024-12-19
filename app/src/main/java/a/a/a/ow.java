@@ -34,7 +34,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import pro.sketchware.databinding.FrManageSoundListBinding;
 import pro.sketchware.databinding.ManageSoundBinding;
+import pro.sketchware.databinding.ManageSoundListItemBinding;
 import pro.sketchware.utility.FileUtil;
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
@@ -43,20 +45,20 @@ public class ow extends qA implements View.OnClickListener {
     private oB fileUtil;
     private ArrayList<ProjectResourceBean> sounds;
     private String sc_id;
-    private RecyclerView soundsList;
-    private TextView noSoundsText;
     public boolean k = false;
     private Adapter adapter = null;
     private String A = "";
+
+    private FrManageSoundListBinding binding;
     private ManageSoundBinding actBinding;
 
     private void i() {
         if (sounds.isEmpty()) {
-            noSoundsText.setVisibility(View.VISIBLE);
-            soundsList.setVisibility(View.GONE);
+            binding.tvGuide.setVisibility(View.VISIBLE);
+            binding.soundList.setVisibility(View.GONE);
         } else {
-            soundsList.setVisibility(View.VISIBLE);
-            noSoundsText.setVisibility(View.GONE);
+            binding.soundList.setVisibility(View.VISIBLE);
+            binding.tvGuide.setVisibility(View.GONE);
         }
     }
 
@@ -167,27 +169,23 @@ public class ow extends qA implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup item = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         setHasOptionsMenu(true);
 
-
         actBinding = ((ManageSoundActivity) requireActivity()).binding;
+        binding = FrManageSoundListBinding.inflate(inflater, container, false);
 
         actBinding.btnDelete.setOnClickListener(this);
         actBinding.btnCancel.setOnClickListener(this);
-        soundsList = item.findViewById(R.id.sound_list);
-        soundsList.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
-        adapter = new Adapter(soundsList);
-        soundsList.setAdapter(adapter);
-        noSoundsText = item.findViewById(R.id.tv_guide);
-        noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
+        binding.soundList.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+        adapter = new Adapter(binding.soundList);
+        binding.soundList.setAdapter(adapter);
         actBinding.fab.setOnClickListener(v -> {
             if (!mB.a()) {
                 a(false);
                 addSound();
             }
         });
-        return item;
+        return binding.getRoot();
     }
 
     @Override
@@ -212,6 +210,25 @@ public class ow extends qA implements View.OnClickListener {
 
     private class Adapter extends SoundPlayingAdapter<Adapter.ViewHolder> {
         private int lastSelectedSound = -1;
+        private final LayoutInflater inflater;
+
+        public Adapter(RecyclerView recyclerView) {
+            super(requireActivity());
+            this.inflater = LayoutInflater.from(requireActivity());
+            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 2 && actBinding.fab.isEnabled()) {
+                            actBinding.fab.hide();
+                        } else if (dy < -2 && actBinding.fab.isEnabled()) {
+                            actBinding.fab.show();
+                        }
+                    }
+                });
+            }
+        }
 
         @Override
         public ProjectResourceBean getData(int position) {
@@ -225,32 +242,14 @@ public class ow extends qA implements View.OnClickListener {
         }
 
         private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
-            public final ProgressBar progress;
-            public final TextView endTime;
-            public final LinearLayout deleteContainer;
-            public final CardView root;
-            public final CheckBox selected;
-            public final ImageView album;
-            public final TextView name;
-            public final ImageView play;
-            public final ImageView delete;
-            public final TextView currentTime;
-
+            private final ManageSoundListItemBinding binding;
             private AudioMetadata audioMetadata;
 
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                root = itemView.findViewById(R.id.layout_item);
-                selected = itemView.findViewById(R.id.chk_select);
-                album = itemView.findViewById(R.id.img_album);
-                delete = itemView.findViewById(R.id.img_delete);
-                name = itemView.findViewById(R.id.tv_sound_name);
-                play = itemView.findViewById(R.id.img_play);
-                currentTime = itemView.findViewById(R.id.tv_currenttime);
-                progress = itemView.findViewById(R.id.prog_playtime);
-                endTime = itemView.findViewById(R.id.tv_endtime);
-                deleteContainer = itemView.findViewById(R.id.delete_img_container);
-                play.setOnClickListener(v -> {
+            public ViewHolder(@NonNull ManageSoundListItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+
+                binding.imgPlay.setOnClickListener(v -> {
                     if (!mB.a()) {
                         lastSelectedSound = getLayoutPosition();
                         if (!k) {
@@ -258,97 +257,81 @@ public class ow extends qA implements View.OnClickListener {
                         }
                     }
                 });
-                selected.setVisibility(View.GONE);
-                root.setOnClickListener(v -> {
+
+                binding.layoutItem.setOnClickListener(v -> {
                     if (!mB.a()) {
                         lastSelectedSound = getLayoutPosition();
                     }
                     if (k) {
-                        selected.setChecked(!selected.isChecked());
-                        sounds.get(lastSelectedSound).isSelected = selected.isChecked();
+                        binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                        sounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
                         notifyItemChanged(lastSelectedSound);
                     } else {
                         f();
                         editSound();
                     }
                 });
-                root.setOnLongClickListener(v -> {
+
+                binding.layoutItem.setOnLongClickListener(v -> {
                     ow.this.a(true);
                     lastSelectedSound = getLayoutPosition();
-                    selected.setChecked(!selected.isChecked());
-                    sounds.get(lastSelectedSound).isSelected = selected.isChecked();
+                    binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                    sounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
                     return true;
                 });
             }
 
             @Override
             protected TextView getCurrentPosition() {
-                return currentTime;
+                return binding.tvCurrenttime;
             }
 
             @Override
             protected ProgressBar getPlaybackProgress() {
-                return progress;
-            }
-        }
-
-        public Adapter(RecyclerView recyclerView) {
-            super(requireActivity());
-            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        if (dy > 2) {
-                            if (actBinding.fab.isEnabled()) {
-                                actBinding.fab.hide();
-                            }
-                        } else if (dy < -2) {
-                            if (actBinding.fab.isEnabled()) {
-                                actBinding.fab.show();
-                            }
-                        }
-                    }
-                });
+                return binding.progPlaytime;
             }
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean bean = sounds.get(position);
+
             if (!k) {
                 var audioMetadata = holder.audioMetadata;
                 var audio = getAudio(position);
                 if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
                     audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
                     bean.totalSoundDuration = audioMetadata.getDurationInMs();
-                    audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
+                    audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.binding.imgAlbum);
                 }
-                holder.album.setVisibility(View.VISIBLE);
-                holder.deleteContainer.setVisibility(View.GONE);
+                holder.binding.imgAlbum.setVisibility(View.VISIBLE);
+                holder.binding.deleteImgContainer.setVisibility(View.GONE);
             } else {
-                holder.album.setVisibility(View.GONE);
-                holder.deleteContainer.setVisibility(View.VISIBLE);
+                holder.binding.imgAlbum.setVisibility(View.GONE);
+                holder.binding.deleteImgContainer.setVisibility(View.VISIBLE);
             }
-            holder.delete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
+
+            holder.binding.imgDelete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
 
             int positionInS = bean.curSoundPosition / 1000;
             int totalDurationInS = bean.totalSoundDuration / 1000;
-            holder.currentTime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
-            holder.endTime.setText(String.format("%d:%02d", totalDurationInS / 60, totalDurationInS % 60));
+            holder.binding.tvCurrenttime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
+            holder.binding.tvEndtime.setText(String.format("%d:%02d", totalDurationInS / 60, totalDurationInS % 60));
 
-            holder.selected.setChecked(bean.isSelected);
-            holder.name.setText(bean.resName);
+            holder.binding.chkSelect.setChecked(bean.isSelected);
+            holder.binding.tvSoundName.setText(bean.resName);
+
             boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
-            holder.play.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
-            holder.progress.setMax(bean.totalSoundDuration / 100);
-            holder.progress.setProgress(bean.curSoundPosition / 100);
+            holder.binding.imgPlay.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
+            holder.binding.progPlaytime.setMax(bean.totalSoundDuration / 100);
+            holder.binding.progPlaytime.setProgress(bean.curSoundPosition / 100);
         }
 
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
+            ManageSoundListItemBinding binding = ManageSoundListItemBinding.inflate(inflater, parent, false);
+            return new ViewHolder(binding);
         }
 
         @Override
