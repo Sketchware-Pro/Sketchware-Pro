@@ -6,14 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.tabs.TabLayout;
 
 import java.lang.ref.WeakReference;
 
@@ -24,16 +22,17 @@ import a.a.a.Zt;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageFontBinding;
 
 public class ManageFontActivity extends BaseAppCompatActivity {
 
     private String sc_id;
-    private ViewPager pager;
     private Zt projectFontsFragment;
     private St collectionFontsFragment;
+    public ManageFontBinding binding;
 
     public void f(int i) {
-        pager.setCurrentItem(i);
+        binding.viewPager.setCurrentItem(i);
     }
 
     public St l() {
@@ -48,6 +47,8 @@ public class ManageFontActivity extends BaseAppCompatActivity {
     public void onBackPressed() {
         if (projectFontsFragment.isSelecting) {
             projectFontsFragment.setSelectingMode(false);
+        } else if (collectionFontsFragment.isSelecting()) {
+            collectionFontsFragment.resetSelection();
         } else {
             k();
             try {
@@ -63,19 +64,18 @@ public class ManageFontActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_font);
+
+        binding = ManageFontBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         if (!super.isStoragePermissionGranted()) {
             finish();
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(Helper.getResString(R.string.design_actionbar_title_manager_font));
+        setSupportActionBar(binding.topAppBar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> {
+        binding.topAppBar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
@@ -86,11 +86,39 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         } else {
             sc_id = savedInstanceState.getString("sc_id");
         }
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        pager = findViewById(R.id.view_pager);
-        pager.setAdapter(new TabLayoutAdapter(getSupportFragmentManager()));
-        pager.setOffscreenPageLimit(2);
-        tabLayout.setupWithViewPager(pager);
+
+        binding.viewPager.setAdapter(new TabLayoutAdapter(getSupportFragmentManager()));
+        binding.viewPager.setOffscreenPageLimit(2);
+        binding.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                binding.layoutBtnGroup.setVisibility(View.GONE);
+                binding.layoutBtnImport.setVisibility(View.GONE);
+                collectionFontsFragment.resetSelection();
+                projectFontsFragment.setSelectingMode(false);
+                changeFabState(position == 0);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        binding.tabLayout.setupWithViewPager(binding.viewPager);
+    }
+
+    public void changeFabState(boolean state) {
+        if (state) {
+            binding.fab.animate().translationY(0F).setDuration(200L).start();
+            binding.fab.show();
+        } else {
+            binding.fab.animate().translationY(400F).setDuration(200L).start();
+            binding.fab.hide();
+        }
     }
 
     @Override
@@ -176,6 +204,5 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         public void a(String str) {
             activityWeakReference.get().h();
         }
-
     }
 }

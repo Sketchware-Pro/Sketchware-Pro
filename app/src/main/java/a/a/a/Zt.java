@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FrManageFontListBinding;
+import pro.sketchware.databinding.ManageFontBinding;
 import pro.sketchware.databinding.ManageFontListItemBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -40,6 +41,7 @@ public class Zt extends qA {
     public String dirPath = "";
     public oB oB;
     public ArrayList<ProjectResourceBean> projectResourceBeans;
+    private ManageFontBinding actBinding;
 
     public String getResourceFilePath(ProjectResourceBean resourceBean) {
         String resFullName = resourceBean.resFullName;
@@ -96,11 +98,10 @@ public class Zt extends qA {
     public void setSelectingMode(boolean state) {
         isSelecting = state;
         requireActivity().invalidateOptionsMenu();
-        if (isSelecting) {
-            binding.layoutBtnGroup.setVisibility(View.VISIBLE);
-        } else {
-            binding.layoutBtnGroup.setVisibility(View.GONE);
-        }
+        ((ManageFontActivity) requireActivity()).changeFabState(!state);
+
+        actBinding.layoutBtnGroup.animate().translationY(isSelecting ? 0F : 400F).setDuration(200L).start();
+        actBinding.layoutBtnGroup.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
 
         adapter.notifyDataSetChanged();
     }
@@ -247,8 +248,9 @@ public class Zt extends qA {
 
         setHasOptionsMenu(true);
 
-        binding.btnCancel.setOnClickListener(view -> setSelectingMode(false));
-        binding.btnDelete.setOnClickListener(view -> {
+        actBinding = ((ManageFontActivity) requireActivity()).binding;
+        actBinding.btnCancel.setOnClickListener(view -> setSelectingMode(false));
+        actBinding.btnDelete.setOnClickListener(view -> {
             if (isSelecting) {
 
                 for (int i = projectResourceBeans.size() - 1; i >= 0; i--) {
@@ -260,7 +262,7 @@ public class Zt extends qA {
                 setSelectingMode(false);
                 toggleEmptyStateVisibility();
                 SketchwareUtil.toast(Helper.getResString(R.string.common_message_complete_delete));
-                binding.fab.show();
+                actBinding.fab.show();
             }
         });
 
@@ -274,19 +276,19 @@ public class Zt extends qA {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy > 2) {
-                    if (binding.fab.isEnabled()) {
-                        binding.fab.hide();
+                    if (actBinding.fab.isEnabled()) {
+                        actBinding.fab.hide();
                     }
                 } else if (dy < -2) {
-                    if (binding.fab.isEnabled()) {
-                        binding.fab.show();
+                    if (actBinding.fab.isEnabled()) {
+                        actBinding.fab.show();
                     }
                 }
             }
         });
 
-        binding.fab.setVisibility(View.VISIBLE);
-        binding.fab.setOnClickListener(view -> {
+        actBinding.fab.setVisibility(View.VISIBLE);
+        actBinding.fab.setOnClickListener(view -> {
             setSelectingMode(false);
             toFontActivity();
         });
@@ -370,7 +372,6 @@ public class Zt extends qA {
                 super(binding.getRoot());
                 this.binding = binding;
 
-                binding.imgFont.setImageResource(R.drawable.ic_font_48dp);
                 binding.tvFontPreview.setText(Helper.getResString(R.string.common_word_preview));
                 binding.chkSelect.setVisibility(View.GONE);
 

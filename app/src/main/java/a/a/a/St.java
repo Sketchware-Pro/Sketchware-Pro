@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import mod.hey.studios.util.Helper;
+
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageFontBinding;
 import pro.sketchware.databinding.ManageFontListItemBinding;
 import pro.sketchware.databinding.FrManageFontListBinding;
 
@@ -32,6 +35,7 @@ public class St extends qA {
     public fontAdapter adapter;
     public String dirPath = "";
     public ArrayList<ProjectResourceBean> projectResourceBeans;
+    private ManageFontBinding actBinding;
 
     public void processProjectResources(ArrayList<ProjectResourceBean> resourceBeans) {
         if (resourceBeans == null || resourceBeans.isEmpty()) {
@@ -76,6 +80,31 @@ public class St extends qA {
     public final void resetSelection() {
         for (ProjectResourceBean resource : projectResourceBeans) {
             resource.isSelected = false;
+        }
+        adapter.notifyDataSetChanged();
+        requireActivity().findViewById(R.id.layout_btn_import).setVisibility(View.GONE);
+    }
+
+    public boolean isSelecting() {
+        return projectResourceBeans.stream().anyMatch(resource -> resource.isSelected);
+    }
+
+    public final void updateImportButtonVisibility() {
+        int selectedCount = 0;
+
+        for (ProjectResourceBean resource : projectResourceBeans) {
+            if (resource.isSelected) {
+                selectedCount++;
+            }
+        }
+
+        if (selectedCount > 0) {
+            actBinding.btnImport.setText(Helper.getResString(R.string.common_word_import_count, selectedCount).toUpperCase());
+            actBinding.layoutBtnImport.animate().translationY(0F).setDuration(200L).start();
+            actBinding.layoutBtnImport.setVisibility(View.VISIBLE);
+        } else {
+            actBinding.layoutBtnImport.animate().translationY(400F).setDuration(200L).start();
+            actBinding.layoutBtnImport.setVisibility(View.GONE);
         }
     }
 
@@ -129,6 +158,8 @@ public class St extends qA {
 
     public View onCreateView(@NonNull LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         binding = FrManageFontListBinding.inflate(layoutInflater, viewGroup, false);
+        actBinding = ((ManageFontActivity) requireActivity()).binding;
+
         setHasOptionsMenu(true);
 
         binding.fontList.setLayoutManager(new LinearLayoutManager(requireActivity()));
@@ -137,13 +168,11 @@ public class St extends qA {
 
         binding.tvGuide.setText(Helper.getResString(R.string.design_manager_font_description_guide_add_font));
 
-        binding.btnImport.setText(Helper.getResString(R.string.common_word_import).toUpperCase());
-        binding.btnImport.setOnClickListener(view -> {
-            binding.btnImport.setVisibility(View.GONE);
+        actBinding.btnImport.setText(Helper.getResString(R.string.common_word_import).toUpperCase());
+        actBinding.btnImport.setOnClickListener(view -> {
             importSelectedFonts();
         });
 
-        binding.btnImport.setVisibility(View.GONE);
         return binding.getRoot();
     }
 
@@ -173,7 +202,6 @@ public class St extends qA {
             String fontPath = wq.a() + File.separator + "font" + File.separator + "data" + File.separator + resource.resFullName;
 
             holder.binding.chkSelect.setVisibility(View.VISIBLE);
-            holder.binding.imgFont.setImageResource(R.drawable.ic_font_48dp);
             holder.binding.chkSelect.setChecked(resource.isSelected);
             holder.binding.tvFontName.setText(resource.resName + ".ttf");
 
@@ -198,14 +226,18 @@ public class St extends qA {
                 super(binding.getRoot());
                 this.binding = binding;
 
-                binding.chkSelect.setOnClickListener(view -> {
+                binding.getRoot().setOnClickListener(view -> binding.chkSelect.setChecked(!binding.chkSelect.isChecked()));
+
+                binding.chkSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     int position = getLayoutPosition();
                     selectedPosition = position;
                     ProjectResourceBean resource = projectResourceBeans.get(position);
-                    resource.isSelected = binding.chkSelect.isChecked();
-                    b();
-                    notifyItemChanged(selectedPosition);
+                    resource.isSelected = isChecked;
+                    updateImportButtonVisibility();
+
+                    new Handler().post(() -> notifyItemChanged(selectedPosition));
                 });
+
             }
         }
     }
