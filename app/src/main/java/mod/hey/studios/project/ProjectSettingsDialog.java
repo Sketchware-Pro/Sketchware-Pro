@@ -51,39 +51,35 @@ public class ProjectSettingsDialog {
 
         binding.enableViewbinding.setChecked(
             settings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "false").equals("true"));
-        binding.swRemoveOldMethods.setChecked(
+        binding.cbRemoveOldMethods.setChecked(
             settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, "false").equals("true"));
-        binding.swUseNewMaterial3AppTheme.setChecked(
+        binding.cbUseNewMaterial3AppTheme.setChecked(
             settings.getValue(ProjectSettings.SETTING_ENABLE_MATERIAL3, "false").equals("true"));
-        binding.swUseDynamicColors.setChecked(settings.isDynamicColorsEnable());
+        binding.cbUseDynamicColors.setChecked(settings.isDynamicColorsEnable());
 
-        binding.swUseNewMaterial3AppTheme.setEnabled(projectLibrary.isEnabled());
-        binding.swUseDynamicColors.setEnabled(projectLibrary.isEnabled());
-        if (!projectLibrary.isEnabled()) {
-            binding.descUseNewMaterial3AppTheme.setText("To use this, enable AppCompat in your project.");
-            binding.descUseDynamicColors.setText("To use this, enable AppCompat in your project.");
-        }
+        binding.cbUseNewMaterial3AppTheme.setEnabled(projectLibrary.isEnabled());
+        binding.cbUseDynamicColors.setEnabled(projectLibrary.isEnabled());
 
-        binding.swUseNewMaterial3AppTheme.setOnCheckedChangeListener((sw, isChecked) -> {
-            binding.swUseDynamicColors.setOnCheckedChangeListener(null);
+        binding.cbUseNewMaterial3AppTheme.setOnCheckedChangeListener((sw, isChecked) -> {
+            binding.cbUseDynamicColors.setOnCheckedChangeListener(null);
             if (!isChecked) {
-                binding.swUseDynamicColors.setChecked(false);
+                binding.cbUseDynamicColors.setChecked(false);
             }
-            binding.swUseDynamicColors.setOnCheckedChangeListener((sw2, isChecked2) -> {
+            binding.cbUseDynamicColors.setOnCheckedChangeListener((sw2, isChecked2) -> {
                 if (isChecked2) {
-                    binding.swUseNewMaterial3AppTheme.setChecked(true);
+                    binding.cbUseNewMaterial3AppTheme.setChecked(true);
                 }
             });
         });
 
-        binding.swUseDynamicColors.setOnCheckedChangeListener((sw, isChecked) -> {
-            binding.swUseNewMaterial3AppTheme.setOnCheckedChangeListener(null);
+        binding.cbUseDynamicColors.setOnCheckedChangeListener((sw, isChecked) -> {
+            binding.cbUseNewMaterial3AppTheme.setOnCheckedChangeListener(null);
             if (isChecked) {
-                binding.swUseNewMaterial3AppTheme.setChecked(true);
+                binding.cbUseNewMaterial3AppTheme.setChecked(true);
             }
-            binding.swUseNewMaterial3AppTheme.setOnCheckedChangeListener((sw2, isChecked2) -> {
+            binding.cbUseNewMaterial3AppTheme.setOnCheckedChangeListener((sw2, isChecked2) -> {
                 if (!isChecked2) {
-                    binding.swUseDynamicColors.setChecked(false);
+                    binding.cbUseDynamicColors.setChecked(false);
                 }
             });
         });
@@ -92,9 +88,9 @@ public class ProjectSettingsDialog {
         binding.etMinimumSdkVersion.setTag(ProjectSettings.SETTING_MINIMUM_SDK_VERSION);
         binding.etTargetSdkVersion.setTag(ProjectSettings.SETTING_TARGET_SDK_VERSION);
         binding.etApplicationClassName.setTag(ProjectSettings.SETTING_APPLICATION_CLASS);
-        binding.swRemoveOldMethods.setTag(ProjectSettings.SETTING_DISABLE_OLD_METHODS);
-        binding.swUseNewMaterial3AppTheme.setTag(ProjectSettings.SETTING_ENABLE_MATERIAL3);
-        binding.swUseDynamicColors.setTag(ProjectSettings.SETTING_ENABLE_DYNAMIC_COLORS);
+        binding.cbRemoveOldMethods.setTag(ProjectSettings.SETTING_DISABLE_OLD_METHODS);
+        binding.cbUseNewMaterial3AppTheme.setTag(ProjectSettings.SETTING_ENABLE_MATERIAL3);
+        binding.cbUseDynamicColors.setTag(ProjectSettings.SETTING_ENABLE_DYNAMIC_COLORS);
 
         dialog.setContentView(binding.getRoot());
 
@@ -103,9 +99,9 @@ public class ProjectSettingsDialog {
               binding.etTargetSdkVersion,
               binding.etApplicationClassName,
               binding.enableViewbinding,
-              binding.swRemoveOldMethods,
-              binding.swUseNewMaterial3AppTheme,
-              binding.swUseDynamicColors
+              binding.cbRemoveOldMethods,
+              binding.cbUseNewMaterial3AppTheme,
+              binding.cbUseDynamicColors
         };
 
         binding.btnCancel.setOnClickListener(v -> dialog.dismiss());
