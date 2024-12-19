@@ -20,28 +20,18 @@ import a.a.a.Np;
 import a.a.a.St;
 import a.a.a.Zt;
 import a.a.a.mB;
+
 import mod.hey.studios.util.Helper;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageFontBinding;
 
 public class ManageFontActivity extends BaseAppCompatActivity {
 
     private String sc_id;
-    private Zt projectFontsFragment;
-    private St collectionFontsFragment;
+    public Zt projectFontsFragment;
+    public St collectionFontsFragment;
     public ManageFontBinding binding;
-
-    public void f(int i) {
-        binding.viewPager.setCurrentItem(i);
-    }
-
-    public St l() {
-        return collectionFontsFragment;
-    }
-
-    public Zt m() {
-        return projectFontsFragment;
-    }
 
     @Override
     public void onBackPressed() {
@@ -54,7 +44,6 @@ public class ManageFontActivity extends BaseAppCompatActivity {
             try {
                 new Handler().postDelayed(() -> new SaveAsyncTask(this).execute(), 500L);
             } catch (Exception e) {
-                e.printStackTrace();
                 h();
             }
         }
@@ -81,11 +70,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
             }
         });
 
-        if (savedInstanceState == null) {
-            sc_id = getIntent().getStringExtra("sc_id");
-        } else {
-            sc_id = savedInstanceState.getString("sc_id");
-        }
+        sc_id = savedInstanceState == null ? getIntent().getStringExtra("sc_id") : savedInstanceState.getString("sc_id");
 
         binding.viewPager.setAdapter(new TabLayoutAdapter(getSupportFragmentManager()));
         binding.viewPager.setOffscreenPageLimit(2);
@@ -164,11 +149,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         @Override
         @NonNull
         public Fragment getItem(int position) {
-            if (position == 0) {
-                return new Zt();
-            } else {
-                return new St();
-            }
+            return position == 0 ? new Zt() : new St();
         }
 
         @Override
