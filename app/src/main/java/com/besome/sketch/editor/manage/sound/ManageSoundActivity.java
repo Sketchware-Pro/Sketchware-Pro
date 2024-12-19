@@ -6,15 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.tabs.TabLayout;
-import pro.sketchware.R;
 
 import java.lang.ref.WeakReference;
 
@@ -23,12 +20,14 @@ import a.a.a.Qp;
 import a.a.a.Yv;
 import a.a.a.mB;
 import a.a.a.ow;
-import a.a.a.xB;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageSoundBinding;
 
 public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
+
     private final int TAB_COUNT = 2;
     private String sc_id;
-    private ViewPager viewPager;
+    public ManageSoundBinding binding;
     private ow projectSounds;
     private Yv collectionSounds;
 
@@ -41,7 +40,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     public void f(int i) {
-        viewPager.setCurrentItem(i);
+        binding.viewPager.setCurrentItem(i);
     }
 
     public Yv l() {
@@ -75,14 +74,17 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         if (!super.isStoragePermissionGranted()) {
             finish();
         }
-        setContentView(R.layout.manage_sound);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
+
+        binding = ManageSoundBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        setSupportActionBar(binding.toolbar);
+        binding.layoutMainLogo.setVisibility(View.GONE);
         getSupportActionBar().setTitle(getTranslatedString(R.string.design_actionbar_title_manager_sound));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> {
+
+        binding.toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
@@ -92,12 +94,11 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         } else {
             sc_id = savedInstanceState.getString("sc_id");
         }
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        viewPager.setOffscreenPageLimit(TAB_COUNT);
-        viewPager.addOnPageChangeListener(this);
-        tabLayout.setupWithViewPager(viewPager);
+
+        binding.viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        binding.viewPager.setOffscreenPageLimit(TAB_COUNT);
+        binding.viewPager.addOnPageChangeListener(this);
+        binding.tabLayout.setupWithViewPager(binding.viewPager);
     }
 
     @Override
@@ -192,6 +193,5 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         public void a(String str) {
             activityWeakReference.get().h();
         }
-
     }
 }
