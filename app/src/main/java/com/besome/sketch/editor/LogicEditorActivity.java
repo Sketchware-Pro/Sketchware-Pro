@@ -2178,7 +2178,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
             }
             int id = v.getId();
-            if (id == R.id.btn_accept) {
+            if (id == R.id.btn_delete) {
                 setResult(Activity.RESULT_OK, new Intent());
                 finish();
             } else if (id == R.id.btn_cancel) {

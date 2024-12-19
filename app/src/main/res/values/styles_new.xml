@@ -63,8 +63,9 @@
         <item name="cornerSize">14dp</item>
     </style>
 
-    <style name="ThemeOverlay.SketchwarePro.ViewEditor" parent="Base.Theme.MaterialComponents.Light" />
-
+    <style name="ThemeOverlay.SketchwarePro.ViewPane" parent="Base.Theme.MaterialComponents.Light" />
+    <style name="ThemeOverlay.SketchwarePro.ViewPane.Material3" parent="Base.Theme.Material3.Light" />
+    
     <style name="Preference.SketchwarePro.SwitchPreferenceCompat" parent="@style/Preference.SwitchPreferenceCompat.Material">
         <item name="widgetLayout">@layout/preference_widget_layout_m3_switch</item>
     </style>
@@ -98,13 +99,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="TextDropDownLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="boxStrokeColor">@color/input_layout_selector</item>
+    <style name="TextDropDownLayoutStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="errorTextAppearance">@style/error_appearance</item>
         <item name="hintTextAppearance">@style/hint_appearance</item>
-        <item name="shapeAppearanceOverlay">
-            @style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded
-        </item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded" parent="">
