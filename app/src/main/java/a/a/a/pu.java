@@ -230,7 +230,10 @@ public class pu extends qA {
         }
         jC.d(sc_id).b(images);
         jC.d(sc_id).y();
-        jC.a(sc_id).b(jC.d(sc_id));
+
+        // This method is replaces not exist images to default_image, I removed it because it changes vector images to default_images
+        // jC.a(sc_id).b(jC.d(sc_id));
+
         jC.a(sc_id).k();
     }
 

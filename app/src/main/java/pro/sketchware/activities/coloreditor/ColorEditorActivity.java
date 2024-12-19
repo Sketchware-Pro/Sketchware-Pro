@@ -46,7 +46,7 @@ public class ColorEditorActivity extends AppCompatActivity {
 
     private static final int MENU_SAVE = 0;
     private static final int MENU_OPEN_IN_EDITOR = 1;
-    private static String contentPath;
+    public static String contentPath;
     private final ArrayList<ColorItem> colorList = new ArrayList<>();
     private boolean isGoingToEditor;
     private ColorEditorActivityBinding binding;
@@ -64,7 +64,9 @@ public class ColorEditorActivity extends AppCompatActivity {
         if (colorValue.startsWith("#")) {
             return colorValue;
         }
-
+        if (colorValue.startsWith("?attr/")) {
+            return getColorValueFromXml(context, colorValue.substring(6), referencingLimit - 1);
+        }
         if (colorValue.startsWith("@color/")) {
             return getColorValueFromXml(context, colorValue.substring(7), referencingLimit - 1);
 
