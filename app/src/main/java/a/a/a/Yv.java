@@ -31,15 +31,17 @@ import java.util.ArrayList;
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
 import pro.sketchware.R;
+import pro.sketchware.databinding.FrManageSoundListBinding;
 import pro.sketchware.databinding.ManageSoundBinding;
+import pro.sketchware.databinding.ManageSoundListItemBinding;
 
 public class Yv extends qA implements View.OnClickListener {
-    private RecyclerView soundsList;
     private String sc_id;
     private ArrayList<ProjectResourceBean> sounds;
-    private TextView noSoundsText;
     private String h = "";
     private Adapter adapter = null;
+
+    private FrManageSoundListBinding binding;
     private ManageSoundBinding actBinding;
 
     private ActivityResultLauncher<Intent> importSoundsHandler;
@@ -105,18 +107,16 @@ public class Yv extends qA implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup viewGroup2 = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
 
         actBinding = ((ManageSoundActivity) requireActivity()).binding;
+        binding = FrManageSoundListBinding.inflate(inflater, container, false);
 
-        soundsList = viewGroup2.findViewById(R.id.sound_list);
-        soundsList.setLayoutManager(new LinearLayoutManager(null, LinearLayoutManager.VERTICAL, false));
+        binding.soundList.setLayoutManager(new LinearLayoutManager(null, LinearLayoutManager.VERTICAL, false));
         adapter = new Adapter();
-        soundsList.setAdapter(adapter);
-        noSoundsText = viewGroup2.findViewById(R.id.tv_guide);
-        noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
+        binding.soundList.setAdapter(adapter);
+        binding.tvGuide.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
         actBinding.btnImport.setOnClickListener(this);
-        return viewGroup2;
+        return binding.getRoot();
     }
 
     @Override
@@ -127,8 +127,11 @@ public class Yv extends qA implements View.OnClickListener {
     }
 
     private class Adapter extends SoundPlayingAdapter<Adapter.ViewHolder> {
+        private final LayoutInflater inflater;
+
         public Adapter() {
             super(requireActivity());
+            this.inflater = LayoutInflater.from(requireActivity());
         }
 
         @Override
@@ -142,33 +145,22 @@ public class Yv extends qA implements View.OnClickListener {
         }
 
         private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
-            public final CheckBox select;
-            public final ImageView album;
-            public final TextView name;
-            public final ImageView play;
-            public final TextView currentTime;
-            public final ProgressBar progress;
-            public final TextView endTime;
-
+            private final ManageSoundListItemBinding binding;
             private AudioMetadata audioMetadata;
 
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                select = itemView.findViewById(R.id.chk_select);
-                album = itemView.findViewById(R.id.img_album);
-                name = itemView.findViewById(R.id.tv_sound_name);
-                play = itemView.findViewById(R.id.img_play);
-                currentTime = itemView.findViewById(R.id.tv_currenttime);
-                progress = itemView.findViewById(R.id.prog_playtime);
-                endTime = itemView.findViewById(R.id.tv_endtime);
-                play.setOnClickListener(v -> {
+            public ViewHolder(@NonNull ManageSoundListItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+
+                binding.imgPlay.setOnClickListener(v -> {
                     if (!mB.a()) {
                         soundPlayer.onPlayPressed(getLayoutPosition());
                     }
                 });
-                select.setOnClickListener(v -> {
+
+                binding.chkSelect.setOnClickListener(v -> {
                     int position = getLayoutPosition();
-                    sounds.get(position).isSelected = select.isChecked();
+                    sounds.get(position).isSelected = binding.chkSelect.isChecked();
                     updateImportSoundsText();
                     notifyItemChanged(position);
                 });
@@ -176,44 +168,45 @@ public class Yv extends qA implements View.OnClickListener {
 
             @Override
             protected TextView getCurrentPosition() {
-                return currentTime;
+                return binding.tvCurrenttime;
             }
 
             @Override
             protected ProgressBar getPlaybackProgress() {
-                return progress;
+                return binding.progPlaytime;
             }
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean bean = sounds.get(position);
-            holder.select.setVisibility(View.VISIBLE);
+            holder.binding.chkSelect.setVisibility(View.VISIBLE);
 
             var audioMetadata = holder.audioMetadata;
             var audio = getAudio(position);
             if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
                 audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
                 bean.totalSoundDuration = audioMetadata.getDurationInMs();
-                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.album);
+                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.binding.imgAlbum);
             }
 
             int positionInS = bean.curSoundPosition / 1000;
-            holder.currentTime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
+            holder.binding.tvCurrenttime.setText(String.format("%d:%02d", positionInS / 60, positionInS % 60));
             int durationInS = bean.totalSoundDuration / 1000;
-            holder.endTime.setText(String.format("%d:%02d", durationInS / 60, durationInS % 60));
-            holder.select.setChecked(bean.isSelected);
-            holder.name.setText(bean.resName);
+            holder.binding.tvEndtime.setText(String.format("%d:%02d", durationInS / 60, durationInS % 60));
+            holder.binding.chkSelect.setChecked(bean.isSelected);
+            holder.binding.tvSoundName.setText(bean.resName);
             boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
-            holder.play.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
-            holder.progress.setMax(bean.totalSoundDuration / 100);
-            holder.progress.setProgress(bean.curSoundPosition / 100);
+            holder.binding.imgPlay.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
+            holder.binding.progPlaytime.setMax(bean.totalSoundDuration / 100);
+            holder.binding.progPlaytime.setProgress(bean.curSoundPosition / 100);
         }
 
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_sound_list_item, parent, false));
+            ManageSoundListItemBinding binding = ManageSoundListItemBinding.inflate(inflater, parent, false);
+            return new ViewHolder(binding);
         }
 
         @Override
@@ -240,11 +233,11 @@ public class Yv extends qA implements View.OnClickListener {
 
     private void showOrHideNoSoundsText() {
         if (sounds.isEmpty()) {
-            noSoundsText.setVisibility(View.VISIBLE);
-            soundsList.setVisibility(View.GONE);
+            binding.tvGuide.setVisibility(View.VISIBLE);
+            binding.soundList.setVisibility(View.GONE);
         } else {
-            soundsList.setVisibility(View.VISIBLE);
-            noSoundsText.setVisibility(View.GONE);
+            binding.soundList.setVisibility(View.VISIBLE);
+            binding.tvGuide.setVisibility(View.GONE);
         }
     }
 
