@@ -383,21 +383,16 @@ public class yq {
                                     + "DebugActivity.java"
                     )).replaceAll(packageName));
         }
-        
+
         String customApplicationClassName = new ProjectSettings(sc_id).getValue(ProjectSettings.SETTING_APPLICATION_CLASS,
                 ".SketchApplication");
-                
-        var sketchApplicationDir = "debug" + File.separator + "SketchApplication.java";
-        if (N.g && projectSettings.isDynamicColorsEnable()) {
-            sketchApplicationDir = "debug" + File.separator + "material" + File.separator +  "SketchApplication.java";
-        }
         boolean notUsingCustomApplicationClass = customApplicationClassName.equals(".SketchApplication");
         if (!new File(javaDir, "SketchApplication.java").exists() && notUsingCustomApplicationClass) {
             boolean applyMultiDex = projectSettings.getMinSdkVersion() < 21;
 
             String sketchApplicationFileContent = PACKAGE_PLACEHOLDER_PATTERN.matcher(fileUtil.b(
                     context,
-                    sketchApplicationDir
+                    "debug" + File.separator + "SketchApplication.java"
             )).replaceAll(packageName);
             if (applyMultiDex) {
                 sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
@@ -925,13 +920,10 @@ public class yq {
     
     private String getXMLStyle() {
         if (N.g) {
+            boolean useNewMaterialComponentsTheme = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
+                    BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
             XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
-            if (projectSettings.isMaterial3Enable()) {
-                stylesFileBuilder.addStyle("AppTheme", "Theme.Material3.Light.NoActionBar");
-            } else {
-                stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar");
-            }
-            //todo: new material attrs
+            stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? "" : ".Bridge"));
             stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimary", "@color/colorPrimary");
             stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimaryDark", "@color/colorPrimaryDark");
             stylesFileBuilder.addItemToStyle("AppTheme", "colorAccent", "@color/colorAccent");
@@ -940,13 +932,8 @@ public class yq {
             stylesFileBuilder.addStyle("AppTheme.FullScreen", "AppTheme");
             stylesFileBuilder.addItemToStyle("AppTheme.FullScreen", "android:windowFullscreen", "true");
             stylesFileBuilder.addItemToStyle("AppTheme.FullScreen", "android:windowContentOverlay", "@null");
-            if (projectSettings.isMaterial3Enable()) {
-                stylesFileBuilder.addStyle("AppTheme.AppBarOverlay", "ThemeOverlay.Material3.Dark.ActionBar");
-                stylesFileBuilder.addStyle("AppTheme.PopupOverlay", "ThemeOverlay.Material3.Light");
-            } else {
-                stylesFileBuilder.addStyle("AppTheme.AppBarOverlay", "ThemeOverlay.MaterialComponents.Dark.ActionBar");
-                stylesFileBuilder.addStyle("AppTheme.PopupOverlay", "ThemeOverlay.MaterialComponents.Light");
-            }
+            stylesFileBuilder.addStyle("AppTheme.AppBarOverlay", "ThemeOverlay.MaterialComponents.Dark.ActionBar");
+            stylesFileBuilder.addStyle("AppTheme.PopupOverlay", "ThemeOverlay.MaterialComponents.Light");
             return CommandBlock.applyCommands("styles.xml", stylesFileBuilder.toCode());
         } else {
             XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
