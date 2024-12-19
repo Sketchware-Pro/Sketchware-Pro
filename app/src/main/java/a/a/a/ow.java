@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
+import com.besome.sketch.editor.manage.font.ManageFontActivity;
 import com.besome.sketch.editor.manage.sound.AddSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
 import com.google.android.material.button.MaterialButton;
@@ -33,6 +34,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import pro.sketchware.databinding.ManageSoundBinding;
 import pro.sketchware.utility.FileUtil;
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.SoundPlayingAdapter;
@@ -40,14 +42,13 @@ import mod.jbk.util.SoundPlayingAdapter;
 public class ow extends qA implements View.OnClickListener {
     private oB fileUtil;
     private ArrayList<ProjectResourceBean> sounds;
-    private FloatingActionButton add;
     private String sc_id;
     private RecyclerView soundsList;
-    private LinearLayout actionContainer;
     private TextView noSoundsText;
     public boolean k = false;
     private Adapter adapter = null;
     private String A = "";
+    private ManageSoundBinding actBinding;
 
     private void i() {
         if (sounds.isEmpty()) {
@@ -138,7 +139,7 @@ public class ow extends qA implements View.OnClickListener {
                         a(false);
                         i();
                         bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.common_message_complete_delete), 1).show();
-                        add.show();
+                        actBinding.fab.show();
                         break;
                     } else {
                         ProjectResourceBean projectResourceBean = sounds.get(size);
@@ -168,27 +169,19 @@ public class ow extends qA implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup item = (ViewGroup) inflater.inflate(R.layout.fr_manage_sound_list, container, false);
         setHasOptionsMenu(true);
-        actionContainer = item.findViewById(R.id.layout_btn_group);
-        MaterialButton delete = item.findViewById(R.id.btn_delete);
-        MaterialButton cancel = item.findViewById(R.id.btn_cancel);
-        add = item.findViewById(R.id.fab);
-        delete.setText(xB.b().a(requireActivity(), R.string.common_word_delete));
-        cancel.setText(xB.b().a(requireActivity(), R.string.common_word_cancel));
-        delete.setOnClickListener(this);
-        cancel.setOnClickListener(this);
+
+
+        actBinding = ((ManageSoundActivity) requireActivity()).binding;
+
+        actBinding.btnDelete.setOnClickListener(this);
+        actBinding.btnCancel.setOnClickListener(this);
         soundsList = item.findViewById(R.id.sound_list);
         soundsList.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
         adapter = new Adapter(soundsList);
         soundsList.setAdapter(adapter);
         noSoundsText = item.findViewById(R.id.tv_guide);
         noSoundsText.setText(xB.b().a(requireActivity(), R.string.design_manager_sound_description_guide_add_sound));
-        noSoundsText.setOnClickListener(v -> {
-            if (!mB.a()) {
-                a(false);
-                addSound();
-            }
-        });
-        add.setOnClickListener(v -> {
+        actBinding.fab.setOnClickListener(v -> {
             if (!mB.a()) {
                 a(false);
                 addSound();
@@ -307,12 +300,12 @@ public class ow extends qA implements View.OnClickListener {
                     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                         super.onScrolled(recyclerView, dx, dy);
                         if (dy > 2) {
-                            if (add.isEnabled()) {
-                                add.hide();
+                            if (actBinding.fab.isEnabled()) {
+                                actBinding.fab.hide();
                             }
                         } else if (dy < -2) {
-                            if (add.isEnabled()) {
-                                add.show();
+                            if (actBinding.fab.isEnabled()) {
+                                actBinding.fab.show();
                             }
                         }
                     }
@@ -422,9 +415,9 @@ public class ow extends qA implements View.OnClickListener {
         unselectAll();
         if (k) {
             f();
-            actionContainer.setVisibility(View.VISIBLE);
+            actBinding.layoutBtnGroup.setVisibility(View.VISIBLE);
         } else {
-            actionContainer.setVisibility(View.GONE);
+            actBinding.layoutBtnGroup.setVisibility(View.GONE);
         }
         adapter.notifyDataSetChanged();
     }
