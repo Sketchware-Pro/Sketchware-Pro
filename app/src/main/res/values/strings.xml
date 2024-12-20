@@ -2241,5 +2241,6 @@ Please try again later"</string>
 
     <string name="used_custom_blocks">Used Custom Blocks</string>
     <string name="property_enter_value">Enter %s value</string>
+    <string name="check_if_appcompat_admob_and_google_map_are_enabled_to_use_views_related_to_them_to_avoid_errors">"Check if AppCompat, Admob and Google Map are enabled to use views related to them to avoid errors. "</string>
 
 </resources>

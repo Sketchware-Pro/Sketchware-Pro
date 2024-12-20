@@ -35,7 +35,6 @@ public class gt extends LinearLayout {
     private TextView tvPreview;
     private aB dialog;
     private bB mToast;
-    private SharedPreferences admobShared;
 
     public gt(Activity activity) {
         super(activity);
@@ -134,7 +133,6 @@ public class gt extends LinearLayout {
         moreviewsVariableList = new ArrayList<>();
         componentsVariableList = new ArrayList<>();
         initializeVariableItems();
-        admobShared= getContext().getSharedPreferences("admobEnable", Activity.MODE_PRIVATE);
         initializeViewsItems();
         initializeMoreViewsItems();
         initializeComponentItems();
@@ -173,8 +171,7 @@ public class gt extends LinearLayout {
                 } else if (itemId == R.id.moreviews) {
                     // more views list
                     mToast = new bB();
-                    mToast.a(getContext(), "Check if AppCompat, Admob and Google Map are enabled to use views related to them to avoid errors. ", bB.TOAST_WARNING).show();
-
+                    mToast.a(getContext(), getContext().getString(R.string.check_if_appcompat_admob_and_google_map_are_enabled_to_use_views_related_to_them_to_avoid_errors), bB.TOAST_WARNING).show();
                     adapter.setData(moreviewsVariableList);
                 } else {
                     // components list

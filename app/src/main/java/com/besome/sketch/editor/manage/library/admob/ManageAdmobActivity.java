@@ -39,7 +39,6 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     private static final int REQUEST_CODE_ENABLE_ADMOB = 8001;
     private static final int REQUEST_CODE_ADMOB_SETTINGS = 8002;
     private DB A;
-    private SharedPreferences admobShared;
     private TestDeviceAdapter testDeviceAdapter;
     private ArrayList<AdTestDeviceBean> testDeviceList = new ArrayList<>();
     private ProjectLibraryBean admobLibraryBean;
@@ -167,7 +166,6 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
             } else if (id == binding.layoutSwitch.getId()) {
                 if (!binding.libSwitch.isChecked()) {
                     binding.libSwitch.setChecked(true);
-                    admobShared.edit().putBoolean("admob", true).commit();
                     admobLibraryBean.useYn = "Y";
                 } else {
                     binding.libSwitch.setChecked(!binding.libSwitch.isChecked());
@@ -187,7 +185,6 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         binding = ManageLibraryManageAdmobBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        admobShared = getSharedPreferences("admobEnable", BaseAppCompatActivity.MODE_PRIVATE);
 
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
@@ -259,7 +256,6 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
         dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
             if (!mB.a()) {
                 admobLibraryBean.useYn = "N";
-                admobShared.edit().putBoolean("admob", false).commit();
                 binding.libSwitch.setChecked(false);
                 dialog.dismiss();
             }
