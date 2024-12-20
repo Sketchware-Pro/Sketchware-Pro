@@ -184,26 +184,28 @@ public class gt extends LinearLayout {
     }
 
     private void initializeViewsItems() {
-        viewsVariableList.add(new VariableItem("m", "view", R.drawable.layout_48));
-        viewsVariableList.add(new VariableItem("m", "textview", R.drawable.widget_text_view));
-        viewsVariableList.add(new VariableItem("m", "imageview", R.drawable.widget_image_view));
-        viewsVariableList.add(new VariableItem("m", "checkbox", R.drawable.widget_check_box));
-        viewsVariableList.add(new VariableItem("m", "switch", R.drawable.widget_switch));
-        viewsVariableList.add(new VariableItem("m", "listview", R.drawable.widget_list_view));
-        viewsVariableList.add(new VariableItem("m", "spinner", R.drawable.widget_spinner));
-        viewsVariableList.add(new VariableItem("m", "webview", R.drawable.widget_web_view));
-        viewsVariableList.add(new VariableItem("m", "seekbar", R.drawable.widget_seek_bar));
-        viewsVariableList.add(new VariableItem("m", "progressbar", R.drawable.widget_progress_bar));
-        viewsVariableList.add(new VariableItem("m", "calendarview", R.drawable.widget_calendar));
-        viewsVariableList.add(new VariableItem("m", "radiobutton", R.drawable.widget_radio_button));
-        viewsVariableList.add(new VariableItem("m", "ratingbar", R.drawable.star_filled));
-        viewsVariableList.add(new VariableItem("m", "videoview", R.drawable.widget_mediaplayer));
-        viewsVariableList.add(new VariableItem("m", "searchview", R.drawable.ic_search_color_96dp));
-        viewsVariableList.add(new VariableItem("m", "gridview", R.drawable.grid_3_48));
-        viewsVariableList.add(new VariableItem("m", "actv", R.drawable.widget_edit_text));
-        viewsVariableList.add(new VariableItem("m", "mactv", R.drawable.widget_edit_text));
-        viewsVariableList.add(new VariableItem("m", "viewpager", R.drawable.widget_relative_layout));
-        viewsVariableList.add(new VariableItem("m", "badgeview", R.drawable.pro_account_100dp_primary));
+        viewsVariableList.add(new VariableItem("m", "view", R.drawable.ic_mtrl_view_vertical));
+        viewsVariableList.add(new VariableItem("m", "textview", R.drawable.ic_mtrl_formattext));
+        viewsVariableList.add(new VariableItem("m", "imageview", R.drawable.ic_mtrl_image));
+        viewsVariableList.add(new VariableItem("m", "checkbox", R.drawable.ic_mtrl_checkbox));
+        viewsVariableList.add(new VariableItem("m", "switch", R.drawable.ic_mtrl_switch));
+        viewsVariableList.add(new VariableItem("m", "listview", R.drawable.ic_mtrl_list));
+        viewsVariableList.add(new VariableItem("m", "spinner", R.drawable.ic_mtrl_spinner));
+        viewsVariableList.add(new VariableItem("m", "webview", R.drawable.ic_mtrl_web));
+        viewsVariableList.add(new VariableItem("m", "seekbar", R.drawable.ic_mtrl_seekbar));
+        viewsVariableList.add(new VariableItem("m", "progressbar", R.drawable.ic_mtrl_progress));
+        viewsVariableList.add(new VariableItem("m", "calendarview", R.drawable.ic_mtrl_calendar));
+        viewsVariableList.add(new VariableItem("m", "radiobutton", R.drawable.ic_mtrl_radio_btn));
+        viewsVariableList.add(new VariableItem("m", "ratingbar", R.drawable.ic_mtrl_star));
+        viewsVariableList.add(new VariableItem("m", "videoview", R.drawable.ic_mtrl_video));
+        viewsVariableList.add(new VariableItem("m", "searchview", R.drawable.ic_mtrl_search));
+        viewsVariableList.add(new VariableItem("m", "gridview", R.drawable.ic_mtrl_grid));
+        viewsVariableList.add(new VariableItem("m", "recyclerview", R.drawable.ic_mtrl_list));
+        viewsVariableList.add(new VariableItem("m", "lottieanimation", R.drawable.ic_mtrl_animation));
+        viewsVariableList.add(new VariableItem("m", "actv", R.drawable.ic_mtrl_edittext));
+        viewsVariableList.add(new VariableItem("m", "mactv", R.drawable.ic_mtrl_edittext));
+        viewsVariableList.add(new VariableItem("m", "viewpager", R.drawable.ic_mtrl_viewpager));
+        viewsVariableList.add(new VariableItem("m", "badgeview", R.drawable.ic_mtrl_badge));
     }
 
     public Pair<String, String> getSelectedItem() {

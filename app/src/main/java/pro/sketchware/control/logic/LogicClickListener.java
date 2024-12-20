@@ -343,6 +343,7 @@ public class LogicClickListener implements View.OnClickListener {
                 textView.setTextSize(14);
                 return new TitleHolder(textView);
             } else if (viewType == Item.TYPE_ITEM) {
+
                 CheckBox checkBox = new CheckBox(context);
                 checkBox.setLayoutParams(new LinearLayout.LayoutParams(
                         LayoutParams.MATCH_PARENT,
