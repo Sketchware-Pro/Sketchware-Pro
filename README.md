@@ -156,12 +156,12 @@ Khi bạn thực hiện thay đổi đối với một hoặc nhiều tệp, b�
   - `docs:` cho các tài liệu.
   - `chore:` cho bảo trì mã (bạn cũng có thể sử dụng emoji để biểu diễn loại cam kết).
 
-Examples:
+Ví dụ:
 - `feat: Speed up compiling with new technique`
 - `fix: Fix crash during launch on certain phones`
 - `refactor: Reformat code in File.java`
 
-> [!IMPORTANT]
+> [!QUAN TRỌNG]
 > Nếu bạn muốn thêm các tính năng mới không yêu cầu chỉnh sửa các gói khác ngoài `pro.sketchware`, hãy thực hiện các thay đổi trong gói `pro.sketchware` và tuân thủ cấu trúc thư mục, tệp. Mặc dù dự án có thể biên dịch tốt với các lớp Kotlin mà bạn thêm vào, hãy cố gắng thực hiện các thay đổi hoặc bổ sung bằng Java, trừ khi thực sự cần thiết.
 
 ## Cảm ơn bạn đã đóng góp
@@ -170,11 +170,11 @@ Cảm ơn bạn đã đóng góp cho Sketchware Pro! Những đóng góp của b
 
 ## Discord
 
-Want to chat with us, discuss changes, or just hang out? We have a Discord server just for that.
+Bạn muốn trò chuyện với chúng tôi, thảo luận về những thay đổi hoặc chỉ muốn giao lưu? Chúng tôi có máy chủ Discord dành riêng cho mục đích đó.
 
-[![Join our Discord server!](https://invidget.switchblade.xyz/kq39yhT4rX)](http://discord.gg/kq39yhT4rX)
+[![Tham gia máy chủ Discord của chúng tôi!](https://invidget.switchblade.xyz/kq39yhT4rX)](http://discord.gg/kq39yhT4rX)
 
-## Disclaimer
+## Tuyên bố miễn trừ trách nhiệm
 
 
 Bản mod này không được tạo ra với mục đích gây hại cho Sketchware; ngược lại, nó được tạo ra để duy trì Sketchware bởi cộng đồng và cho cộng đồng. Hãy sử dụng nó một cách cẩn thận và cân nhắc trở thành người ủng hộ Patreon để hỗ trợ các nhà phát triển. Thật không may, các phương thức hỗ trợ khác hiện không còn hoạt động, nên Patreon là lựa chọn duy nhất. Bạn có thể tìm thấy trang Patreon của họ tại [đây](https://www.patreon.com/sketchware)..
