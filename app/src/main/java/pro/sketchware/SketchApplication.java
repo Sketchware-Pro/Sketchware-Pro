@@ -14,7 +14,6 @@ import pro.sketchware.utility.theme.ThemeManager;
 
 public class SketchApplication extends Application {
     private static Context mApplicationContext;
-    private SharedPreferences dyamic;
 
     public static Context getContext() {
         return mApplicationContext;
