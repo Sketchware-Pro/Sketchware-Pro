@@ -3,7 +3,6 @@ package pro.sketchware;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Process;
 import android.util.Log;
@@ -15,7 +14,6 @@ import pro.sketchware.utility.theme.ThemeManager;
 
 public class SketchApplication extends Application {
     private static Context mApplicationContext;
-    private SharedPreferences dyamic;
 
     public static Context getContext() {
         return mApplicationContext;
