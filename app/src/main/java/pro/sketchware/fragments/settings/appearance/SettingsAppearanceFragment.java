@@ -1,5 +1,6 @@
 package pro.sketchware.fragments.settings.appearance;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import pro.sketchware.utility.theme.ThemeManager;
 public class SettingsAppearanceFragment extends qA {
     private FragmentSettingsAppearanceBinding binding;
     private MaterialCardView selectedThemeCard;
+    private SharedPreferences dyamic;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,13 +48,26 @@ public class SettingsAppearanceFragment extends qA {
         binding.switchSystem.setChecked(isSystemTheme);
 
         updateThemeCardSelection(ThemeManager.getCurrentTheme(requireContext()));
-
+        dyamic = getActivity().getSharedPreferences("dynamic", getActivity().MODE_PRIVATE);
         setThemeCardsEnabled(!isSystemTheme);
+        if (dyamic.getString("dynamic", "").equals("true")) {
+            binding.switchDynamicSystem.setChecked(true);
+        } else {
+            binding.switchDynamicSystem.setChecked(false);
+        }
+
     }
 
     private void setupClickListeners() {
         binding.themeSystem.setOnClickListener(v -> binding.switchSystem.setChecked(!binding.switchSystem.isChecked()));
 
+        binding.switchDynamicSystem.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            if (isChecked) {
+                dyamic.edit().putString("dynamic", "true").commit();
+            } else {
+                dyamic.edit().putString("dynamic", "false").commit();
+            }
+        }));
         binding.switchSystem.setOnCheckedChangeListener((buttonView, isChecked) -> {
             unselectSelectedThemeCard();
             setThemeCardsEnabled(!isChecked);

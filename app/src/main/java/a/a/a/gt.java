@@ -227,6 +227,11 @@ public class gt extends LinearLayout {
         moreviewsVariableList.add(new VariableItem("m", "signinbutton", R.drawable.ic_mtrl_login));
         moreviewsVariableList.add(new VariableItem("m", "materialButton", R.drawable.ic_mtrl_button_click));
         moreviewsVariableList.add(new VariableItem("m", "collapsingtoolbar", R.drawable.ic_mtrl_collapsing_toolbar));
+        moreviewsVariableList.add(new VariableItem("m", "swiperefreshlayout", R.drawable.ic_mtrl_swipe_down));
+        moreviewsVariableList.add(new VariableItem("m", "adview", R.drawable.ic_mtrl_ad));
+        moreviewsVariableList.add(new VariableItem("m", "mapview", R.drawable.ic_mtrl_map));
+        moreviewsVariableList.add(new VariableItem("m", "cardview", R.drawable.ic_mtrl_rectangle));
+
     }
 
     public Pair<String, String> getSelectedItem() {
