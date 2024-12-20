@@ -161,7 +161,7 @@ Ví dụ:
 - `fix: Fix crash during launch on certain phones`
 - `refactor: Reformat code in File.java`
 
-> [!QUAN TRỌNG]
+> [!IMPORTANT]
 > Nếu bạn muốn thêm các tính năng mới không yêu cầu chỉnh sửa các gói khác ngoài `pro.sketchware`, hãy thực hiện các thay đổi trong gói `pro.sketchware` và tuân thủ cấu trúc thư mục, tệp. Mặc dù dự án có thể biên dịch tốt với các lớp Kotlin mà bạn thêm vào, hãy cố gắng thực hiện các thay đổi hoặc bổ sung bằng Java, trừ khi thực sự cần thiết.
 
 ## Cảm ơn bạn đã đóng góp
