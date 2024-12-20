@@ -33,7 +33,7 @@ android {
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
-        buildConfigField("String", "FLAVOR_NAME_WITH_AABS", "\"minApi26\"")
+        buildConfigField("String", "FLAVOR_NAME_WITH_AABS", "\"minApi26AAB\"")
         buildConfigField("String", "FLAVOR_NAME_WITHOUT_AABS", "\"minApi21\"")
 
         buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v7.0.0-BETASNAPSHOT-${getCommitHash()}\"")
