@@ -17,7 +17,7 @@ To build the app, you must use Gradle. It's highly recommended to use Android St
 There are two build variants with different features:
 
 - `minApi26:` This variant supports exporting AABs from projects and compiling Java 1.8, 1.9, 10, and 11 code. However, it only works on Android 8.0 (O) and above.
-- `minApi21:` This variant can't produce AABs from projects and can only compile Java 1.7 code, but it supports Android 5 and above ⬆️.
+- `minApi21:` This variant can't produce AABs from projects and can only compile Java 1.7 code, but it supports Android 5 and above .
 
 To select the appropriate build variant in Android Studio, use the Build Variants tab or use the appropriate Gradle build command.
 
