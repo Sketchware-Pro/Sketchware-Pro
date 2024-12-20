@@ -91,7 +91,8 @@ We love Sketchware very much and are grateful to Sketchware's developers for cre
 
 ## Vietnamese 
 
- <img src="assets/Sketchware-Pro.png" style="width: 30%;" />
+<p align="center">
+  <img src="assets/Sketchware-Pro.png" style="width: 30%;" />
 </p>
 
 # Sketchware Pro
