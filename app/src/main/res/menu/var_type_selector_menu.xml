@@ -11,6 +11,11 @@
         android:title="Views" />
 
     <item
+        android:id="@+id/moreviews"
+        android:icon="@drawable/ic_mtrl_view_horizontal"
+        android:title="Advanded Views" />
+
+    <item
         android:id="@+id/components"
         android:icon="@drawable/ic_mtrl_component"
         android:title="Components" />

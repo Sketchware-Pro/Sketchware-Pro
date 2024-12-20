@@ -2,11 +2,13 @@ package a.a.a;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -20,16 +22,20 @@ import pro.sketchware.databinding.VarTypeSelectorDialogBinding;
 
 import java.util.ArrayList;
 
+
 @SuppressLint("ViewConstructor")
 public class gt extends LinearLayout {
 
     private ArrayList<VariableItem> variableItems;
     private ArrayList<VariableItem> viewsVariableList;
+    private ArrayList<VariableItem> moreviewsVariableList;
     private ArrayList<VariableItem> componentsVariableList;
     private VariableItem selectedVariableItem;
 
     private TextView tvPreview;
     private aB dialog;
+    private bB mToast;
+    private SharedPreferences admobShared;
 
     public gt(Activity activity) {
         super(activity);
@@ -113,6 +119,7 @@ public class gt extends LinearLayout {
         componentsVariableList.add(new VariableItem("m", "texttospeech", R.drawable.widget_text_to_speech));
         componentsVariableList.add(new VariableItem("m", "speechtotext", R.drawable.widget_speech_to_text));
         componentsVariableList.add(new VariableItem("m", "locationmanager", R.drawable.widget_location));
+        componentsVariableList.add(new VariableItem("m", "mediacontroller", R.drawable.widget_media_controller));
         componentsVariableList.add(new VariableItem("m", "videoad", R.drawable.widget_media_controller));
         componentsVariableList.add(new VariableItem("m", "progressdialog", R.drawable.widget_progress_dialog));
         componentsVariableList.add(new VariableItem("m", "timepickerdialog", R.drawable.widget_timer));
@@ -124,12 +131,14 @@ public class gt extends LinearLayout {
         tvPreview = findViewById(R.id.tv_preview);
         variableItems = new ArrayList<>();
         viewsVariableList = new ArrayList<>();
+        moreviewsVariableList = new ArrayList<>();
         componentsVariableList = new ArrayList<>();
         initializeVariableItems();
+        admobShared= getContext().getSharedPreferences("admobEnable", Activity.MODE_PRIVATE);
         initializeViewsItems();
+        initializeMoreViewsItems();
         initializeComponentItems();
         setPreview(variableItems.get(0));
-
         findViewById(R.id.container).setOnClickListener(view -> {
             if (!mB.a()) {
                 showVarTypeSelectorDialog(activity);
@@ -161,6 +170,12 @@ public class gt extends LinearLayout {
                 } else if (itemId == R.id.views) {
                     // views list
                     adapter.setData(viewsVariableList);
+                } else if (itemId == R.id.moreviews) {
+                    // more views list
+                    mToast = new bB();
+                    mToast.a(getContext(), "Check if AppCompat, Admob and Google Map are enabled to use views related to them to avoid errors. ", bB.TOAST_WARNING).show();
+
+                    adapter.setData(moreviewsVariableList);
                 } else {
                     // components list
                     adapter.setData(componentsVariableList);
@@ -177,10 +192,10 @@ public class gt extends LinearLayout {
         variableItems.add(new VariableItem("b", "", R.drawable.ic_true_false_color_48dp));
         variableItems.add(new VariableItem("d", "", R.drawable.numbers_48));
         variableItems.add(new VariableItem("s", "", R.drawable.abc_96_color));
-        variableItems.add(new VariableItem("m", "varMap", R.drawable.ic_map_color_48dp));
-        variableItems.add(new VariableItem("m", "listInt", R.drawable.ic_list_color_48dp));
-        variableItems.add(new VariableItem("m", "listStr", R.drawable.ic_list_color_48dp));
-        variableItems.add(new VariableItem("m", "listMap", R.drawable.ic_list_color_48dp));
+        variableItems.add(new VariableItem("m", "varMap", R.drawable.ic_mtrl_map));
+        variableItems.add(new VariableItem("m", "listInt", R.drawable.ic_mtrl_list));
+        variableItems.add(new VariableItem("m", "listStr", R.drawable.ic_mtrl_list));
+        variableItems.add(new VariableItem("m", "listMap", R.drawable.ic_mtrl_list));
     }
 
     private void initializeViewsItems() {
@@ -200,12 +215,21 @@ public class gt extends LinearLayout {
         viewsVariableList.add(new VariableItem("m", "videoview", R.drawable.ic_mtrl_video));
         viewsVariableList.add(new VariableItem("m", "searchview", R.drawable.ic_mtrl_search));
         viewsVariableList.add(new VariableItem("m", "gridview", R.drawable.ic_mtrl_grid));
-        viewsVariableList.add(new VariableItem("m", "recyclerview", R.drawable.ic_mtrl_list));
-        viewsVariableList.add(new VariableItem("m", "lottieanimation", R.drawable.ic_mtrl_animation));
         viewsVariableList.add(new VariableItem("m", "actv", R.drawable.ic_mtrl_edittext));
         viewsVariableList.add(new VariableItem("m", "mactv", R.drawable.ic_mtrl_edittext));
         viewsVariableList.add(new VariableItem("m", "viewpager", R.drawable.ic_mtrl_viewpager));
         viewsVariableList.add(new VariableItem("m", "badgeview", R.drawable.ic_mtrl_badge));
+    }
+    private void initializeMoreViewsItems() {
+        moreviewsVariableList.add(new VariableItem("m", "recyclerview", R.drawable.ic_mtrl_list));
+        moreviewsVariableList.add(new VariableItem("m", "lottie", R.drawable.ic_mtrl_animation));
+        moreviewsVariableList.add(new VariableItem("m", "circleimageview", R.drawable.ic_mtrl_camera));
+        moreviewsVariableList.add(new VariableItem("m", "youtubeview", R.drawable.ic_mtrl_video));
+        moreviewsVariableList.add(new VariableItem("m", "otpview", R.drawable.ic_mtrl_password));
+        moreviewsVariableList.add(new VariableItem("m", "tablayout", R.drawable.ic_mtrl_tabs));
+        moreviewsVariableList.add(new VariableItem("m", "signinbutton", R.drawable.ic_mtrl_login));
+        moreviewsVariableList.add(new VariableItem("m", "materialButton", R.drawable.ic_mtrl_button_click));
+        moreviewsVariableList.add(new VariableItem("m", "collapsingtoolbar", R.drawable.ic_mtrl_collapsing_toolbar));
     }
 
     public Pair<String, String> getSelectedItem() {
