@@ -56,6 +56,7 @@ import com.besome.sketch.editor.view.item.ItemSeekBar;
 import com.besome.sketch.editor.view.item.ItemSignInButton;
 import com.besome.sketch.editor.view.item.ItemSpinner;
 import com.besome.sketch.editor.view.item.ItemSwitch;
+import com.besome.sketch.editor.view.item.ItemMaterialSwitch;
 import com.besome.sketch.editor.view.item.ItemTabLayout;
 import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
@@ -311,6 +312,7 @@ public class ViewPane extends RelativeLayout {
             case ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW -> new ItemOTPView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW -> new ItemCodeView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW -> new ItemRecyclerView(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_MATERIALSWITCH -> new ItemMaterialSwitch(context);
             default -> getUnknownItemView(viewBean);
         };
         assert item != null;
