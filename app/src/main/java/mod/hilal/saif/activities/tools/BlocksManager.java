@@ -112,15 +112,13 @@ public class BlocksManager extends BaseAppCompatActivity {
         background.addView(toolbar, 0);
         SAVE = new Gson().toJson(pallet_listmap);
         more_button.setOnClickListener(v -> {
-            refresh_list();
             PopupMenu popupMenu = new PopupMenu(this, more_button);
             popupMenu.inflate(R.menu.popup_more);
-            popupMenu.show();
             popupMenu.setOnMenuItemClickListener(item -> {
                switch (item.getItemId()) {
                    case R.id.clear_all:
-                       refresh_list();
                        inputText.setText("");
+                       refresh_list();
                        break;
                    case R.id.search_name:
                        break;
@@ -129,6 +127,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                }
                 return false;
             });
+            popupMenu.show();
 
         });
         inputText.addTextChangedListener(new TextWatcher() {
