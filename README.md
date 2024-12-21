@@ -181,5 +181,5 @@ Bản mod này không được tạo ra với mục đích gây hại cho Sketch
 
 Chúng tôi KHÔNG cho phép xuất bản Sketchware Pro dưới dạng hiện tại hoặc đã sửa đổi trên Play Store hoặc bất kỳ cửa hàng ứng dụng nào khác. Xin nhớ rằng dự án này vẫn là một bản mod. Việc sửa đổi ứng dụng trái phép bị coi là vi phạm pháp luật, và chúng tôi không khuyến khích hành vi này.
 
-Chúng tôi rất yêu quý Sketchware và biết ơn các nhà phát triển đã tạo ra một ứng dụng tuyệt vời như vậy. Tuy nhiên, đã lâu rồi chúng tôi không nhận được bản cập nhật. Đó là lý do chúng tôi quyết định duy trì Sketchware bằng cách tạo ra bản mod này, và nó hoàn toàn miễn phí. Chúng tôi không yêu cầu tiền. 😊
+Chúng tôi rất yêu quý Sketchware và biết ơn các nhà phát triển đã tạo ra một ứng dụng tuyệt vời như vậy. Tuy nhiên, đã lâu rồi chúng tôi không nhận được bản cập nhật. Đó là lý do chúng tôi quyết định duy trì Sketchware bằng cách tạo ra bản mod này, và nó hoàn toàn miễn phí. Chúng tôi không yêu cầu tiền. :)
 
