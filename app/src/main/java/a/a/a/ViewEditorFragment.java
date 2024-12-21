@@ -240,7 +240,6 @@ public class ViewEditorFragment extends qA {
         viewEditor.extraWidget("", "AutoCompleteTextView", "AutoCompleteTextView");
         viewEditor.extraWidget("", "MultiAutoCompleteTextView", "MultiAutoCompleteTextView");
         viewEditor.addWidget(PaletteWidget.b.a, "", "Button", "Button");
-        viewEditor.extraWidget("", "MaterialButton", "MaterialButton");
         viewEditor.addWidget(PaletteWidget.b.d, "", "ImageView", "default_image");
         viewEditor.extraWidget("", "CircleImageView", "default_image");
         viewEditor.addWidget(PaletteWidget.b.g, "", "CheckBox", "CheckBox");
@@ -284,6 +283,12 @@ public class ViewEditorFragment extends qA {
         viewEditor.extraWidget("", "DatePicker", "DatePicker");
         viewEditor.addWidget(PaletteWidget.b.k, "", "CalendarView", "CalendarView");
         widgetsCreatorManager.addWidgetsByTitle("Date & Time");
+        widgetsCreatorManager.addExtraClasses();
+
+        viewEditor.paletteWidget.extraTitle("Material You", 1);
+        viewEditor.extraWidget("", "MaterialSwitch", "MaterialSwitch");
+        viewEditor.extraWidget("", "MaterialButton", "MaterialButton");
+        widgetsCreatorManager.addWidgetsByTitle("Material You");
         widgetsCreatorManager.addExtraClasses();
     }
 

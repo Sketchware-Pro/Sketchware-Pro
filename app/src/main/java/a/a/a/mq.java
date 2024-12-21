@@ -164,6 +164,7 @@ public class mq {
             case "compoundButton" -> "CompoundButton";
             case "checkbox" -> "CheckBox";
             case "switch" -> "Switch";
+            case "materialswitch" -> "MaterialSwitch";
             case "listSpn" -> "AdapterView";
             case "listview" -> "ListView";
             case "spinner" -> "Spinner";

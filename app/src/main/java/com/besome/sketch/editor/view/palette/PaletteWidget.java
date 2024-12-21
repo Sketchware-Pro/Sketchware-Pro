@@ -47,6 +47,7 @@ import mod.agus.jcoderz.editor.view.palette.IconRatingBar;
 import mod.agus.jcoderz.editor.view.palette.IconSearchView;
 import mod.agus.jcoderz.editor.view.palette.IconTimePicker;
 import mod.agus.jcoderz.editor.view.palette.IconVideoView;
+import mod.agus.jcoderz.editor.view.palette.IconMaterialSwitch;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.widgets.IconCustomWidget;
@@ -213,6 +214,7 @@ public class PaletteWidget extends LinearLayout {
             case "LottieAnimation" -> new IconLottieAnimation(context);
             case "YoutubePlayer" -> new IconYoutubePlayer(context);
             case "OTPView" -> new IconOTPView(context);
+            case "MaterialSwitch" -> new IconMaterialSwitch(context);
             case "CodeView" -> new IconCodeView(context);
             case "RecyclerView" -> new IconRecyclerView(context);
             default -> null;
