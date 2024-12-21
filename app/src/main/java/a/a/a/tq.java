@@ -23,11 +23,13 @@ public class tq {
         a.add(new QuizBean("You must manually write Java code to handle button clicks in Sketchware.", QuizBean.QUIZ_FALSE));
         a.add(new QuizBean("Sketchware apps can only be run on Android devices.", QuizBean.QUIZ_TRUE));
         a.add(new QuizBean("In Sketchware, you can save data using SharedPreferences.", QuizBean.QUIZ_TRUE));
-
         a.add(new QuizBean("The \"if...else\" block in Sketchware is used to create animations.", QuizBean.QUIZ_FALSE));
         a.add(new QuizBean("Sketchware is a great tool for beginners to learn Android app development.", QuizBean.QUIZ_TRUE));
         a.add(new QuizBean("You can preview your app’s UI directly in Sketchware before running it.", QuizBean.QUIZ_FALSE));
-
+        a.add(new QuizBean("Sketchware automatically generates Java code based on the blocks you use.", QuizBean.QUIZ_TRUE));
+        a.add(new QuizBean("The Sketchware app allows you to directly edit the Java code it generates.", QuizBean.QUIZ_FALSE));
+        a.add(new QuizBean("To display a webpage in your Sketchware app, you use the \"WebView\" component.", QuizBean.QUIZ_TRUE));
+        //more soon
 
         // Questions with options
         a.add(new QuizBean("This component is used to animate Widgets.", QuizBean.QUIZ_ANSWER_B, "MediaPlayer", "ObjectAnimator"));

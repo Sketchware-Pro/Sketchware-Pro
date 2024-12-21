@@ -1017,7 +1017,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             if (activity == null) return;
 
             activity.runOnUiThread(() -> {
-                activity.runProject.setText("Building APK file...");
+                activity.runProject.setText("Buiding...");
                 activity.runProject.setClickable(false);
                 activity.r.a("P1I10", true);
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -1317,7 +1317,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_mtrl_code)
-                    .setContentTitle("Building project")
+                    .setContentTitle("Building Project Started")
                     .setContentText(progress)
                     .setOngoing(true)
                     .setProgress(0, 0, true)

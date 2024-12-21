@@ -466,6 +466,8 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                 break;
 
             case "3":  // Button
+            case "49":
+                prioritizedSuggestions.add("com.google.android.material.materialswitch.MaterialSwitch");
             case "41": // MaterialButton
                 prioritizedSuggestions.addAll(Arrays.asList(
                         "Button", "com.google.android.material.button.MaterialButton",
@@ -473,7 +475,6 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                         "androidx.appcompat.widget.AppCompatButton"
                 ));
                 break;
-
             case "4":  // TextView
             case "5":  // EditText
             case "38": // TextInputLayout
