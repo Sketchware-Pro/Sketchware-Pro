@@ -27,7 +27,8 @@
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="?attr/colorSurfaceContainer"
                 app:cardElevation="0dp"
-                app:contentPadding="14dp">
+                app:contentPadding="14dp"
+                app:strokeWidth="0.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -137,7 +138,8 @@
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="?attr/colorSurfaceContainer"
                 app:cardElevation="0dp"
-                app:contentPadding="14dp">
+                app:contentPadding="14dp"
+                app:strokeWidth="0.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -256,7 +258,8 @@
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="?attr/colorSurfaceContainer"
                 app:cardElevation="0dp"
-                app:contentPadding="14dp">
+                app:contentPadding="14dp"
+                app:strokeWidth="0.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
