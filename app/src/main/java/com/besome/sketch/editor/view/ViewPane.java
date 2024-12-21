@@ -62,6 +62,7 @@ import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
@@ -443,7 +444,7 @@ public class ViewPane extends RelativeLayout {
         if (classInfo.a("TextView")) {
             TextView textView = (TextView) view;
             updateTextView(textView, viewBean);
-            if (!classInfo.b("Button") && !classInfo.b("Switch")) {
+            if (!classInfo.b("Button") && !classInfo.b("Switch") && !classInfo.b("MaterialSwitch")) {
                 textView.setGravity(viewBean.layout.gravity);
             } else {
                 int gravity = viewBean.layout.gravity;
