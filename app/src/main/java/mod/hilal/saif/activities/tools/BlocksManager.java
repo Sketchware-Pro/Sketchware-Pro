@@ -120,9 +120,9 @@ public class BlocksManager extends BaseAppCompatActivity {
                        inputText.setText("");
                        refresh_list();
                        break;
-                   case R.id.search_name:
+                   case R.id.search_by_name:
                        break;
-                   case R.id.search_color:
+                   case R.id.search_by_color:
                        break;
                }
                 return false;
