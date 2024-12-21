@@ -4,6 +4,6 @@
           android:title="Clear" />
     <item android:id="@+id/search_name"
           android:title="Search by name" />
-    <item android:id="@+id/import_widgets"
+    <item android:id="@+id/search_color"
           android:title="Search by Color" />
 </menu>

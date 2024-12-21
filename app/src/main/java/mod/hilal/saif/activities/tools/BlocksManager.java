@@ -122,7 +122,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                        break;
                    case R.id.search_name:
                        break;
-                   case R.id.import_widgets:
+                   case R.id.search_color:
                        break;
                }
                 return false;
