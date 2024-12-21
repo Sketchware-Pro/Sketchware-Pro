@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,9 +23,13 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonElement;
@@ -62,6 +67,14 @@ public class BlocksManager extends BaseAppCompatActivity {
     private ListView list_pallete;
     private LinearLayout background;
     private MaterialCardView recycle_bin_card;
+    private TextInputLayout searchBlocks;
+    private MaterialButton more_button;
+    private TextInputEditText inputText;
+    private String SAVE = "";
+    private String key = "";
+    private String value = "";
+    private double number = 0;
+    private double length = 0;
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
@@ -72,6 +85,9 @@ public class BlocksManager extends BaseAppCompatActivity {
         recycle_sub = findViewById(R.id.recycle_sub);
         list_pallete = findViewById(R.id.list_pallete);
         recycle_bin_card = findViewById(R.id.recycle_bin_card);
+        searchBlocks = findViewById(R.id.searchBlocks);
+        more_button = findViewById(R.id.more_button);
+        inputText = findViewById(R.id.inputText);
 
         initialize();
         initializeLogic();
@@ -94,7 +110,57 @@ public class BlocksManager extends BaseAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(view -> onBackPressed());
         background.addView(toolbar, 0);
+        SAVE = new Gson().toJson(pallet_listmap);
+        more_button.setOnClickListener(v -> {
+            refresh_list();
+            PopupMenu popupMenu = new PopupMenu(this, more_button);
+            popupMenu.inflate(R.menu.popup_more);
+            popupMenu.show();
+            popupMenu.setOnMenuItemClickListener(item -> {
+               switch (item.getItemId()) {
+                   case R.id.clear_all:
+                       refresh_list();
+                       inputText.setText("");
+                       break;
+                   case R.id.search_name:
+                       break;
+                   case R.id.import_widgets:
+                       break;
+               }
+                return false;
+            });
 
+        });
+        inputText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    length = pallet_listmap.size();
+                    number = length - 1;
+                    for(int _repeat87 = 0; _repeat87 < (int)(length); _repeat87++) {
+                        value = pallet_listmap.get((int)number).get("name").toString();
+                        if (value.toLowerCase().contains(s.toString().toLowerCase())) {
+
+                        } else {
+                            pallet_listmap.remove((int)(number));
+                        }
+                        number--;
+                    }
+                }
+                list_pallete.setAdapter(new PaletteAdapter(pallet_listmap));
+                ((BaseAdapter) list_pallete.getAdapter()).notifyDataSetChanged();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         _fab.setOnClickListener(v -> showPaletteDialog(false, null, null, null, null));
     }
 
