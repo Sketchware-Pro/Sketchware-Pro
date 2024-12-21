@@ -539,6 +539,11 @@ public class mq {
                 importList.add("de.hdodenhof.circleimageview.*");
                 return importList;
 
+            case "MaterialSwitch":
+                importList.add("com.google.android.material.materialswitch.MaterialSwitch");
+                return importList;
+
+
             case "YouTubePlayerView":
                 importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.*");
                 importList.add("com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener");
