@@ -1,8 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="8dp"
     android:background="?android:colorBackground"
     android:orientation="vertical">
 
@@ -102,7 +103,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_expand_less_grey600_24dp"
+                android:src="@drawable/ic_mtrl_arrow_down"
                 android:id="@+id/ic_arrow"
                 app:tint="?attr/colorControlNormal" />
         </LinearLayout>
@@ -134,4 +135,4 @@
                 tools:text="A version that's newer than v6.3.0. That's it." />
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

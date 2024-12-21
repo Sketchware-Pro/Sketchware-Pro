@@ -1,4 +1,4 @@
-package mod.agus.jcoderz.editor.view.palette;;
+package mod.agus.jcoderz.editor.view.palette;
 
 import android.content.Context;
 import android.view.ViewGroup;

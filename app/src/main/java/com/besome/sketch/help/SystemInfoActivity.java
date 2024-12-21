@@ -12,6 +12,8 @@ import androidx.activity.EdgeToEdge;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.PropertyOneLineItem;
 import com.besome.sketch.lib.ui.PropertyTwoLineItem;
+import com.google.android.material.card.MaterialCardView;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.ActivitySystemInfoBinding;
 
@@ -44,7 +46,11 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
         propertyTwoLineItem.setKey(key);
         propertyTwoLineItem.setName(name);
         propertyTwoLineItem.setDesc(description);
-        binding.content.addView(propertyTwoLineItem);
+        MaterialCardView materialCardView = new MaterialCardView(this);
+        materialCardView.setRadius(12);
+        materialCardView.addView(propertyTwoLineItem);
+
+        binding.content.addView(materialCardView);
     }
 
     private void addAndroidVersionNameInfo() {
