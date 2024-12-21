@@ -4,20 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:paddingBottom="16dp"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp">
 
-    <View
-        android:layout_width="50dp"
-        android:layout_height="5dp"
-        android:layout_gravity="center_horizontal"
-        android:background="@drawable/rounded_bottom_sheet_slider" />
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:id="@+id/drag_handle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:id="@+id/preference_scroller"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="8dp">
 
         <LinearLayout
             android:id="@+id/preference_container"
@@ -68,6 +69,7 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
+
             <com.google.android.material.card.MaterialCardView
                 style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
@@ -102,6 +104,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+
             <com.google.android.material.card.MaterialCardView
                 style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
@@ -117,8 +120,9 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
+
                     <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/sw_remove_old_methods"
+                        android:id="@+id/cb_remove_old_methods"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="0dp"
@@ -151,56 +155,21 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
+
                     <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/sw_use_new_material3_app_theme"
+                        android:id="@+id/cb_use_new_material_components_app_theme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="0dp"
-                        android:text="Use Material3"
+                        android:text="Use MaterialComponents"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/desc_use_new_material3_app_theme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:layout_marginEnd="26dp"
-                        android:text="This will use material design 3 in your app"
-                        android:textColor="?android:attr/textColorSecondary" />
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                app:strokeWidth="0.5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?selectableItemBackground"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/sw_use_dynamic_colors"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minHeight="0dp"
-                        android:text="Use Dynamic Colors"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/desc_use_dynamic_colors"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginEnd="26dp"
-                        android:text="The app will use android color palette, in devices with Android 12+"
+                        android:text="This will replace e.g. Button with MaterialButton, be careful!"
                         android:textColor="?android:attr/textColorSecondary" />
 
                 </LinearLayout>
@@ -218,16 +187,16 @@
 
         <Button
             style="?materialButtonOutlinedStyle"
-            android:id="@+id/btnCancel"
+            android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="Cancel" />
+            android:text="@string/common_word_cancel" />
 
         <Button
-            android:id="@+id/btnSave"
+            android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save" />
+            android:text="@string/common_word_save" />
     </LinearLayout>
 </LinearLayout>
