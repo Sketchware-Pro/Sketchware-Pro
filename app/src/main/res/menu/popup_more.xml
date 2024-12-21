@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/clear_all"
+        android:title="Clear" />
+    <item android:id="@+id/search_by_name"
+        android:title="Search by name" />
+    <item android:id="@+id/search_by_color"
+        android:title="Search by Color" />
+</menu>

@@ -45,6 +45,7 @@
         <activity
             android:name="com.besome.sketch.common.SrcViewerActivity"
             android:configChanges="orientation|screenSize" />
+
         <activity
             android:name="pro.sketchware.activities.importicon.ImportIconActivity"
             android:configChanges="orientation|screenSize"
