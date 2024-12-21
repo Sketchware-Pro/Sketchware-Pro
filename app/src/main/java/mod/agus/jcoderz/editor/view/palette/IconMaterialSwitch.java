@@ -30,5 +30,6 @@ public class IconMaterialSwitch extends IconBase {
         layoutBean.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         viewBean.convert = "com.google.android.material.materialswitch.MaterialSwitch";
         return viewBean;
+
     }
 }
