@@ -229,7 +229,7 @@ public class gt extends LinearLayout {
         moreviewsVariableList.add(new VariableItem("m", "adview", R.drawable.ic_mtrl_ad));
         moreviewsVariableList.add(new VariableItem("m", "mapview", R.drawable.ic_mtrl_map));
         moreviewsVariableList.add(new VariableItem("m", "cardview", R.drawable.ic_mtrl_rectangle));
-        moreviewsVariableList.add(new VariableItem("m", "MaterialSwitch", R.drawable.ic_mtrl_toggle));
+        moreviewsVariableList.add(new VariableItem("m", "materialswitch", R.drawable.ic_mtrl_toggle));
 
     }
 

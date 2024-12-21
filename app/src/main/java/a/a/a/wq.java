@@ -147,6 +147,7 @@ public class wq {
             case 46 -> "otpview";
             case 47 -> "codeview";
             case 48 -> "recyclerview";
+            case 49 -> "materialswitch";
             default -> "widget";
         };
     }

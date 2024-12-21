@@ -399,6 +399,7 @@ public class kq {
             case "textview" -> "TextView";
             case "locationmanager" -> "LocationManager";
             case "switch" -> "Switch";
+            case "materialswitch" -> "MaterialSwitch";
             case "imageview" -> "ImageView";
             case "varInt" -> "Number";
             case "varMap" -> "Map";

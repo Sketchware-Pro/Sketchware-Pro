@@ -27,7 +27,7 @@ public class IconMaterialSwitch extends IconBase {
         layoutBean.paddingTop = 8;
         layoutBean.paddingRight = 8;
         layoutBean.paddingBottom = 8;
-        layoutBean.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutBean.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         viewBean.convert = getName();
         return viewBean;
     }
