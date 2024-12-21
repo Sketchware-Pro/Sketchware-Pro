@@ -6,8 +6,11 @@ import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
 import android.app.Activity;
 import android.view.View;
 
-import a.a.a.aB;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
 import mod.hey.studios.util.Helper;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogProjectSettingsBinding;
 
@@ -22,12 +25,19 @@ public class ProjectSettingsDialog {
     }
 
     public void show() {
-        aB dialog = new aB(activity);
-        dialog.a(R.drawable.services_48);
-        dialog.b("Project configurations");
-
+        BottomSheetDialog dialog = new BottomSheetDialog(activity);
         DialogProjectSettingsBinding binding = DialogProjectSettingsBinding.inflate(activity.getLayoutInflater());
-
+        
+        dialog.setOnShowListener(bsd -> {
+            var b = (BottomSheetDialog) bsd;
+            var parent = b.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (parent != null) {
+                BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(parent);
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                behavior.setSkipCollapsed(true);
+            }
+        });
+        
         binding.etMinimumSdkVersion.setText(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION, String.valueOf(VAR_DEFAULT_MIN_SDK_VERSION)));
         binding.etTargetSdkVersion.setText(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)));
         binding.etApplicationClassName.setText(settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication"));
@@ -46,7 +56,7 @@ public class ProjectSettingsDialog {
         binding.cbRemoveOldMethods.setTag(ProjectSettings.SETTING_DISABLE_OLD_METHODS);
         binding.cbUseNewMaterialComponentsAppTheme.setTag(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES);
 
-        dialog.a(binding.getRoot());
+        dialog.setContentView(binding.getRoot());
 
         final View[] preferences = {
                 binding.etMinimumSdkVersion,
@@ -56,12 +66,12 @@ public class ProjectSettingsDialog {
                 binding.cbRemoveOldMethods,
                 binding.cbUseNewMaterialComponentsAppTheme
         };
-
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        
+        binding.save.setOnClickListener(v -> {
             settings.setValues(preferences);
             dialog.dismiss();
         });
+        binding.cancel.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
     }
 }
