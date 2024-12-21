@@ -12,7 +12,7 @@
         android:id="@+id/drag_handle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-        
+
     <ScrollView
         android:id="@+id/preference_scroller"
         android:layout_width="match_parent"
@@ -75,7 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:strokeWidth="0.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -109,7 +110,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:strokeWidth="0.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -143,7 +145,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:strokeWidth="0.5dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -174,7 +177,7 @@
 
         </LinearLayout>
     </ScrollView>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
