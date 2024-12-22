@@ -47,7 +47,7 @@ public class Yv extends qA {
     private void updateImportSoundsText() {
         int selectedSounds = (int) sounds.stream().filter(projectResourceBean -> projectResourceBean.isSelected).count();
         if (selectedSounds > 0) {
-            actBinding.btnImport.setText(xB.b().a(getContext(), R.string.common_word_import_count, selectedSounds).toUpperCase());
+            actBinding.btnImport.setText(xB.b().a(getContext(), R.string.common_word_import_count, selectedSounds));
             actBinding.layoutBtnImport.setVisibility(View.VISIBLE);
         } else {
             actBinding.layoutBtnImport.setVisibility(View.GONE);

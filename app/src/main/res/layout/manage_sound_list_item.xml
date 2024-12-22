@@ -13,29 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?selectableItemBackground"
-        android:paddingVertical="4dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
 
         <CheckBox
             android:id="@+id/chk_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:contentDescription="@null" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp">
+            android:layout_marginVertical="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="16dp">
 
             <ImageView
                 android:id="@+id/img_album"
-                android:layout_width="36dp"
-                android:layout_height="36dp" />
+                android:layout_width="40dp"
+                tools:src="@drawable/abc_96_color"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop" />
 
             <LinearLayout
                 android:id="@+id/delete_img_container"
@@ -74,7 +74,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="Sound Name" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,18 +90,19 @@
                         android:layout_marginRight="5dp"
                         android:paddingRight="5dp"
                         android:textColor="#ff9a9a9a"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="00:00" />
 
                     <ProgressBar
                         android:id="@+id/prog_playtime"
                         style="@android:style/Widget.ProgressBar.Horizontal"
-                        android:maxHeight="5dp"
-                        android:minHeight="3dp"
-                        android:indeterminateOnly="false"
-                        android:progressDrawable="?attr/colorPrimary"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:indeterminateOnly="false"
+                        android:maxHeight="5dp"
+                        android:minHeight="3dp"
+                        android:progressDrawable="?attr/colorPrimary" />
 
                     <TextView
                         android:id="@+id/tv_endtime"
@@ -109,7 +111,8 @@
                         android:layout_marginLeft="5dp"
                         android:paddingLeft="5dp"
                         android:textColor="#ff9a9a9a"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="00:00" />
                 </LinearLayout>
             </LinearLayout>
 

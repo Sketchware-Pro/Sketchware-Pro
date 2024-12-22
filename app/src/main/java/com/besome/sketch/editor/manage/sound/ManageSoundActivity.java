@@ -102,11 +102,9 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         projectSounds.setSelecting(false);
         collectionSounds.resetSelection();
         if (position == 0) {
-            binding.fab.animate().translationY(0F).setDuration(200L).start();
             binding.fab.show();
             collectionSounds.stopPlayback();
         } else {
-            binding.fab.animate().translationY(4000F).setDuration(200L).start();
             binding.fab.hide();
             projectSounds.stopPlayback();
         }

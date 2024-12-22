@@ -104,7 +104,7 @@ public class ow extends qA {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 269 &&resultCode == Activity.RESULT_OK) {
+        if (requestCode == 269 && resultCode == Activity.RESULT_OK) {
             sounds.add(data.getParcelableExtra("project_resource"));
             SketchwareUtil.toast(Helper.getResString(R.string.design_manager_message_add_complete));
 
@@ -140,7 +140,9 @@ public class ow extends qA {
         binding = FrManageSoundListBinding.inflate(inflater, container, false);
 
         actBinding.btnDelete.setOnClickListener(view -> {
-            if (!mB.a() && isSelecting) {
+            if (sounds.isEmpty()) {
+                SketchwareUtil.toast(Helper.getResString(R.string.common_message_no_item_delete));
+            } else if (!mB.a() && isSelecting) {
                 for (int i = sounds.size() - 1; i >= 0; i--) {
                     ProjectResourceBean projectResourceBean = sounds.get(i);
                     projectResourceBean.curSoundPosition = 0;
@@ -150,15 +152,13 @@ public class ow extends qA {
                 }
                 adapter.notifyDataSetChanged();
                 adapter.stopPlayback();
-                setSelecting(false);
-                updateNoSoundsTextVisibility();
                 SketchwareUtil.toast(Helper.getResString(R.string.common_message_complete_delete));
-                actBinding.fab.show();
             }
+            setSelecting(false);
+            updateNoSoundsTextVisibility();
         });
 
         actBinding.btnCancel.setOnClickListener(view -> setSelecting(false));
-        binding.soundList.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
         adapter = new Adapter(binding.soundList);
         binding.soundList.setAdapter(adapter);
         actBinding.fab.setOnClickListener(v -> {
@@ -374,8 +374,10 @@ public class ow extends qA {
         unselectAll();
         if (isSelecting) {
             stopPlayback();
+            actBinding.fab.hide();
             actBinding.layoutBtnGroup.setVisibility(View.VISIBLE);
         } else {
+            actBinding.fab.show();
             actBinding.layoutBtnGroup.setVisibility(View.GONE);
         }
         adapter.notifyDataSetChanged();
