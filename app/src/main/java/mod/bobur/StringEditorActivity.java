@@ -326,10 +326,10 @@ public class StringEditorActivity extends AppCompatActivity {
             HashMap<String, Object> item = filteredData.get(position);
             String key = (String) item.get("key");
             String text = (String) item.get("text");
-            holder.binding.textInputLayout.setHint(key);
-            holder.binding.editText.setText(text);
+            holder.binding.stringKey.setText(key);
+            holder.binding.stringValue.setText(text);
 
-            holder.binding.editText.setOnClickListener(
+            holder.binding.cardView.setOnClickListener(
                     v -> {
                         int adapterPosition = holder.getAbsoluteAdapterPosition();
                         HashMap<String, Object> currentItem = filteredData.get(adapterPosition);

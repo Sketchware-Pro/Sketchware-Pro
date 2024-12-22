@@ -66,7 +66,7 @@ public class BackupRestoreManager {
         backupDialogStates.put(1, false);
 
         aB dialog = new aB(act);
-        dialog.a(R.drawable.ic_backup);
+        dialog.a(R.drawable.ic_mtrl_package);
         dialog.b("Backup Options");
 
         LinearLayout checkboxContainer = new LinearLayout(act);
@@ -74,7 +74,7 @@ public class BackupRestoreManager {
         checkboxContainer.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
-        int dip = (int) SketchwareUtil.getDip(8);
+        int dip = (int) SketchwareUtil.getDip(18);
         checkboxContainer.setPadding(dip, dip, dip, dip);
 
         CompoundButton.OnCheckedChangeListener listener = (buttonView, isChecked) -> {
