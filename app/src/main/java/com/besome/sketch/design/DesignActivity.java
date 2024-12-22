@@ -625,7 +625,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             saveProject();
-        } else if (itemId == R.id.design_option_menu_title_show_hierarchy) {
+        } else if (itemId == R.id.menu_view_hierarchy) {
             toLayoutHierarchySheet();
         }
 
