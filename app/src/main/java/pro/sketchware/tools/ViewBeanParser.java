@@ -1,8 +1,10 @@
 package pro.sketchware.tools;
 
+import static pro.sketchware.SketchApplication.getContext;
 import static pro.sketchware.utility.PropertiesUtil.parseReferName;
 
 import android.util.Pair;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -13,6 +15,8 @@ import com.besome.sketch.beans.ViewBean;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+
+import pro.sketchware.utility.InvokeUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -98,8 +102,7 @@ public class ViewBeanParser {
 
                     int type = ViewBean.getViewTypeByTypeName(className);
 
-                    // Special case for other views that can be considered built-in views by type
-                    type = ViewBeanFactory.getConsideredTypeViewByName(className, type);
+                    type = getViewTypeByTag(name, type);
 
                     // Get view ID, either from attributes or generate a unique ID
                     String attrId = parser.getAttributeValue(null, "android:id");
@@ -211,5 +214,26 @@ public class ViewBeanParser {
         } catch (Exception e) {
         }
         return s;
+    }
+
+    private int getViewTypeByTag(String tag, int defaultType) {
+        // Special case for other views that can be considered built-in views by type
+        var type = ViewBeanFactory.getConsideredTypeViewByName(getNameFromTag(tag), defaultType);
+        if (type == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {
+            var view = InvokeUtil.createView(getContext(), tag);
+            if (view != null) {
+                Class<?> clazz = view.getClass();
+                Class<?> viewClazz = View.class.getSuperclass();
+                while (clazz != viewClazz) {
+                    var className = clazz.getSimpleName();
+                    if ("View".equals(className) || "LinearLayout".equals(className)) {
+                        break;
+                    }
+                    type = ViewBean.getViewTypeByTypeName(className);
+                    clazz = clazz.getSuperclass();
+                }
+            }
+        }
+        return type;
     }
 }
