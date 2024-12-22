@@ -2,9 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/property_menu_item"
-    style="?attr/materialCardViewFilledStyle"
+    style="?attr/materialCardViewElevatedStyle"
     android:layout_width="74dp"
-    android:layout_height="74dp"
+    android:layout_height="60dp"
     android:layout_margin="4dp"
     app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
     app:strokeWidth="0.5dp">
@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/img_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginBottom="8dp"
             tools:src="@drawable/height_96" />
 

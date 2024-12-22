@@ -6,21 +6,39 @@
     android:orientation="horizontal"
     android:padding="5dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/text_input_layout"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_margin="3dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:hint="String key">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_height="wrap_content" >
+
+
+        <TextView
+            android:id="@+id/string_key"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="false"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine|textNoSuggestions"
-            android:textSize="16sp"
-            tools:text="String value"
-            tools:ignore="LabelFor" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="String Key"/>
+
+            <TextView
+                android:id="@+id/string_value"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:importantForAutofill="no"
+                android:textSize="15sp"
+                android:textColor="#9E9E9E"
+                tools:ignore="LabelFor"
+                tools:text="String value" />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
 </LinearLayout>
