@@ -1,7 +1,8 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
@@ -10,16 +11,16 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:textSize="14sp"
         android:text="@string/design_manager_sound_description_guide_add_sound"
+        android:textSize="14sp"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sound_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="2dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_weight="1"
-        android:scrollbars="vertical"
-        android:splitMotionEvents="false" />
+        android:splitMotionEvents="false"
+        tools:listitem="@layout/manage_sound_list_item" />
 </LinearLayout>

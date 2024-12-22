@@ -43,9 +43,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="12dp"
             android:clickable="true"
             android:focusable="true"
-            android:layout_marginBottom="12dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainer"
             app:cardCornerRadius="18dp"
             app:strokeWidth="0.5dp">
@@ -60,9 +60,9 @@
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
-            android:layout_marginHorizontal="12dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="12dp" />
 
     </LinearLayout>
 
@@ -73,13 +73,14 @@
         app:layout_anchor="@id/contentLayout"
         app:layout_anchorGravity="bottom|end">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_mtrl_add"
+            android:text="@string/design_manager_sound_title_add_sound"
+            app:icon="@drawable/ic_mtrl_add"
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.card.MaterialCardView
@@ -100,8 +101,8 @@
                 android:id="@+id/btn_import"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/common_word_import"
                 android:layout_margin="8dp"
+                android:text="@string/common_word_import"
                 android:textSize="@dimen/text_size_button_material"
                 app:cornerRadius="15dp" />
 
@@ -132,9 +133,9 @@
                     style="?attr/materialIconButtonFilledTonalStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/cancel"
                     android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
+                    android:text="@string/cancel"
                     android:textSize="@dimen/text_size_button_material"
                     app:cornerRadius="15dp" />
 
@@ -142,9 +143,9 @@
                     android:id="@+id/btn_delete"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/common_word_delete"
                     android:layout_marginHorizontal="4dp"
                     android:layout_weight="1"
+                    android:text="@string/common_word_delete"
                     android:textSize="@dimen/text_size_button_material"
                     app:cornerRadius="15dp" />
             </LinearLayout>

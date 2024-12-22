@@ -86,7 +86,7 @@ public class St extends qA {
         int selectedCount = (int) projectResourceBeans.stream().filter(resource -> resource.isSelected).count();
 
         if (selectedCount > 0) {
-            actBinding.btnImport.setText(Helper.getResString(R.string.common_word_import_count, selectedCount).toUpperCase());
+            actBinding.btnImport.setText(Helper.getResString(R.string.common_word_import_count, selectedCount));
             actBinding.layoutBtnImport.animate().translationY(0F).setDuration(200L).start();
             actBinding.layoutBtnImport.setVisibility(View.VISIBLE);
         } else {
