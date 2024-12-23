@@ -304,10 +304,9 @@ public class ViewPane extends RelativeLayout {
         return item;
     }
     
-    private View getUnknownItemView(ViewBean bean) {
-        ItemTextView view = new ItemTextView(context);
-        view.setText("Unknown type:" + bean.convert);
-        view.setTextColor(Color.RED);
+    private final View getUnknownItemView(final ViewBean bean) {
+        bean.type = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
+        var view = new ItemLinearLayout(context);
         return view;
     }
 
