@@ -93,11 +93,6 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/fr_logic_list_item_component_event" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="16dp"
-                android:background="?attr/colorControlHighlight" />
 
             <com.besome.sketch.editor.component.CollapsibleComponentLayout
                 android:id="@+id/component_option"

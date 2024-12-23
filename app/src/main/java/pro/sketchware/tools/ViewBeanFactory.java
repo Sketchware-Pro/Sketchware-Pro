@@ -750,7 +750,7 @@ public class ViewBeanFactory {
     public static int getConsideredTypeViewByName(String name, int def) {
         return switch (name) {
             //Add more here
-            case "MaterialSwitch" -> ViewBean.VIEW_TYPE_WIDGET_SWITCH;
+            case "MaterialSwitch" -> ViewBeans.VIEW_TYPE_WIDGET_MATERIALSWITCH;
             case "MaterialCardView" -> ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
             case "TextInputEditText" -> ViewBean.VIEW_TYPE_WIDGET_EDITTEXT;
             //idk should I use ImageView(ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW) or Button(ViewBean.VIEW_TYPE_WIDGET_BUTTON)?

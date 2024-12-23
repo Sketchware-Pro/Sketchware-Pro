@@ -555,6 +555,7 @@ public class ExtraPaletteBlock {
                         || extraBlocks.isCustomVarUsed("CheckBox")
                         || extraBlocks.isCustomVarUsed("RadioButton")
                         || extraBlocks.isCustomVarUsed("Switch")
+                        || extraBlocks.isCustomVarUsed("MaterialSwitch")
                         || extraBlocks.isCustomVarUsed("ToggleButton");
                 boolean autoCompleteTextViewUsed = isWidgetUsed("AutoCompleteTextView")
                         || extraBlocks.isCustomVarUsed("AutoCompleteTextView");

@@ -289,6 +289,7 @@ public class Ox {
                     case ViewBean.VIEW_TYPE_WIDGET_PROGRESSBAR:
                     case ViewBean.VIEW_TYPE_WIDGET_CHECKBOX:
                     case ViewBean.VIEW_TYPE_WIDGET_SWITCH:
+                    case ViewBeans.VIEW_TYPE_WIDGET_MATERIALSWITCH:
                     case ViewBean.VIEW_TYPE_WIDGET_SEEKBAR:
                     case ViewBean.VIEW_TYPE_WIDGET_CALENDARVIEW:
                     case ViewBeans.VIEW_TYPE_WIDGET_RADIOBUTTON:
@@ -836,6 +837,7 @@ public class Ox {
         switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_WIDGET_CHECKBOX:
             case ViewBean.VIEW_TYPE_WIDGET_SWITCH:
+            case ViewBeans.VIEW_TYPE_WIDGET_MATERIALSWITCH:
             case ViewBeans.VIEW_TYPE_WIDGET_RADIOBUTTON:
                 if (viewBean.checked == 1 && !toNotAdd.contains("android:checked") && !injectHandler.contains("checked")) {
                     nx.addAttribute("android", "checked", "true");

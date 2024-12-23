@@ -7,6 +7,11 @@
     android:focusable="true"
     android:padding="8dp">
 
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -39,7 +44,7 @@
             android:textSize="12sp"
             tools:text="onChildAdded" />
     </LinearLayout>
-
+</com.google.android.material.card.MaterialCardView>
     <ImageView
         android:id="@+id/add_event"
         android:layout_width="16dp"
@@ -48,7 +53,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="4dp"
         android:layout_marginRight="18dp"
-        android:src="@drawable/ic_add_green_circle_24dp"
+        android:src="@drawable/ic_mtrl_add"
         android:visibility="gone"
         tools:visibility="visible" />
 </RelativeLayout>

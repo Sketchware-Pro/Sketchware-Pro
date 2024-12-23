@@ -45,6 +45,6 @@
         android:layout_width="match_parent"
         android:layout_marginTop="16dp"
         android:layout_height="wrap_content"
-        android:text="Independent class/method"
+        android:text="Independent Class/Method"
         android:textSize="14sp" />
 </LinearLayout>

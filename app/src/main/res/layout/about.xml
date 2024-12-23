@@ -144,8 +144,8 @@
         android:text="@string/about_joindiscord"
         android:textAllCaps="false"
         android:textColor="#FFF"
-        app:backgroundTint="#5865F2"
+        app:backgroundTint="#2196F3"
         app:icon="@drawable/ic_discord"
-        app:iconTint="#FFF" />
+        app:iconTint="#FFFFFF" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
