@@ -11,7 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginHorizontal="6dp">
+        android:layout_marginHorizontal="6dp"
+        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+        app:strokeWidth="0.5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
