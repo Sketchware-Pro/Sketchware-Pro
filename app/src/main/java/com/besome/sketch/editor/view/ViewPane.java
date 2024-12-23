@@ -442,22 +442,6 @@ public class ViewPane extends RelativeLayout {
                 }
             }
         }
-        if (classInfo.b("ExtendedFloatingActionButton")) {
-            ExtendedFloatingActionButton looper = (ExtendedFloatingActionButton) view;
-            int textColor = viewBean.text.textColor;
-            int color = viewBean.layout.backgroundColor;
-            if (color == 0xffffff) {
-                looper.setBackgroundColor(ProjectFile.getColor(viewBean.layout.backgroundResColor, sc_id));
-            } else {
-                looper.setBackgroundColor(color);
-            }
-            if (textColor == 0xFF000000){
-                looper.setTextColor(0xFFFFFFFF);
-            } else {
-                looper.setTextColor(textColor);
-            }
-
-        }
 
         if (classInfo.a("EditText")) {
             updateEditText((EditText) view, viewBean);

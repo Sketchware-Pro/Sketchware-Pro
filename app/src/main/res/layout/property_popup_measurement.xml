@@ -14,6 +14,13 @@
         android:orientation="vertical">
 
         <RadioButton
+            android:id="@+id/rb_fillparent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="fill_parent"
+            android:textSize="15sp" />
+
+        <RadioButton
             android:id="@+id/rb_matchparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
