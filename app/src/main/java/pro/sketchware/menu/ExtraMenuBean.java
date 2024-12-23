@@ -209,6 +209,7 @@ public class ExtraMenuBean {
                     case "checkbox":
                     case "switch":
                     case "materialswitch":
+                    case "extendedfloadtingactionbutton":
                     case "seekbar":
                     case "calendarview":
                     case "compoundButton":

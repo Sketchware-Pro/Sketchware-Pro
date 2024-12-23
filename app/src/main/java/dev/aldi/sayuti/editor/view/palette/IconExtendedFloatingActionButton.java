@@ -1,5 +1,7 @@
 package dev.aldi.sayuti.editor.view.palette;
 
+import static com.besome.sketch.design.DesignActivity.sc_id;
+
 import android.content.Context;
 import android.view.ViewGroup;
 
@@ -7,6 +9,7 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
 
 import mod.agus.jcoderz.beans.ViewBeans;
+import mod.hey.studios.util.ProjectFile;
 import pro.sketchware.R;
 
 import android.content.Context;
@@ -31,13 +34,14 @@ public class IconExtendedFloatingActionButton extends IconBase {
         ViewBean viewBean = new ViewBean();
         viewBean.type = ViewBeans.VIEW_TYPE_WIDGET_EXTENDEDFLOATINGACTIONBUTTON;
         viewBean.layout.orientation = VERTICAL;
-        viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        viewBean.layout.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         viewBean.layout.paddingLeft = 8;
         viewBean.layout.paddingTop = 8;
         viewBean.layout.paddingRight = 8;
         viewBean.layout.paddingBottom = 8;
+        viewBean.layout.backgroundColor = 0xFF2196F3;
         viewBean.text.text = "ExtendedFloatingActionButton";
-        viewBean.convert = "com.google.android.material.floatingactionbutton.FloatingActionButton";
+        viewBean.convert = "com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton";
         viewBean.inject = "app:icon=\"@drawable/default_image\"\napp:iconTint=\"#FFFFFF\"\napp:iconSize=\"24dp\"";
         return viewBean;
     }

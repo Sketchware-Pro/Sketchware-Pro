@@ -400,6 +400,7 @@ public class kq {
             case "locationmanager" -> "LocationManager";
             case "switch" -> "Switch";
             case "materialswitch" -> "MaterialSwitch";
+            case "extendedfloadtingactionbutton" -> "ExtendedFloatingActionButton";
             case "imageview" -> "ImageView";
             case "varInt" -> "Number";
             case "varMap" -> "Map";

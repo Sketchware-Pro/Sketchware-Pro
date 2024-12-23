@@ -148,6 +148,7 @@ public class wq {
             case 47 -> "codeview";
             case 48 -> "recyclerview";
             case 49 -> "materialswitch";
+            case 50 -> "extendedfloadtingactionbutton";
             default -> "widget";
         };
     }
