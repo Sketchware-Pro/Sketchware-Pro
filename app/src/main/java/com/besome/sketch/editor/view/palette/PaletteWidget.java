@@ -23,6 +23,7 @@ import dev.aldi.sayuti.editor.view.palette.IconCardView;
 import dev.aldi.sayuti.editor.view.palette.IconCircleImageView;
 import dev.aldi.sayuti.editor.view.palette.IconCodeView;
 import dev.aldi.sayuti.editor.view.palette.IconCollapsingToolbar;
+import dev.aldi.sayuti.editor.view.palette.IconExtendedFloatingActionButton;
 import dev.aldi.sayuti.editor.view.palette.IconGoogleSignInButton;
 import dev.aldi.sayuti.editor.view.palette.IconLottieAnimation;
 import dev.aldi.sayuti.editor.view.palette.IconMaterialButton;
@@ -215,6 +216,7 @@ public class PaletteWidget extends LinearLayout {
             case "YoutubePlayer" -> new IconYoutubePlayer(context);
             case "OTPView" -> new IconOTPView(context);
             case "MaterialSwitch" -> new IconMaterialSwitch(context);
+            case "ExtendedFloatingActionButton" -> new IconExtendedFloatingActionButton(context);
             case "CodeView" -> new IconCodeView(context);
             case "RecyclerView" -> new IconRecyclerView(context);
             default -> null;

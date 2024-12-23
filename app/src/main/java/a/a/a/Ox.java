@@ -341,7 +341,7 @@ public class Ox {
             }
         }
         if (viewBean.getClassInfo().a("LinearLayout") &&
-                !widgetTag.c().matches("(BottomAppBar|NavigationView|Coordinator|Floating|Collaps|include)\\w*")) {
+                !widgetTag.c().matches("(BottomAppBar|NavigationView|Coordinator|Floating|Extended|Collaps|include)\\w*")) {
             if (!toNotAdd.contains("android:orientation") && !injectHandler.contains("orientation")) {
                 int orientation = viewBean.layout.orientation;
                 if (orientation == LinearLayout.HORIZONTAL) {
@@ -357,6 +357,9 @@ public class Ox {
                     widgetTag.addAttribute("android", "weightSum", String.valueOf(weightSum));
                 }
             }
+        }
+        if (viewBean.getClassInfo().a("ExtendedFloatingActionButton")) {
+            writeTextExtendedFloatingButtonAttributes(widgetTag, viewBean);
         }
         if (viewBean.getClassInfo().a("TextView")) {
             writeViewGravity(widgetTag, viewBean);
@@ -512,7 +515,7 @@ public class Ox {
         String resName = viewBean.image.resName;
         if (!resName.isEmpty() && !"NONE".equals(resName)) {
             String value = "@drawable/" + resName.toLowerCase();
-            if (nx.c().equals("FloatingActionButton")) {
+            if (nx.c().equals("FloatingActionButton") ||  nx.c.equals("ExtendedFloatingActionButton")) {
                 if (!toNotAdd.contains("app:srcCompat") && !injectHandler.contains("srcCompat")) {
                     nx.addAttribute("app", "srcCompat", value);
                 }
@@ -703,6 +706,18 @@ public class Ox {
         }
         if (paddingBottom > 0 && !toNotAdd.contains("android:paddingBottom") && !injectHandler.contains("paddingBottom")) {
             nx.addAttribute("android", "paddingBottom", paddingBottom + "dp");
+        }
+    }
+    private void writeTextExtendedFloatingButtonAttributes(XmlBuilder nx, ViewBean viewBean) {
+        var injectHandler = new InjectAttributeHandler(viewBean);
+        Set<String> toNotAdd = readAttributesToReplace(viewBean);
+        String text = viewBean.text.text;
+        if (text != null && !text.isEmpty() && !toNotAdd.contains("android:text") && !injectHandler.contains("text")) {
+            if (text.startsWith("@")) {
+                nx.addAttribute("android", "text", text);
+            } else {
+                nx.addAttribute("android", "text", escapeXML(text));
+            }
         }
     }
 

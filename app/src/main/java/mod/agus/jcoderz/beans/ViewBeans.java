@@ -37,6 +37,7 @@ public class ViewBeans {
     public static final int VIEW_TYPE_WIDGET_CODEVIEW = 47;
     public static final int VIEW_TYPE_WIDGET_RECYCLERVIEW = 48;
     public static final int VIEW_TYPE_WIDGET_MATERIALSWITCH = 49;
+    public static final int VIEW_TYPE_WIDGET_EXTENDEDFLOATINGACTIONBUTTON = 50;
 
     /**
      * Map that stores both a view's type and type name.
@@ -73,6 +74,7 @@ public class ViewBeans {
             .put(VIEW_TYPE_WIDGET_CODEVIEW, "CodeView")
             .put(VIEW_TYPE_WIDGET_RECYCLERVIEW, "RecyclerView")
             .put(VIEW_TYPE_WIDGET_MATERIALSWITCH, "MaterialSwitch")
+            .put(VIEW_TYPE_WIDGET_EXTENDEDFLOATINGACTIONBUTTON, "ExtendedFloatingActionButton")
             .build();
 
     public static String buildClassInfo(int id) {
@@ -118,6 +120,7 @@ public class ViewBeans {
             case VIEW_TYPE_WIDGET_OTPVIEW -> R.drawable.ic_mtrl_password;
             case VIEW_TYPE_WIDGET_CODEVIEW -> R.drawable.ic_mtrl_terminal;
             case VIEW_TYPE_WIDGET_MATERIALSWITCH -> R.drawable.ic_mtrl_toggle;
+            case VIEW_TYPE_WIDGET_EXTENDEDFLOATINGACTIONBUTTON -> R.drawable.ic_mtrl_fab;
             default -> id;
         };
     }

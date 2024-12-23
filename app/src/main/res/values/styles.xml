@@ -119,7 +119,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.AppCompat.NoActionBar" parent="@style/Theme.AppCompat">
+    <style name="Theme.Material3.NoActionBar" parent="@style/Theme.AppCompat">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

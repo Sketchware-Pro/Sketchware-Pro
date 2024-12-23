@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.android.tools.r8.V;
 import com.besome.sketch.beans.ImageBean;
 import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectResourceBean;
@@ -41,6 +42,7 @@ import com.besome.sketch.editor.view.item.ItemCalendarView;
 import com.besome.sketch.editor.view.item.ItemCardView;
 import com.besome.sketch.editor.view.item.ItemCheckBox;
 import com.besome.sketch.editor.view.item.ItemEditText;
+import com.besome.sketch.editor.view.item.ItemExtendedFab;
 import com.besome.sketch.editor.view.item.ItemFloatingActionButton;
 import com.besome.sketch.editor.view.item.ItemHorizontalScrollView;
 import com.besome.sketch.editor.view.item.ItemImageView;
@@ -60,6 +62,7 @@ import com.besome.sketch.editor.view.item.ItemTabLayout;
 import com.besome.sketch.editor.view.item.ItemTextView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.tabs.TabLayout;
@@ -294,6 +297,7 @@ public class ViewPane extends RelativeLayout {
             case ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW -> new ItemCodeView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW -> new ItemRecyclerView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_MATERIALSWITCH -> new ItemMaterialSwitch(context);
+            case ViewBeans.VIEW_TYPE_WIDGET_EXTENDEDFLOATINGACTIONBUTTON -> new ItemExtendedFab(context);
             default -> getUnknownItemView(viewBean);
         };
         assert item != null;
@@ -427,7 +431,7 @@ public class ViewPane extends RelativeLayout {
         if (classInfo.a("TextView")) {
             TextView textView = (TextView) view;
             updateTextView(textView, viewBean);
-            if (!classInfo.b("Button") && !classInfo.b("Switch") && !classInfo.b("MaterialSwitch")) {
+            if (!classInfo.b("Button") && !classInfo.b("Switch") && !classInfo.b("MaterialSwitch") && !classInfo.b("ExtendedFloatingActionButton")) {
                 textView.setGravity(viewBean.layout.gravity);
             } else {
                 int gravity = viewBean.layout.gravity;
@@ -438,6 +442,23 @@ public class ViewPane extends RelativeLayout {
                 }
             }
         }
+        if (classInfo.b("ExtendedFloatingActionButton")) {
+            ExtendedFloatingActionButton looper = (ExtendedFloatingActionButton) view;
+            int textColor = viewBean.text.textColor;
+            int color = viewBean.layout.backgroundColor;
+            if (color == 0xffffff) {
+                looper.setBackgroundColor(ProjectFile.getColor(viewBean.layout.backgroundResColor, sc_id));
+            } else {
+                looper.setBackgroundColor(color);
+            }
+            if (textColor == 0xFF000000){
+                looper.setTextColor(0xFFFFFFFF);
+            } else {
+                looper.setTextColor(textColor);
+            }
+
+        }
+
         if (classInfo.a("EditText")) {
             updateEditText((EditText) view, viewBean);
         }
@@ -1196,6 +1217,7 @@ public class ViewPane extends RelativeLayout {
         cardView.setStrokeWidth(PropertiesUtil.resolveSize(strokeWidth, 0));
         cardView.setStrokeColor(PropertiesUtil.isHexColor(strokeColor) ? PropertiesUtil.parseColor(strokeColor) : Color.WHITE);
     }
+
 
     private void updateCircleImageView(ItemCircleImageView imageView, InjectAttributeHandler handler) {
         String borderColor = handler.getAttributeValueOf("civ_border_color");

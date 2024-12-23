@@ -28,6 +28,7 @@ public class IconMaterialSwitch extends IconBase {
         layoutBean.paddingRight = 8;
         layoutBean.paddingBottom = 8;
         layoutBean.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        viewBean.text.text = "MaterialSwitch";
         viewBean.convert = "com.google.android.material.materialswitch.MaterialSwitch";
         return viewBean;
 

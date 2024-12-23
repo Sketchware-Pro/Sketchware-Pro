@@ -54,13 +54,13 @@ public class WidgetsCreatorManager {
     private final String widgetExportDirectoryPath = widgetResourcesDirectoryPath + "export/";
     private final ArrayList<String> allCategories = new ArrayList<>();
     private final ArrayList<String> mainCategories = new ArrayList<>(Arrays.asList(
-            "Layouts", "AndroidX", "Widgets", "List", "Library", "Google", "Date & Time"
+            "Layouts", "AndroidX", "Widgets", "List", "Library", "Google", "Date & Time", "Material You"
     ));
     private final List<String> availableWidgetsNames = Arrays.asList(
             "BottomNavigationView", "Button", "CardView", "CheckBox", "CodeView", "EditText", "GridView",
             "HScrollView", "ImageView", "LinearLayout", "ListView", "MapView", "MaterialButton", "ProgressBar",
             "RadioButton", "RecyclerView", "RelativeLayout", "ScrollView", "SeekBar", "Spinner", "Switch", "MaterialSwitch",
-            "SwipeRefreshLayout", "TabLayout", "TextInputLayout", "TextView", "VideoView", "ViewPager", "WebView"
+            "SwipeRefreshLayout", "TabLayout", "TextInputLayout", "TextView", "VideoView", "ViewPager", "WebView" , "ExtendedFloatingActionButton"
     );
     private final List<String> availableWidgetsTypes = new ArrayList<>();
     private final ViewEditor viewEditor;

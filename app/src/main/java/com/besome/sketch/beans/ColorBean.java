@@ -25,6 +25,9 @@ public class ColorBean {
 
         if (color == 0xffffff) return "NONE";
 
+        if (color == 0xFF000000) return "BLACK";
+        if (color == 0xFFFFFFFF) return "WHITE";
+
         if (isWideFilling) return String.format("#%08X", color);
 
         return String.format("#%06X", color & 0xffffff);

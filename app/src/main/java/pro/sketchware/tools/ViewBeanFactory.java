@@ -751,6 +751,7 @@ public class ViewBeanFactory {
         return switch (name) {
             //Add more here
             case "MaterialSwitch" -> ViewBeans.VIEW_TYPE_WIDGET_MATERIALSWITCH;
+            case "ExtendedFloatingActionButton" -> ViewBeans.VIEW_TYPE_WIDGET_EXTENDEDFLOATINGACTIONBUTTON;
             case "MaterialCardView" -> ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
             case "TextInputEditText" -> ViewBean.VIEW_TYPE_WIDGET_EDITTEXT;
             //idk should I use ImageView(ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW) or Button(ViewBean.VIEW_TYPE_WIDGET_BUTTON)?

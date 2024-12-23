@@ -125,6 +125,10 @@ public class Gx {
                 classInfos = "View.Clickable.TextView.Button.CompoundButton.SwitchCompat.MaterialSwitch";
                 break;
 
+            case "ExtendedFloatingActionButton":
+                classInfos = "View.Clickable.TextView.ExtendedFloatingActionButton";
+                break;
+
             case "SeekBar":
                 classInfos = "View.SeekBar";
                 break;

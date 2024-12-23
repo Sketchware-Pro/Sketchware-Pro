@@ -288,6 +288,7 @@ public class ViewEditorFragment extends qA {
         viewEditor.paletteWidget.extraTitle("Material You", 1);
         viewEditor.extraWidget("", "MaterialSwitch", "MaterialSwitch");
         viewEditor.extraWidget("", "MaterialButton", "MaterialButton");
+        viewEditor.extraWidget("", "ExtendedFloatingActionButton", "ExtendedFloatingActionButton");
         widgetsCreatorManager.addWidgetsByTitle("Material You");
         widgetsCreatorManager.addExtraClasses();
     }
