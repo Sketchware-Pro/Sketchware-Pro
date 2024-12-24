@@ -156,6 +156,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private Handler handler = new Handler(Looper.getMainLooper());
     private ProjectFileBean projectFile;
     private TextView fileName;
+    private String currentJavaFileName;
     private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (projectFileSelector != null) {
@@ -242,8 +243,16 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
     private void refreshFileSelector() {
         if (projectFile != null) {
+            var javaFileName = projectFile.getJavaName();
+            if (!javaFileName.isEmpty()) {
+                currentJavaFileName = javaFileName;
+            }
             var currentItem = viewPager.getCurrentItem();
-            fileName.setText(currentItem == 0 ? projectFile.getXmlName() : projectFile.getJavaName());
+            if (currentItem == 0) {
+                fileName.setText(projectFile.getXmlName());
+            } else {
+                fileName.setText(currentJavaFileName);
+            }
         }
     }
 
