@@ -145,6 +145,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private Button runProject;
     private ProjectFileSelector projectFileSelector;
     private Menu bottomMenu;
+    private MenuItem directXmlEditorMenu;
     private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (projectFileSelector != null) {
@@ -402,7 +403,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         bottomMenu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
         bottomMenu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK").setVisible(false);
         bottomMenu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures").setVisible(false);
-        bottomMenu.add(Menu.NONE, 7, Menu.NONE, "Direct XML editor").setVisible(false);
+        directXmlEditorMenu = bottomMenu.add(Menu.NONE, 7, Menu.NONE, "Direct XML editor");
 
         bottomAppBar.setOnMenuItemClickListener(
                 item -> {
@@ -498,6 +499,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     componentTabAdapter.unselectAll();
                 }
                 if (position == 0) {
+                    directXmlEditorMenu.setVisible(true);
                     if (viewTabAdapter != null) {
                         viewTabAdapter.c(true);
                         xmlLayoutOrientation.setVisibility(View.VISIBLE);
@@ -505,6 +507,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                         projectFileSelector.syncState();
                     }
                 } else if (position == 1) {
+                    directXmlEditorMenu.setVisible(false);
                     if (viewTabAdapter != null) {
                         xmlLayoutOrientation.setVisibility(View.GONE);
                         viewTabAdapter.c(false);
@@ -515,6 +518,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                         }
                     }
                 } else {
+                    directXmlEditorMenu.setVisible(false);
                     if (viewTabAdapter != null) {
                         viewTabAdapter.c(false);
                         xmlLayoutOrientation.setVisibility(View.GONE);
