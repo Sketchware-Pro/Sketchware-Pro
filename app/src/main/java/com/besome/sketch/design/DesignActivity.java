@@ -548,6 +548,22 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         return new BuildSettings(sc_id).getValue(BuildSettings.SETTING_ENABLE_BACKGROUND_BUILDING, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
     }
 
+    private boolean isDebugApkExists() {
+        if (q != null) {
+            return FileUtil.isExistFile(q.finalToInstallApkPath);
+        }
+        return false;
+    }
+
+    private void updateBottomMenu() {
+        if (bottomMenu != null) {
+            bottomMenu.findItem(2).setVisible(q != null && FileUtil.isExistFile(q.projectMyscPath));
+            var isDebugApkExists = isDebugApkExists();
+            bottomMenu.findItem(4).setVisible(isDebugApkExists);
+            bottomMenu.findItem(6).setVisible(isDebugApkExists);
+        }
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -1220,6 +1236,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     }
                     activity.runProject.setText(Helper.getResString(R.string.common_word_run));
                     activity.runProject.setClickable(true);
+                    activity.updateBottomMenu();
                     activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
             });
@@ -1378,6 +1395,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                         }
                     }
 
+                    activity.updateBottomMenu();
                     activity.projectFileSelector.syncState();
                     activity.h();
                     if (savedInstanceState == null) {
