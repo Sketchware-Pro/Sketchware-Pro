@@ -926,12 +926,7 @@ public class yq {
     private String getXMLStyle() {
         if (N.g) {
             XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
-            if (projectSettings.isMaterial3Enable()) {
-                stylesFileBuilder.addStyle("AppTheme", "Theme.Material3.Light.NoActionBar");
-            } else {
-                stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar");
-            }
-            //todo: new material attrs
+            stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar");
             // todo: add `colorOnPrimary` to custom theme colors.
             stylesFileBuilder.addItemToStyle("AppTheme", "colorOnPrimary", "@android:color/white");
             stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimary", "@color/colorPrimary");
@@ -942,13 +937,8 @@ public class yq {
             stylesFileBuilder.addStyle("AppTheme.FullScreen", "AppTheme");
             stylesFileBuilder.addItemToStyle("AppTheme.FullScreen", "android:windowFullscreen", "true");
             stylesFileBuilder.addItemToStyle("AppTheme.FullScreen", "android:windowContentOverlay", "@null");
-            if (projectSettings.isMaterial3Enable()) {
-                stylesFileBuilder.addStyle("AppTheme.AppBarOverlay", "ThemeOverlay.Material3.Dark.ActionBar");
-                stylesFileBuilder.addStyle("AppTheme.PopupOverlay", "ThemeOverlay.Material3.Light");
-            } else {
-                stylesFileBuilder.addStyle("AppTheme.AppBarOverlay", "ThemeOverlay.MaterialComponents.Dark.ActionBar");
-                stylesFileBuilder.addStyle("AppTheme.PopupOverlay", "ThemeOverlay.MaterialComponents.Light");
-            }
+            stylesFileBuilder.addStyle("AppTheme.AppBarOverlay", "ThemeOverlay.MaterialComponents.Dark.ActionBar");
+            stylesFileBuilder.addStyle("AppTheme.PopupOverlay", "ThemeOverlay.MaterialComponents.Light");
             stylesFileBuilder.addStyle("AppTheme.DebugActivity", "AppTheme");
             stylesFileBuilder.addItemToStyle("AppTheme.DebugActivity", "actionBarStyle", "@style/ThemeOverlay.MaterialComponents.ActionBar.Primary");
             stylesFileBuilder.addItemToStyle("AppTheme.DebugActivity", "actionBarTheme", "@style/Widget.MaterialComponents.ActionBar.Primary");
