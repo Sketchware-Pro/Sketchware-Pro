@@ -119,8 +119,6 @@ import pro.sketchware.utility.ResourceUtil;
 import pro.sketchware.utility.SvgUtils;
 
 public class ViewPane extends RelativeLayout {
-    
-    private final String stringsStart = "@string/";
     private Context context;
     private ViewGroup rootLayout;
     private int b = 99;
@@ -129,11 +127,10 @@ public class ViewPane extends RelativeLayout {
     private TextView highlightedTextView;
     private kC resourcesManager;
     private String sc_id;
+    private final String stringsStart = "@string/";
+
     private SvgUtils svgUtils;
-    private ProjectSettings projectSettings;
-    private ProjectLibraryBean projectLibrary;
-    private int theme = R.style.ThemeOverlay_SketchwarePro_ViewPane;
-    
+
     public ViewPane(Context context) {
         super(context);
         initialize();
@@ -145,36 +142,22 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void initialize() {
-        context = getContext();
+        context = new ContextThemeWrapper(getContext(), R.style.ThemeOverlay_SketchwarePro_ViewEditor);
         svgUtils = new SvgUtils(context);
         svgUtils.initImageLoader();
         setBackgroundColor(Color.WHITE);
         addRootLayout();
         initTextView();
     }
-    
-    public void setResourceManager(kC resourcesManager) {
-        this.resourcesManager = resourcesManager;
-    }
-    
-    public void setScId(String sc_id) {
-        this.sc_id = sc_id;
-        reloadSettings();
-    }
-    
-    private void reloadSettings() {
-        projectSettings = new ProjectSettings(sc_id);
-        projectLibrary = jC.c(sc_id).c();
-        if (projectLibrary.isEnabled() && projectSettings.isMaterial3Enable()) {
-            theme = R.style.ThemeOverlay_SketchwarePro_ViewPane_Material3;
-        }
-        context = new ContextThemeWrapper(getContext(), theme);
-    }
 
     public void clearViews() {
         resetView(true);
         viewInfos = new ArrayList<>();
         ((ty) rootLayout).setChildScrollEnabled(true);
+    }
+
+    public void setResourceManager(kC resourcesManager) {
+        this.resourcesManager = resourcesManager;
     }
 
     private void initTextView() {
@@ -244,6 +227,10 @@ public class ViewPane extends RelativeLayout {
         viewBean.preParentType = -1;
         findViewWithTag.setVisibility(VISIBLE);
         return (sy) findViewWithTag;
+    }
+
+    public void setScId(String sc_id) {
+        this.sc_id = sc_id;
     }
 
     public void addRootLayout(ViewBean viewBean) {

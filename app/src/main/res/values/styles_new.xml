@@ -56,9 +56,8 @@
         <item name="cornerSize">14dp</item>
     </style>
 
-    <style name="ThemeOverlay.SketchwarePro.ViewPane" parent="Base.Theme.MaterialComponents.Light" />
-    <style name="ThemeOverlay.SketchwarePro.ViewPane.Material3" parent="Base.Theme.Material3.Light" />
-    
+    <style name="ThemeOverlay.SketchwarePro.ViewEditor" parent="Base.Theme.MaterialComponents.Light" />
+
     <style name="Preference.SketchwarePro.SwitchPreferenceCompat" parent="@style/Preference.SwitchPreferenceCompat.Material">
         <item name="widgetLayout">@layout/preference_widget_layout_m3_switch</item>
     </style>
