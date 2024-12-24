@@ -58,11 +58,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:id="@+id/progress_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
+                    <TextView
+                        android:id="@+id/progress_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:singleLine="true"
+                        android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:id="@+id/progress"
+                        android:indeterminate="true" />
+                </LinearLayout>
                 <com.google.android.material.bottomappbar.BottomAppBar
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
