@@ -60,7 +60,6 @@ import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.besome.sketch.editor.manage.library.ManageLibraryActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
 import com.besome.sketch.editor.manage.view.ManageViewActivity;
-import com.besome.sketch.editor.view.ProjectFileSelector;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
@@ -150,7 +149,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private yq q;
     private DB r;
     private DB t;
-    private ProjectFileSelector projectFileSelector;
     private Menu bottomMenu;
     private MenuItem directXmlEditorMenu;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -504,36 +502,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     return true;
                 });
         xmlLayoutOrientation = findViewById(R.id.img_orientation);
-        projectFileSelector = findViewById(R.id.file_selector);
-        projectFileSelector.setScId(sc_id);
-        projectFileSelector.setOnSelectedFileChangeListener((i, projectFileBean) -> {
-            if (i == 0) {
-                if (viewTabAdapter != null && projectFileBean != null) {
-                    int orientation = projectFileBean.orientation;
-                    if (orientation == ProjectFileBean.ORIENTATION_PORTRAIT) {
-                        xmlLayoutOrientation.setImageResource(R.drawable.ic_screen_portrait_grey600_24dp);
-                    } else if (orientation == ProjectFileBean.ORIENTATION_LANDSCAPE) {
-                        xmlLayoutOrientation.setImageResource(R.drawable.ic_screen_landscape_grey600_24dp);
-                    } else {
-                        xmlLayoutOrientation.setImageResource(R.drawable.ic_screen_rotation_grey600_24dp);
-                    }
-                    viewTabAdapter.a(projectFileBean);
-                }
-            } else if (i == 1) {
-                if (eventTabAdapter != null) {
-                    if (projectFileBean != null) {
-                        eventTabAdapter.setCurrentActivity(projectFileBean);
-                        eventTabAdapter.refreshEvents();
-                    } else {
-                        return;
-                    }
-                }
-                if (componentTabAdapter != null && projectFileBean != null) {
-                    componentTabAdapter.setProjectFile(projectFileBean);
-                    componentTabAdapter.refreshData();
-                }
-            }
-        });
         viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
         viewPager.setOffscreenPageLimit(3);
@@ -694,7 +662,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
-        projectFileSelector.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
         if (!isStoragePermissionGranted()) {
             finish();
@@ -821,6 +788,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private void showCurrentActivitySrcCode() {
+        if (projectFile == null) return;
         ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(getLayoutInflater());
         loadingDialogBinding.tvProgress.setText("Generating source code...");
         var loadingDialog = new MaterialAlertDialogBuilder(this)
@@ -831,7 +799,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         loadingDialog.show();
 
         new Thread(() -> {
-            String filename = projectFileSelector.getFileName();
+            String filename = projectFile.fileName;
             final String source = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
             var dialogBuilder = new MaterialAlertDialogBuilder(this)
@@ -909,9 +877,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      * Opens {@link ViewCodeEditor}.
      */
     void toViewCodeEditor() {
+        if (projectFile == null) return;
         k();
         new Thread(() -> {
-            String filename = projectFileSelector.getFileName();
+            String filename = projectFile.fileName;
             // var yq = new yq(getApplicationContext(), sc_id);
             var xmlGenerator = new Ox(q.N, jC.b(sc_id).b(filename));
             var projectDataManager = jC.a(sc_id);
@@ -923,7 +892,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             runOnUiThread(() -> {
                 if (isFinishing()) return;
                 h();
-                launchActivity(ViewCodeEditorActivity.class, openViewCodeEditor, new Pair<>("title", projectFileSelector.getFileName()), new Pair<>("content", content));
+                launchActivity(ViewCodeEditorActivity.class, openViewCodeEditor, new Pair<>("title", projectFile.fileName), new Pair<>("content", content));
             });
         }).start();
     }
@@ -949,16 +918,18 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      * Opens {@link AndroidManifestInjection}.
      */
     void toAndroidManifestManager() {
+        if (projectFile == null) return;
         launchActivity(AndroidManifestInjection.class, null,
-                new Pair<>("file_name", projectFileSelector.currentJavaFileName));
+                new Pair<>("file_name", projectFile.getJavaName()));
     }
 
     /**
      * Opens {@link ManageCustomAttributeActivity}.
      */
     void toAppCompatInjectionManager() {
+        if (projectFile == null) return;
         launchActivity(ManageAppCompatActivity.class, null,
-                new Pair<>("file_name", projectFileSelector.currentXmlFileName));
+                new Pair<>("file_name", projectFile.getXmlName()));
     }
 
     /**
@@ -1432,15 +1403,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             if (activity != null) {
                 activity.loadProject(savedInstanceState != null);
                 activity.runOnUiThread(() -> {
-                    if (savedInstanceState != null) {
-                        activity.projectFileSelector.onRestoreInstanceState(savedInstanceState);
-                        if (savedInstanceState.getInt("file_selector_current_file_type") == 0) {
-                            activity.xmlLayoutOrientation.setVisibility(View.VISIBLE);
-                        } else {
-                            activity.xmlLayoutOrientation.setVisibility(View.GONE);
-                        }
-                    }
-
                     activity.updateBottomMenu();
                     activity.refresh();
                     activity.h();
