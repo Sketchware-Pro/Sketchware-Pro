@@ -15,6 +15,8 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
@@ -144,6 +146,7 @@ public class DesignActivity extends BaseAppCompatActivity {
     private ProjectFileSelector projectFileSelector;
     private Menu bottomMenu;
     private MenuItem directXmlEditorMenu;
+    private Handler handler = new Handler(Looper.getMainLooper());
     private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (projectFileSelector != null) {
@@ -550,10 +553,15 @@ public class DesignActivity extends BaseAppCompatActivity {
 
     private void updateBottomMenu() {
         if (bottomMenu != null) {
-            bottomMenu.findItem(2).setVisible(q != null && FileUtil.isExistFile(q.projectMyscPath));
-            var isDebugApkExists = isDebugApkExists();
-            bottomMenu.findItem(4).setVisible(isDebugApkExists);
-            bottomMenu.findItem(6).setVisible(isDebugApkExists);
+            handler.post(
+                    () -> {
+                        bottomMenu
+                                .findItem(2)
+                                .setVisible(q != null && FileUtil.isExistFile(q.projectMyscPath));
+                        var isDebugApkExists = isDebugApkExists();
+                        bottomMenu.findItem(4).setVisible(isDebugApkExists);
+                        bottomMenu.findItem(6).setVisible(isDebugApkExists);
+                    });
         }
     }
 
