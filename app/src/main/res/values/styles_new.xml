@@ -20,15 +20,8 @@
         <item name="titleCollapseMode">scale</item>
     </style>
 
-    <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed" parent="TextAppearance.Material3.TitleLarge">
-        <item name="fontFamily">@font/gilroy</item>
-        <item name="android:fontFamily">@font/gilroy</item>
-    </style>
-
-    <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Expanded" parent="TextAppearance.Material3.HeadlineMedium">
-        <item name="fontFamily">@font/gilroy</item>
-        <item name="android:fontFamily">@font/gilroy</item>
-    </style>
+    <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed" parent="TextAppearance.SketchwarePro.TitleLarge" />
+    <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Expanded" parent="TextAppearance.SketchwarePro.HeadlineMedium" />
 
     <style name="Widget.SketchwarePro.Toolbar.SmallText" parent="Widget.Material3.Toolbar">
         <item name="titleTextAppearance">?attr/textAppearanceBodyLarge</item>
@@ -63,28 +56,17 @@
         <item name="cornerSize">14dp</item>
     </style>
 
-    <style name="ThemeOverlay.SketchwarePro.ViewEditor" parent="Base.Theme.MaterialComponents.Light" />
-
+    <style name="ThemeOverlay.SketchwarePro.ViewPane" parent="Base.Theme.MaterialComponents.Light" />
+    <style name="ThemeOverlay.SketchwarePro.ViewPane.Material3" parent="Base.Theme.Material3.Light" />
+    
     <style name="Preference.SketchwarePro.SwitchPreferenceCompat" parent="@style/Preference.SwitchPreferenceCompat.Material">
         <item name="widgetLayout">@layout/preference_widget_layout_m3_switch</item>
     </style>
 
-    <!--  TabLayout style  -->
-    <style name="TabLayoutStyle" parent="Base.Widget.Design.TabLayout">
-        <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
-        <item name="tabIndicatorColor">?attr/colorPrimary</item>
+    <style name="TabLayoutStyle" parent="Widget.Material3.TabLayout">
+        <item name="android:background">@drawable/tab_background_on_surface_with_divider</item>
         <item name="tabIndicator">@drawable/view_tab_indicator</item>
-        <item name="tabIndicatorAnimationMode">elastic</item>
-        <item name="tabSelectedTextColor">?attr/colorPrimary</item>
-        <item name="font">@font/gilroy</item>
-        <item name="android:fontFamily">@font/gilroy</item>
-
     </style>
-
-    <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">
-        <item name="textAllCaps">false</item>
-    </style>
-    <!--  end TabLayout style  -->
 
     <style name="ThemeOverlay.SketchwarePro.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="android:navigationBarColor">@android:color/transparent</item>

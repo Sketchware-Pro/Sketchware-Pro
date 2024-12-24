@@ -996,6 +996,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private static class BuildTask extends BaseTask implements DialogInterface.OnCancelListener, BuildProgressReceiver {
         public static final String ACTION_CANCEL_BUILD = "com.besome.sketch.design.ACTION_CANCEL_BUILD";
         private final BuildingDialog dialog;
+        private aB cancelDialog;
         private final ExecutorService executorService = Executors.newSingleThreadExecutor();
         private volatile boolean canceled;
         private volatile boolean isBuildFinished;
@@ -1180,8 +1181,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     dialog.show();
                 });
             } catch (zy zy) {
+                isBuildFinished = true;
                 activity.indicateCompileErrorOccurred(zy.getMessage());
             } catch (Throwable tr) {
+                isBuildFinished = true;
                 LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
                 activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));
             } finally {
@@ -1216,6 +1219,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                             isShowingNotification = false;
                         }
                     } else {
+                        ensureCancelDialogCanceled();
                         if (dialog.isShowing()) {
                             dialog.dismiss();
                         }
@@ -1234,7 +1238,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
             if (!activity.isBuildingInTheBackground()) {
                 activity.runOnUiThread(() -> {
-                    aB cancelDialog = new aB(activity);
+                    cancelDialog = new aB(activity);
                     cancelDialog.b(activity.getString(R.string.design_cancel_build_title));
                     cancelDialog.a(activity.getString(R.string.design_cancel_build_desc));
                     cancelDialog.a(R.drawable.ic_mtrl_exit);
@@ -1272,6 +1276,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 notificationManager.cancel(notificationId);
                 isShowingNotification = false;
             }
+            ensureCancelDialogCanceled();
             DesignActivity activity = getActivity();
             if (activity != null) {
                 activity.runOnUiThread(() -> {
@@ -1279,6 +1284,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     activity.runProject.setClickable(true);
                     activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 });
+            }
+        }
+
+        public void ensureCancelDialogCanceled() {
+            if (cancelDialog != null && cancelDialog.isShowing()) {
+                cancelDialog.dismiss();
+                cancelDialog = null;
             }
         }
 

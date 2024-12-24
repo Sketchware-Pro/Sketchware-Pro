@@ -66,11 +66,7 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         binding = ManageSoundBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.topAppBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-
-        binding.topAppBar.setNavigationOnClickListener(v -> {
+        binding.toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }

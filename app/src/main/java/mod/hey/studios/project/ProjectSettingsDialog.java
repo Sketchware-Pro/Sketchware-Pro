@@ -27,7 +27,7 @@ public class ProjectSettingsDialog {
     public void show() {
         BottomSheetDialog dialog = new BottomSheetDialog(activity);
         DialogProjectSettingsBinding binding = DialogProjectSettingsBinding.inflate(activity.getLayoutInflater());
-        
+
         dialog.setOnShowListener(bsd -> {
             var b = (BottomSheetDialog) bsd;
             var parent = b.findViewById(com.google.android.material.R.id.design_bottom_sheet);
@@ -66,12 +66,13 @@ public class ProjectSettingsDialog {
                 binding.cbRemoveOldMethods,
                 binding.cbUseNewMaterialComponentsAppTheme
         };
-        
+
         binding.save.setOnClickListener(v -> {
             settings.setValues(preferences);
             dialog.dismiss();
         });
         binding.cancel.setOnClickListener(v -> dialog.dismiss());
+
         dialog.show();
     }
 }

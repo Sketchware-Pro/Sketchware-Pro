@@ -25,12 +25,9 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="50dp"
-                android:layout_height="5dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="4dp"
-                android:background="@drawable/rounded_bottom_sheet_slider" />
+            <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/common_dialog_title_layout"
