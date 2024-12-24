@@ -117,7 +117,8 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingTop="2dp"
-                    android:paddingBottom="2dp">
+                    android:paddingBottom="2dp"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="0dp"
