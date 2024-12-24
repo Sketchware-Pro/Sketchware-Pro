@@ -1251,7 +1251,6 @@ public class DesignActivity extends BaseAppCompatActivity {
             DesignActivity activity = getActivity();
             if (activity != null) {
                 activity.runOnUiThread(() -> {
-                    updateRunMenu(false);
                     activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 });
             }
