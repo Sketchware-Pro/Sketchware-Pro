@@ -733,7 +733,7 @@ public class ViewBeanFactory {
     }
 
     private boolean hasDimensionSuffix(String str) {
-        String pattern = "^(.+)dp$|^(.+)sp$|^(.+)px$|^(.+)pt$|^(.+)in$|^(.+)mm$";
+        String pattern = "^(\\d+(\\.\\d+)?)(dp|sp|px|pt|in|mm)$";
         return str.matches(pattern);
     }
 
