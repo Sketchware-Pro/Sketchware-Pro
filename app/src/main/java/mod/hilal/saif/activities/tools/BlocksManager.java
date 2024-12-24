@@ -143,8 +143,6 @@ public class BlocksManager extends BaseAppCompatActivity {
                 viewHolder.itemView.setAlpha(1f);
                 FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
                 FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-
-                readSettings();
             }
 
             @Override
