@@ -383,21 +383,16 @@ public class yq {
                                     + "DebugActivity.java"
                     )).replaceAll(packageName));
         }
-        
+
         String customApplicationClassName = new ProjectSettings(sc_id).getValue(ProjectSettings.SETTING_APPLICATION_CLASS,
                 ".SketchApplication");
-                
-        var sketchApplicationDir = "debug" + File.separator + "SketchApplication.java";
-        if (N.g && projectSettings.isDynamicColorsEnable()) {
-            sketchApplicationDir = "debug" + File.separator + "material" + File.separator +  "SketchApplication.java";
-        }
         boolean notUsingCustomApplicationClass = customApplicationClassName.equals(".SketchApplication");
         if (!new File(javaDir, "SketchApplication.java").exists() && notUsingCustomApplicationClass) {
             boolean applyMultiDex = projectSettings.getMinSdkVersion() < 21;
 
             String sketchApplicationFileContent = PACKAGE_PLACEHOLDER_PATTERN.matcher(fileUtil.b(
                     context,
-                    sketchApplicationDir
+                    "debug" + File.separator + "SketchApplication.java"
             )).replaceAll(packageName);
             if (applyMultiDex) {
                 sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
@@ -925,8 +920,10 @@ public class yq {
     
     private String getXMLStyle() {
         if (N.g) {
+            boolean useNewMaterialComponentsTheme = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
+                    BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
             XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
-            stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar");
+            stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? "" : ".Bridge"));
             // todo: add `colorOnPrimary` to custom theme colors.
             stylesFileBuilder.addItemToStyle("AppTheme", "colorOnPrimary", "@android:color/white");
             stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimary", "@color/colorPrimary");
