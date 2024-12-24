@@ -159,25 +159,20 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private String currentJavaFileName;
     private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
-            if (projectFileSelector != null) {
-                projectFileSelector.syncState();
-            }
+            refresh();
         }
     });
     public final ActivityResultLauncher<Intent> changeOpenFile = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             assert result.getData() != null;
             projectFile = result.getData().getParcelableExtra("project_file");
-            refreshFileSelector();
-            refreshViewTabAdapter();
+            refresh();
         }
     });
     private ViewEditorFragment viewTabAdapter;
     private final ActivityResultLauncher<Intent> openLibraryManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
-            if (projectFileSelector != null) {
-                projectFileSelector.syncState();
-            }
+            refresh();
             if (viewTabAdapter != null) {
                 viewTabAdapter.n();
             }
@@ -185,9 +180,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     });
     private final ActivityResultLauncher<Intent> openViewManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
-            if (viewTabAdapter != null) {
-                projectFileSelector.syncState();
-            }
+            refresh();
         }
     });
     private final ActivityResultLauncher<Intent> openCollectionManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -281,6 +274,16 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         if (componentTabAdapter != null && projectFile != null) {
             componentTabAdapter.setProjectFile(projectFile);
             componentTabAdapter.refreshData();
+        }
+    }
+    
+    private void refresh() {
+        refreshFileSelector();
+        if (viewPager.getCurrentItem() == 0) {
+            refreshViewTabAdapter();
+        } else {
+            refreshEventTabAdapter();
+            refreshComponentTabAdapter();
         }
     }
 
@@ -558,16 +561,12 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     if (viewTabAdapter != null) {
                         viewTabAdapter.c(true);
                         xmlLayoutOrientation.setVisibility(View.VISIBLE);
-                        projectFileSelector.setFileType(0);
-                        projectFileSelector.syncState();
                     }
                 } else if (position == 1) {
                     directXmlEditorMenu.setVisible(false);
                     if (viewTabAdapter != null) {
                         xmlLayoutOrientation.setVisibility(View.GONE);
                         viewTabAdapter.c(false);
-                        projectFileSelector.setFileType(1);
-                        projectFileSelector.syncState();
                         if (eventTabAdapter != null) {
                             eventTabAdapter.refreshEvents();
                         }
@@ -577,14 +576,12 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     if (viewTabAdapter != null) {
                         viewTabAdapter.c(false);
                         xmlLayoutOrientation.setVisibility(View.GONE);
-                        projectFileSelector.setFileType(1);
-                        projectFileSelector.syncState();
                         if (componentTabAdapter != null) {
                             componentTabAdapter.refreshData();
                         }
                     }
                 }
-                refreshFileSelector();
+                refresh();
                 currentTabNumber = position;
             }
         });
@@ -810,7 +807,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     jC.a(sc_id).c(jC.d(sc_id));
                     jC.a(sc_id).a(jC.d(sc_id));
                 }
-                projectFileSelector.syncState();
+                refresh();
                 B = false;
                 dialog.dismiss();
             }
@@ -1445,8 +1442,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     }
 
                     activity.updateBottomMenu();
-                    activity.refreshFileSelector();
-                    activity.projectFileSelector.syncState();
+                    activity.refresh();
                     activity.h();
                     if (savedInstanceState == null) {
                         activity.checkForUnsavedProjectData();
