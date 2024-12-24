@@ -149,6 +149,7 @@ public class DesignActivity extends BaseAppCompatActivity {
     private Menu bottomMenu;
     private MenuItem directXmlEditorMenu;
     private Handler handler = new Handler(Looper.getMainLooper());
+    private ProjectFileBean projectFile;
     private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (projectFileSelector != null) {
@@ -217,6 +218,7 @@ public class DesignActivity extends BaseAppCompatActivity {
     }
 
     private void loadProject(boolean haveSavedState) {
+        projectFile = jC.b(sc_id).b("main.xml");
         jC.a(sc_id, haveSavedState);
         jC.b(sc_id, haveSavedState);
         kC var2 = jC.d(sc_id, haveSavedState);
