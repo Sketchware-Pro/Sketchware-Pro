@@ -24,40 +24,26 @@
                 app:title="@string/about_title" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-        <com.google.android.material.card.MaterialCardView
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="10dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="?attr/colorSurfaceContainer"
-            app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
-            app:strokeWidth="0.5dp">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
-                style="@style/TabLayoutStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_team_title" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/about_team_title" />
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_changelog_title" />
 
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/about_changelog_title" />
-
-                <com.google.android.material.tabs.TabItem
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/about_beta_changes_title" />
-            </com.google.android.material.tabs.TabLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_beta_changes_title" />
+        </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2

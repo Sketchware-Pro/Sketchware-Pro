@@ -28,6 +28,10 @@
                 app:title="@string/design_actionbar_title_manager_image" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -36,27 +40,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/mainTabsCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_marginBottom="12dp"
-            app:cardBackgroundColor="?attr/colorSurfaceContainer"
-            app:cardCornerRadius="18dp"
-            app:strokeWidth="0.5dp">
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
-                style="@style/TabLayoutStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.google.android.material.card.MaterialCardView>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
@@ -73,16 +56,16 @@
         app:layout_anchor="@id/contentLayout"
         app:layout_anchorGravity="bottom|end">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_mtrl_add"
-        android:visibility="gone"
-        tools:ignore="ContentDescription"
-        tools:visibility="visible" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_mtrl_add"
+            android:visibility="gone"
+            tools:ignore="ContentDescription"
+            tools:visibility="visible" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/layout_btn_import"

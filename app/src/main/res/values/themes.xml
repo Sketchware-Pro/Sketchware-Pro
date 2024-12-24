@@ -12,6 +12,7 @@
         <item name="switchPreferenceCompatStyle">
             @style/Preference.SketchwarePro.SwitchPreferenceCompat
         </item>
+        <item name="tabStyle">@style/TabLayoutStyle</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.SketchwarePro.BottomSheetDialog</item>
 
         <!-- Type styles. -->

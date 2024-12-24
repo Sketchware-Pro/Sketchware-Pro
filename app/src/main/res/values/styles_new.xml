@@ -64,6 +64,7 @@
     </style>
 
     <style name="TabLayoutStyle" parent="Widget.Material3.TabLayout">
+        <item name="android:background">@drawable/tab_background_on_surface_with_divider</item>
         <item name="tabIndicator">@drawable/view_tab_indicator</item>
     </style>
 

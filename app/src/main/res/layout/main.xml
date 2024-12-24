@@ -40,12 +40,10 @@
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
-                    style="@style/TabLayoutStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent" />
             </com.google.android.material.card.MaterialCardView>
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager2.widget.ViewPager2
