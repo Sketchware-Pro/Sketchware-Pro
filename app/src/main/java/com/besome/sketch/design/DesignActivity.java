@@ -169,7 +169,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             assert result.getData() != null;
             projectFile = result.getData().getParcelableExtra("project_file");
             refreshFileSelector();
-            projectFileSelector.setXmlFileName(result.getData().getParcelableExtra("project_file"));
+            refreshViewTabAdapter();
         }
     });
     private ViewEditorFragment viewTabAdapter;
@@ -253,6 +253,34 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             } else {
                 fileName.setText(currentJavaFileName);
             }
+        }
+    }
+
+    private void refreshViewTabAdapter() {
+        if (viewTabAdapter != null && projectFile != null) {
+            int orientation = projectFile.orientation;
+            if (orientation == ProjectFileBean.ORIENTATION_PORTRAIT) {
+                xmlLayoutOrientation.setImageResource(R.drawable.ic_screen_portrait_grey600_24dp);
+            } else if (orientation == ProjectFileBean.ORIENTATION_LANDSCAPE) {
+                xmlLayoutOrientation.setImageResource(R.drawable.ic_screen_landscape_grey600_24dp);
+            } else {
+                xmlLayoutOrientation.setImageResource(R.drawable.ic_screen_rotation_grey600_24dp);
+            }
+            viewTabAdapter.a(projectFile);
+        }
+    }
+
+    private void refreshEventTabAdapter() {
+        if (eventTabAdapter != null && projectFile != null) {
+            eventTabAdapter.setCurrentActivity(projectFile);
+            eventTabAdapter.refreshEvents();
+        }
+    }
+
+    private void refreshComponentTabAdapter() {
+        if (componentTabAdapter != null && projectFile != null) {
+            componentTabAdapter.setProjectFile(projectFile);
+            componentTabAdapter.refreshData();
         }
     }
 
@@ -863,6 +891,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         adapter.setOnItemClickListener(projectFileBean -> {
             projectFile = projectFileBean;
             refreshFileSelector();
+            refreshEventTabAdapter();
+            refreshComponentTabAdapter();
             dialog.dismiss();
         });
         recyclerView.setAdapter(adapter);
