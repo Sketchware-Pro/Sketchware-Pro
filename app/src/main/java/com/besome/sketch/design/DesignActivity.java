@@ -56,6 +56,7 @@ import com.besome.sketch.editor.view.ProjectFileSelector;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -143,6 +144,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private Button buildSettings;
     private Button runProject;
     private ProjectFileSelector projectFileSelector;
+    private Menu bottomMenu;
     private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (projectFileSelector != null) {
@@ -360,56 +362,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 BuildTask buildTask = new BuildTask(this);
                 currentBuildTask = buildTask;
                 buildTask.execute();
-            } else if (v.getId() == R.id.btn_compiler_opt) {
-                PopupMenu popupMenu = new PopupMenu(this, buildSettings);
-                Menu menu = popupMenu.getMenu();
-
-                var isViewTab = viewPager.getCurrentItem() == 0;
-                menu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
-                menu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
-                menu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
-                menu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
-                if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
-                    menu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
-                    menu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures");
-                }
-                if (isViewTab) {
-                    menu.add(Menu.NONE, 7, Menu.NONE, "Direct XML editor");
-                }
-
-                popupMenu.setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()) {
-                        case 1 -> new BuildSettingsDialog(this, sc_id).show();
-                        case 2 -> new Thread(() -> {
-                            FileUtil.deleteFile(q.projectMyscPath);
-                            runOnUiThread(() ->
-                                    SketchwareUtil.toast("Done cleaning temporary files!"));
-                        }).start();
-                        case 3 -> new CompileErrorSaver(sc_id).showLastErrors(this);
-                        case 4 -> {
-                            if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
-                                installBuiltApk();
-                            } else {
-                                SketchwareUtil.toast("APK doesn't exist anymore");
-                            }
-                        }
-                        case 5 -> showCurrentActivitySrcCode();
-                        case 6 -> {
-                            ApkSignatures apkSignatures = new ApkSignatures(this, q.finalToInstallApkPath);
-                            apkSignatures.showSignaturesDialog();
-                        }
-                        case 7 -> {
-                            toViewCodeEditor();
-                        }
-                        default -> {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                });
-
-                popupMenu.show();
             }
         }
     }
@@ -442,6 +394,51 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 .applyToView(findViewById(R.id.container));
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
+        BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
+        bottomMenu = bottomAppBar.getMenu();
+        bottomMenu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
+        bottomMenu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
+        bottomMenu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
+        bottomMenu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
+        bottomMenu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
+        bottomMenu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures");
+        bottomMenu.add(Menu.NONE, 7, Menu.NONE, "Direct XML editor");
+
+        bottomAppBar.setOnMenuItemClickListener(
+                item -> {
+                    switch (item.getItemId()) {
+                        case 1 -> new BuildSettingsDialog(this, sc_id).show();
+                        case 2 -> new Thread(
+                                        () -> {
+                                            FileUtil.deleteFile(q.projectMyscPath);
+                                            runOnUiThread(
+                                                    () ->
+                                                            SketchwareUtil.toast(
+                                                                    "Done cleaning temporary files!"));
+                                        })
+                                .start();
+                        case 3 -> new CompileErrorSaver(sc_id).showLastErrors(this);
+                        case 4 -> {
+                            if (FileUtil.isExistFile(q.finalToInstallApkPath)) {
+                                installBuiltApk();
+                            } else {
+                                SketchwareUtil.toast("APK doesn't exist anymore");
+                            }
+                        }
+                        case 5 -> showCurrentActivitySrcCode();
+                        case 6 -> {
+                            ApkSignatures apkSignatures =
+                                    new ApkSignatures(this, q.finalToInstallApkPath);
+                            apkSignatures.showSignaturesDialog();
+                        }
+                        case 7 -> toViewCodeEditor();
+                        default -> {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                });
         buildSettings = findViewById(R.id.btn_compiler_opt);
         buildSettings.setOnClickListener(this);
         runProject = findViewById(R.id.btn_execute);
