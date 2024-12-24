@@ -1243,6 +1243,7 @@ public class DesignActivity extends BaseAppCompatActivity {
 
         public void cancelBuild() {
             canceled = true;
+            onProgress("Canceling build...");
             if (isShowingNotification) {
                 notificationManager.cancel(notificationId);
                 isShowingNotification = false;
