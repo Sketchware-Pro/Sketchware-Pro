@@ -150,6 +150,7 @@ public class DesignActivity extends BaseAppCompatActivity {
     private MenuItem directXmlEditorMenu;
     private Handler handler = new Handler(Looper.getMainLooper());
     private ProjectFileBean projectFile;
+    private TextView fileName;
     private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (projectFileSelector != null) {
@@ -229,6 +230,13 @@ public class DesignActivity extends BaseAppCompatActivity {
             var2.f();
             var2.g();
             var2.e();
+        }
+    }
+
+    private void refreshFileSelector() {
+        if (projectFile != null) {
+            var currentItem = viewPager.getCurrentItem();
+            fileName.setText(currentItem == 0 ? projectFile.getXmlName() : projectFile.getJavaName());
         }
     }
 
@@ -389,6 +397,7 @@ public class DesignActivity extends BaseAppCompatActivity {
                 .applyToView(findViewById(R.id.container));
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
+        fileName = findViewById(R.id.file_name);
         BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
         bottomMenu = bottomAppBar.getMenu();
         bottomMenu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
@@ -530,6 +539,7 @@ public class DesignActivity extends BaseAppCompatActivity {
                         }
                     }
                 }
+                refreshFileSelector();
                 currentTabNumber = position;
             }
         });
@@ -1351,6 +1361,7 @@ public class DesignActivity extends BaseAppCompatActivity {
                     }
 
                     activity.updateBottomMenu();
+                    activity.refreshFileSelector();
                     activity.projectFileSelector.syncState();
                     activity.h();
                     if (savedInstanceState == null) {
