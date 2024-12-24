@@ -26,7 +26,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -1009,9 +1011,8 @@ public class DesignActivity extends BaseAppCompatActivity {
         }
     }
 
-    private static class BuildTask extends BaseTask implements DialogInterface.OnCancelListener, BuildProgressReceiver {
+    private static class BuildTask extends BaseTask implements BuildProgressReceiver {
         public static final String ACTION_CANCEL_BUILD = "com.besome.sketch.design.ACTION_CANCEL_BUILD";
-        private final BuildingDialog dialog;
         private final ExecutorService executorService = Executors.newSingleThreadExecutor();
         private volatile boolean canceled;
         private volatile boolean isBuildFinished;
@@ -1022,12 +1023,16 @@ public class DesignActivity extends BaseAppCompatActivity {
         private MenuItem runMenu;
         private MenuItem cancelMenu;
 
+        private LinearLayout progressContainer;
+        private TextView progressText;
+
         public BuildTask(DesignActivity activity) {
             super(activity);
             notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
-            dialog = new BuildingDialog(activity);
             runMenu = activity.bottomMenu.findItem(R.id.menu_run);
             cancelMenu = activity.bottomMenu.findItem(R.id.menu_cancel);
+            progressContainer = activity.findViewById(R.id.progress_container);
+            progressText = activity.findViewById(R.id.progress_text);
         }
 
         public void execute() {
@@ -1046,9 +1051,6 @@ public class DesignActivity extends BaseAppCompatActivity {
 
                 if (activity.isBuildingInTheBackground()) {
                     maybeShowNotification();
-                } else {
-                    maybeShowDialog();
-                    dialog.setIsCancelableOnBackPressed(false);
                 }
             });
         }
@@ -1215,11 +1217,8 @@ public class DesignActivity extends BaseAppCompatActivity {
             activity.runOnUiThread(() -> {
                 if (activity.isBuildingInTheBackground()) {
                     updateNotification(progress);
-                } else {
-                    if (dialog.isShowing()) {
-                        dialog.setProgress(progress);
-                    }
                 }
+                progressText.setText(progress);
             });
         }
 
@@ -1234,54 +1233,12 @@ public class DesignActivity extends BaseAppCompatActivity {
                             notificationManager.cancel(notificationId);
                             isShowingNotification = false;
                         }
-                    } else {
-                        if (dialog.isShowing()) {
-                            dialog.dismiss();
-                        }
                     }
                     updateRunMenu(false);
                     activity.updateBottomMenu();
                     activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
             });
-        }
-
-        @Override
-        public void onCancel(DialogInterface dialogInterface) {
-            DesignActivity activity = getActivity();
-            if (activity == null) return;
-
-            if (!activity.isBuildingInTheBackground()) {
-                activity.runOnUiThread(() -> {
-                    aB cancelDialog = new aB(activity);
-                    cancelDialog.b(activity.getString(R.string.design_cancel_build_title));
-                    cancelDialog.a(activity.getString(R.string.design_cancel_build_desc));
-                    cancelDialog.a(R.drawable.ic_mtrl_exit);
-
-                    cancelDialog.a(activity.getString(R.string.design_cancel_build_btn_stop), v -> {
-                        if (!isBuildFinished) {
-                            if (!dialog.isCancelableOnBackPressed()) {
-                                dialog.setIsCancelableOnBackPressed(true);
-                                maybeShowDialog();
-                                canceled = true;
-                            }
-                            dialog.show();
-                            onProgress("Canceling build...");
-                        }
-                        cancelDialog.dismiss();
-                    });
-
-                    cancelDialog.b(activity.getString(R.string.design_cancel_build_btn_continue), v -> {
-                        if (!isBuildFinished)
-                            dialog.show();
-                        cancelDialog.dismiss();
-                    });
-
-                    cancelDialog.setCancelable(false);
-                    cancelDialog.setCanceledOnTouchOutside(false);
-                    cancelDialog.show();
-                });
-            }
         }
 
         public void cancelBuild() {
@@ -1297,18 +1254,6 @@ public class DesignActivity extends BaseAppCompatActivity {
                     activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 });
             }
-        }
-
-        private void maybeShowDialog() {
-            DesignActivity activity = getActivity();
-            if (activity == null) return;
-
-            activity.runOnUiThread(() -> {
-                if (!dialog.isShowing()) {
-                    dialog.setOnCancelListener(this);
-                    dialog.show();
-                }
-            });
         }
 
         private void maybeShowNotification() {
@@ -1371,6 +1316,7 @@ public class DesignActivity extends BaseAppCompatActivity {
         private void updateRunMenu(boolean isRunning) {
             runMenu.setVisible(!isRunning);
             cancelMenu.setVisible(isRunning);
+            progressContainer.setVisibility(isRunning ? View.VISIBLE : View.GONE);
         }
     }
 
