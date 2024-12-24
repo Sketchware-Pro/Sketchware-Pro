@@ -397,12 +397,12 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
         bottomMenu = bottomAppBar.getMenu();
         bottomMenu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
-        bottomMenu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files");
+        bottomMenu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files").setVisible(false);
         bottomMenu.add(Menu.NONE, 3, Menu.NONE, "Show last compile error");
         bottomMenu.add(Menu.NONE, 5, Menu.NONE, "Show source code");
-        bottomMenu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK");
-        bottomMenu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures");
-        bottomMenu.add(Menu.NONE, 7, Menu.NONE, "Direct XML editor");
+        bottomMenu.add(Menu.NONE, 4, Menu.NONE, "Install last built APK").setVisible(false);
+        bottomMenu.add(Menu.NONE, 6, Menu.NONE, "Show Apk signatures").setVisible(false);
+        bottomMenu.add(Menu.NONE, 7, Menu.NONE, "Direct XML editor").setVisible(false);
 
         bottomAppBar.setOnMenuItemClickListener(
                 item -> {
