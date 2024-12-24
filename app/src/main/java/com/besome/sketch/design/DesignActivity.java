@@ -46,11 +46,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.besome.sketch.adapters.JavaFileAdapter;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.common.SrcViewerActivity;
 import com.besome.sketch.editor.manage.ManageCollectionActivity;
+import com.besome.sketch.editor.manage.ViewSelectorActivity;
 import com.besome.sketch.editor.manage.font.ManageFontActivity;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.besome.sketch.editor.manage.library.ManageLibraryActivity;
@@ -91,6 +95,7 @@ import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.rs;
 import a.a.a.wq;
+import a.a.a.xB;
 import a.a.a.yB;
 import a.a.a.yq;
 import a.a.a.zy;
@@ -134,7 +139,7 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.apk.ApkSignatures;
 
-public class DesignActivity extends BaseAppCompatActivity {
+public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public static String sc_id;
     private ImageView xmlLayoutOrientation;
     private boolean B;
@@ -161,6 +166,8 @@ public class DesignActivity extends BaseAppCompatActivity {
     public final ActivityResultLauncher<Intent> changeOpenFile = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             assert result.getData() != null;
+            projectFile = result.getData().getParcelableExtra("project_file");
+            refreshFileSelector();
             projectFileSelector.setXmlFileName(result.getData().getParcelableExtra("project_file"));
         }
     });
@@ -398,6 +405,7 @@ public class DesignActivity extends BaseAppCompatActivity {
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         coordinatorLayout = findViewById(R.id.layout_coordinator);
         fileName = findViewById(R.id.file_name);
+        findViewById(R.id.file_name_container).setOnClickListener(this);
         BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
         bottomMenu = bottomAppBar.getMenu();
         bottomMenu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
@@ -664,6 +672,17 @@ public class DesignActivity extends BaseAppCompatActivity {
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.file_name_container) {
+            if (viewPager.getCurrentItem() == 0) {
+                showAvailableViews();
+            } else {
+                showAvailableJavaFiles();
+            }
+        }
+    }
+
     /**
      * Show a dialog asking about saving the project before quitting.
      */
@@ -822,6 +841,32 @@ public class DesignActivity extends BaseAppCompatActivity {
                 dialog.show();
             });
         }).start();
+    }
+
+    private void showAvailableJavaFiles() {
+        var dialog = new aB(this);
+        dialog.b(getTranslatedString(R.string.design_file_selector_title_java));
+        dialog.a(R.drawable.ic_mtrl_java);
+        View customView = a.a.a.wB.a(this, R.layout.file_selector_popup_select_java);
+        RecyclerView recyclerView = customView.findViewById(R.id.file_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
+        var adapter = new JavaFileAdapter(sc_id);
+        adapter.setOnItemClickListener(projectFileBean -> {
+            projectFile = projectFileBean;
+            refreshFileSelector();
+            dialog.dismiss();
+        });
+        recyclerView.setAdapter(adapter);
+        dialog.a(customView);
+        dialog.show();
+    }
+
+    private void showAvailableViews() {
+        Intent intent = new Intent(getApplicationContext(), ViewSelectorActivity.class);
+        intent.putExtra("sc_id", sc_id);
+        intent.putExtra("current_xml", projectFile.getXmlName());
+        intent.putExtra("is_custom_view", projectFile.fileType == 2);
+        changeOpenFile.launch(intent);
     }
 
     /**
