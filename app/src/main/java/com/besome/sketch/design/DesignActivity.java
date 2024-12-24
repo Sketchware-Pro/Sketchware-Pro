@@ -403,6 +403,7 @@ public class DesignActivity extends BaseAppCompatActivity {
                         case 2 -> new Thread(
                                         () -> {
                                             FileUtil.deleteFile(q.projectMyscPath);
+                                            updateBottomMenu();
                                             runOnUiThread(
                                                     () ->
                                                             SketchwareUtil.toast(
