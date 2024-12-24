@@ -1215,7 +1215,7 @@ public class DesignActivity extends BaseAppCompatActivity {
             if (activity == null) return;
 
             activity.runOnUiThread(() -> {
-                if (activity.isBuildingInTheBackground()) {
+                if (!canceled && activity.isBuildingInTheBackground()) {
                     updateNotification(progress);
                 }
                 progressText.setText(progress);
