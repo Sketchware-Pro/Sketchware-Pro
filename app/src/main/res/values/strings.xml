@@ -22,6 +22,7 @@
     <string name="block_and_body_1">and</string>
     <string name="block_and_head" />
     <string name="block_and_tail" />
+    <string name="block_move_to_bin">Move to recycle bin</string>
     <string name="block_bigger_body_1">></string>
     <string name="block_bigger_head" />
     <string name="block_bigger_tail" />
