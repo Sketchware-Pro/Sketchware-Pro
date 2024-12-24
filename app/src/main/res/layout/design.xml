@@ -128,53 +128,6 @@
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </com.google.android.material.bottomappbar.BottomAppBar>
-
-                <LinearLayout
-                    android:id="@+id/layout_btn_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:background="?attr/colorSurface"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center_vertical"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/ic_screen_portrait_grey600_24dp" />
-
-                        <com.besome.sketch.editor.view.ProjectFileSelector
-                            android:id="@+id/file_selector"
-                            android:layout_width="match_parent"
-                            android:layout_height="36dp" />
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/btn_compiler_opt"
-                        style="?materialIconButtonFilledStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        app:icon="@drawable/sorting_options_48" />
-
-                    <Button
-                        android:id="@+id/btn_execute"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        tools:text="@string/common_word_run" />
-                </LinearLayout>
             </LinearLayout>
 
             <com.besome.sketch.editor.view.ViewProperty
