@@ -130,7 +130,7 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.apk.ApkSignatures;
 
-public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
+public class DesignActivity extends BaseAppCompatActivity {
     public static String sc_id;
     private ImageView xmlLayoutOrientation;
     private boolean B;
@@ -141,8 +141,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private yq q;
     private DB r;
     private DB t;
-    private Button buildSettings;
-    private Button runProject;
     private ProjectFileSelector projectFileSelector;
     private Menu bottomMenu;
     private MenuItem directXmlEditorMenu;
@@ -357,17 +355,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onClick(View v) {
-        if (!mB.a()) {
-            if (v.getId() == R.id.btn_execute) {
-                BuildTask buildTask = new BuildTask(this);
-                currentBuildTask = buildTask;
-                buildTask.execute();
-            }
-        }
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
@@ -407,7 +394,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
         bottomAppBar.setOnMenuItemClickListener(
                 item -> {
-                    switch (item.getItemId()) {
+                    var itemId = item.getItemId();
+                    switch (itemId) {
                         case 1 -> new BuildSettingsDialog(this, sc_id).show();
                         case 2 -> new Thread(
                                         () -> {
@@ -434,17 +422,22 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                         }
                         case 7 -> toViewCodeEditor();
                         default -> {
-                            return false;
+                            if (itemId == R.id.menu_run) {
+                                BuildTask buildTask = new BuildTask(this);
+                                currentBuildTask = buildTask;
+                                buildTask.execute();
+                            } else if (itemId == R.id.menu_cancel) {
+                                if (currentBuildTask != null) {
+                                    currentBuildTask.cancelBuild();
+                                }
+                            } else {
+                                return false;
+                            }
                         }
                     }
 
                     return true;
                 });
-        buildSettings = findViewById(R.id.btn_compiler_opt);
-        buildSettings.setOnClickListener(this);
-        runProject = findViewById(R.id.btn_execute);
-        runProject.setText(Helper.getResString(R.string.common_word_run));
-        runProject.setOnClickListener(this);
         xmlLayoutOrientation = findViewById(R.id.img_orientation);
         projectFileSelector = findViewById(R.id.file_selector);
         projectFileSelector.setScId(sc_id);
@@ -1017,11 +1010,15 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private final int notificationId = 1;
         private boolean isShowingNotification = false;
         private static final String CHANNEL_ID = "build_notification_channel";
+        private MenuItem runMenu;
+        private MenuItem cancelMenu;
 
         public BuildTask(DesignActivity activity) {
             super(activity);
             notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
             dialog = new BuildingDialog(activity);
+            runMenu = activity.bottomMenu.findItem(R.id.menu_run);
+            cancelMenu = activity.bottomMenu.findItem(R.id.menu_cancel);
         }
 
         public void execute() {
@@ -1034,8 +1031,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             if (activity == null) return;
 
             activity.runOnUiThread(() -> {
-                activity.runProject.setText("Building APK file...");
-                activity.runProject.setClickable(false);
+                updateRunMenu(true);
                 activity.r.a("P1I10", true);
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -1234,8 +1230,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                             dialog.dismiss();
                         }
                     }
-                    activity.runProject.setText(Helper.getResString(R.string.common_word_run));
-                    activity.runProject.setClickable(true);
+                    updateRunMenu(false);
                     activity.updateBottomMenu();
                     activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
@@ -1262,7 +1257,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                                 canceled = true;
                             }
                             dialog.show();
-                            activity.runProject.setText("Canceling build...");
                             onProgress("Canceling build...");
                         }
                         cancelDialog.dismiss();
@@ -1290,8 +1284,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             DesignActivity activity = getActivity();
             if (activity != null) {
                 activity.runOnUiThread(() -> {
-                    activity.runProject.setText(Helper.getResString(R.string.common_word_run));
-                    activity.runProject.setClickable(true);
+                    updateRunMenu(false);
                     activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 });
             }
@@ -1364,6 +1357,11 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 channel.setDescription(description);
                 notificationManager.createNotificationChannel(channel);
             }
+        }
+
+        private void updateRunMenu(boolean isRunning) {
+            runMenu.setVisible(!isRunning);
+            cancelMenu.setVisible(isRunning);
         }
     }
 
