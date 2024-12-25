@@ -290,7 +290,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             componentTabAdapter.refreshData();
         }
     }
-    
+
     private void refresh() {
         refreshFileSelector();
         if (viewPager.getCurrentItem() == 0) {
@@ -476,14 +476,14 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     switch (itemId) {
                         case 1 -> new BuildSettingsDialog(this, sc_id).show();
                         case 2 -> new Thread(
-                                        () -> {
-                                            FileUtil.deleteFile(q.projectMyscPath);
-                                            updateBottomMenu();
-                                            runOnUiThread(
-                                                    () ->
-                                                            SketchwareUtil.toast(
-                                                                    "Done cleaning temporary files!"));
-                                        })
+                                () -> {
+                                    FileUtil.deleteFile(q.projectMyscPath);
+                                    updateBottomMenu();
+                                    runOnUiThread(
+                                            () ->
+                                                    SketchwareUtil.toast(
+                                                            "Done cleaning temporary files!"));
+                                })
                                 .start();
                         case 3 -> new CompileErrorSaver(sc_id).showLastErrors(this);
                         case 4 -> {
@@ -1162,7 +1162,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                         q.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
                     }
                 }
-                
+
                 onProgress("Generating source code...");
                 kC kC = jC.d(sc_id);
                 kC.b(q.resDirectoryPath + File.separator + "drawable-xhdpi");
@@ -1281,8 +1281,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     dialog.show();
                 });
             } catch (zy zy) {
+                isBuildFinished = true;
                 activity.indicateCompileErrorOccurred(zy.getMessage());
             } catch (Throwable tr) {
+                isBuildFinished = true;
                 LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
                 activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));
             } finally {
