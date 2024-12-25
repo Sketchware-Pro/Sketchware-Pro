@@ -6,7 +6,7 @@
         android:icon="@drawable/ic_mtrl_run"
         android:orderInCategory="110"
         android:title="Run"
-        app:iconTint="@color/scolor_green_01"
+        app:iconTint="?attr/colorPrimary"
         app:showAsAction="always" />
 
     <item
@@ -15,6 +15,6 @@
         android:orderInCategory="110"
         android:title="Cancel"
         android:visible="false"
-        app:iconTint="@color/scolor_red_02"
+        app:iconTint="?attr/colorError"
         app:showAsAction="always" />
 </menu>
