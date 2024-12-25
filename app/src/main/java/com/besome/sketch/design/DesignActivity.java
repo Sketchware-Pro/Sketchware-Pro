@@ -39,6 +39,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -462,6 +463,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         fileName = findViewById(R.id.file_name);
         findViewById(R.id.file_name_container).setOnClickListener(this);
         BottomAppBar bottomAppBar = findViewById(R.id.bottom_app_bar);
+        bottomAppBar.setOverflowIcon(ContextCompat.getDrawable(this,  R.drawable.sorting_options));
         bottomMenu = bottomAppBar.getMenu();
         bottomMenu.add(Menu.NONE, 1, Menu.NONE, "Build Settings");
         bottomMenu.add(Menu.NONE, 2, Menu.NONE, "Clean temporary files").setVisible(false);
