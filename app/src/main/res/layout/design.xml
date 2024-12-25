@@ -53,71 +53,78 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
                 <LinearLayout
                     android:id="@+id/progress_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/progress_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
                         android:layout_marginHorizontal="5dp"
+                        android:padding="10dp"
+                        tools:text="Building your awesome app..."
                         android:singleLine="true"
                         android:textAppearance="?attr/textAppearanceBodyMedium" />
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
                         android:id="@+id/progress"
-                        android:indeterminate="true" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:progress="0"
+                        android:indeterminate="false" />
                 </LinearLayout>
+
                 <com.google.android.material.bottomappbar.BottomAppBar
+                    android:id="@+id/bottom_app_bar"
+                    style="@style/Widget.Material3.BottomAppBar.Legacy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/bottom_app_bar"
+                    android:gravity="center_vertical"
                     app:menu="@menu/design_bottom_menu"
-                    app:paddingBottomSystemWindowInsets="false"
-                    style="@style/Widget.Material3.BottomAppBar.Legacy">
+                    app:paddingBottomSystemWindowInsets="false">
 
                     <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/file_name_container"
+                        style="?attr/materialCardViewOutlinedStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/file_name_container"
                         android:layout_marginHorizontal="4dp"
-                        android:layout_marginBottom="8dp"
-                        android:clickable="true"
-                        android:focusable="true"
+                        android:layout_marginVertical="8dp"
                         android:checkable="true"
-                        style="?attr/materialCardViewOutlinedStyle">
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center_vertical"
-                            android:paddingVertical="10dp">
+                            android:paddingVertical="12dp">
 
                             <ImageView
                                 android:id="@+id/img_orientation"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_marginStart="6dp"
-                                android:src="@drawable/ic_screen_portrait_grey600_24dp"
-                                android:tint="?attr/colorControlNormal" />
+                                android:src="@drawable/ic_mtrl_screen"
+                                app:tint="?attr/colorControlNormal" />
 
                             <TextView
                                 android:id="@+id/file_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginHorizontal="5dp"
-                                android:text="main"
                                 android:singleLine="true"
+                                android:text="main"
                                 android:textAppearance="?attr/textAppearanceBodyMedium" />
 
                         </LinearLayout>

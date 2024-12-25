@@ -60,7 +60,7 @@ public class StringfogHandler {
      */
     public void start(BuildProgressReceiver progressReceiver, ProjectBuilder builder) {
         if (isStringfogEnabled()) {
-            progressReceiver.onProgress("Running StringFog...");
+            progressReceiver.onProgress("Running StringFog...", 14);
             builder.runStringfog();
         }
     }

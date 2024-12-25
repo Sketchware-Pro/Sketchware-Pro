@@ -65,6 +65,7 @@ import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.topjohnwu.superuser.Shell;
@@ -544,12 +545,12 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     directXmlEditorMenu.setVisible(true);
                     if (viewTabAdapter != null) {
                         viewTabAdapter.c(true);
-                        xmlLayoutOrientation.setVisibility(View.VISIBLE);
+                        xmlLayoutOrientation.setImageResource(R.drawable.ic_mtrl_screen);
                     }
                 } else if (position == 1) {
                     directXmlEditorMenu.setVisible(false);
                     if (viewTabAdapter != null) {
-                        xmlLayoutOrientation.setVisibility(View.GONE);
+                        xmlLayoutOrientation.setImageResource(R.drawable.ic_mtrl_code);
                         viewTabAdapter.c(false);
                         if (eventTabAdapter != null) {
                             eventTabAdapter.refreshEvents();
@@ -558,8 +559,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 } else {
                     directXmlEditorMenu.setVisible(false);
                     if (viewTabAdapter != null) {
+                        xmlLayoutOrientation.setImageResource(R.drawable.ic_mtrl_code);
                         viewTabAdapter.c(false);
-                        xmlLayoutOrientation.setVisibility(View.GONE);
                         if (componentTabAdapter != null) {
                             componentTabAdapter.refreshData();
                         }
@@ -1105,6 +1106,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
         private LinearLayout progressContainer;
         private TextView progressText;
+        private LinearProgressIndicator progressBar;
 
         public BuildTask(DesignActivity activity) {
             super(activity);
@@ -1113,6 +1115,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             cancelMenu = activity.bottomMenu.findItem(R.id.menu_cancel);
             progressContainer = activity.findViewById(R.id.progress_container);
             progressText = activity.findViewById(R.id.progress_text);
+            progressBar = activity.findViewById(R.id.progress);
         }
 
         public void execute() {
@@ -1142,7 +1145,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             try {
                 var q = activity.q;
                 var sc_id = DesignActivity.sc_id;
-                onProgress("Deleting temporary files...");
+                onProgress("Deleting temporary files...", 1);
                 FileUtil.deleteFile(q.projectMyscPath);
 
                 q.c(activity.getApplicationContext());
@@ -1163,7 +1166,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     }
                 }
 
-                onProgress("Generating source code...");
+                onProgress("Generating source code...", 2);
                 kC kC = jC.d(sc_id);
                 kC.b(q.resDirectoryPath + File.separator + "drawable-xhdpi");
                 kC = jC.d(sc_id);
@@ -1187,19 +1190,19 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     return;
                 }
 
-                onProgress("Extracting built-in libraries...");
+                onProgress("Extracting built-in libraries...", 3);
                 BuiltInLibraries.extractCompileAssets(this);
                 if (canceled) {
                     return;
                 }
 
-                onProgress("AAPT2 is running...");
+                onProgress("AAPT2 is running...", 8);
                 builder.compileResources();
                 if (canceled) {
                     return;
                 }
 
-                onProgress("Generating view binding...");
+                onProgress("Generating view binding...", 11);
                 builder.generateViewBinding();
                 if (canceled) {
                     return;
@@ -1210,7 +1213,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     return;
                 }
 
-                onProgress("Java is compiling...");
+                onProgress("Java is compiling...", 13);
                 builder.compileJavaCode();
                 if (canceled) {
                     return;
@@ -1228,25 +1231,25 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     return;
                 }
 
-                onProgress(builder.getDxRunningText());
+                onProgress(builder.getDxRunningText(), 17);
                 builder.createDexFilesFromClasses();
                 if (canceled) {
                     return;
                 }
 
-                onProgress("Merging DEX files...");
+                onProgress("Merging DEX files...", 18);
                 builder.getDexFilesReady();
                 if (canceled) {
                     return;
                 }
 
-                onProgress("Building APK...");
+                onProgress("Building APK...", 19);
                 builder.buildApk();
                 if (canceled) {
                     return;
                 }
 
-                onProgress("Signing APK...");
+                onProgress("Signing APK...", 20);
                 builder.signDebugApk();
                 if (canceled) {
                     return;
@@ -1292,15 +1295,20 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         }
 
-        public void onProgress(String progress) {
+        public void onProgress(String progress, int step) {
+            progressBar.setIndeterminate(step == -1);
+            int totalSteps = 20;
+
             DesignActivity activity = getActivity();
             if (activity == null) return;
 
             activity.runOnUiThread(() -> {
                 if (!canceled && activity.isBuildingInTheBackground()) {
-                    updateNotification(progress);
+                    updateNotification(progress + " (" + step + " / " + totalSteps + ")");
                 }
                 progressText.setText(progress);
+                progressBar.setProgress((step * 100) / totalSteps, true);
+                Log.d("DesignActivity$BuildTask", step + " / " + totalSteps);
             });
         }
 
@@ -1325,7 +1333,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
         public void cancelBuild() {
             canceled = true;
-            onProgress("Canceling build...");
+            onProgress("Canceling build...", -1);
             if (isShowingNotification) {
                 notificationManager.cancel(notificationId);
                 isShowingNotification = false;

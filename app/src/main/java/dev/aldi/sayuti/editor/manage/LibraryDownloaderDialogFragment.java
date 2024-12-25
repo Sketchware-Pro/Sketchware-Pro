@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
+import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.pranav.dependency.resolver.DependencyResolver;
 import pro.sketchware.databinding.LibraryDownloaderDialogBinding;
@@ -115,7 +116,7 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
         }
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            BuiltInLibraries.maybeExtractAndroidJar(progress -> handler.post(new SetTextRunnable(progress)));
+            BuiltInLibraries.maybeExtractAndroidJar((message, progress) -> handler.post(new SetTextRunnable(message)));
             BuiltInLibraries.maybeExtractCoreLambdaStubsJar();
 
             resolver.resolveDependency(new DependencyResolver.DependencyResolverCallback() {
