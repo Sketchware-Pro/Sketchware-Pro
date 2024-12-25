@@ -1290,13 +1290,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         }
 
         public void onProgress(String progress, int step) {
-            progressBar.setIndeterminate(step == -1);
             int totalSteps = 20;
 
             DesignActivity activity = getActivity();
             if (activity == null) return;
 
             activity.runOnUiThread(() -> {
+                progressBar.setIndeterminate(step == -1);
                 if (!canceled) {
                     updateNotification(progress + " (" + step + " / " + totalSteps + ")");
                 }
