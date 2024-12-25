@@ -885,7 +885,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         Intent intent = new Intent(getApplicationContext(), ViewSelectorActivity.class);
         intent.putExtra("sc_id", sc_id);
         intent.putExtra("current_xml", projectFile.getXmlName());
-        intent.putExtra("is_custom_view", projectFile.fileType == 2);
+        intent.putExtra("is_custom_view", projectFile.fileType == 1 || projectFile.fileType == 2);
         changeOpenFile.launch(intent);
     }
 
