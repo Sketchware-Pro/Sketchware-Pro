@@ -1038,19 +1038,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      * Opens {@link SrcViewerActivity}.
      */
     void toSourceCodeViewer() {
-        String current = "";
-        if (viewPager.getCurrentItem() == 0) {
-            try {
-                current = viewTabAdapter.d().getXmlName();
-            } catch (Exception ignored) {
-            }
-        } else if (viewPager.getCurrentItem() == 1) {
-            try {
-                current = eventTabAdapter.getCurrentActivity().getJavaName();
-            } catch (Exception ignored) {
-            }
-        }
-        launchActivity(SrcViewerActivity.class, null, new Pair<>("current", current));
+        launchActivity(SrcViewerActivity.class, null, new Pair<>("current", fileName.getText().toString()));
     }
 
     /**
