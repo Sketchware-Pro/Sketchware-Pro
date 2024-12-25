@@ -924,6 +924,8 @@ public class yq {
                     BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
             XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
             stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? "" : ".Bridge"));
+            // todo: add `colorOnPrimary` to custom theme colors.
+            stylesFileBuilder.addItemToStyle("AppTheme", "colorOnPrimary", "@android:color/white");
             stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimary", "@color/colorPrimary");
             stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimaryDark", "@color/colorPrimaryDark");
             stylesFileBuilder.addItemToStyle("AppTheme", "colorAccent", "@color/colorAccent");
@@ -934,6 +936,11 @@ public class yq {
             stylesFileBuilder.addItemToStyle("AppTheme.FullScreen", "android:windowContentOverlay", "@null");
             stylesFileBuilder.addStyle("AppTheme.AppBarOverlay", "ThemeOverlay.MaterialComponents.Dark.ActionBar");
             stylesFileBuilder.addStyle("AppTheme.PopupOverlay", "ThemeOverlay.MaterialComponents.Light");
+            stylesFileBuilder.addStyle("AppTheme.DebugActivity", "AppTheme");
+            stylesFileBuilder.addItemToStyle("AppTheme.DebugActivity", "actionBarStyle", "@style/ThemeOverlay.MaterialComponents.ActionBar.Primary");
+            stylesFileBuilder.addItemToStyle("AppTheme.DebugActivity", "actionBarTheme", "@style/Widget.MaterialComponents.ActionBar.Primary");
+            stylesFileBuilder.addItemToStyle("AppTheme.DebugActivity", "windowActionBar", "true");
+            stylesFileBuilder.addItemToStyle("AppTheme.DebugActivity", "windowNoTitle", "false");
             return CommandBlock.applyCommands("styles.xml", stylesFileBuilder.toCode());
         } else {
             XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
@@ -957,6 +964,7 @@ public class yq {
             stylesFileBuilder.addItemToStyle("NoActionBar", "android:colorControlNormal", "@color/colorControlNormal");
             stylesFileBuilder.addStyle("NoStatusBar", "AppTheme");
             stylesFileBuilder.addItemToStyle("NoStatusBar", "android:windowFullscreen", "true");
+            stylesFileBuilder.addStyle("AppTheme.DebugActivity", "AppTheme");
             return CommandBlock.applyCommands("styles.xml", stylesFileBuilder.toCode());
         }
     }

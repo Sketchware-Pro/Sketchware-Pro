@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fills the entire area with the divider's color first... -->
+    <item>
+        <shape>
+            <solid android:color="?attr/colorOutlineVariant" />
+        </shape>
+    </item>
+    <!-- ..., then draws a rectangle with the container color to cover the area not for the divider. -->
+    <item android:bottom="0.5dp">
+        <shape>
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+</layer-list>

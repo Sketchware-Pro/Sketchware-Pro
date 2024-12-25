@@ -69,7 +69,6 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.card.MaterialCardView
                 style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
@@ -120,7 +119,6 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
-
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/cb_remove_old_methods"
                         android:layout_width="match_parent"
@@ -155,7 +153,6 @@
                     android:orientation="vertical"
                     android:padding="12dp">
 
-
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/cb_use_new_material_components_app_theme"
                         android:layout_width="match_parent"
@@ -186,8 +183,8 @@
         android:layout_marginTop="16dp">
 
         <Button
-            style="?materialButtonOutlinedStyle"
             android:id="@+id/cancel"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"

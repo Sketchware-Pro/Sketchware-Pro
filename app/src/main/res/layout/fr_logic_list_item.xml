@@ -1,10 +1,11 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="4dp"
-    app:cardBackgroundColor="?colorSurfaceContainer"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="8dp"
     app:strokeWidth="0.5dp">
 
     <LinearLayout
@@ -91,9 +92,9 @@
                         android:id="@+id/tv_event_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:alpha="0.6"
                         android:gravity="center_vertical"
                         android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         tools:text="@string/event_onclick" />
                 </LinearLayout>
             </LinearLayout>
@@ -121,17 +122,16 @@
             android:visibility="gone"
             tools:visibility="visible">
 
-            <View
+            <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:background="?attr/colorControlHighlight" />
+                android:layout_height="wrap_content"
+                app:dividerInsetEnd="16dp"
+                app:dividerInsetStart="16dp" />
 
             <com.besome.sketch.editor.event.CollapsibleEventLayout
                 android:id="@+id/event_option"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
