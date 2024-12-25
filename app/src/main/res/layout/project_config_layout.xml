@@ -88,12 +88,5 @@
             android:layout_marginTop="12dp"
             android:text="Enable debug logcat logs viewable in Logcat Reader. Not enabled in exported AABs/APKs." />
 
-        <CheckBox
-            android:id="@+id/cb_enable_background_build"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Enable building the project in the background" />
-
     </LinearLayout>
 </ScrollView>

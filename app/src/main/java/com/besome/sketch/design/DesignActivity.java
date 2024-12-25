@@ -582,10 +582,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
     }
 
-    private boolean isBuildingInTheBackground() {
-        return new BuildSettings(sc_id).getValue(BuildSettings.SETTING_ENABLE_BACKGROUND_BUILDING, BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
-    }
-
     private boolean isDebugApkExists() {
         if (q != null) {
             return FileUtil.isExistFile(q.finalToInstallApkPath);
@@ -1132,9 +1128,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 activity.r.a("P1I10", true);
                 activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-                if (activity.isBuildingInTheBackground()) {
-                    maybeShowNotification();
-                }
+                maybeShowNotification();
             });
         }
 
@@ -1303,7 +1297,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             if (activity == null) return;
 
             activity.runOnUiThread(() -> {
-                if (!canceled && activity.isBuildingInTheBackground()) {
+                if (!canceled) {
                     updateNotification(progress + " (" + step + " / " + totalSteps + ")");
                 }
                 progressText.setText(progress);
@@ -1318,11 +1312,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
             activity.runOnUiThread(() -> {
                 if (!activity.isDestroyed()) {
-                    if (activity.isBuildingInTheBackground()) {
-                        if (isShowingNotification) {
-                            notificationManager.cancel(notificationId);
-                            isShowingNotification = false;
-                        }
+                    if (isShowingNotification) {
+                        notificationManager.cancel(notificationId);
+                        isShowingNotification = false;
                     }
                     updateRunMenu(false);
                     activity.updateBottomMenu();

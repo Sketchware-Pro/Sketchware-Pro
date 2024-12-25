@@ -3,7 +3,6 @@ package mod.hey.studios.build;
 import static mod.hey.studios.build.BuildSettings.SETTING_ANDROID_JAR_PATH;
 import static mod.hey.studios.build.BuildSettings.SETTING_CLASSPATH;
 import static mod.hey.studios.build.BuildSettings.SETTING_DEXER;
-import static mod.hey.studios.build.BuildSettings.SETTING_ENABLE_BACKGROUND_BUILDING;
 import static mod.hey.studios.build.BuildSettings.SETTING_ENABLE_LOGCAT;
 import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION;
 import static mod.hey.studios.build.BuildSettings.SETTING_NO_HTTP_LEGACY;
@@ -50,7 +49,6 @@ public class BuildSettingsDialog {
         views[VIEW_CLASS_PATH] = binding.tilClasspath.getEditText();
         views[VIEW_DEXER] = binding.rgDexer;
         views[VIEW_ENABLE_LOGCAT] = binding.cbEnableLogcat;
-        views[VIEW_ENABLE_BACKGROUND_BUILDING] = binding.cbEnableBackgroundBuild;
         views[VIEW_JAVA_VERSION] = binding.rgJavaVersion;
         views[VIEW_NO_HTTP_LEGACY] = binding.cbNoHttpLegacy;
         views[VIEW_NO_WARNINGS] = binding.cbNoWarnings;
@@ -65,7 +63,6 @@ public class BuildSettingsDialog {
         views[VIEW_CLASS_PATH].setTag(SETTING_CLASSPATH);
         views[VIEW_DEXER].setTag(SETTING_DEXER);
         views[VIEW_ENABLE_LOGCAT].setTag(SETTING_ENABLE_LOGCAT);
-        views[VIEW_ENABLE_BACKGROUND_BUILDING].setTag(SETTING_ENABLE_BACKGROUND_BUILDING);
         views[VIEW_JAVA_VERSION].setTag(SETTING_JAVA_VERSION);
         views[VIEW_NO_HTTP_LEGACY].setTag(SETTING_NO_HTTP_LEGACY);
         views[VIEW_NO_WARNINGS].setTag(SETTING_NO_WARNINGS);
@@ -83,7 +80,6 @@ public class BuildSettingsDialog {
         setCheckboxValue(getCheckbox(VIEW_NO_WARNINGS), SETTING_NO_WARNINGS, true);
         setCheckboxValue(getCheckbox(VIEW_NO_HTTP_LEGACY), SETTING_NO_HTTP_LEGACY, false);
         setCheckboxValue(getCheckbox(VIEW_ENABLE_LOGCAT), SETTING_ENABLE_LOGCAT, true);
-        setCheckboxValue(getCheckbox(VIEW_ENABLE_BACKGROUND_BUILDING), SETTING_ENABLE_BACKGROUND_BUILDING, false);
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
         builder.setIcon(R.drawable.ic_mtrl_tune);
