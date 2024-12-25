@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_run"
+        android:icon="@drawable/ic_mtrl_run"
+        android:orderInCategory="110"
+        android:title="Run"
+        app:iconTint="@color/scolor_green_01"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_cancel"
+        android:icon="@drawable/ic_mtrl_stop"
+        android:orderInCategory="110"
+        android:title="Cancel"
+        android:visible="false"
+        app:iconTint="@color/scolor_red_02"
+        app:showAsAction="always" />
+</menu>

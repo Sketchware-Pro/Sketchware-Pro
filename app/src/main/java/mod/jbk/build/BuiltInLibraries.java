@@ -444,7 +444,7 @@ public class BuiltInLibraries {
 
         if (ProjectBuilder.hasFileChanged(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
             for (BuildProgressReceiver receiver : progressReceivers) {
-                receiver.onProgress("Extracting built-in libraries' DEX files...");
+                receiver.onProgress("Extracting built-in libraries' DEX files...", 4);
             }
             /* Delete the directory */
             fileUtil.b(dexsDirectoryPath);
@@ -455,7 +455,7 @@ public class BuiltInLibraries {
         }
         if (ProjectBuilder.hasFileChanged(baseAssetsPath + libsArchiveName, libsArchivePath)) {
             for (BuildProgressReceiver receiver : progressReceivers) {
-                receiver.onProgress("Extracting built-in libraries' resources...");
+                receiver.onProgress("Extracting built-in libraries' resources...", 5);
             }
             /* Delete the directory */
             fileUtil.b(libsDirectoryPath);
@@ -467,7 +467,7 @@ public class BuiltInLibraries {
         maybeExtractCoreLambdaStubsJar();
         if (ProjectBuilder.hasFileChanged(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
             for (BuildProgressReceiver receiver : progressReceivers) {
-                receiver.onProgress("Extracting built-in signing keys...");
+                receiver.onProgress("Extracting built-in signing keys...", 6);
             }
             /* Delete the directory */
             fileUtil.b(testkeyDirectoryPath);
@@ -483,7 +483,7 @@ public class BuiltInLibraries {
         String androidJarPath = new File(EXTRACTED_COMPILE_ASSETS_PATH, androidJarArchiveName).getAbsolutePath();
         if (ProjectBuilder.hasFileChanged("libs" + File.separator + androidJarArchiveName, androidJarPath)) {
             for (BuildProgressReceiver receiver : receivers) {
-                receiver.onProgress("Extracting built-in android.jar...");
+                receiver.onProgress("Extracting built-in android.jar...", 7);
             }
             /* Delete android.jar */
             new oB().c(EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");

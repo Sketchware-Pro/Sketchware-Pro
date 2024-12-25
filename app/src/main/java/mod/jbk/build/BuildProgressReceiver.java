@@ -1,5 +1,5 @@
 package mod.jbk.build;
 
 public interface BuildProgressReceiver {
-    void onProgress(String progress);
+    void onProgress(String progress, int step);
 }
