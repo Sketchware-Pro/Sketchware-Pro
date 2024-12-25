@@ -233,7 +233,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private ProjectFileBean getDefaultProjectFile() {
-        return jC.b(sc_id).b("main.xml");
+        return jC.b(sc_id).b(ProjectFileBean.DEFAULT_XML_NAME);
     }
 
     private void refreshFileSelector() {
@@ -249,16 +249,15 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         }
 
         if (viewPager.getCurrentItem() == 0) {
-            if (!"main.xml".equals(xmlFileName) && jC.b(sc_id).b(xmlFileName) == null) {
+            if (!ProjectFileBean.DEFAULT_XML_NAME.equals(xmlFileName) && jC.b(sc_id).b(xmlFileName) == null) {
                 projectFile = getDefaultProjectFile();
-                xmlFileName = "main.xml";
+                xmlFileName = ProjectFileBean.DEFAULT_XML_NAME;
             }
             fileName.setText(xmlFileName);
         } else {
-            if (!"MainActivity.java".equals(currentJavaFileName)
-                    && jC.b(sc_id).a(currentJavaFileName) == null) {
+            if (!ProjectFileBean.DEFAULT_JAVA_NAME.equals(currentJavaFileName) && jC.b(sc_id).a(currentJavaFileName) == null) {
                 projectFile = getDefaultProjectFile();
-                currentJavaFileName = "MainActivity.java";
+                currentJavaFileName = ProjectFileBean.DEFAULT_JAVA_NAME;
             }
             fileName.setText(currentJavaFileName);
         }
