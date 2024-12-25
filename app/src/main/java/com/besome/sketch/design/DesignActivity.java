@@ -812,7 +812,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         loadingDialog.show();
 
         new Thread(() -> {
-            String filename = viewPager.getCurrentItem() == 0 ? projectFile.getXmlName() : projectFile.getJavaName();
+            String filename = fileName.getText().toString();
             final String source = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
             var dialogBuilder = new MaterialAlertDialogBuilder(this)
@@ -893,7 +893,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         if (projectFile == null) return;
         k();
         new Thread(() -> {
-            String filename = projectFile.getXmlName();
+            final String filename = fileName.getText().toString();
             // var yq = new yq(getApplicationContext(), sc_id);
             var xmlGenerator = new Ox(q.N, projectFile);
             var projectDataManager = jC.a(sc_id);
@@ -905,7 +905,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             runOnUiThread(() -> {
                 if (isFinishing()) return;
                 h();
-                launchActivity(ViewCodeEditorActivity.class, openViewCodeEditor, new Pair<>("title", projectFile.getXmlName()), new Pair<>("content", content));
+                launchActivity(ViewCodeEditorActivity.class, openViewCodeEditor, new Pair<>("title", filename), new Pair<>("content", content));
             });
         }).start();
     }
