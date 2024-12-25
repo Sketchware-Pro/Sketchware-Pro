@@ -120,12 +120,20 @@
 
                             <TextView
                                 android:id="@+id/file_name"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:layout_marginHorizontal="5dp"
                                 android:singleLine="true"
                                 android:text="main"
                                 android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="8dp"
+                                android:src="@drawable/ic_mtrl_touch"
+                                app:tint="?attr/colorControlNormal" />
 
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
