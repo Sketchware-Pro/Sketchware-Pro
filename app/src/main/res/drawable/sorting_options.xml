@@ -1,0 +1,4 @@
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/sorting_options_48"
+    android:tint="?attr/colorControlNormal" />
+    
