@@ -218,7 +218,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private void loadProject(boolean haveSavedState) {
-        projectFile = jC.b(sc_id).b("main.xml");
+        projectFile = getDefaultProjectFile();
         jC.a(sc_id, haveSavedState);
         jC.b(sc_id, haveSavedState);
         kC var2 = jC.d(sc_id, haveSavedState);
@@ -232,18 +232,35 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         }
     }
 
+    private ProjectFileBean getDefaultProjectFile() {
+        return jC.b(sc_id).b("main.xml");
+    }
+
     private void refreshFileSelector() {
-        if (projectFile != null) {
-            var javaFileName = projectFile.getJavaName();
-            if (!javaFileName.isEmpty()) {
-                currentJavaFileName = javaFileName;
+        if (projectFile == null) {
+            projectFile = getDefaultProjectFile();
+        }
+
+        String javaFileName = projectFile.getJavaName();
+        String xmlFileName = projectFile.getXmlName();
+
+        if (!javaFileName.isEmpty()) {
+            currentJavaFileName = javaFileName;
+        }
+
+        if (viewPager.getCurrentItem() == 0) {
+            if (!"main.xml".equals(xmlFileName) && jC.b(sc_id).b(xmlFileName) == null) {
+                projectFile = getDefaultProjectFile();
+                xmlFileName = "main.xml";
             }
-            var currentItem = viewPager.getCurrentItem();
-            if (currentItem == 0) {
-                fileName.setText(projectFile.getXmlName());
-            } else {
-                fileName.setText(currentJavaFileName);
+            fileName.setText(xmlFileName);
+        } else {
+            if (!"MainActivity.java".equals(currentJavaFileName)
+                    && jC.b(sc_id).a(currentJavaFileName) == null) {
+                projectFile = getDefaultProjectFile();
+                currentJavaFileName = "MainActivity.java";
             }
+            fileName.setText(currentJavaFileName);
         }
     }
 
