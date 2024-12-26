@@ -14,6 +14,8 @@
         </item>
         <item name="tabStyle">@style/TabLayoutStyle</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.SketchwarePro.BottomSheetDialog</item>
+        <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
+        <item name="android:popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
 
         <!-- Type styles. -->
         <item name="textAppearanceDisplayLarge">@style/TextAppearance.SketchwarePro.DisplayLarge</item>
