@@ -3,21 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_undo"
         android:title="Undo"
         android:icon="@drawable/ic_mtrl_undo"
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/action_redo"
         android:title="Redo"
         android:icon="@drawable/ic_mtrl_redo"
         app:showAsAction="always" />
 
     <item
-        android:title="Save"
-        android:icon="@drawable/ic_mtrl_save"
-        app:showAsAction="always" />
-
-    <item
+        android:id="@+id/action_menu"
         android:title="Menu"
         android:icon="@drawable/ic_mtrl_more_vertical"
         app:showAsAction="always" />

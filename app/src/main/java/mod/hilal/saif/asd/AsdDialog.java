@@ -14,10 +14,11 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.editor.LogicEditorActivity;
 import pro.sketchware.R;
@@ -58,101 +59,101 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         SrcCodeEditor.loadCESettings(act, codeEditor, "dlg");
         pref = SrcCodeEditor.pref;
 
-        ImageView redo = findViewById(R.id.menu_view_redo);
-        redo.setOnClickListener(v -> codeEditor.redo());
-        ImageView undo = findViewById(R.id.menu_view_undo);
-        undo.setOnClickListener(v -> codeEditor.undo());
-        ImageView more = findViewById(R.id.more);
-        more.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(act, v);
-            populateMenu(popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(item -> {
-                String charSequence = item.getTitle().toString();
-                switch (charSequence) {
-                    case "Pretty print":
-                        StringBuilder sb = new StringBuilder();
-                        String[] split = codeEditor.getText().toString().split("\n");
-                        for (String s : split) {
-                            String trim = (s + "X").trim();
-                            sb.append(trim.substring(0, trim.length() - 1));
-                            sb.append("\n");
-                        }
-                        boolean failed = false;
-                        String code = sb.toString();
-                        try {
-                            code = Lx.j(code, true);
-                        } catch (Exception e) {
-                            failed = true;
-                            SketchwareUtil.toastError("Your code contains incorrectly nested parentheses");
-                        }
-                        if (!failed) {
-                            codeEditor.setText(code);
-                        }
-                        break;
-
-                    case "Switch language":
-                        SketchwareUtil.toast("Currently not supported, sorry!");
-                        break;
-
-                    case "Find & Replace":
-                        codeEditor.getSearcher().stopSearch();
-                        codeEditor.beginSearchMode();
-                        break;
-
-                    case "Switch theme":
-                        SrcCodeEditor.showSwitchThemeDialog(act, codeEditor, (dialog, which) -> {
-                            SrcCodeEditor.selectTheme(codeEditor, which);
-                            AsdDialog.pref.edit().putInt("dlg_theme", which).apply();
-                            if (isDark()) {
-                                lin.setBackgroundColor(0xff292929);
-                                save.setBackground(new DialogButtonGradientDrawable()
-                                        .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
-                                cancel.setBackground(new DialogButtonGradientDrawable()
-                                        .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
-                            } else {
-                                lin.setBackgroundColor(Color.WHITE);
-                                save.setBackground(new DialogButtonGradientDrawable()
-                                        .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-                                cancel.setBackground(new DialogButtonGradientDrawable()
-                                        .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_undo) {
+                codeEditor.undo()
+            } else if (id == R.id.action_redo) {
+                codeEditor.redo();
+            } else if (id == R.id.action_more) {
+                PopupMenu popupMenu = new PopupMenu(act, v);
+                populateMenu(popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(menuItem -> {
+                    String title = menuItem.getTitle().toString();
+                    switch (title) {
+                        case "Pretty print":
+                            StringBuilder sb = new StringBuilder();
+                            String[] split = codeEditor.getText().toString().split("\n");
+                            for (String s : split) {
+                                String trim = (s + "X").trim();
+                                sb.append(trim.substring(0, trim.length() - 1));
+                                sb.append("\n");
                             }
-                            dialog.dismiss();
-                        });
-                        break;
+                            boolean failed = false;
+                            String code = sb.toString();
+                            try {
+                                code = Lx.j(code, true);
+                            } catch (Exception e) {
+                                failed = true;
+                                SketchwareUtil.toastError("Your code contains incorrectly nested parentheses");
+                            }
+                            if (!failed) {
+                                codeEditor.setText(code);
+                            }
+                            break;
 
-                    case "Word wrap":
-                        item.setChecked(!item.isChecked());
-                        codeEditor.setWordwrap(item.isChecked());
-                        pref.edit().putBoolean("dlg_ww", item.isChecked()).apply();
-                        break;
+                        case "Switch language":
+                            SketchwareUtil.toast("Currently not supported, sorry!");
+                            break;
 
-                    case "Auto complete symbol pair":
-                        item.setChecked(!item.isChecked());
-                        codeEditor.getProps().symbolPairAutoCompletion = item.isChecked();
-                        pref.edit().putBoolean("dlg_acsp", item.isChecked()).apply();
-                        break;
+                        case "Find & Replace":
+                            codeEditor.getSearcher().stopSearch();
+                            codeEditor.beginSearchMode();
+                            break;
 
-                    case "Auto complete":
-                        item.setChecked(!item.isChecked());
-                        codeEditor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
-                        pref.edit().putBoolean("dlg_ac", item.isChecked()).apply();
-                        break;
+                        case "Switch theme":
+                            SrcCodeEditor.showSwitchThemeDialog(act, codeEditor, (dialog, which) -> {
+                                SrcCodeEditor.selectTheme(codeEditor, which);
+                                AsdDialog.pref.edit().putInt("dlg_theme", which).apply();
+                                if (isDark()) {
+                                    lin.setBackgroundColor(0xff292929);
+                                    save.setBackground(new DialogButtonGradientDrawable()
+                                            .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                                    cancel.setBackground(new DialogButtonGradientDrawable()
+                                            .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
+                                } else {
+                                    lin.setBackgroundColor(Color.WHITE);
+                                    save.setBackground(new DialogButtonGradientDrawable()
+                                            .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                                    cancel.setBackground(new DialogButtonGradientDrawable()
+                                            .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
+                                }
+                                dialog.dismiss();
+                            });
+                            break;
 
-                    case "Paste":
-                        codeEditor.pasteText();
-                        break;
+                        case "Word wrap":
+                            item.setChecked(!item.isChecked());
+                            codeEditor.setWordwrap(item.isChecked());
+                            pref.edit().putBoolean("dlg_ww", item.isChecked()).apply();
+                            break;
 
-                    default:
-                        return false;
-                }
-                return true;
-            });
-            popupMenu.show();
+                        case "Auto complete symbol pair":
+                            item.setChecked(!item.isChecked());
+                            codeEditor.getProps().symbolPairAutoCompletion = item.isChecked();
+                            pref.edit().putBoolean("dlg_acsp", item.isChecked()).apply();
+                            break;
+
+                        case "Auto complete":
+                            item.setChecked(!item.isChecked());
+                            codeEditor.getComponent(EditorAutoCompletion.class).setEnabled(item.isChecked());
+                            pref.edit().putBoolean("dlg_ac", item.isChecked()).apply();
+                            break;
+
+                        case "Paste":
+                            codeEditor.pasteText();
+                            break;
+
+                        default:
+                            return false;
+                    }
+                    return true;
+                });
+                popupMenu.show();
+            }
         });
-        Helper.applyRipple(getContext(), redo);
-        Helper.applyRipple(getContext(), undo);
-        Helper.applyRipple(getContext(), more);
-        findViewById(R.id.save).setVisibility(View.GONE);
+
         codeEditor.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 0,
