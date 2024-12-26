@@ -63,7 +63,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         toolbar.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
             if (id == R.id.action_undo) {
-                codeEditor.undo()
+                codeEditor.undo();
             } else if (id == R.id.action_redo) {
                 codeEditor.redo();
             } else if (id == R.id.action_more) {
