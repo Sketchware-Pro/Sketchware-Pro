@@ -66,7 +66,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                 codeEditor.undo();
             } else if (id == R.id.action_redo) {
                 codeEditor.redo();
-            } else if (id == R.id.action_more) {
+            } else if (id == R.id.action_menu) {
                 PopupMenu popupMenu = new PopupMenu(act, v);
                 populateMenu(popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(menuItem -> {
@@ -152,6 +152,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                 });
                 popupMenu.show();
             }
+            return true;
         });
 
         codeEditor.setLayoutParams(new LinearLayout.LayoutParams(
