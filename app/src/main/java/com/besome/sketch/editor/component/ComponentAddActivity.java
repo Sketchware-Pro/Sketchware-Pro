@@ -229,7 +229,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
             }
         });
         binding.docsButton.setOnClickListener(this);
-        binding.imgFilePicker.setOnClickListener(this);
+        binding.tiInputFilePicker.setEndIconOnClickListener(v -> showFilePickerMimeTypeSelectionDialog());
     }
 
     @Override
@@ -258,8 +258,6 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                     t();
                 }
             }
-        } else if (id == R.id.img_file_picker) {
-            showFilePickerMimeTypeSelectionDialog();
         }
     }
 
@@ -276,9 +274,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
         new MaterialAlertDialogBuilder(this)
                 .setTitle(getTranslatedString(R.string.component_file_picker_title_select_mime_type))
-                .setSingleChoiceItems(mimeTypeLabels.toArray(new String[0]), selectedMime.get(), (dialog, which) -> {
-                    selectedChoice.set(which);
-                })
+                .setSingleChoiceItems(mimeTypeLabels.toArray(new String[0]), selectedMime.get(), (dialog, which) -> selectedChoice.set(which))
                 .setPositiveButton(R.string.common_word_select, (dialog, which) -> {
                     String selectedMimeType = mimeTypes.get(selectedChoice.get());
                     selectedMime.set(selectedChoice.get());
@@ -348,6 +344,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
             binding.addButton.animate().alpha(LayoutParams.FLEX_GROW_DEFAULT).start();
             binding.docsButton.animate().alpha(LayoutParams.FLEX_GROW_DEFAULT).start();
             Pair<Integer, Integer> pair = w.get(componentsAdapter.layoutPosition);
+            if (pair == null) return;
             binding.layoutImgIcon.animate()
                     .translationX((float) pair.first)
                     .translationY((float) pair.second)
@@ -372,7 +369,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         binding.layoutImgIcon.setTranslationX(LayoutParams.FLEX_GROW_DEFAULT);
         binding.layoutImgIcon.setTranslationY(LayoutParams.FLEX_GROW_DEFAULT);
         ComponentBean componentBean = componentList.get(componentsAdapter.layoutPosition);
-        Helper.setViewsVisibility(true, binding.tvWarning, binding.tiInputFilename, binding.tvDescFirebasePath, binding.tvDescFilePicker, binding.tiInputFirebasePath, binding.layoutInputFilePicker);
+        Helper.setViewsVisibility(true, binding.tvWarning, binding.tiInputFilename, binding.tvDescFirebasePath, binding.tvDescFilePicker, binding.tiInputFirebasePath, binding.tiInputFilePicker);
         switch (componentBean.type) {
             case ComponentBean.COMPONENT_TYPE_SHAREDPREF:
                 binding.tiInputFilename.setVisibility(View.VISIBLE);
@@ -391,7 +388,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 break;
 
             case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                Helper.setViewsVisibility(false, binding.tvDescFilePicker, binding.layoutInputFilePicker);
+                Helper.setViewsVisibility(false, binding.tvDescFilePicker, binding.tiInputFilePicker);
                 break;
         }
         binding.imgIcon.setImageResource(ComponentBean.getIconResource(componentBean.type));
@@ -459,6 +456,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
             }
             if (position == layoutPosition) {
                 Pair<Integer, Integer> pair = w.get(position);
+                if (pair == null) return;
                 holder.itemName.animate()
                         .setDuration(100)
                         .alpha(LayoutParams.FLEX_GROW_DEFAULT)

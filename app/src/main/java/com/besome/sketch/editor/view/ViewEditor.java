@@ -1,5 +1,7 @@
 package com.besome.sketch.editor.view;
 
+import static pro.sketchware.utility.ThemeUtils.getColor;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -72,7 +74,6 @@ import mod.hey.studios.util.ProjectFile;
 
 @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
 public class ViewEditor extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
-
     private final int[] G = new int[2];
     private final Handler handler = new Handler();
     public boolean isLayoutChanged = true;
@@ -93,7 +94,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private boolean S = true;
     private boolean T = false;
     private LinearLayout paletteGroup;
-    private PaletteGroupItem favoritePalette;
     private String a;
     private LinearLayout aa;
     private String b;
@@ -125,12 +125,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public WidgetsCreatorManager widgetsCreatorManager;
 
     public ViewEditor(Context context) {
-        super(context);
-        initialize(context);
+        this(context, null);
     }
 
-    public ViewEditor(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
+    public ViewEditor(Context context, AttributeSet attrs) {
+        super(context, attrs);
         initialize(context);
     }
 
@@ -151,14 +150,22 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         isAnimating = true;
     }
 
-    private void g() {
+    private void addPaletteGroupItems() {
+        LinearLayout.LayoutParams paletteLayoutParams =
+                new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
+        paletteLayoutParams.weight = 1f;
+
         PaletteGroupItem basicPalette = new PaletteGroupItem(getContext());
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams.weight = 1.0f;
-        basicPalette.setLayoutParams(layoutParams);
-        basicPalette.a(PaletteGroup.BASIC);
+        basicPalette.setLayoutParams(paletteLayoutParams);
+        basicPalette.setPaletteGroup(PaletteGroup.BASIC);
         basicPalette.setSelected(true);
+
+        PaletteGroupItem favoritePalette = new PaletteGroupItem(getContext());
+        favoritePalette.setLayoutParams(paletteLayoutParams);
+        favoritePalette.setPaletteGroup(PaletteGroup.FAVORITE);
+        favoritePalette.setSelected(false);
+        favoritePalette.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
+
         basicPalette.setOnClickListener(v -> {
             showPaletteWidget();
             basicPalette.animate().scaleX(1).scaleY(1).alpha(1).start();
@@ -166,14 +173,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             basicPalette.setSelected(true);
             favoritePalette.setSelected(false);
         });
-        favoritePalette = new PaletteGroupItem(getContext());
-        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(0,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        layoutParams2.weight = 1.0f;
-        favoritePalette.setLayoutParams(layoutParams2);
-        favoritePalette.a(PaletteGroup.FAVORITE);
-        favoritePalette.setSelected(false);
-        favoritePalette.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
+
         favoritePalette.setOnClickListener(v -> {
             showPaletteFavorite();
             basicPalette.animate().scaleX(0.9f).scaleY(0.9f).alpha(0.6f).start();
@@ -181,6 +181,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             basicPalette.setSelected(false);
             favoritePalette.setSelected(true);
         });
+
         paletteGroup.addView(basicPalette);
         paletteGroup.addView(favoritePalette);
     }
@@ -254,8 +255,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     @Override
     public void onClick(View view) {
-        int id2 = view.getId();
-        if (id2 == R.id.btn_editproperties) {
+        int id = view.getId();
+        if (id == R.id.btn_editproperties) {
             m();
         }
     }
@@ -495,6 +496,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     private void initialize(Context context) {
         wB.a(context, this, R.layout.view_editor);
+
         paletteWidget = findViewById(R.id.palette_widget);
         paletteFavorite = findViewById(R.id.palette_favorite);
         dummyView = findViewById(R.id.dummy);
@@ -503,25 +505,31 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         deleteView = findViewById(R.id.delete_view);
         FrameLayout shape = findViewById(R.id.shape);
         paletteGroup = findViewById(R.id.palette_group);
-        g();
+
+        addPaletteGroupItems();
+        initialDeleteViewUi();
+
         findViewById(R.id.btn_editproperties).setOnClickListener(this);
         findViewById(R.id.img_close).setOnClickListener(this);
-        rippleRound(deleteView, "#696969", "#ffffff", 200);
+
         f = wB.a(context, 1.0f);
         I = (int) (I * f);
         J = (int) (J * f);
         displayWidth = getResources().getDisplayMetrics().widthPixels;
         displayHeight = getResources().getDisplayMetrics().heightPixels;
+
         aa = new LinearLayout(context);
         aa.setOrientation(LinearLayout.VERTICAL);
         aa.setGravity(Gravity.CENTER);
         aa.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, displayHeight));
         shape.addView(aa);
+
         k = new LinearLayout(context);
         k.setBackgroundColor(0xff0084c2);
         k.setOrientation(LinearLayout.HORIZONTAL);
         k.setGravity(Gravity.CENTER_VERTICAL);
         k.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 25f)));
+
         fileName = new TextView(context);
         fileName.setTextColor(Color.WHITE);
         fileName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -529,6 +537,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         fileName.setPadding((int) (f * 8f), 0, 0, 0);
         fileName.setGravity(Gravity.CENTER_VERTICAL);
         k.addView(fileName);
+
         imgPhoneTopBg = new ImageView(context);
         imgPhoneTopBg.setImageResource(R.drawable.phone_bg_top);
         imgPhoneTopBg.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -536,11 +545,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         imgPhoneTopBg.setScaleType(ImageView.ScaleType.FIT_END);
         k.addView(imgPhoneTopBg);
         shape.addView(k);
+
         toolbar = new LinearLayout(context);
         toolbar.setBackgroundColor(0xff008dcd);
         toolbar.setOrientation(LinearLayout.HORIZONTAL);
         toolbar.setGravity(Gravity.CENTER_VERTICAL);
         toolbar.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 48f)));
+
         TextView tvToolbar = new TextView(context);
         tvToolbar.setTextColor(Color.WHITE);
         tvToolbar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -552,13 +563,16 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         tvToolbar.setTypeface(null, Typeface.BOLD);
         toolbar.addView(tvToolbar);
         shape.addView(toolbar);
+
         viewPane = new ViewPane(getContext());
         viewPane.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, displayHeight));
-        shape.addView(viewPane);
         viewPane.setOnTouchListener(this);
+        shape.addView(viewPane);
+
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         isVibrationEnabled = new DB(context, "P12").a("P12I0", true);
         scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+
         paletteWidget.cardView.setOnClickListener(view -> widgetsCreatorManager.showWidgetsCreatorDialog(-1));
     }
 
@@ -700,9 +714,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     private boolean isInsideItemScrollView(View view) {
         for (ViewParent parent = view.getParent(); parent != null && parent != this; parent = parent.getParent()) {
-            if ((parent instanceof ItemVerticalScrollView) || (parent instanceof ItemHorizontalScrollView)) {
-                return true;
-            }
+            return parent instanceof ItemVerticalScrollView || parent instanceof ItemHorizontalScrollView;
         }
         return false;
     }
@@ -714,17 +726,17 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void deleteWidgetFromCollection(String str) {
-        aB aBVar = new aB((Activity) getContext());
-        aBVar.b(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
-        aBVar.a(R.drawable.ic_mtrl_delete);
-        aBVar.a(xB.b().a(getContext(), R.string.view_widget_favorites_delete_message));
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
+        aB dialog = new aB((Activity) getContext());
+        dialog.b(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
+        dialog.a(R.drawable.ic_mtrl_delete);
+        dialog.a(xB.b().a(getContext(), R.string.view_widget_favorites_delete_message));
+        dialog.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
             Rp.h().a(str, true);
             setFavoriteData(Rp.h().f());
-            aBVar.dismiss();
+            dialog.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
-        aBVar.show();
+        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.show();
     }
 
     private void cancelAnimation() {
@@ -998,7 +1010,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             rippleRound(deleteView, isCustomWidget ? "#26A59A" :"#FF5D5D", "#ff0000", 200);
             shakeView(deleteView);
         } else {
-            rippleRound(deleteView, "#696969", "#ffffff", 200);
+            initialDeleteViewUi();
         }
         if (isCustomWidget) {
             deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_edit));
@@ -1009,11 +1021,21 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
+    private void initialDeleteViewUi() {
+        int focus = getColor(deleteView, R.attr.colorSurfaceInverse);
+        int pressed = getColor(deleteView, R.attr.colorOnSurfaceVariant);
+        rippleRound(deleteView, focus, pressed, 200);
+    }
+
     private void rippleRound(View view, String focus, String pressed, double round) {
+        rippleRound(view, Color.parseColor(focus), Color.parseColor(pressed), round);
+    }
+
+    private void rippleRound(View view, int focus, int pressed, double round) {
         GradientDrawable GG = new GradientDrawable();
-        GG.setColor(Color.parseColor(focus));
+        GG.setColor(focus);
         GG.setCornerRadius((float) round);
-        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{Color.parseColor(pressed)}), GG, null);
+        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{pressed}), GG, null);
         view.setBackground(RE);
     }
 
@@ -1023,15 +1045,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     static class PaletteGroupItem extends LinearLayout implements View.OnClickListener {
-
         private ImageView imgGroup;
 
         public PaletteGroupItem(Context context) {
             super(context);
-            initialize(context);
-        }
 
-        private void initialize(Context context) {
             wB.a(context, this, R.layout.palette_group_item);
             imgGroup = findViewById(R.id.img_group);
         }
@@ -1040,7 +1058,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         public void onClick(View view) {
         }
 
-        public void a(PaletteGroup group) {
+        public void setPaletteGroup(PaletteGroup group) {
             imgGroup.setImageResource(group == PaletteGroup.BASIC ?
                     R.drawable.selector_palette_tab_ic_sketchware :
                     R.drawable.selector_palette_tab_ic_bookmark);
@@ -1061,5 +1079,4 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         extraWidget.setTag(tagValue);
         extraWidget.setOnTouchListener(this);
     }
-
 }

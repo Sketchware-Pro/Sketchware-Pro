@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="Undo"
+        android:icon="@drawable/ic_mtrl_undo"
+        app:showAsAction="always" />
+
+    <item
+        android:title="Redo"
+        android:icon="@drawable/ic_mtrl_redo"
+        app:showAsAction="always" />
+
+    <item
+        android:title="Save"
+        android:icon="@drawable/ic_mtrl_save"
+        app:showAsAction="always" />
+
+    <item
+        android:title="Menu"
+        android:icon="@drawable/ic_mtrl_more_vertical"
+        app:showAsAction="always" />
+
+</menu>

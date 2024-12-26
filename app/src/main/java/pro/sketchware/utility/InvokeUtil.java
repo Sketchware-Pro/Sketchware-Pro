@@ -1,8 +1,44 @@
 package pro.sketchware.utility;
 
+import android.content.Context;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 public class InvokeUtil {
+
+    public static final String[] ANDROID_CLASS_PREFIX = {
+        "android.widget.", "android.view.", "android.webkit."
+    };
+
+    public static View createView(Context context, @NonNull String name) {
+        View v = null;
+        if (name.contains(".")) {
+            v = create(context, name);
+        } else {
+            for (String prefix : ANDROID_CLASS_PREFIX) {
+                v = create(context, prefix + name);
+                if (v != null) {
+                    break;
+                }
+            }
+        }
+        return v;
+    }
+
+    private static View create(Context context, @NonNull String name) {
+        try {
+            Class<?> clazz = Class.forName(name);
+            Constructor<?> con = clazz.getDeclaredConstructor(Context.class);
+            con.setAccessible(true);
+            return (View) con.newInstance(context);
+        } catch (Exception ignored) {
+        }
+        return null;
+    }
 
     public static Object invoke(Object v, String name, Class<?>[] types, Object... params) {
         try {

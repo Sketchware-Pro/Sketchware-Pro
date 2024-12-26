@@ -12,7 +12,25 @@
         <item name="switchPreferenceCompatStyle">
             @style/Preference.SketchwarePro.SwitchPreferenceCompat
         </item>
+        <item name="tabStyle">@style/TabLayoutStyle</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.SketchwarePro.BottomSheetDialog</item>
+
+        <!-- Type styles. -->
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.SketchwarePro.DisplayLarge</item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.SketchwarePro.DisplayMedium</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.SketchwarePro.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.SketchwarePro.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SketchwarePro.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.SketchwarePro.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.SketchwarePro.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.SketchwarePro.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.SketchwarePro.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.SketchwarePro.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.SketchwarePro.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.SketchwarePro.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.SketchwarePro.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.SketchwarePro.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.SketchwarePro.LabelSmall</item>
     </style>
 
     <style name="Theme.SketchwarePro.Main">

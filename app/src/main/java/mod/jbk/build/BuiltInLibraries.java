@@ -113,8 +113,6 @@ public class BuiltInLibraries {
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
     public static String JETBRAINS_ANNOTATIONS = "annotations-13.0";
     public static String KOTLIN_STDLIB = "kotlin-stdlib-1.6.21";
-    public static String KOTLIN_STDLIB_JDK7 = "kotlin-stdlib-jdk7-1.6.21";
-    public static String KOTLIN_STDLIB_JDK8 = "kotlin-stdlib-jdk8-1.6.21";
     public static String LOTTIE = "lottie-3.4.0";
     public static String MATERIAL = "material-1.12.0";
     public static String OKHTTP = "okhttp-3.9.1";
@@ -302,8 +300,6 @@ public class BuiltInLibraries {
             new BuiltInLibrary(HTTP_LEGACY_ANDROID_28),
             new BuiltInLibrary(JETBRAINS_ANNOTATIONS),
             new BuiltInLibrary(KOTLIN_STDLIB, List.of(JETBRAINS_ANNOTATIONS)),
-            new BuiltInLibrary(KOTLIN_STDLIB_JDK7, List.of(KOTLIN_STDLIB)),
-            new BuiltInLibrary(KOTLIN_STDLIB_JDK8, List.of(KOTLIN_STDLIB)),
             new BuiltInLibrary(LOTTIE, List.of(ANDROIDX_APPCOMPAT, OKIO), "com.airbnb.lottie"),
             new BuiltInLibrary(MATERIAL, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_ACTIVITY, ANDROIDX_RESOURCEINSPECTION_ANNOTATION, ANDROIDX_APPCOMPAT, ANDROIDX_CARDVIEW,
                     ANDROIDX_CONSTRAINTLAYOUT, ANDROIDX_COORDINATORLAYOUT, ANDROIDX_CORE, ANDROIDX_DRAWERLAYOUT, ANDROIDX_DYNAMIC_ANIMATION,
@@ -314,7 +310,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ONESIGNAL, List.of(ANDROIDX_BROWSER, ANDROIDX_CARDVIEW, ANDROIDX_FRAGMENT, ANDROIDX_MEDIA, FIREBASE_MESSAGING,
                     PLAY_SERVICES_ADS_IDENTIFIER, PLAY_SERVICES_BASE, PLAY_SERVICES_LOCATION), "com.onesignal"),
 
-            new BuiltInLibrary(OTPVIEW, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE_KTX, ANDROIDX_CONSTRAINTLAYOUT, KOTLIN_STDLIB_JDK7),
+            new BuiltInLibrary(OTPVIEW, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_CORE_KTX, ANDROIDX_CONSTRAINTLAYOUT),
                     "affan.ahmad.otp"),
 
             new BuiltInLibrary(PATTERN_LOCK_VIEW, List.of(ANDROIDX_CORE, JETBRAINS_ANNOTATIONS), "com.andrognito.patternlockview"),
@@ -361,7 +357,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(UMP_USER_MESSAGING_PLATFORM, List.of(ANDROIDX_ANNOTATION, PLAY_SERVICES_ADS_IDENTIFIER,
                     PLAY_SERVICES_BASEMENT)),
             new BuiltInLibrary(WAVE_SIDE_BAR, List.of(), "com.sayuti.lib"),
-            new BuiltInLibrary(YOUTUBE_PLAYER, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_RECYCLERVIEW, KOTLIN_STDLIB_JDK7),
+            new BuiltInLibrary(YOUTUBE_PLAYER, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_RECYCLERVIEW),
                     "com.pierfrancescosoffritti.androidyoutubeplayer"),
     };
 
@@ -456,7 +452,7 @@ public class BuiltInLibraries {
 
         if (ProjectBuilder.hasFileChanged(baseAssetsPath + dexsArchiveName, dexsArchivePath)) {
             for (BuildProgressReceiver receiver : progressReceivers) {
-                receiver.onProgress("Extracting built-in libraries' DEX files...");
+                receiver.onProgress("Extracting built-in libraries' DEX files...", 4);
             }
             /* Delete the directory */
             fileUtil.b(dexsDirectoryPath);
@@ -467,7 +463,7 @@ public class BuiltInLibraries {
         }
         if (ProjectBuilder.hasFileChanged(baseAssetsPath + libsArchiveName, libsArchivePath)) {
             for (BuildProgressReceiver receiver : progressReceivers) {
-                receiver.onProgress("Extracting built-in libraries' resources...");
+                receiver.onProgress("Extracting built-in libraries' resources...", 5);
             }
             /* Delete the directory */
             fileUtil.b(libsDirectoryPath);
@@ -479,7 +475,7 @@ public class BuiltInLibraries {
         maybeExtractCoreLambdaStubsJar();
         if (ProjectBuilder.hasFileChanged(baseAssetsPath + testkeyArchiveName, testkeyArchivePath)) {
             for (BuildProgressReceiver receiver : progressReceivers) {
-                receiver.onProgress("Extracting built-in signing keys...");
+                receiver.onProgress("Extracting built-in signing keys...", 6);
             }
             /* Delete the directory */
             fileUtil.b(testkeyDirectoryPath);
@@ -495,7 +491,7 @@ public class BuiltInLibraries {
         String androidJarPath = new File(EXTRACTED_COMPILE_ASSETS_PATH, androidJarArchiveName).getAbsolutePath();
         if (ProjectBuilder.hasFileChanged("libs" + File.separator + androidJarArchiveName, androidJarPath)) {
             for (BuildProgressReceiver receiver : receivers) {
-                receiver.onProgress("Extracting built-in android.jar...");
+                receiver.onProgress("Extracting built-in android.jar...", 7);
             }
             /* Delete android.jar */
             new oB().c(EXTRACTED_COMPILE_ASSETS_PATH.getAbsolutePath() + File.separator + "android.jar");

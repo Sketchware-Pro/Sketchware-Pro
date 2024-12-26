@@ -99,7 +99,9 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                     activity.orientation = projectFile.orientation;
                     activity.options = projectFile.options;
                     if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-                        jC.b(sc_id).a(2, projectFile.getDrawerName());
+                        if (jC.b(sc_id).b(projectFile.getDrawerXmlName()) == null) {
+                            jC.b(sc_id).a(2, projectFile.getDrawerName());
+                        }
                     } else {
                         jC.b(sc_id).b(2, projectFile.getDrawerName());
                     }

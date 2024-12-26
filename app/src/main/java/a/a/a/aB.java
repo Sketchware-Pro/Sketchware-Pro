@@ -24,6 +24,8 @@ public class aB extends AlertDialog {
     public View.OnClickListener dialogNoListener = null;
     public String dialogYesText = "Yes";
     public View.OnClickListener dialogYesListener = null;
+    public boolean cancelable = true;
+    public boolean canceledOnTouchOutside = true;
 
     private final Activity activity;
     private AlertDialog dialog;
@@ -31,6 +33,16 @@ public class aB extends AlertDialog {
     public aB(Activity activity) {
         super(activity);
         this.activity = activity;
+    }
+
+    @Override
+    public void setCancelable(boolean cancelable) {
+        this.cancelable = cancelable;
+    }
+
+    @Override
+    public void setCanceledOnTouchOutside(boolean canceledOnTouchOutside) {
+        this.canceledOnTouchOutside = canceledOnTouchOutside;
     }
 
     /**
@@ -93,6 +105,7 @@ public class aB extends AlertDialog {
     @Override
     public void show() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(activity);
+        builder.setCancelable(cancelable);
 
         if (!dialogTitleText.isEmpty()) {
             builder.setTitle(dialogTitleText);
@@ -131,6 +144,7 @@ public class aB extends AlertDialog {
             });
         }
 
+        dialog.setCanceledOnTouchOutside(canceledOnTouchOutside);
         dialog.show();
 
         if (dialogDefaultListener != null) {

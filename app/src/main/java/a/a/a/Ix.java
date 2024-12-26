@@ -639,6 +639,7 @@ public class Ix {
             XmlBuilder activityTag = new XmlBuilder("activity");
             activityTag.addAttribute("android", "name", ".DebugActivity");
             activityTag.addAttribute("android", "screenOrientation", "portrait");
+            activityTag.addAttribute("android", "theme", "@style/AppTheme.DebugActivity");
             applicationTag.a(activityTag);
         }
         if (c.isAdMobEnabled) {

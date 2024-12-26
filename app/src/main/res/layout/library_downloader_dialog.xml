@@ -13,8 +13,7 @@
         android:layout_marginTop="14dp"
         android:paddingHorizontal="4dp"
         android:text="@string/local_library_manager_enter_dependency"
-        android:textColor="?attr/colorPrimary"
-        android:textSize="20sp" />
+        android:textAppearance="?attr/textAppearanceTitleLargeEmphasized" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dependencyInputLayout"
@@ -40,7 +39,7 @@
         android:layout_marginHorizontal="12dp"
         android:layout_marginTop="8dp"
         android:text="@string/local_library_manager_dependency_info"
-        android:textSize="14sp" />
+        android:textAppearance="?attr/textAppearanceBodyMedium" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/downloadProgressCardView"
