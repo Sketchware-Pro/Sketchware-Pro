@@ -1,4 +1,4 @@
-package pro.sketchware.fragments.settings.events;
+package pro.sketchware.fragments.settings.events.details;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +15,8 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentEventsManagerDetailsBinding;
 import pro.sketchware.databinding.LayoutEventItemBinding;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.fragments.settings.events.EventsManagerConstants;
+import pro.sketchware.fragments.settings.events.creator.EventsManagerCreatorFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
