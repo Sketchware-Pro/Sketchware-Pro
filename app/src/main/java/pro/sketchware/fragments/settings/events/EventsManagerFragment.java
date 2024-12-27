@@ -279,9 +279,9 @@ public class EventsManagerFragment extends qA {
             holder.binding.eventTitle.setText(name);
             holder.binding.eventSubtitle.setText(getNumOfEvents(name));
 
-            holder.binding.itemView.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment(name)));
+            holder.itemView.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment(name)));
 
-            holder.binding.itemView.setOnLongClickListener(v -> {
+            holder.itemView.setOnLongClickListener(v -> {
                 new MaterialAlertDialogBuilder(context)
                         .setTitle(name)
                         .setItems(new String[]{"Edit", "Export", "Delete"}, (dialog, which) -> {

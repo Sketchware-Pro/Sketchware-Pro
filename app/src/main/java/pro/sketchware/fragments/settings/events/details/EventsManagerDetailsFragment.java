@@ -140,7 +140,7 @@ public class EventsManagerDetailsFragment extends qA {
             } else {
                 holder.binding.eventSubtitle.setText((String) dataArray.get(position).get("var"));
             }
-            holder.binding.itemView.setOnClickListener(v -> {
+            holder.itemView.setOnClickListener(v -> {
                 Bundle args = new Bundle();
                 args.putString("lis_name", listName);
                 args.putString("event", (String) dataArray.get(position).get("name"));
@@ -157,7 +157,7 @@ public class EventsManagerDetailsFragment extends qA {
                 fragment.setArguments(args);
                 openFragment(fragment);
             });
-            holder.binding.itemView.setOnLongClickListener(v -> {
+            holder.itemView.setOnLongClickListener(v -> {
                 new MaterialAlertDialogBuilder(requireContext())
                         .setTitle((String) dataArray.get(position).get("name"))
                         .setMessage("Delete this event?")
