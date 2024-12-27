@@ -23,5 +23,5 @@
     <item
         android:id="@+id/moreblock"
         android:icon="@drawable/ic_mtrl_moreblock"
-        android:title="@string/common_word_block" />
+        android:title="@string/common_word_moreblock" />
 </menu>
