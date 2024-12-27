@@ -28,7 +28,6 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -297,7 +296,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         }
 
         public class ViewHolder extends CollapsibleViewHolder {
-            public final MaterialCardView root;
+            public final LinearLayout root;
             public final LinearLayout optionLayout;
             public final ImageView icon;
             public final TextView type;
@@ -307,7 +306,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView, 200);
-                root = (MaterialCardView) itemView;
+                root = (LinearLayout) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 type = itemView.findViewById(R.id.tv_component_type);
                 description = itemView.findViewById(R.id.tv_component_description);
