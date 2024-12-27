@@ -3,32 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:ignore="ContentDescription">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:liftOnScroll="false"
-        app:elevation="0dp">
+        android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="Logcat Reader" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_height="wrap_content"
+            app:menu="@menu/menu_logcat"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="Logcat Reader" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -78,8 +67,7 @@
         android:id="@+id/noContentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:colorBackground"
-        android:fitsSystemWindows="false"
+        android:background="?attr/colorSurface"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingHorizontal="16dp"
@@ -87,17 +75,13 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:visibility="gone">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:src="@drawable/img_nocontent" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="Logcat hasn't captured anything yet"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
 
         <TextView
@@ -106,130 +90,8 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="Keep this screen open then run your app"
+            android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
+
     </LinearLayout>
-
-    <View
-        android:id="@+id/dimView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0"
-        android:background="@drawable/ui_logcat_gradient_background"
-        tools:alpha="1" />
-
-    <FrameLayout
-        android:id="@+id/optionsSheet"
-        style="@style/Widget.Material3.BottomSheet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusable="true"
-        android:clickable="true"
-        app:behavior_hideable="false"
-        app:behavior_peekHeight="@dimen/logcat_bottom_sheet_peek_height"
-        app:layout_behavior="@string/bottom_sheet_behavior">
-
-        <LinearLayout
-            android:id="@+id/optionsSheetLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-                android:id="@+id/drag_handle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp" />
-
-            <LinearLayout
-                android:id="@+id/scrollSwitchLayout"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/minTouchTargetSize"
-                android:background="?attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_mtrl_scroller" />
-
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/autoScrollSwitch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:focusable="false"
-                    android:clickable="false"
-                    android:checked="true"
-                    android:text="Auto scroll enabled" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/filterSwitchLayout"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/minTouchTargetSize"
-                android:background="?attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_mtrl_filter" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Filter by package name"
-                    android:textAppearance="?attr/textAppearanceBodyMedium" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_mtrl_arrow_right" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/clearSwitchLayout"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/minTouchTargetSize"
-                android:background="?attr/selectableItemBackground"
-                android:focusable="true"
-                android:clickable="true"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_mtrl_clear_all" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Clear all logs"
-                    android:textAppearance="?attr/textAppearanceBodyMedium" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_mtrl_arrow_right" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </FrameLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

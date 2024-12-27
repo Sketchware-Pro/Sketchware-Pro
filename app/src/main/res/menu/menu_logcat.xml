@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_auto_scroll"
+        android:checkable="true"
+        android:title="Auto scroll"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_mtrl_filter"
+        android:title="Filter by package name"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_clear_logs"
+        android:icon="@drawable/ic_mtrl_clear_all"
+        android:title="Clear all logs"
+        app:showAsAction="always" />
+
+</menu>
