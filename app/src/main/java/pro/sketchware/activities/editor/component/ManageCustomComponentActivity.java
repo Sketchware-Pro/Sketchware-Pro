@@ -254,6 +254,17 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            int backgroundResource;
+            if (components.size() == 1) {
+                backgroundResource = R.drawable.shape_alone;
+            } else if (position == 0) {
+                backgroundResource = R.drawable.shape_top;
+            } else if (position == components.size() - 1) {
+                backgroundResource = R.drawable.shape_bottom;
+            } else {
+                backgroundResource = R.drawable.shape_middle;
+            }
+            holder.itemView.setBackgroundResource(backgroundResource);
             holder.bind(components.get(position));
             if (holder.isCollapsed()) {
                 holder.optionLayout.setVisibility(View.GONE);
