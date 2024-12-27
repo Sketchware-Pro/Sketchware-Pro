@@ -114,7 +114,19 @@ public class EventsManagerDetailsFragment extends qA {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             HashMap<String, Object> item = dataArray.get(position);
-
+            
+            int backgroundResource;
+            if (dataArray.size() == 1) {
+                backgroundResource = R.drawable.shape_alone;
+            } else if (position == 0) {
+                backgroundResource = R.drawable.shape_top;
+            } else if (position == dataArray.size() - 1) {
+                backgroundResource = R.drawable.shape_bottom;
+            } else {
+                backgroundResource = R.drawable.shape_middle;
+            }
+            holder.itemView.setBackgroundResource(backgroundResource);
+            
             if (listName.isEmpty()) {
                 holder.binding.eventIcon.setImageResource(R.drawable.widget_source);
             } else {
@@ -128,7 +140,7 @@ public class EventsManagerDetailsFragment extends qA {
             } else {
                 holder.binding.eventSubtitle.setText((String) dataArray.get(position).get("var"));
             }
-            holder.binding.eventCard.setOnClickListener(v -> {
+            holder.binding.itemView.setOnClickListener(v -> {
                 Bundle args = new Bundle();
                 args.putString("lis_name", listName);
                 args.putString("event", (String) dataArray.get(position).get("name"));
@@ -145,7 +157,7 @@ public class EventsManagerDetailsFragment extends qA {
                 fragment.setArguments(args);
                 openFragment(fragment);
             });
-            holder.binding.eventCard.setOnLongClickListener(v -> {
+            holder.binding.itemView.setOnLongClickListener(v -> {
                 new MaterialAlertDialogBuilder(requireContext())
                         .setTitle((String) dataArray.get(position).get("name"))
                         .setMessage("Delete this event?")
