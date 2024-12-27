@@ -128,7 +128,7 @@ public class EventsManagerDetailsFragment extends qA {
             holder.itemView.setBackgroundResource(backgroundResource);
             
             if (listName.isEmpty()) {
-                holder.binding.eventIcon.setImageResource(R.drawable.widget_source);
+                holder.binding.eventIcon.setImageResource(R.drawable.ic_mtrl_code);
             } else {
                 int imgRes = Integer.parseInt((String) dataArray.get(position).get("icon"));
                 holder.binding.eventIcon.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(imgRes));

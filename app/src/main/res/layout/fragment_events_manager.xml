@@ -41,68 +41,60 @@
             android:paddingTop="16dp"
             android:orientation="vertical">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/activity_events_card"
-                style="?materialCardViewFilledStyle"
+            <LinearLayout
+                android:id="@+id/activity_events"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:gravity="center|start"
+                android:orientation="horizontal"
+                android:padding="6dp"
                 android:layout_marginHorizontal="14dp"
                 android:layout_marginVertical="8dp"
-                android:orientation="vertical"
-                app:cardBackgroundColor="?colorSurfaceContainer">
+                android:background="@drawable/shape_alone">
 
                 <LinearLayout
-                    android:id="@+id/activity_events"
-                    android:layout_width="match_parent"
+                    android:layout_width="48dp"
                     android:layout_height="wrap_content"
-                    android:baselineAligned="false"
-                    android:gravity="center|start"
-                    android:orientation="horizontal"
-                    android:padding="6dp">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="48dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/activity_events_icon"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/ic_mtrl_code"
-                            app:tint="?attr/colorPrimary"
-                            android:tintMode="src_in" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:paddingStart="0dp"
-                        android:paddingTop="8dp"
-                        android:paddingEnd="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/settings_events_manager_activity_events"
-                            android:textAppearance="?textAppearanceBodyLarge"
-                            android:textColor="?colorOnSurface"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/activity_events_description"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?textAppearanceBodyMedium"
-                            android:textColor="?colorOnSurfaceVariant"
-                            android:textSize="12sp" />
-                    </LinearLayout>
+                    <ImageView
+                        android:id="@+id/activity_events_icon"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_mtrl_code"
+                        app:tint="?attr/colorPrimary"
+                        android:tintMode="src_in" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="0dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings_events_manager_activity_events"
+                        android:textAppearance="?textAppearanceBodyLarge"
+                        android:textColor="?colorOnSurface"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/activity_events_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?textAppearanceBodyMedium"
+                        android:textColor="?colorOnSurfaceVariant"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -143,7 +135,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
         android:src="@drawable/ic_mtrl_add"
-        android:elevation="0dp"
         app:fabSize="normal" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

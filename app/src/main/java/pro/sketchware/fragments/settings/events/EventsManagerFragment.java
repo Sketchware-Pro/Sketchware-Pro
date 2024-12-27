@@ -76,7 +76,7 @@ public class EventsManagerFragment extends qA {
             }
             return false;
         });
-        binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
+        binding.activityEvents.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
         binding.activityEventsDescription.setText(getNumOfEvents(""));
         binding.fabNewListener.setOnClickListener(v -> showAddNewListenerDialog());
         refreshList();
