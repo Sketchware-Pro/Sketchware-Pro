@@ -58,13 +58,16 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
+
         super.onCreate(savedInstanceState);
         binding = ManageAppCompatBinding.inflate(getLayoutInflater());
+
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setTitle("AppCompat Manager");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        filename = getIntent().getStringExtra("file_name");
+        getSupportActionBar().setSubtitle(filename);
+
         UI.addSystemWindowInsetToPadding(binding.list, false, false, false, true);
         binding.toolbar.setNavigationOnClickListener(
                 v -> {
@@ -78,8 +81,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
         } else {
             sc_id = savedInstanceState.getString("sc_id");
         }
-        filename = getIntent().getStringExtra("file_name");
-        getSupportActionBar().setSubtitle(filename);
+
         path =
                 FileUtil.getExternalStorageDir()
                         + "/.sketchware/data/"
@@ -156,7 +158,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                     appCompats.add("NavigationDrawer");
                 }
                 if (appCompats.isEmpty()) {
-                    setNote("No AppCompat options are currently available in this activity.");
+                    setNote("No options are found.", "No AppCompat options are currently available in this activity.");
                 } else {
                     for (int i = 0; i < appCompats.size(); i++) {
                         TabLayout.Tab tab = binding.tabLayout.newTab();
@@ -170,10 +172,10 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                 }
             } else {
                 setNote(
-                        "This feature is currently disabled. Enabled appcompat in the library manager to use it.");
+                        "AppCompat is disabled.", "Please enable AppCompat in the Library Manager to use it.");
             }
         } else {
-            setNote("You're not currently in the Activity layout.");
+            setNote("Not available.", "You're not currently in the Activity layout.");
         }
     }
 
@@ -239,14 +241,14 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
         FileUtil.writeFile(path, defInjections);
     }
 
-    private void setNote(String note) {
-        if (note == null || note.isEmpty()) {
-            binding.noteCard.setVisibility(View.GONE);
+    private void setNote(String title, String message) {
+        if ((title == null && message == null) || (title.isEmpty() && message.isEmpty()) {
             return;
         }
-        binding.noteCard.setVisibility(View.VISIBLE);
-        binding.note.setText(note);
-        binding.note.setSelected(true);
+
+        binding.noContentLayout.setVisibility(View.VISIBLE);
+        binding.noteTitle.setText(title);
+        binding.noteMessage.setText(message);
     }
 
     private void dialog(String type, int position) {
