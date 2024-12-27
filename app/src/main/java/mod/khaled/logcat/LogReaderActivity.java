@@ -12,17 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.BackEventCompat;
 import androidx.activity.EdgeToEdge;
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import pro.sketchware.R;
@@ -54,30 +48,6 @@ public class LogReaderActivity extends BaseAppCompatActivity {
     private ArrayList<String> pkgFilterList = new ArrayList<>();
 
     private ActivityLogcatreaderBinding binding;
-    private BottomSheetBehavior<View> persistentBottomSheetBehavior;
-
-    private final OnBackPressedCallback persistentBottomSheetBackCallback =
-            new OnBackPressedCallback(/* enabled= */ false) {
-                @Override
-                public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
-                    persistentBottomSheetBehavior.startBackProgress(backEvent);
-                }
-
-                @Override
-                public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
-                    persistentBottomSheetBehavior.updateBackProgress(backEvent);
-                }
-
-                @Override
-                public void handleOnBackPressed() {
-                    persistentBottomSheetBehavior.handleBackInvoked();
-                }
-
-                @Override
-                public void handleOnBackCancelled() {
-                    persistentBottomSheetBehavior.cancelBackProgress();
-                }
-            };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,60 +71,21 @@ public class LogReaderActivity extends BaseAppCompatActivity {
             registerReceiver(logger, intentFilter);
         }
 
-        final View decorView = getWindow().getDecorView();
-        ViewCompat.setOnApplyWindowInsetsListener(decorView, (v, insets) -> {
-            Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            binding.appBarLayout.setPadding(
-                    binding.appBarLayout.getPaddingLeft(),
-                    systemBarsInsets.top,
-                    binding.appBarLayout.getPaddingRight(),
-                    binding.appBarLayout.getPaddingBottom());
-
-            binding.optionsSheet.setPadding(
-                    binding.optionsSheet.getPaddingLeft(),
-                    binding.optionsSheet.getPaddingTop(),
-                    binding.optionsSheet.getPaddingRight(),
-                    systemBarsInsets.bottom);
-
-            persistentBottomSheetBehavior.setPeekHeight(
-                    getResources().getDimensionPixelSize(R.dimen.logcat_bottom_sheet_peek_height) + systemBarsInsets.bottom,
-                    true);
-            return WindowInsetsCompat.CONSUMED;
-        });
-
-        persistentBottomSheetBehavior = BottomSheetBehavior.from(binding.optionsSheet);
-        persistentBottomSheetBehavior.addBottomSheetCallback(createBottomSheetCallback());
-
-        binding.optionsSheet.post(() -> {
-            if (persistentBottomSheetBehavior != null) {
-                persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-            }
-
-            int state = persistentBottomSheetBehavior.getState();
-            updateBackHandlingEnabled(state);
-        });
-        setupBackHandling();
-
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-
-        binding.autoScrollSwitch.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            autoScroll = isChecked;
-            if (autoScroll) {
-                binding.autoScrollSwitch.setText("Auto scroll enabled");
-                Objects.requireNonNull(binding.logsRecyclerView.getLayoutManager()).scrollToPosition(Objects.requireNonNull(binding.logsRecyclerView.getAdapter()).getItemCount() - 1);
-            } else {
-                binding.autoScrollSwitch.setText("Auto scroll disabled");
+        binding.topAppBar.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_clear) {
+                mainList.clear();
+                ((Adapter) binding.logsRecyclerView.getAdapter()).deleteAll();
+            } else if (id == R.id.action_auto_scroll) {
+                autoScroll = !item.isChecked();
+                if (autoScroll) {
+                    binding.logsRecyclerView.getLayoutManager().scrollToPosition(binding.logsRecyclerView.getAdapter().getItemCount() - 1);
+                }
+            } else if (id == R.id.action_filter) {
+                showFilterDialog();
             }
-        });
-
-        binding.scrollSwitchLayout.setOnClickListener(view -> binding.autoScrollSwitch.performClick());
-
-        binding.filterSwitchLayout.setOnClickListener(view -> showFilterDialog());
-
-        binding.clearSwitchLayout.setOnClickListener(view -> {
-            mainList.clear();
-            ((Adapter) Objects.requireNonNull(binding.logsRecyclerView.getAdapter())).deleteAll();
+            return true;
         });
 
         binding.searchInput.addTextChangedListener(new BaseTextWatcher() {
@@ -182,54 +113,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         });
     }
 
-    private void setupBackHandling() {
-        getOnBackPressedDispatcher().addCallback(this, persistentBottomSheetBackCallback);
-        persistentBottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                updateBackHandlingEnabled(newState);
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-            }
-        });
-    }
-
-    private void updateBackHandlingEnabled(int state) {
-        switch (state) {
-            case BottomSheetBehavior.STATE_EXPANDED, BottomSheetBehavior.STATE_HALF_EXPANDED ->
-                    persistentBottomSheetBackCallback.setEnabled(true);
-            case BottomSheetBehavior.STATE_COLLAPSED, BottomSheetBehavior.STATE_HIDDEN ->
-                    persistentBottomSheetBackCallback.setEnabled(false);
-            default -> {
-            }
-        }
-    }
-
-    private BottomSheetBehavior.BottomSheetCallback createBottomSheetCallback() {
-        return new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    binding.dimView.setOnClickListener(view -> persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
-                    binding.dimView.setClickable(true);
-                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    binding.dimView.setOnClickListener(null);
-                    binding.dimView.setClickable(false);
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                binding.dimView.setAlpha(slideOffset);
-            }
-        };
-    }
-
     void showFilterDialog() {
-        persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
         var dialogBinding = EasyDeleteEdittextBinding.inflate(getLayoutInflater());
         View view = dialogBinding.getRoot();
 
@@ -327,22 +211,13 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 binding.appBarLayout.setExpanded(false);
             }
 
-            if (!data.isEmpty()) {
-                if (persistentBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-                    persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    persistentBottomSheetBehavior.setHideable(false);
-                }
-                binding.noContentLayout.setVisibility(View.GONE);
-            } else {
-                binding.noContentLayout.setVisibility(View.VISIBLE);
-            }
+            binding.noContentLayout.setVisibility(data.isEmpty() ? View.VISIBLE : View.GONE);
         }
 
         public void deleteAll() {
             data.clear();
             binding.logsRecyclerView.getAdapter().notifyDataSetChanged();
             binding.noContentLayout.setVisibility(View.VISIBLE);
-            persistentBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
 
         public Adapter(ArrayList<HashMap<String, Object>> data) {
