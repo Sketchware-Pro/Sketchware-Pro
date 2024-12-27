@@ -1,4 +1,4 @@
-package pro.sketchware.fragments.settings.selector.block.details;
+package pro.sketchware.fragments.settings.block.selector.details;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,8 +17,8 @@ import pro.sketchware.databinding.DialogSelectorActionsBinding;
 
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
-import pro.sketchware.fragments.settings.selector.block.Selector;
-import pro.sketchware.fragments.settings.selector.block.BlockSelectorConsts;
+import pro.sketchware.fragments.settings.block.selector.Selector;
+import pro.sketchware.fragments.settings.block.selector.BlockSelectorConsts;
 
 import java.util.List;
 

@@ -4,11 +4,13 @@ import android.os.Bundle;
 import androidx.activity.ComponentActivity;
 import androidx.activity.EdgeToEdge;
 import androidx.fragment.app.Fragment;
+
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+
 import pro.sketchware.databinding.ActivitySettingsBinding;
 import pro.sketchware.fragments.settings.events.EventsManagerFragment;
 import pro.sketchware.fragments.settings.appearance.SettingsAppearanceFragment;
-import pro.sketchware.fragments.settings.selector.block.BlockSelectorManagerFragment;
+import pro.sketchware.fragments.settings.block.selector.BlockSelectorManagerFragment;
 
 public class SettingsActivity extends BaseAppCompatActivity {
 

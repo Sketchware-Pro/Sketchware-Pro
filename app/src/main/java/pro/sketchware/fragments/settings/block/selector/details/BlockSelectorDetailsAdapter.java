@@ -1,4 +1,4 @@
-package pro.sketchware.fragments.settings.selector.block;
+package pro.sketchware.fragments.settings.block.selector.details;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,37 +11,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import pro.sketchware.R;
 import pro.sketchware.databinding.LayoutBlockSelectorBinding;
+import pro.sketchware.fragments.settings.block.selector.BlockSelectorAdapter.OnClickListener;
+import pro.sketchware.fragments.settings.block.selector.BlockSelectorAdapter.OnLongClickListener;
 
-public class BlockSelectorAdapter extends ListAdapter<Selector, BlockSelectorAdapter.BlockSelectorAdapterViewHolder> {
+public class BlockSelectorDetailsAdapter extends ListAdapter<String, BlockSelectorDetailsAdapter.BlockSelectorDetailsAdapterViewHolder> {
 
     public final OnClickListener onClick;
     public final OnLongClickListener onLongClick;
 
-    public interface OnClickListener {
-        void onClick(Selector selector, int position);
-    }
-
-    public interface OnLongClickListener {
-        void onLongClick(Selector selector, int position);
-    }
-
-    public BlockSelectorAdapter(OnClickListener onClick, OnLongClickListener onLongClick) {
-        super(new BlockSelectorAdapterDiffCallback());
+    public BlockSelectorDetailsAdapter(OnClickListener onClick, OnLongClickListener onLongClick) {
+        super(new BlockSelectorDetailsAdapterDiffCallback());
         this.onClick = onClick;
         this.onLongClick = onLongClick;
     }
 
     @NonNull
     @Override
-    public BlockSelectorAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BlockSelectorDetailsAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutBlockSelectorBinding binding = LayoutBlockSelectorBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false
         );
-        return new BlockSelectorAdapterViewHolder(binding, onClick, onLongClick);
+        return new BlockSelectorDetailsAdapterViewHolder(binding, onClick, onLongClick);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BlockSelectorAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BlockSelectorDetailsAdapterViewHolder holder, int position) {
         holder.bind(getItem(position), position);
 
         int backgroundResource;
@@ -58,48 +52,48 @@ public class BlockSelectorAdapter extends ListAdapter<Selector, BlockSelectorAda
         holder.itemView.setBackgroundResource(backgroundResource);
     }
 
-    public static class BlockSelectorAdapterViewHolder extends RecyclerView.ViewHolder {
+    public static class BlockSelectorDetailsAdapterViewHolder extends RecyclerView.ViewHolder {
         public final LayoutBlockSelectorBinding binding;
         public final OnClickListener onClick;
         public final OnLongClickListener onLongClick;
-        public Selector currentSelector;
+        public String currentString;
         public Integer currentIndex;
 
-        public BlockSelectorAdapterViewHolder(LayoutBlockSelectorBinding binding, OnClickListener onClick, OnLongClickListener onLongClick) {
+        public BlockSelectorDetailsAdapterViewHolder(LayoutBlockSelectorBinding binding, OnClickListener onClick, OnLongClickListener onLongClick) {
             super(binding.getRoot());
             this.binding = binding;
             this.onClick = onClick;
             this.onLongClick = onLongClick;
 
             itemView.setOnClickListener(v -> {
-                if (currentSelector != null && currentIndex != null) {
-                    onClick.onClick(currentSelector, currentIndex);
+                if (currentIndex != null) {
+                    onClick.onClick(null, currentIndex);
                 }
             });
 
             itemView.setOnLongClickListener(v -> {
-                if (currentSelector != null && currentIndex != null) {
-                    onLongClick.onLongClick(currentSelector, currentIndex);
+                if (currentIndex != null) {
+                    onLongClick.onLongClick(null, currentIndex);
                 }
                 return true;
             });
         }
 
-        public void bind(Selector selector, int index) {
-            currentSelector = selector;
+        public void bind(String string, int index) {
+            currentString = string;
             currentIndex = index;
-            binding.name.setText(selector.getName());
+            binding.name.setText(string);
         }
     }
 
-   public static class BlockSelectorAdapterDiffCallback extends DiffUtil.ItemCallback<Selector> {
+    public static class BlockSelectorDetailsAdapterDiffCallback extends DiffUtil.ItemCallback<String> {
         @Override
-        public boolean areItemsTheSame(@NonNull Selector oldItem, @NonNull Selector newItem) {
-            return oldItem.getName().equals(newItem.getName());
+        public boolean areItemsTheSame(@NonNull String oldItem, @NonNull String newItem) {
+            return oldItem.equals(newItem);
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Selector oldItem, @NonNull Selector newItem) {
+        public boolean areContentsTheSame(@NonNull String oldItem, @NonNull String newItem) {
             return oldItem.equals(newItem);
         }
     }
