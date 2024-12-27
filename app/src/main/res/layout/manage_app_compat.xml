@@ -24,6 +24,14 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:tabMode="scrollable" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/tabs_divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:dividerThickness="0.5dp" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/note_card"
             style="@style/Widget.Material3.CardView.Filled"

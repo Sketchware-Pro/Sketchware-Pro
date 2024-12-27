@@ -62,8 +62,7 @@
         <item name="widgetLayout">@layout/preference_widget_layout_m3_switch</item>
     </style>
 
-    <style name="TabLayoutStyle" parent="Widget.Material3.TabLayout">
-        <item name="android:background">@drawable/tab_background_on_surface_with_divider</item>
+    <style name="TabLayoutStyle" parent="Widget.Material3.TabLayout.OnSurface">
         <item name="tabIndicator">@drawable/view_tab_indicator</item>
     </style>
 

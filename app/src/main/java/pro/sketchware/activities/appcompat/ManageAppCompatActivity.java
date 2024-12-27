@@ -165,6 +165,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                         binding.tabLayout.addTab(tab);
                     }
                     binding.tabLayout.setVisibility(View.VISIBLE);
+                    binding.tabsDivider.setVisibility(View.VISIBLE);
                     binding.fab.setVisibility(View.VISIBLE);
                 }
             } else {
