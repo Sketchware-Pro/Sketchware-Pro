@@ -41,8 +41,6 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigationrail.NavigationRailView;
 
-import pro.sketchware.R;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -62,6 +60,7 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.util.AudioMetadata;
 import mod.jbk.util.BlockUtil;
 import mod.jbk.util.SoundPlayingAdapter;
+import pro.sketchware.R;
 
 public class ManageCollectionActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_ADD_IMAGE_DIALOG = 267;
@@ -133,7 +132,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         if (selectingToBeDeletedItems) {
             collectionAdapter.stopPlayback();
             actionButtonGroup.setVisibility(View.VISIBLE);
-        } else {
+        }else{
             actionButtonGroup.setVisibility(View.GONE);
             if (currentItemId == 3 || currentItemId == 4) {
                 fab.setVisibility(View.GONE);
@@ -146,9 +145,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private void handleFabOnClick(int categoryId) {
         if (categoryId == 0) {
             showAddImageDialog();
-        } else if (categoryId == 1) {
+        }else if (categoryId == 1) {
             showAddSoundDialog();
-        } else {
+        }else{
             showAddFontDialog();
         }
     }
@@ -205,16 +204,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private int getSelectedIndex(int id) {
         if (id == R.id.image) {
             return 0;
-        } else if (id == R.id.audio) {
+        }else if (id == R.id.audio) {
             return 1;
-        } else if (id == R.id.font) {
+        }else if (id == R.id.font) {
             return 2;
-        } else if (id == R.id.widget) {
+        }else if (id == R.id.widget) {
             return 3;
-        } else if (id == R.id.block) {
+        }else if (id == R.id.block) {
             return 4;
-        }
-        else if (id == R.id.moreblock) {
+        }else if (id == R.id.moreblock) {
             return 5;
         }
         return -1;
@@ -361,11 +359,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                     if (collectionAdapter.currentViewType == 0) {
                         collection.setLayoutManager(new GridLayoutManager(getApplicationContext(), getGridLayoutColumnCount()));
                         fab.show();
-                    } else {
+                    }else{
                         collection.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
                         if (collectionAdapter.currentViewType != 1 && collectionAdapter.currentViewType != 2) {
                             fab.hide();
-                        } else {
+                        }else{
                             fab.show();
                         }
                     }
@@ -395,7 +393,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     public void onBackPressed() {
         if (selectingToBeDeletedItems) {
             changeDeletingItemsState(false);
-        } else {
+        }else{
             if (hasDeletedWidget) {
                 setResult(RESULT_OK);
                 finish();
@@ -411,9 +409,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
         if (id == R.id.btn_cancel && selectingToBeDeletedItems) {
             changeDeletingItemsState(false);
-        } else if (id == R.id.btn_delete && selectingToBeDeletedItems) {
+        }else if (id == R.id.btn_delete && selectingToBeDeletedItems) {
             deleteSelectedToBeDeletedItems();
-        } else if (id == R.id.fab) {
+        }else if (id == R.id.fab) {
             changeDeletingItemsState(false);
             handleFabOnClick(currentItemId);
         }
@@ -461,7 +459,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         super.onPostCreate(savedInstanceState);
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
-        } else {
+        }else{
             sc_id = savedInstanceState.getString("sc_id");
         }
 
@@ -624,7 +622,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                             return;
                         }
                         fab.hide();
-                    } else if (dy < -2 && fab.isEnabled()) {
+                    }else if (dy < -2 && fab.isEnabled()) {
                         fab.show();
                     }
                 }
@@ -641,19 +639,19 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
             if (selectingToBeDeletedItems) {
                 holder.deleteContainer.setVisibility(View.VISIBLE);
-            } else {
+            }else{
                 holder.deleteContainer.setVisibility(View.GONE);
             }
 
             if (bean.isNinePatch()) {
                 holder.ninePatchIcon.setVisibility(View.VISIBLE);
-            } else {
+            }else{
                 holder.ninePatchIcon.setVisibility(View.GONE);
             }
 
             if (bean.isSelected) {
                 holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
+            }else{
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
@@ -673,7 +671,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             if (selectingToBeDeletedItems) {
                 holder.album.setVisibility(View.GONE);
                 holder.deleteContainer.setVisibility(View.VISIBLE);
-            } else {
+            }else{
                 var audioMetadata = holder.audioMetadata;
                 var audio = getAudio(position);
                 if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
@@ -687,7 +685,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
             if (bean.isSelected) {
                 holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
+            }else{
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
@@ -708,13 +706,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
             if (selectingToBeDeletedItems) {
                 holder.deleteContainer.setVisibility(View.VISIBLE);
-            } else {
+            }else{
                 holder.deleteContainer.setVisibility(View.GONE);
             }
 
             if (bean.isSelected) {
                 holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
+            }else{
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
@@ -734,14 +732,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             if (selectingToBeDeletedItems) {
                 holder.deleteContainer.setVisibility(View.VISIBLE);
                 holder.widgetIcon.setVisibility(View.GONE);
-            } else {
+            }else{
                 holder.deleteContainer.setVisibility(View.GONE);
                 holder.widgetIcon.setVisibility(View.VISIBLE);
             }
 
             if (bean.isSelected) {
                 holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
+            }else{
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
@@ -755,14 +753,14 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             if (selectingToBeDeletedItems) {
                 holder.deleteContainer.setVisibility(View.VISIBLE);
                 holder.blockIcon.setVisibility(View.GONE);
-            } else {
+            }else{
                 holder.blockIcon.setVisibility(View.VISIBLE);
                 holder.deleteContainer.setVisibility(View.GONE);
             }
 
             if (bean.isSelected) {
                 holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
+            }else{
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
@@ -775,13 +773,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             MoreBlockCollectionBean bean = (MoreBlockCollectionBean) currentCollectionTypeItems.get(position);
             if (selectingToBeDeletedItems) {
                 holder.deleteContainer.setVisibility(View.VISIBLE);
-            } else {
+            }else{
                 holder.deleteContainer.setVisibility(View.GONE);
             }
 
             if (bean.isSelected) {
                 holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
+            }else{
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 
@@ -795,7 +793,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             currentCollectionTypeItems = beans;
             if (beans.size() <= 0) {
                 noItemsNote.setVisibility(View.VISIBLE);
-            } else {
+            }else{
                 noItemsNote.setVisibility(View.GONE);
             }
         }
@@ -806,15 +804,15 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
             if (position == 0) {
                 return 0;
-            } else if (position == 1) {
+            }else if (position == 1) {
                 return 1;
-            } else if (position == 2) {
+            }else if (position == 2) {
                 return 2;
-            } else if (position == 3) {
+            }else if (position == 3) {
                 return 3;
-            } else if (position == 4) {
+            }else if (position == 4) {
                 return 4;
-            } else {
+            }else{
                 return 5;
             }
         }
@@ -885,7 +883,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
-                    } else {
+                    }else{
                         openBlockDetails(lastSelectedItemPosition);
                     }
                 });
@@ -926,7 +924,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
-                    } else {
+                    }else{
                         openFontDetails(lastSelectedItemPosition);
                     }
                 });
@@ -963,7 +961,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
-                    } else {
+                    }else{
                         openImageDetails(lastSelectedItemPosition);
                     }
                 });
@@ -1000,7 +998,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
-                    } else {
+                    }else{
                         openMoreBlockDetails(lastSelectedItemPosition);
                     }
                 });
@@ -1052,7 +1050,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
-                    } else {
+                    }else{
                         openSoundDetails(lastSelectedItemPosition);
                     }
                 });
@@ -1099,7 +1097,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                         checkBox.setChecked(!checkBox.isChecked());
                         currentCollectionTypeItems.get(lastSelectedItemPosition).isSelected = checkBox.isChecked();
                         notifyItemChanged(lastSelectedItemPosition);
-                    } else {
+                    }else{
                         openWidgetDetails(lastSelectedItemPosition);
                     }
                 });
