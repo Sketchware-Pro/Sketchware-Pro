@@ -22,6 +22,7 @@ import pro.sketchware.databinding.FragmentEventsManagerBinding;
 import pro.sketchware.databinding.LayoutEventItemBinding;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.fragments.settings.events.details.EventsManagerDetailsFragment;
 
 import java.io.File;
 import java.util.ArrayList;
