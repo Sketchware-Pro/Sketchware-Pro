@@ -1,5 +1,4 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,7 +23,7 @@
                 android:layout_height="?actionBarSize"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/abc_ic_ab_back_material"
-                app:title="@string/settings_block_selector" 
+                app:title="@string/settings_block_selector"
                 app:menu="@menu/block_selector_menu" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -41,16 +40,16 @@
             android:layout_height="match_parent"
             android:paddingTop="16dp"
             android:orientation="vertical">
-            
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:transitionGroup="true"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    
+
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/create_new"
         android:layout_width="wrap_content"
@@ -59,5 +58,5 @@
         android:layout_margin="16dp"
         android:text="@string/common_word_new"
         app:icon="@drawable/ic_mtrl_add" />
-    
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

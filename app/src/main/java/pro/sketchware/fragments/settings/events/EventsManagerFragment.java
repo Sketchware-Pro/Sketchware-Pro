@@ -22,6 +22,7 @@ import pro.sketchware.databinding.FragmentEventsManagerBinding;
 import pro.sketchware.databinding.LayoutEventItemBinding;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.fragments.settings.events.details.EventsManagerDetailsFragment;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -75,7 +76,7 @@ public class EventsManagerFragment extends qA {
             }
             return false;
         });
-        binding.activityEventsCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
+        binding.activityEvents.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment()));
         binding.activityEventsDescription.setText(getNumOfEvents(""));
         binding.fabNewListener.setOnClickListener(v -> showAddNewListenerDialog());
         refreshList();
@@ -259,6 +260,18 @@ public class EventsManagerFragment extends qA {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             HashMap<String, Object> item = dataArray.get(position);
             String name = (String) item.get("name");
+            
+            int backgroundResource;
+            if (dataArray.size() == 1) {
+                backgroundResource = R.drawable.shape_alone;
+            } else if (position == 0) {
+                backgroundResource = R.drawable.shape_top;
+            } else if (position == dataArray.size() - 1) {
+                backgroundResource = R.drawable.shape_bottom;
+            } else {
+                backgroundResource = R.drawable.shape_middle;
+            }
+            holder.itemView.setBackgroundResource(backgroundResource);
 
             holder.binding.eventIcon.setImageResource(R.drawable.event_on_response_48dp);
             ((LinearLayout) holder.binding.eventIcon.getParent()).setGravity(Gravity.CENTER);
@@ -266,9 +279,9 @@ public class EventsManagerFragment extends qA {
             holder.binding.eventTitle.setText(name);
             holder.binding.eventSubtitle.setText(getNumOfEvents(name));
 
-            holder.binding.eventCard.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment(name)));
+            holder.itemView.setOnClickListener(v -> openFragment(new EventsManagerDetailsFragment(name)));
 
-            holder.binding.eventCard.setOnLongClickListener(v -> {
+            holder.itemView.setOnLongClickListener(v -> {
                 new MaterialAlertDialogBuilder(context)
                         .setTitle(name)
                         .setItems(new String[]{"Edit", "Export", "Delete"}, (dialog, which) -> {
