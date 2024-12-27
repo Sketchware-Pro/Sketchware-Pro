@@ -304,7 +304,7 @@
         android:transitionGroup="true"
         android:background="?attr/colorSurface">
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/events_creator_cancel"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
@@ -313,7 +313,7 @@
             android:layout_weight="1"
             android:text="@string/common_word_cancel" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/events_creator_save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
