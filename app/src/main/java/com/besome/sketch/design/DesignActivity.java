@@ -1291,7 +1291,12 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     updateNotification(progress + " (" + step + " / " + totalSteps + ")");
                 }
                 progressText.setText(progress);
-                progressBar.setProgress((step * 100) / totalSteps, true);
+                var progressInt = (step * 100) / totalSteps;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                   progressBar.setProgress(progressInt, true);
+                } else {
+                   progressBar.setProgress(progressInt);
+                }
                 Log.d("DesignActivity$BuildTask", step + " / " + totalSteps);
             });
         }

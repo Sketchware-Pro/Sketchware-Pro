@@ -3,23 +3,55 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+
+        android:id="@+id/action_undo"
         android:title="Undo"
         android:icon="@drawable/ic_mtrl_undo"
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/action_redo"
         android:title="Redo"
         android:icon="@drawable/ic_mtrl_redo"
         app:showAsAction="always" />
 
     <item
-        android:title="Save"
-        android:icon="@drawable/ic_mtrl_save"
-        app:showAsAction="always" />
+          
+        android:id="@+id/action_paste"
+        android:title="Paste"
+        app:showAsAction="never" />
 
     <item
-        android:title="Menu"
-        android:icon="@drawable/ic_mtrl_more_vertical"
-        app:showAsAction="always" />
+        android:id="@+id/action_word_wrap"
+        android:checkable="true"
+        android:title="Word wrap"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_pretty_print"
+        android:title="Pretty print"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_switch_language"
+        android:title="Switch language"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_switch_theme"
+        android:title="Switch theme"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_autocomplete"
+        android:checkable="true"
+        android:title="Auto complete"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_autocomplete_symbol_pair"
+        android:checkable="true"
+        android:title="Auto complete symbol pair"
+        app:showAsAction="never" />
 
 </menu>

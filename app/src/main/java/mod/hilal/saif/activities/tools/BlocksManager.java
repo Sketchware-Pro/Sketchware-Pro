@@ -1,6 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -42,6 +43,7 @@ import java.util.Objects;
 
 import a.a.a.Zx;
 import a.a.a.aB;
+import a.a.a.xB;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
@@ -61,9 +63,10 @@ public class BlocksManager extends BaseAppCompatActivity {
     private String pallet_dir;
     private int oldPos;
     private int newPos;
+    private Activity activity;
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
-
+    boolean isDialogShowing;
     private BlocksManagerBinding binding;
     private Vibrator vibrator;
     View draggedView;
@@ -86,17 +89,15 @@ public class BlocksManager extends BaseAppCompatActivity {
     }
 
     private void initialize() {
+
+        activity = this;
         setSupportActionBar(binding.toolbar);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setNavigationOnClickListener(view -> getOnBackPressedDispatcher().onBackPressed());
-
-
         binding.paletteRecycler.setLayoutManager(new LinearLayoutManager(this));
-
         binding.paletteRecycler.setAdapter(new PaletteAdapter(pallet_listmap));
-
         binding.fab.setOnClickListener(v -> showPaletteDialog(false, null, null, "#ffffff", null));
 
         readSettings();
@@ -109,20 +110,12 @@ public class BlocksManager extends BaseAppCompatActivity {
                 oldPos = viewHolder.getBindingAdapterPosition();
                 newPos = target.getBindingAdapterPosition();
 
-                if (oldPos < newPos) {
-                    for (int i = oldPos; i < newPos; i++) {
-                        Collections.swap(pallet_listmap, i, i + 1);
-                    }
-                }else{
-                    for (int i = oldPos; i > newPos; i--) {
-                        Collections.swap(pallet_listmap, i, i - 1);
-                    }
-                }
+                Collections.swap(pallet_listmap, oldPos, newPos);
 
                 Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemMoved(oldPos, newPos);
                 swapRelatedBlocks(oldPos + 9, newPos + 9);
 
-                return false;
+                return true;
             }
 
             @Override
@@ -149,8 +142,6 @@ public class BlocksManager extends BaseAppCompatActivity {
                 viewHolder.itemView.setAlpha(1f);
                 FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
                 FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-
-                readSettings();
             }
 
             @Override
@@ -161,42 +152,21 @@ public class BlocksManager extends BaseAppCompatActivity {
                     if (isItInTrash(draggedView, binding.recycleBin)) {
                         int pos = viewHolder.getBindingAdapterPosition();
                         binding.recycleBinCard.setAlpha(0.5f);
-                        if (!isCurrentlyActive && pos != RecyclerView.NO_POSITION && pos < pallet_listmap.size()) {
+                        if (!isCurrentlyActive && pos != RecyclerView.NO_POSITION && pos < pallet_listmap.size() && !isDialogShowing) {
                             vibrator.vibrate(40L);
-                            draggedView.setVisibility(View.GONE);
-                            binding.background.setClipChildren(true);
-                            pallet_listmap.remove(pos);
-                            Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemRemoved(pos);
-                            Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemChanged(pos);
-                            moveRelatedBlocksToRecycleBin(pos + 9);
-                            removeRelatedBlocks(pos + 9);
-                            refreshCount();
-                            draggedView = null;
+                            showMoveToBinDialog(pos);
+                            isDialogShowing = true;
                         }
                         return;
                     }
                 }
                 binding.recycleBinCard.setAlpha(1f);
-            }
-
-            @Override
-            public int interpolateOutOfBoundsScroll(@NonNull RecyclerView recyclerView, int viewSize, int viewSizeOutOfBounds, int totalSize, long msSinceStartScroll) {
-                final int direction = (int) Math.signum(viewSizeOutOfBounds);
-                final float distanceRatio = Math.min(1.0f, Math.abs((float) viewSizeOutOfBounds) / viewSize);
-                return (int) (direction * distanceRatio * 10);
+                isDialogShowing = false;
             }
 
         });
 
         itemTouchHelper.attachToRecyclerView(binding.paletteRecycler);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        readSettings();
-        refresh_list();
     }
 
     @Override
@@ -248,6 +218,27 @@ public class BlocksManager extends BaseAppCompatActivity {
             dialog.dismiss();
         });
 
+        dialog.show();
+    }
+
+    private void showMoveToBinDialog(int position) {
+        aB dialog = new aB(activity);
+        dialog.a(R.drawable.ic_mtrl_delete);
+        dialog.b(xB.b().a(activity, R.string.block_move_to_bin));
+        dialog.a(xB.b().a(activity, R.string.common_message_confirm));
+        dialog.b(xB.b().a(activity, R.string.common_word_yes), v -> {
+            pallet_listmap.remove(position);
+            Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemRemoved(position);
+            Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemChanged(position);
+            draggedView = null;
+            moveRelatedBlocksToRecycleBin(position + 9);
+            removeRelatedBlocks(position + 9);
+            FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
+            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+            refreshCount();
+            dialog.dismiss();
+        });
+        dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> dialog.dismiss());
         dialog.show();
     }
 
@@ -424,7 +415,6 @@ public class BlocksManager extends BaseAppCompatActivity {
         refresh_list();
     }
 
-
     private void showPaletteDialog(boolean isEditing, Integer oldPosition, String oldName, String oldColor, Integer insertAtPosition) {
         aB dialog = new aB(this);
         dialog.a(R.drawable.icon_style_white_96);
@@ -510,7 +500,6 @@ public class BlocksManager extends BaseAppCompatActivity {
 
     private boolean isItNearTrash(View draggedView, View trash) {
         if (draggedView == null) return false;
-
         int[] trashLocation = new int[2];
         trash.getLocationOnScreen(trashLocation);
 
@@ -521,7 +510,6 @@ public class BlocksManager extends BaseAppCompatActivity {
 
         return draggedY <= (trashLocation[1] + (draggedView.getMeasuredHeight() * 2) / 2) && draggedY >= ((trashLocation[1] - (draggedView.getMeasuredHeight() * 2) / 2));
     }
-
 
     public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.ViewHolder> {
 
@@ -585,7 +573,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                                         refreshCount();
                                     })
                                     .setNegativeButton(R.string.common_word_cancel, null)
-                                    .setNeutralButton("Move to recycle bin", (dialog, which) -> {
+                                    .setNeutralButton(R.string.block_move_to_bin, (dialog, which) -> {
                                         moveRelatedBlocksToRecycleBin(position + 9);
                                         palettes.remove(pos);
                                         notifyItemRemoved(pos);

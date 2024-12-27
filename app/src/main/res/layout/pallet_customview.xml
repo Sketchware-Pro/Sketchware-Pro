@@ -63,6 +63,7 @@
         android:layout_width="35dp"
         android:layout_height="50dp"
         android:orientation="vertical"
+        android:visibility="gone"
         android:clickable="true"
         android:background="@drawable/ic_mtrl_drag"
         android:layout_marginHorizontal="20dp"

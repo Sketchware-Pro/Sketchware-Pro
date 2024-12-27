@@ -31,7 +31,6 @@ public class BuildSettingsDialog {
     private static final int VIEW_NO_WARNINGS = totalViews++;
     private static final int VIEW_NO_HTTP_LEGACY = totalViews++;
     private static final int VIEW_ENABLE_LOGCAT = totalViews++;
-    private static final int VIEW_ENABLE_BACKGROUND_BUILDING = totalViews++;
 
     private final Activity activity;
     private final BuildSettings settings;
