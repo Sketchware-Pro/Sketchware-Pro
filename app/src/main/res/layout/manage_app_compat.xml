@@ -54,6 +54,7 @@
         android:background="?attr/colorSurface"
         android:gravity="center"
         android:orientation="vertical"
+        android:paddingHorizontal="16dp"
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:visibility="gone">
@@ -69,6 +70,7 @@
             android:id="@+id/note_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
 

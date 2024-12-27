@@ -78,8 +78,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:gravity="center"
             android:text="Logcat hasn't captured anything yet"
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
@@ -87,8 +85,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
+            android:layout_marginTop="4dp"
             android:text="Keep this screen open then run your app"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
