@@ -144,7 +144,6 @@
         android:layout_marginBottom="32dp"
         android:src="@drawable/ic_mtrl_add"
         android:elevation="0dp"
-        app:elevation="6dp"
         app:fabSize="normal" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

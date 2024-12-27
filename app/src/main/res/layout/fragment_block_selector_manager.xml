@@ -57,7 +57,6 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:text="@string/common_word_new"
-        android:elevation="0dp"
         app:icon="@drawable/ic_mtrl_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
