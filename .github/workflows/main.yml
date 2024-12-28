@@ -1,0 +1,102 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "**" ]
+    paths-ignore:
+      - '**/*.md'
+  pull_request:
+    branches: [ "**" ]
+    paths-ignore:
+      - '**/*.md'
+  workflow_dispatch:
+
+jobs:
+  init:
+    name: Init
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: notify telegram
+        uses: EverythingSuckz/github-telegram-notify@main
+        continue-on-error: true
+        with:
+          bot_token: ${{ secrets.bot_token }}
+          chat_id: -1002295019134
+          topic_id: 8
+          
+  build_debug_apk:
+    name: Build App Debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'oracle'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Build with Gradle
+        id: gradle_build_debug
+        env :
+            BOT_TOKEN: ${{ secrets.bot_token }}
+            CHAT_ID: ${{ secrets.chat_id }}
+        run: ./gradlew assembleDebug 
+
+      - name: Upload debug apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          
+  send_debug_apk:
+    name: Send Debug APK
+    runs-on: ubuntu-latest
+    needs: build_debug_apk
+    
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          
+      - name: Download debug apk
+        uses: actions/download-artifact@v4
+        with:
+          name: app-debug
+          
+      - name: List repo contents
+        run: ls
+          
+      - name: Get the last commit message
+        id: get_commit_msg
+        run: |
+          commit_message=$(git log -1 --pretty=format:'%s')
+          echo "message=$commit_message" >> $GITHUB_OUTPUT
+          
+      - name: Rename file 
+        run: |
+          mv app-debug.apk xsigner-app-debug.apk
+          ls 
+
+      - name: Send APK to Debug Channel Telegram with Topic ID
+        if: success()
+        continue-on-error: true
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.bot_token }}/sendDocument" \
+            -F chat_id="-1002295019134" \
+            -F message_thread_id="10" \
+            -F document=@"xsigner-app-debug.apk" \
+            -F caption="${{ github.event.head_commit.message }} by ${{ github.actor }}"
