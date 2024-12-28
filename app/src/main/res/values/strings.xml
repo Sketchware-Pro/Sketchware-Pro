@@ -1535,6 +1535,8 @@ But, components should be added manually for working correctly."</string>
     <string name="message_license_expired">"License expired.
 %s"</string>
     <string name="message_strings_xml_loaded">Your \"strings.xml\" file has been successfully loaded!</string>
+    <string name="my_local_libraries">Project Library</string>
+    <string name="all_local_libraries">ALl Library</string>
     <string name="myprojects_confirm_project_delete">Are you sure you want to delete this project?</string>
     <string name="myprojects_customize_icon">Customize icon</string>
 
@@ -2164,8 +2166,10 @@ Please try again later"</string>
     <string name="local_library_manager_enter_dependency">Enter dependency</string>
     <string name="local_library_manager_dependency_info">You can find the dependency of a library in GitHub, typically in the Readme file.</string>
     <string name="local_library_manager_no_libraries_title">No Local libraries available</string>
-    <string name="local_library_manager_no_libraries_body">You don\'t have any Local libraries yet, try downloading one.</string>
-    <string name="local_library_manager_download_status">Download status</string>
+    <string name="local_library_manager_no_libraries_body">You don\'t have selected any Local libraries yet, try selecting one.</string>
+    <string name="local_library_manager_no_libraries_title_all">No Local libraries available</string>
+    <string name="local_library_manager_no_libraries_body_all">You don\'t have any Local libraries yet, try downloading one.</string>
+   <string name="local_library_manager_download_status">Download status</string>
     <string name="local_library_manager_skip_downloading_dependencies">Skip downloading sub-dependencies</string>
     <string name="signatures_title">Signatures</string>
     <string name="settings_appearance">Appearance</string>
