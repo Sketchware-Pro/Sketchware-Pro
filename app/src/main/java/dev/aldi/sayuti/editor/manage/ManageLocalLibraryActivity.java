@@ -192,10 +192,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            var listBinding = ViewItemLocalLibBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            var layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            listBinding.getRoot().setLayoutParams(layoutParams);
-            return new ViewHolder(listBinding);
+            return new ViewHolder(ViewItemLocalLibBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
 
         @Override
