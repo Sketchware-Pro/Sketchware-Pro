@@ -76,7 +76,7 @@ public class IconCreatorActivity extends AppCompatActivity {
         }
     }
 
-    public static Bitmap captureAppIco(View view, int size) {
+    public static Bitmap captureAppIco(View view) {
         Bitmap bitmap = Bitmap.createBitmap(
                 view.getWidth(),
                 view.getHeight(),
@@ -92,13 +92,10 @@ public class IconCreatorActivity extends AppCompatActivity {
         canvas.clipPath(path);
         view.draw(canvas);
 
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);
-        bitmap.recycle();
-
-        return scaledBitmap;
+        return bitmap;
     }
 
-    public static Bitmap captureForeground(View view, int size, boolean score, boolean pattern, View pattView, View scoreView, View bg) {
+    public static Bitmap captureForeground(View view, boolean score, boolean pattern, View pattView, View scoreView, View bg) {
 
         bg.setVisibility(View.INVISIBLE);
         if (!score) scoreView.setVisibility(View.INVISIBLE);
@@ -122,19 +119,17 @@ public class IconCreatorActivity extends AppCompatActivity {
         }
 
 
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);
-        int paddedSize = size + (padding * 2);
-        Bitmap paddedBitmap = Bitmap.createBitmap(paddedSize, paddedSize, Bitmap.Config.ARGB_8888);
+        int paddedSize = padding * 2;
+        Bitmap paddedBitmap = Bitmap.createBitmap(bitmap.getWidth() + paddedSize, bitmap.getHeight() + paddedSize, Bitmap.Config.ARGB_8888);
 
         Canvas paddedCanvas = new Canvas(paddedBitmap);
-        paddedCanvas.drawBitmap(scaledBitmap, padding, padding, null);
+        paddedCanvas.drawBitmap(bitmap, padding, padding, null);
 
         bg.setVisibility(View.VISIBLE);
         if (score) scoreView.setVisibility(View.VISIBLE);
         if (pattern) pattView.setVisibility(View.VISIBLE);
 
         bitmap.recycle();
-        scaledBitmap.recycle();
 
         return paddedBitmap;
     }
@@ -201,7 +196,7 @@ public class IconCreatorActivity extends AppCompatActivity {
         binding.save.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), MyProjectSettingActivity.class);
             saveIconToRes();
-            intent.putExtra("appIco", captureAppIco(binding.appIcoCard, 192));
+            intent.putExtra("appIco", captureAppIco(binding.appIcoCard));
             if (binding.adaptiveCheck.isChecked()) {
                 intent.putExtra("isIconAdaptive", binding.adaptiveCheck.isChecked());
                 saveForegroundToRes();
@@ -529,32 +524,32 @@ public class IconCreatorActivity extends AppCompatActivity {
     }
 
     private void saveIconToRes() {
-        saveBitmapTo(captureAppIco(binding.appIcoCard, 72), getIconPath("mipmap-hdpi", "ic_launcher.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoCard, 48), getIconPath("mipmap-mdpi", "ic_launcher.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoCard, 96), getIconPath("mipmap-xhdpi", "ic_launcher.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoCard, 144), getIconPath("mipmap-xxhdpi", "ic_launcher.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoCard, 192), getIconPath("mipmap-xxxhdpi", "ic_launcher.png"));
+        saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-hdpi", "ic_launcher.png"));
+        saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-mdpi", "ic_launcher.png"));
+        saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-xhdpi", "ic_launcher.png"));
+        saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-xxhdpi", "ic_launcher.png"));
+        saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-xxxhdpi", "ic_launcher.png"));
 
     }
 
     private void saveForegroundToRes() {
-        saveBitmapTo(captureForeground(binding.appIcoItems, 108, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 152, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 176, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 284, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_foreground.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 392, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_foreground.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_foreground.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_foreground.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_foreground.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_foreground.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, eff_score, eff_texture, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_foreground.png"));
 
-        saveBitmapTo(captureForeground(binding.appIcoItems, 108, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 152, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 176, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 284, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_monochrome.png"));
-        saveBitmapTo(captureForeground(binding.appIcoItems, 392, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_monochrome.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_monochrome.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_monochrome.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_monochrome.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_monochrome.png"));
+        saveBitmapTo(captureForeground(binding.appIcoItems, false, false, binding.appIcoTexture, binding.appIcoScore, binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_monochrome.png"));
 
-        saveBitmapTo(captureAppIco(binding.appIcoBg, 108), getIconPath("mipmap-mdpi", "ic_launcher_background.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoBg, 162), getIconPath("mipmap-hdpi", "ic_launcher_background.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoBg, 216), getIconPath("mipmap-xhdpi", "ic_launcher_background.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoBg, 324), getIconPath("mipmap-xxhdpi", "ic_launcher_background.png"));
-        saveBitmapTo(captureAppIco(binding.appIcoBg, 432), getIconPath("mipmap-xxxhdpi", "ic_launcher_background.png"));
+        saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-mdpi", "ic_launcher_background.png"));
+        saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-hdpi", "ic_launcher_background.png"));
+        saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-xhdpi", "ic_launcher_background.png"));
+        saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_background.png"));
+        saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_background.png"));
 
 
     }

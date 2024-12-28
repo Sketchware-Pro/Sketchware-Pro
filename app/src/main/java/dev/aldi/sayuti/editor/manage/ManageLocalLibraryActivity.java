@@ -3,8 +3,6 @@ package dev.aldi.sayuti.editor.manage;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -21,7 +19,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -29,13 +26,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
-import pro.sketchware.R;
+
 import pro.sketchware.databinding.ManageLocallibrariesBinding;
 import pro.sketchware.databinding.ViewItemLocalLibBinding;
 import pro.sketchware.utility.FileUtil;
@@ -48,11 +43,9 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
     private ArrayList<HashMap<String, Object>> lookup_list = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> project_used_libs = new ArrayList<>();
     private BuildSettings buildSettings;
-    private ArrayList<String> arrayList = new ArrayList<>();
+    private final ArrayList<String> arrayList = new ArrayList<>();
     private ManageLocallibrariesBinding binding;
     private LibraryAdapter adapter;
-    private Handler handler = new Handler(Looper.getMainLooper());
-    private Runnable searchRunnable;
     public static HashMap<String, Object> createLibraryMap(String name, String dependency) {
         String configPath = local_libs_path + name + "/config";
         String resPath = local_libs_path + name + "/res";
@@ -134,8 +127,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
     }
 
     private void setUpSearchView() {
-        TextInputEditText searchEditText = findViewById(R.id.searchInput);
-        searchEditText.addTextChangedListener(new TextWatcher() {
+        binding.searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -143,48 +135,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
             @Override
             public void afterTextChanged(Editable s) {
                 String value = s.toString().trim();
-
-                if (searchRunnable != null) {
-                    handler.removeCallbacks(searchRunnable);
-                }
-
-                searchRunnable = () -> {
-                    ExecutorService executorService = Executors.newSingleThreadExecutor();
-                    executorService.execute(() -> {
-                        FileUtil.listDir(local_libs_path, arrayList);
-                        arrayList.sort(String.CASE_INSENSITIVE_ORDER);
-
-                        List<String> localLibraryNames = new LinkedList<>();
-                        for (String filename : arrayList) {
-                            if (FileUtil.isDirectory(filename)) {
-                                String name = Uri.parse(filename).getLastPathSegment();
-                                localLibraryNames.add(name);
-                            }
-                        }
-
-                        List<String> filteredLibraryNames = new ArrayList<>();
-                        for (String filename : localLibraryNames) {
-                            String name = filename.replace(local_libs_path, "").toLowerCase();
-                            if (name.contains(value.toLowerCase())) {
-                                filteredLibraryNames.add(filename);
-                            }
-                        }
-
-                        runOnUiThread(() -> {
-                            if (filteredLibraryNames.isEmpty()) {
-                                binding.noContentLayout.setVisibility(View.VISIBLE);
-                            } else {
-                                binding.noContentLayout.setVisibility(View.GONE);
-                            }
-
-                            LibraryAdapter adapter = new LibraryAdapter(filteredLibraryNames);
-                            binding.librariesList.setAdapter(adapter);
-                            adapter.notifyDataSetChanged();
-                        });
-                    });
-                };
-
-                handler.postDelayed(searchRunnable, 200);
+                adapter.filter(value);
             }
 
             @Override
@@ -223,15 +174,18 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
             binding.noContentLayout.setVisibility(View.GONE);
         }
         binding.librariesList.setLayoutManager(new LinearLayoutManager(this));
-        binding.librariesList.setAdapter(new LibraryAdapter(localLibraryNames));
+        adapter = new LibraryAdapter(localLibraryNames);
+        binding.librariesList.setAdapter(adapter);
     }
 
     public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
 
-        private final List<String> localLibraries;
+        private final List<String> originalList;
+        private final List<String> filteredList;
 
         public LibraryAdapter(List<String> localLibraries) {
-            this.localLibraries = localLibraries;
+            this.originalList = new ArrayList<>(localLibraries);
+            this.filteredList = new ArrayList<>(localLibraries);
         }
 
         @NonNull
@@ -247,7 +201,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         public void onBindViewHolder(ViewHolder holder, final int position) {
             var binding = holder.listBinding;
 
-            final String libraryName = localLibraries.get(position);
+            final String libraryName = filteredList.get(position);
             binding.checkboxContent.setText(libraryName);
 
             binding.checkboxContent.setOnClickListener(v -> {
@@ -311,7 +265,21 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
 
         @Override
         public int getItemCount() {
-            return localLibraries.size();
+            return filteredList.size();
+        }
+
+        public void filter(String query) {
+            filteredList.clear();
+            if (query.isEmpty()) {
+                filteredList.addAll(originalList);
+            } else {
+                for (String item : originalList) {
+                    if (item.toLowerCase().contains(query.toLowerCase())) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            notifyDataSetChanged();
         }
 
         static class ViewHolder extends RecyclerView.ViewHolder {

@@ -638,10 +638,12 @@ public class ViewBeanFactory {
         if (value != null) {
             var size = resolveDimenSize(value);
             if (size != null) {
-                return Integer.parseInt(size);
-            } else {
-                injectAttributes.put(attributeName, value);
+                try {
+                    return Integer.parseInt(size);
+                } catch (NumberFormatException ignored) {
+                }
             }
+            injectAttributes.put(attributeName, value);
         }
         return -1;
     }
@@ -733,7 +735,7 @@ public class ViewBeanFactory {
     }
 
     private boolean hasDimensionSuffix(String str) {
-        String pattern = "^(.+)dp$|^(.+)sp$|^(.+)px$|^(.+)pt$|^(.+)in$|^(.+)mm$";
+        String pattern = "^(\\d+(\\.\\d+)?)(dp|sp|px|pt|in|mm)$";
         return str.matches(pattern);
     }
 

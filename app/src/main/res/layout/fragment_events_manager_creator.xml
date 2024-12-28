@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/abc_ic_ab_back_material"
+                app:navigationIcon="?attr/homeAsUpIndicator"
                 app:title="@string/program_information_title_open_source_license" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -41,7 +41,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="16dp">
-
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/layout_item"
@@ -302,17 +301,17 @@
         android:layout_gravity="bottom"
         android:orientation="horizontal"
         android:padding="14dp"
-        android:transitionGroup="true">
+        android:transitionGroup="true"
+        android:background="?attr/colorSurface">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/events_creator_cancel"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:text="@string/common_word_cancel"
-            android:textSize="@dimen/text_size_button_material"
-            app:backgroundTint="?colorAccent" />
+            android:text="@string/common_word_cancel" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/events_creator_save"
@@ -320,7 +319,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
             android:layout_weight="1"
-            android:text="@string/common_word_save"
-            android:textSize="@dimen/text_size_button_material" />
+            android:text="@string/common_word_save" />
+
     </LinearLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,22 +1,20 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    app:cardBackgroundColor="?colorSurfaceContainer"
-    app:shapeAppearanceOverlay="@style/BottomSheetCardStyle"
-    app:strokeWidth="0dp">
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:shapeAppearanceOverlay="?attr/shapeAppearanceCornerLarge">
 
     <LinearLayout
         android:id="@+id/layout_quiz"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp" />
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
 
         <com.google.android.material.card.MaterialCardView
             style="?attr/materialCardViewFilledStyle"
@@ -32,8 +30,9 @@
                 <RelativeLayout
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/circle_bg_white">
+                    android:layout_margin="12dp"
+                    android:background="@drawable/circle_bg_white"
+                    android:backgroundTint="?attr/colorSurfaceContainerLow">
 
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/animation_view"
@@ -49,13 +48,10 @@
 
                 <TextView
                     android:id="@+id/tv_progress"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="start|center"
-                    android:paddingHorizontal="16dp"
-                    android:text="@string/common_message_loading"
-                    android:textSize="12sp" />
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    tools:text="Signing APK" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

@@ -18,4 +18,5 @@
         android:scaleType="fitCenter"
         android:src="@drawable/top_title_logo"
         app:tint="?attr/colorPrimary" />
+
 </androidx.appcompat.widget.Toolbar>

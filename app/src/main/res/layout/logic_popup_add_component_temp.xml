@@ -1,9 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="16dp"
     android:animateLayoutChanges="true"
     android:orientation="vertical">
 
@@ -13,44 +12,45 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="8dp">
 
             <ImageView
                 android:id="@+id/img_back"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="?selectableItemBackground"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="4dp"
-                android:src="@drawable/ic_back_ios_24" />
+                app:srcCompat="?attr/homeAsUpIndicator" />
 
             <TextView
                 android:id="@+id/tv_component_title"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginLeft="16dp"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:textColor="?attr/colorPrimary"
-                android:textSize="14sp"
                 android:textStyle="bold"
                 tools:text="Component name" />
+
         </LinearLayout>
 
-        <View
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?attr/colorSecondary" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/layout_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        tools:layout_height="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +103,6 @@
                     android:layout_marginTop="28dp"
                     android:layout_marginRight="16dp"
                     android:textColor="?attr/colorOnSurfaceVariant"
-                    android:textSize="12sp"
                     tools:text="This is a simple description" />
             </LinearLayout>
 
@@ -121,7 +120,8 @@
                     android:layout_marginLeft="28dp"
                     android:layout_marginRight="24dp"
                     android:gravity="left"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    tools:text="Warnign for preview" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ti_input"
@@ -195,42 +195,24 @@
                     android:visibility="gone"
                     tools:visibility="visible" />
 
-                <LinearLayout
-                    android:id="@+id/layout_input_file_picker"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_input_file_picker"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="24dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="24dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone"
-                    tools:visibility="visible">
+                    android:importantForAutofill="noExcludeDescendants"
+                    app:endIconDrawable="@drawable/ic_expand_more_grey600_24dp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/ti_input_file_picker"
-                        android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/ed_input_file_picker"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:importantForAutofill="noExcludeDescendants">
-
-                        <EditText
-                            android:id="@+id/ed_input_file_picker"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:imeOptions="actionDone"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:textSize="16sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <ImageView
-                        android:id="@+id/img_file_picker"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_vertical"
-                        android:padding="8sp"
-                        android:src="@drawable/ic_expand_more_grey600_24dp" />
-                </LinearLayout>
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:maxLines="1" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/tv_desc_file_picker"
@@ -262,7 +244,8 @@
             <Button
                 android:id="@+id/add_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -274,5 +257,8 @@
         android:paddingVertical="8dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:splitMotionEvents="false" />
+        android:splitMotionEvents="false"
+        tools:layout_height="wrap_content"
+        tools:listitem="@layout/component_add_item"
+        tools:itemCount="15" />
 </LinearLayout>
