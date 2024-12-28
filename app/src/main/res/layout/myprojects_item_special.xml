@@ -19,7 +19,7 @@
             android:id="@+id/iv_create_new"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@drawable/ic_restore_white_24dp"
+            android:src="@drawable/ic_mtrl_history"
             app:tint="?colorControlNormal" />
 
         <TextView
