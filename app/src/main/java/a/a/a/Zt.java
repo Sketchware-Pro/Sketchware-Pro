@@ -104,6 +104,10 @@ public class Zt extends qA {
         actBinding.layoutBtnGroup.animate().translationY(isSelecting ? 0F : 400F).setDuration(200L).start();
         actBinding.layoutBtnGroup.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
 
+        if (!isSelecting) {
+            projectResourceBeans.forEach(bean -> bean.isSelected = false);
+        }
+
         adapter.notifyDataSetChanged();
     }
 
