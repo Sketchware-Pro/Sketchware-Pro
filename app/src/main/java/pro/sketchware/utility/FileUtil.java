@@ -54,6 +54,36 @@ import java.util.zip.ZipInputStream;
 
 @SuppressWarnings("unused")
 public class FileUtil {
+    public static String formatFileSize(long size) {
+        return formatFileSize(size, false);
+    }
+
+    public static String formatFileSize(long size, boolean removeZero) {
+        if (size < 1024) {
+            return String.format("%d B", size);
+        } else if (size < 1024 * 1024) {
+            float value = size / 1024.0f;
+            if (removeZero && (value - (int) value) * 10 == 0) {
+                return String.format("%d KB", (int) value);
+            } else {
+                return String.format("%.1f KB", value);
+            }
+        } else if (size < 1024 * 1024 * 1024) {
+            float value = size / 1024.0f / 1024.0f;
+            if (removeZero && (value - (int) value) * 10 == 0) {
+                return String.format("%d MB", (int) value);
+            } else {
+                return String.format("%.1f MB", value);
+            }
+        } else {
+            float value = size / 1024.0f / 1024.0f / 1024.0f;
+            if (removeZero && (value - (int) value) * 10 == 0) {
+                return String.format("%d GB", (int) value);
+            } else {
+                return String.format("%.1f GB", value);
+            }
+        }
+    }
 
     public static boolean renameFile(String str, String str2) {
         return new File(str).renameTo(new File(str2));
@@ -270,6 +300,17 @@ public class FileUtil {
             list.clear();
             for (File file : listFiles) {
                 list.add(file.getAbsolutePath());
+            }
+        }
+    }
+
+    public static void listDirAsFile(String path, ArrayList<File> list) {
+        File[] listFiles;
+        File dir = new File(path);
+        if (dir.exists() && !dir.isFile() && (listFiles = dir.listFiles()) != null && listFiles.length > 0 && list != null) {
+            list.clear();
+            for (File file : listFiles) {
+                list.add(file);
             }
         }
     }

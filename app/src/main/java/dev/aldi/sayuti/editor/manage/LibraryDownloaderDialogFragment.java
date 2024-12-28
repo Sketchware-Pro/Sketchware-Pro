@@ -41,7 +41,6 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
     private String local_lib_file = "";
     private LibraryDownloaderListener listener;
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
