@@ -19,6 +19,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import pro.sketchware.R;
+
 public class UI {
     public static void loadImageFromUrl(ImageView image, String url) {
         Glide.with(image.getContext())
