@@ -8,18 +8,19 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorSurface"
+        android:gravity="center_horizontal"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
 
         <ImageView
             android:id="@+id/img_backbtn"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:focusable="true"
             android:clickable="true"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="16dp"
+            android:padding="8dp"
             android:src="@drawable/arrow_back_white_48dp" />
 
         <LinearLayout
