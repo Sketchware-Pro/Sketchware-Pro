@@ -1,0 +1,99 @@
+name: Android CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '**/*.md'
+  workflow_dispatch:
+
+jobs:
+  init:
+    name: Init
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: notify telegram
+        uses: EverythingSuckz/github-telegram-notify@main
+        continue-on-error: true
+        with:
+          bot_token: ${{ secrets.bot_token }}
+          chat_id: -1001427104411
+          topic_id: 257833
+          
+  build_debug_apk:
+    name: Build App Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'oracle'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Build with Gradle
+        id: gradle_build_release
+        env:
+            BOT_TOKEN: ${{ secrets.bot_token }}
+            CHAT_ID: ${{ secrets.chat_id }}
+        run: ./gradlew assembleMinApi26Release
+
+      - name: Upload release apk
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/app-minApi26-release.apk
+          
+  send_debug_apk:
+    name: Send Release APK
+    runs-on: ubuntu-latest
+    needs: build_release_apk
+    
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          
+      - name: Download release apk
+        uses: actions/download-artifact@v4
+        with:
+          name: app-release
+          
+      - name: List repo contents
+        run: ls
+          
+      - name: Get the last commit message
+        id: get_commit_msg
+        run: |
+          commit_message=$(git log -1 --pretty=format:'%s')
+          echo "message=$commit_message" >> $GITHUB_OUTPUT
+
+      - name: Send APK to Release Channel Telegram with Topic ID
+        if: success()
+        continue-on-error: true
+        run: |
+          curl -X POST "https://api.telegram.org/bot${{ secrets.bot_token }}/sendDocument" \
+            -F chat_id="-1001427104411" \
+            -F message_thread_id="257833" \
+            -F document=@"app-minApi26-release.apk" \
+            -F caption="${{ github.event.head_commit.message }} by ${{ github.actor }}"
