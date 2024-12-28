@@ -30,7 +30,7 @@ jobs:
           topic_id: 257833
           
   build_debug_apk:
-    name: Build App Debug APK
+    name: Build App Release APK
     runs-on: ubuntu-latest
 
     steps:
@@ -51,22 +51,22 @@ jobs:
         uses: gradle/actions/wrapper-validation@v4
 
       - name: Build with Gradle
-        id: gradle_build_debug
+        id: gradle_build_release
         env:
             BOT_TOKEN: ${{ secrets.bot_token }}
             CHAT_ID: ${{ secrets.chat_id }}
         run: ./gradlew assembleMinApi26Release
 
-      - name: Upload debug apk
+      - name: Upload release apk
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
-          path: app/build/outputs/apk/debug/app-minApi26-release.apk
+          name: app-release
+          path: app/build/outputs/apk/release/app-minApi26-release.apk
           
   send_debug_apk:
-    name: Send Debug APK
+    name: Send Release APK
     runs-on: ubuntu-latest
-    needs: build_debug_apk
+    needs: build_release_apk
     
     steps:
       - name: Check out repository
@@ -74,10 +74,10 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           
-      - name: Download debug apk
+      - name: Download release apk
         uses: actions/download-artifact@v4
         with:
-          name: app-debug
+          name: app-release
           
       - name: List repo contents
         run: ls
@@ -88,7 +88,7 @@ jobs:
           commit_message=$(git log -1 --pretty=format:'%s')
           echo "message=$commit_message" >> $GITHUB_OUTPUT
 
-      - name: Send APK to Debug Channel Telegram with Topic ID
+      - name: Send APK to Release Channel Telegram with Topic ID
         if: success()
         continue-on-error: true
         run: |
