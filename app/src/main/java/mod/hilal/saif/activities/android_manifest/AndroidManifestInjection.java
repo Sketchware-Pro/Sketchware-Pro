@@ -110,7 +110,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         LinearLayout cards = findViewById(R.id.cards);
 
         LibraryItemView application_card = new LibraryItemView(this);
-        makeup(application_card, R.drawable.icons8_app_attrs, "Application", "Default properties for the app");
+        makeup(application_card, R.drawable.ic_mtrl_settings_applications, "Application", "Default properties for the app");
         cards.addView(application_card);
         application_card.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -123,7 +123,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
         {
             LibraryItemView permission_card = new LibraryItemView(this);
-            makeup(permission_card, R.drawable.event_on_signin_complete_48dp, "Permissions", "Add custom Permissions to the app");
+            makeup(permission_card, R.drawable.ic_mtrl_shield_check, "Permissions", "Add custom Permissions to the app");
             cards.addView(permission_card);
             permission_card.setOnClickListener(_view -> {
                 Intent inta = new Intent();
@@ -137,13 +137,13 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
         {
             LibraryItemView permission_card = new LibraryItemView(this);
-            makeup(permission_card, R.drawable.recycling_48, "Launcher Activity", "Change the default Launcher Activity");
+            makeup(permission_card, R.drawable.ic_mtrl_lifecycle, "Launcher Activity", "Change the default Launcher Activity");
             cards.addView(permission_card);
             permission_card.setOnClickListener(v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id)));
         }
 
         LibraryItemView allAct_card = new LibraryItemView(this);
-        makeup(allAct_card, R.drawable.icons8_all_activities_attrs, "All Activities", "Add attributes for all Activities");
+        makeup(allAct_card, R.drawable.ic_mtrl_deployed_code, "All Activities", "Add attributes for all Activities");
         cards.addView(allAct_card);
         allAct_card.setOnClickListener(v -> {
             Intent inta = new Intent();
@@ -155,7 +155,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         });
 
         LibraryItemView appCom_card = new LibraryItemView(this);
-        makeup(appCom_card, R.drawable.icons8_app_components, "App Components", "Add extra components");
+        makeup(appCom_card, R.drawable.ic_mtrl_component, "App Components", "Add extra components");
         cards.addView(appCom_card);
         appCom_card.setOnClickListener(v -> showAppComponentDialog());
 
