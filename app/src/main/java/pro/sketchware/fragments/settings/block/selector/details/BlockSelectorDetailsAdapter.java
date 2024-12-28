@@ -13,6 +13,7 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.LayoutBlockSelectorBinding;
 import pro.sketchware.fragments.settings.block.selector.BlockSelectorAdapter.OnClickListener;
 import pro.sketchware.fragments.settings.block.selector.BlockSelectorAdapter.OnLongClickListener;
+import pro.sketchware.utility.UI;
 
 public class BlockSelectorDetailsAdapter extends ListAdapter<String, BlockSelectorDetailsAdapter.BlockSelectorDetailsAdapterViewHolder> {
 
@@ -37,19 +38,7 @@ public class BlockSelectorDetailsAdapter extends ListAdapter<String, BlockSelect
     @Override
     public void onBindViewHolder(@NonNull BlockSelectorDetailsAdapterViewHolder holder, int position) {
         holder.bind(getItem(position), position);
-
-        int backgroundResource;
-        if (getCurrentList().size() == 1) {
-            backgroundResource = R.drawable.shape_alone;
-        } else if (position == 0) {
-            backgroundResource = R.drawable.shape_top;
-        } else if (position == getCurrentList().size() - 1) {
-            backgroundResource = R.drawable.shape_bottom;
-        } else {
-            backgroundResource = R.drawable.shape_middle;
-        }
-
-        holder.itemView.setBackgroundResource(backgroundResource);
+        holder.itemView.setBackgroundResource(UI.getShapedBackgroundForList(getCurrentList(), position));
     }
 
     public static class BlockSelectorDetailsAdapterViewHolder extends RecyclerView.ViewHolder {

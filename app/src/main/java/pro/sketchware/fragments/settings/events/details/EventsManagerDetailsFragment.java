@@ -15,6 +15,7 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentEventsManagerDetailsBinding;
 import pro.sketchware.databinding.LayoutEventItemBinding;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.UI;
 import pro.sketchware.fragments.settings.events.EventsManagerConstants;
 import pro.sketchware.fragments.settings.events.creator.EventsManagerCreatorFragment;
 
@@ -115,17 +116,7 @@ public class EventsManagerDetailsFragment extends qA {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             HashMap<String, Object> item = dataArray.get(position);
             
-            int backgroundResource;
-            if (dataArray.size() == 1) {
-                backgroundResource = R.drawable.shape_alone;
-            } else if (position == 0) {
-                backgroundResource = R.drawable.shape_top;
-            } else if (position == dataArray.size() - 1) {
-                backgroundResource = R.drawable.shape_bottom;
-            } else {
-                backgroundResource = R.drawable.shape_middle;
-            }
-            holder.itemView.setBackgroundResource(backgroundResource);
+            holder.itemView.setBackgroundResource(UI.getShapedBackgroundForList(dataArray, position));
             
             if (listName.isEmpty()) {
                 holder.binding.eventIcon.setImageResource(R.drawable.ic_mtrl_code);
