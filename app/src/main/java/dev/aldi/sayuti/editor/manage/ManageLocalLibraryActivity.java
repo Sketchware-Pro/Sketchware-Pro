@@ -36,6 +36,7 @@ import pro.sketchware.databinding.ManageLocallibrariesBinding;
 import pro.sketchware.databinding.ViewItemLocalLibBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.UI;
 
 public class ManageLocalLibraryActivity extends AppCompatActivity implements View.OnClickListener {
     private static String local_libs_path = "";
@@ -198,17 +199,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
             var binding = holder.listBinding;
-            int backgroundResource;
-            if (filteredList.size() == 1) {
-                backgroundResource = R.drawable.shape_alone;
-            } else if (position == 0) {
-                backgroundResource = R.drawable.shape_top;
-            } else if (position == filteredList.size() - 1) {
-                backgroundResource = R.drawable.shape_bottom;
-            } else {
-                backgroundResource = R.drawable.shape_middle;
-            }
-            holder.itemView.setBackgroundResource(backgroundResource);
+            holder.itemView.setBackgroundResource(UI.getShapedBackgroundForList(filteredList, position));
             
             final String libraryName = filteredList.get(position);
             binding.checkboxContent.setText(libraryName);
