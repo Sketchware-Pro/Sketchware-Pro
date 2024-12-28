@@ -36,5 +36,5 @@
         android:id="@+id/img_delete"
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:src="@drawable/icon_delete" />
+        android:src="@drawable/ic_mtrl_delete" />
 </LinearLayout>
