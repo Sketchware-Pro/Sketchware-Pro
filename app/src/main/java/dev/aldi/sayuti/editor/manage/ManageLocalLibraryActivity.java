@@ -355,9 +355,9 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
                         } else {
                             loadAllLibraries();
                         }
-                        
+
                     }else{
-                        loadAllLibraries();  
+                        loadAllLibraries();
                     }
                     return true;
                 });
