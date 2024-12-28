@@ -16,12 +16,12 @@ import a.a.a.xB;
 
 public class LibraryItemView extends FrameLayout {
     protected final Context context;
-    protected MaterialCardView container;
-
-    public ImageView icon;
-    public TextView title;
-    public TextView description;
-    public TextView enabled;
+    
+    public final MaterialCardView container;
+    public final ImageView icon;
+    public final TextView title;
+    public final TextView description;
+    public final TextView enabled;
 
     public LibraryItemView(Context context) {
         super(context);
