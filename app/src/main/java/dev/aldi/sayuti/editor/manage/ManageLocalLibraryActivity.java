@@ -31,6 +31,7 @@ import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
+import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLocallibrariesBinding;
 import pro.sketchware.databinding.ViewItemLocalLibBinding;
 import pro.sketchware.utility.FileUtil;
@@ -200,7 +201,18 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
             var binding = holder.listBinding;
-
+            int backgroundResource;
+            if (filteredList.size() == 1) {
+                backgroundResource = R.drawable.shape_alone;
+            } else if (position == 0) {
+                backgroundResource = R.drawable.shape_top;
+            } else if (position == filteredList.size() - 1) {
+                backgroundResource = R.drawable.shape_bottom;
+            } else {
+                backgroundResource = R.drawable.shape_middle;
+            }
+            holder.itemView.setBackgroundResource(backgroundResource);
+            
             final String libraryName = filteredList.get(position);
             binding.checkboxContent.setText(libraryName);
 
