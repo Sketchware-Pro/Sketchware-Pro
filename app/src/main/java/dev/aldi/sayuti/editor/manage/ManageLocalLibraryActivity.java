@@ -19,7 +19,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.beans.AdUnitBean;
 import com.google.gson.Gson;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,13 +34,17 @@ import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
+import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLocallibrariesBinding;
 import pro.sketchware.databinding.ViewItemLocalLibBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class ManageLocalLibraryActivity extends AppCompatActivity implements View.OnClickListener {
+
     private static String local_libs_path = "";
+
+    private boolean notAllLocalLibraries = false;
     private boolean notAssociatedWithProject = false;
     private String local_lib_file = "";
     private ArrayList<HashMap<String, Object>> lookup_list = new ArrayList<>();
@@ -46,6 +53,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
     private final ArrayList<String> arrayList = new ArrayList<>();
     private ManageLocallibrariesBinding binding;
     private LibraryAdapter adapter;
+
     public static HashMap<String, Object> createLibraryMap(String name, String dependency) {
         String configPath = local_libs_path + name + "/config";
         String resPath = local_libs_path + name + "/res";
@@ -94,26 +102,66 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         ViewCompat.setOnApplyWindowInsetsListener(binding.downloadLibraryButton, new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
 
         initButtons();
+
+        local_libs_path = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
+
         if (getIntent().hasExtra("sc_id")) {
             String sc_id = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
             buildSettings = new BuildSettings(sc_id);
             notAssociatedWithProject = sc_id.equals("system");
             local_lib_file = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/local_library"));
         }
-        local_libs_path = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
-        loadFiles();
+        if (!notAssociatedWithProject){
+            projectLibraries(true);
+            binding.toggleGroup.check(R.id.myLibrariesButton);
+            binding.downloadLibraryButton.setVisibility(View.VISIBLE);
+            loadMyLibraries();
+        } else {
+            projectLibraries(false);
+            notAllLocalLibraries = false;
+            binding.toggleGroup.check(R.id.allLibrariesButton);
+            binding.downloadLibraryButton.setVisibility(View.VISIBLE);
+            loadAllLibraries();
+        }
         setUpSearchView();
     }
+
+
 
     private void initButtons() {
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         binding.downloadLibraryButton.setOnClickListener(this);
+
+        binding.toggleGroup.check(R.id.myLibrariesButton);
+        binding.toggleGroup.addOnButtonCheckedListener(
+                new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+                    @Override
+                    public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                        if (isChecked) {
+                            switch (checkedId) {
+                                case R.id.myLibrariesButton:
+                                    // Handle "My Libraries" button selection
+                                    notAllLocalLibraries = true;
+                                    binding.downloadLibraryButton.setVisibility(View.GONE);
+                                    loadMyLibraries();
+                                    break;
+
+                                case R.id.allLibrariesButton:
+                                    // Handle "All Libraries" button selection
+                                    notAllLocalLibraries = false;
+                                    binding.downloadLibraryButton.setVisibility(View.VISIBLE);
+                                    loadAllLibraries();
+                                    break;
+                            }
+                        }
+                    }
+                });
+
     }
 
     @Override
     @SuppressLint("SetTextI18n")
     public void onClick(View v) {
-
         LibraryDownloaderDialogFragment dialogFragment = new LibraryDownloaderDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean("notAssociatedWithProject", notAssociatedWithProject);
@@ -122,7 +170,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         dialogFragment.setArguments(bundle);
         if (getSupportFragmentManager().findFragmentByTag("library_downloader_dialog") != null)
             return;
-        dialogFragment.setListener(this::loadFiles);
+        dialogFragment.setListener(this::loadAllLibraries);
         dialogFragment.show(getSupportFragmentManager(), "library_downloader_dialog");
     }
 
@@ -141,15 +189,33 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
             @Override
             public void onTextChanged(CharSequence newText, int start, int before, int count) {
                 if (newText.toString().isEmpty()) {
-                    loadFiles();
+                    // Reload based on the current toggle state
+                    if (binding.toggleGroup.getCheckedButtonId() == R.id.myLibrariesButton) {
+                        loadMyLibraries();
+                    } else if (binding.toggleGroup.getCheckedButtonId() == R.id.allLibrariesButton) {
+                        loadAllLibraries();
+                    }
                 }
             }
         });
     }
 
-    private void loadFiles() {
+    private void projectLibraries(boolean hasScId) {
+        if (hasScId) {
+            binding.toggleGroup.setVisibility(View.VISIBLE);
+            binding.myLibrariesButton.setVisibility(View.VISIBLE);
+            binding.allLibrariesButton.setVisibility(View.VISIBLE);
+        } else {
+            binding.toggleGroup.setVisibility(View.GONE);
+            binding.downloadLibraryButton.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    private void loadMyLibraries() {
         project_used_libs.clear();
         lookup_list.clear();
+
         if (!notAssociatedWithProject) {
             String fileContent;
             if (!FileUtil.isExistFile(local_lib_file) || (fileContent = FileUtil.readFile(local_lib_file)).isEmpty()) {
@@ -159,24 +225,51 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
             }
         }
 
+        List<String> myLibraryNames = new LinkedList<>();
+        myLibraryNames.clear();
+        for (HashMap<String, Object> lib : project_used_libs) {
+            myLibraryNames.add((String) lib.get("name"));
+        }
+
+        updateLibraryList(myLibraryNames, true);
+    }
+
+    private void loadAllLibraries() {
+        arrayList.clear();
         FileUtil.listDir(local_libs_path, arrayList);
         arrayList.sort(String.CASE_INSENSITIVE_ORDER);
 
-        List<String> localLibraryNames = new LinkedList<>();
+        List<String> allLibraryNames = new LinkedList<>();
+        allLibraryNames.clear();
         for (String filename : arrayList) {
             if (FileUtil.isDirectory(filename)) {
-                localLibraryNames.add(Uri.parse(filename).getLastPathSegment());
+                allLibraryNames.add(Uri.parse(filename).getLastPathSegment());
             }
         }
-        if (localLibraryNames.isEmpty()) {
+
+        updateLibraryList(allLibraryNames, false);
+    }
+
+    private void updateLibraryList(List<String> libraryNames, Boolean isMyLibraries) {
+        if (libraryNames.isEmpty()) {
+            if(isMyLibraries){
+                binding.noContentTitle.setText(R.string.local_library_manager_no_libraries_title);
+                binding.noContentBody.setText(R.string.local_library_manager_no_libraries_body);
+            } else{
+                binding.noContentTitle.setText(R.string.local_library_manager_no_libraries_title_all);
+                binding.noContentBody.setText(R.string.local_library_manager_no_libraries_body_all);
+            }
             binding.noContentLayout.setVisibility(View.VISIBLE);
         } else {
             binding.noContentLayout.setVisibility(View.GONE);
         }
+
         binding.librariesList.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new LibraryAdapter(localLibraryNames);
+        adapter = new LibraryAdapter(libraryNames);
         binding.librariesList.setAdapter(adapter);
     }
+
+
 
     public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
 
@@ -256,7 +349,16 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
                 popupMenu.setOnMenuItemClickListener(menuItem -> {
                     FileUtil.deleteFile(local_libs_path.concat(binding.checkboxContent.getText().toString()));
                     SketchwareUtil.toast("Deleted successfully");
-                    loadFiles();
+                    if (!notAssociatedWithProject) {
+                        if (notAllLocalLibraries) {
+                            loadMyLibraries();
+                        } else {
+                            loadAllLibraries();
+                        }
+                        
+                    }else{
+                        loadAllLibraries();  
+                    }
                     return true;
                 });
                 popupMenu.show();

@@ -270,7 +270,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             Glide.with(getApplicationContext())
                     .load(projectResourceBean.resFullName)
                     .asBitmap()
-                    .centerCrop()
+                    .fitCenter()
                     .error(R.drawable.ic_remove_grey600_24dp)
                     .into(new BitmapImageViewTarget(viewHolder.img));
             viewHolder.tv_name.setText(selectedCollections.get(position).resName);
@@ -292,7 +292,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         Glide.with(getApplicationContext())
                 .load(selectedCollections.get(index).resFullName)
                 .asBitmap()
-                .centerCrop()
+                .fitCenter()
                 .error(R.drawable.ic_remove_grey600_24dp)
                 .into(new BitmapImageViewTarget(img));
     }
