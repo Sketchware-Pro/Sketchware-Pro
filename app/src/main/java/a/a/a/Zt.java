@@ -131,7 +131,7 @@ public class Zt extends qA {
     }
 
     public void processResources() {
-        if (projectResourceBeans == null || projectResourceBeans.isEmpty()) {
+        if (projectResourceBeans == null) {
             return;
         }
 
