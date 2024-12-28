@@ -24,8 +24,8 @@ jobs:
         continue-on-error: true
         with:
           bot_token: ${{ secrets.bot_token }}
-          chat_id: -1002295019134
-          topic_id: 8
+          chat_id: -1001427104411
+          topic_id: 257833
           
   build_debug_apk:
     name: Build App Debug APK
@@ -85,11 +85,6 @@ jobs:
         run: |
           commit_message=$(git log -1 --pretty=format:'%s')
           echo "message=$commit_message" >> $GITHUB_OUTPUT
-          
-      - name: Rename file 
-        run: |
-          mv app-debug.apk xsigner-app-debug.apk
-          ls 
 
       - name: Send APK to Debug Channel Telegram with Topic ID
         if: success()
@@ -98,5 +93,5 @@ jobs:
           curl -X POST "https://api.telegram.org/bot${{ secrets.bot_token }}/sendDocument" \
             -F chat_id="-1002295019134" \
             -F message_thread_id="10" \
-            -F document=@"xsigner-app-debug.apk" \
+            -F document=@"app-minApi26-release.apk" \
             -F caption="${{ github.event.head_commit.message }} by ${{ github.actor }}"
