@@ -22,6 +22,7 @@ import pro.sketchware.databinding.FragmentEventsManagerBinding;
 import pro.sketchware.databinding.LayoutEventItemBinding;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.UI;
 import pro.sketchware.fragments.settings.events.details.EventsManagerDetailsFragment;
 
 import java.io.File;
@@ -260,18 +261,7 @@ public class EventsManagerFragment extends qA {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             HashMap<String, Object> item = dataArray.get(position);
             String name = (String) item.get("name");
-            
-            int backgroundResource;
-            if (dataArray.size() == 1) {
-                backgroundResource = R.drawable.shape_alone;
-            } else if (position == 0) {
-                backgroundResource = R.drawable.shape_top;
-            } else if (position == dataArray.size() - 1) {
-                backgroundResource = R.drawable.shape_bottom;
-            } else {
-                backgroundResource = R.drawable.shape_middle;
-            }
-            holder.itemView.setBackgroundResource(backgroundResource);
+            holder.itemView.setBackgroundResource(UI.getShapedBackgroundForList(dataArray, position));
 
             holder.binding.eventIcon.setImageResource(R.drawable.event_on_response_48dp);
             ((LinearLayout) holder.binding.eventIcon.getParent()).setGravity(Gravity.CENTER);

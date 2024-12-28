@@ -49,6 +49,7 @@ import pro.sketchware.activities.settings.SettingsActivity;
 import pro.sketchware.databinding.DialogSelectApkToSignBinding;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.UI;
 
 public class AppSettings extends BaseAppCompatActivity {
 
@@ -143,17 +144,7 @@ public class AppSettings extends BaseAppCompatActivity {
         preferences.add(createPreference(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class)), true));
         preferences.forEach(preference -> {
             final int index = preferences.indexOf(preference);
-            int backgroundResource;
-            if (preferences.size() == 1) {
-                backgroundResource = R.drawable.shape_alone;
-            } else if (index == 0) {
-                backgroundResource = R.drawable.shape_top;
-            } else if (index == preferences.size() - 1) {
-                backgroundResource = R.drawable.shape_bottom;
-            } else {
-                backgroundResource = R.drawable.shape_middle;
-            }
-            preference.container.setBackgroundResource(backgroundResource);
+            preference.container.setBackgroundResource(UI.getShapedBackgroundForList(preferences, index));
             content.addView(preference);
         });
     }
