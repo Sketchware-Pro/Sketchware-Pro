@@ -51,7 +51,8 @@
             android:text="@string/my_local_libraries"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
             android:checkable="true"
-            android:checked="true" />
+            android:checked="true"
+            android:textAllCaps="false"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/allLibrariesButton"
@@ -61,7 +62,8 @@
             style="?attr/materialButtonOutlinedStyle"
             android:text="@string/all_local_libraries"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
-            android:checkable="true" />
+            android:checkable="true"
+            android:textAllCaps="false"/>
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
