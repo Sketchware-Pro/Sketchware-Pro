@@ -59,14 +59,13 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
     private TextView externalLib;
 
-    private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean, int drawable) {
+    private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean) {
         LibraryItemView libraryItemView;
         if (libraryBean != null) {
             libraryItemView = new LibraryItemView(this);
         } else {
             libraryItemView = new ExcludeBuiltInLibrariesLibraryItemView(this, sc_id);
         }
-        libraryItemView.container.setBackgroundResource(drawable);
         libraryItemView.setTag(libraryBean != null ? libraryBean.libType : null);
         //noinspection ConstantConditions since the variant if it's nullable handles nulls correctly
         libraryItemView.setData(libraryBean);
@@ -325,14 +324,14 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             originalGoogleMapUseYn = savedInstanceState.getString("originalGoogleMapUseYn");
         }
 
-        addLibraryItem(compatLibraryBean, R.drawable.shape_top);
-        addLibraryItem(firebaseLibraryBean, R.drawable.shape_middle);
-        addLibraryItem(admobLibraryBean, R.drawable.shape_middle);
-        addLibraryItem(googleMapLibraryBean, R.drawable.shape_bottom);
-        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB), R.drawable.shape_top);
-        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB), R.drawable.shape_bottom);
+        addLibraryItem(compatLibraryBean);
+        addLibraryItem(firebaseLibraryBean);
+        addLibraryItem(admobLibraryBean);
+        addLibraryItem(googleMapLibraryBean);
+        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB));
+        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB));
         // Exclude built-in libraries
-        addLibraryItem(null, R.drawable.shape_alone);
+        addLibraryItem(null);
     }
 
     @Override

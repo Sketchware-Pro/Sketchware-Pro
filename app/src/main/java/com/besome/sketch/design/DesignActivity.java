@@ -934,7 +934,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     /**
-     * Opens {@link ManageCustomAttributeActivity}.
+     * Opens {@link ManageAppCompatActivity}.
      */
     void toAppCompatInjectionManager() {
         if (projectFile == null) return;
