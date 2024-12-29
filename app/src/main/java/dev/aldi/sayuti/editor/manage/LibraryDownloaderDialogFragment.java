@@ -28,6 +28,8 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.pranav.dependency.resolver.DependencyResolver;
+
+import pro.sketchware.R;
 import pro.sketchware.databinding.LibraryDownloaderDialogBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -227,5 +229,9 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
         binding.dependencyInput.setEnabled(!downloading);
         binding.cbSkipSubdependencies.setEnabled(!downloading);
         setCancelable(!downloading);
+
+        if (!downloading) {
+            binding.dependencyInfo.setText(R.string.local_library_manager_dependency_info);
+        }
     }
 }
