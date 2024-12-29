@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="16dp">
+    android:orientation="vertical">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
         android:id="@+id/drag_handle"
@@ -75,6 +74,7 @@
                 android:id="@+id/enable_viewbinding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -109,7 +109,10 @@
                 <CheckBox
                     android:id="@+id/cb_enable_viewbinding"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp" />
 
             </LinearLayout>
 
@@ -151,7 +154,10 @@
                 <CheckBox
                     android:id="@+id/cb_remove_old_methods"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp" />
 
             </LinearLayout>
 
@@ -193,7 +199,10 @@
                 <CheckBox
                     android:id="@+id/cb_use_new_material_components_app_theme"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp" />
 
             </LinearLayout>
 
@@ -204,7 +213,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="16dp">
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginVertical="8dp">
 
         <Button
             android:id="@+id/cancel"
