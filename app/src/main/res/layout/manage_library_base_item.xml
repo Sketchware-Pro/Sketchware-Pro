@@ -9,8 +9,7 @@
     android:layout_marginTop="5dp"
     android:focusable="true"
     android:clickable="true"
-    style="?attr/materialCardViewFilledStyle"
-    app:cardBackgroundColor="?attr/colorSurfaceContainer">
+    android:background="@drawable/shape_alone">
 
     <LinearLayout
         android:layout_width="match_parent"
