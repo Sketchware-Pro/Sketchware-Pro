@@ -86,5 +86,9 @@
 
     <color name="splash_bg_color">@color/md_theme_light_background</color>
     <color name="splash_content_color">@color/md_theme_light_on_background</color>
+    <color name="light_blue_400">#FF29B6F6</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="gray_400">#FFBDBDBD</color>
+    <color name="gray_600">#FF757575</color>
 
 </resources>
