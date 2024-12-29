@@ -326,6 +326,10 @@
         <activity
             android:name=".activities.editor.view.ViewCodeEditorActivity"
             android:configChanges="orientation|screenSize" />
+            
+        <activity
+            android:name=".activities.editor.view.CodeViewerActivity"
+            android:configChanges="orientation|screenSize" />
 
         <activity
             android:name=".activities.preview.LayoutPreviewActivity"
