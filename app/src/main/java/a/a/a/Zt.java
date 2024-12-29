@@ -255,7 +255,6 @@ public class Zt extends qA {
                 for (int i = projectResourceBeans.size() - 1; i >= 0; i--) {
                     if (projectResourceBeans.get(i).isSelected) {
                         projectResourceBeans.remove(i);
-                        FileUtil.deleteFile(getResourceFilePath(projectResourceBeans.get(i)));
                     }
                 }
 
