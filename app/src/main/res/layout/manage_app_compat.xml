@@ -54,7 +54,7 @@
         android:background="?attr/colorSurface"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="24dp"
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:visibility="gone">
@@ -63,6 +63,7 @@
             android:id="@+id/note_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
 
@@ -71,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:gravity="center"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
 
