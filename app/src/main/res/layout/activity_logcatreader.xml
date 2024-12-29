@@ -70,7 +70,7 @@
         android:background="?attr/colorSurface"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="24dp"
         android:paddingBottom="100dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:visibility="gone">
@@ -78,6 +78,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="Logcat hasn't captured anything yet"
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
@@ -86,6 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:gravity="center"
             android:text="Keep this screen open then run your app"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
