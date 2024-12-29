@@ -16,7 +16,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="10dp"
         android:text="Project Settings"
-        android:textAppearance="?attr/textAppearanceHeadlineSmallEmphasized" />
+        android:textAppearance="?attr/textAppearanceTitleLarge" />
 
     <LinearLayout
         android:id="@+id/project_settings"

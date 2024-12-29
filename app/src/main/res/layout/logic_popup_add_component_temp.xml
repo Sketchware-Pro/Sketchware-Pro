@@ -203,7 +203,8 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="24dp"
                     android:importantForAutofill="noExcludeDescendants"
-                    app:endIconDrawable="@drawable/ic_expand_more_grey600_24dp">
+                    app:endIconDrawable="@drawable/ic_expand_more_grey600_24dp"
+                    app:endIconMode="custom">
 
                     <EditText
                         android:id="@+id/ed_input_file_picker"
