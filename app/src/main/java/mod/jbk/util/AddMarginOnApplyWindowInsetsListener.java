@@ -17,6 +17,13 @@ public class AddMarginOnApplyWindowInsetsListener implements OnApplyWindowInsets
 
     /**
      * @param insetsTypeMask Bit mask of {@link WindowInsetsCompat.Type}s to query the insets for.
+     */
+    public AddMarginOnApplyWindowInsetsListener(int insetsTypeMask) {
+        this(insetsTypeMask, null);
+    }
+
+    /**
+     * @param insetsTypeMask Bit mask of {@link WindowInsetsCompat.Type}s to query the insets for.
      * @param returnValue What {@link #onApplyWindowInsets(View, WindowInsetsCompat)} should return.
      */
     public AddMarginOnApplyWindowInsetsListener(int insetsTypeMask, WindowInsetsCompat returnValue) {
@@ -36,6 +43,6 @@ public class AddMarginOnApplyWindowInsetsListener implements OnApplyWindowInsets
         } else {
             throw new IllegalArgumentException("View's layout params must extend ViewGroup.MarginLayoutParams");
         }
-        return returnValue;
+        return returnValue != null ? returnValue : insets;
     }
 }

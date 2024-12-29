@@ -67,7 +67,8 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
         binding = ManageLocallibrariesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.downloadLibraryButton, new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
+        ViewCompat.setOnApplyWindowInsetsListener(binding.downloadLibraryButton,
+                new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars() | WindowInsetsCompat.Type.ime()));
 
         if (getIntent().hasExtra("sc_id")) {
             String scId = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
