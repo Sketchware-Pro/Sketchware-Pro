@@ -6,8 +6,8 @@
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:paddingEnd="12dp"
-    android:paddingStart="20dp"
+    android:paddingEnd="16dp"
+    android:paddingStart="24dp"
     android:paddingVertical="16dp">
 
     <TextView
@@ -18,7 +18,6 @@
         android:singleLine="true"
         android:textAppearance="?attr/textAppearanceBodyLarge"
         android:textColor="?attr/colorOnSurface"
-        android:textSize="17sp"
         app:layout_constraintEnd_toStartOf="@id/checkbox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/library_size"
@@ -31,7 +30,6 @@
         android:layout_marginTop="2dp"
         android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textColor="?attr/colorOnSurfaceVariant"
-        android:textSize="15sp"
         app:layout_constraintEnd_toStartOf="@id/checkbox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/library_name"

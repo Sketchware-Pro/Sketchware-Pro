@@ -45,8 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:paddingBottom="120dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/view_item_local_lib_search" />
@@ -68,6 +67,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/local_library_manager_no_libraries_title"
             android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
@@ -76,6 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:gravity="center"
             android:text="@string/local_library_manager_no_libraries_body"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp" />
@@ -83,7 +84,7 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/downloadLibraryButton"
+        android:id="@+id/download_library_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"

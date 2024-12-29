@@ -54,34 +54,56 @@ import java.util.zip.ZipInputStream;
 
 @SuppressWarnings("unused")
 public class FileUtil {
+    public static long getFileSize(File file) {
+        if (file == null || !file.exists()) {
+            return 0;
+        }
+
+        if (!file.isDirectory()) {
+            return file.length();
+        }
+
+        List<File> dirs = new LinkedList<>();
+        dirs.add(file);
+
+        long result = 0;
+        while (!dirs.isEmpty()) {
+            File dir = dirs.remove(0);
+            if (!dir.exists())
+                continue;
+            File[] listFiles = dir.listFiles();
+            if (listFiles == null || listFiles.length == 0)
+                continue;
+            for (File child : listFiles) {
+                if (child.isDirectory()) {
+                    dirs.add(child);
+                } else {
+                    result += child.length();
+                }
+            }
+        }
+
+        return result;
+    }
+
     public static String formatFileSize(long size) {
         return formatFileSize(size, false);
     }
 
     public static String formatFileSize(long size, boolean removeZero) {
-        if (size < 1024) {
-            return String.format("%d B", size);
-        } else if (size < 1024 * 1024) {
-            float value = size / 1024.0f;
-            if (removeZero && (value - (int) value) * 10 == 0) {
-                return String.format("%d KB", (int) value);
-            } else {
-                return String.format("%.1f KB", value);
-            }
-        } else if (size < 1024 * 1024 * 1024) {
-            float value = size / 1024.0f / 1024.0f;
-            if (removeZero && (value - (int) value) * 10 == 0) {
-                return String.format("%d MB", (int) value);
-            } else {
-                return String.format("%.1f MB", value);
-            }
+        String[] units = {"B", "KiB", "MiB", "GiB"};
+        float value = size;
+        int unitIndex = 0;
+
+        while (value >= 1024 && unitIndex < units.length - 1) {
+            value /= 1024;
+            unitIndex++;
+        }
+
+        if (removeZero && (value - (int) value) * 10 == 0) {
+            return String.format("%d %s", (int) value, units[unitIndex]);
         } else {
-            float value = size / 1024.0f / 1024.0f / 1024.0f;
-            if (removeZero && (value - (int) value) * 10 == 0) {
-                return String.format("%d GB", (int) value);
-            } else {
-                return String.format("%.1f GB", value);
-            }
+            return String.format("%.1f %s", value, units[unitIndex]);
         }
     }
 

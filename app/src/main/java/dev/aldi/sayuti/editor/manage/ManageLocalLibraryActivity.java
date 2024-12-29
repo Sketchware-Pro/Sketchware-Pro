@@ -32,7 +32,6 @@ import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
-import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLocallibrariesBinding;
 import pro.sketchware.databinding.ViewItemLocalLibBinding;
 import pro.sketchware.databinding.ViewItemLocalLibSearchBinding;
@@ -96,7 +95,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
 
             LibraryDownloaderDialogFragment fragment = new LibraryDownloaderDialogFragment();
             fragment.setArguments(bundle);
-            fragment.setListener(this::loadLibraries);
+            fragment.setOnLibraryDownloadedTask(this::loadLibraries);
             fragment.show(getSupportFragmentManager(), "library_downloader_dialog");
         });
 
@@ -211,7 +210,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
             var binding = holder.binding;
 
             final File libraryFile = libraryFiles.get(position);
-            final String librarySize = FileUtil.formatFileSize(libraryFile.length());
+            final String librarySize = FileUtil.formatFileSize(FileUtil.getFileSize(libraryFile));
             binding.libraryName.setText(libraryFile.getName());
             binding.librarySize.setText(librarySize);
             binding.libraryName.setSelected(true);
@@ -317,7 +316,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
             var binding = holder.binding;
 
             final File libraryFile = filteredLibraryFiles.get(position);
-            final String librarySize = FileUtil.formatFileSize(libraryFile.length());
+            final String librarySize = FileUtil.formatFileSize(FileUtil.getFileSize(libraryFile));
             binding.libraryName.setText(libraryFile.getName());
             binding.librarySize.setText(librarySize);
             binding.libraryName.setSelected(true);
