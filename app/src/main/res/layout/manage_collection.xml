@@ -38,7 +38,7 @@
                         android:fitsSystemWindows="false"
                         app:itemPaddingBottom="28dp"
                         app:labelVisibilityMode="labeled"
-                        app:menu="@menu/manage_collection_items_menu"  />
+                        app:menu="@menu/manage_collection_items_menu" />
 
                 </LinearLayout>
 
@@ -63,6 +63,18 @@
                         android:layout_weight="1"
                         android:scrollbars="vertical"
                         android:splitMotionEvents="false" />
+
+                    <!-- Select All Checkbox -->
+                    <CheckBox
+                        android:id="@+id/checkbox_select_all"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select All"
+                        android:padding="16dp"
+                        android:gravity="center"
+                        android:layout_gravity="start"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -97,7 +109,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:text="Delete Selected" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

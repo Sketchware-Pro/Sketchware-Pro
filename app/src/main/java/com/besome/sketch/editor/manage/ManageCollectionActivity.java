@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +46,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import a.a.a.Mp;
@@ -74,6 +76,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private static final int REQUEST_CODE_SHOW_MORE_BLOCK_DETAILS = 279;
 
     private LinearLayout actionButtonGroup;
+
+    private CheckBox selectAllCheckBox;
     private boolean hasDeletedWidget;
     private boolean selectingToBeDeletedItems;
     private CollectionAdapter collectionAdapter;
@@ -85,8 +89,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private ArrayList<WidgetCollectionBean> widgets;
     private ArrayList<BlockCollectionBean> blocks;
     private ArrayList<MoreBlockCollectionBean> moreBlocks;
+
+    private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
+
     private int currentItemId = 1;
     private int collectionItemsSize = 6;
+
+    private boolean isAllSelected = false;
     private TextView noItemsNote;
     private FloatingActionButton fab;
     private String sc_id;
@@ -133,15 +142,38 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         if (selectingToBeDeletedItems) {
             collectionAdapter.stopPlayback();
             actionButtonGroup.setVisibility(View.VISIBLE);
+            selectAllCheckBox.setVisibility(View.VISIBLE);
         } else {
             actionButtonGroup.setVisibility(View.GONE);
+            selectAllCheckBox.setChecked(false);
+            selectAllCheckBox.setVisibility(View.GONE);
             if (currentItemId == 3 || currentItemId == 4) {
                 fab.setVisibility(View.GONE);
             }
         }
-
         collectionAdapter.notifyDataSetChanged();
     }
+
+    private void selectAllItems(boolean selectAll) {
+        if (currentCollectionTypeItems == null || currentCollectionTypeItems.isEmpty()) {
+            Log.d("SelectAll", "The item list is empty!");
+            return;
+        }
+        for (Object item : currentCollectionTypeItems) {
+            if (item instanceof ProjectResourceBean) {
+                ((ProjectResourceBean) item).isSelected = selectAll;
+            } else if (item instanceof WidgetCollectionBean) {
+                ((WidgetCollectionBean) item).isSelected = selectAll;
+            } else if (item instanceof BlockCollectionBean) {
+                ((BlockCollectionBean) item).isSelected = selectAll;
+            } else if (item instanceof MoreBlockCollectionBean) {
+                ((MoreBlockCollectionBean) item).isSelected = selectAll;
+            }
+        }
+        isAllSelected = selectAll;
+        collectionAdapter.notifyDataSetChanged();
+    }
+
 
     private void handleFabOnClick(int categoryId) {
         if (categoryId == 0) {
@@ -366,6 +398,13 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
         fab.setOnClickListener(this);
         actionButtonGroup = findViewById(R.id.layout_btn_group);
 
+        selectAllCheckBox = findViewById(R.id.checkbox_select_all);
+        selectAllCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            isAllSelected = isChecked;
+            selectAllItems(isAllSelected);
+            collectionAdapter.notifyDataSetChanged();
+        });
+
         MaterialButton delete = findViewById(R.id.btn_delete);
         MaterialButton cancel = findViewById(R.id.btn_cancel);
         delete.setText(Helper.getResString(R.string.common_word_delete));
@@ -414,9 +453,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
         if (id == R.id.btn_cancel && selectingToBeDeletedItems) {
             changeDeletingItemsState(false);
-        }else if (id == R.id.btn_delete && selectingToBeDeletedItems) {
+        } else if (id == R.id.btn_delete && selectingToBeDeletedItems) {
             deleteSelectedToBeDeletedItems();
-        }else if (id == R.id.fab) {
+        } else if (id == R.id.fab) {
             changeDeletingItemsState(false);
             handleFabOnClick(currentItemId);
         }
@@ -571,46 +610,24 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     }
 
     private void unselectToBeDeletedItems() {
-        int id = getCurrentCategoryItemId();
-
-        switch (id) {
-            case 0:
-                for (ProjectResourceBean bean : images) {
-                    bean.isSelected = false;
-                }
-                break;
-
-            case 1:
-                for (ProjectResourceBean bean : sounds) {
-                    bean.isSelected = false;
-                }
-                break;
-
-            case 2:
-                for (ProjectResourceBean bean : fonts) {
-                    bean.isSelected = false;
-                }
-                break;
-
-            case 3:
-                for (WidgetCollectionBean bean : widgets) {
-                    bean.isSelected = false;
-                }
-                break;
-
-            default:
-                for (BlockCollectionBean bean : blocks) {
-                    bean.isSelected = false;
-                }
-                break;
+        for (Object item : currentCollectionTypeItems) {
+            if (item instanceof ProjectResourceBean) {
+                ((ProjectResourceBean) item).isSelected = false;
+            } else if (item instanceof WidgetCollectionBean) {
+                ((WidgetCollectionBean) item).isSelected = false;
+            } else if (item instanceof BlockCollectionBean) {
+                ((BlockCollectionBean) item).isSelected = false;
+            } else if (item instanceof MoreBlockCollectionBean) {
+                ((MoreBlockCollectionBean) item).isSelected = false;
+            }
         }
+        collectionAdapter.notifyDataSetChanged();
     }
 
 
     private class CollectionAdapter extends SoundPlayingAdapter<SoundPlayingAdapter.ViewHolder> {
         private int lastSelectedItemPosition;
         private int currentViewType;
-        private ArrayList<? extends SelectableBean> currentCollectionTypeItems;
 
         public CollectionAdapter(RecyclerView target) {
             super(ManageCollectionActivity.this);
@@ -643,33 +660,23 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
         private void onBindViewHolder(ImageCollectionViewHolder holder, int position) {
             ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
-            if (selectingToBeDeletedItems) {
-                holder.deleteContainer.setVisibility(View.VISIBLE);
-            } else {
-                holder.deleteContainer.setVisibility(View.GONE);
-            }
-
-            if (bean.isNinePatch()) {
-                holder.ninePatchIcon.setVisibility(View.VISIBLE);
-            } else {
-                holder.ninePatchIcon.setVisibility(View.GONE);
-            }
-
-            if (bean.isSelected) {
-                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-
+            holder.deleteContainer.setVisibility(selectingToBeDeletedItems ? View.VISIBLE : View.GONE);
+            holder.ninePatchIcon.setVisibility(bean.isNinePatch() ? View.VISIBLE : View.GONE);
+            holder.delete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
             Glide.with(getApplicationContext())
                     .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName)
                     .asBitmap()
                     .centerCrop()
                     .error(R.drawable.ic_remove_grey600_24dp)
                     .into(new BitmapImageViewTarget(holder.image));
-
             holder.name.setText(bean.resName);
             holder.checkBox.setChecked(bean.isSelected);
+holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+    bean.isSelected = isChecked;
+    notifyItemChanged(position);  // Notify the adapter to refresh the item at this position
+});
+
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> bean.isSelected = isChecked);
         }
 
         private void onBindViewHolder(SoundCollectionViewHolder holder, int position) {
@@ -678,8 +685,8 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 holder.album.setVisibility(View.GONE);
                 holder.deleteContainer.setVisibility(View.VISIBLE);
             } else {
-                var audioMetadata = holder.audioMetadata;
                 var audio = getAudio(position);
+                var audioMetadata = holder.audioMetadata;
                 if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
                     audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
                     bean.totalSoundDuration = audioMetadata.getDurationInMs();
@@ -688,19 +695,16 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                 holder.album.setVisibility(View.VISIBLE);
                 holder.deleteContainer.setVisibility(View.GONE);
             }
-
-            if (bean.isSelected) {
-                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-
-            int soundPositionInS = bean.curSoundPosition / 1000;
-
-            int totalSoundDurationInS = bean.totalSoundDuration / 1000;
-            holder.currentPosition.setText(String.format("%d:%02d", soundPositionInS / 60, soundPositionInS % 60));
-            holder.totalDuration.setText(String.format("%d:%02d", totalSoundDurationInS / 60, totalSoundDurationInS % 60));
+            holder.delete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
+            holder.currentPosition.setText(String.format("%d:%02d", (bean.curSoundPosition / 1000) / 60, (bean.curSoundPosition / 1000) % 60));
+            holder.totalDuration.setText(String.format("%d:%02d", (bean.totalSoundDuration / 1000) / 60, (bean.totalSoundDuration / 1000) % 60));
             holder.checkBox.setChecked(bean.isSelected);
+holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+    bean.isSelected = isChecked;
+    notifyItemChanged(position);  // Notify the adapter to refresh the item at this position
+});
+
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> bean.isSelected = isChecked);
             holder.name.setText(bean.resName);
             boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
             holder.play.setImageResource(playing ? R.drawable.ic_pause_blue_circle_48dp : R.drawable.circled_play_96_blue);
@@ -710,21 +714,16 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
         private void onBindViewHolder(FontCollectionViewHolder holder, int position) {
             ProjectResourceBean bean = (ProjectResourceBean) currentCollectionTypeItems.get(position);
-            if (selectingToBeDeletedItems) {
-                holder.deleteContainer.setVisibility(View.VISIBLE);
-            } else {
-                holder.deleteContainer.setVisibility(View.GONE);
-            }
-
-            if (bean.isSelected) {
-                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else { 
-                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-
+            holder.deleteContainer.setVisibility(selectingToBeDeletedItems ? View.VISIBLE : View.GONE);
+            holder.delete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
             holder.checkBox.setChecked(bean.isSelected);
-            holder.name.setText(bean.resName + ".ttf");
+holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+    bean.isSelected = isChecked;
+    notifyItemChanged(position);  // Notify the adapter to refresh the item at this position
+});
 
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> bean.isSelected = isChecked);
+            holder.name.setText(bean.resName + ".ttf");
             try {
                 holder.preview.setTypeface(Typeface.createFromFile(wq.a() + File.separator + "font" + File.separator + "data" + File.separator + bean.resFullName));
                 holder.preview.setText(Helper.getResString(R.string.design_manager_font_description_example_sentence));
@@ -735,62 +734,48 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
         private void onBindViewHolder(WidgetCollectionViewHolder holder, int position) {
             WidgetCollectionBean bean = (WidgetCollectionBean) currentCollectionTypeItems.get(position);
-            if (selectingToBeDeletedItems) {
-                holder.deleteContainer.setVisibility(View.VISIBLE);
-                holder.widgetIcon.setVisibility(View.GONE);
-            } else {
-                holder.deleteContainer.setVisibility(View.GONE);
-                holder.widgetIcon.setVisibility(View.VISIBLE);
-            }
-
-            if (bean.isSelected) {
-                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-
+            holder.deleteContainer.setVisibility(selectingToBeDeletedItems ? View.VISIBLE : View.GONE);
+            holder.widgetIcon.setVisibility(selectingToBeDeletedItems ? View.GONE : View.VISIBLE);
+            holder.delete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
             holder.widgetIcon.setImageResource(ViewBean.getViewTypeResId(bean.widgets.get(0).type));
             holder.name.setText(bean.name);
             holder.checkBox.setChecked(bean.isSelected);
+holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+    bean.isSelected = isChecked;
+    notifyItemChanged(position);  // Notify the adapter to refresh the item at this position
+});
+
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> bean.isSelected = isChecked);
         }
 
         private void onBindViewHolder(BlockCollectionViewHolder holder, int position) {
             BlockCollectionBean bean = (BlockCollectionBean) currentCollectionTypeItems.get(position);
-            if (selectingToBeDeletedItems) {
-                holder.deleteContainer.setVisibility(View.VISIBLE);
-                holder.blockIcon.setVisibility(View.GONE);
-            } else {
-                holder.blockIcon.setVisibility(View.VISIBLE);
-                holder.deleteContainer.setVisibility(View.GONE);
-            }
-
-            if (bean.isSelected) {
-                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-
+            holder.deleteContainer.setVisibility(selectingToBeDeletedItems ? View.VISIBLE : View.GONE);
+            holder.blockIcon.setVisibility(selectingToBeDeletedItems ? View.GONE : View.VISIBLE);
+            holder.delete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
             holder.blockIcon.setImageResource(getBlockIcon(bean.blocks.get(0)));
             holder.name.setText(bean.name);
             holder.checkBox.setChecked(bean.isSelected);
+holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+    bean.isSelected = isChecked;
+    notifyItemChanged(position);  // Notify the adapter to refresh the item at this position
+});
+
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> bean.isSelected = isChecked);
         }
 
         private void onBindViewHolder(MoreBlockCollectionViewHolder holder, int position) {
             MoreBlockCollectionBean bean = (MoreBlockCollectionBean) currentCollectionTypeItems.get(position);
-            if (selectingToBeDeletedItems) {
-                holder.deleteContainer.setVisibility(View.VISIBLE);
-            } else {
-                holder.deleteContainer.setVisibility(View.GONE);
-            }
-
-            if (bean.isSelected) {
-                holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else {
-                holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
-            }
-
+            holder.deleteContainer.setVisibility(selectingToBeDeletedItems ? View.VISIBLE : View.GONE);
+            holder.delete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
             holder.name.setText(bean.name);
             holder.checkBox.setChecked(bean.isSelected);
+holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+    bean.isSelected = isChecked;
+    notifyItemChanged(position);  // Notify the adapter to refresh the item at this position
+});
+
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> bean.isSelected = isChecked);
             holder.blockArea.removeAllViews();
             BlockUtil.loadMoreblockPreview(holder.blockArea, bean.spec);
         }
