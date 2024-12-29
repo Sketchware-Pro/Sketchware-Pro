@@ -30,11 +30,15 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <androidx.recyclerview.widget.RecyclerView
+                    <com.google.android.material.navigationrail.NavigationRailView
                         android:id="@+id/category_list"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:splitMotionEvents="false" />
+                        android:background="@android:color/transparent"
+                        android:fitsSystemWindows="false"
+                        app:itemPaddingBottom="28dp"
+                        app:labelVisibilityMode="labeled"
+                        app:menu="@menu/manage_collection_items_menu" />
 
                 </LinearLayout>
 

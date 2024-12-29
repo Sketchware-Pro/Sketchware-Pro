@@ -30,11 +30,11 @@ import java.util.Objects;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
-
 import pro.sketchware.databinding.ManageLocallibrariesBinding;
 import pro.sketchware.databinding.ViewItemLocalLibBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.UI;
 
 public class ManageLocalLibraryActivity extends AppCompatActivity implements View.OnClickListener {
     private static String local_libs_path = "";
@@ -191,16 +191,14 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            var listBinding = ViewItemLocalLibBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            var layoutParams = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            listBinding.getRoot().setLayoutParams(layoutParams);
-            return new ViewHolder(listBinding);
+            return new ViewHolder(ViewItemLocalLibBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
             var binding = holder.listBinding;
-
+            holder.itemView.setBackgroundResource(UI.getShapedBackgroundForList(filteredList, position));
+            
             final String libraryName = filteredList.get(position);
             binding.checkboxContent.setText(libraryName);
 

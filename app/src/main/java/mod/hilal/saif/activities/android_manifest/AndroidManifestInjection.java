@@ -19,28 +19,22 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.editor.manage.library.LibraryItemView;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ProgressMsgBoxBinding;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.wB;
 import a.a.a.yq;
-
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
-
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
@@ -49,6 +43,11 @@ import mod.hilal.saif.android_manifest.AndroidManifestInjector;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
 import mod.remaker.view.CustomAttributeView;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ProgressMsgBoxBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.UI;
 
 @SuppressLint("SetTextI18n")
 public class AndroidManifestInjection extends BaseAppCompatActivity {
@@ -109,60 +108,77 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         LinearLayout content = findViewById(R.id.content);
         LinearLayout cards = findViewById(R.id.cards);
 
-        LibraryItemView application_card = new LibraryItemView(this);
-        makeup(application_card, R.drawable.icons8_app_attrs, "Application", "Default properties for the app");
-        cards.addView(application_card);
-        application_card.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-            intent.putExtra("sc_id", sc_id);
-            intent.putExtra("file_name", activityName);
-            intent.putExtra("type", "application");
-            startActivity(intent);
+        List<LibraryItemView> options = new ArrayList<>();
+
+        options.add(createOption(
+                "Application",
+                "Default properties for the app",
+                R.drawable.icons8_app_attrs,
+                v -> {
+                    Intent intent = new Intent();
+                    intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+                    intent.putExtra("sc_id", sc_id);
+                    intent.putExtra("file_name", activityName);
+                    intent.putExtra("type", "application");
+                    startActivity(intent);
+                }
+        ));
+        options.add(createOption(
+                "Permissions",
+                "Add custom Permissions to the app",
+                R.drawable.event_on_signin_complete_48dp,
+                v -> {
+                    Intent intent = new Intent();
+                    intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+                    intent.putExtra("sc_id", sc_id);
+                    intent.putExtra("file_name", activityName);
+                    intent.putExtra("type", "permission");
+                    startActivity(intent);
+                }
+        ));
+        options.add(createOption(
+                "Launcher Activity",
+                "Change the default Launcher Activity",
+                R.drawable.recycling_48,
+                v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id))
+        ));
+        options.add(createOption(
+                "All Activities",
+                "Add attributes for all Activities",
+                R.drawable.icons8_all_activities_attrs,
+                v -> {
+                    Intent intent = new Intent();
+                    intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+                    intent.putExtra("sc_id", sc_id);
+                    intent.putExtra("file_name", activityName);
+                    intent.putExtra("type", "all");
+                    startActivity(intent);
+                }
+        ));
+        options.add(createOption(
+                "App Components",
+                "Add extra components",
+                R.drawable.icons8_app_components,
+                v -> showAppComponentDialog()
+        ));
+
+        options.forEach(option -> {
+            final int index = options.indexOf(option);
+            option.container.setBackgroundResource(UI.getShapedBackgroundForList(options, index));
+            cards.addView(option);
         });
-
-        {
-            LibraryItemView permission_card = new LibraryItemView(this);
-            makeup(permission_card, R.drawable.event_on_signin_complete_48dp, "Permissions", "Add custom Permissions to the app");
-            cards.addView(permission_card);
-            permission_card.setOnClickListener(_view -> {
-                Intent inta = new Intent();
-                inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-                inta.putExtra("sc_id", sc_id);
-                inta.putExtra("file_name", activityName);
-                inta.putExtra("type", "permission");
-                startActivity(inta);
-            });
-        }
-
-        {
-            LibraryItemView permission_card = new LibraryItemView(this);
-            makeup(permission_card, R.drawable.recycling_48, "Launcher Activity", "Change the default Launcher Activity");
-            cards.addView(permission_card);
-            permission_card.setOnClickListener(v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id)));
-        }
-
-        LibraryItemView allAct_card = new LibraryItemView(this);
-        makeup(allAct_card, R.drawable.icons8_all_activities_attrs, "All Activities", "Add attributes for all Activities");
-        cards.addView(allAct_card);
-        allAct_card.setOnClickListener(v -> {
-            Intent inta = new Intent();
-            inta.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
-            inta.putExtra("sc_id", sc_id);
-            inta.putExtra("file_name", activityName);
-            inta.putExtra("type", "all");
-            startActivity(inta);
-        });
-
-        LibraryItemView appCom_card = new LibraryItemView(this);
-        makeup(appCom_card, R.drawable.icons8_app_components, "App Components", "Add extra components");
-        cards.addView(appCom_card);
-        appCom_card.setOnClickListener(v -> showAppComponentDialog());
 
         act_list = new ListView(this);
         act_list.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         act_list.setDividerHeight(0);
         content.addView(act_list);
+    }
+
+    private final LibraryItemView createOption(final String title, final String description, final int icon, View.OnClickListener onClick) {
+        var card = new LibraryItemView(this);
+        makeup(card, icon, title, description);
+        card.setOnClickListener(onClick);
+        return card;
     }
 
     private void showAppComponentDialog() {

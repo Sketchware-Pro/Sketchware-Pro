@@ -10,11 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.DrawableRes;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+
+import java.util.List;
+
+import pro.sketchware.R;
 
 public class UI {
     public static void loadImageFromUrl(ImageView image, String url) {
@@ -71,5 +76,18 @@ public class UI {
                             initialBottom + (bottom ? insets.bottom : 0));
                     return windowInsets;
                 });
+    }
+
+    @DrawableRes
+    public static <T> int getShapedBackgroundForList(final List<T> list, final int position) {
+        if (list.size() == 1) {
+            return R.drawable.shape_alone;
+        } else if (position == 0) {
+            return R.drawable.shape_top;
+        } else if (position == list.size() - 1) {
+            return R.drawable.shape_bottom;
+        } else {
+            return R.drawable.shape_middle;
+        }
     }
 }

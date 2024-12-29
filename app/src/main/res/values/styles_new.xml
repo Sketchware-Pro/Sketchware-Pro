@@ -138,4 +138,7 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <style name="Widget.SketchwarePro.MaterialCardView" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">16dp</item>
+    </style>
 </resources>
