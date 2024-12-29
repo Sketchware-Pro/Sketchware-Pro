@@ -108,7 +108,7 @@
 
                 <CheckBox
                     android:id="@+id/cb_enable_viewbinding"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
@@ -150,7 +150,7 @@
 
                 <CheckBox
                     android:id="@+id/cb_remove_old_methods"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
@@ -192,7 +192,7 @@
 
                 <CheckBox
                     android:id="@+id/cb_use_new_material_components_app_theme"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
