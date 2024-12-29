@@ -37,17 +37,21 @@ public class ProjectSettingsDialog {
                 behavior.setSkipCollapsed(true);
             }
         });
-        
+
         binding.etMinimumSdkVersion.setText(settings.getValue(ProjectSettings.SETTING_MINIMUM_SDK_VERSION, String.valueOf(VAR_DEFAULT_MIN_SDK_VERSION)));
         binding.etTargetSdkVersion.setText(settings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)));
         binding.etApplicationClassName.setText(settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication"));
 
-        binding.enableViewbinding.setChecked(
+        binding.cbEnableViewbinding.setChecked(
                 settings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "false").equals("true"));
         binding.cbRemoveOldMethods.setChecked(
                 settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, "false").equals("true"));
         binding.cbUseNewMaterialComponentsAppTheme.setChecked(
                 settings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES, "false").equals("true"));
+
+        binding.enableViewbinding.setOnClickListener(v -> binding.cbEnableViewbinding.performClick());
+        binding.removeOldMethods.setOnClickListener(v -> binding.cbRemoveOldMethods.performClick());
+        binding.useNewMaterialComponentsAppTheme.setOnClickListener(v -> binding.cbUseNewMaterialComponentsAppTheme.performClick());
 
         binding.enableViewbinding.setTag(ProjectSettings.SETTING_ENABLE_VIEWBINDING);
         binding.etMinimumSdkVersion.setTag(ProjectSettings.SETTING_MINIMUM_SDK_VERSION);
@@ -62,7 +66,7 @@ public class ProjectSettingsDialog {
                 binding.etMinimumSdkVersion,
                 binding.etTargetSdkVersion,
                 binding.etApplicationClassName,
-                binding.enableViewbinding,
+                binding.cbEnableViewbinding,
                 binding.cbRemoveOldMethods,
                 binding.cbUseNewMaterialComponentsAppTheme
         };
