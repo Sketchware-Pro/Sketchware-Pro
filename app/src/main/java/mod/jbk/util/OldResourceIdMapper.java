@@ -938,7 +938,6 @@ public class OldResourceIdMapper {
             case 2131166114 -> R.drawable.selector_palette_tab_round;
             case 2131166115 -> R.drawable.selector_plugin;
             case 2131166116 -> R.drawable.selector_save;
-            case 2131166117 -> R.drawable.selector_search;
             case 2131166118 -> R.drawable.selector_show_hint;
             case 2131166119 -> R.drawable.selector_tab_round;
             case 2131166120 -> R.drawable.selector_toggle_list_view;

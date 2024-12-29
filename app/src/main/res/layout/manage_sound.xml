@@ -17,10 +17,24 @@
                 app:navigationIcon="?attr/homeAsUpIndicator"
                 app:title="Sound Manager" />
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mainTabsCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@color/transparent"
+            app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+            app:strokeWidth="0dp">
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"

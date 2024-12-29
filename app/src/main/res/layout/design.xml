@@ -38,10 +38,24 @@
                         tools:title="InternalDemo" />
                 </com.google.android.material.appbar.AppBarLayout>
 
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mainTabsCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="3dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+                    app:strokeWidth="0dp">
+
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -97,6 +111,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     app:menu="@menu/design_bottom_menu"
+                    app:paddingLeftSystemWindowInsets="false"
                     app:paddingBottomSystemWindowInsets="false">
 
                     <com.google.android.material.card.MaterialCardView
@@ -106,10 +121,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="8dp"
                         android:clickable="true"
-                        app:contentPaddingBottom="12dp"
-                        app:contentPaddingEnd="8dp"
-                        app:contentPaddingStart="8dp"
-                        app:contentPaddingTop="12dp">
+                        app:contentPadding="12dp"
+                        app:strokeWidth="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -149,9 +162,9 @@
             <com.besome.sketch.editor.view.ViewProperty
                 android:id="@+id/view_property"
                 android:layout_width="match_parent"
-                android:layout_height="156dp"
+                android:layout_height="180dp"
                 android:layout_alignParentBottom="true"
-                android:translationY="156dp" />
+                android:translationY="180dp" />
         </RelativeLayout>
 
         <com.besome.sketch.design.DesignDrawer

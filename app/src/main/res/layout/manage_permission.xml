@@ -37,8 +37,8 @@
                 android:layout_weight="1"
                 android:hint="Search for permissions"
                 android:importantForAutofill="noExcludeDescendants"
-                app:boxBackgroundMode="none"
-                app:startIconDrawable="@drawable/search_icon_grey">
+                app:boxBackgroundMode="outline"
+                app:startIconDrawable="@drawable/ic_mtrl_search">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/searchInput"
