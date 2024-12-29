@@ -362,7 +362,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
     private void showFirebaseNeedCompatDialog() {
         aB dialog = new aB(this);
-        dialog.a(R.drawable.widget_firebase);
+        dialog.a(R.drawable.ic_mtrl_firebase);
         dialog.b(Helper.getResString(R.string.common_word_warning));
         dialog.a(Helper.getResString(R.string.design_library_firebase_message_need_compat));
         dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));

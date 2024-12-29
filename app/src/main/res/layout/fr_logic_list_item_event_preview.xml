@@ -1,14 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/icon_bg"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/circle_bg_white_outline_gray"
+    android:background="@drawable/circle_bg_surface"
     android:gravity="center"
-    android:padding="2dp">
+    android:padding="4dp">
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:src="@drawable/android_icon" />
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:src="@drawable/ic_mtrl_database_added"
+        android:scaleType="fitCenter"
+        app:tint="?colorSecondary"/>
 </LinearLayout>
