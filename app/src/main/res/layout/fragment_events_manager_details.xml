@@ -58,34 +58,31 @@
         android:id="@+id/no_events_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?android:colorBackground"
+        android:background="?attr/colorSurface"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="24dp"
         android:paddingBottom="100dp"
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="150dp"
-            android:src="@drawable/img_nocontent" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             android:gravity="center"
             android:text="No events"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="4dp"
             android:gravity="center"
             android:text="Start by creating a new one"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="14sp" />
+
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -97,7 +94,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="32dp"
         android:src="@drawable/ic_mtrl_add"
-        app:elevation="6dp"
         app:fabSize="normal" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

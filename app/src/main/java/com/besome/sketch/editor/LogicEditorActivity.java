@@ -118,11 +118,6 @@ import a.a.a.xB;
 import a.a.a.yq;
 import a.a.a.yy;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
-import io.github.rosemoe.sora.langs.java.JavaLanguage;
-import io.github.rosemoe.sora.widget.CodeEditor;
-import io.github.rosemoe.sora.widget.component.Magnifier;
-import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.bobur.StringEditorActivity;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.editor.view.IdGenerator;
@@ -144,6 +139,7 @@ import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.SvgUtils;
+import pro.sketchware.activities.editor.view.CodeViewerActivity;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -2724,39 +2720,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         yq yq = new yq(this, B);
         yq.a(jC.c(B), jC.b(B), jC.a(B), false);
         String code = new Fx(M.getActivityName(), yq.N, o.getBlocks(), isViewBindingEnabled).a();
-
-        CodeEditor codeEditor = new CodeEditor(this);
-        codeEditor.setEditable(false);
-        codeEditor.setEditorLanguage(new JavaLanguage());
-        codeEditor.setText(Lx.j(code, false));
-        codeEditor.setTextSize(12);
-        codeEditor.setTypefaceText(Typeface.MONOSPACE);
-        codeEditor.setWordwrap(false);
-        codeEditor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            Configuration configuration = getResources().getConfiguration();
-            boolean isDarkTheme = configuration.isNightModeActive();
-            if (isDarkTheme) {
-                codeEditor.setColorScheme(new SchemeDarcula());
-            } else {
-                codeEditor.setColorScheme(new EditorColorScheme());
-            }
-        } else {
-            codeEditor.setColorScheme(new EditorColorScheme());
-        }
-
-        var dialog = new MaterialAlertDialogBuilder(this)
-                .setTitle("Source code")
-                .setPositiveButton(R.string.common_word_close, null)
-                .create();
-
-        dialog.setView(codeEditor,
-                (int) getDip(24),
-                (int) getDip(20),
-                (int) getDip(24),
-                (int) getDip(0));
-        dialog.show();
+        var intent = new Intent(this, CodeViewerActivity.class);
+        intent.putExtra("code", code);
+        startActivity(intent);
     }
 
     public void t() {

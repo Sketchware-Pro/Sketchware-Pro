@@ -1,4 +1,4 @@
-package pro.sketchware.fragments.settings.selector.block;
+package pro.sketchware.fragments.settings.block.selector;
 
 import java.util.ArrayList;
 import java.util.List;

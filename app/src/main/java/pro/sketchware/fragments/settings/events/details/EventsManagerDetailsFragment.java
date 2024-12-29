@@ -1,4 +1,4 @@
-package pro.sketchware.fragments.settings.events;
+package pro.sketchware.fragments.settings.events.details;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +15,9 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentEventsManagerDetailsBinding;
 import pro.sketchware.databinding.LayoutEventItemBinding;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.UI;
+import pro.sketchware.fragments.settings.events.EventsManagerConstants;
+import pro.sketchware.fragments.settings.events.creator.EventsManagerCreatorFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -112,9 +115,11 @@ public class EventsManagerDetailsFragment extends qA {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             HashMap<String, Object> item = dataArray.get(position);
-
+            
+            holder.itemView.setBackgroundResource(UI.getShapedBackgroundForList(dataArray, position));
+            
             if (listName.isEmpty()) {
-                holder.binding.eventIcon.setImageResource(R.drawable.widget_source);
+                holder.binding.eventIcon.setImageResource(R.drawable.ic_mtrl_code);
             } else {
                 int imgRes = Integer.parseInt((String) dataArray.get(position).get("icon"));
                 holder.binding.eventIcon.setImageResource(OldResourceIdMapper.getDrawableFromOldResourceId(imgRes));
@@ -126,7 +131,7 @@ public class EventsManagerDetailsFragment extends qA {
             } else {
                 holder.binding.eventSubtitle.setText((String) dataArray.get(position).get("var"));
             }
-            holder.binding.eventCard.setOnClickListener(v -> {
+            holder.itemView.setOnClickListener(v -> {
                 Bundle args = new Bundle();
                 args.putString("lis_name", listName);
                 args.putString("event", (String) dataArray.get(position).get("name"));
@@ -143,7 +148,7 @@ public class EventsManagerDetailsFragment extends qA {
                 fragment.setArguments(args);
                 openFragment(fragment);
             });
-            holder.binding.eventCard.setOnLongClickListener(v -> {
+            holder.itemView.setOnLongClickListener(v -> {
                 new MaterialAlertDialogBuilder(requireContext())
                         .setTitle((String) dataArray.get(position).get("name"))
                         .setMessage("Delete this event?")

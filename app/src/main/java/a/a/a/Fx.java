@@ -551,7 +551,12 @@ public class Fx {
                         break;
                     }
                 }
-                opcode = String.format("%s.setTypeface(Typeface.createFromAsset(getAssets(),\"fonts/%s.ttf\"), %s);", params.get(0), params.get(1), opcode);
+                String fontName = params.get(1);
+                if ("default_font".equals(fontName)) {
+                    opcode = String.format("%s.setTypeface(Typeface.DEFAULT, %s);", params.get(0), opcode);
+                } else {
+                    opcode = String.format("%s.setTypeface(Typeface.createFromAsset(getAssets(),\"fonts/%s.ttf\"), %s);", params.get(0), fontName, opcode);
+                }
                 break;
             case "getText":
                 opcode = String.format("%s.getText().toString()", params.get(0));

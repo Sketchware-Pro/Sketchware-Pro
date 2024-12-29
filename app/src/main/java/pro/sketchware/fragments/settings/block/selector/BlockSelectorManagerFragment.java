@@ -1,4 +1,4 @@
-package pro.sketchware.fragments.settings.selector.block;
+package pro.sketchware.fragments.settings.block.selector;
 
 import static mod.hey.studios.util.Helper.addBasicTextChangedListener;
 
@@ -36,7 +36,7 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.DialogBlockConfigurationBinding;
 import pro.sketchware.databinding.DialogSelectorActionsBinding;
 import pro.sketchware.databinding.FragmentBlockSelectorManagerBinding;
-import pro.sketchware.fragments.settings.selector.block.details.BlockSelectorDetailsFragment;
+import pro.sketchware.fragments.settings.block.selector.details.BlockSelectorDetailsFragment;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 

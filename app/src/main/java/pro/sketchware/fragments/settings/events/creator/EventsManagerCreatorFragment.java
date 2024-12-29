@@ -1,4 +1,4 @@
-package pro.sketchware.fragments.settings.events;
+package pro.sketchware.fragments.settings.events.creator;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
