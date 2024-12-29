@@ -227,5 +227,9 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
         binding.dependencyInput.setEnabled(!downloading);
         binding.cbSkipSubdependencies.setEnabled(!downloading);
         setCancelable(!downloading);
+
+        if (!downloading) {
+            binding.dependencyInfo.setText(R.string.local_library_manager_dependency_info);
+        }
     }
 }
