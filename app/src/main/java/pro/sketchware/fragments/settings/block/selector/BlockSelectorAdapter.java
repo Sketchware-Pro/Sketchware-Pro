@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import pro.sketchware.R;
 import pro.sketchware.databinding.LayoutBlockSelectorBinding;
+import pro.sketchware.utility.UI;
 
 public class BlockSelectorAdapter extends ListAdapter<Selector, BlockSelectorAdapter.BlockSelectorAdapterViewHolder> {
 
@@ -43,19 +44,7 @@ public class BlockSelectorAdapter extends ListAdapter<Selector, BlockSelectorAda
     @Override
     public void onBindViewHolder(@NonNull BlockSelectorAdapterViewHolder holder, int position) {
         holder.bind(getItem(position), position);
-
-        int backgroundResource;
-        if (getCurrentList().size() == 1) {
-            backgroundResource = R.drawable.shape_alone;
-        } else if (position == 0) {
-            backgroundResource = R.drawable.shape_top;
-        } else if (position == getCurrentList().size() - 1) {
-            backgroundResource = R.drawable.shape_bottom;
-        } else {
-            backgroundResource = R.drawable.shape_middle;
-        }
-
-        holder.itemView.setBackgroundResource(backgroundResource);
+        holder.itemView.setBackgroundResource(UI.getShapedBackgroundForList(getCurrentList(), position));
     }
 
     public static class BlockSelectorAdapterViewHolder extends RecyclerView.ViewHolder {

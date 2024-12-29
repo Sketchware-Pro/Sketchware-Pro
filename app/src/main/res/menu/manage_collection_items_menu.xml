@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/image"
+        android:icon="@drawable/ic_mtrl_image"
+        android:title="@string/common_word_image" />
+    <item
+        android:id="@+id/audio"
+        android:icon="@drawable/ic_mtrl_music"
+        android:title="@string/common_word_sound" />
+    <item
+        android:id="@+id/font"
+        android:icon="@drawable/ic_mtrl_font"
+        android:title="@string/common_word_font" />
+    <item
+        android:id="@+id/widget"
+        android:icon="@drawable/ic_mtrl_interests"
+        android:title="@string/common_word_widget" />
+    <item
+        android:id="@+id/block"
+        android:icon="@drawable/ic_mtrl_block"
+        android:title="@string/common_word_block" />
+    <item
+        android:id="@+id/moreblock"
+        android:icon="@drawable/ic_mtrl_moreblock"
+        android:title="@string/common_word_moreblock" />
+</menu>
