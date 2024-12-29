@@ -334,49 +334,50 @@ public class ManageEvent {
 
     public static int d(String str) {
         return switch (str) {
-            case "onUpdateProfileComplete" -> R.drawable.event_update_profile;
+            case "onUpdateProfileComplete" -> R.drawable.ic_mtrl_user_edit;
             case "FBAdsBanner_onLoggingImpression", "FBAdsInterstitial_onLoggingImpression" ->
                     R.drawable.event_fbads_impression;
-            case "onEmailVerificationSent" -> R.drawable.event_email_verif_sent;
-            case "onDateChanged", "onDateSet" -> R.drawable.event_on_date_changed_48dp;
-            case "onFailureLink" -> R.drawable.event_fb_dynamic_fail;
-            case "onDeleteUserComplete" -> R.drawable.event_delete_user;
-            case "onCompletion" -> R.drawable.event_on_file_put_success_48dp;
-            case "onQueryTextChanged", "onQueryTextSubmit" -> R.drawable.ic_search_color_96dp;
-            case "onUpdateEmailComplete" -> R.drawable.event_email_updated;
-            case "onError", "onRestoreInstanceState" -> R.drawable.error_96_yellow;
-            case "onVerificationCompleted" -> R.drawable.event_verif_success;
+            case "onEmailVerificationSent" -> R.drawable.ic_mtrl_sms_check;
+            case "onDateChanged", "onDateSet" -> R.drawable.ic_mtrl_date_changed;
+            case "onFailureLink" -> R.drawable.ic_mtrl_link_fail;
+            case "onDeleteUserComplete" -> R.drawable.ic_mtrl_user_remove;
+            case "onCompletion" -> R.drawable.ic_mtrl_vid_completed;
+            case "onQueryTextChanged", "onQueryTextSubmit" -> R.drawable.ic_mtrl_search;
+            case "onUpdateEmailComplete" -> R.drawable.ic_mtrl_email_sent;
+            case "onRestoreInstanceState" -> R.drawable.ic_mtrl_warning;
+            case "onError" -> R.drawable.ic_mtrl_vid_error;
+            case "onVerificationCompleted" -> R.drawable.ic_mtrl_verified_user;
             case "onSaveInstanceState", "onCreateOptionsMenu", "onCreateContextMenu",
                  "onContextItemSelected", "onOptionsItemSelected" ->
                     R.drawable.bg_event_type_activity;
-            case "onSuccessLink" -> R.drawable.event_fb_dynamic_success;
+            case "onSuccessLink" -> R.drawable.ic_mtrl_link_check;
             case "onPatternLockCleared", "onPatternLockProgress", "onPatternLockStarted",
-                 "onPatternLockComplete" -> R.drawable.event_pattern_lock_view;
+                 "onPatternLockComplete" -> R.drawable.ic_mtrl_pattern;
             case "FBAdsInterstitial_onAdClicked", "FBAdsBanner_onAdClicked" ->
                     R.drawable.event_fbads_click;
-            case "onAccountPickerCancelled" -> R.drawable.event_google_revoke;
-            case "onVerificationFailed" -> R.drawable.event_verif_failed;
+            case "onAccountPickerCancelled" -> R.drawable.ic_mtrl_user_delete;
+            case "onVerificationFailed" -> R.drawable.ic_mtrl_gpp_bad;
             case "onGoogleSignIn" -> R.drawable.event_google_signin;
-            case "onAccountPicker" -> R.drawable.event_google_result;
-            case "onFragmentAdded" -> R.drawable.widget_fragment;
-            case "onTimeSet", "onTimeChanged" -> R.drawable.widget_timer;
-            case "signInWithPhoneAuthComplete", "onCodeSent" -> R.drawable.event_code_sent;
+            case "onAccountPicker" -> R.drawable.ic_mtrl_group;
+            case "onFragmentAdded" -> R.drawable.ic_mtrl_viewpager;
+            case "onTimeSet", "onTimeChanged" -> R.drawable.ic_mtrl_timer;
+            case "signInWithPhoneAuthComplete", "onCodeSent" -> R.drawable.ic_mtrl_email_sent;
             case "FBAdsInterstitial_onInterstitialDismissed" -> R.drawable.event_fbads_dismiss;
-            case "onRatingChanged" -> R.drawable.star_filled;
+            case "onRatingChanged" -> R.drawable.ic_mtrl_star;
             case "FBAdsInterstitial_onInterstitialDisplayed" -> R.drawable.event_fbads_displayed;
-            case "onLetterSelected" -> R.drawable.event_on_letter_selected;
+            case "onLetterSelected" -> R.drawable.ic_mtrl_abc_click;
             case "onScrollChanged", "onPageChanged", "onPageScrolled", "onRecyclerScrolled",
                  "onRecyclerScrollChanged", "onNavigationItemSelected", "onScrolled",
                  "onTabUnselected", "onPageSelected", "onTabSelected", "onTabReselected" ->
-                    R.drawable.event_on_item_long_clicked_48dp;
-            case "onPrepared" -> R.drawable.event_on_page_started_48dp;
+                    R.drawable.ic_mtrl_touch_long;
+            case "onPrepared" -> R.drawable.ic_mtrl_vid_prepared;
             case "FBAdsInterstitial_onError", "FBAdsBanner_onError" -> R.drawable.event_fbads_error;
             case "FBAdsInterstitial_onAdLoaded", "FBAdsBanner_onAdLoaded" ->
                     R.drawable.event_fbads_loaded;
-            case "onTabAdded" -> R.drawable.widget_tab_layout;
-            case "onCompleteRegister" -> R.drawable.event_complete_register;
-            case "onUpdatePasswordComplete" -> R.drawable.event_password_updated;
-            case "onUserEarnedReward" -> R.drawable.receive_cash_48;
+            case "onTabAdded" -> R.drawable.ic_mtrl_post_added;
+            case "onCompleteRegister" -> R.drawable.ic_mtrl_user_register_complete;
+            case "onUpdatePasswordComplete" -> R.drawable.ic_mtrl_password;
+            case "onUserEarnedReward" -> R.drawable.ic_mtrl_payment;
             default -> EventsHandler.getIcon(str);
         };
     }

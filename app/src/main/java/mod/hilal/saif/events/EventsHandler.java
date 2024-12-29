@@ -218,13 +218,13 @@ public class EventsHandler {
         return switch (name) {
             case "Import", "onActivityResult", "initializeLogic", "onBackPressed", "onPostCreate",
                  "onStart", "onResume", "onPause", "onStop", "onDestroy",
-                 "onTabLayoutNewTabAdded" -> R.drawable.widget_source;
-            case " onLongClick" -> R.drawable.check_upload_apk_48dp;
-            case "onSwipeRefreshLayout" -> R.drawable.widget_swipe_refresh;
-            case "onPreExecute" -> R.drawable.event_on_stop_tracking_touch_48dp;
-            case "doInBackground" -> R.drawable.event_on_animation_start_48dp;
-            case "onProgressUpdate" -> R.drawable.event_on_page_started_48dp;
-            case "onPostExecute" -> R.drawable.event_on_progress_changed_48dp;
+                 "onTabLayoutNewTabAdded" -> R.drawable.ic_mtrl_code;
+            case " onLongClick" -> R.drawable.ic_mtrl_touch_long;
+            case "onSwipeRefreshLayout" -> R.drawable.ic_mtrl_refresh;
+            case "onPreExecute" -> R.drawable.ic_mtrl_track_started;
+            case "doInBackground" -> R.drawable.ic_mtrl_sprint;
+            case "onProgressUpdate" -> R.drawable.ic_mtrl_progress;
+            case "onPostExecute" -> R.drawable.ic_mtrl_progress_check;
             default -> {
                 for (int i = 0, cachedCustomEventsSize = cachedCustomEvents.size(); i < cachedCustomEventsSize; i++) {
                     HashMap<String, Object> customEvent = cachedCustomEvents.get(i);
