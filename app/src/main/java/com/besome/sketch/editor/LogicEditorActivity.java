@@ -125,7 +125,7 @@ import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.asd.asdforall.AsdAllEditor;
+import mod.hilal.saif.asd.AsdDialog;
 import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
 import mod.pranav.viewbinding.ViewBindingBuilder;
@@ -1846,10 +1846,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         dialog.a(customView);
         dialog.configureDefaultButton("Code Editor", v -> {
-            AsdAllEditor editor = new AsdAllEditor(this);
+            AsdDialog editor = new AsdDialog(this);
             editor.setCon(ss.getArgValue().toString());
             editor.show();
-            editor.saveLis(this, ss);
+            editor.saveLis(this, false, ss, editor);;
             editor.cancelLis(editor);
             dialog.dismiss();
         });
