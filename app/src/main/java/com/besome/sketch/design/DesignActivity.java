@@ -134,6 +134,7 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.utility.apk.ApkSignatures;
+import pro.sketchware.activities.editor.view.CodeViewerActivity;
 
 public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public static String sc_id;
@@ -798,59 +799,36 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     private void showCurrentActivitySrcCode() {
-        if (projectFile == null) return;
-        ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(getLayoutInflater());
+        if (projectFile == null) return; 
+        var loadingDialogBinding = ProgressMsgBoxBinding.inflate(getLayoutInflater());
         loadingDialogBinding.tvProgress.setText("Generating source code...");
         var loadingDialog = new MaterialAlertDialogBuilder(this)
-                .setTitle("Please wait")
-                .setCancelable(false)
-                .setView(loadingDialogBinding.getRoot())
-                .create();
+            .setTitle("Please wait")
+            .setCancelable(false)
+            .setView(loadingDialogBinding.getRoot())
+            .create();
         loadingDialog.show();
-
+        
         new Thread(() -> {
-            String filename = fileName.getText().toString();
-            final String source = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
-
-            var dialogBuilder = new MaterialAlertDialogBuilder(this)
-                    .setTitle(filename)
-                    .setCancelable(false)
-                    .setPositiveButton("Dismiss", null);
-
+            var filename = fileName.getText().toString();
+            final String source = new yq(getApplicationContext(), sc_id)
+                .getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
             runOnUiThread(() -> {
                 if (isFinishing()) return;
                 loadingDialog.dismiss();
-
-                CodeEditor editor = new CodeEditor(this);
-                editor.setTypefaceText(Typeface.MONOSPACE);
-                editor.setEditable(false);
-                editor.setTextSize(14);
-                editor.setText(!source.isEmpty() ? source : "Failed to generate source.");
-                editor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
-
-                if (filename.endsWith(".xml")) {
-                    editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
-                    if (ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
-                        editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
-                    } else {
-                        editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
-                    }
-                } else {
-                    editor.setEditorLanguage(new JavaLanguage());
-                    if (ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
-                        editor.setColorScheme(new SchemeDarcula());
-                    } else {
-                        editor.setColorScheme(new EditorColorScheme());
-                    }
+                if (source.isEmpty()) {
+                    Toast.makeText(this, "Failed to generate source.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-
-                AlertDialog dialog = dialogBuilder.create();
-                dialog.setView(editor,
-                        (int) getDip(24),
-                        (int) getDip(20),
-                        (int) getDip(24),
-                        (int) getDip(0));
-                dialog.show();
+                var intent = new Intent(this, CodeViewerActivity.class);
+                intent.putExtra("code", source);
+                intent.putExtra("sc_id", sc_id);
+                if (filename.endsWith(".xml")) {
+                    intent.putExtra("scheme", CodeViewerActivity.SCHEME_XML);
+                } else {
+                    intent.putExtra("scheme", CodeViewerActivity.SCHEME_JAVA);
+                }
+                startActivity(intent);
             });
         }).start();
     }
