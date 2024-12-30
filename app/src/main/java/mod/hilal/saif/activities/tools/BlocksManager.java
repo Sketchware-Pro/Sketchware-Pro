@@ -24,6 +24,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import a.a.a.Zx;
+import a.a.a.aB;
+import a.a.a.xB;
+
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
@@ -31,6 +35,18 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+
+import mod.hey.studios.editor.manage.block.v2.BlockLoader;
+import mod.hey.studios.util.Helper;
+
+import pro.sketchware.R;
+import pro.sketchware.databinding.BlocksManagerBinding;
+import pro.sketchware.databinding.DialogBlockConfigurationBinding;
+import pro.sketchware.databinding.DialogPaletteBinding;
+import pro.sketchware.databinding.PalletCustomviewBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.PropertiesUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,21 +56,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import a.a.a.Zx;
-import a.a.a.aB;
-import a.a.a.xB;
-import mod.hey.studios.editor.manage.block.v2.BlockLoader;
-import mod.hey.studios.util.Helper;
-import mod.hilal.saif.lib.PCP;
-import pro.sketchware.R;
-import pro.sketchware.databinding.BlocksManagerBinding;
-import pro.sketchware.databinding.DialogBlockConfigurationBinding;
-import pro.sketchware.databinding.DialogPaletteBinding;
-import pro.sketchware.databinding.PalletCustomviewBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.PropertiesUtil;
-import pro.sketchware.utility.SketchwareUtil;
 
 public class BlocksManager extends BaseAppCompatActivity {
 
@@ -68,6 +69,7 @@ public class BlocksManager extends BaseAppCompatActivity {
     private ItemTouchHelper itemTouchHelper;
     boolean isDialogShowing;
     private BlocksManagerBinding binding;
+    private DialogPaletteBinding dialogBinding;
     private Vibrator vibrator;
     View draggedView;
 
@@ -421,30 +423,42 @@ public class BlocksManager extends BaseAppCompatActivity {
         dialog.a(R.drawable.icon_style_white_96);
         dialog.b(!isEditing ? "Create a new palette" : "Edit palette");
 
-        DialogPaletteBinding dialogBinding = DialogPaletteBinding.inflate(getLayoutInflater());
-
+        dialogBinding = DialogPaletteBinding.inflate(getLayoutInflater());
+        
         if (isEditing) {
             dialogBinding.nameEditText.setText(oldName);
-            dialogBinding.colorEditText.setText(oldColor);
+            dialogBinding.colorEditText.setText(oldColor.replace("#",""));
         }
 
         dialogBinding.openColorPalette.setOnClickListener(v1 -> {
-            final Zx zx = new Zx(this, PropertiesUtil.parseColor(oldColor), true, false);
-            zx.a(new PCP(dialogBinding.colorEditText));
+            final Zx zx = new Zx(this, 0xFFFFFFFF, false, false);
+            zx.a(new Zx.b() {
+                @Override
+                public void a(int colorInt) {
+                    dialogBinding.colorEditText.setText(String.format("%06X", colorInt & 0x00FFFFFF));
+                }
+                
+                @Override
+                public void a(String var1, int var2) {
+                
+                }
+            });
             zx.showAtLocation(dialogBinding.openColorPalette, Gravity.CENTER, 0, 0);
         });
-
+    
         dialog.a(dialogBinding.getRoot());
 
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             String nameInput = Objects.requireNonNull(dialogBinding.nameEditText.getText()).toString();
-            String colorInput = "#" + Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
-
+            String colorInput = Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
+            
             if (nameInput.isEmpty()) {
                 SketchwareUtil.toast("Name cannot be empty", Toast.LENGTH_SHORT);
                 return;
             }
-
+            // add hash for the color 
+            colorInput = "#" + colorInput;
+            
             if (!PropertiesUtil.isHexColor(colorInput)) {
                 SketchwareUtil.toast("Please enter a valid HEX color", Toast.LENGTH_SHORT);
                 return;
@@ -484,7 +498,8 @@ public class BlocksManager extends BaseAppCompatActivity {
         dialog.a(dialogBinding.getRoot());
         dialog.show();
     }
-
+    
+    
     private boolean isItInTrash(View draggedView, View trash) {
         if (draggedView == null) return false;
 
