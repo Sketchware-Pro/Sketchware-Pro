@@ -17,7 +17,8 @@ class ViewBindingBuilder(
         val name = generateFileNameForLayout(layoutFile.nameWithoutExtension)
         val rootView = getTopLevelView(layoutFile)
         val parsed = parseViews(layoutFile)
-        val views = if (parsed.first() == rootView) parsed.drop(1) else parsed
+        val views =
+            if (parsed.isNotEmpty() && parsed.first() == rootView) parsed.drop(1) else parsed
 
         val file = File(outputDir, "$name.java")
 
