@@ -78,7 +78,7 @@
                             android:layout_height="18dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="8dp"
-                            android:src="@drawable/widget_file" />
+                            android:src="@drawable/ic_mtrl_id" />
 
                         <TextView
                             android:id="@+id/tv_title_app_id"
@@ -137,7 +137,7 @@
                             android:layout_height="18dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="8dp"
-                            android:src="@drawable/widget_file" />
+                            android:src="@drawable/ic_mtrl_file" />
 
                         <TextView
                             android:id="@+id/tv_title_banner"
@@ -224,10 +224,10 @@
 
                         <ImageView
                             android:layout_width="18dp"
-                            android:layout_height="18dp"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="8dp"
-                            android:src="@drawable/widget_file" />
+                            android:src="@drawable/ic_mtrl_file" />
 
                         <TextView
                             android:id="@+id/tv_title_inter"
@@ -317,7 +317,7 @@
                             android:layout_height="18dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="8dp"
-                            android:src="@drawable/widget_file" />
+                            android:src="@drawable/ic_mtrl_star" />
 
                         <TextView
                             android:id="@+id/tv_title_reward"
@@ -402,7 +402,7 @@
                         android:layout_height="18dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="8dp"
-                        android:src="@drawable/ic_test_device_48dp" />
+                        android:src="@drawable/ic_mtrl_devices" />
 
                     <TextView
                         android:id="@+id/tv_title_test_device"

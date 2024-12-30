@@ -101,13 +101,13 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     private void setIcon(ImageView imageView) {
         switch (key) {
             case "property_id" -> icon = R.drawable.ic_mtrl_id;
-            case "property_text" -> icon = R.drawable.ic_mtrl_type;
+            case "property_text" -> icon = R.drawable.ic_mtrl_text_select;
             case "property_hint" -> icon = R.drawable.ic_mtrl_bulb;
             case "property_weight", "property_weight_sum" -> icon = R.drawable.ic_mtrl_weight;
-            case "property_rotate" -> icon = R.drawable.ic_mtrl_rotate_90;
+            case "property_rotate" -> icon = R.drawable.ic_mtrl_rotate;
             case "property_lines" -> icon = R.drawable.ic_mtrl_numbers;
             case "property_progress" -> icon = R.drawable.ic_mtrl_prog_min;
-            case "property_max" -> icon = R.drawable.ic_mtrl_circle;
+            case "property_max" -> icon = R.drawable.ic_mtrl_prog_max;
             case "property_alpha" -> icon = R.drawable.ic_mtrl_opacity_full;
             case "property_translation_x" -> icon = R.drawable.ic_mtrl_move_x;
             case "property_translation_y" -> icon = R.drawable.ic_mtrl_move_y;

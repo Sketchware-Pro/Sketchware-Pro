@@ -73,7 +73,7 @@
                         android:layout_height="32dp"
                         android:layout_marginRight="8dp"
                         android:padding="4dp"
-                        android:src="@drawable/widget_google_map" />
+                        android:src="@drawable/ic_mtrl_map" />
 
                     <TextView
                         android:id="@+id/tv_desc"
@@ -96,7 +96,7 @@
                         android:layout_height="18dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="8dp"
-                        android:src="@drawable/ic_key_48dp" />
+                        android:src="@drawable/ic_mtrl_key" />
 
                     <TextView
                         android:id="@+id/tv_api_key"
