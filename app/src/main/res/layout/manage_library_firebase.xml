@@ -58,7 +58,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/chrome_96" />
+                    android:src="@drawable/ic_mtrl_web" />
 
                 <TextView
                     android:id="@+id/tv_goto_console"

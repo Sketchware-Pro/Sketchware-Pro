@@ -107,7 +107,6 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     private void setupViews() {
         LinearLayout content = findViewById(R.id.content);
         LinearLayout cards = findViewById(R.id.cards);
-
         List<LibraryItemView> options = new ArrayList<>();
 
         options.add(createOption(

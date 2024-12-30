@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="124dp"
     android:layout_height="90dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginHorizontal="2dp"
     android:clickable="true"
     android:focusable="true"
@@ -27,7 +28,7 @@
                 android:id="@+id/icon"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                tools:src="@drawable/event_on_child_added_48dp" />
+                tools:src="@drawable/ic_mtrl_database_added" />
         </LinearLayout>
 
         <TextView
@@ -48,7 +49,8 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="4dp"
         android:layout_marginRight="18dp"
-        android:src="@drawable/ic_add_green_circle_24dp"
+        app:tint="?colorCoolGreen"
+        android:src="@drawable/ic_mtrl_add_circle"
         android:visibility="gone"
         tools:visibility="visible" />
 </RelativeLayout>
