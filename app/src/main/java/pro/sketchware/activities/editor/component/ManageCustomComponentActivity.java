@@ -28,7 +28,6 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -254,6 +253,17 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            int backgroundResource;
+            if (components.size() == 1) {
+                backgroundResource = R.drawable.shape_alone;
+            } else if (position == 0) {
+                backgroundResource = R.drawable.shape_top;
+            } else if (position == components.size() - 1) {
+                backgroundResource = R.drawable.shape_bottom;
+            } else {
+                backgroundResource = R.drawable.shape_middle;
+            }
+            holder.itemView.setBackgroundResource(backgroundResource);
             holder.bind(components.get(position));
             if (holder.isCollapsed()) {
                 holder.optionLayout.setVisibility(View.GONE);
@@ -286,7 +296,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         }
 
         public class ViewHolder extends CollapsibleViewHolder {
-            public final MaterialCardView root;
+            public final LinearLayout root;
             public final LinearLayout optionLayout;
             public final ImageView icon;
             public final TextView type;
@@ -296,7 +306,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView, 200);
-                root = (MaterialCardView) itemView;
+                root = (LinearLayout) itemView;
                 icon = itemView.findViewById(R.id.img_icon);
                 type = itemView.findViewById(R.id.tv_component_type);
                 description = itemView.findViewById(R.id.tv_component_description);

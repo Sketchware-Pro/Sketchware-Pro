@@ -25,9 +25,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
-        android:gravity="center_vertical"
-        android:clickable="true"
         android:background="?selectableItemBackground"
+        android:clickable="true"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -40,21 +40,15 @@
             android:background="?attr/colorPrimary"
             android:orientation="horizontal" />
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img_user_icon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            app:cardCornerRadius="22.2dp">
-
-            <ImageView
-                android:id="@+id/img_user_icon"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:focusable="false"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_user" />
-        </androidx.cardview.widget.CardView>
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_user"
+            app:shapeAppearance="?attr/shapeAppearanceCornerLarge" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -81,11 +75,11 @@
                 android:layout_below="@+id/tv_user_name"
                 android:autoLink="all"
                 android:focusable="false"
+                android:maxLines="2"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
                 android:textAppearance="?attr/textAppearanceBodySmall"
-                android:maxLines="2"
                 tools:text="Their description" />
 
             <TextView

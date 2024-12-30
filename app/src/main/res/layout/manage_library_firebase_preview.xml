@@ -60,7 +60,7 @@
                 android:layout_height="18dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/ic_title" />
+                android:src="@drawable/ic_mtrl_link" />
 
             <TextView
                 android:id="@+id/tv_title_project_id"
@@ -102,7 +102,7 @@
                 android:layout_height="18dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/ic_title" />
+                android:src="@drawable/ic_mtrl_id" />
 
             <TextView
                 android:id="@+id/tv_title_app_id"
@@ -144,7 +144,7 @@
                 android:layout_height="18dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/ic_key_48dp" />
+                android:src="@drawable/ic_mtrl_key" />
 
             <TextView
                 android:id="@+id/tv_title_api_key"
@@ -186,7 +186,7 @@
                 android:layout_height="18dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/rename_96_blue" />
+                android:src="@drawable/ic_mtrl_link" />
 
             <TextView
                 android:id="@+id/tv_title_storage_url"

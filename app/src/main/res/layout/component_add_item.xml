@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
@@ -10,7 +11,8 @@
     <ImageView
         android:id="@+id/icon"
         android:layout_width="32dp"
-        android:layout_height="32dp" />
+        android:layout_height="32dp"
+        tools:src="@drawable/abc_96" />
 
     <TextView
         android:id="@+id/name"
@@ -19,5 +21,6 @@
         android:layout_marginTop="2dp"
         android:gravity="center"
         android:lines="2"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        tools:text="Comp 1" />
 </LinearLayout>

@@ -8,15 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.tabs.TabLayout;
+
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageImageBinding;
 
 import java.lang.ref.WeakReference;
 
@@ -28,9 +28,9 @@ import a.a.a.pu;
 
 public class ManageImageActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
     private String sc_id;
-    private ViewPager viewPager;
     private pu projectImagesFragment;
     private fu collectionImagesFragment;
+    private ManageImageBinding binding;
 
     @Override
     public void onPageScrollStateChanged(int state) {
@@ -41,7 +41,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     }
 
     public void f(int i) {
-        viewPager.setCurrentItem(i);
+        binding.viewPager.setCurrentItem(i);
     }
 
     public fu l() {
@@ -61,6 +61,9 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     public void onBackPressed() {
         if (projectImagesFragment.isSelecting) {
             projectImagesFragment.a(false);
+        } else if (collectionImagesFragment.isSelecting()) {
+            collectionImagesFragment.unselectAll();
+            binding.layoutBtnImport.setVisibility(View.GONE);
         } else {
             k();
             new Handler().postDelayed(() -> new SaveImagesAsyncTask(this).execute(), 500L);
@@ -70,17 +73,16 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_image);
+        binding = ManageImageBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         if (!super.isStoragePermissionGranted()) {
             finish();
         }
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle(getTranslatedString(R.string.design_actionbar_title_manager_image));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> {
+
+        setSupportActionBar(binding.topAppBar);
+        binding.topAppBar.setTitle(getTranslatedString(R.string.design_actionbar_title_manager_image));
+        binding.topAppBar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
             }
@@ -90,12 +92,11 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         } else {
             sc_id = savedInstanceState.getString("sc_id");
         }
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
-        viewPager.setOffscreenPageLimit(2);
-        viewPager.addOnPageChangeListener(this);
-        tabLayout.setupWithViewPager(viewPager);
+
+        binding.viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+        binding.viewPager.setOffscreenPageLimit(2);
+        binding.viewPager.addOnPageChangeListener(this);
+        binding.tabLayout.setupWithViewPager(binding.viewPager);
     }
 
     @Override
@@ -114,9 +115,16 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void onPageSelected(int position) {
+        binding.layoutBtnGroup.setVisibility(View.GONE);
+        binding.layoutBtnImport.setVisibility(View.GONE);
+
         if (position == 0) {
+            binding.fab.animate().translationY(0F).setDuration(200L).start();
+            binding.fab.show();
             collectionImagesFragment.unselectAll();
         } else {
+            binding.fab.animate().translationY(400F).setDuration(200L).start();
+            binding.fab.hide();
             projectImagesFragment.a(false);
         }
     }
@@ -190,6 +198,5 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         public void a(String str) {
             activity.get().h();
         }
-
     }
 }

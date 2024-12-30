@@ -214,7 +214,7 @@ public class AdmobActivity extends BaseAppCompatActivity implements View.OnClick
         binding.tvGotoConsole.setText(Helper.getResString(R.string.design_library_admob_button_goto_setting));
         binding.tvPrevbtn.setText(Helper.getResString(R.string.common_word_prev));
         binding.tvPrevbtn.setOnClickListener(this);
-        binding.icon.setImageResource(R.drawable.widget_admob);
+        binding.icon.setImageResource(R.drawable.ic_mtrl_admob);
         binding.tvNextbtn.setText(Helper.getResString(R.string.common_word_next));
         binding.tvNextbtn.setOnClickListener(this);
         binding.imgBackbtn.setOnClickListener(Helper.getBackPressedClickListener(this));

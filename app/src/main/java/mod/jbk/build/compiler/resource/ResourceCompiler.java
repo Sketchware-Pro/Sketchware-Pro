@@ -56,8 +56,8 @@ public class ResourceCompiler {
 
         resourceCompiler.setProgressListener(new Compiler.ProgressListener() {
             @Override
-            void onProgressUpdate(String newProgress) {
-                if (progressReceiver != null) progressReceiver.onProgress(newProgress);
+            void onProgressUpdate(String newProgress, int step) {
+                if (progressReceiver != null) progressReceiver.onProgress(newProgress, step);
             }
         });
         resourceCompiler.compile();
@@ -89,7 +89,7 @@ public class ResourceCompiler {
              *
              * @param newProgress A String provided by the resource compiler the user should see.
              */
-            abstract void onProgressUpdate(String newProgress);
+            abstract void onProgressUpdate(String newProgress, int step);
         }
     }
 
@@ -119,7 +119,7 @@ public class ResourceCompiler {
 
             long savedTimeMillis = System.currentTimeMillis();
             if (progressListener != null) {
-                progressListener.onProgressUpdate("Compiling resources with AAPT2...");
+                progressListener.onProgressUpdate("Compiling resources with AAPT2...", 9);
             }
             compileBuiltInLibraryResources();
             LogUtil.d(TAG + ":c", "Compiling built-in library resources took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
@@ -146,7 +146,7 @@ public class ResourceCompiler {
         public void link() throws zy, MissingFileException {
             String resourcesPath = buildHelper.yq.binDirectoryPath + File.separator + "res";
             if (progressListener != null)
-                progressListener.onProgressUpdate("Linking resources with AAPT2...");
+                progressListener.onProgressUpdate("Linking resources with AAPT2...", 10);
 
             ArrayList<String> args = new ArrayList<>();
             args.add(aapt2.getAbsolutePath());

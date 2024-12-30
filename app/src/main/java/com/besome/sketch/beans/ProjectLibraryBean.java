@@ -84,10 +84,10 @@ public class ProjectLibraryBean implements Parcelable {
 
     public static int getLibraryIcon(int i) {
         return switch (i) {
-            case 0 -> R.drawable.widget_firebase;
-            case 1 -> R.drawable.connected_96;
-            case 2 -> R.drawable.widget_admob;
-            case 3 -> R.drawable.widget_google_map;
+            case 0 -> R.drawable.ic_mtrl_firebase;
+            case 1 -> R.drawable.ic_mtrl_design;
+            case 2 -> R.drawable.ic_mtrl_admob;
+            case 3 -> R.drawable.ic_mtrl_map;
             case 4 -> R.drawable.ic_mtrl_box;
             case 5 -> R.drawable.ic_mtrl_settings_input;
             default -> 0;

@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.color.MaterialColors;
+
 import pro.sketchware.R;
 
 import a.a.a.wB;
@@ -38,9 +40,8 @@ public class ComponentEventButton extends LinearLayout {
 
     public void onEventAdded() {
         addEvent.setVisibility(GONE);
-        ColorMatrix colorMatrix = new ColorMatrix();
-        colorMatrix.setSaturation(1);
-        icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+        icon.setColorFilter(MaterialColors.getColor(name, com.google.android.material.R.attr.colorSecondary));
+
     }
 
     public void setClickListener(View.OnClickListener onClickListener) {
@@ -49,9 +50,8 @@ public class ComponentEventButton extends LinearLayout {
 
     public void onEventAvailableToAdd() {
         addEvent.setVisibility(VISIBLE);
-        ColorMatrix colorMatrix = new ColorMatrix();
-        colorMatrix.setSaturation(0);
-        icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+        icon.setColorFilter(MaterialColors.getColor(name, com.google.android.material.R.attr.colorOutlineVariant));
+
     }
 
     public ImageView getIcon() {

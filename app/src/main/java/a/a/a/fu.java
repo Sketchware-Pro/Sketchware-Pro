@@ -9,9 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -25,7 +22,11 @@ import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.besome.sketch.editor.manage.image.ManageImageImportActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.android.material.card.MaterialCardView;
+
 import pro.sketchware.R;
+import pro.sketchware.databinding.FrManageImageListBinding;
+import pro.sketchware.databinding.ManageImageListItemBinding;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +42,6 @@ public class fu extends qA implements View.OnClickListener {
             } else {
                 importedImages = data.getParcelableArrayListExtra("results");
             }
-
             ArrayList<ProjectResourceBean> newImportedImages = new ArrayList<>();
             for (ProjectResourceBean image : importedImages) {
                 newImportedImages.add(new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, image.resName, image.resFullName));
@@ -52,12 +52,14 @@ public class fu extends qA implements View.OnClickListener {
             }
         }
     });
-    private RecyclerView recyclerView;
-    private String sc_id;
+
+    private FrManageImageListBinding binding;
     private ArrayList<ProjectResourceBean> collectionImages;
-    private Adapter adapter = null;
-    private TextView guide;
-    private Button importImages;
+    private Adapter adapter;
+    private String sc_id;
+
+    private Button btnImport;
+    private MaterialCardView layoutBtnImport;
 
     public void refreshData() {
         collectionImages = Op.g().f();
@@ -69,12 +71,20 @@ public class fu extends qA implements View.OnClickListener {
         for (ProjectResourceBean image : collectionImages) {
             image.isSelected = false;
         }
+        adapter.notifyDataSetChanged();
+    }
+
+    public boolean isSelecting() {
+        for (ProjectResourceBean image : collectionImages) {
+            if (image.isSelected) return true;
+        }
+        return false;
     }
 
     public void updateGuideVisibility() {
         boolean isEmpty = collectionImages.isEmpty();
-        guide.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-        recyclerView.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        binding.tvGuide.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        binding.imageList.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
     }
 
     public void importImages() {
@@ -102,10 +112,10 @@ public class fu extends qA implements View.OnClickListener {
             }
         }
         if (count > 0) {
-            importImages.setText(xB.b().a(requireContext(), R.string.common_word_import_count, count).toUpperCase());
-            importImages.setVisibility(View.VISIBLE);
+            btnImport.setText(xB.b().a(requireContext(), R.string.common_word_import_count, count).toUpperCase());
+            layoutBtnImport.setVisibility(View.VISIBLE);
         } else {
-            importImages.setVisibility(View.GONE);
+            layoutBtnImport.setVisibility(View.GONE);
         }
     }
 
@@ -120,7 +130,7 @@ public class fu extends qA implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (!mB.a() && v.getId() == R.id.btn_import) {
-            importImages.setVisibility(View.GONE);
+            layoutBtnImport.setVisibility(View.GONE);
             importImages();
         }
     }
@@ -128,27 +138,25 @@ public class fu extends qA implements View.OnClickListener {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (recyclerView.getLayoutManager() instanceof GridLayoutManager manager) {
+        if (binding.imageList.getLayoutManager() instanceof GridLayoutManager manager) {
             manager.setSpanCount(ManageImageActivity.getImageGridColumnCount(requireContext()));
         }
-        recyclerView.requestLayout();
+        binding.imageList.requestLayout();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fr_manage_image_list, container, false);
-        recyclerView = root.findViewById(R.id.image_list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
+        binding = FrManageImageListBinding.inflate(inflater, container, false);
+        binding.imageList.setHasFixedSize(true);
+        binding.imageList.setLayoutManager(new GridLayoutManager(requireActivity(), ManageImageActivity.getImageGridColumnCount(requireContext())));
         adapter = new Adapter();
-        recyclerView.setAdapter(adapter);
-        guide = root.findViewById(R.id.tv_guide);
-        guide.setText(xB.b().a(requireContext(), R.string.design_manager_image_description_guide_add_image));
-        importImages = root.findViewById(R.id.btn_import);
-        importImages.setText(xB.b().a(requireContext(), R.string.common_word_import).toUpperCase());
-        importImages.setOnClickListener(this);
-        importImages.setVisibility(View.GONE);
-        return root;
+        binding.imageList.setAdapter(adapter);
+        binding.tvGuide.setText(xB.b().a(requireContext(), R.string.design_manager_image_description_guide_add_image));
+        btnImport = requireActivity().findViewById(R.id.btn_import);
+        layoutBtnImport = requireActivity().findViewById(R.id.layout_btn_import);
+        btnImport.setOnClickListener(this);
+        layoutBtnImport.setVisibility(View.GONE);
+        return binding.getRoot();
     }
 
     @Override
@@ -158,25 +166,26 @@ public class fu extends qA implements View.OnClickListener {
     }
 
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ProjectResourceBean image = collectionImages.get(position);
-            holder.checkBox.setVisibility(View.VISIBLE);
-            holder.ninePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
+            holder.binding.chkSelect.setVisibility(View.VISIBLE);
+            holder.binding.imgNinePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
             Glide.with(requireActivity())
                     .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + image.resFullName)
                     .asBitmap()
                     .centerCrop()
                     .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(holder.image));
-            holder.name.setText(image.resName);
-            holder.checkBox.setChecked(image.isSelected);
+                    .into(new BitmapImageViewTarget(holder.binding.img));
+            holder.binding.tvImageName.setText(image.resName);
+            holder.binding.chkSelect.setChecked(image.isSelected);
         }
 
         @Override
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_image_list_item, parent, false));
+            return new ViewHolder(ManageImageListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
 
         @Override
@@ -185,21 +194,15 @@ public class fu extends qA implements View.OnClickListener {
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
-            public final CheckBox checkBox;
-            public final TextView name;
-            public final ImageView image;
-            public final ImageView ninePatch;
+            public final ManageImageListItemBinding binding;
 
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                checkBox = itemView.findViewById(R.id.chk_select);
-                name = itemView.findViewById(R.id.tv_image_name);
-                image = itemView.findViewById(R.id.img);
-                ninePatch = itemView.findViewById(R.id.img_nine_patch);
-                checkBox.setVisibility(View.VISIBLE);
-                image.setOnClickListener(v -> {
-                    checkBox.setChecked(!checkBox.isChecked());
-                    collectionImages.get(getLayoutPosition()).isSelected = checkBox.isChecked();
+            public ViewHolder(@NonNull ManageImageListItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+                binding.chkSelect.setVisibility(View.VISIBLE);
+                binding.img.setOnClickListener(v -> {
+                    binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                    collectionImages.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
                     onItemSelected();
                     notifyItemChanged(getLayoutPosition());
                 });

@@ -27,8 +27,8 @@ public class CollapsibleCustomComponentLayout extends CollapsibleLayout<Collapsi
 
     @Override
     protected List<CollapsibleButton> initializeButtons(@NonNull Context context) {
-        CollapsibleButton export = CollapsibleButton.create(context, 0, R.drawable.export_96, R.string.common_word_export);
-        delete = CollapsibleButton.create(context, 1, R.drawable.delete_96, R.string.common_word_delete);
+        CollapsibleButton export = CollapsibleButton.create(context, 0, R.drawable.ic_mtrl_export, R.string.common_word_export);
+        delete = CollapsibleButton.create(context, 1, R.drawable.ic_mtrl_delete, R.string.common_word_delete);
         return List.of(export, delete);
     }
 

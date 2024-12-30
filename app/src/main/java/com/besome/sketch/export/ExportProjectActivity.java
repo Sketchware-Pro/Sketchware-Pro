@@ -844,7 +844,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         }
 
         @Override
-        public void onProgress(String progress) {
+        public void onProgress(String progress, int step) {
             publishProgress(progress);
         }
     }

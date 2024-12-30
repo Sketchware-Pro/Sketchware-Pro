@@ -17,7 +17,6 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/screenshot1Card"
             android:layout_width="140dp"

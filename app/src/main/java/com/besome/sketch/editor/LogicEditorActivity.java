@@ -48,7 +48,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -61,6 +60,7 @@ import com.besome.sketch.beans.HistoryBlockBean;
 import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.component.ComponentAddActivity;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.editor.logic.LogicTopMenu;
@@ -118,12 +118,8 @@ import a.a.a.xB;
 import a.a.a.yq;
 import a.a.a.yy;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
-import io.github.rosemoe.sora.langs.java.JavaLanguage;
-import io.github.rosemoe.sora.widget.CodeEditor;
-import io.github.rosemoe.sora.widget.component.Magnifier;
-import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.bobur.StringEditorActivity;
+import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
@@ -143,6 +139,7 @@ import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.SvgUtils;
+import pro.sketchware.activities.editor.view.CodeViewerActivity;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -748,11 +745,13 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         Glide.with(getContext()).load(fromFile).signature(kC.n()).error(R.drawable.ic_remove_grey600_24dp).into(imageView);
                     }
                 } else {
-                    imageView.setImageResource(getContext().getResources().getIdentifier(str, "drawable", getContext().getPackageName()));
+                    try {
+                        XmlToSvgConverter.setImageVectorFromFile(imageView, XmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, str));
+                    } catch (Exception e) {
+                        imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
+                    }
                 }
             }
-        } else {
-            imageView.setImageDrawable(null);
         }
         imageView.setBackgroundResource(R.drawable.bg_outline);
         return imageView;
@@ -914,6 +913,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ArrayList<String> images = jC.d(B).m();
+        images.addAll(XmlToSvgConverter.getVectorDrawables(DesignActivity.sc_id));
         if (selectingImage) {
             images.add(0, "default_image");
         } else if (selectingBackgroundImage) {
@@ -2170,7 +2170,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 }
             }
             int id = v.getId();
-            if (id == R.id.btn_accept) {
+            if (id == R.id.btn_delete) {
                 setResult(Activity.RESULT_OK, new Intent());
                 finish();
             } else if (id == R.id.btn_cancel) {
@@ -2210,9 +2210,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         T = (int) wB.a(getBaseContext(), (float) T);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(v -> {
             if (!mB.a()) {
                 onBackPressed();
@@ -2221,18 +2218,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         G = new DB(getContext(), "P12").a("P12I0", true);
         A = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         F = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        String stringExtra = getIntent().getStringExtra("event_text");
-        ActionBar d;
-        if (C.equals("onCreate")) {
-            d = getSupportActionBar();
-        } else if (C.equals("_fab")) {
-            d = getSupportActionBar();
-            stringExtra = "fab : " + stringExtra;
-        } else {
-            d = getSupportActionBar();
-            stringExtra = ReturnMoreblockManager.getMbName(C) + " : " + stringExtra;
-        }
-        d.setTitle(stringExtra);
+        String eventText = getIntent().getStringExtra("event_text");
+        toolbar.setTitle(C.equals("_fab") ? "fab" : ReturnMoreblockManager.getMbName(C));
+        toolbar.setSubtitle(eventText);
         paletteSelector = findViewById(R.id.palette_selector);
         paletteSelector.setOnBlockCategorySelectListener(this);
         m = findViewById(R.id.palette_block);
@@ -2732,39 +2720,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         yq yq = new yq(this, B);
         yq.a(jC.c(B), jC.b(B), jC.a(B), false);
         String code = new Fx(M.getActivityName(), yq.N, o.getBlocks(), isViewBindingEnabled).a();
-
-        CodeEditor codeEditor = new CodeEditor(this);
-        codeEditor.setEditable(false);
-        codeEditor.setEditorLanguage(new JavaLanguage());
-        codeEditor.setText(Lx.j(code, false));
-        codeEditor.setTextSize(12);
-        codeEditor.setTypefaceText(Typeface.MONOSPACE);
-        codeEditor.setWordwrap(false);
-        codeEditor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            Configuration configuration = getResources().getConfiguration();
-            boolean isDarkTheme = configuration.isNightModeActive();
-            if (isDarkTheme) {
-                codeEditor.setColorScheme(new SchemeDarcula());
-            } else {
-                codeEditor.setColorScheme(new EditorColorScheme());
-            }
-        } else {
-            codeEditor.setColorScheme(new EditorColorScheme());
-        }
-
-        var dialog = new MaterialAlertDialogBuilder(this)
-                .setTitle("Source code")
-                .setPositiveButton(R.string.common_word_close, null)
-                .create();
-
-        dialog.setView(codeEditor,
-                (int) getDip(24),
-                (int) getDip(20),
-                (int) getDip(24),
-                (int) getDip(0));
-        dialog.show();
+        var intent = new Intent(this, CodeViewerActivity.class);
+        intent.putExtra("code", code);
+        startActivity(intent);
     }
 
     public void t() {

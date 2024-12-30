@@ -201,6 +201,9 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     );
 
     public void refreshProjectsList() {
+        // Check if the fragment is still attached to the activity
+        if (!isAdded()) return;
+
         // Don't load project list without having permissions
         if (!c()) {
             if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);

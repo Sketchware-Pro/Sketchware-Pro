@@ -241,10 +241,10 @@ public class ProguardHandler {
     public void start(BuildProgressReceiver progressReceiver, ProjectBuilder builder) throws IOException {
         if (isShrinkingEnabled()) {
             if (isR8Enabled()) {
-                progressReceiver.onProgress("Running R8 on classes...");
+                progressReceiver.onProgress("Running R8 on classes...", 15);
                 builder.runR8();
             } else {
-                progressReceiver.onProgress("ProGuarding classes...");
+                progressReceiver.onProgress("ProGuarding classes...", 16);
                 builder.runProguard();
             }
         }

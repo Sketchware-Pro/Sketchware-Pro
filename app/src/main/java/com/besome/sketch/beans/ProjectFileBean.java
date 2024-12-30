@@ -25,6 +25,9 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         }
     };
 
+    public static final String DEFAULT_XML_NAME = "main.xml";
+    public static final String DEFAULT_JAVA_NAME = "MainActivity.java";
+
     public static final int KEYBOARD_STATE_HIDDEN = 2;
     public static final int KEYBOARD_STATE_UNSPECIFIED = 0;
     public static final int KEYBOARD_STATE_VISIBLE = 1;
