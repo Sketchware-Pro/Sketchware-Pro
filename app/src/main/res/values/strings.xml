@@ -2244,10 +2244,8 @@ Please try again later"</string>
     <string name="new_class">Or create a new category</string>
     <string name="add_to">Add to category</string>
     <string name="title_activity_icon_creator">IconCreatorActivity</string>
-
+    <string name="code_viewer">Code Viewer</string>
     <string name="used_custom_blocks">Used Custom Blocks</string>
     <string name="property_enter_value">Enter %s value</string>
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
