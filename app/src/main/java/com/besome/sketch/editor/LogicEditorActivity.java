@@ -2722,6 +2722,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         String code = new Fx(M.getActivityName(), yq.N, o.getBlocks(), isViewBindingEnabled).a();
         var intent = new Intent(this, CodeViewerActivity.class);
         intent.putExtra("code", code);
+        intent.putExtra("sc_id", B);
+        intent.putExtra("scheme", CodeViewerActivity.SCHEME_JAVA);
         startActivity(intent);
     }
 
