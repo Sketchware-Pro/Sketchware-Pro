@@ -438,7 +438,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             String nameInput = Objects.requireNonNull(dialogBinding.nameEditText.getText()).toString();
-            String colorInput = Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
+            String colorInput = "#" + Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
 
             if (nameInput.isEmpty()) {
                 SketchwareUtil.toast("Name cannot be empty", Toast.LENGTH_SHORT);
