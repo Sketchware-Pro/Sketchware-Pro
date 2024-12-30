@@ -34,7 +34,7 @@ import a.a.a.aB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
 import mod.alucard.tn.apksigner.ApkSigner;
-import mod.hey.studios.code.SrcCodeEditorLegacy;
+import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
 import pro.sketchware.R;
@@ -99,9 +99,7 @@ public class AppSettings extends BaseAppCompatActivity {
                         .setSingleChoiceItems(new String[]{"Edit", "Delete"}, -1, (actionDialog, which) -> {
                             switch (which) {
                                 case 0 -> {
-                                    Intent intent = new Intent(getApplicationContext(), ConfigActivity.isLegacyCeEnabled() ?
-                                            SrcCodeEditorLegacy.class
-                                            : mod.hey.studios.code.SrcCodeEditor.class);
+                                    Intent intent = new Intent(getApplicationContext(), SrcCodeEditor.class);
                                     intent.putExtra("title", Uri.parse(files[0]).getLastPathSegment());
                                     intent.putExtra("content", files[0]);
                                     intent.putExtra("xml", "");

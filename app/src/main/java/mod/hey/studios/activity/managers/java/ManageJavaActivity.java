@@ -48,7 +48,7 @@ import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileResConfig;
 import pro.sketchware.utility.FileUtil;
-import mod.hey.studios.code.SrcCodeEditorLegacy;
+import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
@@ -509,13 +509,7 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
 
         public void goEditFile(int position) {
             Intent intent = new Intent();
-
-            if (ConfigActivity.isLegacyCeEnabled()) {
-                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-            } else {
-                intent.setClass(getApplicationContext(), mod.hey.studios.code.SrcCodeEditor.class);
-            }
-
+            intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             intent.putExtra("java", "");
             intent.putExtra("title", getFileName(position));
             intent.putExtra("content", getItem(position));

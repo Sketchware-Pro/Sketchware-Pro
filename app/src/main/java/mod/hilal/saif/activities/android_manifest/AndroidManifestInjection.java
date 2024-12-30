@@ -36,7 +36,6 @@ import a.a.a.yq;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
 import mod.hey.studios.code.SrcCodeEditor;
-import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.android_manifest.AndroidManifestInjector;
@@ -182,11 +181,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
     private void showAppComponentDialog() {
         Intent intent = new Intent();
-        if (ConfigActivity.isLegacyCeEnabled()) {
-            intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-        } else {
-            intent.setClass(getApplicationContext(), SrcCodeEditor.class);
-        }
+        intent.setClass(getApplicationContext(), SrcCodeEditor.class);
 
         String APP_COMPONENTS_PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/app_components.txt");
         if (!FileUtil.isExistFile(APP_COMPONENTS_PATH)) FileUtil.writeFile(APP_COMPONENTS_PATH, "");

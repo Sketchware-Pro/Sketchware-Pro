@@ -26,12 +26,6 @@
 
     <SwitchPreferenceCompat
         app:iconSpaceReserved="false"
-        app:key="legacy-ce"
-        app:summary="Enables old Code Editor from v6.2.0."
-        app:title="Use legacy Code Editor" />
-
-    <SwitchPreferenceCompat
-        app:iconSpaceReserved="false"
         app:key="root-auto-install-projects"
         app:summary="Automatically installs project APKs after building using root access."
         app:title="Install projects with root access" />
