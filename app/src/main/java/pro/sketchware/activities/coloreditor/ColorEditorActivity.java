@@ -30,7 +30,6 @@ import a.a.a.Zx;
 import a.a.a.aB;
 import a.a.a.xB;
 import mod.hey.studios.code.SrcCodeEditor;
-import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import pro.sketchware.R;
 import pro.sketchware.activities.coloreditor.adapters.ColorsAdapter;
@@ -219,11 +218,7 @@ public class ColorEditorActivity extends AppCompatActivity {
         } else if (id == MENU_OPEN_IN_EDITOR) {
             XmlUtil.saveXml(contentPath, convertListToXml(colorList));
             Intent intent = new Intent();
-            if (ConfigActivity.isLegacyCeEnabled()) {
-                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-            } else {
-                intent.setClass(getApplicationContext(), SrcCodeEditor.class);
-            }
+            intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             intent.putExtra("title", title);
             intent.putExtra("content", contentPath);
             intent.putExtra("xml", xmlPath);

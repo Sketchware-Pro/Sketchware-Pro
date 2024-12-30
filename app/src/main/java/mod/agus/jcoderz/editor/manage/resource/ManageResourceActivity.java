@@ -35,7 +35,6 @@ import java.util.Collections;
 import mod.bobur.StringEditorActivity;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.code.SrcCodeEditor;
-import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
@@ -345,11 +344,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             startActivity(intent);
         }else if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
-            if (ConfigActivity.isLegacyCeEnabled()) {
-                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-            } else {
-                intent.setClass(getApplicationContext(), SrcCodeEditor.class);
-            }
+            intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
             intent.putExtra("content", frc.listFileResource.get(position));
             intent.putExtra("xml", "");
@@ -365,11 +360,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
     private void goEdit2(int position) {
         if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
-            if (ConfigActivity.isLegacyCeEnabled()) {
-                intent.setClass(getApplicationContext(), SrcCodeEditorLegacy.class);
-            } else {
-                intent.setClass(getApplicationContext(), SrcCodeEditor.class);
-            }
+            intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
             intent.putExtra("content", frc.listFileResource.get(position));
             intent.putExtra("xml", "");
