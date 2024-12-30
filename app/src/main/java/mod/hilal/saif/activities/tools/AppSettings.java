@@ -2,8 +2,6 @@ package mod.hilal.saif.activities.tools;
 
 import static com.besome.sketch.editor.view.ViewEditor.shakeView;
 
-import static pro.sketchware.utility.SketchwareUtil.dpToPx;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -19,8 +17,6 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 
-import a.a.a.aB;
-
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.besome.sketch.help.SystemSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -30,26 +26,23 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import a.a.a.aB;
+import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
-
 import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
-
 import pro.sketchware.R;
 import pro.sketchware.activities.editor.component.ManageCustomComponentActivity;
 import pro.sketchware.activities.settings.SettingsActivity;
 import pro.sketchware.databinding.DialogSelectApkToSignBinding;
-import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.UI;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class AppSettings extends BaseAppCompatActivity {
 
@@ -131,22 +124,18 @@ public class AppSettings extends BaseAppCompatActivity {
     }
 
     private void setupPreferences() {
-        preferences.add(createPreference(R.drawable.ic_mtrl_block, "Block manager", "Manage your own blocks to use in Logic Editor", new ActivityLauncher(new Intent(getApplicationContext(), BlocksManager.class)), false));
-        preferences.add(createPreference(R.drawable.ic_mtrl_pull_down, "Block selector menu manager", "Manage your own block selector menus", openSettingsActivity(SettingsActivity.BLOCK_SELECTOR_MANAGER_FRAGMENT), false));
-        preferences.add(createPreference(R.drawable.ic_mtrl_component, "Component manager", "Manage your own components", new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class)), false));
-        preferences.add(createPreference(R.drawable.ic_mtrl_list, "Event manager", "Manage your own events", openSettingsActivity(SettingsActivity.EVENTS_MANAGER_FRAGMENT), false));
-        preferences.add(createPreference(R.drawable.ic_mtrl_box, "Local library manager", "Manage and download local libraries", new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system")), false));
-        preferences.add(createPreference(R.drawable.ic_mtrl_settings_applications, "Mod settings", "Change general mod settings", new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class)), false));
-        preferences.add(createPreference(R.drawable.ic_mtrl_palette, getString(R.string.settings_appearance), getString(R.string.settings_appearance_description), openSettingsActivity(SettingsActivity.SETTINGS_APPEARANCE_FRAGMENT), false));
-        preferences.add(createPreference(R.drawable.ic_mtrl_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", v -> openWorkingDirectory(), false));
-        preferences.add(createPreference(R.drawable.ic_mtrl_apk_document, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", v -> signApkFileDialog(), false));
-        preferences.add(createPreference(R.drawable.ic_mtrl_article, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class)), false));
-        preferences.add(createPreference(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class)), true));
-        preferences.forEach(preference -> {
-            final int index = preferences.indexOf(preference);
-            preference.container.setBackgroundResource(UI.getShapedBackgroundForList(preferences, index));
-            content.addView(preference);
-        });
+        preferences.add(createPreference(R.drawable.ic_mtrl_block, "Block manager", "Manage your own blocks to use in Logic Editor", new ActivityLauncher(new Intent(getApplicationContext(), BlocksManager.class))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_pull_down, "Block selector menu manager", "Manage your own block selector menus", openSettingsActivity(SettingsActivity.BLOCK_SELECTOR_MANAGER_FRAGMENT)));
+        preferences.add(createPreference(R.drawable.ic_mtrl_component, "Component manager", "Manage your own components", new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_list, "Event manager", "Manage your own events", openSettingsActivity(SettingsActivity.EVENTS_MANAGER_FRAGMENT)));
+        preferences.add(createPreference(R.drawable.ic_mtrl_box, "Local library manager", "Manage and download local libraries", new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system"))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_settings_applications, "Mod settings", "Change general mod settings", new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_palette, getString(R.string.settings_appearance), getString(R.string.settings_appearance_description), openSettingsActivity(SettingsActivity.SETTINGS_APPEARANCE_FRAGMENT)));
+        preferences.add(createPreference(R.drawable.ic_mtrl_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", v -> openWorkingDirectory()));
+        preferences.add(createPreference(R.drawable.ic_mtrl_apk_document, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", v -> signApkFileDialog()));
+        preferences.add(createPreference(R.drawable.ic_mtrl_article, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class))));
+        preferences.forEach(preference -> content.addView(preference));
     }
     
     private View.OnClickListener openSettingsActivity(String fragmentTag) {
@@ -157,20 +146,13 @@ public class AppSettings extends BaseAppCompatActivity {
         };
     }
 
-    private LibraryItemView createPreference(int icon, String title, String desc, View.OnClickListener listener, boolean lastpreference) {
+    private LibraryItemView createPreference(int icon, String title, String desc, View.OnClickListener listener) {
         LibraryItemView preference = new LibraryItemView(this);
         preference.enabled.setVisibility(View.GONE);
         preference.icon.setImageResource(icon);
         preference.title.setText(title);
         preference.description.setText(desc);
         preference.setOnClickListener(listener);
-        LinearLayout.LayoutParams preferenceParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                0.0f
-        );
-        preferenceParams.bottomMargin = lastpreference ? dpToPx(25) : dpToPx(0);
-        preference.setLayoutParams(preferenceParams);
         return preference;
     }
 
@@ -277,7 +259,7 @@ public class AppSettings extends BaseAppCompatActivity {
                 }
 
                 runOnUiThread(() -> {
-                    if (callback.errorCount.get() == 0) {
+                    if (ApkSigner.LogCallback.errorCount.get() == 0) {
                         building_dialog.dismiss();
                         SketchwareUtil.toast("Successfully saved signed APK to: /Internal storage/sketchware/signed_apk/"
                                         + Uri.fromFile(new File(outputApkPath)).getLastPathSegment(),

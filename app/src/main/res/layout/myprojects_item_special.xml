@@ -5,8 +5,8 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginBottom="10dp"
     app:cardBackgroundColor="?attr/colorSurfaceContainer"
-    app:cardCornerRadius="18dp"
-    app:strokeWidth="0.5dp">
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
+    app:strokeWidth="0dp">
 
     <LinearLayout
         android:id="@+id/project_one"

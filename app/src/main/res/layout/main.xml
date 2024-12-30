@@ -26,7 +26,6 @@
                 layout="@layout/toolbar" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/mainTabsCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
@@ -34,9 +33,9 @@
                 android:layout_marginBottom="10dp"
                 android:clickable="true"
                 android:focusable="true"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
-                app:strokeWidth="0.5dp">
+                app:cardBackgroundColor="@color/transparent"
+                app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+                app:strokeWidth="0dp">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
