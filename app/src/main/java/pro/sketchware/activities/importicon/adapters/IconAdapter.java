@@ -12,10 +12,9 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pro.sketchware.databinding.ImportIconListItemBinding;
-
 import java.io.File;
 
+import pro.sketchware.databinding.ImportIconListItemBinding;
 import pro.sketchware.utility.SvgUtils;
 
 public class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.ViewHolder> {
@@ -76,6 +75,7 @@ public class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.V
         String filePath = getItem(position).second + File.separator + selected_icon_type + ".svg";
         svgUtils.loadImage(holder.itemBinding.img, filePath);
         holder.itemBinding.img.setColorFilter(selected_color, PorterDuff.Mode.SRC_IN);
+        holder.itemBinding.title.setText(getItem(position).first);
     }
 
     @Override

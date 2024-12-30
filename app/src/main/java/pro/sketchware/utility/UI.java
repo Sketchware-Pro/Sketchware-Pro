@@ -77,7 +77,7 @@ public class UI {
                     return windowInsets;
                 });
     }
-    
+
     @DrawableRes
     public static <T> int getShapedBackgroundForList(final List<T> list, final int position) {
         if (list.size() == 1) {

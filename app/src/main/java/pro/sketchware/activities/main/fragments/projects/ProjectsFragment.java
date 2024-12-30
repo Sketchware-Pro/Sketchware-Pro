@@ -50,7 +50,7 @@ import pro.sketchware.activities.main.activities.MainActivity;
 import pro.sketchware.databinding.MyprojectsBinding;
 import pro.sketchware.databinding.SortProjectDialogBinding;
 
-public class ProjectsFragment extends DA implements View.OnClickListener {
+public class ProjectsFragment extends DA {
     private MyprojectsBinding binding;
     private ProjectsAdapter projectsAdapter;
     private DB preference;
@@ -102,13 +102,6 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.create_new_project) {
-            toProjectSettingsActivity();
-        }
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         binding = MyprojectsBinding.inflate(inflater, parent, false);
         return binding.getRoot();
@@ -125,7 +118,7 @@ public class ProjectsFragment extends DA implements View.OnClickListener {
         preference = new DB(requireContext(), "project");
 
         ExtendedFloatingActionButton fab = requireActivity().findViewById(R.id.create_new_project);
-        fab.setOnClickListener(this);
+        fab.setOnClickListener((v) -> toProjectSettingsActivity());
         Insetter.builder()
                 .margin(WindowInsetsCompat.Type.navigationBars())
                 .applyToView(fab);
