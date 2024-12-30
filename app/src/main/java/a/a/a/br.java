@@ -275,7 +275,7 @@ public class br extends qA implements View.OnClickListener {
                             previewBinding.getRoot().setLayoutParams(layoutParams);
                             previewBinding.icon.setImageResource(oq.a(event.eventName));
                             previewBinding.iconBg.setBackgroundResource(
-                                    R.drawable.circle_bg_white_outline_secondary);
+                                    R.drawable.circle_bg_surface);
                             binding.eventsPreview.addView(previewBinding.getRoot());
                             availableEvents.remove(event.eventName);
                         }

@@ -37,7 +37,8 @@
                 android:layout_height="12dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_add_green_circle_24dp" />
+                app:tint="?colorCoolGreen"
+                android:src="@drawable/ic_mtrl_add_circle" />
         </RelativeLayout>
 
         <TextView

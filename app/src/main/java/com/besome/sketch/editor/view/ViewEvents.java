@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.google.android.material.color.MaterialColors;
 
 import pro.sketchware.R;
 import pro.sketchware.databinding.EventGridItemBinding;
@@ -115,7 +116,7 @@ public class ViewEvents extends LinearLayout {
                 binding.tvTitle.setText(event.eventName);
 
                 if (event.isSelected) {
-                    mB.a(binding.imgIcon, 1);
+                    binding.imgIcon.setColorFilter(MaterialColors.getColor(binding.tvTitle, com.google.android.material.R.attr.colorSecondary));
                     binding.imgUsedEvent.setVisibility(View.GONE);
                     binding.container.setOnLongClickListener(v -> {
                         aB dialog = new aB((Activity) itemView.getContext());
@@ -136,7 +137,7 @@ public class ViewEvents extends LinearLayout {
                     });
                 } else {
                     binding.imgUsedEvent.setVisibility(View.VISIBLE);
-                    mB.a(binding.imgIcon, 0);
+                    binding.imgIcon.setColorFilter(MaterialColors.getColor(binding.tvTitle, com.google.android.material.R.attr.colorOutlineVariant));
                 }
             }
         }
