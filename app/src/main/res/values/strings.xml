@@ -2247,7 +2247,5 @@ Please try again later"</string>
     <string name="code_viewer">Code Viewer</string>
     <string name="used_custom_blocks">Used Custom Blocks</string>
     <string name="property_enter_value">Enter %s value</string>
-    
-    <string name="code_viewer">Code Viewer</string>
 
 </resources>

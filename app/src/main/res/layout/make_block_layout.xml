@@ -287,18 +287,18 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/ti_parameter"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
-                        android:layout_weight="1"
                         android:hint="Parameter: m.name (without % sign)"
                         android:importantForAutofill="noExcludeDescendants">
 
@@ -312,11 +312,18 @@
                             android:textSize="13sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
                         android:hint="Variable name"
                         android:importantForAutofill="noExcludeDescendants">
 
@@ -335,6 +342,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ADD" />
+                </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
