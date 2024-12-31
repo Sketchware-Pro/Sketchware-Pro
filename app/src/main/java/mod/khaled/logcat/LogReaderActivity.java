@@ -151,6 +151,28 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         builder.show();
     }
 
+    private void exportLogcat(ArrayList<HashMap<String, Object>> logs){
+        try {
+            File file = new File(Environment.getExternalStorageDirectory(),".sketchware/logcat/" + packageName +"_"+ Calendar.getInstance(Locale.ENGLISH).getTimeInMillis() + ".txt");
+            createNewFileIfNotPresent(file.getAbsolutePath());
+            FileWriter writer = new FileWriter(file);
+            for (int i = 0; i < logs.size(); i++) {
+                String date = Objects.requireNonNull(logs.get(i).get("date")).toString();
+                String type = Objects.requireNonNull(logs.get(i).get("type")).toString();
+                String tag = Objects.requireNonNull(logs.get(i).get("header")).toString();
+                String body = Objects.requireNonNull(logs.get(i).get("body")).toString();
+
+                writer.write( date + " " +  type + " " + tag + " " + body + "\n");
+            }
+            writer.close();
+            SketchwareUtil.toast("Logcat exported successfully");
+
+        } catch (IOException ex) {
+            SketchwareUtil.toastError("Something went wrong!");
+        }
+    }
+    
+
     private class Logger extends BroadcastReceiver {
 
         @Override
@@ -321,27 +343,6 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 super(listBinding.getRoot());
                 this.listBinding = listBinding;
             }
-        }
-    }
-
-    private void exportLogcat(ArrayList<HashMap<String, Object>> logs){
-        try {
-            File file = new File(Environment.getExternalStorageDirectory(),".sketchware/Logcat/" + packageName +"_"+ Calendar.getInstance(Locale.ENGLISH).getTimeInMillis() + ".txt");
-            createNewFileIfNotPresent(file.getAbsolutePath());
-            FileWriter writer = new FileWriter(file);
-            for (int i = 0; i < logs.size(); i++) {
-                String date = Objects.requireNonNull(logs.get(i).get("date")).toString();
-                String type = Objects.requireNonNull(logs.get(i).get("type")).toString();
-                String tag = Objects.requireNonNull(logs.get(i).get("header")).toString();
-                String body = Objects.requireNonNull(logs.get(i).get("body")).toString();
-
-                writer.write( date + " " +  type + " " + tag + " " + body + "\n");
-            }
-            writer.close();
-            SketchwareUtil.toast("Logcat exported successfully");
-
-        } catch (IOException ex) {
-            SketchwareUtil.toast("Something went wrong!");
         }
     }
 }
