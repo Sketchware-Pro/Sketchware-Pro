@@ -419,10 +419,10 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
                     if (isDarkTheme) {
                         editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
                     } else {
-                        editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                        editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
                     }
                 } else {
-                    editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                    editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
                 }
 
                 AlertDialog dialog = dialogBuilder.create();

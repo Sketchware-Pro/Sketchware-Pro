@@ -24,6 +24,7 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
 
     public static final String SCHEME_XML = "xml";
     public static final String SCHEME_JAVA = "java";
+    public static final String SCHEME_KOTLIN = "kotlin";
     
     private ActivityCodeViewerBinding binding;
 
@@ -46,23 +47,39 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
     }
 
     private void loadColorScheme(final String scheme) {
+        
         if (scheme.equals(SCHEME_XML)) {
             loadXmlScheme();
-        } else {
+        } else if (scheme.equals(SCHEME_JAVA)) {
             loadJavaScheme();
+        } else if (scheme.equals(SCHEME_KOTLIN)) {
+            loadkotlinScheme();
         }
     }
 
     private void loadJavaScheme() {
-        binding.editor.setEditorLanguage(new JavaLanguage());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        binding.editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_JAVA));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (isDarkThemeEnabled(this)) {
-                binding.editor.setColorScheme(new SchemeDarcula());
+                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
             } else {
-                binding.editor.setColorScheme(new EditorColorScheme());
+                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
             }
         } else {
-            binding.editor.setColorScheme(new EditorColorScheme());
+            binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
+        }
+    }
+    
+    private void loadkotlinScheme() {
+        binding.editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_KOTLIN));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (isDarkThemeEnabled(this)) {
+                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+            } else {
+                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
+            }
+        } else {
+            binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
         }
     }
 
@@ -72,10 +89,10 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
             if (isDarkThemeEnabled(this)) {
                 binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
             } else {
-                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
             }
         } else {
-            binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+            binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
         }
     }
 }

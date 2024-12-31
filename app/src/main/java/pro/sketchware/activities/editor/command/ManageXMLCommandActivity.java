@@ -348,7 +348,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                                         } else {
                                             editor.setColorScheme(
                                                     CodeEditorColorSchemes.loadTextMateColorScheme(
-                                                            CodeEditorColorSchemes.THEME_GITHUB));
+                                                            CodeEditorColorSchemes.THEME_QUIETLIGHT));
                                         }
 
                                         AlertDialog dialog = dialogBuilder.create();

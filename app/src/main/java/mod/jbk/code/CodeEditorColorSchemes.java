@@ -18,8 +18,8 @@ public class CodeEditorColorSchemes {
     private static final String TAG = "CodeEditorColorSchemes";
 
     public static final String THEME_DRACULA = "dracula.json";
-    public static final String THEME_GITHUB = "GitHub.tmTheme";
-    public static final String[] THEMES = {THEME_DRACULA, THEME_GITHUB};
+    public static final String THEME_QUIETLIGHT = "quietlight.json";
+    public static final String[] THEMES = {THEME_DRACULA, THEME_QUIETLIGHT};
 
     static {
         AssetManager assets = SketchApplication.getContext().getAssets();

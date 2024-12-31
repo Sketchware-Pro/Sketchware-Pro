@@ -233,12 +233,12 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
             } else {
                 editor.setColorScheme(
                         CodeEditorColorSchemes.loadTextMateColorScheme(
-                                CodeEditorColorSchemes.THEME_GITHUB));
+                                CodeEditorColorSchemes.THEME_QUIETLIGHT));
             }
         } else {
             editor.setColorScheme(
                     CodeEditorColorSchemes.loadTextMateColorScheme(
-                            CodeEditorColorSchemes.THEME_GITHUB));
+                            CodeEditorColorSchemes.THEME_QUIETLIGHT));
         }
     }
 

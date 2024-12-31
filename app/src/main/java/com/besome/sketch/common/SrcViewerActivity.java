@@ -148,10 +148,10 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
                 if (isDarkTheme) {
                     codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
                 } else {
-                    codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                    codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
                 }
             } else {
-                codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
             }
             codeViewer.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
         } else {
@@ -159,14 +159,14 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
                 Configuration configuration = getResources().getConfiguration();
                 boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
                 if (isDarkTheme) {
-                    codeViewer.setColorScheme( new SchemeDarcula());
+                    codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
                 } else {
-                    codeViewer.setColorScheme( new EditorColorScheme());
+                    codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
                 }
             } else {
-                codeViewer.setColorScheme( new EditorColorScheme());
+                codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
             }
-            codeViewer.setEditorLanguage(new JavaLanguage());
+            codeViewer.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_JAVA));
         }
     }
 

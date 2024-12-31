@@ -215,18 +215,27 @@ public class SrcCodeEditor extends AppCompatActivity {
         editor.setText(beforeContent);
 
         if (title.endsWith(".java")) {
-            editor.setEditorLanguage(new JavaLanguage());
+            editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_JAVA));
+            if(ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
+                editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+            } else {
+                editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
+            }
             languageId = 0;
         } else if (title.endsWith(".kt")) {
             editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_KOTLIN));
-            editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+            if(ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
+                editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+            } else {
+                editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
+            }
             languageId = 1;
         } else if (title.endsWith(".xml")) {
             editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
             if(ThemeUtils.isDarkThemeEnabled(getApplicationContext())) {
                 editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
             } else {
-                editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_QUIETLIGHT));
             }
             languageId = 2;
         }

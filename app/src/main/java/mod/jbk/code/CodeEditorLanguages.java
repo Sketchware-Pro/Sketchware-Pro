@@ -17,6 +17,7 @@ public class CodeEditorLanguages {
 
     public static final String SCOPE_NAME_KOTLIN = "source.kotlin";
     public static final String SCOPE_NAME_XML = "text.xml";
+    public static final String SCOPE_NAME_JAVA = "source.java";
 
     static {
         FileProviderRegistry.getInstance().addFileProvider(new AssetsFileResolver(SketchApplication.getContext().getAssets()));
