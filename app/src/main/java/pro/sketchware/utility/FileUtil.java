@@ -91,7 +91,7 @@ public class FileUtil {
         return filePath.substring(last + 1);
     }
 
-    private static void createNewFileIfNotPresent(String path) {
+    public static void createNewFileIfNotPresent(String path) {
         int lastSep = path.lastIndexOf(File.separator);
         if (lastSep > 0) {
             String dirPath = path.substring(0, lastSep);
