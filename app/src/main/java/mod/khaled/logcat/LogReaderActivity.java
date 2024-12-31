@@ -1,5 +1,7 @@
 package mod.khaled.logcat;
 
+import static pro.sketchware.utility.FileUtil.createNewFileIfNotPresent;
+
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -8,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +29,14 @@ import pro.sketchware.databinding.ViewLogcatItemBinding;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,6 +50,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
     private final BroadcastReceiver logger = new Logger();
     private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");
     private String pkgFilter = "";
+    private String packageName = "pro.sketchware";
     private boolean autoScroll = true;
 
     private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
@@ -66,7 +75,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("pro.sketchware.ACTION_NEW_DEBUG_LOG");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            registerReceiver(logger, intentFilter, Context.RECEIVER_NOT_EXPORTED);
+            registerReceiver(logger, intentFilter, Context.RECEIVER_EXPORTED);
         } else {
             registerReceiver(logger, intentFilter);
         }
@@ -84,6 +93,8 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 }
             } else if (id == R.id.action_filter) {
                 showFilterDialog();
+            } else if (id == R.id.action_export) {
+                exportLogcat(mainList);
             }
             return true;
         });
@@ -140,6 +151,28 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         builder.show();
     }
 
+    private void exportLogcat(ArrayList<HashMap<String, Object>> logs){
+        try {
+            File file = new File(Environment.getExternalStorageDirectory(),".sketchware/logcat/" + packageName +"_"+ Calendar.getInstance(Locale.ENGLISH).getTimeInMillis() + ".txt");
+            createNewFileIfNotPresent(file.getAbsolutePath());
+            FileWriter writer = new FileWriter(file);
+            for (int i = 0; i < logs.size(); i++) {
+                String date = Objects.requireNonNull(logs.get(i).get("date")).toString();
+                String type = Objects.requireNonNull(logs.get(i).get("type")).toString();
+                String tag = Objects.requireNonNull(logs.get(i).get("header")).toString();
+                String body = Objects.requireNonNull(logs.get(i).get("body")).toString();
+
+                writer.write( date + " " +  type + " " + tag + " " + body + "\n");
+            }
+            writer.close();
+            SketchwareUtil.toast("Logcat exported successfully");
+
+        } catch (IOException ex) {
+            SketchwareUtil.toastError("Something went wrong!");
+        }
+    }
+    
+
     private class Logger extends BroadcastReceiver {
 
         @Override
@@ -148,6 +181,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
             if (intent.hasExtra("log") && (intent.getStringExtra("log") != null)) {
                 if (intent.hasExtra("packageName")) {
                     map.put("pkgName", intent.getStringExtra("packageName"));
+                    packageName = intent.getStringExtra("packageName");
                 }
                 map.put("logRaw", intent.getStringExtra("log"));
                 if (intent.getStringExtra("log") == null) return;
