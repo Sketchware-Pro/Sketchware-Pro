@@ -15,9 +15,17 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_export"
+        android:icon="@drawable/ic_mtrl_export"
+        android:title="Export Logcat"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/action_clear"
         android:icon="@drawable/ic_mtrl_clear_all"
         android:title="Clear all logs"
         app:showAsAction="always" />
+
+
 
 </menu>
