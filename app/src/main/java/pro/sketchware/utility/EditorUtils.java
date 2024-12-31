@@ -17,7 +17,7 @@ public class EditorUtils {
         var primary = MaterialColors.getColor(editor, com.google.android.material.R.attr.colorPrimary);
         var surface = MaterialColors.getColor(editor, com.google.android.material.R.attr.colorSurface);
         var onSurface = MaterialColors.getColor(editor, com.google.android.material.R.attr.colorOnSurface);
-        var onSurface = MaterialColors.getColor(editor, com.google.android.material.R.attr.colorOnSurfaceVariant);
+        var onSurfaceVariant = MaterialColors.getColor(editor, com.google.android.material.R.attr.colorOnSurfaceVariant);
         scheme.setColor(EditorColorScheme.KEYWORD, primary);
         scheme.setColor(EditorColorScheme.FUNCTION_NAME, primary);
         scheme.setColor(EditorColorScheme.WHOLE_BACKGROUND, surface);
