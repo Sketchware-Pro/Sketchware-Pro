@@ -37,7 +37,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
-import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.hilal.saif.asd.old.AsdOldDialog;
 
 import pro.sketchware.R;
@@ -749,10 +748,10 @@ public class ExtraMenuBean {
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.configureDefaultButton("Code Editor", v -> {
-            AsdAllEditor editor = new AsdAllEditor(logicEditor);
+            AsdDialog editor = new AsdDialog(logicEditor);
             editor.setCon(menu.getArgValue().toString());
             editor.show();
-            editor.saveLis(logicEditor, menu);
+            editor.saveLis(logicEditor, false, menu, editor);;
             editor.cancelLis(editor);
             dialog.dismiss();
         });

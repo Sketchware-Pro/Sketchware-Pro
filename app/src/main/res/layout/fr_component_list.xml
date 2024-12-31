@@ -26,7 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingBottom="80dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="64dp"
                 android:scrollbars="vertical"
                 android:splitMotionEvents="false"
                 tools:listitem="@layout/fr_logic_list_item_component" />

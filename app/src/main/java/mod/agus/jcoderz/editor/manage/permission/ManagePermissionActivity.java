@@ -1,6 +1,5 @@
 package mod.agus.jcoderz.editor.manage.permission;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
@@ -15,24 +14,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
+import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManagePermissionBinding;
 import pro.sketchware.databinding.ViewItemPermissionBinding;
-
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-
-import java.util.ArrayList;
-
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileResConfig;
 import pro.sketchware.utility.FileUtil;
-import mod.hey.studios.util.Helper;
-import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
 public class ManagePermissionActivity extends BaseAppCompatActivity {
     private PermissionsAdapter adapter;
@@ -64,7 +59,7 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
     }
 
     private void initViews() {
-        binding.topAppBar.setNavigationOnClickListener(v -> onBackPressed());
+        binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
         ViewCompat.setOnApplyWindowInsetsListener(binding.scrollToTopButton,
                 new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
     }
@@ -112,18 +107,21 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
     }
 
     public void initButtons() {
-        binding.resetPermissions.setOnClickListener(view -> {
-            new MaterialAlertDialogBuilder(this)
-                .setTitle("Reset permissions")
-                .setMessage("Are you sure you want to reset all permissions? This cannot be undone!")
-                .setPositiveButton("Reset", (dialog, which) -> {
-                    FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), "[]");
-                    //As FileResConfig only refreshes permissions during <init>()V, this is required.
-                    frc = new FileResConfig(numProj);
-                    setItems();
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
-                .show();
+        binding.toolbar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_reset) {
+                new MaterialAlertDialogBuilder(this)
+                        .setTitle("Reset permissions")
+                        .setMessage("Are you sure you want to reset all permissions? This cannot be undone!")
+                        .setPositiveButton("Reset", (dialog, which) -> {
+                            FileUtil.writeFile(new FilePathUtil().getPathPermission(numProj), "[]");
+                            //As FileResConfig only refreshes permissions during <init>()V, this is required.
+                            frc = new FileResConfig(numProj);
+                            setItems();
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
+            return true;
         });
         binding.scrollToTopButton.setOnClickListener(view -> {
             binding.scrollToTopButton.hide();

@@ -15,29 +15,45 @@ import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 
 import mod.hey.studios.util.Helper;
+import mod.jbk.code.CodeEditorColorSchemes;
+import mod.jbk.code.CodeEditorLanguages;
 
 import pro.sketchware.databinding.ActivityCodeViewerBinding;
 
 public class CodeViewerActivity extends BaseAppCompatActivity {
+
+    public static final String SCHEME_XML = "xml";
+    public static final String SCHEME_JAVA = "java";
     
     private ActivityCodeViewerBinding binding;
-    
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCodeViewerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         var code = getIntent().getStringExtra("code");
+        var scheme = getIntent().getStringExtra("scheme");
+        var scId = getIntent().getStringExtra("scId");
+        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.toolbar.setSubtitle(scId);
         binding.editor.setTypefaceText(Typeface.MONOSPACE);
         binding.editor.setTextSize(14);
         binding.editor.setText(code);
         binding.editor.setEditable(false);
         binding.editor.setWordwrap(false);
-        loadColorScheme();
+        loadColorScheme(scheme);
     }
-    
-    private void loadColorScheme() {
+
+    private void loadColorScheme(final String scheme) {
+        if (scheme.equals(SCHEME_XML)) {
+            loadXmlScheme();
+        } else {
+            loadJavaScheme();
+        }
+    }
+
+    private void loadJavaScheme() {
         binding.editor.setEditorLanguage(new JavaLanguage());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (isDarkThemeEnabled(this)) {
@@ -47,6 +63,19 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
             }
         } else {
             binding.editor.setColorScheme(new EditorColorScheme());
+        }
+    }
+
+    private void loadXmlScheme() {
+        binding.editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (isDarkThemeEnabled(this)) {
+                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+            } else {
+                binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+            }
+        } else {
+            binding.editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
         }
     }
 }

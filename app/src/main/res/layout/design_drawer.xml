@@ -51,8 +51,8 @@
             android:id="@+id/tv_title_global"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textAppearance="?textAppearanceBodyLarge"
+            android:padding="6dp"
+            android:textAppearance="?textAppearanceBodyMedium"
             tools:text="@string/design_drawer_menu_bottom_title" />
     </LinearLayout>
 

@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 app:title="Activity"
                 app:subtitle="onCreate"
+                app:subtitleTextColor="?colorSecondary"
                 app:navigationIcon="?attr/homeAsUpIndicator" />
 
             <com.besome.sketch.editor.view.ViewLogicEditor

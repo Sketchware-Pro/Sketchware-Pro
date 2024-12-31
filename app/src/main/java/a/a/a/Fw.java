@@ -275,7 +275,6 @@ public class Fw extends qA {
             viewHolder.binding.imgActivity.setImageResource(getImageResByOptions(projectFileBean.options));
             viewHolder.binding.tvScreenName.setText(projectFileBean.getXmlName());
             viewHolder.binding.tvActivityName.setText(projectFileBean.getJavaName());
-            viewHolder.binding.imgDelete.setImageResource(projectFileBean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
         }
 
         @Override
