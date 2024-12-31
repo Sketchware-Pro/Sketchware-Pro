@@ -1,89 +1,12 @@
 {
-  "scopeName": "text.xml",
-  "name": "XML",
-  "fileTypes": [
-    "aiml",
-    "atom",
-    "axml",
-    "bpmn",
-    "config",
-    "cpt",
-    "csl",
-    "csproj",
-    "csproj.user",
-    "dae",
-    "dia",
-    "dita",
-    "ditamap",
-    "dtml",
-    "fodg",
-    "fodp",
-    "fods",
-    "fodt",
-    "fsproj",
-    "fxml",
-    "gir",
-    "glade",
-    "gpx",
-    "graphml",
-    "icls",
-    "iml",
-    "isml",
-    "jmx",
-    "jsp",
-    "kml",
-    "kst",
-    "launch",
-    "menu",
-    "mxml",
-    "nunit",
-    "nuspec",
-    "opml",
-    "owl",
-    "pom",
-    "ppj",
-    "proj",
-    "pt",
-    "pubxml",
-    "pubxml.user",
-    "rdf",
-    "rng",
-    "rss",
-    "sdf",
-    "shproj",
-    "siml",
-    "sld",
-    "storyboard",
-    "StyleCop",
-    "svg",
-    "targets",
-    "tld",
-    "vbox",
-    "vbox-prev",
-    "vbproj",
-    "vbproj.user",
-    "vcproj",
-    "vcproj.filters",
-    "vcxproj",
-    "vcxproj.filters",
-    "wixmsp",
-    "wixmst",
-    "wixobj",
-    "wixout",
-    "wsdl",
-    "wxs",
-    "xaml",
-    "xbl",
-    "xib",
-    "xlf",
-    "xliff",
-    "xml",
-    "xpdl",
-    "xsd",
-    "xul",
-    "ui"
+  "information_for_contributors": [
+    "This file has been converted from https://github.com/atom/language-xml/blob/master/grammars/xml.cson",
+    "If you want to provide a fix or improvement, please create a pull request against the original repository.",
+    "Once accepted there, we are happy to receive an update request."
   ],
-  "firstLineMatch": "(?x)\n# XML declaration\n(?:\n  ^ <\\? xml\n\n  # VersionInfo\n  \\s+ version\n  \\s* = \\s*\n  (['\"])\n    1 \\. [0-9]+\n  \\1\n\n  # EncodingDecl\n  (?:\n    \\s+ encoding\n    \\s* = \\s*\n\n    # EncName\n    (['\"])\n      [A-Za-z]\n      [-A-Za-z0-9._]*\n    \\2\n  )?\n\n  # SDDecl\n  (?:\n    \\s+ standalone\n    \\s* = \\s*\n    (['\"])\n      (?:yes|no)\n    \\3\n  )?\n\n  \\s* \\?>\n)\n|\n# Modeline\n(?i:\n  # Emacs\n  -\\*-(?:\\s*(?=[^:;\\s]+\\s*-\\*-)|(?:.*?[;\\s]|(?<=-\\*-))mode\\s*:\\s*)\n    xml\n  (?=[\\s;]|(?<![-*])-\\*-).*?-\\*-\n  |\n  # Vim\n  (?:(?:\\s|^)vi(?:m[<=>]?\\d+|m)?|\\sex)(?=:(?=\\s*set?\\s[^\\n:]+:)|:(?!\\s*set?\\s))(?:(?:\\s|\\s*:\\s*)\\w*(?:\\s*=(?:[^\\n\\\\\\s]|\\\\.)*)?)*[\\s:](?:filetype|ft|syntax)\\s*=\n    xml\n  (?=\\s|:|$)\n)",
+  "version": "https://github.com/atom/language-xml/commit/7bc75dfe779ad5b35d9bf4013d9181864358cb49",
+  "name": "XML",
+  "scopeName": "text.xml",
   "patterns": [
     {
       "begin": "(<\\?)\\s*([-_a-zA-Z0-9]+)",
@@ -423,6 +346,42 @@
         },
         {
           "include": "#singlequotedString"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "begin": "<%--",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.xml"
+            }
+          },
+          "end": "--%>",
+          "name": "comment.block.xml"
+        },
+        {
+          "begin": "<!--",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.xml"
+            }
+          },
+          "end": "-->",
+          "name": "comment.block.xml",
+          "patterns": [
+            {
+              "begin": "--(?!>)",
+              "captures": {
+                "0": {
+                  "name": "invalid.illegal.bad-comments-or-CDATA.xml"
+                }
+              },
+              "end": "",
+              "name": "comment.block.xml"
+            }
+          ]
         }
       ]
     }
