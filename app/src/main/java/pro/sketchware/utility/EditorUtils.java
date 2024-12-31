@@ -17,6 +17,7 @@ public class EditorUtils {
         var primary = MaterialColors.getColor(editor, com.google.android.material.R.attr.colorPrimary);
         var surface = MaterialColors.getColor(editor, com.google.android.material.R.attr.colorSurface);
         var onSurface = MaterialColors.getColor(editor, com.google.android.material.R.attr.colorOnSurface);
+        var onSurface = MaterialColors.getColor(editor, com.google.android.material.R.attr.colorOnSurfaceVariant);
         scheme.setColor(EditorColorScheme.KEYWORD, primary);
         scheme.setColor(EditorColorScheme.FUNCTION_NAME, primary);
         scheme.setColor(EditorColorScheme.WHOLE_BACKGROUND, surface);
@@ -24,6 +25,7 @@ public class EditorUtils {
         scheme.setColor(EditorColorScheme.LINE_NUMBER_PANEL, surface);
         scheme.setColor(EditorColorScheme.LINE_NUMBER_BACKGROUND, surface);
         scheme.setColor(EditorColorScheme.TEXT_NORMAL, onSurface);
+        scheme.setColor(EditorColorScheme.SELECTION_INSERT, onSurfaceVariant);
         return scheme;
     }
 }
