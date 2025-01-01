@@ -19,6 +19,7 @@ import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
 
 import pro.sketchware.databinding.ActivityCodeViewerBinding;
+import pro.sketchware.utility.EditorUtils;
 
 public class CodeViewerActivity extends BaseAppCompatActivity {
 
@@ -34,7 +35,7 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
         setContentView(binding.getRoot());
         var code = getIntent().getStringExtra("code");
         var scheme = getIntent().getStringExtra("scheme");
-        var scId = getIntent().getStringExtra("scId");
+        var scId = getIntent().getStringExtra("sc_id");
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
         binding.toolbar.setSubtitle(scId);
         binding.editor.setTypefaceText(Typeface.MONOSPACE);
@@ -43,6 +44,7 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
         binding.editor.setEditable(false);
         binding.editor.setWordwrap(false);
         loadColorScheme(scheme);
+        binding.editor.setColorScheme(EditorUtils.getMaterialStyledScheme(binding.editor));
     }
 
     private void loadColorScheme(final String scheme) {
