@@ -26,7 +26,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import mod.hey.studios.code.SrcCodeEditor;
-import mod.hey.studios.code.SrcCodeEditorLegacy;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 
@@ -169,7 +168,7 @@ public class StringEditorActivity extends AppCompatActivity {
             isComingFromSrcCodeEditor = true;
             XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
             Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), ConfigActivity.isLegacyCeEnabled() ? SrcCodeEditorLegacy.class : SrcCodeEditor.class);
+            intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             intent.putExtra("title", getIntent().getStringExtra("title"));
             intent.putExtra("content", getIntent().getStringExtra("content"));
             intent.putExtra("xml", getIntent().getStringExtra("xml"));

@@ -47,7 +47,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
     public static final String SETTING_ROOT_AUTO_INSTALL_PROJECTS = "root-auto-install-projects";
     public static final String SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING = "root-auto-open-after-installing";
     public static final String SETTING_BACKUP_FILENAME = "backup-filename";
-    public static final String SETTING_LEGACY_CODE_EDITOR = "legacy-ce";
     public static final String SETTING_SHOW_BUILT_IN_BLOCKS = "built-in-blocks";
     public static final String SETTING_SHOW_EVERY_SINGLE_BLOCK = "show-every-single-block";
     public static final String SETTING_USE_NEW_VERSION_CONTROL = "use-new-version-control";
@@ -97,10 +96,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
 
     public static String getBackupFileName() {
         return DataStore.getInstance().getString(SETTING_BACKUP_FILENAME, "$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)");
-    }
-
-    public static boolean isLegacyCeEnabled() {
-        return DataStore.getInstance().getBoolean(SETTING_LEGACY_CODE_EDITOR, false);
     }
 
     public static boolean isSettingEnabled(String keyName) {
@@ -154,7 +149,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
 
         List<String> keys = Arrays.asList(SETTING_ALWAYS_SHOW_BLOCKS,
                 SETTING_BACKUP_DIRECTORY,
-                SETTING_LEGACY_CODE_EDITOR,
                 SETTING_ROOT_AUTO_INSTALL_PROJECTS,
                 SETTING_ROOT_AUTO_OPEN_AFTER_INSTALLING,
                 SETTING_SHOW_BUILT_IN_BLOCKS,
@@ -172,7 +166,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
 
     public static Object getDefaultValue(String key) {
         return switch (key) {
-            case SETTING_ALWAYS_SHOW_BLOCKS, SETTING_LEGACY_CODE_EDITOR,
+            case SETTING_ALWAYS_SHOW_BLOCKS,
                  SETTING_ROOT_AUTO_INSTALL_PROJECTS, SETTING_SHOW_BUILT_IN_BLOCKS,
                  SETTING_SHOW_EVERY_SINGLE_BLOCK, SETTING_USE_NEW_VERSION_CONTROL,
                  SETTING_USE_ASD_HIGHLIGHTER -> false;
