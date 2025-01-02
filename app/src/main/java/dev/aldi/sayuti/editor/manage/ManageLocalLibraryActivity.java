@@ -309,6 +309,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 onItemClicked(binding, library.getName());
             });
 
+            binding.materialSwitch.setChecked(false);
             if (!notAssociatedWithProject) {
                 for (Map<String, Object> libraryMap : projectUsedLibs) {
                     if (library.getName().equals(libraryMap.get("name").toString())) {
