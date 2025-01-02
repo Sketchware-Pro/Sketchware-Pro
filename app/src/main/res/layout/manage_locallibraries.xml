@@ -33,14 +33,11 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Elevation needs to be greater than AppBarLayout's elevation;
-       otherwise for some reason when the AppBarLayout's background
-       is not transparent, the elevation on this Toolbar doesn't show. -->
     <FrameLayout
         android:id="@+id/contextual_toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
+        android:elevation="2dp"
         android:visibility="gone">
 
         <com.google.android.material.appbar.MaterialToolbar

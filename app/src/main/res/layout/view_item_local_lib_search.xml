@@ -8,7 +8,7 @@
     android:focusable="true"
     android:paddingEnd="20dp"
     android:paddingStart="24dp"
-    android:paddingVertical="12dp">
+    android:paddingVertical="8dp">
 
     <TextView
         android:id="@+id/library_name"
