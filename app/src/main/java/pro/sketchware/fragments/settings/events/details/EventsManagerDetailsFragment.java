@@ -1,5 +1,7 @@
 package pro.sketchware.fragments.settings.events.details;
 
+import static pro.sketchware.utility.GsonUtils.getGson;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,7 +64,7 @@ public class EventsManagerDetailsFragment extends qA {
     private void refreshList() {
         listMap.clear();
         if (FileUtil.isExistFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath())) {
-            ArrayList<HashMap<String, Object>> events = new Gson()
+            ArrayList<HashMap<String, Object>> events = getGson()
                     .fromJson(FileUtil.readFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < events.size(); i++) {
                 if (listName.equals(events.get(i).get("listener"))) {
@@ -82,7 +83,7 @@ public class EventsManagerDetailsFragment extends qA {
     private void deleteItem(int position) {
         listMap.remove(position);
         if (FileUtil.isExistFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath())) {
-            ArrayList<HashMap<String, Object>> events = new Gson()
+            ArrayList<HashMap<String, Object>> events = getGson()
                     .fromJson(FileUtil.readFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
             for (int i = events.size() - 1; i > -1; i--) {
                 if (listName.equals(events.get(i).get("listener"))) {
@@ -90,7 +91,7 @@ public class EventsManagerDetailsFragment extends qA {
                 }
             }
             events.addAll(listMap);
-            FileUtil.writeFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath(), new Gson().toJson(events));
+            FileUtil.writeFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath(), getGson().toJson(events));
             refreshList();
         }
     }

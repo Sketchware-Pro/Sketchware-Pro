@@ -1,5 +1,7 @@
 package pro.sketchware.activities.editor.component;
 
+import static pro.sketchware.utility.GsonUtils.getGson;
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
@@ -19,7 +21,6 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,7 +94,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
 
     private void fillUp() {
         if (FileUtil.isExistFile(path)) {
-            ArrayList<HashMap<String, Object>> list = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            ArrayList<HashMap<String, Object>> list = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             HashMap<String, Object> map = list.get(position);
             setupViews(map);
         }
@@ -159,7 +160,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
     private void save() {
         ArrayList<HashMap<String, Object>> list = new ArrayList<>();
         if (FileUtil.isExistFile(path)) {
-            list = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            list = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
         }
         HashMap<String, Object> map = new HashMap<>();
         if (isEditMode) {
@@ -180,7 +181,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
         if (!isEditMode) {
             list.add(map);
         }
-        FileUtil.writeFile(path, new Gson().toJson(list));
+        FileUtil.writeFile(path, getGson().toJson(list));
         SketchwareUtil.toast(Helper.getResString(R.string.common_word_saved));
         finish();
     }
