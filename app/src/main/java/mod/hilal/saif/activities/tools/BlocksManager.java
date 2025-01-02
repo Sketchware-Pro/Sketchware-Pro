@@ -424,12 +424,15 @@ public class BlocksManager extends BaseAppCompatActivity {
         DialogPaletteBinding dialogBinding = DialogPaletteBinding.inflate(getLayoutInflater());
 
         if (isEditing) {
-            dialogBinding.nameEditText.setText(oldName);
-            dialogBinding.colorEditText.setText(oldColor);
+            dialogBinding.nameEditText.setText(oldName != null ? oldName : "");
+            dialogBinding.colorEditText.setText(oldColor != null ? oldColor : "");
         }
 
         dialogBinding.openColorPalette.setOnClickListener(v1 -> {
-            final Zx zx = new Zx(this, PropertiesUtil.parseColor(oldColor), true, false);
+            String colorToParse = oldColor != null && PropertiesUtil.isHexColor(oldColor)
+                    ? oldColor
+                    : "#FFFFFF"; // Default to white if `oldColor` is null or invalid
+            final Zx zx = new Zx(this, PropertiesUtil.parseColor(colorToParse), true, false);
             zx.a(new PCP(dialogBinding.colorEditText));
             zx.showAtLocation(dialogBinding.openColorPalette, Gravity.CENTER, 0, 0);
         });
@@ -450,40 +453,39 @@ public class BlocksManager extends BaseAppCompatActivity {
                 return;
             }
 
-            if (PropertiesUtil.isHexColor(colorInput)) {
-                Color.parseColor(colorInput);
-                if (!isEditing) {
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("name", nameInput);
-                    map.put("color", colorInput);
+            Color.parseColor(colorInput);
+            if (!isEditing) {
+                HashMap<String, Object> map = new HashMap<>();
+                map.put("name", nameInput);
+                map.put("color", colorInput);
 
-                    if (insertAtPosition == null) {
-                        pallet_listmap.add(map);
-                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                        Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(pallet_listmap.size() - 1);
-                        readSettings();
-                    }else{
-                        pallet_listmap.add(insertAtPosition, map);
-                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
-                        readSettings();
-                        Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(insertAtPosition);
-                        insertBlocksAt(insertAtPosition + 9);
-                    }
-                }else{
-                    pallet_listmap.get(oldPosition).put("name", nameInput);
-                    pallet_listmap.get(oldPosition).put("color", colorInput);
+                if (insertAtPosition == null) {
+                    pallet_listmap.add(map);
+                    FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                    Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(pallet_listmap.size() - 1);
+                    readSettings();
+                } else {
+                    pallet_listmap.add(insertAtPosition, map);
                     FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
                     readSettings();
-                    refresh_list();
+                    Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(insertAtPosition);
+                    insertBlocksAt(insertAtPosition + 9);
                 }
-                dialog.dismiss();
+            } else {
+                pallet_listmap.get(oldPosition).put("name", nameInput);
+                pallet_listmap.get(oldPosition).put("color", colorInput);
+                FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                readSettings();
+                refresh_list();
             }
+            dialog.dismiss();
         });
 
         dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
         dialog.a(dialogBinding.getRoot());
         dialog.show();
     }
+
 
     private boolean isItInTrash(View draggedView, View trash) {
         if (draggedView == null) return false;

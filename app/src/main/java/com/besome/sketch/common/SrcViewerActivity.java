@@ -3,6 +3,7 @@ package com.besome.sketch.common;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import pro.sketchware.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import a.a.a.ProjectBuilder;
 import a.a.a.bB;
@@ -32,6 +34,9 @@ import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.hey.studios.util.Helper;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.TextView;
 
 public class SrcViewerActivity extends BaseAppCompatActivity {
 
@@ -40,9 +45,6 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
     private ImageView changeFontSize;
     private LinearLayout progressContainer;
     private ArrayList<SrcCodeBean> srcCodeBean;
-    /**
-     * Corresponds to the filename of which layout or activity the user is currently in.
-     */
     private String currentPageFileName;
     private int sourceCodeFontSize = 12;
     private CodeEditor codeViewer;
@@ -81,8 +83,7 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         LinearLayout layoutSrcList = findViewById(R.id.layout_srclist);
@@ -90,7 +91,6 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
             View child = layoutSrcList.getChildAt(i);
 
             if (child instanceof LinearLayout) {
-                // Found the LinearLayout containing the ProgressBar and TextView!
                 progressContainer = (LinearLayout) child;
 
                 filesListSpinner.setVisibility(View.GONE);
@@ -109,28 +109,24 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
             builder.buildBuiltInLibraryInformation();
             srcCodeBean = yq.a(fileManager, dataManager, builder.getBuiltInLibraryManager());
 
-            try {
-                runOnUiThread(() -> {
-                    if (srcCodeBean == null) {
-                        bB.b(getApplicationContext(), Helper.getResString(R.string.common_error_unknown), bB.TOAST_NORMAL).show();
-                    } else {
-                        filesListSpinner.setAdapter(new FilesListSpinnerAdapter());
-                        for (SrcCodeBean src : srcCodeBean) {
-                            if (src.srcFileName.equals(currentPageFileName)) {
-                                filesListSpinner.setSelection(srcCodeBean.indexOf(src));
-                                break;
-                            }
+            runOnUiThread(() -> {
+                if (srcCodeBean == null) {
+                    bB.b(getApplicationContext(), Helper.getResString(R.string.common_error_unknown), bB.TOAST_NORMAL).show();
+                } else {
+                    filesListSpinner.setAdapter(new FilesListSpinnerAdapter());
+                    for (SrcCodeBean src : srcCodeBean) {
+                        if (src.srcFileName.equals(currentPageFileName)) {
+                            filesListSpinner.setSelection(srcCodeBean.indexOf(src));
+                            break;
                         }
-                        codeViewer.setText(srcCodeBean.get(filesListSpinner.getSelectedItemPosition()).source);
-
-                        progressContainer.setVisibility(View.GONE);
-                        filesListSpinner.setVisibility(View.VISIBLE);
-                        changeFontSize.setVisibility(View.VISIBLE);
                     }
-                });
-            } catch (Exception ignored) {
-                // May occur if the activity is killed
-            }
+                    codeViewer.setText(srcCodeBean.get(filesListSpinner.getSelectedItemPosition()).source);
+
+                    progressContainer.setVisibility(View.GONE);
+                    filesListSpinner.setVisibility(View.VISIBLE);
+                    changeFontSize.setVisibility(View.VISIBLE);
+                }
+            });
         }).start();
     }
 
@@ -144,7 +140,7 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
         if (currentPageFileName.endsWith(".xml")) {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
                 Configuration configuration = getResources().getConfiguration();
-                boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
+                boolean isDarkTheme = configuration.isNightModeActive();
                 if (isDarkTheme) {
                     codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
                 } else {
@@ -157,14 +153,14 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
         } else {
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
                 Configuration configuration = getResources().getConfiguration();
-                boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
+                boolean isDarkTheme = configuration.isNightModeActive();
                 if (isDarkTheme) {
-                    codeViewer.setColorScheme( new SchemeDarcula());
+                    codeViewer.setColorScheme(new SchemeDarcula());
                 } else {
-                    codeViewer.setColorScheme( new EditorColorScheme());
+                    codeViewer.setColorScheme(new EditorColorScheme());
                 }
             } else {
-                codeViewer.setColorScheme( new EditorColorScheme());
+                codeViewer.setColorScheme(new EditorColorScheme());
             }
             codeViewer.setEditorLanguage(new JavaLanguage());
         }
@@ -196,17 +192,24 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
     }
 
     public class FilesListSpinnerAdapter extends BaseAdapter {
+        private List<SrcCodeBean> originalList;
+        private List<SrcCodeBean> filteredList;
+
+        public FilesListSpinnerAdapter() {
+            this.originalList = new ArrayList<>(srcCodeBean);
+            this.filteredList = new ArrayList<>(srcCodeBean);
+        }
 
         private View getCustomSpinnerView(int position, View view, boolean isCurrentlyViewingFile) {
             CommonSpinnerItem spinnerItem = (view != null) ? (CommonSpinnerItem) view :
                     new CommonSpinnerItem(SrcViewerActivity.this);
-            spinnerItem.a((srcCodeBean.get(position)).srcFileName, isCurrentlyViewingFile);
+            spinnerItem.a(filteredList.get(position).srcFileName, isCurrentlyViewingFile);
             return spinnerItem;
         }
 
         @Override
         public int getCount() {
-            return srcCodeBean.size();
+            return filteredList.size();
         }
 
         @Override
@@ -217,7 +220,7 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
 
         @Override
         public Object getItem(int position) {
-            return srcCodeBean.get(position);
+            return filteredList.get(position);
         }
 
         @Override
@@ -228,6 +231,20 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             return getCustomSpinnerView(position, convertView, false);
+        }
+
+        public void filter(String query) {
+            filteredList.clear();
+            if (TextUtils.isEmpty(query)) {
+                filteredList.addAll(originalList);
+            } else {
+                for (SrcCodeBean item : originalList) {
+                    if (item.srcFileName.toLowerCase().contains(query.toLowerCase())) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+            notifyDataSetChanged();
         }
     }
 }

@@ -1,4 +1,5 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -29,6 +30,44 @@
                 app:title="@string/local_library_manager" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
+
+        <!-- Toggle Group for switching views -->
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+        android:background="@android:color/transparent"
+        android:theme="@style/ChipStyle.SWPro.Chip.Rounded">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/myLibrariesButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            style="?attr/materialButtonOutlinedStyle"
+            android:text="@string/my_local_libraries"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:checkable="true"
+            android:checked="true"
+            android:textAllCaps="false"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/allLibrariesButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            style="?attr/materialButtonOutlinedStyle"
+            android:text="@string/all_local_libraries"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:checkable="true"
+            android:textAllCaps="false"/>
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+        <!-- Search bar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,6 +133,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
+            android:id="@+id/noContentTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -102,6 +142,7 @@
             android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/noContentBody"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
