@@ -8,7 +8,7 @@
     android:focusable="true"
     android:paddingEnd="20dp"
     android:paddingStart="24dp"
-    android:paddingVertical="16dp">
+    android:paddingVertical="12dp">
 
     <TextView
         android:id="@+id/library_name"
@@ -18,9 +18,11 @@
         android:singleLine="true"
         android:textAppearance="?attr/textAppearanceBodyLarge"
         android:textColor="?attr/colorOnSurface"
+        app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintEnd_toStartOf="@id/material_switch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/library_size"
+        app:layout_constraintTop_toTopOf="@id/material_switch"
         tools:text="appcompat-v1.7.0" />
 
     <TextView
@@ -30,6 +32,7 @@
         android:layout_marginTop="2dp"
         android:textAppearance="?attr/textAppearanceBodyMedium"
         android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintBottom_toBottomOf="@id/material_switch"
         app:layout_constraintEnd_toStartOf="@id/material_switch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/library_name"
@@ -38,7 +41,7 @@
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/material_switch"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
