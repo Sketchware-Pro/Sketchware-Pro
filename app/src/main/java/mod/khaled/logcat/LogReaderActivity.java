@@ -53,6 +53,11 @@ public class LogReaderActivity extends BaseAppCompatActivity {
     private String packageName = "pro.sketchware";
     private boolean autoScroll = true;
 
+    private String date;
+    private String tag;
+    private String body;
+    private String type;
+
     private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
     private ArrayList<String> pkgFilterList = new ArrayList<>();
 
@@ -158,10 +163,10 @@ public class LogReaderActivity extends BaseAppCompatActivity {
             createNewFileIfNotPresent(file.getAbsolutePath());
             FileWriter writer = new FileWriter(file);
             for (int i = 0; i < logs.size(); i++) {
-                String date = Objects.requireNonNull(logs.get(i).get("date")).toString();
-                String type = Objects.requireNonNull(logs.get(i).get("type")).toString();
-                String tag = Objects.requireNonNull(logs.get(i).get("header")).toString();
-                String body = Objects.requireNonNull(logs.get(i).get("body")).toString();
+                if (logs.get(i).containsKey("date")) date = Objects.requireNonNull(logs.get(i).get("date")).toString();
+                if (logs.get(i).containsKey("type")) type = Objects.requireNonNull(logs.get(i).get("type")).toString();
+                if (logs.get(i).containsKey("header")) tag = Objects.requireNonNull(logs.get(i).get("header")).toString();
+                if (logs.get(i).containsKey("body")) body = Objects.requireNonNull(logs.get(i).get("body")).toString();
 
                 writer.write( date + " " +  type + " " + tag + " " + body + "\n");
             }
