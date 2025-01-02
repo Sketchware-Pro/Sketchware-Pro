@@ -1,6 +1,7 @@
 package pro.sketchware.widgets;
 
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
+import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,7 +25,6 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -86,7 +86,7 @@ public class WidgetsCreatorManager {
 
     private void loadCustomWidgets() {
         try {
-            widgetConfigurationsList = new Gson().fromJson(
+            widgetConfigurationsList = getGson().fromJson(
                     FileUtil.readFile(widgetsJsonFilePath),
                     new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType()
             );
@@ -139,7 +139,7 @@ public class WidgetsCreatorManager {
 
     private void createWidgetsFile() {
         if (widgetConfigurationsList != null) widgetConfigurationsList.clear();
-        FileUtil.writeFile(widgetsJsonFilePath, new Gson().toJson(widgetConfigurationsList));
+        FileUtil.writeFile(widgetsJsonFilePath, getGson().toJson(widgetConfigurationsList));
     }
 
     public void showWidgetsCreatorDialog(int position) {
@@ -223,7 +223,7 @@ public class WidgetsCreatorManager {
                     map.put("position", widgetConfigurationsList.size());
                     widgetConfigurationsList.add(map);
                 }
-                FileUtil.writeFile(widgetsJsonFilePath, new Gson().toJson(widgetConfigurationsList));
+                FileUtil.writeFile(widgetsJsonFilePath, getGson().toJson(widgetConfigurationsList));
                 if (!allCategories.contains(widgetClass)) {
                     allCategories.add(widgetClass);
                 }
@@ -264,7 +264,7 @@ public class WidgetsCreatorManager {
                 pickerDialog.show();
             } else {
                 String exportFilePath = widgetExportDirectoryPath + "allWidgets.json";
-                FileUtil.writeFile(exportFilePath, new Gson().toJson(widgetConfigurationsList));
+                FileUtil.writeFile(exportFilePath, getGson().toJson(widgetConfigurationsList));
                 SketchwareUtil.toast("Exported in " + exportFilePath);
             }
             return true;
@@ -281,7 +281,7 @@ public class WidgetsCreatorManager {
 
             try {
                 Type listType = new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType();
-                ArrayList<HashMap<String, Object>> importedWidgets = new Gson().fromJson(value, listType);
+                ArrayList<HashMap<String, Object>> importedWidgets = getGson().fromJson(value, listType);
 
                 if (importedWidgets.isEmpty()) {
                     SketchwareUtil.toastError(String.format(ERROR_MESSAGE, i + 1));
@@ -304,7 +304,7 @@ public class WidgetsCreatorManager {
         }
 
         if (!widgetConfigurationsList.isEmpty()) {
-            FileUtil.writeFile(widgetsJsonFilePath, new Gson().toJson(widgetConfigurationsList));
+            FileUtil.writeFile(widgetsJsonFilePath, getGson().toJson(widgetConfigurationsList));
             viewEditorFragment.e();
             SketchwareUtil.toast("Imported!");
         }
@@ -476,7 +476,7 @@ public class WidgetsCreatorManager {
         dialogBinding.export.setOnClickListener(v -> {
             HashMap<String, Object> mapToExport = widgetConfigurationsList.get(position);
             String exportFilePath = widgetExportDirectoryPath + mapToExport.get("title") + ".json";
-            FileUtil.writeFile(exportFilePath, "[" + new Gson().toJson(mapToExport) + "]");
+            FileUtil.writeFile(exportFilePath, "[" + getGson().toJson(mapToExport) + "]");
             SketchwareUtil.toast("Exported in " + exportFilePath);
             dialog.dismiss();
         });
@@ -498,7 +498,7 @@ public class WidgetsCreatorManager {
             if (isClassEmpty(Class) && !mainCategories.contains(Class)) {
                 allCategories.remove(Class);
             }
-            FileUtil.writeFile(widgetsJsonFilePath, new Gson().toJson(widgetConfigurationsList));
+            FileUtil.writeFile(widgetsJsonFilePath, getGson().toJson(widgetConfigurationsList));
             viewEditorFragment.e();
             dialog.dismiss();
         });
