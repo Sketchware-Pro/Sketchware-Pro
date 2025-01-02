@@ -2,12 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_item"
-    style="?attr/materialCardViewFilledStyle"
+    style="?attr/materialCardViewElevatedStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     app:cardBackgroundColor="?attr/colorSurfaceContainer"
-    app:strokeWidth="0.5dp">
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium">
 
     <RelativeLayout
         android:layout_width="wrap_content"
