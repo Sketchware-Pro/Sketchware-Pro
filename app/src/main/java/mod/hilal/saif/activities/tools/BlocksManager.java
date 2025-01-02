@@ -1,5 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
+import static pro.sketchware.utility.GsonUtils.getGson;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -30,7 +32,6 @@ import a.a.a.xB;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
@@ -143,8 +144,8 @@ public class BlocksManager extends BaseAppCompatActivity {
             @Override
             public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
                 viewHolder.itemView.setAlpha(1f);
-                FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
-                FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                FileUtil.writeFile(blocks_dir, getGson().toJson(all_blocks_list));
+                FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
             }
 
             @Override
@@ -236,8 +237,8 @@ public class BlocksManager extends BaseAppCompatActivity {
             draggedView = null;
             moveRelatedBlocksToRecycleBin(position + 9);
             removeRelatedBlocks(position + 9);
-            FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
-            FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+            FileUtil.writeFile(blocks_dir, getGson().toJson(all_blocks_list));
+            FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
             refreshCount();
             dialog.dismiss();
         });
@@ -253,7 +254,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
         if (FileUtil.isExistFile(blocks_dir) && isValidJson(FileUtil.readFile(blocks_dir))) {
             try {
-                all_blocks_list = new Gson().fromJson(FileUtil.readFile(blocks_dir), Helper.TYPE_MAP_LIST);
+                all_blocks_list = getGson().fromJson(FileUtil.readFile(blocks_dir), Helper.TYPE_MAP_LIST);
 
                 if (all_blocks_list != null) {
                     return;
@@ -282,7 +283,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             String paletteJsonContent;
             if (FileUtil.isExistFile(pallet_dir) && !(paletteJsonContent = FileUtil.readFile(pallet_dir)).isEmpty()) {
                 try {
-                    pallet_listmap = new Gson().fromJson(paletteJsonContent, Helper.TYPE_MAP_LIST);
+                    pallet_listmap = getGson().fromJson(paletteJsonContent, Helper.TYPE_MAP_LIST);
 
                     if (pallet_listmap != null) {
                         break parsePaletteJson;
@@ -355,7 +356,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                 }
             }
         }
-        FileUtil.writeFile(blocks_dir, new Gson().toJson(newBlocks));
+        FileUtil.writeFile(blocks_dir, getGson().toJson(newBlocks));
         readSettings();
     }
 
@@ -391,7 +392,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                 all_blocks_list.get(i).put("palette", String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) + 1)));
             }
         }
-        FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
+        FileUtil.writeFile(blocks_dir, getGson().toJson(all_blocks_list));
         readSettings();
         refresh_list();
     }
@@ -402,7 +403,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                 all_blocks_list.get(i).put("palette", "-1");
             }
         }
-        FileUtil.writeFile(blocks_dir, new Gson().toJson(all_blocks_list));
+        FileUtil.writeFile(blocks_dir, getGson().toJson(all_blocks_list));
         readSettings();
     }
 
@@ -413,7 +414,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                 newBlocks.add(all_blocks_list.get(i));
             }
         }
-        FileUtil.writeFile(blocks_dir, new Gson().toJson(newBlocks));
+        FileUtil.writeFile(blocks_dir, getGson().toJson(newBlocks));
         readSettings();
         refresh_list();
     }
@@ -473,12 +474,12 @@ public class BlocksManager extends BaseAppCompatActivity {
 
                     if (insertAtPosition == null) {
                         pallet_listmap.add(map);
-                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                        FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
                         Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(pallet_listmap.size() - 1);
                         readSettings();
                     }else{
                         pallet_listmap.add(insertAtPosition, map);
-                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                        FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
                         readSettings();
                         Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(insertAtPosition);
                         insertBlocksAt(insertAtPosition + 9);
@@ -486,7 +487,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                 }else{
                     pallet_listmap.get(oldPosition).put("name", nameInput);
                     pallet_listmap.get(oldPosition).put("color", colorInput);
-                    FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                    FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
                     readSettings();
                     refresh_list();
                 }
@@ -585,7 +586,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                                     .setPositiveButton("Remove permanently", (dialog, which) -> {
                                         palettes.remove(pos);
                                         notifyItemRemoved(pos);
-                                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                                        FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
                                         removeRelatedBlocks(pos + 9);
                                         readSettings();
                                         refreshCount();
@@ -595,7 +596,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                                         moveRelatedBlocksToRecycleBin(position + 9);
                                         palettes.remove(pos);
                                         notifyItemRemoved(pos);
-                                        FileUtil.writeFile(pallet_dir, new Gson().toJson(pallet_listmap));
+                                        FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
                                         removeRelatedBlocks(pos + 9);
                                         readSettings();
                                         refreshCount();
