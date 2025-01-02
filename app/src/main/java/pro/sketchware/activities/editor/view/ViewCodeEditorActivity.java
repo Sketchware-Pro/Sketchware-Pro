@@ -27,8 +27,6 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import io.github.rosemoe.sora.widget.CodeEditor;
 
 import mod.hey.studios.util.Helper;
-import mod.jbk.code.CodeEditorColorSchemes;
-import mod.jbk.code.CodeEditorLanguages;
 
 import pro.sketchware.R;
 import pro.sketchware.activities.appcompat.ManageAppCompatActivity;
@@ -38,6 +36,7 @@ import pro.sketchware.managers.inject.InjectRootLayoutManager;
 import pro.sketchware.tools.ViewBeanParser;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.relativelayout.CircularDependencyDetector;
+import pro.sketchware.utility.EditorUtils;
 
 public class ViewCodeEditorActivity extends BaseAppCompatActivity {
     private ViewCodeEditorBinding binding;
@@ -120,10 +119,10 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
         });
         content = getIntent().getStringExtra("content");
         editor = binding.editor;
-        editor.setTypefaceText(Typeface.MONOSPACE);
+        editor.setTypefaceText(EditorUtils.getTypeface(this));
         editor.setTextSize(14);
         editor.setText(content);
-        loadColorScheme();
+        EditorUtils.loadXmlConfig(editor);
         if (projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY
                 && projectLibrary.isEnabled()) {
             setNote("Use AppCompat Manager to modify attributes for CoordinatorLayout, Toolbar, and other appcompat layout/widget.");
@@ -181,7 +180,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
                 return true;
             }
             case 4 -> {
-                loadColorScheme();
+                EditorUtils.loadXmlConfig(binding.editor);
                 return true;
             }
             case 5 -> {
@@ -218,28 +217,6 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
         binding.noteCard.setVisibility(View.VISIBLE);
         binding.note.setText(note);
         binding.note.setSelected(true);
-    }
-
-    private void loadColorScheme() {
-        editor.setEditorLanguage(
-            CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            Configuration configuration = getResources().getConfiguration();
-            boolean isDarkTheme = configuration.isNightModeActive();
-            if (isDarkTheme) {
-                editor.setColorScheme(
-                        CodeEditorColorSchemes.loadTextMateColorScheme(
-                                CodeEditorColorSchemes.THEME_DRACULA));
-            } else {
-                editor.setColorScheme(
-                        CodeEditorColorSchemes.loadTextMateColorScheme(
-                                CodeEditorColorSchemes.THEME_GITHUB));
-            }
-        } else {
-            editor.setColorScheme(
-                    CodeEditorColorSchemes.loadTextMateColorScheme(
-                            CodeEditorColorSchemes.THEME_GITHUB));
-        }
     }
 
     private void save() {
