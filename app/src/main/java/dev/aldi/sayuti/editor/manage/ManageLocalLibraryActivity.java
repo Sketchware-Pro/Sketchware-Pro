@@ -3,6 +3,7 @@ package dev.aldi.sayuti.editor.manage;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,15 +14,16 @@ import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -40,9 +42,10 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
 
+import a.a.a.MA;
 import a.a.a.mB;
 
-public class ManageLocalLibraryActivity extends AppCompatActivity {
+public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
 
     private ArrayList<HashMap<String, Object>> lookupList = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> projectUsedLibs = new ArrayList<>();
@@ -61,7 +64,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ManageLocallibrariesBinding.inflate(getLayoutInflater());
@@ -97,7 +100,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
 
             LibraryDownloaderDialogFragment fragment = new LibraryDownloaderDialogFragment();
             fragment.setArguments(bundle);
-            fragment.setOnLibraryDownloadedTask(this::loadLibraries);
+            fragment.setOnLibraryDownloadedTask(this::runLoadLocalLibrariesTask);
             fragment.show(getSupportFragmentManager(), "library_downloader_dialog");
         });
 
@@ -114,13 +117,17 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence newText, int start, int before, int count) {
-                if (newText.toString().isEmpty()) {
-                    loadLibraries();
-                }
             }
         });
 
-        loadLibraries();
+        runLoadLocalLibrariesTask();
+    }
+
+    private void runLoadLocalLibrariesTask() {
+        k();
+        new Handler().postDelayed(() -> {
+            new LoadLocalLibrariesTask(this).execute();
+        }, 500L);
     }
 
     @Override
@@ -155,8 +162,10 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
             }
         }
 
-        adapter.setLibraryFiles(libraryFiles);
-        binding.noContentLayout.setVisibility(libraryFiles.isEmpty() ? View.VISIBLE : View.GONE);
+        runOnUiThread(() -> {
+            adapter.setLibraryFiles(libraryFiles);
+            binding.noContentLayout.setVisibility(libraryFiles.isEmpty() ? View.VISIBLE : View.GONE);
+        });
     }
 
     public static HashMap<String, Object> createLibraryMap(String name, String dependency) {
@@ -195,6 +204,35 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
             localLibrary.put("assetsPath", assetsPath);
         }
         return localLibrary;
+    }
+
+    private static class LoadLocalLibrariesTask extends MA {
+        private final WeakReference<ManageLocalLibraryActivity> activity;
+
+        public LoadLocalLibrariesTask(ManageLocalLibraryActivity activity) {
+            super(activity);
+            this.activity = new WeakReference<>(activity);
+            activity.addTask(this);
+        }
+
+        @Override
+        public void a() {
+            activity.get().h();
+        }
+
+        @Override
+        public void a(String idk) {
+            activity.get().h();
+        }
+
+        @Override
+        public void b() {
+            try {
+                activity.get().loadLibraries();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
@@ -237,7 +275,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
                 popupMenu.setOnMenuItemClickListener(menuItem -> {
                     FileUtil.deleteFile(localLibsPath.concat(binding.libraryName.getText().toString()));
                     SketchwareUtil.toast("Deleted successfully");
-                    loadLibraries();
+                    runLoadLocalLibrariesTask();
                     return true;
                 });
                 popupMenu.show();
@@ -343,7 +381,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity {
                 popupMenu.setOnMenuItemClickListener(menuItem -> {
                     FileUtil.deleteFile(localLibsPath.concat(binding.libraryName.getText().toString()));
                     SketchwareUtil.toast("Deleted successfully");
-                    loadLibraries();
+                    runLoadLocalLibrariesTask();
                     return true;
                 });
                 popupMenu.show();
