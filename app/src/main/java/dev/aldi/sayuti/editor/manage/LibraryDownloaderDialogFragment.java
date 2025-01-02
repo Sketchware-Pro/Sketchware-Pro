@@ -1,5 +1,7 @@
 package dev.aldi.sayuti.editor.manage;
 
+import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.createLibraryMap;
+
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
@@ -210,7 +212,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                             var fileContent = FileUtil.readFile(localLibFile);
                             var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);
                             enabledLibs.addAll(dependencies.stream()
-                                    .map(name -> ManageLocalLibraryActivity.createLibraryMap(name, dependencyName))
+                                    .map(name -> createLibraryMap(name, dependencyName))
                                     .collect(Collectors.toList()));
                             FileUtil.writeFile(localLibFile, gson.toJson(enabledLibs));
                         }

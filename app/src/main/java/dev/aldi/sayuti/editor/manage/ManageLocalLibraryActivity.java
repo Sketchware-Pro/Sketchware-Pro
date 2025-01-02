@@ -1,7 +1,11 @@
 package dev.aldi.sayuti.editor.manage;
 
-import static pro.sketchware.utility.FileUtil.formatFileSize;
-import static pro.sketchware.utility.FileUtil.getFileSize;
+import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.createLibraryMap;
+import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.deleteSelectedLocalLibraries;
+import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.getAllLocalLibraries;
+import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.getLocalLibFile;
+import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.getLocalLibraries;
+import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.rewriteLocalLibFile;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
@@ -31,7 +35,7 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.Map;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,26 +55,19 @@ import a.a.a.MA;
 import a.a.a.mB;
 
 public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
+    private ArrayList<HashMap<String, Object>> projectUsedLibs;
 
-    private ArrayList<HashMap<String, Object>> lookupList = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> projectUsedLibs = new ArrayList<>();
-    private final ArrayList<File> localLibraryFiles = new ArrayList<>();
-
-    private static String localLibsPath;
     private boolean notAssociatedWithProject;
     private boolean searchBarExpanded;
-    private String localLibFile;
     private BuildSettings buildSettings;
     private ManageLocallibrariesBinding binding;
+    private String scId;
+
     private LibraryAdapter adapter = new LibraryAdapter();
     private SearchAdapter searchAdapter = new SearchAdapter();
 
     private interface OnLocalLibrarySelectedStateChangedListener {
-        void onLocalLibrarySelectedStateChanged(LocalLibrary library);
-    }
-
-    static {
-        localLibsPath = FileUtil.getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
+        void invoke(LocalLibrary library);
     }
 
     @Override
@@ -89,10 +86,9 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
         });
 
         if (getIntent().hasExtra("sc_id")) {
-            String scId = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
+            scId = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
             buildSettings = new BuildSettings(scId);
             notAssociatedWithProject = scId.equals("system");
-            localLibFile = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(scId.concat("/local_library"));
         }
 
         adapter.setOnLocalLibrarySelectedStateChangedListener(item -> {
@@ -124,9 +120,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 return true;
             } else if (id == R.id.action_delete_selected_local_libraries) {
                 new Thread(() -> {
-                    for (LocalLibrary library : getSelectedLocalLibraries()) {
-                        FileUtil.deleteFile(localLibsPath.concat(library.getName()));
-                    }
+                    deleteSelectedLocalLibraries(adapter.getLocalLibraries());
 
                     runOnUiThread(() -> {
                         SketchwareUtil.toast("Deleted successfully");
@@ -148,7 +142,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putBoolean("notAssociatedWithProject", notAssociatedWithProject);
             bundle.putSerializable("buildSettings", buildSettings);
-            bundle.putString("localLibFile", localLibFile);
+            bundle.putString("localLibFile", getLocalLibFile(scId).getAbsolutePath());
 
             LibraryDownloaderDialogFragment fragment = new LibraryDownloaderDialogFragment();
             fragment.setArguments(bundle);
@@ -164,7 +158,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String value = s.toString().trim();
-                searchAdapter.filter(adapter.getLocalLibraries(), value);
+                searchAdapter.filter(getAdapterLocalLibraries(), value);
             }
 
             @Override
@@ -175,6 +169,17 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
         runLoadLocalLibrariesTask();
     }
 
+    private void runLoadLocalLibrariesTask() {
+        k();
+        new Handler().postDelayed(() -> {
+            new LoadLocalLibrariesTask(this).execute();
+        }, 500L);
+    }
+
+    private List<LocalLibrary> getAdapterLocalLibraries() {
+        return adapter.getLocalLibraries();
+    }
+
     private void hideContextualToolbarAndClearSelection() {
         adapter.isSelectionModeEnabled = false;
         if (collapseContextualToolbar()) {
@@ -183,7 +188,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
     }
 
     public void setLocalLibrariesSelected(boolean selected) {
-        for (LocalLibrary library : adapter.getLocalLibraries()) {
+        for (LocalLibrary library : getAdapterLocalLibraries()) {
             library.setSelected(selected);
         }
         adapter.notifyDataSetChanged();
@@ -200,24 +205,13 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
     }
 
     private long getSelectedLocalLibrariesCount() {
-        return getSelectedLocalLibraries().isEmpty() ? 0 : getSelectedLocalLibraries().size();
-    }
-
-    private List<LocalLibrary> getSelectedLocalLibraries() {
-        List<LocalLibrary> selectedLocalLibraries = new LinkedList<>();
-        for (LocalLibrary library : adapter.getLocalLibraries()) {
+        long count = 0;
+        for (LocalLibrary library : getAdapterLocalLibraries()) {
             if (library.isSelected()) {
-                selectedLocalLibraries.add(library);
+                count++;
             }
         }
-        return selectedLocalLibraries;
-    }
-
-    private void runLoadLocalLibrariesTask() {
-        k();
-        new Handler().postDelayed(() -> {
-            new LoadLocalLibrariesTask(this).execute();
-        }, 500L);
+        return count;
     }
 
     @Override
@@ -231,102 +225,18 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
         }
     }
 
+    // This method is running from the background thread.
+    // So, every UI operation must be called inside `runOnUiThread`.
     private void loadLibraries() {
-        projectUsedLibs.clear();
-        lookupList.clear();
-
+        var localLibraries = getAllLocalLibraries();
         if (!notAssociatedWithProject) {
-            String fileContent;
-            if (!FileUtil.isExistFile(localLibFile) || (fileContent = FileUtil.readFile(localLibFile)).isEmpty()) {
-                FileUtil.writeFile(localLibFile, "[]");
-            } else {
-                projectUsedLibs = new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
-            }
-        }
-
-        FileUtil.listDirAsFile(localLibsPath, localLibraryFiles);
-        localLibraryFiles.sort(new LocalLibrariesComparator());
-
-        List<LocalLibrary> localLibraries = new LinkedList<>();
-        for (File libraryFile : localLibraryFiles) {
-            if (libraryFile.isDirectory()) {
-                localLibraries.add(LocalLibrary.fromFile(libraryFile));
-            }
+            projectUsedLibs = getLocalLibraries(scId);
         }
 
         runOnUiThread(() -> {
             adapter.setLocalLibraries(localLibraries);
             binding.noContentLayout.setVisibility(localLibraries.isEmpty() ? View.VISIBLE : View.GONE);
         });
-    }
-
-    public static HashMap<String, Object> createLibraryMap(String name, String dependency) {
-        String configPath = localLibsPath + name + "/config";
-        String resPath = localLibsPath + name + "/res";
-        String jarPath = localLibsPath + name + "/classes.jar";
-        String dexPath = localLibsPath + name + "/classes.dex";
-        String manifestPath = localLibsPath + name + "/AndroidManifest.xml";
-        String pgRulesPath = localLibsPath + name + "/proguard.txt";
-        String assetsPath = localLibsPath + name + "/assets";
-
-        HashMap<String, Object> localLibrary = new HashMap<>();
-        localLibrary.put("name", name);
-        if (dependency != null) {
-            localLibrary.put("dependency", dependency);
-        }
-        if (FileUtil.isExistFile(configPath)) {
-            localLibrary.put("packageName", FileUtil.readFile(configPath));
-        }
-        if (FileUtil.isExistFile(resPath)) {
-            localLibrary.put("resPath", resPath);
-        }
-        if (FileUtil.isExistFile(jarPath)) {
-            localLibrary.put("jarPath", jarPath);
-        }
-        if (FileUtil.isExistFile(dexPath)) {
-            localLibrary.put("dexPath", dexPath);
-        }
-        if (FileUtil.isExistFile(manifestPath)) {
-            localLibrary.put("manifestPath", manifestPath);
-        }
-        if (FileUtil.isExistFile(pgRulesPath)) {
-            localLibrary.put("pgRulesPath", pgRulesPath);
-        }
-        if (FileUtil.isExistFile(assetsPath)) {
-            localLibrary.put("assetsPath", assetsPath);
-        }
-        return localLibrary;
-    }
-
-    private static class LocalLibrary {
-        private final String name;
-        private final String size;
-        private boolean isSelected;
-
-        private LocalLibrary(String name, String size) {
-            this.name = name;
-            this.size = size;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getSize() {
-            return size;
-        }
-
-        public boolean isSelected() {
-            return isSelected;
-        }
-
-        public void setSelected(boolean isSelected) {
-            this.isSelected = isSelected;
-        }
-
-        public static LocalLibrary fromFile(File file) {
-            return new LocalLibrary(file.getName(), formatFileSize(getFileSize(file)));
-        }
     }
 
     private static class LoadLocalLibrariesTask extends MA {
@@ -401,11 +311,9 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 onItemClicked(binding, library.getName());
             });
 
-            binding.materialSwitch.setChecked(false);
             if (!notAssociatedWithProject) {
-                lookupList = new Gson().fromJson(FileUtil.readFile(localLibFile), Helper.TYPE_MAP_LIST);
-                for (HashMap<String, Object> localLibrary : lookupList) {
-                    if (library.getName().equals(Objects.requireNonNull(localLibrary.get("name")).toString())) {
+                for (Map<String, Object> libraryMap : projectUsedLibs) {
+                    if (library.getName().equals(libraryMap.get("name").toString())) {
                         binding.materialSwitch.setChecked(true);
                     }
                 }
@@ -429,7 +337,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             library.setSelected(!library.isSelected());
             bindSelectedState(card, library);
             if (onLocalLibrarySelectedStateChangedListener != null) {
-                onLocalLibrarySelectedStateChangedListener.onLocalLibrarySelectedStateChanged(library);
+                onLocalLibrarySelectedStateChangedListener.invoke(library);
             }
         }
 
@@ -443,8 +351,8 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 // Remove the library from the list
                 int indexToRemove = -1;
                 for (int i = 0; i < projectUsedLibs.size(); i++) {
-                    HashMap<String, Object> lib = projectUsedLibs.get(i);
-                    if (name.equals(lib.get("name"))) {
+                    Map<String, Object> libraryMap = projectUsedLibs.get(i);
+                    if (name.equals(libraryMap.get("name").toString())) {
                         indexToRemove = i;
                         break;
                     }
@@ -456,16 +364,16 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 // Add the library to the list
                 // Here, we need to find the dependency string if it exists
                 String dependency = null;
-                for (HashMap<String, Object> lib : lookupList) {
-                    if (name.equals(lib.get("name"))) {
-                        dependency = (String) lib.get("dependency");
+                for (Map<String, Object> libraryMap : projectUsedLibs) {
+                    if (name.equals(libraryMap.get("name").toString())) {
+                        dependency = (String) libraryMap.get("dependency");
                         break;
                     }
                 }
                 localLibrary = createLibraryMap(name, dependency);
                 projectUsedLibs.add(localLibrary);
             }
-            FileUtil.writeFile(localLibFile, new Gson().toJson(projectUsedLibs));
+            rewriteLocalLibFile(scId, new Gson().toJson(projectUsedLibs));
         }
 
         public void setLocalLibraries(List<LocalLibrary> localLibraries) {
@@ -518,9 +426,8 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
 
             binding.materialSwitch.setChecked(false);
             if (!notAssociatedWithProject) {
-                lookupList = new Gson().fromJson(FileUtil.readFile(localLibFile), Helper.TYPE_MAP_LIST);
-                for (HashMap<String, Object> localLibrary : lookupList) {
-                    if (library.getName().equals(Objects.requireNonNull(localLibrary.get("name")).toString())) {
+                for (Map<String, Object> libraryMap : projectUsedLibs) {
+                    if (library.getName().equals(libraryMap.get("name").toString())) {
                         binding.materialSwitch.setChecked(true);
                     }
                 }
@@ -540,8 +447,8 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 // Remove the library from the list
                 int indexToRemove = -1;
                 for (int i = 0; i < projectUsedLibs.size(); i++) {
-                    HashMap<String, Object> lib = projectUsedLibs.get(i);
-                    if (name.equals(lib.get("name"))) {
+                    Map<String, Object> libraryMap = projectUsedLibs.get(i);
+                    if (name.equals(libraryMap.get("name").toString())) {
                         indexToRemove = i;
                         break;
                     }
@@ -553,16 +460,16 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 // Add the library to the list
                 // Here, we need to find the dependency string if it exists
                 String dependency = null;
-                for (HashMap<String, Object> lib : lookupList) {
-                    if (name.equals(lib.get("name"))) {
-                        dependency = (String) lib.get("dependency");
+                for (Map<String, Object> libraryMap : projectUsedLibs) {
+                    if (name.equals(libraryMap.get("name").toString())) {
+                        dependency = (String) libraryMap.get("dependency");
                         break;
                     }
                 }
                 localLibrary = createLibraryMap(name, dependency);
                 projectUsedLibs.add(localLibrary);
             }
-            FileUtil.writeFile(localLibFile, new Gson().toJson(projectUsedLibs));
+            rewriteLocalLibFile(scId, new Gson().toJson(projectUsedLibs));
         }
 
         public void filter(List<LocalLibrary> localLibraries, String query) {
