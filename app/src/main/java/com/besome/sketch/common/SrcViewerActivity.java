@@ -13,25 +13,30 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
 
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.besome.sketch.beans.SrcCodeBean;
-import com.besome.sketch.ctrls.CommonSpinnerItem;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import pro.sketchware.R;
-
-import java.util.ArrayList;
-
 import a.a.a.ProjectBuilder;
 import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.yq;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.beans.SrcCodeBean;
+import com.besome.sketch.ctrls.CommonSpinnerItem;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.ArrayList;
+
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
+
 import mod.hey.studios.util.Helper;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
+
+import pro.sketchware.R;
+import pro.sketchware.utility.EditorUtils;
 
 public class SrcViewerActivity extends BaseAppCompatActivity {
 
@@ -55,11 +60,15 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
         currentPageFileName = getIntent().hasExtra("current") ? getIntent().getStringExtra("current") : "";
 
         codeViewer = new CodeEditor(this);
-        codeViewer.setTypefaceText(Typeface.MONOSPACE);
+        codeViewer.setTypefaceText(EditorUtils.getTypeface(this));
         codeViewer.setEditable(false);
         codeViewer.setTextSize(sourceCodeFontSize);
         codeViewer.setPinLineNumber(true);
-        setCorrectCodeEditorLanguage();
+        if (currentPageFileName.endsWith(".xml")) {
+            EditorUtils.loadXmlConfig(codeViewer);
+        } else {
+            EditorUtils.loadJavaConfig(codeViewer);
+        }
 
         LinearLayout contentLayout = (LinearLayout) (findViewById(R.id.pager_soruce_code).getParent());
         contentLayout.removeAllViews();
@@ -77,7 +86,11 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
                 SrcCodeBean bean = srcCodeBean.get(position);
                 codeViewer.setText(bean.source);
                 currentPageFileName = bean.srcFileName;
-                setCorrectCodeEditorLanguage();
+                if (currentPageFileName.endsWith(".xml")) {
+                    EditorUtils.loadXmlConfig(codeViewer);
+                } else {
+                    EditorUtils.loadJavaConfig(codeViewer);
+                }
             }
 
             @Override
@@ -138,36 +151,6 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
-    }
-
-    private void setCorrectCodeEditorLanguage() {
-        if (currentPageFileName.endsWith(".xml")) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                Configuration configuration = getResources().getConfiguration();
-                boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
-                if (isDarkTheme) {
-                    codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
-                } else {
-                    codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
-                }
-            } else {
-                codeViewer.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
-            }
-            codeViewer.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
-        } else {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                Configuration configuration = getResources().getConfiguration();
-                boolean isDarkTheme = isDarkTheme = configuration.isNightModeActive();
-                if (isDarkTheme) {
-                    codeViewer.setColorScheme( new SchemeDarcula());
-                } else {
-                    codeViewer.setColorScheme( new EditorColorScheme());
-                }
-            } else {
-                codeViewer.setColorScheme( new EditorColorScheme());
-            }
-            codeViewer.setEditorLanguage(new JavaLanguage());
-        }
     }
 
     private void showChangeFontSizeDialog() {
