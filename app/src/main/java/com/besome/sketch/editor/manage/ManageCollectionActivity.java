@@ -146,7 +146,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private void handleFabOnClick(int categoryId) {
         if (categoryId == 0) {
             showAddImageDialog();
-        }else if (categoryId == 1) {
+        } else if (categoryId == 1) {
             showAddSoundDialog();
         } else {
             showAddFontDialog();
@@ -414,9 +414,9 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
         if (id == R.id.btn_cancel && selectingToBeDeletedItems) {
             changeDeletingItemsState(false);
-        }else if (id == R.id.btn_delete && selectingToBeDeletedItems) {
+        } else if (id == R.id.btn_delete && selectingToBeDeletedItems) {
             deleteSelectedToBeDeletedItems();
-        }else if (id == R.id.fab) {
+        } else if (id == R.id.fab) {
             changeDeletingItemsState(false);
             handleFabOnClick(currentItemId);
         }
@@ -628,7 +628,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
                             return;
                         }
                         fab.hide();
-                    }else if (dy < -2 && fab.isEnabled()) {
+                    } else if (dy < -2 && fab.isEnabled()) {
                         fab.show();
                     }
                 }

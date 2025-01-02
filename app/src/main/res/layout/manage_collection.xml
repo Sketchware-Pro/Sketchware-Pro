@@ -38,7 +38,7 @@
                         android:fitsSystemWindows="false"
                         app:itemPaddingBottom="28dp"
                         app:labelVisibilityMode="labeled"
-                        app:menu="@menu/manage_collection_items_menu"  />
+                        app:menu="@menu/manage_collection_items_menu" />
 
                 </LinearLayout>
 

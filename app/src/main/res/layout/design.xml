@@ -34,13 +34,28 @@
                         app:navigationIcon="?attr/homeAsUpIndicator"
                         tools:menu="@menu/design_menu"
                         tools:subtitle="605"
+                        app:subtitleTextColor="?attr/colorSecondary"
                         tools:title="InternalDemo" />
                 </com.google.android.material.appbar.AppBarLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mainTabsCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="3dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+                    app:strokeWidth="0dp">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+                </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
@@ -96,30 +111,29 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     app:menu="@menu/design_bottom_menu"
+                    app:paddingLeftSystemWindowInsets="false"
                     app:paddingBottomSystemWindowInsets="false">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/file_name_container"
-                        style="?attr/materialCardViewOutlinedStyle"
+                        style="?attr/materialCardViewStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="4dp"
                         android:layout_marginVertical="8dp"
-                        android:checkable="true"
                         android:clickable="true"
-                        android:focusable="true">
+                        app:contentPadding="12dp"
+                        app:strokeWidth="0dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical"
-                            android:paddingVertical="12dp">
+                            android:gravity="center_vertical">
 
                             <ImageView
                                 android:id="@+id/img_orientation"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:layout_marginStart="6dp"
+                                android:layout_marginHorizontal="6dp"
                                 android:src="@drawable/ic_mtrl_screen"
                                 app:tint="?attr/colorControlNormal" />
 
@@ -137,7 +151,7 @@
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:layout_marginEnd="8dp"
-                                android:src="@drawable/ic_mtrl_touch"
+                                android:src="@drawable/ic_arrow_drop_down_24px"
                                 app:tint="?attr/colorControlNormal" />
 
                         </LinearLayout>
@@ -148,9 +162,9 @@
             <com.besome.sketch.editor.view.ViewProperty
                 android:id="@+id/view_property"
                 android:layout_width="match_parent"
-                android:layout_height="156dp"
+                android:layout_height="180dp"
                 android:layout_alignParentBottom="true"
-                android:translationY="156dp" />
+                android:translationY="180dp" />
         </RelativeLayout>
 
         <com.besome.sketch.design.DesignDrawer

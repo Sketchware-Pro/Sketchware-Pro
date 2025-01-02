@@ -7,7 +7,7 @@
         android:orderInCategory="110"
         android:title="Run"
         app:iconTint="?attr/colorPrimary"
-        app:showAsAction="always" />
+        app:showAsAction="always|withText" />
 
     <item
         android:id="@+id/menu_cancel"

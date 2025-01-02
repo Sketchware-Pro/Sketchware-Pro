@@ -27,11 +27,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tv_import"
-                style="?attr/materialButtonOutlinedStyle"
+                style="?attr/materialButtonElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="4dp"
+                android:textColor="?colorControlNormal"
                 android:text="@string/logic_button_import_more_block"
                 android:textSize="14sp" />
 
@@ -48,7 +49,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                android:paddingBottom="80dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="64dp"
                 android:scrollbars="vertical"
                 android:splitMotionEvents="false"
                 tools:itemCount="5"

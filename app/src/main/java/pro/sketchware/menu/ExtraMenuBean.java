@@ -37,7 +37,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
-import mod.hilal.saif.asd.asdforall.AsdAllEditor;
 import mod.hilal.saif.asd.old.AsdOldDialog;
 
 import pro.sketchware.R;
@@ -123,21 +122,12 @@ public class ExtraMenuBean {
     }
 
     private void codeMenu(Ss menu) {
-        if (ConfigActivity.isLegacyCeEnabled()) {
-            AsdOldDialog asdOldDialog = new AsdOldDialog(logicEditor);
-            asdOldDialog.setCon(menu.getArgValue().toString());
-            asdOldDialog.show();
-            /* p2 as true is for number */
-            asdOldDialog.saveLis(logicEditor, false, menu, asdOldDialog);
-            asdOldDialog.cancelLis(logicEditor, asdOldDialog);
-        } else {
-            AsdDialog asdDialog = new AsdDialog(logicEditor);
-            asdDialog.setCon(menu.getArgValue().toString());
-            asdDialog.show();
-            /* p2 as true is for number */
-            asdDialog.saveLis(logicEditor, false, menu, asdDialog);
-            asdDialog.cancelLis(asdDialog);
-        }
+        AsdDialog asdDialog = new AsdDialog(logicEditor);
+        asdDialog.setCon(menu.getArgValue().toString());
+        asdDialog.show();
+        /* p2 as true is for number */
+        asdDialog.saveLis(logicEditor, false, menu, asdDialog);
+        asdDialog.cancelLis(asdDialog);
     }
 
     public void defineMenuSelector(Ss ss) {
@@ -749,10 +739,10 @@ public class ExtraMenuBean {
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.configureDefaultButton("Code Editor", v -> {
-            AsdAllEditor editor = new AsdAllEditor(logicEditor);
+            AsdDialog editor = new AsdDialog(logicEditor);
             editor.setCon(menu.getArgValue().toString());
             editor.show();
-            editor.saveLis(logicEditor, menu);
+            editor.saveLis(logicEditor, false, menu, editor);;
             editor.cancelLis(editor);
             dialog.dismiss();
         });
@@ -798,19 +788,11 @@ public class ExtraMenuBean {
         });
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.configureDefaultButton("Code Editor", v -> {
-            if (ConfigActivity.isLegacyCeEnabled()) {
-                AsdOldDialog asdOldDialog = new AsdOldDialog(logicEditor);
-                asdOldDialog.setCon(edittext.getText().toString());
-                asdOldDialog.show();
-                asdOldDialog.saveLis(logicEditor, false, ss, asdOldDialog);
-                asdOldDialog.cancelLis(logicEditor, asdOldDialog);
-            } else {
-                AsdDialog asdDialog = new AsdDialog(logicEditor);
-                asdDialog.setCon(edittext.getText().toString());
-                asdDialog.show();
-                asdDialog.saveLis(logicEditor, false, ss, asdDialog);
-                asdDialog.cancelLis(asdDialog);
-            }
+            AsdDialog asdDialog = new AsdDialog(logicEditor);
+            asdDialog.setCon(edittext.getText().toString());
+            asdDialog.show();
+            asdDialog.saveLis(logicEditor, false, ss, asdDialog);
+            asdDialog.cancelLis(asdDialog);
             dialog.dismiss();
         });
         dialog.show();

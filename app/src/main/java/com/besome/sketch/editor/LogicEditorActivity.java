@@ -118,11 +118,6 @@ import a.a.a.xB;
 import a.a.a.yq;
 import a.a.a.yy;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
-import io.github.rosemoe.sora.langs.java.JavaLanguage;
-import io.github.rosemoe.sora.widget.CodeEditor;
-import io.github.rosemoe.sora.widget.component.Magnifier;
-import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
 import mod.bobur.StringEditorActivity;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.editor.view.IdGenerator;
@@ -130,7 +125,7 @@ import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.asd.asdforall.AsdAllEditor;
+import mod.hilal.saif.asd.AsdDialog;
 import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
 import mod.pranav.viewbinding.ViewBindingBuilder;
@@ -144,6 +139,7 @@ import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.SvgUtils;
+import pro.sketchware.activities.editor.view.CodeViewerActivity;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -1850,10 +1846,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         dialog.a(customView);
         dialog.configureDefaultButton("Code Editor", v -> {
-            AsdAllEditor editor = new AsdAllEditor(this);
+            AsdDialog editor = new AsdDialog(this);
             editor.setCon(ss.getArgValue().toString());
             editor.show();
-            editor.saveLis(this, ss);
+            editor.saveLis(this, false, ss, editor);;
             editor.cancelLis(editor);
             dialog.dismiss();
         });
@@ -2724,39 +2720,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         yq yq = new yq(this, B);
         yq.a(jC.c(B), jC.b(B), jC.a(B), false);
         String code = new Fx(M.getActivityName(), yq.N, o.getBlocks(), isViewBindingEnabled).a();
-
-        CodeEditor codeEditor = new CodeEditor(this);
-        codeEditor.setEditable(false);
-        codeEditor.setEditorLanguage(new JavaLanguage());
-        codeEditor.setText(Lx.j(code, false));
-        codeEditor.setTextSize(12);
-        codeEditor.setTypefaceText(Typeface.MONOSPACE);
-        codeEditor.setWordwrap(false);
-        codeEditor.getComponent(Magnifier.class).setWithinEditorForcibly(true);
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            Configuration configuration = getResources().getConfiguration();
-            boolean isDarkTheme = configuration.isNightModeActive();
-            if (isDarkTheme) {
-                codeEditor.setColorScheme(new SchemeDarcula());
-            } else {
-                codeEditor.setColorScheme(new EditorColorScheme());
-            }
-        } else {
-            codeEditor.setColorScheme(new EditorColorScheme());
-        }
-
-        var dialog = new MaterialAlertDialogBuilder(this)
-                .setTitle("Source code")
-                .setPositiveButton(R.string.common_word_close, null)
-                .create();
-
-        dialog.setView(codeEditor,
-                (int) getDip(24),
-                (int) getDip(20),
-                (int) getDip(24),
-                (int) getDip(0));
-        dialog.show();
+        var intent = new Intent(this, CodeViewerActivity.class);
+        intent.putExtra("code", code);
+        intent.putExtra("sc_id", B);
+        intent.putExtra("scheme", CodeViewerActivity.SCHEME_JAVA);
+        startActivity(intent);
     }
 
     public void t() {

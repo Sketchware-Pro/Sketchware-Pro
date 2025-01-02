@@ -23,21 +23,18 @@ import com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity;
 import com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
-import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
-
-import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
-
-import pro.sketchware.R;
-
 import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
 import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.mB;
+import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
+import mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesLibraryItemView;
+import pro.sketchware.R;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -62,14 +59,13 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
     private TextView externalLib;
 
-    private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean, int drawable) {
+    private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean) {
         LibraryItemView libraryItemView;
         if (libraryBean != null) {
             libraryItemView = new LibraryItemView(this);
         } else {
             libraryItemView = new ExcludeBuiltInLibrariesLibraryItemView(this, sc_id);
         }
-        libraryItemView.container.setBackgroundResource(drawable);
         libraryItemView.setTag(libraryBean != null ? libraryBean.libType : null);
         //noinspection ConstantConditions since the variant if it's nullable handles nulls correctly
         libraryItemView.setData(libraryBean);
@@ -328,14 +324,14 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             originalGoogleMapUseYn = savedInstanceState.getString("originalGoogleMapUseYn");
         }
 
-        addLibraryItem(compatLibraryBean, R.drawable.shape_top);
-        addLibraryItem(firebaseLibraryBean, R.drawable.shape_middle);
-        addLibraryItem(admobLibraryBean, R.drawable.shape_middle);
-        addLibraryItem(googleMapLibraryBean, R.drawable.shape_bottom);
-        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB), R.drawable.shape_top);
-        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB), R.drawable.shape_bottom);
+        addLibraryItem(compatLibraryBean);
+        addLibraryItem(firebaseLibraryBean);
+        addLibraryItem(admobLibraryBean);
+        addLibraryItem(googleMapLibraryBean);
+        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB));
+        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB));
         // Exclude built-in libraries
-        addLibraryItem(null, R.drawable.shape_alone);
+        addLibraryItem(null);
     }
 
     @Override
@@ -362,7 +358,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
     private void showFirebaseNeedCompatDialog() {
         aB dialog = new aB(this);
-        dialog.a(R.drawable.widget_firebase);
+        dialog.a(R.drawable.ic_mtrl_firebase);
         dialog.b(Helper.getResString(R.string.common_word_warning));
         dialog.a(Helper.getResString(R.string.design_library_firebase_message_need_compat));
         dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));

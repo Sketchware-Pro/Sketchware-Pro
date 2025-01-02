@@ -263,7 +263,7 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
 
     @DrawableRes
     public static int getItemIcon() {
-        return R.drawable.ic_detail_setting_48dp;
+        return R.drawable.ic_mtrl_tune;
     }
 
     public static String getItemTitle() {

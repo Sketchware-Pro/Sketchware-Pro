@@ -76,7 +76,8 @@
                         android:layout_height="32dp"
                         android:layout_marginRight="8dp"
                         android:padding="4dp"
-                        android:src="@drawable/ic_warning_96dp" />
+                        app:tint="?colorAmber"
+                        android:src="@drawable/ic_mtrl_warning" />
 
                     <TextView
                         android:id="@+id/tv_desc"
@@ -99,7 +100,7 @@
                         android:layout_height="18dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="8dp"
-                        android:src="@drawable/ic_title" />
+                        android:src="@drawable/ic_mtrl_label" />
 
                     <TextView
                         android:id="@+id/tv_title"

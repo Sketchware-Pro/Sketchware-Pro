@@ -251,7 +251,7 @@ public class OldResourceIdMapper {
             case 2131165426 -> R.drawable.circle_bg_white_outline_light_pink;
             case 2131165427 -> R.drawable.circle_bg_white_outline_orange;
             case 2131165428 -> R.drawable.circle_bg_white_outline_pink;
-            case 2131165429 -> R.drawable.circle_bg_white_outline_secondary;
+            case 2131165429 -> R.drawable.circle_bg_surface;
             case 2131165430 -> R.drawable.circle_help_48_blue;
             case 2131165431 -> R.drawable.circle_help_48_gray;
             case 2131165432 -> R.drawable.circle_stamp;
@@ -938,7 +938,6 @@ public class OldResourceIdMapper {
             case 2131166114 -> R.drawable.selector_palette_tab_round;
             case 2131166115 -> R.drawable.selector_plugin;
             case 2131166116 -> R.drawable.selector_save;
-            case 2131166117 -> R.drawable.selector_search;
             case 2131166118 -> R.drawable.selector_show_hint;
             case 2131166119 -> R.drawable.selector_tab_round;
             case 2131166120 -> R.drawable.selector_toggle_list_view;

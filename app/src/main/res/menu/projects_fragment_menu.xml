@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/searchProjects"
-        android:icon="@drawable/search_icon_tinted"
+        android:icon="@drawable/ic_mtrl_search"
         android:title="@string/search_menu_title"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView"
@@ -13,5 +13,6 @@
     <item
         android:id="@+id/sortProject"
         android:title="@string/sort_projects"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_mtrl_sort"
+        app:showAsAction="always" />
 </menu>

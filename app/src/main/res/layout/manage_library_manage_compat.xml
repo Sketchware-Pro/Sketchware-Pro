@@ -69,7 +69,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="8dp"
                 android:padding="4dp"
-                android:src="@drawable/connected_96" />
+                android:src="@drawable/ic_mtrl_design" />
 
             <TextView
                 android:id="@+id/tv_desc"

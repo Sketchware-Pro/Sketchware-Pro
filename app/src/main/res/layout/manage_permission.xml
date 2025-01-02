@@ -10,31 +10,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        app:liftOnScroll="false"
-        app:elevation="0dp">
+        app:elevation="0dp"
+        app:liftOnScroll="false">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="Permissions Manager" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/permission_manager_menu"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="Permissions Manager" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="4dp"
+            android:baselineAligned="false"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -42,15 +34,11 @@
                 android:id="@+id/searchInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:hint="Search for permissions"
                 android:importantForAutofill="noExcludeDescendants"
-                app:boxCornerRadiusBottomEnd="50dp"
-                app:boxCornerRadiusBottomStart="50dp"
-                app:boxCornerRadiusTopEnd="50dp"
-                app:boxCornerRadiusTopStart="50dp"
-                app:startIconDrawable="@drawable/search_icon_grey">
+                app:boxBackgroundMode="outline"
+                app:startIconDrawable="@drawable/ic_mtrl_search">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/searchInput"
@@ -60,16 +48,6 @@
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/resetPermissions"
-                style="?attr/materialIconButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:insetBottom="0dp"
-                android:text="Reset"
-                app:icon="@drawable/ic_mtrl_reset"
-                app:iconGravity="textStart"
-                app:iconSize="20dp" />
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -85,8 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingBottom="120dp"
             android:paddingTop="8dp"
+            android:paddingBottom="120dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/view_item_permission" />
     </LinearLayout>
