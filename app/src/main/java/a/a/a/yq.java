@@ -15,7 +15,6 @@ import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
 import com.besome.sketch.beans.ViewBean;
 import com.google.gson.Gson;
-import pro.sketchware.xml.XmlBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,8 +29,11 @@ import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.blocks.CommandBlock;
+import mod.pranav.viewbinding.ViewBindingBuilder;
+
 import pro.sketchware.SketchApplication;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.xml.XmlBuilder;
 
 public class yq {
 
@@ -209,12 +211,15 @@ public class yq {
      * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/raw
      */
     public final String importedSoundsPath;
+    
+    private final Context context;
 
     public yq(Context context, String sc_id) {
         this(context, wq.d(sc_id), lC.b(sc_id));
     }
 
     public yq(Context context, String myscFolderPath, HashMap<String, Object> metadata) {
+        this.context = context;
         N = new jq();
         sc_id = yB.c(metadata, "sc_id");
         N.sc_id = sc_id;
@@ -765,30 +770,46 @@ public class yq {
         if (newXMLCommand && FileUtil.isExistFile(path)) {
             FileUtil.copyFile(path, FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands"));
         }
+        
+        var viewBindingBuilder = new ViewBindingBuilder(List.of(), new File("."), packageName);
 
         // Generate layouts unless a custom version of it exists already
         // at /Internal storage/.sketchware/data/<sc_id>/files/resource/layout/
-        {
-            ArrayList<ProjectFileBean> regularLayouts = projectFileManager.b();
-            for (ProjectFileBean layout : regularLayouts) {
-                String xmlName = layout.getXmlName();
-                Ox ox = new Ox(N, layout);
-                ox.a(eC.a(projectDataManager.d(xmlName)), projectDataManager.h(xmlName));
-                if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
-                    srcCodeBeans.add(new SrcCodeBean(xmlName,
-                            CommandBlock.applyCommands(xmlName, ox.b())));
+        ArrayList<ProjectFileBean> regularLayouts = projectFileManager.b();
+        for (ProjectFileBean layout : regularLayouts) {
+            String xmlName = layout.getXmlName();
+            Ox ox = new Ox(N, layout);
+            ox.a(eC.a(projectDataManager.d(xmlName)), projectDataManager.h(xmlName));
+            var ogFile = new File(layoutDir + xmlName);
+            if (!layoutFiles.contains(ogFile)) {
+                srcCodeBeans.add(new SrcCodeBean(xmlName, CommandBlock.applyCommands(xmlName, ox.b())));
+                
+                if (isViewBindingEnable()) {
+                    var privFile = new File(context.getCacheDir(), xmlName);
+                    FileUtil.writeFile(privFile.getAbsolutePath(), CommandBlock.applyCommands(xmlName, ox.b()));
+                    var code = viewBindingBuilder.generateBindingForLayout(privFile);
+                    srcCodeBeans.add(new SrcCodeBean(
+                        ViewBindingBuilder.generateFileNameForLayout(xmlName.replace(".xml", "")) + ".java", 
+                        CommandBlock.applyCommands(xmlName, code)
+                    ));
                 }
             }
         }
-        {
-            ArrayList<ProjectFileBean> drawerLayouts = projectFileManager.c();
-            for (ProjectFileBean drawerFile : drawerLayouts) {
-                String xmlName = drawerFile.getXmlName();
-                Ox ox = new Ox(N, drawerFile);
-                ox.a(eC.a(projectDataManager.d(xmlName)));
-                if (!layoutFiles.contains(new File(layoutDir + xmlName))) {
-                    srcCodeBeans.add(new SrcCodeBean(xmlName,
-                            CommandBlock.applyCommands(xmlName, ox.b())));
+        
+        ArrayList<ProjectFileBean> drawerLayouts = projectFileManager.c();
+        for (ProjectFileBean drawerFile : drawerLayouts) {
+            String xmlName = drawerFile.getXmlName();
+            Ox ox = new Ox(N, drawerFile);
+            ox.a(eC.a(projectDataManager.d(xmlName)));
+            var ogFile = new File(layoutDir + xmlName);
+            if (!layoutFiles.contains(ogFile)) {
+                srcCodeBeans.add(new SrcCodeBean(xmlName, CommandBlock.applyCommands(xmlName, ox.b())));
+                
+                if (isViewBindingEnable()) {
+                    var privFile = new File(context.getCacheDir(), xmlName);
+                    FileUtil.writeFile(privFile.getAbsolutePath(), CommandBlock.applyCommands(xmlName, ox.b()));
+                    var code = viewBindingBuilder.generateBindingForLayout(privFile);
+                    srcCodeBeans.add(new SrcCodeBean(xmlName, CommandBlock.applyCommands(xmlName, code)));
                 }
             }
         }
@@ -834,13 +855,16 @@ public class yq {
             }
         }
 
-        srcCodeBeans.add(new SrcCodeBean("AndroidManifest.xml",
-                CommandBlock.applyCommands("AndroidManifest.xml", ix.a())));
+        srcCodeBeans.add(new SrcCodeBean("AndroidManifest.xml", CommandBlock.applyCommands("AndroidManifest.xml", ix.a())));
         srcCodeBeans.add(new SrcCodeBean("styles.xml", getXMLStyle()));
         srcCodeBeans.add(new SrcCodeBean("colors.xml", getXMLColor()));
         srcCodeBeans.add(new SrcCodeBean("strings.xml", getXMLString()));
         CommandBlock.x();
         return srcCodeBeans;
+    }
+
+    private boolean isViewBindingEnable() {
+        return projectSettings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, ProjectSettings.SETTING_GENERIC_VALUE_FALSE).equals(ProjectSettings.SETTING_GENERIC_VALUE_TRUE);
     }
 
     /**

@@ -26,6 +26,9 @@ public class PropertiesUtil {
     }
 
     public static int parseColor(String color) {
+        if (color == null) {
+           color = "#FFFFFFFF";
+        }
         String hexColor = color.replaceFirst("#", "");
         String formattedColor = String.format("#%8s", hexColor).replaceAll(" ", "F");
         return Color.parseColor(formattedColor);

@@ -88,6 +88,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 ((Adapter) binding.logsRecyclerView.getAdapter()).deleteAll();
             } else if (id == R.id.action_auto_scroll) {
                 autoScroll = !item.isChecked();
+                item.setChecked(autoScroll);
                 if (autoScroll) {
                     binding.logsRecyclerView.getLayoutManager().scrollToPosition(binding.logsRecyclerView.getAdapter().getItemCount() - 1);
                 }

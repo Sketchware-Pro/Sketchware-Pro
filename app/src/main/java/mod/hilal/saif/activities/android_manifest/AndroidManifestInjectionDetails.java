@@ -1,6 +1,7 @@
 package mod.hilal.saif.activities.android_manifest;
 
 import static pro.sketchware.utility.SketchwareUtil.getDip;
+import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -12,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
 
 import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.R;
@@ -86,7 +86,7 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
         listMap.clear();
         ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(ATTRIBUTES_FILE_PATH)) {
-            data = new Gson().fromJson(FileUtil.readFile(ATTRIBUTES_FILE_PATH), Helper.TYPE_MAP_LIST);
+            data = getGson().fromJson(FileUtil.readFile(ATTRIBUTES_FILE_PATH), Helper.TYPE_MAP_LIST);
             for (HashMap<String, Object> item : data) {
                 String str = (String) item.get("name");
                 if (str.equals(constant)) {
@@ -168,7 +168,7 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
     private void applyChange() {
         ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(ATTRIBUTES_FILE_PATH)) {
-            data = new Gson().fromJson(FileUtil.readFile(ATTRIBUTES_FILE_PATH), Helper.TYPE_MAP_LIST);
+            data = getGson().fromJson(FileUtil.readFile(ATTRIBUTES_FILE_PATH), Helper.TYPE_MAP_LIST);
             for (int i = data.size() - 1; i > -1; i--) {
                 String str = (String) data.get(i).get("name");
                 if (str.equals(constant)) {
@@ -179,7 +179,7 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
         } else {
             data = new ArrayList<>(listMap);
         }
-        FileUtil.writeFile(ATTRIBUTES_FILE_PATH, new Gson().toJson(data));
+        FileUtil.writeFile(ATTRIBUTES_FILE_PATH, getGson().toJson(data));
         refreshList();
     }
 

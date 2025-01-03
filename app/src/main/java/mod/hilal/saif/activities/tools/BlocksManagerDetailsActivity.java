@@ -1,5 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
+import static pro.sketchware.utility.GsonUtils.getGson;
+
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
@@ -28,7 +30,6 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import pro.sketchware.R;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -117,7 +118,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                 SketchwareUtil.toastError("The selected file is empty!");
             } else {
                 try {
-                    ArrayList<HashMap<String, Object>> readMap = new Gson().fromJson(FileUtil.readFile(selections[0]), Helper.TYPE_MAP_LIST);
+                    ArrayList<HashMap<String, Object>> readMap = getGson().fromJson(FileUtil.readFile(selections[0]), Helper.TYPE_MAP_LIST);
                     _importBlocks(readMap);
                 } catch (JsonParseException e) {
                     SketchwareUtil.toastError("Invalid JSON file");
@@ -199,7 +200,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                 Object paletteName = pallet_list.get(palette - 9).get("name");
                 if (paletteName instanceof String) {
                     String exportTo = new File(BLOCK_EXPORT_PATH, paletteName + ".json").getAbsolutePath();
-                    FileUtil.writeFile(exportTo, new Gson().toJson(filtered_list));
+                    FileUtil.writeFile(exportTo, getGson().toJson(filtered_list));
                     SketchwareUtil.toast("Successfully exported blocks to:\n" + exportTo, Toast.LENGTH_LONG);
                 } else {
                     SketchwareUtil.toastError("Invalid name of palette #" + (palette - 9));
@@ -247,7 +248,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         parseLists:
         {
             try {
-                pallet_list = new Gson().fromJson(paletteFileContent, Helper.TYPE_MAP_LIST);
+                pallet_list = getGson().fromJson(paletteFileContent, Helper.TYPE_MAP_LIST);
 
                 if (pallet_list != null) {
                     break parseLists;
@@ -264,7 +265,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         parseBlocks:
         {
             try {
-                all_blocks_list = new Gson().fromJson(blocksFileContent, Helper.TYPE_MAP_LIST);
+                all_blocks_list = getGson().fromJson(blocksFileContent, Helper.TYPE_MAP_LIST);
 
                 if (all_blocks_list != null) {
                     break parseBlocks;
@@ -301,7 +302,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
 
     private void _swapitems(int sourcePosition, int targetPosition) {
         Collections.swap(all_blocks_list, sourcePosition, targetPosition);
-        FileUtil.writeFile(blocks_path, new Gson().toJson(all_blocks_list));
+        FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
         _refreshLists();
     }
 
@@ -389,19 +390,19 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
             }
         }
         all_blocks_list.add(position + 1, block);
-        FileUtil.writeFile(blocks_path, new Gson().toJson(all_blocks_list));
+        FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
         _refreshLists();
     }
 
     private void _deleteBlock(int position) {
         all_blocks_list.remove(position);
-        FileUtil.writeFile(blocks_path, new Gson().toJson(all_blocks_list));
+        FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
         _refreshLists();
     }
 
     private void _moveToRecycleBin(int position) {
         all_blocks_list.get(position).put("palette", "-1");
-        FileUtil.writeFile(blocks_path, new Gson().toJson(all_blocks_list));
+        FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
         _refreshLists();
     }
 
@@ -418,7 +419,6 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
             }
         }
 
-        Gson gson = new Gson();
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setNegativeButton(R.string.common_word_cancel, null);
         if (palette == -1) {
@@ -429,7 +429,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                         if (restoreToChoice.get() != -1) {
                             all_blocks_list.get(position).put("palette", String.valueOf(restoreToChoice.get() + 9));
                             Collections.swap(all_blocks_list, position, all_blocks_list.size() - 1);
-                            FileUtil.writeFile(blocks_path, gson.toJson(all_blocks_list));
+                            FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
                             _refreshLists();
                         }
                     });
@@ -440,7 +440,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                     .setPositiveButton("Move", (dialog, which) -> {
                         all_blocks_list.get(position).put("palette", String.valueOf(moveToChoice.get() + 9));
                         Collections.swap(all_blocks_list, position, all_blocks_list.size() - 1);
-                        FileUtil.writeFile(blocks_path, gson.toJson(all_blocks_list));
+                        FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
                         _refreshLists();
                     });
         }
@@ -477,7 +477,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                                 all_blocks_list.add(map);
                             }
                         }
-                        FileUtil.writeFile(blocks_path, new Gson().toJson(all_blocks_list));
+                        FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
                         _refreshLists();
                         SketchwareUtil.toast("Imported successfully");
                     })
@@ -489,7 +489,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                                 all_blocks_list.add(map);
                             }
                         }
-                        FileUtil.writeFile(blocks_path, new Gson().toJson(all_blocks_list));
+                        FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
                         _refreshLists();
                         SketchwareUtil.toast("Imported successfully");
                     })
@@ -499,7 +499,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
                             map.put("palette", String.valueOf(palette));
                             all_blocks_list.add(map);
                         }
-                        FileUtil.writeFile(blocks_path, new Gson().toJson(all_blocks_list));
+                        FileUtil.writeFile(blocks_path, getGson().toJson(all_blocks_list));
                         _refreshLists();
                         SketchwareUtil.toast("Imported successfully");
                     })
