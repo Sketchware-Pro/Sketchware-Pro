@@ -148,12 +148,10 @@ public class Zt extends qA {
         for (int i = 0; i < projectResourceBeans.size(); i++) {
             ProjectResourceBean resourceBean = projectResourceBeans.get(i);
             if (resourceBean.isNew) {
-                String fileExtension = resourceBean.resFullName.substring(resourceBean.resFullName.lastIndexOf("."));
-                String newFileName = resourceBean.resName + fileExtension;
                 resourceBean = new ProjectResourceBean(
                         ProjectResourceBean.PROJECT_RES_TYPE_FILE,
                         resourceBean.resName,
-                        newFileName
+                        getResourceFilePath(resourceBean)
                 );
                 projectResourceBeans.set(i, resourceBean);
             }
@@ -246,9 +244,9 @@ public class Zt extends qA {
         actBinding.btnCancel.setOnClickListener(view -> setSelectingMode(false));
         actBinding.btnDelete.setOnClickListener(view -> {
             if (isSelecting) {
-
                 for (int i = projectResourceBeans.size() - 1; i >= 0; i--) {
                     if (projectResourceBeans.get(i).isSelected) {
+                        FileUtil.deleteFile(projectResourceBeans.get(i).resFullName);
                         projectResourceBeans.remove(i);
                     }
                 }
