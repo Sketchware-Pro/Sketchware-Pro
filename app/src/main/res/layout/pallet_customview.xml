@@ -28,7 +28,7 @@
                 android:id="@+id/color"
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
-                android:background="#ff009688"
+                android:background="?attr/colorPrimary"
                 android:gravity="center"
                 android:orientation="vertical" />
 
@@ -54,6 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
                     android:textSize="14sp"
+                    android:maxLines="1"
                     tools:text="Blocks: 22" />
             </LinearLayout>
         </LinearLayout>

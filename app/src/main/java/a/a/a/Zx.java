@@ -1,7 +1,5 @@
 package a.a.a;
 
-import static pro.sketchware.activities.coloreditor.ColorEditorActivity.getColorValue;
-
 import android.app.Activity;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -20,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ColorBean;
 import com.besome.sketch.editor.view.ColorGroupItem;
 import pro.sketchware.R;
+import pro.sketchware.activities.resources.editors.utils.ColorsEditorManager;
 import pro.sketchware.databinding.ColorPickerBinding;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -342,6 +341,7 @@ public class Zx extends PopupWindow {
     }
 
     private void parseColorsXML(String colorXml) {
+        ColorsEditorManager colorsEditorManager = new ColorsEditorManager();
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser parser = factory.newPullParser();
@@ -364,10 +364,10 @@ public class Zx extends PopupWindow {
                         break;
                     case XmlPullParser.END_TAG:
                         if (tagName.equals("color")) {
-                            if (colorName != null && isValidHexColor(getColorValue(activity.getApplicationContext(), colorValue, 4))) {
+                            if (colorName != null && isValidHexColor(colorsEditorManager.getColorValue(activity.getApplicationContext(), colorValue, 4))) {
                                 HashMap<String, Object> colors = new HashMap<>();
                                 colors.put("colorName", colorName);
-                                colors.put("colorValue", String.format("#%8s", getColorValue(activity.getApplicationContext(), colorValue, 4).replaceFirst("#", "")).replaceAll(" ", "F"));
+                                colors.put("colorValue", String.format("#%8s", colorsEditorManager.getColorValue(activity.getApplicationContext(), colorValue, 4).replaceFirst("#", "")).replaceAll(" ", "F"));
                                 color_res_list.add(colors);
                             }
                         }
