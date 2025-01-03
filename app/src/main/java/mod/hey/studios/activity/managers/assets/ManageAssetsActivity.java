@@ -17,8 +17,6 @@ import android.widget.PopupMenu;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -48,7 +46,6 @@ import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
-import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 
 public class ManageAssetsActivity extends BaseAppCompatActivity {
 
@@ -90,8 +87,6 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
             hideShowOptionsButton(true);
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.createNewButton,
-                new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
     }
 
     private void hideShowOptionsButton(boolean isHide) {
