@@ -1,5 +1,7 @@
 package dev.aldi.sayuti.editor.manage;
 
+import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.createLibraryMap;
+
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,8 +13,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
@@ -28,90 +30,87 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.pranav.dependency.resolver.DependencyResolver;
+
+import pro.sketchware.R;
 import pro.sketchware.databinding.LibraryDownloaderDialogBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
-public class LibraryDownloaderDialogFragment extends DialogFragment {
+public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
     private LibraryDownloaderDialogBinding binding;
-    private final Gson gson = new Gson();
-    private boolean notAssociatedWithProject = false;
-    private String dependencyName;
+
+    private Gson gson = new Gson();
     private BuildSettings buildSettings;
-    private String local_lib_file = "";
-    private LibraryDownloaderListener listener;
 
+    private boolean notAssociatedWithProject;
+    private String dependencyName;
+    private String localLibFile;
+    private OnLibraryDownloadedTask onLibraryDownloadedTask;
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        binding = LibraryDownloaderDialogBinding.inflate(getLayoutInflater());
-        initVariables();
-
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireActivity());
-        builder.setView(binding.getRoot());
-
-        return builder.create();
+    public interface OnLibraryDownloadedTask {
+        void invoke();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = LibraryDownloaderDialogBinding.inflate(inflater, container, false);
         return binding.getRoot();
-    }
-
-    public void setListener(LibraryDownloaderListener listener) {
-        this.listener = listener;
-    }
-
-    public interface LibraryDownloaderListener {
-        void onTaskCompleted();
-    }
-
-    private void initVariables() {
-        if (getArguments() == null) return;
-
-        notAssociatedWithProject = getArguments().getBoolean("notAssociatedWithProject", false);
-        buildSettings = (BuildSettings) getArguments().getSerializable("buildSettings");
-        local_lib_file = getArguments().getString("local_lib_file");
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        binding.downloadButton.setOnClickListener(v1 -> initDownloadFlow());
+        super.onViewCreated(view, savedInstanceState);
+
+        if (getArguments() == null) return;
+
+        notAssociatedWithProject = getArguments().getBoolean("notAssociatedWithProject", false);
+        buildSettings = (BuildSettings) getArguments().getSerializable("buildSettings");
+        localLibFile = getArguments().getString("localLibFile");
+
+        binding.btnCancel.setOnClickListener(v -> dismiss());
+        binding.btnDownload.setOnClickListener(v -> initDownloadFlow());
+    }
+
+    public void setOnLibraryDownloadedTask(OnLibraryDownloadedTask onLibraryDownloadedTask) {
+        this.onLibraryDownloadedTask = onLibraryDownloadedTask;
     }
 
     private void initDownloadFlow() {
-        dependencyName = Objects.requireNonNull(binding.dependencyInput.getText()).toString();
-        if (dependencyName.isEmpty()) {
-            SketchwareUtil.toastError("Please enter a dependency");
-            return;
-        }
-        var parts = dependencyName.split(":");
-        if (parts.length != 3) {
-            SketchwareUtil.toastError("Invalid dependency format");
+        dependencyName = binding.dependencyInput.getText().toString();
+        if (dependencyName == null || dependencyName.isEmpty()) {
+            binding.dependencyInputLayout.setError("Please enter a dependency");
+            binding.dependencyInputLayout.setErrorEnabled(true);
             return;
         }
 
-        binding.downloadStatusTxt.setText("Looking for dependency...");
+        var parts = dependencyName.split(":");
+        if (parts.length != 3) {
+            binding.dependencyInputLayout.setError("Invalid dependency format");
+            binding.dependencyInputLayout.setErrorEnabled(true);
+            return;
+        }
+
+        binding.dependencyInfo.setText("Looking for dependency...");
+        binding.dependencyInputLayout.setErrorEnabled(false);
         setDownloadState(true);
 
         var group = parts[0];
         var artifact = parts[1];
         var version = parts[2];
-        var resolver = new DependencyResolver(group, artifact, version, binding.skipSubDependenciesCheckBox.isChecked(), buildSettings);
+        var resolver = new DependencyResolver(group, artifact, version, binding.cbSkipSubdependencies.isChecked(), buildSettings);
         var handler = new Handler(Looper.getMainLooper());
 
         class SetTextRunnable implements Runnable {
-            private final String message;
+            private final String text;
 
-            SetTextRunnable(String message) {
-                this.message = message;
+            SetTextRunnable(String text) {
+                this.text = text;
             }
 
             @Override
             public void run() {
-                binding.downloadStatusTxt.setText(message);
+                binding.dependencyInfo.setText(text);
             }
         }
 
@@ -210,16 +209,16 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
                         SketchwareUtil.toast("Library downloaded successfully");
                         if (!notAssociatedWithProject) {
                             new SetTextRunnable("Adding dependencies to project...").run();
-                            var fileContent = FileUtil.readFile(local_lib_file);
+                            var fileContent = FileUtil.readFile(localLibFile);
                             var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);
                             enabledLibs.addAll(dependencies.stream()
-                                    .map(name -> ManageLocalLibraryActivity.createLibraryMap(name, dependencyName))
+                                    .map(name -> createLibraryMap(name, dependencyName))
                                     .collect(Collectors.toList()));
-                            FileUtil.writeFile(local_lib_file, gson.toJson(enabledLibs));
+                            FileUtil.writeFile(localLibFile, gson.toJson(enabledLibs));
                         }
                         if (getActivity() == null) return;
                         dismiss();
-                        if (listener != null) listener.onTaskCompleted();
+                        if (onLibraryDownloadedTask != null) onLibraryDownloadedTask.invoke();
                     });
                 }
             });
@@ -227,12 +226,14 @@ public class LibraryDownloaderDialogFragment extends DialogFragment {
     }
 
     private void setDownloadState(boolean downloading) {
-        binding.downloadButton.setEnabled(!downloading);
+        binding.btnCancel.setVisibility(downloading ? View.GONE : View.VISIBLE);
+        binding.btnDownload.setEnabled(!downloading);
         binding.dependencyInput.setEnabled(!downloading);
-        binding.downloadButton.setText(downloading ? "Downloading..." : "Download");
-        binding.downloadProgressCardView.setVisibility(downloading ? View.VISIBLE : View.GONE);
-        binding.hintText.setVisibility(downloading ? View.GONE : View.VISIBLE);
-        binding.skipSubDependenciesCheckBox.setVisibility(downloading ? View.GONE : View.VISIBLE);
+        binding.cbSkipSubdependencies.setEnabled(!downloading);
         setCancelable(!downloading);
+
+        if (!downloading) {
+            binding.dependencyInfo.setText(R.string.local_library_manager_dependency_info);
+        }
     }
 }

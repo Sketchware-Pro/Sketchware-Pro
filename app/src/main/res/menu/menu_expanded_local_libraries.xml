@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_select_all"
+        android:title="Select all"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_delete_selected_local_libraries"
+        android:icon="@drawable/ic_mtrl_delete"
+        android:title="Delete selected local libraries"
+        app:iconTint="?attr/colorError"
+        app:showAsAction="ifRoom" />
+
+</menu>

@@ -54,6 +54,58 @@ import java.util.zip.ZipInputStream;
 
 @SuppressWarnings("unused")
 public class FileUtil {
+    public static long getFileSize(File file) {
+        if (file == null || !file.exists()) {
+            return 0;
+        }
+
+        if (!file.isDirectory()) {
+            return file.length();
+        }
+
+        List<File> dirs = new LinkedList<>();
+        dirs.add(file);
+
+        long result = 0;
+        while (!dirs.isEmpty()) {
+            File dir = dirs.remove(0);
+            if (!dir.exists())
+                continue;
+            File[] listFiles = dir.listFiles();
+            if (listFiles == null || listFiles.length == 0)
+                continue;
+            for (File child : listFiles) {
+                if (child.isDirectory()) {
+                    dirs.add(child);
+                } else {
+                    result += child.length();
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public static String formatFileSize(long size) {
+        return formatFileSize(size, false);
+    }
+
+    public static String formatFileSize(long size, boolean removeZero) {
+        String[] units = {"B", "KiB", "MiB", "GiB"};
+        float value = size;
+        int unitIndex = 0;
+
+        while (value >= 1024 && unitIndex < units.length - 1) {
+            value /= 1024;
+            unitIndex++;
+        }
+
+        if (removeZero && (value - (int) value) * 10 == 0) {
+            return String.format("%d %s", (int) value, units[unitIndex]);
+        } else {
+            return String.format("%.1f %s", value, units[unitIndex]);
+        }
+    }
 
     public static boolean renameFile(String str, String str2) {
         return new File(str).renameTo(new File(str2));
@@ -270,6 +322,17 @@ public class FileUtil {
             list.clear();
             for (File file : listFiles) {
                 list.add(file.getAbsolutePath());
+            }
+        }
+    }
+
+    public static void listDirAsFile(String path, ArrayList<File> list) {
+        File[] listFiles;
+        File dir = new File(path);
+        if (dir.exists() && !dir.isFile() && (listFiles = dir.listFiles()) != null && listFiles.length > 0 && list != null) {
+            list.clear();
+            for (File file : listFiles) {
+                list.add(file);
             }
         }
     }
