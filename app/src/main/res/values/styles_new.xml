@@ -137,6 +137,10 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+    <style name="PlaceholderStyle" parent="TextAppearance.Design.Placeholder">
+        <item name="android:textSize">10sp</item>
+        <item name="alpha">0.6</item>
+    </style>
 
     <style name="Widget.SketchwarePro.MaterialCardView" parent="Widget.Material3.CardView.Filled">
         <item name="cardCornerRadius">16dp</item>

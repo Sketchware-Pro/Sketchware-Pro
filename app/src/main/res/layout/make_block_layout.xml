@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <HorizontalScrollView
@@ -299,7 +300,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="8dp"
                         android:layout_weight="1"
-                        android:hint="Parameter: m.name (without % sign)"
+                        android:hint="Parameter"
+                        app:placeholderText="m.name (without % sign)"
+                        app:placeholderTextAppearance="@style/PlaceholderStyle"
                         android:importantForAutofill="noExcludeDescendants">
 
                         <EditText
