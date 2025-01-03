@@ -1,6 +1,7 @@
 package pro.sketchware.fragments.settings.block.selector;
 
 import static mod.hey.studios.util.Helper.addBasicTextChangedListener;
+import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -16,8 +17,6 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -92,10 +91,9 @@ public class BlockSelectorManagerFragment extends qA {
     }
 
     private List<Selector> parseJson(String jsonString) {
-        Gson gson = new Gson();
         Type listType = new TypeToken<List<Selector>>() {
         }.getType();
-        return gson.fromJson(jsonString, listType);
+        return getGson().fromJson(jsonString, listType);
     }
 
     private void showCreateEditDialog(int index, boolean isEdit) {
@@ -322,12 +320,6 @@ public class BlockSelectorManagerFragment extends qA {
     private boolean isObject(String jsonString) {
         JsonElement jsonElement = JsonParser.parseString(jsonString);
         return jsonElement.isJsonObject();
-    }
-
-    private Gson getGson() {
-        return new GsonBuilder()
-                .setPrettyPrinting()
-                .create();
     }
 
     private boolean itemAlreadyExists(String toCompare) {

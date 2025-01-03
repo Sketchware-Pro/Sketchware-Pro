@@ -1,5 +1,7 @@
 package pro.sketchware.fragments.settings.events.creator;
 
+import static pro.sketchware.utility.GsonUtils.getGson;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
-import com.google.gson.Gson;
 
 import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentEventsManagerCreatorBinding;
@@ -139,7 +139,7 @@ public class EventsManagerCreatorFragment extends qA {
         ArrayList<HashMap<String, Object>> arrayList;
         String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/events.json");
         if (FileUtil.isExistFile(concat)) {
-            arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
+            arrayList = getGson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
         } else {
             arrayList = new ArrayList<>();
         }
@@ -162,7 +162,7 @@ public class EventsManagerCreatorFragment extends qA {
         if (!isEdit) {
             arrayList.add(hashMap);
         }
-        FileUtil.writeFile(concat, new Gson().toJson(arrayList));
+        FileUtil.writeFile(concat, getGson().toJson(arrayList));
         SketchwareUtil.toast("Saved");
         getParentFragmentManager().popBackStack();
     }
@@ -170,7 +170,7 @@ public class EventsManagerCreatorFragment extends qA {
     private int figureP(String str) {
         String concat = FileUtil.getExternalStorageDir().concat("/.sketchware/data/system/events.json");
         if (FileUtil.isExistFile(concat)) {
-            ArrayList<HashMap<String, Object>> arrayList = new Gson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
+            ArrayList<HashMap<String, Object>> arrayList = getGson().fromJson(FileUtil.readFile(concat), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < arrayList.size(); i++) {
                 if (str.equals(arrayList.get(i).get("name"))) {
                     return i;

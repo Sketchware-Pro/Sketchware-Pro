@@ -1,6 +1,7 @@
 package mod.hilal.saif.activities.android_manifest;
 
 import static pro.sketchware.utility.SketchwareUtil.getDip;
+import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -22,7 +23,6 @@ import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,7 +83,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     private void checkAttrs() {
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         if (FileUtil.isExistFile(path)) {
-            ArrayList<HashMap<String, Object>> data = new Gson().fromJson(FileUtil.readFile(path),
+            ArrayList<HashMap<String, Object>> data = getGson().fromJson(FileUtil.readFile(path),
                     Helper.TYPE_MAP_LIST);
             for (int i = 0; i < data.size(); i++) {
                 String str = (String) data.get(i).get("name");
@@ -99,7 +99,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
             _item.put("name", "_application_attrs");
             _item.put("value", "android:theme=\"@style/AppTheme\"");
             data.add(_item);
-            FileUtil.writeFile(path, new Gson().toJson(data));
+            FileUtil.writeFile(path, getGson().toJson(data));
         }
     }
 
@@ -245,7 +245,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         ArrayList<HashMap<String, Object>> data = new ArrayList<>();
         if (FileUtil.isExistFile(path)) {
-            data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            data = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
         }
         {
             HashMap<String, Object> _item = new HashMap<>();
@@ -292,7 +292,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         }
 
 
-        FileUtil.writeFile(path, new Gson().toJson(data));
+        FileUtil.writeFile(path, getGson().toJson(data));
         refreshList();
 
     }
@@ -303,7 +303,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         ArrayList<String> temp = new ArrayList<>();
         ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(path)) {
-            data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            data = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < data.size(); i++) {
                 if (!temp.contains(Objects.requireNonNull(data.get(i).get("name")).toString())) {
                     if (!Objects.requireNonNull(data.get(i).get("name")).equals("_application_attrs") && !Objects.requireNonNull(data.get(i).get("name")).equals("_apply_for_all_activities") && !Objects.requireNonNull(data.get(i).get("name")).equals("_application_permissions")) {
@@ -325,14 +325,14 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         String activity_name = (String) list_map.get(pos).get("act_name");
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         ArrayList<HashMap<String, Object>> data;
-        data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+        data = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
         for (int i = data.size() - 1; i > -1; i--) {
             String temp = (String) data.get(i).get("name");
             if (Objects.requireNonNull(temp).equals(activity_name)) {
                 data.remove(i);
             }
         }
-        FileUtil.writeFile(path, new Gson().toJson(data));
+        FileUtil.writeFile(path, getGson().toJson(data));
         refreshList();
         removeComponents(activity_name);
         SketchwareUtil.toast("Activity removed");
@@ -342,7 +342,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/activities_components.json");
         ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(path)) {
-            data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            data = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             for (int i = data.size() - 1; i > -1; i--) {
                 String name = (String) data.get(i).get("name");
                 if (Objects.requireNonNull(name).equals(str)) {
@@ -350,7 +350,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
                     break;
                 }
             }
-            FileUtil.writeFile(path, new Gson().toJson(data));
+            FileUtil.writeFile(path, getGson().toJson(data));
         }
     }
 

@@ -46,6 +46,7 @@ import javax.xml.xpath.XPathFactory;
 
 import a.a.a.Lx;
 import a.a.a.aB;
+
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme;
 import io.github.rosemoe.sora.widget.CodeEditor;
@@ -56,14 +57,17 @@ import io.github.rosemoe.sora.widget.schemes.SchemeEclipse;
 import io.github.rosemoe.sora.widget.schemes.SchemeGitHub;
 import io.github.rosemoe.sora.widget.schemes.SchemeNotepadXX;
 import io.github.rosemoe.sora.widget.schemes.SchemeVS2019;
+
 import mod.hey.studios.util.Helper;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
+
 import pro.sketchware.R;
 import pro.sketchware.activities.preview.LayoutPreviewActivity;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.ThemeUtils;
+import pro.sketchware.utility.EditorUtils;
 
 public class SrcCodeEditor extends AppCompatActivity {
     public static final List<Pair<String, Class<? extends EditorColorScheme>>> KNOWN_COLOR_SCHEMES = List.of(
@@ -207,7 +211,7 @@ public class SrcCodeEditor extends AppCompatActivity {
     private void initialize() {
         String title = getIntent().getStringExtra("title");
 
-        editor.setTypefaceText(Typeface.MONOSPACE);
+        editor.setTypefaceText(EditorUtils.getTypeface(this));
         editor.setTextSize(16);
 
         beforeContent = FileUtil.readFile(getIntent().getStringExtra("content"));

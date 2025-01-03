@@ -1,5 +1,5 @@
 <com.google.android.material.card.MaterialCardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
@@ -10,7 +10,7 @@
     android:focusable="true"
     android:clickable="true"
     app:cardBackgroundColor="?attr/colorSurfaceContainer"
-    app:strokeWidth="0.5dp">
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

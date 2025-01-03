@@ -1,8 +1,9 @@
 package mod.hilal.saif.android_manifest;
 
+import static pro.sketchware.utility.GsonUtils.getGson;
+
 import android.os.Environment;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import pro.sketchware.xml.XmlBuilder;
 
@@ -52,7 +53,7 @@ public class AndroidManifestInjector {
                 File injections = getPathAndroidManifestAttributeInjection(sc_id);
 
                 if (injections.exists()) {
-                    attributes = new Gson().fromJson(FileUtil.readFile(injections.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+                    attributes = getGson().fromJson(FileUtil.readFile(injections.getAbsolutePath()), Helper.TYPE_MAP_LIST);
 
                     if (attributes == null) {
                         errorMessage = "result == null";
@@ -193,7 +194,7 @@ public class AndroidManifestInjector {
 
         String path = getPathAndroidManifestActivitiesComponents(projectId).getAbsolutePath();
         if (FileUtil.isExistFile(path)) {
-            ArrayList<HashMap<String, Object>> data = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            ArrayList<HashMap<String, Object>> data = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < data.size(); i++) {
                 HashMap<String, Object> activityComponents = data.get(i);
 

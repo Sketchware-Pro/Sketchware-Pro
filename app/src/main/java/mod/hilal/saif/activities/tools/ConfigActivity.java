@@ -1,5 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
+import static pro.sketchware.utility.GsonUtils.getGson;
+
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -16,16 +18,17 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.annotations.NonNull;
+
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import pro.sketchware.R;
-import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
-import pro.sketchware.databinding.PreferenceActivityBinding;
+
 import com.topjohnwu.superuser.Shell;
+
+import dev.chrisbanes.insetter.Insetter;
 
 import java.io.File;
 import java.util.Arrays;
@@ -33,9 +36,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import dev.chrisbanes.insetter.Insetter;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
+import pro.sketchware.databinding.PreferenceActivityBinding;
+
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
+
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 
@@ -122,7 +129,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
             Exception toLog;
 
             try {
-                settings = new Gson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
+                settings = getGson().fromJson(FileUtil.readFile(SETTINGS_FILE.getAbsolutePath()), Helper.TYPE_MAP);
 
                 if (settings != null) {
                     return settings;
@@ -161,7 +168,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
         for (String key : keys) {
             settings.put(key, getDefaultValue(key));
         }
-        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+        FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), getGson().toJson(settings));
     }
 
     public static Object getDefaultValue(String key) {
@@ -313,7 +320,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
          * since there's no automatic persist. Meaning, every write, unless they are in batches.
          */
         public void persist() {
-            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), new Gson().toJson(settings));
+            FileUtil.writeFile(SETTINGS_FILE.getAbsolutePath(), getGson().toJson(settings));
         }
 
         @Override

@@ -1,5 +1,7 @@
 package mod.hilal.saif.activities.tools;
 
+import static pro.sketchware.utility.GsonUtils.getGson;
+
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -22,7 +24,6 @@ import a.a.a.Zx;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 
 import mod.hey.studios.util.Helper;
@@ -396,7 +397,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
 
     private void getBlockList() {
         try {
-            blocksList = new Gson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            blocksList = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
 
             if (blocksList != null) {
                 for (int i = 0, blocksListSize = blocksList.size(); i < blocksListSize; i++) {
@@ -462,7 +463,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         tempMap.put("code", binding.code.getText().toString());
         tempMap.put("palette", String.valueOf(blockPosition));
         blocksList.add(tempMap);
-        FileUtil.writeFile(path, new Gson().toJson(blocksList));
+        FileUtil.writeFile(path, getGson().toJson(blocksList));
         SketchwareUtil.toast("Saved");
         finish();
     }
@@ -487,7 +488,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         tempMap.put("code", binding.code.getText().toString());
         tempMap.put("palette", blocksList.get(position).get("palette"));
         blocksList.add(position, tempMap);
-        FileUtil.writeFile(path, new Gson().toJson(blocksList));
+        FileUtil.writeFile(path, getGson().toJson(blocksList));
         SketchwareUtil.toast("Saved");
         finish();
     }
@@ -508,7 +509,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         }
         tempMap.put("imports", binding.customImport.getText().toString());
         tempMap.put("code", binding.code.getText().toString());
-        FileUtil.writeFile(path, new Gson().toJson(blocksList));
+        FileUtil.writeFile(path, getGson().toJson(blocksList));
         SketchwareUtil.toast("Saved");
         finish();
     }

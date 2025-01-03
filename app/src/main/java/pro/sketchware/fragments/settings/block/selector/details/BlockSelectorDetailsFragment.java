@@ -1,5 +1,7 @@
 package pro.sketchware.fragments.settings.block.selector.details;
 
+import static pro.sketchware.utility.GsonUtils.getGson;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import pro.sketchware.databinding.FragmentBlockSelectorManagerBinding;
 import pro.sketchware.databinding.DialogAddCustomActivityBinding;
@@ -130,8 +130,7 @@ public class BlockSelectorDetailsFragment extends qA {
     }
 
     private void saveAll() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        FileUtil.writeFile(BlockSelectorConsts.BLOCK_SELECTORS_FILE.getAbsolutePath(), gson.toJson(selectors));
+        FileUtil.writeFile(BlockSelectorConsts.BLOCK_SELECTORS_FILE.getAbsolutePath(), getGson().toJson(selectors));
         SketchwareUtil.toast("Saved!");
     }
 

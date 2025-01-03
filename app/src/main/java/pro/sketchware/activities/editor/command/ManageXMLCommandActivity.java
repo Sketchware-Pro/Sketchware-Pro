@@ -1,6 +1,7 @@
 package pro.sketchware.activities.editor.command;
 
 import static pro.sketchware.utility.SketchwareUtil.getDip;
+import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -28,7 +29,6 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.gson.Gson;
 
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
@@ -143,7 +143,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                                                     commands.remove(position);
                                                     FileUtil.writeFile(
                                                             commandPath,
-                                                            new Gson().toJson(commands));
+                                                            getGson().toJson(commands));
                                                     adapter.submitList(new ArrayList<>(commands));
                                                 }
                                             });
@@ -188,7 +188,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
     }
 
     private void save() {
-        FileUtil.writeFile(commandPath, new Gson().toJson(commands));
+        FileUtil.writeFile(commandPath, getGson().toJson(commands));
         adapter.submitList(null);
         adapter.submitList(commands);
     }
@@ -367,7 +367,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         if (FileUtil.isExistFile(commandPath)) {
             try {
                 commands =
-                        new Gson().fromJson(FileUtil.readFile(commandPath), Helper.TYPE_MAP_LIST);
+                        getGson().fromJson(FileUtil.readFile(commandPath), Helper.TYPE_MAP_LIST);
                 adapter.submitList(commands);
             } catch (Exception ignored) {
             }

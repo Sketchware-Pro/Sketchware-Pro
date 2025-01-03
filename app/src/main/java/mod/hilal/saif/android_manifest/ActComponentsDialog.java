@@ -1,6 +1,7 @@
 package mod.hilal.saif.android_manifest;
 
 import static pro.sketchware.utility.SketchwareUtil.getDip;
+import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -13,7 +14,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import pro.sketchware.R;
 
 import java.util.ArrayList;
@@ -190,12 +190,12 @@ public class ActComponentsDialog extends Dialog {
         save.setOnClickListener(v -> {
             ArrayList<HashMap<String, Object>> arrayList = new ArrayList<>();
             if (FileUtil.isExistFile(ACTIVITIES_COMPONENTS_FILE_PATH)) {
-                ArrayList<HashMap<String, Object>> activitiesComponents = new Gson()
+                ArrayList<HashMap<String, Object>> activitiesComponents = getGson()
                         .fromJson(FileUtil.readFile(ACTIVITIES_COMPONENTS_FILE_PATH), Helper.TYPE_MAP_LIST);
                 for (int i = 0; i < activitiesComponents.size(); i++) {
                     if (activitiesComponents.get(i).get("name").equals(activityName)) {
                         activitiesComponents.get(i).put("value", codeEditor.getText());
-                        FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
+                        FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, getGson()
                                 .toJson(activitiesComponents));
                         SketchwareUtil.toast("Saved");
                         dismiss();
@@ -206,14 +206,14 @@ public class ActComponentsDialog extends Dialog {
                 map.put("name", activityName);
                 map.put("value", codeEditor.getText());
                 activitiesComponents.add(map);
-                FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
+                FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, getGson()
                         .toJson(activitiesComponents));
             } else {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("name", activityName);
                 map.put("value", codeEditor.getText());
                 arrayList.add(map);
-                FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, new Gson()
+                FileUtil.writeFile(ACTIVITIES_COMPONENTS_FILE_PATH, getGson()
                         .toJson(arrayList));
             }
             dismiss();
@@ -223,7 +223,7 @@ public class ActComponentsDialog extends Dialog {
 
     private void setCodeEditorText() {
         if (FileUtil.isExistFile(ACTIVITIES_COMPONENTS_FILE_PATH)) {
-            ArrayList<HashMap<String, Object>> arrayList = new Gson()
+            ArrayList<HashMap<String, Object>> arrayList = getGson()
                     .fromJson(FileUtil.readFile(ACTIVITIES_COMPONENTS_FILE_PATH), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < arrayList.size(); i++) {
                 if (arrayList.get(i).get("name").equals(activityName)) {
