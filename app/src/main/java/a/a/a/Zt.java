@@ -137,7 +137,11 @@ public class Zt extends qA {
 
         for (ProjectResourceBean resourceBean : projectResourceBeans) {
             if (resourceBean.isNew) {
-                oB.c(getFilePath(resourceBean.resFullName));
+                try {
+                    importFont(resourceBean.resFullName, getResourceFilePath(resourceBean));
+                    oB.c(resourceBean.resFullName);
+                } catch (Exception ignored) {
+                }
             }
         }
 
@@ -159,19 +163,6 @@ public class Zt extends qA {
         jC.d(sc_id).y();
         jC.a(sc_id).a(jC.d(sc_id));
         jC.a(sc_id).k();
-
-        for (ProjectResourceBean resourceBean : projectResourceBeans) {
-            if (resourceBean.isNew) {
-                try {
-                    String filePath = getResourceFilePath(resourceBean);
-                    if (oB.e(filePath)) {
-                        oB.c(filePath);
-                    }
-                    importFont(resourceBean.resFullName, filePath);
-                } catch (Exception ignored) {
-                }
-            }
-        }
     }
 
     public final void toggleEmptyStateVisibility() {
