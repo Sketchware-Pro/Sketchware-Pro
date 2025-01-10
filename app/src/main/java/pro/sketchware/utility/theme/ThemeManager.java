@@ -68,7 +68,7 @@ public class ThemeManager {
     public static int getSystemAppliedTheme(Context context){
         TypedValue outValue = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.themeId, outValue, true);
-        return Integer.getInteger(outValue.string.toString());
+        return outValue.data;
     }
 
     public static boolean isSystemMode(Context context) {
