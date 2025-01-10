@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.util.Log;
 import android.util.TypedValue;
 
 import androidx.appcompat.app.AppCompatDelegate;
@@ -55,6 +56,7 @@ public class ThemeManager {
             default:
                 context.setTheme(R.style.GreenApple);
         }
+        saveTheme(context,theme);
     }
 
     public static int getCurrentMode(Context context) {
@@ -63,6 +65,17 @@ public class ThemeManager {
 
     public static int getCurrentTheme(Context context) {
         return getPreferences(context).getInt(THEME_KEY, THEME_SYSTEM);
+    }
+
+    public static int getSystemAppliedTheme(Context context){
+        TypedValue outValue = new TypedValue();
+        context.getTheme().resolveAttribute(R.attr.themeName, outValue, true);
+        return switch (outValue.string.toString()) {
+            case ("GreenApple") -> 0;
+            case ("Lavender") -> 1;
+            case ("yogNesh") -> 2;
+            default -> 0;
+        };
     }
 
     public static boolean isSystemMode(Context context) {
@@ -111,10 +124,6 @@ public class ThemeManager {
         };
     }
 
-    public static int getSystemAppliedTheme(Context context){
-        TypedValue outValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.theme, outValue, true);
-        return outValue.resourceId;
-    }
+
 
 }
