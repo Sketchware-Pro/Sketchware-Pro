@@ -4,14 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.util.Log;
 import android.util.TypedValue;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.view.ContextThemeWrapper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import pro.sketchware.R;
 
