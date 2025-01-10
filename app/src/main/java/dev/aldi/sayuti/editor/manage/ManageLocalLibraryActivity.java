@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import mod.hey.studios.build.BuildSettings;
@@ -127,16 +128,19 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 binding.contextualToolbar.setTitle(String.valueOf(getSelectedLocalLibrariesCount()));
                 return true;
             } else if (id == R.id.action_delete_selected_local_libraries) {
-                new Thread(() -> {
+                k();
+                Executors.newSingleThreadExecutor().execute(() -> {
                     deleteSelectedLocalLibraries(adapter.getLocalLibraries());
 
                     runOnUiThread(() -> {
+                        h();
                         SketchwareUtil.toast("Deleted successfully");
-                        runLoadLocalLibrariesTask();
                         adapter.isSelectionModeEnabled = false;
+                        adapter.notifyDataSetChanged();
                         collapseContextualToolbar();
                     });
-                }).start();
+                });
+
                 return true;
             }
             return false;

@@ -47,11 +47,13 @@ public class LocalLibrariesUtil {
     }
 
     public static void deleteSelectedLocalLibraries(List<LocalLibrary> localLibraries) {
-        for (LocalLibrary library : localLibraries) {
+        localLibraries.removeIf(library -> {
             if (library.isSelected()) {
                 deleteFile(localLibsPath.concat(library.getName()));
+                return true;
             }
-        }
+            return false;
+        });
     }
 
     public static File getLocalLibFile(String scId) {
