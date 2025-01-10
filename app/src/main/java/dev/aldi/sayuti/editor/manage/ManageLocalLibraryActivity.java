@@ -13,12 +13,12 @@ import android.widget.PopupMenu;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
 
-public class ManageLocalLibraryActivity extends AppCompatActivity implements View.OnClickListener {
+public class ManageLocalLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private static String local_libs_path = "";
     private boolean notAssociatedWithProject = false;
     private String local_lib_file = "";
@@ -85,7 +85,7 @@ public class ManageLocalLibraryActivity extends AppCompatActivity implements Vie
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = ManageLocallibrariesBinding.inflate(getLayoutInflater());
