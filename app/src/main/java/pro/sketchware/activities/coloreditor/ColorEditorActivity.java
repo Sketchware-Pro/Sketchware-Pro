@@ -10,9 +10,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -22,15 +23,12 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import a.a.a.XB;
 import a.a.a.Zx;
 import a.a.a.aB;
 import a.a.a.xB;
 import mod.hey.studios.code.SrcCodeEditor;
-import mod.hilal.saif.activities.tools.ConfigActivity;
 import pro.sketchware.R;
 import pro.sketchware.activities.coloreditor.adapters.ColorsAdapter;
 import pro.sketchware.activities.coloreditor.models.ColorItem;
@@ -41,7 +39,7 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
 
-public class ColorEditorActivity extends AppCompatActivity {
+public class ColorEditorActivity extends BaseAppCompatActivity {
 
     private static final int MENU_SAVE = 0;
     private static final int MENU_OPEN_IN_EDITOR = 1;
@@ -147,7 +145,7 @@ public class ColorEditorActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ColorEditorActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -175,7 +173,7 @@ public class ColorEditorActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (isGoingToEditor) {
             parseColorsXML(FileUtil.readFile(contentPath));

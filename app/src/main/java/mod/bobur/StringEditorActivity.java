@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,12 +21,12 @@ import a.a.a.jC;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.activities.tools.ConfigActivity;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -54,7 +53,7 @@ import java.util.Objects;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class StringEditorActivity extends AppCompatActivity {
+public class StringEditorActivity extends BaseAppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> listmap = new ArrayList<>();
     private MaterialAlertDialogBuilder dialog;
@@ -63,7 +62,7 @@ public class StringEditorActivity extends AppCompatActivity {
     private boolean isComingFromSrcCodeEditor = true;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = StringEditorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -97,7 +96,7 @@ public class StringEditorActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (isComingFromSrcCodeEditor) {
             convertXmlToListMap(FileUtil.readFile(getIntent().getStringExtra("content")), listmap);
