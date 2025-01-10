@@ -63,4 +63,137 @@
         <item name="android:statusBarColor">@android:color/black</item>
     </style>
     <style name="Platform.Theme.SketchwarePro" parent="Platform.V21.Theme.SketchwarePro" />
+
+    <!--== Green Apple Theme ==-->
+    <style name="GreenApple">
+        <item name="themeId">0</item>
+        <item name="colorPrimary">@color/greenapple_primary</item>
+        <item name="colorOnPrimary">@color/greenapple_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/greenapple_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/greenapple_onPrimaryContainer</item>
+        <item name="colorPrimaryInverse">@color/greenapple_inversePrimary</item>
+        <item name="colorSecondary">@color/greenapple_secondary</item>
+        <item name="colorOnSecondary">@color/greenapple_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/greenapple_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/greenapple_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/greenapple_tertiary</item>
+        <item name="colorOnTertiary">@color/greenapple_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/greenapple_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/greenapple_onTertiaryContainer</item>
+        <item name="android:colorBackground">@color/greenapple_background</item>
+        <item name="colorOnBackground">@color/greenapple_onBackground</item>
+        <item name="colorSurface">@color/greenapple_surface</item>
+        <item name="colorOnSurface">@color/greenapple_onSurface</item>
+        <item name="colorSurfaceVariant">@color/greenapple_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/greenapple_onSurfaceVariant</item>
+        <item name="colorSurfaceInverse">@color/greenapple_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/greenapple_inverseOnSurface</item>
+        <item name="colorError">@color/greenapple_error</item>
+        <item name="colorOnError">@color/greenapple_onError</item>
+        <item name="colorErrorContainer">@color/greenapple_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/greenapple_onErrorContainer</item>
+        <item name="colorOutline">@color/greenapple_outline</item>
+        <item name="colorOutlineVariant">@color/greenapple_outlineVariant</item>
+        <item name="scrimBackground">@color/greenapple_scrim</item>
+        <item name="colorSurfaceBright">@color/greenapple_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/greenapple_surfaceDim</item>
+        <item name="colorSurfaceContainer">@color/greenapple_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/greenapple_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/greenapple_surfaceContainerHighest</item>
+        <item name="colorSurfaceContainerLow">@color/greenapple_surfaceContainerLow</item>
+        <item name="colorSurfaceContainerLowest">@color/greenapple_surfaceContainerLowest</item>
+    </style>
+
+    <!--== Lavender Theme ==-->
+    <style name="Lavender">
+        <item name="themeId">1</item>
+        <item name="colorPrimary">@color/lavender_primary</item>
+        <item name="colorOnPrimary">@color/lavender_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/lavender_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/lavender_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/lavender_secondary</item>
+        <item name="colorOnSecondary">@color/lavender_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/lavender_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/lavender_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/lavender_tertiary</item>
+        <item name="colorOnTertiary">@color/lavender_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/lavender_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/lavender_onTertiaryContainer</item>
+        <item name="colorError">@color/lavender_error</item>
+        <item name="colorOnError">@color/lavender_onError</item>
+        <item name="colorErrorContainer">@color/lavender_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/lavender_onErrorContainer</item>
+        <item name="android:colorBackground">@color/lavender_background</item>
+        <item name="colorOnBackground">@color/lavender_onBackground</item>
+        <item name="colorSurface">@color/lavender_surface</item>
+        <item name="colorOnSurface">@color/lavender_onSurface</item>
+        <item name="colorSurfaceVariant">@color/lavender_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/lavender_onSurfaceVariant</item>
+        <item name="colorOutline">@color/lavender_outline</item>
+        <item name="colorOutlineVariant">@color/lavender_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/lavender_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/lavender_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/lavender_inversePrimary</item>
+        <item name="colorSurfaceDim">@color/lavender_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/lavender_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/lavender_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/lavender_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/lavender_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/lavender_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/lavender_surfaceContainerHighest</item>
+    </style>
+
+    <!--== Yog & esh Theme ==-->
+        <style name="yogNesh" parent="Theme.Material3.Light.NoActionBar">
+            <item name="themeId">2</item>
+            <item name="colorPrimary">@color/yog_primary</item>
+            <item name="colorOnPrimary">@color/yog_onPrimary</item>
+            <item name="colorPrimaryContainer">@color/yog_primaryContainer</item>
+            <item name="colorOnPrimaryContainer">@color/yog_onPrimaryContainer</item>
+            <item name="colorSecondary">@color/yog_secondary</item>
+            <item name="colorOnSecondary">@color/yog_onSecondary</item>
+            <item name="colorSecondaryContainer">@color/yog_secondaryContainer</item>
+            <item name="colorOnSecondaryContainer">@color/yog_onSecondaryContainer</item>
+            <item name="colorTertiary">@color/yog_tertiary</item>
+            <item name="colorOnTertiary">@color/yog_onTertiary</item>
+            <item name="colorTertiaryContainer">@color/yog_tertiaryContainer</item>
+            <item name="colorOnTertiaryContainer">@color/yog_onTertiaryContainer</item>
+            <item name="colorError">@color/yog_error</item>
+            <item name="colorOnError">@color/yog_onError</item>
+            <item name="colorErrorContainer">@color/yog_errorContainer</item>
+            <item name="colorOnErrorContainer">@color/yog_onErrorContainer</item>
+            <item name="android:colorBackground">@color/yog_background</item>
+            <item name="colorOnBackground">@color/yog_onBackground</item>
+            <item name="colorSurface">@color/yog_surface</item>
+            <item name="colorOnSurface">@color/yog_onSurface</item>
+            <item name="colorSurfaceVariant">@color/yog_surfaceVariant</item>
+            <item name="colorOnSurfaceVariant">@color/yog_onSurfaceVariant</item>
+            <item name="colorOutline">@color/yog_outline</item>
+            <item name="colorOutlineVariant">@color/yog_outlineVariant</item>
+            <item name="colorSurfaceInverse">@color/yog_inverseSurface</item>
+            <item name="colorOnSurfaceInverse">@color/yog_inverseOnSurface</item>
+            <item name="colorPrimaryInverse">@color/yog_inversePrimary</item>
+            <item name="colorPrimaryFixed">@color/yog_primaryFixed</item>
+            <item name="colorOnPrimaryFixed">@color/yog_onPrimaryFixed</item>
+            <item name="colorPrimaryFixedDim">@color/yog_primaryFixedDim</item>
+            <item name="colorOnPrimaryFixedVariant">@color/yog_onPrimaryFixedVariant</item>
+            <item name="colorSecondaryFixed">@color/yog_secondaryFixed</item>
+            <item name="colorOnSecondaryFixed">@color/yog_onSecondaryFixed</item>
+            <item name="colorSecondaryFixedDim">@color/yog_secondaryFixedDim</item>
+            <item name="colorOnSecondaryFixedVariant">@color/yog_onSecondaryFixedVariant</item>
+            <item name="colorTertiaryFixed">@color/yog_tertiaryFixed</item>
+            <item name="colorOnTertiaryFixed">@color/yog_onTertiaryFixed</item>
+            <item name="colorTertiaryFixedDim">@color/yog_tertiaryFixedDim</item>
+            <item name="colorOnTertiaryFixedVariant">@color/yog_onTertiaryFixedVariant</item>
+            <item name="colorSurfaceDim">@color/yog_surfaceDim</item>
+            <item name="colorSurfaceBright">@color/yog_surfaceBright</item>
+            <item name="colorSurfaceContainerLowest">@color/yog_surfaceContainerLowest</item>
+            <item name="colorSurfaceContainerLow">@color/yog_surfaceContainerLow</item>
+            <item name="colorSurfaceContainer">@color/yog_surfaceContainer</item>
+            <item name="colorSurfaceContainerHigh">@color/yog_surfaceContainerHigh</item>
+            <item name="colorSurfaceContainerHighest">@color/yog_surfaceContainerHighest</item>
+        </style>
+
+
+
 </resources>

@@ -78,4 +78,5 @@
     <attr name="colorVioletContainer" format="color" />
     <attr name="colorOnVioletContainer" format="color" />
     <attr name="harmonizeViolet" format="boolean" />
+    <attr name="themeId" format="integer"/>
 </resources>
