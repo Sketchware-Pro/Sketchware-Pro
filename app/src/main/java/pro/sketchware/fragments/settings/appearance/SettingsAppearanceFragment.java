@@ -6,11 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 
+import java.util.ArrayList;
+
 import a.a.a.qA;
+import pro.sketchware.R;
 import pro.sketchware.databinding.FragmentSettingsAppearanceBinding;
+import pro.sketchware.databinding.ThemeItemBinding;
+import pro.sketchware.utility.theme.ThemeItem;
 import pro.sketchware.utility.theme.ThemeManager;
 
 public class SettingsAppearanceFragment extends qA {
@@ -27,6 +34,8 @@ public class SettingsAppearanceFragment extends qA {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupToolbar();
+
+        binding.themesRecycler.setAdapter(new ThemesAdapter(ThemeManager.getThemesList()));
         initializeThemeSettings();
         setupClickListeners();
     }
@@ -35,85 +44,125 @@ public class SettingsAppearanceFragment extends qA {
         binding.toolbar.setNavigationOnClickListener(v -> {
             if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 requireActivity().getSupportFragmentManager().popBackStack();
-            } else {
+            }else{
                 requireActivity().onBackPressed();
             }
         });
     }
 
     private void initializeThemeSettings() {
-        boolean isSystemTheme = ThemeManager.isSystemTheme(requireContext());
-        binding.switchSystem.setChecked(isSystemTheme);
+        boolean isSystemTheme = ThemeManager.isSystemMode(requireContext());
 
-        updateThemeCardSelection(ThemeManager.getCurrentTheme(requireContext()));
-
-        setThemeCardsEnabled(!isSystemTheme);
+        switch (ThemeManager.getCurrentMode(requireContext())) {
+            case (0):
+                binding.themeModes.check(R.id.mode_system);
+                break;
+            case (1):
+                binding.themeModes.check(R.id.mode_light);
+                break;
+            case (2):
+                binding.themeModes.check(R.id.mode_dark);
+                break;
+            default:
+                binding.themeModes.check(R.id.mode_system);
+        }
     }
 
     private void setupClickListeners() {
-        binding.themeSystem.setOnClickListener(v -> binding.switchSystem.setChecked(!binding.switchSystem.isChecked()));
-
-        binding.switchSystem.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            unselectSelectedThemeCard();
-            setThemeCardsEnabled(!isChecked);
+        binding.themeModes.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
-                ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_SYSTEM);
-                return;
-            }
-            int theme = ThemeManager.getSystemAppliedTheme(requireContext());
-            ThemeManager.applyTheme(requireContext(), theme);
-            updateThemeCardSelection(theme);
-        });
+                switch (checkedId) {
+                    case (R.id.mode_system):
+                        ThemeManager.applyMode(requireContext(), ThemeManager.THEME_SYSTEM);
+                        break;
+                    case (R.id.mode_light):
+                        ThemeManager.applyMode(requireContext(), ThemeManager.THEME_LIGHT);
+                        break;
+                    case (R.id.mode_dark):
+                        ThemeManager.applyMode(requireContext(), ThemeManager.THEME_DARK);
+                        break;
+                    default:
+                        ThemeManager.applyMode(requireContext(), ThemeManager.THEME_SYSTEM);
 
-        binding.themeLight.setOnClickListener(v -> {
-            if (!binding.switchSystem.isChecked()) {
-                updateThemeCardSelection(ThemeManager.THEME_LIGHT);
-                ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_LIGHT);
-            }
-        });
+                }
 
-        binding.themeDark.setOnClickListener(v -> {
-            if (!binding.switchSystem.isChecked()) {
-                updateThemeCardSelection(ThemeManager.THEME_DARK);
-                ThemeManager.applyTheme(requireContext(), ThemeManager.THEME_DARK);
             }
         });
     }
 
-    private void updateThemeCardSelection(int theme) {
-        unselectSelectedThemeCard();
-
-        MaterialCardView newSelection = switch (theme) {
-            case ThemeManager.THEME_LIGHT -> binding.themeLight;
-            case ThemeManager.THEME_DARK -> binding.themeDark;
-            default -> null;
-        };
-
-        if (newSelection != null && !binding.switchSystem.isChecked()) {
-            newSelection.setChecked(true);
-            selectedThemeCard = newSelection;
-        }
-    }
-
-    private void unselectSelectedThemeCard() {
-        if (selectedThemeCard != null) {
-            selectedThemeCard.setChecked(false);
-            selectedThemeCard = null;
-        }
-    }
-
-    private void setThemeCardsEnabled(boolean enabled) {
-        binding.themeLight.setEnabled(enabled);
-        binding.themeDark.setEnabled(enabled);
-
-        float alpha = enabled ? 1.0f : 0.5f;
-        binding.themeLight.animate().alpha(alpha).start();
-        binding.themeDark.animate().alpha(alpha).start();
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder> {
+        private ThemeItemBinding itemBinding;
+        private ArrayList<ThemeItem> data;
+
+        private ThemesAdapter(ArrayList<ThemeItem> data) {
+            this.data = data;
+        }
+
+        @NonNull
+        @Override
+        public ThemesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            itemBinding = ThemeItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new ViewHolder(itemBinding);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ThemeItem themeItem = data.get(holder.getBindingAdapterPosition());
+
+            int primaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorPrimary);
+            int secondaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondary);
+            int surfaceContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurfaceContainer);
+            int surfaceColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurface);
+
+            itemBinding.themeNameText.setText(themeItem.getName());
+
+            itemBinding.themeCardView.setChecked(ThemeManager.getCurrentTheme(requireContext()) == themeItem.getThemeId());
+            itemBinding.themeItem1.setCardBackgroundColor(surfaceContainerColor);
+            itemBinding.themeItem2.setCardBackgroundColor(surfaceContainerColor);
+            itemBinding.themeItem3.setCardBackgroundColor(surfaceContainerColor);
+
+
+            itemBinding.themeItem1Rect.setCardBackgroundColor(primaryColor);
+            itemBinding.themeItem1Rect.setCardBackgroundColor(secondaryColor);
+            itemBinding.themeAccentedButton.setCardBackgroundColor(secondaryColor);
+
+            itemBinding.themeCardView.setOnClickListener(v -> {
+                ThemeManager.saveTheme(requireContext(), themeItem.getThemeId());
+                ThemeManager.applyMode(requireContext(), ThemeManager.getCurrentMode(requireContext()));
+                requireActivity().recreate();
+
+            });
+
+            if (ThemeManager.getCurrentTheme(requireContext()) == themeItem.getThemeId()) {
+                itemBinding.themeSelected.setBackground(AppCompatResources.getDrawable(requireContext(), R.drawable.theme_selected_border));
+                itemBinding.check.setVisibility(View.VISIBLE);
+            }else{
+                itemBinding.themeSelected.setBackground(AppCompatResources.getDrawable(requireContext(), R.drawable.theme_unselected_border));
+                itemBinding.check.setVisibility(View.GONE);
+            }
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return data.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public ThemeItemBinding itemBinding;
+
+            public ViewHolder(ThemeItemBinding itemBinding) {
+                super(itemBinding.getRoot());
+                this.itemBinding = itemBinding;
+            }
+        }
     }
 }
