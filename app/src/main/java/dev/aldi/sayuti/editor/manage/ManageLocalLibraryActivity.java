@@ -300,7 +300,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             binding.card.setOnClickListener(v -> {
                 if (isSelectionModeEnabled) {
                     toggleLocalLibrary(binding.card, library, onLocalLibrarySelectedStateChangedListener);
-                } else {
+                } else if (!notAssociatedWithProject) {
                     binding.materialSwitch.performClick();
                 }
             });
@@ -315,12 +315,13 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
                 return true;
             });
 
-            binding.materialSwitch.setOnClickListener(v -> {
-                onItemClicked(binding, library.getName());
-            });
-
             binding.materialSwitch.setChecked(false);
             if (!notAssociatedWithProject) {
+
+                binding.materialSwitch.setOnClickListener(v -> {
+                    onItemClicked(binding, library.getName());
+                });
+
                 for (Map<String, Object> libraryMap : projectUsedLibs) {
                     if (library.getName().equals(libraryMap.get("name").toString())) {
                         binding.materialSwitch.setChecked(true);
@@ -424,17 +425,18 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             binding.librarySize.setText(library.getSize());
             binding.libraryName.setSelected(true);
 
-            binding.getRoot().setOnClickListener(v -> {
-                binding.materialSwitch.performClick();
-            });
-
-            binding.materialSwitch.setOnClickListener(v -> {
-                onItemClicked(binding, library.getName());
-                adapter.notifyItemChanged(position);
-            });
-
             binding.materialSwitch.setChecked(false);
             if (!notAssociatedWithProject) {
+
+                binding.getRoot().setOnClickListener(v -> {
+                    binding.materialSwitch.performClick();
+                });
+
+                binding.materialSwitch.setOnClickListener(v -> {
+                    onItemClicked(binding, library.getName());
+                    adapter.notifyItemChanged(position);
+                });
+
                 for (Map<String, Object> libraryMap : projectUsedLibs) {
                     if (library.getName().equals(libraryMap.get("name").toString())) {
                         binding.materialSwitch.setChecked(true);
