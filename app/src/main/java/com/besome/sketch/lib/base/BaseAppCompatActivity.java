@@ -28,6 +28,7 @@ import a.a.a.MA;
 import a.a.a.ZA;
 import a.a.a.lC;
 import a.a.a.xB;
+import pro.sketchware.utility.theme.ThemeManager;
 
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
@@ -109,6 +110,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyMode(this, ThemeManager.getCurrentMode(this));
         super.onCreate(savedInstanceState);
         e = getApplicationContext();
         taskList = new ArrayList<>();
