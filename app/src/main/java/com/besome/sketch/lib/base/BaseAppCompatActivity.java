@@ -1,11 +1,16 @@
 package com.besome.sketch.lib.base;
 
+import static pro.sketchware.utility.theme.ThemeManager.applyTheme;
+import static pro.sketchware.utility.theme.ThemeManager.getCurrentTheme;
+import static pro.sketchware.utility.theme.ThemeManager.getSystemAppliedTheme;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -144,6 +149,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+
+        if (getSystemAppliedTheme(this) != getCurrentTheme(this)) {
+            recreate();
+        }
+
         if (lottieDialog != null && lottieDialog.isShowing()) {
             lottieDialog.resumeAnimation();
         }
