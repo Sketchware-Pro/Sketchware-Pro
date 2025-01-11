@@ -150,4 +150,85 @@
     <color name="lavender_surfaceContainerHigh">#241f41</color>
     <color name="lavender_surfaceContainerHighest">#282446</color>
 
+    <!--== Yin & Yang Theme Colors ==-->
+    <color name="yinyang_primary">#FFFFFF</color>
+    <color name="yinyang_onPrimary">#5A5A5A</color>
+    <color name="yinyang_primaryContainer">#FFFFFF</color>
+    <color name="yinyang_onPrimaryContainer">#000000</color>
+    <color name="yinyang_inversePrimary">#CECECE</color>
+    <color name="yinyang_secondary">#FFFFFF</color>
+    <color name="yinyang_onSecondary">#5A5A5A</color>
+    <color name="yinyang_secondaryContainer">#717171</color>
+    <color name="yinyang_onSecondaryContainer">#E4E4E4</color>
+    <color name="yinyang_tertiary">#000000</color>
+    <color name="yinyang_onTertiary">#FFFFFF</color>
+    <color name="yinyang_tertiaryContainer">#00419E</color>
+    <color name="yinyang_onTertiaryContainer">#D8E2FF</color>
+    <color name="yinyang_background">#1E1E1E</color>
+    <color name="yinyang_onBackground">#E6E6E6</color>
+    <color name="yinyang_surface">#1E1E1E</color>
+    <color name="yinyang_onSurface">#E6E6E6</color>
+    <color name="yinyang_surfaceVariant">#313131</color>
+    <color name="yinyang_onSurfaceVariant">#D1D1D1</color>
+    <color name="yinyang_surfaceTint">#FFFFFF</color>
+    <color name="yinyang_inverseSurface">#E6E6E6</color>
+    <color name="yinyang_inverseOnSurface">#1E1E1E</color>
+    <color name="yinyang_outline">#999999</color>
+    <color name="yinyang_surfaceContainerLowest">#2A2A2A</color>
+    <color name="yinyang_surfaceContainerLow">#2D2D2D</color>
+    <color name="yinyang_surfaceContainer">#313131</color>
+    <color name="yinyang_surfaceContainerHigh">#383838</color>
+    <color name="yinyang_surfaceContainerHighest">#3F3F3F</color>
+
+    <!--== Sketchware original Theme Colors ==-->
+    <color name="sketchOG_primary">#9ECAFF</color>
+    <color name="sketchOG_onPrimary">#003258</color>
+    <color name="sketchOG_primaryContainer">#0078C8</color>
+    <color name="sketchOG_onPrimaryContainer">#FFFFFF</color>
+    <color name="sketchOG_secondary">#A9C9F2</color>
+    <color name="sketchOG_onSecondary">#0C3253</color>
+    <color name="sketchOG_secondaryContainer">#204163</color>
+    <color name="sketchOG_onSecondaryContainer">#B8D7FF</color>
+    <color name="sketchOG_tertiary">#9ECAFF</color>
+    <color name="sketchOG_onTertiary">#003258</color>
+    <color name="sketchOG_tertiaryContainer">#0078C8</color>
+    <color name="sketchOG_onTertiaryContainer">#FFFFFF</color>
+    <color name="sketchOG_error">#FFB4AB</color>
+    <color name="sketchOG_onError">#690005</color>
+    <color name="sketchOG_errorContainer">#93000A</color>
+    <color name="sketchOG_onErrorContainer">#FFDAD6</color>
+    <color name="sketchOG_background">#0F1419</color>
+    <color name="sketchOG_onBackground">#DFE2EA</color>
+    <color name="sketchOG_surface">#0F1419</color>
+    <color name="sketchOG_onSurface">#DFE2EA</color>
+    <color name="sketchOG_surfaceVariant">#404752</color>
+    <color name="sketchOG_onSurfaceVariant">#BFC7D4</color>
+    <color name="sketchOG_outline">#89919D</color>
+    <color name="sketchOG_outlineVariant">#404752</color>
+    <color name="sketchOG_inverseSurface">#DFE2EA</color>
+    <color name="sketchOG_inverseOnSurface">#2D3137</color>
+    <color name="sketchOG_inversePrimary">#0061A4</color>
+    <color name="sketchOG_primaryFixed">#D1E4FF</color>
+    <color name="sketchOG_onPrimaryFixed">#001D36</color>
+    <color name="sketchOG_primaryFixedDim">#9ECAFF</color>
+    <color name="sketchOG_onPrimaryFixedVariant">#00497D</color>
+    <color name="sketchOG_secondaryFixed">#D1E4FF</color>
+    <color name="sketchOG_onSecondaryFixed">#001D36</color>
+    <color name="sketchOG_secondaryFixedDim">#A9C9F2</color>
+    <color name="sketchOG_onSecondaryFixedVariant">#28496B</color>
+    <color name="sketchOG_tertiaryFixed">#D1E4FF</color>
+    <color name="sketchOG_onTertiaryFixed">#001D36</color>
+    <color name="sketchOG_tertiaryFixedDim">#9ECAFF</color>
+    <color name="sketchOG_onTertiaryFixedVariant">#00497D</color>
+    <color name="sketchOG_surfaceDim">#0F1419</color>
+    <color name="sketchOG_surfaceBright">#353940</color>
+    <color name="sketchOG_surfaceContainerLowest">#0A0E14</color>
+    <color name="sketchOG_surfaceContainerLow">#181C22</color>
+    <color name="sketchOG_surfaceContainer">#1C2026</color>
+    <color name="sketchOG_surfaceContainerHigh">#262A30</color>
+    <color name="sketchOG_surfaceContainerHighest">#31353B</color>
+
+
+
+
 </resources>
