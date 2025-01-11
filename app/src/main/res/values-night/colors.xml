@@ -130,7 +130,6 @@
     <color name="lavender_onError">#690005</color>
     <color name="lavender_errorContainer">#93000A</color>
     <color name="lavender_onErrorContainer">#FFDAD6</color>
-    <color name="lavender_background">#111129</color>
     <color name="lavender_onBackground">#E7E0EC</color>
     <color name="lavender_surface">#111129</color>
     <color name="lavender_onSurface">#E7E0EC</color>
