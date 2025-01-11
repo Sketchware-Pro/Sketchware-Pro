@@ -9,6 +9,8 @@ import android.util.TypedValue;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.view.ContextThemeWrapper;
 
+import com.android.tools.r8.internal.C;
+
 import java.util.ArrayList;
 
 import pro.sketchware.R;
@@ -18,6 +20,8 @@ public class ThemeManager {
     private static final String THEME_PREF = "themedata";
     private static final String MODE_KEY = "idetheme"; // theme mode : light , dark and follow system
     private static final String THEME_KEY = "idethemecolor"; // theme : greenapple , dark and follow system
+    private static final String AMOLED_KEY = "ideisamoled"; // theme : greenapple , dark and follow system
+
 
     public static final int THEME_SYSTEM = 0;
     public static final int THEME_LIGHT = 1;
@@ -26,6 +30,8 @@ public class ThemeManager {
     public static void applyMode(Context context, int type) {
         saveThemeMode(context, type);
         applyTheme(context, getCurrentTheme(context));
+        if (isAmoledEnabled(context)) applyAmoled(context);
+
 
         switch (type) {
             case THEME_LIGHT:
@@ -34,7 +40,6 @@ public class ThemeManager {
             case THEME_DARK:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
-
             default:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         }
@@ -43,7 +48,7 @@ public class ThemeManager {
     public static void applyTheme(Context context, int theme) {
         switch (theme) {
             case (0):
-                context.setTheme(R.style.GreenApple);
+                context.setTheme(R.style.Dynamic);
                 break;
             case (1):
                 context.setTheme(R.style.Lavender);
@@ -51,11 +56,26 @@ public class ThemeManager {
             case (2):
                 context.setTheme(R.style.yogNesh);
                 break;
-            default:
+            case (3):
+                context.setTheme(R.style.YinYang);
+                break;
+            case (4):
+                context.setTheme(R.style.sketchwareOg);
+                break;
+            case (5):
                 context.setTheme(R.style.GreenApple);
+                break;
+            default:
+                context.setTheme(R.style.Dynamic);
         }
         saveTheme(context,theme);
     }
+
+    public static void applyAmoled(Context context) {
+        context.getTheme().applyStyle(R.style.sketchware_Amoled, true);
+
+    }
+
 
     public static int getCurrentMode(Context context) {
         return getPreferences(context).getInt(MODE_KEY, THEME_SYSTEM);
@@ -63,6 +83,10 @@ public class ThemeManager {
 
     public static int getCurrentTheme(Context context) {
         return getPreferences(context).getInt(THEME_KEY, THEME_SYSTEM);
+    }
+
+    public static boolean isAmoledEnabled(Context context) {
+        return getPreferences(context).getBoolean(AMOLED_KEY, false);
     }
 
     public static int getSystemAppliedTheme(Context context){
@@ -84,6 +108,11 @@ public class ThemeManager {
         getPreferences(context).edit().putInt(THEME_KEY, theme).apply();
     }
 
+    public static void setAmoled(Context context, boolean bool) {
+        getPreferences(context).edit().putBoolean(AMOLED_KEY, bool).apply();
+        if (bool) applyAmoled(context);;
+    }
+
     private static SharedPreferences getPreferences(Context context) {
         return context.getSharedPreferences(THEME_PREF, Context.MODE_PRIVATE);
     }
@@ -91,9 +120,13 @@ public class ThemeManager {
     public static ArrayList<ThemeItem> getThemesList(){
         ArrayList<ThemeItem> themeList = new ArrayList<>();
 
-        themeList.add(new ThemeItem("GreenApple", R.style.GreenApple, 0));
+        themeList.add(new ThemeItem("Dynamic", R.style.Dynamic, 0));
         themeList.add(new ThemeItem("Lavender", R.style.Lavender, 1));
         themeList.add(new ThemeItem("Yog & esh", R.style.yogNesh, 2));
+        themeList.add(new ThemeItem("Yin & Yang", R.style.YinYang, 3));
+        themeList.add(new ThemeItem("Sketchware original", R.style.sketchwareOg, 4));
+        themeList.add(new ThemeItem("Green Apple", R.style.GreenApple, 5));
+
 
         return themeList;
     }

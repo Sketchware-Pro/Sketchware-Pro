@@ -1,5 +1,7 @@
 package pro.sketchware.fragments.settings.appearance;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 
@@ -23,10 +26,13 @@ import pro.sketchware.utility.theme.ThemeManager;
 public class SettingsAppearanceFragment extends qA {
     private FragmentSettingsAppearanceBinding binding;
     private MaterialCardView selectedThemeCard;
+    private Context context;
 
+    private int primaryColor, secondaryColor, surfaceContainerColor, primaryContainerColor, controlNormalColor, backgroundColor, secondaryContainerColor;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSettingsAppearanceBinding.inflate(inflater, container, false);
+        context = requireContext();
         return binding.getRoot();
     }
 
@@ -38,6 +44,7 @@ public class SettingsAppearanceFragment extends qA {
         binding.themesRecycler.setAdapter(new ThemesAdapter(ThemeManager.getThemesList()));
         initializeThemeSettings();
         setupClickListeners();
+
     }
 
     private void setupToolbar() {
@@ -51,9 +58,7 @@ public class SettingsAppearanceFragment extends qA {
     }
 
     private void initializeThemeSettings() {
-        boolean isSystemTheme = ThemeManager.isSystemMode(requireContext());
-
-        switch (ThemeManager.getCurrentMode(requireContext())) {
+        switch (ThemeManager.getCurrentMode(context)) {
             case (0):
                 binding.themeModes.check(R.id.mode_system);
                 break;
@@ -66,6 +71,13 @@ public class SettingsAppearanceFragment extends qA {
             default:
                 binding.themeModes.check(R.id.mode_system);
         }
+
+        binding.amoledCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            ThemeManager.setAmoled(context, isChecked);
+            requireActivity().recreate();
+        });
+
+        binding.amoledCheck.setChecked(ThemeManager.isAmoledEnabled(context));
     }
 
     private void setupClickListeners() {
@@ -73,21 +85,27 @@ public class SettingsAppearanceFragment extends qA {
             if (isChecked) {
                 switch (checkedId) {
                     case (R.id.mode_system):
-                        ThemeManager.applyMode(requireContext(), ThemeManager.THEME_SYSTEM);
+                        ThemeManager.setAmoled(context, false);
+                        ThemeManager.applyMode(context, ThemeManager.THEME_SYSTEM);
                         break;
                     case (R.id.mode_light):
-                        ThemeManager.applyMode(requireContext(), ThemeManager.THEME_LIGHT);
+                        ThemeManager.setAmoled(context, false);
+                        ThemeManager.applyMode(context, ThemeManager.THEME_LIGHT);
                         break;
                     case (R.id.mode_dark):
-                        ThemeManager.applyMode(requireContext(), ThemeManager.THEME_DARK);
+                        ThemeManager.applyMode(context, ThemeManager.THEME_DARK);
                         break;
                     default:
-                        ThemeManager.applyMode(requireContext(), ThemeManager.THEME_SYSTEM);
+                        ThemeManager.setAmoled(context, false);
+                        ThemeManager.applyMode(context, ThemeManager.THEME_SYSTEM);
 
                 }
 
             }
+            requireActivity().recreate();
         });
+
+
     }
 
 
@@ -116,39 +134,64 @@ public class SettingsAppearanceFragment extends qA {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ThemeItem themeItem = data.get(holder.getBindingAdapterPosition());
 
-            int primaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorPrimary);
-            int secondaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondary);
-            int surfaceContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurfaceContainer);
-            int surfaceColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurface);
+            primaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorPrimary);
+            secondaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondary);
+            surfaceContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurfaceContainer);
+            primaryContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorPrimaryContainer);
+            controlNormalColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorControlNormal);
+            backgroundColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurface);
+            secondaryContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondaryContainer);
+
+            // dynamic colors theme preview
+            if (themeItem.getThemeId() == 0) {
+                primaryColor = context.getResources().getColor(android.R.color.system_accent1_500);
+                secondaryColor = MaterialColors.getColor(itemBinding.getRoot(), com.google.android.material.R.attr.colorSecondary);
+                surfaceContainerColor = MaterialColors.getColor(itemBinding.getRoot(), com.google.android.material.R.attr.colorSurfaceContainer);
+                primaryContainerColor = MaterialColors.getColor(itemBinding.getRoot(), com.google.android.material.R.attr.colorPrimaryContainer);
+                controlNormalColor = MaterialColors.getColor(itemBinding.getRoot(), themeItem.getStyleId(), com.google.android.material.R.attr.colorControlNormal);
+                backgroundColor = MaterialColors.getColor(itemBinding.getRoot(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurface);
+                secondaryContainerColor = MaterialColors.getColor(itemBinding.getRoot(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondaryContainer);
+            }
 
             itemBinding.themeNameText.setText(themeItem.getName());
 
-            itemBinding.themeCardView.setChecked(ThemeManager.getCurrentTheme(requireContext()) == themeItem.getThemeId());
             itemBinding.themeItem1.setCardBackgroundColor(surfaceContainerColor);
             itemBinding.themeItem2.setCardBackgroundColor(surfaceContainerColor);
             itemBinding.themeItem3.setCardBackgroundColor(surfaceContainerColor);
+            itemBinding.themeItem4.setCardBackgroundColor(secondaryContainerColor);
 
+            itemBinding.themeNameText.setTextColor(primaryContainerColor);
+            itemBinding.themeAccentedButton.setCardBackgroundColor(primaryContainerColor);
 
             itemBinding.themeItem1Rect.setCardBackgroundColor(primaryColor);
             itemBinding.themeItem1Rect.setCardBackgroundColor(secondaryColor);
-            itemBinding.themeAccentedButton.setCardBackgroundColor(secondaryColor);
+
+
+            itemBinding.themeSpecial.setCardBackgroundColor(controlNormalColor);
+            itemBinding.themeCardView.setCardBackgroundColor(backgroundColor);
 
             itemBinding.themeCardView.setOnClickListener(v -> {
-                ThemeManager.saveTheme(requireContext(), themeItem.getThemeId());
-                ThemeManager.applyMode(requireContext(), ThemeManager.getCurrentMode(requireContext()));
+                ThemeManager.saveTheme(context, themeItem.getThemeId());
+                ThemeManager.applyMode(context, ThemeManager.getCurrentMode(context));
                 requireActivity().recreate();
 
             });
 
-            if (ThemeManager.getCurrentTheme(requireContext()) == themeItem.getThemeId()) {
-                itemBinding.themeSelected.setBackground(AppCompatResources.getDrawable(requireContext(), R.drawable.theme_selected_border));
-                itemBinding.check.setVisibility(View.VISIBLE);
-            }else{
-                itemBinding.themeSelected.setBackground(AppCompatResources.getDrawable(requireContext(), R.drawable.theme_unselected_border));
-                itemBinding.check.setVisibility(View.GONE);
+            if (ThemeManager.isAmoledEnabled(context)) {
+                itemBinding.themeCardView.setCardBackgroundColor(Color.BLACK);
+                itemBinding.themeItem1.setCardBackgroundColor(getResources().getColor(R.color.md_amoled_surfaceContainerLow));
+                itemBinding.themeItem2.setCardBackgroundColor(getResources().getColor(R.color.md_amoled_surfaceContainerLow));
+                itemBinding.themeItem3.setCardBackgroundColor(getResources().getColor(R.color.md_amoled_surfaceContainer));
+                itemBinding.themeItem4.setCardBackgroundColor(getResources().getColor(R.color.md_amoled_surfaceContainerLow));
             }
 
-
+            if (ThemeManager.getCurrentTheme(context) == themeItem.getThemeId()) {
+                itemBinding.themeSelected.setBackground(AppCompatResources.getDrawable(context, R.drawable.theme_selected_border));
+                itemBinding.check.setVisibility(View.VISIBLE);
+            }else{
+                itemBinding.themeSelected.setBackground(AppCompatResources.getDrawable(context, R.drawable.theme_unselected_border));
+                itemBinding.check.setVisibility(View.GONE);
+            }
         }
 
         @Override
