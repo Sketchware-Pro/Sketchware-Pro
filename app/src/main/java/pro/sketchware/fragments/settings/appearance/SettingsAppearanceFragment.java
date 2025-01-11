@@ -72,10 +72,6 @@ public class SettingsAppearanceFragment extends qA {
                 binding.themeModes.check(R.id.mode_system);
         }
 
-        binding.amoledCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            ThemeManager.setAmoled(context, isChecked);
-            requireActivity().recreate();
-        });
 
         binding.amoledCheck.setChecked(ThemeManager.isAmoledEnabled(context));
     }
@@ -85,18 +81,15 @@ public class SettingsAppearanceFragment extends qA {
             if (isChecked) {
                 switch (checkedId) {
                     case (R.id.mode_system):
-                        ThemeManager.setAmoled(context, false);
                         ThemeManager.applyMode(context, ThemeManager.THEME_SYSTEM);
                         break;
                     case (R.id.mode_light):
-                        ThemeManager.setAmoled(context, false);
                         ThemeManager.applyMode(context, ThemeManager.THEME_LIGHT);
                         break;
                     case (R.id.mode_dark):
                         ThemeManager.applyMode(context, ThemeManager.THEME_DARK);
                         break;
                     default:
-                        ThemeManager.setAmoled(context, false);
                         ThemeManager.applyMode(context, ThemeManager.THEME_SYSTEM);
 
                 }
@@ -104,7 +97,9 @@ public class SettingsAppearanceFragment extends qA {
             }
             requireActivity().recreate();
         });
-
+        binding.amoledCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            ThemeManager.setAmoled(context, isChecked);
+        });
 
     }
 
