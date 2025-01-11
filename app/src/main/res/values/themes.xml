@@ -89,7 +89,6 @@
     <!--== Lavender Theme ==-->
     <style name="Lavender">
         <item name="themeId">1</item>
-        <item name="isMaterial3DynamicColorApplied">false</item>
         <item name="colorPrimary">@color/lavender_primary</item>
         <item name="colorOnPrimary">@color/lavender_onPrimary</item>
         <item name="colorPrimaryContainer">@color/lavender_primaryContainer</item>
@@ -106,7 +105,7 @@
         <item name="colorOnError">@color/lavender_onError</item>
         <item name="colorErrorContainer">@color/lavender_errorContainer</item>
         <item name="colorOnErrorContainer">@color/lavender_onErrorContainer</item>
-        <item name="android:colorBackground">@color/lavender_background</item>
+        <item name="android:colorBackground">@color/lavender_surface</item>
         <item name="colorOnBackground">@color/lavender_onBackground</item>
         <item name="colorSurface">@color/lavender_surface</item>
         <item name="colorOnSurface">@color/lavender_onSurface</item>
