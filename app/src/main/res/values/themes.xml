@@ -1,10 +1,14 @@
 <resources>
+
     <style name="Base.Theme.SketchwarePro" parent="Scheme.SketchwarePro.DayNight" />
+
     <style name="Theme.SketchwarePro" parent="Platform.Theme.SketchwarePro">
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutLargeStyle</item>
         <item name="collapsingToolbarLayoutLargeSize">@dimen/collapsing_toolbar_large_size</item>
-        <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.SketchwarePro.CollapsingToolbar</item>
+        <item name="collapsingToolbarLayoutLargeStyle">
+            @style/Widget.SketchwarePro.CollapsingToolbar
+        </item>
         <item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_material</item>
         <item name="textInputStyle">@style/Widget.SketchwarePro.TextInputLayout</item>
         <item name="fontFamily">@font/gilroy</item>
@@ -13,25 +17,35 @@
             @style/Preference.SketchwarePro.SwitchPreferenceCompat
         </item>
         <item name="tabStyle">@style/TabLayoutStyle</item>
-        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.SketchwarePro.BottomSheetDialog</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.SketchwarePro.BottomSheetDialog
+        </item>
         <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
         <item name="android:popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
         <item name="materialCardViewFilledStyle">@style/Widget.SketchwarePro.MaterialCardView</item>
         <!-- Type styles. -->
-        <item name="textAppearanceDisplayLarge">@style/TextAppearance.SketchwarePro.DisplayLarge</item>
-        <item name="textAppearanceDisplayMedium">@style/TextAppearance.SketchwarePro.DisplayMedium</item>
-        <item name="textAppearanceDisplaySmall">@style/TextAppearance.SketchwarePro.DisplaySmall</item>
-        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.SketchwarePro.HeadlineLarge</item>
-        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.SketchwarePro.HeadlineMedium</item>
-        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.SketchwarePro.HeadlineSmall</item>
+        <item name="textAppearanceDisplayLarge">@style/TextAppearance.SketchwarePro.DisplayLarge
+        </item>
+        <item name="textAppearanceDisplayMedium">@style/TextAppearance.SketchwarePro.DisplayMedium
+        </item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.SketchwarePro.DisplaySmall
+        </item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.SketchwarePro.HeadlineLarge
+        </item>
+        <item name="textAppearanceHeadlineMedium">
+            @style/TextAppearance.SketchwarePro.HeadlineMedium
+        </item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.SketchwarePro.HeadlineSmall
+        </item>
         <item name="textAppearanceTitleLarge">@style/TextAppearance.SketchwarePro.TitleLarge</item>
-        <item name="textAppearanceTitleMedium">@style/TextAppearance.SketchwarePro.TitleMedium</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.SketchwarePro.TitleMedium
+        </item>
         <item name="textAppearanceTitleSmall">@style/TextAppearance.SketchwarePro.TitleSmall</item>
         <item name="textAppearanceBodyLarge">@style/TextAppearance.SketchwarePro.BodyLarge</item>
         <item name="textAppearanceBodyMedium">@style/TextAppearance.SketchwarePro.BodyMedium</item>
         <item name="textAppearanceBodySmall">@style/TextAppearance.SketchwarePro.BodySmall</item>
         <item name="textAppearanceLabelLarge">@style/TextAppearance.SketchwarePro.LabelLarge</item>
-        <item name="textAppearanceLabelMedium">@style/TextAppearance.SketchwarePro.LabelMedium</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.SketchwarePro.LabelMedium
+        </item>
         <item name="textAppearanceLabelSmall">@style/TextAppearance.SketchwarePro.LabelSmall</item>
     </style>
 
@@ -62,51 +76,20 @@
         <item name="android:navigationBarColor">@android:color/black</item>
         <item name="android:statusBarColor">@android:color/black</item>
     </style>
+
     <style name="Platform.Theme.SketchwarePro" parent="Platform.V21.Theme.SketchwarePro" />
 
-    <!--== Green Apple Theme ==-->
-    <style name="GreenApple">
+
+    <!--== Dynamic colors Theme ==-->
+    <style name="Dynamic">
         <item name="themeId">0</item>
-        <item name="colorPrimary">@color/greenapple_primary</item>
-        <item name="colorOnPrimary">@color/greenapple_onPrimary</item>
-        <item name="colorPrimaryContainer">@color/greenapple_primaryContainer</item>
-        <item name="colorOnPrimaryContainer">@color/greenapple_onPrimaryContainer</item>
-        <item name="colorPrimaryInverse">@color/greenapple_inversePrimary</item>
-        <item name="colorSecondary">@color/greenapple_secondary</item>
-        <item name="colorOnSecondary">@color/greenapple_onSecondary</item>
-        <item name="colorSecondaryContainer">@color/greenapple_secondaryContainer</item>
-        <item name="colorOnSecondaryContainer">@color/greenapple_onSecondaryContainer</item>
-        <item name="colorTertiary">@color/greenapple_tertiary</item>
-        <item name="colorOnTertiary">@color/greenapple_onTertiary</item>
-        <item name="colorTertiaryContainer">@color/greenapple_tertiaryContainer</item>
-        <item name="colorOnTertiaryContainer">@color/greenapple_onTertiaryContainer</item>
-        <item name="android:colorBackground">@color/greenapple_background</item>
-        <item name="colorOnBackground">@color/greenapple_onBackground</item>
-        <item name="colorSurface">@color/greenapple_surface</item>
-        <item name="colorOnSurface">@color/greenapple_onSurface</item>
-        <item name="colorSurfaceVariant">@color/greenapple_surfaceVariant</item>
-        <item name="colorOnSurfaceVariant">@color/greenapple_onSurfaceVariant</item>
-        <item name="colorSurfaceInverse">@color/greenapple_inverseSurface</item>
-        <item name="colorOnSurfaceInverse">@color/greenapple_inverseOnSurface</item>
-        <item name="colorError">@color/greenapple_error</item>
-        <item name="colorOnError">@color/greenapple_onError</item>
-        <item name="colorErrorContainer">@color/greenapple_errorContainer</item>
-        <item name="colorOnErrorContainer">@color/greenapple_onErrorContainer</item>
-        <item name="colorOutline">@color/greenapple_outline</item>
-        <item name="colorOutlineVariant">@color/greenapple_outlineVariant</item>
-        <item name="scrimBackground">@color/greenapple_scrim</item>
-        <item name="colorSurfaceBright">@color/greenapple_surfaceBright</item>
-        <item name="colorSurfaceDim">@color/greenapple_surfaceDim</item>
-        <item name="colorSurfaceContainer">@color/greenapple_surfaceContainer</item>
-        <item name="colorSurfaceContainerHigh">@color/greenapple_surfaceContainerHigh</item>
-        <item name="colorSurfaceContainerHighest">@color/greenapple_surfaceContainerHighest</item>
-        <item name="colorSurfaceContainerLow">@color/greenapple_surfaceContainerLow</item>
-        <item name="colorSurfaceContainerLowest">@color/greenapple_surfaceContainerLowest</item>
+        <item name="isMaterial3DynamicColorApplied">true</item>
     </style>
 
     <!--== Lavender Theme ==-->
     <style name="Lavender">
         <item name="themeId">1</item>
+        <item name="isMaterial3DynamicColorApplied">false</item>
         <item name="colorPrimary">@color/lavender_primary</item>
         <item name="colorOnPrimary">@color/lavender_onPrimary</item>
         <item name="colorPrimaryContainer">@color/lavender_primaryContainer</item>
@@ -144,56 +127,179 @@
     </style>
 
     <!--== Yog & esh Theme ==-->
-        <style name="yogNesh" parent="Theme.Material3.Light.NoActionBar">
-            <item name="themeId">2</item>
-            <item name="colorPrimary">@color/yog_primary</item>
-            <item name="colorOnPrimary">@color/yog_onPrimary</item>
-            <item name="colorPrimaryContainer">@color/yog_primaryContainer</item>
-            <item name="colorOnPrimaryContainer">@color/yog_onPrimaryContainer</item>
-            <item name="colorSecondary">@color/yog_secondary</item>
-            <item name="colorOnSecondary">@color/yog_onSecondary</item>
-            <item name="colorSecondaryContainer">@color/yog_secondaryContainer</item>
-            <item name="colorOnSecondaryContainer">@color/yog_onSecondaryContainer</item>
-            <item name="colorTertiary">@color/yog_tertiary</item>
-            <item name="colorOnTertiary">@color/yog_onTertiary</item>
-            <item name="colorTertiaryContainer">@color/yog_tertiaryContainer</item>
-            <item name="colorOnTertiaryContainer">@color/yog_onTertiaryContainer</item>
-            <item name="colorError">@color/yog_error</item>
-            <item name="colorOnError">@color/yog_onError</item>
-            <item name="colorErrorContainer">@color/yog_errorContainer</item>
-            <item name="colorOnErrorContainer">@color/yog_onErrorContainer</item>
-            <item name="android:colorBackground">@color/yog_background</item>
-            <item name="colorOnBackground">@color/yog_onBackground</item>
-            <item name="colorSurface">@color/yog_surface</item>
-            <item name="colorOnSurface">@color/yog_onSurface</item>
-            <item name="colorSurfaceVariant">@color/yog_surfaceVariant</item>
-            <item name="colorOnSurfaceVariant">@color/yog_onSurfaceVariant</item>
-            <item name="colorOutline">@color/yog_outline</item>
-            <item name="colorOutlineVariant">@color/yog_outlineVariant</item>
-            <item name="colorSurfaceInverse">@color/yog_inverseSurface</item>
-            <item name="colorOnSurfaceInverse">@color/yog_inverseOnSurface</item>
-            <item name="colorPrimaryInverse">@color/yog_inversePrimary</item>
-            <item name="colorPrimaryFixed">@color/yog_primaryFixed</item>
-            <item name="colorOnPrimaryFixed">@color/yog_onPrimaryFixed</item>
-            <item name="colorPrimaryFixedDim">@color/yog_primaryFixedDim</item>
-            <item name="colorOnPrimaryFixedVariant">@color/yog_onPrimaryFixedVariant</item>
-            <item name="colorSecondaryFixed">@color/yog_secondaryFixed</item>
-            <item name="colorOnSecondaryFixed">@color/yog_onSecondaryFixed</item>
-            <item name="colorSecondaryFixedDim">@color/yog_secondaryFixedDim</item>
-            <item name="colorOnSecondaryFixedVariant">@color/yog_onSecondaryFixedVariant</item>
-            <item name="colorTertiaryFixed">@color/yog_tertiaryFixed</item>
-            <item name="colorOnTertiaryFixed">@color/yog_onTertiaryFixed</item>
-            <item name="colorTertiaryFixedDim">@color/yog_tertiaryFixedDim</item>
-            <item name="colorOnTertiaryFixedVariant">@color/yog_onTertiaryFixedVariant</item>
-            <item name="colorSurfaceDim">@color/yog_surfaceDim</item>
-            <item name="colorSurfaceBright">@color/yog_surfaceBright</item>
-            <item name="colorSurfaceContainerLowest">@color/yog_surfaceContainerLowest</item>
-            <item name="colorSurfaceContainerLow">@color/yog_surfaceContainerLow</item>
-            <item name="colorSurfaceContainer">@color/yog_surfaceContainer</item>
-            <item name="colorSurfaceContainerHigh">@color/yog_surfaceContainerHigh</item>
-            <item name="colorSurfaceContainerHighest">@color/yog_surfaceContainerHighest</item>
-        </style>
+    <style name="yogNesh">
+        <item name="themeId">2</item>
+        <item name="colorPrimary">@color/yog_primary</item>
+        <item name="colorOnPrimary">@color/yog_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/yog_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/yog_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/yog_secondary</item>
+        <item name="colorOnSecondary">@color/yog_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/yog_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/yog_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/yog_tertiary</item>
+        <item name="colorOnTertiary">@color/yog_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/yog_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/yog_onTertiaryContainer</item>
+        <item name="colorError">@color/yog_error</item>
+        <item name="colorOnError">@color/yog_onError</item>
+        <item name="colorErrorContainer">@color/yog_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/yog_onErrorContainer</item>
+        <item name="android:colorBackground">@color/yog_surface</item>
+        <item name="colorOnBackground">@color/yog_onBackground</item>
+        <item name="colorSurface">@color/yog_surface</item>
+        <item name="colorSurfaceDim">@color/yog_surface</item>
+        <item name="colorPrimarySurface">@color/yog_surface</item>
+        <item name="colorOnSurface">@color/yog_onSurface</item>
+        <item name="colorSurfaceVariant">@color/yog_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/yog_onSurfaceVariant</item>
+        <item name="colorOutline">@color/yog_outline</item>
+        <item name="colorOutlineVariant">@color/yog_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/yog_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/yog_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/yog_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/yog_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/yog_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/yog_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/yog_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/yog_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/yog_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/yog_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/yog_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/yog_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/yog_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/yog_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/yog_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceBright">@color/yog_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/yog_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/yog_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/yog_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/yog_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/yog_surfaceContainerHighest</item>
+    </style>
 
+    <!--== Yin & Yang Theme ==-->
+    <style name="YinYang">
+        <item name="themeId">3</item>
+        <item name="colorPrimary">@color/yinyang_primary</item>
+        <item name="colorOnPrimary">@color/yinyang_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/yinyang_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/yinyang_onPrimaryContainer</item>
+        <item name="colorPrimaryInverse">@color/yinyang_inversePrimary</item>
+        <item name="colorSecondary">@color/yinyang_secondary</item>
+        <item name="colorOnSecondary">@color/yinyang_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/yinyang_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/yinyang_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/yinyang_tertiary</item>
+        <item name="colorOnTertiary">@color/yinyang_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/yinyang_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/yinyang_onTertiaryContainer</item>
+        <item name="android:colorBackground">@color/yinyang_surface</item>
+        <item name="colorOnBackground">@color/yinyang_onBackground</item>
+        <item name="colorSurface">@color/yinyang_surface</item>
+        <item name="colorOnSurface">@color/yinyang_onSurface</item>
+        <item name="colorSurfaceVariant">@color/yinyang_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/yinyang_onSurfaceVariant</item>
+        <item name="elevationOverlayColor">@color/yinyang_surfaceTint</item>
+        <item name="colorSurfaceInverse">@color/yinyang_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/yinyang_inverseOnSurface</item>
+        <item name="colorOutline">@color/yinyang_outline</item>
+        <item name="colorSurfaceContainer">@color/yinyang_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/yinyang_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/yinyang_surfaceContainerHighest</item>
+        <item name="colorSurfaceContainerLow">@color/yinyang_surfaceContainerLow</item>
+        <item name="colorSurfaceContainerLowest">@color/yinyang_surfaceContainerLowest</item>
+    </style>
 
+    <!--== Sketchware original Theme ==-->
+    <style name="sketchwareOg">
+        <item name="themeId">4</item>
+        <item name="colorPrimary">@color/sketchOG_primary</item>
+        <item name="colorOnPrimary">@color/sketchOG_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/sketchOG_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/sketchOG_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/sketchOG_secondary</item>
+        <item name="colorOnSecondary">@color/sketchOG_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/sketchOG_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/sketchOG_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/sketchOG_tertiary</item>
+        <item name="colorOnTertiary">@color/sketchOG_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/sketchOG_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/sketchOG_onTertiaryContainer</item>
+        <item name="colorError">@color/sketchOG_error</item>
+        <item name="colorOnError">@color/sketchOG_onError</item>
+        <item name="colorErrorContainer">@color/sketchOG_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/sketchOG_onErrorContainer</item>
+        <item name="android:colorBackground">@color/sketchOG_surface</item>
+        <item name="colorOnBackground">@color/sketchOG_onBackground</item>
+        <item name="colorSurface">@color/sketchOG_surface</item>
+        <item name="colorOnSurface">@color/sketchOG_onSurface</item>
+        <item name="colorSurfaceVariant">@color/sketchOG_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/sketchOG_onSurfaceVariant</item>
+        <item name="colorOutline">@color/sketchOG_outline</item>
+        <item name="colorOutlineVariant">@color/sketchOG_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/sketchOG_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/sketchOG_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/sketchOG_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/sketchOG_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/sketchOG_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/sketchOG_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/sketchOG_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/sketchOG_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/sketchOG_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/sketchOG_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/sketchOG_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/sketchOG_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/sketchOG_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/sketchOG_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/sketchOG_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/sketchOG_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/sketchOG_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/sketchOG_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/sketchOG_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/sketchOG_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/sketchOG_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/sketchOG_surfaceContainerHighest</item>
+    </style>
+
+    <!--== Green Apple Theme ==-->
+    <style name="GreenApple">
+        <item name="themeId">5</item>
+        <item name="colorPrimary">@color/greenapple_primary</item>
+        <item name="colorOnPrimary">@color/greenapple_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/greenapple_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/greenapple_onPrimaryContainer</item>
+        <item name="colorPrimaryInverse">@color/greenapple_inversePrimary</item>
+        <item name="colorSecondary">@color/greenapple_secondary</item>
+        <item name="colorOnSecondary">@color/greenapple_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/greenapple_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/greenapple_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/greenapple_tertiary</item>
+        <item name="colorOnTertiary">@color/greenapple_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/greenapple_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/greenapple_onTertiaryContainer</item>
+        <item name="android:colorBackground">@color/greenapple_surface</item>
+        <item name="colorOnBackground">@color/greenapple_onBackground</item>
+        <item name="colorSurface">@color/greenapple_surface</item>
+        <item name="colorOnSurface">@color/greenapple_onSurface</item>
+        <item name="colorSurfaceVariant">@color/greenapple_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/greenapple_onSurfaceVariant</item>
+        <item name="colorSurfaceInverse">@color/greenapple_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/greenapple_inverseOnSurface</item>
+        <item name="colorError">@color/greenapple_error</item>
+        <item name="colorOnError">@color/greenapple_onError</item>
+        <item name="colorErrorContainer">@color/greenapple_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/greenapple_onErrorContainer</item>
+        <item name="colorOutline">@color/greenapple_outline</item>
+        <item name="colorOutlineVariant">@color/greenapple_outlineVariant</item>
+        <item name="scrimBackground">@color/greenapple_scrim</item>
+        <item name="colorSurfaceBright">@color/greenapple_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/greenapple_surfaceDim</item>
+        <item name="colorSurfaceContainer">@color/greenapple_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/greenapple_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/greenapple_surfaceContainerHighest</item>
+        <item name="colorSurfaceContainerLow">@color/greenapple_surfaceContainerLow</item>
+        <item name="colorSurfaceContainerLowest">@color/greenapple_surfaceContainerLowest</item>
+    </style>
 
 </resources>

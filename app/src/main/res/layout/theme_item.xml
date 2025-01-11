@@ -35,6 +35,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/theme_item4"
+                android:layout_width="40dp"
+                android:layout_height="12dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                app:cardCornerRadius="4dp"
+                app:strokeWidth="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
             <LinearLayout
                 android:id="@+id/theme_layout"
                 android:layout_width="0dp"
@@ -49,12 +60,21 @@
                     android:id="@+id/theme_item3"
                     android:layout_width="65dp"
                     android:layout_height="25dp"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginTop="26dp"
                     app:cardCornerRadius="4dp"
                     app:strokeWidth="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent">
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/theme_special"
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="?colorControlNormal"
+                        app:cardCornerRadius="10dp"
+                        app:strokeWidth="0dp" />
+                </com.google.android.material.card.MaterialCardView>
 
 
                 <com.google.android.material.card.MaterialCardView
@@ -110,7 +130,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/theme_accented_button"
-                android:layout_width="25dp"
+                android:layout_width="21dp"
                 android:layout_height="12dp"
                 android:layout_margin="10dp"
                 app:cardBackgroundColor="?colorPrimary"
@@ -128,8 +148,7 @@
         android:maxLines="3"
         android:layout_marginTop="2dp"
         android:textAlignment="center"
-        android:layout_marginStart="9dp"
-        android:layout_marginEnd="6dp"
+        android:gravity="center_horizontal"
         android:textAppearance="?textAppearanceCaption"
         app:layout_constraintTop_toBottomOf="@id/theme_selected"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,10 +158,10 @@
 
     <ImageView
         android:id="@+id/check"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="15dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginRight="18dp"
         android:src="@drawable/ic_checked_24"
         app:tint="?colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
