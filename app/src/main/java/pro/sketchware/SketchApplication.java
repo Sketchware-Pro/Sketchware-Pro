@@ -32,6 +32,6 @@ public class SketchApplication extends Application {
             }
         });
         super.onCreate();
-        ThemeManager.applyTheme(this, ThemeManager.getCurrentTheme(this));
+        ThemeManager.applyMode(this, ThemeManager.getCurrentMode(this));
     }
 }
