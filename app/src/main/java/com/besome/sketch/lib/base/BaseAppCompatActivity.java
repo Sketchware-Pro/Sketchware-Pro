@@ -1,8 +1,8 @@
 package com.besome.sketch.lib.base;
 
-import static pro.sketchware.utility.theme.ThemeManager.applyTheme;
 import static pro.sketchware.utility.theme.ThemeManager.getCurrentTheme;
 import static pro.sketchware.utility.theme.ThemeManager.getSystemAppliedTheme;
+import static pro.sketchware.utility.theme.ThemeManager.isAmoledEnabled;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +44,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     protected ProgressDialog progressDialog;
     private ZA lottieDialog;
     private ArrayList<MA> taskList;
+    private boolean isAmoled;
 
     public void a(MA var1) {
         taskList.add(var1);
@@ -116,11 +116,12 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         ThemeManager.applyMode(this, ThemeManager.getCurrentMode(this));
+        isAmoled = isAmoledEnabled(this);
         super.onCreate(savedInstanceState);
-        e = getApplicationContext();
+        e = this;
         taskList = new ArrayList<>();
         lottieDialog = new ZA(this);
-        lC.a(getApplicationContext(), false);
+        lC.a(e, false);
         progressDialog = new ProgressDialog(this);
         mAnalytics = FirebaseAnalytics.getInstance(this);
     }
@@ -150,8 +151,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        if (getSystemAppliedTheme(this) != getCurrentTheme(this)) {
-            recreate();
+        if ((getSystemAppliedTheme(this) != getCurrentTheme(this)) || (isAmoled != isAmoledEnabled(this))) {
+           recreate();
         }
 
         if (lottieDialog != null && lottieDialog.isShowing()) {
