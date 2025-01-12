@@ -1,20 +1,15 @@
 package mod.hey.studios.project.proguard;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import pro.sketchware.R;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -22,9 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-import mod.hey.studios.util.Helper;
 
-public class ManageProguardActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class ManageProguardActivity extends BaseAppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private ProguardHandler pg;
     private MaterialSwitch sw_pg_enabled;
@@ -94,7 +88,7 @@ public class ManageProguardActivity extends AppCompatActivity implements View.On
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_proguard);
 
