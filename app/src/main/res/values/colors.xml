@@ -190,6 +190,7 @@
     <color name="lavender_onError">#FFFFFF</color>
     <color name="lavender_errorContainer">#FFDAD6</color>
     <color name="lavender_onErrorContainer">#410002</color>
+    <color name="lavender_background">#EDE2FF</color>
     <color name="lavender_onBackground">#1D1A22</color>
     <color name="lavender_surface">#EDE2FF</color>
     <color name="lavender_onSurface">#1D1A22</color>
@@ -291,5 +292,54 @@
     <color name="md_amoled_black_1000">#000000</color>
     <color name="md_amoled_surfaceContainer">#0c0c0c</color>
     <color name="md_amoled_surfaceContainerLow">#0F0F0F</color>
+
+    <!--== Sakura Theme Colors ==-->
+    <color name="sakura_primary">#F49897</color>
+    <color name="sakura_onPrimary">#FFFFFF</color>
+    <color name="sakura_primaryContainer">#FAAAA9</color>
+    <color name="sakura_onPrimaryContainer">#FFFFFF</color>
+    <color name="sakura_secondary">#9F0F3D</color>
+    <color name="sakura_onSecondary">#FFFFFF</color>
+    <color name="sakura_secondaryContainer">#D13B60</color>
+    <color name="sakura_onSecondaryContainer">#FFFFFF</color>
+    <color name="sakura_tertiary">#54606B</color>
+    <color name="sakura_onTertiary">#FFFFFF</color>
+    <color name="sakura_tertiaryContainer">#D8E4F2</color>
+    <color name="sakura_onTertiaryContainer">#3E4955</color>
+    <color name="sakura_error">#BA1A1A</color>
+    <color name="sakura_onError">#FFFFFF</color>
+    <color name="sakura_errorContainer">#FFDAD6</color>
+    <color name="sakura_onErrorContainer">#410002</color>
+    <color name="sakura_background">#FFF8F7</color>
+    <color name="sakura_onBackground">#281719</color>
+    <color name="sakura_surface">#FFF8F7</color>
+    <color name="sakura_onSurface">#1E1B1B</color>
+    <color name="sakura_surfaceVariant">#FFD9DD</color>
+    <color name="sakura_onSurfaceVariant">#5B3F43</color>
+    <color name="sakura_outline">#906F72</color>
+    <color name="sakura_outlineVariant">#E4BDC0</color>
+    <color name="sakura_scrim">#000000</color>
+    <color name="sakura_inverseSurface">#33302F</color>
+    <color name="sakura_inverseOnSurface">#F6EFEE</color>
+    <color name="sakura_inversePrimary">#FFB2BB</color>
+    <color name="sakura_primaryFixed">#FFD9DD</color>
+    <color name="sakura_onPrimaryFixed">#400012</color>
+    <color name="sakura_primaryFixedDim">#FFB2BB</color>
+    <color name="sakura_onPrimaryFixedVariant">#910033</color>
+    <color name="sakura_secondaryFixed">#FFD9DD</color>
+    <color name="sakura_onSecondaryFixed">#400013</color>
+    <color name="sakura_secondaryFixedDim">#FFB2BC</color>
+    <color name="sakura_onSecondaryFixedVariant">#910035</color>
+    <color name="sakura_tertiaryFixed">#D8E4F2</color>
+    <color name="sakura_onTertiaryFixed">#111D27</color>
+    <color name="sakura_tertiaryFixedDim">#BCC8D5</color>
+    <color name="sakura_onTertiaryFixedVariant">#3D4853</color>
+    <color name="sakura_surfaceDim">#DFD8D8</color>
+    <color name="sakura_surfaceBright">#FFF8F7</color>
+    <color name="sakura_surfaceContainerLowest">#FFFFFF</color>
+    <color name="sakura_surfaceContainerLow">#F9F2F1</color>
+    <color name="sakura_surfaceContainer">#F4ECEB</color>
+    <color name="sakura_surfaceContainerHigh">#EEE6E6</color>
+    <color name="sakura_surfaceContainerHighest">#E8E1E0</color>
 
 </resources>
