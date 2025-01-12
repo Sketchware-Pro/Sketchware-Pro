@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -155,6 +156,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
 
         tryLoadingCustomizedAppStrings();
         binding = MainBinding.inflate(getLayoutInflater());
@@ -165,7 +167,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
         setContentView(binding.getRoot());
         Insetter.builder()
-                .padding(WindowInsetsCompat.Type.navigationBars(), Side.create(true, false, true, false))
+                .padding(WindowInsetsCompat.Type.navigationBars() , Side.create(true, false, true, false))
                 .applyToView(binding.layoutCoordinator);
         setSupportActionBar(binding.toolbar.toolbar);
 
