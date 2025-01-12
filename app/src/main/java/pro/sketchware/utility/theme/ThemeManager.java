@@ -45,28 +45,28 @@ public class ThemeManager {
     public static void applyTheme(Context context, int theme) {
         switch (theme) {
             case (0):
-                context.setTheme(R.style.Theme_Dynamic);
+                context.setTheme(R.style.Dynamic);
                 break;
             case (1):
-                context.setTheme(R.style.Theme_Lavender);
+                context.setTheme(R.style.Lavender);
                 break;
             case (2):
-                context.setTheme(R.style.Theme_yogNesh);
+                context.setTheme(R.style.yogNesh);
                 break;
             case (3):
-                context.setTheme(R.style.Theme_YinYang);
+                context.setTheme(R.style.YinYang);
                 break;
             case (4):
-                context.setTheme(R.style.Theme_sketchwareOg);
+                context.setTheme(R.style.sketchwareOg);
                 break;
             case (5):
-                context.setTheme(R.style.Theme_GreenApple);
+                context.setTheme(R.style.GreenApple);
                 break;
             case (6):
-                context.setTheme(R.style.Theme_Sakura);
+                context.setTheme(R.style.Sakura);
                 break;
             default:
-                context.setTheme(R.style.Theme_Dynamic);
+                context.setTheme(R.style.Dynamic);
         }
         saveTheme(context,theme);
     }
@@ -101,13 +101,13 @@ public class ThemeManager {
     public static ArrayList<ThemeItem> getThemesList(){
         ArrayList<ThemeItem> themeList = new ArrayList<>();
 
-        themeList.add(new ThemeItem("Dynamic", R.style.Theme_Dynamic, 0));
-        themeList.add(new ThemeItem("Lavender", R.style.Theme_Lavender, 1));
-        themeList.add(new ThemeItem("Yog & esh", R.style.Theme_yogNesh, 2));
-        themeList.add(new ThemeItem("Yin & Yang", R.style.Theme_YinYang, 3));
-        themeList.add(new ThemeItem("Sketchware original", R.style.Theme_sketchwareOg, 4));
-        themeList.add(new ThemeItem("Green Apple", R.style.Theme_GreenApple, 5));
-        themeList.add(new ThemeItem("Sakura", R.style.Theme_Sakura, 6));
+        themeList.add(new ThemeItem("Dynamic", R.style.Dynamic, 0));
+        themeList.add(new ThemeItem("Lavender", R.style.Lavender, 1));
+        themeList.add(new ThemeItem("Yog & esh", R.style.yogNesh, 2));
+        themeList.add(new ThemeItem("Yin & Yang", R.style.YinYang, 3));
+        themeList.add(new ThemeItem("Sketchware original", R.style.sketchwareOg, 4));
+        themeList.add(new ThemeItem("Green Apple", R.style.GreenApple, 5));
+        themeList.add(new ThemeItem("Sakura", R.style.Sakura, 6));
 
 
         return themeList;

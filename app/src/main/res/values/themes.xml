@@ -75,13 +75,13 @@
     </style>
 
     <!--== Dynamic colors Theme ==-->
-    <style name="Theme.Dynamic">
+    <style name="Dynamic">
         <item name="themeId">0</item>
         <item name="isMaterial3DynamicColorApplied">true</item>
     </style>
 
     <!--== Lavender Theme ==-->
-    <style name="Theme.Lavender" >
+    <style name="Lavender" >
         <item name="themeId">1</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="colorPrimary">@color/lavender_primary</item>
@@ -121,7 +121,7 @@
     </style>
 
     <!--== Yog & esh Theme ==-->
-    <style name="Theme.yogNesh">
+    <style name="yogNesh">
         <item name="themeId">2</item>
         <item name="dynamicColorThemeOverlay">@color/yog_surface</item>
         <item name="android:windowBackground">@color/yog_surface</item>
@@ -175,7 +175,7 @@
     </style>
 
     <!--== Yin & Yang Theme ==-->
-    <style name="Theme.YinYang">
+    <style name="YinYang">
         <item name="themeId">3</item>
         <item name="colorPrimary">@color/yinyang_primary</item>
         <item name="colorOnPrimary">@color/yinyang_onPrimary</item>
@@ -208,7 +208,7 @@
     </style>
 
     <!--== Sketchware original Theme ==-->
-    <style name="Theme.sketchwareOg">
+    <style name="sketchwareOg">
         <item name="themeId">4</item>
         <item name="colorPrimary">@color/sketchOG_primary</item>
         <item name="colorOnPrimary">@color/sketchOG_onPrimary</item>
@@ -259,7 +259,7 @@
     </style>
 
     <!--== Green Apple Theme ==-->
-    <style name="Theme.GreenApple">
+    <style name="GreenApple">
         <item name="themeId">5</item>
         <item name="colorPrimary">@color/greenapple_primary</item>
         <item name="colorOnPrimary">@color/greenapple_onPrimary</item>
@@ -299,7 +299,7 @@
     </style>
 
     <!--== Sakura Theme ==-->
-    <style name="Theme.Sakura">
+    <style name="Sakura">
         <item name="themeId">6</item>
         <item name="colorPrimary">@color/sakura_primary</item>
         <item name="colorOnPrimary">@color/sakura_onPrimary</item>
