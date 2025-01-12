@@ -1,5 +1,9 @@
 package com.besome.sketch.lib.base;
 
+import static pro.sketchware.utility.theme.ThemeManager.getCurrentTheme;
+import static pro.sketchware.utility.theme.ThemeManager.getSystemAppliedTheme;
+import static pro.sketchware.utility.theme.ThemeManager.isAmoledEnabled;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
@@ -28,6 +32,7 @@ import a.a.a.MA;
 import a.a.a.ZA;
 import a.a.a.lC;
 import a.a.a.xB;
+import pro.sketchware.utility.theme.ThemeManager;
 
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
@@ -39,6 +44,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     protected ProgressDialog progressDialog;
     private ZA lottieDialog;
     private ArrayList<MA> taskList;
+    private boolean isAmoled;
+
 
     public void a(MA var1) {
         taskList.add(var1);
@@ -109,6 +116,8 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        ThemeManager.applyMode(this, ThemeManager.getCurrentMode(this));
+        isAmoled = isAmoledEnabled(this);
         super.onCreate(savedInstanceState);
         e = getApplicationContext();
         taskList = new ArrayList<>();
@@ -142,6 +151,11 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+
+        if ((getSystemAppliedTheme(this) != getCurrentTheme(this)) || (isAmoled != isAmoledEnabled(this))) {
+            recreate();
+        }
+
         if (lottieDialog != null && lottieDialog.isShowing()) {
             lottieDialog.resumeAnimation();
         }
