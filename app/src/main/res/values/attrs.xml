@@ -79,4 +79,5 @@
     <attr name="colorOnVioletContainer" format="color" />
     <attr name="harmonizeViolet" format="boolean" />
     <attr name="themeId" format="integer"/>
+    <attr name="amoledId" format="integer" />
 </resources>

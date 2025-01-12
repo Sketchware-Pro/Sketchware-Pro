@@ -87,8 +87,9 @@
     </style>
 
     <!--== Lavender Theme ==-->
-    <style name="Lavender">
+    <style name="Lavender" >
         <item name="themeId">1</item>
+        <item name="android:windowDisablePreview">true</item>
         <item name="colorPrimary">@color/lavender_primary</item>
         <item name="colorOnPrimary">@color/lavender_onPrimary</item>
         <item name="colorPrimaryContainer">@color/lavender_primaryContainer</item>
@@ -128,6 +129,8 @@
     <!--== Yog & esh Theme ==-->
     <style name="yogNesh">
         <item name="themeId">2</item>
+        <item name="dynamicColorThemeOverlay">@color/yog_surface</item>
+        <item name="android:windowBackground">@color/yog_surface</item>
         <item name="colorPrimary">@color/yog_primary</item>
         <item name="colorOnPrimary">@color/yog_onPrimary</item>
         <item name="colorPrimaryContainer">@color/yog_primaryContainer</item>
@@ -299,6 +302,57 @@
         <item name="colorSurfaceContainerHighest">@color/greenapple_surfaceContainerHighest</item>
         <item name="colorSurfaceContainerLow">@color/greenapple_surfaceContainerLow</item>
         <item name="colorSurfaceContainerLowest">@color/greenapple_surfaceContainerLowest</item>
+    </style>
+
+    <!--== Sakura Theme ==-->
+    <style name="Sakura">
+        <item name="themeId">6</item>
+        <item name="colorPrimary">@color/sakura_primary</item>
+        <item name="colorOnPrimary">@color/sakura_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/sakura_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/sakura_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/sakura_secondary</item>
+        <item name="colorOnSecondary">@color/sakura_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/sakura_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/sakura_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/sakura_tertiary</item>
+        <item name="colorOnTertiary">@color/sakura_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/sakura_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/sakura_onTertiaryContainer</item>
+        <item name="colorError">@color/sakura_error</item>
+        <item name="colorOnError">@color/sakura_onError</item>
+        <item name="colorErrorContainer">@color/sakura_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/sakura_onErrorContainer</item>
+        <item name="android:colorBackground">@color/sakura_surface</item>
+        <item name="colorOnBackground">@color/sakura_onBackground</item>
+        <item name="colorSurface">@color/sakura_surface</item>
+        <item name="colorOnSurface">@color/sakura_onSurface</item>
+        <item name="colorSurfaceVariant">@color/sakura_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/sakura_onSurfaceVariant</item>
+        <item name="colorOutline">@color/sakura_outline</item>
+        <item name="colorOutlineVariant">@color/sakura_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/sakura_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/sakura_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/sakura_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/sakura_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/sakura_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/sakura_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/sakura_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/sakura_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/sakura_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/sakura_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/sakura_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/sakura_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/sakura_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/sakura_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/sakura_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/sakura_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/sakura_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/sakura_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/sakura_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/sakura_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/sakura_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/sakura_surfaceContainerHighest</item>
     </style>
 
 </resources>

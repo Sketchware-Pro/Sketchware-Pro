@@ -65,6 +65,9 @@ public class ThemeManager {
             case (5):
                 context.setTheme(R.style.GreenApple);
                 break;
+            case (6):
+                context.setTheme(R.style.Sakura);
+                break;
             default:
                 context.setTheme(R.style.Dynamic);
         }
@@ -72,10 +75,8 @@ public class ThemeManager {
     }
 
     public static void applyAmoled(Context context) {
-        context.getTheme().applyStyle(R.style.sketchware_Amoled, true);
-
+        context.getTheme().applyStyle(R.style.Theme_Amoled, true);
     }
-
 
     public static int getCurrentMode(Context context) {
         return getPreferences(context).getInt(MODE_KEY, THEME_SYSTEM);
@@ -110,7 +111,7 @@ public class ThemeManager {
 
     public static void setAmoled(Context context, boolean bool) {
         getPreferences(context).edit().putBoolean(AMOLED_KEY, bool).apply();
-        if (bool) applyAmoled(context);;
+        if (bool) applyAmoled(context);
     }
 
     private static SharedPreferences getPreferences(Context context) {
@@ -126,6 +127,7 @@ public class ThemeManager {
         themeList.add(new ThemeItem("Yin & Yang", R.style.YinYang, 3));
         themeList.add(new ThemeItem("Sketchware original", R.style.sketchwareOg, 4));
         themeList.add(new ThemeItem("Green Apple", R.style.GreenApple, 5));
+        themeList.add(new ThemeItem("Sakura", R.style.Sakura, 6));
 
 
         return themeList;

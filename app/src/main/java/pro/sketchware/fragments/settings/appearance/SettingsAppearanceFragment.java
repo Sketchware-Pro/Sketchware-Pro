@@ -3,6 +3,7 @@ package pro.sketchware.fragments.settings.appearance;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import a.a.a.qA;
 import pro.sketchware.R;
@@ -40,8 +42,11 @@ public class SettingsAppearanceFragment extends qA {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupToolbar();
+        ThemesAdapter adapter = new ThemesAdapter(ThemeManager.getThemesList());
+        adapter.setHasStableIds(true);
 
-        binding.themesRecycler.setAdapter(new ThemesAdapter(ThemeManager.getThemesList()));
+        binding.themesRecycler.setAdapter(adapter);
+        binding.themesRecycler.smoothScrollToPosition(ThemeManager.getCurrentMode(context));
         initializeThemeSettings();
         setupClickListeners();
 
@@ -72,7 +77,6 @@ public class SettingsAppearanceFragment extends qA {
                 binding.themeModes.check(R.id.mode_system);
         }
 
-
         binding.amoledCheck.setChecked(ThemeManager.isAmoledEnabled(context));
     }
 
@@ -82,15 +86,18 @@ public class SettingsAppearanceFragment extends qA {
                 switch (checkedId) {
                     case (R.id.mode_system):
                         ThemeManager.applyMode(context, ThemeManager.THEME_SYSTEM);
+                        binding.amoledCheck.setChecked(false);
                         break;
                     case (R.id.mode_light):
                         ThemeManager.applyMode(context, ThemeManager.THEME_LIGHT);
+                        binding.amoledCheck.setChecked(false);
                         break;
                     case (R.id.mode_dark):
                         ThemeManager.applyMode(context, ThemeManager.THEME_DARK);
                         break;
                     default:
                         ThemeManager.applyMode(context, ThemeManager.THEME_SYSTEM);
+                        binding.amoledCheck.setChecked(false);
 
                 }
 
@@ -99,6 +106,8 @@ public class SettingsAppearanceFragment extends qA {
         });
         binding.amoledCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
             ThemeManager.setAmoled(context, isChecked);
+            if (isChecked) ThemeManager.applyMode(context, ThemeManager.THEME_DARK);
+            requireActivity().recreate();
         });
 
     }
@@ -126,8 +135,13 @@ public class SettingsAppearanceFragment extends qA {
         }
 
         @Override
+        public int getItemViewType(int position){
+            return position;
+        }
+
+        @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ThemeItem themeItem = data.get(holder.getBindingAdapterPosition());
+            ThemeItem themeItem = data.get(holder.getAbsoluteAdapterPosition());
 
             primaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorPrimary);
             secondaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondary);
@@ -139,6 +153,7 @@ public class SettingsAppearanceFragment extends qA {
 
             // dynamic colors theme preview
             if (themeItem.getThemeId() == 0) {
+
                 primaryColor = context.getResources().getColor(android.R.color.system_accent1_500);
                 secondaryColor = MaterialColors.getColor(itemBinding.getRoot(), com.google.android.material.R.attr.colorSecondary);
                 surfaceContainerColor = MaterialColors.getColor(itemBinding.getRoot(), com.google.android.material.R.attr.colorSurfaceContainer);
@@ -159,7 +174,7 @@ public class SettingsAppearanceFragment extends qA {
             itemBinding.themeAccentedButton.setCardBackgroundColor(primaryContainerColor);
 
             itemBinding.themeItem1Rect.setCardBackgroundColor(primaryColor);
-            itemBinding.themeItem1Rect.setCardBackgroundColor(secondaryColor);
+            itemBinding.themeItem2Rect.setCardBackgroundColor(secondaryColor);
 
 
             itemBinding.themeSpecial.setCardBackgroundColor(controlNormalColor);
