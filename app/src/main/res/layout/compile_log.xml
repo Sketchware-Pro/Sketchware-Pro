@@ -36,6 +36,7 @@
         android:clipToPadding="false"
         android:fillViewport="true"
         android:paddingBottom="50dp"
+        android:background="?colorSurface"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <HorizontalScrollView
