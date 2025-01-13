@@ -120,6 +120,7 @@
                 android:layout_marginHorizontal="14dp"
                 android:layout_marginTop="24dp"
                 android:checked="false"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:text="Pure black dark mode (Amoled) " />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
