@@ -124,11 +124,11 @@
     <color name="greenapple_tertiary">#ff9d0012</color>
     <color name="greenapple_tertiaryContainer">#ffd33131</color>
 
-    <!--== yog & esh Theme Colors ==-->
+    <!--== Cherry & yogurt Theme Colors ==-->
     <color name="yog_primary">#6B3058</color>
     <color name="yog_onPrimary">#FFFFFF</color>
     <color name="yog_primaryContainer">#94537D</color>
-    <color name="yog_onPrimaryContainer">#6B3058</color>
+    <color name="yog_onPrimaryContainer">#46223A</color>
     <color name="yog_secondary">#455162</color>
     <color name="yog_onSecondary">#FFFFFF</color>
     <color name="yog_secondaryContainer">#697587</color>
@@ -341,6 +341,66 @@
     <color name="sakura_surfaceContainer">#F4ECEB</color>
     <color name="sakura_surfaceContainerHigh">#EEE6E6</color>
     <color name="sakura_surfaceContainerHighest">#E8E1E0</color>
+
+    <!--== AquaMist Theme Colors ==-->
+    <color name="aquamist_primary">#008080</color>
+    <color name="aquamist_onPrimary">#FFFFFF</color>
+    <color name="aquamist_primaryContainer">#008080</color>
+    <color name="aquamist_onPrimaryContainer">#FFFFFF</color>
+    <color name="aquamist_inversePrimary">#40E0D0</color>
+    <color name="aquamist_secondary">#008080</color>
+    <color name="aquamist_onSecondary">#FFFFFF</color>
+    <color name="aquamist_secondaryContainer">#CFE5E4</color>
+    <color name="aquamist_onSecondaryContainer">#008080</color>
+    <color name="aquamist_tertiary">#FF7F7F</color>
+    <color name="aquamist_onTertiary">#000000</color>
+    <color name="aquamist_tertiaryContainer">#2A1616</color>
+    <color name="aquamist_onTertiaryContainer">#FF7F7F</color>
+    <color name="aquamist_background">#FAFAFA</color>
+    <color name="aquamist_onBackground">#050505</color>
+    <color name="aquamist_surface">#FAFAFA</color>
+    <color name="aquamist_onSurface">#050505</color>
+    <color name="aquamist_surfaceVariant">#EBF3F1</color>
+    <color name="aquamist_onSurfaceVariant">#050505</color>
+    <color name="aquamist_surfaceTint">#BFDFDF</color>
+    <color name="aquamist_inverseSurface">#050505</color>
+    <color name="aquamist_inverseOnSurface">#FAFAFA</color>
+    <color name="aquamist_outline">#6F7977</color>
+    <color name="aquamist_surfaceContainerLowest">#E1E9E7</color>
+    <color name="aquamist_surfaceContainerLow">#E6EEEC</color>
+    <color name="aquamist_surfaceContainer">#EBF3F1</color>
+    <color name="aquamist_surfaceContainerHigh">#F0F8F6</color>
+    <color name="aquamist_surfaceContainerHighest">#F7FFFD</color>
+
+    <!--== Tako Theme Colors ==-->
+    <color name="tako_primary">#66577E</color>
+    <color name="tako_onPrimary">#F3B375</color>
+    <color name="tako_primaryContainer">#66577E</color>
+    <color name="tako_onPrimaryContainer">#F3B375</color>
+    <color name="tako_inversePrimary">#D6BAFF</color>
+    <color name="tako_secondary">#66577E</color>
+    <color name="tako_onSecondary">#F3B375</color>
+    <color name="tako_secondaryContainer">#C8BED0</color>
+    <color name="tako_onSecondaryContainer">#66577E</color>
+    <color name="tako_tertiary">#F3B375</color>
+    <color name="tako_onTertiary">#574360</color>
+    <color name="tako_tertiaryContainer">#FDD6B0</color>
+    <color name="tako_onTertiaryContainer">#221437</color>
+    <color name="tako_background">#F7F5FF</color>
+    <color name="tako_onBackground">#1B1B22</color>
+    <color name="tako_surface">#F7F5FF</color>
+    <color name="tako_onSurface">#1B1B22</color>
+    <color name="tako_surfaceVariant">#E8E0EB</color>
+    <color name="tako_onSurfaceVariant">#49454E</color>
+    <color name="tako_surfaceTint">#66577E</color>
+    <color name="tako_inverseSurface">#313033</color>
+    <color name="tako_inverseOnSurface">#F3EFF4</color>
+    <color name="tako_outline">#7A757E</color>
+    <color name="tako_surfaceContainerLowest">#D7D0DA</color>
+    <color name="tako_surfaceContainerLow">#DFD8E2</color>
+    <color name="tako_surfaceContainer">#E8E0EB</color>
+    <color name="tako_surfaceContainerHigh">#EEE6F1</color>
+    <color name="tako_surfaceContainerHighest">#F7EEFA</color>
 
 
 </resources>

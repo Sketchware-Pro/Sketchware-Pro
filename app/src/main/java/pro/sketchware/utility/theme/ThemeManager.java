@@ -51,7 +51,6 @@ public class ThemeManager {
                 break;
             case (2):
                 context.setTheme(R.style.Theme_SketchwarePro_Lavender);
-
                 break;
             case (3):
                 context.setTheme(R.style.Theme_SketchwarePro_yogNesh);
@@ -65,8 +64,14 @@ public class ThemeManager {
             case (6):
                 context.setTheme(R.style.Theme_SketchwarePro_Sakura);
                 break;
+            case (7):
+                context.setTheme(R.style.Theme_SketchwarePro_AquaMist);
+                break;
+            case (8):
+                context.setTheme(R.style.Theme_SketchwarePro_Tako);
+                break;
             default:
-                context.setTheme(R.style.Platform_V21_Theme_SketchwarePro);
+                context.setTheme(R.style.Theme_SketchwarePro_Default);
         }
         saveTheme(context,theme);
     }
@@ -104,10 +109,12 @@ public class ThemeManager {
         themeList.add(new ThemeItem("Default", R.style.Theme_SketchwarePro_Default, 0));
         themeList.add(new ThemeItem("Dynamic", R.style.Theme_SketchwarePro, 1));
         themeList.add(new ThemeItem("Lavender", R.style.Theme_SketchwarePro_Lavender, 2));
-        themeList.add(new ThemeItem("Yog & esh", R.style.Theme_SketchwarePro_yogNesh, 3));
+        themeList.add(new ThemeItem("Cherry & yogurt", R.style.Theme_SketchwarePro_yogNesh, 3));
         themeList.add(new ThemeItem("Yin & Yang", R.style.Theme_SketchwarePro_YinYang, 4));
         themeList.add(new ThemeItem("Green Apple", R.style.Theme_SketchwarePro_GreenApple, 5));
         themeList.add(new ThemeItem("Sakura", R.style.Theme_SketchwarePro_Sakura, 6));
+        themeList.add(new ThemeItem("AquaMist", R.style.Theme_SketchwarePro_AquaMist, 7));
+        themeList.add(new ThemeItem("Tako", R.style.Theme_SketchwarePro_Tako, 8));
 
 
         return themeList;

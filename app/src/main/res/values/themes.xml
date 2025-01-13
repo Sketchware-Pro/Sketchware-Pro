@@ -65,6 +65,7 @@
     </style>
     <style name="Platform.Theme.SketchwarePro" parent="Platform.V21.Theme.SketchwarePro" />
 
+    <!--== Amoled Theme ==-->
     <style name="Theme.SketchwarePro.Amoled" parent="">
         <item name="colorSurface">@color/md_amoled_black_1000</item>
         <item name="colorPrimaryVariant">@color/md_amoled_black_1000</item>
@@ -73,6 +74,7 @@
         <item name="colorSurfaceContainer">@color/md_amoled_surfaceContainer</item>
         <item name="colorSurfaceContainerLow">@color/md_amoled_surfaceContainerLow</item>
         <item name="colorSurfaceContainerHigh">@color/md_amoled_surfaceContainerLow</item>
+        <item name="colorOutline">@color/md_amoled_surfaceContainerLow</item>
     </style>
 
     <!--== Default Theme ==-->
@@ -81,6 +83,7 @@
         <item name="colorPrimary">@color/sketchOG_primary</item>
         <item name="colorOnPrimary">@color/sketchOG_onPrimary</item>
         <item name="colorPrimaryContainer">@color/sketchOG_primaryContainer</item>
+        <item name="colorControlNormal">@color/sketchOG_onSurfaceVariant</item>
         <item name="colorOnPrimaryContainer">@color/sketchOG_onPrimaryContainer</item>
         <item name="colorSecondary">@color/sketchOG_secondary</item>
         <item name="colorOnSecondary">@color/sketchOG_onSecondary</item>
@@ -94,6 +97,7 @@
         <item name="colorOnError">@color/sketchOG_onError</item>
         <item name="colorErrorContainer">@color/sketchOG_errorContainer</item>
         <item name="colorOnErrorContainer">@color/sketchOG_onErrorContainer</item>
+        <item name="android:textColorPrimary">@color/sketchOG_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/sketchOG_surface</item>
         <item name="colorOnBackground">@color/sketchOG_onBackground</item>
         <item name="colorSurface">@color/sketchOG_surface</item>
@@ -135,11 +139,11 @@
     <!--== Lavender Theme ==-->
     <style name="Theme.SketchwarePro.Lavender" >
         <item name="themeId">2</item>
-        <item name="android:windowDisablePreview">true</item>
         <item name="colorPrimary">@color/lavender_primary</item>
         <item name="colorOnPrimary">@color/lavender_onPrimary</item>
         <item name="colorPrimaryContainer">@color/lavender_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/lavender_onPrimaryContainer</item>
+        <item name="colorControlNormal">@color/lavender_onSurfaceVariant</item>
         <item name="colorSecondary">@color/lavender_secondary</item>
         <item name="colorOnSecondary">@color/lavender_onSecondary</item>
         <item name="colorSecondaryContainer">@color/lavender_secondaryContainer</item>
@@ -152,6 +156,7 @@
         <item name="colorOnError">@color/lavender_onError</item>
         <item name="colorErrorContainer">@color/lavender_errorContainer</item>
         <item name="colorOnErrorContainer">@color/lavender_onErrorContainer</item>
+        <item name="android:textColorPrimary">@color/lavender_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/lavender_surface</item>
         <item name="colorOnBackground">@color/lavender_onBackground</item>
         <item name="colorSurface">@color/lavender_surface</item>
@@ -172,13 +177,14 @@
         <item name="colorSurfaceContainerHighest">@color/lavender_surfaceContainerHighest</item>
     </style>
 
-    <!--== Yog & esh Theme ==-->
+    <!--== Cherry & yogurt Theme ==-->
     <style name="Theme.SketchwarePro.yogNesh">
         <item name="themeId">3</item>
         <item name="colorPrimary">@color/yog_primary</item>
         <item name="colorOnPrimary">@color/yog_onPrimary</item>
         <item name="colorPrimaryContainer">@color/yog_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/yog_onPrimaryContainer</item>
+        <item name="colorControlNormal">@color/yog_onSurfaceVariant</item>
         <item name="colorSecondary">@color/yog_secondary</item>
         <item name="colorOnSecondary">@color/yog_onSecondary</item>
         <item name="colorSecondaryContainer">@color/yog_secondaryContainer</item>
@@ -191,6 +197,7 @@
         <item name="colorOnError">@color/yog_onError</item>
         <item name="colorErrorContainer">@color/yog_errorContainer</item>
         <item name="colorOnErrorContainer">@color/yog_onErrorContainer</item>
+        <item name="android:textColorPrimary">@color/yog_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/yog_surface</item>
         <item name="colorOnBackground">@color/yog_onBackground</item>
         <item name="colorSurface">@color/yog_surface</item>
@@ -231,6 +238,7 @@
         <item name="colorOnPrimary">@color/yinyang_onPrimary</item>
         <item name="colorPrimaryContainer">@color/yinyang_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/yinyang_onPrimaryContainer</item>
+        <item name="colorControlNormal">@color/yinyang_onSurfaceVariant</item>
         <item name="colorPrimaryInverse">@color/yinyang_inversePrimary</item>
         <item name="colorSecondary">@color/yinyang_secondary</item>
         <item name="colorOnSecondary">@color/yinyang_onSecondary</item>
@@ -240,6 +248,7 @@
         <item name="colorOnTertiary">@color/yinyang_onTertiary</item>
         <item name="colorTertiaryContainer">@color/yinyang_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/yinyang_onTertiaryContainer</item>
+        <item name="android:textColorPrimary">@color/yinyang_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/yinyang_surface</item>
         <item name="colorOnBackground">@color/yinyang_onBackground</item>
         <item name="colorSurface">@color/yinyang_surface</item>
@@ -265,6 +274,7 @@
         <item name="colorPrimaryContainer">@color/greenapple_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/greenapple_onPrimaryContainer</item>
         <item name="colorPrimaryInverse">@color/greenapple_inversePrimary</item>
+        <item name="colorControlNormal">@color/greenapple_onSurfaceVariant</item>
         <item name="colorSecondary">@color/greenapple_secondary</item>
         <item name="colorOnSecondary">@color/greenapple_onSecondary</item>
         <item name="colorSecondaryContainer">@color/greenapple_secondaryContainer</item>
@@ -273,6 +283,7 @@
         <item name="colorOnTertiary">@color/greenapple_onTertiary</item>
         <item name="colorTertiaryContainer">@color/greenapple_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/greenapple_onTertiaryContainer</item>
+        <item name="android:textColorPrimary">@color/greenapple_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/greenapple_surface</item>
         <item name="colorOnBackground">@color/greenapple_onBackground</item>
         <item name="colorSurface">@color/greenapple_surface</item>
@@ -304,6 +315,7 @@
         <item name="colorOnPrimary">@color/sakura_onPrimary</item>
         <item name="colorPrimaryContainer">@color/sakura_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/sakura_onPrimaryContainer</item>
+        <item name="colorControlNormal">@color/sakura_onSurfaceVariant</item>
         <item name="colorSecondary">@color/sakura_secondary</item>
         <item name="colorOnSecondary">@color/sakura_onSecondary</item>
         <item name="colorSecondaryContainer">@color/sakura_secondaryContainer</item>
@@ -316,6 +328,7 @@
         <item name="colorOnError">@color/sakura_onError</item>
         <item name="colorErrorContainer">@color/sakura_errorContainer</item>
         <item name="colorOnErrorContainer">@color/sakura_onErrorContainer</item>
+        <item name="android:textColorPrimary">@color/sakura_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/sakura_surface</item>
         <item name="colorOnBackground">@color/sakura_onBackground</item>
         <item name="colorSurface">@color/sakura_surface</item>
@@ -346,6 +359,76 @@
         <item name="colorSurfaceContainer">@color/sakura_surfaceContainer</item>
         <item name="colorSurfaceContainerHigh">@color/sakura_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/sakura_surfaceContainerHighest</item>
+    </style>
+
+    <!--== AquaMist Theme ==-->
+    <style name="Theme.SketchwarePro.AquaMist">
+        <item name="themeId">7</item>
+        <item name="colorPrimary">@color/aquamist_primary</item>
+        <item name="colorOnPrimary">@color/aquamist_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/aquamist_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/aquamist_onPrimaryContainer</item>
+        <item name="colorControlNormal">@color/aquamist_onSurfaceVariant</item>
+        <item name="colorPrimaryInverse">@color/aquamist_inversePrimary</item>
+        <item name="colorSecondary">@color/aquamist_secondary</item>
+        <item name="colorOnSecondary">@color/aquamist_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/aquamist_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/aquamist_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/aquamist_tertiary</item>
+        <item name="colorOnTertiary">@color/aquamist_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/aquamist_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/aquamist_onTertiaryContainer</item>
+        <item name="android:colorBackground">@color/aquamist_background</item>
+        <item name="android:textColorPrimary">@color/aquamist_onSurfaceVariant</item>
+        <item name="colorOnBackground">@color/aquamist_onBackground</item>
+        <item name="colorSurface">@color/aquamist_surface</item>
+        <item name="colorOnSurface">@color/aquamist_onSurface</item>
+        <item name="colorSurfaceVariant">@color/aquamist_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/aquamist_onSurfaceVariant</item>
+        <item name="elevationOverlayColor">@color/aquamist_surfaceTint</item>
+        <item name="colorSurfaceInverse">@color/aquamist_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/aquamist_inverseOnSurface</item>
+        <item name="colorOutline">@color/aquamist_outline</item>
+        <item name="colorSurfaceContainer">@color/aquamist_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/aquamist_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/aquamist_surfaceContainerHighest</item>
+        <item name="colorSurfaceContainerLow">@color/aquamist_surfaceContainerLow</item>
+        <item name="colorSurfaceContainerLowest">@color/aquamist_surfaceContainerLowest</item>
+    </style>
+
+    <!--== Tako Theme ==-->
+    <style name="Theme.SketchwarePro.Tako">
+        <item name="themeId">8</item>
+        <item name="colorPrimary">@color/tako_primary</item>
+        <item name="colorOnPrimary">@color/tako_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/tako_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/tako_onPrimaryContainer</item>
+        <item name="colorControlNormal">@color/tako_onSurfaceVariant</item>
+        <item name="android:textColorPrimary">@color/tako_onSurfaceVariant</item>
+        <item name="colorPrimaryInverse">@color/tako_inversePrimary</item>
+        <item name="colorSecondary">@color/tako_secondary</item>
+        <item name="colorOnSecondary">@color/tako_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/tako_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/tako_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/tako_tertiary</item>
+        <item name="colorOnTertiary">@color/tako_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/tako_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/tako_onTertiaryContainer</item>
+        <item name="android:colorBackground">@color/tako_background</item>
+        <item name="colorOnBackground">@color/tako_onBackground</item>
+        <item name="colorSurface">@color/tako_surface</item>
+        <item name="colorOnSurface">@color/tako_onSurface</item>
+        <item name="colorSurfaceVariant">@color/tako_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/tako_onSurfaceVariant</item>
+        <item name="elevationOverlayColor">@color/tako_surfaceTint</item>
+        <item name="colorSurfaceInverse">@color/tako_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/tako_inverseOnSurface</item>
+        <item name="colorOutline">@color/tako_outline</item>
+        <item name="colorSurfaceContainer">@color/tako_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/tako_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/tako_surfaceContainerHighest</item>
+        <item name="colorSurfaceContainerLow">@color/tako_surfaceContainerLow</item>
+        <item name="colorSurfaceContainerLowest">@color/tako_surfaceContainerLowest</item>
     </style>
 
 
