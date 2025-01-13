@@ -64,7 +64,7 @@
     </style>
     <style name="Platform.Theme.SketchwarePro" parent="Platform.V21.Theme.SketchwarePro" />
 
-    <style name="Theme.Amoled" parent="">
+    <style name="Theme.SketchwarePro.Amoled" parent="">
         <item name="colorSurface">@color/md_amoled_black_1000</item>
         <item name="colorPrimaryVariant">@color/md_amoled_black_1000</item>
         <item name="android:colorBackground">@color/md_amoled_black_1000</item>
@@ -75,13 +75,13 @@
     </style>
 
     <!--== Dynamic colors Theme ==-->
-    <style name="Dynamic">
+    <style name="Theme.SketchwarePro.Dynamic">
         <item name="themeId">0</item>
         <item name="isMaterial3DynamicColorApplied">true</item>
     </style>
 
     <!--== Lavender Theme ==-->
-    <style name="Lavender" >
+    <style name="Theme.SketchwarePro.Lavender" >
         <item name="themeId">1</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="colorPrimary">@color/lavender_primary</item>
@@ -121,7 +121,7 @@
     </style>
 
     <!--== Yog & esh Theme ==-->
-    <style name="yogNesh">
+    <style name="Theme.SketchwarePro.yogNesh">
         <item name="themeId">2</item>
         <item name="dynamicColorThemeOverlay">@color/yog_surface</item>
         <item name="android:windowBackground">@color/yog_surface</item>
@@ -175,7 +175,7 @@
     </style>
 
     <!--== Yin & Yang Theme ==-->
-    <style name="YinYang">
+    <style name="Theme.SketchwarePro.YinYang">
         <item name="themeId">3</item>
         <item name="colorPrimary">@color/yinyang_primary</item>
         <item name="colorOnPrimary">@color/yinyang_onPrimary</item>
@@ -208,7 +208,7 @@
     </style>
 
     <!--== Sketchware original Theme ==-->
-    <style name="sketchwareOg">
+    <style name="Theme.SketchwarePro.sketchwareOg">
         <item name="themeId">4</item>
         <item name="colorPrimary">@color/sketchOG_primary</item>
         <item name="colorOnPrimary">@color/sketchOG_onPrimary</item>
@@ -259,7 +259,7 @@
     </style>
 
     <!--== Green Apple Theme ==-->
-    <style name="GreenApple">
+    <style name="Theme.SketchwarePro.GreenApple">
         <item name="themeId">5</item>
         <item name="colorPrimary">@color/greenapple_primary</item>
         <item name="colorOnPrimary">@color/greenapple_onPrimary</item>
@@ -299,7 +299,7 @@
     </style>
 
     <!--== Sakura Theme ==-->
-    <style name="Sakura">
+    <style name="Theme.SketchwarePro.Sakura">
         <item name="themeId">6</item>
         <item name="colorPrimary">@color/sakura_primary</item>
         <item name="colorOnPrimary">@color/sakura_onPrimary</item>

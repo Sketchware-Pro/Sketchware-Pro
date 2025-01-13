@@ -45,28 +45,28 @@ public class ThemeManager {
     public static void applyTheme(Context context, int theme) {
         switch (theme) {
             case (0):
-                context.setTheme(R.style.Dynamic);
+                context.setTheme(R.style.Theme_SketchwarePro_Dynamic);
                 break;
             case (1):
-                context.setTheme(R.style.Lavender);
+                context.setTheme(R.style.Theme_SketchwarePro_Lavender);
                 break;
             case (2):
-                context.setTheme(R.style.yogNesh);
+                context.setTheme(R.style.Theme_SketchwarePro_yogNesh);
                 break;
             case (3):
-                context.setTheme(R.style.YinYang);
+                context.setTheme(R.style.Theme_SketchwarePro_YinYang);
                 break;
             case (4):
-                context.setTheme(R.style.sketchwareOg);
+                context.setTheme(R.style.Theme_SketchwarePro_sketchwareOg);
                 break;
             case (5):
-                context.setTheme(R.style.GreenApple);
+                context.setTheme(R.style.Theme_SketchwarePro_GreenApple);
                 break;
             case (6):
-                context.setTheme(R.style.Sakura);
+                context.setTheme(R.style.Theme_SketchwarePro_Sakura);
                 break;
             default:
-                context.setTheme(R.style.Dynamic);
+                context.setTheme(R.style.Theme_SketchwarePro_Dynamic);
         }
         saveTheme(context,theme);
     }
@@ -82,7 +82,7 @@ public class ThemeManager {
     }
 
     public static void applyAmoled(Context context) {
-        context.getTheme().applyStyle(R.style.Theme_Amoled, true);
+        context.getTheme().applyStyle(R.style.Theme_SketchwarePro_Amoled, true);
     }
 
     public static void setAmoled(Context context, boolean bool) {
@@ -101,13 +101,13 @@ public class ThemeManager {
     public static ArrayList<ThemeItem> getThemesList(){
         ArrayList<ThemeItem> themeList = new ArrayList<>();
 
-        themeList.add(new ThemeItem("Dynamic", R.style.Dynamic, 0));
-        themeList.add(new ThemeItem("Lavender", R.style.Lavender, 1));
-        themeList.add(new ThemeItem("Yog & esh", R.style.yogNesh, 2));
-        themeList.add(new ThemeItem("Yin & Yang", R.style.YinYang, 3));
-        themeList.add(new ThemeItem("Sketchware original", R.style.sketchwareOg, 4));
-        themeList.add(new ThemeItem("Green Apple", R.style.GreenApple, 5));
-        themeList.add(new ThemeItem("Sakura", R.style.Sakura, 6));
+        themeList.add(new ThemeItem("Dynamic", R.style.Theme_SketchwarePro_Dynamic, 0));
+        themeList.add(new ThemeItem("Lavender", R.style.Theme_SketchwarePro_Lavender, 1));
+        themeList.add(new ThemeItem("Yog & esh", R.style.Theme_SketchwarePro_yogNesh, 2));
+        themeList.add(new ThemeItem("Yin & Yang", R.style.Theme_SketchwarePro_YinYang, 3));
+        themeList.add(new ThemeItem("Sketchware original", R.style.Theme_SketchwarePro_sketchwareOg, 4));
+        themeList.add(new ThemeItem("Green Apple", R.style.Theme_SketchwarePro_GreenApple, 5));
+        themeList.add(new ThemeItem("Sakura", R.style.Theme_SketchwarePro_Sakura, 6));
 
 
         return themeList;
