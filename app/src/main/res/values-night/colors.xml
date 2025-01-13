@@ -114,14 +114,14 @@
     <color name="yog_surfaceContainerHighest">#373434</color>
 
     <!--== Lavender Theme Colors ==-->
-    <color name="lavender_primary">#A177FF</color>
+    <color name="lavender_primary">#6A38AC</color>
     <color name="lavender_onPrimary">#3D0090</color>
-    <color name="lavender_primaryContainer">#A177FF</color>
+    <color name="lavender_primaryContainer">#6A38AC</color>
     <color name="lavender_onPrimaryContainer">#FFFFFF</color>
-    <color name="lavender_secondary">#A177FF</color>
+    <color name="lavender_secondary">#6A38AC</color>
     <color name="lavender_onSecondary">#FFFFFF</color>
-    <color name="lavender_secondaryContainer">#423271</color>
-    <color name="lavender_onSecondaryContainer">#A177FF</color>
+    <color name="lavender_secondaryContainer">#34285A</color>
+    <color name="lavender_onSecondaryContainer">#6A38AC</color>
     <color name="lavender_tertiary">#CDBDFF</color>
     <color name="lavender_onTertiary">#360096</color>
     <color name="lavender_tertiaryContainer">#5512D8</color>
@@ -131,7 +131,7 @@
     <color name="lavender_errorContainer">#93000A</color>
     <color name="lavender_onErrorContainer">#FFDAD6</color>
     <color name="lavender_onBackground">#E7E0EC</color>
-    <color name="lavender_surface">#111129</color>
+    <color name="lavender_surface">#101020</color>
     <color name="lavender_onSurface">#E7E0EC</color>
     <color name="lavender_surfaceVariant">#3D2F6B</color>
     <color name="lavender_onSurfaceVariant">#CBC3D6</color>
@@ -141,26 +141,26 @@
     <color name="lavender_inverseSurface">#E7E0EC</color>
     <color name="lavender_inverseOnSurface">#322F38</color>
     <color name="lavender_inversePrimary">#6D41C8</color>
-    <color name="lavender_surfaceDim">#111129</color>
+    <color name="lavender_surfaceDim">#101020</color>
     <color name="lavender_surfaceBright">#3B3841</color>
     <color name="lavender_surfaceContainerLowest">#15132d</color>
     <color name="lavender_surfaceContainerLow">#171531</color>
-    <color name="lavender_surfaceContainer">#1D193B</color>
-    <color name="lavender_surfaceContainerHigh">#241f41</color>
+    <color name="lavender_surfaceContainer">#1A1634</color>
+    <color name="lavender_surfaceContainerHigh">#1D1934</color>
     <color name="lavender_surfaceContainerHighest">#282446</color>
 
     <!--== Yin & Yang Theme Colors ==-->
-    <color name="yinyang_primary">#FFFFFF</color>
+    <color name="yinyang_primary">#EBEBEB</color>
     <color name="yinyang_onPrimary">#5A5A5A</color>
-    <color name="yinyang_primaryContainer">#FFFFFF</color>
+    <color name="yinyang_primaryContainer">#EBEBEB</color>
     <color name="yinyang_onPrimaryContainer">#000000</color>
     <color name="yinyang_inversePrimary">#CECECE</color>
-    <color name="yinyang_secondary">#FFFFFF</color>
+    <color name="yinyang_secondary">#EBEBEB</color>
     <color name="yinyang_onSecondary">#5A5A5A</color>
     <color name="yinyang_secondaryContainer">#717171</color>
     <color name="yinyang_onSecondaryContainer">#E4E4E4</color>
     <color name="yinyang_tertiary">#000000</color>
-    <color name="yinyang_onTertiary">#FFFFFF</color>
+    <color name="yinyang_onTertiary">#EBEBEB</color>
     <color name="yinyang_tertiaryContainer">#00419E</color>
     <color name="yinyang_onTertiaryContainer">#D8E2FF</color>
     <color name="yinyang_background">#1E1E1E</color>
@@ -169,7 +169,7 @@
     <color name="yinyang_onSurface">#E6E6E6</color>
     <color name="yinyang_surfaceVariant">#313131</color>
     <color name="yinyang_onSurfaceVariant">#D1D1D1</color>
-    <color name="yinyang_surfaceTint">#FFFFFF</color>
+    <color name="yinyang_surfaceTint">#EBEBEB</color>
     <color name="yinyang_inverseSurface">#E6E6E6</color>
     <color name="yinyang_inverseOnSurface">#1E1E1E</color>
     <color name="yinyang_outline">#999999</color>
