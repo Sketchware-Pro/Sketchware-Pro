@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.color.DynamicColors;
@@ -54,7 +55,7 @@ public class SettingsAppearanceFragment extends qA {
             if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 requireActivity().getSupportFragmentManager().popBackStack();
             }else{
-                requireActivity().onBackPressed();
+                requireActivity().getOnBackPressedDispatcher().onBackPressed();
             }
         });
     }
@@ -118,7 +119,7 @@ public class SettingsAppearanceFragment extends qA {
 
     private class ThemesAdapter extends RecyclerView.Adapter<ThemesAdapter.ViewHolder> {
         private ThemeItemBinding itemBinding;
-        private ArrayList<ThemeItem> data;
+        private final ArrayList<ThemeItem> data;
 
         private ThemesAdapter(ArrayList<ThemeItem> data) {
             this.data = data;
@@ -180,10 +181,10 @@ public class SettingsAppearanceFragment extends qA {
 
             if (ThemeManager.isAmoledEnabled(context)) {
                 itemBinding.themeCardView.setCardBackgroundColor(Color.BLACK);
-                itemBinding.themeItem1.setCardBackgroundColor(getResources().getColor(R.color.md_amoled_surfaceContainerLow));
-                itemBinding.themeItem2.setCardBackgroundColor(getResources().getColor(R.color.md_amoled_surfaceContainerLow));
-                itemBinding.themeItem3.setCardBackgroundColor(getResources().getColor(R.color.md_amoled_surfaceContainer));
-                itemBinding.themeItem4.setCardBackgroundColor(getResources().getColor(R.color.md_amoled_surfaceContainerLow));
+                itemBinding.themeItem1.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_amoled_surfaceContainerLow));
+                itemBinding.themeItem2.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_amoled_surfaceContainerLow));
+                itemBinding.themeItem3.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_amoled_surfaceContainer));
+                itemBinding.themeItem4.setCardBackgroundColor(ContextCompat.getColor(context, R.color.md_amoled_surfaceContainerLow));
             }
 
             if (ThemeManager.getCurrentTheme(context) == themeItem.getThemeId()) {
