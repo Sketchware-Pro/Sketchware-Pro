@@ -57,7 +57,7 @@ public class ThemeManager {
                 context.setTheme(R.style.Theme_SketchwarePro_YinYang);
                 break;
             case (4):
-                context.setTheme(R.style.Theme_SketchwarePro_sketchwareOg);
+                context.setTheme(R.style.Theme_SketchwarePro);
                 break;
             case (5):
                 context.setTheme(R.style.Theme_SketchwarePro_GreenApple);
@@ -105,7 +105,7 @@ public class ThemeManager {
         themeList.add(new ThemeItem("Lavender", R.style.Theme_SketchwarePro_Lavender, 1));
         themeList.add(new ThemeItem("Yog & esh", R.style.Theme_SketchwarePro_yogNesh, 2));
         themeList.add(new ThemeItem("Yin & Yang", R.style.Theme_SketchwarePro_YinYang, 3));
-        themeList.add(new ThemeItem("Sketchware original", R.style.Theme_SketchwarePro_sketchwareOg, 4));
+        themeList.add(new ThemeItem("Default", R.style.Theme_SketchwarePro, 4));
         themeList.add(new ThemeItem("Green Apple", R.style.Theme_SketchwarePro_GreenApple, 5));
         themeList.add(new ThemeItem("Sakura", R.style.Theme_SketchwarePro_Sakura, 6));
 
