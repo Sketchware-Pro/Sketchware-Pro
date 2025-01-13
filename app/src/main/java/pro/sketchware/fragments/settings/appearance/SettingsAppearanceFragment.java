@@ -11,8 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.color.MaterialColors;
+import com.google.android.material.color.DynamicColors;
 
 import java.util.ArrayList;
 
@@ -25,10 +24,8 @@ import pro.sketchware.utility.theme.ThemeManager;
 
 public class SettingsAppearanceFragment extends qA {
     private FragmentSettingsAppearanceBinding binding;
-    private MaterialCardView selectedThemeCard;
 
     private Context context;
-    private int primaryColor, secondaryColor, surfaceContainerColor, primaryContainerColor, controlNormalColor, backgroundColor, secondaryContainerColor;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -143,25 +140,15 @@ public class SettingsAppearanceFragment extends qA {
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ThemeItem themeItem = data.get(holder.getAbsoluteAdapterPosition());
 
-            primaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorPrimary);
-            secondaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondary);
-            surfaceContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurfaceContainer);
-            primaryContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorPrimaryContainer);
-            controlNormalColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorControlNormal);
-            backgroundColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurface);
-            secondaryContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondaryContainer);
+            int primaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorPrimary);
+            int secondaryColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondary);
+            int surfaceContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurfaceContainer);
+            int primaryContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorPrimaryContainer);
+            int controlNormalColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorControlNormal);
+            int backgroundColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurface);
+            int secondaryContainerColor = ThemeManager.getColorFromTheme(holder.itemView.getContext(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondaryContainer);
 
-            // dynamic colors theme preview
-            if (themeItem.getThemeId() == 0) {
 
-                primaryColor = context.getResources().getColor(android.R.color.system_accent1_500);
-                secondaryColor = MaterialColors.getColor(itemBinding.getRoot(), com.google.android.material.R.attr.colorSecondary);
-                surfaceContainerColor = MaterialColors.getColor(itemBinding.getRoot(), com.google.android.material.R.attr.colorSurfaceContainer);
-                primaryContainerColor = MaterialColors.getColor(itemBinding.getRoot(), com.google.android.material.R.attr.colorPrimaryContainer);
-                controlNormalColor = MaterialColors.getColor(itemBinding.getRoot(), themeItem.getStyleId(), com.google.android.material.R.attr.colorControlNormal);
-                backgroundColor = MaterialColors.getColor(itemBinding.getRoot(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSurface);
-                secondaryContainerColor = MaterialColors.getColor(itemBinding.getRoot(), themeItem.getStyleId(), com.google.android.material.R.attr.colorSecondaryContainer);
-            }
             itemBinding.themeNameText.setText(themeItem.getName());
 
             itemBinding.themeItem1.setCardBackgroundColor(surfaceContainerColor);
@@ -186,6 +173,11 @@ public class SettingsAppearanceFragment extends qA {
 
             });
 
+            // Hide dynamic theme if device doesn't support it
+            if (themeItem.getStyleId() == R.style.Theme_SketchwarePro && !DynamicColors.isDynamicColorAvailable()) {
+                holder.itemBinding.getRoot().setVisibility(View.GONE);
+            }
+
             if (ThemeManager.isAmoledEnabled(context)) {
                 itemBinding.themeCardView.setCardBackgroundColor(Color.BLACK);
                 itemBinding.themeItem1.setCardBackgroundColor(getResources().getColor(R.color.md_amoled_surfaceContainerLow));
@@ -208,7 +200,7 @@ public class SettingsAppearanceFragment extends qA {
             return data.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder {
             public ThemeItemBinding itemBinding;
 
             public ViewHolder(ThemeItemBinding itemBinding) {
