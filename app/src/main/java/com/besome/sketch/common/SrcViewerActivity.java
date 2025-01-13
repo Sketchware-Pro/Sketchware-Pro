@@ -77,6 +77,7 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
             yq.a(libraryManager, fileManager, dataManager, false);
             ProjectBuilder builder = new ProjectBuilder(this, yq);
             builder.buildBuiltInLibraryInformation();
+            yq.generateDataBindingClasses = true;
             sourceCodeBeans = yq.a(fileManager, dataManager, builder.getBuiltInLibraryManager());
 
             try {

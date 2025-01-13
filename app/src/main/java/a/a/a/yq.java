@@ -212,6 +212,8 @@ public class yq {
     
     private final Context context;
 
+    public boolean generateDataBindingClasses;
+
     public yq(Context context, String sc_id) {
         this(context, wq.d(sc_id), lC.b(sc_id));
     }
@@ -862,7 +864,7 @@ public class yq {
     }
 
     private boolean isViewBindingEnable() {
-        return projectSettings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, ProjectSettings.SETTING_GENERIC_VALUE_FALSE).equals(ProjectSettings.SETTING_GENERIC_VALUE_TRUE);
+        return generateDataBindingClasses && projectSettings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, ProjectSettings.SETTING_GENERIC_VALUE_FALSE).equals(ProjectSettings.SETTING_GENERIC_VALUE_TRUE);
     }
 
     /**
