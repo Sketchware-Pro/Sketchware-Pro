@@ -789,7 +789,7 @@ public class yq {
                     FileUtil.writeFile(privFile.getAbsolutePath(), CommandBlock.applyCommands(xmlName, ox.b()));
                     var code = viewBindingBuilder.generateBindingForLayout(privFile);
                     srcCodeBeans.add(new SrcCodeBean(
-                        ViewBindingBuilder.generateFileNameForLayout(xmlName.replace(".xml", "")) + ".java", 
+                        ViewBindingBuilder.generateFileNameForLayout(xmlName.replace(".xml", ".java")), 
                         CommandBlock.applyCommands(xmlName, code)
                     ));
                 }
