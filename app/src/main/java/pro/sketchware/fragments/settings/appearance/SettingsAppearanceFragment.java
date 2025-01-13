@@ -135,6 +135,11 @@ public class SettingsAppearanceFragment extends qA {
         }
 
         @Override
+        public int getItemViewType(int position){
+            return position;
+        }
+
+        @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ThemeItem themeItem = data.get(holder.getAbsoluteAdapterPosition());
 
