@@ -10,16 +10,17 @@ class ViewBindingBuilder(
     private val packageName: String = "dev.pranav.viewbinding"
 ) {
     fun generateBindings() {
-        inputFiles.forEach { generateBindingForLayoutAndWrite(it) }
+        inputFiles.forEach { generateBindingForLayout(it) }
     }
-    
-    /** generate binding and return class code */
-    fun generateBindingForLayout(layoutFile: File): String {
+
+    private fun generateBindingForLayout(layoutFile: File) {
         val name = generateFileNameForLayout(layoutFile.nameWithoutExtension)
         val rootView = getTopLevelView(layoutFile)
         val parsed = parseViews(layoutFile)
         val views =
             if (parsed.isNotEmpty() && parsed.first() == rootView) parsed.drop(1) else parsed
+
+        val file = File(outputDir, "$name.java")
 
         val content = """
 // Generated file. Do not modify.
@@ -84,14 +85,6 @@ ${
 }
         """.trimIndent()
 
-        return content
-    }
-    
-    /** generate view binding and save in output file */
-    private fun generateBindingForLayoutAndWrite(layoutFile: File) {
-        val name = generateFileNameForLayout(layoutFile.nameWithoutExtension)
-        val file = File(outputDir, "$name.java")
-        val content = generateBindingForLayout(layoutFile)
         file.writeText(content)
     }
 
