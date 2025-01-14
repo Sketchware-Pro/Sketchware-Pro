@@ -292,6 +292,7 @@
     <color name="md_amoled_black_1000">#000000</color>
     <color name="md_amoled_surfaceContainer">#0c0c0c</color>
     <color name="md_amoled_surfaceContainerLow">#0F0F0F</color>
+    <color name="md_amoled_outline">#1F1F1F</color>
 
     <!--== Sakura Theme Colors ==-->
     <color name="sakura_primary">#F49897</color>

@@ -114,7 +114,7 @@
     <color name="yog_surfaceContainerHighest">#373434</color>
 
     <!--== Lavender Theme Colors ==-->
-    <color name="lavender_primary">#945BDD</color>
+    <color name="lavender_primary">#6F32B7</color>
     <color name="lavender_onPrimary">#3D0090</color>
     <color name="lavender_primaryContainer">#8F41FF</color>
     <color name="lavender_onPrimaryContainer">#FFFFFF</color>

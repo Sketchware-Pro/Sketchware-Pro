@@ -60,6 +60,7 @@
 
     <style name="Preference.SketchwarePro.SwitchPreferenceCompat" parent="@style/Preference.SwitchPreferenceCompat.Material">
         <item name="widgetLayout">@layout/preference_widget_layout_m3_switch</item>
+        <item name="android:textColorSecondary">?android:textColorPrimary</item>
     </style>
 
     <style name="TabLayoutStyle" parent="Widget.Material3.TabLayout">

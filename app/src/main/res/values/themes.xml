@@ -74,7 +74,7 @@
         <item name="colorSurfaceContainer">@color/md_amoled_surfaceContainer</item>
         <item name="colorSurfaceContainerLow">@color/md_amoled_surfaceContainerLow</item>
         <item name="colorSurfaceContainerHigh">@color/md_amoled_surfaceContainerLow</item>
-        <item name="colorOutline">@color/md_amoled_surfaceContainerLow</item>
+        <item name="colorOutline">@color/md_amoled_outline</item>
     </style>
 
     <!--== Default Theme ==-->
@@ -98,6 +98,7 @@
         <item name="colorErrorContainer">@color/sketchOG_errorContainer</item>
         <item name="colorOnErrorContainer">@color/sketchOG_onErrorContainer</item>
         <item name="android:textColorPrimary">@color/sketchOG_onSurfaceVariant</item>
+        <item name="android:textColorSecondary">@color/sketchOG_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/sketchOG_surface</item>
         <item name="colorOnBackground">@color/sketchOG_onBackground</item>
         <item name="colorSurface">@color/sketchOG_surface</item>
@@ -151,6 +152,7 @@
         <item name="colorErrorContainer">@color/lavender_errorContainer</item>
         <item name="colorOnErrorContainer">@color/lavender_onErrorContainer</item>
         <item name="android:textColorPrimary">@color/lavender_onSurfaceVariant</item>
+        <item name="android:textColorSecondary">@color/lavender_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/lavender_surface</item>
         <item name="colorOnBackground">@color/lavender_onBackground</item>
         <item name="colorSurface">@color/lavender_surface</item>
@@ -192,6 +194,7 @@
         <item name="colorErrorContainer">@color/yog_errorContainer</item>
         <item name="colorOnErrorContainer">@color/yog_onErrorContainer</item>
         <item name="android:textColorPrimary">@color/yog_onSurfaceVariant</item>
+        <item name="android:textColorSecondary">@color/yog_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/yog_surface</item>
         <item name="colorOnBackground">@color/yog_onBackground</item>
         <item name="colorSurface">@color/yog_surface</item>
@@ -243,6 +246,7 @@
         <item name="colorTertiaryContainer">@color/yinyang_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/yinyang_onTertiaryContainer</item>
         <item name="android:textColorPrimary">@color/yinyang_onSurfaceVariant</item>
+        <item name="android:textColorSecondary">@color/yinyang_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/yinyang_surface</item>
         <item name="colorOnBackground">@color/yinyang_onBackground</item>
         <item name="colorSurface">@color/yinyang_surface</item>
@@ -278,6 +282,7 @@
         <item name="colorTertiaryContainer">@color/greenapple_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/greenapple_onTertiaryContainer</item>
         <item name="android:textColorPrimary">@color/greenapple_onSurfaceVariant</item>
+        <item name="android:textColorSecondary">@color/yinyang_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/greenapple_surface</item>
         <item name="colorOnBackground">@color/greenapple_onBackground</item>
         <item name="colorSurface">@color/greenapple_surface</item>
@@ -323,6 +328,7 @@
         <item name="colorErrorContainer">@color/sakura_errorContainer</item>
         <item name="colorOnErrorContainer">@color/sakura_onErrorContainer</item>
         <item name="android:textColorPrimary">@color/sakura_onSurfaceVariant</item>
+        <item name="android:textColorSecondary">@color/sakura_onSurfaceVariant</item>
         <item name="android:colorBackground">@color/sakura_surface</item>
         <item name="colorOnBackground">@color/sakura_onBackground</item>
         <item name="colorSurface">@color/sakura_surface</item>
@@ -374,6 +380,7 @@
         <item name="colorOnTertiaryContainer">@color/aquamist_onTertiaryContainer</item>
         <item name="android:colorBackground">@color/aquamist_background</item>
         <item name="android:textColorPrimary">@color/aquamist_onSurfaceVariant</item>
+        <item name="android:textColorSecondary">@color/aquamist_onSurfaceVariant</item>
         <item name="colorOnBackground">@color/aquamist_onBackground</item>
         <item name="colorSurface">@color/aquamist_surface</item>
         <item name="colorOnSurface">@color/aquamist_onSurface</item>
@@ -399,6 +406,7 @@
         <item name="colorOnPrimaryContainer">@color/tako_onPrimaryContainer</item>
         <item name="colorControlNormal">@color/tako_onSurfaceVariant</item>
         <item name="android:textColorPrimary">@color/tako_onSurfaceVariant</item>
+        <item name="android:textColorSecondary">@color/tako_onSurfaceVariant</item>
         <item name="colorPrimaryInverse">@color/tako_inversePrimary</item>
         <item name="colorSecondary">@color/tako_secondary</item>
         <item name="colorOnSecondary">@color/tako_onSecondary</item>
