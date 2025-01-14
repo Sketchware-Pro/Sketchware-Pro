@@ -2,12 +2,13 @@ package pro.sketchware.utility.theme;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.util.TypedValue;
 
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.view.ContextThemeWrapper;
+
+import com.google.android.material.color.DynamicColors;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ public class ThemeManager {
 
     private static final String THEME_PREF = "themedata";
     private static final String MODE_KEY = "idetheme";// theme mode : light , dark and follow system
-    private static final String THEME_KEY = "idethemecolor"; // eg : green apple , sakura
+    private static final String THEME_KEY = "idethemecolor"; // eg : green apple , sakura...
     private static final String AMOLED_KEY = "ideisamoled";
 
     public static final int THEME_SYSTEM = 0;
@@ -73,14 +74,14 @@ public class ThemeManager {
             default:
                 context.setTheme(R.style.Theme_SketchwarePro_Default);
         }
-        saveTheme(context,theme);
+        saveTheme(context, theme);
     }
 
     public static boolean isAmoledEnabled(Context context) {
         return getPreferences(context).getBoolean(AMOLED_KEY, false);
     }
 
-    public static int getSystemAppliedTheme(Context context){
+    public static int getSystemAppliedTheme(Context context) {
         TypedValue outValue = new TypedValue();
         context.getTheme().resolveAttribute(R.attr.themeId, outValue, true);
         return outValue.data;
@@ -96,18 +97,18 @@ public class ThemeManager {
     }
 
     public static int getCurrentTheme(Context context) {
-        return getPreferences(context).getInt(THEME_KEY, 1);
+        return getPreferences(context).getInt(THEME_KEY, 0);
     }
 
     public static int getCurrentMode(Context context) {
         return getPreferences(context).getInt(MODE_KEY, THEME_SYSTEM);
     }
 
-    public static ArrayList<ThemeItem> getThemesList(){
+    public static ArrayList<ThemeItem> getThemesList() {
         ArrayList<ThemeItem> themeList = new ArrayList<>();
 
         themeList.add(new ThemeItem("Default", R.style.Theme_SketchwarePro_Default, 0));
-        themeList.add(new ThemeItem("Dynamic", R.style.Theme_SketchwarePro, 1));
+        if (DynamicColors.isDynamicColorAvailable()) themeList.add(new ThemeItem("Dynamic", R.style.Theme_SketchwarePro, 1));
         themeList.add(new ThemeItem("Lavender", R.style.Theme_SketchwarePro_Lavender, 2));
         themeList.add(new ThemeItem("Cherry & yogurt", R.style.Theme_SketchwarePro_yogNesh, 3));
         themeList.add(new ThemeItem("Yin & Yang", R.style.Theme_SketchwarePro_YinYang, 4));
@@ -115,7 +116,6 @@ public class ThemeManager {
         themeList.add(new ThemeItem("Sakura", R.style.Theme_SketchwarePro_Sakura, 6));
         themeList.add(new ThemeItem("AquaMist", R.style.Theme_SketchwarePro_AquaMist, 7));
         themeList.add(new ThemeItem("Tako", R.style.Theme_SketchwarePro_Tako, 8));
-
 
         return themeList;
     }

@@ -12,8 +12,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.color.DynamicColors;
-
 import java.util.ArrayList;
 
 import a.a.a.qA;
@@ -133,7 +131,7 @@ public class SettingsAppearanceFragment extends qA {
         }
 
         @Override
-        public int getItemViewType(int position){
+        public int getItemViewType(int position) {
             return position;
         }
 
@@ -174,10 +172,6 @@ public class SettingsAppearanceFragment extends qA {
 
             });
 
-            // Hide dynamic theme if device doesn't support it
-            if (themeItem.getStyleId() == R.style.Theme_SketchwarePro && !DynamicColors.isDynamicColorAvailable()) {
-                holder.itemBinding.getRoot().setVisibility(View.GONE);
-            }
 
             if (ThemeManager.isAmoledEnabled(context)) {
                 itemBinding.themeCardView.setCardBackgroundColor(Color.BLACK);
@@ -211,4 +205,4 @@ public class SettingsAppearanceFragment extends qA {
         }
 
     }
-    }
+}
