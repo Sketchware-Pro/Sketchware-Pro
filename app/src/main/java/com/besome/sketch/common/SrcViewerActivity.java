@@ -1,17 +1,13 @@
 package com.besome.sketch.common;
 
-import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
 
 import a.a.a.ProjectBuilder;
 import a.a.a.bB;
@@ -26,14 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
-import io.github.rosemoe.sora.langs.java.JavaLanguage;
-import io.github.rosemoe.sora.widget.CodeEditor;
-import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
-
 import mod.hey.studios.util.Helper;
-import mod.jbk.code.CodeEditorColorSchemes;
-import mod.jbk.code.CodeEditorLanguages;
 
 import pro.sketchware.R;
 import pro.sketchware.databinding.SrcViewerBinding;
@@ -88,6 +77,7 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
             yq.a(libraryManager, fileManager, dataManager, false);
             ProjectBuilder builder = new ProjectBuilder(this, yq);
             builder.buildBuiltInLibraryInformation();
+            yq.generateDataBindingClasses = true;
             sourceCodeBeans = yq.a(fileManager, dataManager, builder.getBuiltInLibraryManager());
 
             try {
