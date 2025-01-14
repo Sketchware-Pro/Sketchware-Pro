@@ -130,12 +130,6 @@
         <item name="colorSurfaceContainerHighest">@color/sketchOG_surfaceContainerHighest</item>
     </style>
 
-    <!--== Dynamic colors Theme ==-->
-    <style name="Theme.SketchwarePro.Dynamic">
-        <item name="themeId">1</item>
-        <item name="isMaterial3DynamicColorApplied">true</item>
-    </style>
-
     <!--== Lavender Theme ==-->
     <style name="Theme.SketchwarePro.Lavender" >
         <item name="themeId">2</item>

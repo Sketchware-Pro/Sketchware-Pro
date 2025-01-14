@@ -55,7 +55,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Choose how your app looks"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorOnSurfaceVariant" />
+                />
 
             <com.google.android.material.button.MaterialButtonToggleGroup
                 android:id="@+id/theme_modes"

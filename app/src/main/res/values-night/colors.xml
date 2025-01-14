@@ -114,9 +114,9 @@
     <color name="yog_surfaceContainerHighest">#373434</color>
 
     <!--== Lavender Theme Colors ==-->
-    <color name="lavender_primary">#6A38AC</color>
+    <color name="lavender_primary">#945BDD</color>
     <color name="lavender_onPrimary">#3D0090</color>
-    <color name="lavender_primaryContainer">#6A38AC</color>
+    <color name="lavender_primaryContainer">#8F41FF</color>
     <color name="lavender_onPrimaryContainer">#FFFFFF</color>
     <color name="lavender_secondary">#6A38AC</color>
     <color name="lavender_onSecondary">#FFFFFF</color>
@@ -152,7 +152,7 @@
     <!--== Yin & Yang Theme Colors ==-->
     <color name="yinyang_primary">#EBEBEB</color>
     <color name="yinyang_onPrimary">#5A5A5A</color>
-    <color name="yinyang_primaryContainer">#EBEBEB</color>
+    <color name="yinyang_primaryContainer">#B2B2B2</color>
     <color name="yinyang_onPrimaryContainer">#000000</color>
     <color name="yinyang_inversePrimary">#CECECE</color>
     <color name="yinyang_secondary">#EBEBEB</color>
@@ -279,7 +279,7 @@
     <!--== AquaMist Theme Colors ==-->
     <color name="aquamist_primary">#40E0D0</color>
     <color name="aquamist_onPrimary">#161918</color>
-    <color name="aquamist_primaryContainer">#40E0D0</color>
+    <color name="aquamist_primaryContainer">#008080</color>
     <color name="aquamist_onPrimaryContainer">#161918</color>
     <color name="aquamist_inversePrimary">#008080</color>
     <color name="aquamist_secondary">#40E0D0</color>
@@ -309,7 +309,7 @@
     <!--== Tako Theme Colors ==-->
     <color name="tako_primary">#F3B375</color>
     <color name="tako_onPrimary">#38294E</color>
-    <color name="tako_primaryContainer">#F3B375</color>
+    <color name="tako_primaryContainer">#CD883C</color>
     <color name="tako_onPrimaryContainer">#38294E</color>
     <color name="tako_inversePrimary">#84531E</color>
     <color name="tako_secondary">#F3B375</color>

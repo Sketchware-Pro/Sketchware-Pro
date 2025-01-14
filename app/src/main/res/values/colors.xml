@@ -213,7 +213,7 @@
     <!--== Yin & Yang Theme Colors ==-->
     <color name="yinyang_primary">#202020</color>
     <color name="yinyang_onPrimary">#FFFFFF</color>
-    <color name="yinyang_primaryContainer">#202020</color>
+    <color name="yinyang_primaryContainer">#3D3D3D</color>
     <color name="yinyang_onPrimaryContainer">#FFFFFF</color>
     <color name="yinyang_inversePrimary">#A6A6A6</color>
     <color name="yinyang_secondary">#202020</color>
@@ -345,7 +345,7 @@
     <!--== AquaMist Theme Colors ==-->
     <color name="aquamist_primary">#008080</color>
     <color name="aquamist_onPrimary">#FFFFFF</color>
-    <color name="aquamist_primaryContainer">#008080</color>
+    <color name="aquamist_primaryContainer">#019A9A</color>
     <color name="aquamist_onPrimaryContainer">#FFFFFF</color>
     <color name="aquamist_inversePrimary">#40E0D0</color>
     <color name="aquamist_secondary">#008080</color>
@@ -375,7 +375,7 @@
     <!--== Tako Theme Colors ==-->
     <color name="tako_primary">#66577E</color>
     <color name="tako_onPrimary">#F3B375</color>
-    <color name="tako_primaryContainer">#66577E</color>
+    <color name="tako_primaryContainer">#8D7AAC</color>
     <color name="tako_onPrimaryContainer">#F3B375</color>
     <color name="tako_inversePrimary">#D6BAFF</color>
     <color name="tako_secondary">#66577E</color>
