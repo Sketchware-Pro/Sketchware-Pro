@@ -64,9 +64,6 @@ import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
-import mod.bobur.XmlToSvgConverter;
-import pro.sketchware.R;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +91,7 @@ import dev.aldi.sayuti.editor.view.item.ItemPatternLockView;
 import dev.aldi.sayuti.editor.view.item.ItemViewPager;
 import dev.aldi.sayuti.editor.view.item.ItemWaveSideBar;
 import dev.aldi.sayuti.editor.view.item.ItemYoutubePlayer;
+import dev.juez.editor.view.JuezViewCreator;
 
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.view.item.ItemAnalogClock;
@@ -108,6 +106,7 @@ import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.hey.studios.util.ProjectFile;
 import mod.hey.studios.project.ProjectSettings;
+import mod.bobur.XmlToSvgConverter;
 
 import pro.sketchware.R;
 import pro.sketchware.utility.FilePathUtil;
@@ -250,6 +249,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     public View createItemView(ViewBean viewBean) {
+        var juezViewCreator = new JuezViewCreator(getContext());
         View item = switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_LAYOUT_LINEAR,
                  ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
@@ -302,7 +302,7 @@ public class ViewPane extends RelativeLayout {
             case ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW -> new ItemOTPView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW -> new ItemCodeView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW -> new ItemRecyclerView(context);
-            default -> getUnknownItemView(viewBean);
+            default -> juezViewCreator.create(viewBean);
         };
         assert item != null;
         item.setId(++b);
@@ -312,7 +312,7 @@ public class ViewPane extends RelativeLayout {
         return item;
     }
     
-    private final View getUnknownItemView(final ViewBean bean) {
+    public static final View getUnknownItemView(final Context context, final ViewBean bean) {
         bean.type = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
         var view = new ItemLinearLayout(context);
         return view;

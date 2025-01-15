@@ -2,6 +2,7 @@ package mod.agus.jcoderz.beans;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
+import dev.juez.beans.JuezViewBeans;
 import pro.sketchware.R;
 
 public class ViewBeans {
@@ -78,11 +79,11 @@ public class ViewBeans {
     }
 
     public static int getViewTypeByTypeName(String typeName) {
-        return views.inverse().containsKey(typeName) ? views.inverse().get(typeName) : 0;
+        return views.inverse().containsKey(typeName) ? views.inverse().get(typeName) : JuezViewBeans.getViewTypeByTypeName(typeName);
     }
 
     public static String getViewTypeName(int id) {
-        return views.containsKey(id) ? views.get(id) : "";
+        return views.containsKey(id) ? views.get(id) : JuezViewBeans.getViewTypeName(id);
     }
 
     public static int getViewTypeResId(int id) {
@@ -115,7 +116,8 @@ public class ViewBeans {
             case VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW -> R.drawable.ic_mtrl_youtube;
             case VIEW_TYPE_WIDGET_OTPVIEW -> R.drawable.ic_mtrl_password;
             case VIEW_TYPE_WIDGET_CODEVIEW -> R.drawable.ic_mtrl_terminal;
-            default -> id;
+        default -> JuezViewBeans.getViewTypeResId(id);
         };
     }
+ 
 }
