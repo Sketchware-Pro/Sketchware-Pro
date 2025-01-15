@@ -23,13 +23,10 @@ import a.a.a.jC;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ViewBean;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
-import a.a.a.xB;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.activities.tools.ConfigActivity;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -59,7 +56,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class StringEditorActivity extends AppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> listmap = new ArrayList<>();
-    private MaterialAlertDialogBuilder dialog;
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
     private boolean isComingFromSrcCodeEditor = true;
@@ -77,7 +73,6 @@ public class StringEditorActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setNavigationOnClickListener(_v -> onBackPressed());
-        dialog = new MaterialAlertDialogBuilder(this);
         binding.addStringButton.setOnClickListener(view -> addStringDialog());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -121,14 +116,14 @@ public class StringEditorActivity extends AppCompatActivity {
             finish();
         } else {
             aB dialog = new aB(this);
-            dialog.b(xB.b().a(this, R.string.common_word_warning));
-            dialog.a(xB.b().a(this, R.string.src_code_editor_unsaved_changes_dialog_warning_message));
-            dialog.b(xB.b().a(this, R.string.common_word_save), v -> {
+            dialog.b(Helper.getResString(R.string.common_word_warning));
+            dialog.a(Helper.getResString(R.string.src_code_editor_unsaved_changes_dialog_warning_message));
+            dialog.b(Helper.getResString(R.string.common_word_save), v -> {
                 XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
                 dialog.dismiss();
                 finish();
             });
-            dialog.a(xB.b().a(this, R.string.common_word_exit), v -> {
+            dialog.a(Helper.getResString(R.string.common_word_exit), v -> {
                 dialog.dismiss();
                 finish();
             });
