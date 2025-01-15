@@ -15,8 +15,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 public class LocalLibrariesUtil {
     private static String localLibsPath = getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
@@ -46,14 +46,26 @@ public class LocalLibrariesUtil {
         return new Gson().fromJson(fileContent, Helper.TYPE_MAP_LIST);
     }
 
-    public static void deleteSelectedLocalLibraries(List<LocalLibrary> localLibraries) {
+    public static void deleteSelectedLocalLibraries(String scId, List<LocalLibrary> localLibraries, ArrayList<HashMap<String, Object>> projectUsedLibs) {
         localLibraries.removeIf(library -> {
             if (library.isSelected()) {
                 deleteFile(localLibsPath.concat(library.getName()));
+                int indexToRemove = -1;
+                for (int i = 0; i < projectUsedLibs.size(); i++) {
+                    Map<String, Object> libraryMap = projectUsedLibs.get(i);
+                    if (library.getName().equals(libraryMap.get("name").toString())) {
+                        indexToRemove = i;
+                        break;
+                    }
+                }
+                if (indexToRemove != -1) {
+                    projectUsedLibs.remove(indexToRemove);
+                }
                 return true;
             }
             return false;
         });
+        rewriteLocalLibFile(scId, new Gson().toJson(projectUsedLibs));
     }
 
     public static File getLocalLibFile(String scId) {
