@@ -196,6 +196,11 @@ public class yq {
     public final String resDirectoryPath;
 
     /**
+     * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/proguard-rules.pro
+     */
+    public final String proguardFilePath;
+
+    /**
      * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/layout
      */
     public final String layoutFilesPath;
@@ -251,6 +256,7 @@ public class yq {
         generatedFilesPath = projectMyscPath + "app" + File.separator + "src" + File.separator + "main";
         javaFilesPath = generatedFilesPath + File.separator + "java";
         resDirectoryPath = generatedFilesPath + File.separator + "res";
+        proguardFilePath = projectMyscPath + "app" + File.separator + "proguard-rules.pro";
         layoutFilesPath = resDirectoryPath + File.separator + "layout";
         importedSoundsPath = resDirectoryPath + File.separator + "raw";
         assetsPath = generatedFilesPath + File.separator + "assets";

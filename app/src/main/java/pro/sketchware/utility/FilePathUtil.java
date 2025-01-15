@@ -53,6 +53,10 @@ public class FilePathUtil {
         return new File(SKETCHWARE_DATA, sc_id + "/files/resource").getAbsolutePath();
     }
 
+    public String getPathProguard(String sc_id) {
+        return new File(SKETCHWARE_DATA, sc_id + "/proguard-rules.pro").getAbsolutePath();
+    }
+
     public String getPathLocalLibrary(String sc_id) {
         return new File(SKETCHWARE_DATA, sc_id + "/local_library").getAbsolutePath();
     }

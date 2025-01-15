@@ -223,6 +223,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             if (pathResources.exists()) {
                 FileUtil.copyDirectory(pathResources, new File(project_metadata.resDirectoryPath));
             }
+            String pathProguard = util.getPathProguard(sc_id);
+            if (FileUtil.isExistFile(pathProguard)) {
+                FileUtil.copyFile(pathProguard, project_metadata.proguardFilePath);
+            }
             if (pathAssets.exists()) {
                 FileUtil.copyDirectory(pathAssets, new File(project_metadata.assetsPath));
             }
