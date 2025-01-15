@@ -13,6 +13,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -41,6 +43,7 @@ public class AppBundleCompiler {
     private final File appBundle;
 
     private final List<String> uncompressedModuleMainPaths = new LinkedList<>();
+    private final Set<String> addedEntries = new HashSet<>();
 
     public AppBundleCompiler(ProjectBuilder builder) {
         this.builder = builder;
@@ -148,15 +151,20 @@ public class AppBundleCompiler {
                         uncompressedModuleMainPaths.add(entry.getName());
                     }
 
-                    moduleMainZip.putNextEntry(toCompress);
+                    // Check for duplicate entries here
+                    if (!addedEntries.contains(toCompress.getName())) {
+                        moduleMainZip.putNextEntry(toCompress);
 
-                    var buffer = new byte[1024];
-                    int length;
-                    while ((length = apkRes.read(buffer)) > 0) {
-                        moduleMainZip.write(buffer, 0, length);
+                        var buffer = new byte[1024];
+                        int length;
+                        while ((length = apkRes.read(buffer)) > 0) {
+                            moduleMainZip.write(buffer, 0, length);
+                        }
+
+                        moduleMainZip.closeEntry();
+                        addedEntries.add(toCompress.getName());
                     }
 
-                    moduleMainZip.closeEntry();
                     apkRes.closeEntry();
                     entry = apkRes.getNextEntry();
                 }
@@ -206,16 +214,20 @@ public class AppBundleCompiler {
                     while (jarArchiveEntry != null) {
                         var pathInJar = jarArchiveEntry.getName();
                         if (!jarArchiveEntry.isDirectory() && !pathInJar.equals("META-INF/MANIFEST.MF") && !pathInJar.endsWith(".class")) {
-                            var nonClassFileToAddToModule = new ZipEntry(MODULE_ROOT + File.separator +
-                                    pathInJar);
-                            moduleMainZip.putNextEntry(nonClassFileToAddToModule);
+                            var nonClassFileToAddToModule = new ZipEntry(MODULE_ROOT + File.separator + pathInJar);
 
-                            var buffer = new byte[1024];
-                            int length;
-                            while ((length = jarArchiveStream.read(buffer)) > 0) {
-                                moduleMainZip.write(buffer, 0, length);
+                            // Check for duplicate entries here
+                            if (!addedEntries.contains(nonClassFileToAddToModule.getName())) {
+                                moduleMainZip.putNextEntry(nonClassFileToAddToModule);
+
+                                var buffer = new byte[1024];
+                                int length;
+                                while ((length = jarArchiveStream.read(buffer)) > 0) {
+                                    moduleMainZip.write(buffer, 0, length);
+                                }
+                                moduleMainZip.closeEntry();
+                                addedEntries.add(nonClassFileToAddToModule.getName());
                             }
-                            moduleMainZip.closeEntry();
                         }
 
                         jarArchiveEntry = jarArchiveStream.getNextEntry();
