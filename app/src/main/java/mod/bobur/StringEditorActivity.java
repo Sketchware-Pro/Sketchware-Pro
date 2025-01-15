@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -22,12 +23,10 @@ import a.a.a.jC;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ViewBean;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.activities.tools.ConfigActivity;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -57,7 +56,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class StringEditorActivity extends AppCompatActivity {
 
     private final ArrayList<HashMap<String, Object>> listmap = new ArrayList<>();
-    private MaterialAlertDialogBuilder dialog;
     private StringEditorBinding binding;
     private RecyclerViewAdapter adapter;
     private boolean isComingFromSrcCodeEditor = true;
@@ -65,6 +63,7 @@ public class StringEditorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         binding = StringEditorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initialize();
@@ -74,7 +73,6 @@ public class StringEditorActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setNavigationOnClickListener(_v -> onBackPressed());
-        dialog = new MaterialAlertDialogBuilder(this);
         binding.addStringButton.setOnClickListener(view -> addStringDialog());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -117,12 +115,19 @@ public class StringEditorActivity extends AppCompatActivity {
             setResult(RESULT_OK);
             finish();
         } else {
-            dialog.setTitle("Warning")
-                    .setMessage("You have unsaved changes. Are you sure you want to exit?")
-                    .setPositiveButton("Exit", (dialog, which) -> super.onBackPressed())
-                    .setNegativeButton("Cancel", null)
-                    .create()
-                    .show();
+            aB dialog = new aB(this);
+            dialog.b(Helper.getResString(R.string.common_word_warning));
+            dialog.a(Helper.getResString(R.string.src_code_editor_unsaved_changes_dialog_warning_message));
+            dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+                XmlUtil.saveXml(getIntent().getStringExtra("content"), convertListMapToXml(listmap));
+                dialog.dismiss();
+                finish();
+            });
+            dialog.a(Helper.getResString(R.string.common_word_exit), v -> {
+                dialog.dismiss();
+                finish();
+            });
+            dialog.show();
         }
         if (listmap.isEmpty() && (! FileUtil.readFile(getIntent().getStringExtra("content")).contains("</resources>"))) {
             XmlUtil.saveXml(getIntent().getStringExtra("content"),convertListMapToXml(listmap));
@@ -201,7 +206,7 @@ public class StringEditorActivity extends AppCompatActivity {
     private static HashMap<String, Object> getStringHashMap(Element node) {
         HashMap<String, Object> map = new HashMap<>();
         String key = node.getAttribute("name");
-        String value = node.getTextContent();
+        String value = node.getTextContent().replace("\\", "");
         map.put("key", key);
         map.put("text", value);
         return map;
@@ -241,7 +246,7 @@ public class StringEditorActivity extends AppCompatActivity {
                 .replace("<", "&lt;")
                 .replace(">", "&gt;")
                 .replace("\"", "&quot;")
-                .replace("'", "&apos;")
+                .replace("'", "\\'")
                 .replace("\n", "&#10;")
                 .replace("\r", "&#13;");
     }
