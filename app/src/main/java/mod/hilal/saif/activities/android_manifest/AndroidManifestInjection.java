@@ -111,7 +111,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         options.add(createOption(
                 "Application",
                 "Default properties for the app",
-                R.drawable.icons8_app_attrs,
+                R.drawable.ic_mtrl_settings_applications,
                 v -> {
                     Intent intent = new Intent();
                     intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
@@ -124,7 +124,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         options.add(createOption(
                 "Permissions",
                 "Add custom Permissions to the app",
-                R.drawable.event_on_signin_complete_48dp,
+                R.drawable.ic_mtrl_shield_check,
                 v -> {
                     Intent intent = new Intent();
                     intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
@@ -137,13 +137,13 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         options.add(createOption(
                 "Launcher Activity",
                 "Change the default Launcher Activity",
-                R.drawable.recycling_48,
+                R.drawable.ic_mtrl_login,
                 v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id))
         ));
         options.add(createOption(
                 "All Activities",
                 "Add attributes for all Activities",
-                R.drawable.icons8_all_activities_attrs,
+                R.drawable.ic_mtrl_frame_source,
                 v -> {
                     Intent intent = new Intent();
                     intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
@@ -156,7 +156,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         options.add(createOption(
                 "App Components",
                 "Add extra components",
-                R.drawable.icons8_app_components,
+                R.drawable.ic_mtrl_component,
                 v -> showAppComponentDialog()
         ));
 
