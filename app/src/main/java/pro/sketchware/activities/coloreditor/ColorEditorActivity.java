@@ -11,9 +11,14 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -153,6 +158,11 @@ public class ColorEditorActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         binding = ColorEditorActivityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        ViewCompat.setOnApplyWindowInsetsListener(binding.recyclerviewColors, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
+            return insets;
+        });
         initialize();
     }
 
@@ -174,6 +184,24 @@ public class ColorEditorActivity extends AppCompatActivity {
         binding.recyclerviewColors.setAdapter(adapter);
 
         binding.addColorButton.setOnClickListener(v -> showColorEditDialog(null, -1));
+
+        binding.recyclerviewColors.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy < 0) {
+                    if (!binding.addColorButton.isExtended()) {
+                        binding.addColorButton.extend();
+                    }
+                }
+                else if (dy > 0) {
+                    if (binding.addColorButton.isExtended()) {
+                        binding.addColorButton.shrink();
+                    }
+                }
+            }
+        });
     }
 
     @Override
