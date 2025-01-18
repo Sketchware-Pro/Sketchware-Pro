@@ -21,7 +21,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import pro.sketchware.SketchApplication;
-import pro.sketchware.activities.coloreditor.ColorEditorActivity;
+import pro.sketchware.activities.resources.editors.utils.ColorsEditorManager;
 import pro.sketchware.utility.FileUtil;
 
 /**
@@ -146,6 +146,8 @@ public class XmlToSvgConverter {
     }
 
     private static void handlePath(Element path, StringWriter svg) {
+        ColorsEditorManager colorsEditorManager = new ColorsEditorManager();
+
         String pathData = path.getAttribute("android:pathData");
         String fillColor = getVectorColor(path);
         String strokeColor = path.getAttribute("android:strokeColor");
@@ -159,7 +161,7 @@ public class XmlToSvgConverter {
         svg.append("<path d=\"").append(pathData).append("\" ");
 
         if (!fillColor.isEmpty()) {
-            svg.append("fill=\"").append(ColorEditorActivity.getColorValue(SketchApplication.getContext(), fillColor, 4)).append("\" ");
+            svg.append("fill=\"").append(colorsEditorManager.getColorValue(SketchApplication.getContext(), fillColor, 4)).append("\" ");
             if (!fillAlpha.isEmpty()) {
                 svg.append("fill-opacity=\"").append(fillAlpha).append("\" ");
             }
@@ -168,7 +170,7 @@ public class XmlToSvgConverter {
         }
 
         if (!strokeColor.isEmpty()) {
-            svg.append("stroke=\"").append(ColorEditorActivity.getColorValue(SketchApplication.getContext(), strokeColor, 4)).append("\" ");
+            svg.append("stroke=\"").append(colorsEditorManager.getColorValue(SketchApplication.getContext(), strokeColor, 4)).append("\" ");
             if (!strokeWidth.isEmpty()) {
                 svg.append("stroke-width=\"").append(parseDimension(strokeWidth)).append("\" ");
             }
@@ -218,6 +220,8 @@ public class XmlToSvgConverter {
     }
 
     public static String getVectorColor(Element vectorElement) {
+        ColorsEditorManager colorsEditorManager = new ColorsEditorManager();
+
         Element root = vectorElement.getOwnerDocument().getDocumentElement();
         String tint = root.getAttribute("android:tint");
         // check colors file
@@ -228,12 +232,12 @@ public class XmlToSvgConverter {
                 return "#FFFFFF";
             }
         }
-        ColorEditorActivity.contentPath = filePath;
+        colorsEditorManager.contentPath = filePath;
         if (!tint.isEmpty()) {
-            return ColorEditorActivity.getColorValue(SketchApplication.getContext(), tint, 4);
+            return colorsEditorManager.getColorValue(SketchApplication.getContext(), tint, 4);
         } else {
             String fillColor = vectorElement.getAttribute("android:fillColor");
-            return ColorEditorActivity.getColorValue(SketchApplication.getContext(), fillColor, 4);
+            return colorsEditorManager.getColorValue(SketchApplication.getContext(), fillColor, 4);
         }
     }
     public static void setImageVectorFromFile(ImageView imageView, String filePath) throws Exception {
