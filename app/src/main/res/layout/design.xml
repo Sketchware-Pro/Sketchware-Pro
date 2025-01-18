@@ -101,7 +101,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:progress="0"
-                        android:indeterminate="false" />
+                        android:indeterminate="false"
+                        app:trackStopIndicatorSize="0dp"/>
                 </LinearLayout>
 
                 <com.google.android.material.bottomappbar.BottomAppBar
