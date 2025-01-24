@@ -800,35 +800,21 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
     private void showCurrentActivitySrcCode() {
         if (projectFile == null) return; 
-        var loadingDialogBinding = ProgressMsgBoxBinding.inflate(getLayoutInflater());
-        loadingDialogBinding.tvProgress.setText("Generating source code...");
-        var loadingDialog = new MaterialAlertDialogBuilder(this)
-            .setTitle("Please wait")
-            .setCancelable(false)
-            .setView(loadingDialogBinding.getRoot())
-            .create();
-        loadingDialog.show();
-        
+        k();
         new Thread(() -> {
-            var filename = fileName.getText().toString();
-            final String source = new yq(getApplicationContext(), sc_id)
-                .getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
+            final var filename = fileName.getText().toString();
+            final var code = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
             runOnUiThread(() -> {
                 if (isFinishing()) return;
-                loadingDialog.dismiss();
-                if (source.isEmpty()) {
-                    Toast.makeText(this, "Failed to generate source.", Toast.LENGTH_SHORT).show();
+                h();
+                if (code.isEmpty()) {
+                    SketchwareUtil.toast("Failed to generate source.");
                     return;
                 }
-                var intent = new Intent(this, CodeViewerActivity.class);
-                intent.putExtra("code", source);
-                intent.putExtra("sc_id", sc_id);
-                if (filename.endsWith(".xml")) {
-                    intent.putExtra("scheme", CodeViewerActivity.SCHEME_XML);
-                } else {
-                    intent.putExtra("scheme", CodeViewerActivity.SCHEME_JAVA);
-                }
-                startActivity(intent);
+                final var scheme = filename.endsWith(".xml")
+                  ? CodeViewerActivity.SCHEME_XML
+                  : CodeViewerActivity.SCHEME_JAVA;
+                launchActivity(CodeViewerActivity.class, null, new Pair<>("code", code), new Pair<>("sc_id", sc_id), new Pair<>("scheme", scheme));
             });
         }).start();
     }
