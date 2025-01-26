@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -29,47 +31,81 @@ import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import a.a.a.aB;
-import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
+
 import kellinwood.security.zipsigner.ZipSigner;
+
 import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
+
 import pro.sketchware.R;
 import pro.sketchware.activities.editor.component.ManageCustomComponentActivity;
 import pro.sketchware.activities.settings.SettingsActivity;
 import pro.sketchware.databinding.DialogSelectApkToSignBinding;
+import pro.sketchware.databinding.PrefencesContentAppbarBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class AppSettings extends BaseAppCompatActivity {
 
-    private LinearLayout content;
-    private MaterialToolbar topAppBar;
-    private final List<LibraryItemView> preferences = new ArrayList<>();
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.prefences_content_appbar);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.contentLayout), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+        final var binding = PrefencesContentAppbarBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.contentScroll, (v, insets) -> {
+            final Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
             return insets;
         });
 
-        content = findViewById(R.id.content);
-        topAppBar = findViewById(R.id.topAppBar);
+        binding.topAppBar.setTitle(Helper.getResString(R.string.common_word_settings));
+        binding.topAppBar.setNavigationOnClickListener(view -> Helper.getBackPressedClickListener(this));
 
-        topAppBar.setTitle("Settings");
-        topAppBar.setNavigationOnClickListener(view -> onBackPressed());
-        setupPreferences();
+        setupPreferences(binding.content);
+    }
+
+    private void setupPreferences(final ViewGroup content) {
+        final var preferences = new ArrayList<LibraryItemView>();
+        preferences.add(createPreference(R.drawable.ic_mtrl_block, "Block manager", "Manage your own blocks to use in Logic Editor", new ActivityLauncher(new Intent(getApplicationContext(), BlocksManager.class))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_pull_down, "Block selector menu manager", "Manage your own block selector menus", openSettingsActivity(SettingsActivity.BLOCK_SELECTOR_MANAGER_FRAGMENT)));
+        preferences.add(createPreference(R.drawable.ic_mtrl_component, "Component manager", "Manage your own components", new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_list, "Event manager", "Manage your own events", openSettingsActivity(SettingsActivity.EVENTS_MANAGER_FRAGMENT)));
+        preferences.add(createPreference(R.drawable.ic_mtrl_box, "Local library manager", "Manage and download local libraries", new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system"))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_settings_applications, "Mod settings", "Change general mod settings", new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_palette, getString(R.string.settings_appearance), getString(R.string.settings_appearance_description), openSettingsActivity(SettingsActivity.SETTINGS_APPEARANCE_FRAGMENT)));
+        preferences.add(createPreference(R.drawable.ic_mtrl_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", v -> openWorkingDirectory()));
+        preferences.add(createPreference(R.drawable.ic_mtrl_apk_document, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", v -> signApkFileDialog()));
+        preferences.add(createPreference(R.drawable.ic_mtrl_article, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class))));
+        preferences.forEach(preference -> content.addView(preference));
+    }
+
+    private View.OnClickListener openSettingsActivity(final String fragmentTag) {
+        return v -> {
+            Intent intent = new Intent(v.getContext(), SettingsActivity.class);
+            intent.putExtra(SettingsActivity.FRAGMENT_TAG_EXTRA, fragmentTag);
+            v.getContext().startActivity(intent);
+        };
+    }
+
+    private LibraryItemView createPreference(int icon, String title, String desc, View.OnClickListener listener) {
+        final LibraryItemView preference = new LibraryItemView(this);
+        preference.enabled.setVisibility(View.GONE);
+        preference.icon.setImageResource(icon);
+        preference.title.setText(title);
+        preference.description.setText(desc);
+        preference.setOnClickListener(listener);
+        return preference;
     }
 
     private void openWorkingDirectory() {
@@ -127,39 +163,6 @@ public class AppSettings extends BaseAppCompatActivity {
             }
         });
         dialog.show();
-    }
-
-    private void setupPreferences() {
-        preferences.add(createPreference(R.drawable.ic_mtrl_block, "Block manager", "Manage your own blocks to use in Logic Editor", new ActivityLauncher(new Intent(getApplicationContext(), BlocksManager.class))));
-        preferences.add(createPreference(R.drawable.ic_mtrl_pull_down, "Block selector menu manager", "Manage your own block selector menus", openSettingsActivity(SettingsActivity.BLOCK_SELECTOR_MANAGER_FRAGMENT)));
-        preferences.add(createPreference(R.drawable.ic_mtrl_component, "Component manager", "Manage your own components", new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class))));
-        preferences.add(createPreference(R.drawable.ic_mtrl_list, "Event manager", "Manage your own events", openSettingsActivity(SettingsActivity.EVENTS_MANAGER_FRAGMENT)));
-        preferences.add(createPreference(R.drawable.ic_mtrl_box, "Local library manager", "Manage and download local libraries", new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system"))));
-        preferences.add(createPreference(R.drawable.ic_mtrl_settings_applications, "Mod settings", "Change general mod settings", new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class))));
-        preferences.add(createPreference(R.drawable.ic_mtrl_palette, getString(R.string.settings_appearance), getString(R.string.settings_appearance_description), openSettingsActivity(SettingsActivity.SETTINGS_APPEARANCE_FRAGMENT)));
-        preferences.add(createPreference(R.drawable.ic_mtrl_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", v -> openWorkingDirectory()));
-        preferences.add(createPreference(R.drawable.ic_mtrl_apk_document, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", v -> signApkFileDialog()));
-        preferences.add(createPreference(R.drawable.ic_mtrl_article, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class))));
-        preferences.add(createPreference(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class))));
-        preferences.forEach(preference -> content.addView(preference));
-    }
-    
-    private View.OnClickListener openSettingsActivity(String fragmentTag) {
-        return v -> {
-            Intent intent = new Intent(v.getContext(), SettingsActivity.class);
-            intent.putExtra("fragment_tag", fragmentTag);
-            v.getContext().startActivity(intent);
-        };
-    }
-
-    private LibraryItemView createPreference(int icon, String title, String desc, View.OnClickListener listener) {
-        LibraryItemView preference = new LibraryItemView(this);
-        preference.enabled.setVisibility(View.GONE);
-        preference.icon.setImageResource(icon);
-        preference.title.setText(title);
-        preference.description.setText(desc);
-        preference.setOnClickListener(listener);
-        return preference;
     }
 
     private void signApkFileDialog() {

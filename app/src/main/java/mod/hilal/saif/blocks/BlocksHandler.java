@@ -1904,7 +1904,7 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "changeStatebarColour");
         hashMap.put("type", " ");
-        hashMap.put("code", "if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {\r\nWindow w =%s.this.getWindow();\r\nw.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);\r\nw.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS); w.setStatusBarColor(%s);\r\n}");
+        hashMap.put("code", "if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {\r\nfinal Window window = %s.this.getWindow();\r\nwindow.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);\r\nwindow.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);\r\nwindow.setStatusBarColor(%s);\r\n}");
         hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.activity set statebar color %m.color");
