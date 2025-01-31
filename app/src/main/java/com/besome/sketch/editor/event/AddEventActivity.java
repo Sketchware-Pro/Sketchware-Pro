@@ -129,6 +129,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         ArrayList<ComponentBean> components = jC.a(sc_id).e(projectFile.getJavaName());
         if (views != null) {
             for (ViewBean view : views) {
+                Set<String> toNotAdd = new Ox(new jq(), projectFile).readAttributesToReplace(view);
                 for (String viewEvent : oq.c(view.getClassInfo())) {
                     boolean exists;
                     if (viewEvent.equals("onBindCustomView") && (view.customView.isEmpty()
@@ -146,7 +147,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                         }
                     }
 
-                    if (!exists) {
+                    if (!exists && !toNotAdd.contains("android:id")) {
                         addableViewEvents.add(new EventBean(EventBean.EVENT_TYPE_VIEW, view.type, view.id, viewEvent));
                     }
                 }
