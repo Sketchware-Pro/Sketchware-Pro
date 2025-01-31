@@ -1,7 +1,5 @@
 package pro.sketchware.fragments.settings.events;
 
-import static pro.sketchware.utility.GsonUtils.getGson;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -15,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -43,7 +42,7 @@ public class EventsManagerFragment extends qA {
     public static String getNumOfEvents(String name) {
         int eventAmount = 0;
         if (FileUtil.isExistFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath())) {
-            ArrayList<HashMap<String, Object>> events = getGson()
+            ArrayList<HashMap<String, Object>> events = new Gson()
                     .fromJson(FileUtil.readFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
             for (HashMap<String, Object> event : events) {
                 if (event.get("listener").toString().equals(name)) {
@@ -132,7 +131,7 @@ public class EventsManagerFragment extends qA {
     public void refreshList() {
         listMap.clear();
         if (FileUtil.isExistFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath())) {
-            listMap = getGson().fromJson(FileUtil.readFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+            listMap = new Gson().fromJson(FileUtil.readFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
             binding.listenersRecyclerView.setAdapter(new ListenersAdapter(listMap, requireContext()));
             binding.listenersRecyclerView.getAdapter().notifyDataSetChanged();
         }
@@ -158,8 +157,8 @@ public class EventsManagerFragment extends qA {
             } else {
                 try {
                     String[] split = FileUtil.readFile(selections[0]).split("\n");
-                    importEvents(getGson().fromJson(split[0], Helper.TYPE_MAP_LIST),
-                            getGson().fromJson(split[1], Helper.TYPE_MAP_LIST));
+                    importEvents(new Gson().fromJson(split[0], Helper.TYPE_MAP_LIST),
+                            new Gson().fromJson(split[1], Helper.TYPE_MAP_LIST));
                 } catch (Exception e) {
                     SketchwareUtil.toastError("Invalid file");
                 }
@@ -171,13 +170,12 @@ public class EventsManagerFragment extends qA {
     private void importEvents(ArrayList<HashMap<String, Object>> data, ArrayList<HashMap<String, Object>> data2) {
         ArrayList<HashMap<String, Object>> events = new ArrayList<>();
         if (FileUtil.isExistFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath())) {
-            events = getGson()
-                    .fromJson(FileUtil.readFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+            events = new Gson().fromJson(FileUtil.readFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
         }
         events.addAll(data2);
-        FileUtil.writeFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath(), getGson().toJson(events));
+        FileUtil.writeFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath(), new Gson().toJson(events));
         listMap.addAll(data);
-        FileUtil.writeFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath(), getGson().toJson(listMap));
+        FileUtil.writeFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
         refreshList();
         SketchwareUtil.toast("Successfully imported events");
     }
@@ -188,7 +186,7 @@ public class EventsManagerFragment extends qA {
         ex.add(listMap.get(p));
         ArrayList<HashMap<String, Object>> ex2 = new ArrayList<>();
         if (FileUtil.isExistFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath())) {
-            ArrayList<HashMap<String, Object>> events = getGson()
+            ArrayList<HashMap<String, Object>> events = new Gson()
                     .fromJson(FileUtil.readFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < events.size(); i++) {
                 if (events.get(i).get("listener").toString().equals(listMap.get(p).get("name"))) {
@@ -196,7 +194,7 @@ public class EventsManagerFragment extends qA {
                 }
             }
         }
-        FileUtil.writeFile(concat + ex.get(0).get("name").toString() + ".txt", getGson().toJson(ex) + "\n" + getGson().toJson(ex2));
+        FileUtil.writeFile(concat + ex.get(0).get("name").toString() + ".txt", new Gson().toJson(ex) + "\n" + new Gson().toJson(ex2));
         SketchwareUtil.toast("Successfully exported event to:\n" +
                 "/Internal storage/.sketchware/data/system/export/events", Toast.LENGTH_LONG);
     }
@@ -204,29 +202,29 @@ public class EventsManagerFragment extends qA {
     private void exportAllEvents() {
         ArrayList<HashMap<String, Object>> events = new ArrayList<>();
         if (FileUtil.isExistFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath())) {
-            events = getGson().fromJson(FileUtil.readFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+            events = new Gson().fromJson(FileUtil.readFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
         }
         FileUtil.writeFile(new File(EventsManagerConstants.EVENT_EXPORT_LOCATION, "All_Events.txt").getAbsolutePath(),
-                getGson().toJson(listMap) + "\n" + getGson().toJson(events));
+                new Gson().toJson(listMap) + "\n" + new Gson().toJson(events));
         SketchwareUtil.toast("Successfully exported events to:\n" +
                 "/Internal storage/.sketchware/data/system/export/events", Toast.LENGTH_LONG);
     }
 
     private void addListenerItem() {
-        FileUtil.writeFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath(), getGson().toJson(listMap));
+        FileUtil.writeFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
         refreshList();
     }
 
     private void deleteItem(int position) {
         listMap.remove(position);
-        FileUtil.writeFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath(), getGson().toJson(listMap));
+        FileUtil.writeFile(EventsManagerConstants.LISTENERS_FILE.getAbsolutePath(), new Gson().toJson(listMap));
         refreshList();
     }
 
     private void deleteRelatedEvents(String name) {
         ArrayList<HashMap<String, Object>> events = new ArrayList<>();
         if (FileUtil.isExistFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath())) {
-            events = getGson()
+            events = new Gson()
                     .fromJson(FileUtil.readFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath()), Helper.TYPE_MAP_LIST);
             for (int i = events.size() - 1; i > -1; i--) {
                 if (events.get(i).get("listener").toString().equals(name)) {
@@ -234,7 +232,7 @@ public class EventsManagerFragment extends qA {
                 }
             }
         }
-        FileUtil.writeFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath(), getGson().toJson(events));
+        FileUtil.writeFile(EventsManagerConstants.EVENTS_FILE.getAbsolutePath(), new Gson().toJson(events));
     }
 
     public class ListenersAdapter extends RecyclerView.Adapter<ListenersAdapter.ViewHolder> {
