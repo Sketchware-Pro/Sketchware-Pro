@@ -132,7 +132,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
 
     private void initToolbar() {
         binding.topAppBar.setTitle("Resource Manager");
-        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        binding.topAppBar.setNavigationOnClickListener(v -> onBackPressed());
         binding.showOptionsButton.setOnClickListener(view -> {
             if (isInMainDirectory()) {
                 createNewDialog(true);
