@@ -832,7 +832,7 @@ public class Fx {
                 opcode = String.format("_%s_controller.setMarkerIcon(%s, R.drawable.%s);", params.get(0), params.get(1), name.toLowerCase());
                 break;
             case "mapViewSetMarkerVisible":
-                opcode = String.format("_%s_controller.setMarkerVisible(%s, %s);", params.get(2), params.get(1), params.get(2));
+                opcode = String.format("_%s_controller.setMarkerVisible(%s, %s);", params.get(0), params.get(1), params.get(2));
                 break;
             case "vibratorAction":
                 opcode = String.format("%s.vibrate((long)(%s));", params.get(0), params.get(1));
