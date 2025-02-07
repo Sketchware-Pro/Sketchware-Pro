@@ -391,6 +391,7 @@ public class ViewPane extends RelativeLayout {
         view.setTranslationY(wB.a(getContext(), viewBean.translationY));
         view.setScaleX(viewBean.scaleX);
         view.setScaleY(viewBean.scaleY);
+	view.setEnabled(viewBean.enabled != 0);
         String backgroundResource = viewBean.layout.backgroundResource;
         if (backgroundResource != null) {
             try {
