@@ -2,6 +2,7 @@ package mod.hilal.saif.events;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+
 import pro.sketchware.R;
 
 import java.util.ArrayList;
@@ -328,9 +329,9 @@ public class EventsHandler {
             case "onTabLayoutNewTabAdded" ->
                 // Changed from: "public  CharSequence  onTabLayoutNewTabAdded( int   _position ){..."
                     "public CharSequence onTabLayoutNewTabAdded(int _position) {\r\n" +
-                            param + "\r\n" +
-                            "return null;\r\n" +
-                            "}";
+                            (param.isEmpty() ? "return null;\r\n" :
+                                    param + "\r\n"
+                            ) + "}";
             case "onPreExecute" -> "@Override\r\n" +
                     "protected void onPreExecute() {\r\n" +
                     param + "\r\n" +
