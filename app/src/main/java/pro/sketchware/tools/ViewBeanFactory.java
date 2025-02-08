@@ -159,16 +159,12 @@ public class ViewBeanFactory {
 
         StringBuilder injectProperty = new StringBuilder();
         injectAttributes
-                .entrySet()
-                .forEach(
-                        entry -> {
-                            injectProperty
-                                    .append(entry.getKey())
-                                    .append("=\"")
-                                    .append(entry.getValue())
-                                    .append("\"")
-                                    .append("\n");
-                        });
+                .forEach((key, value) -> injectProperty
+                        .append(key)
+                        .append("=\"")
+                        .append(value)
+                        .append("\"")
+                        .append("\n"));
         bean.inject = injectProperty.toString().trim();
     }
 
