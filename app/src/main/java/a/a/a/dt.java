@@ -83,8 +83,8 @@ public class dt extends LinearLayout {
                         fullSpec = variableType + "." + variableSpec.second;
                     }
 
-                    variablesSpecAndNamePair.add(new Pair<>(fullSpec, binding.edVariableName.getText().toString()));
-                    updateBlockPreview(binding.blockArea, binding.removeArea, block, binding.edName.getText().toString(), variablesSpecAndNamePair);
+                    variablesSpecAndNamePair.add(new Pair<>(fullSpec, Helper.getText(binding.edVariableName)));
+                    updateBlockPreview(binding.blockArea, binding.removeArea, block, Helper.getText(binding.edName), variablesSpecAndNamePair);
 
                     ArrayList<String> reservedVariableNames = new ArrayList<>(Arrays.asList(uq.a()));
 
@@ -117,9 +117,9 @@ public class dt extends LinearLayout {
         });
 
         binding.add.setOnClickListener(v -> {
-            if (!customVariableInvalid && !binding.name.getText().toString().isEmpty() && !binding.parameter.getText().toString().isEmpty()) {
-                variablesSpecAndNamePair.add(new Pair<>(binding.parameter.getText().toString(), binding.name.getText().toString()));
-                updateBlockPreview(binding.blockArea, binding.removeArea, block, binding.edName.getText().toString(), variablesSpecAndNamePair);
+            if (!customVariableInvalid && !Helper.getText(binding.name).isEmpty() && !Helper.getText(binding.parameter).isEmpty()) {
+                variablesSpecAndNamePair.add(new Pair<>(Helper.getText(binding.parameter), Helper.getText(binding.name)));
+                updateBlockPreview(binding.blockArea, binding.removeArea, block, Helper.getText(binding.edName), variablesSpecAndNamePair);
                 binding.parameter.setText("");
                 binding.name.setText("");
 
@@ -135,8 +135,8 @@ public class dt extends LinearLayout {
         binding.addLabel.setOnClickListener(v -> {
             if (!mB.a()) {
                 if (labelTextValidator.b() && blockNameValidator.b()) {
-                    variablesSpecAndNamePair.add(new Pair<>("t", binding.edLabel.getText().toString()));
-                    updateBlockPreview(binding.blockArea, binding.removeArea, block, binding.edName.getText().toString(), variablesSpecAndNamePair);
+                    variablesSpecAndNamePair.add(new Pair<>("t", Helper.getText(binding.edLabel)));
+                    updateBlockPreview(binding.blockArea, binding.removeArea, block, Helper.getText(binding.edName), variablesSpecAndNamePair);
                     binding.edLabel.setText("");
                 }
             }
@@ -190,7 +190,7 @@ public class dt extends LinearLayout {
                 TextView textView = (TextView) view;
 
                 Rect rect = new Rect();
-                textView.getPaint().getTextBounds(textView.getText().toString(), 0, textView.getText().length(), rect);
+                textView.getPaint().getTextBounds(Helper.getText(textView), 0, textView.getText().length(), rect);
                 width = rect.width();
             } else if (view instanceof Rs) {
                 width = ((Rs) view).getWidthSum();
@@ -236,11 +236,11 @@ public class dt extends LinearLayout {
     }
 
     public boolean a() {
-        return binding.edName.getText().toString().isEmpty() && variablesSpecAndNamePair.isEmpty();
+        return Helper.getText(binding.edName).isEmpty() && variablesSpecAndNamePair.isEmpty();
     }
 
     public boolean b() {
-        if (!binding.edName.getText().toString().isEmpty() && blockNameValidator.b()) {
+        if (!Helper.getText(binding.edName).isEmpty() && blockNameValidator.b()) {
             return true;
         } else {
             bB.b(getContext(), Helper.getResString(R.string.logic_editor_message_name_requied), Toast.LENGTH_SHORT).show();
@@ -249,7 +249,7 @@ public class dt extends LinearLayout {
     }
 
     public Pair<String, String> getBlockInformation() {
-        String var1 = binding.edName.getText().toString().trim();
+        String var1 = Helper.getText(binding.edName).trim();
         return new Pair<>(ReturnMoreblockManager.injectMbType(var1, var1, getType()), ReturnMoreblockManager.injectMbType(block.T, var1, getType()));
     }
 
@@ -265,7 +265,7 @@ public class dt extends LinearLayout {
         type = ReturnMoreblockManager.getPreviewType(type);
         Rs var2 = new Rs(activity, 0, "", type, "definedFunc");
         block = var2;
-        updateBlockPreview(binding.blockArea, binding.removeArea, var2, binding.edName.getText().toString(), variablesSpecAndNamePair);
+        updateBlockPreview(binding.blockArea, binding.removeArea, var2, Helper.getText(binding.edName), variablesSpecAndNamePair);
     }
 
     public void setFuncNameValidator(ArrayList<String> var1) {

@@ -9,6 +9,8 @@ import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import mod.hey.studios.util.Helper;
+
 public abstract class MB implements TextWatcher, InputFilter {
 
     public Context a;
@@ -27,7 +29,7 @@ public abstract class MB implements TextWatcher, InputFilter {
     }
 
     public String a() {
-        return c.getText().toString();
+        return Helper.getText(c);
     }
 
     public void a(String str) {

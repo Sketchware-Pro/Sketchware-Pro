@@ -215,7 +215,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                             Helper.getDialogDismissListener(dialogInterface));
                     Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
                     positiveButton.setOnClickListener(view -> {
-                        getDataStore().putString(SETTING_BACKUP_DIRECTORY, binding.inputText.getText().toString());
+                        getDataStore().putString(SETTING_BACKUP_DIRECTORY, Helper.getText(binding.inputText));
                         dialog.dismiss();
                     });
 
@@ -273,7 +273,7 @@ public class ConfigActivity extends BaseAppCompatActivity {
                             Helper.getDialogDismissListener(dialog));
                     Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
                     positiveButton.setOnClickListener(view -> {
-                        getDataStore().putString(SETTING_BACKUP_FILENAME, binding.inputText.getText().toString());
+                        getDataStore().putString(SETTING_BACKUP_FILENAME, Helper.getText(binding.inputText));
                         dialog.dismiss();
                     });
                     dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);

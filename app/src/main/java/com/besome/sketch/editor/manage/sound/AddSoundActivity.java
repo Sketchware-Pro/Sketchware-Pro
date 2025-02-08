@@ -25,6 +25,8 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 import java.io.File;
@@ -210,7 +212,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
 
     private void saveSound() {
         if (isSoundValid(soundNameValidator)) {
-            String soundName = this.soundName.getText().toString();
+            String soundName = Helper.getText(this.soundName);
 
             SketchwareUtil.copySafDocumentToTempFile(soundUri, this, FileUtil.getFileExtension(getFilenameOfPickedFile(soundUri)),
                     tempFile -> {

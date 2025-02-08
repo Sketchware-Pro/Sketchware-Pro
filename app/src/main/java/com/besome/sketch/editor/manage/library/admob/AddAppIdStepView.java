@@ -37,7 +37,7 @@ public class AddAppIdStepView extends LinearLayout implements Uu, View.OnClickLi
 
     @Override
     public boolean isValid() {
-        if (!isEmpty(binding.textId.getText().toString())) {
+        if (!isEmpty(Helper.getText(binding.textId))) {
             return true;
         } else {
             bB.a(getContext(), Helper.getResString(R.string.design_library_admob_setting_message_add_app_id), 1).show();
@@ -86,7 +86,7 @@ public class AddAppIdStepView extends LinearLayout implements Uu, View.OnClickLi
         edAppId.setPrivateImeOptions("defaultInputmode=english;");
         dialog.a(addBinding.getRoot());
         dialog.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
-            String id = edAppId.getText().toString();
+            String id = Helper.getText(edAppId);
             if (!isEmpty(id)) {
                 setAppId(id);
                 dialog.dismiss();

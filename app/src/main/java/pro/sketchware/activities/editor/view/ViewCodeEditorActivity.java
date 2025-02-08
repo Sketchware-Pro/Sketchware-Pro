@@ -3,8 +3,6 @@ package pro.sketchware.activities.editor.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,29 +12,26 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import a.a.a.aB;
-import a.a.a.cC;
-import a.a.a.jC;
-
 import com.besome.sketch.beans.HistoryViewBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
+import a.a.a.aB;
+import a.a.a.cC;
+import a.a.a.jC;
 import io.github.rosemoe.sora.widget.CodeEditor;
-
 import mod.hey.studios.util.Helper;
-
 import pro.sketchware.R;
 import pro.sketchware.activities.appcompat.ManageAppCompatActivity;
 import pro.sketchware.activities.preview.LayoutPreviewActivity;
 import pro.sketchware.databinding.ViewCodeEditorBinding;
 import pro.sketchware.managers.inject.InjectRootLayoutManager;
 import pro.sketchware.tools.ViewBeanParser;
+import pro.sketchware.utility.EditorUtils;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.relativelayout.CircularDependencyDetector;
-import pro.sketchware.utility.EditorUtils;
 
 public class ViewCodeEditorActivity extends BaseAppCompatActivity {
     private ViewCodeEditorBinding binding;
@@ -55,7 +50,7 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
 
     private InjectRootLayoutManager rootLayoutManager;
 
-    private OnBackPressedCallback onBackPressedCallback =
+    private final OnBackPressedCallback onBackPressedCallback =
             new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {

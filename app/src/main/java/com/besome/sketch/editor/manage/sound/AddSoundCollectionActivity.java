@@ -18,6 +18,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.card.MaterialCardView;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageSoundAddBinding;
 
@@ -197,7 +199,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
     private void r() {
         if (a(M)) {
             if (!u) {
-                String obj = binding.edInput.getText().toString();
+                String obj = Helper.getText(binding.edInput);
                 String a = HB.a(this, K);
                 if (a == null) {
                     return;
@@ -226,7 +228,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
                     }
                 }
             } else {
-                Qp.g().a(O, binding.edInput.getText().toString(), true);
+                Qp.g().a(O, Helper.getText(binding.edInput), true);
                 bB.a(this, xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete), 1).show();
             }
             finish();

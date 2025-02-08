@@ -73,10 +73,10 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
     public void onBackPressed() {
         Intent intent = new Intent();
         googleMapLibraryBean.useYn = libSwitch.isChecked() ? "Y" : "N";
-        googleMapLibraryBean.data = editApiKey.getText().toString();
+        googleMapLibraryBean.data = Helper.getText(editApiKey);
         intent.putExtra("google_map", googleMapLibraryBean);
         setResult(RESULT_OK, intent);
-        if (editApiKey.getText().toString().isEmpty() && libSwitch.isChecked()) {
+        if (Helper.getText(editApiKey).isEmpty() && libSwitch.isChecked()) {
             bB.a(getApplicationContext(), "Api key can't be empty!", Toast.LENGTH_SHORT).show();
         } else {
             super.onBackPressed();

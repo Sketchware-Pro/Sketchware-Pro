@@ -70,7 +70,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
 
     private boolean checks() {
         int componentType = componentList.get(componentsAdapter.layoutPosition).type;
-        String componentId = binding.edInput.getText().toString();
+        String componentId = Helper.getText(binding.edInput);
         if (!componentNameValidator.b()) {
             return false;
         }
@@ -79,7 +79,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 if (!componentFileNameValidator.b()) {
                     return false;
                 }
-                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, binding.edInputFilename.getText().toString());
+                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, Helper.getText(binding.edInputFilename));
                 break;
 
             case ComponentBean.COMPONENT_TYPE_FIREBASE:
@@ -91,7 +91,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                     bB.b(this, Helper.getResString(R.string.design_library_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 }
-                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, binding.edInputFirebasePath.getText().toString());
+                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, Helper.getText(binding.edInputFirebasePath));
                 break;
 
             case ComponentBean.COMPONENT_TYPE_FIREBASE_AUTH:
@@ -102,7 +102,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                     bB.b(this, Helper.getResString(R.string.design_library_firebase_guide_setup_first), bB.TOAST_WARNING).show();
                     return false;
                 } else {
-                    jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, binding.edInputFirebasePath.getText().toString());
+                    jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, Helper.getText(binding.edInputFirebasePath));
                 }
                 break;
 
@@ -132,10 +132,10 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
                 break;
 
             case ComponentBean.COMPONENT_TYPE_FILE_PICKER:
-                if (binding.edInputFilePicker.getText().toString().isEmpty() || !componentMimeTypeValidator.b()) {
+                if (Helper.getText(binding.edInputFilePicker).isEmpty() || !componentMimeTypeValidator.b()) {
                     return false;
                 }
-                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, binding.edInputFilePicker.getText().toString());
+                jC.a(sc_id).a(projectFileBean.getJavaName(), componentType, componentId, Helper.getText(binding.edInputFilePicker));
                 break;
 
             default:

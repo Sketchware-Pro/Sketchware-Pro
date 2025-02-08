@@ -142,9 +142,9 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 .setIcon(R.drawable.ic_mtrl_filter)
                 .setView(view)
                 .setPositiveButton("Apply", (dialog, which) -> {
-                    pkgFilter = dialogBinding.easyEdInput.getText().toString();
+                    pkgFilter = Helper.getText(dialogBinding.easyEdInput);
                     pkgFilterList = new ArrayList<>(Arrays.asList(pkgFilter.split(",")));
-                    binding.searchInput.setText(binding.searchInput.getText().toString());
+                    binding.searchInput.setText(Helper.getText(binding.searchInput));
                 })
                 .setNeutralButton("Reset", (dialog, which) -> {
                     pkgFilter = "";
@@ -207,16 +207,16 @@ public class LogReaderActivity extends BaseAppCompatActivity {
 
                 mainList.add(map);
                 if (pkgFilterList.isEmpty()) {
-                    if (!binding.searchInput.getText().toString().isEmpty()) {
-                        if (map.get("logRaw").toString().toLowerCase().contains(binding.searchInput.getText().toString().toLowerCase())) {
+                    if (!Helper.getText(binding.searchInput).isEmpty()) {
+                        if (map.get("logRaw").toString().toLowerCase().contains(Helper.getText(binding.searchInput).toLowerCase())) {
                             ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                         }
                     } else {
                         ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                     }
                 } else if (map.containsKey("pkgName") && pkgFilterList.contains(map.get("pkgName").toString())) {
-                    if (!binding.searchInput.getText().toString().isEmpty()) {
-                        if (map.get("logRaw").toString().toLowerCase().contains(binding.searchInput.getText().toString().toLowerCase())) {
+                    if (!Helper.getText(binding.searchInput).isEmpty()) {
+                        if (map.get("logRaw").toString().toLowerCase().contains(Helper.getText(binding.searchInput).toLowerCase())) {
                             ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                         }
                     } else {

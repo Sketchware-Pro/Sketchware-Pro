@@ -242,9 +242,9 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         binding.positive.setText(R.string.common_word_save);
         binding.positive.setOnClickListener(
                 v -> {
-                    var xmlName = binding.xmlName.getText().toString();
-                    var reference = binding.reference.getText().toString();
-                    var command = binding.command.getText().toString();
+                    var xmlName = Helper.getText(binding.xmlName);
+                    var reference = Helper.getText(binding.reference);
+                    var command = Helper.getText(binding.command);
                     if (TextUtils.isEmpty(xmlName)) {
                         SketchwareUtil.toastError("XML name is required");
                         return;
@@ -255,13 +255,13 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                     }
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("reference", reference);
-                    map.put("distance", Integer.parseInt(binding.distance.getText().toString()));
-                    map.put("after", Integer.parseInt(binding.front.getText().toString()));
-                    map.put("before", Integer.parseInt(binding.backend.getText().toString()));
-                    map.put("command", binding.command.getText().toString());
+                    map.put("distance", Integer.parseInt(Helper.getText(binding.distance)));
+                    map.put("after", Integer.parseInt(Helper.getText(binding.front)));
+                    map.put("before", Integer.parseInt(Helper.getText(binding.backend)));
+                    map.put("command", Helper.getText(binding.command));
                     StringBuilder inputBuilder = new StringBuilder();
                     inputBuilder.append(">").append(xmlName).append("\n");
-                    inputBuilder.append(binding.changes.getText().toString());
+                    inputBuilder.append(Helper.getText(binding.changes));
                     map.put("input", inputBuilder.toString());
                     if (edit) {
                         if (position != -1) {

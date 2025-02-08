@@ -28,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
 import pro.sketchware.databinding.DialogSaveIconBinding;
@@ -390,7 +392,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                 if (iconNameValidator.b() && selectedIconPosition >= 0) {
                     String resFullname = adapter.getCurrentList().get(selectedIconPosition).second + File.separator + selected_icon_type + ".svg";
                     Intent intent = new Intent();
-                    intent.putExtra("iconName", dialogBinding.inputText.getText().toString());
+                    intent.putExtra("iconName", Helper.getText(dialogBinding.inputText));
                     intent.putExtra("iconPath", resFullname);
 
                     intent.putExtra("iconColor", selected_color);

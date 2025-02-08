@@ -96,7 +96,7 @@ public class EventsManagerFragment extends qA {
             listenerBinding.listenerCustomImport.setText(existingListener.get("imports").toString());
             if ("true".equals(existingListener.get("s"))) {
                 listenerBinding.listenerIsIndependentClassOrMethod.setChecked(true);
-                listenerBinding.listenerCode.setText(existingListener.get("code").toString().replaceFirst("//" + listenerBinding.listenerName.getText().toString() + "\n", ""));
+                listenerBinding.listenerCode.setText(existingListener.get("code").toString().replaceFirst("//" + Helper.getText(listenerBinding.listenerName) + "\n", ""));
             }
         }
 
@@ -104,15 +104,15 @@ public class EventsManagerFragment extends qA {
                 .setTitle(existingListener == null ? "New Listener" : "Edit Listener")
                 .setView(listenerBinding.getRoot())
                 .setPositiveButton("Save", (di, i) -> {
-                    String listenerName = listenerBinding.listenerName.getText().toString();
+                    String listenerName = Helper.getText(listenerBinding.listenerName);
                     if (!listenerName.isEmpty()) {
                         HashMap<String, Object> hashMap = existingListener != null ? existingListener : new HashMap<>();
                         hashMap.put("name", listenerName);
                         hashMap.put("code", listenerBinding.listenerIsIndependentClassOrMethod.isChecked()
-                                ? "//" + listenerName + "\n" + listenerBinding.listenerCode.getText().toString()
-                                : listenerBinding.listenerCode.getText().toString());
+                                ? "//" + listenerName + "\n" + Helper.getText(listenerBinding.listenerCode)
+                                : Helper.getText(listenerBinding.listenerCode));
                         hashMap.put("s", listenerBinding.listenerIsIndependentClassOrMethod.isChecked() ? "true" : "false");
-                        hashMap.put("imports", listenerBinding.listenerCustomImport.getText().toString());
+                        hashMap.put("imports", Helper.getText(listenerBinding.listenerCustomImport));
                         if (position >= 0) {
                             listMap.set(position, hashMap);
                         } else {

@@ -31,6 +31,7 @@ import java.util.concurrent.Executors;
 
 import a.a.a.aB;
 import a.a.a.qA;
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogBlockConfigurationBinding;
 import pro.sketchware.databinding.DialogSelectorActionsBinding;
@@ -123,7 +124,7 @@ public class BlockSelectorManagerFragment extends qA {
         dialog.b(!isEdit ? "New selector" : "Edit selector");
         dialog.a(dialogBinding.getRoot());
         dialog.b(!isEdit ? "Create" : "Save", v -> {
-            String selectorName = dialogBinding.palettesPath.getText().toString();
+            String selectorName = Helper.getText(dialogBinding.palettesPath);
             String selectorTitle = Objects.requireNonNull(dialogBinding.blocksPath.getText()).toString();
 
             if (selectorName.isEmpty()) {

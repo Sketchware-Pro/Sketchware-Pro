@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import mod.hey.studios.util.Helper;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManagePermissionBinding;
@@ -182,11 +183,11 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
             binding.checkboxContent.setChecked(frc.getPermissionList().contains(permission));
             binding.checkboxContent.setOnCheckedChangeListener((button, checked) -> {
                 if (checked) {
-                    if (!frc.getPermissionList().contains(button.getText().toString())) {
-                        frc.listFilePermission.add(button.getText().toString());
+                    if (!frc.getPermissionList().contains(Helper.getText(button))) {
+                        frc.listFilePermission.add(Helper.getText(button));
                     }
                 } else {
-                    frc.listFilePermission.remove(button.getText().toString());
+                    frc.listFilePermission.remove(Helper.getText(button));
                 }
             });
         }

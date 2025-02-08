@@ -107,7 +107,7 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
 
     private void showDialog() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(Helper.getText(tvName));
         dialog.a(icon);
         View view = wB.a(getContext(), R.layout.property_popup_selector_single);
         radioGroupContent = view.findViewById(R.id.rg_content);

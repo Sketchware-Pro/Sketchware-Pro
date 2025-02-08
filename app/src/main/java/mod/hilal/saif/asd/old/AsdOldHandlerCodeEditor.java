@@ -6,6 +6,7 @@ import com.besome.sketch.editor.LogicEditorActivity;
 
 import a.a.a.Ss;
 import mod.hey.studios.lib.code_editor.CodeEditorEditText;
+import mod.hey.studios.util.Helper;
 
 public class AsdOldHandlerCodeEditor implements View.OnClickListener {
 
@@ -25,7 +26,7 @@ public class AsdOldHandlerCodeEditor implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        String editable = codeEditorEditText.getText().toString();
+        String editable = Helper.getText(codeEditorEditText);
         if (isNumber) {
             String parsedDouble = "";
             try {

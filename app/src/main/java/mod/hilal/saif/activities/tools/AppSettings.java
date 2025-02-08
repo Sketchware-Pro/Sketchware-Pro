@@ -193,7 +193,7 @@ public class AppSettings extends BaseAppCompatActivity {
                 shakeView(binding.selectFile);
                 return;
             }
-            String input_apk_path = apk_path_txt.getText().toString();
+            String input_apk_path = Helper.getText(apk_path_txt);
             String output_apk_file_name = Uri.fromFile(new File(input_apk_path)).getLastPathSegment();
             String output_apk_path = new File(Environment.getExternalStorageDirectory(),
                     "sketchware/signed_apk/" + output_apk_file_name).getAbsolutePath();
@@ -247,7 +247,7 @@ public class AppSettings extends BaseAppCompatActivity {
                 super.run();
 
                 ApkSigner.LogCallback callback = line -> runOnUiThread(() ->
-                        tv_log.setText(tv_log.getText().toString() + line));
+                        tv_log.setText(Helper.getText(tv_log) + line));
 
                 if (useTestkey) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

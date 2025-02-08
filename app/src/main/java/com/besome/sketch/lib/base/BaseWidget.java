@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 import a.a.a.wB;
@@ -43,7 +44,7 @@ public class BaseWidget extends LinearLayout {
     }
 
     public String getWidgetName() {
-        return tv_widget.getText().toString();
+        return Helper.getText(tv_widget);
     }
 
     public int getWidgetType() {

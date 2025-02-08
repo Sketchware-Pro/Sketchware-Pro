@@ -180,7 +180,7 @@ public class ViewProperty extends LinearLayout implements Kw {
         dialog.a(view);
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (!mB.a() && validator.b()) {
-                String widgetName = editText.getText().toString();
+                String widgetName = Helper.getText(editText);
                 ArrayList<ViewBean> viewBeans = jC.a(sc_id).b(projectFile.getXmlName(), projectActivityViews.get(idsAdapter.getSelectedItemPosition()));
                 for (ViewBean viewBean : viewBeans) {
                     String backgroundResource = viewBean.layout.backgroundResource;
