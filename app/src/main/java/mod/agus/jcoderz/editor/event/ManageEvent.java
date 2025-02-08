@@ -652,7 +652,7 @@ public class ManageEvent {
             case "onTabAdded" -> "@Override\r\n" +
                     "public CharSequence getPageTitle(int _position) {\r\n" +
                     (!eventLogic.isEmpty() ? eventLogic + "\r\n" :
-                            "return null;\r\n") +
+                            "return \"\";\r\n") +
                     "}";
             case "onCompleteRegister" -> "@Override\r\n" +
                     "public void onComplete(Task<InstanceIdResult> task) {\r\n" +
