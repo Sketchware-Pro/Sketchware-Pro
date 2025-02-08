@@ -87,7 +87,7 @@ public class AppSettings extends BaseAppCompatActivity {
         preferences.add(createPreference(R.drawable.ic_mtrl_apk_document, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", v -> signApkFileDialog()));
         preferences.add(createPreference(R.drawable.ic_mtrl_article, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class))));
         preferences.add(createPreference(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class))));
-        preferences.forEach(preference -> content.addView(preference));
+        preferences.forEach(content::addView);
     }
 
     private View.OnClickListener openSettingsActivity(final String fragmentTag) {
