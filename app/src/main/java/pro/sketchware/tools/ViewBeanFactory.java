@@ -13,6 +13,7 @@ import pro.sketchware.utility.PropertiesUtil;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ViewBeanFactory {
 
@@ -347,12 +348,9 @@ public class ViewBeanFactory {
             }
             case ViewBean.VIEW_TYPE_WIDGET_ADVIEW -> {
                 var adSize = attributes.getOrDefault("app:adSize", null);
-                if (adSize != null) {
-                    bean.adSize = adSize;
-                } else {
-                    bean.adSize = "SMART_BANNER";
-                }
+                bean.adSize = Objects.requireNonNullElse(adSize, "SMART_BANNER");
                 var adUnitId = attributes.getOrDefault("app:adUnitId", null);
+                //noinspection StatementWithEmptyBody
                 if (adUnitId != null) {
                     // This can probably be ignored since it's auto-generated
                     // bean.adUnitId = "debug : " + adUnitId;
