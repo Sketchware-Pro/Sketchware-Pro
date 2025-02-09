@@ -1,16 +1,11 @@
 package com.besome.sketch.editor.view;
 
-import static pro.sketchware.utility.ThemeUtils.getColor;
-
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
@@ -42,6 +37,7 @@ import com.besome.sketch.editor.view.palette.IconLinearVertical;
 import com.besome.sketch.editor.view.palette.IconMapView;
 import com.besome.sketch.editor.view.palette.PaletteFavorite;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
+import com.google.android.material.card.MaterialCardView;
 
 import pro.sketchware.R;
 
@@ -67,6 +63,7 @@ import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
 
+import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.widgets.IconCustomWidget;
 import pro.sketchware.widgets.WidgetsCreatorManager;
 import mod.hey.studios.util.Helper;
@@ -118,9 +115,15 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private ViewDummy dummyView;
     private ImageView deleteIcon;
     private TextView deleteText;
-    private LinearLayout deleteView;
+    private MaterialCardView deleteView;
     private ObjectAnimator animatorTranslateY;
     private final Runnable ea = this::e;
+
+    private int colorSurfaceContainerHighest;
+    private int colorCoolGreenContainer;
+    private int colorCoolGreen;
+    private int colorError;
+    private int colorErrorContainer;
 
     public WidgetsCreatorManager widgetsCreatorManager;
 
@@ -507,7 +510,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         paletteGroup = findViewById(R.id.palette_group);
 
         addPaletteGroupItems();
-        initialDeleteViewUi();
 
         findViewById(R.id.btn_editproperties).setOnClickListener(this);
         findViewById(R.id.img_close).setOnClickListener(this);
@@ -574,6 +576,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
         paletteWidget.cardView.setOnClickListener(view -> widgetsCreatorManager.showWidgetsCreatorDialog(-1));
+
+        colorSurfaceContainerHighest = ThemeUtils.getColor(deleteView, R.attr.colorSurfaceContainerHighest);
+        colorCoolGreenContainer = ThemeUtils.getColor(deleteView, R.attr.colorCoolGreenContainer);
+        colorCoolGreen = ThemeUtils.getColor(deleteView, R.attr.colorCoolGreen);
+        colorErrorContainer = ThemeUtils.getColor(deleteView, R.attr.colorErrorContainer);
+        colorError = ThemeUtils.getColor(deleteView, R.attr.colorOnErrorContainer);
+
+        initialDeleteViewUi();
     }
 
     public void b(ArrayList<ViewBean> arrayList, boolean z) {
@@ -757,6 +767,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         } else if (z) {
             deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_delete));
             deleteText.setText("Drag here to delete");
+            setDeleteViewIconAndTextUi(false);
         }
         deleteView.bringToFront();
         if (!isAnimating) {
@@ -1007,10 +1018,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         if (D == z) return;
         D = z;
         if (D) {
-            rippleRound(deleteView, isCustomWidget ? "#26A59A" :"#FF5D5D", "#ff0000", 200);
+            setSelectedDeleteViewUi(isCustomWidget);
             shakeView(deleteView);
         } else {
             initialDeleteViewUi();
+            setDeleteViewIconAndTextUi(isCustomWidget);
         }
         if (isCustomWidget) {
             deleteIcon.setImageDrawable(AppCompatResources.getDrawable(getContext(), R.drawable.ic_mtrl_edit));
@@ -1022,21 +1034,22 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void initialDeleteViewUi() {
-        int focus = getColor(deleteView, R.attr.colorSurfaceInverse);
-        int pressed = getColor(deleteView, R.attr.colorOnSurfaceVariant);
-        rippleRound(deleteView, focus, pressed, 200);
+        deleteView.setCardBackgroundColor(colorSurfaceContainerHighest);
     }
 
-    private void rippleRound(View view, String focus, String pressed, double round) {
-        rippleRound(view, Color.parseColor(focus), Color.parseColor(pressed), round);
+    private void setSelectedDeleteViewUi(boolean isCustomWidget) {
+        deleteView.setCardBackgroundColor(isCustomWidget ? colorCoolGreenContainer : colorErrorContainer);
+        setDeleteViewIconAndTextUi(isCustomWidget);
     }
 
-    private void rippleRound(View view, int focus, int pressed, double round) {
-        GradientDrawable GG = new GradientDrawable();
-        GG.setColor(focus);
-        GG.setCornerRadius((float) round);
-        RippleDrawable RE = new RippleDrawable(new ColorStateList(new int[][]{new int[]{}}, new int[]{pressed}), GG, null);
-        view.setBackground(RE);
+    private void setDeleteViewIconAndTextUi(boolean isCustomWidget) {
+        if (isCustomWidget) {
+            deleteText.setTextColor(colorCoolGreen);
+            deleteIcon.setColorFilter(colorCoolGreen);
+        } else {
+            deleteText.setTextColor(colorError);
+            deleteIcon.setColorFilter(colorError);
+        }
     }
 
     enum PaletteGroup {
