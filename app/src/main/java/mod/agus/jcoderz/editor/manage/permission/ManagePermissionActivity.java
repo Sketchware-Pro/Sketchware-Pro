@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,8 +20,8 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import dev.chrisbanes.insetter.Insetter;
 import mod.hey.studios.util.Helper;
-import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManagePermissionBinding;
 import pro.sketchware.databinding.ViewItemPermissionBinding;
@@ -61,8 +60,9 @@ public class ManagePermissionActivity extends BaseAppCompatActivity {
 
     private void initViews() {
         binding.toolbar.setNavigationOnClickListener(v -> onBackPressed());
-        ViewCompat.setOnApplyWindowInsetsListener(binding.scrollToTopButton,
-                new AddMarginOnApplyWindowInsetsListener(WindowInsetsCompat.Type.navigationBars(), WindowInsetsCompat.CONSUMED));
+        Insetter.builder()
+                .margin(WindowInsetsCompat.Type.navigationBars())
+                .applyToView(binding.scrollToTopButton);
     }
 
     private void setItems() {
