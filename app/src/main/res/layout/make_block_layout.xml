@@ -100,62 +100,80 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <RadioGroup
+                    <com.google.android.material.chip.ChipGroup
                         android:id="@+id/radio_mb_type"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="6dp">
+                        android:padding="6dp"
+                        app:singleSelection="true">
 
-                        <RadioButton
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/radio_mb_type_void"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"
-                            android:text="Void" />
+                            android:text="Void"
+                            app:chipBackgroundColor="?attr/colorPrimary"
+                            app:closeIconVisible="false"/>
 
-                        <RadioButton
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/radio_mb_type_string"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="String" />
+                            android:text="String"
+                            app:chipBackgroundColor="?attr/colorPrimary"
+                            app:closeIconVisible="false"/>
 
-                        <RadioButton
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/radio_mb_type_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Number" />
+                            android:text="Number"
+                            app:chipBackgroundColor="?attr/colorPrimary"
+                            app:closeIconVisible="false"/>
 
-                        <RadioButton
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/radio_mb_type_boolean"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Boolean" />
+                            android:text="Boolean"
+                            app:chipBackgroundColor="?attr/colorPrimary"
+                            app:closeIconVisible="false"/>
 
-                        <RadioButton
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/radio_mb_type_map"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Map" />
+                            android:text="Map"
+                            app:chipBackgroundColor="?attr/colorPrimary"
+                            app:closeIconVisible="false"/>
 
-                        <RadioButton
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/radio_mb_type_liststring"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="List String" />
+                            android:text="List String"
+                            app:chipBackgroundColor="?attr/colorPrimary"
+                            app:closeIconVisible="false"/>
 
-                        <RadioButton
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/radio_mb_type_listmap"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="List Map" />
+                            android:text="List Map"
+                            app:chipBackgroundColor="?attr/colorPrimary"
+                            app:closeIconVisible="false"/>
 
-                        <RadioButton
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/radio_mb_type_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="View" />
-                    </RadioGroup>
+                            android:text="View"
+                            app:chipBackgroundColor="?attr/colorPrimary"
+                            app:closeIconVisible="false"/>
+
+                    </com.google.android.material.chip.ChipGroup>
                 </HorizontalScrollView>
 
                 <TextView

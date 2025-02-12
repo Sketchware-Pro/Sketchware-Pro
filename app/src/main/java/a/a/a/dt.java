@@ -254,7 +254,7 @@ public class dt extends LinearLayout {
     }
 
     private String getType() {
-        return ReturnMoreblockManager.getMbTypeFromRadioButton(binding.radioMbType);
+        return ReturnMoreblockManager.getMbTypeFromChipGroup(binding.radioMbType);
     }
 
     private void initRefresh() {
