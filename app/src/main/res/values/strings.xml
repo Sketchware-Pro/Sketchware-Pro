@@ -2245,5 +2245,6 @@ Please try again later"</string>
     <string name="property_enter_value">Enter %s value</string>
     
     <string name="code_viewer">Code Viewer</string>
+    <string name="block_name">Block Name</string>
 
 </resources>
