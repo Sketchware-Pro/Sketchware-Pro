@@ -42,235 +42,268 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:padding="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:padding="4dp"
                 android:text="use (moreblockName[type|typeName] or\nmoreblockName[type|typeName|typeCode]) for custom moreblock type(S)"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tv_title_blockname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginRight="8dp"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:text="@string/block_name"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ti_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:importantForAutofill="noExcludeDescendants">
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="4dp"
+                app:endIconMode="clear_text"
+                app:counterEnabled="true"
+                app:counterMaxLength="60">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:lines="1"
-                    android:textSize="13sp" />
+                    android:textSize="12sp"
+                    android:hint="Block name"
+                    android:padding="12dp"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_title_select_mb_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:text="Select Moreblock type"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbarThumbHorizontal="?attr/colorPrimary">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/radio_mb_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="6dp"
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/radio_mb_type_void"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="Void"
+                        app:closeIconVisible="false"
+                        app:chipCornerRadius="8dp"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        app:checkedIconTint="@color/colorPrimary"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/radio_mb_type_string"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="String"
+                        app:closeIconVisible="false"
+                        app:chipCornerRadius="8dp"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        app:checkedIconTint="@color/colorPrimary"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/radio_mb_type_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Number"
+                        app:closeIconVisible="false"
+                        app:chipCornerRadius="8dp"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        app:checkedIconTint="@color/colorPrimary"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/radio_mb_type_boolean"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Boolean"
+                        app:closeIconVisible="false"
+                        app:chipCornerRadius="8dp"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        app:checkedIconTint="@color/colorPrimary"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/radio_mb_type_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Map"
+                        app:closeIconVisible="false"
+                        app:chipCornerRadius="8dp"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        app:checkedIconTint="@color/colorPrimary"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/radio_mb_type_liststring"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="List String"
+                        app:closeIconVisible="false"
+                        app:chipCornerRadius="8dp"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        app:checkedIconTint="@color/colorPrimary"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/radio_mb_type_listmap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="List Map"
+                        app:closeIconVisible="false"
+                        app:chipCornerRadius="8dp"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        app:checkedIconTint="@color/colorPrimary"/>
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/radio_mb_type_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="View"
+                        app:closeIconVisible="false"
+                        app:chipCornerRadius="8dp"
+                        style="@style/Widget.Material3.Chip.Filter"
+                        app:checkedIconTint="@color/colorPrimary"/>
+
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/tv_title_add_variable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Add Variable"/>
+
+            <LinearLayout
+                android:id="@+id/var_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_outline"
+                android:orientation="vertical"
+                android:padding="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical">
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_title_select_mb_type"
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_variable_name"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginRight="8dp"
-                    android:text="Select Moreblock type"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:layout_weight="1"
+                    app:endIconMode="clear_text"
+                    android:layout_marginEnd="8dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="100">
 
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <RadioGroup
-                        android:id="@+id/radio_mb_type"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ed_variable_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="6dp">
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:textSize="12sp"
+                        android:hint="Variable name"
+                        android:padding="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <RadioButton
-                            android:id="@+id/radio_mb_type_void"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="true"
-                            android:text="Void" />
-
-                        <RadioButton
-                            android:id="@+id/radio_mb_type_string"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="String" />
-
-                        <RadioButton
-                            android:id="@+id/radio_mb_type_number"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Number" />
-
-                        <RadioButton
-                            android:id="@+id/radio_mb_type_boolean"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Boolean" />
-
-                        <RadioButton
-                            android:id="@+id/radio_mb_type_map"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Map" />
-
-                        <RadioButton
-                            android:id="@+id/radio_mb_type_liststring"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="List String" />
-
-                        <RadioButton
-                            android:id="@+id/radio_mb_type_listmap"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="List Map" />
-
-                        <RadioButton
-                            android:id="@+id/radio_mb_type_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="View" />
-                    </RadioGroup>
-                </HorizontalScrollView>
-
-                <TextView
-                    android:id="@+id/tv_title_add_variable"
-                    android:layout_width="match_parent"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_variable"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginRight="8dp"
-                    android:textColor="?attr/colorPrimary"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
-
-                    <LinearLayout
-                        android:id="@+id/var_type_spinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_outline"
-                        android:orientation="vertical"
-                        android:paddingLeft="8dp"
-                        android:paddingRight="8dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ti_variable_name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="8dp"
-                            android:layout_weight="1"
-                            android:importantForAutofill="noExcludeDescendants">
-
-                            <EditText
-                                android:id="@+id/ed_variable_name"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:imeOptions="actionNext"
-                                android:inputType="text"
-                                android:lines="1"
-                                android:textSize="13sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <Button
-                            android:id="@+id/add_variable"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
-                </LinearLayout>
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    app:icon="@drawable/ic_add_white_24dp"
+                    app:cornerRadius="14dp"
+                    app:iconGravity="textEnd"
+                    android:text=""/>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:paddingBottom="8dp">
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_label"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="100">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/ti_label"
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/ed_label"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        android:importantForAutofill="noExcludeDescendants">
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:textSize="12sp"
+                        android:hint="Label text"
+                        android:padding="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/ed_label"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:imeOptions="actionDone"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:textSize="13sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <Button
-                        android:id="@+id/add_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    app:icon="@drawable/ic_add_white_24dp"
+                    app:cornerRadius="14dp"
+                    app:iconGravity="textEnd"/>
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Custom parameter"
+                android:text="Custom Parameter"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -278,67 +311,64 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:paddingBottom="8dp">
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/ti_parameter"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="16dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:hint="Parameter"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="100">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/ti_parameter"
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/parameter"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        android:hint="Parameter"
-                        app:placeholderText="m.name (without % sign)"
-                        app:placeholderTextAppearance="@style/PlaceholderStyle"
-                        android:importantForAutofill="noExcludeDescendants">
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:textSize="12sp"
+                        android:singleLine="true"
+                        android:padding="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/parameter"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:imeOptions="actionDone"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:textSize="13sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:hint="Variable name"
+                    app:endIconMode="clear_text"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="100">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="8dp"
-                        android:layout_weight="1"
-                        android:hint="Variable name"
-                        android:importantForAutofill="noExcludeDescendants">
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:textSize="12sp"
+                        android:singleLine="true"
+                        android:padding="12dp"/>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:imeOptions="actionDone"
-                            android:inputType="text"
-                            android:lines="1"
-                            android:textSize="13sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <Button
-                        android:id="@+id/add"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ADD" />
-                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    app:icon="@drawable/ic_add_white_24dp"
+                    app:cornerRadius="14dp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
