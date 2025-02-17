@@ -143,7 +143,7 @@ dependencies {
     minApi26Implementation "com.google.protobuf:protobuf-java:3.19.2"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
-    implementation "com.android.tools:r8:8.5.35"
+    implementation "com.android.tools:r8:8.7.18"
     implementation "com.github.Iyxan23:zipalign-java:1.2.1"
 
     implementation "com.google.code.gson:gson:2.11.0"
