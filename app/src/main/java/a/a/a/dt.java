@@ -251,7 +251,7 @@ public class dt extends LinearLayout {
     }
 
     private void initRefresh() {
-        binding.radioMbType.setOnCheckedChangeListener((radioGroup, i) -> refresh(getType()));
+        binding.radioMbType.setOnCheckedStateChangeListener((chipGroup, ids) -> refresh(getType()));
     }
 
     private void refresh(String type) {
