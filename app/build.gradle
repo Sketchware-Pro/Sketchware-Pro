@@ -176,7 +176,7 @@ dependencies {
     if (analyticsEnabled) {
         new File("$projectDir/google-services.json").text = secrets
     }
-    implementation platform("com.google.firebase:firebase-bom:33.6.0")
+    implementation platform("com.google.firebase:firebase-bom:33.9.0")
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.1.3"
