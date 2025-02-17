@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <HorizontalScrollView
@@ -57,32 +57,32 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="8dp"
+                android:text="@string/block_name"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:text="@string/block_name"/>
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ti_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginTop="4dp"
-                app:endIconMode="clear_text"
+                android:layout_marginRight="8dp"
                 app:counterEnabled="true"
-                app:counterMaxLength="60">
+                app:counterMaxLength="60"
+                app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Block name"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:lines="1"
-                    android:textSize="12sp"
-                    android:hint="Block name"
-                    android:padding="12dp"/>
+                    android:padding="12dp"
+                    android:textSize="12sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -108,89 +108,89 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="6dp"
-                    app:singleSelection="true"
-                    app:selectionRequired="true">
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/radio_mb_type_void"
+                        style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:text="Void"
-                        app:closeIconVisible="false"
+                        app:checkedIconTint="@color/colorPrimary"
                         app:chipCornerRadius="8dp"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        app:checkedIconTint="@color/colorPrimary"/>
+                        app:closeIconVisible="false" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/radio_mb_type_string"
+                        style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="String"
-                        app:closeIconVisible="false"
+                        app:checkedIconTint="@color/colorPrimary"
                         app:chipCornerRadius="8dp"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        app:checkedIconTint="@color/colorPrimary"/>
+                        app:closeIconVisible="false" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/radio_mb_type_number"
+                        style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Number"
-                        app:closeIconVisible="false"
+                        app:checkedIconTint="@color/colorPrimary"
                         app:chipCornerRadius="8dp"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        app:checkedIconTint="@color/colorPrimary"/>
+                        app:closeIconVisible="false" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/radio_mb_type_boolean"
+                        style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Boolean"
-                        app:closeIconVisible="false"
+                        app:checkedIconTint="@color/colorPrimary"
                         app:chipCornerRadius="8dp"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        app:checkedIconTint="@color/colorPrimary"/>
+                        app:closeIconVisible="false" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/radio_mb_type_map"
+                        style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Map"
-                        app:closeIconVisible="false"
+                        app:checkedIconTint="@color/colorPrimary"
                         app:chipCornerRadius="8dp"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        app:checkedIconTint="@color/colorPrimary"/>
+                        app:closeIconVisible="false" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/radio_mb_type_liststring"
+                        style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="List String"
-                        app:closeIconVisible="false"
+                        app:checkedIconTint="@color/colorPrimary"
                         app:chipCornerRadius="8dp"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        app:checkedIconTint="@color/colorPrimary"/>
+                        app:closeIconVisible="false" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/radio_mb_type_listmap"
+                        style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="List Map"
-                        app:closeIconVisible="false"
+                        app:checkedIconTint="@color/colorPrimary"
                         app:chipCornerRadius="8dp"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        app:checkedIconTint="@color/colorPrimary"/>
+                        app:closeIconVisible="false" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/radio_mb_type_view"
+                        style="@style/Widget.Material3.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="View"
-                        app:closeIconVisible="false"
+                        app:checkedIconTint="@color/colorPrimary"
                         app:chipCornerRadius="8dp"
-                        style="@style/Widget.Material3.Chip.Filter"
-                        app:checkedIconTint="@color/colorPrimary"/>
+                        app:closeIconVisible="false" />
 
                 </com.google.android.material.chip.ChipGroup>
             </HorizontalScrollView>
@@ -202,60 +202,60 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
+                android:text="Add Variable"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                android:text="Add Variable"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/var_type_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:background="@drawable/bg_outline"
                 android:orientation="vertical"
-                android:padding="4dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"/>
+                android:padding="4dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ti_variable_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:endIconMode="clear_text"
                     android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
                     app:counterEnabled="true"
-                    app:counterMaxLength="100">
+                    app:counterMaxLength="100"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_variable_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="Variable name"
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:lines="1"
-                        android:textSize="12sp"
-                        android:hint="Variable name"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        android:textSize="12sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_variable"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    app:icon="@drawable/ic_add_white_24dp"
+                    android:text=""
                     app:cornerRadius="14dp"
-                    app:iconGravity="textEnd"
-                    android:text=""/>
+                    app:icon="@drawable/ic_add_white_24dp"
+                    app:iconGravity="textEnd" />
             </LinearLayout>
 
             <LinearLayout
@@ -271,30 +271,30 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_weight="1"
-                    app:endIconMode="clear_text"
                     app:counterEnabled="true"
-                    app:counterMaxLength="100">
+                    app:counterMaxLength="100"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ed_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="Label text"
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
-                        android:textSize="12sp"
-                        android:hint="Label text"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        android:textSize="12sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_label"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    app:icon="@drawable/ic_add_white_24dp"
                     app:cornerRadius="14dp"
-                    app:iconGravity="textEnd"/>
+                    app:icon="@drawable/ic_add_white_24dp"
+                    app:iconGravity="textEnd" />
             </LinearLayout>
 
             <TextView
@@ -324,9 +324,9 @@
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:hint="Parameter"
-                    app:endIconMode="clear_text"
                     app:counterEnabled="true"
-                    app:counterMaxLength="100">
+                    app:counterMaxLength="100"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/parameter"
@@ -335,9 +335,9 @@
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
-                        android:textSize="12sp"
+                        android:padding="12dp"
                         android:singleLine="true"
-                        android:padding="12dp"/>
+                        android:textSize="12sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -346,9 +346,9 @@
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:hint="Variable name"
-                    app:endIconMode="clear_text"
                     app:counterEnabled="true"
-                    app:counterMaxLength="100">
+                    app:counterMaxLength="100"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/name"
@@ -357,18 +357,18 @@
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
-                        android:textSize="12sp"
+                        android:padding="12dp"
                         android:singleLine="true"
-                        android:padding="12dp"/>
+                        android:textSize="12sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    app:icon="@drawable/ic_add_white_24dp"
-                    app:cornerRadius="14dp"/>
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/ic_add_white_24dp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
