@@ -13,6 +13,7 @@ import pro.sketchware.utility.PropertiesUtil;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ViewBeanFactory {
 
@@ -134,23 +135,37 @@ public class ViewBeanFactory {
                     bean.parentAttributes.put(attrName, parseReferName(attrValue, "/"));
                     continue;
                 }
+                if (attrName.equals("tools:listitem")) {
+                    continue;
+                }
                 // add attributes for inject property
                 injectAttributes.put(attrName, attrValue);
+            }
+        }
+        if (bean.getClassInfo().b("ListView")
+                || bean.getClassInfo().b("GridView")
+                || bean.getClassInfo().b("Spinner")
+                || bean.getClassInfo().b("RecyclerView")
+                || bean.getClassInfo().b("ViewPager")) {
+            var customView = attributes.getOrDefault("tools:listitem", null);
+            if (customView != null) {
+                if (customView.startsWith("@layout/")) {
+                    var layoutName = parseReferName(customView, "/");
+                    bean.customView = !layoutName.isEmpty() ? layoutName : "none";
+                } else {
+                    injectAttributes.put("tools:listitem", customView);
+                }
             }
         }
 
         StringBuilder injectProperty = new StringBuilder();
         injectAttributes
-                .entrySet()
-                .forEach(
-                        entry -> {
-                            injectProperty
-                                    .append(entry.getKey())
-                                    .append("=\"")
-                                    .append(entry.getValue())
-                                    .append("\"")
-                                    .append("\n");
-                        });
+                .forEach((key, value) -> injectProperty
+                        .append(key)
+                        .append("=\"")
+                        .append(value)
+                        .append("\"")
+                        .append("\n"));
         bean.inject = injectProperty.toString().trim();
     }
 
@@ -333,12 +348,9 @@ public class ViewBeanFactory {
             }
             case ViewBean.VIEW_TYPE_WIDGET_ADVIEW -> {
                 var adSize = attributes.getOrDefault("app:adSize", null);
-                if (adSize != null) {
-                    bean.adSize = adSize;
-                } else {
-                    bean.adSize = "SMART_BANNER";
-                }
+                bean.adSize = Objects.requireNonNullElse(adSize, "SMART_BANNER");
                 var adUnitId = attributes.getOrDefault("app:adUnitId", null);
+                //noinspection StatementWithEmptyBody
                 if (adUnitId != null) {
                     // This can probably be ignored since it's auto-generated
                     // bean.adUnitId = "debug : " + adUnitId;
@@ -753,7 +765,7 @@ public class ViewBeanFactory {
         return switch (name) {
             //Add more here
             case "MaterialSwitch" -> ViewBean.VIEW_TYPE_WIDGET_SWITCH;
-            case "MaterialCardView" -> ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
+            case "MaterialCardView", "CardView" -> ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW;
             case "TextInputEditText" -> ViewBean.VIEW_TYPE_WIDGET_EDITTEXT;
             //idk should I use ImageView(ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW) or Button(ViewBean.VIEW_TYPE_WIDGET_BUTTON)?
             case "ImageButton" -> ViewBean.VIEW_TYPE_WIDGET_IMAGEVIEW;

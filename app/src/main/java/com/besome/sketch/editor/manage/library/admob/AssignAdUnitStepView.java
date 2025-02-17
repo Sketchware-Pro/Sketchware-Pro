@@ -68,11 +68,11 @@ public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickLis
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
                     if (position == 0) {
-                        setBannerAdUnit(radioButton.getText().toString());
+                        setBannerAdUnit(Helper.getText(radioButton));
                     } else if (position == 1) {
-                        setInterstitialAdUnit(radioButton.getText().toString());
+                        setInterstitialAdUnit(Helper.getText(radioButton));
                     } else {
-                        setRewardedAdUnitId(radioButton.getText().toString());
+                        setRewardedAdUnitId(Helper.getText(radioButton));
                     }
                     break;
                 }

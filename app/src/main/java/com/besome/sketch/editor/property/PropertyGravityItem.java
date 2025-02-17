@@ -106,7 +106,7 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
 
     private void showDialog() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(Helper.getText(tvName));
         dialog.a(icon);
 
         View view = wB.a(getContext(), R.layout.property_popup_selector_gravity);

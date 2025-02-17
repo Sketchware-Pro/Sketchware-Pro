@@ -106,7 +106,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         projectNameValidator = new VB(getApplicationContext(), binding.tilProjectName);
         binding.tilPackageName.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
-                if (!shownPackageNameChangeWarning && !((EditText) v).getText().toString().trim().contains("com.my.newproject")) {
+                if (!shownPackageNameChangeWarning && !Helper.getText(((EditText) v)).trim().contains("com.my.newproject")) {
                     showPackageNameChangeWarning();
                 }
             }
@@ -284,7 +284,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         versionNameFirstPartPicker.setWrapSelectorWheel(false);
         versionNameSecondPartPicker.setWrapSelectorWheel(false);
 
-        int versionCode = Integer.parseInt(binding.verCode.getText().toString());
+        int versionCode = Integer.parseInt(Helper.getText(binding.verCode));
         int versionCodeMinimum = versionCode - 5;
         int versionNameFirstPartMinimum = 1;
         if (versionCodeMinimum <= 0) {
@@ -294,7 +294,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         versionCodePicker.setMaxValue(versionCode + 5);
         versionCodePicker.setValue(versionCode);
 
-        String[] split = binding.verName.getText().toString().split("\\.");
+        String[] split = Helper.getText(binding.verName).split("\\.");
         AtomicInteger projectNewVersionNameFirstPart = new AtomicInteger(parseInt(split[0], 1));
         AtomicInteger projectNewVersionNameSecondPart = new AtomicInteger(parseInt(split[1], 0));
         if (projectNewVersionNameFirstPart.get() - 5 > 0) {
@@ -479,14 +479,14 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         public void b() {
             HashMap<String, Object> data = new HashMap<>();
             data.put("sc_id", sc_id);
-            data.put("my_sc_pkg_name", binding.etPackageName.getText().toString());
-            data.put("my_ws_name", binding.etProjectName.getText().toString());
-            data.put("my_app_name", binding.etAppName.getText().toString());
+            data.put("my_sc_pkg_name", Helper.getText(binding.etPackageName));
+            data.put("my_ws_name", Helper.getText(binding.etProjectName));
+            data.put("my_app_name", Helper.getText(binding.etAppName));
             if (updatingExistingProject) {
                 data.put("custom_icon", projectHasCustomIcon);
                 data.put("isIconAdaptive", isIconAdaptive);
-                data.put("sc_ver_code", binding.verCode.getText().toString());
-                data.put("sc_ver_name", binding.verName.getText().toString());
+                data.put("sc_ver_code", Helper.getText(binding.verCode));
+                data.put("sc_ver_name", Helper.getText(binding.verName));
                 data.put("sketchware_ver", GB.d(getApplicationContext()));
                 for (int i = 0; i < themeColorKeys.length; i++) {
                     data.put(themeColorKeys[i], projectThemeColors[i]);
@@ -496,8 +496,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 data.put("my_sc_reg_dt", new nB().a("yyyyMMddHHmmss"));
                 data.put("custom_icon", projectHasCustomIcon);
                 data.put("isIconAdaptive", isIconAdaptive);
-                data.put("sc_ver_code", binding.verCode.getText().toString());
-                data.put("sc_ver_name", binding.verName.getText().toString());
+                data.put("sc_ver_code", Helper.getText(binding.verCode));
+                data.put("sc_ver_name", Helper.getText(binding.verName));
                 data.put("sketchware_ver", GB.d(getApplicationContext()));
                 for (int i = 0; i < themeColorKeys.length; i++) {
                     data.put(themeColorKeys[i], projectThemeColors[i]);

@@ -91,15 +91,15 @@ public class EventsManagerCreatorFragment extends qA {
 
     private boolean filledIn() {
         if (isActivityEvent) {
-            return !binding.eventsCreatorEventname.getText().toString().isEmpty()
-                    && !binding.eventsCreatorSpec.getText().toString().isEmpty()
-                    && !binding.eventsCreatorCode.getText().toString().isEmpty();
+            return !Helper.getText(binding.eventsCreatorEventname).isEmpty()
+                    && !Helper.getText(binding.eventsCreatorSpec).isEmpty()
+                    && !Helper.getText(binding.eventsCreatorCode).isEmpty();
         } else {
-            return !binding.eventsCreatorEventname.getText().toString().isEmpty()
-                    && !binding.eventsCreatorVarname.getText().toString().isEmpty()
-                    && !binding.eventsCreatorIcon.getText().toString().isEmpty()
-                    && !binding.eventsCreatorSpec.getText().toString().isEmpty()
-                    && !binding.eventsCreatorCode.getText().toString().isEmpty();
+            return !Helper.getText(binding.eventsCreatorEventname).isEmpty()
+                    && !Helper.getText(binding.eventsCreatorVarname).isEmpty()
+                    && !Helper.getText(binding.eventsCreatorIcon).isEmpty()
+                    && !Helper.getText(binding.eventsCreatorSpec).isEmpty()
+                    && !Helper.getText(binding.eventsCreatorCode).isEmpty();
         }
     }
 
@@ -131,7 +131,7 @@ public class EventsManagerCreatorFragment extends qA {
             SketchwareUtil.toast("Some required fields are empty!");
             return;
         }
-        if (!OldResourceIdMapper.isValidIconId(binding.eventsCreatorIcon.getText().toString())) {
+        if (!OldResourceIdMapper.isValidIconId(Helper.getText(binding.eventsCreatorIcon))) {
             binding.eventsCreatorIconTil.setError("Invalid icon ID");
             binding.eventsCreatorIcon.requestFocus();
             return;
@@ -147,18 +147,18 @@ public class EventsManagerCreatorFragment extends qA {
         if (isEdit) {
             hashMap = arrayList.get(figureP(_name));
         }
-        hashMap.put("name", binding.eventsCreatorEventname.getText().toString());
-        hashMap.put("var", binding.eventsCreatorVarname.getText().toString());
+        hashMap.put("name", Helper.getText(binding.eventsCreatorEventname));
+        hashMap.put("var", Helper.getText(binding.eventsCreatorVarname));
         if (isActivityEvent) {
             hashMap.put("listener", "");
         } else {
             hashMap.put("listener", lisName);
         }
-        hashMap.put("icon", binding.eventsCreatorIcon.getText().toString());
-        hashMap.put("description", binding.eventsCreatorDesc.getText().toString());
-        hashMap.put("parameters", binding.eventsCreatorParams.getText().toString());
-        hashMap.put("code", binding.eventsCreatorCode.getText().toString());
-        hashMap.put("headerSpec", binding.eventsCreatorSpec.getText().toString());
+        hashMap.put("icon", Helper.getText(binding.eventsCreatorIcon));
+        hashMap.put("description", Helper.getText(binding.eventsCreatorDesc));
+        hashMap.put("parameters", Helper.getText(binding.eventsCreatorParams));
+        hashMap.put("code", Helper.getText(binding.eventsCreatorCode));
+        hashMap.put("headerSpec", Helper.getText(binding.eventsCreatorSpec));
         if (!isEdit) {
             arrayList.add(hashMap);
         }

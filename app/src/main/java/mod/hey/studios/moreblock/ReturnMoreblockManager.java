@@ -4,6 +4,8 @@ import android.util.Pair;
 import android.widget.RadioGroup;
 
 import com.besome.sketch.editor.LogicEditorActivity;
+import com.google.android.material.chip.ChipGroup;
+
 import pro.sketchware.R;
 
 import java.util.Iterator;
@@ -89,28 +91,29 @@ public class ReturnMoreblockManager {
         }
     }
 
-    public static String getMbTypeFromRadioButton(RadioGroup radioGroup) {
+    public static String getMbTypeFromChipGroup(ChipGroup chipGroup) {
         String type;
-        int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
-        if (checkedRadioButtonId == R.id.radio_mb_type_string) {
+        int checkedChipId = chipGroup.getCheckedChipId();
+        if (checkedChipId == R.id.radio_mb_type_string) {
             type = "s";
-        } else if (checkedRadioButtonId == R.id.radio_mb_type_number) {
+        } else if (checkedChipId == R.id.radio_mb_type_number) {
             type = "d";
-        } else if (checkedRadioButtonId == R.id.radio_mb_type_boolean) {
+        } else if (checkedChipId == R.id.radio_mb_type_boolean) {
             type = "b";
-        } else if (checkedRadioButtonId == R.id.radio_mb_type_map) {
+        } else if (checkedChipId == R.id.radio_mb_type_map) {
             type = "a|Map";
-        } else if (checkedRadioButtonId == R.id.radio_mb_type_liststring) {
+        } else if (checkedChipId == R.id.radio_mb_type_liststring) {
             type = "l|List String";
-        } else if (checkedRadioButtonId == R.id.radio_mb_type_listmap) {
+        } else if (checkedChipId == R.id.radio_mb_type_listmap) {
             type = "l|List Map";
-        } else if (checkedRadioButtonId == R.id.radio_mb_type_view) {
+        } else if (checkedChipId == R.id.radio_mb_type_view) {
             type = "v|View";
         } else {
             type = " ";
         }
         return type;
     }
+
 
     public static void listMoreblocks(Iterator<Pair<String, String>> it, LogicEditorActivity logicEditorActivity) {
         while (it.hasNext()) {

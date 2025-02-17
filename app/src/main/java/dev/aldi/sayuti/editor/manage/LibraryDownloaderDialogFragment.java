@@ -77,7 +77,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
     }
 
     private void initDownloadFlow() {
-        dependencyName = binding.dependencyInput.getText().toString();
+        dependencyName = Helper.getText(binding.dependencyInput);
         if (dependencyName == null || dependencyName.isEmpty()) {
             binding.dependencyInputLayout.setError("Please enter a dependency");
             binding.dependencyInputLayout.setErrorEnabled(true);

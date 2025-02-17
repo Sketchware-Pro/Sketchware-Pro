@@ -2,7 +2,6 @@ package mod.hilal.saif.events;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import pro.sketchware.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,11 +9,12 @@ import java.util.HashMap;
 
 import a.a.a.Gx;
 import a.a.a.oq;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 import mod.jbk.util.OldResourceIdMapper;
+import pro.sketchware.R;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class EventsHandler {
 
@@ -328,9 +328,9 @@ public class EventsHandler {
             case "onTabLayoutNewTabAdded" ->
                 // Changed from: "public  CharSequence  onTabLayoutNewTabAdded( int   _position ){..."
                     "public CharSequence onTabLayoutNewTabAdded(int _position) {\r\n" +
-                            param + "\r\n" +
-                            "return null;\r\n" +
-                            "}";
+                            (param.isEmpty() ? "return \"\";\r\n" :
+                                    param + "\r\n"
+                            ) + "}";
             case "onPreExecute" -> "@Override\r\n" +
                     "protected void onPreExecute() {\r\n" +
                     param + "\r\n" +
@@ -456,7 +456,7 @@ public class EventsHandler {
         };
     }
 
-    ///listeners codes
+    /// listeners codes
     public static String getListenerCode(String name, String var, String param) {
         return switch (name) {
             case " onLongClickListener" ->

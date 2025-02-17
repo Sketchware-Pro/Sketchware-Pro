@@ -258,7 +258,7 @@ public class BlocksHandler {
         hashMap.put("name", "datePickerDialogShow");
         hashMap.put("type", " ");
         hashMap.put("code", "DialogFragment datePicker = new DatePickerFragment();\r\ndatePicker.show(getSupportFragmentManager(), \"datePicker\");");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "DatePickerDialog show");
         arrayList.add(hashMap);
@@ -267,7 +267,7 @@ public class BlocksHandler {
         hashMap.put("name", "timePickerDialogShow");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.show();");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.timepickerdialog show");
         arrayList.add(hashMap);
@@ -276,7 +276,7 @@ public class BlocksHandler {
         hashMap.put("name", "imageCrop");
         hashMap.put("type", " ");
         hashMap.put("code", "SketchwareUtil.CropImage(this, %s, (int) %s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "CropImageView fromFilePath %s RequestCode %d");
         arrayList.add(hashMap);
@@ -285,7 +285,7 @@ public class BlocksHandler {
         hashMap.put("name", "isConnected");
         hashMap.put("type", " ");
         hashMap.put("code", "SketchwareUtil.isConnected(getApplicationContext())");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "isConnected");
         arrayList.add(hashMap);
@@ -330,7 +330,7 @@ public class BlocksHandler {
         hashMap.put("name", "LightStatusBar");
         hashMap.put("type", " ");
         hashMap.put("code", "getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);\r\ngetWindow().setStatusBarColor(0xFFFFFFFF);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "LightStatusBar");
         arrayList.add(hashMap);
@@ -339,7 +339,7 @@ public class BlocksHandler {
         hashMap.put("name", "hideKeyboard");
         hashMap.put("type", " ");
         hashMap.put("code", "SketchwareUtil.hideKeyboard(getApplicationContext());");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "Hide keyboard");
         arrayList.add(hashMap);
@@ -348,7 +348,7 @@ public class BlocksHandler {
         hashMap.put("name", "showKeyboard");
         hashMap.put("type", " ");
         hashMap.put("code", "SketchwareUtil.showKeyboard(getApplicationContext());");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "Show keyboard");
         arrayList.add(hashMap);
@@ -357,7 +357,7 @@ public class BlocksHandler {
         hashMap.put("name", "progressdialogSetTitle");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.setTitle(%s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setTitle %s");
         arrayList.add(hashMap);
@@ -366,7 +366,7 @@ public class BlocksHandler {
         hashMap.put("name", "progressdialogSetMessage");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.setMessage(%s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setMessage %s");
         arrayList.add(hashMap);
@@ -375,7 +375,7 @@ public class BlocksHandler {
         hashMap.put("name", "progressdialogSetMax");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.setMax((int)%s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setMax %d");
         arrayList.add(hashMap);
@@ -384,7 +384,7 @@ public class BlocksHandler {
         hashMap.put("name", "progressdialogSetProgress");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.setProgress((int)%s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setProgress %d");
         arrayList.add(hashMap);
@@ -393,7 +393,7 @@ public class BlocksHandler {
         hashMap.put("name", "progressdialogSetCancelable");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.setCancelable(%s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setCancelable %b");
         arrayList.add(hashMap);
@@ -402,7 +402,7 @@ public class BlocksHandler {
         hashMap.put("name", "progressdialogSetCanceled");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.setCanceledOnTouchOutside(%s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setCanceledOnTouchOutside %b");
         arrayList.add(hashMap);
@@ -411,7 +411,7 @@ public class BlocksHandler {
         hashMap.put("name", "progressdialogSetStyle");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.setProgressStyle(ProgressDialog.%s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog setProgressStyle %m.styleprogress");
         arrayList.add(hashMap);
@@ -420,7 +420,7 @@ public class BlocksHandler {
         hashMap.put("name", "progressdialogDismiss");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.dismiss();");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog dismiss");
         arrayList.add(hashMap);
@@ -429,7 +429,7 @@ public class BlocksHandler {
         hashMap.put("name", "progressdialogShow");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.show();");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.progressdialog show");
         arrayList.add(hashMap);
@@ -438,7 +438,7 @@ public class BlocksHandler {
         hashMap.put("name", "startService");
         hashMap.put("type", " ");
         hashMap.put("code", "startService(new Intent(getApplicationContext(), %s.class));");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "startService %m.activity");
         arrayList.add(hashMap);
@@ -447,7 +447,7 @@ public class BlocksHandler {
         hashMap.put("name", "stopService");
         hashMap.put("type", " ");
         hashMap.put("code", "stopService(new Intent(getApplicationContext(), %s.class));");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "stopService %m.activity");
         arrayList.add(hashMap);
@@ -456,7 +456,7 @@ public class BlocksHandler {
         hashMap.put("name", "sendBroadcast");
         hashMap.put("type", " ");
         hashMap.put("code", "sendBroadcast(%s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "sendBroadcast %s");
         arrayList.add(hashMap);
@@ -465,7 +465,7 @@ public class BlocksHandler {
         hashMap.put("name", "startActivityWithChooser");
         hashMap.put("type", " ");
         hashMap.put("code", "startActivity(Intent.createChooser(%s, %s));");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "StartActivity %m.intent with Chooser %s");
         arrayList.add(hashMap);
@@ -474,7 +474,7 @@ public class BlocksHandler {
         hashMap.put("name", "finishAffinity");
         hashMap.put("type", "f");
         hashMap.put("code", "finishAffinity();");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "Finish Affinity");
         arrayList.add(hashMap);
@@ -1896,7 +1896,7 @@ public class BlocksHandler {
         hashMap.put("name", "launchApp");
         hashMap.put("type", " ");
         hashMap.put("code", "%s = getPackageManager().getLaunchIntentForPackage(%s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.intent set app package %s");
         arrayList.add(hashMap);
@@ -1904,8 +1904,8 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "changeStatebarColour");
         hashMap.put("type", " ");
-        hashMap.put("code", "if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {\r\nWindow w =%s.this.getWindow();\r\nw.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);\r\nw.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS); w.setStatusBarColor(%s);\r\n}");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("code", "if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {\r\nfinal Window window = %s.this.getWindow();\r\nwindow.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);\r\nwindow.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);\r\nwindow.setStatusBarColor(%s);\r\n}");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.activity set statebar color %m.color");
         arrayList.add(hashMap);
@@ -1914,7 +1914,7 @@ public class BlocksHandler {
         hashMap.put("name", "Dialog SetIcon");
         hashMap.put("type", " ");
         hashMap.put("code", "%s.setIcon(R.drawable.%s);");
-        hashMap.put("color", "#2AA4E2");
+        hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.dialog setIcon %m.resource_bg");
         arrayList.add(hashMap);

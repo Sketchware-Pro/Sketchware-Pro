@@ -273,9 +273,9 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
         dialog.setPositiveButton(
                 R.string.common_word_save,
                 (dialog1, which) -> {
-                    String namespaceInput = attributeBinding.inputRes.getText().toString();
-                    String nameInput = attributeBinding.inputAttr.getText().toString();
-                    String valueInput = attributeBinding.inputValue.getText().toString();
+                    String namespaceInput = Helper.getText(attributeBinding.inputRes);
+                    String nameInput = Helper.getText(attributeBinding.inputAttr);
+                    String valueInput = Helper.getText(attributeBinding.inputValue);
                     if (!namespaceInput.trim().isEmpty()
                             && !nameInput.trim().isEmpty()
                             && !valueInput.trim().isEmpty()) {

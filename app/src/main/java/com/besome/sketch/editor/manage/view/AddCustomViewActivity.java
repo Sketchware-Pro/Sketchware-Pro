@@ -65,7 +65,7 @@ public class AddCustomViewActivity extends BaseDialogActivity implements View.On
             }
 
             Intent intent = new Intent();
-            intent.putExtra("project_file", new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW, customViewName.getText().toString()));
+            intent.putExtra("project_file", new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW, Helper.getText(customViewName)));
             if (presetName != null) {
                 intent.putExtra("preset_views", getPresetData(presetName));
             }

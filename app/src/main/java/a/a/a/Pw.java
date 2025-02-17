@@ -51,7 +51,7 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
 
     private void a() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(Helper.getText(tvName));
         dialog.a(f);
         PropertyPopupSelectorSingleBinding propertyBinding = PropertyPopupSelectorSingleBinding.inflate(((Activity) getContext()).getLayoutInflater());
         RadioGroup rgContent = propertyBinding.rgContent;

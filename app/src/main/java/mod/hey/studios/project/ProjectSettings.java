@@ -127,7 +127,7 @@ public class ProjectSettings {
                 String value;
 
                 if (v instanceof EditText editText) {
-                    value = editText.getText().toString();
+                    value = Helper.getText(editText);
                 } else if (v instanceof Checkable checkable) {
                     value = checkable.isChecked() ? "true" : "false";
                 } else if (v instanceof RadioGroup radioGroup) {
@@ -152,7 +152,7 @@ public class ProjectSettings {
             RadioButton rb = (RadioButton) rg.getChildAt(i);
 
             if (rb.isChecked()) {
-                return rb.getText().toString();
+                return Helper.getText(rb);
             }
         }
 

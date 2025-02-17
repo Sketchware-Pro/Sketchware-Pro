@@ -105,7 +105,7 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
 
     private void showDialog() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(Helper.getText(tvName));
         dialog.a(icon);
         View view = wB.a(getContext(), R.layout.property_popup_input_size);
         EditText input = view.findViewById(R.id.et_input);
@@ -114,7 +114,7 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         dialog.a(view);
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(Integer.parseInt(input.getText().toString()));
+                setValue(Integer.parseInt(Helper.getText(input)));
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, value);
                 }

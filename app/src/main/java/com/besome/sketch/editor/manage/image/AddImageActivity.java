@@ -18,6 +18,8 @@ import android.widget.TextView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 import java.io.File;
@@ -347,7 +349,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                 if (!activity.multipleImagesPicked) {
                     if (!activity.editing) {
                         var image = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE,
-                                activity.ed_input_edittext.getText().toString().trim(), activity.imageFilePath);
+                                Helper.getText(activity.ed_input_edittext).trim(), activity.imageFilePath);
                         image.savedPos = 1;
                         image.isNew = true;
                         image.rotate = activity.imageRotationDegrees;
@@ -377,7 +379,7 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
                     int i = 0;
                     while (i < activity.pickedImageUris.size()) {
                         var uri = activity.pickedImageUris.get(i);
-                        var imageName = activity.ed_input_edittext.getText().toString().trim() + "_" + ++i;
+                        var imageName = Helper.getText(activity.ed_input_edittext).trim() + "_" + ++i;
                         var imageFilePath = HB.a(activity.getApplicationContext(), uri);
                         if (imageFilePath == null) {
                             return;

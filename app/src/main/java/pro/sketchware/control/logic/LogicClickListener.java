@@ -113,10 +113,10 @@ public class LogicClickListener implements View.OnClickListener {
 
         dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_add), v -> {
-            String variableModifier = binding.modifier.getText().toString().trim();
-            String variableType = binding.type.getText().toString().trim();
-            String variableName = binding.name.getText().toString().trim();
-            String variableInitializer = binding.initializer.getText().toString().trim();
+            String variableModifier = Helper.getText(binding.modifier).trim();
+            String variableType = Helper.getText(binding.type).trim();
+            String variableName = Helper.getText(binding.name).trim();
+            String variableInitializer = Helper.getText(binding.initializer).trim();
 
             boolean isValidModifier = modifiersValidator.isValid() || variableModifier.isEmpty();
             boolean isValidType = varTypeValidator.isValid();
@@ -229,8 +229,8 @@ public class LogicClickListener implements View.OnClickListener {
 
         dialog.a(listBinding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_add), v -> {
-            String variableType = listBinding.type.getText().toString();
-            String variableName = listBinding.name.getText().toString();
+            String variableType = Helper.getText(listBinding.type);
+            String variableName = Helper.getText(listBinding.name);
 
             boolean validType = !isEmpty(variableType);
             boolean validName = !isEmpty(variableName);

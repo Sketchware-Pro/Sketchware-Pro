@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageFontImportBinding;
 
@@ -113,7 +115,7 @@ public class ManageFontImportActivity extends BaseAppCompatActivity implements V
     public void onClick(View v) {
         int id = v.getId();
         if (id == binding.btnDecide.getId()) {
-            String resName = r.getText().toString();
+            String resName = Helper.getText(r);
             if (!isNameValid()) {
                 ProjectResourceBean font = selectedCollection.get(selectedItem);
                 r.setText(font.resName);

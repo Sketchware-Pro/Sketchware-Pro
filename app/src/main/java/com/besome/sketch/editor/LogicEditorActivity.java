@@ -312,7 +312,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     }
                 }
 
-                a(i, editText.getText().toString());
+                a(i, Helper.getText(editText));
                 aBVar.dismiss();
             }
         });
@@ -343,7 +343,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
 
             if (nameValidator.b()) {
-                b(variableType, editText.getText().toString());
+                b(variableType, Helper.getText(editText));
                 dialog.dismiss();
             }
         });
@@ -419,7 +419,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             for (int i = 0; i < childCount; i++) {
                 CheckBox checkBox = (CheckBox) viewGroup.getChildAt(i);
                 if (checkBox.isChecked()) {
-                    removeItem(stringsList, checkBox.getText().toString());
+                    removeItem(stringsList, Helper.getText(checkBox));
                 }
             }
 
@@ -435,7 +435,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     public void setOnCheckedListener(CheckBox checkBox) {
         checkBox.setOnCheckedChangeListener((view, isChecked) -> {
-            if (isChecked && isXmlStringUsed(B, checkBox.getText().toString())) {
+            if (isChecked && isXmlStringUsed(B, Helper.getText(checkBox))) {
                 checkBox.setChecked(false);
             }
         });
@@ -581,9 +581,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             while (i < childCount) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
-                    if (!o.b(radioButton.getText().toString())) {
-                        if (!jC.a(B).b(M.getJavaName(), radioButton.getText().toString(), C + "_" + D)) {
-                            l(radioButton.getText().toString());
+                    if (!o.b(Helper.getText(radioButton))) {
+                        if (!jC.a(B).b(M.getJavaName(), Helper.getText(radioButton), C + "_" + D)) {
+                            l(Helper.getText(radioButton));
                         }
                     }
                     Toast.makeText(getContext(), getTranslatedString(R.string.logic_editor_message_currently_used_list), Toast.LENGTH_SHORT).show();
@@ -615,9 +615,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             while (i < childCount) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
-                    if (!o.c(radioButton.getText().toString())) {
-                        if (!jC.a(B).c(M.getJavaName(), radioButton.getText().toString(), C + "_" + D)) {
-                            m(radioButton.getText().toString());
+                    if (!o.c(Helper.getText(radioButton))) {
+                        if (!jC.a(B).c(M.getJavaName(), Helper.getText(radioButton), C + "_" + D)) {
+                            m(Helper.getText(radioButton));
                         }
                     }
                     Toast.makeText(getContext(), getTranslatedString(R.string.logic_editor_message_currently_used_variable), Toast.LENGTH_SHORT).show();
@@ -967,7 +967,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
         aBVar.b(getTranslatedString(R.string.common_word_save), v -> {
-            String text = editText.getText().toString();
+            String text = Helper.getText(editText);
             emptyStringSetter:
             {
                 if (z) {
@@ -1586,7 +1586,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         aBVar.a(a2);
         aBVar.b(getTranslatedString(R.string.common_word_save), v -> {
             if (nb.b()) {
-                a(editText.getText().toString(), rs);
+                a(Helper.getText(editText), rs);
                 aBVar.dismiss();
             }
         });
@@ -1607,7 +1607,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
         aBVar.b(getTranslatedString(R.string.common_word_save), v -> {
-            a(ss, editText.getText().toString());
+            a(ss, Helper.getText(editText));
             aBVar.dismiss();
         });
         aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
@@ -1750,7 +1750,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         editText.setText(ss.getArgValue().toString());
         aBVar.a(a2);
         aBVar.b(getTranslatedString(R.string.common_word_save), v -> {
-            a(ss, editText.getText().toString());
+            a(ss, Helper.getText(editText));
             aBVar.dismiss();
         });
         aBVar.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
@@ -1985,12 +1985,12 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             if (soundName.equals(ss.getArgValue())) {
                 sound.setChecked(true);
             }
-            sound.setOnClickListener(v -> soundPool.load(jC.d(B).i(sound.getText().toString()), 1));
+            sound.setOnClickListener(v -> soundPool.load(jC.d(B).i(Helper.getText(sound)), 1));
         }
         dialog.a(customView);
         dialog.b(getTranslatedString(R.string.common_word_select), v -> {
             RadioButton checkedRadioButton = radioGroup.findViewById(radioGroup.getCheckedRadioButtonId());
-            a(ss, checkedRadioButton.getText().toString());
+            a(ss, Helper.getText(checkedRadioButton));
             dialog.dismiss();
         });
         dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
@@ -2032,7 +2032,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             for (int i = 0; i < childCount; i++) {
                 RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
-                    a(ss, radioButton.getText().toString());
+                    a(ss, Helper.getText(radioButton));
                     break;
                 }
             }

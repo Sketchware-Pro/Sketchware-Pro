@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
 import pro.sketchware.databinding.DialogIconSelectorBinding;
 import pro.sketchware.databinding.ItemIconSelectorBinding;
@@ -46,7 +47,7 @@ public class IconSelectorDialog {
             builder.dismiss();
         });
 
-        String iconIdInput = toSetText.getText().toString();
+        String iconIdInput = Helper.getText(toSetText);
         if (!iconIdInput.isEmpty() && OldResourceIdMapper.isValidIconId(iconIdInput)) {
             gridView.smoothScrollToPosition(data.indexOf(Integer.parseInt(iconIdInput)));
         }

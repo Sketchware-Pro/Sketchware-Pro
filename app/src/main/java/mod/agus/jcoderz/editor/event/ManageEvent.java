@@ -553,11 +553,12 @@ public class ManageEvent {
                     "final String _errorMessage = task.getException() != null ? task.getException().getMessage() : \"\";\r\n" +
                     eventLogic + "\r\n" +
                     "}";
-            case "onFragmentAdded" -> "@Override\r\n" +
-                    "public Fragment getItem(int _position) {\r\n" +
-                    eventLogic + "\r\n" +
-                    "return null;\r\n" +
-                    "}";
+            case "onFragmentAdded" -> //noinspection DuplicateExpressions
+                    "@Override\r\n" +
+                            "public Fragment getItem(int _position) {\r\n" +
+                            (!eventLogic.isEmpty() ? eventLogic + "\r\n" :
+                                    "return null;\r\n") +
+                            "}";
             case "onTimeSet" -> "@Override\r\n" +
                     "public void onTimeSet(TimePicker _timePicker, int _hour, int _minute) {\r\n" +
                     eventLogic + "\r\n" +
@@ -650,8 +651,8 @@ public class ManageEvent {
                     "}";
             case "onTabAdded" -> "@Override\r\n" +
                     "public CharSequence getPageTitle(int _position) {\r\n" +
-                    eventLogic + "\r\n" +
-                    "return null;\r\n" +
+                    (!eventLogic.isEmpty() ? eventLogic + "\r\n" :
+                            "return \"\";\r\n") +
                     "}";
             case "onCompleteRegister" -> "@Override\r\n" +
                     "public void onComplete(Task<InstanceIdResult> task) {\r\n" +

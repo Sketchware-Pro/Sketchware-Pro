@@ -123,7 +123,7 @@ public class ShowMoreBlockCollectionActivity extends BaseAppCompatActivity imple
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.save_button && moreBlockNameValidator.b()) {
-            Pp.h().a(moreBlockName, moreBlockNameEditorText.getText().toString(), true);
+            Pp.h().a(moreBlockName, Helper.getText(moreBlockNameEditorText), true);
             bB.a(getApplicationContext(), Helper.getResString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
             finish();
         }

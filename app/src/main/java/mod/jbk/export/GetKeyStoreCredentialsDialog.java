@@ -69,10 +69,10 @@ public class GetKeyStoreCredentialsDialog {
                 if (validateInputs()) {
                     dialog.dismiss();
                     receiver.gotCredentials(new Credentials(
-                            binding.etSigningAlgorithm.getText().toString(),
-                            binding.etPassword.getText().toString(),
-                            binding.etAlias.getText().toString(),
-                            binding.etPassword.getText().toString()
+                            Helper.getText(binding.etSigningAlgorithm),
+                            Helper.getText(binding.etPassword),
+                            Helper.getText(binding.etAlias),
+                            Helper.getText(binding.etPassword)
                     ));
                 }
             } else {
@@ -80,7 +80,7 @@ public class GetKeyStoreCredentialsDialog {
             }
         } else if (mode == SigningMode.TESTKEY) {
             dialog.dismiss();
-            receiver.gotCredentials(new Credentials(binding.etSigningAlgorithm.getText().toString()));
+            receiver.gotCredentials(new Credentials(Helper.getText(binding.etSigningAlgorithm)));
         } else if (mode == SigningMode.DONT_SIGN) {
             dialog.dismiss();
             receiver.gotCredentials(null);

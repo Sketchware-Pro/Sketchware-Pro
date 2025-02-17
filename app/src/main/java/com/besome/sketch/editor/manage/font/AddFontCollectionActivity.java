@@ -9,6 +9,8 @@ import android.view.View;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageFontAddBinding;
 
@@ -79,7 +81,7 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
 
     public final void saveFont() {
         if (fontValidator.b()) {
-            Np.g().a(projectResourceBean, binding.edInput.getText().toString(), true);
+            Np.g().a(projectResourceBean, Helper.getText(binding.edInput), true);
             bB.a(this, getTranslatedString(R.string.design_manager_message_edit_complete), 1).show();
             finish();
         }

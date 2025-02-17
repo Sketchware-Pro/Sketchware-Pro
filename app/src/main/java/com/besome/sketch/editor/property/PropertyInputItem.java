@@ -202,7 +202,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void showViewIdDialog() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(Helper.getText(tvName));
         dialog.a(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
@@ -215,7 +215,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(binding.edInput.getText().toString());
+                setValue(Helper.getText(binding.edInput));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
@@ -231,11 +231,11 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void showNumberInputDialog() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(Helper.getText(tvName));
         dialog.a(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
-        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), tvName.getText().toString()));
+        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
 
         binding.edInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
         binding.edInput.setText(value);
@@ -246,7 +246,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(binding.edInput.getText().toString());
+                setValue(Helper.getText(binding.edInput));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
@@ -257,12 +257,12 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void showTextInputDialog(int maxValue, boolean isInject) {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(Helper.getText(tvName));
         dialog.a(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
 
-        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), tvName.getText().toString()));
+        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
 
         SB lengthValidator;
 
@@ -310,7 +310,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         autoCompleteTextView.setAdapter(adapter);
         autoCompleteTextView.setThreshold(1);
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
-            String value = autoCompleteTextView.getText().toString();
+            String value = Helper.getText(autoCompleteTextView);
             autoCompleteTextView.setText(value.substring(0, value.indexOf(" (")));
             autoCompleteTextView.setSelection(autoCompleteTextView.getText().length());
         });
@@ -321,12 +321,12 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                             boolean isInject, aB dialog) {
         if (lengthValidator.b() && textAutoCompleteInput.getError() == null) {
             if (isInject) {
-                setValue(input.getText().toString());
+                setValue(Helper.getText(input));
             } else {
-                setValue(autoCompleteTextView.getText().toString());
+                setValue(Helper.getText(autoCompleteTextView));
             }
             if (valueChangeListener != null) {
-                String inputText = autoCompleteTextView.getText().toString();
+                String inputText = Helper.getText(autoCompleteTextView);
 
                 if (inputText.equals(stringsStart)) {
 
@@ -382,11 +382,11 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void showNumberDecimalInputDialog(int minValue, int maxValue) {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(Helper.getText(tvName));
         dialog.a(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
-        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), tvName.getText().toString()));
+        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
 
         binding.edInput.setInputType((minValue < 0)
                 ? InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL
@@ -399,7 +399,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (validator.b()) {
-                setValue(binding.edInput.getText().toString());
+                setValue(Helper.getText(binding.edInput));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
@@ -410,7 +410,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void showAutoCompleteDialog() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(Helper.getText(tvName));
         dialog.a(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
@@ -425,7 +425,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (lengthValidator.b()) {
-                setValue(input.getText().toString());
+                setValue(Helper.getText(input));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
                 dialog.dismiss();
             }
@@ -620,7 +620,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.setContentView(binding.getRoot());
         dialog.show();
 
-        binding.title.setText(tvName.getText().toString());
+        binding.title.setText(Helper.getText(tvName));
 
         var adapter = new AttributesAdapter();
         adapter.setOnItemClickListener(
@@ -696,7 +696,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         builder.setPositiveButton(
                 R.string.common_word_next,
                 (d, w) -> {
-                    var inputValue = input.getText().toString().trim();
+                    var inputValue = Helper.getText(input).trim();
                     if (!inputValue.isEmpty()) {
                         setAttributeValue(inputValue, attributes);
                     } else {
@@ -709,7 +709,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.setOnShowListener(
                 d -> {
                     var positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setEnabled(!input.getText().toString().trim().isEmpty());
+                    positiveButton.setEnabled(!Helper.getText(input).trim().isEmpty());
 
                     input.addTextChangedListener(
                             new BaseTextWatcher() {
@@ -720,7 +720,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                                         int before,
                                         int after) {
                                     positiveButton.setEnabled(
-                                            !input.getText().toString().trim().isEmpty());
+                                            !Helper.getText(input).trim().isEmpty());
                                 }
                             });
                 });
@@ -746,7 +746,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         builder.setPositiveButton(
                 R.string.common_word_save,
                 (d, w) -> {
-                    var inputValue = input.getText().toString().trim();
+                    var inputValue = Helper.getText(input).trim();
                     if (!inputValue.isEmpty()) {
                         attributes.put(attr, inputValue);
                         saveAttributes(attributes);
@@ -759,7 +759,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.setOnShowListener(
                 d -> {
                     var positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setEnabled(!input.getText().toString().trim().isEmpty());
+                    positiveButton.setEnabled(!Helper.getText(input).trim().isEmpty());
 
                     input.addTextChangedListener(
                             new BaseTextWatcher() {
@@ -770,7 +770,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                                         int before,
                                         int after) {
                                     positiveButton.setEnabled(
-                                            !input.getText().toString().trim().isEmpty());
+                                            !Helper.getText(input).trim().isEmpty());
                                 }
                             });
                 });

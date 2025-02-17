@@ -174,8 +174,8 @@ public class CustomBlocksDialog {
 
         dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
-            String name = binding.nameEditText.getText().toString();
-            String color = binding.colorEditText.getText().toString();
+            String name = Helper.getText(binding.nameEditText);
+            String color = Helper.getText(binding.colorEditText);
 
             if (!validateInput(binding, name, color)) return;
 

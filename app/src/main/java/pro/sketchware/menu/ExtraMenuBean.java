@@ -109,7 +109,7 @@ public class ExtraMenuBean {
                 for (int i = 0; i < viewGroup.getChildCount(); i++) {
                     View childView = viewGroup.getChildAt(i);
                     if (childView instanceof TextView textView) {
-                        String itemText = textView.getText().toString().toLowerCase();
+                        String itemText = Helper.getText(textView).toLowerCase();
                         if (itemText.contains(filterText)) {
                             textView.setVisibility(View.VISIBLE);
                         } else {
@@ -718,7 +718,7 @@ public class ExtraMenuBean {
         setupSearchView(rootView, viewGroup);
         for (int i = 0; i < viewGroup.getChildCount(); i++) {
             if (viewGroup.getChildAt(i) instanceof RadioButton rb) {
-                if (menu.getArgValue().toString().equals(rb.getText().toString())) {
+                if (menu.getArgValue().toString().equals(Helper.getText(rb))) {
                     rb.setChecked(true);
                     break;
                 }
@@ -731,7 +731,7 @@ public class ExtraMenuBean {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 if (viewGroup.getChildAt(i) instanceof RadioButton rb) {
                     if (rb.isChecked()) {
-                        logicEditor.a(menu, rb.getText().toString());
+                        logicEditor.a(menu, Helper.getText(rb));
                     }
                 }
             }
@@ -779,7 +779,7 @@ public class ExtraMenuBean {
         dialog.a(root);
 
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
-            String content = edittext.getText().toString();
+            String content = Helper.getText(edittext);
             if (!content.isEmpty() && content.charAt(0) == '@') {
                 content = " " + content;
             }
@@ -789,7 +789,7 @@ public class ExtraMenuBean {
         dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
         dialog.configureDefaultButton("Code Editor", v -> {
             AsdDialog asdDialog = new AsdDialog(logicEditor);
-            asdDialog.setCon(edittext.getText().toString());
+            asdDialog.setCon(Helper.getText(edittext));
             asdDialog.show();
             asdDialog.saveLis(logicEditor, false, ss, asdDialog);
             asdDialog.cancelLis(asdDialog);

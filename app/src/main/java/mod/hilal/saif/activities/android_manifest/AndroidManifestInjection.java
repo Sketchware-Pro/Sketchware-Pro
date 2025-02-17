@@ -204,8 +204,8 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
         dialog.a(view);
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
-            if (!activity_name_input.getText().toString().trim().isEmpty()) {
-                AndroidManifestInjector.setLauncherActivity(sc_id, activity_name_input.getText().toString());
+            if (!Helper.getText(activity_name_input).trim().isEmpty()) {
+                AndroidManifestInjector.setLauncherActivity(sc_id, Helper.getText(activity_name_input));
                 SketchwareUtil.toast("Saved");
                 dialog.dismiss();
             } else {
@@ -229,8 +229,8 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
         dialog.a(inflate);
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
-            if (!activity_name_input.getText().toString().trim().isEmpty()) {
-                addNewActivity(activity_name_input.getText().toString());
+            if (!Helper.getText(activity_name_input).trim().isEmpty()) {
+                addNewActivity(Helper.getText(activity_name_input));
                 SketchwareUtil.toast("New Activity added");
                 dialog.dismiss();
             } else {

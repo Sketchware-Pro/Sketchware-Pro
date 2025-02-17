@@ -196,7 +196,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
         dialog.setOnShowListener(dialogInterface -> {
             Button positiveButton = ((AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
-                String name = inputText.getText().toString();
+                String name = Helper.getText(inputText);
 
                 if (name.isEmpty()) {
                     textInputLayout.setError("Invalid folder name");
@@ -266,7 +266,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
                 .setView(dialogBinding.getRoot())
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Rename", (dialogInterface, i) -> {
-                    String newName = inputText.getText().toString();
+                    String newName = Helper.getText(inputText);
                     if (!newName.isEmpty()) {
                         if (FileUtil.renameFile(path, path.substring(0, path.lastIndexOf(File.separator)) + File.separator + newName)) {
                             SketchwareUtil.toast("Renamed successfully");

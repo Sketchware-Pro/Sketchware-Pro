@@ -119,7 +119,7 @@ public class Zx extends PopupWindow {
         binding.tvAddColor.setText(xB.b().a(activity, R.string.common_word_add).toUpperCase());
         binding.tvAddColor.setOnClickListener(view -> {
             if (colorValidator.b()) {
-                String formattedColor = String.format("#%8s", binding.etCustomColor.getText().toString()).replaceAll(" ", "F");
+                String formattedColor = String.format("#%8s", Helper.getText(binding.etCustomColor)).replaceAll(" ", "F");
                 savePickedColor(formattedColor.toUpperCase());
                 notifyChanges();
             }
@@ -477,20 +477,20 @@ public class Zx extends PopupWindow {
                 imgSelector = itemView.findViewById(R.id.img_selector);
                 itemView.setOnClickListener(v -> {
                     if (colorPickerCallback != null) {
-                        if (tvColorCode.getText().toString().equals("TRANSPARENT")) {
+                        if (Helper.getText(tvColorCode).equals("TRANSPARENT")) {
                             colorPickerCallback.a(0);
-                        } else if (tvColorCode.getText().toString().equals("NONE")) {
+                        } else if (Helper.getText(tvColorCode).equals("NONE")) {
                             colorPickerCallback.a(0xffffff);
                         } else if (l == 1 && sc_id != null) {
-                            colorPickerCallback.a((String) tvColorName.getText(), Color.parseColor(tvColorCode.getText().toString()));
+                            colorPickerCallback.a((String) tvColorName.getText(), Color.parseColor(Helper.getText(tvColorCode)));
                         } else {
-                            colorPickerCallback.a(Color.parseColor(tvColorCode.getText().toString()));
+                            colorPickerCallback.a(Color.parseColor(Helper.getText(tvColorCode)));
                         }
                     }
                     dismiss();
                 });
                 itemView.setOnLongClickListener(v -> {
-                    if (l == 0) showColorRemoveDialog(tvColorCode.getText().toString());
+                    if (l == 0) showColorRemoveDialog(Helper.getText(tvColorCode));
                     return false;
                 });
             }
