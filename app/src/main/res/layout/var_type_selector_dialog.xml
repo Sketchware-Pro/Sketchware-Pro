@@ -1,26 +1,24 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:paddingHorizontal="20dp"
-    android:paddingVertical="10dp"
-    android:orientation="horizontal">
+    android:paddingVertical="10dp">
 
     <com.google.android.material.navigationrail.NavigationRailView
         android:id="@+id/navRail"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
-        app:menu="@menu/var_type_selector_menu"
-        app:itemPadding="4dp" />
+        app:itemPadding="4dp"
+        app:menu="@menu/var_type_selector_menu" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:splitMotionEvents="false" />
-
 </LinearLayout>
