@@ -56,15 +56,15 @@ public class LayoutHierarchyAdapter extends ListAdapter<ViewBean, LayoutHierarch
     public void onBindViewHolder(@NonNull LayoutHierarchyAdapterViewHolder holder, int position) {
         var bean = getItem(position);
         var imgRes = ViewBean.getViewTypeResId(bean.type);
-        boolean isViewGroup = bean.getClassInfo().a("ViewGroup");
+        boolean hasChildViews = !getChildViews(bean.id).isEmpty();
 
         boolean isExpanded = Boolean.TRUE.equals(expandedStateMap.getOrDefault(position, false));
         holder.binding.recyclerView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.binding.expandToggle.setRotation(isExpanded ? 180f : 0f);
 
-        holder.binding.getRoot().setOnClickListener(v -> handleItemClick(holder, bean, position, isViewGroup));
+        holder.binding.getRoot().setOnClickListener(v -> handleItemClick(holder, bean, position, hasChildViews));
 
-        holder.binding.expandToggle.setVisibility(isViewGroup ? View.VISIBLE : View.GONE);
+        holder.binding.expandToggle.setVisibility(hasChildViews ? View.VISIBLE : View.GONE);
         holder.binding.viewIcon.setImageResource(imgRes);
         holder.binding.viewName.setText(bean.id);
     }
