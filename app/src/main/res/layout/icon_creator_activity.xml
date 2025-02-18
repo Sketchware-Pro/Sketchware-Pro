@@ -148,16 +148,9 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <HorizontalScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:requiresFadingEdge="horizontal"
-                        android:scrollbars="none">
-
                         <com.google.android.material.button.MaterialButtonToggleGroup
                             android:id="@+id/bg_type"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="4dp"
                             android:layout_marginTop="10dp"
@@ -169,20 +162,20 @@
                             <Button
                                 android:id="@+id/bg_color"
                                 style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Color" />
+                                android:text="Color"
+                                android:layout_weight="1"/>
 
                             <Button
                                 android:id="@+id/bg_gradient"
                                 style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Gradient" />
-
-
+                                android:text="Gradient"
+                                android:layout_weight="1"/>
                         </com.google.android.material.button.MaterialButtonToggleGroup>
-                    </HorizontalScrollView>
+
 
                     <LinearLayout
                         android:id="@+id/linear_clr"
