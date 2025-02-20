@@ -131,13 +131,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="5dp"
         android:layout_marginTop="14dp"
+        android:hint="Enter sound name"
         android:importantForAutofill="noExcludeDescendants">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ed_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter sound name"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1" />
