@@ -2,13 +2,12 @@ package mod.hilal.saif.blocks;
 
 import com.besome.sketch.editor.LogicEditorActivity;
 
+import mod.hilal.saif.activities.tools.ConfigActivity;
+
+import pro.sketchware.blocks.ExtraBlocks;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import dev.aldi.sayuti.block.ExtraBlockFile;
-import mod.hilal.saif.activities.tools.ConfigActivity;
-import pro.sketchware.blocks.ExtraBlocks;
-import pro.sketchware.utility.FileUtil;
 
 public class BlocksHandler {
 
@@ -19,27 +18,59 @@ public class BlocksHandler {
         hashMap.put("name", "CommandBlockJava");
         hashMap.put("type", "c");
         hashMap.put("typeName", "");
-        hashMap.put("code", "/*-JX4UA2y_f1OckjjvxWI.bQwRei-sLEsBmds7ArsRfi0xSFEP3Php97kjdMCs5ed\n>[%1$s]\n>%2$s\n>%3$s\n>%4$s\n>%5$s\n%6$s\nBpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs*/");
+        hashMap.put(
+                "code",
+                "/*-JX4UA2y_f1OckjjvxWI.bQwRei-sLEsBmds7ArsRfi0xSFEP3Php97kjdMCs5ed\n"
+                    + ">[%1$s]\n"
+                    + ">%2$s\n"
+                    + ">%3$s\n"
+                    + ">%4$s\n"
+                    + ">%5$s\n"
+                    + "%6$s\n"
+                    + "BpWI8U4flOpx8Ke66QTlZYBA_NEusQ7BN-D0wvZs7ArsRfi0.EP3Php97kjdMCs*/");
         hashMap.put("color", "#493F5A");
         hashMap.put("palette", "0");
-        hashMap.put("spec", "Java Command Block: reference %s distance %d frontend %d backend %d command %m.Command");
+        hashMap.put(
+                "spec",
+                "Java Command Block: reference %s distance %d frontend %d backend %d command"
+                    + " %m.Command");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "CommandBlockXML");
         hashMap.put("type", "c");
         hashMap.put("typeName", "");
-        hashMap.put("code", "/*AXAVajPNTpbJjsz-NGVTp08YDzfI-04kA7ZsuCl4GHqTQQiuWL45sV6Vf4gwK\n>[%1$s]\n>%2$s\n>%3$s\n>%4$s\n>%5$s\n>%6$s\n%7$s\nUi5_PNTJb21WO6OuGwQ3psk3su1LIvyXo_OAol-kVQBC5jtN_DcPLaRCJ0yXp*/");
+        hashMap.put(
+                "code",
+                "/*AXAVajPNTpbJjsz-NGVTp08YDzfI-04kA7ZsuCl4GHqTQQiuWL45sV6Vf4gwK\n"
+                    + ">[%1$s]\n"
+                    + ">%2$s\n"
+                    + ">%3$s\n"
+                    + ">%4$s\n"
+                    + ">%5$s\n"
+                    + ">%6$s\n"
+                    + "%7$s\n"
+                    + "Ui5_PNTJb21WO6OuGwQ3psk3su1LIvyXo_OAol-kVQBC5jtN_DcPLaRCJ0yXp*/");
         hashMap.put("color", "#493F5A");
         hashMap.put("palette", "0");
-        hashMap.put("spec", "XML Command Block: reference %s distance %d frontend %d backend %d command %m.Command xml name %s.inputOnly");
+        hashMap.put(
+                "spec",
+                "XML Command Block: reference %s distance %d frontend %d backend %d command"
+                    + " %m.Command xml name %s.inputOnly");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "viewOnClick");
         hashMap.put("type", "c");
         hashMap.put("typeName", "");
-        hashMap.put("code", "%s.setOnClickListener(new View.OnClickListener() {\n@Override\npublic void onClick(View _view) {\n%s\n}\n});");
+        hashMap.put(
+                "code",
+                "%s.setOnClickListener(new View.OnClickListener() {\n"
+                    + "@Override\n"
+                    + "public void onClick(View _view) {\n"
+                    + "%s\n"
+                    + "}\n"
+                    + "});");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "0");
         hashMap.put("spec", "When %m.view clicked");
@@ -49,10 +80,16 @@ public class BlocksHandler {
         hashMap.put("name", "setRecyclerViewLayoutParams");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
-        hashMap.put("code", "RecyclerView.LayoutParams _lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.%s, ViewGroup.LayoutParams.%s);\n_view.setLayoutParams(_lp);");
+        hashMap.put(
+                "code",
+                "RecyclerView.LayoutParams _lp = new"
+                    + " RecyclerView.LayoutParams(ViewGroup.LayoutParams.%s,"
+                    + " ViewGroup.LayoutParams.%s);\n"
+                    + "_view.setLayoutParams(_lp);");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "7");
-        hashMap.put("spec", "set RecyclerViewLayoutParams width %m.LayoutParam height %m.LayoutParam");
+        hashMap.put(
+                "spec", "set RecyclerViewLayoutParams width %m.LayoutParam height %m.LayoutParam");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -257,7 +294,10 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "datePickerDialogShow");
         hashMap.put("type", " ");
-        hashMap.put("code", "DialogFragment datePicker = new DatePickerFragment();\r\ndatePicker.show(getSupportFragmentManager(), \"datePicker\");");
+        hashMap.put(
+                "code",
+                "DialogFragment datePicker = new DatePickerFragment();\r\n"
+                    + "datePicker.show(getSupportFragmentManager(), \"datePicker\");");
         hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "DatePickerDialog show");
@@ -311,25 +351,40 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "customToast");
         hashMap.put("type", " ");
-        hashMap.put("code", "SketchwareUtil.CustomToast(getApplicationContext(), %s, %s, %s, %s, %s, SketchwareUtil.%s);");
+        hashMap.put(
+                "code",
+                "SketchwareUtil.CustomToast(getApplicationContext(), %s, %s, %s, %s, %s,"
+                    + " SketchwareUtil.%s);");
         hashMap.put("color", "#8A55D7");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "CustomToast %s textColor %m.color textSize %d bgColor %m.color cornerRadius %d gravity %m.gravity_t");
+        hashMap.put(
+                "spec",
+                "CustomToast %s textColor %m.color textSize %d bgColor %m.color cornerRadius %d"
+                    + " gravity %m.gravity_t");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "customToastWithIcon");
         hashMap.put("type", " ");
-        hashMap.put("code", "SketchwareUtil.CustomToastWithIcon(getApplicationContext(), %s, %s, %s, %s, %s, SketchwareUtil.%s, R.drawable.%s);");
+        hashMap.put(
+                "code",
+                "SketchwareUtil.CustomToastWithIcon(getApplicationContext(), %s, %s, %s, %s, %s,"
+                    + " SketchwareUtil.%s, R.drawable.%s);");
         hashMap.put("color", "#8A55D7");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "CustomToastWithIcon %s textColor %m.color textSize %d bgColor %m.color cornerRadius %d gravity %m.gravity_t Icon %m.resource");
+        hashMap.put(
+                "spec",
+                "CustomToastWithIcon %s textColor %m.color textSize %d bgColor %m.color"
+                    + " cornerRadius %d gravity %m.gravity_t Icon %m.resource");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "LightStatusBar");
         hashMap.put("type", " ");
-        hashMap.put("code", "getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);\r\ngetWindow().setStatusBarColor(0xFFFFFFFF);");
+        hashMap.put(
+                "code",
+                "getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);\r\n"
+                    + "getWindow().setStatusBarColor(0xFFFFFFFF);");
         hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "LightStatusBar");
@@ -554,10 +609,16 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "menuAddMenuItem");
         hashMap.put("type", " ");
-        hashMap.put("code", "MenuItem %1$s = menu.add(Menu.NONE, %2$s, Menu.NONE, %3$s);\r\n%1$s.setIcon(R.drawable.%4$s);\r\n%s.setShowAsAction(MenuItem.%5$s);");
+        hashMap.put(
+                "code",
+                "MenuItem %1$s = menu.add(Menu.NONE, %2$s, Menu.NONE, %3$s);\r\n"
+                    + "%1$s.setIcon(R.drawable.%4$s);\r\n"
+                    + "%s.setShowAsAction(MenuItem.%5$s);");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.menuitem add id %d title %s icon %m.resource showAsAction %m.menuaction");
+        hashMap.put(
+                "spec",
+                "%m.menuitem add id %d title %s icon %m.resource showAsAction %m.menuaction");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -590,7 +651,13 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "renameFile");
         hashMap.put("type", " ");
-        hashMap.put("code", "{\njava.io.File dYx4Y = new java.io.File(%1$s);\njava.io.File e5Cyk = new java.io.File(%2$s);\ndYx4Y.renameTo(e5Cyk);\n}");
+        hashMap.put(
+                "code",
+                "{\n"
+                    + "java.io.File dYx4Y = new java.io.File(%1$s);\n"
+                    + "java.io.File e5Cyk = new java.io.File(%2$s);\n"
+                    + "dYx4Y.renameTo(e5Cyk);\n"
+                    + "}");
         hashMap.put("color", "#A1887F");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "rename file path %s to %s");
@@ -768,7 +835,10 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "setImageIdentifier");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setImageResource(getResources().getIdentifier(%s, \"drawable\", getPackageName()));");
+        hashMap.put(
+                "code",
+                "%s.setImageResource(getResources().getIdentifier(%s, \"drawable\","
+                    + " getPackageName()));");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.imageview set image by name %s");
@@ -867,7 +937,10 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "autoComSetData");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, %s));");
+        hashMap.put(
+                "code",
+                "%s.setAdapter(new ArrayAdapter<String>(getBaseContext(),"
+                    + " android.R.layout.simple_list_item_1, %s));");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.actv setListData %m.listStr");
@@ -894,7 +967,10 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "multiAutoComSetData");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, %s));");
+        hashMap.put(
+                "code",
+                "%s.setAdapter(new ArrayAdapter<String>(getBaseContext(),"
+                    + " android.R.layout.simple_list_item_1, %s));");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.mactv setListData %m.listStr");
@@ -1103,7 +1179,11 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "setCornerRadiusView");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setBackground(new GradientDrawable() { public GradientDrawable getIns(int a, int b) { this.setCornerRadius(a); this.setColor(b); return this; } }.getIns((int)%s, %s));");
+        hashMap.put(
+                "code",
+                "%s.setBackground(new GradientDrawable() { public GradientDrawable getIns(int a,"
+                    + " int b) { this.setCornerRadius(a); this.setColor(b); return this; }"
+                    + " }.getIns((int)%s, %s));");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setCornerRadius %d color %m.color");
@@ -1112,7 +1192,10 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "setGradientBackground");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setBackground(new GradientDrawable(GradientDrawable.Orientation.BR_TL, new int[] {%s,%s}));");
+        hashMap.put(
+                "code",
+                "%s.setBackground(new GradientDrawable(GradientDrawable.Orientation.BR_TL, new"
+                    + " int[] {%s,%s}));");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setGradientBackground %m.color and %m.color");
@@ -1121,7 +1204,11 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "setStrokeView");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setBackground(new GradientDrawable() { public GradientDrawable getIns(int a, int b, int c) { this.setStroke(a, b); this.setColor(c); return this; } }.getIns((int)%s, %s, %s));");
+        hashMap.put(
+                "code",
+                "%s.setBackground(new GradientDrawable() { public GradientDrawable getIns(int a,"
+                    + " int b, int c) { this.setStroke(a, b); this.setColor(c); return this; }"
+                    + " }.getIns((int)%s, %s, %s));");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view setStroke %d strokeColor %m.color bgColor %m.color");
@@ -1130,16 +1217,31 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "setRadiusAndStrokeView");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setBackground(new GradientDrawable() { public GradientDrawable getIns(int a, int b, int c, int d) { this.setCornerRadius(a); this.setStroke(b, c); this.setColor(d); return this; } }.getIns((int)%s, (int)%s, %s, %s));");
+        hashMap.put(
+                "code",
+                "%s.setBackground(new GradientDrawable() { public GradientDrawable getIns(int a,"
+                    + " int b, int c, int d) { this.setCornerRadius(a); this.setStroke(b, c);"
+                    + " this.setColor(d); return this; } }.getIns((int)%s, (int)%s, %s, %s));");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.view setCornerRadius %d stroke %d strokeColor %m.color bgColor %m.color");
+        hashMap.put(
+                "spec",
+                "%m.view setCornerRadius %d stroke %d strokeColor %m.color bgColor %m.color");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "showSnackbar");
         hashMap.put("type", "c");
-        hashMap.put("code", "com.google.android.material.snackbar.Snackbar.make(%s, %s, com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction(%s, new View.OnClickListener(){\r\n@Override\r\npublic void onClick(View _view) {\r\n%s\r\n}\r\n}).show();");
+        hashMap.put(
+                "code",
+                "com.google.android.material.snackbar.Snackbar.make(%s, %s,"
+                    + " com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).setAction(%s,"
+                    + " new View.OnClickListener(){\r\n"
+                    + "@Override\r\n"
+                    + "public void onClick(View _view) {\r\n"
+                    + "%s\r\n"
+                    + "}\r\n"
+                    + "}).show();");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.view showSnackbar text %s actionText %s onClick");
@@ -1184,7 +1286,11 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "setTabRippleColor");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setTabRippleColor(new android.content.res.ColorStateList(new int[][]{new int[]{android.R.attr.state_pressed}}, \r\n\r\nnew int[] {%s}));");
+        hashMap.put(
+                "code",
+                "%s.setTabRippleColor(new android.content.res.ColorStateList(new int[][]{new"
+                    + " int[]{android.R.attr.state_pressed}}, \r\n\r\n"
+                    + "new int[] {%s}));");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.tablayout setTabRippleColor %m.color");
@@ -1427,7 +1533,10 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "recyclerSetLayoutManagerHorizontal");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));");
+        hashMap.put(
+                "code",
+                "%s.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,"
+                    + " false));");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.recyclerview set Horizontal LayoutManager");
@@ -1454,7 +1563,10 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "recyclerScrollToPositionWithOffset");
         hashMap.put("type", " ");
-        hashMap.put("code", " ((LinearLayoutManager) %s.getLayoutManager()).scrollToPositionWithOffset((int)%s, (int)%s);");
+        hashMap.put(
+                "code",
+                " ((LinearLayoutManager) %s.getLayoutManager()).scrollToPositionWithOffset((int)%s,"
+                    + " (int)%s);");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.recyclerview scrollToPosition %d offset %d ");
@@ -1535,7 +1647,14 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "onSwipeRefreshLayout");
         hashMap.put("type", "c");
-        hashMap.put("code", "%s.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {\r\n@Override\r\npublic void onRefresh() {\r\n%s\r\n}\r\n});");
+        hashMap.put(
+                "code",
+                "%s.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {\r\n"
+                    + "@Override\r\n"
+                    + "public void onRefresh() {\r\n"
+                    + "%s\r\n"
+                    + "}\r\n"
+                    + "});");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "When %m.swiperefreshlayout refreshed");
@@ -1553,7 +1672,15 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "viewOnLongClick");
         hashMap.put("type", "c");
-        hashMap.put("code", "%s.setOnLongClickListener(new View.OnLongClickListener() {\r\n@Override\r\npublic boolean onLongClick(View _view) {\r\n%s\r\nreturn true;\r\n}\r\n});");
+        hashMap.put(
+                "code",
+                "%s.setOnLongClickListener(new View.OnLongClickListener() {\r\n"
+                    + "@Override\r\n"
+                    + "public boolean onLongClick(View _view) {\r\n"
+                    + "%s\r\n"
+                    + "return true;\r\n"
+                    + "}\r\n"
+                    + "});");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "When %m.view long clicked");
@@ -1562,7 +1689,15 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "viewOnTouch");
         hashMap.put("type", "c");
-        hashMap.put("code", "%s.setOnTouchListener(new View.OnTouchListener(){\r\n@Override\r\npublic boolean onTouch(View _view, MotionEvent _motionEvent){\r\n%s\r\nreturn true;\r\n}\r\n});");
+        hashMap.put(
+                "code",
+                "%s.setOnTouchListener(new View.OnTouchListener(){\r\n"
+                    + "@Override\r\n"
+                    + "public boolean onTouch(View _view, MotionEvent _motionEvent){\r\n"
+                    + "%s\r\n"
+                    + "return true;\r\n"
+                    + "}\r\n"
+                    + "});");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "When %m.view touched");
@@ -1571,7 +1706,13 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "checkboxOnChecked");
         hashMap.put("type", "c");
-        hashMap.put("code", "%s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {\r\n@Override\r\npublic void onCheckedChanged(CompoundButton cb, boolean isChecked) {\r\n%s\r\n}});");
+        hashMap.put(
+                "code",
+                "%s.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {\r\n"
+                    + "@Override\r\n"
+                    + "public void onCheckedChanged(CompoundButton cb, boolean isChecked) {\r\n"
+                    + "%s\r\n"
+                    + "}});");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "When %m.checkbox checked");
@@ -1886,7 +2027,16 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "YTPVSetListener");
         hashMap.put("type", "c");
-        hashMap.put("code", "%1$s.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {\r\n  @Override\r\n  public void onReady(@NonNull YouTubePlayer youTubePlayer) {\r\n    String videoId = %2$s;\r\n    youTubePlayer.cueVideo(videoId, 0);\r\n    %3$s\r\n  }\r\n});");
+        hashMap.put(
+                "code",
+                "%1$s.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {\r\n"
+                    + "  @Override\r\n"
+                    + "  public void onReady(@NonNull YouTubePlayer youTubePlayer) {\r\n"
+                    + "    String videoId = %2$s;\r\n"
+                    + "    youTubePlayer.cueVideo(videoId, 0);\r\n"
+                    + "    %3$s\r\n"
+                    + "  }\r\n"
+                    + "});");
         hashMap.put("color", "#4A6CD4");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.youtubeview addYouTubePlayerListener VideoID %s");
@@ -1904,7 +2054,14 @@ public class BlocksHandler {
         hashMap = new HashMap<>();
         hashMap.put("name", "changeStatebarColour");
         hashMap.put("type", " ");
-        hashMap.put("code", "if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {\r\nfinal Window window = %s.this.getWindow();\r\nwindow.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);\r\nwindow.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);\r\nwindow.setStatusBarColor(%s);\r\n}");
+        hashMap.put(
+                "code",
+                "if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {\r\n"
+                    + "final Window window = %s.this.getWindow();\r\n"
+                    + "window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);\r\n"
+                    + "window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);\r\n"
+                    + "window.setStatusBarColor(%s);\r\n"
+                    + "}");
         hashMap.put("color", "#2CA5E2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.activity set statebar color %m.color");
@@ -2183,7 +2340,10 @@ public class BlocksHandler {
         hashMap.put("name", "GsonStringToListString");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
-        hashMap.put("code", "%2$s = new Gson().fromJson(%1$s, new TypeToken<ArrayList<String>>(){}.getType());");
+        hashMap.put(
+                "code",
+                "%2$s = new Gson().fromJson(%1$s, new"
+                    + " TypeToken<ArrayList<String>>(){}.getType());");
         hashMap.put("color", "#5cb722");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "JSON %s to %m.listStr");
@@ -2193,7 +2353,10 @@ public class BlocksHandler {
         hashMap.put("name", "GsonStringToListNumber");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
-        hashMap.put("code", "%2$s = new Gson().fromJson(%1$s, new TypeToken<ArrayList<Double>>(){}.getType());");
+        hashMap.put(
+                "code",
+                "%2$s = new Gson().fromJson(%1$s, new"
+                    + " TypeToken<ArrayList<Double>>(){}.getType());");
         hashMap.put("color", "#5cb722");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "JSON %s to %m.listInt");
@@ -2354,10 +2517,13 @@ public class BlocksHandler {
         hashMap.put("name", "interstitialAdLoad");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
-        hashMap.put("code", "{\r\n" +
-                "AdRequest adRequest = new AdRequest.Builder().build();\r\n" +
-                "InterstitialAd.load(%2$s.this, _ad_unit_id, adRequest, _%1$s_interstitial_ad_load_callback);\r\n" +
-                "}");
+        hashMap.put(
+                "code",
+                "{\r\n"
+                    + "AdRequest adRequest = new AdRequest.Builder().build();\r\n"
+                    + "InterstitialAd.load(%2$s.this, _ad_unit_id, adRequest,"
+                    + " _%1$s_interstitial_ad_load_callback);\r\n"
+                    + "}");
         hashMap.put("color", "#2aa4e2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.interstitialad load in %m.activity");
@@ -2367,11 +2533,14 @@ public class BlocksHandler {
         hashMap.put("name", "interstitialAdShow");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
-        hashMap.put("code", "if (%1$s != null) {\r\n" +
-                "%1$s.show(%2$s.this);\r\n" +
-                "} else {\r\n" +
-                "SketchwareUtil.showMessage(getApplicationContext(), \"Error: InterstitialAd %1$s hasn't been loaded yet!\");\r\n" +
-                "}");
+        hashMap.put(
+                "code",
+                "if (%1$s != null) {\r\n"
+                    + "%1$s.show(%2$s.this);\r\n"
+                    + "} else {\r\n"
+                    + "SketchwareUtil.showMessage(getApplicationContext(), \"Error: InterstitialAd"
+                    + " %1$s hasn't been loaded yet!\");\r\n"
+                    + "}");
         hashMap.put("color", "#2aa4e2");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "%m.interstitialad show ad in %m.activity");
@@ -2394,7 +2563,10 @@ public class BlocksHandler {
         hashMap.put("code", "");
         hashMap.put("color", "#2aa4e2");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.interstitialad register fullscreen content callbacks (This Block isn't needed anymore, please remove it)");
+        hashMap.put(
+                "spec",
+                "%m.interstitialad register fullscreen content callbacks (This Block isn't needed"
+                    + " anymore, please remove it)");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -2404,7 +2576,10 @@ public class BlocksHandler {
         hashMap.put("code", "");
         hashMap.put("color", "#2aa4e2");
         hashMap.put("palette", "-1");
-        hashMap.put("spec", "%m.videoad register fullscreen content callbacks (This Block isn't needed anymore, please remove it)");
+        hashMap.put(
+                "spec",
+                "%m.videoad register fullscreen content callbacks (This Block isn't needed anymore,"
+                    + " please remove it)");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -2427,7 +2602,12 @@ public class BlocksHandler {
                 || ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_SHOW_EVERY_SINGLE_BLOCK);
     }
 
-    public static void primaryBlocksA(LogicEditorActivity logicEditorActivity, boolean isBoolUsed, boolean isIntUsed, boolean isStrUsed, boolean isMapUsed) {
+    public static void primaryBlocksA(
+            LogicEditorActivity logicEditorActivity,
+            boolean isBoolUsed,
+            boolean isIntUsed,
+            boolean isStrUsed,
+            boolean isMapUsed) {
         logicEditorActivity.a("Blocks", 0xff555555);
         if (showAll() || isBoolUsed) {
             logicEditorActivity.a(" ", "setVarBoolean");
@@ -2476,7 +2656,11 @@ public class BlocksHandler {
         }
     }
 
-    public static void primaryBlocksB(LogicEditorActivity logicEditorActivity, boolean isListNumUsed, boolean isListStrUsed, boolean isListMapUsed) {
+    public static void primaryBlocksB(
+            LogicEditorActivity logicEditorActivity,
+            boolean isListNumUsed,
+            boolean isListStrUsed,
+            boolean isListMapUsed) {
         String eventName = logicEditorActivity.D;
         boolean inOnBindCustomViewEvent = eventName.equals("onBindCustomView");
         boolean inOnFilesPickedEvent = eventName.equals("onFilesPicked");
@@ -2527,14 +2711,19 @@ public class BlocksHandler {
             logicEditorActivity.a(" ", "deleteMapFromListmap");
             logicEditorActivity.a(" ", "sortListmap");
         }
-        if (showAll() || isListMapUsed || isListStrUsed || isListNumUsed || inOnBindCustomViewEvent || inOnFilesPickedEvent) {
+        if (showAll()
+                || isListMapUsed
+                || isListStrUsed
+                || isListNumUsed
+                || inOnBindCustomViewEvent
+                || inOnFilesPickedEvent) {
             logicEditorActivity.a("General", 0xff555555);
             logicEditorActivity.a(" ", "listAddAll");
             logicEditorActivity.a("d", "lengthList");
             logicEditorActivity.a(" ", "deleteList");
             logicEditorActivity.a(" ", "clearList");
+            logicEditorActivity.a(" ", "reverseList");
             if (showBuiltIn()) {
-                logicEditorActivity.a(" ", "reverseList");
                 logicEditorActivity.a(" ", "shuffleList");
                 logicEditorActivity.a(" ", "swapInList");
             }
