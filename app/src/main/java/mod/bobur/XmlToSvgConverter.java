@@ -16,6 +16,9 @@ import org.w3c.dom.NodeList;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -192,7 +195,7 @@ public class XmlToSvgConverter {
     public static ArrayList<String> getVectorDrawables(String sc_id) {
         ArrayList<String> cache = new ArrayList<>();
         FileUtil.listDir("/storage/emulated/0/.sketchware/data/" + sc_id + "/files/resource/drawable/", cache);
-
+        cache.sort(Comparator.comparingLong(path -> new File(path).lastModified()));
         ArrayList<String> files = new ArrayList<>();
         for (String vectorPath : cache) {
             String fileName = Uri.parse(vectorPath).getLastPathSegment();
