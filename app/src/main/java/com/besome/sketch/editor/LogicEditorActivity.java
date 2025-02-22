@@ -1791,7 +1791,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 i2 = width - ((int) wB.a(this, 320.0f));
                 a2 = ViewGroup.LayoutParams.MATCH_PARENT;
             } else {
-                a2 = ((width - GB.a(getContext())) - GB.f(getContext())) - ((int) wB.a(this, 240.0f));
+                a2 = (width - GB.f(getContext())) - ((int) wB.a(this, 264.0f));
             }
             layoutParams = new LinearLayout.LayoutParams(i2, a2);
         } else {
