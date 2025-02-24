@@ -144,7 +144,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                                                     FileUtil.writeFile(
                                                             commandPath,
                                                             getGson().toJson(commands));
-                                                    adapter.submitList(new ArrayList<>(commands));
+                                                    adapter.notifyDataSetChanged();
                                                 }
                                             });
                                     dialog.setNegativeButton(R.string.common_word_no, null);
