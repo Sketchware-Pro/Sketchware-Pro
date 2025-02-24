@@ -69,7 +69,7 @@ public class AppSettings extends BaseAppCompatActivity {
         });
 
         binding.topAppBar.setTitle(Helper.getResString(R.string.common_word_settings));
-        binding.topAppBar.setNavigationOnClickListener(view -> Helper.getBackPressedClickListener(this));
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         setupPreferences(binding.content);
     }

@@ -45,7 +45,7 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
     private PB imageNameValidator;
     private EditText ed_input_edittext;
     private EasyDeleteEditText ed_input;
-    private TextView tv_desc;
+    private ImageView tv_desc;
     private CheckBox chk_collection;
     private String sc_id;
     private ArrayList<ProjectResourceBean> images;

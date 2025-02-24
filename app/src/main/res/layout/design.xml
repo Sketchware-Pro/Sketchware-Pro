@@ -163,9 +163,9 @@
             <com.besome.sketch.editor.view.ViewProperty
                 android:id="@+id/view_property"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="170dp"
                 android:layout_alignParentBottom="true"
-                android:translationY="180dp" />
+                android:translationY="170dp" />
         </RelativeLayout>
 
         <com.besome.sketch.design.DesignDrawer

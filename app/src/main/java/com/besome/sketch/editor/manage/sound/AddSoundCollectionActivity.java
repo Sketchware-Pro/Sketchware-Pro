@@ -136,7 +136,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
             u = true;
         }
         binding.layoutControl.setVisibility(View.GONE);
-        binding.edInput.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
+        binding.tiInput.setHint(xB.b().a(this, R.string.design_manager_sound_hint_enter_sound_name));
         M = new WB(this, binding.tiInput, uq.b, getResourceNames());
         binding.play.setEnabled(false);
         binding.play.setOnClickListener(this);

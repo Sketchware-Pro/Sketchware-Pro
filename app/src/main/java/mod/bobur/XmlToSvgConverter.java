@@ -16,6 +16,9 @@ import org.w3c.dom.NodeList;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -159,7 +162,7 @@ public class XmlToSvgConverter {
         svg.append("<path d=\"").append(pathData).append("\" ");
 
         if (!fillColor.isEmpty()) {
-            svg.append("fill=\"").append(ColorEditorActivity.getColorValue(SketchApplication.getContext(), fillColor, 4)).append("\" ");
+            svg.append("fill=\"").append(convertHexColor(fillColor, path)).append("\" ");
             if (!fillAlpha.isEmpty()) {
                 svg.append("fill-opacity=\"").append(fillAlpha).append("\" ");
             }
@@ -168,7 +171,7 @@ public class XmlToSvgConverter {
         }
 
         if (!strokeColor.isEmpty()) {
-            svg.append("stroke=\"").append(ColorEditorActivity.getColorValue(SketchApplication.getContext(), strokeColor, 4)).append("\" ");
+            svg.append("stroke=\"").append(convertHexColor(strokeColor, path)).append("\" ");
             if (!strokeWidth.isEmpty()) {
                 svg.append("stroke-width=\"").append(parseDimension(strokeWidth)).append("\" ");
             }
@@ -192,7 +195,7 @@ public class XmlToSvgConverter {
     public static ArrayList<String> getVectorDrawables(String sc_id) {
         ArrayList<String> cache = new ArrayList<>();
         FileUtil.listDir("/storage/emulated/0/.sketchware/data/" + sc_id + "/files/resource/drawable/", cache);
-
+        cache.sort(Comparator.comparingLong(path -> new File(path).lastModified()));
         ArrayList<String> files = new ArrayList<>();
         for (String vectorPath : cache) {
             String fileName = Uri.parse(vectorPath).getLastPathSegment();
@@ -215,6 +218,29 @@ public class XmlToSvgConverter {
 
     private static String parseDimension(String value) {
         return value.replaceAll("[^\\d.]", "");
+    }
+
+    private static String convertHexColor(String argb, Element vectorElement) {
+        if (argb.startsWith("@") || argb.startsWith("?")) {
+            return getVectorColor(vectorElement);
+        }
+
+        String digits = argb.replaceAll("^#", "");
+        if (digits.length() != 4 && digits.length() != 8) return argb;
+
+        String red, green, blue, alpha;
+        if (digits.length() == 4) {
+            alpha = String.valueOf(digits.charAt(0));
+            red = String.valueOf(digits.charAt(1));
+            green = String.valueOf(digits.charAt(2));
+            blue = String.valueOf(digits.charAt(3));
+        } else {
+            alpha = digits.substring(0, 2);
+            red = digits.substring(2, 4);
+            green = digits.substring(4, 6);
+            blue = digits.substring(6, 8);
+        }
+        return "#" + red + green + blue + alpha;
     }
 
     public static String getVectorColor(Element vectorElement) {
