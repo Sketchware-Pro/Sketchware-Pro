@@ -324,6 +324,8 @@
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:hint="Parameter"
+                    app:placeholderText="m.name (without % sign)"
+                    app:placeholderTextAppearance="@style/PlaceholderStyle"
                     app:counterEnabled="true"
                     app:counterMaxLength="100"
                     app:endIconMode="clear_text">
