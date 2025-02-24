@@ -320,7 +320,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             });
 
             binding.card.setOnLongClickListener(v -> {
-                if (isSelectionModeEnabled) {
+                if (isSelectionModeEnabled || notAssociatedWithProject) {
                     return false;
                 }
 
