@@ -36,7 +36,8 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_music_primary_24dp" />
+                    android:src="@drawable/ic_mtrl_music"
+                    app:tint="?colorPrimary" />
 
                 <TextView
                     android:id="@+id/tv_add_sound"
@@ -44,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="Add Sound"
-                    android:textColor="#ff7d7d7d"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="12sp" />
             </LinearLayout>
         </RelativeLayout>
