@@ -31,7 +31,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
 
 import pro.sketchware.R;
-import pro.sketchware.databinding.BlocksManagerCreatorBinding;
+import pro.sketchware.databinding.ActivityBlocksManagerCreatorBinding;
 import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.lib.highlighter.SimpleHighlighter;
 import pro.sketchware.utility.FileUtil;
@@ -49,7 +49,7 @@ import java.util.regex.Pattern;
 
 public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
 
-    private BlocksManagerCreatorBinding binding;
+    private ActivityBlocksManagerCreatorBinding binding;
     private final ArrayList<String> id_detector = new ArrayList<>();
     private ArrayList<HashMap<String, Object>> blocksList = new ArrayList<>();
     
@@ -69,7 +69,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = BlocksManagerCreatorBinding.inflate(getLayoutInflater());
+        binding = ActivityBlocksManagerCreatorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initialize();
         initializeLogic();
