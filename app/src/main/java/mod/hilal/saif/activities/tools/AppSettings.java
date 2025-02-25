@@ -49,7 +49,7 @@ import pro.sketchware.R;
 import pro.sketchware.activities.editor.component.ManageCustomComponentActivity;
 import pro.sketchware.activities.settings.SettingsActivity;
 import pro.sketchware.databinding.DialogSelectApkToSignBinding;
-import pro.sketchware.databinding.PrefencesContentAppbarBinding;
+import pro.sketchware.databinding.ActivityAppSettingsBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -59,7 +59,7 @@ public class AppSettings extends BaseAppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        final var binding = PrefencesContentAppbarBinding.inflate(getLayoutInflater());
+        final var binding = ActivityAppSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.contentScroll, (v, insets) -> {
@@ -68,7 +68,6 @@ public class AppSettings extends BaseAppCompatActivity {
             return insets;
         });
 
-        binding.topAppBar.setTitle(Helper.getResString(R.string.common_word_settings));
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         setupPreferences(binding.content);
