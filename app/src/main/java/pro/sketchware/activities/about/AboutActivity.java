@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 import pro.sketchware.R;
@@ -27,7 +28,7 @@ import pro.sketchware.activities.about.models.AboutResponseModel;
 import pro.sketchware.utility.Network;
 import mod.hey.studios.util.Helper;
 
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends BaseAppCompatActivity {
 
     private ActivityAboutAppBinding binding;
     private SharedPreferences sharedPref;
@@ -35,7 +36,7 @@ public class AboutActivity extends AppCompatActivity {
     private final Network network = new Network();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 

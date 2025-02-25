@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.w3c.dom.Document;
@@ -69,7 +70,7 @@ import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.utility.EditorUtils;
 
-public class SrcCodeEditor extends AppCompatActivity {
+public class SrcCodeEditor extends BaseAppCompatActivity {
     public static final List<Pair<String, Class<? extends EditorColorScheme>>> KNOWN_COLOR_SCHEMES = List.of(
             new Pair<>("Default", EditorColorScheme.class),
             new Pair<>("GitHub", SchemeGitHub.class),
