@@ -85,7 +85,7 @@ public class Ox {
     }
 
     private void writeRootLayout() {
-        var root = rootManager.getLayoutByName(projectFile.getXmlName());
+        var root = rootManager.getLayoutByFileName(projectFile.getXmlName());
         XmlBuilder nx = new XmlBuilder(root.getClassName());
         var rootAttributes = root.getAttributes();
         if (!rootAttributes.containsKey("android:layout_width")) {
