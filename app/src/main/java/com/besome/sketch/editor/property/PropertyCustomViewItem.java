@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.property;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -13,15 +13,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectFileBean;
-import pro.sketchware.R;
-import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 
 import java.util.ArrayList;
 
+import a.a.a.Kw;
+import a.a.a.aB;
+import a.a.a.mB;
+import a.a.a.wB;
+import a.a.a.xB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 
 @SuppressLint("ViewConstructor")
-public class Pw extends RelativeLayout implements View.OnClickListener {
+public class PropertyCustomViewItem extends RelativeLayout implements View.OnClickListener {
 
     private String key = "";
     private String value = "";
@@ -34,7 +39,7 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
     private Kw propertyValueChangeListener;
     private ArrayList<ProjectFileBean> customViews;
 
-    public Pw(Context context, boolean idk) {
+    public PropertyCustomViewItem(Context context, boolean idk) {
         super(context);
         a(idk);
     }
@@ -91,11 +96,11 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
 
     private void a(boolean var2) {
         wB.a(getContext(), this, R.layout.property_selector_item);
-        tvName = (TextView) findViewById(R.id.tv_name);
-        tvValue = (TextView) findViewById(R.id.tv_value);
+        tvName = findViewById(R.id.tv_name);
+        tvValue = findViewById(R.id.tv_value);
         propertyItem = findViewById(R.id.property_item);
         propertyMenuItem = findViewById(R.id.property_menu_item);
-        imgLeftIcon = (ImageView) findViewById(R.id.img_left_icon);
+        imgLeftIcon = findViewById(R.id.img_left_icon);
         if (var2) {
             setOnClickListener(this);
             setSoundEffectsEnabled(true);
@@ -130,8 +135,8 @@ public class Pw extends RelativeLayout implements View.OnClickListener {
             tvName.setText(xB.b().a(getResources(), var2));
             f = R.drawable.ic_mtrl_interface;
             if (propertyMenuItem.getVisibility() == View.VISIBLE) {
-                ImageView var3 = (ImageView) findViewById(R.id.img_icon);
-                TextView var4 = (TextView) findViewById(R.id.tv_title);
+                ImageView var3 = findViewById(R.id.img_icon);
+                TextView var4 = findViewById(R.id.tv_title);
                 var3.setImageResource(f);
                 var4.setText(xB.b().a(getContext(), var2));
             } else {
