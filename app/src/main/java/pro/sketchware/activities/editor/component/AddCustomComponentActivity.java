@@ -114,7 +114,7 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
         int id = v.getId();
         if (id == R.id.btn_save) {
             if (!isImportantFieldsEmpty()) {
-                if (OldResourceIdMapper.isValidIconId(binding.componentIcon.getText().toString())) {
+                if (OldResourceIdMapper.isValidIconId(Helper.getText(binding.componentIcon))) {
                     save();
                 } else {
                     SketchwareUtil.toastError(Helper.getResString(R.string.invalid_icon_id));
@@ -148,13 +148,13 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
     }
 
     private boolean isImportantFieldsEmpty() {
-        return binding.componentName.getText().toString().isEmpty()
-                || binding.componentId.getText().toString().isEmpty()
-                || binding.componentIcon.getText().toString().isEmpty()
-                || binding.componentTypeName.getText().toString().isEmpty()
-                || binding.componentVarTypeName.getText().toString().isEmpty()
-                || binding.componentTypeClass.getText().toString().isEmpty()
-                || binding.componentBuildClass.getText().toString().isEmpty();
+        return Helper.getText(binding.componentName).isEmpty()
+                || Helper.getText(binding.componentId).isEmpty()
+                || Helper.getText(binding.componentIcon).isEmpty()
+                || Helper.getText(binding.componentTypeName).isEmpty()
+                || Helper.getText(binding.componentVarTypeName).isEmpty()
+                || Helper.getText(binding.componentTypeClass).isEmpty()
+                || Helper.getText(binding.componentBuildClass).isEmpty();
     }
 
     private void save() {
@@ -166,18 +166,18 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
         if (isEditMode) {
             map = list.get(position);
         }
-        map.put("name", binding.componentName.getText().toString());
-        map.put("id", binding.componentId.getText().toString());
-        map.put("icon", binding.componentIcon.getText().toString());
-        map.put("varName", binding.componentVarTypeName.getText().toString());
-        map.put("typeName", binding.componentTypeName.getText().toString());
-        map.put("buildClass", binding.componentBuildClass.getText().toString());
-        map.put("class", binding.componentTypeClass.getText().toString());
-        map.put("description", binding.componentDescription.getText().toString());
-        map.put("url", binding.componentDocUrl.getText().toString());
-        map.put("additionalVar", binding.componentAddVar.getText().toString());
-        map.put("defineAdditionalVar", binding.componentDefAddVar.getText().toString());
-        map.put("imports", binding.componentImports.getText().toString());
+        map.put("name", Helper.getText(binding.componentName));
+        map.put("id", Helper.getText(binding.componentId));
+        map.put("icon", Helper.getText(binding.componentIcon));
+        map.put("varName", Helper.getText(binding.componentVarTypeName));
+        map.put("typeName", Helper.getText(binding.componentTypeName));
+        map.put("buildClass", Helper.getText(binding.componentBuildClass));
+        map.put("class", Helper.getText(binding.componentTypeClass));
+        map.put("description", Helper.getText(binding.componentDescription));
+        map.put("url", Helper.getText(binding.componentDocUrl));
+        map.put("additionalVar", Helper.getText(binding.componentAddVar));
+        map.put("defineAdditionalVar", Helper.getText(binding.componentDefAddVar));
+        map.put("imports", Helper.getText(binding.componentImports));
         if (!isEditMode) {
             list.add(map);
         }

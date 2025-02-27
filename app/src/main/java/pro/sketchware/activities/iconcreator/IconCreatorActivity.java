@@ -41,7 +41,7 @@ import a.a.a.iB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
-import pro.sketchware.databinding.IconCreatorActivityBinding;
+import pro.sketchware.databinding.ActivityIconCreatorBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -52,7 +52,7 @@ public class IconCreatorActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PICK_ICON = 207;
     static float cardRadius = 20;
     Intent intent;
-    private IconCreatorActivityBinding binding;
+    private ActivityIconCreatorBinding binding;
     private GradientDrawable.Orientation gradDirection = GradientDrawable.Orientation.BOTTOM_TOP;
     private int bgClr = 0xffffff;
     private int badgeClr = 0x000000;
@@ -137,7 +137,7 @@ public class IconCreatorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = IconCreatorActivityBinding.inflate(getLayoutInflater());
+        binding = ActivityIconCreatorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initialize();
     }

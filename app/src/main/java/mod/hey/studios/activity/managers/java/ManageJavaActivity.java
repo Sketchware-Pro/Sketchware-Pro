@@ -202,12 +202,12 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
 
             Button positiveButton = ((androidx.appcompat.app.AlertDialog) dialogInterface).getButton(DialogInterface.BUTTON_POSITIVE);
             positiveButton.setOnClickListener(view -> {
-                if (inputText.getText().toString().isEmpty()) {
+                if (Helper.getText(inputText).isEmpty()) {
                     SketchwareUtil.toastError("Invalid file name");
                     return;
                 }
 
-                String name = inputText.getText().toString();
+                String name = Helper.getText(inputText);
                 String packageName = getCurrentPkgName();
 
                 String extension;
@@ -317,7 +317,7 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
                 .setView(dialogBinding.getRoot())
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Rename", (dialogInterface, i) -> {
-                    if (!inputText.getText().toString().isEmpty()) {
+                    if (!Helper.getText(inputText).isEmpty()) {
                         if (!filesAdapter.isFolder(position)) {
                             if (frc.getJavaManifestList().contains(filesAdapter.getFullName(position))) {
                                 frc.getJavaManifestList().remove(filesAdapter.getFullName(position));
@@ -329,11 +329,11 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
                                 String fileContent = FileUtil.readFile(filesAdapter.getItem(position));
                                 FileUtil.writeFile(filesAdapter.getItem(position),
                                         fileContent.replaceAll(filesAdapter.getFileNameWoExt(position),
-                                                FileUtil.getFileNameNoExtension(inputText.getText().toString())));
+                                                FileUtil.getFileNameNoExtension(Helper.getText(inputText))));
                             }
                         }
 
-                        FileUtil.renameFile(filesAdapter.getItem(position), new File(current_path, inputText.getText().toString()).getAbsolutePath());
+                        FileUtil.renameFile(filesAdapter.getItem(position), new File(current_path, Helper.getText(inputText)).getAbsolutePath());
                         refresh();
                         SketchwareUtil.toast("Renamed successfully");
                     }

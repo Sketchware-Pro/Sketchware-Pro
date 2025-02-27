@@ -135,7 +135,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
     }
 
     private void showDialog() {
-        String propertyType = tvName.getText().toString();
+        String propertyType = Helper.getText(tvName);
 
         aB dialog = new aB((Activity) getContext());
         dialog.b(propertyType);
@@ -170,7 +170,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
             if (binding.chkPtyAll.isChecked()) {
                 binding.individualPaddingView.setVisibility(GONE);
                 binding.allPaddingView.setVisibility(VISIBLE);
-                binding.etLeft.setText(binding.etAll.getText().toString());
+                binding.etLeft.setText(Helper.getText(binding.etAll));
                 binding.etLeft.clearFocus();
                 binding.etTop.clearFocus();
                 binding.etRight.clearFocus();
@@ -193,10 +193,10 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
 
             @Override
             public void afterTextChanged(Editable s) {
-                ti_left.a(binding.etAll.getText().toString());
-                ti_top.a(binding.etAll.getText().toString());
-                ti_right.a(binding.etAll.getText().toString());
-                ti_bottom.a(binding.etAll.getText().toString());
+                ti_left.a(Helper.getText(binding.etAll));
+                ti_top.a(Helper.getText(binding.etAll));
+                ti_right.a(Helper.getText(binding.etAll));
+                ti_bottom.a(Helper.getText(binding.etAll));
             }
         });
         
@@ -218,10 +218,10 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (binding.chkPtyAll.isChecked()) {
                 if (ti_all.b() && ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
-                    int left = Integer.parseInt(binding.etLeft.getText().toString());
-                    int top = Integer.parseInt(binding.etTop.getText().toString());
-                    int right = Integer.parseInt(binding.etRight.getText().toString());
-                    int bottom = Integer.parseInt(binding.etBottom.getText().toString());
+                    int left = Integer.parseInt(Helper.getText(binding.etLeft));
+                    int top = Integer.parseInt(Helper.getText(binding.etTop));
+                    int right = Integer.parseInt(Helper.getText(binding.etRight));
+                    int bottom = Integer.parseInt(Helper.getText(binding.etBottom));
                     a(left, top, right, bottom);
                     if (valueChangeListener != null) {
                         valueChangeListener.a(key, new int[]{left, top, right, bottom});
@@ -229,10 +229,10 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                     }
                 }
             } else if (ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
-                int left = Integer.parseInt(binding.etLeft.getText().toString());
-                int top = Integer.parseInt(binding.etTop.getText().toString());
-                int right = Integer.parseInt(binding.etRight.getText().toString());
-                int bottom = Integer.parseInt(binding.etBottom.getText().toString());
+                int left = Integer.parseInt(Helper.getText(binding.etLeft));
+                int top = Integer.parseInt(Helper.getText(binding.etTop));
+                int right = Integer.parseInt(Helper.getText(binding.etRight));
+                int bottom = Integer.parseInt(Helper.getText(binding.etBottom));
                 a(left, top, right, bottom);
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, new int[]{left, top, right, bottom});

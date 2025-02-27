@@ -69,8 +69,8 @@ public class AddAdUnitStepView extends LinearLayout implements Uu, OnClickListen
             } else if (!adUnitValidator.b()) {
                 edAdUnitId.requestFocus();
             } else {
-                String name = edName.getText().toString();
-                String id = edAdUnitId.getText().toString();
+                String name = Helper.getText(edName);
+                String id = Helper.getText(edAdUnitId);
                 adUnitBeanArrayList.add(new AdUnitBean(id, name));
                 adUnitsAdapter.notifyItemInserted(adUnitBeanArrayList.size() - 1);
                 dialog.dismiss();

@@ -23,6 +23,8 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 import java.util.ArrayList;
@@ -111,7 +113,7 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
                     onBackPressed();
                 }
             } else {
-                String name = ed_input_edittext.getText().toString();
+                String name = Helper.getText(ed_input_edittext);
                 if (!isNameValid()) {
                     ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
                 } else if (!chk_samename.isChecked()) {

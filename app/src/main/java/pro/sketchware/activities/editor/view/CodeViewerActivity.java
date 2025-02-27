@@ -1,13 +1,12 @@
 package pro.sketchware.activities.editor.view;
 
-import static pro.sketchware.utility.ThemeUtils.isDarkThemeEnabled;
-
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
+import a.a.a.Lx;
 import mod.hey.studios.util.Helper;
 
 import pro.sketchware.databinding.ActivityCodeViewerBinding;
@@ -32,7 +31,7 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
         binding.toolbar.setSubtitle(scId);
         binding.editor.setTypefaceText(EditorUtils.getTypeface(this));
         binding.editor.setTextSize(14);
-        binding.editor.setText(code);
+        binding.editor.setText(Lx.j(code, false));
         binding.editor.setEditable(false);
         binding.editor.setWordwrap(false);
         loadColorScheme(scheme);

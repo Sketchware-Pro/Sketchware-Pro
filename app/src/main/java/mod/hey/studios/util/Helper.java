@@ -14,11 +14,14 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.StrictMode;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.activity.ComponentActivity;
 
@@ -118,6 +121,16 @@ public class Helper {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
+    }
+
+    @NonNull
+    public static String getText(TextView textView) {
+        CharSequence text = textView.getText();
+        if (!TextUtils.isEmpty(text)) {
+            return text.toString();
+        } else {
+            return "";
+        }
     }
 
     public interface BasicTextChangedListener {

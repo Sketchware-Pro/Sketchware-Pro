@@ -16,6 +16,8 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 import java.util.ArrayList;
@@ -67,7 +69,7 @@ public class ShowWidgetCollectionActivity extends BaseAppCompatActivity implemen
         if (id == R.id.img_back) {
             onBackPressed();
         } else if (id == R.id.save_button && widgetNameValidator.b()) {
-            Rp.h().a(widgetName, widgetNameInput.getText().toString(), true);
+            Rp.h().a(widgetName, Helper.getText(widgetNameInput), true);
             bB.a(getApplicationContext(), getTranslatedString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
             finish();
         }

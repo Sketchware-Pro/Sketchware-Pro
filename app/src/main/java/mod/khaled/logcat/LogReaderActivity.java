@@ -29,18 +29,18 @@ import pro.sketchware.databinding.ViewLogcatItemBinding;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.lib.base.BaseTextWatcher;
 import mod.hey.studios.util.Helper;
@@ -52,11 +52,6 @@ public class LogReaderActivity extends BaseAppCompatActivity {
     private String pkgFilter = "";
     private String packageName = "pro.sketchware";
     private boolean autoScroll = true;
-
-    private String date;
-    private String tag;
-    private String body;
-    private String type;
 
     private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
     private ArrayList<String> pkgFilterList = new ArrayList<>();
@@ -142,9 +137,9 @@ public class LogReaderActivity extends BaseAppCompatActivity {
                 .setIcon(R.drawable.ic_mtrl_filter)
                 .setView(view)
                 .setPositiveButton("Apply", (dialog, which) -> {
-                    pkgFilter = dialogBinding.easyEdInput.getText().toString();
+                    pkgFilter = Helper.getText(dialogBinding.easyEdInput);
                     pkgFilterList = new ArrayList<>(Arrays.asList(pkgFilter.split(",")));
-                    binding.searchInput.setText(binding.searchInput.getText().toString());
+                    binding.searchInput.setText(Helper.getText(binding.searchInput));
                 })
                 .setNeutralButton("Reset", (dialog, which) -> {
                     pkgFilter = "";
@@ -157,27 +152,54 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         builder.show();
     }
 
-    private void exportLogcat(ArrayList<HashMap<String, Object>> logs){
+    private String safeGet(HashMap<String, Object> log, String key) {
+        Object value = log.get(key);
+        return (value != null) ? value.toString() : "";
+    }
+
+    private void exportLogcat(ArrayList<HashMap<String, Object>> logs) {
+        if (logs.isEmpty()) {
+            SketchwareUtil.toastError("Nothing to Export");
+            return;
+        }
         try {
-            File file = new File(Environment.getExternalStorageDirectory(),".sketchware/logcat/" + packageName +"_"+ Calendar.getInstance(Locale.ENGLISH).getTimeInMillis() + ".txt");
-            createNewFileIfNotPresent(file.getAbsolutePath());
-            FileWriter writer = new FileWriter(file);
-            for (int i = 0; i < logs.size(); i++) {
-                if (logs.get(i).containsKey("date")) date = Objects.requireNonNull(logs.get(i).get("date")).toString();
-                if (logs.get(i).containsKey("type")) type = Objects.requireNonNull(logs.get(i).get("type")).toString();
-                if (logs.get(i).containsKey("header")) tag = Objects.requireNonNull(logs.get(i).get("header")).toString();
-                if (logs.get(i).containsKey("body")) body = Objects.requireNonNull(logs.get(i).get("body")).toString();
+            String fileName = Calendar.getInstance(Locale.ENGLISH).getTimeInMillis() + ".txt";
+            String filePath = Environment.getExternalStorageDirectory() + "/.sketchware/logcat/" + packageName + "/" + fileName;
+            String stars = "*".repeat(95);
+            String blank = " ".repeat(87);
+            createNewFileIfNotPresent(filePath);
+            StringBuilder contentBuilder = new StringBuilder();
+            String formattedDate = new SimpleDateFormat("yyyy/MM/dd 'at' HH:mm:ss", Locale.ENGLISH).format(new Date());
 
-                writer.write( date + " " +  type + " " + tag + " " + body + "\n");
+            contentBuilder.append(stars).append("\n");
+            contentBuilder.append(stars).append("\n");
+            contentBuilder.append("**").append(blank).append("**");
+            contentBuilder.append("\n**    Exported logcat reader for ").append(packageName).append(" on ").append(formattedDate).append("  **\n");
+            contentBuilder.append("**").append(blank).append("**\n");
+            contentBuilder.append(stars).append("\n");
+            contentBuilder.append(stars).append("\n");
+
+            for (HashMap<String, Object> log : logs) {
+                String date = safeGet(log, "date");
+                String type = safeGet(log, "type");
+                String tag = safeGet(log, "header");
+                String body = safeGet(log, "body");
+
+                if (!type.isEmpty()) {
+                    contentBuilder.append("\n\n|-- Log Type: ").append(type).append("\n");
+                    contentBuilder.append("    |-- Date: ").append(date).append("\n");
+                    contentBuilder.append("    |-- Tag: ").append(tag).append("\n");
+                    contentBuilder.append("    |-- Message: ").append(body).append("\n");
+                    contentBuilder.append("------------------------------------------------");
+                }
+
             }
-            writer.close();
-            SketchwareUtil.toast("Logcat exported successfully");
-
-        } catch (IOException ex) {
+            FileUtil.writeFile(filePath, contentBuilder.toString());
+            SketchwareUtil.toast("Logcat exported successfully: " + filePath);
+        } catch (Exception ex) {
             SketchwareUtil.toastError("Something went wrong!");
         }
     }
-    
 
     private class Logger extends BroadcastReceiver {
 
@@ -207,16 +229,16 @@ public class LogReaderActivity extends BaseAppCompatActivity {
 
                 mainList.add(map);
                 if (pkgFilterList.isEmpty()) {
-                    if (!binding.searchInput.getText().toString().isEmpty()) {
-                        if (map.get("logRaw").toString().toLowerCase().contains(binding.searchInput.getText().toString().toLowerCase())) {
+                    if (!Helper.getText(binding.searchInput).isEmpty()) {
+                        if (map.get("logRaw").toString().toLowerCase().contains(Helper.getText(binding.searchInput).toLowerCase())) {
                             ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                         }
                     } else {
                         ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                     }
                 } else if (map.containsKey("pkgName") && pkgFilterList.contains(map.get("pkgName").toString())) {
-                    if (!binding.searchInput.getText().toString().isEmpty()) {
-                        if (map.get("logRaw").toString().toLowerCase().contains(binding.searchInput.getText().toString().toLowerCase())) {
+                    if (!Helper.getText(binding.searchInput).isEmpty()) {
+                        if (map.get("logRaw").toString().toLowerCase().contains(Helper.getText(binding.searchInput).toLowerCase())) {
                             ((Adapter) binding.logsRecyclerView.getAdapter()).updateList(map);
                         }
                     } else {

@@ -33,7 +33,7 @@ public class InjectRootLayoutManager {
         FileUtil.writeFile(path, new Gson().toJson(data));
     }
 
-    public Root getLayoutByName(String name) {
+    public Root getLayoutByFileName(String name) {
         return get().getOrDefault(name, getDefaultRootLayout());
     }
 

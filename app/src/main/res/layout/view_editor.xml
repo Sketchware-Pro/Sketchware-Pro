@@ -60,7 +60,7 @@
         android:layout_marginRight="16dp"
         android:translationY="150dp" />
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/delete_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -68,32 +68,40 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:animateLayoutChanges="true"
-        android:background="#696969"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingHorizontal="20dp"
         android:translationY="106dp"
+        app:cardBackgroundColor="?colorSurfaceContainerHighest"
+        app:cardCornerRadius="18dp"
+        app:strokeWidth="1dp"
         tools:translationY="-20dp">
 
-        <ImageView
-            android:id="@+id/icon_delete"
-            android:layout_width="30dp"
-            android:layout_height="50dp"
-            android:contentDescription="@null"
-            android:padding="2dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_mtrl_delete"
-            app:tint="#FFF" />
-
-        <TextView
-            android:id="@+id/text_delete"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="Drag here to delete"
-            android:textColor="#FFF" />
+            android:paddingHorizontal="20dp"
+            android:gravity="center">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/icon_delete"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:contentDescription="@null"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_mtrl_delete"
+                app:tint="?colorOnSurfaceVariant" />
 
+            <TextView
+                android:id="@+id/text_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Drag here to delete"
+                android:textColor="?colorOnSurfaceVariant" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>

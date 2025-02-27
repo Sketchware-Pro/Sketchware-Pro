@@ -80,7 +80,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
 
     private void saveFont() {
         if (isFontValid(fontNameValidator)) {
-            String fontName = binding.edInput.getText().toString();
+            String fontName = Helper.getText(binding.edInput);
             String pickedFontFilePath = fontUri.getPath();
             ProjectResourceBean resourceBean = new ProjectResourceBean(ProjectResourceBean.PROJECT_RES_TYPE_FILE, fontName, pickedFontFilePath);
             resourceBean.savedPos = 1;

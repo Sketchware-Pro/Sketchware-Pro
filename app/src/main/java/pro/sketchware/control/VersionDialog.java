@@ -27,16 +27,16 @@ public class VersionDialog {
         dialog.a(R.drawable.numbers_48);
         dialog.b("Advanced Version Control");
 
-        binding.versionCode.setText(String.valueOf(Integer.parseInt(activity.binding.verCode.getText().toString())));
-        binding.versionName1.setText(activity.binding.verName.getText().toString().split(" ")[0]);
-        if (activity.binding.verName.getText().toString().split(" ").length > 1)
-            binding.versionName2.setText(activity.binding.verName.getText().toString().split(" ")[1]);
+        binding.versionCode.setText(String.valueOf(Integer.parseInt(Helper.getText(activity.binding.verCode))));
+        binding.versionName1.setText(Helper.getText(activity.binding.verName).split(" ")[0]);
+        if (Helper.getText(activity.binding.verName).split(" ").length > 1)
+            binding.versionName2.setText(Helper.getText(activity.binding.verName).split(" ")[1]);
 
         dialog.a(binding.getRoot());
         dialog.b(activity.getString(R.string.common_word_save), v -> {
-            final String verCode = binding.versionCode.getText().toString();
-            final String verName = binding.versionName1.getText().toString();
-            final String verNamePostfix = binding.versionName2.getText().toString();
+            final String verCode = Helper.getText(binding.versionCode);
+            final String verName = Helper.getText(binding.versionName1);
+            final String verNamePostfix = Helper.getText(binding.versionName2);
 
             boolean validVerCode = !TextUtils.isEmpty(verCode);
             boolean validVerName = !TextUtils.isEmpty(verName);

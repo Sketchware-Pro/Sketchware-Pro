@@ -27,6 +27,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 import java.io.IOException;
@@ -107,7 +109,7 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         if (!mB.a()) {
             int id = v.getId();
             if (id == R.id.btn_decide) {
-                String name = ed_input_edittext.getText().toString();
+                String name = Helper.getText(ed_input_edittext);
                 if (isNameValid()) {
                     if (chk_samename.isChecked()) {
                         int i = 0;

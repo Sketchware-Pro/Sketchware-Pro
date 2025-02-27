@@ -69,7 +69,7 @@ public class AppSettings extends BaseAppCompatActivity {
         });
 
         binding.topAppBar.setTitle(Helper.getResString(R.string.common_word_settings));
-        binding.topAppBar.setNavigationOnClickListener(view -> Helper.getBackPressedClickListener(this));
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
         setupPreferences(binding.content);
     }
@@ -81,13 +81,13 @@ public class AppSettings extends BaseAppCompatActivity {
         preferences.add(createPreference(R.drawable.ic_mtrl_component, "Component manager", "Manage your own components", new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class))));
         preferences.add(createPreference(R.drawable.ic_mtrl_list, "Event manager", "Manage your own events", openSettingsActivity(SettingsActivity.EVENTS_MANAGER_FRAGMENT)));
         preferences.add(createPreference(R.drawable.ic_mtrl_box, "Local library manager", "Manage and download local libraries", new ActivityLauncher(new Intent(getApplicationContext(), ManageLocalLibraryActivity.class), new Pair<>("sc_id", "system"))));
-        preferences.add(createPreference(R.drawable.ic_mtrl_settings_applications, "Mod settings", "Change general mod settings", new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class))));
+        preferences.add(createPreference(R.drawable.ic_mtrl_settings_applications, "App settings", "Change general app settings", new ActivityLauncher(new Intent(getApplicationContext(), ConfigActivity.class))));
         preferences.add(createPreference(R.drawable.ic_mtrl_palette, getString(R.string.settings_appearance), getString(R.string.settings_appearance_description), openSettingsActivity(SettingsActivity.SETTINGS_APPEARANCE_FRAGMENT)));
         preferences.add(createPreference(R.drawable.ic_mtrl_folder, "Open working directory", "Open Sketchware Pro's directory and edit files in it", v -> openWorkingDirectory()));
         preferences.add(createPreference(R.drawable.ic_mtrl_apk_document, "Sign an APK file with testkey", "Sign an already existing APK file with testkey and signature schemes up to V4", v -> signApkFileDialog()));
         preferences.add(createPreference(R.drawable.ic_mtrl_article, getString(R.string.design_drawer_menu_title_logcat_reader), getString(R.string.design_drawer_menu_subtitle_logcat_reader), new ActivityLauncher(new Intent(getApplicationContext(), LogReaderActivity.class))));
         preferences.add(createPreference(R.drawable.ic_mtrl_settings, getString(R.string.main_drawer_title_system_settings), "Auto-save and vibrations", new ActivityLauncher(new Intent(getApplicationContext(), SystemSettingActivity.class))));
-        preferences.forEach(preference -> content.addView(preference));
+        preferences.forEach(content::addView);
     }
 
     private View.OnClickListener openSettingsActivity(final String fragmentTag) {
@@ -193,7 +193,7 @@ public class AppSettings extends BaseAppCompatActivity {
                 shakeView(binding.selectFile);
                 return;
             }
-            String input_apk_path = apk_path_txt.getText().toString();
+            String input_apk_path = Helper.getText(apk_path_txt);
             String output_apk_file_name = Uri.fromFile(new File(input_apk_path)).getLastPathSegment();
             String output_apk_path = new File(Environment.getExternalStorageDirectory(),
                     "sketchware/signed_apk/" + output_apk_file_name).getAbsolutePath();
@@ -247,7 +247,7 @@ public class AppSettings extends BaseAppCompatActivity {
                 super.run();
 
                 ApkSigner.LogCallback callback = line -> runOnUiThread(() ->
-                        tv_log.setText(tv_log.getText().toString() + line));
+                        tv_log.setText(Helper.getText(tv_log) + line));
 
                 if (useTestkey) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

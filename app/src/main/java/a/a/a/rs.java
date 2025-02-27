@@ -45,6 +45,7 @@ import java.util.Set;
 
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.moreblock.importer.MoreblockImporterDialog;
+import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.MoreblockImporter;
 import pro.sketchware.R;
 
@@ -275,7 +276,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         aBVar.a(a2);
         aBVar.b(xB.b().a(requireContext(), R.string.common_word_save), v -> {
             if (nb.b()) {
-                saveMoreBlockToCollection(editText.getText().toString(), moreBlocks.get(moreBlockPosition));
+                saveMoreBlockToCollection(Helper.getText(editText), moreBlocks.get(moreBlockPosition));
                 mB.a(requireContext(), editText);
                 aBVar.dismiss();
             }
@@ -550,7 +551,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 root.setOnClickListener(v -> {
                     if (!mB.a()) {
                         EventBean eventBean = events.get(getPaletteIndex()).get(getLayoutPosition());
-                        openEvent(eventBean.targetId, eventBean.eventName, description.getText().toString());
+                        openEvent(eventBean.targetId, eventBean.eventName, Helper.getText(description));
                     }
                 });
             }

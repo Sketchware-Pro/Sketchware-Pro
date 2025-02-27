@@ -125,18 +125,18 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
 
     private void showDialog() {
         aB dialog = new aB((Activity) getContext());
-        dialog.b(tvName.getText().toString());
+        dialog.b(Helper.getText(tvName));
         dialog.a(imgLeftIconDrawableResId);
 
         PropertyPopupMeasurementBinding binding = PropertyPopupMeasurementBinding.inflate(LayoutInflater.from(getContext()));
-        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), tvName.getText().toString()));
+        binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
 
         TB tb = new TB(getContext(), binding.tiInput, 0, 999);
 
         binding.rgWidthHeight.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rb_directinput) {
                 binding.directInput.setVisibility(VISIBLE);
-                tb.a(binding.edInput.getText().toString());
+                tb.a(Helper.getText(binding.edInput));
             } else {
                 binding.directInput.setVisibility(GONE);
             }
@@ -172,7 +172,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             } else if (checkedRadioButtonId == R.id.rb_wrapcontent) {
                 setValue(LayoutParams.WRAP_CONTENT);
             } else if (tb.b()) {
-                setValue(Integer.parseInt(binding.edInput.getText().toString()));
+                setValue(Integer.parseInt(Helper.getText(binding.edInput)));
             } else {
                 return;
             }

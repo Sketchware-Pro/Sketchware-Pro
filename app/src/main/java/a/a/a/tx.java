@@ -164,7 +164,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
 
     public final void a() {
         aB aBVar = new aB((Activity) getContext());
-        aBVar.b(this.e.getText().toString());
+        aBVar.b(Helper.getText(this.e));
         aBVar.a(this.m);
         View a3 = wB.a(getContext(), R.layout.property_popup_selector_color);
         ScrollView scrollView = a3.findViewById(R.id.scroll_view);

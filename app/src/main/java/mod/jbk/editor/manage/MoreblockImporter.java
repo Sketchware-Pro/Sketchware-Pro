@@ -210,7 +210,7 @@ public class MoreblockImporter {
         dialog.b(xB.b().a(activity, R.string.common_word_save), v -> {
             if (validator.b()) {
                 String moreBlockName = ReturnMoreblockManager.getMbName(ReturnMoreblockManager.getMbNameWithTypeFromSpec(moreBlock.spec));
-                moreBlock.spec = newName.getText().toString() + moreBlock.spec.substring(moreBlockName.length());
+                moreBlock.spec = Helper.getText(newName) + moreBlock.spec.substring(moreBlockName.length());
 
                 handleVariables(moreBlock);
                 mB.a(activity, newName);

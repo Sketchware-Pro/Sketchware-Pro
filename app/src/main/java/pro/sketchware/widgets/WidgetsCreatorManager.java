@@ -384,8 +384,8 @@ public class WidgetsCreatorManager {
         });
         layout.addView(textInputLayout);
 
-        if (!(choice.get() >= 0 && choice.get() < choices.size() && choices.get(choice.get()).equals(type.getText().toString()))) {
-            newEditText.setText(type.getText().toString());
+        if (!(choice.get() >= 0 && choice.get() < choices.size() && choices.get(choice.get()).equals(Helper.getText(type)))) {
+            newEditText.setText(Helper.getText(type));
         }
 
         builder.setTitle(Helper.getResString(R.string.add_to))

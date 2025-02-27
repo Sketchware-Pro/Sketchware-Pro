@@ -74,8 +74,8 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
 
     private void save() {
         if (passwordValidator.b() && passwordConfirmValidator.b()) {
-            String text = password.getText().toString();
-            if (!text.equals(passwordConfirm.getText().toString())) {
+            String text = Helper.getText(password);
+            if (!text.equals(Helper.getText(passwordConfirm))) {
                 bB.b(getApplicationContext(), Helper.getResString(R.string.myprojects_sign_apk_incorrect_password), 0).show();
                 password.setText("");
                 passwordConfirm.setText("");
@@ -98,20 +98,20 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
 
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("CN=");
-            stringBuilder.append(commonName.getText().toString());
+            stringBuilder.append(Helper.getText(commonName));
             stringBuilder.append("OU=");
-            stringBuilder.append(organizationalUnit.getText().toString());
+            stringBuilder.append(Helper.getText(organizationalUnit));
             stringBuilder.append("O=");
-            stringBuilder.append(organization.getText().toString());
+            stringBuilder.append(Helper.getText(organization));
             stringBuilder.append("L=");
-            stringBuilder.append(locality.getText().toString());
+            stringBuilder.append(Helper.getText(locality));
             stringBuilder.append("ST=");
-            stringBuilder.append(state.getText().toString());
+            stringBuilder.append(Helper.getText(state));
             stringBuilder.append("C=");
-            stringBuilder.append(country.getText().toString());
+            stringBuilder.append(Helper.getText(country));
 
             try {
-                E.a(wq.j(), stringBuilder.toString(), validityInYears, alias.getText().toString(), text);
+                E.a(wq.j(), stringBuilder.toString(), validityInYears, Helper.getText(alias), text);
                 showDoneDialog(true, text);
             } catch (Exception e) {
                 e.printStackTrace();

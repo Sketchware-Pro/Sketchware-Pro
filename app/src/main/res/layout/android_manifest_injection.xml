@@ -45,6 +45,13 @@
                     android:text="Activities"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorPrimary" />
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:dividerHeight="0dp"
+                    android:id="@+id/activities_list_view"
+                    android:divider="@null" />
             </LinearLayout>
 
             <Button
@@ -54,7 +61,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:onClick="showAddActivityDialog"
                 android:text="@string/common_word_add_activtiy" />
         </LinearLayout>
     </ScrollView>

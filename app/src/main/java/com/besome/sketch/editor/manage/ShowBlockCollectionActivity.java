@@ -117,7 +117,7 @@ public class ShowBlockCollectionActivity extends BaseAppCompatActivity implement
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.save_button && blockNameValidator.b()) {
-            Mp.h().a(blockName, blockNameEditorText.getText().toString(), true);
+            Mp.h().a(blockName, Helper.getText(blockNameEditorText), true);
             bB.a(getApplicationContext(), Helper.getResString(R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
             finish();
         }

@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuProvider;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -130,12 +131,12 @@ public class ProjectsFragment extends DA {
 
         binding.myprojects.post(this::refreshProjectsList); // wait for RecyclerView to be ready
 
-        binding.myprojects.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.nestedScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 2) {
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
                     fab.shrink();
-                } else if (dy < -2) {
+                } else if (scrollY < oldScrollY) {
                     fab.extend();
                 }
             }

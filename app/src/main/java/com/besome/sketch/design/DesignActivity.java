@@ -802,7 +802,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         if (projectFile == null) return; 
         k();
         new Thread(() -> {
-            final var filename = fileName.getText().toString();
+            final var filename = Helper.getText(fileName);
             final var code = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
             runOnUiThread(() -> {
                 if (isFinishing()) return;
@@ -854,7 +854,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         if (projectFile == null) return;
         k();
         new Thread(() -> {
-            final String filename = fileName.getText().toString();
+            final String filename = Helper.getText(fileName);
             // var yq = new yq(getApplicationContext(), sc_id);
             var xmlGenerator = new Ox(q.N, projectFile);
             var projectDataManager = jC.a(sc_id);
@@ -999,7 +999,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      * Opens {@link SrcViewerActivity}.
      */
     void toSourceCodeViewer() {
-        launchActivity(SrcViewerActivity.class, null, new Pair<>("current", fileName.getText().toString()));
+        launchActivity(SrcViewerActivity.class, null, new Pair<>("current", Helper.getText(fileName)));
     }
 
     /**

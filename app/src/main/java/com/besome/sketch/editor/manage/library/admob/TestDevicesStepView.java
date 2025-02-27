@@ -147,7 +147,7 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
         dialog.a(content);
         dialog.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
             if (validator.b()) {
-                String deviceId = edDeviceId.getText().toString();
+                String deviceId = Helper.getText(edDeviceId);
                 testDevices.add(new AdTestDeviceBean(deviceId));
                 adapter.notifyItemInserted(testDevices.size() - 1);
                 dialog.dismiss();
