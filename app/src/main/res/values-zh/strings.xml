@@ -1,8 +1,5 @@
-以下是将您提供的 `strings.xml` 文件中的英文翻译成中文的内容：
-
-```xml
 <resources>
-    <string name="app_name">Sketchware Pro</string>
+    <string name="app_name">Sketchware专业版</string>
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="besome_blog_url">http://medium.com/sketchware</string>
     <string name="block_add_list_int_body_1">到</string>
