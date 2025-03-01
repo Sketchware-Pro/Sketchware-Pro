@@ -970,37 +970,34 @@ public class ViewPane extends RelativeLayout {
         if (height > 0) {
             height = (int) wB.a(getContext(), (float) viewBean.layout.height);
         }
+
+        int leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
+        int topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
+        int rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
+        int bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
+
         viewBean.parentType = getActualParentType(view, viewBean.parentType);
         view.setBackgroundColor(viewBean.layout.backgroundColor);
         if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(width, height);
-            layoutParams2.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
-            layoutParams2.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
-            layoutParams2.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
-            layoutParams2.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
+            layoutParams2.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
             LayoutBean layoutBean3 = viewBean.layout;
             view.setPadding(layoutBean3.paddingLeft, layoutBean3.paddingTop, layoutBean3.paddingRight, layoutBean3.paddingBottom);
-            int i3 = viewBean.layout.layoutGravity;
-            if (i3 != 0) {
-                layoutParams2.gravity = i3;
+            int layoutGravity = viewBean.layout.layoutGravity;
+            if (layoutGravity != LayoutBean.GRAVITY_NONE) {
+                layoutParams2.gravity = layoutGravity;
             }
             layoutParams2.weight = viewBean.layout.weight;
             view.setLayoutParams(layoutParams2);
         } else if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
             RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(width, height);
-            layoutParams2.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
-            layoutParams2.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
-            layoutParams2.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
-            layoutParams2.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
+            layoutParams2.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
             LayoutBean layoutBean3 = viewBean.layout;
             view.setPadding(layoutBean3.paddingLeft, layoutBean3.paddingTop, layoutBean3.paddingRight, layoutBean3.paddingBottom);
             view.setLayoutParams(layoutParams2);
         } else {
             FrameLayout.LayoutParams layoutParams3 = new FrameLayout.LayoutParams(width, height);
-            layoutParams3.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
-            layoutParams3.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
-            layoutParams3.rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
-            layoutParams3.bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
+            layoutParams3.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
             LayoutBean layoutBean4 = viewBean.layout;
             view.setPadding(layoutBean4.paddingLeft, layoutBean4.paddingTop, layoutBean4.paddingRight, layoutBean4.paddingBottom);
             int layoutGravity = viewBean.layout.layoutGravity;
