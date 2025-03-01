@@ -310,7 +310,6 @@ public class ViewPane extends RelativeLayout {
             case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW -> new ItemRecyclerView(context);
             default -> getUnknownItemView(viewBean);
         };
-        assert item != null;
         item.setId(++b);
         item.setTag(viewBean.id);
         ((sy) item).setBean(viewBean);
