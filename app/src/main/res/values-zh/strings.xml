@@ -1166,10 +1166,6 @@
     <string name="design_library_firebase_title_firebase_setup_tutorial">Firebase设置教程</string>
     <string name="design_library_firebase_title_project_id">完整的数据库URL（例如：sk-pro-default-rtdb.firebaseio.com）</string>
     <string name="design_library_firebase_title_storage_bucket_url">存储桶URL</string>
-以下是将上述XML资源文件中的字符串翻译成中文的结果：
-
-```xml
-<resources>
     <string name="design_library_google_map_button_open_doc">打开文档</string>
     <string name="design_library_google_map_title">Google地图</string>
     <string name="design_library_google_map_title_api_key">API密钥</string>
