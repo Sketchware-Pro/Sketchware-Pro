@@ -40,7 +40,7 @@ public class ViewBeanParser {
 
     private Pair<String, Map<String, String>> rootAttributes;
 
-    private int[] viewsCount = new int[49];
+    private static final int[] viewsCount = new int[49];
 
     public ViewBeanParser(String xml) throws XmlPullParserException {
         this(new StringReader(xml));
@@ -93,16 +93,7 @@ public class ViewBeanParser {
                         break;
                     }
                     var className = getNameFromTag(name);
-
-                    // Special case for HorizontalScrollView, as ViewBean refers to it as
-                    // HScrollView
-                    if (className.equals("HorizontalScrollView")) {
-                        className = "HScrollView";
-                    }
-
-                    int type = ViewBean.getViewTypeByTypeName(className);
-
-                    type = getViewTypeByTag(name, type);
+                    int type = getViewTypeByClassName(name);
 
                     // Get view ID, either from attributes or generate a unique ID
                     String attrId = parser.getAttributeValue(null, "android:id");
@@ -129,7 +120,7 @@ public class ViewBeanParser {
                     bean.parent = parent != null ? parent.id : "root";
                     bean.parentType =
                             bean.parent.equals("root")
-                                    ? ViewBean.VIEW_TYPE_LAYOUT_LINEAR
+                                    ? getViewTypeByClassName(rootAttributes.first)
                                     : parent.type;
                     bean.index = index;
                     Map<String, String> attributes = new LinkedHashMap<>();
@@ -164,11 +155,12 @@ public class ViewBeanParser {
         return beans;
     }
 
-    private String generateUniqueId(Set<String> ids, int type, String className) {
+    public static String generateUniqueId(Set<String> ids, int type, String className) {
         String prefix = wq.b(type);
         var name = ViewBean.getViewTypeName(type);
         // Skip these types as they're the only ones with a different view type name: VScrollView
         // (ScrollView) and HScrollView (HorizontalScrollView).
+        //noinspection ConstantValue
         if (type != ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW
                 || type != ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW) {
             // If the prefix is "linear" and the name is different from the className,
@@ -190,7 +182,7 @@ public class ViewBeanParser {
         return id;
     }
 
-    private String getSnakeCaseId(String id) {
+    public static String getSnakeCaseId(String id) {
         StringBuilder snakeCaseId = new StringBuilder();
         for (int i = 0; i < id.length(); i++) {
             char c = id.charAt(i);
@@ -206,17 +198,29 @@ public class ViewBeanParser {
         return snakeCaseId.toString();
     }
 
-    private String getNameFromTag(@NonNull String s) {
+    public static String getNameFromTag(@NonNull String s) {
         try {
             if (s.contains(".")) {
                 return s.substring(s.lastIndexOf(".") + 1);
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return s;
     }
 
-    private int getViewTypeByTag(String tag, int defaultType) {
+    public static int getViewTypeByClassName(String name) {
+        var className = getNameFromTag(name);
+        // Special case for HorizontalScrollView, as ViewBean refers to it as
+        // HScrollView
+        if (className.equals("HorizontalScrollView")) {
+            className = "HScrollView";
+        }
+
+        int type = ViewBean.getViewTypeByTypeName(className);
+        return getViewTypeByTag(name, type);
+    }
+
+    public static int getViewTypeByTag(String tag, int defaultType) {
         // Special case for other views that can be considered built-in views by type
         var type = ViewBeanFactory.getConsideredTypeViewByName(getNameFromTag(tag), defaultType);
         if (type == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {

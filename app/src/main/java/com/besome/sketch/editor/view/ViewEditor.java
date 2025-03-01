@@ -39,8 +39,6 @@ import com.besome.sketch.editor.view.palette.PaletteFavorite;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
 import com.google.android.material.card.MaterialCardView;
 
-import pro.sketchware.R;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,12 +60,12 @@ import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
-
+import mod.hey.studios.util.Helper;
+import mod.hey.studios.util.ProjectFile;
+import pro.sketchware.R;
 import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.widgets.IconCustomWidget;
 import pro.sketchware.widgets.WidgetsCreatorManager;
-import mod.hey.studios.util.Helper;
-import mod.hey.studios.util.ProjectFile;
 
 @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
 public class ViewEditor extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
@@ -206,6 +204,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void j() {
+        viewPane.updateRootLayout(a, projectFileBean.getXmlName());
         viewPane.clearViewPane();
         l();
         i();

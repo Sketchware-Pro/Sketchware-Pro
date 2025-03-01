@@ -4,10 +4,13 @@ import android.util.Pair;
 
 import a.a.a.wq;
 
+import com.besome.sketch.beans.ViewBean;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
+import pro.sketchware.tools.ViewBeanFactory;
+import pro.sketchware.tools.ViewBeanParser;
 import pro.sketchware.utility.FileUtil;
 
 import java.util.LinkedHashMap;
@@ -37,7 +40,7 @@ public class InjectRootLayoutManager {
         return get().getOrDefault(name, getDefaultRootLayout());
     }
 
-    private Root getDefaultRootLayout() {
+    public static Root getDefaultRootLayout() {
         Map<String, String> attrs = new LinkedHashMap<>();
         attrs.put("android:layout_width", "match_parent");
         attrs.put("android:layout_height", "match_parent");
@@ -53,6 +56,14 @@ public class InjectRootLayoutManager {
                             new TypeToken<LinkedHashMap<String, Root>>() {}.getType());
         }
         return new LinkedHashMap<>();
+    }
+
+    public ViewBean toBean(String name) {
+        Root root = getLayoutByFileName(name);
+        ViewBean viewBean = new ViewBean("root", ViewBeanParser.getViewTypeByClassName(root.className));
+        viewBean.convert = root.className;
+        new ViewBeanFactory(viewBean).applyAttributes(root.getAttributes());
+        return viewBean;
     }
 
     public static Root toRoot(Pair<String, Map<String, String>> root) {
