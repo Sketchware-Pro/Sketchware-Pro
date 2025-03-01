@@ -318,10 +318,9 @@ public class ViewPane extends RelativeLayout {
         return item;
     }
 
-    private final View getUnknownItemView(final ViewBean bean) {
+    private View getUnknownItemView(final ViewBean bean) {
         bean.type = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
-        var view = new ItemLinearLayout(context);
-        return view;
+        return new ItemLinearLayout(context);
     }
 
     public void updateRootLayout(String sc_id, String fileName) {
@@ -1194,7 +1193,7 @@ public class ViewPane extends RelativeLayout {
 
     private void updateTextView(TextView textView, ViewBean viewBean) {
         String str = viewBean.text.text;
-        if (str != null && !str.isEmpty() && str.contains("\\n")) {
+        if (str != null && str.contains("\\n")) {
             str = viewBean.text.text.replaceAll("\\\\n", "\n");
         }
         textView.setText(str.startsWith(stringsStart) ? getXmlString(str) : str);
@@ -1229,15 +1228,15 @@ public class ViewPane extends RelativeLayout {
         }
         String filePath = wq.b(sc_id) + "/files/resource/values/strings.xml";
 
-        ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
+        ArrayList<HashMap<String, Object>> stringsListMap = new ArrayList<>();
 
-        convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
+        convertXmlToListMap(FileUtil.readFileIfExist(filePath), stringsListMap);
 
-        if (key.equals("@string/app_name") && !isXmlStringsContains(StringsListMap, "app_name")) {
+        if (key.equals("@string/app_name") && !isXmlStringsContains(stringsListMap, "app_name")) {
             return yB.c(lC.b(sc_id), "my_app_name");
         }
 
-        for (HashMap<String, Object> map : StringsListMap) {
+        for (HashMap<String, Object> map : stringsListMap) {
             String keyValue = stringsStart + map.get("key").toString().trim();
             if (key.equals(keyValue)) {
                 return map.get("text").toString();
@@ -1297,7 +1296,6 @@ public class ViewPane extends RelativeLayout {
         });
         tabLayout.setTabMode(switch (mode) {
             case "auto" -> TabLayout.MODE_AUTO;
-            case "fixed" -> TabLayout.MODE_FIXED;
             case "scrollable" -> TabLayout.MODE_SCROLLABLE;
             default -> TabLayout.MODE_FIXED;
         });
@@ -1315,7 +1313,7 @@ public class ViewPane extends RelativeLayout {
         materialButton.setCornerRadius(PropertiesUtil.resolveSize(radius, 8));
     }
 
-    private String extractAttrValue(String line, String attrbute) {
+    private String extractAttrValue(String line, String attribute) {
         Matcher matcher = Pattern.compile("=\"([^\"]*)\"").matcher(line);
         return matcher.find() ? matcher.group(1) : "";
     }
