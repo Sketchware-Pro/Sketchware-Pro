@@ -972,7 +972,7 @@ public class ViewPane extends RelativeLayout {
         }
         viewBean.parentType = getActualParentType(view, viewBean.parentType);
         view.setBackgroundColor(viewBean.layout.backgroundColor);
-        if (viewBean.type == ViewBean.VIEW_TYPE_LAYOUT_LINEAR || viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {
+        if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(width, height);
             layoutParams2.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
             layoutParams2.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
@@ -986,7 +986,7 @@ public class ViewPane extends RelativeLayout {
             }
             layoutParams2.weight = viewBean.layout.weight;
             view.setLayoutParams(layoutParams2);
-        } else if (viewBean.type == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE || viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
+        } else if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
             RelativeLayout.LayoutParams layoutParams2 = new RelativeLayout.LayoutParams(width, height);
             layoutParams2.leftMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginLeft);
             layoutParams2.topMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginTop);
