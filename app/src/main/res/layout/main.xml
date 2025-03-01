@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            android:text="New project"
+            android:text="@string/shared_project_all_actionbar_title_new_project"
             app:icon="@drawable/ic_mtrl_add"
             tools:ignore="ContentDescription" />
 
