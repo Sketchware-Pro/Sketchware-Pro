@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sketchware专业版</string>
+    <string name="app_name">Sketchware Pro</string>
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="besome_blog_url">http://medium.com/sketchware</string>
     <string name="block_add_list_int_body_1">到</string>
@@ -2235,11 +2235,9 @@ ACTION_VIEW
     <string name="new_class">或创建新类别</string>
     <string name="add_to">添加到类别</string>
     <string name="title_activity_icon_creator">IconCreatorActivity</string>
-
     <string name="used_custom_blocks">使用的自定义块</string>
     <string name="property_enter_value">输入%s值</string>
-    
     <string name="code_viewer">代码查看器</string>
     <string name="block_name">块名称</string>
-    
+
 </resources>
