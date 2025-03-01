@@ -1,6 +1,3 @@
-=以下是将您提供的 `strings.xml` 文件中的英文翻译成中文的内容：
-
-```xml
 <resources>
     <string name="app_name">Sketchware Pro</string>
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
