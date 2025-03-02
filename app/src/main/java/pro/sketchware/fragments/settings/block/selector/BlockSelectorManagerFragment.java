@@ -333,27 +333,13 @@ public class BlockSelectorManagerFragment extends qA {
     }
 
     private List<String> getTypeViewList() {
-        List<String> list = new ArrayList<>();
-        list.add("View");
-        list.add("ViewGroup");
-        list.add("LinearLayout");
-        list.add("RelativeLayout");
-        list.add("ScrollView");
-        list.add("HorizontalScrollView");
-        list.add("TextView");
-        list.add("EditText");
-        list.add("Button");
-        list.add("RadioButton");
-        list.add("CheckBox");
-        list.add("Switch");
-        list.add("ImageView");
-        list.add("SeekBar");
-        list.add("ListView");
-        list.add("Spinner");
-        list.add("WebView");
-        list.add("MapView");
-        list.add("ProgressBar");
-        return list;
+        return List.of(
+            "View", "ViewGroup", "LinearLayout", "RelativeLayout",
+            "ScrollView", "HorizontalScrollView", "TextView", "EditText",
+            "Button", "RadioButton", "CheckBox", "Switch", "ImageView",
+            "SeekBar", "ListView", "Spinner", "WebView", "MapView",
+            "ProgressBar"
+        );
     }
 
     @Override
