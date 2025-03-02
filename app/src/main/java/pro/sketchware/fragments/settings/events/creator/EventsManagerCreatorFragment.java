@@ -106,7 +106,6 @@ public class EventsManagerCreatorFragment extends qA {
     private void getViewsById() {
         ((View) binding.eventsCreatorListenercode.getParent().getParent()).setVisibility(View.GONE);
         binding.eventsCreatorChooseicon.setImageResource(R.drawable.ic_mtrl_add);
-        binding.eventsCreatorCheckbox.setVisibility(View.GONE);
         if (isActivityEvent) {
             binding.eventsCreatorVarname.setText("");
             ((View) binding.eventsCreatorVarname.getParent().getParent()).setVisibility(View.GONE);

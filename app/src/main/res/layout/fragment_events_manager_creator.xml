@@ -94,20 +94,6 @@
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:transitionGroup="true">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/events_creator_listenername"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Listener name"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -202,15 +188,6 @@
                             android:hint="Event code (### ==> Variable name)"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <CheckBox
-                        android:id="@+id/events_creator_checkbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:padding="6dp"
-                        android:text="Create New Listener"
-                        android:textSize="12sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -242,21 +219,6 @@
                             android:padding="8dp"
                             android:text="Listener properties :"
                             android:textSize="16sp" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:transitionGroup="true">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/events_creator_listenernameA"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Listener Name"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
