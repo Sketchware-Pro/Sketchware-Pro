@@ -52,8 +52,7 @@ public class BlockSelectorDetailsFragment extends qA {
         handleInsetts(binding.getRoot());
 
         adapter = new BlockSelectorDetailsAdapter(
-            (selector, indexA) -> showActionsDialog(indexA),
-            (selector, indexA) -> SketchwareUtil.toast(selectors.get(index).getData().get(indexA))
+          (selector, indexA) -> showActionsDialog(indexA)
         );
         
         adapter.submitList(selectors.get(index).getData());
