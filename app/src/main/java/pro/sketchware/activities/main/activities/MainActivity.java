@@ -211,8 +211,8 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         binding.viewPager.setUserInputEnabled(false);
 
         String[] tabTitles = new String[]{
-                getString(R.string.main_tab_title_myproject),
-                getString(R.string.main_tab_title_projects_store)
+                Helper.getResString(R.string.main_tab_title_myproject),
+                Helper.getResString(R.string.main_tab_title_projects_store)
         };
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager,

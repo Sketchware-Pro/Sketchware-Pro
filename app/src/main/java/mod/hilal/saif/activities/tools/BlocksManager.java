@@ -504,7 +504,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
         });
 
-        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.cancel), v1 -> dialog.dismiss());
         dialog.a(dialogBinding.getRoot());
         dialog.show();
     }

@@ -178,16 +178,16 @@ public class PaletteSelector extends LinearLayout implements View.OnClickListene
         aB dialog = new aB((Activity) context);
         PalettesSearchDialogBinding binding = PalettesSearchDialogBinding.inflate(((Activity) context).getLayoutInflater());
 
-        dialog.b(context.getString(R.string.search_in_palettes_dialog_title));
-        dialog.b(context.getString(R.string.search), v1 -> {
+        dialog.b(Helper.getResString(R.string.search_in_palettes_dialog_title));
+        dialog.b(Helper.getResString(R.string.search), v1 -> {
             if (binding.textInputLayoutSearch.getError() == null) {
                 startSearch(dialog, Helper.getText(binding.edittextSearchValue).trim());
             }
             dialog.dismiss();
         });
-        dialog.a(context.getString(R.string.cancel), v1 -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.cancel), v1 -> dialog.dismiss());
         if (!searchValue.isEmpty()) {
-            dialog.configureDefaultButton(context.getString(R.string.restore), v1 -> startSearch(dialog, ""));
+            dialog.configureDefaultButton(Helper.getResString(R.string.restore), v1 -> startSearch(dialog, ""));
         }
         dialog.a(binding.getRoot());
         binding.edittextSearchValue.setText(searchValue);

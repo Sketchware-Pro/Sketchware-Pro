@@ -385,7 +385,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             paletteSelector.performClickPalette(-1);
             dialog.dismiss();
         });
-        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.cancel), v1 -> dialog.dismiss());
         dialog.a(binding.getRoot());
         dialog.show();
     }

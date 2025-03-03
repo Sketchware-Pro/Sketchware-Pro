@@ -3,6 +3,8 @@ package pro.sketchware.utility.apk;
 import android.app.Activity;
 import android.content.Context;
 
+import mod.hey.studios.util.Helper;
+
 import pro.sketchware.R;
 
 import a.a.a.aB;
@@ -34,10 +36,10 @@ public class ApkSignatures {
 
     public void showSignaturesDialog() {
         aB signaturesDialog = new aB((Activity) context);
-        signaturesDialog.b(context.getResources().getString(R.string.signatures_title));
+        signaturesDialog.b(Helper.getResString(R.string.signatures_title));
         signaturesDialog.a(abMsg);
         signaturesDialog.setMessageIsSelectable(true);
-        signaturesDialog.b(context.getResources().getString(R.string.common_word_ok), null);
+        signaturesDialog.b(Helper.getResString(R.string.common_word_ok), null);
         signaturesDialog.show();
     }
 }

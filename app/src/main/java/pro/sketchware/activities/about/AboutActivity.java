@@ -65,9 +65,9 @@ public class AboutActivity extends BaseAppCompatActivity {
         binding.viewPager.setAdapter(adapter);
 
         String[] tabTitles = new String[]{
-                getString(R.string.about_team_title),
-                getString(R.string.about_changelog_title),
-                getString(R.string.about_beta_changes_title)
+                Helper.getResString(R.string.about_team_title),
+                Helper.getResString(R.string.about_changelog_title),
+                Helper.getResString(R.string.about_beta_changes_title)
         };
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager, (tab, position) -> tab.setText(tabTitles[position])).attach();
@@ -94,7 +94,7 @@ public class AboutActivity extends BaseAppCompatActivity {
     }
 
     private void initData() {
-        network.get(getString(R.string.link_about_team), response -> {
+        network.get(Helper.getResString(R.string.link_about_team), response -> {
             if (response != null) {
                 sharedPref.edit().putString("aboutData", response).apply();
             } else {

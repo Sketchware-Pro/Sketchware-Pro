@@ -307,7 +307,7 @@ public class StringEditorActivity extends BaseAppCompatActivity {
                     }
                     addString(key, value);
                 });
-        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.cancel), v1 -> dialog.dismiss());
         dialog.a(binding.getRoot());
         dialog.show();
     }
@@ -422,7 +422,7 @@ public class StringEditorActivity extends BaseAppCompatActivity {
                                         notifyItemRemoved(adapterPosition);
                                     }
                                 });
-                        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
+                        dialog.a(Helper.getResString(R.string.cancel), v1 -> dialog.dismiss());
                         dialog.a(dialogBinding.getRoot());
                         dialog.show();
                     });
