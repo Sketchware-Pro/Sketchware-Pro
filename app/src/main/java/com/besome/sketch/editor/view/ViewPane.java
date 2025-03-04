@@ -116,7 +116,6 @@ import pro.sketchware.utility.SvgUtils;
 public class ViewPane extends RelativeLayout {
     private Context context;
     private ViewGroup rootLayout;
-    private ViewBean rootBean;
     private int b = 99;
     private ArrayList<ViewInfo> viewInfos = new ArrayList<>();
     private ViewInfo viewInfo;
@@ -325,9 +324,6 @@ public class ViewPane extends RelativeLayout {
     public void updateRootLayout(String sc_id, String fileName) {
         InjectRootLayoutManager manager = new InjectRootLayoutManager(sc_id);
         var currentBean = manager.toBean(fileName);
-        if (rootBean == null) {
-            rootBean = currentBean.clone();
-        }
         View rootView = createItemView(currentBean);
         if (rootView instanceof sy sy) {
             sy.setFixed(true);
@@ -337,9 +333,10 @@ public class ViewPane extends RelativeLayout {
         } else {
             rootLayout = (ViewGroup) rootView;
         }
-        if (!currentBean.isEqual(rootBean)) {
-            rootBean = currentBean;
-            rootLayout = (ViewGroup) rootView;
+        if (rootLayout instanceof sy sy) {
+            if (!currentBean.isEqual(sy.getBean())) {
+                rootLayout = (ViewGroup) rootView;
+            }
         }
         rootLayout.setBackgroundColor(0xffeeeeee);
         addView(rootLayout);
@@ -649,7 +646,11 @@ public class ViewPane extends RelativeLayout {
             viewBean.preParent = viewBean.parent;
             viewBean.parent = "root";
             viewBean.preParentType = viewBean.parentType;
-            viewBean.parentType = rootBean.type;
+            if (rootLayout instanceof sy sy) {
+                viewBean.parentType = sy.getBean().type;
+            } else {
+                viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
+            }
             viewBean.index = -1;
         }
     }
