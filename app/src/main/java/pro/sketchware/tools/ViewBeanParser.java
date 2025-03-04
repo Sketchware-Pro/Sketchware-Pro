@@ -117,10 +117,11 @@ public class ViewBeanParser {
 
                     ViewBean parent = viewStack.isEmpty() ? null : viewStack.peek();
                     // Set parent ID (or root if no parent)
+                    int parentType = rootAttributes != null ? getViewTypeByClassName(rootAttributes.first) : ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
                     bean.parent = parent != null ? parent.id : "root";
                     bean.parentType =
                             bean.parent.equals("root")
-                                    ? getViewTypeByClassName(rootAttributes.first)
+                                    ? parentType
                                     : parent.type;
                     bean.index = index;
                     Map<String, String> attributes = new LinkedHashMap<>();
