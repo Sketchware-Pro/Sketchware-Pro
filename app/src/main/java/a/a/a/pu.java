@@ -273,6 +273,7 @@ public class pu extends qA {
     private void openImportIconActivity() {
         Intent intent = new Intent(requireActivity(), ImportIconActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("sc_id", sc_id);
         intent.putStringArrayListExtra("imageNames", getAllImageNames());
         openImportIconActivity.launch(intent);
     }
