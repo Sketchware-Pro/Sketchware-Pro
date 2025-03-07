@@ -11,5 +11,7 @@ public interface sy {
 
     void setBean(ViewBean viewBean);
 
+    void setFixed(boolean fixed);
+
     void setSelection(boolean selection);
 }

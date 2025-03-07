@@ -280,7 +280,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
             dialog.a(binding.getRoot());
             dialog.setDismissOnDefaultButtonClick(false);
-            dialog.configureDefaultButton(context.getString(R.string.strings_xml), v -> {
+            dialog.configureDefaultButton(Helper.getResString(R.string.strings_xml), v -> {
                 binding.edTiAutoCompleteInput.setText(stringsStart);
                 binding.edTiAutoCompleteInput.setSelection(stringsStart.length());
                 binding.edTiAutoCompleteInput.requestFocus();

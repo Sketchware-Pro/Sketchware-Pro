@@ -327,17 +327,17 @@
         android:paddingHorizontal="14dp"
         android:paddingVertical="10dp">
 
-        <com.google.android.material.button.MaterialButton
+        <Button
+            style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="7dp"
             android:layout_weight="1"
             android:text="@string/common_word_cancel"
-            android:textSize="@dimen/text_size_button_material"
-            app:backgroundTint="?colorAccent" />
+            android:textSize="@dimen/text_size_button_material" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

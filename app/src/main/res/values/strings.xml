@@ -1060,7 +1060,7 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_actionbar_title_manager_image">Image manager</string>
     <string name="design_actionbar_title_manager_sound">Sound manager</string>
     <string name="design_actionbar_title_manager_view">View manager</string>
-    <string name="design_actionbar_title_show_source_code">Show source code</string>
+    <string name="design_actionbar_title_show_source_code">Show built-in source code</string>
     <string name="design_button_properties">Properties</string>
     <string name="design_drawer_menu_bottom_title">Global</string>
     <string name="design_drawer_menu_description_collection">My saved collections</string>
@@ -1068,7 +1068,7 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_drawer_menu_description_image">Import photos and icons</string>
     <string name="design_drawer_menu_description_library">Component settings</string>
     <string name="design_drawer_menu_description_sound">Import music and sound effects</string>
-    <string name="design_drawer_menu_description_source_code">View Java and XML files</string>
+    <string name="design_drawer_menu_description_source_code">View Built-In Java and XML files</string>
     <string name="design_drawer_menu_description_theme">Color theme</string>
     <string name="design_drawer_menu_description_view">Manage multiple screens</string>
     <string name="design_drawer_menu_description_xml_command">Modify built-in XML files.</string>

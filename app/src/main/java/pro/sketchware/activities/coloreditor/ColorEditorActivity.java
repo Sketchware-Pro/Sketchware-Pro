@@ -35,6 +35,7 @@ import a.a.a.XB;
 import a.a.a.Zx;
 import a.a.a.aB;
 import a.a.a.xB;
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import pro.sketchware.R;
@@ -47,7 +48,7 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
 
-public class ColorEditorActivity extends AppCompatActivity {
+public class ColorEditorActivity extends BaseAppCompatActivity {
 
     private static final int MENU_SAVE = 0;
     private static final int MENU_OPEN_IN_EDITOR = 1;
@@ -153,7 +154,7 @@ public class ColorEditorActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         binding = ColorEditorActivityBinding.inflate(getLayoutInflater());
@@ -205,7 +206,7 @@ public class ColorEditorActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (isGoingToEditor) {
             parseColorsXML(FileUtil.readFile(contentPath));

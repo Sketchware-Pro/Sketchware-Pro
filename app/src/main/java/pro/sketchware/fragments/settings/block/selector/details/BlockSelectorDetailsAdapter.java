@@ -16,12 +16,10 @@ import pro.sketchware.utility.UI;
 public class BlockSelectorDetailsAdapter extends ListAdapter<String, BlockSelectorDetailsAdapter.BlockSelectorDetailsAdapterViewHolder> {
 
     public final OnClickListener onClick;
-    public final OnLongClickListener onLongClick;
 
-    public BlockSelectorDetailsAdapter(OnClickListener onClick, OnLongClickListener onLongClick) {
+    public BlockSelectorDetailsAdapter(OnClickListener onClick) {
         super(new BlockSelectorDetailsAdapterDiffCallback());
         this.onClick = onClick;
-        this.onLongClick = onLongClick;
     }
 
     @NonNull
@@ -30,7 +28,7 @@ public class BlockSelectorDetailsAdapter extends ListAdapter<String, BlockSelect
         LayoutBlockSelectorBinding binding = LayoutBlockSelectorBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false
         );
-        return new BlockSelectorDetailsAdapterViewHolder(binding, onClick, onLongClick);
+        return new BlockSelectorDetailsAdapterViewHolder(binding, onClick);
     }
 
     @Override
@@ -42,27 +40,18 @@ public class BlockSelectorDetailsAdapter extends ListAdapter<String, BlockSelect
     public static class BlockSelectorDetailsAdapterViewHolder extends RecyclerView.ViewHolder {
         public final LayoutBlockSelectorBinding binding;
         public final OnClickListener onClick;
-        public final OnLongClickListener onLongClick;
         public String currentString;
         public Integer currentIndex;
 
-        public BlockSelectorDetailsAdapterViewHolder(LayoutBlockSelectorBinding binding, OnClickListener onClick, OnLongClickListener onLongClick) {
+        public BlockSelectorDetailsAdapterViewHolder(LayoutBlockSelectorBinding binding, OnClickListener onClick) {
             super(binding.getRoot());
             this.binding = binding;
             this.onClick = onClick;
-            this.onLongClick = onLongClick;
 
             itemView.setOnClickListener(v -> {
                 if (currentIndex != null) {
                     onClick.onClick(null, currentIndex);
                 }
-            });
-
-            itemView.setOnLongClickListener(v -> {
-                if (currentIndex != null) {
-                    onLongClick.onLongClick(null, currentIndex);
-                }
-                return true;
             });
         }
 

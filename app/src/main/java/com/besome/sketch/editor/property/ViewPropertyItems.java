@@ -30,7 +30,6 @@ import a.a.a.Cx;
 import a.a.a.Gx;
 import a.a.a.Kw;
 import a.a.a.Lw;
-import a.a.a.Pw;
 import a.a.a.Vw;
 import a.a.a.cC;
 import a.a.a.jC;
@@ -266,19 +265,19 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
     }
 
     private void a(String key, String value) {
-        Pw pw = (Pw) f.get(key);
-        if (pw == null) {
-            pw = new Pw(getContext(), !b);
-            pw.setOrientationItem(getOrientation());
-            pw.setKey(key);
-            pw.setTag(key);
-            pw.setOnPropertyValueChangeListener(this);
-            f.put(key, pw);
+        PropertyCustomViewItem propertyCustomViewItem = (PropertyCustomViewItem) f.get(key);
+        if (propertyCustomViewItem == null) {
+            propertyCustomViewItem = new PropertyCustomViewItem(getContext(), !b);
+            propertyCustomViewItem.setOrientationItem(getOrientation());
+            propertyCustomViewItem.setKey(key);
+            propertyCustomViewItem.setTag(key);
+            propertyCustomViewItem.setOnPropertyValueChangeListener(this);
+            f.put(key, propertyCustomViewItem);
         }
 
-        pw.setCustomView(jC.b(sc_id).c());
-        pw.setValue(value);
-        addView(pw);
+        propertyCustomViewItem.setCustomView(jC.b(sc_id).c());
+        propertyCustomViewItem.setValue(value);
+        addView(propertyCustomViewItem);
     }
 
     private void a(String key, String value, boolean z, String typeView) {
@@ -757,7 +756,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                 if (stringPairSelectorItem.getKey().equals("property_progressbar_style")) {
                     bean.progressStyle = stringPairSelectorItem.getValue();
                 }
-            } else if (view instanceof Pw listview_item) {
+            } else if (view instanceof PropertyCustomViewItem listview_item) {
                 if (listview_item.getKey().equals("property_custom_view_listview")) {
                     bean.customView = listview_item.getValue();
                 }

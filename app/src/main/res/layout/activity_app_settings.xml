@@ -15,7 +15,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="@string/app_name" />
+                app:title="@string/common_word_settings" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView

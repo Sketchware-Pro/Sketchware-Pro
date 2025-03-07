@@ -48,6 +48,7 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
         var sc_id = getIntent().getStringExtra("sc_id");
         pane = binding.pane;
         pane.setScId(sc_id);
+        pane.updateRootLayout(sc_id, getIntent().getStringExtra("title"));
         pane.setVerticalScrollBarEnabled(true);
         pane.setResourceManager(jC.d(sc_id));
         UI.addSystemWindowInsetToPadding(binding.pane, false, false, false, true);

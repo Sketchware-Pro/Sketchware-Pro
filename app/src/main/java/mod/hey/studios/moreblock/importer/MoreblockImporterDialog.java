@@ -58,7 +58,7 @@ public class MoreblockImporterDialog extends aB {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         binding.recyclerView.setAdapter(adapter);
 
-        b(activity.getString(R.string.common_word_select), v -> {
+        b(Helper.getResString(R.string.common_word_select), v -> {
             MoreBlockCollectionBean selectedBean = adapter.getSelectedItem();
 
             if (selectedBean == null) {
@@ -69,7 +69,7 @@ public class MoreblockImporterDialog extends aB {
             }
         });
 
-        a(activity.getString(R.string.common_word_cancel), Helper.getDialogDismissListener(this));
+        a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(this));
         a(binding.getRoot());
     }
 

@@ -33,11 +33,11 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
     private ProgramInfoBinding binding;
 
     private void addTwoLineItem(int key, int name, int description) {
-        addTwoLineItem(key, getString(name), getString(description));
+        addTwoLineItem(key, Helper.getResString(name), Helper.getResString(description));
     }
 
     private void addTwoLineItem(int key, int name, int description, boolean hideDivider) {
-        addTwoLineItem(key, getString(name), getString(description), hideDivider);
+        addTwoLineItem(key, Helper.getResString(name), Helper.getResString(description), hideDivider);
     }
 
     private void addTwoLineItem(int key, String name, String description) {
@@ -55,11 +55,11 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
     }
 
     private void addSingleLineItem(int key, int name) {
-        addSingleLineItem(key, getString(name));
+        addSingleLineItem(key, Helper.getResString(name));
     }
 
     private void addSingleLineItem(int key, int name, boolean hideDivider) {
-        addSingleLineItem(key, getString(name), hideDivider);
+        addSingleLineItem(key, Helper.getResString(name), hideDivider);
     }
 
     private void addSingleLineItem(int key, String name) {
@@ -119,10 +119,10 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
             if (v instanceof PropertyTwoLineItem) {
                 key = ((PropertyTwoLineItem) v).getKey();
                 switch (key) {
-                    case ITEM_DOCS_LOG -> openUrl(getString(R.string.link_docs_url));
-                    case ITEM_SUGGEST_IDEAS -> openUrl(getString(R.string.link_ideas_url));
-                    case ITEM_TELEGRAM -> openUrl(getString(R.string.link_telegram_invite));
-                    case ITEM_DISCORD -> openUrl(getString(R.string.link_discord_invite));
+                    case ITEM_DOCS_LOG -> openUrl(Helper.getResString(R.string.link_docs_url));
+                    case ITEM_SUGGEST_IDEAS -> openUrl(Helper.getResString(R.string.link_ideas_url));
+                    case ITEM_TELEGRAM -> openUrl(Helper.getResString(R.string.link_telegram_invite));
+                    case ITEM_DISCORD -> openUrl(Helper.getResString(R.string.link_discord_invite));
                 }
             }
         }
@@ -139,7 +139,7 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
         binding.appVersion.setText(GB.e(getApplicationContext()));
         binding.btnReset.setOnClickListener(this::resetDialog);
         binding.btnUpgrade.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.link_github_release)));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Helper.getResString(R.string.link_github_release)));
             startActivity(intent);
         });
 

@@ -41,7 +41,7 @@ import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
 
 import pro.sketchware.R;
-import pro.sketchware.databinding.BlocksManagerBinding;
+import pro.sketchware.databinding.ActivityBlocksManagerBinding;
 import pro.sketchware.databinding.DialogBlockConfigurationBinding;
 import pro.sketchware.databinding.DialogPaletteBinding;
 import pro.sketchware.databinding.PalletCustomviewBinding;
@@ -69,7 +69,7 @@ public class BlocksManager extends BaseAppCompatActivity {
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
     boolean isDialogShowing;
-    private BlocksManagerBinding binding;
+    private ActivityBlocksManagerBinding binding;
     private DialogPaletteBinding dialogBinding;
     private Vibrator vibrator;
     View draggedView;
@@ -77,7 +77,7 @@ public class BlocksManager extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle _savedInstanceState) {
         super.onCreate(_savedInstanceState);
-        binding = BlocksManagerBinding.inflate(getLayoutInflater());
+        binding = ActivityBlocksManagerBinding.inflate(getLayoutInflater());
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         setContentView(binding.getRoot());
@@ -504,7 +504,7 @@ public class BlocksManager extends BaseAppCompatActivity {
             }
         });
 
-        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
+        dialog.a(Helper.getResString(R.string.cancel), v1 -> dialog.dismiss());
         dialog.a(dialogBinding.getRoot());
         dialog.show();
     }

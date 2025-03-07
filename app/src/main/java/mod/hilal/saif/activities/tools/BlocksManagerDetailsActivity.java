@@ -66,7 +66,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.blocks_managers_details);
+        setContentView(R.layout.activity_blocks_manager_details);
 
         background = findViewById(R.id.background);
         block_list = findViewById(R.id.block_list);

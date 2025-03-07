@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -45,8 +46,7 @@ import pro.sketchware.databinding.ActivityIconCreatorBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
-
-public class IconCreatorActivity extends AppCompatActivity {
+public class IconCreatorActivity extends BaseAppCompatActivity {
 
     private static final int REQUEST_CODE_PICK_CROPPED_ICON = 216;
     private static final int REQUEST_CODE_PICK_ICON = 207;
@@ -135,7 +135,7 @@ public class IconCreatorActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityIconCreatorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -553,7 +553,6 @@ public class IconCreatorActivity extends AppCompatActivity {
 
 
     }
-
 
     private String getIconPath(String folder, String fileName) {
         return wq.e() + File.separator + sc_id + File.separator + "temp_icons" + File.separator + folder + File.separator + fileName;

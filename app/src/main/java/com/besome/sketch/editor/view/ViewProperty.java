@@ -149,6 +149,7 @@ public class ViewProperty extends LinearLayout implements Kw {
             if (selectedGroupId == 0) {
                 propertyLayout.setVisibility(VISIBLE);
                 layoutPropertySeeAll.setVisibility(VISIBLE);
+                viewPropertyItems.setProjectFileBean(projectFile);
                 viewPropertyItems.a(sc_id, viewBean);
                 a(viewBean);
                 viewEvent.setVisibility(GONE);
