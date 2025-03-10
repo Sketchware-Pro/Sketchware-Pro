@@ -36,6 +36,8 @@ import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
 import dev.aldi.sayuti.editor.view.palette.IconViewPager;
 import dev.aldi.sayuti.editor.view.palette.IconWaveSideBar;
 import dev.aldi.sayuti.editor.view.palette.IconYoutubePlayer;
+import dev.juez.editor.view.palette.JuezPaletteWidget;
+
 import mod.agus.jcoderz.editor.view.palette.IconAnalogClock;
 import mod.agus.jcoderz.editor.view.palette.IconAutoCompleteTextView;
 import mod.agus.jcoderz.editor.view.palette.IconDatePicker;
@@ -59,6 +61,7 @@ public class PaletteWidget extends LinearLayout {
     private TextView titleLayouts;
     private TextView titleWidgets;
     private CustomScrollView scrollView;
+    private JuezPaletteWidget juezPaletteWidget;
     public MaterialCardView cardView;
 
     public PaletteWidget(Context context) {
@@ -163,6 +166,7 @@ public class PaletteWidget extends LinearLayout {
         titleWidgets.setText(Helper.getResString(R.string.view_panel_title_widgets));
         scrollView = findViewById(R.id.scv);
         cardView = findViewById(R.id.cardView);
+	juezPaletteWidget = new JuezPaletteWidget(context);
     }
 
     public void removeWidgets() {
@@ -215,7 +219,7 @@ public class PaletteWidget extends LinearLayout {
             case "OTPView" -> new IconOTPView(context);
             case "CodeView" -> new IconCodeView(context);
             case "RecyclerView" -> new IconRecyclerView(context);
-            default -> null;
+            default -> juezPaletteWidget.extraWidget(title);
         };
         if (tag != null && !tag.isEmpty()) {
             iconBase.setTag(tag);

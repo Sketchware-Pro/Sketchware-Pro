@@ -80,6 +80,7 @@ import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
 import a.a.a.zB;
+
 import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
 import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
 import dev.aldi.sayuti.editor.view.item.ItemCodeView;
@@ -90,6 +91,8 @@ import dev.aldi.sayuti.editor.view.item.ItemPatternLockView;
 import dev.aldi.sayuti.editor.view.item.ItemViewPager;
 import dev.aldi.sayuti.editor.view.item.ItemWaveSideBar;
 import dev.aldi.sayuti.editor.view.item.ItemYoutubePlayer;
+import dev.juez.editor.view.JuezViewCretor;
+
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.view.item.ItemAnalogClock;
 import mod.agus.jcoderz.editor.view.item.ItemAutoCompleteTextView;
@@ -103,6 +106,7 @@ import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.util.ProjectFile;
+
 import pro.sketchware.R;
 import pro.sketchware.managers.inject.InjectRootLayoutManager;
 import pro.sketchware.utility.FilePathUtil;
@@ -255,6 +259,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     public View createItemView(ViewBean viewBean) {
+        var juezViewCreator = new JuezViewCreator(getContext());
         View item = switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_LAYOUT_LINEAR,
                  ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
@@ -307,7 +312,7 @@ public class ViewPane extends RelativeLayout {
             case ViewBeans.VIEW_TYPE_WIDGET_OTPVIEW -> new ItemOTPView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW -> new ItemCodeView(context);
             case ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW -> new ItemRecyclerView(context);
-            default -> getUnknownItemView(viewBean);
+            default -> juezViewCreator.create(viewBean);
         };
         item.setId(++b);
         item.setTag(viewBean.id);
@@ -315,8 +320,8 @@ public class ViewPane extends RelativeLayout {
         updateItemView(item, viewBean);
         return item;
     }
-
-    private View getUnknownItemView(final ViewBean bean) {
+  
+    public static final View getUnknownItemView(final Context context, final ViewBean bean) {
         bean.type = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
         return new ItemLinearLayout(context);
     }
@@ -401,6 +406,7 @@ public class ViewPane extends RelativeLayout {
         view.setTranslationY(wB.a(getContext(), viewBean.translationY));
         view.setScaleX(viewBean.scaleX);
         view.setScaleY(viewBean.scaleY);
+	view.setEnabled(viewBean.enabled != 0);
         String backgroundResource = viewBean.layout.backgroundResource;
         if (backgroundResource != null) {
             try {
