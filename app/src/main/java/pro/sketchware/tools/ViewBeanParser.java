@@ -166,7 +166,7 @@ public class ViewBeanParser {
                 || type != ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW) {
             // If the prefix is "linear" and the name is different from the className,
             // update the prefix to the lowercase version of className.
-            if (prefix == "linear"
+            if (prefix.equals("linear")
                     && type == ViewBean.VIEW_TYPE_LAYOUT_LINEAR
                     && !name.equals(className)) {
                 prefix = getSnakeCaseId(className);
