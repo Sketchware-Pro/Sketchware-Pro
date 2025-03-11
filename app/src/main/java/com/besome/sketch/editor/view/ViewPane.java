@@ -340,7 +340,6 @@ public class ViewPane extends RelativeLayout {
                 rootLayout = (ViewGroup) rootView;
             }
         }
-        rootLayout.setBackgroundColor(0xffeeeeee);
         addView(rootLayout);
     }
 
