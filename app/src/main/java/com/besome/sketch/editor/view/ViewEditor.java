@@ -625,9 +625,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private void e() {
         if (r == null) return;
         if (isViewAnIconBase(r)) {
-            if (r instanceof uy uyVar) {
+            if (r instanceof uy collectionWidget) {
                 boolean isAdViewUsed = false;
-                for (ViewBean view : uyVar.getData()) {
+                for (ViewBean view : collectionWidget.getData()) {
                     if (view.type == ViewBean.VIEW_TYPE_WIDGET_ADVIEW) {
                         isAdViewUsed = true;
                         break;
@@ -639,7 +639,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 }
 
                 boolean isMapViewUsed = false;
-                for (ViewBean view : uyVar.getData()) {
+                for (ViewBean view : collectionWidget.getData()) {
                     if (view.type == ViewBean.VIEW_TYPE_WIDGET_MAPVIEW) {
                         isMapViewUsed = true;
                         break;
