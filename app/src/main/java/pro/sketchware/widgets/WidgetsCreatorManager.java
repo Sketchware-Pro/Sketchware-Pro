@@ -88,7 +88,7 @@ public class WidgetsCreatorManager {
         try {
             widgetConfigurationsList = getGson().fromJson(
                     FileUtil.readFile(widgetsJsonFilePath),
-                    new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType()
+                    Helper.TYPE_MAP_LIST
             );
             widgetConfigurationsList.removeIf(this::isInvalidWidget);
         } catch (Exception e) {
