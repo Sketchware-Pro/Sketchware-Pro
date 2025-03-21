@@ -258,13 +258,12 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                 CustomDialogAttributeBinding.inflate(getLayoutInflater());
         dialog.setView(attributeBinding.getRoot());
 
+        attributeBinding.inputLayoutRes.setVisibility(View.GONE);
+
         if (type.equals("edit")) {
             String injectionValue = activityInjections.get(position).get("value").toString();
-            attributeBinding.inputRes.setText(
-                    injectionValue.substring(0, injectionValue.indexOf(":")));
             attributeBinding.inputAttr.setText(
-                    injectionValue.substring(
-                            injectionValue.indexOf(":") + 1, injectionValue.indexOf("=")));
+                    injectionValue.substring(0, injectionValue.indexOf("=")));
             attributeBinding.inputValue.setText(
                     injectionValue.substring(
                             injectionValue.indexOf("\"") + 1, injectionValue.length() - 1));
@@ -273,14 +272,11 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
         dialog.setPositiveButton(
                 R.string.common_word_save,
                 (dialog1, which) -> {
-                    String namespaceInput = Helper.getText(attributeBinding.inputRes);
                     String nameInput = Helper.getText(attributeBinding.inputAttr);
                     String valueInput = Helper.getText(attributeBinding.inputValue);
-                    if (!namespaceInput.trim().isEmpty()
-                            && !nameInput.trim().isEmpty()
+                    if (!nameInput.trim().isEmpty()
                             && !valueInput.trim().isEmpty()) {
-                        String newValue =
-                                namespaceInput + ":" + nameInput + "=\"" + valueInput + "\"";
+                        String newValue = nameInput + "=\"" + valueInput + "\"";
                         HashMap<String, Object> map = new HashMap<>();
                         map.put("type", tabSelected);
                         map.put("value", newValue);
