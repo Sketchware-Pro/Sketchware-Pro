@@ -60,6 +60,16 @@ import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.xB;
+import dev.aldi.sayuti.editor.view.palette.IconBottomNavigationView;
+import dev.aldi.sayuti.editor.view.palette.IconCardView;
+import dev.aldi.sayuti.editor.view.palette.IconCollapsingToolbar;
+import dev.aldi.sayuti.editor.view.palette.IconMaterialButton;
+import dev.aldi.sayuti.editor.view.palette.IconRecyclerView;
+import dev.aldi.sayuti.editor.view.palette.IconSwipeRefreshLayout;
+import dev.aldi.sayuti.editor.view.palette.IconTabLayout;
+import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
+import dev.aldi.sayuti.editor.view.palette.IconViewPager;
+import mod.agus.jcoderz.beans.ViewBeans;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 import pro.sketchware.R;
@@ -625,6 +635,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private void e() {
         if (r == null) return;
         if (isViewAnIconBase(r)) {
+            boolean isAppCompatEnabled = jC.c(a).c().isEnabled();
             if (r instanceof uy collectionWidget) {
                 var collectionData = collectionWidget.getData();
                 boolean isAdViewUsed = false;
@@ -650,10 +661,44 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
+                boolean isAppCompatViewUsed = false;
+                for (ViewBean view : collectionData) {
+                    switch (view.type) {
+                        case ViewBeans.VIEW_TYPE_WIDGET_MATERIALBUTTON,
+                             ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW,
+                             ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW,
+                             ViewBeans.VIEW_TYPE_LAYOUT_TABLAYOUT,
+                             ViewBeans.VIEW_TYPE_LAYOUT_VIEWPAGER,
+                             ViewBeans.VIEW_TYPE_LAYOUT_COLLAPSINGTOOLBARLAYOUT,
+                             ViewBeans.VIEW_TYPE_LAYOUT_TEXTINPUTLAYOUT,
+                             ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT,
+                             ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW -> isAppCompatViewUsed = true;
+                    }
+                    if (isAppCompatViewUsed) {
+                        break;
+                    }
+                }
+
+                if (isAppCompatViewUsed && !isAppCompatEnabled) {
+                    bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
+                    return;
+                }
             } else if ((r instanceof IconAdView) && !draggingListener.isAdmobEnabled()) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             } else if ((r instanceof IconMapView) && !draggingListener.isGoogleMapEnabled()) {
+                bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
+                return;
+            } else if (((r instanceof IconMaterialButton)
+                        || (r instanceof IconRecyclerView)
+                        || (r instanceof IconBottomNavigationView)
+                        || (r instanceof IconTabLayout)
+                        || (r instanceof IconViewPager)
+                        || (r instanceof IconCollapsingToolbar)
+                        || (r instanceof IconTextInputLayout)
+                        || (r instanceof IconSwipeRefreshLayout)
+                        || (r instanceof IconCardView))
+                        && !isAppCompatEnabled) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             }
