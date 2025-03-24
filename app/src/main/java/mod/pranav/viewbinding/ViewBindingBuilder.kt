@@ -12,7 +12,7 @@ class ViewBindingBuilder(
     fun generateBindings() {
         inputFiles.forEach { generateBindingForLayoutAndWrite(it) }
     }
-
+    
     /** generate binding and return class code */
     fun generateBindingForLayout(layoutFile: File): String {
         val name = generateFileNameForLayout(layoutFile.nameWithoutExtension)
@@ -23,10 +23,9 @@ class ViewBindingBuilder(
 
         val content = """
 // Generated file. Do not modify.
-package $packageName.databinding;
+package $packageName;
 
 ${generateImports(views, rootView)}
-import $packageName.R;
 
 public final class $name {
     public final ${rootView.type} ${rootView.name};
@@ -87,7 +86,7 @@ ${
 
         return content
     }
-
+    
     /** generate view binding and save in output file */
     private fun generateBindingForLayoutAndWrite(layoutFile: File) {
         val name = generateFileNameForLayout(layoutFile.nameWithoutExtension)

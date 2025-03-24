@@ -218,9 +218,7 @@ public class Jx {
             addImport("android.Manifest");
             addImport("android.content.pm.PackageManager");
         }
-        if (isViewBindingEnabled) {
-            addImport(packageName + ".databinding.*");
-        }
+
         removeExtraImports();
         Collections.sort(imports);
         for (String anImport : imports) {
