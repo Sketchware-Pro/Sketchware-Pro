@@ -184,7 +184,7 @@ public class PaletteWidget extends LinearLayout {
         titleView.setLayoutParams(layoutParams);
         titleView.setText(title);
         titleView.setTextSize(12);
-        titleView.setTextColor(MaterialColors.getColor(titleView, com.google.android.material.R.attr.colorPrimary));
+        titleView.setTextColor(MaterialColors.getColor(titleView, R.attr.colorPrimary));
         target.addView(titleView);
     }
 

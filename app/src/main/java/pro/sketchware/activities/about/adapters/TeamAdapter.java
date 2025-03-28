@@ -72,7 +72,7 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.ViewHolder> {
         }
 
         if (member.isCoreTeamMember()) {
-            advancedCorners(holder.binding.viewLeftline, MaterialColors.getColor(holder.binding.viewLeftline, com.google.android.material.R.attr.colorPrimary));
+            advancedCorners(holder.binding.viewLeftline, MaterialColors.getColor(holder.binding.viewLeftline, R.attr.colorPrimary));
         } else {
             advancedCorners(holder.binding.viewLeftline, MaterialColors.getColor(holder.binding.viewLeftline, R.attr.colorGreen));
         }
