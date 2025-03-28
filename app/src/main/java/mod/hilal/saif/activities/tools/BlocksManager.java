@@ -22,13 +22,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import a.a.a.Zx;
-import a.a.a.aB;
-import a.a.a.xB;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -36,18 +35,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-
-import mod.hey.studios.editor.manage.block.v2.BlockLoader;
-import mod.hey.studios.util.Helper;
-
-import pro.sketchware.R;
-import pro.sketchware.databinding.ActivityBlocksManagerBinding;
-import pro.sketchware.databinding.DialogBlockConfigurationBinding;
-import pro.sketchware.databinding.DialogPaletteBinding;
-import pro.sketchware.databinding.PalletCustomviewBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.PropertiesUtil;
-import pro.sketchware.utility.SketchwareUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -57,6 +44,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import a.a.a.Zx;
+import a.a.a.aB;
+import a.a.a.xB;
+import mod.hey.studios.editor.manage.block.v2.BlockLoader;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ActivityBlocksManagerBinding;
+import pro.sketchware.databinding.DialogBlockConfigurationBinding;
+import pro.sketchware.databinding.DialogPaletteBinding;
+import pro.sketchware.databinding.PalletCustomviewBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.PropertiesUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class BlocksManager extends BaseAppCompatActivity {
 
@@ -81,6 +82,12 @@ public class BlocksManager extends BaseAppCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         setContentView(binding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.background, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
+            return insets;
+        });
 
         initialize();
     }
@@ -184,7 +191,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         String title = Objects.requireNonNull(menuItem.getTitle()).toString();
         if (title.equals("Settings")) {
             showBlockConfigurationDialog();
-        }else{
+        } else {
             return false;
         }
         return super.onOptionsItemSelected(menuItem);
@@ -326,7 +333,7 @@ public class BlocksManager extends BaseAppCompatActivity {
     private void refreshCount() {
         if (pallet_listmap.isEmpty()) {
             binding.paletteCount.setText("No palettes");
-        }else{
+        } else {
             binding.paletteCount.setText(pallet_listmap.size() + " Palettes");
         }
     }
@@ -359,7 +366,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                     HashMap<String, Object> m = all_blocks_list.get(i);
                     m.put("palette", String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) - 1)));
                     newBlocks.add(m);
-                }else{
+                } else {
                     newBlocks.add(all_blocks_list.get(i));
                 }
             }
@@ -383,7 +390,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
             if (paletteValue == f) {
                 block.put("palette", TEMP_PALETTE);
-            }else if (paletteValue == s) {
+            } else if (paletteValue == s) {
                 block.put("palette", String.valueOf((long) f));
             }
         }
@@ -433,10 +440,10 @@ public class BlocksManager extends BaseAppCompatActivity {
         dialog.b(!isEditing ? "Create a new palette" : "Edit palette");
 
         dialogBinding = DialogPaletteBinding.inflate(getLayoutInflater());
-        
+
         if (isEditing) {
             dialogBinding.nameEditText.setText(oldName);
-            dialogBinding.colorEditText.setText(oldColor.replace("#",""));
+            dialogBinding.colorEditText.setText(oldColor.replace("#", ""));
         }
 
         dialogBinding.openColorPalette.setOnClickListener(v1 -> {
@@ -446,28 +453,28 @@ public class BlocksManager extends BaseAppCompatActivity {
                 public void a(int colorInt) {
                     dialogBinding.colorEditText.setText(String.format("%06X", colorInt & 0x00FFFFFF));
                 }
-                
+
                 @Override
                 public void a(String var1, int var2) {
-                
+
                 }
             });
             zx.showAtLocation(dialogBinding.openColorPalette, Gravity.CENTER, 0, 0);
         });
-    
+
         dialog.a(dialogBinding.getRoot());
 
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             String nameInput = Objects.requireNonNull(dialogBinding.nameEditText.getText()).toString();
             String colorInput = Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
-            
+
             if (nameInput.isEmpty()) {
                 SketchwareUtil.toast("Name cannot be empty", Toast.LENGTH_SHORT);
                 return;
             }
             // add hash for the color 
             colorInput = "#" + colorInput;
-            
+
             if (!PropertiesUtil.isHexColor(colorInput)) {
                 SketchwareUtil.toast("Please enter a valid HEX color", Toast.LENGTH_SHORT);
                 return;
@@ -485,14 +492,14 @@ public class BlocksManager extends BaseAppCompatActivity {
                         FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
                         Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(pallet_listmap.size() - 1);
                         readSettings();
-                    }else{
+                    } else {
                         pallet_listmap.add(insertAtPosition, map);
                         FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
                         readSettings();
                         Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(insertAtPosition);
                         insertBlocksAt(insertAtPosition + 9);
                     }
-                }else{
+                } else {
                     pallet_listmap.get(oldPosition).put("name", nameInput);
                     pallet_listmap.get(oldPosition).put("color", colorInput);
                     FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
@@ -508,8 +515,8 @@ public class BlocksManager extends BaseAppCompatActivity {
         dialog.a(dialogBinding.getRoot());
         dialog.show();
     }
-    
-    
+
+
     private boolean isItInTrash(View draggedView, View trash) {
         if (draggedView == null) return false;
 
