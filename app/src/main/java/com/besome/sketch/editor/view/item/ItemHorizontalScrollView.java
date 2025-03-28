@@ -191,7 +191,7 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
         }
         focusedView.getDrawingRect(rect);
         offsetDescendantRectToMyCoords(focusedView, rect);
-        a(a(rect));
+        scrollHorizontally(calculateScrollOffsetForTargetRect(rect));
     }
 
     @Override
@@ -263,44 +263,49 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
         return rect.right + index >= getScrollX() && rect.left - index <= getScrollX() + getWidth();
     }
 
-    private void a(int i) {
+    private void scrollHorizontally(int i) {
         if (i != 0) {
             scrollBy(i, 0);
         }
     }
 
-    private int a(Rect targetRect) {
-        int i;
-        int i2;
+    private int calculateScrollOffsetForTargetRect(Rect targetRect) {
         if (getChildCount() == 0) {
             return 0;
         }
+
         int width = getWidth();
         int currentScrollX = getScrollX();
         int rightScrollBound = currentScrollX + width;
         int fadeLength = getHorizontalFadingEdgeLength();
+
+        View firstChild = getChildAt(0);
+        if (firstChild == null) {
+            return 0;
+        }
+
         if (targetRect.left > 0) {
             currentScrollX += fadeLength;
         }
-        if (targetRect.right < getChildAt(0).getWidth()) {
+        if (targetRect.right < firstChild.getWidth()) {
             rightScrollBound -= fadeLength;
         }
         if (targetRect.right > rightScrollBound && targetRect.left > currentScrollX) {
-            if (targetRect.width() > width) {
-                i2 = targetRect.left - currentScrollX;
-            } else {
-                i2 = targetRect.right - rightScrollBound;
-            }
-            return Math.min(i2, getChildAt(0).getRight() - rightScrollBound);
+            int scrollAmount = (targetRect.width() > width)
+                    ? targetRect.left - currentScrollX
+                    : targetRect.right - rightScrollBound;
+
+            return Math.min(scrollAmount, Math.max(0, firstChild.getRight() - rightScrollBound));
         }
-        if (targetRect.left >= currentScrollX || targetRect.right >= rightScrollBound) {
-            return 0;
+
+        if (targetRect.left < currentScrollX && targetRect.right < rightScrollBound) {
+            int scrollAmount = (targetRect.width() > width)
+                    ? -(rightScrollBound - targetRect.right)
+                    : -(currentScrollX - targetRect.left);
+
+            return Math.max(scrollAmount, -currentScrollX);
         }
-        if (targetRect.width() > width) {
-            i = -(rightScrollBound - targetRect.right);
-        } else {
-            i = -(currentScrollX - targetRect.left);
-        }
-        return Math.max(i, -getScrollX());
+
+        return 0;
     }
 }
