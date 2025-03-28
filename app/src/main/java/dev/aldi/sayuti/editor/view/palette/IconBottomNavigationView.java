@@ -3,6 +3,9 @@ package dev.aldi.sayuti.editor.view.palette;
 import android.content.Context;
 import android.view.ViewGroup;
 
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
 import pro.sketchware.R;
@@ -15,6 +18,7 @@ public class IconBottomNavigationView extends IconBase {
         super(context);
         setWidgetImage(R.drawable.ic_mtrl_bottom_navigation);
         setWidgetName("BottomNavigationView");
+        ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> WindowInsetsCompat.CONSUMED);
     }
 
     @Override
