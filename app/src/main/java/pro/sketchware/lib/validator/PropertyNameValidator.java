@@ -1,4 +1,4 @@
-package a.a.a;
+package pro.sketchware.lib.validator;
 
 import android.content.Context;
 
@@ -7,7 +7,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class _B extends MB {
+import a.a.a.MB;
+import a.a.a.xB;
+
+public class PropertyNameValidator extends MB {
 
     private final String[] reservedNames;
     private final String[] reservedMethodNames;
@@ -15,9 +18,9 @@ public class _B extends MB {
     private final String value;
     private final Pattern pattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*");
 
-    public _B(Context context, TextInputLayout textInputLayout,
-              String[] reservedNames, String[] reservedMethodNames,
-              ArrayList<String> fileNames, String value) {
+    public PropertyNameValidator(Context context, TextInputLayout textInputLayout,
+                                 String[] reservedNames, String[] reservedMethodNames,
+                                 ArrayList<String> fileNames, String value) {
 
         super(context, textInputLayout);
         this.reservedNames = reservedNames;

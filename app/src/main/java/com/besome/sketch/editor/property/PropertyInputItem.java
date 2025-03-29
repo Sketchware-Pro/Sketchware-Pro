@@ -55,7 +55,7 @@ import a.a.a.Kw;
 import a.a.a.OB;
 import a.a.a.SB;
 import a.a.a.TB;
-import a.a.a._B;
+import pro.sketchware.lib.validator.PropertyNameValidator;
 import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.lC;
@@ -210,7 +210,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), "widget ID"));
 
         binding.edInput.setSingleLine();
-        _B validator = new _B(context, binding.tiInput, uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
+        PropertyNameValidator validator = new PropertyNameValidator(context, binding.tiInput, uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
         validator.a(value);
         dialog.a(binding.getRoot());
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
