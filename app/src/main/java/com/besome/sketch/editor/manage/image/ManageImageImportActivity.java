@@ -271,10 +271,10 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
             }
             Glide.with(getApplicationContext())
                     .load(projectResourceBean.resFullName)
-                    .asBitmap()
+                    //.asBitmap()
                     .centerCrop()
                     .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(viewHolder.img));
+                    .into(new BitmapImageViewTarget(viewHolder.img).getView());
             viewHolder.tv_name.setText(selectedCollections.get(position).resName);
         }
 
@@ -292,11 +292,11 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
 
     private void showPreview(int index) {
         Glide.with(getApplicationContext())
-                .load(selectedCollections.get(index).resFullName)
                 .asBitmap()
+                .load(selectedCollections.get(index).resFullName)
                 .centerCrop()
                 .error(R.drawable.ic_remove_grey600_24dp)
-                .into(new BitmapImageViewTarget(img));
+                .into(new BitmapImageViewTarget(img).getView());
     }
 
     private boolean isNameInUseByProjectImage(String name) {

@@ -662,11 +662,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
 
             Glide.with(getApplicationContext())
-                    .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName)
                     .asBitmap()
+                    .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName)
                     .centerCrop()
                     .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(holder.image));
+                    .into(new BitmapImageViewTarget(holder.image).getView());
 
             holder.name.setText(bean.resName);
             holder.checkBox.setChecked(bean.isSelected);

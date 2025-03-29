@@ -111,6 +111,8 @@ dependencies {
     implementation "com.airbnb.android:lottie:6.5.2"
     implementation "com.google.android.flexbox:flexbox:3.0.0"
 
+    implementation "com.github.bumptech.glide:glide:4.16.0"
+
     implementation "androidx.annotation:annotation:1.9.1"
     implementation "com.android.tools:annotations:31.9.1"
     implementation "com.google.guava:guava:33.3.1-jre"

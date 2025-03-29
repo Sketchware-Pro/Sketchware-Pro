@@ -24,33 +24,36 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
-import pro.sketchware.activities.importicon.ImportIconActivity;
 import com.besome.sketch.editor.manage.image.AddImageActivity;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
+import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import pro.sketchware.R;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import pro.sketchware.R;
+import pro.sketchware.activities.importicon.ImportIconActivity;
 import pro.sketchware.databinding.FrManageImageListBinding;
 import pro.sketchware.databinding.ManageImageListItemBinding;
-import pro.sketchware.utility.SvgUtils;
 import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.SvgUtils;
 
 public class pu extends qA {
 
@@ -446,18 +449,28 @@ public class pu extends qA {
                 svgUtils.loadImage(holder.binding.img, image.isNew ? image.resFullName : fpu.getSvgFullPath(sc_id, image.resName));
             } else {
                 Glide.with(requireActivity())
+                        .asBitmap()
                         .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
                                 : images.get(position).resFullName)
-                        .asBitmap()
+                        .transform(new BitmapTransformation() {
+
+                            final String ID = "my-transformation";
+                            final byte[] ID_BYTES =  ID.getBytes(StandardCharsets.UTF_8);
+
+                            @Override
+                            protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
+                                return iB.a(toTransform, image.rotate, image.flipHorizontal, image.flipVertical);
+                            }
+
+                            @Override
+                            public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+                                messageDigest.update(ID_BYTES);
+                            }
+                        })
                         .centerCrop()
                         .signature(kC.n())
                         .error(R.drawable.ic_remove_grey600_24dp)
-                        .into(new BitmapImageViewTarget(holder.binding.img) {
-                            @Override
-                            public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                                super.onResourceReady(iB.a(bitmap, image.rotate, image.flipHorizontal, image.flipVertical), glideAnimation);
-                            }
-                        });
+                        .into(holder.binding.img);
             }
         }
 

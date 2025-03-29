@@ -173,11 +173,11 @@ public class fu extends qA implements View.OnClickListener {
             holder.binding.chkSelect.setVisibility(View.VISIBLE);
             holder.binding.imgNinePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
             Glide.with(requireActivity())
-                    .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + image.resFullName)
                     .asBitmap()
+                    .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + image.resFullName)
                     .centerCrop()
                     .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(holder.binding.img));
+                    .into(new BitmapImageViewTarget(holder.binding.img).getView());
             holder.binding.tvImageName.setText(image.resName);
             holder.binding.chkSelect.setChecked(image.isSelected);
         }
