@@ -100,7 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="This will enable ViewBinding in your project. Note: It will require changes on older projects"
+                        android:text="This will enable ViewBinding in your project. Note: Manual changes may be required for widgets used in ASD block"
                         android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:textColor="?attr/colorOnSurfaceVariant" />
 

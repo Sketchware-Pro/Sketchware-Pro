@@ -1665,7 +1665,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         RadioButton radioButton = new RadioButton(this);
         radioButton.setText(type + " : " + id);
-        radioButton.setTag(isViewBindingEnabled ? "binding." + id : id);
+        radioButton.setTag(id);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (wB.a(this, 1.0f) * 40.0f));
         radioButton.setGravity(Gravity.CENTER | Gravity.LEFT);
         radioButton.setLayoutParams(layoutParams);
