@@ -30,81 +30,54 @@ public class _B extends MB {
         String trimmedLowerName = charSequence.toString().trim().toLowerCase();
         if (trimmedLowerName.length() < 1) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 2131625433, 1));
+            b.setError(xB.b().a(a, 0x7f0e05d9, 1));
             d = false;
-        } else if (trimmedLowerName.length() > 100) {
+            return;
+        }
+        if (trimmedLowerName.length() > 100) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 2131625432, 100));
+            b.setError(xB.b().a(a, 0x7f0e05d8, 100));
             d = false;
-        } else {
-            String var6;
-            if (value != null && value.length() > 0 && trimmedLowerName.equals(value.toLowerCase())) {
-                b.setErrorEnabled(false);
-                d = true;
-            } else if (fileNames.contains(trimmedLowerName)) {
+            return;
+        }
+        if (value != null && value.length() > 0 && trimmedLowerName.equals(value.toLowerCase())) {
+            b.setErrorEnabled(false);
+            d = true;
+            return;
+        }
+        if (fileNames.contains(trimmedLowerName)) {
+            b.setErrorEnabled(true);
+            b.setError(xB.b().a(a, 0x7f0e03f6));
+            d = false;
+            return;
+        }
+        for (String reservedMethodName : reservedMethodNames) {
+            if (trimmedLowerName.equals(reservedMethodName)) {
                 b.setErrorEnabled(true);
-                b.setError(xB.b().a(a, 2131624950));
+                b.setError(xB.b().a(a, 0x7f0e03f6));
                 d = false;
-            } else {
-                before = reservedMethodNames.length;
-                start = 0;
-
-                while (true) {
-                    if (start >= before) {
-                        start = 0;
-                        break;
-                    }
-
-                    if (trimmedLowerName.equals(((Object[]) reservedMethodNames)[start])) {
-                        start = 1;
-                        break;
-                    }
-
-                    ++start;
-                }
-
-                if (start) {
-                    b.setErrorEnabled(true);
-                    b.setError(xB.b().a(a, 2131624950));
-                    d = false;
-                } else {
-                    int counter = 0;
-
-                    while (true) {
-                        if (counter >= reservedNames.length) {
-                            counter = 0;
-                            break;
-                        }
-
-                        if (trimmedLowerName.equals(reservedNames[counter])) {
-                            counter = 1;
-                            break;
-                        }
-
-                        ++counter;
-                    }
-
-                    if (counter) {
-                        b.setErrorEnabled(true);
-                        b.setError(xB.b().a(a, 0x7f0e0617));
-                        d = false;
-                    } else if (!Character.isLetter(trimmedLowerName.charAt(0))) {
-                        b.setErrorEnabled(true);
-                        b.setError(xB.b().a(a, 2131625497));
-                        d = false;
-                    } else {
-                        if (pattern.matcher(charSequence).matches()) {
-                            b.setErrorEnabled(false);
-                            d = true;
-                        } else {
-                            b.setErrorEnabled(true);
-                            b.setError(xB.b().a(a, 2131625436));
-                            d = false;
-                        }
-
-                    }
-                }
+                return;
             }
+        }
+        for (String reservedName : reservedNames) {
+            if (trimmedLowerName.equals(reservedName)) {
+                b.setErrorEnabled(true);
+                b.setError(xB.b().a(a, 0x7f0e0617));
+                d = false;
+                return;
+            }
+        }
+        if (!Character.isLetter(trimmedLowerName.charAt(0))) {
+            b.setErrorEnabled(true);
+            b.setError(xB.b().a(a, 0x7f0e0619));
+            d = false;
+        } else if (pattern.matcher(charSequence).matches()) {
+            b.setErrorEnabled(false);
+            d = true;
+        } else {
+            b.setErrorEnabled(true);
+            b.setError(xB.b().a(a, 0x7f0e05dc));
+            d = false;
         }
     }
 }
