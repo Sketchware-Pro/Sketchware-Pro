@@ -34,7 +34,7 @@ public class Lx {
     /**
      * @return Content of a <code>build.gradle</code> file for the module ':app', with indentation
      */
-    public static String getBuildGradleString(int compileSdkVersion, int minSdkVersion, String targetSdkVersion, jq metadata) {
+    public static String getBuildGradleString(int compileSdkVersion, int minSdkVersion, String targetSdkVersion, jq metadata, boolean isViewBindingEnabled) {
         StringBuilder content = new StringBuilder("plugins {\r\n" +
                 "id 'com.android.application'\r\n" +
                 "}\r\n" +
@@ -75,8 +75,13 @@ public class Lx {
                 .append("minifyEnabled false\r\n")
                 .append("proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n")
                 .append("}\r\n")
-                .append("}\r\n")
-                .append("}\r\n")
+                .append("}\r\n");
+
+        if (isViewBindingEnabled) {
+            content.append("buildFeatures {\r\n viewBinding true\r\n}\r\n");
+        }
+
+        content.append("}\r\n")
                 .append("\r\n")
                 .append("dependencies {\r\n")
                 .append("implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n");

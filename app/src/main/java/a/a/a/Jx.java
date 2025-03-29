@@ -166,7 +166,7 @@ public class Jx {
     /**
      * @return Generated Java code of the current View (not Widget)
      */
-    public String generateCode() {
+    public String generateCode(boolean exportingProject) {
         boolean isDialogFragment = projectFileBean.fileName.contains("_dialog_fragment");
         boolean isBottomDialogFragment = projectFileBean.fileName.contains("_bottomdialog_fragment");
         boolean isFragment = projectFileBean.fileName.contains("_fragment");
@@ -217,6 +217,9 @@ public class Jx {
             }
             addImport("android.Manifest");
             addImport("android.content.pm.PackageManager");
+        }
+        if (exportingProject && isViewBindingEnabled) {
+            addImport(packageName + ".databinding.*");
         }
 
         removeExtraImports();
