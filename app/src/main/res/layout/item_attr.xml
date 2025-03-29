@@ -1,0 +1,129 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    style="?attr/materialCardViewFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="75dp"
+    android:layout_margin="4dp"
+    app:strokeWidth="0.5dp"
+    app:cardBackgroundColor="?attr/colorSurfaceContainerHighest">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:rotation="45"
+            android:scaleY="400">
+
+            <LinearLayout
+                android:id="@+id/light_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                tools:background="?colorPrimary">
+
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                app:dividerThickness="0.5dp" />
+
+            <LinearLayout
+                android:id="@+id/dark_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                tools:background="?colorOnPrimary">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/light_ttl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:padding="8dp"
+                android:text="@string/settings_appearance_theme_light"
+                tools:textColor="?colorOnPrimary" />
+
+            <TextView
+                android:id="@+id/dark_hex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:padding="8dp"
+                tools:text="#FFFFFF"
+                tools:textColor="?colorPrimary" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/light_hex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:padding="8dp"
+                tools:text="#0000FF"
+                tools:textColor="?colorOnPrimary" />
+
+            <TextView
+                android:id="@+id/dark_ttl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:padding="8dp"
+                android:text="@string/settings_appearance_theme_dark"
+                tools:textColor="?colorPrimary" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvAttrName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:shadowColor="@android:color/black"
+            android:shadowRadius="3"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            tools:text="colorOnSurface" />
+
+        <ImageView
+            android:id="@+id/checked_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="8dp"
+            android:visibility="gone"
+            app:srcCompat="@drawable/checked_white_32"
+            tools:visibility="visible" />
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
