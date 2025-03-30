@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.manage.font;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,27 +14,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ProjectResourceBean;
-import com.besome.sketch.editor.manage.font.ManageFontActivity;
-import com.besome.sketch.editor.manage.font.ManageFontImportActivity;
 
 import java.io.File;
 import java.util.ArrayList;
 
+import a.a.a.Np;
+import a.a.a.oB;
+import a.a.a.qA;
+import a.a.a.wq;
 import mod.hey.studios.util.Helper;
-
 import pro.sketchware.R;
+import pro.sketchware.databinding.FrManageFontListBinding;
 import pro.sketchware.databinding.ManageFontBinding;
 import pro.sketchware.databinding.ManageFontListItemBinding;
-import pro.sketchware.databinding.FrManageFontListBinding;
 
-public class St extends qA {
-
-    private FrManageFontListBinding binding;
+public class FontManagerFragment extends qA {
 
     public String sc_id;
     public fontAdapter adapter;
     public String dirPath = "";
     public ArrayList<ProjectResourceBean> projectResourceBeans;
+    private FrManageFontListBinding binding;
     private ManageFontBinding actBinding;
 
     public void processProjectResources(ArrayList<ProjectResourceBean> resourceBeans) {
