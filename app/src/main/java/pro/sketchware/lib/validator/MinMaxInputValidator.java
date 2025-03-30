@@ -1,4 +1,4 @@
-package a.a.a;
+package pro.sketchware.lib.validator;
 
 import android.content.Context;
 import android.text.Editable;
@@ -8,17 +8,19 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Locale;
 
-public class TB extends MB {
+import a.a.a.MB;
+
+public class MinMaxInputValidator extends MB {
     public int minValue;
     public int maxValue;
 
-    public TB(Context context, TextInputLayout textInputLayout, int minValue, int maxValue) {
+    public MinMaxInputValidator(Context context, TextInputLayout textInputLayout, int minValue, int maxValue) {
         super(context, textInputLayout);
         this.minValue = minValue;
         this.maxValue = maxValue;
-        super.c = textInputLayout.getEditText();
-        super.c.setFilters(new InputFilter[]{this});
-        super.c.addTextChangedListener(this);
+        c = textInputLayout.getEditText();
+        c.setFilters(new InputFilter[]{this});
+        c.addTextChangedListener(this);
     }
 
     @Override
@@ -29,21 +31,21 @@ public class TB extends MB {
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         String inputString = s.toString();
         if (inputString.isEmpty()) {
-            super.b.setError(String.format(Locale.US, "%d ~ %d", minValue, maxValue));
-            super.d = false;
+            b.setError(String.format(Locale.US, "%d ~ %d", minValue, maxValue));
+            d = false;
         } else {
             try {
                 int inputNumber = Integer.parseInt(inputString);
                 if (inputNumber >= minValue && inputNumber <= maxValue) {
-                    super.b.setError(null);
-                    super.d = true;
+                    b.setError(null);
+                    d = true;
                 } else {
-                    super.b.setError(String.format(Locale.US, "%d ~ %d", minValue, maxValue));
-                    super.d = false;
+                    b.setError(String.format(Locale.US, "%d ~ %d", minValue, maxValue));
+                    d = false;
                 }
             } catch (NumberFormatException e) {
-                super.b.setError(String.format(Locale.US, "%d ~ %d", minValue, maxValue));
-                super.d = false;
+                b.setError(String.format(Locale.US, "%d ~ %d", minValue, maxValue));
+                d = false;
             }
         }
     }

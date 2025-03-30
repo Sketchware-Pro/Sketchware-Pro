@@ -9,14 +9,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import pro.sketchware.R;
-
 import a.a.a.Kw;
-import a.a.a.TB;
 import a.a.a.aB;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.lib.validator.MinMaxInputValidator;
 
 @SuppressLint("ViewConstructor")
 public class PropertySizeItem extends RelativeLayout implements View.OnClickListener {
@@ -109,7 +108,7 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         dialog.a(icon);
         View view = wB.a(getContext(), R.layout.property_popup_input_size);
         EditText input = view.findViewById(R.id.et_input);
-        TB validator = new TB(context, view.findViewById(R.id.ti_input), 0, 999);
+        MinMaxInputValidator validator = new MinMaxInputValidator(context, view.findViewById(R.id.ti_input), 0, 999);
         validator.a(String.valueOf(value));
         dialog.a(view);
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {

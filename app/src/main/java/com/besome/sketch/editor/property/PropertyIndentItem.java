@@ -13,13 +13,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import a.a.a.Kw;
-import a.a.a.TB;
 import a.a.a.aB;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupInputIndentBinding;
+import pro.sketchware.lib.validator.MinMaxInputValidator;
 
 @SuppressLint("ViewConstructor")
 public class PropertyIndentItem extends RelativeLayout implements View.OnClickListener {
@@ -147,11 +147,11 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         binding.tiAll.setHint(String.format(Helper.getResString(R.string.property_enter_value), propertyType.toLowerCase()));
         binding.chkPtyAll.setText(String.format("%s on all sides", propertyType));
 
-        TB ti_all = new TB(context, binding.tiAll, 0, 999);
-        TB ti_left = new TB(context, binding.tiLeft, 0, 999);
-        TB ti_right = new TB(context, binding.tiRight, 0, 999);
-        TB ti_top = new TB(context, binding.tiTop, 0, 999);
-        TB ti_bottom = new TB(context, binding.tiBottom, 0, 999);
+        MinMaxInputValidator ti_all = new MinMaxInputValidator(context, binding.tiAll, 0, 999);
+        MinMaxInputValidator ti_left = new MinMaxInputValidator(context, binding.tiLeft, 0, 999);
+        MinMaxInputValidator ti_right = new MinMaxInputValidator(context, binding.tiRight, 0, 999);
+        MinMaxInputValidator ti_top = new MinMaxInputValidator(context, binding.tiTop, 0, 999);
+        MinMaxInputValidator ti_bottom = new MinMaxInputValidator(context, binding.tiBottom, 0, 999);
 
         ti_left.a(String.valueOf(j));
         ti_top.a(String.valueOf(k));
@@ -199,21 +199,21 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                 ti_bottom.a(Helper.getText(binding.etAll));
             }
         });
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.tvDpAll.setVisibility(View.GONE);
             binding.tvDpBottom.setVisibility(View.GONE);
             binding.tvDpLeft.setVisibility(View.GONE);
             binding.tvDpRight.setVisibility(View.GONE);
             binding.tvDpTop.setVisibility(View.GONE);
-            
+
             binding.tiAll.setSuffixText("dp");
             binding.tiBottom.setSuffixText("dp");
             binding.tiLeft.setSuffixText("dp");
             binding.tiRight.setSuffixText("dp");
             binding.tiTop.setSuffixText("dp");
         }
-        
+
         dialog.a(view);
         dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             if (binding.chkPtyAll.isChecked()) {
