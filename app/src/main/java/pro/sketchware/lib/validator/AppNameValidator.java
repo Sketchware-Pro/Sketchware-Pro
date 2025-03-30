@@ -1,4 +1,4 @@
-package a.a.a;
+package pro.sketchware.lib.validator;
 
 import android.content.Context;
 
@@ -6,13 +6,15 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.regex.Pattern;
 
+import a.a.a.MB;
+import a.a.a.xB;
 import pro.sketchware.R;
 
-public class LB extends MB {
+public class AppNameValidator extends MB {
 
     private static final Pattern APP_NAME_PATTERN = Pattern.compile(".*[&\"'<>].*");
 
-    public LB(Context context, TextInputLayout textInputLayout) {
+    public AppNameValidator(Context context, TextInputLayout textInputLayout) {
         super(context, textInputLayout);
     }
 
