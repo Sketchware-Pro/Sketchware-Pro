@@ -1,17 +1,5 @@
 package com.besome.sketch.editor.event;
 
-import a.a.a.Ox;
-import a.a.a.bB;
-import a.a.a.dt;
-import a.a.a.gB;
-import a.a.a.jC;
-import a.a.a.jq;
-import a.a.a.mB;
-import a.a.a.oq;
-import a.a.a.rs;
-import a.a.a.wB;
-import a.a.a.xB;
-
 import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,13 +24,24 @@ import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.makeblock.MoreBlockBuilderView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import pro.sketchware.R;
-import pro.sketchware.utility.InjectAttributeHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+
+import a.a.a.Ox;
+import a.a.a.bB;
+import a.a.a.gB;
+import a.a.a.jC;
+import a.a.a.jq;
+import a.a.a.mB;
+import a.a.a.oq;
+import a.a.a.rs;
+import a.a.a.wB;
+import a.a.a.xB;
+import pro.sketchware.R;
 
 public class AddEventActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ArrayList<EventBean> addableDrawerViewEvents;
@@ -52,7 +51,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
     private Button cancel_button;
     private int categoryIndex;
     private TextView empty_message;
-    private dt moreBlockView;
+    private MoreBlockBuilderView moreBlockView;
     private String sc_id;
     private ProjectFileBean projectFile;
     private CategoryAdapter categoryAdapter;
@@ -296,7 +295,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         cancel_button = findViewById(R.id.cancel_button);
         empty_message = findViewById(R.id.empty_message);
         moreblock_layout = findViewById(R.id.moreblock_layout);
-        moreBlockView = new dt(this);
+        moreBlockView = new MoreBlockBuilderView(this);
         moreblock_layout.addView(moreBlockView);
         moreblock_layout.setVisibility(View.GONE);
         add_button.setOnClickListener(this);
@@ -361,65 +360,6 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         private ArrayList<EventBean> events = new ArrayList<>();
         private boolean e;
 
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public final LinearLayout events_preview;
-            public final ImageView img_icon;
-            public final TextView tv_target_type;
-            public final TextView tv_sep;
-            public final TextView tv_target_id;
-            public final TextView tv_event_name;
-            public final CheckBox checkbox;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                events_preview = itemView.findViewById(R.id.events_preview);
-                img_icon = itemView.findViewById(R.id.img_icon);
-                tv_target_type = itemView.findViewById(R.id.tv_target_type);
-                tv_sep = itemView.findViewById(R.id.tv_sep);
-                tv_target_id = itemView.findViewById(R.id.tv_target_id);
-                tv_event_name = itemView.findViewById(R.id.tv_event_name);
-                checkbox = itemView.findViewById(R.id.checkbox);
-                itemView.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        lastSelectedEvent = getLayoutPosition();
-                        EventBean event = categories.get(categoryAdapter.lastSelectedCategory).get(lastSelectedEvent);
-                        if (event.isSelected) {
-                            event.isSelected = false;
-                            eventsToAdd.remove(event);
-                            l();
-                            eventsToAddAdapter.notifyItemRemoved(eventsToAddAdapter.getItemCount());
-                        } else {
-                            event.isSelected = true;
-                            eventsToAdd.add(event);
-                            l();
-                            eventsToAddAdapter.notifyItemInserted(eventsToAddAdapter.getItemCount());
-                        }
-                        if (!e) {
-                            notifyItemChanged(lastSelectedEvent);
-                        }
-                    }
-                });
-                checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    lastSelectedEvent = getLayoutPosition();
-                    EventBean event = categories.get(categoryAdapter.lastSelectedCategory).get(lastSelectedEvent);
-                    if (!event.isSelected && isChecked) {
-                        event.isSelected = true;
-                        eventsToAdd.add(event);
-                        l();
-                        eventsToAddAdapter.notifyItemInserted(eventsToAddAdapter.getItemCount());
-                    } else if (event.isSelected && !isChecked) {
-                        event.isSelected = false;
-                        eventsToAdd.remove(event);
-                        eventsToAddAdapter.notifyItemRemoved(eventsToAddAdapter.getItemCount());
-                        l();
-                    }
-                    if (!e) {
-                        notifyItemChanged(lastSelectedEvent);
-                    }
-                });
-            }
-        }
-
         public EventAdapter() {
         }
 
@@ -483,42 +423,69 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             }
             this.events = events;
         }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final LinearLayout events_preview;
+            public final ImageView img_icon;
+            public final TextView tv_target_type;
+            public final TextView tv_sep;
+            public final TextView tv_target_id;
+            public final TextView tv_event_name;
+            public final CheckBox checkbox;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                events_preview = itemView.findViewById(R.id.events_preview);
+                img_icon = itemView.findViewById(R.id.img_icon);
+                tv_target_type = itemView.findViewById(R.id.tv_target_type);
+                tv_sep = itemView.findViewById(R.id.tv_sep);
+                tv_target_id = itemView.findViewById(R.id.tv_target_id);
+                tv_event_name = itemView.findViewById(R.id.tv_event_name);
+                checkbox = itemView.findViewById(R.id.checkbox);
+                itemView.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        lastSelectedEvent = getLayoutPosition();
+                        EventBean event = categories.get(categoryAdapter.lastSelectedCategory).get(lastSelectedEvent);
+                        if (event.isSelected) {
+                            event.isSelected = false;
+                            eventsToAdd.remove(event);
+                            l();
+                            eventsToAddAdapter.notifyItemRemoved(eventsToAddAdapter.getItemCount());
+                        } else {
+                            event.isSelected = true;
+                            eventsToAdd.add(event);
+                            l();
+                            eventsToAddAdapter.notifyItemInserted(eventsToAddAdapter.getItemCount());
+                        }
+                        if (!e) {
+                            notifyItemChanged(lastSelectedEvent);
+                        }
+                    }
+                });
+                checkbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    lastSelectedEvent = getLayoutPosition();
+                    EventBean event = categories.get(categoryAdapter.lastSelectedCategory).get(lastSelectedEvent);
+                    if (!event.isSelected && isChecked) {
+                        event.isSelected = true;
+                        eventsToAdd.add(event);
+                        l();
+                        eventsToAddAdapter.notifyItemInserted(eventsToAddAdapter.getItemCount());
+                    } else if (event.isSelected && !isChecked) {
+                        event.isSelected = false;
+                        eventsToAdd.remove(event);
+                        eventsToAddAdapter.notifyItemRemoved(eventsToAddAdapter.getItemCount());
+                        l();
+                    }
+                    if (!e) {
+                        notifyItemChanged(lastSelectedEvent);
+                    }
+                });
+            }
+        }
     }
 
     private class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
         private int lastSelectedCategory = -1;
-
-        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            public final LinearLayout container;
-            public final ImageView img_icon;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                img_icon = itemView.findViewById(R.id.img_icon);
-                container = itemView.findViewById(R.id.container);
-                itemView.setOnClickListener(this);
-            }
-
-            @Override
-            public void onClick(View v) {
-                if (getLayoutPosition() != -1) {
-                    int layoutPosition = getLayoutPosition();
-                    if (layoutPosition != lastSelectedCategory) {
-                        lastSelectedCategory = getLayoutPosition();
-                        notifyDataSetChanged();
-                        tv_category.setText(rs.a(getApplicationContext(), lastSelectedCategory));
-                        if (lastSelectedCategory == 4) {
-                            moreblock_layout.setVisibility(View.VISIBLE);
-                            empty_message.setVisibility(View.GONE);
-                        } else {
-                            moreblock_layout.setVisibility(View.GONE);
-                            eventAdapter.setEvents(categories.get(lastSelectedCategory));
-                            eventAdapter.notifyDataSetChanged();
-                        }
-                    }
-                }
-            }
-        }
 
         public CategoryAdapter() {
         }
@@ -553,24 +520,41 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         public int getItemCount() {
             return categories.size();
         }
-    }
 
-    private class EventsToAddAdapter extends RecyclerView.Adapter<EventsToAddAdapter.ViewHolder> {
-        private static class ViewHolder extends RecyclerView.ViewHolder {
-            public LinearLayout ll_img_event;
-            public RelativeLayout container;
-            public ImageView img_icon;
-            public ImageView img_event;
+        private class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            public final LinearLayout container;
+            public final ImageView img_icon;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                container = itemView.findViewById(R.id.container);
                 img_icon = itemView.findViewById(R.id.img_icon);
-                img_event = itemView.findViewById(R.id.img_event);
-                ll_img_event = itemView.findViewById(R.id.ll_img_event);
+                container = itemView.findViewById(R.id.container);
+                itemView.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View v) {
+                if (getLayoutPosition() != -1) {
+                    int layoutPosition = getLayoutPosition();
+                    if (layoutPosition != lastSelectedCategory) {
+                        lastSelectedCategory = getLayoutPosition();
+                        notifyDataSetChanged();
+                        tv_category.setText(rs.a(getApplicationContext(), lastSelectedCategory));
+                        if (lastSelectedCategory == 4) {
+                            moreblock_layout.setVisibility(View.VISIBLE);
+                            empty_message.setVisibility(View.GONE);
+                        } else {
+                            moreblock_layout.setVisibility(View.GONE);
+                            eventAdapter.setEvents(categories.get(lastSelectedCategory));
+                            eventAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
             }
         }
+    }
 
+    private class EventsToAddAdapter extends RecyclerView.Adapter<EventsToAddAdapter.ViewHolder> {
         public EventsToAddAdapter() {
         }
 
@@ -597,6 +581,21 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         @Override
         public int getItemCount() {
             return eventsToAdd.size();
+        }
+
+        private static class ViewHolder extends RecyclerView.ViewHolder {
+            public LinearLayout ll_img_event;
+            public RelativeLayout container;
+            public ImageView img_icon;
+            public ImageView img_event;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                container = itemView.findViewById(R.id.container);
+                img_icon = itemView.findViewById(R.id.img_icon);
+                img_event = itemView.findViewById(R.id.img_event);
+                ll_img_event = itemView.findViewById(R.id.ll_img_event);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.makeblock;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -13,27 +13,32 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import pro.sketchware.R;
-import pro.sketchware.databinding.MakeBlockLayoutBinding;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-import pro.sketchware.lib.base.BaseTextWatcher;
+import a.a.a.Rs;
+import a.a.a.ZB;
+import a.a.a.bB;
+import a.a.a.mB;
+import a.a.a.uq;
+import a.a.a.wB;
 import mod.hey.studios.moreblock.MoreblockValidator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.BlockUtil;
+import pro.sketchware.R;
+import pro.sketchware.databinding.MakeBlockLayoutBinding;
+import pro.sketchware.lib.base.BaseTextWatcher;
 
 @SuppressLint("ViewConstructor")
-public class dt extends LinearLayout {
+public class MoreBlockBuilderView extends LinearLayout {
 
     private static final Pattern CUSTOM_VARIABLE_PATTERN = Pattern.compile("[mldb]\\.[a-zA-Z]+");
     private final ArrayList<Pair<String, String>> variablesSpecAndNamePair = new ArrayList<>();
     private boolean customVariableInvalid;
     private Activity activity;
-    private gt addVariable;
+    private VariableItemView addVariable;
     private ZB variableNameValidator;
     private ZB labelTextValidator;
     private MoreblockValidator blockNameValidator;
@@ -41,7 +46,7 @@ public class dt extends LinearLayout {
 
     private MakeBlockLayoutBinding binding;
 
-    public dt(Activity activity) {
+    public MoreBlockBuilderView(Activity activity) {
         super(activity);
         initialize(activity);
     }
@@ -50,7 +55,7 @@ public class dt extends LinearLayout {
         this.activity = activity;
         binding = MakeBlockLayoutBinding.inflate(activity.getLayoutInflater(), this, true);
         initRefresh();
-        addVariable = new gt(activity);
+        addVariable = new VariableItemView(activity);
         binding.varTypeSpinner.addView(addVariable);
         blockNameValidator = new MoreblockValidator(activity, binding.tiName, uq.b, uq.a(), new ArrayList<>());
         labelTextValidator = new ZB(activity, binding.tiLabel, uq.b, uq.a(), new ArrayList<>());
@@ -97,7 +102,7 @@ public class dt extends LinearLayout {
         binding.parameter.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence sequence, int start, int before, int count) {
-                final String s = sequence.toString();
+                String s = sequence.toString();
 
                 if (CUSTOM_VARIABLE_PATTERN.matcher(s).matches()) {
                     customVariableInvalid = false;

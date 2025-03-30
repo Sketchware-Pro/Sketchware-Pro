@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.makeblock;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -13,15 +13,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
+import a.a.a.aB;
+import a.a.a.kq;
+import a.a.a.mB;
+import a.a.a.wB;
+import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.VarTypeItemBinding;
 import pro.sketchware.databinding.VarTypeSelectorDialogBinding;
 
-import java.util.ArrayList;
-
 @SuppressLint("ViewConstructor")
-public class gt extends LinearLayout {
+public class VariableItemView extends LinearLayout {
 
     private ArrayList<VariableItem> variableItems;
     private ArrayList<VariableItem> viewsVariableList;
@@ -31,7 +36,7 @@ public class gt extends LinearLayout {
     private TextView tvPreview;
     private aB dialog;
 
-    public gt(Activity activity) {
+    public VariableItemView(Activity activity) {
         super(activity);
         initialize(activity);
     }
@@ -136,12 +141,13 @@ public class gt extends LinearLayout {
             }
         });
     }
-    // New Ui For Type Var Dialog 
+
+    // New Ui For Type Var Dialog
     private void showVarTypeSelectorDialog(Activity activity) {
 
         dialog = new aB(activity);
         VarTypeSelectorDialogBinding binding =
-            VarTypeSelectorDialogBinding.inflate(LayoutInflater.from(activity));
+                VarTypeSelectorDialogBinding.inflate(LayoutInflater.from(activity));
 
         dialog.b(Helper.getResString(R.string.logic_editor_more_block_title_add_variable_type));
 
@@ -153,21 +159,21 @@ public class gt extends LinearLayout {
         adapter.notifyDataSetChanged();
 
         binding.navRail.setOnItemSelectedListener(
-            item -> {
-                int itemId = item.getItemId();
-                if (itemId == R.id.variables) {
-                    // variables list
-                    adapter.setData(variableItems);
-                } else if (itemId == R.id.views) {
-                    // views list
-                    adapter.setData(viewsVariableList);
-                } else {
-                    // components list
-                    adapter.setData(componentsVariableList);
-                }
-                adapter.notifyDataSetChanged();
-                return true;
-            });
+                item -> {
+                    int itemId = item.getItemId();
+                    if (itemId == R.id.variables) {
+                        // variables list
+                        adapter.setData(variableItems);
+                    } else if (itemId == R.id.views) {
+                        // views list
+                        adapter.setData(viewsVariableList);
+                    } else {
+                        // components list
+                        adapter.setData(componentsVariableList);
+                    }
+                    adapter.notifyDataSetChanged();
+                    return true;
+                });
 
         dialog.a(binding.getRoot());
         dialog.show();
@@ -210,7 +216,8 @@ public class gt extends LinearLayout {
         return new Pair<>(selectedVariableItem.type, selectedVariableItem.name);
     }
 
-    private record VariableItem(String type, String name, @DrawableRes int icon) {}
+    private record VariableItem(String type, String name, @DrawableRes int icon) {
+    }
 
     private class VariableItemAdapter extends RecyclerView.Adapter<VariableItemAdapter.ViewHolder> {
         private ArrayList<VariableItem> variables;

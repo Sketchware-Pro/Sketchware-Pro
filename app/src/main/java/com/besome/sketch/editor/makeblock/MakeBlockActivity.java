@@ -13,19 +13,18 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import pro.sketchware.R;
 
 import a.a.a.aB;
-import a.a.a.dt;
 import a.a.a.jC;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class MakeBlockActivity extends BaseAppCompatActivity {
 
     private String sc_id;
     private ProjectFileBean project;
-    private dt makeBlock;
+    private MoreBlockBuilderView makeBlock;
 
     private void goBackDialog() {
         aB dialog = new aB(this);
@@ -56,7 +55,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!super.isStoragePermissionGranted()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 
@@ -76,7 +75,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        makeBlock = new dt(this);
+        makeBlock = new MoreBlockBuilderView(this);
         makeBlock.setFuncNameValidator(jC.a(sc_id).a(project));
         LinearLayout makeBlock = findViewById(R.id.makeblock_view);
         makeBlock.addView(this.makeBlock);
@@ -111,7 +110,7 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.isStoragePermissionGranted()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
     }
