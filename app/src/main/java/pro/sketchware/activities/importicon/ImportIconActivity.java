@@ -1,4 +1,3 @@
-// ImportIconActivity.java
 package pro.sketchware.activities.importicon;
 
 import android.app.Activity;
@@ -31,6 +30,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.activities.resources.editors.utils.ColorsEditorManager;
 import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
 import pro.sketchware.databinding.DialogSaveIconBinding;
 import pro.sketchware.databinding.ImportIconBinding;
@@ -55,6 +55,7 @@ import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.wq;
 import pro.sketchware.activities.importicon.adapters.IconAdapter;
+import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.SvgUtils;
 
 public class ImportIconActivity extends BaseAppCompatActivity implements IconAdapter.OnIconSelectedListener {
@@ -75,6 +76,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private ImportIconBinding binding;
 
     private String iconName;
+    private String sc_id;
     private WB iconNameValidator;
     private MenuItem search;
     private SearchView searchView;
@@ -99,8 +101,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
 
     private boolean isLoading = false;
     private boolean isLastPage = false;
-
-    private Zx colorpicker;
 
     private int getGridLayoutColumnCount() {
         return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 80;
@@ -129,7 +129,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         binding = ImportIconBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        colorpicker = new Zx(this, 0xFF9E9E9E, false, false);
         svgUtils = new SvgUtils(this);
         Toolbar toolbar = binding.toolbar.toolbar;
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
@@ -143,6 +142,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             }
         });
 
+        sc_id = getIntent().getStringExtra("sc_id");
         alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
 
         binding.imageList.setLayoutManager(new GridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
@@ -295,7 +295,8 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             dialogBinding.selectColour.setTextColor(Color.WHITE);
         }
         dialogBinding.selectColour.setOnClickListener(view -> {
-            colorpicker.a(new Zx.b() {
+            Zx colorPicker = new Zx(this, selected_color_hex, false, false, sc_id);
+            colorPicker.a(new Zx.b() {
                 @Override
                 public void a(int var1) {
                     selected_color = var1;
@@ -316,7 +317,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                 @Override
                 public void a(String var1, int var2) {
                     selected_color = var2;
-                    selected_color_hex = "#" + String.format("%06X", var2 & (0x00FFFFFF));
+                    selected_color_hex = "@color/" + var1;
                     dialogBinding.selectColour.setText(selected_color_hex);
                     adapter.setSelectedColor(selected_color);
                     adapter.notifyDataSetChanged();
@@ -330,7 +331,23 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                     }
                 }
             });
-            colorpicker.showAtLocation(view, Gravity.CENTER, 0, 0);
+            colorPicker.materialColorAttr((attr, attrId) -> {
+                attr = "?attr/" + attr;
+                selected_color = PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(getApplicationContext(), attr, 3));
+                selected_color_hex = attr;
+                dialogBinding.selectColour.setText(selected_color_hex);
+                adapter.setSelectedColor(selected_color);
+                adapter.notifyDataSetChanged();
+
+                dialogBinding.selectColour.setBackgroundColor(selected_color);
+
+                if (Color.red(selected_color) * 0.299 + Color.green(selected_color) * 0.587 + Color.blue(selected_color) * 0.114 > 186) {
+                    dialogBinding.selectColour.setTextColor(Color.BLACK);
+                } else {
+                    dialogBinding.selectColour.setTextColor(Color.WHITE);
+                }
+            });
+            colorPicker.showAtLocation(view, Gravity.CENTER, 0, 0);
         });
 
         switch (selected_icon_type) {
