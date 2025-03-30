@@ -17,7 +17,6 @@ import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
 import a.a.a.Np;
-import a.a.a.Zt;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -25,7 +24,7 @@ import pro.sketchware.databinding.ManageFontBinding;
 
 public class ManageFontActivity extends BaseAppCompatActivity {
 
-    public Zt projectFontsFragment;
+    public ImportFontFragment projectFontsFragment;
     public FontManagerFragment collectionFontsFragment;
     public ManageFontBinding binding;
     private String sc_id;
@@ -162,7 +161,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             if (position == 0) {
-                projectFontsFragment = (Zt) fragment;
+                projectFontsFragment = (ImportFontFragment) fragment;
             } else {
                 collectionFontsFragment = (FontManagerFragment) fragment;
             }
@@ -172,7 +171,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         @Override
         @NonNull
         public Fragment getItem(int position) {
-            return position == 0 ? new Zt() : new FontManagerFragment();
+            return position == 0 ? new ImportFontFragment() : new FontManagerFragment();
         }
 
         @Override
