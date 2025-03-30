@@ -32,7 +32,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import a.a.a.GB;
 import a.a.a.LB;
 import a.a.a.MA;
-import a.a.a.UB;
 import a.a.a.VB;
 import a.a.a.Zx;
 import a.a.a.aB;
@@ -51,6 +50,7 @@ import pro.sketchware.R;
 import pro.sketchware.activities.iconcreator.IconCreatorActivity;
 import pro.sketchware.control.VersionDialog;
 import pro.sketchware.databinding.MyprojectSettingBinding;
+import pro.sketchware.lib.validator.PackageNameValidator;
 import pro.sketchware.utility.FileUtil;
 
 public class MyProjectSettingActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -61,7 +61,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private final String[] themeColorKeys = {"color_accent", "color_primary", "color_primary_dark", "color_control_highlight", "color_control_normal"};
     private final String[] themeColorLabels = {"colorAccent", "colorPrimary", "colorPrimaryDark", "colorControlHighlight", "colorControlNormal"};
     private final int[] projectThemeColors = new int[themeColorKeys.length];
-    private UB projectPackageNameValidator;
+    private PackageNameValidator projectPackageNameValidator;
     private VB projectNameValidator;
     private LB projectAppNameValidator;
     private boolean projectHasCustomIcon = false;
@@ -102,7 +102,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         binding.tilProjectName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_project_name));
 
         projectAppNameValidator = new LB(getApplicationContext(), binding.tilAppName);
-        projectPackageNameValidator = new UB(getApplicationContext(), binding.tilPackageName);
+        projectPackageNameValidator = new PackageNameValidator(getApplicationContext(), binding.tilPackageName);
         projectNameValidator = new VB(getApplicationContext(), binding.tilProjectName);
         binding.tilPackageName.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {

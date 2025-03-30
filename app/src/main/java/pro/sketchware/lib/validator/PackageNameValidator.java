@@ -1,4 +1,4 @@
-package a.a.a;
+package pro.sketchware.lib.validator;
 
 import android.content.Context;
 
@@ -6,13 +6,16 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.regex.Pattern;
 
+import a.a.a.MB;
+import a.a.a.uq;
+import a.a.a.xB;
 import pro.sketchware.R;
 
-public class UB extends MB {
+public class PackageNameValidator extends MB {
 
     private static final Pattern packagePattern = Pattern.compile("([a-zA-Z][a-zA-Z\\d]*\\.)*[a-zA-Z][a-zA-Z\\d]*");
 
-    public UB(Context context, TextInputLayout textInputLayout) {
+    public PackageNameValidator(Context context, TextInputLayout textInputLayout) {
         super(context, textInputLayout);
     }
 
