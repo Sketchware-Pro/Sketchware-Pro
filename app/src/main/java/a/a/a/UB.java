@@ -6,6 +6,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.regex.Pattern;
 
+import pro.sketchware.R;
+
 public class UB extends MB {
 
     private static final Pattern packagePattern = Pattern.compile("([a-zA-Z][a-zA-Z\\d]*\\.)*[a-zA-Z][a-zA-Z\\d]*");
@@ -18,8 +20,9 @@ public class UB extends MB {
         if (s.toString().trim().length() > 50) {
             b.setErrorEnabled(true);
             if (e == 0) {
-                b.setError(xB.b().a(a, 0x7f0e05d8, 50));
+                b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, 50));
             } else {
+                //what ???
                 b.setError(xB.b().a(a, e, 50));
             }
             d = false;
@@ -29,12 +32,12 @@ public class UB extends MB {
         d = true;
         if (!packagePattern.matcher(s.toString()).matches()) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 0x7f0e05db));
+            b.setError(xB.b().a(a, R.string.invalid_value_rule_2));
             d = false;
         } else {
             if (!s.toString().contains(".")) {
                 b.setErrorEnabled(true);
-                b.setError(xB.b().a(a, 0x7f0e06d3));
+                b.setError(xB.b().a(a, R.string.myprojects_settings_message_contain_dot));
                 d = false;
                 return;
             }
@@ -59,7 +62,7 @@ public class UB extends MB {
         }
         if (containsReservedWord) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 0x7f0e0617));
+            b.setError(xB.b().a(a, R.string.logic_editor_message_reserved_keywords));
             d = false;
         }
     }
