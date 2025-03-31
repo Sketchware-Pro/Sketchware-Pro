@@ -1040,7 +1040,7 @@ public class Jx {
                 Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
                 if (!toNotAdd.contains("android:id")) {
                     if (isViewBindingEnabled) {
-                        if (!requireImports(viewBean)) return;
+                        if (!requireImports(viewBean)) continue;
                         String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
                         if (viewType.isEmpty()) {
                             viewType = viewBean.getClassInfo().a();
@@ -1059,7 +1059,7 @@ public class Jx {
                     Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
                     if (!toNotAdd.contains("android:id")) {
                         if (isViewBindingEnabled) {
-                            if (!requireImports(viewBean)) return;
+                            if (!requireImports(viewBean)) continue;
                             String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
                             if (viewType.isEmpty()) {
                                 viewType = viewBean.getClassInfo().a();
