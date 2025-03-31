@@ -12,7 +12,7 @@ class ViewBindingBuilder(
     fun generateBindings() {
         inputFiles.forEach { generateBindingForLayoutAndWrite(it) }
     }
-    
+
     /** generate binding and return class code */
     fun generateBindingForLayout(layoutFile: File): String {
         val name = generateFileNameForLayout(layoutFile.nameWithoutExtension)
@@ -86,7 +86,7 @@ ${
 
         return content
     }
-    
+
     /** generate view binding and save in output file */
     private fun generateBindingForLayoutAndWrite(layoutFile: File) {
         val name = generateFileNameForLayout(layoutFile.nameWithoutExtension)
@@ -105,7 +105,15 @@ ${
             "import android.view.ViewGroup;",
             "import ${rootView.fullType};"
         )
-        copy.forEach { imports.add("import ${it.fullType};") }
+
+        copy.forEach {
+            if (it.fullType == "android.widget.WebView") {
+                imports.add("import android.webkit.WebView;")
+            } else {
+                imports.add("import ${it.fullType};")
+            }
+        }
+
         return imports.sorted().joinToString("\n")
     }
 
