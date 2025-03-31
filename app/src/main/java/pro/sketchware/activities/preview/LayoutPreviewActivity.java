@@ -72,7 +72,11 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
     private sy loadView(ViewBean view) {
         var itemView = pane.createItemView(view);
         pane.addViewAndUpdateIndex(itemView);
-        return (sy) itemView;
+        if (itemView instanceof sy sy) {
+            sy.setFixed(true);
+            return sy;
+        }
+        return null;
     }
 
     private sy loadViews(ArrayList<ViewBean> views) {
