@@ -149,33 +149,33 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                        <com.google.android.material.button.MaterialButtonToggleGroup
-                            android:id="@+id/bg_type"
-                            android:layout_width="match_parent"
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/bg_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        app:checkedButton="@id/bg_color"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/bg_color"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="4dp"
-                            android:layout_marginTop="10dp"
-                            android:gravity="center"
-                            app:checkedButton="@id/bg_color"
-                            app:selectionRequired="true"
-                            app:singleSelection="true">
+                            android:text="Color"
+                            android:layout_weight="1"/>
 
-                            <Button
-                                android:id="@+id/bg_color"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:text="Color"
-                                android:layout_weight="1"/>
-
-                            <Button
-                                android:id="@+id/bg_gradient"
-                                style="?attr/materialButtonOutlinedStyle"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:text="Gradient"
-                                android:layout_weight="1"/>
-                        </com.google.android.material.button.MaterialButtonToggleGroup>
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/bg_gradient"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Gradient"
+                            android:layout_weight="1"/>
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
                     <LinearLayout
@@ -271,6 +271,7 @@
                             android:layout_height="wrap_content"
                             app:checkedChip="@+id/chip_top"
                             app:chipSpacingHorizontal="5dp"
+                            app:selectionRequired="true"
                             app:singleSelection="true">
 
                             <com.google.android.material.chip.Chip
@@ -391,29 +392,28 @@
                                 app:selectionRequired="true"
                                 app:singleSelection="true">
 
-                                <Button
+                                <com.google.android.material.button.MaterialButton
                                     android:id="@+id/texture1"
                                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:icon="@drawable/pattern_tech" />
 
-
-                                <Button
+                                <com.google.android.material.button.MaterialButton
                                     android:id="@+id/texture2"
                                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:icon="@drawable/pattern_seq" />
 
-                                <Button
+                                <com.google.android.material.button.MaterialButton
                                     android:id="@+id/texture3"
                                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:icon="@drawable/pattern_waves" />
 
-                                <Button
+                                <com.google.android.material.button.MaterialButton
                                     android:id="@+id/texture4"
                                     style="@style/Widget.App.Button.OutlinedButton.IconOnly"
                                     android:layout_width="wrap_content"
