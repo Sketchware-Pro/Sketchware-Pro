@@ -769,7 +769,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     private boolean isInsideItemScrollView(View view) {
         for (ViewParent parent = view.getParent(); parent != null && parent != this; parent = parent.getParent()) {
-            return parent instanceof ItemVerticalScrollView || parent instanceof ItemHorizontalScrollView;
+            if ((parent instanceof ItemVerticalScrollView) || (parent instanceof ItemHorizontalScrollView)) {
+                return true;
+            }
         }
         return false;
     }
