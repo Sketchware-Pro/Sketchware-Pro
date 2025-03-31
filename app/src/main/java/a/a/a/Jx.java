@@ -1038,8 +1038,17 @@ public class Jx {
         for (ViewBean viewBean : projectDataManager.d(projectFileBean.getXmlName())) {
             if (!viewBean.convert.equals("include")) {
                 Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
-                if (!toNotAdd.contains("android:id") && (!isViewBindingEnabled || requireImports(viewBean))) {
-                    views.add(getViewDeclarationAndAddImports(viewBean));
+                if (!toNotAdd.contains("android:id")) {
+                    if (isViewBindingEnabled) {
+                        if (!requireImports(viewBean)) return;
+                        String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
+                        if (viewType.isEmpty()) {
+                            viewType = viewBean.getClassInfo().a();
+                        }
+                        addImports(mq.getImportsByTypeName(viewType, viewBean.convert));
+                    } else {
+                        views.add(getViewDeclarationAndAddImports(viewBean));
+                    }
                 }
             }
         }
@@ -1048,8 +1057,17 @@ public class Jx {
             for (ViewBean viewBean : projectDataManager.d(projectFileBean.getDrawerXmlName())) {
                 if (!viewBean.convert.equals("include")) {
                     Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
-                    if (!toNotAdd.contains("android:id") && (!isViewBindingEnabled || requireImports(viewBean))) {
-                        views.add(getDrawerViewDeclarationAndAddImports(viewBean));
+                    if (!toNotAdd.contains("android:id")) {
+                        if (isViewBindingEnabled) {
+                            if (!requireImports(viewBean)) return;
+                            String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
+                            if (viewType.isEmpty()) {
+                                viewType = viewBean.getClassInfo().a();
+                            }
+                            addImports(mq.getImportsByTypeName(viewType, null));
+                        } else {
+                            views.add(getDrawerViewDeclarationAndAddImports(viewBean));
+                        }
                     }
                 }
             }
