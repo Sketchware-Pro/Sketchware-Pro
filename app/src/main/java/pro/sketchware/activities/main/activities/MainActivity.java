@@ -446,9 +446,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
         // Actual loading part
         if (xB.b().b(getApplicationContext())) {
-            bB.a(getApplicationContext(),
-                    Helper.getResString(R.string.message_strings_xml_loaded),
-                    0, 80, 0, 128).show();
+            SketchwareUtil.toast(Helper.getResString(R.string.message_strings_xml_loaded));
         }
     }
 
