@@ -2233,6 +2233,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         openBlocksMenuButton.setOnClickListener(v -> e(!X));
         logicTopMenu = findViewById(R.id.top_menu);
         O = findViewById(R.id.right_drawer);
+        findViewById(R.id.search_header).setOnClickListener(v -> paletteSelector.showSearchDialog());
         extraPaletteBlock = new ExtraPaletteBlock(this, isViewBindingEnabled);
     }
 
