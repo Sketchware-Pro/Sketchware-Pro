@@ -925,7 +925,7 @@ public class yq {
             boolean useNewMaterialComponentsTheme = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
                     BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
             XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
-            stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? ".Bridge" : ""));
+            stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? "" : ".Bridge"));
             // todo: add `colorOnPrimary` to custom theme colors.
             stylesFileBuilder.addItemToStyle("AppTheme", "colorOnPrimary", "@android:color/white");
             stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimary", "@color/colorPrimary");
