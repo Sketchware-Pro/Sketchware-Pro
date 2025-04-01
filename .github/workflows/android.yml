@@ -44,9 +44,6 @@ jobs:
   build:
     name: Build APKs
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
-    strategy:
-      matrix:
-        apiLevel: [21, 26]
     steps:
       - uses: actions/checkout@v4
 
@@ -70,13 +67,13 @@ jobs:
       - name: Build Release APK
         env:
           SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
-        run: gradle assembleMinApi${{ matrix.apiLevel }}Release
+        run: gradle assembleRelease
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: apk-minApi${{ matrix.apiLevel }}-release
-          path: app/build/outputs/apk/minApi${{ matrix.apiLevel }}/release
+          name: apk-release
+          path: app/build/outputs/apk/release
 
   aggregateAndSend:
     name: Send APKs to Telegram
@@ -85,17 +82,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download Artifacts for API 21
+      - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: apk-minApi21-release
-          path: ./downloaded-artifact/minApi21
-
-      - name: Download Artifacts for API 26
-        uses: actions/download-artifact@v4
-        with:
-          name: apk-minApi26-release
-          path: ./downloaded-artifact/minApi26
+          name: apk-release
+          path: ./downloaded-artifact
 
       - name: Set up Python 3
         uses: actions/setup-python@v5
@@ -125,8 +116,7 @@ jobs:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-          APK_MIN_API21: ./downloaded-artifact/minApi21/app-minApi21-release.apk
-          APK_MIN_API26: ./downloaded-artifact/minApi26/app-minApi26-release.apk
+          APK_PATH: ./downloaded-artifact/app-release.apk
         run: |
           python ./.github/workflows/deploy_artifacts.py
         continue-on-error: true
