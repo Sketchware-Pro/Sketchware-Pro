@@ -5,6 +5,11 @@ import static mod.hey.studios.build.BuildSettings.SETTING_CLASSPATH;
 import static mod.hey.studios.build.BuildSettings.SETTING_DEXER;
 import static mod.hey.studios.build.BuildSettings.SETTING_ENABLE_LOGCAT;
 import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION;
+import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_10;
+import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_11;
+import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_1_7;
+import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_1_8;
+import static mod.hey.studios.build.BuildSettings.SETTING_JAVA_VERSION_1_9;
 import static mod.hey.studios.build.BuildSettings.SETTING_NO_HTTP_LEGACY;
 import static mod.hey.studios.build.BuildSettings.SETTING_NO_WARNINGS;
 
@@ -74,7 +79,7 @@ public class BuildSettingsDialog {
         getEditText(VIEW_CLASS_PATH).setText(settings.getValue(SETTING_CLASSPATH, ""));
 
         setRadioGroupOptions(getRadioGroup(VIEW_DEXER), new String[]{"Dx", "D8"}, SETTING_DEXER, "Dx");
-        setRadioGroupOptions(getRadioGroup(VIEW_JAVA_VERSION), BuildSettingsDialogBridge.getAvailableJavaVersions(), SETTING_JAVA_VERSION, "1.7");
+        setRadioGroupOptions(getRadioGroup(VIEW_JAVA_VERSION), getAvailableJavaVersions(), SETTING_JAVA_VERSION, "1.7");
 
         setCheckboxValue(getCheckbox(VIEW_NO_WARNINGS), SETTING_NO_WARNINGS, true);
         setCheckboxValue(getCheckbox(VIEW_NO_HTTP_LEGACY), SETTING_NO_HTTP_LEGACY, false);
@@ -87,6 +92,22 @@ public class BuildSettingsDialog {
         builder.setNegativeButton("Cancel", null);
         builder.setView(binding.getRoot());
         builder.show();
+    }
+
+    public static String[] getAvailableJavaVersions() {
+        return new String[]{
+                SETTING_JAVA_VERSION_1_7,
+                SETTING_JAVA_VERSION_1_8,
+                SETTING_JAVA_VERSION_1_9,
+                SETTING_JAVA_VERSION_10,
+                SETTING_JAVA_VERSION_11,
+        };
+    }
+
+    public static void handleJavaVersionChange(String choice) {
+        if (!choice.equals(SETTING_JAVA_VERSION_1_7)) {
+            SketchwareUtil.toast("Don't forget to enable D8 to be able to compile Java 8+ code");
+        }
     }
 
     private EditText getEditText(int index) {
@@ -115,9 +136,7 @@ public class BuildSettingsDialog {
             radioButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (!isChecked) return;
                 if (key.equals(SETTING_JAVA_VERSION)) {
-                    BuildSettingsDialogBridge.handleJavaVersionChange(option);
-                } else if (key.equals(SETTING_DEXER)) {
-                    BuildSettingsDialogBridge.handleDexerChange(option);
+                    handleJavaVersionChange(option);
                 }
             });
             radioGroup.addView(radioButton);

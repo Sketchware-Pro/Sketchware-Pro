@@ -21,6 +21,7 @@ android {
         namespace "pro.sketchware"
         //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
         targetSdkVersion 28
+        minSdkVersion 26
         versionCode 150
         versionName "v7.0.0-SNAPSHOT-" + shortCommitHash
 
@@ -32,22 +33,6 @@ android {
         buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v7.0.0-SNAPSHOT-${shortCommitHash}\"")
 
         buildConfigField("String", "SKETCHUB_API_KEY", "\"${System.getenv("SKETCHUB_API_KEY")}\"")
-    }
-
-    flavorDimensions = ["api"]
-    productFlavors {
-        minApi26 {
-            dimension "api"
-            minSdkVersion 26
-            versionNameSuffix "-minApi26"
-            isDefault = true
-        }
-
-        minApi21 {
-            dimension "api"
-            minSdkVersion 21
-            versionNameSuffix "-minApi21"
-        }
     }
 
     buildTypes {
@@ -92,7 +77,7 @@ android {
         buildConfig true
     }
 
-    configurations.minApi26Implementation {
+    configurations.implementation {
         exclude group: 'javax.inject', module: 'javax.inject'
     }
 }
@@ -132,10 +117,10 @@ dependencies {
     implementation 'io.coil-kt:coil:2.0.0'
     implementation 'io.coil-kt:coil-svg:2.0.0'
 
-    minApi26Implementation "com.android.tools.build:bundletool:1.15.6"
+    implementation "com.android.tools.build:bundletool:1.15.6"
 
     //noinspection GradleDependency copied from above dependency for not just runtime access
-    minApi26Implementation "com.google.protobuf:protobuf-java:3.19.2"
+    implementation "com.google.protobuf:protobuf-java:3.19.2"
     //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
     implementation "com.android.tools:r8:8.7.18"
@@ -153,16 +138,13 @@ dependencies {
 
     implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
 
-    minApi21Implementation "net.sf.proguard:proguard-base:6.0.3"
-    minApi26Implementation files('libs/proguard-base-7.2.2.jar')
-    minApi26Implementation 'com.guardsquare:proguard-core:9.0.2'
-    minApi26Implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0'
+    implementation files('libs/proguard-base-7.2.2.jar')
+    implementation 'com.guardsquare:proguard-core:9.0.2'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0'
 
-    //noinspection GradleDependency
-    minApi21Implementation "org.eclipse.jdt:ecj:3.13.0"
-    minApi26Implementation "org.eclipse.jdt:ecj:3.26.0"
+    implementation "org.eclipse.jdt:ecj:3.26.0"
 
-    minApi26Implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
+    implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
 
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
