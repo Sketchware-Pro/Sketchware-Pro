@@ -39,6 +39,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import a.a.a.ViewEditorFragment;
+import a.a.a.aB;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -146,8 +147,8 @@ public class WidgetsCreatorManager {
 
     public void showWidgetsCreatorDialog(int position) {
         boolean isEditing = position != -1;
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
-        dialog.setTitle(isEditing ? Helper.getResString(R.string.widget_editor) : Helper.getResString(R.string.create_new_widget));
+        aB dialog = new aB((Activity) context);
+        dialog.b(isEditing ? Helper.getResString(R.string.widget_editor) :Helper.getResString(R.string.create_new_widget));
         WidgetsCreatorDialogBinding binding = WidgetsCreatorDialogBinding.inflate(LayoutInflater.from(context));
         View inflate = binding.getRoot();
 
@@ -166,9 +167,8 @@ public class WidgetsCreatorManager {
             binding.addWidgetTo.setText(map.get("Class").toString());
             binding.injectCode.setText(map.get("inject").toString());
         } else {
-            dialog.setNeutralButton(R.string.common_word_see_more, (dialog1, which) -> {
-                showMorePopUp(dialog1, dialog.create().getButton(which));
-            });
+            dialog.setDismissOnDefaultButtonClick(false);
+            dialog.configureDefaultButton(Helper.getResString(R.string.common_word_see_more), view -> showMorePopUp(dialog, view));
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -188,13 +188,13 @@ public class WidgetsCreatorManager {
             showCategorySelectorDialog(types, binding.addWidgetTo);
         });
 
-        dialog.setPositiveButton(R.string.common_word_save, (v, which) -> {
+        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
             try {
-                String widgetTitle = Helper.getText(binding.widgetTitle).trim();
-                String widgetName = Helper.getText(binding.widgetName).trim();
-                String widgetType = Helper.getText(binding.widgetType).trim();
-                String widgetInject = Helper.getText(binding.injectCode).trim();
-                String widgetClass = Helper.getText(binding.addWidgetTo).trim();
+                String widgetTitle = Objects.requireNonNull(binding.widgetTitle.getText()).toString().trim();
+                String widgetName = Objects.requireNonNull(binding.widgetName.getText()).toString().trim();
+                String widgetType = Objects.requireNonNull(binding.widgetType.getText()).toString().trim();
+                String widgetInject = Objects.requireNonNull(binding.injectCode.getText()).toString().trim();
+                String widgetClass = Objects.requireNonNull(binding.addWidgetTo.getText()).toString().trim();
 
                 if (widgetTitle.isEmpty()) {
                     binding.inputTitle.setError(String.format(Helper.getResString(R.string.var_is_required, "Widget title")));
@@ -231,15 +231,15 @@ public class WidgetsCreatorManager {
                     allCategories.add(widgetClass);
                 }
                 viewEditorFragment.e();
-                v.dismiss();
+                dialog.dismiss();
             } catch (Exception e) {
                 SketchwareUtil.toastError("Failed: " + e.getMessage());
             }
         });
 
-        dialog.setNegativeButton(R.string.common_word_cancel, null);
+        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
 
-        dialog.setView(inflate);
+        dialog.a(inflate);
         dialog.show();
     }
 
