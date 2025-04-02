@@ -195,7 +195,7 @@ public class Fx {
 
     private String getParamValue(String param, boolean isWidgetParam) {
         String bindingStart = "binding.";
-        if (isViewBindingEnabled && isWidgetParam && !param.isEmpty() && !param.startsWith(bindingStart)) {
+        if (isViewBindingEnabled && isWidgetParam && !param.isEmpty() && param.charAt(0) != '@' && !param.startsWith(bindingStart)) {
             return bindingStart + ViewBindingBuilder.generateParameterFromId(param);
         } else {
             return param;
