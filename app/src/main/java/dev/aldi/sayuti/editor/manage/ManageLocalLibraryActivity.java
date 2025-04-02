@@ -282,9 +282,11 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
     }
 
     private boolean isUsedLibrary(String libraryName) {
-        for (Map<String, Object> libraryMap : projectUsedLibs) {
-            if (libraryName.equals(libraryMap.get("name").toString())) {
-                return true;
+        if (!notAssociatedWithProject) {
+            for (Map<String, Object> libraryMap : projectUsedLibs) {
+                if (libraryName.equals(libraryMap.get("name").toString())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -320,7 +322,7 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
             });
 
             binding.card.setOnLongClickListener(v -> {
-                if (isSelectionModeEnabled || notAssociatedWithProject) {
+                if (isSelectionModeEnabled) {
                     return false;
                 }
 

@@ -50,22 +50,25 @@ public class LocalLibrariesUtil {
         localLibraries.removeIf(library -> {
             if (library.isSelected()) {
                 deleteFile(localLibsPath.concat(library.getName()));
-                int indexToRemove = -1;
-                for (int i = 0; i < projectUsedLibs.size(); i++) {
-                    Map<String, Object> libraryMap = projectUsedLibs.get(i);
-                    if (library.getName().equals(libraryMap.get("name").toString())) {
-                        indexToRemove = i;
-                        break;
+                if (projectUsedLibs != null) {
+                    int indexToRemove = -1;
+                    for (int i = 0; i < projectUsedLibs.size(); i++) {
+                        Map<String, Object> libraryMap = projectUsedLibs.get(i);
+                        if (library.getName().equals(libraryMap.get("name").toString())) {
+                            indexToRemove = i;
+                            break;
+                        }
                     }
-                }
-                if (indexToRemove != -1) {
-                    projectUsedLibs.remove(indexToRemove);
+                    if (indexToRemove != -1) {
+                        projectUsedLibs.remove(indexToRemove);
+                    }
                 }
                 return true;
             }
             return false;
         });
-        rewriteLocalLibFile(scId, new Gson().toJson(projectUsedLibs));
+        if (projectUsedLibs != null)
+            rewriteLocalLibFile(scId, new Gson().toJson(projectUsedLibs));
     }
 
     public static File getLocalLibFile(String scId) {
