@@ -1,7 +1,6 @@
 package pro.sketchware.control.logic;
 
 import static android.text.TextUtils.isEmpty;
-
 import static pro.sketchware.SketchApplication.getContext;
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
@@ -19,18 +18,21 @@ import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.beans.ProjectFileBean;
+import com.besome.sketch.editor.LogicEditorActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Function;
+
 import a.a.a.ZB;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.uq;
-
-import com.besome.sketch.beans.ProjectFileBean;
-import com.besome.sketch.editor.LogicEditorActivity;
-
 import mod.hey.studios.util.Helper;
-
 import pro.sketchware.R;
 import pro.sketchware.databinding.AddCustomListBinding;
 import pro.sketchware.databinding.AddCustomVariableBinding;
@@ -39,11 +41,6 @@ import pro.sketchware.lib.validator.VariableTypeValidator;
 import pro.sketchware.menu.ExtraMenuBean;
 import pro.sketchware.utility.CustomVariableUtil;
 import pro.sketchware.utility.SketchwareUtil;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Function;
 
 public class LogicClickListener implements View.OnClickListener {
 
@@ -94,9 +91,9 @@ public class LogicClickListener implements View.OnClickListener {
     }
 
     private void addCustomVariable() {
-        aB dialog = new aB(logicEditor);
-        dialog.a(R.drawable.abc_96_color);
-        dialog.b("Add a new custom variable");
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
+        dialog.setIcon(R.drawable.abc_96_color);
+        dialog.setTitle("Add a new custom variable");
 
         AddCustomVariableBinding binding = AddCustomVariableBinding.inflate(logicEditor.getLayoutInflater());
 
@@ -111,8 +108,8 @@ public class LogicClickListener implements View.OnClickListener {
 
         ZB validator = new ZB(getContext(), binding.nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
-        dialog.a(binding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_add), v -> {
+        dialog.setView(binding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_add), (v, which) -> {
             String variableModifier = Helper.getText(binding.modifier).trim();
             String variableType = Helper.getText(binding.type).trim();
             String variableName = Helper.getText(binding.name).trim();
@@ -153,9 +150,9 @@ public class LogicClickListener implements View.OnClickListener {
                 variable += " = " + variableInitializer;
             }
             logicEditor.b(6, variable.trim());
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -163,9 +160,9 @@ public class LogicClickListener implements View.OnClickListener {
     }
 
     private void removeVariable() {
-        aB dialog = new aB(logicEditor);
-        dialog.b(Helper.getResString(R.string.logic_editor_title_remove_variable));
-        dialog.a(R.drawable.delete_96);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
+        dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_variable));
+        dialog.setIcon(R.drawable.delete_96);
 
         RecyclerView recyclerView = new RecyclerView(logicEditor);
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
@@ -205,30 +202,30 @@ public class LogicClickListener implements View.OnClickListener {
             }
         }
 
-        dialog.a(recyclerView);
-        dialog.b(Helper.getResString(R.string.common_word_remove), v -> {
+        dialog.setView(recyclerView);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), (v, which) -> {
             for (Item item : data) {
                 if (item.type == Item.TYPE_ITEM && item.isChecked) {
                     logicEditor.m(item.text);
                 }
             }
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
     private void addCustomList() {
-        aB dialog = new aB(logicEditor);
-        dialog.a(R.drawable.ic_mtrl_add);
-        dialog.b("Add a new custom List");
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
+        dialog.setIcon(R.drawable.ic_mtrl_add);
+        dialog.setTitle("Add a new custom List");
 
         AddCustomListBinding listBinding = AddCustomListBinding.inflate(logicEditor.getLayoutInflater());
 
         ZB validator = new ZB(getContext(), listBinding.nameLayout, uq.b, uq.a(), projectDataManager.a(projectFile));
 
-        dialog.a(listBinding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_add), v -> {
+        dialog.setView(listBinding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_add), (v, which) -> {
             String variableType = Helper.getText(listBinding.type);
             String variableName = Helper.getText(listBinding.name);
 
@@ -254,10 +251,10 @@ public class LogicClickListener implements View.OnClickListener {
 
             if (validType && validName && validator.b()) {
                 logicEditor.a(4, variableType + " " + variableName + " = new ArrayList<>()");
-                dialog.dismiss();
+                v.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
 
         // dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -265,9 +262,9 @@ public class LogicClickListener implements View.OnClickListener {
     }
 
     private void removeList() {
-        aB dialog = new aB(logicEditor);
-        dialog.b(Helper.getResString(R.string.logic_editor_title_remove_list));
-        dialog.a(R.drawable.delete_96);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
+        dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_list));
+        dialog.setIcon(R.drawable.delete_96);
 
         RecyclerView recyclerView = new RecyclerView(logicEditor);
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
@@ -294,16 +291,16 @@ public class LogicClickListener implements View.OnClickListener {
             }
         }
 
-        dialog.a(recyclerView);
-        dialog.b(Helper.getResString(R.string.common_word_remove), v -> {
+        dialog.setView(recyclerView);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_remove), (v, which) -> {
             for (Item item : data) {
                 if (item.type == Item.TYPE_ITEM && item.isChecked) {
                     logicEditor.l(item.text);
                 }
             }
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 

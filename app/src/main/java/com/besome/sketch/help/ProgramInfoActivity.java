@@ -10,15 +10,15 @@ import android.widget.RadioGroup;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.PropertyOneLineItem;
 import com.besome.sketch.lib.ui.PropertyTwoLineItem;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ProgramInfoBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import a.a.a.GB;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ProgramInfoBinding;
 
 public class ProgramInfoActivity extends BaseAppCompatActivity {
 
@@ -78,24 +78,24 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
     }
 
     private void resetDialog(View view) {
-        aB dialog = new aB(this);
-        dialog.b(Helper.getResString(R.string.program_information_reset_system_title));
-        dialog.a(R.drawable.rollback_96);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(Helper.getResString(R.string.program_information_reset_system_title));
+        dialog.setIcon(R.drawable.rollback_96);
         View rootView = wB.a(this, R.layout.all_init_popup);
         RadioGroup radioGroup = rootView.findViewById(R.id.rg_type);
         ((RadioButton) rootView.findViewById(R.id.rb_all)).setText(Helper.getResString(R.string.program_information_reset_system_title_all_settings_data));
         ((RadioButton) rootView.findViewById(R.id.rb_only_config)).setText(Helper.getResString(R.string.program_information_reset_system_title_all_settings));
-        dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_yes), v -> {
+        dialog.setView(rootView);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_yes), (v, which) -> {
             if (!mB.a()) {
                 int buttonId = radioGroup.getCheckedRadioButtonId();
                 boolean resetOnlySettings = buttonId != R.id.rb_all;
-                dialog.dismiss();
+                v.dismiss();
                 setResult(RESULT_OK, getIntent().putExtra("onlyConfig", resetOnlySettings));
                 finish();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -120,8 +120,10 @@ public class ProgramInfoActivity extends BaseAppCompatActivity {
                 key = ((PropertyTwoLineItem) v).getKey();
                 switch (key) {
                     case ITEM_DOCS_LOG -> openUrl(Helper.getResString(R.string.link_docs_url));
-                    case ITEM_SUGGEST_IDEAS -> openUrl(Helper.getResString(R.string.link_ideas_url));
-                    case ITEM_TELEGRAM -> openUrl(Helper.getResString(R.string.link_telegram_invite));
+                    case ITEM_SUGGEST_IDEAS ->
+                            openUrl(Helper.getResString(R.string.link_ideas_url));
+                    case ITEM_TELEGRAM ->
+                            openUrl(Helper.getResString(R.string.link_telegram_invite));
                     case ITEM_DISCORD -> openUrl(Helper.getResString(R.string.link_discord_invite));
                 }
             }

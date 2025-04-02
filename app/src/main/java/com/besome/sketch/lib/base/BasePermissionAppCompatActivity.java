@@ -6,12 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import pro.sketchware.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import a.a.a.Sp;
-import a.a.a.aB;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActivity {
 
@@ -29,11 +29,11 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
 
     public void i(int i) {
         if (!Sp.a) {
-            aB dialog = new aB(this);
-            dialog.b(Helper.getResString(R.string.common_message_permission_title_storage));
-            dialog.a(R.drawable.break_warning_96_red);
-            dialog.a(Helper.getResString(R.string.common_message_permission_storage));
-            dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+            dialog.setTitle(Helper.getResString(R.string.common_message_permission_title_storage));
+            dialog.setIcon(R.drawable.break_warning_96_red);
+            dialog.setMessage(Helper.getResString(R.string.common_message_permission_storage));
+            dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
                 if (!mB.a()) {
                     ActivityCompat.requestPermissions(this,
                             new String[]{
@@ -41,12 +41,12 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
                                     Manifest.permission.READ_EXTERNAL_STORAGE
                             },
                             i);
-                    dialog.dismiss();
+                    v.dismiss();
                 }
             });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
+            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v, which) -> {
                 l();
-                dialog.dismiss();
+                v.dismiss();
             });
             dialog.setOnDismissListener(dialog1 -> Sp.a = false);
             dialog.setCancelable(false);
@@ -84,19 +84,19 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
 
     public void j(int i) {
         if (!Sp.a) {
-            aB dialog = new aB(this);
-            dialog.b(Helper.getResString(R.string.common_message_permission_title_storage));
-            dialog.a(R.drawable.break_warning_96_red);
-            dialog.a(Helper.getResString(R.string.common_message_permission_storage1));
-            dialog.b(Helper.getResString(R.string.common_word_settings), v -> {
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+            dialog.setTitle(Helper.getResString(R.string.common_message_permission_title_storage));
+            dialog.setIcon(R.drawable.break_warning_96_red);
+            dialog.setMessage(Helper.getResString(R.string.common_message_permission_storage1));
+            dialog.setPositiveButton(Helper.getResString(R.string.common_word_settings), (v, which) -> {
                 if (!mB.a()) {
                     h(i);
-                    dialog.dismiss();
+                    v.dismiss();
                 }
             });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
+            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v, which) -> {
                 m();
-                dialog.dismiss();
+                v.dismiss();
             });
             dialog.setOnDismissListener(dialog1 -> Sp.a = false);
             dialog.setCancelable(false);

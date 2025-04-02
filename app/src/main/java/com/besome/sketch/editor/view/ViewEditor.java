@@ -2,7 +2,6 @@ package com.besome.sketch.editor.view;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -38,6 +37,7 @@ import com.besome.sketch.editor.view.palette.IconMapView;
 import com.besome.sketch.editor.view.palette.PaletteFavorite;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,7 +48,6 @@ import a.a.a.GB;
 import a.a.a.Iw;
 import a.a.a.Op;
 import a.a.a.Rp;
-import a.a.a.aB;
 import a.a.a.ay;
 import a.a.a.bB;
 import a.a.a.cC;
@@ -70,7 +69,6 @@ import dev.aldi.sayuti.editor.view.palette.IconTabLayout;
 import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
 import dev.aldi.sayuti.editor.view.palette.IconViewPager;
 import mod.agus.jcoderz.beans.ViewBeans;
-import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 import pro.sketchware.R;
 import pro.sketchware.utility.ThemeUtils;
@@ -83,6 +81,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private final Handler handler = new Handler();
     public boolean isLayoutChanged = true;
     public PaletteWidget paletteWidget;
+    public WidgetsCreatorManager widgetsCreatorManager;
     private ObjectAnimator animatorTranslateX;
     private boolean isAnimating = false;
     private boolean C = false;
@@ -125,15 +124,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private TextView deleteText;
     private MaterialCardView deleteView;
     private ObjectAnimator animatorTranslateY;
-    private final Runnable ea = this::e;
-
     private int colorSurfaceContainerHighest;
     private int colorCoolGreenContainer;
     private int colorCoolGreen;
     private int colorError;
+    private final Runnable ea = this::e;
     private int colorErrorContainer;
-
-    public WidgetsCreatorManager widgetsCreatorManager;
 
     public ViewEditor(Context context) {
         this(context, null);
@@ -690,15 +686,15 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             } else if (((r instanceof IconMaterialButton)
-                        || (r instanceof IconRecyclerView)
-                        || (r instanceof IconBottomNavigationView)
-                        || (r instanceof IconTabLayout)
-                        || (r instanceof IconViewPager)
-                        || (r instanceof IconCollapsingToolbar)
-                        || (r instanceof IconTextInputLayout)
-                        || (r instanceof IconSwipeRefreshLayout)
-                        || (r instanceof IconCardView))
-                        && !isAppCompatEnabled) {
+                    || (r instanceof IconRecyclerView)
+                    || (r instanceof IconBottomNavigationView)
+                    || (r instanceof IconTabLayout)
+                    || (r instanceof IconViewPager)
+                    || (r instanceof IconCollapsingToolbar)
+                    || (r instanceof IconTextInputLayout)
+                    || (r instanceof IconSwipeRefreshLayout)
+                    || (r instanceof IconCardView))
+                    && !isAppCompatEnabled) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             }
@@ -783,16 +779,16 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void deleteWidgetFromCollection(String str) {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
-        dialog.a(R.drawable.ic_mtrl_delete);
-        dialog.a(xB.b().a(getContext(), R.string.view_widget_favorites_delete_message));
-        dialog.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
+        dialog.setIcon(R.drawable.ic_mtrl_delete);
+        dialog.setMessage(xB.b().a(getContext(), R.string.view_widget_favorites_delete_message));
+        dialog.setPositiveButton(xB.b().a(getContext(), R.string.common_word_delete), (v, which) -> {
             Rp.h().a(str, true);
             setFavoriteData(Rp.h().f());
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -1099,13 +1095,27 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
+    public void CreateCustomWidget(HashMap<String, Object> map) {
+        View extraWidget = paletteWidget.CustomWidget(map);
+        extraWidget.setClickable(true);
+        Object position = map.get("position");
+        int tagValue = 0;
+        if (position instanceof Integer) {
+            tagValue = (Integer) position;
+        } else if (position instanceof Double) {
+            tagValue = ((Double) position).intValue();
+        }
+        extraWidget.setTag(tagValue);
+        extraWidget.setOnTouchListener(this);
+    }
+
     enum PaletteGroup {
         BASIC,
         FAVORITE
     }
 
     static class PaletteGroupItem extends LinearLayout implements View.OnClickListener {
-        private ImageView imgGroup;
+        private final ImageView imgGroup;
 
         public PaletteGroupItem(Context context) {
             super(context);
@@ -1124,19 +1134,5 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     R.drawable.selector_palette_tab_ic_bookmark);
             setOnClickListener(this);
         }
-    }
-
-    public void CreateCustomWidget(HashMap<String, Object> map) {
-        View extraWidget = paletteWidget.CustomWidget(map);
-        extraWidget.setClickable(true);
-        Object position = map.get("position");
-        int tagValue = 0;
-        if (position instanceof Integer) {
-            tagValue = (Integer) position;
-        } else if (position instanceof Double) {
-            tagValue = ((Double) position).intValue();
-        }
-        extraWidget.setTag(tagValue);
-        extraWidget.setOnTouchListener(this);
     }
 }

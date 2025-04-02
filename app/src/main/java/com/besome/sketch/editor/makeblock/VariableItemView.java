@@ -10,12 +10,14 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 
-import a.a.a.aB;
 import a.a.a.kq;
 import a.a.a.mB;
 import a.a.a.wB;
@@ -34,7 +36,7 @@ public class VariableItemView extends LinearLayout {
     private VariableItem selectedVariableItem;
 
     private TextView tvPreview;
-    private aB dialog;
+    private AlertDialog dialog;
 
     public VariableItemView(Activity activity) {
         super(activity);
@@ -145,11 +147,11 @@ public class VariableItemView extends LinearLayout {
     // New Ui For Type Var Dialog
     private void showVarTypeSelectorDialog(Activity activity) {
 
-        dialog = new aB(activity);
+        var builder = new MaterialAlertDialogBuilder(activity);
         VarTypeSelectorDialogBinding binding =
                 VarTypeSelectorDialogBinding.inflate(LayoutInflater.from(activity));
 
-        dialog.b(Helper.getResString(R.string.logic_editor_more_block_title_add_variable_type));
+        builder.setTitle(Helper.getResString(R.string.logic_editor_more_block_title_add_variable_type));
 
         VariableItemAdapter adapter = new VariableItemAdapter();
         binding.list.setLayoutManager(new LinearLayoutManager(activity));
@@ -175,7 +177,8 @@ public class VariableItemView extends LinearLayout {
                     return true;
                 });
 
-        dialog.a(binding.getRoot());
+        builder.setView(binding.getRoot());
+        dialog = builder.create();
         dialog.show();
     }
 

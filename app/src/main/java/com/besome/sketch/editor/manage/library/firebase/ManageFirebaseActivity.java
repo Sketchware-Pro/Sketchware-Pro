@@ -24,17 +24,17 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import pro.sketchware.R;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import a.a.a.DB;
 import a.a.a.GB;
-import a.a.a.aB;
 import a.a.a.bB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -43,14 +43,6 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     private final String app_id = "app_id";
     private final String api_key = "api_key";
     private final String storage_bucket = "storage_bucket";
-
-    private final ActivityResultLauncher<Intent> openSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == Activity.RESULT_OK) {
-            assert result.getData() != null;
-            initializeLibrary(result.getData().getParcelableExtra("firebase"));
-        }
-    });
-
     private MaterialSwitch libSwitch;
     private TextView tvProjectId;
     private TextView tvAppId;
@@ -58,6 +50,12 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     private TextView tvStorageUrl;
     private DB s = null;
     private ProjectLibraryBean firebaseLibraryBean;
+    private final ActivityResultLauncher<Intent> openSettings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            initializeLibrary(result.getData().getParcelableExtra("firebase"));
+        }
+    });
     private String sc_id;
 
     private void initializeLibrary(ProjectLibraryBean libraryBean) {
@@ -98,34 +96,34 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     }
 
     private void downloadChromeDialog() {
-        final aB dialog = new aB(this);
-        dialog.a(R.drawable.chrome_96);
-        dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
-        dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
-        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
+        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.chrome_96);
+        dialog.setTitle(Helper.getResString(R.string.title_compatible_chrome_browser));
+        dialog.setMessage(Helper.getResString(R.string.message_compatible_chrome_brower));
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("market://details?id=com.android.chrome"));
             startActivity(intent);
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
     private void configureLibraryDialog() {
-        final aB dialog = new aB(this);
-        dialog.b(Helper.getResString(R.string.common_word_warning));
-        dialog.a(R.drawable.delete_96);
-        dialog.a(Helper.getResString(R.string.design_library_firebase_dialog_description_confirm_uncheck_firebase));
+        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
+        dialog.setIcon(R.drawable.delete_96);
+        dialog.setMessage(Helper.getResString(R.string.design_library_firebase_dialog_description_confirm_uncheck_firebase));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v, which) -> {
             firebaseLibraryBean.useYn = "N";
             libSwitch.setChecked(false);
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v, which) -> {
             libSwitch.setChecked(true);
-            dialog.dismiss();
+            v.dismiss();
         });
         dialog.show();
     }

@@ -28,28 +28,22 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import a.a.a.aB;
-
+import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import kellinwood.security.zipsigner.ZipSigner;
-
 import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import mod.khaled.logcat.LogReaderActivity;
-
 import pro.sketchware.R;
 import pro.sketchware.activities.editor.component.ManageCustomComponentActivity;
 import pro.sketchware.activities.settings.SettingsActivity;
-import pro.sketchware.databinding.DialogSelectApkToSignBinding;
 import pro.sketchware.databinding.ActivityAppSettingsBinding;
+import pro.sketchware.databinding.DialogSelectApkToSignBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -166,8 +160,8 @@ public class AppSettings extends BaseAppCompatActivity {
 
     private void signApkFileDialog() {
         final boolean[] isAPKSelected = {false};
-        aB apkPathDialog = new aB(this);
-        apkPathDialog.b("Sign APK with testkey");
+        MaterialAlertDialogBuilder apkPathDialog = new MaterialAlertDialogBuilder(this);
+        apkPathDialog.setTitle("Sign APK with testkey");
 
         DialogSelectApkToSignBinding binding = DialogSelectApkToSignBinding.inflate(getLayoutInflater());
         View testkey_root = binding.getRoot();
@@ -186,7 +180,7 @@ public class AppSettings extends BaseAppCompatActivity {
             dialog.show();
         });
 
-        apkPathDialog.b("Continue", v -> {
+        apkPathDialog.setPositiveButton("Continue", (v, which) -> {
             if (!isAPKSelected[0]) {
                 SketchwareUtil.toast("Please select an APK file to sign", Toast.LENGTH_SHORT);
                 shakeView(binding.selectFile);
@@ -198,14 +192,14 @@ public class AppSettings extends BaseAppCompatActivity {
                     "sketchware/signed_apk/" + output_apk_file_name).getAbsolutePath();
 
             if (new File(output_apk_path).exists()) {
-                aB confirmOverwrite = new aB(this);
-                confirmOverwrite.a(R.drawable.color_save_as_new_96);
-                confirmOverwrite.b("File exists");
-                confirmOverwrite.a("An APK named " + output_apk_file_name + " already exists at /sketchware/signed_apk/.  Overwrite it?");
+                MaterialAlertDialogBuilder confirmOverwrite = new MaterialAlertDialogBuilder(this);
+                confirmOverwrite.setIcon(R.drawable.color_save_as_new_96);
+                confirmOverwrite.setTitle("File exists");
+                confirmOverwrite.setMessage("An APK named " + output_apk_file_name + " already exists at /sketchware/signed_apk/.  Overwrite it?");
 
-                confirmOverwrite.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(confirmOverwrite));
-                confirmOverwrite.b("Overwrite", view -> {
-                    confirmOverwrite.dismiss();
+                confirmOverwrite.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+                confirmOverwrite.setPositiveButton("Overwrite", (view, which1) -> {
+                    v.dismiss();
                     signApkFileWithDialog(input_apk_path, output_apk_path, true,
                             null, null, null, null);
                 });
@@ -216,9 +210,9 @@ public class AppSettings extends BaseAppCompatActivity {
             }
         });
 
-        apkPathDialog.a(Helper.getResString(R.string.common_word_cancel), v -> apkPathDialog.dismiss());
+        apkPathDialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
 
-        apkPathDialog.a(testkey_root);
+        apkPathDialog.setView(testkey_root);
         apkPathDialog.setCancelable(false);
         apkPathDialog.show();
     }

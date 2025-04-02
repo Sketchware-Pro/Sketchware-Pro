@@ -6,11 +6,11 @@ import android.view.View;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageLibraryManageCompatBinding;
-
-import a.a.a.aB;
-import mod.hey.studios.util.Helper;
 
 public class ManageCompatActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -19,26 +19,26 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
     private ManageLibraryManageCompatBinding binding;
 
     private void showFirebaseNeedDisableDialog() {
-        aB dialog = new aB(this);
-        dialog.a(R.drawable.chrome_96);
-        dialog.a(Helper.getResString(R.string.design_library_appcompat_need_firebase_disable));
-        dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.chrome_96);
+        dialog.setMessage(Helper.getResString(R.string.design_library_appcompat_need_firebase_disable));
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
         dialog.show();
     }
 
     private void configureLibraryDialog() {
-        aB dialog = new aB(this);
-        dialog.b(Helper.getResString(R.string.common_word_warning));
-        dialog.a(R.drawable.delete_96);
-        dialog.a(Helper.getResString(R.string.design_library_message_confirm_uncheck_appcompat_and_design));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
+        dialog.setIcon(R.drawable.delete_96);
+        dialog.setMessage(Helper.getResString(R.string.design_library_message_confirm_uncheck_appcompat_and_design));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v, which) -> {
             binding.libSwitch.setChecked(false);
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v, which) -> {
             binding.libSwitch.setChecked(true);
-            dialog.dismiss();
+            v.dismiss();
         });
         dialog.show();
     }

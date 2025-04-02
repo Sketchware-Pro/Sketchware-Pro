@@ -2,6 +2,7 @@ package com.besome.sketch.editor.logic;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
@@ -9,6 +10,7 @@ import android.util.AttributeSet;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -18,7 +20,6 @@ import java.util.Objects;
 import java.util.concurrent.Executors;
 
 import a.a.a.Vs;
-import a.a.a.aB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PalettesSearchDialogBinding;
@@ -105,21 +106,21 @@ public class PaletteSelector extends RecyclerView {
     }
 
     public void showSearchDialog() {
-        aB dialog = new aB((Activity) context);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
         PalettesSearchDialogBinding binding = PalettesSearchDialogBinding.inflate(((Activity) context).getLayoutInflater());
 
-        dialog.b(Helper.getResString(R.string.search_in_palettes_dialog_title));
-        dialog.b(Helper.getResString(R.string.search), v1 -> {
+        dialog.setTitle(Helper.getResString(R.string.search_in_palettes_dialog_title));
+        dialog.setPositiveButton(Helper.getResString(R.string.search), (v1, which) -> {
             if (binding.textInputLayoutSearch.getError() == null) {
-                startSearch(dialog, Helper.getText(binding.edittextSearchValue).trim());
+                startSearch(v1, Helper.getText(binding.edittextSearchValue).trim());
             }
-            dialog.dismiss();
+            v1.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.cancel), v1 -> dialog.dismiss());
+        dialog.setNegativeButton(Helper.getResString(R.string.cancel), (v1, which) -> v1.dismiss());
         if (!searchValue.isEmpty()) {
-            dialog.configureDefaultButton(Helper.getResString(R.string.restore), v1 -> startSearch(dialog, ""));
+            dialog.setNeutralButton(Helper.getResString(R.string.restore), (v1, which) -> startSearch(v1, ""));
         }
-        dialog.a(binding.getRoot());
+        dialog.setView(binding.getRoot());
         binding.edittextSearchValue.setText(searchValue);
         binding.edittextSearchValue.addTextChangedListener(new SimpleTextWatcher(s -> validateSearch(s.toString(), binding.textInputLayoutSearch)));
         dialog.show();
@@ -137,7 +138,7 @@ public class PaletteSelector extends RecyclerView {
         layout.setError(canSearch(query) ? null : Helper.getResString(R.string.search_error_message));
     }
 
-    private void startSearch(aB dialog, String query) {
+    private void startSearch(DialogInterface dialog, String query) {
         searchValue = query;
         Executors.newSingleThreadExecutor().execute(() ->
                 new Handler(Looper.getMainLooper()).post(() -> {

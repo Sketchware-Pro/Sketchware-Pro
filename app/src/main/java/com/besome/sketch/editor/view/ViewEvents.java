@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,25 +15,23 @@ import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.color.MaterialColors;
-
-import pro.sketchware.R;
-import pro.sketchware.databinding.EventGridItemBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
 import a.a.a.Qs;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.jC;
-import a.a.a.mB;
 import a.a.a.oq;
 import a.a.a.wB;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.EventGridItemBinding;
 
 public class ViewEvents extends LinearLayout {
-    private ArrayList<EventBean> events = new ArrayList<>();
-    private EventAdapter eventAdapter = new EventAdapter();
+    private final ArrayList<EventBean> events = new ArrayList<>();
+    private final EventAdapter eventAdapter = new EventAdapter();
 
     private String sc_id;
     private ProjectFileBean projectFileBean;
@@ -102,46 +99,6 @@ public class ViewEvents extends LinearLayout {
     }
 
     private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public final EventGridItemBinding binding;
-
-            public ViewHolder(EventGridItemBinding binding) {
-                super(binding.getRoot());
-                this.binding = binding;
-            }
-
-            public void bind(EventBean event, int position) {
-                binding.container.setOnClickListener(v -> createEvent(getLayoutPosition()));
-                binding.imgIcon.setImageResource(oq.a(event.eventName));
-                binding.tvTitle.setText(event.eventName);
-
-                if (event.isSelected) {
-                    binding.imgIcon.setColorFilter(MaterialColors.getColor(binding.tvTitle, com.google.android.material.R.attr.colorSecondary));
-                    binding.imgUsedEvent.setVisibility(View.GONE);
-                    binding.container.setOnLongClickListener(v -> {
-                        aB dialog = new aB((Activity) itemView.getContext());
-                        dialog.a(R.drawable.delete_96);
-                        dialog.b("Confirm Delete");
-                        dialog.a("Click on Confirm to delete the selected Event.");
-
-                        dialog.b(Helper.getResString(R.string.common_word_delete), view -> {
-                            dialog.dismiss();
-                            EventBean.deleteEvent(sc_id, event, projectFileBean);
-                            bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
-                            event.isSelected = false;
-                            eventAdapter.notifyItemChanged(position);
-                        });
-                        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-                        dialog.show();
-                        return true;
-                    });
-                } else {
-                    binding.imgUsedEvent.setVisibility(View.VISIBLE);
-                    binding.imgIcon.setColorFilter(MaterialColors.getColor(binding.tvTitle, com.google.android.material.R.attr.colorOutlineVariant));
-                }
-            }
-        }
-
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             EventBean eventBean = events.get(position);
@@ -159,6 +116,46 @@ public class ViewEvents extends LinearLayout {
         @Override
         public int getItemCount() {
             return events.size();
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final EventGridItemBinding binding;
+
+            public ViewHolder(EventGridItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+            }
+
+            public void bind(EventBean event, int position) {
+                binding.container.setOnClickListener(v -> createEvent(getLayoutPosition()));
+                binding.imgIcon.setImageResource(oq.a(event.eventName));
+                binding.tvTitle.setText(event.eventName);
+
+                if (event.isSelected) {
+                    binding.imgIcon.setColorFilter(MaterialColors.getColor(binding.tvTitle, com.google.android.material.R.attr.colorSecondary));
+                    binding.imgUsedEvent.setVisibility(View.GONE);
+                    binding.container.setOnLongClickListener(v -> {
+                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(itemView.getContext());
+                        dialog.setIcon(R.drawable.delete_96);
+                        dialog.setTitle("Confirm Delete");
+                        dialog.setMessage("Click on Confirm to delete the selected Event.");
+
+                        dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (view, which) -> {
+                            view.dismiss();
+                            EventBean.deleteEvent(sc_id, event, projectFileBean);
+                            bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
+                            event.isSelected = false;
+                            eventAdapter.notifyItemChanged(position);
+                        });
+                        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+                        dialog.show();
+                        return true;
+                    });
+                } else {
+                    binding.imgUsedEvent.setVisibility(View.VISIBLE);
+                    binding.imgIcon.setColorFilter(MaterialColors.getColor(binding.tvTitle, com.google.android.material.R.attr.colorOutlineVariant));
+                }
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package a.a.a;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -8,11 +7,12 @@ import android.widget.Toast;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.firebase.FirebaseActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import pro.sketchware.R;
 
-import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class kv extends LinearLayout implements nv {
 
@@ -33,7 +33,7 @@ public class kv extends LinearLayout implements nv {
     public kv(FirebaseActivity var1) {
         super(var1);
         this.a = var1;
-        this.a((Context)var1);
+        this.a(var1);
     }
 
     public void a() {
@@ -42,7 +42,7 @@ public class kv extends LinearLayout implements nv {
 
     public final void a(Context var1) {
         wB.a(var1, this, R.layout.manage_library_firebase_preview);
-        gB.b(this, 600, 200, (Animator.AnimatorListener)null);
+        gB.b(this, 600, 200, null);
 
         tv_enable = findViewById(R.id.tv_enable);
         tv_app_id = findViewById(R.id.tv_app_id);
@@ -72,19 +72,19 @@ public class kv extends LinearLayout implements nv {
     }
 
     private void configureLibraryDialog() {
-        final aB dialog = new aB(a);
-        dialog.b(Helper.getResString(R.string.common_word_warning));
-        dialog.a(R.drawable.delete_96);
-        dialog.a(Helper.getResString(R.string.design_library_firebase_dialog_description_confirm_uncheck_firebase));
+        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(a);
+        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
+        dialog.setIcon(R.drawable.delete_96);
+        dialog.setMessage(Helper.getResString(R.string.design_library_firebase_dialog_description_confirm_uncheck_firebase));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v, which) -> {
             firebaseLibraryBean.useYn = "N";
             lib_switch.setChecked(false);
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), v -> {
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v, which) -> {
             lib_switch.setChecked(true);
-            dialog.dismiss();
+            v.dismiss();
         });
         dialog.show();
     }

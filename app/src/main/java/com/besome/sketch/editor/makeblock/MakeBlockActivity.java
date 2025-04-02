@@ -13,8 +13,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
@@ -27,18 +27,18 @@ public class MakeBlockActivity extends BaseAppCompatActivity {
     private MoreBlockBuilderView makeBlock;
 
     private void goBackDialog() {
-        aB dialog = new aB(this);
-        dialog.b(Helper.getResString(R.string.logic_editor_more_block_dialog_message_confirm_goback));
-        dialog.a(R.drawable.exit_96);
-        dialog.a(Helper.getResString(R.string.logic_editor_more_block_dialog_description_goback));
-        dialog.b(Helper.getResString(R.string.common_word_goback), v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(Helper.getResString(R.string.logic_editor_more_block_dialog_message_confirm_goback));
+        dialog.setIcon(R.drawable.exit_96);
+        dialog.setMessage(Helper.getResString(R.string.logic_editor_more_block_dialog_description_goback));
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_goback), (v, which) -> {
             if (!mB.a()) {
-                dialog.dismiss();
+                v.dismiss();
                 finish();
             }
 
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 

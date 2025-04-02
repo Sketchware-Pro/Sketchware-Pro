@@ -19,6 +19,7 @@ import androidx.core.content.FileProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
@@ -31,7 +32,6 @@ import java.util.HashMap;
 import a.a.a.KB;
 import a.a.a.MA;
 import a.a.a.ProjectBuilder;
-import a.a.a.aB;
 import a.a.a.eC;
 import a.a.a.hC;
 import a.a.a.iC;
@@ -54,7 +54,6 @@ import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
-import pro.sketchware.BuildConfig;
 import pro.sketchware.R;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
@@ -266,14 +265,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
     private void initializeAppBundleExportViews() {
         export_aab_button.setOnClickListener(view -> {
-            aB confirmationDialog = new aB(this);
-            confirmationDialog.b("Important note");
-            confirmationDialog.a("The generated .aab file must be signed.\nCopy your keystore to /Internal storage/sketchware/keystore/release_key.jks and enter the alias' password.");
-            confirmationDialog.a(R.drawable.ic_mtrl_info);
+            MaterialAlertDialogBuilder confirmationDialog = new MaterialAlertDialogBuilder(this);
+            confirmationDialog.setTitle("Important note");
+            confirmationDialog.setMessage("The generated .aab file must be signed.\nCopy your keystore to /Internal storage/sketchware/keystore/release_key.jks and enter the alias' password.");
+            confirmationDialog.setIcon(R.drawable.ic_mtrl_info);
 
-            confirmationDialog.b("Understood", v -> {
+            confirmationDialog.setPositiveButton("Understood", (v, which) -> {
                 showAabSigningDialog();
-                confirmationDialog.dismiss();
+                v.dismiss();
             });
             confirmationDialog.show();
         });
@@ -333,19 +332,19 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         sign_apk_output_stage.setVisibility(View.GONE);
 
         sign_apk_button.setOnClickListener(view -> {
-            aB confirmationDialog = new aB(this);
-            confirmationDialog.b("Important note");
-            confirmationDialog.a("""
+            MaterialAlertDialogBuilder confirmationDialog = new MaterialAlertDialogBuilder(this);
+            confirmationDialog.setTitle("Important note");
+            confirmationDialog.setMessage("""
                     To sign an APK, you need a keystore. Use your already created one, and copy it to \
                     /Internal storage/sketchware/keystore/release_key.jks and enter the alias's password.
                     
                     Note that this only signs your APK using signing scheme V1, to target Android 11+ for example, \
                     use a 3rd-party tool (for now).""");
-            confirmationDialog.a(R.drawable.ic_mtrl_info);
+            confirmationDialog.setIcon(R.drawable.ic_mtrl_info);
 
-            confirmationDialog.b("Understood", v -> {
+            confirmationDialog.setPositiveButton("Understood", (v, which) -> {
                 showApkSigningDialog();
-                confirmationDialog.dismiss();
+                v.dismiss();
             });
             confirmationDialog.show();
         });
@@ -748,12 +747,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
             String aabFilename = getCorrectResultFilename(project_metadata.projectName + ".aab");
             if (buildingAppBundle && new File(Environment.getExternalStorageDirectory(), "sketchware" + File.separator + "signed_aab" + File.separator + aabFilename).exists()) {
-                aB dialog = new aB(activity.get());
-                dialog.a(R.drawable.open_box_48);
-                dialog.b("Finished exporting AAB");
-                dialog.a("You can find the generated, signed AAB file at:\n" +
+                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity.get());
+                dialog.setIcon(R.drawable.open_box_48);
+                dialog.setTitle("Finished exporting AAB");
+                dialog.setMessage("You can find the generated, signed AAB file at:\n" +
                         "/Internal storage/sketchware/signed_aab/" + aabFilename);
-                dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
+                dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
                 dialog.show();
             }
         }

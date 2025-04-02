@@ -1,10 +1,8 @@
 package pro.sketchware.menu;
 
 import static android.text.TextUtils.isEmpty;
-
 import static mod.bobur.StringEditorActivity.convertXmlToListMap;
 import static mod.bobur.StringEditorActivity.isXmlStringsContains;
-
 import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.annotation.SuppressLint;
@@ -17,13 +15,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import a.a.a.Ss;
-import a.a.a.aB;
-import a.a.a.eC;
-import a.a.a.jC;
-import a.a.a.uq;
-import a.a.a.wB;
-
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ComponentBean;
@@ -32,20 +23,8 @@ import com.besome.sketch.editor.LogicEditorActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
-
-import mod.hey.studios.util.Helper;
-import mod.hilal.saif.activities.tools.ConfigActivity;
-import mod.hilal.saif.asd.AsdDialog;
-import mod.hilal.saif.asd.old.AsdOldDialog;
-
-import pro.sketchware.R;
-import pro.sketchware.lib.base.BaseTextWatcher;
-import pro.sketchware.lib.highlighter.SimpleHighlighter;
-import pro.sketchware.utility.CustomVariableUtil;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileResConfig;
-import pro.sketchware.utility.FileUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -53,6 +32,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import a.a.a.Ss;
+import a.a.a.eC;
+import a.a.a.jC;
+import a.a.a.uq;
+import a.a.a.wB;
+import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.ConfigActivity;
+import mod.hilal.saif.asd.AsdDialog;
+import pro.sketchware.R;
+import pro.sketchware.lib.base.BaseTextWatcher;
+import pro.sketchware.lib.highlighter.SimpleHighlighter;
+import pro.sketchware.utility.CustomVariableUtil;
+import pro.sketchware.utility.FilePathUtil;
+import pro.sketchware.utility.FileResConfig;
+import pro.sketchware.utility.FileUtil;
 
 public class ExtraMenuBean {
 
@@ -249,7 +244,7 @@ public class ExtraMenuBean {
     @SuppressLint("SetTextI18n")
     private void defaultMenus(Ss menu) {
         String menuName = menu.getMenuName();
-        aB dialog = new aB(logicEditor);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
         View rootView = wB.a(logicEditor, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = rootView.findViewById(R.id.rg_content);
         ArrayList<String> menus = new ArrayList<>();
@@ -632,11 +627,11 @@ public class ExtraMenuBean {
             case "ResAttr":
             case "ResXml":
                 title = "Deprecated";
-                dialog.a("This Block Menu was initially used to parse resource values, but was too I/O heavy and has been removed due to that. Please use the Code Editor instead.");
+                dialog.setMessage("This Block Menu was initially used to parse resource values, but was too I/O heavy and has been removed due to that. Please use the Code Editor instead.");
                 break;
 
             case "AdUnit":
-                dialog.a(R.drawable.unit_96);
+                dialog.setIcon(R.drawable.unit_96);
                 title = "Select an Ad Unit";
                 for (AdUnitBean bean : jC.c(sc_id).e.adUnits) {
                     menus.add(bean.id);
@@ -644,7 +639,7 @@ public class ExtraMenuBean {
                 break;
 
             case "TestDevice":
-                dialog.a(R.drawable.ic_test_device_48dp);
+                dialog.setIcon(R.drawable.ic_test_device_48dp);
                 title = "Select a Test device";
                 for (AdTestDeviceBean testDevice : jC.c(sc_id).e.testDevices) {
                     menus.add(testDevice.deviceId);
@@ -725,9 +720,9 @@ public class ExtraMenuBean {
             }
         }
 
-        dialog.b(title);
-        dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
+        dialog.setTitle(title);
+        dialog.setView(rootView);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 if (viewGroup.getChildAt(i) instanceof RadioButton rb) {
                     if (rb.isChecked()) {
@@ -735,16 +730,16 @@ public class ExtraMenuBean {
                     }
                 }
             }
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.configureDefaultButton("Code Editor", v -> {
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNeutralButton("Code Editor", (v, which) -> {
             AsdDialog editor = new AsdDialog(logicEditor);
             editor.setCon(menu.getArgValue().toString());
             editor.show();
-            editor.saveLis(logicEditor, false, menu, editor);;
+            editor.saveLis(logicEditor, false, menu, editor);
             editor.cancelLis(editor);
-            dialog.dismiss();
+            v.dismiss();
         });
         dialog.show();
     }
@@ -762,11 +757,11 @@ public class ExtraMenuBean {
     }
 
     private void asdDialog(Ss ss, String message) {
-        aB dialog = new aB(logicEditor);
-        dialog.b(Helper.getResString(R.string.logic_editor_title_enter_string_value));
-        dialog.a(R.drawable.rename_96_blue);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
+        dialog.setTitle(Helper.getResString(R.string.logic_editor_title_enter_string_value));
+        dialog.setIcon(R.drawable.rename_96_blue);
 
-        if (!isEmpty(message)) dialog.a(message);
+        if (!isEmpty(message)) dialog.setMessage(message);
 
         View root = wB.a(logicEditor, R.layout.property_popup_input_text);
         EditText edittext = root.findViewById(R.id.ed_input);
@@ -776,24 +771,24 @@ public class ExtraMenuBean {
             new SimpleHighlighter(edittext);
         }
         edittext.setText(ss.getArgValue().toString());
-        dialog.a(root);
+        dialog.setView(root);
 
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             String content = Helper.getText(edittext);
             if (!content.isEmpty() && content.charAt(0) == '@') {
                 content = " " + content;
             }
             logicEditor.a(ss, content);
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.configureDefaultButton("Code Editor", v -> {
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setNeutralButton("Code Editor", (v, which) -> {
             AsdDialog asdDialog = new AsdDialog(logicEditor);
             asdDialog.setCon(Helper.getText(edittext));
             asdDialog.show();
             asdDialog.saveLis(logicEditor, false, ss, asdDialog);
             asdDialog.cancelLis(asdDialog);
-            dialog.dismiss();
+            v.dismiss();
         });
         dialog.show();
     }

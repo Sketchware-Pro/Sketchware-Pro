@@ -35,6 +35,7 @@ import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigationrail.NavigationRailView;
 
@@ -92,7 +93,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             default -> "";
         };
     }
-    
+
     private int getPaletteIndex(int id) {
         if (id == R.id.activity) {
             return 0;
@@ -107,7 +108,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         }
         return -1;
     }
-    
+
     private int getPaletteIndex() {
         return getPaletteIndex(paletteView.getSelectedItemId());
     }
@@ -262,9 +263,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     private void showSaveMoreBlockToCollectionsDialog(int moreBlockPosition) {
-        aB aBVar = new aB(requireActivity());
-        aBVar.b(xB.b().a(requireContext(), R.string.logic_more_block_favorites_save_title));
-        aBVar.a(R.drawable.ic_bookmark_red_48dp);
+        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(requireActivity());
+        aBVar.setTitle(xB.b().a(requireContext(), R.string.logic_more_block_favorites_save_title));
+        aBVar.setIcon(R.drawable.ic_bookmark_red_48dp);
         View a2 = wB.a(requireContext(), R.layout.property_popup_save_to_favorite);
         ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(xB.b().a(requireContext(), R.string.logic_more_block_favorites_save_guide));
         EditText editText = a2.findViewById(R.id.ed_input);
@@ -273,17 +274,17 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         NB nb = new NB(requireContext(), a2.findViewById(R.id.ti_input), Pp.h().g());
-        aBVar.a(a2);
-        aBVar.b(xB.b().a(requireContext(), R.string.common_word_save), v -> {
+        aBVar.setView(a2);
+        aBVar.setPositiveButton(xB.b().a(requireContext(), R.string.common_word_save), (v, which) -> {
             if (nb.b()) {
                 saveMoreBlockToCollection(Helper.getText(editText), moreBlocks.get(moreBlockPosition));
                 mB.a(requireContext(), editText);
-                aBVar.dismiss();
+                v.dismiss();
             }
         });
-        aBVar.a(xB.b().a(requireContext(), R.string.common_word_cancel), v -> {
+        aBVar.setNegativeButton(xB.b().a(requireContext(), R.string.common_word_cancel), (v, which) -> {
             mB.a(requireContext(), editText);
-            aBVar.dismiss();
+            v.dismiss();
         });
         aBVar.show();
     }

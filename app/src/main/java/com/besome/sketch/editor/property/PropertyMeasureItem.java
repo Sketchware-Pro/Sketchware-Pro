@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.property;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -10,8 +9,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import a.a.a.Kw;
-import a.a.a.aB;
 import a.a.a.mB;
 import a.a.a.sq;
 import a.a.a.wB;
@@ -124,9 +124,9 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
     }
 
     private void showDialog() {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(Helper.getText(tvName));
-        dialog.a(imgLeftIconDrawableResId);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(Helper.getText(tvName));
+        dialog.setIcon(imgLeftIconDrawableResId);
 
         PropertyPopupMeasurementBinding binding = PropertyPopupMeasurementBinding.inflate(LayoutInflater.from(getContext()));
         binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
@@ -164,8 +164,8 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             binding.tiInput.setSuffixText("dp");
         }
 
-        dialog.a(binding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
+        dialog.setView(binding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
             int checkedRadioButtonId = binding.rgWidthHeight.getCheckedRadioButtonId();
             if (checkedRadioButtonId == R.id.rb_matchparent) {
                 setValue(LayoutParams.MATCH_PARENT);
@@ -179,9 +179,9 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             if (valueChangeListener != null) {
                 valueChangeListener.a(key, measureValue);
             }
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 }

@@ -46,7 +46,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import a.a.a.Zx;
-import a.a.a.aB;
 import a.a.a.xB;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
@@ -206,46 +205,46 @@ public class BlocksManager extends BaseAppCompatActivity {
     }
 
     private void showBlockConfigurationDialog() {
-        aB dialog = new aB(this);
-        dialog.a(R.drawable.ic_folder_48dp);
-        dialog.b("Block configuration");
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.ic_folder_48dp);
+        dialog.setTitle("Block configuration");
 
         DialogBlockConfigurationBinding dialogBinding = DialogBlockConfigurationBinding.inflate(getLayoutInflater());
 
         dialogBinding.palettesPath.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
         dialogBinding.blocksPath.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
 
-        dialog.a(dialogBinding.getRoot());
+        dialog.setView(dialogBinding.getRoot());
 
-        dialog.b(Helper.getResString(R.string.common_word_save), view -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (view, which) -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH, Objects.requireNonNull(dialogBinding.palettesPath.getText()).toString());
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH, Objects.requireNonNull(dialogBinding.blocksPath.getText()).toString());
 
             readSettings();
             refreshList();
-            dialog.dismiss();
+            view.dismiss();
         });
 
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
 
-        dialog.configureDefaultButton("Defaults", view -> {
+        dialog.setNeutralButton("Defaults", (view, which) -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH, ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH));
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH, ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH));
 
             readSettings();
             refreshList();
-            dialog.dismiss();
+            view.dismiss();
         });
 
         dialog.show();
     }
 
     private void showMoveToBinDialog(int position) {
-        aB dialog = new aB(activity);
-        dialog.a(R.drawable.ic_mtrl_delete);
-        dialog.b(xB.b().a(activity, R.string.block_move_to_bin));
-        dialog.a(xB.b().a(activity, R.string.common_message_confirm));
-        dialog.b(xB.b().a(activity, R.string.common_word_yes), v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
+        dialog.setIcon(R.drawable.ic_mtrl_delete);
+        dialog.setTitle(xB.b().a(activity, R.string.block_move_to_bin));
+        dialog.setMessage(xB.b().a(activity, R.string.common_message_confirm));
+        dialog.setPositiveButton(xB.b().a(activity, R.string.common_word_yes), (v, which) -> {
             pallet_listmap.remove(position);
             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemRemoved(position);
             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemChanged(position);
@@ -255,9 +254,9 @@ public class BlocksManager extends BaseAppCompatActivity {
             FileUtil.writeFile(blocks_dir, getGson().toJson(all_blocks_list));
             FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
             refreshCount();
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> dialog.dismiss());
+        dialog.setNegativeButton(xB.b().a(activity, R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -435,9 +434,9 @@ public class BlocksManager extends BaseAppCompatActivity {
     }
 
     private void showPaletteDialog(boolean isEditing, Integer oldPosition, String oldName, String oldColor, Integer insertAtPosition) {
-        aB dialog = new aB(this);
-        dialog.a(R.drawable.icon_style_white_96);
-        dialog.b(!isEditing ? "Create a new palette" : "Edit palette");
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.icon_style_white_96);
+        dialog.setTitle(!isEditing ? "Create a new palette" : "Edit palette");
 
         dialogBinding = DialogPaletteBinding.inflate(getLayoutInflater());
 
@@ -462,9 +461,9 @@ public class BlocksManager extends BaseAppCompatActivity {
             zx.showAtLocation(dialogBinding.openColorPalette, Gravity.CENTER, 0, 0);
         });
 
-        dialog.a(dialogBinding.getRoot());
+        dialog.setView(dialogBinding.getRoot());
 
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             String nameInput = Objects.requireNonNull(dialogBinding.nameEditText.getText()).toString();
             String colorInput = Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
 
@@ -507,12 +506,11 @@ public class BlocksManager extends BaseAppCompatActivity {
                     refreshList();
                 }
                 refreshCount();
-                dialog.dismiss();
+                v.dismiss();
             }
         });
 
-        dialog.a(Helper.getResString(R.string.cancel), v1 -> dialog.dismiss());
-        dialog.a(dialogBinding.getRoot());
+        dialog.setNegativeButton(Helper.getResString(R.string.cancel), null);
         dialog.show();
     }
 

@@ -1,6 +1,5 @@
 package a.a.a;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
@@ -21,10 +20,10 @@ import androidx.core.content.FileProvider;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.design.DesignActivity;
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.util.Helper;
@@ -163,9 +162,9 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     }
 
     public final void a() {
-        aB aBVar = new aB((Activity) getContext());
-        aBVar.b(Helper.getText(this.e));
-        aBVar.a(this.m);
+        MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(getContext());
+        aBVar.setTitle(Helper.getText(this.e));
+        aBVar.setIcon(this.m);
         View a3 = wB.a(getContext(), R.layout.property_popup_selector_color);
         ScrollView scrollView = a3.findViewById(R.id.scroll_view);
         this.i = a3.findViewById(R.id.rg);
@@ -190,8 +189,8 @@ public class tx extends RelativeLayout implements View.OnClickListener {
             radioButton = (RadioButton) this.i.getChildAt(0);
             radioButton.setChecked(true);
         }
-        aBVar.a(a3);
-        aBVar.b(xB.b().a(getContext(), R.string.common_word_select), v -> {
+        aBVar.setView(a3);
+        aBVar.setPositiveButton(xB.b().a(getContext(), R.string.common_word_select), (v, which) -> {
             for (int i = 0; i < tx.this.i.getChildCount(); i++) {
                 RadioButton child = (RadioButton) tx.this.i.getChildAt(i);
                 if (child.isChecked()) {
@@ -202,12 +201,14 @@ public class tx extends RelativeLayout implements View.OnClickListener {
                     break;
                 }
             }
-            aBVar.dismiss();
+            v.dismiss();
         });
-        aBVar.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(aBVar));
+        aBVar.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
         RadioButton finalRadioButton = radioButton;
-        aBVar.setOnShowListener(dialog -> scrollView.smoothScrollTo(0, (int) finalRadioButton.getY()));
-        aBVar.show();
+
+        var dialog = aBVar.create();
+        dialog.setOnShowListener(dialogInterface -> scrollView.smoothScrollTo(0, (int) finalRadioButton.getY()));
+        dialog.show();
     }
 
     public final RadioButton a(String str) {

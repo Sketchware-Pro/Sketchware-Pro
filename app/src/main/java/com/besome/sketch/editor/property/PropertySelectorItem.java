@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.property;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.util.Pair;
 import android.view.Gravity;
@@ -13,14 +12,14 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import pro.sketchware.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import a.a.a.Kw;
-import a.a.a.aB;
 import a.a.a.mB;
 import a.a.a.sq;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 @SuppressLint("ViewConstructor")
 public class PropertySelectorItem extends RelativeLayout implements View.OnClickListener {
@@ -143,9 +142,9 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
     }
 
     private void showDialog() {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(Helper.getText(tvName));
-        dialog.a(icon);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(Helper.getText(tvName));
+        dialog.setIcon(icon);
         View view = wB.a(getContext(), R.layout.property_popup_selector_single);
         radioGroupContent = view.findViewById(R.id.rg_content);
         TextView desc = view.findViewById(R.id.desc);
@@ -164,8 +163,8 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
                 radioButton.setChecked(true);
             }
         }
-        dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
+        dialog.setView(view);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
             for (int i = 0; radioGroupContent.getChildCount() > i; i++) {
                 RadioButton radioButton = (RadioButton) radioGroupContent.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -175,9 +174,9 @@ public class PropertySelectorItem extends RelativeLayout implements View.OnClick
             if (valueChangeListener != null) {
                 valueChangeListener.a(key, value);
             }
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 

@@ -3,34 +3,30 @@ package mod.hey.studios.project.backup;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.view.LayoutInflater;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.view.LayoutInflater;
 
 import androidx.appcompat.app.AlertDialog;
-
-import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-
-import pro.sketchware.R;
-import pro.sketchware.databinding.ProgressMsgBoxBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 
-import a.a.a.aB;
 import a.a.a.lC;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import pro.sketchware.R;
+import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
+import pro.sketchware.databinding.ProgressMsgBoxBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class BackupRestoreManager {
 
@@ -65,9 +61,9 @@ public class BackupRestoreManager {
         backupDialogStates.put(0, false);
         backupDialogStates.put(1, false);
 
-        aB dialog = new aB(act);
-        dialog.a(R.drawable.ic_backup);
-        dialog.b("Backup Options");
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(act);
+        dialog.setIcon(R.drawable.ic_backup);
+        dialog.setTitle("Backup Options");
 
         LinearLayout checkboxContainer = new LinearLayout(act);
         checkboxContainer.setOrientation(LinearLayout.VERTICAL);
@@ -115,12 +111,12 @@ public class BackupRestoreManager {
         includeUsedCustomBlocks.setOnCheckedChangeListener(listener);
         checkboxContainer.addView(includeUsedCustomBlocks);
 
-        dialog.a(checkboxContainer);
-        dialog.b("Back up", v -> {
-            dialog.dismiss();
+        dialog.setView(checkboxContainer);
+        dialog.setPositiveButton("Back up", (v, which) -> {
+            v.dismiss();
             doBackup(sc_id, project_name);
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -150,13 +146,13 @@ public class BackupRestoreManager {
                     boolean restoringMultipleBackups = files.length > 1;
 
                     new MaterialAlertDialogBuilder(act)
-                         .setTitle("Warning")
-                         .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, i, files.length,
-                               FileUtil.getFileNameNoExtension(backupFilePath)))
-                         .setPositiveButton("Copy", (dialog, which) -> doRestore(backupFilePath, true))
-                         .setNegativeButton("Don't copy", (dialog, which) -> doRestore(backupFilePath, false))
-                         .setNeutralButton(R.string.common_word_cancel, null)
-                         .show();
+                            .setTitle("Warning")
+                            .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, i, files.length,
+                                    FileUtil.getFileNameNoExtension(backupFilePath)))
+                            .setPositiveButton("Copy", (dialog, which) -> doRestore(backupFilePath, true))
+                            .setNegativeButton("Don't copy", (dialog, which) -> doRestore(backupFilePath, false))
+                            .setNeutralButton(R.string.common_word_cancel, null)
+                            .show();
 
                 } else {
                     doRestore(backupFilePath, false);
@@ -192,11 +188,11 @@ public class BackupRestoreManager {
             ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(LayoutInflater.from(activityWeakReference.get()));
             loadingDialogBinding.tvProgress.setText("Creating backup...");
             dlg = new MaterialAlertDialogBuilder(activityWeakReference.get())
-                  .setTitle("Please wait")
-                  .setCancelable(false)
-                  .setView(loadingDialogBinding.getRoot())
-                  .create();
-            dlg.show();      
+                    .setTitle("Please wait")
+                    .setCancelable(false)
+                    .setView(loadingDialogBinding.getRoot())
+                    .create();
+            dlg.show();
         }
 
         @Override
@@ -244,10 +240,10 @@ public class BackupRestoreManager {
             ProgressMsgBoxBinding loadingDialogBinding = ProgressMsgBoxBinding.inflate(LayoutInflater.from(activityWeakReference.get()));
             loadingDialogBinding.tvProgress.setText("Restoring...");
             dlg = new MaterialAlertDialogBuilder(activityWeakReference.get())
-                  .setTitle("Please wait")
-                  .setCancelable(false)
-                  .setView(loadingDialogBinding.getRoot())
-                  .create();
+                    .setTitle("Please wait")
+                    .setCancelable(false)
+                    .setView(loadingDialogBinding.getRoot())
+                    .create();
             dlg.show();
         }
 

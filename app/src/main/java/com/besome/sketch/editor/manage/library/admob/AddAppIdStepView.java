@@ -2,7 +2,6 @@ package com.besome.sketch.editor.manage.library.admob;
 
 import static android.text.TextUtils.isEmpty;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +9,16 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageLibraryAdmobAppIdBinding;
-import pro.sketchware.databinding.ManageLibrarySettingAdmobAppIdAddBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import a.a.a.Uu;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.gB;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryAdmobAppIdBinding;
+import pro.sketchware.databinding.ManageLibrarySettingAdmobAppIdAddBinding;
 
 public class AddAppIdStepView extends LinearLayout implements Uu, View.OnClickListener {
     private ManageLibraryAdmobAppIdBinding binding;
@@ -77,24 +76,24 @@ public class AddAppIdStepView extends LinearLayout implements Uu, View.OnClickLi
     }
 
     private void showAddAppIdDialog() {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_app_id));
-        dialog.a(R.drawable.ic_mtrl_add);
-        ManageLibrarySettingAdmobAppIdAddBinding addBinding = ManageLibrarySettingAdmobAppIdAddBinding.inflate(dialog.getLayoutInflater());
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_app_id));
+        dialog.setIcon(R.drawable.ic_mtrl_add);
+        ManageLibrarySettingAdmobAppIdAddBinding addBinding = ManageLibrarySettingAdmobAppIdAddBinding.inflate(LayoutInflater.from(getContext()));
         EditText edAppId = addBinding.edAppId;
         edAppId.setText(appId);
         edAppId.setPrivateImeOptions("defaultInputmode=english;");
-        dialog.a(addBinding.getRoot());
-        dialog.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
+        dialog.setView(addBinding.getRoot());
+        dialog.setPositiveButton(xB.b().a(getContext(), R.string.common_word_add), (v, which) -> {
             String id = Helper.getText(edAppId);
             if (!isEmpty(id)) {
                 setAppId(id);
-                dialog.dismiss();
+                v.dismiss();
             } else {
                 edAppId.requestFocus();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
         dialog.show();
     }
 }

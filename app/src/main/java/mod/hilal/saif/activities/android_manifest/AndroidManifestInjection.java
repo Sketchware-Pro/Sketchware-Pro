@@ -13,36 +13,34 @@ import android.widget.BaseAdapter;
 
 import androidx.appcompat.widget.Toolbar;
 
-import a.a.a.aB;
-import a.a.a.jC;
-import a.a.a.wB;
-import a.a.a.yq;
-
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
-
-import mod.hey.studios.code.SrcCodeEditor;
-import mod.hey.studios.util.Helper;
-import mod.hilal.saif.android_manifest.AndroidManifestInjector;
-import mod.remaker.view.CustomAttributeView;
-
-import pro.sketchware.R;
-import pro.sketchware.activities.editor.view.CodeViewerActivity;
-import pro.sketchware.databinding.AndroidManifestInjectionBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import a.a.a.jC;
+import a.a.a.wB;
+import a.a.a.yq;
+import mod.hey.studios.code.SrcCodeEditor;
+import mod.hey.studios.util.Helper;
+import mod.hilal.saif.android_manifest.AndroidManifestInjector;
+import mod.remaker.view.CustomAttributeView;
+import pro.sketchware.R;
+import pro.sketchware.activities.editor.view.CodeViewerActivity;
+import pro.sketchware.databinding.AndroidManifestInjectionBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+
 @SuppressLint("SetTextI18n")
 public class AndroidManifestInjection extends BaseAppCompatActivity {
 
-    private AndroidManifestInjectionBinding binding;
     private final ArrayList<HashMap<String, Object>> activitiesListMap = new ArrayList<>();
+    private AndroidManifestInjectionBinding binding;
     private String sc_id;
     private String currentActivityName;
 
@@ -191,38 +189,34 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     private void showLauncherActDialog(String actnamr) {
-        final aB dialog = new aB(this);
-        dialog.a(R.drawable.ic_mtrl_lifecycle);
-        dialog.b(Helper.getResString(R.string.change_launcher_activity_dialog_title));
+        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.ic_mtrl_lifecycle);
+        dialog.setTitle(Helper.getResString(R.string.change_launcher_activity_dialog_title));
         View view = wB.a(this, R.layout.dialog_add_custom_activity);
 
         final TextInputEditText activity_name_input = view.findViewById(R.id.activity_name_input);
 
         activity_name_input.setText(actnamr);
 
-        dialog.a(view);
-        dialog.b(
-                Helper.getResString(R.string.common_word_save),
-                v -> {
-                    if (!Helper.getText(activity_name_input).trim().isEmpty()) {
-                        AndroidManifestInjector.setLauncherActivity(
-                                sc_id, Helper.getText(activity_name_input));
-                        SketchwareUtil.toast("Saved");
-                        dialog.dismiss();
-                    } else {
-                        activity_name_input.setError("Enter activity name");
-                    }
-                });
-        dialog.a(
-                Helper.getResString(R.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.setView(view);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+            if (!Helper.getText(activity_name_input).trim().isEmpty()) {
+                AndroidManifestInjector.setLauncherActivity(
+                        sc_id, Helper.getText(activity_name_input));
+                SketchwareUtil.toast("Saved");
+                v.dismiss();
+            } else {
+                activity_name_input.setError("Enter activity name");
+            }
+        });
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
     public void showAddActivityDialog() {
-        final aB dialog = new aB(this);
-        dialog.a(R.drawable.ic_mtrl_add);
-        dialog.b(Helper.getResString(R.string.common_word_add_activtiy));
+        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.ic_mtrl_add);
+        dialog.setTitle(Helper.getResString(R.string.common_word_add_activtiy));
         View inflate = wB.a(this, R.layout.dialog_add_custom_activity);
 
         final TextInputEditText activity_name_input =
@@ -230,21 +224,17 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
         activity_name_input.setText(currentActivityName);
 
-        dialog.a(inflate);
-        dialog.b(
-                Helper.getResString(R.string.common_word_save),
-                v -> {
-                    if (!Helper.getText(activity_name_input).trim().isEmpty()) {
-                        addNewActivity(Helper.getText(activity_name_input));
-                        SketchwareUtil.toast("New Activity added");
-                        dialog.dismiss();
-                    } else {
-                        activity_name_input.setError("Enter activity name");
-                    }
-                });
-        dialog.a(
-                Helper.getResString(R.string.common_word_cancel),
-                Helper.getDialogDismissListener(dialog));
+        dialog.setView(inflate);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
+            if (!Helper.getText(activity_name_input).trim().isEmpty()) {
+                addNewActivity(Helper.getText(activity_name_input));
+                SketchwareUtil.toast("New Activity added");
+                v.dismiss();
+            } else {
+                activity_name_input.setError("Enter activity name");
+            }
+        });
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -322,11 +312,11 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
             for (int i = 0; i < data.size(); i++) {
                 if (!temp.contains(Objects.requireNonNull(data.get(i).get("name")).toString())) {
                     if (!Objects.requireNonNull(data.get(i).get("name"))
-                                    .equals("_application_attrs")
+                            .equals("_application_attrs")
                             && !Objects.requireNonNull(data.get(i).get("name"))
-                                    .equals("_apply_for_all_activities")
+                            .equals("_apply_for_all_activities")
                             && !Objects.requireNonNull(data.get(i).get("name"))
-                                    .equals("_application_permissions")) {
+                            .equals("_application_permissions")) {
                         temp.add((String) data.get(i).get("name"));
                     }
                 }
@@ -413,30 +403,30 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     private void showQuickManifestSourceDialog() {
         k();
         new Thread(
-                        () -> {
-                            final String source =
-                                    new yq(getApplicationContext(), sc_id)
-                                            .getFileSrc(
-                                                    "AndroidManifest.xml",
-                                                    jC.b(sc_id),
-                                                    jC.a(sc_id),
-                                                    jC.c(sc_id));
+                () -> {
+                    final String source =
+                            new yq(getApplicationContext(), sc_id)
+                                    .getFileSrc(
+                                            "AndroidManifest.xml",
+                                            jC.b(sc_id),
+                                            jC.a(sc_id),
+                                            jC.c(sc_id));
 
-                            runOnUiThread(
-                                    () -> {
-                                        if (isFinishing()) return;
-                                        h();
-                                        var intent = new Intent(this, CodeViewerActivity.class);
-                                        intent.putExtra(
-                                                "code",
-                                                !source.isEmpty()
-                                                        ? source
-                                                        : "Failed to generate source.");
-                                        intent.putExtra("sc_id", sc_id);
-                                        intent.putExtra("scheme", CodeViewerActivity.SCHEME_XML);
-                                        startActivity(intent);
-                                    });
-                        })
+                    runOnUiThread(
+                            () -> {
+                                if (isFinishing()) return;
+                                h();
+                                var intent = new Intent(this, CodeViewerActivity.class);
+                                intent.putExtra(
+                                        "code",
+                                        !source.isEmpty()
+                                                ? source
+                                                : "Failed to generate source.");
+                                intent.putExtra("sc_id", sc_id);
+                                intent.putExtra("scheme", CodeViewerActivity.SCHEME_XML);
+                                startActivity(intent);
+                            });
+                })
                 .start();
     }
 
@@ -490,27 +480,21 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
             attributeView.setOnLongClickListener(
                     v -> {
                         {
-                            aB dialog = new aB(AndroidManifestInjection.this);
-                            dialog.a(R.drawable.icon_delete);
-                            dialog.b(
-                                    Helper.getResString(
-                                            R.string.delete_custom_activity_dialog_title));
-                            dialog.a(
-                                    Helper.getResString(
-                                                    R.string.delete_custom_activity_dialog_message)
-                                            .replace(
-                                                    "%1$s",
-                                                    (String) _data.get(position).get("act_name")));
+                            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AndroidManifestInjection.this);
+                            dialog.setIcon(R.drawable.icon_delete);
+                            dialog.setTitle(Helper.getResString(
+                                    R.string.delete_custom_activity_dialog_title));
+                            dialog.setMessage(Helper.getResString(
+                                            R.string.delete_custom_activity_dialog_message)
+                                    .replace(
+                                            "%1$s",
+                                            (String) _data.get(position).get("act_name")));
 
-                            dialog.b(
-                                    Helper.getResString(R.string.common_word_delete),
-                                    v1 -> {
-                                        deleteActivity(position);
-                                        dialog.dismiss();
-                                    });
-                            dialog.a(
-                                    Helper.getResString(R.string.common_word_cancel),
-                                    Helper.getDialogDismissListener(dialog));
+                            dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v1, which) -> {
+                                deleteActivity(position);
+                                v1.dismiss();
+                            });
+                            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
                             dialog.show();
                         }
                         return true;

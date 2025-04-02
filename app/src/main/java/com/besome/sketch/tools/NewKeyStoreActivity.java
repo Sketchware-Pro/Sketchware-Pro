@@ -11,12 +11,12 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import a.a.a.RB;
 import a.a.a.SB;
 import a.a.a.VB;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.iI;
 import a.a.a.mB;
@@ -25,6 +25,7 @@ import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClickListener {
+    private final int validityInYears = 25;
     private RB organizationValidator;
     private RB localityValidator;
     private RB stateValidator;
@@ -32,7 +33,6 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     private RB commonNameValidator;
     private RB organizationalUnitValidator;
     private iI E;
-    private final int validityInYears = 25;
     private EditText alias;
     private EditText password;
     private EditText passwordConfirm;
@@ -46,19 +46,19 @@ public class NewKeyStoreActivity extends BaseAppCompatActivity implements OnClic
     private SB passwordValidator, passwordConfirmValidator;
 
     private void showDoneDialog(boolean success, String password) {
-        aB dialog = new aB(this);
-        dialog.b(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(Helper.getResString(R.string.myprojects_sign_apk_new_certificate_title_certificate));
         if (success) {
-            dialog.a(R.drawable.certificate_96_blue);
-            dialog.a(Helper.getResString(R.string.myprojects_sign_apk_dialog_complete_create_certificate));
+            dialog.setIcon(R.drawable.certificate_96_blue);
+            dialog.setMessage(Helper.getResString(R.string.myprojects_sign_apk_dialog_complete_create_certificate));
         } else {
-            dialog.a(R.drawable.error_96_yellow);
-            dialog.a(Helper.getResString(R.string.myprojects_sign_apk_error_failed_create_new_certificate));
+            dialog.setIcon(R.drawable.error_96_yellow);
+            dialog.setMessage(Helper.getResString(R.string.myprojects_sign_apk_error_failed_create_new_certificate));
         }
 
-        dialog.b(Helper.getResString(R.string.common_word_close), v -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_close), (v, which) -> {
             if (!mB.a()) {
-                dialog.dismiss();
+                v.dismiss();
                 if (success) {
                     Intent intent = new Intent();
                     intent.putExtra("pwd", password);

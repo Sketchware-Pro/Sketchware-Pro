@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.view;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.text.InputType;
@@ -25,6 +24,7 @@ import com.besome.sketch.editor.property.ViewPropertyItems;
 import com.besome.sketch.lib.ui.CustomHorizontalScrollView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
@@ -36,7 +36,6 @@ import a.a.a.NB;
 import a.a.a.Op;
 import a.a.a.Qs;
 import a.a.a.Rp;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.mB;
@@ -166,9 +165,9 @@ public class ViewProperty extends LinearLayout implements Kw {
     }
 
     private void showSaveToCollectionDialog() {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(Helper.getResString(R.string.view_widget_favorites_save_title));
-        dialog.a(R.drawable.ic_bookmark_red_48dp);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(Helper.getResString(R.string.view_widget_favorites_save_title));
+        dialog.setIcon(R.drawable.ic_bookmark_red_48dp);
         View view = wB.a(getContext(), R.layout.property_popup_save_to_favorite);
         ((TextView) view.findViewById(R.id.tv_favorites_guide)).setText(Helper.getResString(R.string.view_widget_favorites_save_guide_new));
         EditText editText = view.findViewById(R.id.ed_input);
@@ -178,8 +177,8 @@ public class ViewProperty extends LinearLayout implements Kw {
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         NB validator = new NB(getContext(), view.findViewById(R.id.ti_input), Rp.h().g());
-        dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.setView(view);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             if (!mB.a() && validator.b()) {
                 String widgetName = Helper.getText(editText);
                 ArrayList<ViewBean> viewBeans = jC.a(sc_id).b(projectFile.getXmlName(), projectActivityViews.get(idsAdapter.getSelectedItemPosition()));
@@ -207,10 +206,10 @@ public class ViewProperty extends LinearLayout implements Kw {
                     propertyListener.a();
                 }
                 bB.a(getContext(), Helper.getResString(R.string.common_message_complete_save), bB.TOAST_NORMAL).show();
-                dialog.dismiss();
+                v.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
