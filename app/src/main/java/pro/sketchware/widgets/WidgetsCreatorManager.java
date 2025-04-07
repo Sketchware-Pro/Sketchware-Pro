@@ -259,7 +259,7 @@ public class WidgetsCreatorManager {
 
         AlertDialog dialog = builder.create();
         dialog.setOnShowListener(dialog1 -> {
-            if (isEditing) {
+            if (!isEditing) {
                 dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> showMorePopUp(dialog, v));
             }
         });
