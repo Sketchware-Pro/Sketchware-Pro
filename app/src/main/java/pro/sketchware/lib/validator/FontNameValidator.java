@@ -20,72 +20,54 @@ public class FontNameValidator extends MB {
 
     public FontNameValidator(Context context, TextInputLayout textInputLayout, String[] reservedKeywordsArr, ArrayList<String> arrayList) {
         super(context, textInputLayout);
-        this.pattern = Pattern.compile("^[a-z][a-z0-9_]*");
-        this.reservedKeywords = reservedKeywordsArr;
-        this.fontNames = arrayList;
+        pattern = Pattern.compile("^[a-z][a-z0-9_]*");
+        reservedKeywords = reservedKeywordsArr;
+        fontNames = arrayList;
     }
 
     public FontNameValidator(Context context, TextInputLayout textInputLayout, String[] strArr, ArrayList<String> arrayList, String str) {
         super(context, textInputLayout);
-        this.pattern = Pattern.compile("^[a-z][a-z0-9_]*");
-        this.reservedKeywords = strArr;
-        this.fontNames = arrayList;
-        this.h = str;
-    }
-
-    public CharSequence filter(CharSequence charSequence, int i, int i2, Spanned spanned, int i3, int i4) {
-        return null;
+        pattern = Pattern.compile("^[a-z][a-z0-9_]*");
+        reservedKeywords = strArr;
+        fontNames = arrayList;
+        h = str;
     }
 
     public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-        TextInputLayout textInputLayout;
         String a2;
-        xB b;
-        Context context;
-        int i4;
+        int msgRes;
         String trim = charSequence.toString().trim();
         if (trim.length() < 3) {
-            textInputLayout = this.b;
-            a2 = xB.b().a(this.a, R.string.invalid_value_min_lenth, 3);
+            a2 = xB.b().a(a, R.string.invalid_value_min_lenth, 3);
         } else if (trim.length() > 70) {
-            textInputLayout = this.b;
-            a2 = xB.b().a(this.a, R.string.invalid_value_max_lenth, 70);
-        } else if (trim.equals("default_image") || "NONE".equalsIgnoreCase(trim) || (!trim.equals(this.h) && (fontNames != null && this.fontNames.contains(trim)))) {
-            textInputLayout = this.b;
-            a2 = xB.b().a(this.a, R.string.common_message_name_unavailable);
+            a2 = xB.b().a(a, R.string.invalid_value_max_lenth, 70);
+        } else if (trim.equals("default_image") || "NONE".equalsIgnoreCase(trim) || (!trim.equals(h) && (fontNames != null && fontNames.contains(trim)))) {
+            a2 = xB.b().a(a, R.string.common_message_name_unavailable);
         } else {
-            String[] strArr = this.reservedKeywords;
-            int length = strArr.length;
-            int i5 = 0;
+            int count = 0;
             while (true) {
-                if (i5 < length) {
-                    if (charSequence.toString().equals(strArr[i5])) {
-                        textInputLayout = this.b;
-                        b = xB.b();
-                        context = this.a;
-                        i4 = R.string.logic_editor_message_reserved_keywords;
+                if (count < reservedKeywords.length) {
+                    if (charSequence.toString().equals(reservedKeywords[count])) {
+                        msgRes = R.string.logic_editor_message_reserved_keywords;
                         break;
                     }
-                    i5++;
+                    count++;
                 } else if (Character.isLetter(charSequence.charAt(0))) {
-                    if (this.pattern.matcher(charSequence.toString()).matches()) {
-                        this.b.setError(null);
-                        this.d = true;
+                    if (pattern.matcher(charSequence.toString()).matches()) {
+                        b.setError(null);
+                        d = true;
                         return;
                     }
-                    this.b.setError(xB.b().a(this.a, R.string.invalid_value_rule_4));
-                    this.d = false;
+                    b.setError(xB.b().a(a, R.string.invalid_value_rule_4));
+                    d = false;
                     return;
                 } else {
-                    textInputLayout = this.b;
-                    b = xB.b();
-                    context = this.a;
-                    i4 = R.string.logic_editor_message_variable_name_must_start_letter;
+                    msgRes = R.string.logic_editor_message_variable_name_must_start_letter;
                 }
             }
-            a2 = b.a(context, i4);
+            a2 = xB.b().a(a, msgRes);
         }
-        textInputLayout.setError(a2);
-        this.d = false;
+        b.setError(a2);
+        d = false;
     }
 }
