@@ -7,6 +7,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import pro.sketchware.R;
+
 public class ZB extends MB {
 
     private final String[] restrictedNames;
@@ -29,13 +31,13 @@ public class ZB extends MB {
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (s.toString().trim().isEmpty()) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 0x7f0e05d9, 1));
+            b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, 1));
             d = false;
             return;
         }
         if (s.toString().trim().length() > 100) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 0x7f0e05d8, 100));
+            b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, 100));
             d = false;
             return;
         }
@@ -47,14 +49,14 @@ public class ZB extends MB {
         }
         if (excludedNames.contains(s.toString())) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 0x7f0e03f6));
+            b.setError(xB.b().a(a, R.string.common_message_name_unavailable));
             d = false;
             return;
         }
         for (String reservedName : reservedNames) {
             if (s.toString().equals(reservedName)) {
                 b.setErrorEnabled(true);
-                b.setError(xB.b().a(a, 0x7f0e03f6));
+                b.setError(xB.b().a(a, R.string.common_message_name_unavailable));
                 d = false;
                 return;
             }
@@ -62,14 +64,14 @@ public class ZB extends MB {
         for (String restrictedName : restrictedNames) {
             if (s.toString().equals(restrictedName)) {
                 b.setErrorEnabled(true);
-                b.setError(xB.b().a(a, 0x7f0e0617));
+                b.setError(xB.b().a(a, R.string.logic_editor_message_reserved_keywords));
                 d = false;
                 return;
             }
         }
         if (!Character.isLetter(s.charAt(0))) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 0x7f0e0619));
+            b.setError(xB.b().a(a, R.string.logic_editor_message_variable_name_must_start_letter));
             d = false;
             return;
         }
