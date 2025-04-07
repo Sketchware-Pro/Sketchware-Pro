@@ -9,72 +9,71 @@ import java.util.regex.Pattern;
 
 public class ZB extends MB {
 
-    public String[] f;
-    public String[] g;
-    public ArrayList<String> h;
-    public String i;
-    public Pattern j;
+    private final String[] restrictedNames;
+    private String[] reservedNames;
+    private final ArrayList<String> excludedNames;
+    private String lastValidName;
+    private static final Pattern validNamePattern = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*");
 
-    public ZB(Context context, TextInputLayout textInputLayout, String[] strArr, String[] strArr2, ArrayList<String> arrayList) {
+    public ZB(Context context, TextInputLayout textInputLayout, String[] newReservedNames, String[] strArr2, ArrayList<String> arrayList) {
         super(context, textInputLayout);
-        j = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*");
-        f = strArr;
-        g = strArr2;
-        h = arrayList;
+        restrictedNames = newReservedNames;
+        reservedNames = strArr2;
+        excludedNames = arrayList;
     }
 
-    public void a(String[] strArr) {
-        g = strArr;
+    public void a(String[] newReservedNames) {
+        reservedNames = newReservedNames;
     }
 
-    public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
-        if (charSequence.toString().trim().isEmpty()) {
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (s.toString().trim().isEmpty()) {
             b.setErrorEnabled(true);
             b.setError(xB.b().a(a, 0x7f0e05d9, 1));
             d = false;
             return;
         }
-        if (charSequence.toString().trim().length() > 100) {
+        if (s.toString().trim().length() > 100) {
             b.setErrorEnabled(true);
             b.setError(xB.b().a(a, 0x7f0e05d8, 100));
             d = false;
             return;
         }
-        String str = this.i;
-        if (str != null && !str.isEmpty() && charSequence.toString().equals(this.i)) {
+        String previousValidName = lastValidName;
+        if (previousValidName != null && !previousValidName.isEmpty() && s.toString().equals(lastValidName)) {
             b.setErrorEnabled(false);
             d = true;
             return;
         }
-        if (h.contains(charSequence.toString())) {
+        if (excludedNames.contains(s.toString())) {
             b.setErrorEnabled(true);
             b.setError(xB.b().a(a, 0x7f0e03f6));
             d = false;
             return;
         }
-        for (String str2 : g) {
-            if (charSequence.toString().equals(str2)) {
+        for (String reservedName : reservedNames) {
+            if (s.toString().equals(reservedName)) {
                 b.setErrorEnabled(true);
                 b.setError(xB.b().a(a, 0x7f0e03f6));
                 d = false;
                 return;
             }
         }
-        for (String str3 : f) {
-            if (charSequence.toString().equals(str3)) {
+        for (String restrictedName : restrictedNames) {
+            if (s.toString().equals(restrictedName)) {
                 b.setErrorEnabled(true);
                 b.setError(xB.b().a(a, 0x7f0e0617));
                 d = false;
                 return;
             }
         }
-        if (!Character.isLetter(charSequence.charAt(0))) {
+        if (!Character.isLetter(s.charAt(0))) {
             b.setErrorEnabled(true);
             b.setError(xB.b().a(a, 0x7f0e0619));
             d = false;
             return;
         }
-        if (j.matcher(charSequence.toString()).matches()) {
+        if (validNamePattern.matcher(s.toString()).matches()) {
             b.setErrorEnabled(false);
             d = true;
         } else {
@@ -82,7 +81,7 @@ public class ZB extends MB {
             b.setError(xB.b().a(a, 0x7f0e05dc));
             d = false;
         }
-        if (charSequence.toString().trim().isEmpty()) {
+        if (s.toString().trim().isEmpty()) {
             b.setErrorEnabled(true);
             b.setError(xB.b().a(a, 0x7f0e05d9, 1));
             d = false;
