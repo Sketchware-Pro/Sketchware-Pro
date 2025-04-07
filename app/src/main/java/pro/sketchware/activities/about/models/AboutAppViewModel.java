@@ -54,7 +54,6 @@ public class AboutAppViewModel extends ViewModel {
     }
 
 
-
     public ArrayList<String> getCoreTeamMembers() {
         ArrayList<String> coreTeam = new ArrayList<>();
         if (teamMembers.getValue() != null) {

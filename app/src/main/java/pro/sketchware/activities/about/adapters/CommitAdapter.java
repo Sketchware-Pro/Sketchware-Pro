@@ -27,11 +27,10 @@ import pro.sketchware.databinding.AboutCommitAdapterItemProgressBinding;
 public class CommitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_LOADING = 1;
-    public int shaPosition = -1;
-    private boolean isLoadingVisible = false;
-
     private final ArrayList<AboutResponseModel.CommitDetails> commitDetailsList = new ArrayList<>();
     private final AboutAppViewModel aboutAppViewModel;
+    public int shaPosition = -1;
+    private boolean isLoadingVisible = false;
 
     public CommitAdapter(AboutAppViewModel aboutAppViewModel) {
         this.aboutAppViewModel = aboutAppViewModel;
@@ -144,15 +143,6 @@ public class CommitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         markwon.setMarkdown(textView, input);
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        private final AboutBetaChangesBinding binding;
-
-        public ItemViewHolder(AboutBetaChangesBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
-
     public void updateShaPosition() {
         int i = 0;
         for (AboutResponseModel.CommitDetails commitDetails : commitDetailsList) {
@@ -160,6 +150,15 @@ public class CommitAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 shaPosition = i;
             }
             i++;
+        }
+    }
+
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+        private final AboutBetaChangesBinding binding;
+
+        public ItemViewHolder(AboutBetaChangesBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 

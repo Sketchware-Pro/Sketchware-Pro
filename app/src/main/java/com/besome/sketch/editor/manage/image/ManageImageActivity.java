@@ -15,9 +15,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageImageBinding;
-
 import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
@@ -25,12 +22,19 @@ import a.a.a.Op;
 import a.a.a.fu;
 import a.a.a.mB;
 import a.a.a.pu;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageImageBinding;
 
 public class ManageImageActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
     private String sc_id;
     private pu projectImagesFragment;
     private fu collectionImagesFragment;
     private ManageImageBinding binding;
+
+    public static int getImageGridColumnCount(Context context) {
+        var displayMetrics = context.getResources().getDisplayMetrics();
+        return (int) (displayMetrics.widthPixels / displayMetrics.density) / 100;
+    }
 
     @Override
     public void onPageScrollStateChanged(int state) {
@@ -50,11 +54,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     public pu m() {
         return projectImagesFragment;
-    }
-
-    public static int getImageGridColumnCount(Context context) {
-        var displayMetrics = context.getResources().getDisplayMetrics();
-        return (int) (displayMetrics.widthPixels / displayMetrics.density) / 100;
     }
 
     @Override
@@ -129,6 +128,35 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         }
     }
 
+    private static class SaveImagesAsyncTask extends MA {
+        private final WeakReference<ManageImageActivity> activity;
+
+        public SaveImagesAsyncTask(ManageImageActivity activity) {
+            super(activity);
+            this.activity = new WeakReference<>(activity);
+            activity.a(this);
+        }
+
+        @Override
+        public void a() {
+            var activity = this.activity.get();
+            activity.h();
+            activity.setResult(Activity.RESULT_OK);
+            activity.finish();
+            Op.g().d();
+        }
+
+        @Override
+        public void b() {
+            activity.get().projectImagesFragment.saveImages();
+        }
+
+        @Override
+        public void a(String str) {
+            activity.get().h();
+        }
+    }
+
     private class PagerAdapter extends FragmentPagerAdapter {
         private final String[] labels;
 
@@ -168,35 +196,6 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         @Override
         public CharSequence getPageTitle(int position) {
             return labels[position];
-        }
-    }
-
-    private static class SaveImagesAsyncTask extends MA {
-        private final WeakReference<ManageImageActivity> activity;
-
-        public SaveImagesAsyncTask(ManageImageActivity activity) {
-            super(activity);
-            this.activity = new WeakReference<>(activity);
-            activity.a(this);
-        }
-
-        @Override
-        public void a() {
-            var activity = this.activity.get();
-            activity.h();
-            activity.setResult(Activity.RESULT_OK);
-            activity.finish();
-            Op.g().d();
-        }
-
-        @Override
-        public void b() {
-            activity.get().projectImagesFragment.saveImages();
-        }
-
-        @Override
-        public void a(String str) {
-            activity.get().h();
         }
     }
 }

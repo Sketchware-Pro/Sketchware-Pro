@@ -13,17 +13,19 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity;
-import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
 import com.google.gson.Gson;
-import pro.sketchware.databinding.ViewStoreProjectPagerItemBinding;
 
 import java.util.List;
+
+import pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity;
+import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
+import pro.sketchware.databinding.ViewStoreProjectPagerItemBinding;
 
 public class StorePagerProjectsAdapter extends RecyclerView.Adapter<StorePagerProjectsAdapter.ViewHolder> {
 
     private final List<ProjectModel.Project> projects;
     private final FragmentActivity context;
+    private final Gson gson = new Gson();
 
     public StorePagerProjectsAdapter(List<ProjectModel.Project> projects, FragmentActivity context) {
         this.projects = projects;
@@ -63,17 +65,6 @@ public class StorePagerProjectsAdapter extends RecyclerView.Adapter<StorePagerPr
         return projects.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ViewStoreProjectPagerItemBinding binding;
-
-        public ViewHolder(ViewStoreProjectPagerItemBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
-
-    private final Gson gson = new Gson();
-
     private void openProject(ProjectModel.Project project, View view) {
         var fm = context.getSupportFragmentManager();
 
@@ -89,6 +80,15 @@ public class StorePagerProjectsAdapter extends RecyclerView.Adapter<StorePagerPr
                     "project_preview"
             );
             context.startActivity(intent, options.toBundle());
+        }
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ViewStoreProjectPagerItemBinding binding;
+
+        public ViewHolder(ViewStoreProjectPagerItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

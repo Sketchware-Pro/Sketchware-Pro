@@ -1,8 +1,5 @@
 package com.besome.sketch.lib.ui;
 
-import a.a.a.wB;
-import mod.hey.studios.util.Helper;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -13,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
+import a.a.a.wB;
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 
 public class CollapsibleButton extends LinearLayout {
@@ -30,6 +29,14 @@ public class CollapsibleButton extends LinearLayout {
         initialize(context);
     }
 
+    public static CollapsibleButton create(Context context, int id, @DrawableRes int icon, @StringRes int label) {
+        CollapsibleButton collapsibleButton = new CollapsibleButton(context);
+        collapsibleButton.id = id;
+        collapsibleButton.icon.setImageResource(icon);
+        collapsibleButton.label.setText(Helper.getResString(collapsibleButton, label));
+        return collapsibleButton;
+    }
+
     private void initialize(Context context) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -40,14 +47,6 @@ public class CollapsibleButton extends LinearLayout {
         label = findViewById(R.id.name);
     }
 
-    public static CollapsibleButton create(Context context, int id, @DrawableRes int icon, @StringRes int label) {
-        CollapsibleButton collapsibleButton = new CollapsibleButton(context);
-        collapsibleButton.id = id;
-        collapsibleButton.icon.setImageResource(icon);
-        collapsibleButton.label.setText(Helper.getResString(collapsibleButton, label));
-        return collapsibleButton;
-    }
-
     public int getButtonId() {
         return id;
     }
@@ -55,7 +54,7 @@ public class CollapsibleButton extends LinearLayout {
     public TextView getLabel() {
         return label;
     }
-    
+
     public ImageView getIcon() {
         return icon;
     }

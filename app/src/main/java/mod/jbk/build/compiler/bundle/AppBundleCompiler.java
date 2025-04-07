@@ -11,9 +11,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -23,9 +23,9 @@ import a.a.a.ProjectBuilder;
 import a.a.a.yq;
 import a.a.a.zy;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-import pro.sketchware.utility.FilePathUtil;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.util.LogUtil;
+import pro.sketchware.utility.FilePathUtil;
 
 public class AppBundleCompiler {
     private static final String MODULE_ARCHIVE_FILE_NAME = "module-main.zip";

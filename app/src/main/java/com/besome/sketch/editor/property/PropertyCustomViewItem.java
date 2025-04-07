@@ -112,22 +112,6 @@ public class PropertyCustomViewItem extends RelativeLayout implements View.OnCli
         return key;
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void onClick(View var1) {
-        if (!mB.a()) {
-            if ("property_custom_view_listview".equals(key)) {
-                a();
-            }
-        }
-    }
-
-    public void setCustomView(ArrayList<ProjectFileBean> customView) {
-        customViews = customView;
-    }
-
     public void setKey(String key) {
         this.key = key;
         int var2 = getResources().getIdentifier(key, "string", getContext().getPackageName());
@@ -146,6 +130,30 @@ public class PropertyCustomViewItem extends RelativeLayout implements View.OnCli
 
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        if (TextUtils.isEmpty(value)) {
+            value = "none";
+        }
+        this.value = value;
+        tvValue.setText(value);
+    }
+
+    public void onClick(View var1) {
+        if (!mB.a()) {
+            if ("property_custom_view_listview".equals(key)) {
+                a();
+            }
+        }
+    }
+
+    public void setCustomView(ArrayList<ProjectFileBean> customView) {
+        customViews = customView;
+    }
+
     public void setOnPropertyValueChangeListener(Kw var1) {
         propertyValueChangeListener = var1;
     }
@@ -159,13 +167,5 @@ public class PropertyCustomViewItem extends RelativeLayout implements View.OnCli
             propertyMenuItem.setVisibility(View.GONE);
         }
 
-    }
-
-    public void setValue(String value) {
-        if (TextUtils.isEmpty(value)) {
-            value = "none";
-        }
-        this.value = value;
-        tvValue.setText(value);
     }
 }

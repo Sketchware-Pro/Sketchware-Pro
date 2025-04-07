@@ -1,14 +1,13 @@
 package mod.hey.studios.moreblock;
 
 import android.util.Pair;
-import android.widget.RadioGroup;
 
 import com.besome.sketch.editor.LogicEditorActivity;
 import com.google.android.material.chip.ChipGroup;
 
-import pro.sketchware.R;
-
 import java.util.Iterator;
+
+import pro.sketchware.R;
 
 public class ReturnMoreblockManager {
 
@@ -155,7 +154,7 @@ public class ReturnMoreblockManager {
         if (!type.contains("|")) return type;
         String[] splits = type.split("\\|");
         return splits[0];
-    } 
+    }
 
     public static String injectMbType(String str, String str2, String str3) {
         String str4 = str;

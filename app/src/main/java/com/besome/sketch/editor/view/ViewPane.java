@@ -90,7 +90,6 @@ import dev.aldi.sayuti.editor.view.item.ItemPatternLockView;
 import dev.aldi.sayuti.editor.view.item.ItemViewPager;
 import dev.aldi.sayuti.editor.view.item.ItemWaveSideBar;
 import dev.aldi.sayuti.editor.view.item.ItemYoutubePlayer;
-
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.view.item.ItemAnalogClock;
 import mod.agus.jcoderz.editor.view.item.ItemAutoCompleteTextView;
@@ -104,7 +103,6 @@ import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
 import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.util.ProjectFile;
-
 import pro.sketchware.R;
 import pro.sketchware.managers.inject.InjectRootLayoutManager;
 import pro.sketchware.utility.FilePathUtil;
@@ -116,6 +114,7 @@ import pro.sketchware.utility.ResourceUtil;
 import pro.sketchware.utility.SvgUtils;
 
 public class ViewPane extends RelativeLayout {
+    private final String stringsStart = "@string/";
     private Context context;
     private ViewGroup rootLayout;
     private int b = 99;
@@ -124,8 +123,6 @@ public class ViewPane extends RelativeLayout {
     private TextView highlightedTextView;
     private kC resourcesManager;
     private String sc_id;
-    private final String stringsStart = "@string/";
-
     private SvgUtils svgUtils;
 
     public ViewPane(Context context) {
@@ -317,7 +314,7 @@ public class ViewPane extends RelativeLayout {
         updateItemView(item, viewBean);
         return item;
     }
-    
+
     private final View getUnknownItemView(final ViewBean bean) {
         bean.type = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
         return new ItemLinearLayout(context);
@@ -865,7 +862,6 @@ public class ViewPane extends RelativeLayout {
             }
 
 
-
         }
     }
 
@@ -1325,6 +1321,18 @@ public class ViewPane extends RelativeLayout {
         return matcher.find() ? matcher.group(1) : "";
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        Log.d("ViewEditor", "onMeasure" + getMeasuredWidth() + "x" + getMeasuredHeight());
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return getClass().getName() + "@" + Integer.toHexString(hashCode());
+    }
+
     private static class ViewInfo {
 
         private final Rect rect;
@@ -1354,17 +1362,5 @@ public class ViewPane extends RelativeLayout {
         public int getDepth() {
             return depth;
         }
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        Log.d("ViewEditor", "onMeasure" + getMeasuredWidth() + "x" + getMeasuredHeight());
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return getClass().getName() + "@" + Integer.toHexString(hashCode());
     }
 }

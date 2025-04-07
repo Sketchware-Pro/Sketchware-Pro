@@ -14,11 +14,11 @@ public class KotlinCompilerUtil {
 
     /**
      * Returns whether there are any .kt files in
-     *
+     * <p>
      * > .sketchware/mysc/xxx/app/src/main/java,
      * > .sketchware/mysc/xxx/gen,
      * > .sketchware/data/xxx/files/java
-     *
+     * <p>
      * or not.
      */
     public static boolean areAnyKtFilesPresent(ProjectBuilder bui) {
@@ -32,7 +32,7 @@ public class KotlinCompilerUtil {
 
     /**
      * Returns a list of `.java` & `.kt` files from the specified dirs.
-     *
+     * <p>
      * The name might be a little misleading, but only `.kt` files
      * are actually compiled by kotlinc, `.java` files are used for
      * classpath. (for Java-Kotlin interoperability)

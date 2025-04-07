@@ -62,6 +62,22 @@ public class BuildSettingsDialog {
         addTagsForViews();
     }
 
+    public static String[] getAvailableJavaVersions() {
+        return new String[]{
+                SETTING_JAVA_VERSION_1_7,
+                SETTING_JAVA_VERSION_1_8,
+                SETTING_JAVA_VERSION_1_9,
+                SETTING_JAVA_VERSION_10,
+                SETTING_JAVA_VERSION_11,
+        };
+    }
+
+    public static void handleJavaVersionChange(String choice) {
+        if (!choice.equals(SETTING_JAVA_VERSION_1_7)) {
+            SketchwareUtil.toast("Don't forget to enable D8 to be able to compile Java 8+ code");
+        }
+    }
+
     private void addTagsForViews() {
         views[VIEW_ANDROIR_JAR_PATH].setTag(SETTING_ANDROID_JAR_PATH);
         views[VIEW_CLASS_PATH].setTag(SETTING_CLASSPATH);
@@ -92,22 +108,6 @@ public class BuildSettingsDialog {
         builder.setNegativeButton("Cancel", null);
         builder.setView(binding.getRoot());
         builder.show();
-    }
-
-    public static String[] getAvailableJavaVersions() {
-        return new String[]{
-                SETTING_JAVA_VERSION_1_7,
-                SETTING_JAVA_VERSION_1_8,
-                SETTING_JAVA_VERSION_1_9,
-                SETTING_JAVA_VERSION_10,
-                SETTING_JAVA_VERSION_11,
-        };
-    }
-
-    public static void handleJavaVersionChange(String choice) {
-        if (!choice.equals(SETTING_JAVA_VERSION_1_7)) {
-            SketchwareUtil.toast("Don't forget to enable D8 to be able to compile Java 8+ code");
-        }
     }
 
     private EditText getEditText(int index) {

@@ -8,12 +8,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 public class ThemeManager {
 
-    private static final String THEME_PREF = "themedata";
-    private static final String THEME_KEY = "idetheme";
-
     public static final int THEME_SYSTEM = 0;
     public static final int THEME_LIGHT = 1;
     public static final int THEME_DARK = 2;
+    private static final String THEME_PREF = "themedata";
+    private static final String THEME_KEY = "idetheme";
 
     public static void applyTheme(Context context, int type) {
         saveTheme(context, type);

@@ -2,8 +2,8 @@ package mod.hey.studios.build;
 
 import java.io.Serializable;
 
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.project.ProjectSettings;
+import pro.sketchware.utility.FileUtil;
 
 public class BuildSettings extends ProjectSettings implements Serializable {
 

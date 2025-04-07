@@ -19,9 +19,6 @@ import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -37,6 +34,8 @@ import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.xB;
 import a.a.a.yy;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class AddImageActivity extends BaseDialogActivity implements View.OnClickListener {
     private ArrayList<ProjectResourceBean> existingImages;
@@ -317,6 +316,23 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         }
     }
 
+    private void handleImagePickClipData(ClipData clipData) {
+        if (clipData != null) {
+            pickedImageUris = new ArrayList<>();
+            for (int i = 0; i < clipData.getItemCount(); i++) {
+                if (i == 0) {
+                    setImageFromUri(clipData.getItemAt(i).getUri());
+                }
+                pickedImageUris.add(clipData.getItemAt(i).getUri());
+            }
+            onMultipleImagesPicked(clipData.getItemCount());
+        }
+    }
+
+    private String a(ProjectResourceBean projectResourceBean) {
+        return dir_path + File.separator + projectResourceBean.resFullName;
+    }
+
     private static class SaveAsyncTask extends MA {
         private final WeakReference<AddImageActivity> activity;
 
@@ -434,22 +450,5 @@ public class AddImageActivity extends BaseDialogActivity implements View.OnClick
         public void a(String str) {
             activity.get().h();
         }
-    }
-
-    private void handleImagePickClipData(ClipData clipData) {
-        if (clipData != null) {
-            pickedImageUris = new ArrayList<>();
-            for (int i = 0; i < clipData.getItemCount(); i++) {
-                if (i == 0) {
-                    setImageFromUri(clipData.getItemAt(i).getUri());
-                }
-                pickedImageUris.add(clipData.getItemAt(i).getUri());
-            }
-            onMultipleImagesPicked(clipData.getItemCount());
-        }
-    }
-
-    private String a(ProjectResourceBean projectResourceBean) {
-        return dir_path + File.separator + projectResourceBean.resFullName;
     }
 }

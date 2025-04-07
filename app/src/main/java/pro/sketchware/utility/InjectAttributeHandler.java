@@ -23,7 +23,7 @@ public class InjectAttributeHandler {
     public InjectAttributeHandler(ViewBean viewBean) {
         this.viewBean = viewBean;
     }
-    
+
     public ViewBean getBean() {
         return viewBean;
     }
@@ -31,11 +31,11 @@ public class InjectAttributeHandler {
     public String getAttributeValueOf(String name) {
         return getAttributeByName(name).orElse("");
     }
-    
+
     public boolean contains(String name) {
         return getAttributeByName(name).isPresent();
     }
-    
+
     private Optional<String> getAttributeByName(String name) {
         for (Pair<String, String> pair : getAttributes()) {
             if (pair.first.equals(name)) {

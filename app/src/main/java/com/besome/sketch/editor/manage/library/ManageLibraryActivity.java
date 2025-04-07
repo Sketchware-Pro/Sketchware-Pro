@@ -115,8 +115,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                 if (libraryBean == null) {
                     ((ExcludeBuiltInLibrariesLibraryItemView) child).setData(null);
                 }
-            } else if (child instanceof LibraryItemView) {
-                LibraryItemView libraryItemView = (LibraryItemView) child;
+            } else if (child instanceof LibraryItemView libraryItemView) {
                 if (libraryBean != null && libraryBean.libType == (Integer) libraryItemView.getTag()) {
                     libraryItemView.setData(libraryBean);
                 }

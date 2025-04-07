@@ -11,7 +11,6 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import pro.sketchware.R;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -21,6 +20,7 @@ import a.a.a.bB;
 import a.a.a.rq;
 import a.a.a.uq;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class AddCustomViewActivity extends BaseDialogActivity implements View.OnClickListener {
 

@@ -17,14 +17,14 @@ import a.a.a.wB;
 
 public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
 
+    private final Rect g = new Rect();
+    private final Rect rect = new Rect();
     private ViewBean viewBean;
     private boolean isSelected = false;
     private boolean isFixed = false;
     private Paint paint;
     private float e = -1.0F;
     private boolean f = true;
-    private final Rect g = new Rect();
-    private final Rect rect = new Rect();
 
     public ItemVerticalScrollView(Context context) {
         super(context);
@@ -150,12 +150,25 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         return viewBean;
     }
 
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
+    }
+
     public boolean getFixed() {
         return isFixed;
     }
 
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
+    }
+
     public boolean getSelection() {
         return isSelected;
+    }
+
+    public void setSelection(boolean hasSelection) {
+        isSelected = hasSelection;
+        invalidate();
     }
 
     public void measureChild(View view, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
@@ -270,10 +283,6 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         setScrollY(0);
     }
 
-    public void setBean(ViewBean viewBean) {
-        this.viewBean = viewBean;
-    }
-
     public void setChildScrollEnabled(boolean childScrollEnabled) {
         for (int i = 0; i < getChildCount(); ++i) {
             View child = getChildAt(i);
@@ -291,20 +300,11 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         }
     }
 
-    public void setFixed(boolean isFixed) {
-        this.isFixed = isFixed;
-    }
-
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding((int) wB.a(getContext(), (float) left), (int) wB.a(getContext(), (float) top), (int) wB.a(getContext(), (float) right), (int) wB.a(getContext(), (float) bottom));
     }
 
     public void setScrollEnabled(boolean isScrollEnabled) {
         f = isScrollEnabled;
-    }
-
-    public void setSelection(boolean hasSelection) {
-        isSelected = hasSelection;
-        invalidate();
     }
 }

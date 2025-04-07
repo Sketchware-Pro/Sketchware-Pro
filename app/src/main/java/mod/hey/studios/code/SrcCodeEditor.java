@@ -75,10 +75,8 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             new Pair<>("NotepadXX", SchemeNotepadXX.class)
     );
     public static SharedPreferences pref;
-    private String beforeContent;
-
     public static int languageId;
-
+    private String beforeContent;
     private ImageView save;
     private ImageView more;
     private TextView file_title;
@@ -191,6 +189,44 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         for (int i = 0; i < tabAmount; ++i) {
             code.append('\t');
         }
+    }
+
+    public static void showSwitchThemeDialog(Activity activity, CodeEditor codeEditor, DialogInterface.OnClickListener listener) {
+        EditorColorScheme currentScheme = codeEditor.getColorScheme();
+        var knownColorSchemesProperlyOrdered = new ArrayList<>(KNOWN_COLOR_SCHEMES);
+        Collections.reverse(knownColorSchemesProperlyOrdered);
+        int selectedThemeIndex = knownColorSchemesProperlyOrdered.stream()
+                .filter(pair -> pair.second.equals(currentScheme.getClass()))
+                .map(KNOWN_COLOR_SCHEMES::indexOf)
+                .findFirst()
+                .orElse(-1);
+        String[] themeItems = KNOWN_COLOR_SCHEMES.stream()
+                .map(pair -> pair.first)
+                .toArray(String[]::new);
+        new AlertDialog.Builder(activity)
+                .setTitle("Select Theme")
+                .setSingleChoiceItems(themeItems, selectedThemeIndex, listener)
+                .setNegativeButton(R.string.common_word_cancel, null)
+                .show();
+    }
+
+    public static void showSwitchLanguageDialog(Activity activity, CodeEditor codeEditor, DialogInterface.OnClickListener listener) {
+        CharSequence[] languagesList = {
+                "Java",
+                "Kotlin",
+                "XML"
+        };
+
+        new AlertDialog.Builder(activity)
+                .setTitle("Select Language")
+                .setSingleChoiceItems(languagesList, languageId, listener)
+                .setNegativeButton(R.string.common_word_cancel, null)
+                .show();
+    }
+
+    public static boolean isDarkModeEnabled(Context context) {
+        int nightModeFlags = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
     }
 
     @Override
@@ -392,44 +428,6 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
 
         float scaledDensity = getResources().getDisplayMetrics().scaledDensity;
         pref.edit().putInt("act_ts", (int) (editor.getTextSizePx() / scaledDensity)).apply();
-    }
-
-    public static void showSwitchThemeDialog(Activity activity, CodeEditor codeEditor, DialogInterface.OnClickListener listener) {
-        EditorColorScheme currentScheme = codeEditor.getColorScheme();
-        var knownColorSchemesProperlyOrdered = new ArrayList<>(KNOWN_COLOR_SCHEMES);
-        Collections.reverse(knownColorSchemesProperlyOrdered);
-        int selectedThemeIndex = knownColorSchemesProperlyOrdered.stream()
-                .filter(pair -> pair.second.equals(currentScheme.getClass()))
-                .map(KNOWN_COLOR_SCHEMES::indexOf)
-                .findFirst()
-                .orElse(-1);
-        String[] themeItems = KNOWN_COLOR_SCHEMES.stream()
-                .map(pair -> pair.first)
-                .toArray(String[]::new);
-        new AlertDialog.Builder(activity)
-                .setTitle("Select Theme")
-                .setSingleChoiceItems(themeItems, selectedThemeIndex, listener)
-                .setNegativeButton(R.string.common_word_cancel, null)
-                .show();
-    }
-
-    public static void showSwitchLanguageDialog(Activity activity, CodeEditor codeEditor, DialogInterface.OnClickListener listener) {
-        CharSequence[] languagesList = {
-                "Java",
-                "Kotlin",
-                "XML"
-        };
-
-        new AlertDialog.Builder(activity)
-                .setTitle("Select Language")
-                .setSingleChoiceItems(languagesList, languageId, listener)
-                .setNegativeButton(R.string.common_word_cancel, null)
-                .show();
-    }
-
-    public static boolean isDarkModeEnabled(Context context) {
-        int nightModeFlags = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
     }
 
     private boolean isFileInLayoutFolder() {

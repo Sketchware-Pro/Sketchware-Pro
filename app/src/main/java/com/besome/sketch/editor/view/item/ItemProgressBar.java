@@ -10,10 +10,10 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
-import pro.sketchware.R;
 
 import a.a.a.sy;
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public class ItemProgressBar extends LinearLayout implements sy {
 
@@ -50,12 +50,25 @@ public class ItemProgressBar extends LinearLayout implements sy {
         return viewBean;
     }
 
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
+    }
+
     public boolean getFixed() {
         return isFixed;
     }
 
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
+    }
+
     public boolean getSelection() {
         return isSelected;
+    }
+
+    public void setSelection(boolean selection) {
+        isSelected = selection;
+        invalidate();
     }
 
     public void onDraw(Canvas var1) {
@@ -63,14 +76,6 @@ public class ItemProgressBar extends LinearLayout implements sy {
             var1.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
         }
         super.onDraw(var1);
-    }
-
-    public void setBean(ViewBean viewBean) {
-        this.viewBean = viewBean;
-    }
-
-    public void setFixed(boolean isFixed) {
-        this.isFixed = isFixed;
     }
 
     public void setPadding(int left, int top, int right, int bottom) {
@@ -90,10 +95,5 @@ public class ItemProgressBar extends LinearLayout implements sy {
             imageView.getLayoutParams().width = (int) (paddingFactor * 320F);
             imageView.getLayoutParams().height = (int) (paddingFactor * 30F);
         }
-    }
-
-    public void setSelection(boolean selection) {
-        isSelected = selection;
-        invalidate();
     }
 }

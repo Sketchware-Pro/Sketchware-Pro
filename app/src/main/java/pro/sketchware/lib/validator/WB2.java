@@ -4,13 +4,13 @@ import android.content.Context;
 import android.text.Spanned;
 
 import com.google.android.material.textfield.TextInputLayout;
-import pro.sketchware.R;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import a.a.a.MB;
 import a.a.a.xB;
+import pro.sketchware.R;
 
 public class WB2 extends MB {
     public String[] reservedKeywords;

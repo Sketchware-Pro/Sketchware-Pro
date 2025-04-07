@@ -5,16 +5,16 @@ import static pro.sketchware.utility.GsonUtils.getGson;
 import android.os.Environment;
 
 import com.google.gson.JsonParseException;
-import pro.sketchware.xml.XmlBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.xml.XmlBuilder;
 
 public class AndroidManifestInjector {
 

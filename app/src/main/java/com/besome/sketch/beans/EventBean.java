@@ -4,10 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
-import pro.sketchware.R;
 
 import a.a.a.eC;
 import a.a.a.jC;
+import pro.sketchware.R;
 
 public class EventBean extends CollapsibleBean implements Parcelable {
     public static final Parcelable.Creator<EventBean> CREATOR = new Parcelable.Creator<>() {

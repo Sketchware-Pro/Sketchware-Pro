@@ -17,11 +17,11 @@ import a.a.a.wB;
 
 public class ItemCardView extends MaterialCardView implements sy, ty {
 
+    private final Rect rect = new Rect();
     private ViewBean viewBean;
     private boolean isSelected;
     private boolean isFixed;
     private Paint paint;
-    private final Rect rect = new Rect();
 
     public ItemCardView(Context context) {
         super(context);
@@ -66,12 +66,27 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
     }
 
     @Override
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
+    }
+
+    @Override
     public boolean getFixed() {
         return isFixed;
     }
 
+    public void setFixed(boolean fixed) {
+        isFixed = fixed;
+    }
+
     public boolean getSelection() {
         return isSelected;
+    }
+
+    @Override
+    public void setSelection(boolean selected) {
+        isSelected = selected;
+        invalidate();
     }
 
     @Override
@@ -86,11 +101,6 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
 
     public void setBackgroundColor(int color) {
         super.setCardBackgroundColor(color == 0x00FFFFFF ? 0xFFFFFFFF : color);
-    }
-
-    @Override
-    public void setBean(ViewBean viewBean) {
-        this.viewBean = viewBean;
     }
 
     @Override
@@ -116,15 +126,5 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
                 (int) wB.a(getContext(), (float) top),
                 (int) wB.a(getContext(), (float) right),
                 (int) wB.a(getContext(), (float) bottom));
-    }
-
-    public void setFixed(boolean fixed) {
-        isFixed = fixed;
-    }
-
-    @Override
-    public void setSelection(boolean selected) {
-        isSelected = selected;
-        invalidate();
     }
 }

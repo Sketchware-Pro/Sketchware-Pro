@@ -11,12 +11,11 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
-import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-
-import pro.sketchware.R;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
+import pro.sketchware.R;
 
 public class ManageProguardActivity extends BaseAppCompatActivity
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {

@@ -20,17 +20,13 @@ import a.a.a.wB;
 
 public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
 
+    private final Rect rect = new Rect();
     private ViewBean viewBean;
-
     private boolean isSelected;
-
     private boolean isFixed = false;
-
     private Paint drawPaint;
     private float lastTouchX = -1.0f;
-
     private boolean isScrollEnabled = false;
-    private final Rect rect = new Rect();
 
     public ItemHorizontalScrollView(Context context) {
         super(context);
@@ -77,12 +73,27 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
     }
 
     @Override
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
+    }
+
+    @Override
     public boolean getFixed() {
         return isFixed;
     }
 
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
+    }
+
     public boolean getSelection() {
         return isSelected;
+    }
+
+    @Override
+    public void setSelection(boolean isSelected) {
+        this.isSelected = isSelected;
+        invalidate();
     }
 
     @Override
@@ -206,11 +217,6 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
     }
 
     @Override
-    public void setBean(ViewBean viewBean) {
-        this.viewBean = viewBean;
-    }
-
-    @Override
     public void setChildScrollEnabled(boolean isEnabled) {
         for (int i = 0; i < getChildCount(); i++) {
             KeyEvent.Callback firstChild = getChildAt(i);
@@ -226,10 +232,6 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
         }
     }
 
-    public void setFixed(boolean isFixed) {
-        this.isFixed = isFixed;
-    }
-
     @Override
     public void setPadding(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom) {
         super.setPadding((int) wB.a(getContext(), (float) paddingLeft), (int) wB.a(getContext(), (float) paddingTop), (int) wB.a(getContext(), (float) paddingRight), (int) wB.a(getContext(), (float) paddingBottom));
@@ -237,12 +239,6 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
 
     public void setScrollEnabled(boolean isEnabled) {
         isScrollEnabled = isEnabled;
-    }
-
-    @Override
-    public void setSelection(boolean isSelected) {
-        this.isSelected = isSelected;
-        invalidate();
     }
 
     @Override

@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import pro.sketchware.beans.ResourceBean;
-import pro.sketchware.utility.FilePathUtil;
-import pro.sketchware.utility.FileUtil;
 
 public class ResourceUtil {
     private final String sc_id;

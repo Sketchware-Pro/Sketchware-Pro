@@ -741,7 +741,6 @@ public class Lx {
         ArrayList<String> parameterSpecs = FB.c(moreBlockSpec);
         boolean isFirstParameter = true;
 
-        processingParameters:
         for (String parameterSpec : parameterSpecs) {
             // Avoid label spec parts
             if (parameterSpec.charAt(0) == '%') {

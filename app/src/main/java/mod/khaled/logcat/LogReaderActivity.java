@@ -20,14 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import pro.sketchware.R;
-import pro.sketchware.databinding.ActivityLogcatreaderBinding;
-import pro.sketchware.databinding.EasyDeleteEdittextBinding;
-import pro.sketchware.databinding.ViewLogcatItemBinding;
-
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,20 +34,23 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ActivityLogcatreaderBinding;
+import pro.sketchware.databinding.EasyDeleteEdittextBinding;
+import pro.sketchware.databinding.ViewLogcatItemBinding;
+import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.lib.base.BaseTextWatcher;
-import mod.hey.studios.util.Helper;
 
 public class LogReaderActivity extends BaseAppCompatActivity {
 
     private final BroadcastReceiver logger = new Logger();
     private final Pattern logPattern = Pattern.compile("^(.*\\d) ([VADEIW]) (.*): (.*)");
+    private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
     private String pkgFilter = "";
     private String packageName = "pro.sketchware";
     private boolean autoScroll = true;
-
-    private final ArrayList<HashMap<String, Object>> mainList = new ArrayList<>();
     private ArrayList<String> pkgFilterList = new ArrayList<>();
 
     private ActivityLogcatreaderBinding binding;
@@ -201,6 +198,18 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        binding.searchInput.clearFocus();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(logger);
+    }
+
     private class Logger extends BroadcastReceiver {
 
         @Override
@@ -249,27 +258,19 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        binding.searchInput.clearFocus();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(logger);
-    }
-
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         private final ArrayList<HashMap<String, Object>> data;
+
+        public Adapter(ArrayList<HashMap<String, Object>> data) {
+            this.data = data;
+        }
 
         public void updateList(final HashMap<String, Object> _map) {
             data.add(_map);
             binding.logsRecyclerView.getAdapter().notifyItemInserted(data.size() + 1);
 
             if (autoScroll) {
-                ((LinearLayoutManager) binding.logsRecyclerView.getLayoutManager()).scrollToPosition(data.size() - 1);
+                binding.logsRecyclerView.getLayoutManager().scrollToPosition(data.size() - 1);
                 binding.appBarLayout.setExpanded(false);
             }
 
@@ -280,10 +281,6 @@ public class LogReaderActivity extends BaseAppCompatActivity {
             data.clear();
             binding.logsRecyclerView.getAdapter().notifyDataSetChanged();
             binding.noContentLayout.setVisibility(View.VISIBLE);
-        }
-
-        public Adapter(ArrayList<HashMap<String, Object>> data) {
-            this.data = data;
         }
 
         @Override

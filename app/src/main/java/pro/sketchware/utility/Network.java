@@ -25,6 +25,11 @@ public class Network {
         this.client = new OkHttpClient();
     }
 
+    public static void runOnUiThread(Runnable runnable) {
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(runnable);
+    }
+
     public void request(String method, String url, Map<String, String> headers, String body, Map<String, String> formData, ResponseHandler handler) {
         Request.Builder requestBuilder = new Request.Builder().url(url);
 
@@ -90,10 +95,5 @@ public class Network {
     @FunctionalInterface
     public interface ResponseHandler {
         void handleResponse(String response);
-    }
-
-    public static void runOnUiThread(Runnable runnable) {
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        mainHandler.post(runnable);
     }
 }

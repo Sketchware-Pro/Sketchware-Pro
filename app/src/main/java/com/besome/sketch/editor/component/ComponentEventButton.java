@@ -1,8 +1,6 @@
 package com.besome.sketch.editor.component;
 
 import android.content.Context;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,9 +9,8 @@ import android.widget.TextView;
 
 import com.google.android.material.color.MaterialColors;
 
-import pro.sketchware.R;
-
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public class ComponentEventButton extends LinearLayout {
     private LinearLayout container;

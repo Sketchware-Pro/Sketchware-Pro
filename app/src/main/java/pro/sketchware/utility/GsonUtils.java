@@ -8,8 +8,8 @@ import com.google.gson.GsonBuilder;
 public class GsonUtils {
 
     private static final Gson gson = new GsonBuilder()
-        .setPrettyPrinting()
-        .create();
+            .setPrettyPrinting()
+            .create();
 
     @NonNull
     public static Gson getGson() {

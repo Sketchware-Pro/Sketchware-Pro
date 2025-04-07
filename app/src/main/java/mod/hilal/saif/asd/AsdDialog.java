@@ -12,7 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -21,16 +20,16 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-import pro.sketchware.R;
 
 import a.a.a.Lx;
 import a.a.a.Ss;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
-import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class AsdDialog extends Dialog implements DialogInterface.OnDismissListener {
     private static SharedPreferences pref;

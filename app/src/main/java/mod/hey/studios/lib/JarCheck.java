@@ -57,7 +57,8 @@ public final class JarCheck {
                         success = false;
                     }
                 }
-            } catch (EOFException ignored) {}
+            } catch (EOFException ignored) {
+            }
 
             zip.close();
             return success;

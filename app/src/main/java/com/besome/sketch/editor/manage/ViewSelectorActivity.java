@@ -17,7 +17,6 @@ import com.besome.sketch.editor.manage.view.AddCustomViewActivity;
 import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-
 import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
@@ -29,23 +28,21 @@ import a.a.a.mB;
 import a.a.a.rq;
 import a.a.a.wq;
 import a.a.a.xB;
-
 import pro.sketchware.R;
 import pro.sketchware.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
 import pro.sketchware.databinding.FileSelectorPopupSelectXmlBinding;
 
 public class ViewSelectorActivity extends BaseAppCompatActivity {
+    private final int[] x = new int[19];
+    private final int TAB_ACTIVITY = ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY;
+    private final int TAB_CUSTOM_VIEW = ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW;
     private ViewSelectorAdapter viewSelectorAdapter;
     private String sc_id;
     private ProjectFileBean projectFile;
     private String currentXml;
     private int selectedTab;
     private boolean isCustomView = false;
-    private final int[] x = new int[19];
     private FileSelectorPopupSelectXmlBinding binding;
-
-    private final int TAB_ACTIVITY = ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY;
-    private final int TAB_CUSTOM_VIEW = ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW;
 
     private int getViewIcon(int i) {
         String replace = String.format("%4s", Integer.toBinaryString(i)).replace(' ', '0');
@@ -244,121 +241,6 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    private class ViewSelectorAdapter extends RecyclerView.Adapter<ViewSelectorAdapter.ViewHolder> {
-        private int selectedItem = -1;
-
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            private final FileSelectorPopupSelectXmlActivityItemBinding itemBinding;
-
-            public ViewHolder(@NonNull FileSelectorPopupSelectXmlActivityItemBinding binding) {
-                super(binding.getRoot());
-                this.itemBinding = binding;
-                itemBinding.cardView.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        selectedItem = getLayoutPosition();
-                        hC hC = jC.b(sc_id);
-                        ArrayList<ProjectFileBean> list = switch (selectedTab) {
-                            case TAB_ACTIVITY -> hC.b();
-                            case TAB_CUSTOM_VIEW -> hC.c();
-                            default -> null;
-                        };
-                        if (list != null) {
-                            projectFile = list.get(getLayoutPosition());
-                        }
-                        Intent intent = new Intent();
-                        intent.putExtra("project_file", projectFile);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                });
-                itemBinding.actionContainer.setOnClickListener(v -> {
-                    if (selectedTab == TAB_ACTIVITY && !mB.a()) {
-                        selectedItem = getLayoutPosition();
-                        Intent intent = new Intent(getApplicationContext(), AddViewActivity.class);
-                        intent.putExtra("project_file", jC.b(sc_id).b().get(getLayoutPosition()));
-                        intent.putExtra("request_code", 265);
-                        startActivityForResult(intent, 265);
-                    }
-                });
-                itemBinding.imgPresetSetting.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        selectedItem = getLayoutPosition();
-                        int requestCode = a(jC.b(sc_id).b().get(getLayoutPosition()));
-                        Intent intent = new Intent(getApplicationContext(), PresetSettingActivity.class);
-                        intent.putExtra("request_code", requestCode);
-                        intent.putExtra("edit_mode", true);
-                        startActivityForResult(intent, requestCode);
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-            viewHolder.itemBinding.cardView.setStrokeWidth(0);
-            viewHolder.itemBinding.cardView.setStrokeColor(ContextCompat.getColor(
-                    ViewSelectorActivity.this, R.color.transparent));
-
-            if (selectedTab == TAB_ACTIVITY) {
-                viewHolder.itemBinding.tvFilename.setVisibility(View.VISIBLE);
-                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.VISIBLE);
-                ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
-                String xmlName = projectFileBean.getXmlName();
-                if (currentXml.equals(xmlName)) {
-                    viewHolder.itemBinding.cardView.setStrokeColor(ContextCompat.getColor(
-                            ViewSelectorActivity.this, R.color.scolor_dark_yellow_01));
-                    viewHolder.itemBinding.cardView.setStrokeWidth(2);
-                }
-                String javaName = projectFileBean.getJavaName();
-                viewHolder.itemBinding.imgEdit.setVisibility(View.VISIBLE);
-                viewHolder.itemBinding.imgView.setImageResource(getViewIcon(projectFileBean.options));
-                viewHolder.itemBinding.tvFilename.setText(xmlName);
-                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.VISIBLE);
-                viewHolder.itemBinding.tvLinkedFilename.setText(javaName);
-            } else if (selectedTab == TAB_CUSTOM_VIEW) {
-                viewHolder.itemBinding.imgEdit.setVisibility(View.GONE);
-                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.GONE);
-                ProjectFileBean customView = jC.b(sc_id).c().get(position);
-                if (currentXml.equals(customView.getXmlName())) {
-                    viewHolder.itemBinding.cardView.setStrokeColor(ContextCompat.getColor(
-                            ViewSelectorActivity.this, R.color.scolor_dark_yellow_01));
-                    viewHolder.itemBinding.cardView.setStrokeWidth(2);
-                }
-                if (customView.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
-                    viewHolder.itemBinding.imgView.setImageResource(getViewIcon(4));
-                    viewHolder.itemBinding.tvFilename.setText(customView.fileName.substring(1));
-                } else {
-                    viewHolder.itemBinding.imgView.setImageResource(getViewIcon(3));
-                    viewHolder.itemBinding.tvFilename.setText(customView.getXmlName());
-                }
-            }
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            FileSelectorPopupSelectXmlActivityItemBinding binding = FileSelectorPopupSelectXmlActivityItemBinding.inflate(inflater, parent, false);
-            return new ViewHolder(binding);
-        }
-
-        @Override
-        public int getItemCount() {
-            binding.emptyMessage.setVisibility(View.GONE);
-            hC hC = jC.b(sc_id);
-            ArrayList<ProjectFileBean> list = switch (selectedTab) {
-                case TAB_ACTIVITY -> hC.b();
-                case TAB_CUSTOM_VIEW -> hC.c();
-                default -> null;
-            };
-            int size = list != null ? list.size() : 0;
-            if (size == 0) {
-                binding.emptyMessage.setVisibility(View.VISIBLE);
-            }
-            return size;
-        }
-    }
-
     private void a(ProjectFileBean projectFile, ArrayList<ViewBean> presetViews) {
         jC.a(sc_id);
         for (ViewBean view : eC.a(presetViews)) {
@@ -432,5 +314,120 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             return 276;
         }
         return projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_CUSTOM_VIEW ? 277 : 278;
+    }
+
+    private class ViewSelectorAdapter extends RecyclerView.Adapter<ViewSelectorAdapter.ViewHolder> {
+        private int selectedItem = -1;
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+            viewHolder.itemBinding.cardView.setStrokeWidth(0);
+            viewHolder.itemBinding.cardView.setStrokeColor(ContextCompat.getColor(
+                    ViewSelectorActivity.this, R.color.transparent));
+
+            if (selectedTab == TAB_ACTIVITY) {
+                viewHolder.itemBinding.tvFilename.setVisibility(View.VISIBLE);
+                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.VISIBLE);
+                ProjectFileBean projectFileBean = jC.b(sc_id).b().get(position);
+                String xmlName = projectFileBean.getXmlName();
+                if (currentXml.equals(xmlName)) {
+                    viewHolder.itemBinding.cardView.setStrokeColor(ContextCompat.getColor(
+                            ViewSelectorActivity.this, R.color.scolor_dark_yellow_01));
+                    viewHolder.itemBinding.cardView.setStrokeWidth(2);
+                }
+                String javaName = projectFileBean.getJavaName();
+                viewHolder.itemBinding.imgEdit.setVisibility(View.VISIBLE);
+                viewHolder.itemBinding.imgView.setImageResource(getViewIcon(projectFileBean.options));
+                viewHolder.itemBinding.tvFilename.setText(xmlName);
+                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.VISIBLE);
+                viewHolder.itemBinding.tvLinkedFilename.setText(javaName);
+            } else if (selectedTab == TAB_CUSTOM_VIEW) {
+                viewHolder.itemBinding.imgEdit.setVisibility(View.GONE);
+                viewHolder.itemBinding.tvLinkedFilename.setVisibility(View.GONE);
+                ProjectFileBean customView = jC.b(sc_id).c().get(position);
+                if (currentXml.equals(customView.getXmlName())) {
+                    viewHolder.itemBinding.cardView.setStrokeColor(ContextCompat.getColor(
+                            ViewSelectorActivity.this, R.color.scolor_dark_yellow_01));
+                    viewHolder.itemBinding.cardView.setStrokeWidth(2);
+                }
+                if (customView.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
+                    viewHolder.itemBinding.imgView.setImageResource(getViewIcon(4));
+                    viewHolder.itemBinding.tvFilename.setText(customView.fileName.substring(1));
+                } else {
+                    viewHolder.itemBinding.imgView.setImageResource(getViewIcon(3));
+                    viewHolder.itemBinding.tvFilename.setText(customView.getXmlName());
+                }
+            }
+        }
+
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            FileSelectorPopupSelectXmlActivityItemBinding binding = FileSelectorPopupSelectXmlActivityItemBinding.inflate(inflater, parent, false);
+            return new ViewHolder(binding);
+        }
+
+        @Override
+        public int getItemCount() {
+            binding.emptyMessage.setVisibility(View.GONE);
+            hC hC = jC.b(sc_id);
+            ArrayList<ProjectFileBean> list = switch (selectedTab) {
+                case TAB_ACTIVITY -> hC.b();
+                case TAB_CUSTOM_VIEW -> hC.c();
+                default -> null;
+            };
+            int size = list != null ? list.size() : 0;
+            if (size == 0) {
+                binding.emptyMessage.setVisibility(View.VISIBLE);
+            }
+            return size;
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            private final FileSelectorPopupSelectXmlActivityItemBinding itemBinding;
+
+            public ViewHolder(@NonNull FileSelectorPopupSelectXmlActivityItemBinding binding) {
+                super(binding.getRoot());
+                this.itemBinding = binding;
+                itemBinding.cardView.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        selectedItem = getLayoutPosition();
+                        hC hC = jC.b(sc_id);
+                        ArrayList<ProjectFileBean> list = switch (selectedTab) {
+                            case TAB_ACTIVITY -> hC.b();
+                            case TAB_CUSTOM_VIEW -> hC.c();
+                            default -> null;
+                        };
+                        if (list != null) {
+                            projectFile = list.get(getLayoutPosition());
+                        }
+                        Intent intent = new Intent();
+                        intent.putExtra("project_file", projectFile);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                });
+                itemBinding.actionContainer.setOnClickListener(v -> {
+                    if (selectedTab == TAB_ACTIVITY && !mB.a()) {
+                        selectedItem = getLayoutPosition();
+                        Intent intent = new Intent(getApplicationContext(), AddViewActivity.class);
+                        intent.putExtra("project_file", jC.b(sc_id).b().get(getLayoutPosition()));
+                        intent.putExtra("request_code", 265);
+                        startActivityForResult(intent, 265);
+                    }
+                });
+                itemBinding.imgPresetSetting.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        selectedItem = getLayoutPosition();
+                        int requestCode = a(jC.b(sc_id).b().get(getLayoutPosition()));
+                        Intent intent = new Intent(getApplicationContext(), PresetSettingActivity.class);
+                        intent.putExtra("request_code", requestCode);
+                        intent.putExtra("edit_mode", true);
+                        startActivityForResult(intent, requestCode);
+                    }
+                });
+            }
+        }
     }
 }

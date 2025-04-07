@@ -60,6 +60,8 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class BlocksManager extends BaseAppCompatActivity {
 
+    boolean isDialogShowing;
+    View draggedView;
     private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private String blocks_dir;
     private String pallet_dir;
@@ -68,11 +70,9 @@ public class BlocksManager extends BaseAppCompatActivity {
     private Activity activity;
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
-    boolean isDialogShowing;
     private ActivityBlocksManagerBinding binding;
     private DialogPaletteBinding dialogBinding;
     private Vibrator vibrator;
-    View draggedView;
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {

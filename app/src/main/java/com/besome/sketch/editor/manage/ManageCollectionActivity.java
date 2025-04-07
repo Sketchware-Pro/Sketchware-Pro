@@ -86,7 +86,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private ArrayList<BlockCollectionBean> blocks;
     private ArrayList<MoreBlockCollectionBean> moreBlocks;
     private int currentItemId = 1;
-    private int collectionItemsSize = 6;
+    private final int collectionItemsSize = 6;
     private TextView noItemsNote;
     private FloatingActionButton fab;
     private String sc_id;
@@ -718,7 +718,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
             if (bean.isSelected) {
                 holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else { 
+            } else {
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 

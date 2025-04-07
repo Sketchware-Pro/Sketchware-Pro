@@ -19,33 +19,29 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
-
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+
+import mod.hey.studios.code.SrcCodeEditor;
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
 import pro.sketchware.databinding.DialogInputLayoutBinding;
 import pro.sketchware.databinding.ManageFileBinding;
 import pro.sketchware.databinding.ManageJavaItemHsBinding;
-
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Arrays; 
-
-import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
-import mod.hey.studios.code.SrcCodeEditor;
-import mod.hey.studios.util.Helper;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ManageAssetsActivity extends BaseAppCompatActivity {
 
@@ -252,14 +248,14 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
     }
 
     public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.AssetsViewHolder> {
-        
-        private static final String[] textExtensions = { 
-            ".txt", ".xml", ".java", ".json", ".csv", ".html", ".css", ".js", 
-            ".md", ".rtf", ".log", ".sql", ".yml", ".yaml", ".properties", ".ini",
-            ".kt", ".toml", ".kts", ".php", ".py", ".ts", ".md", ".sh", ".c", ".h",
-            ".hpp", ".cpp"
+
+        private static final String[] textExtensions = {
+                ".txt", ".xml", ".java", ".json", ".csv", ".html", ".css", ".js",
+                ".md", ".rtf", ".log", ".sql", ".yml", ".yaml", ".properties", ".ini",
+                ".kt", ".toml", ".kts", ".php", ".py", ".ts", ".md", ".sh", ".c", ".h",
+                ".hpp", ".cpp"
         };
-        
+
         @NonNull
         @Override
         public AssetsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

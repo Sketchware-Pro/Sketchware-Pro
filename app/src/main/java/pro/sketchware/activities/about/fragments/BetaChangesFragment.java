@@ -18,10 +18,9 @@ import java.util.Arrays;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.activities.about.adapters.CommitAdapter;
+import pro.sketchware.activities.about.models.AboutAppViewModel;
 import pro.sketchware.activities.about.models.AboutResponseModel;
 import pro.sketchware.databinding.FragmentBetaChangesBinding;
-
-import pro.sketchware.activities.about.models.AboutAppViewModel;
 import pro.sketchware.utility.Network;
 import pro.sketchware.utility.SketchwareUtil;
 

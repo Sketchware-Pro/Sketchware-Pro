@@ -103,6 +103,7 @@ public class ProjectResourceBean extends SelectableBean implements Parcelable {
     public boolean isNinePatch() {
         return isNinePatch(resFullName);
     }
+
     public boolean isSvg() {
         return isSvg(resFullName);
     }

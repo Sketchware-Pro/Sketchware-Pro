@@ -1,16 +1,12 @@
 package pro.sketchware.utility.apk;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import mod.hey.studios.util.Helper;
-
 import pro.sketchware.R;
-
-import a.a.a.aB;
 import pro.sketchware.databinding.DialogAppSignaturesBinding;
 
 public class ApkSignatures {

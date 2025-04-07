@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.besome.sketch.editor.LogicEditorActivity;
-import pro.sketchware.R;
 
 import a.a.a.Ss;
 import mod.hey.studios.lib.code_editor.CodeEditorEditText;
@@ -24,6 +23,7 @@ import mod.hey.studios.lib.code_editor.CodeEditorLayout;
 import mod.hey.studios.lib.code_editor.ColorScheme;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.DialogButtonGradientDrawable;
+import pro.sketchware.R;
 
 public class AsdOldDialog extends Dialog {
 

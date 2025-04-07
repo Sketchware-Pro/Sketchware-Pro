@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.palette.IconBase;
-import pro.sketchware.R;
 
 import mod.agus.jcoderz.beans.ViewBeans;
+import pro.sketchware.R;
 
 public class IconCircleImageView extends IconBase {
 

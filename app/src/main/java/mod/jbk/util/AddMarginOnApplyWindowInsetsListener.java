@@ -17,7 +17,7 @@ public class AddMarginOnApplyWindowInsetsListener implements OnApplyWindowInsets
 
     /**
      * @param insetsTypeMask Bit mask of {@link WindowInsetsCompat.Type}s to query the insets for.
-     * @param returnValue What {@link #onApplyWindowInsets(View, WindowInsetsCompat)} should return.
+     * @param returnValue    What {@link #onApplyWindowInsets(View, WindowInsetsCompat)} should return.
      */
     public AddMarginOnApplyWindowInsetsListener(int insetsTypeMask, WindowInsetsCompat returnValue) {
         this.insetsTypeMask = insetsTypeMask;

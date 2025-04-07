@@ -28,14 +28,13 @@ import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.ScrollView;
 
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-
 import java.util.List;
 import java.util.regex.Matcher;
 
 import a.a.a.Lx;
 import a.a.a.wB;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 import pro.sketchware.utility.SketchwareUtil;
 
 /**
@@ -231,8 +230,7 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
     public void setWordWrap(boolean b) {
         if (b) {
             if (editText.getParent() instanceof HorizontalScrollView
-                    && scrollView.getChildAt(0) instanceof HorizontalScrollView) {
-                HorizontalScrollView hrz = (HorizontalScrollView) scrollView.getChildAt(0);
+                    && scrollView.getChildAt(0) instanceof HorizontalScrollView hrz) {
                 hrz.removeView(editText);
                 scrollView.removeView(hrz);
                 scrollView.addView(editText);

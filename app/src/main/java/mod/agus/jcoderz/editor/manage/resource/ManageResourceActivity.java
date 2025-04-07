@@ -336,7 +336,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
             intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
             intent.putExtra("content", frc.listFileResource.get(position));
             startActivity(intent);
-        }else if (frc.listFileResource.get(position).endsWith("xml")) {
+        } else if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());

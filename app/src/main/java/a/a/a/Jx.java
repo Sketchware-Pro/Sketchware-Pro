@@ -78,7 +78,7 @@ public class Jx {
      * Filled with request code constants for FilePicker components
      */
     private final ArrayList<String> filePickerRequestCodes = new ArrayList<>();
-    
+
     private final ArrayList<HashMap<String, Object>> extraBlocks;
     private Hx eventManager;
     private ArrayList<String> imports = new ArrayList<>();
@@ -959,7 +959,7 @@ public class Jx {
             }
         }
     }
-    
+
     private Map<String, Object> getExtraBlockByName(String name) {
         for (Map<String, Object> block : extraBlocks) {
             if (block.containsKey("name") && block.get("name").toString().equals(name)) {
@@ -1137,7 +1137,8 @@ public class Jx {
                  ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW,
                  ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW,
                  ViewBeans.VIEW_TYPE_LAYOUT_TABLAYOUT,
-                 ViewBeans.VIEW_TYPE_LAYOUT_VIEWPAGER -> true; // it's necessary for the adapters, listeners...
+                 ViewBeans.VIEW_TYPE_LAYOUT_VIEWPAGER ->
+                    true; // it's necessary for the adapters, listeners...
             default -> false;
         };
     }

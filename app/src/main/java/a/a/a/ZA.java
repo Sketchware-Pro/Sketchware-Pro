@@ -8,9 +8,9 @@ import android.widget.TextView;
 import androidx.core.view.WindowCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
-import pro.sketchware.R;
 
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class ZA extends Dialog {
 

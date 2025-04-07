@@ -65,7 +65,7 @@ public class ImageBean extends nA implements Parcelable {
         String str = resName;
         if (str != null) {
             String str2 = imageBean.resName;
-            if (str2 == null || !str.equals(str2)) {
+            if (!str.equals(str2)) {
                 return false;
             }
         } else if (imageBean.resName != null) {
@@ -74,7 +74,7 @@ public class ImageBean extends nA implements Parcelable {
         String str3 = scaleType;
         if (str3 != null) {
             String str4 = imageBean.scaleType;
-            if (str4 == null || !str3.equals(str4)) {
+            if (!str3.equals(str4)) {
                 return false;
             }
         } else if (imageBean.scaleType != null) {

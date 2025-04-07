@@ -8,11 +8,11 @@ import androidx.annotation.Nullable;
 
 import com.besome.sketch.lib.base.CollapsibleLayout;
 import com.besome.sketch.lib.ui.CollapsibleButton;
-import pro.sketchware.R;
 
 import java.util.List;
 
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class CollapsibleCustomComponentLayout extends CollapsibleLayout<CollapsibleButton> {
     private CollapsibleButton delete;

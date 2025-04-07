@@ -5,10 +5,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
-import pro.sketchware.R;
 
 import a.a.a.Gx;
 import mod.hilal.saif.components.ComponentsHandler;
+import pro.sketchware.R;
 
 public class ComponentBean extends CollapsibleBean implements Parcelable {
     public static final Parcelable.Creator<ComponentBean> CREATOR = new Parcelable.Creator<>() {
@@ -336,7 +336,7 @@ public class ComponentBean extends CollapsibleBean implements Parcelable {
             case COMPONENT_TYPE_CALENDAR -> R.drawable.ic_mtrl_calendar;
             case COMPONENT_TYPE_VIBRATOR -> R.drawable.ic_mtrl_vibration;
             case COMPONENT_TYPE_TIMERTASK -> R.drawable.ic_mtrl_timer;
-            case COMPONENT_TYPE_FIREBASE_AUTH-> R.drawable.ic_mtrl_firebase_auth;
+            case COMPONENT_TYPE_FIREBASE_AUTH -> R.drawable.ic_mtrl_firebase_auth;
             case COMPONENT_TYPE_FIREBASE_STORAGE -> R.drawable.ic_mtrl_firebase_storage;
             case COMPONENT_TYPE_FIREBASE -> R.drawable.ic_mtrl_firebase_rtdb;
             case COMPONENT_TYPE_DIALOG -> R.drawable.ic_mtrl_dialog;

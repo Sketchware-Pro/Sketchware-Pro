@@ -2,13 +2,12 @@ package a.a.a;
 
 import android.content.Context;
 
-import pro.sketchware.R;
-
 import java.util.ArrayList;
 
 import mod.agus.jcoderz.editor.event.ManageEvent;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.events.EventsHandler;
+import pro.sketchware.R;
 
 public class oq {
 
@@ -22,7 +21,8 @@ public class oq {
      */
     public static int a(String eventName) {
         return switch (eventName) {
-            case "initializeLogic", "onBackPressed", "onPostCreate", "onStart", "onStop", "onDestroy", "onResume", "onPause", "moreBlock" ->
+            case "initializeLogic", "onBackPressed", "onPostCreate", "onStart", "onStop",
+                 "onDestroy", "onResume", "onPause", "moreBlock" ->
                     R.drawable.bg_event_type_activity;
             case "onBannerAdClicked", "onClick" -> R.drawable.ic_mtrl_touch;
             case "onCheckedChange" -> R.drawable.ic_mtrl_checkbox;
@@ -53,7 +53,8 @@ public class oq {
             case "onAccuracyChanged" -> R.drawable.ic_mtrl_center;
             case "onInterstitialAdLoaded", "onBannerAdLoaded", "onRewardAdLoaded" ->
                     R.drawable.ic_mtrl_loaded;
-            case "onBannerAdFailedToLoad", "onInterstitialAdFailedToLoad", "onAdFailedToShowFullScreenContent", "onRewardAdFailedToLoad", "onFailure" ->
+            case "onBannerAdFailedToLoad", "onInterstitialAdFailedToLoad",
+                 "onAdFailedToShowFullScreenContent", "onRewardAdFailedToLoad", "onFailure" ->
                     R.drawable.ic_mtrl_load_failed;
             case "onAdShowedFullScreenContent", "onBannerAdOpened" -> R.drawable.ic_mtrl_preview;
             case "onAdDismissedFullScreenContent", "onBannerAdClosed" ->

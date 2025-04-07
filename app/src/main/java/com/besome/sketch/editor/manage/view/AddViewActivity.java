@@ -19,10 +19,6 @@ import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageScreenActivityAddTempBinding;
-
 import java.util.ArrayList;
 
 import a.a.a.YB;
@@ -31,6 +27,9 @@ import a.a.a.rq;
 import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageScreenActivityAddTempBinding;
 
 public class AddViewActivity extends BaseAppCompatActivity {
 

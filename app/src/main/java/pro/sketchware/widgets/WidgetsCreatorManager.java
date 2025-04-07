@@ -50,7 +50,6 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class WidgetsCreatorManager {
 
-    private ArrayList<HashMap<String, Object>> widgetConfigurationsList = new ArrayList<>();
     private final String widgetResourcesDirectoryPath = "/storage/emulated/0/.sketchware/resources/widgets/";
     private final String widgetsJsonFilePath = widgetResourcesDirectoryPath + "widgets.json";
     private final String widgetExportDirectoryPath = widgetResourcesDirectoryPath + "export/";
@@ -68,12 +67,32 @@ public class WidgetsCreatorManager {
     private final ViewEditor viewEditor;
     private final ViewEditorFragment viewEditorFragment;
     private final Context context;
+    private ArrayList<HashMap<String, Object>> widgetConfigurationsList = new ArrayList<>();
 
     public WidgetsCreatorManager(ViewEditorFragment viewEditorFragment) {
         this.viewEditorFragment = viewEditorFragment;
         viewEditor = viewEditorFragment.viewEditor;
         context = viewEditorFragment.requireContext();
         initialize();
+    }
+
+    public static void clearErrorOnTextChanged(EditText editText, TextInputLayout textInputLayout) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (textInputLayout.getError() != null) {
+                    textInputLayout.setError(null);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     public void initialize() {
@@ -121,7 +140,6 @@ public class WidgetsCreatorManager {
         return false;
     }
 
-
     private void initializeAvailableWidgetTypesList() {
         for (String widgetName : availableWidgetsNames) {
             availableWidgetsTypes.add(String.valueOf(ViewBean.getViewTypeByTypeName(widgetName)));
@@ -146,7 +164,7 @@ public class WidgetsCreatorManager {
 
     public void showWidgetsCreatorDialog(int position) {
         boolean isEditing = position != -1;
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder((Activity) context);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
         builder.setTitle(isEditing ? Helper.getResString(R.string.widget_editor) : Helper.getResString(R.string.create_new_widget));
         WidgetsCreatorDialogBinding binding = WidgetsCreatorDialogBinding.inflate(LayoutInflater.from(context));
         View inflate = binding.getRoot();
@@ -318,25 +336,6 @@ public class WidgetsCreatorManager {
             viewEditorFragment.e();
             SketchwareUtil.toast("Imported!");
         }
-    }
-
-    public static void clearErrorOnTextChanged(EditText editText, TextInputLayout textInputLayout) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (textInputLayout.getError() != null) {
-                    textInputLayout.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
     }
 
     private void showTypeViewSelectorDialog(List<String> choices, List<String> types, TextInputEditText type) {

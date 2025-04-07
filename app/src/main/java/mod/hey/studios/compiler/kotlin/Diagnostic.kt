@@ -2,7 +2,7 @@ package mod.hey.studios.compiler.kotlin
 
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSourceLocation
-import java.util.*
+import java.util.Locale
 
 class Diagnostic(
     val severity: CompilerMessageSeverity,

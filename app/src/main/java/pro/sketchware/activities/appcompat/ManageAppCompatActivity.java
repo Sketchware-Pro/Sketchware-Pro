@@ -10,9 +10,6 @@ import android.widget.PopupMenu;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import a.a.a.jC;
-import a.a.a.mB;
-
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -20,10 +17,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+
+import a.a.a.jC;
+import a.a.a.mB;
 import dev.aldi.sayuti.editor.injection.AppCompatInjection;
-
 import mod.hey.studios.util.Helper;
-
 import pro.sketchware.R;
 import pro.sketchware.activities.appcompat.adapters.AppCompatAdapter;
 import pro.sketchware.databinding.CustomDialogAttributeBinding;
@@ -31,11 +33,6 @@ import pro.sketchware.databinding.ManageAppCompatBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 
 public class ManageAppCompatActivity extends BaseAppCompatActivity {
 
@@ -133,10 +130,12 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                     }
 
                     @Override
-                    public void onTabReselected(TabLayout.Tab tab) {}
+                    public void onTabReselected(TabLayout.Tab tab) {
+                    }
 
                     @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {}
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                    }
                 });
         List<String> appCompats = new ArrayList<>();
         initializeProjectBean();

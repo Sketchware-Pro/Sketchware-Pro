@@ -7,10 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import a.a.a.jC;
-
 import com.besome.sketch.beans.ProjectFileBean;
 
+import a.a.a.jC;
 import pro.sketchware.databinding.FileSelectorPopupSelectJavaListItemBinding;
 import pro.sketchware.listeners.ItemClickListener;
 
@@ -25,6 +24,23 @@ public class JavaFileAdapter extends RecyclerView.Adapter<JavaFileAdapter.ViewHo
 
     public void setOnItemClickListener(ItemClickListener<ProjectFileBean> listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bind(jC.b(sc_id).b().get(position));
+    }
+
+    @Override
+    @NonNull
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        var inflater = LayoutInflater.from(parent.getContext());
+        return new ViewHolder(FileSelectorPopupSelectJavaListItemBinding.inflate(inflater, parent, false));
+    }
+
+    @Override
+    public int getItemCount() {
+        return jC.b(sc_id).b().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -46,22 +62,5 @@ public class JavaFileAdapter extends RecyclerView.Adapter<JavaFileAdapter.ViewHo
                 }
             });
         }
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(jC.b(sc_id).b().get(position));
-    }
-
-    @Override
-    @NonNull
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        var inflater = LayoutInflater.from(parent.getContext());
-        return new ViewHolder(FileSelectorPopupSelectJavaListItemBinding.inflate(inflater, parent, false));
-    }
-
-    @Override
-    public int getItemCount() {
-        return jC.b(sc_id).b().size();
     }
 }

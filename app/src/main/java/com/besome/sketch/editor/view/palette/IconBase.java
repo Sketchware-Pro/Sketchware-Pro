@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseWidget;
+
 import pro.sketchware.R;
 
 public class IconBase extends BaseWidget {

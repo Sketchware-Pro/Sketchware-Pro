@@ -2,8 +2,6 @@ package mod.jbk.code;
 
 import android.content.res.AssetManager;
 
-import pro.sketchware.SketchApplication;
-
 import org.eclipse.tm4e.core.registry.IThemeSource;
 
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme;
@@ -13,13 +11,13 @@ import io.github.rosemoe.sora.langs.textmate.registry.model.ThemeModel;
 import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
 import mod.jbk.util.LogUtil;
+import pro.sketchware.SketchApplication;
 
 public class CodeEditorColorSchemes {
-    private static final String TAG = "CodeEditorColorSchemes";
-
     public static final String THEME_DRACULA = "dracula.json";
     public static final String THEME_GITHUB = "GitHub.tmTheme";
     public static final String[] THEMES = {THEME_DRACULA, THEME_GITHUB};
+    private static final String TAG = "CodeEditorColorSchemes";
 
     static {
         AssetManager assets = SketchApplication.getContext().getAssets();

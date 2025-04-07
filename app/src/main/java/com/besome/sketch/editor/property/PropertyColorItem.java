@@ -9,13 +9,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import pro.sketchware.R;
-
 import a.a.a.Kw;
 import a.a.a.Zx;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 @SuppressLint("ViewConstructor")
 public class PropertyColorItem extends RelativeLayout implements View.OnClickListener {
@@ -66,10 +65,6 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         return value;
     }
 
-    public String getResValue() {
-        return resValue;
-    }
-
     public void setValue(int value) {
         this.value = value;
         resValue = null;
@@ -83,6 +78,10 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             tvValue.setText(String.format("#%08X", value));
             viewColor.setBackgroundColor(value);
         }
+    }
+
+    public String getResValue() {
+        return resValue;
     }
 
     public void setValue(int value, String resValue) {

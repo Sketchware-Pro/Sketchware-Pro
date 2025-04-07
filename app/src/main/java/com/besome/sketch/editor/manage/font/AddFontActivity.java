@@ -12,19 +12,19 @@ import android.widget.Toast;
 
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageFontAddBinding;
 
 import a.a.a.Np;
-import pro.sketchware.lib.validator.WB2;
 import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.yy;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageFontAddBinding;
+import pro.sketchware.lib.validator.WB2;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class AddFontActivity extends BaseDialogActivity implements View.OnClickListener {
 

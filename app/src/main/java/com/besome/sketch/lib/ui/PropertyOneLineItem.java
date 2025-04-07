@@ -1,12 +1,11 @@
 package com.besome.sketch.lib.ui;
 
-import a.a.a.wB;
-
 import android.content.Context;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import a.a.a.wB;
 import pro.sketchware.R;
 
 public class PropertyOneLineItem extends RelativeLayout {

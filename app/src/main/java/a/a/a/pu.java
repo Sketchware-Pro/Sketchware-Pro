@@ -37,7 +37,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,6 +56,10 @@ import pro.sketchware.utility.SvgUtils;
 
 public class pu extends qA {
 
+    private final FilePathUtil fpu = new FilePathUtil();
+    public boolean isSelecting = false;
+    public SvgUtils svgUtils;
+    Map<Integer, Map<String, Object>> colorMap = new HashMap<>();
     private FrManageImageListBinding binding;
     private String sc_id;
     private ArrayList<ProjectResourceBean> images;
@@ -64,13 +67,6 @@ public class pu extends qA {
     private FloatingActionButton fab;
     private String projectImagesDirectory = "";
     private Adapter adapter = null;
-    public boolean isSelecting = false;
-
-    public SvgUtils svgUtils;
-
-    private final FilePathUtil fpu = new FilePathUtil();
-
-    Map<Integer, Map<String, Object>> colorMap = new HashMap<>();
     private final ActivityResultLauncher<Intent> openImportIconActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK) {
             var data = result.getData();
@@ -128,6 +124,20 @@ public class pu extends qA {
             bB.a(requireActivity(), xB.b().a(requireActivity(), R.string.design_manager_message_edit_complete), bB.TOAST_NORMAL).show();
         }
     });
+
+    public static void copyFile(String srcPath, String destPath) throws IOException {
+        File srcFile = new File(srcPath);
+        File destFile = new File(destPath);
+
+        try (FileInputStream fis = new FileInputStream(srcFile);
+             FileOutputStream fos = new FileOutputStream(destFile)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+        }
+    }
 
     public ArrayList<ProjectResourceBean> d() {
         return images;
@@ -192,7 +202,7 @@ public class pu extends qA {
 
 
                     String str = projectImagesDirectory + File.separator + image.resName;
-                    Log.d("svg", "full name : " + image.resFullName.toString());
+                    Log.d("svg", "full name : " + image.resFullName);
                     if (image.resFullName.endsWith(".svg")) {
                         // convert the svg to vectors
                         String svgPath = fpu.getSvgFullPath(sc_id, image.resName);
@@ -239,21 +249,6 @@ public class pu extends qA {
 
         jC.a(sc_id).k();
     }
-
-    public static void copyFile(String srcPath, String destPath) throws IOException {
-        File srcFile = new File(srcPath);
-        File destFile = new File(destPath);
-
-        try (FileInputStream fis = new FileInputStream(srcFile);
-             FileOutputStream fos = new FileOutputStream(destFile)) {
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = fis.read(buffer)) > 0) {
-                fos.write(buffer, 0, length);
-            }
-        }
-    }
-
 
     private void updateGuideVisibility() {
         if (images.isEmpty()) {
@@ -368,125 +363,6 @@ public class pu extends qA {
         super.onSaveInstanceState(outState);
     }
 
-    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            private final ManageImageListItemBinding binding;
-
-            public ViewHolder(@NonNull ManageImageListItemBinding binding) {
-                super(binding.getRoot());
-                this.binding = binding;
-
-                binding.img.setOnClickListener(v -> {
-                    if (!isSelecting) {
-                        if (!(images.get(getLayoutPosition()).resFullName.endsWith(".svg") ||
-                                images.get(getLayoutPosition()).resFullName.endsWith(".xml"))) {
-                            showImageDetailsDialog(images.get(getLayoutPosition()));
-                        }
-                    } else {
-                        binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
-                        images.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
-                        notifyItemChanged(getLayoutPosition());
-                    }
-                });
-
-                binding.img.setOnLongClickListener(v -> {
-                    a(true);
-                    binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
-                    images.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
-                    return true;
-                });
-            }
-        }
-
-        public Adapter(RecyclerView recyclerView) {
-            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        if (dy > 2) {
-                            if (fab.isEnabled()) {
-                                fab.hide();
-                            }
-                        } else if (dy < -2) {
-                            if (fab.isEnabled()) {
-                                fab.show();
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean image = images.get(position);
-
-            holder.binding.deleteImgContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
-            holder.binding.imgNinePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
-            holder.binding.imgDelete.setImageResource(image.isSelected ? R.drawable.ic_checkmark_green_48dp
-                    : R.drawable.ic_trashcan_white_48dp);
-            holder.binding.chkSelect.setChecked(image.isSelected);
-            holder.binding.tvImageName.setText(image.resName);
-
-            if (colorMap.get(position) != null) {
-                int color = Objects.requireNonNullElse((int) colorMap.get(position).get("color"), 0xFFFFFFFF);
-                Log.d("Applying filter to " + position, String.valueOf(color));
-                holder.binding.img.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-            } else {
-                holder.binding.img.clearColorFilter();
-            }
-
-            if (svgUtils == null) {
-                svgUtils = new SvgUtils(requireContext());
-                svgUtils.initImageLoader();
-            }
-
-            if (image.resFullName.endsWith(".svg")) {
-                svgUtils.loadImage(holder.binding.img, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));
-            } else if (image.resFullName.endsWith(".xml")) {
-                Log.d("loading converted vector: ", fpu.getSvgFullPath(sc_id, image.resName));
-                svgUtils.loadImage(holder.binding.img, image.isNew ? image.resFullName : fpu.getSvgFullPath(sc_id, image.resName));
-            } else {
-                Glide.with(requireActivity())
-                        .asBitmap()
-                        .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
-                                : images.get(position).resFullName)
-                        .transform(new BitmapTransformation() {
-
-                            final String ID = "my-transformation";
-                            final byte[] ID_BYTES =  ID.getBytes(StandardCharsets.UTF_8);
-
-                            @Override
-                            protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
-                                return iB.a(toTransform, image.rotate, image.flipHorizontal, image.flipVertical);
-                            }
-
-                            @Override
-                            public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
-                                messageDigest.update(ID_BYTES);
-                            }
-                        })
-                        .centerCrop()
-                        .signature(kC.n())
-                        .error(R.drawable.ic_remove_grey600_24dp)
-                        .into(holder.binding.img);
-            }
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ManageImageListItemBinding binding = ManageImageListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new ViewHolder(binding);
-        }
-
-        @Override
-        public int getItemCount() {
-            return images.size();
-        }
-    }
-
     private void showImageDetailsDialog(ProjectResourceBean projectResourceBean) {
         Intent intent = new Intent(requireContext(), AddImageActivity.class);
         intent.putParcelableArrayListExtra("images", images);
@@ -567,10 +443,129 @@ public class pu extends qA {
         colorItem1.put("color", color);
 
         colorMap.put(forPosition, colorItem1);
-        Log.d("color filter", "new color filter item at " + forPosition + ": " + colorHex + " " + String.valueOf(color));
+        Log.d("color filter", "new color filter item at " + forPosition + ": " + colorHex + " " + color);
     }
 
     private void addImages(ArrayList<ProjectResourceBean> arrayList) {
         images.addAll(arrayList);
+    }
+
+    private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+        public Adapter(RecyclerView recyclerView) {
+            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 2) {
+                            if (fab.isEnabled()) {
+                                fab.hide();
+                            }
+                        } else if (dy < -2) {
+                            if (fab.isEnabled()) {
+                                fab.show();
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ProjectResourceBean image = images.get(position);
+
+            holder.binding.deleteImgContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
+            holder.binding.imgNinePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
+            holder.binding.imgDelete.setImageResource(image.isSelected ? R.drawable.ic_checkmark_green_48dp
+                    : R.drawable.ic_trashcan_white_48dp);
+            holder.binding.chkSelect.setChecked(image.isSelected);
+            holder.binding.tvImageName.setText(image.resName);
+
+            if (colorMap.get(position) != null) {
+                int color = Objects.requireNonNullElse((int) colorMap.get(position).get("color"), 0xFFFFFFFF);
+                Log.d("Applying filter to " + position, String.valueOf(color));
+                holder.binding.img.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            } else {
+                holder.binding.img.clearColorFilter();
+            }
+
+            if (svgUtils == null) {
+                svgUtils = new SvgUtils(requireContext());
+                svgUtils.initImageLoader();
+            }
+
+            if (image.resFullName.endsWith(".svg")) {
+                svgUtils.loadImage(holder.binding.img, image.isNew ? image.resFullName : String.join(File.separator, projectImagesDirectory, image.resFullName));
+            } else if (image.resFullName.endsWith(".xml")) {
+                Log.d("loading converted vector: ", fpu.getSvgFullPath(sc_id, image.resName));
+                svgUtils.loadImage(holder.binding.img, image.isNew ? image.resFullName : fpu.getSvgFullPath(sc_id, image.resName));
+            } else {
+                Glide.with(requireActivity())
+                        .asBitmap()
+                        .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
+                                : images.get(position).resFullName)
+                        .transform(new BitmapTransformation() {
+
+                            final String ID = "my-transformation";
+                            final byte[] ID_BYTES = ID.getBytes(StandardCharsets.UTF_8);
+
+                            @Override
+                            protected Bitmap transform(@NonNull BitmapPool pool, @NonNull Bitmap toTransform, int outWidth, int outHeight) {
+                                return iB.a(toTransform, image.rotate, image.flipHorizontal, image.flipVertical);
+                            }
+
+                            @Override
+                            public void updateDiskCacheKey(@NonNull MessageDigest messageDigest) {
+                                messageDigest.update(ID_BYTES);
+                            }
+                        })
+                        .centerCrop()
+                        .signature(kC.n())
+                        .error(R.drawable.ic_remove_grey600_24dp)
+                        .into(holder.binding.img);
+            }
+        }
+
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ManageImageListItemBinding binding = ManageImageListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new ViewHolder(binding);
+        }
+
+        @Override
+        public int getItemCount() {
+            return images.size();
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            private final ManageImageListItemBinding binding;
+
+            public ViewHolder(@NonNull ManageImageListItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+
+                binding.img.setOnClickListener(v -> {
+                    if (!isSelecting) {
+                        if (!(images.get(getLayoutPosition()).resFullName.endsWith(".svg") ||
+                                images.get(getLayoutPosition()).resFullName.endsWith(".xml"))) {
+                            showImageDetailsDialog(images.get(getLayoutPosition()));
+                        }
+                    } else {
+                        binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                        images.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
+                        notifyItemChanged(getLayoutPosition());
+                    }
+                });
+
+                binding.img.setOnLongClickListener(v -> {
+                    a(true);
+                    binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                    images.get(getLayoutPosition()).isSelected = binding.chkSelect.isChecked();
+                    return true;
+                });
+            }
+        }
     }
 }

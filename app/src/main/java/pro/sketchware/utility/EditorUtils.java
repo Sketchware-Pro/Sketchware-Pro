@@ -2,19 +2,18 @@ package pro.sketchware.utility;
 
 import static pro.sketchware.utility.ThemeUtils.isDarkThemeEnabled;
 
-import android.os.Build;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.material.color.MaterialColors;
 
+import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
-
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
 import pro.sketchware.R;

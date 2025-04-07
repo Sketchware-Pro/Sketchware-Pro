@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.hilal.saif.events.EventsHandler;
-
 import pro.sketchware.menu.DefaultExtraMenuBean;
 
 public class mq {
@@ -797,8 +796,8 @@ public class mq {
             case "SpeechToText" -> "SpeechRecognizer";
             case "FragmentAdapter" -> "FragmentStatePagerAdapter";
             case "Context" -> "Activity";
-            case "ResString", "ResStyle", "ResColor", "ResArray", "ResDimen", "ResBool", "ResInteger", "ResAttr", "ResXml", "Color" ->
-                    "int";
+            case "ResString", "ResStyle", "ResColor", "ResArray", "ResDimen", "ResBool",
+                 "ResInteger", "ResAttr", "ResXml", "Color" -> "int";
             default -> typeName;
         };
     }

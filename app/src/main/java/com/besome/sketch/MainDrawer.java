@@ -18,12 +18,12 @@ import androidx.core.view.WindowInsetsCompat;
 import com.besome.sketch.help.ProgramInfoActivity;
 import com.besome.sketch.tools.NewKeyStoreActivity;
 import com.google.android.material.navigation.NavigationView;
-import pro.sketchware.R;
 
 import a.a.a.mB;
 import dev.chrisbanes.insetter.Insetter;
 import dev.chrisbanes.insetter.Side;
 import mod.hilal.saif.activities.tools.AppSettings;
+import pro.sketchware.R;
 import pro.sketchware.activities.about.AboutActivity;
 
 public class MainDrawer extends NavigationView {

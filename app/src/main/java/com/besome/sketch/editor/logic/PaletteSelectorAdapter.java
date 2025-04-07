@@ -21,9 +21,9 @@ public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelector
 
     private final PaletteSelector paletteSelector;
     private final List<paletteSelectorRecord> paletteList = new ArrayList<>();
-    private int selectedPosition = -1;
     private final Context context;
     private final Vs onBlockCategorySelectListener;
+    private int selectedPosition = -1;
 
     public PaletteSelectorAdapter(PaletteSelector paletteSelector, Vs onBlockCategorySelectListener) {
         this.paletteSelector = paletteSelector;

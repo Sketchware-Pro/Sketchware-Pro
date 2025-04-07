@@ -12,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class aB extends AlertDialog {
 
+    private final Activity activity;
     public int dialogImageResId = -1;
     public String dialogTitleText = "";
     public String dialogMessageText = "";
@@ -26,8 +27,6 @@ public class aB extends AlertDialog {
     public View.OnClickListener dialogYesListener = null;
     public boolean cancelable = true;
     public boolean canceledOnTouchOutside = true;
-
-    private final Activity activity;
     private AlertDialog dialog;
 
     public aB(Activity activity) {

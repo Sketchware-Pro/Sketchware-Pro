@@ -13,13 +13,12 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pro.sketchware.utility.ThemeUtils;
+import java.util.HashMap;
 
 import pro.sketchware.R;
 import pro.sketchware.databinding.CustomViewAttributeBinding;
 import pro.sketchware.listeners.ItemClickListener;
-
-import java.util.HashMap;
+import pro.sketchware.utility.ThemeUtils;
 
 public class AppCompatAdapter
         extends ListAdapter<HashMap<String, Object>, AppCompatAdapter.ViewHolder> {
@@ -39,12 +38,11 @@ public class AppCompatAdapter
                     return true;
                 }
             };
+    private ItemClickListener<Pair<View, HashMap<String, Object>>> listener;
 
     public AppCompatAdapter() {
         super(DIFF_CALLBACK);
     }
-
-    private ItemClickListener<Pair<View, HashMap<String, Object>>> listener;
 
     public void setOnItemClickListener(
             ItemClickListener<Pair<View, HashMap<String, Object>>> listener) {

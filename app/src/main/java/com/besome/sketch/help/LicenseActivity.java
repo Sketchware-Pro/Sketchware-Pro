@@ -7,10 +7,10 @@ import android.text.util.Linkify;
 import androidx.activity.EdgeToEdge;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import pro.sketchware.databinding.ActivityOssLibrariesBinding;
 
 import a.a.a.oB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.databinding.ActivityOssLibrariesBinding;
 
 public class LicenseActivity extends BaseAppCompatActivity {
 

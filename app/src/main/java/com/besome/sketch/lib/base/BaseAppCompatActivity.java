@@ -18,16 +18,14 @@ import androidx.core.view.WindowInsetsCompat;
 import com.android.annotations.NonNull;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import dev.chrisbanes.insetter.Insetter;
-
 import java.util.ArrayList;
-
-import pro.sketchware.dialogs.ProgressDialog;
 
 import a.a.a.MA;
 import a.a.a.ZA;
 import a.a.a.lC;
 import a.a.a.xB;
+import dev.chrisbanes.insetter.Insetter;
+import pro.sketchware.dialogs.ProgressDialog;
 
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
@@ -163,7 +161,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     public void handleInsetts(View root) {
         Insetter.builder()
-            .padding(WindowInsetsCompat.Type.navigationBars())
-            .applyToView(root);
+                .padding(WindowInsetsCompat.Type.navigationBars())
+                .applyToView(root);
     }
 }

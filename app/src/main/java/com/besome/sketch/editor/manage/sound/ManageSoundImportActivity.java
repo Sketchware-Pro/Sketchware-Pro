@@ -258,75 +258,6 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         }
     }
 
-    private class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public LinearLayout layout_item;
-            public ImageView img_conflict;
-            public ImageView img;
-            public TextView tv_name;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                layout_item = itemView.findViewById(R.id.layout_item);
-                img_conflict = itemView.findViewById(R.id.img_conflict);
-                img = itemView.findViewById(R.id.img);
-                tv_name = itemView.findViewById(R.id.tv_name);
-                img.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        pausePlayback();
-                        selectedItem = getLayoutPosition();
-                        showPreview(selectedItem);
-                        tv_currentnum.setText(String.valueOf(selectedItem + 1));
-                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
-                        if (chk_samename.isChecked()) {
-                            nameValidator.c(null);
-                            nameValidator.a(selectedCollections.size());
-                        } else {
-                            nameValidator.c(selectedCollections.get(selectedItem).resName);
-                            nameValidator.a(1);
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        }
-
-        public ItemAdapter() {
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-            ProjectResourceBean sound = selectedCollections.get(position);
-            if (sound.isDuplicateCollection) {
-                viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
-            } else {
-                viewHolder.img_conflict.setImageResource(R.drawable.ic_ok_48dp);
-            }
-            if (position == selectedItem) {
-                viewHolder.img.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
-            } else {
-                viewHolder.img.setBackgroundColor(Color.WHITE);
-            }
-            try {
-                loadSoundEmbeddedPicture(sound.resFullName, viewHolder.img, position);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            viewHolder.tv_name.setText(selectedCollections.get(position).resName);
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_import_list_item, parent, false));
-        }
-
-        @Override
-        public int getItemCount() {
-            return selectedCollections.size();
-        }
-    }
-
     private void showPreview(int i) {
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -373,5 +304,74 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
             }
         }
         mediaMetadataRetriever.release();
+    }
+
+    private class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+        public ItemAdapter() {
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+            ProjectResourceBean sound = selectedCollections.get(position);
+            if (sound.isDuplicateCollection) {
+                viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
+            } else {
+                viewHolder.img_conflict.setImageResource(R.drawable.ic_ok_48dp);
+            }
+            if (position == selectedItem) {
+                viewHolder.img.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
+            } else {
+                viewHolder.img.setBackgroundColor(Color.WHITE);
+            }
+            try {
+                loadSoundEmbeddedPicture(sound.resFullName, viewHolder.img, position);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            viewHolder.tv_name.setText(selectedCollections.get(position).resName);
+        }
+
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_import_list_item, parent, false));
+        }
+
+        @Override
+        public int getItemCount() {
+            return selectedCollections.size();
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public LinearLayout layout_item;
+            public ImageView img_conflict;
+            public ImageView img;
+            public TextView tv_name;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                layout_item = itemView.findViewById(R.id.layout_item);
+                img_conflict = itemView.findViewById(R.id.img_conflict);
+                img = itemView.findViewById(R.id.img);
+                tv_name = itemView.findViewById(R.id.tv_name);
+                img.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        pausePlayback();
+                        selectedItem = getLayoutPosition();
+                        showPreview(selectedItem);
+                        tv_currentnum.setText(String.valueOf(selectedItem + 1));
+                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
+                        if (chk_samename.isChecked()) {
+                            nameValidator.c(null);
+                            nameValidator.a(selectedCollections.size());
+                        } else {
+                            nameValidator.c(selectedCollections.get(selectedItem).resName);
+                            nameValidator.a(1);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }
     }
 }

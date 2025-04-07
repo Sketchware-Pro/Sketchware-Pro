@@ -2,6 +2,7 @@ package a.a.a;
 
 import android.content.Context;
 import android.util.Log;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,20 +12,6 @@ import java.util.Iterator;
 
 public class lC {
     public static DB a;
-
-    public static class a implements Comparator<Integer> {
-        public a() {
-        }
-
-        public int a(Integer var1, Integer var2) {
-            return var1.compareTo(var2);
-        }
-
-        @Override
-        public int compare(Integer o1, Integer o2) {
-            return 0;
-        }
-    }
 
     public static ArrayList<HashMap<String, Object>> a() {
         String str = "project";
@@ -225,8 +212,8 @@ public class lC {
         ArrayList var1 = new ArrayList();
         Iterator var7 = var0.iterator();
 
-        while(var7.hasNext()) {
-            String var2 = yB.c((HashMap)var7.next(), "my_ws_name");
+        while (var7.hasNext()) {
+            String var2 = yB.c((HashMap) var7.next(), "my_ws_name");
             if (var2.equals("NewProject")) {
                 var1.add(1);
             } else if (var2.indexOf("NewProject") == 0) {
@@ -241,8 +228,8 @@ public class lC {
         int var3 = 0;
         Iterator var8 = var1.iterator();
 
-        while(var8.hasNext()) {
-            int var4 = (Integer)var8.next();
+        while (var8.hasNext()) {
+            int var4 = (Integer) var8.next();
             int var5 = var3 + 1;
             if (var4 == var5) {
                 var3 = var5;
@@ -257,10 +244,9 @@ public class lC {
         if (var3 == 0) {
             return "NewProject";
         } else {
-            StringBuilder var9 = new StringBuilder();
-            var9.append("NewProject");
-            var9.append(var3 + 1);
-            return var9.toString();
+            String var9 = "NewProject" +
+                    (var3 + 1);
+            return var9;
         }
     }
 
@@ -269,5 +255,19 @@ public class lC {
             a(str, a.g(str));
         }
         a.a();
+    }
+
+    public static class a implements Comparator<Integer> {
+        public a() {
+        }
+
+        public int a(Integer var1, Integer var2) {
+            return var1.compareTo(var2);
+        }
+
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return 0;
+        }
     }
 }

@@ -135,36 +135,11 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private DB t;
     private Menu bottomMenu;
     private MenuItem directXmlEditorMenu;
-    private Handler handler = new Handler(Looper.getMainLooper());
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private ProjectFileBean projectFile;
     private TextView fileName;
     private String currentJavaFileName;
-    private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            refresh();
-        }
-    });
-    public final ActivityResultLauncher<Intent> changeOpenFile = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == Activity.RESULT_OK) {
-            assert result.getData() != null;
-            projectFile = result.getData().getParcelableExtra("project_file");
-            refresh();
-        }
-    });
     private ViewEditorFragment viewTabAdapter;
-    private final ActivityResultLauncher<Intent> openLibraryManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            refresh();
-            if (viewTabAdapter != null) {
-                viewTabAdapter.n();
-            }
-        }
-    });
-    private final ActivityResultLauncher<Intent> openViewManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            refresh();
-        }
-    });
     private final ActivityResultLauncher<Intent> openCollectionManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (viewTabAdapter != null) {
@@ -188,7 +163,42 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     });
     private rs eventTabAdapter;
     private br componentTabAdapter;
+    private final ActivityResultLauncher<Intent> openImageManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            refresh();
+        }
+    });
+    public final ActivityResultLauncher<Intent> changeOpenFile = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK) {
+            assert result.getData() != null;
+            projectFile = result.getData().getParcelableExtra("project_file");
+            refresh();
+        }
+    });
+    private final ActivityResultLauncher<Intent> openLibraryManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            refresh();
+            if (viewTabAdapter != null) {
+                viewTabAdapter.n();
+            }
+        }
+    });
+    private final ActivityResultLauncher<Intent> openViewManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            refresh();
+        }
+    });
     private BuildTask currentBuildTask;
+    private final BroadcastReceiver buildCancelReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (BuildTask.ACTION_CANCEL_BUILD.equals(intent.getAction())) {
+                if (currentBuildTask != null) {
+                    currentBuildTask.cancelBuild();
+                }
+            }
+        }
+    };
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -592,17 +602,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         super.onDestroy();
         unregisterReceiver(buildCancelReceiver);
     }
-
-    private final BroadcastReceiver buildCancelReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (BuildTask.ACTION_CANCEL_BUILD.equals(intent.getAction())) {
-                if (currentBuildTask != null) {
-                    currentBuildTask.cancelBuild();
-                }
-            }
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1023,19 +1022,19 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
     private static class BuildTask extends BaseTask implements BuildProgressReceiver {
         public static final String ACTION_CANCEL_BUILD = "com.besome.sketch.design.ACTION_CANCEL_BUILD";
+        private static final String CHANNEL_ID = "build_notification_channel";
         private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-        private volatile boolean canceled;
-        private volatile boolean isBuildFinished;
         private final NotificationManager notificationManager;
         private final int notificationId = 1;
+        private volatile boolean canceled;
+        private volatile boolean isBuildFinished;
         private boolean isShowingNotification = false;
-        private static final String CHANNEL_ID = "build_notification_channel";
-        private MenuItem runMenu;
-        private MenuItem cancelMenu;
+        private final MenuItem runMenu;
+        private final MenuItem cancelMenu;
 
-        private LinearLayout progressContainer;
-        private TextView progressText;
-        private LinearProgressIndicator progressBar;
+        private final LinearLayout progressContainer;
+        private final TextView progressText;
+        private final LinearProgressIndicator progressBar;
 
         public BuildTask(DesignActivity activity) {
             super(activity);

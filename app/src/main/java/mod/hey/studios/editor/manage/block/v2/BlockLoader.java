@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
-import pro.sketchware.utility.SketchwareUtil;
 import mod.agus.jcoderz.editor.manage.block.palette.PaletteSelector;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.jbk.util.LogUtil;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 /**
  * An optimized Custom Blocks loader.

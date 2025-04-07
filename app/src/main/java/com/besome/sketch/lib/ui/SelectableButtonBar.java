@@ -8,13 +8,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import pro.sketchware.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import a.a.a.YA;
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public class SelectableButtonBar extends LinearLayout {
 

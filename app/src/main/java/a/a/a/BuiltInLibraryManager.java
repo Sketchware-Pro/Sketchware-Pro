@@ -12,7 +12,7 @@ import mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity;
 /**
  * A class to keep track of a project's built-in libraries.
  */
- 
+
 public class BuiltInLibraryManager {
 
     private final ArrayList<String> libraryNames = new ArrayList<>();

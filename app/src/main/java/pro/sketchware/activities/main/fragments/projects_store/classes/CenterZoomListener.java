@@ -3,8 +3,8 @@ package pro.sketchware.activities.main.fragments.projects_store.classes;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class CenterZoomListener extends RecyclerView.OnScrollListener {
 

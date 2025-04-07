@@ -3,10 +3,9 @@ package mod.hey.studios.util;
 import android.graphics.Color;
 import android.os.Build;
 
-import pro.sketchware.SketchApplication;
-
 import a.a.a.lC;
 import a.a.a.yB;
+import pro.sketchware.SketchApplication;
 
 public class ProjectFile {
     public static final String COLOR_ACCENT = "color_accent";
@@ -46,9 +45,12 @@ public class ProjectFile {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             // Android 12+ (API level 31): Use Material 3 dynamic colors
             return switch (color) {
-                case "color_primary_dark" -> SketchApplication.getContext().getColor(android.R.color.system_accent1_500);
-                case "color_control_highlight" -> SketchApplication.getContext().getColor(android.R.color.system_accent1_100);
-                default -> SketchApplication.getContext().getColor(android.R.color.system_accent1_500);
+                case "color_primary_dark" ->
+                        SketchApplication.getContext().getColor(android.R.color.system_accent1_500);
+                case "color_control_highlight" ->
+                        SketchApplication.getContext().getColor(android.R.color.system_accent1_100);
+                default ->
+                        SketchApplication.getContext().getColor(android.R.color.system_accent1_500);
             };
         } else {
             // For Android versions below 12: use static fallback colors

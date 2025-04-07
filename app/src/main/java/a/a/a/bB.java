@@ -7,9 +7,8 @@ import android.widget.Toast;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.content.ContextCompat;
 
-import pro.sketchware.R;
-
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 import pro.sketchware.databinding.CustomToastBinding;
 import pro.sketchware.utility.ThemeUtils;
 

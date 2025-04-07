@@ -3,23 +3,21 @@ package pro.sketchware.menu;
 import android.net.Uri;
 import android.util.Pair;
 
-import a.a.a.Ss;
-import a.a.a.eC;
-import a.a.a.jC;
-import a.a.a.uq;
-import a.a.a.wq;
-
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.editor.LogicEditorActivity;
-
-import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
-import mod.hey.studios.util.Helper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import a.a.a.Ss;
+import a.a.a.eC;
+import a.a.a.jC;
+import a.a.a.uq;
+import a.a.a.wq;
+import mod.agus.jcoderz.editor.manage.block.makeblock.BlockMenu;
+import mod.hey.studios.util.Helper;
 import pro.sketchware.utility.CustomVariableUtil;
 import pro.sketchware.utility.FileUtil;
 
@@ -33,6 +31,29 @@ public class DefaultExtraMenuBean {
         this.logicEditor = logicEditor;
         sc_id = logicEditor.B;
         projectDataManager = jC.a(sc_id);
+    }
+
+    public static String getName(String menuName) {
+        return switch (menuName) {
+            case "image" -> "Custom Image";
+            case "til_box_mode" -> "Box Mode";
+            case "fabsize" -> "Fab Size";
+            case "fabvisible" -> "Fab Visible";
+            case "menuaction" -> "Menu Action";
+            case "porterduff" -> "Porterduff Mode";
+            case "transcriptmode" -> "Transcript Mode";
+            case "listscrollparam", "recyclerscrollparam", "pagerscrollparam" -> "Scroll Param";
+            case "gridstretchmode" -> "Stretch Mode";
+            case "gravity_v" -> "Gravity Vertical";
+            case "gravity_h" -> "Gravity Horizontal";
+            case "gravity_t" -> "Gravity Toast";
+            case "patternviewmode" -> "Pattern Mode";
+            case "styleprogress" -> "Progress Style";
+            case "cv_theme" -> "Theme";
+            case "cv_language" -> "Language";
+            case "import" -> "Import";
+            default -> menuName;
+        };
     }
 
     public Pair<String, ArrayList<String>> getMenu(Ss menu) {
@@ -182,29 +203,6 @@ public class DefaultExtraMenuBean {
             //end
         }
         return new Pair<>(title, menus);
-    }
-
-    public static String getName(String menuName) {
-        return switch (menuName) {
-            case "image" -> "Custom Image";
-            case "til_box_mode" -> "Box Mode";
-            case "fabsize" -> "Fab Size";
-            case "fabvisible" -> "Fab Visible";
-            case "menuaction" -> "Menu Action";
-            case "porterduff" -> "Porterduff Mode";
-            case "transcriptmode" -> "Transcript Mode";
-            case "listscrollparam", "recyclerscrollparam", "pagerscrollparam" -> "Scroll Param";
-            case "gridstretchmode" -> "Stretch Mode";
-            case "gravity_v" -> "Gravity Vertical";
-            case "gravity_h" -> "Gravity Horizontal";
-            case "gravity_t" -> "Gravity Toast";
-            case "patternviewmode" -> "Pattern Mode";
-            case "styleprogress" -> "Progress Style";
-            case "cv_theme" -> "Theme";
-            case "cv_language" -> "Language";
-            case "import" -> "Import";
-            default -> menuName;
-        };
     }
 
     private String getPath(String sc_id, String name) {

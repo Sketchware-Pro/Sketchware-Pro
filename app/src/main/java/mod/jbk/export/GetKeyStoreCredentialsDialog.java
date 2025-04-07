@@ -20,9 +20,9 @@ import pro.sketchware.utility.SketchwareUtil;
 public class GetKeyStoreCredentialsDialog {
 
     private final MaterialAlertDialogBuilder dialog;
+    private final DialogKeystoreCredentialsBinding binding;
     private CredentialsReceiver receiver;
     private SigningMode mode;
-    private final DialogKeystoreCredentialsBinding binding;
 
     public GetKeyStoreCredentialsDialog(Activity activity, int iconResourceId, String title, String noticeText) {
         dialog = new MaterialAlertDialogBuilder(activity);
@@ -123,6 +123,18 @@ public class GetKeyStoreCredentialsDialog {
         this.receiver = receiver;
     }
 
+    private enum SigningMode {
+        OWN_KEY_STORE("Sign using keystore"),
+        TESTKEY("Sign using a test key"),
+        DONT_SIGN("Don't sign");
+
+        private final String label;
+
+        SigningMode(String label) {
+            this.label = label;
+        }
+    }
+
     public interface CredentialsReceiver {
         /**
          * @param credentials The {@link Credentials} object made from user input.
@@ -195,18 +207,6 @@ public class GetKeyStoreCredentialsDialog {
          */
         public String getSigningAlgorithm() {
             return signingAlgorithm;
-        }
-    }
-
-    private enum SigningMode {
-        OWN_KEY_STORE("Sign using keystore"),
-        TESTKEY("Sign using a test key"),
-        DONT_SIGN("Don't sign");
-
-        private final String label;
-
-        SigningMode(String label) {
-            this.label = label;
         }
     }
 }

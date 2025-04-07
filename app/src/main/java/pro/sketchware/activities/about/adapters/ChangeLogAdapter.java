@@ -14,8 +14,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pro.sketchware.databinding.AboutChangelogBinding;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +22,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import pro.sketchware.activities.about.models.AboutResponseModel;
+import pro.sketchware.databinding.AboutChangelogBinding;
 
 public class ChangeLogAdapter extends RecyclerView.Adapter<ChangeLogAdapter.ViewHolder> {
 

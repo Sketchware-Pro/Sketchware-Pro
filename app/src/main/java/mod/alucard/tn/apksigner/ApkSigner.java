@@ -56,7 +56,7 @@ public class ApkSigner {
             try {
                 ApkSignerTool.main(args.toArray(new String[0]));
             } catch (Exception e) {
-                callback.errorCount.incrementAndGet();
+                LogCallback.errorCount.incrementAndGet();
                 logger.write("An error occurred while trying to sign the APK file " + inputPath +
                         " and outputting it to " + outputPath + ": " + e.getMessage() + "\n" +
                         "Stack trace: " + Log.getStackTraceString(e));
@@ -106,7 +106,7 @@ public class ApkSigner {
             try {
                 ApkSignerTool.main(args.toArray(new String[0]));
             } catch (Exception e) {
-                callback.errorCount.incrementAndGet();
+                LogCallback.errorCount.incrementAndGet();
                 logger.write("Failed to sign APK with JKS keystore: " + Log.getStackTraceString(e));
             }
 
@@ -122,6 +122,7 @@ public class ApkSigner {
 
     public interface LogCallback {
         AtomicInteger errorCount = new AtomicInteger(0);
+
         void onNewLineLogged(String line);
     }
 

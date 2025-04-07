@@ -20,10 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageFontImportBinding;
-
 import java.util.ArrayList;
 
 import a.a.a.QB;
@@ -31,6 +27,9 @@ import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageFontImportBinding;
 
 @SuppressLint("NotifyDataSetChanged")
 public class ManageFontImportActivity extends BaseAppCompatActivity implements View.OnClickListener {

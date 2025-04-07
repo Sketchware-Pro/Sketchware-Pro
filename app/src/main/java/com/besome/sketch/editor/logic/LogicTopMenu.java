@@ -19,17 +19,15 @@ import pro.sketchware.utility.ThemeUtils;
 
 public class LogicTopMenu extends LinearLayout {
 
+    private final Context context;
     public boolean isDeleteActive;
     public boolean isCopyActive;
     public boolean isFavoriteActive;
     public boolean isDetailActive;
-
     private int colorSurfaceContainerHigh;
     private int colorDefault;
     private int colorOnDrag;
-
     private LogicEditorTopMenuBinding binding;
-    private final Context context;
 
     public LogicTopMenu(Context context) {
         super(context);

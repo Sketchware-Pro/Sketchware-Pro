@@ -18,17 +18,12 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.android.annotations.NonNull;
-
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.JsonParseException;
-
 import com.topjohnwu.superuser.Shell;
-
-import dev.chrisbanes.insetter.Insetter;
 
 import java.io.File;
 import java.util.Arrays;
@@ -36,15 +31,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dev.chrisbanes.insetter.Insetter;
+import mod.hey.studios.util.Helper;
+import mod.jbk.util.LogUtil;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
 import pro.sketchware.databinding.PreferenceActivityBinding;
-
-import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
-
-import mod.hey.studios.util.Helper;
-import mod.jbk.util.LogUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ConfigActivity extends BaseAppCompatActivity {
 
@@ -61,26 +55,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
     public static final String SETTING_CRITICAL_UPDATE_REMINDER = "critical-update-reminder";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH = "palletteDir";
     public static final String SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH = "blockDir";
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
-        super.onCreate(savedInstanceState);
-        var binding = PreferenceActivityBinding.inflate(getLayoutInflater());
-        // unfortunately, androidx.preference doesn't make it easy to support edge-to-edge layout properly, so this will have to do
-        Insetter.builder()
-                .padding(WindowInsetsCompat.Type.navigationBars())
-                .applyToView(binding.getRoot());
-        setContentView(binding.getRoot());
-
-        binding.topAppBar.setTitle("App Settings");
-        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-        var fragment = new PreferenceFragment();
-        fragment.setSnackbarView(binding.getRoot());
-        getSupportFragmentManager().beginTransaction()
-                .replace(binding.fragmentContainer.getId(), fragment)
-                .commit();
-    }
 
     public static String getBackupPath() {
         return DataStore.getInstance().getString(SETTING_BACKUP_DIRECTORY, "/.sketchware/backups/");
@@ -185,6 +159,26 @@ public class ConfigActivity extends BaseAppCompatActivity {
                     "/.sketchware/resources/block/My Block/block.json";
             default -> throw new IllegalArgumentException("Unknown key '" + key + "'!");
         };
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
+        super.onCreate(savedInstanceState);
+        var binding = PreferenceActivityBinding.inflate(getLayoutInflater());
+        // unfortunately, androidx.preference doesn't make it easy to support edge-to-edge layout properly, so this will have to do
+        Insetter.builder()
+                .padding(WindowInsetsCompat.Type.navigationBars())
+                .applyToView(binding.getRoot());
+        setContentView(binding.getRoot());
+
+        binding.topAppBar.setTitle("App Settings");
+        binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        var fragment = new PreferenceFragment();
+        fragment.setSnackbarView(binding.getRoot());
+        getSupportFragmentManager().beginTransaction()
+                .replace(binding.fragmentContainer.getId(), fragment)
+                .commit();
     }
 
     public static class PreferenceFragment extends PreferenceFragmentCompat {

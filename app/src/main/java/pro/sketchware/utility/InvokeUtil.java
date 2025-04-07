@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 public class InvokeUtil {
 
     public static final String[] ANDROID_CLASS_PREFIX = {
-        "android.widget.", "android.view.", "android.webkit."
+            "android.widget.", "android.view.", "android.webkit."
     };
 
     public static View createView(Context context, @NonNull String name) {
@@ -56,8 +56,8 @@ public class InvokeUtil {
 
     private static Method getMethod(Class<?> clazz, String name, Class<?>... types) {
         for (Class<?> superClass = clazz;
-                superClass != Object.class;
-                superClass = superClass.getSuperclass()) {
+             superClass != Object.class;
+             superClass = superClass.getSuperclass()) {
             try {
                 return superClass.getDeclaredMethod(name, types);
             } catch (Exception e) {

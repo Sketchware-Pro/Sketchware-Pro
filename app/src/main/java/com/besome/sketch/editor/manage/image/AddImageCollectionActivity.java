@@ -18,9 +18,6 @@ import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -37,6 +34,8 @@ import a.a.a.uq;
 import a.a.a.wq;
 import a.a.a.xB;
 import a.a.a.yy;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class AddImageCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
 
@@ -269,6 +268,17 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
+    private void setImageFromUri(Uri uri) {
+        String filePath;
+        if (uri != null && (filePath = HB.a(this, uri)) != null) {
+            setImageFromFile(filePath);
+        }
+    }
+
+    private String a(ProjectResourceBean projectResourceBean) {
+        return wq.a() + File.separator + "image" + File.separator + "data" + File.separator + projectResourceBean.resFullName;
+    }
+
     private static class SaveAsyncTask extends MA {
         private final WeakReference<AddImageCollectionActivity> activity;
 
@@ -339,16 +349,5 @@ public class AddImageCollectionActivity extends BaseDialogActivity implements Vi
         public void a(String str) {
             activity.get().h();
         }
-    }
-
-    private void setImageFromUri(Uri uri) {
-        String filePath;
-        if (uri != null && (filePath = HB.a(this, uri)) != null) {
-            setImageFromFile(filePath);
-        }
-    }
-
-    private String a(ProjectResourceBean projectResourceBean) {
-        return wq.a() + File.separator + "image" + File.separator + "data" + File.separator + projectResourceBean.resFullName;
     }
 }

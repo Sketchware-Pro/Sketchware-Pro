@@ -31,13 +31,9 @@ public class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.V
     };
 
     private final SvgUtils svgUtils;
+    private final OnIconSelectedListener listener;
     private String selected_icon_type;
     private int selected_color;
-    private final OnIconSelectedListener listener;
-
-    public interface OnIconSelectedListener {
-        void onIconSelected(int position);
-    }
 
     public IconAdapter(Context context, String selected_icon_type, int selected_color, OnIconSelectedListener listener) {
         super(DIFF_CALLBACK);
@@ -55,21 +51,6 @@ public class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.V
         this.selected_color = selected_color;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImportIconListItemBinding itemBinding;
-
-        public ViewHolder(ImportIconListItemBinding binding) {
-            super(binding.getRoot());
-            this.itemBinding = binding;
-            binding.getRoot().setOnClickListener(v -> {
-                int position = getLayoutPosition();
-                if (listener != null) {
-                    listener.onIconSelected(position);
-                }
-            });
-        }
-    }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String filePath = getItem(position).second + File.separator + selected_icon_type + ".svg";
@@ -83,6 +64,25 @@ public class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.V
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ImportIconListItemBinding binding = ImportIconListItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(binding);
+    }
+
+    public interface OnIconSelectedListener {
+        void onIconSelected(int position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private final ImportIconListItemBinding itemBinding;
+
+        public ViewHolder(ImportIconListItemBinding binding) {
+            super(binding.getRoot());
+            this.itemBinding = binding;
+            binding.getRoot().setOnClickListener(v -> {
+                int position = getLayoutPosition();
+                if (listener != null) {
+                    listener.onIconSelected(position);
+                }
+            });
+        }
     }
 }
 

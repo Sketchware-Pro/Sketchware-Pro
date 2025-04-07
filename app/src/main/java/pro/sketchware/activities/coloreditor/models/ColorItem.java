@@ -13,12 +13,12 @@ public class ColorItem {
         return colorName;
     }
 
-    public String getColorValue() {
-        return colorValue;
-    }
-
     public void setColorName(String colorName) {
         this.colorName = colorName;
+    }
+
+    public String getColorValue() {
+        return colorValue;
     }
 
     public void setColorValue(String colorValue) {

@@ -24,12 +24,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.material.card.MaterialCardView;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import pro.sketchware.R;
 import pro.sketchware.databinding.FrManageImageListBinding;
 import pro.sketchware.databinding.ManageImageListItemBinding;
-
-import java.io.File;
-import java.util.ArrayList;
 
 public class fu extends qA implements View.OnClickListener {
 

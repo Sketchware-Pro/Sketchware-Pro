@@ -24,9 +24,6 @@ import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-
 import java.util.ArrayList;
 
 import a.a.a.QB;
@@ -34,6 +31,8 @@ import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class ManageImageImportActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ImageView img;
@@ -221,38 +220,25 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         selectedCollections.addAll(notDuplicateCollections);
     }
 
-    private class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public final LinearLayout layout_item;
-            public final ImageView img_conflict;
-            public final ImageView img;
-            public final TextView tv_name;
+    private void showPreview(int index) {
+        Glide.with(getApplicationContext())
+                .asBitmap()
+                .load(selectedCollections.get(index).resFullName)
+                .centerCrop()
+                .error(R.drawable.ic_remove_grey600_24dp)
+                .into(new BitmapImageViewTarget(img).getView());
+    }
 
-            public ViewHolder(View itemView) {
-                super(itemView);
-                layout_item = itemView.findViewById(R.id.layout_item);
-                img_conflict = itemView.findViewById(R.id.img_conflict);
-                img = itemView.findViewById(R.id.img);
-                tv_name = itemView.findViewById(R.id.tv_name);
-                img.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        selectedItem = getLayoutPosition();
-                        showPreview(selectedItem);
-                        tv_currentnum.setText(String.valueOf(selectedItem + 1));
-                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
-                        if (chk_samename.isChecked()) {
-                            nameValidator.c(null);
-                            nameValidator.a(selectedCollections.size());
-                        } else {
-                            nameValidator.c(selectedCollections.get(selectedItem).resName);
-                            nameValidator.a(1);
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+    private boolean isNameInUseByProjectImage(String name) {
+        for (ProjectResourceBean projectImage : projectImages) {
+            if (projectImage.resName.equals(name)) {
+                return true;
             }
         }
+        return false;
+    }
 
+    private class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         public ItemAdapter() {
         }
 
@@ -288,23 +274,36 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         public int getItemCount() {
             return selectedCollections.size();
         }
-    }
 
-    private void showPreview(int index) {
-        Glide.with(getApplicationContext())
-                .asBitmap()
-                .load(selectedCollections.get(index).resFullName)
-                .centerCrop()
-                .error(R.drawable.ic_remove_grey600_24dp)
-                .into(new BitmapImageViewTarget(img).getView());
-    }
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final LinearLayout layout_item;
+            public final ImageView img_conflict;
+            public final ImageView img;
+            public final TextView tv_name;
 
-    private boolean isNameInUseByProjectImage(String name) {
-        for (ProjectResourceBean projectImage : projectImages) {
-            if (projectImage.resName.equals(name)) {
-                return true;
+            public ViewHolder(View itemView) {
+                super(itemView);
+                layout_item = itemView.findViewById(R.id.layout_item);
+                img_conflict = itemView.findViewById(R.id.img_conflict);
+                img = itemView.findViewById(R.id.img);
+                tv_name = itemView.findViewById(R.id.tv_name);
+                img.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        selectedItem = getLayoutPosition();
+                        showPreview(selectedItem);
+                        tv_currentnum.setText(String.valueOf(selectedItem + 1));
+                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
+                        if (chk_samename.isChecked()) {
+                            nameValidator.c(null);
+                            nameValidator.a(selectedCollections.size());
+                        } else {
+                            nameValidator.c(selectedCollections.get(selectedItem).resName);
+                            nameValidator.a(1);
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                });
             }
         }
-        return false;
     }
 }

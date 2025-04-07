@@ -42,7 +42,7 @@ public class TextBean extends nA implements Parcelable {
     public String hint;
     @Expose
     public int hintColor;
-    @Expose 
+    @Expose
     public String resHintColor;
     @Expose
     public int imeOption;
@@ -56,7 +56,7 @@ public class TextBean extends nA implements Parcelable {
     public String text;
     @Expose
     public int textColor;
-   @Expose 
+    @Expose
     public String resTextColor;
     @Expose
     public String textFont;
@@ -124,19 +124,19 @@ public class TextBean extends nA implements Parcelable {
         String str = text;
         if (str != null) {
             String str2 = textBean.text;
-            if (str2 == null || !str.equals(str2)) {
+            if (!str.equals(str2)) {
                 return false;
             }
         } else if (textBean.text != null) {
             return false;
         }
-        if (textSize != textBean.textSize || textColor != textBean.textColor || textType != textBean.textType || resTextColor!= textBean.resTextColor || resHintColor != textBean.resTextColor) { //new
+        if (textSize != textBean.textSize || textColor != textBean.textColor || textType != textBean.textType || resTextColor != textBean.resTextColor || resHintColor != textBean.resTextColor) { //new
             return false;
         }
         String str3 = textFont;
         if (str3 != null) {
             String str4 = textBean.textFont;
-            if (str4 == null || !str3.equals(str4)) {
+            if (!str3.equals(str4)) {
                 return false;
             }
         } else if (textBean.textFont != null) {
@@ -145,7 +145,7 @@ public class TextBean extends nA implements Parcelable {
         String str5 = hint;
         if (str5 != null) {
             String str6 = textBean.hint;
-            if (str6 == null || !str5.equals(str6)) {
+            if (!str5.equals(str6)) {
                 return false;
             }
         } else if (textBean.hint != null) {

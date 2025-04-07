@@ -1,10 +1,13 @@
 package pro.sketchware.lib.validator;
 
-import a.a.a.MB;
 import android.content.Context;
 import android.text.TextUtils;
-import java.util.regex.Pattern;
+
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.regex.Pattern;
+
+import a.a.a.MB;
 
 public class VariableTypeValidator extends MB {
     public static final Pattern PATTERN_TYPE = Pattern.compile(

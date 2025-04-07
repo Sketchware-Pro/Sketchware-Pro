@@ -9,15 +9,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import a.a.a.wq;
-
 import com.besome.sketch.beans.ViewBean;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-
-import pro.sketchware.utility.InvokeUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,8 +21,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -34,14 +30,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import a.a.a.wq;
+import pro.sketchware.utility.InvokeUtil;
+
 public class ViewBeanParser {
 
+    private static final int[] viewsCount = new int[49];
     private final XmlPullParser parser;
     private boolean skipRoot;
-
     private Pair<String, Map<String, String>> rootAttributes;
-
-    private static final int[] viewsCount = new int[49];
 
     public ViewBeanParser(String xml) throws XmlPullParserException {
         this(new StringReader(xml));
@@ -56,6 +53,92 @@ public class ViewBeanParser {
         parser = factory.newPullParser();
         parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
         parser.setInput(reader);
+    }
+
+    public static String generateUniqueId(Set<String> ids, int type, String className) {
+        String prefix = wq.b(type);
+        var name = ViewBean.getViewTypeName(type);
+        // Skip these types as they're the only ones with a different view type name: VScrollView
+        // (ScrollView) and HScrollView (HorizontalScrollView).
+        //noinspection ConstantValue
+        if (type != ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW
+                || type != ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW) {
+            // If the prefix is "linear" and the name is different from the className,
+            // update the prefix to the lowercase version of className.
+            if (prefix.equals("linear")
+                    && type == ViewBean.VIEW_TYPE_LAYOUT_LINEAR
+                    && !name.equals(className)) {
+                prefix = getSnakeCaseId(className);
+            }
+        }
+        int count = ++viewsCount[type];
+        String id = prefix + count;
+
+        while (ids.contains(id)) {
+            count = ++viewsCount[type];
+            id = prefix + count;
+        }
+
+        return id;
+    }
+
+    public static String getSnakeCaseId(String id) {
+        StringBuilder snakeCaseId = new StringBuilder();
+        for (int i = 0; i < id.length(); i++) {
+            char c = id.charAt(i);
+            if (Character.isUpperCase(c)) {
+                if (i != 0) {
+                    snakeCaseId.append("_");
+                }
+                snakeCaseId.append(Character.toLowerCase(c));
+            } else {
+                snakeCaseId.append(c);
+            }
+        }
+        return snakeCaseId.toString();
+    }
+
+    public static String getNameFromTag(@NonNull String s) {
+        try {
+            if (s.contains(".")) {
+                return s.substring(s.lastIndexOf(".") + 1);
+            }
+        } catch (Exception ignored) {
+        }
+        return s;
+    }
+
+    public static int getViewTypeByClassName(String name) {
+        var className = getNameFromTag(name);
+        // Special case for HorizontalScrollView, as ViewBean refers to it as
+        // HScrollView
+        if (className.equals("HorizontalScrollView")) {
+            className = "HScrollView";
+        }
+
+        int type = ViewBean.getViewTypeByTypeName(className);
+        return getViewTypeByTag(name, type);
+    }
+
+    public static int getViewTypeByTag(String tag, int defaultType) {
+        // Special case for other views that can be considered built-in views by type
+        var type = ViewBeanFactory.getConsideredTypeViewByName(getNameFromTag(tag), defaultType);
+        if (type == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {
+            var view = InvokeUtil.createView(getContext(), tag);
+            if (view != null) {
+                Class<?> clazz = view.getClass();
+                Class<?> viewClazz = View.class.getSuperclass();
+                while (clazz != viewClazz) {
+                    var className = clazz.getSimpleName();
+                    if ("View".equals(className) || "LinearLayout".equals(className)) {
+                        break;
+                    }
+                    type = ViewBean.getViewTypeByTypeName(className);
+                    clazz = clazz.getSuperclass();
+                }
+            }
+        }
+        return type;
     }
 
     public void setSkipRoot(boolean skipRoot) {
@@ -159,91 +242,5 @@ public class ViewBeanParser {
             }
         }
         return beans;
-    }
-
-    public static String generateUniqueId(Set<String> ids, int type, String className) {
-        String prefix = wq.b(type);
-        var name = ViewBean.getViewTypeName(type);
-        // Skip these types as they're the only ones with a different view type name: VScrollView
-        // (ScrollView) and HScrollView (HorizontalScrollView).
-        //noinspection ConstantValue
-        if (type != ViewBean.VIEW_TYPE_LAYOUT_VSCROLLVIEW
-                || type != ViewBean.VIEW_TYPE_LAYOUT_HSCROLLVIEW) {
-            // If the prefix is "linear" and the name is different from the className,
-            // update the prefix to the lowercase version of className.
-            if (prefix.equals("linear")
-                    && type == ViewBean.VIEW_TYPE_LAYOUT_LINEAR
-                    && !name.equals(className)) {
-                prefix = getSnakeCaseId(className);
-            }
-        }
-        int count = ++viewsCount[type];
-        String id = prefix + count;
-
-        while (ids.contains(id)) {
-            count = ++viewsCount[type];
-            id = prefix + count;
-        }
-
-        return id;
-    }
-
-    public static String getSnakeCaseId(String id) {
-        StringBuilder snakeCaseId = new StringBuilder();
-        for (int i = 0; i < id.length(); i++) {
-            char c = id.charAt(i);
-            if (Character.isUpperCase(c)) {
-                if (i != 0) {
-                    snakeCaseId.append("_");
-                }
-                snakeCaseId.append(Character.toLowerCase(c));
-            } else {
-                snakeCaseId.append(c);
-            }
-        }
-        return snakeCaseId.toString();
-    }
-
-    public static String getNameFromTag(@NonNull String s) {
-        try {
-            if (s.contains(".")) {
-                return s.substring(s.lastIndexOf(".") + 1);
-            }
-        } catch (Exception ignored) {
-        }
-        return s;
-    }
-
-    public static int getViewTypeByClassName(String name) {
-        var className = getNameFromTag(name);
-        // Special case for HorizontalScrollView, as ViewBean refers to it as
-        // HScrollView
-        if (className.equals("HorizontalScrollView")) {
-            className = "HScrollView";
-        }
-
-        int type = ViewBean.getViewTypeByTypeName(className);
-        return getViewTypeByTag(name, type);
-    }
-
-    public static int getViewTypeByTag(String tag, int defaultType) {
-        // Special case for other views that can be considered built-in views by type
-        var type = ViewBeanFactory.getConsideredTypeViewByName(getNameFromTag(tag), defaultType);
-        if (type == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {
-            var view = InvokeUtil.createView(getContext(), tag);
-            if (view != null) {
-                Class<?> clazz = view.getClass();
-                Class<?> viewClazz = View.class.getSuperclass();
-                while (clazz != viewClazz) {
-                    var className = clazz.getSimpleName();
-                    if ("View".equals(className) || "LinearLayout".equals(className)) {
-                        break;
-                    }
-                    type = ViewBean.getViewTypeByTypeName(className);
-                    clazz = clazz.getSuperclass();
-                }
-            }
-        }
-        return type;
     }
 }

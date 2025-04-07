@@ -31,7 +31,11 @@ public final class $name {
     public final ${rootView.type} ${rootView.name};
 ${views.joinToString("\n") { "    public final ${it.type} ${it.name};" }}
 
-    private $name(${rootView.type} ${rootView.name}${if (views.isNotEmpty()) views.joinToString(prefix = ", ") { "${it.type} ${it.name}" } else ""}) {
+    private $name(${rootView.type} ${rootView.name}${
+            if (views.isNotEmpty()) views.joinToString(
+                prefix = ", "
+            ) { "${it.type} ${it.name}" } else ""
+        }) {
         this.${rootView.name} = ${rootView.name};
 ${views.joinToString("\n") { "        this.${it.name} = ${it.name};" }}
     }

@@ -9,9 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 
-import pro.sketchware.R;
-
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public class MyProjectButton extends LinearLayout {
     private int id;
@@ -27,6 +26,14 @@ public class MyProjectButton extends LinearLayout {
         initialize(context);
     }
 
+    public static MyProjectButton create(Context context, int id, @DrawableRes int resId, String label) {
+        MyProjectButton button = new MyProjectButton(context);
+        button.id = id;
+        button.icon.setImageResource(resId);
+        button.name.setText(label);
+        return button;
+    }
+
     private void initialize(Context context) {
         setLayoutParams(new LinearLayout.LayoutParams(
                 0,
@@ -40,13 +47,5 @@ public class MyProjectButton extends LinearLayout {
 
     public int getButtonId() {
         return id;
-    }
-
-    public static MyProjectButton create(Context context, int id, @DrawableRes int resId, String label) {
-        MyProjectButton button = new MyProjectButton(context);
-        button.id = id;
-        button.icon.setImageResource(resId);
-        button.name.setText(label);
-        return button;
     }
 }

@@ -1,7 +1,7 @@
 package mod.hilal.saif.activities.android_manifest;
 
-import static pro.sketchware.utility.SketchwareUtil.getDip;
 import static pro.sketchware.utility.GsonUtils.getGson;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -12,22 +12,21 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import pro.sketchware.utility.ThemeUtils;
-import pro.sketchware.R;
-import pro.sketchware.databinding.CustomDialogAttributeBinding;
-import pro.sketchware.databinding.ActivityManageCustomAttributeBinding;
-import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.android_manifest.ActComponentsDialog;
 import mod.remaker.view.CustomAttributeView;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ActivityManageCustomAttributeBinding;
+import pro.sketchware.databinding.CustomDialogAttributeBinding;
+import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.ThemeUtils;
 
 public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
 
@@ -116,7 +115,7 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
                         ActComponentsDialog acd = new ActComponentsDialog(this, src_id, activityName);
                         acd.show();
                         return true;
-                    default: 
+                    default:
                         return false;
                 }
             });

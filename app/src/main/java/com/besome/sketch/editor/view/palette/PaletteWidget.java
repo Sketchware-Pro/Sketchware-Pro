@@ -53,13 +53,13 @@ import pro.sketchware.widgets.IconCustomWidget;
 
 public class PaletteWidget extends LinearLayout {
 
+    public MaterialCardView cardView;
     private LinearLayout layoutContainer;
     private LinearLayout widgetsContainer;
     private View divider;
     private TextView titleLayouts;
     private TextView titleWidgets;
     private CustomScrollView scrollView;
-    public MaterialCardView cardView;
 
     public PaletteWidget(Context context) {
         super(context);

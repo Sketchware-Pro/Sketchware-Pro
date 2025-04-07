@@ -163,7 +163,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.property);
-        
+
         content = findViewById(R.id.content);
         layoutAds = findViewById(R.id.layout_ads);
         scrollView = findViewById(R.id.scroll_view);

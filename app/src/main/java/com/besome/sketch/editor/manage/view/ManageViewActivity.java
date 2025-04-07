@@ -46,16 +46,15 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     private static final int TAB_COUNT = 2;
     private static final int REQUEST_CODE_ADD_ACTIVITY = 264;
     private static final int REQUEST_CODE_ADD_CUSTOM_VIEW = 266;
-
+    private final int[] x = new int[19];
+    // signature mustn't be changed: used in La/a/a/Bw;->a(Landroidx/recyclerview/widget/RecyclerView;II)V, La/a/a/tw;->a(Landroidx/recyclerview/widget/RecyclerView;II)V
+    public FloatingActionButton s;
     private MaterialCardView actionButtonsContainer;
     private boolean selecting = false;
     private String isAppCompatEnabled = "N";
-    // signature mustn't be changed: used in La/a/a/Bw;->a(Landroidx/recyclerview/widget/RecyclerView;II)V, La/a/a/tw;->a(Landroidx/recyclerview/widget/RecyclerView;II)V
-    public FloatingActionButton s;
     private Fw activitiesFragment;
     private xw customViewsFragment;
     private ViewPager viewPager;
-    private final int[] x = new int[19];
     private String sc_id;
 
     public final String a(int var1, String var2) {
@@ -125,7 +124,7 @@ public class ManageViewActivity extends BaseAppCompatActivity implements OnClick
     public void a(boolean var1) {
         selecting = var1;
         invalidateOptionsMenu();
-        
+
         if (selecting) {
             actionButtonsContainer.setVisibility(View.VISIBLE);
             actionButtonsContainer.post(() -> {

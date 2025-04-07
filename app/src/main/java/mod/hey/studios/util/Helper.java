@@ -2,7 +2,6 @@ package mod.hey.studios.util;
 
 import static pro.sketchware.SketchApplication.getContext;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,9 +20,9 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
-import androidx.activity.ComponentActivity;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -34,8 +33,8 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import a.a.a.xB;
-import pro.sketchware.utility.FileUtil;
 import pro.sketchware.lib.base.BaseTextWatcher;
+import pro.sketchware.utility.FileUtil;
 
 public class Helper {
     public static final TypeToken<HashMap<String, Object>> TYPE_MAP = new TypeToken<>() {
@@ -133,10 +132,6 @@ public class Helper {
         }
     }
 
-    public interface BasicTextChangedListener {
-        void onTextChanged(String str);
-    }
-
     public static void applyRippleToToolbarView(View view) {
         GradientDrawable content = new GradientDrawable();
         content.setCornerRadius(90);
@@ -210,6 +205,10 @@ public class Helper {
                 target.setError(null);
             }
         });
+    }
+
+    public interface BasicTextChangedListener {
+        void onTextChanged(String str);
     }
 
     /**

@@ -5,34 +5,32 @@ import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 
 import android.util.Pair;
 
-import a.a.a.Ox;
-import a.a.a.jC;
-import a.a.a.jq;
-import a.a.a.kq;
-
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.LogicEditorActivity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+
+import a.a.a.Ox;
+import a.a.a.jC;
+import a.a.a.jq;
+import a.a.a.kq;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.blocks.BlocksHandler;
 import mod.pranav.viewbinding.ViewBindingBuilder;
-
 import pro.sketchware.blocks.ExtraBlocks;
 import pro.sketchware.control.logic.LogicClickListener;
 import pro.sketchware.utility.CustomVariableUtil;
 import pro.sketchware.utility.FileResConfig;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 public class ExtraPaletteBlock {
 
@@ -46,8 +44,8 @@ public class ExtraPaletteBlock {
     private final FileResConfig frc;
     private final HashMap<String, Object> mapSave = new HashMap<>();
     private final ProjectFileBean projectFile;
-    public LogicEditorActivity logicEditor;
     private final Boolean isViewBindingEnabled;
+    public LogicEditorActivity logicEditor;
 
     public ExtraPaletteBlock(LogicEditorActivity logicEditorActivity, Boolean isViewBindingEnabled) {
         logicEditor = logicEditorActivity;
@@ -212,7 +210,8 @@ public class ExtraPaletteBlock {
                 String type = switch (variableType) {
                     case "boolean", "Boolean" -> "b";
                     case "String" -> "s";
-                    case "double", "Double", "int", "Integer", "float", "Float", "long", "Long", "short", "Short" -> "d";
+                    case "double", "Double", "int", "Integer", "float", "Float", "long", "Long",
+                         "short", "Short" -> "d";
                     default -> "v";
                 };
                 logicEditor.a(variableName, type, variableType, "getVar").setTag(variable);

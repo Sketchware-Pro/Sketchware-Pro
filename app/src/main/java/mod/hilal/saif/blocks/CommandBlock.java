@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.utility.FileUtil;
 
 /**
  * Sample usage of CommandBlock:

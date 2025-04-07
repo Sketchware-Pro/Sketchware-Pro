@@ -83,36 +83,6 @@ public class SyntaxScheme {
         return Color.parseColor(isDarkMode ? darkColor : lightColor);
     }
 
-    private void initializeJavaPattern() {
-        mJavaPattern[0] = "\\b(out|print|println|valueOf|toString|concat|equals|for|while|switch|getText\\b";
-        mJavaPattern[1] = "|println|printf|print|out|parseInt|round|sqrt|charAt|compareTo|compareToIgnoreCase|concat|contains|contentEquals|equals|length|toLowerCase|trim|toUpperCase|toString|valueOf|substring|startsWith|split|replace|replaceAll|lastIndexOf|size)\\b";
-        mJavaPattern[2] = "\\b(public|private|protected|void|switch|case|class|import|package|extends|Activity|TextView|EditText|LinearLayout|CharSequence|String|int|onCreate|ArrayList|float|if|else|for|static|Intent|Button|SharedPreferences\\b";
-        mJavaPattern[3] = "|abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|interface|long|native|new|package|private|protected|";
-        mJavaPattern[4] = "public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while|true|false|null)\\b";
-        mJavaPattern[5] = "\\b0x[0-9a-f]{6,8}|\\b([0-9]+)\\b";
-        mJavaPattern[6] = "(\\w+)(\\()+";
-        mJavaPattern[7] = "(?:@)\\w+\\b";
-        mJavaPattern[8] = "\"(.*)\"|'(.*)'";
-        mJavaPattern[9] = "/\\*(?:.|[\\n\\r])*?\\*/|//.*";
-        mJavaPattern[10] = "\\b(?:[A-Z])[a-zA-Z0-9]+\\b";
-        mJavaPattern[11] = "(?!\\s)\\W";
-    }
-
-    private void initializeXmlPattern() {
-        mXmlPattern[0] = "\\w+:\\w+";
-        mXmlPattern[1] = "<!--(?:.|[\\n\\r])*?-->|//\\*(?:.|[\\n\\r])*?\\*//|//.*";
-        mXmlPattern[2] = "<([A-Za-z][A-Za-z0-9]*)\\b[^>]*>|</([A-Za-z][A-Za-z0-9]*)\\b[^>]*>|(.+?):(.+?);";
-        mXmlPattern[3] = "[<>/]";
-    }
-
-    public SyntaxScheme getPrimarySyntax() {
-        if (ThemeUtils.isDarkThemeEnabled(SketchApplication.getContext())) {
-            return new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR_DARK));
-        } else {
-            return new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR_LIGHT));
-        }
-    }
-
     public static void setXMLHighlighter(EditText editText) {
 
         int violet = ThemeUtils.getColor(editText, R.attr.colorViolet);
@@ -149,6 +119,36 @@ public class SyntaxScheme {
                 }
             }
         });
+    }
+
+    private void initializeJavaPattern() {
+        mJavaPattern[0] = "\\b(out|print|println|valueOf|toString|concat|equals|for|while|switch|getText\\b";
+        mJavaPattern[1] = "|println|printf|print|out|parseInt|round|sqrt|charAt|compareTo|compareToIgnoreCase|concat|contains|contentEquals|equals|length|toLowerCase|trim|toUpperCase|toString|valueOf|substring|startsWith|split|replace|replaceAll|lastIndexOf|size)\\b";
+        mJavaPattern[2] = "\\b(public|private|protected|void|switch|case|class|import|package|extends|Activity|TextView|EditText|LinearLayout|CharSequence|String|int|onCreate|ArrayList|float|if|else|for|static|Intent|Button|SharedPreferences\\b";
+        mJavaPattern[3] = "|abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|interface|long|native|new|package|private|protected|";
+        mJavaPattern[4] = "public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while|true|false|null)\\b";
+        mJavaPattern[5] = "\\b0x[0-9a-f]{6,8}|\\b([0-9]+)\\b";
+        mJavaPattern[6] = "(\\w+)(\\()+";
+        mJavaPattern[7] = "(?:@)\\w+\\b";
+        mJavaPattern[8] = "\"(.*)\"|'(.*)'";
+        mJavaPattern[9] = "/\\*(?:.|[\\n\\r])*?\\*/|//.*";
+        mJavaPattern[10] = "\\b(?:[A-Z])[a-zA-Z0-9]+\\b";
+        mJavaPattern[11] = "(?!\\s)\\W";
+    }
+
+    private void initializeXmlPattern() {
+        mXmlPattern[0] = "\\w+:\\w+";
+        mXmlPattern[1] = "<!--(?:.|[\\n\\r])*?-->|//\\*(?:.|[\\n\\r])*?\\*//|//.*";
+        mXmlPattern[2] = "<([A-Za-z][A-Za-z0-9]*)\\b[^>]*>|</([A-Za-z][A-Za-z0-9]*)\\b[^>]*>|(.+?):(.+?);";
+        mXmlPattern[3] = "[<>/]";
+    }
+
+    public SyntaxScheme getPrimarySyntax() {
+        if (ThemeUtils.isDarkThemeEnabled(SketchApplication.getContext())) {
+            return new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR_DARK));
+        } else {
+            return new SyntaxScheme(Pattern.compile(mJavaPattern[6]), Color.parseColor(PRIMARY_COLOR_LIGHT));
+        }
     }
 
 }

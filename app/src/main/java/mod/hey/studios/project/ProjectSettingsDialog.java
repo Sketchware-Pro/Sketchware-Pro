@@ -6,12 +6,9 @@ import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
 import android.app.Activity;
 import android.view.View;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import mod.hey.studios.util.Helper;
-
-import pro.sketchware.R;
 import pro.sketchware.databinding.DialogProjectSettingsBinding;
 
 public class ProjectSettingsDialog {

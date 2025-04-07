@@ -9,17 +9,17 @@ import static pro.sketchware.utility.FileUtil.writeFile;
 
 import com.google.gson.Gson;
 
-import mod.hey.studios.util.Helper;
-
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 
+import mod.hey.studios.util.Helper;
+
 public class LocalLibrariesUtil {
-    private static String localLibsPath = getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
+    private static final String localLibsPath = getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
 
     public static List<LocalLibrary> getAllLocalLibraries() {
         ArrayList<File> localLibraryFiles = new ArrayList<>();

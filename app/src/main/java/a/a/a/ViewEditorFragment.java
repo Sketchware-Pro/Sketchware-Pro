@@ -24,15 +24,16 @@ import com.besome.sketch.editor.view.DraggingListener;
 import com.besome.sketch.editor.view.ViewEditor;
 import com.besome.sketch.editor.view.ViewProperty;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
-import pro.sketchware.R;
-import pro.sketchware.widgets.WidgetsCreatorManager;
 
 import java.util.ArrayList;
 
+import pro.sketchware.R;
+import pro.sketchware.widgets.WidgetsCreatorManager;
+
 public class ViewEditorFragment extends qA {
 
-    private ProjectFileBean projectFileBean;
     public ViewEditor viewEditor;
+    private ProjectFileBean projectFileBean;
     private boolean isFabEnabled = false;
     private ViewProperty viewProperty;
     private ObjectAnimator n;

@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
-import pro.sketchware.R;
 
 import a.a.a.sy;
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public class ItemYoutubePlayer extends LinearLayout implements sy {
 

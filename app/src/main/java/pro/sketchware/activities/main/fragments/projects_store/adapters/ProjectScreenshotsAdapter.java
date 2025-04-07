@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pro.sketchware.databinding.ViewStoreProjectScreenshotBinding;
-
 import java.util.List;
+
+import pro.sketchware.databinding.ViewStoreProjectScreenshotBinding;
 
 public class ProjectScreenshotsAdapter extends RecyclerView.Adapter<ProjectScreenshotsAdapter.ViewHolder> {
 

@@ -1,12 +1,11 @@
 package mod.agus.jcoderz.editor.event;
 
-import pro.sketchware.R;
-
 import java.util.ArrayList;
 
 import a.a.a.Gx;
 import a.a.a.Lx;
 import mod.hilal.saif.events.EventsHandler;
+import pro.sketchware.R;
 
 public class ManageEvent {
 
