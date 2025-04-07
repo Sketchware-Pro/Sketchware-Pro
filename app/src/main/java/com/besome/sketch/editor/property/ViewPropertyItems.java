@@ -35,7 +35,6 @@ import a.a.a.cC;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.oq;
-import a.a.a.tx;
 import a.a.a.xB;
 import mod.hey.studios.project.ProjectSettings;
 import mod.pranav.viewbinding.ViewBindingBuilder;
@@ -346,9 +345,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
     }
 
     private void b(String key, String value, boolean z) {
-        tx drawableItem = (tx) f.get(key);
+        PropertyResourceItem drawableItem = (PropertyResourceItem) f.get(key);
         if (drawableItem == null) {
-            drawableItem = new tx(getContext(), !b, sc_id, z);
+            drawableItem = new PropertyResourceItem(getContext(), !b, sc_id, z);
             drawableItem.setOrientationItem(getOrientation());
             drawableItem.setKey(key);
             drawableItem.setValue(value);
@@ -808,7 +807,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                 } else if (gravityItem.getKey().equals("property_layout_gravity")) {
                     bean.layout.layoutGravity = gravityItem.getValue();
                 }
-            } else if (view instanceof tx image_item) {
+            } else if (view instanceof PropertyResourceItem image_item) {
                 if (image_item.getKey().equals("property_image")) {
                     bean.image.resName = image_item.getValue();
                 } else if (image_item.getKey().equals("property_background_resource")) {

@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.editor.property;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -25,13 +25,19 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.File;
 import java.util.ArrayList;
 
+import a.a.a.Kw;
+import a.a.a.jC;
+import a.a.a.kC;
+import a.a.a.mB;
+import a.a.a.wB;
+import a.a.a.xB;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.SvgUtils;
 
-public class tx extends RelativeLayout implements View.OnClickListener {
+public class PropertyResourceItem extends RelativeLayout implements View.OnClickListener {
     private final SvgUtils svgUtils;
     private final FilePathUtil fpu = new FilePathUtil();
     public String a;
@@ -49,7 +55,7 @@ public class tx extends RelativeLayout implements View.OnClickListener {
     public int m;
     public Kw n;
 
-    public tx(Context context, boolean z, String str, boolean z2) {
+    public PropertyResourceItem(Context context, boolean z, String str, boolean z2) {
         super(context);
         d = false;
         a = str;
