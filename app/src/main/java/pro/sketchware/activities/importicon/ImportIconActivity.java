@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
@@ -43,7 +44,6 @@ import java.util.stream.Stream;
 import a.a.a.KB;
 import a.a.a.MA;
 import a.a.a.WB;
-import a.a.a.Zx;
 import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.uq;
@@ -95,7 +95,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private boolean isLoading = false;
     private boolean isLastPage = false;
 
-    private Zx colorpicker;
+    private ColorPickerDialog colorpicker;
 
     private int getGridLayoutColumnCount() {
         return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 80;
@@ -124,7 +124,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         binding = ImportIconBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        colorpicker = new Zx(this, 0xFF9E9E9E, false, false);
+        colorpicker = new ColorPickerDialog(this, 0xFF9E9E9E, false, false);
         svgUtils = new SvgUtils(this);
         Toolbar toolbar = binding.toolbar.toolbar;
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
@@ -290,7 +290,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             dialogBinding.selectColour.setTextColor(Color.WHITE);
         }
         dialogBinding.selectColour.setOnClickListener(view -> {
-            colorpicker.a(new Zx.b() {
+            colorpicker.a(new ColorPickerDialog.b() {
                 @Override
                 public void a(int var1) {
                     selected_color = var1;

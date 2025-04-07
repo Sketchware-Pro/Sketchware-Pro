@@ -22,6 +22,7 @@ import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
@@ -33,7 +34,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import a.a.a.GB;
 import a.a.a.MA;
 import a.a.a.VB;
-import a.a.a.Zx;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.nB;
@@ -366,8 +366,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     }
 
     private void pickColor(View anchorView, int colorIndex) {
-        Zx zx = new Zx(this, projectThemeColors[colorIndex], false, false);
-        zx.a((new Zx.b() {
+        ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, projectThemeColors[colorIndex], false, false);
+        colorPickerDialog.a((new ColorPickerDialog.b() {
             @Override
             public void a(int var1) {
                 projectThemeColors[colorIndex] = var1;
@@ -381,7 +381,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             }
         }
         ));
-        zx.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
+        colorPickerDialog.showAtLocation(anchorView, Gravity.CENTER, 0, 0);
     }
 
     private void showResetIconConfirmation() {

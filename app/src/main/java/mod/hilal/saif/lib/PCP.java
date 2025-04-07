@@ -2,9 +2,9 @@ package mod.hilal.saif.lib;
 
 import android.widget.TextView;
 
-import a.a.a.Zx;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 
-public class PCP implements Zx.b {
+public class PCP implements ColorPickerDialog.b {
 
     private final TextView toSetText;
 

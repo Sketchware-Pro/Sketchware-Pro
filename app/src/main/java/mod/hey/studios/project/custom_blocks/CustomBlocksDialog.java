@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.BlockBean;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -22,7 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 
 import a.a.a.Rs;
-import a.a.a.Zx;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
@@ -157,8 +157,8 @@ public class CustomBlocksDialog {
         DialogPaletteBinding binding = DialogPaletteBinding.inflate(((Activity) context).getLayoutInflater());
 
         binding.openColorPalette.setOnClickListener(v -> {
-            Zx colorPicker = new Zx((Activity) context, 0, true, false);
-            colorPicker.a(new Zx.b() {
+            ColorPickerDialog colorPicker = new ColorPickerDialog((Activity) context, 0, true, false);
+            colorPicker.a(new ColorPickerDialog.b() {
                 @Override
                 public void a(int colorInt) {
                     binding.colorEditText.setText(getHexColor(colorInt));

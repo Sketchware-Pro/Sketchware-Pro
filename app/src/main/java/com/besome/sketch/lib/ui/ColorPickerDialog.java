@@ -1,4 +1,4 @@
-package a.a.a;
+package com.besome.sketch.lib.ui;
 
 import static pro.sketchware.activities.coloreditor.ColorEditorActivity.getColorValue;
 
@@ -30,13 +30,18 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import a.a.a.DB;
+import a.a.a.GB;
+import a.a.a.bB;
+import a.a.a.sq;
+import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ColorPickerBinding;
 import pro.sketchware.lib.validator.ColorInputValidator;
 import pro.sketchware.utility.FileUtil;
 
-public class Zx extends PopupWindow {
+public class ColorPickerDialog extends PopupWindow {
 
     private static String sc_id;
     private final ArrayList<ColorBean> colorList = new ArrayList<>();
@@ -52,13 +57,13 @@ public class Zx extends PopupWindow {
     private Activity activity;
 
 
-    public Zx(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
+    public ColorPickerDialog(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         super(activity);
         binding = ColorPickerBinding.inflate(activity.getLayoutInflater());
         initialize(activity, var3, isTransparentColor, isNoneColor);
     }
 
-    public Zx(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor, String scId) {
+    public ColorPickerDialog(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor, String scId) {
         super(activity);
         binding = ColorPickerBinding.inflate(activity.getLayoutInflater());
         sc_id = scId;

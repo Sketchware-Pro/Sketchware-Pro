@@ -25,6 +25,7 @@ import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
@@ -38,7 +39,6 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import a.a.a.HB;
-import a.a.a.Zx;
 import a.a.a.iB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
@@ -400,9 +400,9 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
     }
 
     private void showColorPicker(View v, int r, int oldClr) {
-        Zx colorPicker = new Zx(this, oldClr, true, false);
+        ColorPickerDialog colorPicker = new ColorPickerDialog(this, oldClr, true, false);
 
-        colorPicker.a(new Zx.b() {
+        colorPicker.a(new ColorPickerDialog.b() {
             @Override
             public void a(int colorInt) {
                 switch (r) {

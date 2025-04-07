@@ -20,6 +20,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.JsonParseException;
@@ -34,7 +35,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import a.a.a.Rs;
-import a.a.a.Zx;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.lib.PCP;
 import pro.sketchware.R;
@@ -161,9 +161,9 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         });
 
         binding.openColorPalette.setOnClickListener(v -> {
-            Zx zx = new Zx(this, 0, false, false);
-            zx.a(new PCP(binding.colour));
-            zx.showAtLocation(v, Gravity.CENTER, 0, 0);
+            ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, 0, false, false);
+            colorPickerDialog.a(new PCP(binding.colour));
+            colorPickerDialog.showAtLocation(v, Gravity.CENTER, 0, 0);
         });
 
         binding.colour.addTextChangedListener(new BaseTextWatcher() {

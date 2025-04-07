@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
@@ -45,7 +46,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import a.a.a.Zx;
 import a.a.a.xB;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.util.Helper;
@@ -446,8 +446,8 @@ public class BlocksManager extends BaseAppCompatActivity {
         }
 
         dialogBinding.openColorPalette.setOnClickListener(v1 -> {
-            final Zx zx = new Zx(this, 0xFFFFFFFF, false, false);
-            zx.a(new Zx.b() {
+            final ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, 0xFFFFFFFF, false, false);
+            colorPickerDialog.a(new ColorPickerDialog.b() {
                 @Override
                 public void a(int colorInt) {
                     dialogBinding.colorEditText.setText(String.format("%06X", colorInt & 0x00FFFFFF));
@@ -458,7 +458,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
                 }
             });
-            zx.showAtLocation(dialogBinding.openColorPalette, Gravity.CENTER, 0, 0);
+            colorPickerDialog.showAtLocation(dialogBinding.openColorPalette, Gravity.CENTER, 0, 0);
         });
 
         dialog.setView(dialogBinding.getRoot());

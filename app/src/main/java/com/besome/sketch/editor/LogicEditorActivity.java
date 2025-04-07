@@ -70,6 +70,7 @@ import com.besome.sketch.editor.manage.ShowBlockCollectionActivity;
 import com.besome.sketch.editor.view.ViewDummy;
 import com.besome.sketch.editor.view.ViewLogicEditor;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -101,7 +102,6 @@ import a.a.a.Ts;
 import a.a.a.Us;
 import a.a.a.Vs;
 import a.a.a.ZB;
-import a.a.a.Zx;
 import a.a.a.bC;
 import a.a.a.eC;
 import a.a.a.jC;
@@ -1443,8 +1443,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void b(Ss ss) {
-        Zx zx = new Zx(this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false, B);
-        zx.a(new Zx.b() {
+        ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false, B);
+        colorPickerDialog.a(new ColorPickerDialog.b() {
             @Override
             public void a(int var1) {
                 if (var1 == 0) {
@@ -1459,7 +1459,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 LogicEditorActivity.this.a(ss, "getResources().getColor(R.color." + var1 + ")");
             }
         });
-        zx.showAtLocation(ss, Gravity.CENTER, 0, 0);
+        colorPickerDialog.showAtLocation(ss, Gravity.CENTER, 0, 0);
     }
 
     public void b(String str, String str2) {
@@ -2708,7 +2708,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             this.images = images;
             this.selectedImage = selectedImage;
             this.listener = listener;
-            this.filteredImages = new ArrayList<>(images);
+            filteredImages = new ArrayList<>(images);
         }
 
         @NonNull

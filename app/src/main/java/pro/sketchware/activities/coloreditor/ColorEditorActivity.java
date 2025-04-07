@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -31,8 +32,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import pro.sketchware.lib.validator.ColorInputValidator;
-import a.a.a.Zx;
 import a.a.a.xB;
 import mod.hey.studios.code.SrcCodeEditor;
 import pro.sketchware.R;
@@ -40,6 +39,7 @@ import pro.sketchware.activities.coloreditor.adapters.ColorsAdapter;
 import pro.sketchware.activities.coloreditor.models.ColorItem;
 import pro.sketchware.databinding.ColorEditorActivityBinding;
 import pro.sketchware.databinding.ColorEditorAddBinding;
+import pro.sketchware.lib.validator.ColorInputValidator;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -55,7 +55,7 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
     private ColorEditorActivityBinding binding;
     private ColorsAdapter adapter;
     private Activity activity;
-    private Zx colorpicker;
+    private ColorPickerDialog colorpicker;
     private String title;
     private String xmlPath;
 
@@ -169,7 +169,7 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
         contentPath = getIntent().getStringExtra("content");
         title = getIntent().getStringExtra("title");
         xmlPath = getIntent().getStringExtra("xml");
-        colorpicker = new Zx(this, 0xFFFFFFFF, false, false);
+        colorpicker = new ColorPickerDialog(this, 0xFFFFFFFF, false, false);
 
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -384,7 +384,7 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
         });
 
         dialogBinding.colorPreviewCard.setOnClickListener(v -> {
-            colorpicker.a(new Zx.b() {
+            colorpicker.a(new ColorPickerDialog.b() {
                 @Override
                 public void a(int colorInt) {
                     String selectedColorHex = "#" + String.format("%06X", colorInt & 0x00FFFFFF);
