@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ColorPickerBinding;
+import pro.sketchware.lib.validator.ColorInputValidator;
 import pro.sketchware.utility.FileUtil;
 
 public class Zx extends PopupWindow {
@@ -43,7 +44,7 @@ public class Zx extends PopupWindow {
     private final ArrayList<HashMap<String, Object>> color_res_list = new ArrayList<>();
     private final ColorPickerBinding binding;
     private b colorPickerCallback;
-    private XB colorValidator;
+    private ColorInputValidator colorValidator;
     private int k;
     private int l;
     private int m = -1;
@@ -124,7 +125,7 @@ public class Zx extends PopupWindow {
 
         binding.tiCustomColor.setHint(xB.b().a(activity, R.string.picker_color_hint_enter_hex_color_code));
 
-        colorValidator = new XB(activity, binding.tiCustomColor, binding.tvCustomColor);
+        colorValidator = new ColorInputValidator(activity, binding.tiCustomColor, binding.tvCustomColor);
         binding.etCustomColor.setPrivateImeOptions("defaultInputmode=english;");
         binding.tvAddColor.setText(xB.b().a(activity, R.string.common_word_add).toUpperCase());
         binding.tvAddColor.setOnClickListener(view -> {

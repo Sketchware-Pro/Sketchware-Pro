@@ -31,7 +31,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import a.a.a.XB;
+import pro.sketchware.lib.validator.ColorInputValidator;
 import a.a.a.Zx;
 import a.a.a.xB;
 import mod.hey.studios.code.SrcCodeEditor;
@@ -326,7 +326,7 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
     public void showColorEditDialog(ColorItem colorItem, int position) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         ColorEditorAddBinding dialogBinding = ColorEditorAddBinding.inflate(LayoutInflater.from(this));
-        XB colorValidator = new XB(this, dialogBinding.colorValueInputLayout, dialogBinding.colorPreview);
+        ColorInputValidator colorValidator = new ColorInputValidator(this, dialogBinding.colorValueInputLayout, dialogBinding.colorPreview);
 
         if (colorItem != null) {
             dialogBinding.colorKeyInput.setText(colorItem.getColorName());
