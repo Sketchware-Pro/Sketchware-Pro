@@ -16,12 +16,12 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.android.annotations.NonNull;
+import com.besome.sketch.lib.ui.LoadingDialog;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 
 import a.a.a.MA;
-import a.a.a.ZA;
 import a.a.a.lC;
 import a.a.a.xB;
 import dev.chrisbanes.insetter.Insetter;
@@ -35,7 +35,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
     public Context e;
     public Activity parent;
     protected ProgressDialog progressDialog;
-    private ZA lottieDialog;
+    private LoadingDialog lottieDialog;
     private ArrayList<MA> taskList;
 
     public void a(MA var1) {
@@ -75,7 +75,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
             }
         } catch (Exception var2) {
             lottieDialog = null;
-            lottieDialog = new ZA(this);
+            lottieDialog = new LoadingDialog(this);
         }
     }
 
@@ -110,7 +110,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         e = getApplicationContext();
         taskList = new ArrayList<>();
-        lottieDialog = new ZA(this);
+        lottieDialog = new LoadingDialog(this);
         lC.a(getApplicationContext(), false);
         progressDialog = new ProgressDialog(this);
         mAnalytics = FirebaseAnalytics.getInstance(this);

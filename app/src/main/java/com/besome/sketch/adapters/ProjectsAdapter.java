@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.export.ExportProjectActivity;
+import com.besome.sketch.lib.ui.LoadingDialog;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -24,7 +25,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import a.a.a.ZA;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.wq;
@@ -182,7 +182,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
     }
 
     private void deleteProject(HashMap<String, Object> projectMap, int position) {
-        ZA progressDialog = new ZA(activity);
+        LoadingDialog progressDialog = new LoadingDialog(activity);
         progressDialog.show();
 
         String scId = yB.c(projectMap, "sc_id");
