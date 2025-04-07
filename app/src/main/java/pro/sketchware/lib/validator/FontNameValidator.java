@@ -12,20 +12,20 @@ import a.a.a.MB;
 import a.a.a.xB;
 import pro.sketchware.R;
 
-public class WB2 extends MB {
+public class FontNameValidator extends MB {
     public String[] reservedKeywords;
     public ArrayList<String> fontNames;
     public String h;
     public Pattern pattern;
 
-    public WB2(Context context, TextInputLayout textInputLayout, String[] reservedKeywordsArr, ArrayList<String> arrayList) {
+    public FontNameValidator(Context context, TextInputLayout textInputLayout, String[] reservedKeywordsArr, ArrayList<String> arrayList) {
         super(context, textInputLayout);
         this.pattern = Pattern.compile("^[a-z][a-z0-9_]*");
         this.reservedKeywords = reservedKeywordsArr;
         this.fontNames = arrayList;
     }
 
-    public WB2(Context context, TextInputLayout textInputLayout, String[] strArr, ArrayList<String> arrayList, String str) {
+    public FontNameValidator(Context context, TextInputLayout textInputLayout, String[] strArr, ArrayList<String> arrayList, String str) {
         super(context, textInputLayout);
         this.pattern = Pattern.compile("^[a-z][a-z0-9_]*");
         this.reservedKeywords = strArr;

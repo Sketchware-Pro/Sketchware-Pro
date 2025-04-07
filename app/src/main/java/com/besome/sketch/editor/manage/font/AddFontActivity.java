@@ -22,7 +22,7 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageFontAddBinding;
-import pro.sketchware.lib.validator.WB2;
+import pro.sketchware.lib.validator.FontNameValidator;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -34,7 +34,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
     private boolean validFontPicked;
     private boolean fromCollectionPage;
     private String sc_id;
-    private WB2 fontNameValidator;
+    private FontNameValidator fontNameValidator;
 
     private ManageFontAddBinding binding;
 
@@ -59,7 +59,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         r.setOnClickListener(this);
         s.setOnClickListener(this);
 
-        fontNameValidator = new WB2(this, binding.tiInput, uq.b, intent.getStringArrayListExtra("font_names"));
+        fontNameValidator = new FontNameValidator(this, binding.tiInput, uq.b, intent.getStringArrayListExtra("font_names"));
         if (intent.getIntExtra("request_code", -1) == 272) {
             e(Helper.getResString(R.string.design_manager_font_title_edit_font));
             binding.edInput.setText(((ProjectResourceBean) intent.getParcelableExtra("resource_bean")).resName);
@@ -170,7 +170,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
         }
     }
 
-    private boolean isFontValid(WB2 wb) {
+    private boolean isFontValid(FontNameValidator wb) {
         if (wb != null && !wb.b()) {
             return false;
         }
