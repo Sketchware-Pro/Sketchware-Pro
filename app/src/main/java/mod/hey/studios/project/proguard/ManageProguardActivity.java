@@ -3,27 +3,23 @@ package mod.hey.studios.project.proguard;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-
-import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import pro.sketchware.R;
+import pro.sketchware.databinding.ManageProguardBinding;
 
 public class ManageProguardActivity extends BaseAppCompatActivity
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private ProguardHandler pg;
-    private MaterialSwitch sw_pg_enabled;
-    private MaterialSwitch sw_pg_debug;
-    private MaterialSwitch r8_enabled;
+
+    private ManageProguardBinding binding;
 
     @Override
     public void onClick(View v) {
@@ -82,11 +78,11 @@ public class ManageProguardActivity extends BaseAppCompatActivity
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         int id = buttonView.getId();
-        if (id == R.id.sw_pg_enabled) {
+        if (id == binding.swPgEnabled.getId()) {
             pg.setProguardEnabled(isChecked);
-        } else if (id == R.id.r8_enabled) {
+        } else if (id == binding.r8Enabled.getId()) {
             pg.setR8Enabled(isChecked);
-        } else if (id == R.id.sw_pg_debug) {
+        } else if (id == binding.swPgDebug.getId()) {
             pg.setDebugEnabled(isChecked);
         }
     }
@@ -94,43 +90,34 @@ public class ManageProguardActivity extends BaseAppCompatActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.manage_proguard);
+        binding = ManageProguardBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         initialize();
         initializeLogic();
     }
 
     private void initialize() {
-        sw_pg_enabled = findViewById(R.id.sw_pg_enabled);
-
-        LinearLayout ln_pg_rules = findViewById(R.id.ln_pg_rules);
-        sw_pg_debug = findViewById(R.id.sw_pg_debug);
-
-        LinearLayout ln_pg_fm = findViewById(R.id.ln_pg_fm);
-
-        sw_pg_enabled.setOnCheckedChangeListener(this);
-        ln_pg_rules.setOnClickListener(this);
-        r8_enabled = findViewById(R.id.r8_enabled);
-        r8_enabled.setOnCheckedChangeListener(this);
-
-        sw_pg_debug.setOnCheckedChangeListener(this);
-        ln_pg_fm.setOnClickListener(this);
+        binding.swPgEnabled.setOnCheckedChangeListener(this);
+        binding.lnPgRules.setOnClickListener(this);
+        binding.r8Enabled.setOnCheckedChangeListener(this);
+        binding.swPgDebug.setOnCheckedChangeListener(this);
+        binding.lnPgFm.setOnClickListener(this);
     }
 
     private void initializeLogic() {
         _initToolbar();
         pg = new ProguardHandler(getIntent().getStringExtra("sc_id"));
-        sw_pg_enabled.setChecked(pg.isShrinkingEnabled());
-        sw_pg_debug.setChecked(pg.isDebugFilesEnabled());
-        r8_enabled.setChecked(pg.isR8Enabled());
+        binding.swPgEnabled.setChecked(pg.isShrinkingEnabled());
+        binding.swPgDebug.setChecked(pg.isDebugFilesEnabled());
+        binding.r8Enabled.setChecked(pg.isR8Enabled());
     }
 
     private void _initToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(binding.toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Code Shrinking Manager");
-        toolbar.setNavigationOnClickListener(view -> onBackPressed());
+        binding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
     }
 }

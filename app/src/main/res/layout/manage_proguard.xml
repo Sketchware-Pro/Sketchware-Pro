@@ -4,7 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_improved" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -38,8 +42,8 @@
                 android:gravity="center|left"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
-                android:textColor="?attr/colorPrimary"
                 android:text="@string/code_shrinker_use_r8"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="16sp" />
 
 
