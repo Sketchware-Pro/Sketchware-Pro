@@ -595,40 +595,46 @@ public class Lx {
      * </pre>
      */
     public static String a(String typeName, String typeInstanceName, AccessModifier accessModifier, String... parameters) {
-        String fieldDeclaration = accessModifier.getName();
+        return a(typeName, typeInstanceName, accessModifier, false, parameters);
+    }
+    public static String a(String typeName, String typeInstanceName, AccessModifier accessModifier, boolean isViewBindingEnabled ,String... parameters) {
+        String fieldDeclaration = "";
 
         if (typeName.equals("include") || typeName.equals("#")) {
             fieldDeclaration = "";
         } else {
-            String initializer = getInitializer(typeName, parameters);
-            String builtInType = mq.e(typeName);
-            if (initializer.isEmpty()) {
-                if (!(builtInType.isEmpty() || builtInType.equals("RewardedVideoAd") || builtInType.equals("FirebaseCloudMessage") || builtInType.equals("FragmentStatePagerAdapter"))) {
-                    fieldDeclaration += " " + builtInType + " " + typeInstanceName + ";";
-                } else {
-                    switch (typeName) {
-                        case "FirebaseCloudMessage":
-                            fieldDeclaration = "";
-                            break;
-                        case "FragmentStatePagerAdapter":
-                            fieldDeclaration += " " + a(typeInstanceName + "Fragment", false) + " " + typeInstanceName + ";";
-                            break;
-                        case "RewardedVideoAd":
-                            fieldDeclaration += " RewardedAd " + typeInstanceName + ";";
-                            break;
-                        default:
-                            fieldDeclaration += " " + typeName + " " + typeInstanceName + ";";
-                            break;
+            if (!isViewBindingEnabled) {
+                fieldDeclaration = accessModifier.getName();
+                String initializer = getInitializer(typeName, parameters);
+                String builtInType = mq.e(typeName);
+                if (initializer.isEmpty()) {
+                    if (!(builtInType.isEmpty() || builtInType.equals("RewardedVideoAd") || builtInType.equals("FirebaseCloudMessage") || builtInType.equals("FragmentStatePagerAdapter"))) {
+                        fieldDeclaration += " " + builtInType + " " + typeInstanceName + ";";
+                    } else {
+                        switch (typeName) {
+                            case "FirebaseCloudMessage":
+                                fieldDeclaration = "";
+                                break;
+                            case "FragmentStatePagerAdapter":
+                                fieldDeclaration += " " + a(typeInstanceName + "Fragment", false) + " " + typeInstanceName + ";";
+                                break;
+                            case "RewardedVideoAd":
+                                fieldDeclaration += " RewardedAd " + typeInstanceName + ";";
+                                break;
+                            default:
+                                fieldDeclaration += " " + typeName + " " + typeInstanceName + ";";
+                                break;
+                        }
                     }
-                }
-            } else {
-                String typeNameOfField = builtInType;
+                } else {
+                    String typeNameOfField = builtInType;
 
-                if (builtInType.isEmpty() && "Videos".equals(typeName)) {
-                    typeNameOfField = "Intent";
-                }
+                    if (builtInType.isEmpty() && "Videos".equals(typeName)) {
+                        typeNameOfField = "Intent";
+                    }
 
-                fieldDeclaration += " " + typeNameOfField + " " + typeInstanceName + " = " + initializer + ";";
+                    fieldDeclaration += " " + typeNameOfField + " " + typeInstanceName + " = " + initializer + ";";
+                }
             }
 
             switch (typeName) {
@@ -729,7 +735,7 @@ public class Lx {
             }
         }
 
-        return fieldDeclaration;
+        return fieldDeclaration.trim();
     }
 
     /**
@@ -1726,7 +1732,7 @@ public class Lx {
                             + eventLogic + "\r\n"
                             + "};";
             case "onMapMarkerClickListener" ->
-                    "_" + componentName + "_controller.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {\r\n"
+                    "_" + componentName.replace("binding.", "") + "_controller.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {\r\n"
                             + eventLogic + "\r\n"
                             + "});";
             case "authCreateUserComplete" ->
@@ -1745,7 +1751,7 @@ public class Lx {
                             + eventLogic + "\r\n"
                             + "});";
             case "onMapReadyCallback" -> {
-                String googleMapControllerName = "_" + componentName + "_controller";
+                String googleMapControllerName = "_" + componentName.replace("binding.", "") + "_controller";
                 yield googleMapControllerName + " = new GoogleMapController(" + componentName + ", new OnMapReadyCallback() {\r\n"
                         + "@Override\r\n"
                         + "public void onMapReady(GoogleMap _googleMap) {\r\n"

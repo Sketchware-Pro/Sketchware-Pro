@@ -639,8 +639,10 @@ public class Jx {
         if (viewType.isEmpty()) {
             viewType = viewBean.getClassInfo().a();
         }
-        addImports(mq.getImportsByTypeName(viewType, viewBean.convert));
-        return Lx.a(viewType, viewBean.id, Lx.AccessModifier.PRIVATE);
+        if (requireImports(viewBean)) {
+            addImports(mq.getImportsByTypeName(viewType, viewBean.convert));
+        }
+        return Lx.a(viewType, viewBean.id, Lx.AccessModifier.PRIVATE, isViewBindingEnabled);
     }
 
     private String getDeprecatedMethodsCode() {
@@ -1039,15 +1041,9 @@ public class Jx {
             if (!viewBean.convert.equals("include")) {
                 Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
                 if (!toNotAdd.contains("android:id")) {
-                    if (isViewBindingEnabled) {
-                        if (!requireImports(viewBean)) continue;
-                        String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
-                        if (viewType.isEmpty()) {
-                            viewType = viewBean.getClassInfo().a();
-                        }
-                        addImports(mq.getImportsByTypeName(viewType, viewBean.convert));
-                    } else {
-                        views.add(getViewDeclarationAndAddImports(viewBean));
+                    String viewDeclarations = getViewDeclarationAndAddImports(viewBean);
+                    if (!viewDeclarations.isEmpty()) {
+                        views.add(viewDeclarations);
                     }
                 }
             }
@@ -1058,15 +1054,9 @@ public class Jx {
                 if (!viewBean.convert.equals("include")) {
                     Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
                     if (!toNotAdd.contains("android:id")) {
-                        if (isViewBindingEnabled) {
-                            if (!requireImports(viewBean)) continue;
-                            String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
-                            if (viewType.isEmpty()) {
-                                viewType = viewBean.getClassInfo().a();
-                            }
-                            addImports(mq.getImportsByTypeName(viewType, null));
-                        } else {
-                            views.add(getDrawerViewDeclarationAndAddImports(viewBean));
+                        String drawerViewDeclarations = getDrawerViewDeclarationAndAddImports(viewBean);
+                        if (!drawerViewDeclarations.isEmpty()) {
+                            views.add(drawerViewDeclarations);
                         }
                     }
                 }
@@ -1123,6 +1113,9 @@ public class Jx {
     }
 
     private boolean requireImports(ViewBean viewBean) {
+        if (!isViewBindingEnabled) {
+            return true;
+        }
         return switch (viewBean.type) {
             case ViewBean.VIEW_TYPE_WIDGET_LISTVIEW,
                  ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW,

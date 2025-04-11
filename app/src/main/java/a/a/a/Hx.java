@@ -127,7 +127,7 @@ public class Hx {
 
     public void addLifecycleEvent(String eventName, String viewType, String viewId) {
         if (!activityLifecycleEvents.containsKey(eventName)) {
-            activityLifecycleEvents.put(eventName, Lx.getDefaultActivityLifecycleCode(eventName, viewType, isViewBindingEnabled ? ViewBindingBuilder.generateParameterFromId(viewId) : viewId));
+            activityLifecycleEvents.put(eventName, Lx.getDefaultActivityLifecycleCode(eventName, viewType, isViewBindingEnabled ? "binding." + ViewBindingBuilder.generateParameterFromId(viewId) : viewId));
         }
     }
 
