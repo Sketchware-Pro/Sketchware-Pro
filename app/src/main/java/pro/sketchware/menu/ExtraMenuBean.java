@@ -1,8 +1,6 @@
 package pro.sketchware.menu;
 
 import static android.text.TextUtils.isEmpty;
-import static mod.bobur.StringEditorActivity.convertXmlToListMap;
-import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.annotation.SuppressLint;
@@ -42,6 +40,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
 import pro.sketchware.R;
+import pro.sketchware.activities.resources.editors.utils.StringsEditorManager;
 import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.lib.highlighter.SimpleHighlighter;
 import pro.sketchware.utility.CustomVariableUtil;
@@ -608,9 +607,10 @@ public class ExtraMenuBean {
 
                 String filePath = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id.concat("/files/resource/values/strings.xml"));
                 ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
-                convertXmlToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
+                StringsEditorManager stringsEditorManager = new StringsEditorManager();
+                stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
-                if (!isXmlStringsContains(StringsListMap, "app_name")) {
+                if (!stringsEditorManager.isXmlStringsExist(StringsListMap, "app_name")) {
                     menus.add("R.string.app_name");
                 }
                 for (HashMap<String, Object> map : StringsListMap) {
