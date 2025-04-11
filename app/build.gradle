@@ -100,7 +100,7 @@ dependencies {
 
     implementation "androidx.annotation:annotation:1.9.1"
     implementation "com.android.tools:annotations:31.9.1"
-    implementation "com.google.guava:guava:33.3.1-jre"
+    implementation "com.google.guava:guava:33.4.0-jre"
     implementation 'androidx.exifinterface:exifinterface:1.4.0'
     implementation "androidx.preference:preference:1.2.1"
     implementation files('libs/android-svg.jar')
