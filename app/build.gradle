@@ -117,7 +117,7 @@ dependencies {
     implementation 'io.coil-kt:coil:2.0.0'
     implementation 'io.coil-kt:coil-svg:2.0.0'
 
-    implementation "com.android.tools.build:bundletool:1.15.6"
+    implementation "com.android.tools.build:bundletool:1.18.1"
 
     //noinspection GradleDependency copied from above dependency for not just runtime access
     implementation "com.google.protobuf:protobuf-java:3.19.2"
