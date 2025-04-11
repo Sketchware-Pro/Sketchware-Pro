@@ -138,8 +138,6 @@ dependencies {
 
     implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
 
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0'
-
     implementation "org.eclipse.jdt:ecj:3.26.0"
 
     implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
