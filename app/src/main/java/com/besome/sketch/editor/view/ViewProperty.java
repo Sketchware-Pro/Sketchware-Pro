@@ -46,6 +46,7 @@ import pro.sketchware.R;
 
 public class ViewProperty extends LinearLayout implements Kw {
 
+    private Context context;
     private final ArrayList<ViewBean> projectActivityViews = new ArrayList<>();
     private String sc_id;
     private ProjectFileBean projectFile;
@@ -59,9 +60,11 @@ public class ViewProperty extends LinearLayout implements Kw {
     private ViewEvents viewEvent;
     private Iw propertyListener = null;
     private Lw propertyValueChangedListener;
+    private onPropertyDeleted onPropertyDeletedListener;
     private LinearLayout layoutPropertyGroup;
     private int selectedGroupId;
     private ImageView imgSave;
+    private ImageView imgDelete;
     private ObjectAnimator showAllShower;
     private ObjectAnimator showAllHider;
     private boolean showAllVisible = true;
@@ -78,6 +81,14 @@ public class ViewProperty extends LinearLayout implements Kw {
 
     @Override
     public void a(String str, Object obj) {
+    }
+
+    public interface onPropertyDeleted {
+        void deleteProperty(ViewBean viewBean);
+    }
+
+    public void setOnPropertyDeleted(onPropertyDeleted onPropertyDeleted) {
+        onPropertyDeletedListener = onPropertyDeleted;
     }
 
     public void setOnEventClickListener(Qs onEventClickListener) {
@@ -213,7 +224,21 @@ public class ViewProperty extends LinearLayout implements Kw {
         dialog.show();
     }
 
+    private void showDeleteViewBeanWidget() {
+        new MaterialAlertDialogBuilder(context)
+                .setTitle(Helper.getResString(R.string.view_widget_delete_title))
+                .setMessage(Helper.getResString(R.string.view_widget_delete_description))
+                .setPositiveButton(Helper.getResString(R.string.common_word_delete), (d, w) -> {
+                    if (onPropertyDeletedListener != null) {
+                        onPropertyDeletedListener.deleteProperty(projectActivityViews.get(idsAdapter.getSelectedItemPosition()));
+                    }
+                })
+                .setNegativeButton(Helper.getResString(R.string.common_word_cancel), (d, w) -> d.dismiss())
+                .show();
+    }
+
     private void initialize(Context context) {
+        this.context = context;
         wB.a(context, this, R.layout.view_property);
         layoutPropertyGroup = findViewById(R.id.layout_property_group);
         CustomHorizontalScrollView hcvProperty = findViewById(R.id.hcv_property);
@@ -261,6 +286,8 @@ public class ViewProperty extends LinearLayout implements Kw {
                 showSaveToCollectionDialog();
             }
         });
+        imgDelete = findViewById(R.id.img_delete);
+        imgDelete.setOnClickListener(view -> showDeleteViewBeanWidget());
         spnWidget = findViewById(R.id.spn_widget);
         idsAdapter = new ViewIdsAdapter(context, projectActivityViews);
         spnWidget.setAdapter(idsAdapter);
@@ -289,8 +316,10 @@ public class ViewProperty extends LinearLayout implements Kw {
         }
         if ("_fab".equals(viewBean.id)) {
             imgSave.setVisibility(GONE);
+            imgDelete.setVisibility(GONE);
         } else {
             imgSave.setVisibility(VISIBLE);
+            imgDelete.setVisibility(VISIBLE);
         }
         viewPropertyItems.setProjectFileBean(projectFile);
         e();

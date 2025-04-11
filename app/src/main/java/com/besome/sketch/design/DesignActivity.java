@@ -398,7 +398,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END);
         } else if (viewTabAdapter.g()) {
-            viewTabAdapter.a(false);
+            hideViewPropertyView();
         } else {
             if (currentTabNumber > 0) {
                 currentTabNumber--;
@@ -410,6 +410,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 showSaveBeforeQuittingDialog();
             }
         }
+    }
+
+    public void hideViewPropertyView() {
+        viewTabAdapter.a(false);
     }
 
     private void saveChangesAndCloseProject() {
