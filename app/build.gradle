@@ -98,8 +98,6 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:4.16.0"
 
-    implementation "androidx.annotation:annotation:1.9.1"
-    implementation "com.android.tools:annotations:31.9.1"
     implementation 'androidx.exifinterface:exifinterface:1.4.0'
     implementation "androidx.preference:preference:1.2.1"
     implementation files('libs/android-svg.jar')
