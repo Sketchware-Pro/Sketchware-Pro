@@ -243,9 +243,6 @@
             android:name="mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity"
             android:configChanges="orientation|screenSize" />
         <activity
-            android:name="mod.hey.studios.code.SrcCodeEditorLegacy"
-            android:configChanges="orientation|screenSize" />
-        <activity
             android:name="mod.hey.studios.code.SrcCodeEditor"
             android:configChanges="orientation|screenSize" />
         <activity
@@ -269,15 +266,6 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="mod.hilal.saif.activities.tools.ConfigActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="mod.hilal.saif.activities.tools.EventsMaker"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="mod.hilal.saif.activities.tools.EventsMakerCreator"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name="mod.hilal.saif.activities.tools.EventsMakerDetails"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="mod.hilal.saif.activities.tools.AppSettings"
