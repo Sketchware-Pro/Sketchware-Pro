@@ -2,8 +2,9 @@ package mod.alucard.tn.apksigner;
 
 import android.util.Log;
 
-import com.android.annotations.NonNull;
-import com.android.annotations.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.android.apksigner.ApkSignerTool;
 
 import java.io.File;

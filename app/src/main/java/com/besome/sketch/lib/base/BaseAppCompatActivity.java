@@ -10,12 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.android.annotations.NonNull;
 import com.besome.sketch.lib.ui.LoadingDialog;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
