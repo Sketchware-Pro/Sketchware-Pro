@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.NonNull;
+
 import com.besome.sketch.beans.ViewBean;
 
 import a.a.a.sy;
@@ -18,44 +20,32 @@ import a.a.a.wB;
 
 public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
 
-    public ViewBean viewBean;
-
-    public boolean selected;
-
-    public boolean fixed;
-
-    public Paint paint;
-    public float e;
-
-    public boolean scrollEnabled;
-    public int g;
-    public final Rect h;
+    private final Rect rect = new Rect();
+    private ViewBean viewBean;
+    private boolean isSelected;
+    private boolean isFixed = false;
+    private Paint drawPaint;
+    private float lastTouchX = -1.0f;
+    private boolean isScrollEnabled = false;
 
     public ItemHorizontalScrollView(Context context) {
         super(context);
-        this.viewBean = null;
-        this.selected = false;
-        this.fixed = false;
-        this.e = -1.0f;
-        this.scrollEnabled = true;
-        this.g = 0;
-        this.h = new Rect();
-        a(context);
+        initialize(context);
     }
 
-    public final void a(Context context) {
+    private void initialize(Context context) {
         setDrawingCacheEnabled(true);
         setMinimumWidth((int) wB.a(context, 32.0f));
         setMinimumHeight((int) wB.a(context, 32.0f));
-        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.paint.setStrokeWidth(wB.a(getContext(), 2.0f));
+        drawPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        drawPaint.setStrokeWidth(wB.a(getContext(), 2.0f));
     }
 
     @Override
     public void addView(View child, int index) {
         int childCount = getChildCount();
         if (index > childCount) {
-            super.addView(child);
+            addView(child);
             return;
         }
         int i = -1;
@@ -79,125 +69,140 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
 
     @Override
     public ViewBean getBean() {
-        return this.viewBean;
+        return viewBean;
+    }
+
+    @Override
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
     }
 
     @Override
     public boolean getFixed() {
-        return this.fixed;
+        return isFixed;
+    }
+
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
     }
 
     public boolean getSelection() {
-        return this.selected;
+        return isSelected;
     }
 
     @Override
-    public void measureChild(View child, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
-        ViewGroup.LayoutParams layoutParams = child.getLayoutParams();
-        child.measure(View.MeasureSpec.makeMeasureSpec(Math.max(0, View.MeasureSpec.getSize(parentWidthMeasureSpec) - (getPaddingLeft() + getPaddingRight())), MeasureSpec.UNSPECIFIED), FrameLayout.getChildMeasureSpec(parentHeightMeasureSpec, getPaddingTop() + getPaddingBottom(), layoutParams.height));
+    public void setSelection(boolean isSelected) {
+        this.isSelected = isSelected;
+        invalidate();
     }
 
     @Override
-    public void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
-        ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-        child.measure(View.MeasureSpec.makeMeasureSpec(Math.max(0, View.MeasureSpec.getSize(parentWidthMeasureSpec) - ((((getPaddingLeft() + getPaddingRight()) + marginLayoutParams.leftMargin) + marginLayoutParams.rightMargin) + widthUsed)), MeasureSpec.UNSPECIFIED), FrameLayout.getChildMeasureSpec(parentHeightMeasureSpec, getPaddingTop() + getPaddingBottom() + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin + heightUsed, marginLayoutParams.height));
+    public void measureChild(View view, int parentWidthSpec, int parentHeightSpec) {
+        ViewGroup.LayoutParams viewLayoutParams = view.getLayoutParams();
+        view.measure(View.MeasureSpec.makeMeasureSpec(Math.max(0, View.MeasureSpec.getSize(parentWidthSpec) - (getPaddingLeft() + getPaddingRight())), MeasureSpec.UNSPECIFIED), FrameLayout.getChildMeasureSpec(parentHeightSpec, getPaddingTop() + getPaddingBottom(), viewLayoutParams.height));
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
-        if (!this.fixed) {
-            int scrollX = getScrollX();
-            int scrollX2 = getScrollX() + getMeasuredWidth();
-            int scrollY = getScrollY();
-            int scrollY2 = getScrollY() + getMeasuredHeight();
-            if (this.selected) {
-                this.paint.setColor(0x9599d5d0);
-                canvas.drawRect(new Rect(scrollX, scrollY, scrollX2, scrollY2), this.paint);
+    public void measureChildWithMargins(View view, int parentWidthSpec, int horizontalMarginUsed, int parentHeightSpec, int verticalMarginUsed) {
+        ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        view.measure(View.MeasureSpec.makeMeasureSpec(Math.max(0, View.MeasureSpec.getSize(parentWidthSpec) - ((((getPaddingLeft() + getPaddingRight()) + marginLayoutParams.leftMargin) + marginLayoutParams.rightMargin) + horizontalMarginUsed)), MeasureSpec.UNSPECIFIED), FrameLayout.getChildMeasureSpec(parentHeightSpec, getPaddingTop() + getPaddingBottom() + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin + verticalMarginUsed, marginLayoutParams.height));
+    }
+
+    @Override
+    public void onDraw(@NonNull Canvas canvas) {
+        if (!isFixed) {
+            float currentScrollX = getScrollX();
+            float endScrollX = getScrollX() + getMeasuredWidth();
+            float currentScrollY = getScrollY();
+            float endScrollY = getScrollY() + getMeasuredHeight();
+            if (isSelected) {
+                drawPaint.setColor(0x9599d5d0);
+                canvas.drawRect(currentScrollX, currentScrollY, endScrollX, endScrollY, drawPaint);
             }
-            this.paint.setColor(0xaad50000);
-            float scrollX3 = scrollX;
-            float f = scrollY;
-            float f2 = scrollX2;
-            canvas.drawLine(scrollX3, f, f2, f, this.paint);
-            float f3 = scrollY2;
-            canvas.drawLine(scrollX3, f, scrollX3, f3, this.paint);
-            canvas.drawLine(f2, f, f2, f3, this.paint);
-            canvas.drawLine(scrollX3, f3, f2, f3, this.paint);
+            drawPaint.setColor(0xaad50000);
+
+            canvas.drawLine(currentScrollX, currentScrollY, endScrollX, currentScrollY, drawPaint);
+            canvas.drawLine(currentScrollX, currentScrollY, currentScrollX, endScrollY, drawPaint);
+            canvas.drawLine(endScrollX, currentScrollY, endScrollX, endScrollY, drawPaint);
+            canvas.drawLine(currentScrollX, endScrollY, endScrollX, endScrollY, drawPaint);
         }
         super.onDraw(canvas);
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        int min;
-        if (!this.scrollEnabled || getChildCount() <= 0) {
+    public boolean onInterceptTouchEvent(MotionEvent touchEvent) {
+        int scrollOffset;
+        if (!isScrollEnabled || getChildCount() <= 0) {
             return false;
         }
-        View child = getChildAt(0);
-        int action = ev.getAction();
-        float x = ev.getX();
-        if (action == 0) {
-            this.e = x;
-        } else if (action == 1) {
-            this.e = -1.0f;
-        } else if (action == 2) {
-            if (this.e < 0.0f) {
-                this.e = x;
+        View view = getChildAt(0);
+        int eventAction = touchEvent.getAction();
+        float currentTouchX = touchEvent.getX();
+        if (eventAction == 0) {
+            lastTouchX = currentTouchX;
+        } else if (eventAction == 1) {
+            lastTouchX = -1.0f;
+        } else if (eventAction == 2) {
+            if (lastTouchX < 0.0f) {
+                lastTouchX = currentTouchX;
             }
-            int i = (int) (this.e - x);
-            this.e = x;
+            int i = (int) (lastTouchX - currentTouchX);
+            lastTouchX = currentTouchX;
             if (i <= 0) {
                 if (getScrollX() <= 0) {
                     i = 0;
                 }
-                min = Math.max(0 - getScrollX(), i);
+                scrollOffset = Math.max(-getScrollX(), i);
             } else {
-                int right = ((child.getRight() - getScrollX()) - getWidth()) + getPaddingRight();
-                min = right > 0 ? Math.min(right, i) : 0;
+                int paddingRight = ((view.getRight() - getScrollX()) - getWidth()) + getPaddingRight();
+                scrollOffset = paddingRight > 0 ? Math.min(paddingRight, i) : 0;
             }
-            if (min != 0) {
-                scrollBy(min, 0);
+            if (scrollOffset != 0) {
+                scrollBy(scrollOffset, 0);
             }
         }
         return false;
     }
 
     @Override
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int paddingLeft;
-        int paddingTop;
-        int paddingBottom;
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (View.MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.UNSPECIFIED && getChildCount() > 0) {
-            View childAt = getChildAt(0);
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) childAt.getLayoutParams();
+    public void onMeasure(int parentWidthSpec, int parentHeightSpec) {
+        int horizontalPadding;
+        int topPadding;
+        int bottomPadding;
+        super.onMeasure(parentWidthSpec, parentHeightSpec);
+        if (View.MeasureSpec.getMode(parentWidthSpec) != MeasureSpec.UNSPECIFIED && getChildCount() > 0) {
+            View firstChild = getChildAt(0);
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) firstChild.getLayoutParams();
             if (getContext().getApplicationInfo().targetSdkVersion >= 23) {
-                paddingLeft = getPaddingLeft() + getPaddingRight() + layoutParams.leftMargin + layoutParams.rightMargin;
-                paddingTop = getPaddingTop() + getPaddingBottom() + layoutParams.topMargin;
-                paddingBottom = layoutParams.bottomMargin;
+                horizontalPadding = getPaddingLeft() + getPaddingRight() + layoutParams.leftMargin + layoutParams.rightMargin;
+                topPadding = getPaddingTop() + getPaddingBottom() + layoutParams.topMargin;
+                bottomPadding = layoutParams.bottomMargin;
             } else {
-                paddingLeft = getPaddingLeft() + getPaddingRight();
-                paddingTop = getPaddingTop();
-                paddingBottom = getPaddingBottom();
+                horizontalPadding = getPaddingLeft() + getPaddingRight();
+                topPadding = getPaddingTop();
+                bottomPadding = getPaddingBottom();
             }
-            int i = paddingTop + paddingBottom;
-            int measuredWidth = getMeasuredWidth() - paddingLeft;
-            if (childAt.getMeasuredWidth() < measuredWidth) {
-                childAt.measure(View.MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY), FrameLayout.getChildMeasureSpec(heightMeasureSpec, i, layoutParams.height));
+            int finalIndex = topPadding + bottomPadding;
+            int visibleWidth = getMeasuredWidth() - horizontalPadding;
+            if (firstChild.getMeasuredWidth() < visibleWidth) {
+                firstChild.measure(
+                        View.MeasureSpec.makeMeasureSpec(visibleWidth, MeasureSpec.EXACTLY),
+                        FrameLayout.getChildMeasureSpec(parentHeightSpec, finalIndex, layoutParams.height)
+                );
             }
         }
     }
 
     @Override
-    public void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        View findFocus = findFocus();
-        if (findFocus == null || this == findFocus || !a(findFocus, getRight() - getLeft())) {
+    public void onSizeChanged(int newWidth, int newHeight, int oldWidth, int oldHeight) {
+        super.onSizeChanged(newWidth, newHeight, oldWidth, oldHeight);
+        View focusedView = findFocus();
+        if (focusedView == null || this == focusedView || !a(focusedView, getRight() - getLeft())) {
             return;
         }
-        findFocus.getDrawingRect(this.h);
-        offsetDescendantRectToMyCoords(findFocus, this.h);
-        a(a(this.h));
+        focusedView.getDrawingRect(rect);
+        offsetDescendantRectToMyCoords(focusedView, rect);
+        scrollHorizontally(calculateScrollOffsetForTargetRect(rect));
     }
 
     @Override
@@ -212,101 +217,91 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
     }
 
     @Override
-    public void setBean(ViewBean viewBean) {
-        this.viewBean = viewBean;
-    }
-
-    @Override
-    public void setChildScrollEnabled(boolean z) {
+    public void setChildScrollEnabled(boolean isEnabled) {
         for (int i = 0; i < getChildCount(); i++) {
-            KeyEvent.Callback childAt = getChildAt(i);
-            if (childAt instanceof ty) {
-                ((ty) childAt).setChildScrollEnabled(z);
+            KeyEvent.Callback firstChild = getChildAt(i);
+            if (firstChild instanceof ty) {
+                ((ty) firstChild).setChildScrollEnabled(isEnabled);
             }
-            if (childAt instanceof ItemHorizontalScrollView) {
-                ((ItemHorizontalScrollView) childAt).setScrollEnabled(z);
+            if (firstChild instanceof ItemHorizontalScrollView) {
+                ((ItemHorizontalScrollView) firstChild).setScrollEnabled(isEnabled);
             }
-            if (childAt instanceof ItemVerticalScrollView) {
-                ((ItemVerticalScrollView) childAt).setScrollEnabled(z);
+            if (firstChild instanceof ItemVerticalScrollView) {
+                ((ItemVerticalScrollView) firstChild).setScrollEnabled(isEnabled);
             }
         }
     }
 
-    public void setFixed(boolean fixed) {
-        this.fixed = fixed;
-    }
-
     @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding((int) wB.a(getContext(), (float) left), (int) wB.a(getContext(), (float) top), (int) wB.a(getContext(), (float) right), (int) wB.a(getContext(), (float) bottom));
+    public void setPadding(int paddingLeft, int paddingTop, int paddingRight, int paddingBottom) {
+        super.setPadding((int) wB.a(getContext(), (float) paddingLeft), (int) wB.a(getContext(), (float) paddingTop), (int) wB.a(getContext(), (float) paddingRight), (int) wB.a(getContext(), (float) paddingBottom));
     }
 
-    public void setScrollEnabled(boolean enabled) {
-        this.scrollEnabled = enabled;
-    }
-
-    @Override
-    public void setSelection(boolean selected) {
-        this.selected = selected;
-        invalidate();
+    public void setScrollEnabled(boolean isEnabled) {
+        isScrollEnabled = isEnabled;
     }
 
     @Override
     public void a() {
         int i = 0;
-        for (int i2 = 0; i2 < getChildCount(); i2++) {
-            KeyEvent.Callback childAt = getChildAt(i2);
-            if (childAt instanceof sy) {
-                ((sy) childAt).getBean().index = i;
+        for (int j = 0; j < getChildCount(); j++) {
+            KeyEvent.Callback firstChild = getChildAt(j);
+            if (firstChild instanceof sy) {
+                ((sy) firstChild).getBean().index = i;
                 i++;
             }
         }
     }
 
-    public final boolean a(View view, int i) {
-        view.getDrawingRect(this.h);
-        offsetDescendantRectToMyCoords(view, this.h);
-        return this.h.right + i >= getScrollX() && this.h.left - i <= getScrollX() + getWidth();
+    public final boolean a(View view, int index) {
+        view.getDrawingRect(rect);
+        offsetDescendantRectToMyCoords(view, rect);
+        return rect.right + index >= getScrollX() && rect.left - index <= getScrollX() + getWidth();
     }
 
-    public final void a(int i) {
+    private void scrollHorizontally(int i) {
         if (i != 0) {
             scrollBy(i, 0);
         }
     }
 
-    public int a(Rect rect) {
-        int i;
-        int i2;
+    private int calculateScrollOffsetForTargetRect(Rect targetRect) {
         if (getChildCount() == 0) {
             return 0;
         }
+
         int width = getWidth();
-        int scrollX = getScrollX();
-        int i3 = scrollX + width;
-        int horizontalFadingEdgeLength = getHorizontalFadingEdgeLength();
-        if (rect.left > 0) {
-            scrollX += horizontalFadingEdgeLength;
-        }
-        if (rect.right < getChildAt(0).getWidth()) {
-            i3 -= horizontalFadingEdgeLength;
-        }
-        if (rect.right > i3 && rect.left > scrollX) {
-            if (rect.width() > width) {
-                i2 = rect.left - scrollX;
-            } else {
-                i2 = rect.right - i3;
-            }
-            return Math.min(i2 + 0, getChildAt(0).getRight() - i3);
-        }
-        if (rect.left >= scrollX || rect.right >= i3) {
+        int currentScrollX = getScrollX();
+        int rightScrollBound = currentScrollX + width;
+        int fadeLength = getHorizontalFadingEdgeLength();
+
+        View firstChild = getChildAt(0);
+        if (firstChild == null) {
             return 0;
         }
-        if (rect.width() > width) {
-            i = 0 - (i3 - rect.right);
-        } else {
-            i = 0 - (scrollX - rect.left);
+
+        if (targetRect.left > 0) {
+            currentScrollX += fadeLength;
         }
-        return Math.max(i, -getScrollX());
+        if (targetRect.right < firstChild.getWidth()) {
+            rightScrollBound -= fadeLength;
+        }
+        if (targetRect.right > rightScrollBound && targetRect.left > currentScrollX) {
+            int scrollAmount = (targetRect.width() > width)
+                    ? targetRect.left - currentScrollX
+                    : targetRect.right - rightScrollBound;
+
+            return Math.min(scrollAmount, Math.max(0, firstChild.getRight() - rightScrollBound));
+        }
+
+        if (targetRect.left < currentScrollX && targetRect.right < rightScrollBound) {
+            int scrollAmount = (targetRect.width() > width)
+                    ? -(rightScrollBound - targetRect.right)
+                    : -(currentScrollX - targetRect.left);
+
+            return Math.max(scrollAmount, -currentScrollX);
+        }
+
+        return 0;
     }
 }

@@ -1,12 +1,11 @@
 package com.besome.sketch.lib.ui;
 
-import a.a.a.wB;
-
 import android.content.Context;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import a.a.a.wB;
 import pro.sketchware.R;
 
 public class PropertyTwoLineItem extends RelativeLayout {
@@ -30,12 +29,12 @@ public class PropertyTwoLineItem extends RelativeLayout {
         return key;
     }
 
-    public void setDesc(String txt) {
-        tvDesc.setText(txt);
-    }
-
     public void setKey(int key) {
         this.key = key;
+    }
+
+    public void setDesc(String txt) {
+        tvDesc.setText(txt);
     }
 
     public void setName(String var1) {

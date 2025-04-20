@@ -22,11 +22,11 @@ import com.besome.sketch.editor.manage.library.compat.ManageCompatActivity;
 import com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity;
 import com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
-import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.mB;
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
@@ -100,10 +100,12 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private void initializeLibrary(@Nullable ProjectLibraryBean libraryBean) {
         if (libraryBean != null) {
             switch (libraryBean.libType) {
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE -> firebaseLibraryBean = libraryBean;
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_FIREBASE ->
+                        firebaseLibraryBean = libraryBean;
                 case ProjectLibraryBean.PROJECT_LIB_TYPE_COMPAT -> compatLibraryBean = libraryBean;
                 case ProjectLibraryBean.PROJECT_LIB_TYPE_ADMOB -> admobLibraryBean = libraryBean;
-                case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP -> googleMapLibraryBean = libraryBean;
+                case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP ->
+                        googleMapLibraryBean = libraryBean;
             }
         }
 
@@ -113,8 +115,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                 if (libraryBean == null) {
                     ((ExcludeBuiltInLibrariesLibraryItemView) child).setData(null);
                 }
-            } else if (child instanceof LibraryItemView) {
-                LibraryItemView libraryItemView = (LibraryItemView) child;
+            } else if (child instanceof LibraryItemView libraryItemView) {
                 if (libraryBean != null && libraryBean.libType == (Integer) libraryItemView.getTag()) {
                     libraryItemView.setData(libraryBean);
                 }
@@ -359,11 +360,11 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     }
 
     private void showFirebaseNeedCompatDialog() {
-        aB dialog = new aB(this);
-        dialog.a(R.drawable.ic_mtrl_firebase);
-        dialog.b(Helper.getResString(R.string.common_word_warning));
-        dialog.a(Helper.getResString(R.string.design_library_firebase_message_need_compat));
-        dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.ic_mtrl_firebase);
+        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
+        dialog.setMessage(Helper.getResString(R.string.design_library_firebase_message_need_compat));
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
         dialog.show();
     }
 

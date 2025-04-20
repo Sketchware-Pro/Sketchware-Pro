@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.property;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
@@ -10,14 +9,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import pro.sketchware.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import a.a.a.Kw;
-import a.a.a.aB;
 import a.a.a.mB;
 import a.a.a.sq;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 @SuppressLint("ViewConstructor")
 public class PropertyGravityItem extends RelativeLayout implements View.OnClickListener {
@@ -105,9 +104,9 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
     }
 
     private void showDialog() {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(Helper.getText(tvName));
-        dialog.a(icon);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(Helper.getText(tvName));
+        dialog.setIcon(icon);
 
         View view = wB.a(getContext(), R.layout.property_popup_selector_gravity);
         CheckBox chk_left = view.findViewById(R.id.chk_left);
@@ -116,14 +115,14 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
         CheckBox chk_top = view.findViewById(R.id.chk_top);
         CheckBox chk_bottom = view.findViewById(R.id.chk_bottom);
         CheckBox chk_vcenter = view.findViewById(R.id.chk_vcenter);
-        CheckBox chk_center = view.findViewById(R.id.chk_center); 
-        
+        CheckBox chk_center = view.findViewById(R.id.chk_center);
+
         if (gravityValue == Gravity.CENTER) {
             chk_center.setChecked(true);
         } else {
             int verticalGravity = gravityValue & Gravity.FILL_VERTICAL;
             int horizontalGravity = gravityValue & Gravity.FILL_HORIZONTAL;
-            
+
             if (horizontalGravity == Gravity.CENTER_HORIZONTAL) {
                 chk_hcenter.setChecked(true);
             } else {
@@ -145,10 +144,10 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
                 }
             }
         }
-        
-        dialog.a(view);
-        
-        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
+
+        dialog.setView(view);
+
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
             int value = Gravity.NO_GRAVITY;
 
             if (chk_center.isChecked()) {
@@ -177,9 +176,9 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
             if (valueChangeListener != null) {
                 valueChangeListener.a(key, gravityValue);
             }
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 }

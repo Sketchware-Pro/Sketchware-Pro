@@ -19,15 +19,9 @@ import android.widget.TextView;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,9 +35,11 @@ import a.a.a.WB;
 import a.a.a.bB;
 import a.a.a.uq;
 import a.a.a.yy;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
+import mod.hey.studios.util.Helper;
 import mod.jbk.util.LogUtil;
+import pro.sketchware.R;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class AddSoundActivity extends BaseDialogActivity implements View.OnClickListener {
     private static final int REQUEST_CODE_SOUND_PICKER = 218;
@@ -356,12 +352,7 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
                 mediaMetadataRetriever.setDataSource(getContentResolver().openFileDescriptor(soundUri, "r").getFileDescriptor());
             }
             if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
-                    @Override
-                    public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        albumCover.setImageDrawable(glideDrawable);
-                    }
-                });
+                Glide.with(this).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(albumCover);
             } else {
                 Glide.with(this).load(R.drawable.default_album_art_200dp).centerCrop().into(albumCover);
             }

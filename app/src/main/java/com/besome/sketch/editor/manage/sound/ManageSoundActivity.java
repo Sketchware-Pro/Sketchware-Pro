@@ -25,10 +25,10 @@ import pro.sketchware.databinding.ManageSoundBinding;
 public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPager.OnPageChangeListener {
 
     private final int TAB_COUNT = 2;
-    private String sc_id;
     public ManageSoundBinding binding;
     public ow projectSounds;
     public Yv collectionSounds;
+    private String sc_id;
 
     @Override
     public void onPageScrollStateChanged(int state) {
@@ -106,6 +106,35 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         }
     }
 
+    private static class SaveAsyncTask extends MA {
+        private final WeakReference<ManageSoundActivity> activityWeakReference;
+
+        public SaveAsyncTask(ManageSoundActivity activity) {
+            super(activity);
+            activityWeakReference = new WeakReference<>(activity);
+            activity.addTask(this);
+        }
+
+        @Override
+        public void a() {
+            var activity = activityWeakReference.get();
+            activity.h();
+            activity.setResult(RESULT_OK);
+            activity.finish();
+            Qp.g().d();
+        }
+
+        @Override
+        public void b() {
+            activityWeakReference.get().projectSounds.saveSounds();
+        }
+
+        @Override
+        public void a(String str) {
+            activityWeakReference.get().h();
+        }
+    }
+
     private class PagerAdapter extends FragmentPagerAdapter {
         private final String[] titles;
 
@@ -142,35 +171,6 @@ public class ManageSoundActivity extends BaseAppCompatActivity implements ViewPa
         @Override
         public CharSequence getPageTitle(int position) {
             return titles[position];
-        }
-    }
-
-    private static class SaveAsyncTask extends MA {
-        private final WeakReference<ManageSoundActivity> activityWeakReference;
-
-        public SaveAsyncTask(ManageSoundActivity activity) {
-            super(activity);
-            activityWeakReference = new WeakReference<>(activity);
-            activity.addTask(this);
-        }
-
-        @Override
-        public void a() {
-            var activity = activityWeakReference.get();
-            activity.h();
-            activity.setResult(RESULT_OK);
-            activity.finish();
-            Qp.g().d();
-        }
-
-        @Override
-        public void b() {
-            activityWeakReference.get().projectSounds.saveSounds();
-        }
-
-        @Override
-        public void a(String str) {
-            activityWeakReference.get().h();
         }
     }
 }

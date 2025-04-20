@@ -6,8 +6,8 @@ import java.io.PrintStream;
 
 import kellinwood.logging.LogManager;
 import kellinwood.logging.Logger;
-import pro.sketchware.utility.FileUtil;
 import mod.jbk.util.LogUtil;
+import pro.sketchware.utility.FileUtil;
 
 public class SystemLogPrinter {
 

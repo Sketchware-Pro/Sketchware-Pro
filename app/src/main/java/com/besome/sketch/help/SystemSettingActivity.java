@@ -7,10 +7,10 @@ import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import pro.sketchware.R;
-import pro.sketchware.databinding.PreferenceActivityBinding;
 
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.PreferenceActivityBinding;
 
 public class SystemSettingActivity extends BaseAppCompatActivity {
     @Override

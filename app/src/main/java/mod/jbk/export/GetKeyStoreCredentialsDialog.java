@@ -1,39 +1,39 @@
 package mod.jbk.export;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ArrayAdapter;
 
-import pro.sketchware.R;
-import pro.sketchware.databinding.DialogKeystoreCredentialsBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.LinkedList;
 
-import a.a.a.aB;
 import a.a.a.wq;
-import pro.sketchware.utility.SketchwareUtil;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogKeystoreCredentialsBinding;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class GetKeyStoreCredentialsDialog {
 
-    private final aB dialog;
+    private final MaterialAlertDialogBuilder dialog;
+    private final DialogKeystoreCredentialsBinding binding;
     private CredentialsReceiver receiver;
     private SigningMode mode;
-    private final DialogKeystoreCredentialsBinding binding;
 
     public GetKeyStoreCredentialsDialog(Activity activity, int iconResourceId, String title, String noticeText) {
-        dialog = new aB(activity);
-        dialog.a(iconResourceId);
-        dialog.b(title);
-        dialog.a(noticeText);
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.b(Helper.getResString(R.string.common_word_next), this::onNextButtonClick);
+        dialog = new MaterialAlertDialogBuilder(activity);
+        dialog.setIcon(iconResourceId);
+        dialog.setTitle(title);
+        dialog.setMessage(noticeText);
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_next), (dialog1, which) -> onNextButtonClick(dialog1));
 
         binding = DialogKeystoreCredentialsBinding.inflate(LayoutInflater.from(activity));
-        dialog.a(binding.getRoot());
+        dialog.setView(binding.getRoot());
 
         setupSpinner(activity);
     }
@@ -63,11 +63,11 @@ public class GetKeyStoreCredentialsDialog {
         binding.tilSigningAlgorithm.setEnabled(signingWithKeyStore);
     }
 
-    private void onNextButtonClick(View v) {
+    private void onNextButtonClick(DialogInterface dialogInterface) {
         if (mode == SigningMode.OWN_KEY_STORE) {
             if (new File(wq.j()).exists()) {
                 if (validateInputs()) {
-                    dialog.dismiss();
+                    dialogInterface.dismiss();
                     receiver.gotCredentials(new Credentials(
                             Helper.getText(binding.etSigningAlgorithm),
                             Helper.getText(binding.etPassword),
@@ -79,10 +79,10 @@ public class GetKeyStoreCredentialsDialog {
                 SketchwareUtil.toastError("Keystore not found");
             }
         } else if (mode == SigningMode.TESTKEY) {
-            dialog.dismiss();
+            dialogInterface.dismiss();
             receiver.gotCredentials(new Credentials(Helper.getText(binding.etSigningAlgorithm)));
         } else if (mode == SigningMode.DONT_SIGN) {
-            dialog.dismiss();
+            dialogInterface.dismiss();
             receiver.gotCredentials(null);
         }
     }
@@ -121,6 +121,18 @@ public class GetKeyStoreCredentialsDialog {
 
     public void setListener(CredentialsReceiver receiver) {
         this.receiver = receiver;
+    }
+
+    private enum SigningMode {
+        OWN_KEY_STORE("Sign using keystore"),
+        TESTKEY("Sign using a test key"),
+        DONT_SIGN("Don't sign");
+
+        private final String label;
+
+        SigningMode(String label) {
+            this.label = label;
+        }
     }
 
     public interface CredentialsReceiver {
@@ -195,18 +207,6 @@ public class GetKeyStoreCredentialsDialog {
          */
         public String getSigningAlgorithm() {
             return signingAlgorithm;
-        }
-    }
-
-    private enum SigningMode {
-        OWN_KEY_STORE("Sign using keystore"),
-        TESTKEY("Sign using a test key"),
-        DONT_SIGN("Don't sign");
-
-        private final String label;
-
-        SigningMode(String label) {
-            this.label = label;
         }
     }
 }

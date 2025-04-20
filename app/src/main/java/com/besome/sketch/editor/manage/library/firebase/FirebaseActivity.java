@@ -18,10 +18,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import pro.sketchware.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import a.a.a.GB;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.iC;
 import a.a.a.kv;
@@ -32,6 +31,7 @@ import a.a.a.nv;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.editor.manage.library.LibrarySettingsImporter;
+import pro.sketchware.R;
 
 public class FirebaseActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private static final int STEP_1 = 0;
@@ -277,19 +277,19 @@ public class FirebaseActivity extends BaseAppCompatActivity implements View.OnCl
     }
 
     private void showGetChromeDialog() {
-        aB dialog = new aB(this);
-        dialog.a(R.drawable.chrome_96);
-        dialog.b(getTranslatedString(R.string.title_compatible_chrome_browser));
-        dialog.a(getTranslatedString(R.string.message_compatible_chrome_brower));
-        dialog.b(getTranslatedString(R.string.common_word_ok), v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.chrome_96);
+        dialog.setTitle(getTranslatedString(R.string.title_compatible_chrome_browser));
+        dialog.setMessage(getTranslatedString(R.string.message_compatible_chrome_brower));
+        dialog.setPositiveButton(getTranslatedString(R.string.common_word_ok), (v, which) -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
                 startActivity(intent);
-                dialog.dismiss();
+                v.dismiss();
             }
         });
-        dialog.a(getTranslatedString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
         dialog.show();
     }
 }

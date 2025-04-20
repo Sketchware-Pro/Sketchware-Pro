@@ -23,12 +23,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.adapters.ProjectsAdapter;
 import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
@@ -40,24 +40,39 @@ import java.util.stream.IntStream;
 
 import a.a.a.DA;
 import a.a.a.DB;
-import a.a.a.aB;
 import a.a.a.lC;
 import dev.chrisbanes.insetter.Insetter;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
-import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.activities.main.activities.MainActivity;
 import pro.sketchware.databinding.MyprojectsBinding;
 import pro.sketchware.databinding.SortProjectDialogBinding;
 
 public class ProjectsFragment extends DA {
-    private MyprojectsBinding binding;
-    private ProjectsAdapter projectsAdapter;
-    private DB preference;
-    private SearchView projectsSearchView;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final List<HashMap<String, Object>> projectsList = new ArrayList<>();
+    private MyprojectsBinding binding;
+    private ProjectsAdapter projectsAdapter;
+    public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        String sc_id = data.getStringExtra("sc_id");
+                        if (data.getBooleanExtra("is_new", false)) {
+                            toDesignActivity(sc_id);
+                            addProject(sc_id);
+                        } else {
+                            updateProject(sc_id);
+                        }
+                    }
+                }
+            }
+    );
+    private DB preference;
+    private SearchView projectsSearchView;
 
     @Override
     public void b(int requestCode) {
@@ -176,24 +191,6 @@ public class ProjectsFragment extends DA {
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
-    public final ActivityResultLauncher<Intent> openProjectSettings = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    if (data != null) {
-                        String sc_id = data.getStringExtra("sc_id");
-                        if (data.getBooleanExtra("is_new", false)) {
-                            toDesignActivity(sc_id);
-                            addProject(sc_id);
-                        } else {
-                            updateProject(sc_id);
-                        }
-                    }
-                }
-            }
-    );
-
     public void refreshProjectsList() {
         // Check if the fragment is still attached to the activity
         if (!isAdded()) return;
@@ -253,8 +250,8 @@ public class ProjectsFragment extends DA {
     }
 
     private void showProjectSortingDialog() {
-        aB dialog = new aB(requireActivity());
-        dialog.b("Sort options");
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
+        dialog.setTitle("Sort options");
 
         SortProjectDialogBinding dialogBinding = SortProjectDialogBinding.inflate(LayoutInflater.from(requireActivity()));
         RadioButton sortByName = dialogBinding.sortByName;
@@ -274,8 +271,8 @@ public class ProjectsFragment extends DA {
             sortOrderDesc.setChecked(true);
         }
 
-        dialog.a(dialogBinding.getRoot());
-        dialog.b("Save", v -> {
+        dialog.setView(dialogBinding.getRoot());
+        dialog.setPositiveButton("Save", (v, which) -> {
             int sortValue = 0;
             if (sortByName.isChecked()) {
                 sortValue |= ProjectComparator.SORT_BY_NAME;
@@ -290,10 +287,10 @@ public class ProjectsFragment extends DA {
                 sortValue |= ProjectComparator.SORT_ORDER_DESCENDING;
             }
             preference.a("sortBy", sortValue, true);
-            dialog.dismiss();
+            v.dismiss();
             refreshProjectsList();
         });
-        dialog.a("Cancel", Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton("Cancel", null);
         dialog.show();
     }
 

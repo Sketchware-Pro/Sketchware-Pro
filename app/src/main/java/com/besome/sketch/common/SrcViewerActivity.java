@@ -9,21 +9,22 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
-import a.a.a.ProjectBuilder;
-import a.a.a.bB;
-import a.a.a.jC;
-import a.a.a.yq;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.beans.SrcCodeBean;
 import com.besome.sketch.ctrls.CommonSpinnerItem;
-
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
+import a.a.a.ProjectBuilder;
+import a.a.a.bB;
+import a.a.a.jC;
+import a.a.a.yq;
 import mod.hey.studios.util.Helper;
-
 import pro.sketchware.R;
 import pro.sketchware.databinding.SrcViewerBinding;
 import pro.sketchware.utility.EditorUtils;
@@ -33,7 +34,7 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
     private SrcViewerBinding binding;
     private String sc_id;
     private ArrayList<SrcCodeBean> sourceCodeBeans;
-    
+
     private String currentFileName;
     private int editorFontSize = 12;
 
@@ -44,7 +45,13 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
         setContentView(binding.getRoot());
         currentFileName = getIntent().hasExtra("current") ? getIntent().getStringExtra("current") : "";
         sc_id = (savedInstanceState != null) ? savedInstanceState.getString("sc_id") : getIntent().getStringExtra("sc_id");
-        
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), systemBars.top, v.getPaddingRight(), systemBars.bottom);
+            return insets;
+        });
+
         configureEditor();
 
         binding.changeFontSize.setOnClickListener((v -> showChangeFontSizeDialog()));
@@ -68,7 +75,7 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
         });
 
         k(); // show loading
-        
+
         new Thread(() -> {
             var yq = new yq(getBaseContext(), sc_id);
             var fileManager = jC.b(sc_id);
@@ -101,13 +108,13 @@ public class SrcViewerActivity extends BaseAppCompatActivity {
             }
         }).start();
     }
-    
+
     private void configureEditor() {
         binding.editor.setTypefaceText(EditorUtils.getTypeface(this));
         binding.editor.setEditable(false);
         binding.editor.setTextSize(editorFontSize);
         binding.editor.setPinLineNumber(true);
-        
+
         if (currentFileName.endsWith(".xml")) {
             EditorUtils.loadXmlConfig(binding.editor);
         } else {

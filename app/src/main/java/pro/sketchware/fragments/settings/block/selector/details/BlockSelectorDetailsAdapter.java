@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import pro.sketchware.databinding.LayoutBlockSelectorBinding;
 import pro.sketchware.fragments.settings.block.selector.BlockSelectorAdapter.OnClickListener;
-import pro.sketchware.fragments.settings.block.selector.BlockSelectorAdapter.OnLongClickListener;
 import pro.sketchware.utility.UI;
 
 public class BlockSelectorDetailsAdapter extends ListAdapter<String, BlockSelectorDetailsAdapter.BlockSelectorDetailsAdapterViewHolder> {

@@ -6,7 +6,6 @@ import com.besome.sketch.editor.LogicEditorActivity;
 
 import a.a.a.Ss;
 import io.github.rosemoe.sora.widget.CodeEditor;
-import mod.hey.studios.util.Helper;
 
 public class AsdHandlerCodeEditor implements View.OnClickListener {
 
@@ -40,7 +39,7 @@ public class AsdHandlerCodeEditor implements View.OnClickListener {
         } else if (!content.isEmpty() && content.charAt(0) == '@') {
             content = " " + content;
         }
-        logicEditorActivity.a(ss, (Object) content);
+        logicEditorActivity.a(ss, content);
         asdDialog.dismiss();
     }
 }

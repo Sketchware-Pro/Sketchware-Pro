@@ -30,9 +30,9 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.xml.XmlBuilder;
 
 public class Ix {
+    private final BuiltInLibraryManager builtInLibraryManager;
     public XmlBuilder a = new XmlBuilder("manifest");
     public ArrayList<ProjectFileBean> b;
-    private final BuiltInLibraryManager builtInLibraryManager;
     public BuildSettings buildSettings;
     public jq c;
     public FilePathUtil fpu = new FilePathUtil();

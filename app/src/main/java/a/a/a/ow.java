@@ -21,28 +21,27 @@ import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.editor.manage.sound.AddSoundActivity;
 import com.besome.sketch.editor.manage.sound.ManageSoundActivity;
 
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import mod.hey.studios.util.Helper;
+import mod.jbk.util.AudioMetadata;
+import mod.jbk.util.SoundPlayingAdapter;
+import pro.sketchware.R;
 import pro.sketchware.databinding.FrManageSoundListBinding;
 import pro.sketchware.databinding.ManageSoundBinding;
 import pro.sketchware.databinding.ManageSoundListItemBinding;
 import pro.sketchware.utility.FileUtil;
-import mod.jbk.util.AudioMetadata;
-import mod.jbk.util.SoundPlayingAdapter;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class ow extends qA {
 
     public ArrayList<ProjectResourceBean> sounds;
-    private String sc_id;
     public boolean isSelecting = false;
+    private String sc_id;
     private Adapter adapter;
     private String dirPath = "";
 
@@ -190,140 +189,6 @@ public class ow extends qA {
         super.onSaveInstanceState(outState);
     }
 
-    private class Adapter extends SoundPlayingAdapter<Adapter.ViewHolder> {
-        private int lastSelectedSound = -1;
-        private final LayoutInflater inflater;
-
-        public Adapter(RecyclerView recyclerView) {
-            super(requireActivity());
-            this.inflater = LayoutInflater.from(requireActivity());
-            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
-                        if (dy > 2 && actBinding.fab.isEnabled()) {
-                            actBinding.fab.hide();
-                        } else if (dy < -2 && actBinding.fab.isEnabled()) {
-                            actBinding.fab.show();
-                        }
-                    }
-                });
-            }
-        }
-
-        @Override
-        public ProjectResourceBean getData(int position) {
-            return sounds.get(position);
-        }
-
-        @Override
-        public Path getAudio(int position) {
-            var bean = sounds.get(position);
-            return Paths.get(bean.isNew ? bean.resFullName : getFilePathFromResource(bean));
-        }
-
-        private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
-            private final ManageSoundListItemBinding binding;
-            private AudioMetadata audioMetadata;
-
-            public ViewHolder(@NonNull ManageSoundListItemBinding binding) {
-                super(binding.getRoot());
-                this.binding = binding;
-
-                binding.chkSelect.setVisibility(View.GONE);
-
-                binding.imgPlay.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        lastSelectedSound = getLayoutPosition();
-                        if (!isSelecting) {
-                            soundPlayer.onPlayPressed(lastSelectedSound);
-                        }
-                    }
-                });
-
-                binding.layoutItem.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        lastSelectedSound = getLayoutPosition();
-                    }
-                    if (isSelecting) {
-                        binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
-                        sounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
-                        notifyItemChanged(lastSelectedSound);
-                    } else {
-                        stopPlayback();
-                        editSound();
-                    }
-                });
-
-                binding.layoutItem.setOnLongClickListener(v -> {
-                    setSelecting(true);
-                    lastSelectedSound = getLayoutPosition();
-                    binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
-                    sounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
-                    return true;
-                });
-            }
-
-            @Override
-            protected TextView getCurrentPosition() {
-                return binding.tvCurrenttime;
-            }
-
-            @Override
-            protected ProgressBar getPlaybackProgress() {
-                return binding.progPlaytime;
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean bean = sounds.get(position);
-
-            if (!isSelecting) {
-                var audioMetadata = holder.audioMetadata;
-                var audio = getAudio(position);
-                if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
-                    audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
-                    bean.totalSoundDuration = audioMetadata.getDurationInMs();
-                    audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.binding.imgAlbum);
-                }
-                holder.binding.imgAlbum.setVisibility(View.VISIBLE);
-                holder.binding.deleteImgContainer.setVisibility(View.GONE);
-            } else {
-                holder.binding.imgAlbum.setVisibility(View.GONE);
-                holder.binding.deleteImgContainer.setVisibility(View.VISIBLE);
-            }
-
-            holder.binding.imgDelete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
-
-            int positionInS = bean.curSoundPosition / 1000;
-            int totalDurationInS = bean.totalSoundDuration / 1000;
-            holder.binding.tvCurrenttime.setText(String.format(Locale.US, "%d:%02d", positionInS / 60, positionInS % 60));
-            holder.binding.tvEndtime.setText(String.format(Locale.US, "%d:%02d", totalDurationInS / 60, totalDurationInS % 60));
-
-            holder.binding.chkSelect.setChecked(bean.isSelected);
-            holder.binding.tvSoundName.setText(bean.resName);
-
-            boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
-            holder.binding.imgPlay.setImageResource(playing ? R.drawable.ic_mtrl_circle_pause : R.drawable.ic_mtrl_circle_play);
-            holder.binding.progPlaytime.setMax(bean.totalSoundDuration / 100);
-            holder.binding.progPlaytime.setProgress(bean.curSoundPosition / 100);
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ManageSoundListItemBinding binding = ManageSoundListItemBinding.inflate(inflater, parent, false);
-            return new ViewHolder(binding);
-        }
-
-        @Override
-        public int getItemCount() {
-            return sounds.size();
-        }
-    }
-
     public void stopPlayback() {
         adapter.stopPlayback();
     }
@@ -434,5 +299,139 @@ public class ow extends qA {
         String str = projectResourceBean.resFullName;
         String substring = str.substring(str.lastIndexOf("."));
         return dirPath + File.separator + projectResourceBean.resName + substring;
+    }
+
+    private class Adapter extends SoundPlayingAdapter<Adapter.ViewHolder> {
+        private final LayoutInflater inflater;
+        private int lastSelectedSound = -1;
+
+        public Adapter(RecyclerView recyclerView) {
+            super(requireActivity());
+            this.inflater = LayoutInflater.from(requireActivity());
+            if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                        if (dy > 2 && actBinding.fab.isEnabled()) {
+                            actBinding.fab.hide();
+                        } else if (dy < -2 && actBinding.fab.isEnabled()) {
+                            actBinding.fab.show();
+                        }
+                    }
+                });
+            }
+        }
+
+        @Override
+        public ProjectResourceBean getData(int position) {
+            return sounds.get(position);
+        }
+
+        @Override
+        public Path getAudio(int position) {
+            var bean = sounds.get(position);
+            return Paths.get(bean.isNew ? bean.resFullName : getFilePathFromResource(bean));
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ProjectResourceBean bean = sounds.get(position);
+
+            if (!isSelecting) {
+                var audioMetadata = holder.audioMetadata;
+                var audio = getAudio(position);
+                if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
+                    audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
+                    bean.totalSoundDuration = audioMetadata.getDurationInMs();
+                    audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.binding.imgAlbum);
+                }
+                holder.binding.imgAlbum.setVisibility(View.VISIBLE);
+                holder.binding.deleteImgContainer.setVisibility(View.GONE);
+            } else {
+                holder.binding.imgAlbum.setVisibility(View.GONE);
+                holder.binding.deleteImgContainer.setVisibility(View.VISIBLE);
+            }
+
+            holder.binding.imgDelete.setImageResource(bean.isSelected ? R.drawable.ic_checkmark_green_48dp : R.drawable.ic_trashcan_white_48dp);
+
+            int positionInS = bean.curSoundPosition / 1000;
+            int totalDurationInS = bean.totalSoundDuration / 1000;
+            holder.binding.tvCurrenttime.setText(String.format(Locale.US, "%d:%02d", positionInS / 60, positionInS % 60));
+            holder.binding.tvEndtime.setText(String.format(Locale.US, "%d:%02d", totalDurationInS / 60, totalDurationInS % 60));
+
+            holder.binding.chkSelect.setChecked(bean.isSelected);
+            holder.binding.tvSoundName.setText(bean.resName);
+
+            boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
+            holder.binding.imgPlay.setImageResource(playing ? R.drawable.ic_mtrl_circle_pause : R.drawable.ic_mtrl_circle_play);
+            holder.binding.progPlaytime.setMax(bean.totalSoundDuration / 100);
+            holder.binding.progPlaytime.setProgress(bean.curSoundPosition / 100);
+        }
+
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ManageSoundListItemBinding binding = ManageSoundListItemBinding.inflate(inflater, parent, false);
+            return new ViewHolder(binding);
+        }
+
+        @Override
+        public int getItemCount() {
+            return sounds.size();
+        }
+
+        private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
+            private final ManageSoundListItemBinding binding;
+            private AudioMetadata audioMetadata;
+
+            public ViewHolder(@NonNull ManageSoundListItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+
+                binding.chkSelect.setVisibility(View.GONE);
+
+                binding.imgPlay.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        lastSelectedSound = getLayoutPosition();
+                        if (!isSelecting) {
+                            soundPlayer.onPlayPressed(lastSelectedSound);
+                        }
+                    }
+                });
+
+                binding.layoutItem.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        lastSelectedSound = getLayoutPosition();
+                    }
+                    if (isSelecting) {
+                        binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                        sounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
+                        notifyItemChanged(lastSelectedSound);
+                    } else {
+                        stopPlayback();
+                        editSound();
+                    }
+                });
+
+                binding.layoutItem.setOnLongClickListener(v -> {
+                    setSelecting(true);
+                    lastSelectedSound = getLayoutPosition();
+                    binding.chkSelect.setChecked(!binding.chkSelect.isChecked());
+                    sounds.get(lastSelectedSound).isSelected = binding.chkSelect.isChecked();
+                    return true;
+                });
+            }
+
+            @Override
+            protected TextView getCurrentPosition() {
+                return binding.tvCurrenttime;
+            }
+
+            @Override
+            protected ProgressBar getPlaybackProgress() {
+                return binding.progPlaytime;
+            }
+        }
     }
 }

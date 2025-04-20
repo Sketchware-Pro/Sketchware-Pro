@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.property;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import a.a.a.Kw;
-import a.a.a.aB;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
@@ -42,19 +40,6 @@ import pro.sketchware.utility.relativelayout.CircularDependencyDetector;
 
 @SuppressLint("ViewConstructor")
 public class PropertyAttributesItem extends LinearLayout implements View.OnClickListener {
-    private String key = "";
-    private HashMap<String, String> value = new HashMap<>();
-    private TextView tvName;
-    private TextView tvValue;
-    private View propertyItem;
-    private View propertyMenuItem;
-    private ImageView imgLeftIcon;
-    private int icon;
-    private Kw valueChangeListener;
-    private ViewBean bean;
-    private List<String> ids = new ArrayList<>();
-    private final ArrayList<ViewBean> beans = new ArrayList<>();
-
     private static final String[] PARENT_RELATIVE = {
             "android:layout_centerInParent",
             "android:layout_centerVertical",
@@ -79,7 +64,6 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
             "android:layout_alignParentBottom",
             "android:layout_alignBaseline"
     };
-
     public static List<String> RELATIVE_IDS = Arrays.asList(
             "android:layout_alignStart",
             "android:layout_alignLeft",
@@ -93,6 +77,18 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
             "android:layout_toRightOf",
             "android:layout_above",
             "android:layout_below");
+    private final ArrayList<ViewBean> beans = new ArrayList<>();
+    private String key = "";
+    private HashMap<String, String> value = new HashMap<>();
+    private TextView tvName;
+    private TextView tvValue;
+    private View propertyItem;
+    private View propertyMenuItem;
+    private ImageView imgLeftIcon;
+    private int icon;
+    private Kw valueChangeListener;
+    private ViewBean bean;
+    private List<String> ids = new ArrayList<>();
 
     public PropertyAttributesItem(Context context, boolean z) {
         super(context);
@@ -303,17 +299,17 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                             .show();
                 });
                 itemView.setOnLongClickListener(v -> {
-                    var dialog = new aB((Activity) getContext());
-                    dialog.b("Delete");
-                    dialog.a("Are you sure you want to delete " + attr + "?");
-                    dialog.b("Yes", view -> {
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+                    dialog.setTitle("Delete");
+                    dialog.setMessage("Are you sure you want to delete " + attr + "?");
+                    dialog.setPositiveButton("Yes", (view, which) -> {
                         value.remove(attr);
                         if (valueChangeListener != null)
                             valueChangeListener.a(key, value);
                         submitList(new ArrayList<>(value.keySet()));
-                        dialog.dismiss();
+                        view.dismiss();
                     });
-                    dialog.a("No", view -> dialog.dismiss());
+                    dialog.setNegativeButton("No", (view, which) -> view.dismiss());
                     dialog.show();
                     return true;
                 });
@@ -339,18 +335,18 @@ public class PropertyAttributesItem extends LinearLayout implements View.OnClick
                     if (valueChangeListener != null) valueChangeListener.a(key, value);
                 });
                 itemView.setOnLongClickListener(v -> {
-                    var dialog = new aB((Activity) getContext());
-                    dialog.b("Delete");
-                    dialog.a("Are you sure you want to delete " + attr + "?");
-                    dialog.b("Yes", view -> {
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+                    dialog.setTitle("Delete");
+                    dialog.setMessage("Are you sure you want to delete " + attr + "?");
+                    dialog.setPositiveButton("Yes", (view, which) -> {
                         value.remove(attr);
                         if (valueChangeListener != null)
                             valueChangeListener.a(key, value);
                         submitList(new ArrayList<>(value.keySet()));
-                        dialog.dismiss();
+                        view.dismiss();
                     });
 
-                    dialog.a("No", view -> dialog.dismiss());
+                    dialog.setNegativeButton("No", (view, which) -> view.dismiss());
                     dialog.show();
                     return true;
                 });

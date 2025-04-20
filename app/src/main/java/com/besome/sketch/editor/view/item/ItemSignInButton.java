@@ -9,16 +9,16 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.besome.sketch.beans.ViewBean;
 
-import pro.sketchware.R;
 import a.a.a.sy;
 import a.a.a.wB;
 import a.a.a.xB;
+import pro.sketchware.R;
 
 public class ItemSignInButton extends AppCompatButton implements sy {
-    private Context context;
     private final Paint paint;
     private final float paddingFactor;
     private final Rect rect;
+    private final Context context;
     private ViewBean viewBean;
     private boolean hasSelection;
     private boolean hasFixed;

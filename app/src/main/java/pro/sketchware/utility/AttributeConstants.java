@@ -105,13 +105,13 @@ public class AttributeConstants {
                 String.valueOf(LayoutBean.ORIENTATION_HORIZONTAL));
 
         String[] layout =
-                new String[] {
-                    "fill_parent",
-                    String.valueOf(LayoutBean.LAYOUT_MATCH_PARENT),
-                    "match_parent",
-                    String.valueOf(LayoutBean.LAYOUT_MATCH_PARENT),
-                    "wrap_content",
-                    String.valueOf(LayoutBean.LAYOUT_WRAP_CONTENT)
+                new String[]{
+                        "fill_parent",
+                        String.valueOf(LayoutBean.LAYOUT_MATCH_PARENT),
+                        "match_parent",
+                        String.valueOf(LayoutBean.LAYOUT_MATCH_PARENT),
+                        "wrap_content",
+                        String.valueOf(LayoutBean.LAYOUT_WRAP_CONTENT)
                 };
 
         initializeEnumMap("layout_width", layout);
@@ -160,21 +160,21 @@ public class AttributeConstants {
                 TextBean.INPUT_TYPE_PHONE);
 
         var gravity =
-                new Object[] {
-                    "top",
-                    LayoutBean.GRAVITY_TOP,
-                    "bottom",
-                    LayoutBean.GRAVITY_BOTTOM,
-                    "left",
-                    LayoutBean.GRAVITY_LEFT,
-                    "right",
-                    LayoutBean.GRAVITY_RIGHT,
-                    "center_vertical",
-                    LayoutBean.GRAVITY_CENTER_VERTICAL,
-                    "center_horizontal",
-                    LayoutBean.GRAVITY_CENTER_HORIZONTAL,
-                    "center",
-                    LayoutBean.GRAVITY_CENTER
+                new Object[]{
+                        "top",
+                        LayoutBean.GRAVITY_TOP,
+                        "bottom",
+                        LayoutBean.GRAVITY_BOTTOM,
+                        "left",
+                        LayoutBean.GRAVITY_LEFT,
+                        "right",
+                        LayoutBean.GRAVITY_RIGHT,
+                        "center_vertical",
+                        LayoutBean.GRAVITY_CENTER_VERTICAL,
+                        "center_horizontal",
+                        LayoutBean.GRAVITY_CENTER_HORIZONTAL,
+                        "center",
+                        LayoutBean.GRAVITY_CENTER
                 };
         initializeFlagMap("gravity", gravity);
         initializeFlagMap("layout_gravity", gravity);

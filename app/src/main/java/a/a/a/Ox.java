@@ -15,8 +15,6 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.TextBean;
 import com.besome.sketch.beans.ViewBean;
 
-import dev.aldi.sayuti.editor.injection.AppCompatInjection;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -31,9 +29,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import dev.aldi.sayuti.editor.injection.AppCompatInjection;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.jbk.util.LogUtil;
-
 import pro.sketchware.managers.inject.InjectRootLayoutManager;
 import pro.sketchware.utility.InjectAttributeHandler;
 import pro.sketchware.xml.XmlBuilder;
@@ -56,6 +54,16 @@ public class Ox {
         projectFile = projectFileBean;
         rootManager = new InjectRootLayoutManager(jq.sc_id);
         aci = new AppCompatInjection(jq, projectFileBean);
+    }
+
+    public static String formatColor(int color) {
+        int alpha = (color >> 24) & 0xff;
+
+        if (alpha != 0xff) {
+            return String.format("#%06X", color);
+        } else {
+            return String.format("#%08X", color);
+        }
     }
 
     /**
@@ -169,16 +177,6 @@ public class Ox {
         rootLayout.addNamespaceDeclaration(0, "xmlns", "tools", "http://schemas.android.com/tools");
         rootLayout.addNamespaceDeclaration(0, "xmlns", "app", "http://schemas.android.com/apk/res-auto");
         rootLayout.addNamespaceDeclaration(0, "xmlns", "android", "http://schemas.android.com/apk/res/android");
-    }
-
-    public static String formatColor(int color) {
-        int alpha = (color >> 24) & 0xff;
-
-        if (alpha != 0xff) {
-            return String.format("#%06X", color);
-        } else {
-            return String.format("#%08X", color);
-        }
     }
 
     private void writeBackgroundResource(XmlBuilder nx, ViewBean viewBean) {
@@ -406,7 +404,7 @@ public class Ox {
         if (!viewBean.inject.isEmpty()) {
             widgetTag.addAttributeValue(viewBean.inject.replaceAll(" ", ""));
         }
-        
+
         if (!viewBean.parentAttributes.isEmpty()) {
             viewBean.parentAttributes.forEach((key, value) -> {
                 String[] parts = key.split(":");

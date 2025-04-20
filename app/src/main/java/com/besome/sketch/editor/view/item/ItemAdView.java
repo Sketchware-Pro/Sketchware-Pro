@@ -9,20 +9,20 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
-import pro.sketchware.R;
 
 import a.a.a.sy;
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public class ItemAdView extends LinearLayout implements sy {
 
+    private final Rect rect = new Rect();
     private ViewBean viewBean;
     private boolean hasSelection;
     private boolean isFixed;
     private Paint paint;
     private float paddingFactor;
     private ImageView imgView;
-    private final Rect rect = new Rect();
 
     public ItemAdView(Context context) {
         super(context);
@@ -50,12 +50,27 @@ public class ItemAdView extends LinearLayout implements sy {
     }
 
     @Override
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
+    }
+
+    @Override
     public boolean getFixed() {
         return isFixed;
     }
 
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
+    }
+
     public boolean getSelection() {
         return hasSelection;
+    }
+
+    @Override
+    public void setSelection(boolean selection) {
+        hasSelection = selection;
+        invalidate();
     }
 
     @Override
@@ -88,24 +103,9 @@ public class ItemAdView extends LinearLayout implements sy {
     }
 
     @Override
-    public void setBean(ViewBean viewBean) {
-        this.viewBean = viewBean;
-    }
-
-    public void setFixed(boolean isFixed) {
-        this.isFixed = isFixed;
-    }
-
-    @Override
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding(
                 (int) (left * paddingFactor), (int) (top * paddingFactor),
                 (int) (right * paddingFactor), (int) (bottom * paddingFactor));
-    }
-
-    @Override
-    public void setSelection(boolean selection) {
-        hasSelection = selection;
-        invalidate();
     }
 }

@@ -7,12 +7,12 @@ import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
-import pro.sketchware.R;
 
 import java.util.ArrayList;
 
 import a.a.a.uy;
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public class PaletteFavorite extends LinearLayout {
     private LinearLayout collectionWidgets;

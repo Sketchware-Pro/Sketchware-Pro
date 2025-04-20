@@ -4,27 +4,24 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.material.card.MaterialCardView;
 
-import pro.sketchware.R;
-import pro.sketchware.databinding.PaletteBlockBinding;
-
 import a.a.a.Rs;
 import a.a.a.Ts;
 import a.a.a.wB;
+import pro.sketchware.databinding.PaletteBlockBinding;
 
 public class PaletteBlock extends LinearLayout {
 
+    public float f = 0.0F;
     private PaletteBlockBinding binding;
     private Context context;
-    public float f = 0.0F;
 
     public PaletteBlock(Context context) {
         super(context);
@@ -35,7 +32,7 @@ public class PaletteBlock extends LinearLayout {
         super(context, attrs);
         initialize(context);
     }
-    
+
     private void initialize(final Context context) {
         this.context = context;
         binding = PaletteBlockBinding.inflate(LayoutInflater.from(context), this, true);
@@ -61,19 +58,19 @@ public class PaletteBlock extends LinearLayout {
         binding.blockBuilder.addView(blockView);
         return blockView;
     }
-    
+
     public TextView a(String title) {
         var textView = new TextView(context);
         textView.setText(title);
         textView.setTextSize(10.0F);
         textView.setGravity(Gravity.CENTER);
         textView.setPadding((int) (f * 8.0F), 0, (int) (f * 8.0F), 0);
-        
+
         var cardView = new MaterialCardView(context);
         var params = getLayoutParams(30.0F);
         params.setMargins(0, 0, 3, 3);
         cardView.setLayoutParams(params);
-        
+
         cardView.setCardElevation(0f); // I don't remember if the card has elevation by default 
         cardView.setRadius(12.0f);
         cardView.setStrokeWidth(0);
@@ -101,7 +98,7 @@ public class PaletteBlock extends LinearLayout {
         textView.setPadding((int) (f * 12.0F), 0, (int) (f * 12.0F), 0);
         binding.blockBuilder.addView(textView);
     }
-    
+
     public void addDeprecatedBlock(String message, String type, String opCode) {
         if (message != null && !message.isEmpty()) {
             a(message, 0xff555555);
@@ -110,11 +107,11 @@ public class PaletteBlock extends LinearLayout {
         blockView.e = 0xFFBDBDBD;
         blockView.setTag(opCode);
     }
-    
+
     private LinearLayout.LayoutParams getLayoutParams(float heightMultiplier) {
         return new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            (int) (f * heightMultiplier)
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (int) (f * heightMultiplier)
         );
     }
 

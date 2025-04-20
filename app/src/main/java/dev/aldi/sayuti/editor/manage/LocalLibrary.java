@@ -15,6 +15,10 @@ public class LocalLibrary {
         this.size = size;
     }
 
+    public static LocalLibrary fromFile(File file) {
+        return new LocalLibrary(file.getName(), formatFileSize(getFileSize(file)));
+    }
+
     public String getName() {
         return name;
     }
@@ -29,9 +33,5 @@ public class LocalLibrary {
 
     public void setSelected(boolean isSelected) {
         this.isSelected = isSelected;
-    }
-
-    public static LocalLibrary fromFile(File file) {
-        return new LocalLibrary(file.getName(), formatFileSize(getFileSize(file)));
     }
 }

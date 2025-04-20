@@ -19,24 +19,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
-import a.a.a.Rs;
-import a.a.a.Zx;
-
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.JsonParseException;
-
-import mod.hey.studios.util.Helper;
-import mod.hilal.saif.lib.PCP;
-
-import pro.sketchware.R;
-import pro.sketchware.databinding.ActivityBlocksManagerCreatorBinding;
-import pro.sketchware.lib.base.BaseTextWatcher;
-import pro.sketchware.lib.highlighter.SimpleHighlighter;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.PropertiesUtil;
-import pro.sketchware.utility.SketchwareUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,14 +34,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import a.a.a.Rs;
+import mod.hey.studios.util.Helper;
+import mod.hilal.saif.lib.PCP;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ActivityBlocksManagerCreatorBinding;
+import pro.sketchware.lib.base.BaseTextWatcher;
+import pro.sketchware.lib.highlighter.SimpleHighlighter;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.PropertiesUtil;
+import pro.sketchware.utility.SketchwareUtil;
+
 public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
 
-    private ActivityBlocksManagerCreatorBinding binding;
-    private final ArrayList<String> id_detector = new ArrayList<>();
-    private ArrayList<HashMap<String, Object>> blocksList = new ArrayList<>();
-    
     private static final Pattern PARAM_PATTERN = Pattern.compile("%m(?!\\.[\\w]+)");
-    
+    private final ArrayList<String> id_detector = new ArrayList<>();
+    private ActivityBlocksManagerCreatorBinding binding;
+    private ArrayList<HashMap<String, Object>> blocksList = new ArrayList<>();
     /**
      * Current mode of this activity, "edit" if editing a block, "add" if creating a new block and "insert" if inserting a block above another
      */
@@ -165,9 +161,9 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         });
 
         binding.openColorPalette.setOnClickListener(v -> {
-            Zx zx = new Zx(this, 0, false, false);
-            zx.a(new PCP(binding.colour));
-            zx.showAtLocation(v, Gravity.CENTER, 0, 0);
+            ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, 0, false, false);
+            colorPickerDialog.a(new PCP(binding.colour));
+            colorPickerDialog.showAtLocation(v, Gravity.CENTER, 0, 0);
         });
 
         binding.colour.addTextChangedListener(new BaseTextWatcher() {
@@ -241,7 +237,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                 (int) SketchwareUtil.getDip(8),
                 0
         );
-        textView.setTextColor(MaterialColors.getColor(textView, com.google.android.material.R.attr.colorPrimary));
+        textView.setTextColor(MaterialColors.getColor(textView, R.attr.colorPrimary));
         textView.setText(name);
         textView.setTextSize(14.0f);
         textView.setTypeface(Typeface.DEFAULT_BOLD);
@@ -332,8 +328,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         }
 
         Object typeObject = block.get("type");
-        if (typeObject instanceof String) {
-            String typeString = (String) typeObject;
+        if (typeObject instanceof String typeString) {
 
             if (typeString.equals(" ")) {
                 binding.type.setText("regular");
@@ -368,7 +363,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
                 binding.spec2.setError("Invalid spec2 block data");
             }
         }
-        
+
         Object importsObject = block.get("imports");
         if (importsObject != null) {
             if (importsObject instanceof String) {

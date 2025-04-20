@@ -8,7 +8,6 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
 import a.a.a.Lx;
 import mod.hey.studios.util.Helper;
-
 import pro.sketchware.databinding.ActivityCodeViewerBinding;
 import pro.sketchware.utility.EditorUtils;
 
@@ -16,7 +15,7 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
 
     public static final String SCHEME_XML = "xml";
     public static final String SCHEME_JAVA = "java";
-    
+
     private ActivityCodeViewerBinding binding;
 
     @Override

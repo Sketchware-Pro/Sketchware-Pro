@@ -1,6 +1,5 @@
 package com.besome.sketch.editor.manage.library.admob;
 
-import android.app.Activity;
 import android.content.Context;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -17,8 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
-import pro.sketchware.R;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,12 +26,12 @@ import java.util.stream.Collectors;
 
 import a.a.a.NB;
 import a.a.a.Uu;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.gB;
 import a.a.a.wB;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClickListener {
     private TestDeviceAdapter adapter;
@@ -71,36 +70,6 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
         adapter.notifyDataSetChanged();
     }
 
-    private class TestDeviceAdapter extends RecyclerView.Adapter<TestDeviceAdapter.ViewHolder> {
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public final TextView deviceId;
-            public final ImageView delete;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                deviceId = itemView.findViewById(R.id.tv_device_id);
-                delete = itemView.findViewById(R.id.img_delete);
-                delete.setOnClickListener(v -> showDeleteTestDeviceDialog(getLayoutPosition()));
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            holder.deviceId.setText(testDevices.get(position).deviceId);
-        }
-
-        @Override
-        public int getItemCount() {
-            return testDevices.size();
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
-        }
-    }
-
     private void initialize(Context context) {
         wB.a(context, this, R.layout.manage_library_admob_test_device);
         gB.b(this, 600, 200, null);
@@ -133,9 +102,9 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
     }
 
     private void showAddTestDeviceDialog() {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_title));
-        dialog.a(R.drawable.ic_mtrl_add);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_title));
+        dialog.setIcon(R.drawable.ic_mtrl_add);
         View content = wB.a(getContext(), R.layout.manage_library_setting_admob_test_device_add);
         EditText edDeviceId = content.findViewById(R.id.ed_device_id);
         ((TextInputLayout) content.findViewById(R.id.ti_device_id)).setHint(xB.b().a(getContext(), R.string.design_library_admob_dialog_set_test_device_hint_device_id));
@@ -144,33 +113,63 @@ public class TestDevicesStepView extends LinearLayout implements Uu, View.OnClic
                 .collect(Collectors.toCollection(ArrayList::new)));
         edDeviceId.setText(getCurrentDeviceId());
         edDeviceId.setPrivateImeOptions("defaultInputmode=english;");
-        dialog.a(content);
-        dialog.b(xB.b().a(getContext(), R.string.common_word_add), v -> {
+        dialog.setView(content);
+        dialog.setPositiveButton(xB.b().a(getContext(), R.string.common_word_add), (v, which) -> {
             if (validator.b()) {
                 String deviceId = Helper.getText(edDeviceId);
                 testDevices.add(new AdTestDeviceBean(deviceId));
                 adapter.notifyItemInserted(testDevices.size() - 1);
-                dialog.dismiss();
+                v.dismiss();
             } else {
                 edDeviceId.requestFocus();
             }
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
         dialog.show();
     }
 
     private void showDeleteTestDeviceDialog(int index) {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(xB.b().a(getContext(), R.string.design_library_admob_dialog_delete_test_device_title));
-        dialog.a(R.drawable.delete_96);
-        dialog.a(xB.b().a(getContext(), R.string.design_library_admob_dialog_confirm_delete_test_device));
-        dialog.b(xB.b().a(getContext(), R.string.common_word_delete), v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(xB.b().a(getContext(), R.string.design_library_admob_dialog_delete_test_device_title));
+        dialog.setIcon(R.drawable.delete_96);
+        dialog.setMessage(xB.b().a(getContext(), R.string.design_library_admob_dialog_confirm_delete_test_device));
+        dialog.setPositiveButton(xB.b().a(getContext(), R.string.common_word_delete), (v, which) -> {
             testDevices.remove(index);
             adapter.notifyItemRemoved(index);
             bB.a(getContext(), xB.b().a(getContext(), R.string.common_message_complete_delete), 0).show();
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(xB.b().a(getContext(), R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
         dialog.show();
+    }
+
+    private class TestDeviceAdapter extends RecyclerView.Adapter<TestDeviceAdapter.ViewHolder> {
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            holder.deviceId.setText(testDevices.get(position).deviceId);
+        }
+
+        @Override
+        public int getItemCount() {
+            return testDevices.size();
+        }
+
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_library_setting_admob_test_device_item, parent, false));
+        }
+
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public final TextView deviceId;
+            public final ImageView delete;
+
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                deviceId = itemView.findViewById(R.id.tv_device_id);
+                delete = itemView.findViewById(R.id.img_delete);
+                delete.setOnClickListener(v -> showDeleteTestDeviceDialog(getLayoutPosition()));
+            }
+        }
     }
 }

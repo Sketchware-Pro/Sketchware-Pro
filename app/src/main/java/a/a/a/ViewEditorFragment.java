@@ -24,15 +24,19 @@ import com.besome.sketch.editor.view.DraggingListener;
 import com.besome.sketch.editor.view.ViewEditor;
 import com.besome.sketch.editor.view.ViewProperty;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
-import pro.sketchware.R;
-import pro.sketchware.widgets.WidgetsCreatorManager;
+
+import mod.hey.studios.util.Helper;
 
 import java.util.ArrayList;
 
+import pro.sketchware.R;
+import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.widgets.WidgetsCreatorManager;
+
 public class ViewEditorFragment extends qA {
 
-    private ProjectFileBean projectFileBean;
     public ViewEditor viewEditor;
+    private ProjectFileBean projectFileBean;
     private boolean isFabEnabled = false;
     private ViewProperty viewProperty;
     private ObjectAnimator n;
@@ -68,6 +72,13 @@ public class ViewEditorFragment extends qA {
             a(viewBean.id);
             viewProperty.e();
             invalidateOptionsMenu();
+        });
+        viewProperty.setOnPropertyDeleted(viewBean -> {
+            viewEditor.deleteWidget(viewBean);
+            if (requireActivity() instanceof DesignActivity designActivity) {
+                designActivity.hideViewPropertyView();
+            }
+            SketchwareUtil.toast(Helper.getResString(R.string.common_word_deleted));
         });
         viewProperty.setOnEventClickListener(eventBean -> toLogicEditorActivity(eventBean.targetId, eventBean.eventName, eventBean.eventName));
         viewProperty.setOnPropertyTargetChangeListener(viewEditor::updateSelection);

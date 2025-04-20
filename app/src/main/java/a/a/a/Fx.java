@@ -8,18 +8,28 @@ import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
+import mod.pranav.viewbinding.ViewBindingBuilder;
 
 public class Fx {
 
     private static final Pattern PARAM_PATTERN = Pattern.compile("%m(?!\\.[\\w]+)");
     public final boolean isViewBindingEnabled;
+    private final ArrayList<String> viewParamsTypes = new ArrayList<>(List.of(
+            "%m.view", "%m.layout", "%m.textview", "%m.button", "%m.edittext", "%m.imageview", "%m.recyclerview",
+            "%m.listview", "%m.gridview", "%m.cardview", "%m.viewpager", "%m.webview", "%m.videoview", "%m.progressbar",
+            "%m.seekbar", "%m.switch", "%m.checkbox", "%m.spinner", "%m.tablayout", "%m.bottomnavigation", "%m.adview",
+            "%m.swiperefreshlayout", "%m.textinputlayout", "%m.ratingbar", "%m.datepicker", "%m.otpview", "%m.lottie",
+            "%m.badgeview", "%m.codeview", "%m.patternview", "%m.signinbutton", "%m.youtubeview"
+    ));
     public String[] operators = {"repeat", "+", "-", "*", "/", "%", ">", "=", "<", "&&", "||", "not"};
     public String[] arithmetic = {"+", "-", "*", "/", "%", ">", "=", "<", "&&", "||"};
     public String moreBlock = "";
@@ -174,12 +184,34 @@ public class Fx {
 
     public ArrayList<String> getBlockParams(BlockBean bean) {
         ArrayList<String> params = new ArrayList<>();
+        ArrayList<String> paramsTypes = extractParamsTypes(bean.spec);
         for (int i = 0; i < bean.parameters.size(); i++) {
-            String param = bean.parameters.get(i);
+            String param = getParamValue(bean.parameters.get(i), viewParamsTypes.contains(paramsTypes.get(i)));
             int type = getBlockType(bean, i);
             params.add(a(param, type, bean.opCode));
         }
         return params;
+    }
+
+    private String getParamValue(String param, boolean isWidgetParam) {
+        String bindingStart = "binding.";
+        if (isViewBindingEnabled && isWidgetParam && !param.isEmpty() && param.charAt(0) != '@' && !param.startsWith(bindingStart)) {
+            return bindingStart + ViewBindingBuilder.generateParameterFromId(param);
+        } else {
+            return param;
+        }
+    }
+
+    private ArrayList<String> extractParamsTypes(String input) {
+        ArrayList<String> matches = new ArrayList<>();
+        Pattern pattern = Pattern.compile("%\\w+(?:\\.\\w+)?|%\\w"); // Supports %m.word.word, %m.word and %word
+        Matcher matcher = pattern.matcher(input);
+
+        while (matcher.find()) {
+            matches.add(matcher.group().toLowerCase());
+        }
+
+        return matches;
     }
 
     private String getBlockCode(BlockBean bean, ArrayList<String> params) {
@@ -191,12 +223,13 @@ public class Fx {
                     opcode = bean.type;
                     moreBlock = "_" + (space < 0 ? bean.spec : bean.spec.substring(0, space)) + "()" + ReturnMoreblockManager.getMbEnd(bean.type);
                 } else {
+                    ArrayList<String> paramsTypes = extractParamsTypes(bean.spec);
                     opcode = "_" + bean.spec.substring(0, space) + "(";
                     boolean hasStringParam = false;
 
                     for (int i = 0; i < params.size(); i++) {
                         if (i > 0) opcode += ", ";
-                        String param = params.get(i);
+                        String param = getParamValue(params.get(i), viewParamsTypes.contains(paramsTypes.get(i)));
                         if (param.isEmpty()) {
                             Gx paramInfo = bean.getParamClassInfo().get(i);
                             if (paramInfo.b("boolean")) {
@@ -717,7 +750,7 @@ public class Fx {
                 if (isViewBindingEnabled && paramAdapter.startsWith("binding.")) {
                     paramAdapter = paramAdapter.substring("binding.".length());
                 }
-                opcode = String.format("%s.setAdapter(new %s(%s));", param, Lx.a(paramAdapter), params.get(1));
+                opcode = String.format("%s.setAdapter(new %s(%s));", param, Lx.a(paramAdapter, isViewBindingEnabled), params.get(1));
                 break;
             case "listRefresh":
                 opcode = String.format("((BaseAdapter)%s.getAdapter()).notifyDataSetChanged();", params.get(0));
@@ -1360,12 +1393,13 @@ public class Fx {
         }
         return opcode;
     }
-    
+
     private String getCodeExtraBlock(BlockBean blockBean, String var2) {
         ArrayList<String> parameters = new ArrayList<>();
+        ArrayList<String> paramsTypes = extractParamsTypes(blockBean.spec);
 
         for (int i = 0; i < blockBean.parameters.size(); i++) {
-            String parameterValue = blockBean.parameters.get(i);
+            String parameterValue = getParamValue(blockBean.parameters.get(i), viewParamsTypes.contains(paramsTypes.get(i)));
 
             switch (getBlockType(blockBean, i)) {
                 case 0:
@@ -1432,7 +1466,7 @@ public class Fx {
 
         return formattedCode;
     }
-    
+
     private int getBlockType(BlockBean blockBean, int parameterIndex) {
         int blockType;
 

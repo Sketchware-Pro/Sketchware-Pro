@@ -116,7 +116,7 @@ public class EventsManagerDetailsFragment extends qA {
             HashMap<String, Object> item = dataArray.get(position);
 
             holder.itemView.setBackgroundResource(UI.getShapedBackgroundForList(dataArray, position));
-            
+
             if (listName.isEmpty()) {
                 holder.binding.eventIcon.setImageResource(R.drawable.ic_mtrl_code);
             } else {

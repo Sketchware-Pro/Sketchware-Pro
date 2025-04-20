@@ -6,10 +6,8 @@ import android.text.TextUtils;
 import android.util.Pair;
 import android.widget.Toast;
 
-import pro.sketchware.SketchApplication;
 import com.besome.sketch.beans.ComponentBean;
 import com.google.gson.Gson;
-import pro.sketchware.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,10 +19,12 @@ import java.util.Optional;
 
 import a.a.a.Lx;
 import a.a.a.xB;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.util.OldResourceIdMapper;
+import pro.sketchware.R;
+import pro.sketchware.SketchApplication;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 //responsible code :
 //ComponentBean == sketchware / beans √
 //Manage components == agus /component √
@@ -530,8 +530,7 @@ public class ComponentsHandler {
                     if (name.equals(componentVarName)) {
                         Object componentImports = component.get("imports");
 
-                        if (componentImports instanceof String) {
-                            String componentImportsString = (String) componentImports;
+                        if (componentImports instanceof String componentImportsString) {
                             String[] componentImportsArray = componentImportsString.split("\n");
                             arrayList.addAll(Arrays.asList(componentImportsArray));
                         } else {

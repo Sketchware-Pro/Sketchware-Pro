@@ -12,27 +12,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.BlockBean;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-
-import a.a.a.Zx;
-import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
-import mod.hey.studios.util.Helper;
-import mod.hilal.saif.activities.tools.ConfigActivity;
-import pro.sketchware.R;
-import pro.sketchware.databinding.DialogPaletteBinding;
-import pro.sketchware.databinding.ItemCustomBlockBinding;
-import pro.sketchware.databinding.ViewUsedCustomBlocksBinding;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 
-import a.a.a.aB;
 import a.a.a.Rs;
+import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
 import mod.hey.studios.editor.manage.block.v2.BlockLoader;
+import mod.hey.studios.util.Helper;
+import mod.hilal.saif.activities.tools.ConfigActivity;
+import pro.sketchware.R;
+import pro.sketchware.databinding.DialogPaletteBinding;
+import pro.sketchware.databinding.ItemCustomBlockBinding;
+import pro.sketchware.databinding.ViewUsedCustomBlocksBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -45,8 +43,8 @@ public class CustomBlocksDialog {
         this.sc_id = sc_id;
         ViewUsedCustomBlocksBinding dialogBinding = ViewUsedCustomBlocksBinding.inflate(context.getLayoutInflater());
 
-        aB dialog = new aB(context);
-        dialog.b(Helper.getResString(R.string.used_custom_blocks));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+        dialog.setTitle(Helper.getResString(R.string.used_custom_blocks));
 
         String subtitle = "You haven't used any custom blocks in this project.";
 
@@ -65,9 +63,9 @@ public class CustomBlocksDialog {
         }
 
         if (customBlocks.isEmpty()) {
-            dialog.a(subtitle);
+            dialog.setMessage(subtitle);
         } else {
-            dialog.b(Helper.getResString(R.string.common_word_import), v -> {
+            dialog.setPositiveButton(Helper.getResString(R.string.common_word_import), (v, which) -> {
                 ArrayList<BlockBean> selectedBeans = new ArrayList<>();
                 for (int i = 0; i < customBlocks.size(); i++) {
                     if (Boolean.TRUE.equals(selectedBlocks.getOrDefault(i, false))) {
@@ -81,12 +79,12 @@ public class CustomBlocksDialog {
                 }
 
                 importAll(context, customBlocksManager, selectedBeans);
-                dialog.dismiss();
+                v.dismiss();
             });
-            dialog.a(dialogBinding.getRoot());
+            dialog.setView(dialogBinding.getRoot());
         }
 
-        dialog.a(Helper.getResString(R.string.common_word_dismiss), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_dismiss), null);
         dialog.show();
     }
 
@@ -142,24 +140,25 @@ public class CustomBlocksDialog {
                 if (!content.isEmpty()) {
                     result = new Gson().fromJson(content, Helper.TYPE_MAP_LIST);
                 }
-            } catch (JsonParseException | NullPointerException ignored) {}
+            } catch (JsonParseException | NullPointerException ignored) {
+            }
         }
         return result;
     }
 
     private void showCreatePaletteDialog(Context context, ArrayList<HashMap<String, Object>> paletteList, String paletteDir,
-                                                CustomBlocksManager customBlocksManager, ArrayList<BlockBean> list, ArrayList<HashMap<String, Object>> blocksList,
-                                                ArrayList<HashMap<String, Object>> allBlocksList, String blocksDir) {
+                                         CustomBlocksManager customBlocksManager, ArrayList<BlockBean> list, ArrayList<HashMap<String, Object>> blocksList,
+                                         ArrayList<HashMap<String, Object>> allBlocksList, String blocksDir) {
 
-        aB dialog = new aB((Activity) context);
-        dialog.a(R.drawable.icon_style_white_96);
-        dialog.b("Create a new palette");
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+        dialog.setIcon(R.drawable.icon_style_white_96);
+        dialog.setTitle("Create a new palette");
 
         DialogPaletteBinding binding = DialogPaletteBinding.inflate(((Activity) context).getLayoutInflater());
 
         binding.openColorPalette.setOnClickListener(v -> {
-            Zx colorPicker = new Zx((Activity) context, 0, true, false);
-            colorPicker.a(new Zx.b() {
+            ColorPickerDialog colorPicker = new ColorPickerDialog((Activity) context, 0, true, false);
+            colorPicker.a(new ColorPickerDialog.b() {
                 @Override
                 public void a(int colorInt) {
                     binding.colorEditText.setText(getHexColor(colorInt));
@@ -172,8 +171,8 @@ public class CustomBlocksDialog {
             colorPicker.showAtLocation(binding.openColorPalette, Gravity.CENTER, 0, 0);
         });
 
-        dialog.a(binding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.setView(binding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             String name = Helper.getText(binding.nameEditText);
             String color = Helper.getText(binding.colorEditText);
 
@@ -190,9 +189,9 @@ public class CustomBlocksDialog {
             FileUtil.writeFile(blocksDir, new Gson().toJson(allBlocksList));
             BlockLoader.refresh();
             SketchwareUtil.toast("Blocks imported!");
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -218,7 +217,7 @@ public class CustomBlocksDialog {
     }
 
     private void addBlocksToList(CustomBlocksManager customBlocksManager, ArrayList<BlockBean> list,
-                                        ArrayList<HashMap<String, Object>> blocksList, int paletteIndex) {
+                                 ArrayList<HashMap<String, Object>> blocksList, int paletteIndex) {
 
         for (BlockBean block : list) {
             try {
@@ -232,7 +231,8 @@ public class CustomBlocksDialog {
                 blockData.put("code", customBlocksManager.getCustomBlockCode(block.opCode));
                 blockData.put("palette", String.valueOf(paletteIndex));
                 blocksList.add(blockData);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
     }
 
@@ -267,6 +267,19 @@ public class CustomBlocksDialog {
         @Override
         public int getItemCount() {
             return blockBeans.size();
+        }
+
+        private Rs createBlock(Context context, BlockBean blockBean) {
+            Rs block = new Rs(
+                    context,
+                    Integer.parseInt(blockBean.id),
+                    blockBean.spec,
+                    blockBean.type,
+                    blockBean.typeName,
+                    blockBean.opCode
+            );
+            block.e = blockBean.color;
+            return block;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -333,19 +346,6 @@ public class CustomBlocksDialog {
                 }
                 return block.opCode;
             }
-        }
-
-        private Rs createBlock(Context context, BlockBean blockBean) {
-            Rs block = new Rs(
-                    context,
-                    Integer.parseInt(blockBean.id),
-                    blockBean.spec,
-                    blockBean.type,
-                    blockBean.typeName,
-                    blockBean.opCode
-            );
-            block.e = blockBean.color;
-            return block;
         }
     }
 

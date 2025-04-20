@@ -6,13 +6,13 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
-import pro.sketchware.R;
 
 import java.util.HashMap;
 
 import a.a.a.Gx;
 import a.a.a.nA;
 import mod.agus.jcoderz.beans.ViewBeans;
+import pro.sketchware.R;
 
 public class ViewBean extends nA implements Parcelable {
     public static final Parcelable.Creator<ViewBean> CREATOR = new Parcelable.Creator<>() {

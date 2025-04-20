@@ -1,7 +1,7 @@
 package pro.sketchware.activities.editor.command;
 
-import static pro.sketchware.utility.SketchwareUtil.getDip;
 import static pro.sketchware.utility.GsonUtils.getGson;
+import static pro.sketchware.utility.SketchwareUtil.getDip;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -17,31 +17,31 @@ import android.widget.PopupMenu;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import a.a.a.Jx;
-import a.a.a.hC;
-import a.a.a.jC;
-import a.a.a.mB;
-import a.a.a.wq;
-import a.a.a.yq;
-
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import io.github.rosemoe.sora.langs.java.JavaLanguage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.concurrent.Executors;
+
+import a.a.a.Jx;
+import a.a.a.hC;
+import a.a.a.jC;
+import a.a.a.mB;
+import a.a.a.wq;
+import a.a.a.yq;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.Magnifier;
-import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
-import io.github.rosemoe.sora.widget.schemes.SchemeDarcula;
-
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.jbk.code.CodeEditorColorSchemes;
 import mod.jbk.code.CodeEditorLanguages;
-
 import pro.sketchware.R;
 import pro.sketchware.activities.editor.command.adapters.XMLCommandAdapter;
 import pro.sketchware.databinding.ManageXmlCommandAddBinding;
@@ -51,31 +51,45 @@ import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.utility.UI;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.concurrent.Executors;
-
 public class ManageXMLCommandActivity extends BaseAppCompatActivity {
 
+    private static final String[] COMMANDS_ACTION = {
+            "insert", "add", "replace", "find-replace", "find-replace-first", "find-replace-all"
+    };
     private ManageXmlCommandBinding binding;
     private String sc_id;
-
     private String commandPath;
-
     private XMLCommandAdapter adapter;
-
     private ProjectSettings settings;
-
-    private static final String[] COMMANDS_ACTION = {
-        "insert", "add", "replace", "find-replace", "find-replace-first", "find-replace-all"
-    };
-
     private ArrayList<HashMap<String, Object>> commands = new ArrayList<>();
     private ArrayList<String> xmlFiles;
 
     private hC projectFile;
+
+    public static void fetchXMLCommand(Context context, String sc_id) {
+        var path = wq.b(sc_id) + "/command";
+        if (FileUtil.isExistFile(path)) {
+            return;
+        }
+        var yq = new yq(context, sc_id);
+        var projectLibraryManager = jC.c(sc_id);
+        var projectFileManager = jC.b(sc_id);
+        var projectDataManager = jC.a(sc_id);
+        yq.a(projectLibraryManager, projectFileManager, projectDataManager, false);
+        CommandBlock.x();
+        ArrayList<ProjectFileBean> files = new ArrayList<>(projectFileManager.b());
+        files.addAll(new ArrayList<>(projectFileManager.c()));
+        for (ProjectFileBean file : files) {
+            CommandBlock.CBForXml(new Jx(yq.N, file, projectDataManager).generateCode(false));
+        }
+        String commandPath = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
+        if (FileUtil.isExistFile(commandPath)) {
+            FileUtil.copyFile(commandPath, path);
+            CommandBlock.x();
+        } else {
+            FileUtil.writeFile(path, "[]");
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -259,10 +273,9 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
                     map.put("after", Integer.parseInt(Helper.getText(binding.front)));
                     map.put("before", Integer.parseInt(Helper.getText(binding.backend)));
                     map.put("command", Helper.getText(binding.command));
-                    StringBuilder inputBuilder = new StringBuilder();
-                    inputBuilder.append(">").append(xmlName).append("\n");
-                    inputBuilder.append(Helper.getText(binding.changes));
-                    map.put("input", inputBuilder.toString());
+                    String inputBuilder = ">" + xmlName + "\n" +
+                            Helper.getText(binding.changes);
+                    map.put("input", inputBuilder);
                     if (edit) {
                         if (position != -1) {
                             commands.set(position, map);
@@ -403,30 +416,5 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
-    }
-
-    public static void fetchXMLCommand(Context context, String sc_id) {
-        var path = wq.b(sc_id) + "/command";
-        if (FileUtil.isExistFile(path)) {
-            return;
-        }
-        var yq = new yq(context, sc_id);
-        var projectLibraryManager = jC.c(sc_id);
-        var projectFileManager = jC.b(sc_id);
-        var projectDataManager = jC.a(sc_id);
-        yq.a(projectLibraryManager, projectFileManager, projectDataManager, false);
-        CommandBlock.x();
-        ArrayList<ProjectFileBean> files = new ArrayList<>(projectFileManager.b());
-        files.addAll(new ArrayList<>(projectFileManager.c()));
-        for (ProjectFileBean file : files) {
-            CommandBlock.CBForXml(new Jx(yq.N, file, projectDataManager).generateCode());
-        }
-        String commandPath = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
-        if (FileUtil.isExistFile(commandPath)) {
-            FileUtil.copyFile(commandPath, path);
-            CommandBlock.x();
-        } else {
-            FileUtil.writeFile(path, "[]");
-        }
     }
 }

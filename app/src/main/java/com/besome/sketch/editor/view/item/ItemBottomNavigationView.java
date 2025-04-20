@@ -11,10 +11,10 @@ import androidx.annotation.NonNull;
 
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import pro.sketchware.R;
 
 import a.a.a.sy;
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public class ItemBottomNavigationView extends BottomNavigationView implements sy {
 

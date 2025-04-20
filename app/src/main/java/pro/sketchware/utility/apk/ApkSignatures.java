@@ -1,13 +1,13 @@
 package pro.sketchware.utility.apk;
 
-import android.app.Activity;
 import android.content.Context;
+import android.view.LayoutInflater;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import mod.hey.studios.util.Helper;
-
 import pro.sketchware.R;
-
-import a.a.a.aB;
+import pro.sketchware.databinding.DialogAppSignaturesBinding;
 
 public class ApkSignatures {
 
@@ -35,11 +35,14 @@ public class ApkSignatures {
     }
 
     public void showSignaturesDialog() {
-        aB signaturesDialog = new aB((Activity) context);
-        signaturesDialog.b(Helper.getResString(R.string.signatures_title));
-        signaturesDialog.a(abMsg);
-        signaturesDialog.setMessageIsSelectable(true);
-        signaturesDialog.b(Helper.getResString(R.string.common_word_ok), null);
+        DialogAppSignaturesBinding signaturesBinding = DialogAppSignaturesBinding.inflate(LayoutInflater.from(context));
+        MaterialAlertDialogBuilder signaturesDialog = new MaterialAlertDialogBuilder(context);
+        signaturesDialog.setTitle(Helper.getResString(R.string.signatures_title));
+
+        signaturesBinding.tvMsg.setText(abMsg);
+
+        signaturesDialog.setView(signaturesBinding.getRoot());
+        signaturesDialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
         signaturesDialog.show();
     }
 }

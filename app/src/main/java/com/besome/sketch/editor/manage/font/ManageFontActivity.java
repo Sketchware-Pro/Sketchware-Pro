@@ -17,21 +17,17 @@ import java.lang.ref.WeakReference;
 
 import a.a.a.MA;
 import a.a.a.Np;
-import a.a.a.St;
-import a.a.a.Zt;
 import a.a.a.mB;
-
 import mod.hey.studios.util.Helper;
-
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageFontBinding;
 
 public class ManageFontActivity extends BaseAppCompatActivity {
 
-    private String sc_id;
-    public Zt projectFontsFragment;
-    public St collectionFontsFragment;
+    public ImportFontFragment projectFontsFragment;
+    public FontManagerFragment collectionFontsFragment;
     public ManageFontBinding binding;
+    private String sc_id;
 
     @Override
     public void onBackPressed() {
@@ -57,7 +53,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         binding = ManageFontBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (!super.isStoragePermissionGranted()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
 
@@ -106,7 +102,7 @@ public class ManageFontActivity extends BaseAppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (!super.isStoragePermissionGranted()) {
+        if (!isStoragePermissionGranted()) {
             finish();
         }
     }
@@ -115,44 +111,6 @@ public class ManageFontActivity extends BaseAppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
-    }
-
-    private class TabLayoutAdapter extends FragmentPagerAdapter {
-        private final String[] labels = new String[2];
-
-        public TabLayoutAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
-            labels[0] = Helper.getResString(R.string.design_manager_tab_title_this_project);
-            labels[1] = Helper.getResString(R.string.design_manager_tab_title_my_collection);
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        @NonNull
-        public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            Fragment fragment = (Fragment) super.instantiateItem(container, position);
-            if (position == 0) {
-                projectFontsFragment = (Zt) fragment;
-            } else {
-                collectionFontsFragment = (St) fragment;
-            }
-            return fragment;
-        }
-
-        @Override
-        @NonNull
-        public Fragment getItem(int position) {
-            return position == 0 ? new Zt() : new St();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return labels[position];
-        }
     }
 
     private static class SaveAsyncTask extends MA {
@@ -181,6 +139,44 @@ public class ManageFontActivity extends BaseAppCompatActivity {
         @Override
         public void a(String str) {
             activityWeakReference.get().h();
+        }
+    }
+
+    private class TabLayoutAdapter extends FragmentPagerAdapter {
+        private final String[] labels = new String[2];
+
+        public TabLayoutAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+            labels[0] = Helper.getResString(R.string.design_manager_tab_title_this_project);
+            labels[1] = Helper.getResString(R.string.design_manager_tab_title_my_collection);
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        @NonNull
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            if (position == 0) {
+                projectFontsFragment = (ImportFontFragment) fragment;
+            } else {
+                collectionFontsFragment = (FontManagerFragment) fragment;
+            }
+            return fragment;
+        }
+
+        @Override
+        @NonNull
+        public Fragment getItem(int position) {
+            return position == 0 ? new ImportFontFragment() : new FontManagerFragment();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return labels[position];
         }
     }
 }

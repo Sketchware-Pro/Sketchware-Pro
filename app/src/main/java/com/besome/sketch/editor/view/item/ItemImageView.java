@@ -1,13 +1,16 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.wB;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+
 import androidx.appcompat.widget.AppCompatImageView;
+
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.wB;
 
 public class ItemImageView extends AppCompatImageView implements sy {
 
@@ -39,12 +42,27 @@ public class ItemImageView extends AppCompatImageView implements sy {
     }
 
     @Override
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
+    }
+
+    @Override
     public boolean getFixed() {
         return this.fixed;
     }
 
+    public void setFixed(boolean fixed) {
+        this.fixed = fixed;
+    }
+
     public boolean getSelection() {
         return this.selected;
+    }
+
+    @Override
+    public void setSelection(boolean selected) {
+        this.selected = selected;
+        invalidate();
     }
 
     @Override
@@ -56,23 +74,8 @@ public class ItemImageView extends AppCompatImageView implements sy {
     }
 
     @Override
-    public void setBean(ViewBean viewBean) {
-        this.viewBean = viewBean;
-    }
-
-    public void setFixed(boolean fixed) {
-        this.fixed = fixed;
-    }
-
-    @Override
     public void setPadding(int left, int top, int right, int bottom) {
         float oneDp = this.oneDp;
         super.setPadding((int) (left * oneDp), (int) (top * oneDp), (int) (right * oneDp), (int) (bottom * oneDp));
-    }
-
-    @Override
-    public void setSelection(boolean selected) {
-        this.selected = selected;
-        invalidate();
     }
 }

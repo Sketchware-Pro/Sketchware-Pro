@@ -2,29 +2,30 @@ package pro.sketchware.fragments.settings.block.selector.details;
 
 import static pro.sketchware.utility.GsonUtils.getGson;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.material.appbar.MaterialToolbar;
-
-import mod.hey.studios.util.Helper;
-import pro.sketchware.databinding.FragmentBlockSelectorManagerBinding;
-import pro.sketchware.databinding.DialogAddCustomActivityBinding;
-import pro.sketchware.databinding.DialogSelectorActionsBinding;
-
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.fragments.settings.block.selector.Selector;
-import pro.sketchware.fragments.settings.block.selector.BlockSelectorConsts;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.List;
 
-import a.a.a.aB;
 import a.a.a.qA;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.databinding.DialogAddCustomActivityBinding;
+import pro.sketchware.databinding.DialogSelectorActionsBinding;
+import pro.sketchware.databinding.FragmentBlockSelectorManagerBinding;
+import pro.sketchware.fragments.settings.block.selector.BlockSelectorConsts;
+import pro.sketchware.fragments.settings.block.selector.Selector;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class BlockSelectorDetailsFragment extends qA {
 
@@ -52,9 +53,9 @@ public class BlockSelectorDetailsFragment extends qA {
         handleInsetts(binding.getRoot());
 
         adapter = new BlockSelectorDetailsAdapter(
-          (selector, indexA) -> showActionsDialog(indexA)
+                (selector, indexA) -> showActionsDialog(indexA)
         );
-        
+
         adapter.submitList(selectors.get(index).getData());
         binding.list.setAdapter(adapter);
 
@@ -68,9 +69,9 @@ public class BlockSelectorDetailsFragment extends qA {
             dialogBinding.activityNameInput.setText(selectors.get(index).getData().get(indexA));
         }
 
-        aB dialog = new aB(requireActivity());
-        dialog.b("New Selector Item");
-        dialog.b("Create", v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
+        dialog.setTitle("New Selector Item");
+        dialog.setPositiveButton("Create", (v, which) -> {
             String newItem = Helper.getText(dialogBinding.activityNameInput);
             if (newItem != null && !newItem.isEmpty()) {
                 if (!isEdit) {
@@ -81,19 +82,19 @@ public class BlockSelectorDetailsFragment extends qA {
                 saveAll();
                 adapter.notifyDataSetChanged();
             }
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a("Cancel", v -> dialog.dismiss());
-        dialog.a(dialogBinding.getRoot());
+        dialog.setNegativeButton("Cancel", null);
+        dialog.setView(dialogBinding.getRoot());
         dialog.show();
     }
 
     private void showActionsDialog(int indexA) {
         DialogSelectorActionsBinding dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext()));
 
-        aB dialog = new aB(requireActivity());
-        dialog.b("Actions");
-        dialog.a(dialogBinding.getRoot());
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireActivity()).create();
+        dialog.setTitle("Actions");
+        dialog.setView(dialogBinding.getRoot());
 
         dialogBinding.edit.setOnClickListener(v -> {
             dialog.dismiss();
@@ -105,14 +106,14 @@ public class BlockSelectorDetailsFragment extends qA {
         dialogBinding.delete.setOnClickListener(v -> {
             dialog.dismiss();
             showConfirmationDialog(
-                "Are you sure you want to delete this Selector Item?",
-                confirmDialog -> {
-                    selectors.get(index).getData().remove(indexA);
-                    saveAll();
-                    adapter.notifyDataSetChanged();
-                    confirmDialog.dismiss();
-                },
-                cancelDialog -> cancelDialog.dismiss()
+                    "Are you sure you want to delete this Selector Item?",
+                    confirmDialog -> {
+                        selectors.get(index).getData().remove(indexA);
+                        saveAll();
+                        adapter.notifyDataSetChanged();
+                        confirmDialog.dismiss();
+                    },
+                    DialogInterface::dismiss
             );
         });
 
@@ -120,11 +121,11 @@ public class BlockSelectorDetailsFragment extends qA {
     }
 
     private void showConfirmationDialog(String message, OnDialogClickListener onConfirm, OnDialogClickListener onCancel) {
-        aB dialog = new aB(requireActivity());
-        dialog.b("Attention");
-        dialog.a(message);
-        dialog.b("Yes", v -> onConfirm.onClick(dialog));
-        dialog.a("Cancel", v -> onCancel.onClick(dialog));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
+        dialog.setTitle("Attention");
+        dialog.setMessage(message);
+        dialog.setPositiveButton("Yes", (v, which) -> onConfirm.onClick(v));
+        dialog.setNegativeButton("Cancel", (v, which) -> onCancel.onClick(v));
 
         dialog.show();
     }
@@ -151,6 +152,6 @@ public class BlockSelectorDetailsFragment extends qA {
 
     @FunctionalInterface
     public interface OnDialogClickListener {
-        void onClick(aB dialog);
+        void onClick(DialogInterface dialog);
     }
 }

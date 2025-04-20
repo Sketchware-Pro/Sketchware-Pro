@@ -10,21 +10,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import pro.sketchware.R;
-import pro.sketchware.databinding.FragmentEventsManagerCreatorBinding;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import a.a.a.qA;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.IconSelectorDialog;
 import mod.jbk.util.OldResourceIdMapper;
-
-import a.a.a.qA;
+import pro.sketchware.R;
+import pro.sketchware.databinding.FragmentEventsManagerCreatorBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class EventsManagerCreatorFragment extends qA {
 

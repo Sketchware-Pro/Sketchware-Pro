@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.property;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -10,15 +9,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import a.a.a.Kw;
-import a.a.a.TB;
-import a.a.a.aB;
 import a.a.a.mB;
 import a.a.a.sq;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupMeasurementBinding;
+import pro.sketchware.lib.validator.MinMaxInputValidator;
 
 @SuppressLint("ViewConstructor")
 public class PropertyMeasureItem extends RelativeLayout implements View.OnClickListener {
@@ -124,19 +124,19 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
     }
 
     private void showDialog() {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(Helper.getText(tvName));
-        dialog.a(imgLeftIconDrawableResId);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(Helper.getText(tvName));
+        dialog.setIcon(imgLeftIconDrawableResId);
 
         PropertyPopupMeasurementBinding binding = PropertyPopupMeasurementBinding.inflate(LayoutInflater.from(getContext()));
         binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
 
-        TB tb = new TB(getContext(), binding.tiInput, 0, 999);
+        MinMaxInputValidator minMaxInputValidator = new MinMaxInputValidator(getContext(), binding.tiInput, 0, 999);
 
         binding.rgWidthHeight.setOnCheckedChangeListener((group, checkedId) -> {
             if (checkedId == R.id.rb_directinput) {
                 binding.directInput.setVisibility(VISIBLE);
-                tb.a(Helper.getText(binding.edInput));
+                minMaxInputValidator.a(Helper.getText(binding.edInput));
             } else {
                 binding.directInput.setVisibility(GONE);
             }
@@ -145,7 +145,7 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         if (measureValue >= 0) {
             if (isCustomValue) {
                 binding.rgWidthHeight.check(R.id.rb_directinput);
-                tb.a(String.valueOf(measureValue));
+                minMaxInputValidator.a(String.valueOf(measureValue));
                 binding.directInput.setVisibility(VISIBLE);
             } else {
                 binding.rgWidthHeight.check(R.id.rb_wrapcontent);
@@ -157,21 +157,21 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
         } else {
             binding.rgWidthHeight.check(R.id.rb_matchparent);
         }
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.tvInputDp.setVisibility(View.GONE);
 
             binding.tiInput.setSuffixText("dp");
         }
 
-        dialog.a(binding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
+        dialog.setView(binding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
             int checkedRadioButtonId = binding.rgWidthHeight.getCheckedRadioButtonId();
             if (checkedRadioButtonId == R.id.rb_matchparent) {
                 setValue(LayoutParams.MATCH_PARENT);
             } else if (checkedRadioButtonId == R.id.rb_wrapcontent) {
                 setValue(LayoutParams.WRAP_CONTENT);
-            } else if (tb.b()) {
+            } else if (minMaxInputValidator.b()) {
                 setValue(Integer.parseInt(Helper.getText(binding.edInput)));
             } else {
                 return;
@@ -179,9 +179,9 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             if (valueChangeListener != null) {
                 valueChangeListener.a(key, measureValue);
             }
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 }

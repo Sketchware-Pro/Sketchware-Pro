@@ -28,16 +28,12 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
-import pro.sketchware.activities.main.fragments.projects_store.ProjectsStoreFragment;
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import pro.sketchware.R;
-import pro.sketchware.databinding.MainBinding;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,26 +41,33 @@ import java.util.Objects;
 
 import a.a.a.DB;
 import a.a.a.GB;
-import a.a.a.aB;
-import a.a.a.bB;
 import a.a.a.oB;
 import a.a.a.sB;
 import a.a.a.wq;
 import a.a.a.xB;
 import dev.chrisbanes.insetter.Insetter;
 import dev.chrisbanes.insetter.Side;
-import pro.sketchware.utility.SketchwareUtil;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
-import pro.sketchware.activities.about.AboutActivity;
-import pro.sketchware.lib.base.BottomSheetDialogView;
 import mod.jbk.util.LogUtil;
 import mod.tyron.backup.SingleCopyTask;
+import pro.sketchware.R;
+import pro.sketchware.activities.about.AboutActivity;
+import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
+import pro.sketchware.activities.main.fragments.projects_store.ProjectsStoreFragment;
+import pro.sketchware.databinding.MainBinding;
+import pro.sketchware.lib.base.BottomSheetDialogView;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class MainActivity extends BasePermissionAppCompatActivity {
+    private ActionBarDrawerToggle drawerToggle;
+    private DB u;
+    private Snackbar storageAccessDenied;
+    private FragmentsAdapter fragmentsAdapter;
+    private MainBinding binding;
     private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
@@ -72,12 +75,6 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             binding.drawerLayout.closeDrawers();
         }
     };
-
-    private ActionBarDrawerToggle drawerToggle;
-    private DB u;
-    private Snackbar storageAccessDenied;
-    private FragmentsAdapter fragmentsAdapter;
-    private MainBinding binding;
 
     @Override
     // onRequestPermissionsResult but for Storage access only, and only when granted
@@ -362,18 +359,18 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             boolean granted = Environment.isExternalStorageManager();
 
             if (!optOutFile.exists() && !granted) {
-                aB dialog = new aB(this);
-                dialog.a(R.drawable.ic_expire_48dp);
-                dialog.b("Android 11 storage access");
-                dialog.a("Starting with Android 11, Sketchware Pro needs a new permission to avoid " +
+                MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                dialog.setIcon(R.drawable.ic_expire_48dp);
+                dialog.setTitle("Android 11 storage access");
+                dialog.setMessage("Starting with Android 11, Sketchware Pro needs a new permission to avoid " +
                         "taking ages to build projects. Don't worry, we can't do more to storage than " +
                         "with current granted permissions.");
-                dialog.b(Helper.getResString(R.string.common_word_settings), v -> {
+                dialog.setPositiveButton(Helper.getResString(R.string.common_word_settings), (v, which) -> {
                     FileUtil.requestAllFilesAccessPermission(this);
-                    dialog.dismiss();
+                    v.dismiss();
                 });
-                dialog.a("Skip", Helper.getDialogDismissListener(dialog));
-                dialog.configureDefaultButton("Don't show anymore", v -> {
+                dialog.setNegativeButton("Skip", null);
+                dialog.setNeutralButton("Don't show anymore", (v, which) -> {
                     try {
                         if (!optOutFile.createNewFile())
                             throw new IOException("Failed to create file " + optOutFile);
@@ -381,7 +378,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                         Log.e("MainActivity", "Error while trying to create " +
                                 "\"Don't show Android 11 hint\" dialog file: " + e.getMessage(), e);
                     }
-                    dialog.dismiss();
+                    v.dismiss();
                 });
                 dialog.show();
             }
@@ -389,12 +386,12 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     }
 
     private void showNoticeNeedStorageAccess() {
-        aB dialog = new aB(this);
-        dialog.b(Helper.getResString(R.string.common_message_permission_title_storage));
-        dialog.a(R.drawable.color_about_96);
-        dialog.a(Helper.getResString(R.string.common_message_permission_need_load_project));
-        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
-            dialog.dismiss();
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(Helper.getResString(R.string.common_message_permission_title_storage));
+        dialog.setIcon(R.drawable.color_about_96);
+        dialog.setMessage(Helper.getResString(R.string.common_message_permission_need_load_project));
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
+            v.dismiss();
             ActivityCompat.requestPermissions(this, new String[]{
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -404,11 +401,11 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     }
 
     private void showNoticeNotEnoughFreeStorageSpace() {
-        aB dialog = new aB(this);
-        dialog.b(Helper.getResString(R.string.common_message_insufficient_storage_space_title));
-        dialog.a(R.drawable.high_priority_96_red);
-        dialog.a(Helper.getResString(R.string.common_message_insufficient_storage_space));
-        dialog.b(Helper.getResString(R.string.common_word_ok), Helper.getDialogDismissListener(dialog));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(Helper.getResString(R.string.common_message_insufficient_storage_space_title));
+        dialog.setIcon(R.drawable.high_priority_96_red);
+        dialog.setMessage(Helper.getResString(R.string.common_message_insufficient_storage_space));
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
         dialog.show();
     }
 
@@ -446,9 +443,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
         // Actual loading part
         if (xB.b().b(getApplicationContext())) {
-            bB.a(getApplicationContext(),
-                    Helper.getResString(R.string.message_strings_xml_loaded),
-                    0, 80, 0, 128).show();
+            SketchwareUtil.toast(Helper.getResString(R.string.message_strings_xml_loaded));
         }
     }
 

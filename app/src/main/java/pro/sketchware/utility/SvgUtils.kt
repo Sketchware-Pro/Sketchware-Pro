@@ -21,6 +21,7 @@ import kotlin.math.roundToInt
 
 
 const val SIZE_MULTIPLIER = 2
+
 class SvgUtils(private val context: Context) {
     private var imageLoader: ImageLoader? = null
 
@@ -49,7 +50,7 @@ class SvgUtils(private val context: Context) {
         }
     }
 
-    fun loadImage(imageView: ImageView, filePath: String,width: Int, height: Int) {
+    fun loadImage(imageView: ImageView, filePath: String, width: Int, height: Int) {
         val file = File(filePath)
         if (file.exists()) {
             val request: ImageRequest = ImageRequest.Builder(context)
@@ -80,7 +81,8 @@ class SvgUtils(private val context: Context) {
             .target { drawable ->
                 drawable.let {
                     // Get density scaling
-                    val densityScale = (context.resources.displayMetrics.density * scaleFactor).roundToInt()
+                    val densityScale =
+                        (context.resources.displayMetrics.density * scaleFactor).roundToInt()
                     val bitmap = drawable.toBitmap()
                     // Apply scaling to width and height
                     val scaledBitmap = Bitmap.createScaledBitmap(
@@ -98,11 +100,12 @@ class SvgUtils(private val context: Context) {
         imageLoader.enqueue(request)
     }
 
-    fun loadWithoutQueue(imageView: ImageView,filePath: String){
+    fun loadWithoutQueue(imageView: ImageView, filePath: String) {
         imageView.load(filePath) {
             decoderFactory { result, options, _ -> SvgDecoder(result.source, options) }
         }
     }
+
     fun convert(inputFilePath: String, outputDir: String, fillColor: String?) {
         // Create output directory if it doesn't exist
         Files.createDirectories(Paths.get(outputDir))
@@ -248,7 +251,8 @@ class SvgUtils(private val context: Context) {
 
         // Get width and height
         val width = parser.getAttributeValue(null, "width")?.removeSuffix("px")?.toIntOrNull() ?: 24
-        val height = parser.getAttributeValue(null, "height")?.removeSuffix("px")?.toIntOrNull() ?: 24
+        val height =
+            parser.getAttributeValue(null, "height")?.removeSuffix("px")?.toIntOrNull() ?: 24
 
         return SvgAttributes(width, height, viewportWidth, viewportHeight)
     }
@@ -283,15 +287,22 @@ class SvgUtils(private val context: Context) {
                         "g" -> {
                             groupFillColor = parser.getAttributeValue(null, "fill")
                         }
+
                         "path" -> {
                             writePath(serializer, parser, customFillColor ?: groupFillColor)
                         }
+
                         "circle", "rect", "ellipse", "polygon", "polyline" -> {
                             val pathData = convertShapeToPath(parser)
-                            writePathFromData(serializer, pathData, customFillColor ?: groupFillColor)
+                            writePathFromData(
+                                serializer,
+                                pathData,
+                                customFillColor ?: groupFillColor
+                            )
                         }
                     }
                 }
+
                 XmlPullParser.END_TAG -> {
                     depth--
                     if (parser.name == "g") {
@@ -306,7 +317,11 @@ class SvgUtils(private val context: Context) {
         serializer.endDocument()
     }
 
-    private fun writePath(serializer: XmlSerializer, parser: XmlPullParser, inheritedFill: String?) {
+    private fun writePath(
+        serializer: XmlSerializer,
+        parser: XmlPullParser,
+        inheritedFill: String?
+    ) {
         val pathData = parser.getAttributeValue(null, "d")
         val fill = parser.getAttributeValue(null, "fill") ?: inheritedFill ?: "#000000"
 
@@ -341,6 +356,7 @@ class SvgUtils(private val context: Context) {
                 val r = parser.getAttributeValue(null, "r")?.toFloatOrNull() ?: 0f
                 createCirclePath(cx, cy, r)
             }
+
             "rect" -> {
                 val x = parser.getAttributeValue(null, "x")?.toFloatOrNull() ?: 0f
                 val y = parser.getAttributeValue(null, "y")?.toFloatOrNull() ?: 0f
@@ -350,6 +366,7 @@ class SvgUtils(private val context: Context) {
                 val ry = parser.getAttributeValue(null, "ry")?.toFloatOrNull() ?: 0f
                 createRectPath(x, y, width, height, rx, ry)
             }
+
             "ellipse" -> {
                 val cx = parser.getAttributeValue(null, "cx")?.toFloatOrNull() ?: 0f
                 val cy = parser.getAttributeValue(null, "cy")?.toFloatOrNull() ?: 0f
@@ -357,6 +374,7 @@ class SvgUtils(private val context: Context) {
                 val ry = parser.getAttributeValue(null, "ry")?.toFloatOrNull() ?: 0f
                 createEllipsePath(cx, cy, rx, ry)
             }
+
             else -> ""
         }
     }

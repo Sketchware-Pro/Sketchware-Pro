@@ -9,10 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import pro.sketchware.databinding.FragmentAboutAppBinding;
-
 import pro.sketchware.activities.about.adapters.ChangeLogAdapter;
 import pro.sketchware.activities.about.models.AboutAppViewModel;
+import pro.sketchware.databinding.FragmentAboutAppBinding;
 
 public class ChangeLogFragment extends Fragment {
     private FragmentAboutAppBinding binding;

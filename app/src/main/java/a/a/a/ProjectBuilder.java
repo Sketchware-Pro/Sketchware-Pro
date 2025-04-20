@@ -75,18 +75,13 @@ import pro.sketchware.SketchApplication;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
-import proguard.Configuration;
-import proguard.ConfigurationParser;
-import proguard.ParseException;
-import proguard.ProGuard;
 
 public class ProjectBuilder {
     public static final String TAG = "AppBuilder";
 
     private final File aapt2Binary;
-    public BuildSettings build_settings;
-    private BuildProgressReceiver progressReceiver;
     private final Context context;
+    public BuildSettings build_settings;
     public yq yq;
     public FilePathUtil fpu;
     public ManageLocalLibrary mll;
@@ -94,6 +89,7 @@ public class ProjectBuilder {
     public String androidJarPath;
     public ProguardHandler proguard;
     public ProjectSettings settings;
+    private BuildProgressReceiver progressReceiver;
     private boolean buildAppBundle = false;
     private ArrayList<File> dexesToAddButNotMerge = new ArrayList<>();
 
@@ -144,6 +140,37 @@ public class ProjectBuilder {
     }
 
     /**
+     * Checks if a file on local storage differs from a file in assets, and if so,
+     * replaces the file on local storage with the one in assets.
+     * <p/>
+     * The files' sizes are compared, not content.
+     *
+     * @param fileInAssets The file in assets relative to assets/ in the APK
+     * @param targetFile   The file on local storage
+     * @return If the file in assets has been extracted
+     */
+    public static boolean hasFileChanged(String fileInAssets, String targetFile) {
+        long length;
+        File compareToFile = new File(targetFile);
+        oB fileUtil = new oB();
+        long lengthOfFileInAssets = fileUtil.a(SketchApplication.getContext(), fileInAssets);
+        if (compareToFile.exists()) {
+            length = compareToFile.length();
+        } else {
+            length = 0;
+        }
+        if (lengthOfFileInAssets == length) {
+            return false;
+        }
+
+        /* Delete the file */
+        fileUtil.a(compareToFile);
+        /* Copy the file from assets to local storage */
+        fileUtil.a(SketchApplication.getContext(), fileInAssets, targetFile);
+        return true;
+    }
+
+    /**
      * Compile resources and log time needed.
      *
      * @throws Exception Thrown when anything goes wrong while compiling resources
@@ -176,37 +203,6 @@ public class ProjectBuilder {
         builder.generateBindings();
     }
 
-    /**
-     * Checks if a file on local storage differs from a file in assets, and if so,
-     * replaces the file on local storage with the one in assets.
-     * <p/>
-     * The files' sizes are compared, not content.
-     *
-     * @param fileInAssets The file in assets relative to assets/ in the APK
-     * @param targetFile   The file on local storage
-     * @return If the file in assets has been extracted
-     */
-    public static boolean hasFileChanged(String fileInAssets, String targetFile) {
-        long length;
-        File compareToFile = new File(targetFile);
-        oB fileUtil = new oB();
-        long lengthOfFileInAssets = fileUtil.a(SketchApplication.getContext(), fileInAssets);
-        if (compareToFile.exists()) {
-            length = compareToFile.length();
-        } else {
-            length = 0;
-        }
-        if (lengthOfFileInAssets == length) {
-            return false;
-        }
-
-        /* Delete the file */
-        fileUtil.a(compareToFile);
-        /* Copy the file from assets to local storage */
-        fileUtil.a(SketchApplication.getContext(), fileInAssets, targetFile);
-        return true;
-    }
-
     public boolean isD8Enabled() {
         return build_settings.getValue(
                 BuildSettings.SETTING_DEXER,
@@ -225,7 +221,7 @@ public class ProjectBuilder {
      */
     public void createDexFilesFromClasses() throws Exception {
         FileUtil.makeDir(yq.binDirectoryPath + File.separator + "dex");
-        if (proguard.isShrinkingEnabled() && proguard.isR8Enabled()) return;
+        if (proguard.isShrinkingEnabled()) return;
 
         if (isD8Enabled()) {
             long savedTimeMillis = System.currentTimeMillis();
@@ -816,32 +812,6 @@ public class ProjectBuilder {
         merger.merge().writeTo(target);
     }
 
-    /**
-     * Adds all built-in libraries' ProGuard rules to {@code args}, if any.
-     *
-     * @param args List of arguments to add built-in libraries' ProGuard roles to.
-     */
-    private void proguardAddLibConfigs(List<String> args) {
-        for (Jp library : builtInLibraryManager.getLibraries()) {
-            File config = BuiltInLibraries.getLibraryProguardConfiguration(library.getName());
-            if (config.exists()) {
-                args.add("-include");
-                args.add(config.getAbsolutePath());
-            }
-        }
-    }
-
-    /**
-     * Generates default ProGuard R.java rules and adds them to {@code args}.
-     *
-     * @param args List of arguments to add R.java rules to.
-     */
-    private void proguardAddRjavaRules(List<String> args) {
-        FileUtil.writeFile(yq.proguardAutoGeneratedExclusions, getRJavaRules());
-        args.add("-include");
-        args.add(yq.proguardAutoGeneratedExclusions);
-    }
-
     private String getRJavaRules() {
         StringBuilder sb = new StringBuilder("# R.java rules");
         for (Jp jp : builtInLibraryManager.getLibraries()) {
@@ -897,79 +867,6 @@ public class ProjectBuilder {
             throw new IOException(e);
         }
         LogUtil.d(TAG, "R8 took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
-    }
-
-    public void runProguard() throws IOException {
-        long savedTimeMillis = System.currentTimeMillis();
-
-        ArrayList<String> args = new ArrayList<>();
-
-        /* Include global ProGuard rules */
-        args.add("-include");
-        args.add(ProguardHandler.ANDROID_PROGUARD_RULES_PATH);
-
-        /* Include ProGuard rules generated by AAPT2 */
-        args.add("-include");
-        args.add(yq.proguardAaptRules);
-
-        /* Include custom ProGuard rules */
-        args.add("-include");
-        args.add(proguard.getCustomProguardRules());
-
-        proguardAddLibConfigs(args);
-        proguardAddRjavaRules(args);
-
-        /* Include local libraries' ProGuard rules */
-        for (String rule : mll.getPgRules()) {
-            args.add("-include");
-            args.add(rule);
-        }
-
-        /* Include compiled Java classes (?) IT SAYS -in*jar*s, so why include .class es? */
-        args.add("-injars");
-        args.add(yq.compiledClassesPath);
-
-        for (HashMap<String, Object> hashMap : mll.list) {
-            String obj = hashMap.get("name").toString();
-            if (hashMap.containsKey("jarPath") && proguard.libIsProguardFMEnabled(obj)) {
-                args.add("-injars");
-                args.add(hashMap.get("jarPath").toString());
-            }
-        }
-        args.add("-libraryjars");
-        args.add(getProguardClasspath());
-        args.add("-outjars");
-        args.add(yq.proguardClassesPath);
-        if (proguard.isDebugFilesEnabled()) {
-            args.add("-printseeds");
-            args.add(yq.proguardSeedsPath);
-            args.add("-printusage");
-            args.add(yq.proguardUsagePath);
-            args.add("-printmapping");
-            args.add(yq.proguardMappingPath);
-        }
-        LogUtil.d(TAG, "About to run ProGuard with these arguments: " + args);
-
-        Configuration configuration = new Configuration();
-
-        try {
-            ConfigurationParser parser = new ConfigurationParser(args.toArray(new String[0]), System.getProperties());
-            try {
-                parser.parse(configuration);
-            } finally {
-                parser.close();
-            }
-        } catch (ParseException e) {
-            throw new IOException(e);
-        }
-
-        try {
-            new ProGuard(configuration).execute();
-        } catch (Exception e) {
-            throw new IOException(e);
-        }
-
-        LogUtil.d(TAG, "ProGuard took " + (System.currentTimeMillis() - savedTimeMillis) + " ms");
     }
 
     public void runStringfog() {

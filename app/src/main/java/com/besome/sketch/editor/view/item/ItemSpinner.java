@@ -47,12 +47,27 @@ public class ItemSpinner extends AppCompatTextView implements sy {
     }
 
     @Override
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
+    }
+
+    @Override
     public boolean getFixed() {
         return this.fixed;
     }
 
+    public void setFixed(boolean fixed) {
+        this.fixed = fixed;
+    }
+
     public boolean getSelection() {
         return this.selected;
+    }
+
+    @Override
+    public void setSelection(boolean selected) {
+        this.selected = selected;
+        invalidate();
     }
 
     @Override
@@ -64,23 +79,8 @@ public class ItemSpinner extends AppCompatTextView implements sy {
     }
 
     @Override
-    public void setBean(ViewBean viewBean) {
-        this.viewBean = viewBean;
-    }
-
-    public void setFixed(boolean fixed) {
-        this.fixed = fixed;
-    }
-
-    @Override
     public void setPadding(int left, int top, int right, int bottom) {
         float oneDp = this.oneDp;
         super.setPadding((int) (left * oneDp), (int) (top * oneDp), (int) (right * oneDp), (int) (bottom * oneDp));
-    }
-
-    @Override
-    public void setSelection(boolean selected) {
-        this.selected = selected;
-        invalidate();
     }
 }

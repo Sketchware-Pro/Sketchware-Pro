@@ -27,4 +27,6 @@
     <color name="splash_bg_color">@color/md_theme_dark_background</color>
     <color name="splash_content_color">@color/md_theme_dark_on_background</color>
 
+    <color name="color_error_bg">#261008</color>
+
 </resources>

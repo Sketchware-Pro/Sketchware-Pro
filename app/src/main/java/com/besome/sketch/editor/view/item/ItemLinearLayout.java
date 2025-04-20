@@ -1,9 +1,5 @@
 package com.besome.sketch.editor.view.item;
 
-import a.a.a.sy;
-import a.a.a.ty;
-import a.a.a.wB;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,6 +8,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
+
+import a.a.a.sy;
+import a.a.a.ty;
+import a.a.a.wB;
 
 public class ItemLinearLayout extends LinearLayout implements sy, ty {
 
@@ -94,16 +94,36 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
     }
 
     @Override
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
+    }
+
+    @Override
     public boolean getFixed() {
         return isFixed;
+    }
+
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
     }
 
     public int getLayoutGravity() {
         return layoutGravity;
     }
 
+    public void setLayoutGravity(int layoutGravity) {
+        this.layoutGravity = layoutGravity;
+        super.setGravity(layoutGravity);
+    }
+
     public boolean getSelection() {
         return isSelected;
+    }
+
+    @Override
+    public void setSelection(boolean selected) {
+        isSelected = selected;
+        invalidate();
     }
 
     @Override
@@ -129,11 +149,6 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
     }
 
     @Override
-    public void setBean(ViewBean viewBean) {
-        this.viewBean = viewBean;
-    }
-
-    @Override
     public void setChildScrollEnabled(boolean childScrollEnabled) {
         for (int i = 0; i < getChildCount(); ++i) {
             View child = getChildAt(i);
@@ -151,23 +166,8 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         }
     }
 
-    public void setFixed(boolean isFixed) {
-        this.isFixed = isFixed;
-    }
-
-    public void setLayoutGravity(int layoutGravity) {
-        this.layoutGravity = layoutGravity;
-        super.setGravity(layoutGravity);
-    }
-
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding((int) wB.a(getContext(), (float) left), (int) wB.a(getContext(), (float) top), (int) wB.a(getContext(), (float) right), (int) wB.a(getContext(), (float) bottom));
-    }
-
-    @Override
-    public void setSelection(boolean selected) {
-        isSelected = selected;
-        invalidate();
     }
 }

@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.property;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.text.Editable;
@@ -12,14 +11,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import a.a.a.Kw;
-import a.a.a.TB;
-import a.a.a.aB;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.PropertyPopupInputIndentBinding;
+import pro.sketchware.lib.validator.MinMaxInputValidator;
 
 @SuppressLint("ViewConstructor")
 public class PropertyIndentItem extends RelativeLayout implements View.OnClickListener {
@@ -137,9 +137,9 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
     private void showDialog() {
         String propertyType = Helper.getText(tvName);
 
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(propertyType);
-        dialog.a(icon);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(propertyType);
+        dialog.setIcon(icon);
 
         PropertyPopupInputIndentBinding binding = PropertyPopupInputIndentBinding.inflate(LayoutInflater.from(getContext()));
         View view = binding.getRoot();
@@ -147,11 +147,11 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         binding.tiAll.setHint(String.format(Helper.getResString(R.string.property_enter_value), propertyType.toLowerCase()));
         binding.chkPtyAll.setText(String.format("%s on all sides", propertyType));
 
-        TB ti_all = new TB(context, binding.tiAll, 0, 999);
-        TB ti_left = new TB(context, binding.tiLeft, 0, 999);
-        TB ti_right = new TB(context, binding.tiRight, 0, 999);
-        TB ti_top = new TB(context, binding.tiTop, 0, 999);
-        TB ti_bottom = new TB(context, binding.tiBottom, 0, 999);
+        MinMaxInputValidator ti_all = new MinMaxInputValidator(context, binding.tiAll, 0, 999);
+        MinMaxInputValidator ti_left = new MinMaxInputValidator(context, binding.tiLeft, 0, 999);
+        MinMaxInputValidator ti_right = new MinMaxInputValidator(context, binding.tiRight, 0, 999);
+        MinMaxInputValidator ti_top = new MinMaxInputValidator(context, binding.tiTop, 0, 999);
+        MinMaxInputValidator ti_bottom = new MinMaxInputValidator(context, binding.tiBottom, 0, 999);
 
         ti_left.a(String.valueOf(j));
         ti_top.a(String.valueOf(k));
@@ -199,23 +199,23 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                 ti_bottom.a(Helper.getText(binding.etAll));
             }
         });
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.tvDpAll.setVisibility(View.GONE);
             binding.tvDpBottom.setVisibility(View.GONE);
             binding.tvDpLeft.setVisibility(View.GONE);
             binding.tvDpRight.setVisibility(View.GONE);
             binding.tvDpTop.setVisibility(View.GONE);
-            
+
             binding.tiAll.setSuffixText("dp");
             binding.tiBottom.setSuffixText("dp");
             binding.tiLeft.setSuffixText("dp");
             binding.tiRight.setSuffixText("dp");
             binding.tiTop.setSuffixText("dp");
         }
-        
-        dialog.a(view);
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+
+        dialog.setView(view);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             if (binding.chkPtyAll.isChecked()) {
                 if (ti_all.b() && ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
                     int left = Integer.parseInt(Helper.getText(binding.etLeft));
@@ -225,7 +225,7 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                     a(left, top, right, bottom);
                     if (valueChangeListener != null) {
                         valueChangeListener.a(key, new int[]{left, top, right, bottom});
-                        dialog.dismiss();
+                        v.dismiss();
                     }
                 }
             } else if (ti_left.b() && ti_right.b() && ti_top.b() && ti_bottom.b()) {
@@ -236,11 +236,11 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
                 a(left, top, right, bottom);
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, new int[]{left, top, right, bottom});
-                    dialog.dismiss();
+                    v.dismiss();
                 }
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 }

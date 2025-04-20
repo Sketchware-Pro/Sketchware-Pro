@@ -59,21 +59,21 @@ class SingleCopyTask(private val context: Context, private val callback: CallBac
             val file = File(pathPlusName)
 
             inputStream?.use { input ->
-                    BufferedInputStream(input).use { bis ->
+                BufferedInputStream(input).use { bis ->
                     FileOutputStream(file).use { fos ->
-                    val data = ByteArray(1024)
-                var total: Long = 0
-                var count: Int
-                while (bis.read(data).also { count = it } != -1) {
-                    total += count
-                    if (size != -1) {
-                        callback.onCopyProgressUpdate((total * 100 / size).toInt())
+                        val data = ByteArray(1024)
+                        var total: Long = 0
+                        var count: Int
+                        while (bis.read(data).also { count = it } != -1) {
+                            total += count
+                            if (size != -1) {
+                                callback.onCopyProgressUpdate((total * 100 / size).toInt())
+                            }
+                            fos.write(data, 0, count)
+                        }
+                        fos.flush()
                     }
-                    fos.write(data, 0, count)
                 }
-                fos.flush()
-            }
-            }
             }
             success = true
         } catch (e: IOException) {

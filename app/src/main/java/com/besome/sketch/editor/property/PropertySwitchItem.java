@@ -4,13 +4,12 @@ import android.content.Context;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.material.materialswitch.MaterialSwitch;
-import pro.sketchware.R;
 
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public class PropertySwitchItem extends RelativeLayout implements View.OnClickListener {
 

@@ -4,27 +4,26 @@ import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 
-import a.a.a.jC;
-import a.a.a.mB;
-import a.a.a.sy;
-
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 
+import java.util.ArrayList;
+
+import a.a.a.jC;
+import a.a.a.mB;
+import a.a.a.sy;
 import pro.sketchware.databinding.ActivityLayoutPreviewBinding;
 import pro.sketchware.tools.ViewBeanParser;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
-
-import java.util.ArrayList;
 
 public class LayoutPreviewActivity extends BaseAppCompatActivity {
 
     private ActivityLayoutPreviewBinding binding;
 
     private ViewPane pane;
-    
+
     private String content;
 
     @Override
@@ -72,7 +71,11 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
     private sy loadView(ViewBean view) {
         var itemView = pane.createItemView(view);
         pane.addViewAndUpdateIndex(itemView);
-        return (sy) itemView;
+        if (itemView instanceof sy sy) {
+            sy.setFixed(true);
+            return sy;
+        }
+        return null;
     }
 
     private sy loadViews(ArrayList<ViewBean> views) {

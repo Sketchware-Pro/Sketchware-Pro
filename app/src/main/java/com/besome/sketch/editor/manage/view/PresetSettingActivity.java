@@ -8,13 +8,13 @@ import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
-import pro.sketchware.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
-import a.a.a.aB;
 import a.a.a.rq;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class PresetSettingActivity extends BaseDialogActivity implements View.OnClickListener {
 
@@ -45,13 +45,13 @@ public class PresetSettingActivity extends BaseDialogActivity implements View.On
     }
 
     private void confirmBeforeClose() {
-        aB dialog = new aB(this);
-        dialog.b(Helper.getResString(R.string.preset_setting_title));
-        dialog.a(R.drawable.ic_detail_setting_48dp);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(Helper.getResString(R.string.preset_setting_title));
+        dialog.setIcon(R.drawable.ic_detail_setting_48dp);
         dialog.setCancelable(false);
-        dialog.a(Helper.getResString(R.string.preset_setting_edit_warning));
-        dialog.b(Helper.getResString(R.string.common_word_ok), v -> close());
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setMessage(Helper.getResString(R.string.preset_setting_edit_warning));
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> close());
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 

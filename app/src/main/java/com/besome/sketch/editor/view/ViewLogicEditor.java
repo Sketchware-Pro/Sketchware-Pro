@@ -4,12 +4,13 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import com.besome.sketch.editor.logic.BlockPane;
 
 public class ViewLogicEditor extends LogicEditorScrollView {
     private final BlockPane blockPane;
-    private boolean k = true;
     private final int[] locationOnScreen = new int[2];
+    private boolean k = true;
 
     public ViewLogicEditor(Context context) {
         this(context, null);
@@ -51,9 +52,7 @@ public class ViewLogicEditor extends LogicEditorScrollView {
         int[] iArr = this.locationOnScreen;
         if (x > iArr[0] && x < iArr[0] + getWidth()) {
             int[] iArr2 = this.locationOnScreen;
-            if (y > iArr2[1] && y < iArr2[1] + getHeight()) {
-                return true;
-            }
+            return y > iArr2[1] && y < iArr2[1] + getHeight();
         }
         return false;
     }

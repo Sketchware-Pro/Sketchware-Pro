@@ -22,32 +22,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import a.a.a.Zx;
-import a.a.a.aB;
-import a.a.a.xB;
-
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-
-import mod.hey.studios.editor.manage.block.v2.BlockLoader;
-import mod.hey.studios.util.Helper;
-
-import pro.sketchware.R;
-import pro.sketchware.databinding.ActivityBlocksManagerBinding;
-import pro.sketchware.databinding.DialogBlockConfigurationBinding;
-import pro.sketchware.databinding.DialogPaletteBinding;
-import pro.sketchware.databinding.PalletCustomviewBinding;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.PropertiesUtil;
-import pro.sketchware.utility.SketchwareUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,8 +46,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import a.a.a.xB;
+import mod.hey.studios.editor.manage.block.v2.BlockLoader;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ActivityBlocksManagerBinding;
+import pro.sketchware.databinding.DialogBlockConfigurationBinding;
+import pro.sketchware.databinding.DialogPaletteBinding;
+import pro.sketchware.databinding.PalletCustomviewBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.PropertiesUtil;
+import pro.sketchware.utility.SketchwareUtil;
+
 public class BlocksManager extends BaseAppCompatActivity {
 
+    boolean isDialogShowing;
+    View draggedView;
     private ArrayList<HashMap<String, Object>> all_blocks_list = new ArrayList<>();
     private String blocks_dir;
     private String pallet_dir;
@@ -68,11 +70,9 @@ public class BlocksManager extends BaseAppCompatActivity {
     private Activity activity;
     private ArrayList<HashMap<String, Object>> pallet_listmap = new ArrayList<>();
     private ItemTouchHelper itemTouchHelper;
-    boolean isDialogShowing;
     private ActivityBlocksManagerBinding binding;
     private DialogPaletteBinding dialogBinding;
     private Vibrator vibrator;
-    View draggedView;
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
@@ -81,6 +81,12 @@ public class BlocksManager extends BaseAppCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         setContentView(binding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.background, (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
+            return insets;
+        });
 
         initialize();
     }
@@ -184,7 +190,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         String title = Objects.requireNonNull(menuItem.getTitle()).toString();
         if (title.equals("Settings")) {
             showBlockConfigurationDialog();
-        }else{
+        } else {
             return false;
         }
         return super.onOptionsItemSelected(menuItem);
@@ -199,46 +205,46 @@ public class BlocksManager extends BaseAppCompatActivity {
     }
 
     private void showBlockConfigurationDialog() {
-        aB dialog = new aB(this);
-        dialog.a(R.drawable.ic_folder_48dp);
-        dialog.b("Block configuration");
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.ic_folder_48dp);
+        dialog.setTitle("Block configuration");
 
         DialogBlockConfigurationBinding dialogBinding = DialogBlockConfigurationBinding.inflate(getLayoutInflater());
 
         dialogBinding.palettesPath.setText(pallet_dir.replace(FileUtil.getExternalStorageDir(), ""));
         dialogBinding.blocksPath.setText(blocks_dir.replace(FileUtil.getExternalStorageDir(), ""));
 
-        dialog.a(dialogBinding.getRoot());
+        dialog.setView(dialogBinding.getRoot());
 
-        dialog.b(Helper.getResString(R.string.common_word_save), view -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (view, which) -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH, Objects.requireNonNull(dialogBinding.palettesPath.getText()).toString());
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH, Objects.requireNonNull(dialogBinding.blocksPath.getText()).toString());
 
             readSettings();
             refreshList();
-            dialog.dismiss();
+            view.dismiss();
         });
 
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
 
-        dialog.configureDefaultButton("Defaults", view -> {
+        dialog.setNeutralButton("Defaults", (view, which) -> {
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH, ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_PALETTE_FILE_PATH));
             ConfigActivity.setSetting(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH, ConfigActivity.getDefaultValue(ConfigActivity.SETTING_BLOCKMANAGER_DIRECTORY_BLOCK_FILE_PATH));
 
             readSettings();
             refreshList();
-            dialog.dismiss();
+            view.dismiss();
         });
 
         dialog.show();
     }
 
     private void showMoveToBinDialog(int position) {
-        aB dialog = new aB(activity);
-        dialog.a(R.drawable.ic_mtrl_delete);
-        dialog.b(xB.b().a(activity, R.string.block_move_to_bin));
-        dialog.a(xB.b().a(activity, R.string.common_message_confirm));
-        dialog.b(xB.b().a(activity, R.string.common_word_yes), v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
+        dialog.setIcon(R.drawable.ic_mtrl_delete);
+        dialog.setTitle(xB.b().a(activity, R.string.block_move_to_bin));
+        dialog.setMessage(xB.b().a(activity, R.string.common_message_confirm));
+        dialog.setPositiveButton(xB.b().a(activity, R.string.common_word_yes), (v, which) -> {
             pallet_listmap.remove(position);
             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemRemoved(position);
             Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemChanged(position);
@@ -248,9 +254,9 @@ public class BlocksManager extends BaseAppCompatActivity {
             FileUtil.writeFile(blocks_dir, getGson().toJson(all_blocks_list));
             FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
             refreshCount();
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> dialog.dismiss());
+        dialog.setNegativeButton(xB.b().a(activity, R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -326,7 +332,7 @@ public class BlocksManager extends BaseAppCompatActivity {
     private void refreshCount() {
         if (pallet_listmap.isEmpty()) {
             binding.paletteCount.setText("No palettes");
-        }else{
+        } else {
             binding.paletteCount.setText(pallet_listmap.size() + " Palettes");
         }
     }
@@ -359,7 +365,7 @@ public class BlocksManager extends BaseAppCompatActivity {
                     HashMap<String, Object> m = all_blocks_list.get(i);
                     m.put("palette", String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) - 1)));
                     newBlocks.add(m);
-                }else{
+                } else {
                     newBlocks.add(all_blocks_list.get(i));
                 }
             }
@@ -383,7 +389,7 @@ public class BlocksManager extends BaseAppCompatActivity {
 
             if (paletteValue == f) {
                 block.put("palette", TEMP_PALETTE);
-            }else if (paletteValue == s) {
+            } else if (paletteValue == s) {
                 block.put("palette", String.valueOf((long) f));
             }
         }
@@ -428,46 +434,46 @@ public class BlocksManager extends BaseAppCompatActivity {
     }
 
     private void showPaletteDialog(boolean isEditing, Integer oldPosition, String oldName, String oldColor, Integer insertAtPosition) {
-        aB dialog = new aB(this);
-        dialog.a(R.drawable.icon_style_white_96);
-        dialog.b(!isEditing ? "Create a new palette" : "Edit palette");
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.icon_style_white_96);
+        dialog.setTitle(!isEditing ? "Create a new palette" : "Edit palette");
 
         dialogBinding = DialogPaletteBinding.inflate(getLayoutInflater());
-        
+
         if (isEditing) {
             dialogBinding.nameEditText.setText(oldName);
-            dialogBinding.colorEditText.setText(oldColor.replace("#",""));
+            dialogBinding.colorEditText.setText(oldColor.replace("#", ""));
         }
 
         dialogBinding.openColorPalette.setOnClickListener(v1 -> {
-            final Zx zx = new Zx(this, 0xFFFFFFFF, false, false);
-            zx.a(new Zx.b() {
+            final ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, 0xFFFFFFFF, false, false);
+            colorPickerDialog.a(new ColorPickerDialog.b() {
                 @Override
                 public void a(int colorInt) {
                     dialogBinding.colorEditText.setText(String.format("%06X", colorInt & 0x00FFFFFF));
                 }
-                
+
                 @Override
                 public void a(String var1, int var2) {
-                
+
                 }
             });
-            zx.showAtLocation(dialogBinding.openColorPalette, Gravity.CENTER, 0, 0);
+            colorPickerDialog.showAtLocation(dialogBinding.openColorPalette, Gravity.CENTER, 0, 0);
         });
-    
-        dialog.a(dialogBinding.getRoot());
 
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.setView(dialogBinding.getRoot());
+
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             String nameInput = Objects.requireNonNull(dialogBinding.nameEditText.getText()).toString();
             String colorInput = Objects.requireNonNull(dialogBinding.colorEditText.getText()).toString();
-            
+
             if (nameInput.isEmpty()) {
                 SketchwareUtil.toast("Name cannot be empty", Toast.LENGTH_SHORT);
                 return;
             }
             // add hash for the color 
             colorInput = "#" + colorInput;
-            
+
             if (!PropertiesUtil.isHexColor(colorInput)) {
                 SketchwareUtil.toast("Please enter a valid HEX color", Toast.LENGTH_SHORT);
                 return;
@@ -485,14 +491,14 @@ public class BlocksManager extends BaseAppCompatActivity {
                         FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
                         Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(pallet_listmap.size() - 1);
                         readSettings();
-                    }else{
+                    } else {
                         pallet_listmap.add(insertAtPosition, map);
                         FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
                         readSettings();
                         Objects.requireNonNull(binding.paletteRecycler.getAdapter()).notifyItemInserted(insertAtPosition);
                         insertBlocksAt(insertAtPosition + 9);
                     }
-                }else{
+                } else {
                     pallet_listmap.get(oldPosition).put("name", nameInput);
                     pallet_listmap.get(oldPosition).put("color", colorInput);
                     FileUtil.writeFile(pallet_dir, getGson().toJson(pallet_listmap));
@@ -500,16 +506,15 @@ public class BlocksManager extends BaseAppCompatActivity {
                     refreshList();
                 }
                 refreshCount();
-                dialog.dismiss();
+                v.dismiss();
             }
         });
 
-        dialog.a(Helper.getResString(R.string.cancel), v1 -> dialog.dismiss());
-        dialog.a(dialogBinding.getRoot());
+        dialog.setNegativeButton(Helper.getResString(R.string.cancel), null);
         dialog.show();
     }
-    
-    
+
+
     private boolean isItInTrash(View draggedView, View trash) {
         if (draggedView == null) return false;
 

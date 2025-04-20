@@ -6,9 +6,10 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
-import pro.sketchware.R;
 
 import java.util.ArrayList;
+
+import pro.sketchware.R;
 
 public class ProjectLibraryBean implements Parcelable {
     public static final Parcelable.Creator<ProjectLibraryBean> CREATOR = new Parcelable.Creator<>() {

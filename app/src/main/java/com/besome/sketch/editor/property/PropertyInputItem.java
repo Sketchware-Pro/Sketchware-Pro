@@ -4,8 +4,8 @@ import static mod.bobur.StringEditorActivity.convertXmlToListMap;
 import static mod.bobur.StringEditorActivity.isXmlStringsContains;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -27,13 +27,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.beans.ProjectFileBean;
+import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.StringReader;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,20 +49,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import java.io.IOException;
-import java.io.StringReader;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-
 import a.a.a.Jx;
 import a.a.a.Kw;
 import a.a.a.OB;
 import a.a.a.SB;
-import a.a.a.TB;
-import a.a.a._B;
-import a.a.a.aB;
 import a.a.a.jC;
 import a.a.a.lC;
 import a.a.a.mB;
@@ -70,6 +66,8 @@ import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
 import pro.sketchware.lib.base.BaseTextWatcher;
 import pro.sketchware.lib.highlighter.SyntaxScheme;
+import pro.sketchware.lib.validator.MinMaxInputValidator;
+import pro.sketchware.lib.validator.PropertyNameValidator;
 import pro.sketchware.utility.FileUtil;
 
 @SuppressLint("ViewConstructor")
@@ -201,26 +199,26 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     }
 
     private void showViewIdDialog() {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(Helper.getText(tvName));
-        dialog.a(icon);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(Helper.getText(tvName));
+        dialog.setIcon(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
 
         binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), "widget ID"));
 
         binding.edInput.setSingleLine();
-        _B validator = new _B(context, binding.tiInput, uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
+        PropertyNameValidator validator = new PropertyNameValidator(context, binding.tiInput, uq.b, uq.a(), jC.a(sc_id).a(projectFileBean), value);
         validator.a(value);
-        dialog.a(binding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.setView(binding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             if (validator.b()) {
                 setValue(Helper.getText(binding.edInput));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
-                dialog.dismiss();
+                v.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -230,9 +228,9 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     }
 
     private void showNumberInputDialog() {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(Helper.getText(tvName));
-        dialog.a(icon);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(Helper.getText(tvName));
+        dialog.setIcon(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
         binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
@@ -240,25 +238,25 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         binding.edInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
         binding.edInput.setText(value);
 
-        TB validator = new TB(context, binding.tiInput, 0,
+        MinMaxInputValidator validator = new MinMaxInputValidator(context, binding.tiInput, 0,
                 (key.equals("property_max") || key.equals("property_progress")) ? 0x7fffffff : 999);
 
-        dialog.a(binding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.setView(binding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             if (validator.b()) {
                 setValue(Helper.getText(binding.edInput));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
-                dialog.dismiss();
+                v.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
     private void showTextInputDialog(int maxValue, boolean isInject) {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(Helper.getText(tvName));
-        dialog.a(icon);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(Helper.getText(tvName));
+        dialog.setIcon(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
 
@@ -278,9 +276,8 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             binding.tiAutoCompleteInput.setVisibility(View.VISIBLE);
             binding.tiInput.setVisibility(View.GONE);
 
-            dialog.a(binding.getRoot());
-            dialog.setDismissOnDefaultButtonClick(false);
-            dialog.configureDefaultButton(Helper.getResString(R.string.strings_xml), v -> {
+            dialog.setView(binding.getRoot());
+            dialog.setNeutralButton(Helper.getResString(R.string.strings_xml), (v, which) -> {
                 binding.edTiAutoCompleteInput.setText(stringsStart);
                 binding.edTiAutoCompleteInput.setSelection(stringsStart.length());
                 binding.edTiAutoCompleteInput.requestFocus();
@@ -290,9 +287,10 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         }
 
         lengthValidator.a(value);
-        dialog.a(binding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> handleSave(lengthValidator, binding.edInput, binding.edTiAutoCompleteInput, binding.tiAutoCompleteInput, isInject, dialog));
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setView(binding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) ->
+                handleSave(lengthValidator, binding.edInput, binding.edTiAutoCompleteInput, binding.tiAutoCompleteInput, isInject, v));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -318,7 +316,7 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     private void handleSave(SB lengthValidator, EditText input,
                             MaterialAutoCompleteTextView autoCompleteTextView, TextInputLayout textAutoCompleteInput,
-                            boolean isInject, aB dialog) {
+                            boolean isInject, DialogInterface dialog) {
         if (lengthValidator.b() && textAutoCompleteInput.getError() == null) {
             if (isInject) {
                 setValue(Helper.getText(input));
@@ -381,9 +379,9 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
     }
 
     private void showNumberDecimalInputDialog(int minValue, int maxValue) {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(Helper.getText(tvName));
-        dialog.a(icon);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(Helper.getText(tvName));
+        dialog.setIcon(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
         binding.tiInput.setHint(String.format(Helper.getResString(R.string.property_enter_value), Helper.getText(tvName)));
@@ -396,22 +394,22 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
         OB validator = new OB(context, binding.tiInput, minValue, maxValue);
 
-        dialog.a(binding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.setView(binding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             if (validator.b()) {
                 setValue(Helper.getText(binding.edInput));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
-                dialog.dismiss();
+                v.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
     private void showAutoCompleteDialog() {
-        aB dialog = new aB((Activity) getContext());
-        dialog.b(Helper.getText(tvName));
-        dialog.a(icon);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
+        dialog.setTitle(Helper.getText(tvName));
+        dialog.setIcon(icon);
 
         PropertyPopupInputTextBinding binding = PropertyPopupInputTextBinding.inflate(LayoutInflater.from(getContext()));
         MaterialAutoCompleteTextView input = binding.edTiAutoCompleteInput;
@@ -422,15 +420,15 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         binding.tiAutoCompleteInput.setVisibility(View.VISIBLE);
         SB lengthValidator = new SB(context, binding.tiInput, 0, 99);
         lengthValidator.a(value);
-        dialog.a(binding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        dialog.setView(binding.getRoot());
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             if (lengthValidator.b()) {
                 setValue(Helper.getText(input));
                 if (valueChangeListener != null) valueChangeListener.a(key, value);
-                dialog.dismiss();
+                v.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
@@ -562,31 +560,31 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
 
     /**
      * Populates additional attributes for specific view types.
-     * 
-     * You can add more attributes directly to this list instead of introducing 
-     * another variable in the ViewBean class. Use the ViewBean#type field 
+     * <p>
+     * You can add more attributes directly to this list instead of introducing
+     * another variable in the ViewBean class. Use the ViewBean#type field
      * or getClassInfo methods to identify the type of view and add attributes accordingly.
-     * 
+     * <p>
      * Examples:
-     * 
+     * <p>
      * // Using ViewBean#type
      * if (bean.type == ViewBean.VIEW_TYPE_WIDGET_TEXTVIEW) {
-     *     attrs.add("android:text");
+     * attrs.add("android:text");
      * }
-     * 
+     * <p>
      * // Using getClassInfo
      * if (bean.getClassInfo().a("TextView")) {
-     *     attrs.add("android:text");
+     * attrs.add("android:text");
      * }
      * if (bean.getClassInfo().b("LinearLayout")) {
-     *     attrs.add("android:orientation");
+     * attrs.add("android:orientation");
      * }
-     * 
+     * <p>
      * Notes for getClassInfo:
      * - a(String): Similar to instanceof for view class names.
-     * - b(String): Represents the actual type of the view, I think?. 
-     *   Idk if there's a difference between ViewBean#type and this.
-     * 
+     * - b(String): Represents the actual type of the view, I think?.
+     * Idk if there's a difference between ViewBean#type and this.
+     *
      * @return A list of additional attributes for the specified view type.
      */
     private List<String> populateAttributes() {
@@ -826,13 +824,12 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                         return true;
                     }
                 };
+        private Map<String, String> attributes;
+        private ItemClickListener listener;
 
         public AttributesAdapter() {
             super(DIFF_CALLBACK);
         }
-
-        private Map<String, String> attributes;
-        private ItemClickListener listener;
 
         public void setAttributes(Map<String, String> attributes) {
             this.attributes = attributes;
@@ -852,6 +849,13 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             holder.bind(getItem(position));
+        }
+
+        private interface ItemClickListener {
+
+            void onItemClick(Map<String, String> attributes, String item);
+
+            void onItemLongClick(Map<String, String> attributes, String item);
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
@@ -879,13 +883,6 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
                             return true;
                         });
             }
-        }
-
-        private interface ItemClickListener {
-
-            void onItemClick(Map<String, String> attributes, String item);
-
-            void onItemLongClick(Map<String, String> attributes, String item);
         }
     }
 }

@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.lib.ui.CustomScrollView;
 import com.google.android.material.card.MaterialCardView;
-import pro.sketchware.R;
 
 import java.util.ArrayList;
 
@@ -20,6 +19,7 @@ import a.a.a.Us;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.AppSettings;
+import pro.sketchware.R;
 
 public class LogicEditorDrawer extends LinearLayout {
 

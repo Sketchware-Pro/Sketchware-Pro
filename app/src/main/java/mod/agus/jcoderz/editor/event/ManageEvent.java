@@ -1,12 +1,11 @@
 package mod.agus.jcoderz.editor.event;
 
-import pro.sketchware.R;
-
 import java.util.ArrayList;
 
 import a.a.a.Gx;
 import a.a.a.Lx;
 import mod.hilal.saif.events.EventsHandler;
+import pro.sketchware.R;
 
 public class ManageEvent {
 
@@ -775,7 +774,7 @@ public class ManageEvent {
                             listenerLogic + "\r\n" +
                             "};";
             case "FragmentStatePagerAdapter" -> {
-                String className = Lx.a(targetId + "Fragment");
+                String className = Lx.a(targetId + "Fragment", false);
                 yield "public class " + className + " extends FragmentStatePagerAdapter {\r\n" +
                         "// This class is deprecated, you should migrate to ViewPager2:\r\n" +
                         "// https://developer.android.com/reference/androidx/viewpager2/widget/ViewPager2\r\n" +

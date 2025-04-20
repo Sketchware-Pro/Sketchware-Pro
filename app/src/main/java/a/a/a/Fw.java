@@ -29,10 +29,10 @@ public class Fw extends qA {
 
     private static final int REQUEST_CODE_PRESET_ACTIVITY = 276;
     private static final int REQUEST_CODE_ADD_VIEW_ACTIVITY = 265;
+    private final int[] m = new int[19];
     private RecyclerView activitiesList;
     private Boolean k = false;
     private TextView tvGuide;
-    private final int[] m = new int[19];
     private ProjectFilesAdapter projectFilesAdapter = null;
     private String sc_id;
     private String isAppCompatUsed = "N";

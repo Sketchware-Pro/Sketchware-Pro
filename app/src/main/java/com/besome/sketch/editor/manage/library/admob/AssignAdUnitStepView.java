@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.manage.library.admob;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
@@ -13,16 +12,16 @@ import android.widget.TextView;
 
 import com.besome.sketch.beans.AdUnitBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
-import pro.sketchware.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
 import a.a.a.Uu;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.gB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickListener {
     private final ArrayList<String> adUnits = new ArrayList<>();
@@ -53,17 +52,17 @@ public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickLis
     }
 
     private void setAdUnit(int position) {
-        aB dialog = new aB((Activity) getContext());
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
         View rootView = wB.a(getContext(), R.layout.property_popup_selector_single);
         ViewGroup viewGroup = rootView.findViewById(R.id.rg_content);
-        dialog.b(Helper.getResString(R.string.design_library_admob_dialog_select_unit_title));
+        dialog.setTitle(Helper.getResString(R.string.design_library_admob_dialog_select_unit_title));
 
         for (String adUnit : adUnits) {
             viewGroup.addView(addRadioButton(adUnit));
         }
 
-        dialog.a(rootView);
-        dialog.b(Helper.getResString(R.string.common_word_select), v -> {
+        dialog.setView(rootView);
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 RadioButton radioButton = (RadioButton) viewGroup.getChildAt(i);
                 if (radioButton.isChecked()) {
@@ -77,9 +76,9 @@ public class AssignAdUnitStepView extends LinearLayout implements Uu, OnClickLis
                     break;
                 }
             }
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 

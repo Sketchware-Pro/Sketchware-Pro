@@ -9,13 +9,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import pro.sketchware.R;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 
 import a.a.a.Kw;
-import a.a.a.Zx;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 @SuppressLint("ViewConstructor")
 public class PropertyColorItem extends RelativeLayout implements View.OnClickListener {
@@ -66,10 +66,6 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         return value;
     }
 
-    public String getResValue() {
-        return resValue;
-    }
-
     public void setValue(int value) {
         this.value = value;
         resValue = null;
@@ -83,6 +79,10 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             tvValue.setText(String.format("#%08X", value));
             viewColor.setBackgroundColor(value);
         }
+    }
+
+    public String getResValue() {
+        return resValue;
     }
 
     public void setValue(int value, String resValue) {
@@ -146,8 +146,8 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             colorTransparentAvailable = false;
             colorNoneAvailable = false;
         }
-        Zx colorPicker = new Zx((Activity) context, value, colorTransparentAvailable, colorNoneAvailable, sc_id);
-        colorPicker.a(new Zx.b() {
+        ColorPickerDialog colorPicker = new ColorPickerDialog((Activity) context, value, colorTransparentAvailable, colorNoneAvailable, sc_id);
+        colorPicker.a(new ColorPickerDialog.b() {
             @Override
             public void a(int var1) {
                 setValue(var1);

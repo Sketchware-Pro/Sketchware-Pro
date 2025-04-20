@@ -6,9 +6,9 @@ import android.graphics.Canvas;
 
 import com.besome.sketch.beans.ViewBean;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import pro.sketchware.R;
 
 import a.a.a.sy;
+import pro.sketchware.R;
 
 public class ItemFloatingActionButton extends FloatingActionButton implements sy {
 
@@ -29,12 +29,27 @@ public class ItemFloatingActionButton extends FloatingActionButton implements sy
     }
 
     @Override
+    public void setBean(ViewBean viewBean) {
+        this.viewBean = viewBean;
+    }
+
+    @Override
     public boolean getFixed() {
         return isFixed;
     }
 
+    public void setFixed(boolean isFixed) {
+        this.isFixed = isFixed;
+    }
+
     public boolean getSelection() {
         return isSelected;
+    }
+
+    @Override
+    public void setSelection(boolean isSelected) {
+        this.isSelected = isSelected;
+        invalidate();
     }
 
     @Override
@@ -53,22 +68,7 @@ public class ItemFloatingActionButton extends FloatingActionButton implements sy
         super.onDraw(canvas);
     }
 
-    @Override
-    public void setBean(ViewBean viewBean) {
-        this.viewBean = viewBean;
-    }
-
-    public void setFixed(boolean isFixed) {
-        this.isFixed = isFixed;
-    }
-
     public void setMainColor(int color) {
         maincolor = color;
-    }
-
-    @Override
-    public void setSelection(boolean isSelected) {
-        this.isSelected = isSelected;
-        invalidate();
     }
 }

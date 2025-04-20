@@ -11,7 +11,6 @@
         <item>Space</item>
 
         <item>HorizontalScrollView</item>
-        <item>VerticalScrollView</item>
         <item>ScrollView</item>
         <item>androidx.core.widget.NestedScrollView</item>
         <item>androidx.recyclerview.widget.RecyclerView</item>

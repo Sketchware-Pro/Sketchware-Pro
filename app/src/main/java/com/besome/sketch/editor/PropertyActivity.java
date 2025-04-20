@@ -39,7 +39,7 @@ import a.a.a.cC;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.ro;
-import a.a.a.tx;
+import com.besome.sketch.editor.property.PropertyResourceItem;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -71,7 +71,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
 
     private void m() {
         ArrayList<String> var1 = jC.d(sc_id).m();
-        tx resourceProperty;
+        PropertyResourceItem resourceProperty;
         if (!var1.contains(viewBean.layout.backgroundResource)) {
             viewBean.layout.backgroundResource = null;
             resourceProperty = content.findViewWithTag("property_background_resource");
@@ -163,7 +163,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.property);
-        
+
         content = findViewById(R.id.content);
         layoutAds = findViewById(R.id.layout_ads);
         scrollView = findViewById(R.id.scroll_view);

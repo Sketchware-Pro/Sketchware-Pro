@@ -86,7 +86,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
     private ArrayList<BlockCollectionBean> blocks;
     private ArrayList<MoreBlockCollectionBean> moreBlocks;
     private int currentItemId = 1;
-    private int collectionItemsSize = 6;
+    private final int collectionItemsSize = 6;
     private TextView noItemsNote;
     private FloatingActionButton fab;
     private String sc_id;
@@ -662,11 +662,11 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
             }
 
             Glide.with(getApplicationContext())
-                    .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName)
                     .asBitmap()
+                    .load(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + bean.resFullName)
                     .centerCrop()
                     .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(holder.image));
+                    .into(new BitmapImageViewTarget(holder.image).getView());
 
             holder.name.setText(bean.resName);
             holder.checkBox.setChecked(bean.isSelected);
@@ -718,7 +718,7 @@ public class ManageCollectionActivity extends BaseAppCompatActivity implements V
 
             if (bean.isSelected) {
                 holder.delete.setImageResource(R.drawable.ic_checkmark_green_48dp);
-            } else { 
+            } else {
                 holder.delete.setImageResource(R.drawable.ic_trashcan_white_48dp);
             }
 

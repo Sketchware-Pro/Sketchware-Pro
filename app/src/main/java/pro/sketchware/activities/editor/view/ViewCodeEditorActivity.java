@@ -17,8 +17,8 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import a.a.a.aB;
 import a.a.a.cC;
 import a.a.a.jC;
 import io.github.rosemoe.sora.widget.CodeEditor;
@@ -55,25 +55,21 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
                 @Override
                 public void handleOnBackPressed() {
                     if (isContentModified()) {
-                        aB dialog = new aB(ViewCodeEditorActivity.this);
-                        dialog.a(R.drawable.ic_warning_96dp);
-                        dialog.b(Helper.getResString(R.string.common_word_warning));
-                        dialog.a(
-                                Helper.getResString(
-                                        R.string
-                                                .src_code_editor_unsaved_changes_dialog_warning_message));
+                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(ViewCodeEditorActivity.this);
+                        dialog.setIcon(R.drawable.ic_warning_96dp);
+                        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
+                        dialog.setMessage(Helper.getResString(
+                                R.string
+                                        .src_code_editor_unsaved_changes_dialog_warning_message));
 
-                        dialog.b(
-                                Helper.getResString(R.string.common_word_exit),
-                                v -> {
-                                    dialog.dismiss();
-                                    exitWithEditedContent();
-                                    finish();
-                                });
+                        dialog.setPositiveButton(Helper.getResString(R.string.common_word_exit), (v, which) -> {
+                            v.dismiss();
+                            exitWithEditedContent();
+                            finish();
+                        });
 
-                        dialog.a(
-                                Helper.getResString(R.string.common_word_cancel),
-                                Helper.getDialogDismissListener(dialog));
+                        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel),
+                                null);
                         dialog.show();
                     } else {
                         if (isEdited) {

@@ -27,13 +27,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
-import pro.sketchware.databinding.DialogSaveIconBinding;
-import pro.sketchware.databinding.ImportIconBinding;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,16 +44,31 @@ import java.util.stream.Stream;
 import a.a.a.KB;
 import a.a.a.MA;
 import a.a.a.WB;
-import a.a.a.Zx;
 import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.wq;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 import pro.sketchware.activities.importicon.adapters.IconAdapter;
+import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
+import pro.sketchware.databinding.DialogSaveIconBinding;
+import pro.sketchware.databinding.ImportIconBinding;
 import pro.sketchware.utility.SvgUtils;
 
 public class ImportIconActivity extends BaseAppCompatActivity implements IconAdapter.OnIconSelectedListener {
 
+    private static final String ICON_TYPE_OUTLINE = "outline";
+    private static final String ICON_TYPE_SHARP = "sharp";
+    private static final String ICON_TYPE_TWO_TONE = "twotone";
+    private static final String ICON_TYPE_ROUND = "round";
+    private static final String ICON_TYPE_BASELINE = "baseline";
+    private final int ITEMS_PER_PAGE = 40;
+    private ImportIconBinding binding;
+    private String iconName;
+    private WB iconNameValidator;
+    private MenuItem search;
+    private SearchView searchView;
     private final OnBackPressedCallback searchViewCloser = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
@@ -71,13 +81,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             }
         }
     };
-
-    private ImportIconBinding binding;
-
-    private String iconName;
-    private WB iconNameValidator;
-    private MenuItem search;
-    private SearchView searchView;
     private IconAdapter adapter = null;
     private ArrayList<String> alreadyAddedImageNames;
     private SvgUtils svgUtils;
@@ -85,22 +88,14 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private int selected_color = Color.parseColor("#9E9E9E");
     private String selected_color_hex = "#9E9E9E";
     private int selectedIconPosition = -1;
-
-    private static final String ICON_TYPE_OUTLINE = "outline";
-    private static final String ICON_TYPE_SHARP = "sharp";
-    private static final String ICON_TYPE_TWO_TONE = "twotone";
-    private static final String ICON_TYPE_ROUND = "round";
-    private static final String ICON_TYPE_BASELINE = "baseline";
-
     private List<Pair<String, String>> allIconPaths;
     private List<Pair<String, String>> icons;
-    private final int ITEMS_PER_PAGE = 40;
     private int currentPage = 0;
 
     private boolean isLoading = false;
     private boolean isLastPage = false;
 
-    private Zx colorpicker;
+    private ColorPickerDialog colorpicker;
 
     private int getGridLayoutColumnCount() {
         return ((int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density)) / 80;
@@ -129,7 +124,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         binding = ImportIconBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        colorpicker = new Zx(this, 0xFF9E9E9E, false, false);
+        colorpicker = new ColorPickerDialog(this, 0xFF9E9E9E, false, false);
         svgUtils = new SvgUtils(this);
         Toolbar toolbar = binding.toolbar.toolbar;
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);
@@ -295,7 +290,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             dialogBinding.selectColour.setTextColor(Color.WHITE);
         }
         dialogBinding.selectColour.setOnClickListener(view -> {
-            colorpicker.a(new Zx.b() {
+            colorpicker.a(new ColorPickerDialog.b() {
                 @Override
                 public void a(int var1) {
                     selected_color = var1;
@@ -421,6 +416,15 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         dialog.show();
     }
 
+    @Override
+    public void onIconSelected(int position) {
+        if (!mB.a()) {
+            selectedIconPosition = position;
+            setIconName(position);
+            showSaveDialog(position);
+        }
+    }
+
     private static class InitialIconLoader extends MA {
         private final WeakReference<ImportIconActivity> activity;
 
@@ -486,15 +490,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         @Override
         public void a(String str) {
             activity.get().h();
-        }
-    }
-
-    @Override
-    public void onIconSelected(int position) {
-        if (!mB.a()) {
-            selectedIconPosition = position;
-            setIconName(position);
-            showSaveDialog(position);
         }
     }
 }

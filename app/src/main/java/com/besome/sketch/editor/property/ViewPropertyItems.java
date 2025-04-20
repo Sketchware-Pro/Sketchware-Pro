@@ -35,19 +35,18 @@ import a.a.a.cC;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.oq;
-import a.a.a.tx;
 import a.a.a.xB;
 import mod.hey.studios.project.ProjectSettings;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.R;
 
 public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickListener {
-    private String sc_id;
     private final boolean b = false;
+    private final HashMap<String, View> f = new HashMap<>();
+    private String sc_id;
     private ViewBean c;
     private Lw d;
     private ProjectFileBean e;
-    private final HashMap<String, View> f = new HashMap<>();
     private ProjectSettings settings;
 
     public ViewPropertyItems(Context var1) {
@@ -107,7 +106,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             case "property_text" -> b(property, bean.text.text);
             case "property_text_size" -> c(property, bean.text.textSize);
             case "property_text_style" -> c(property, bean.text.textType);
-            case "property_text_color" -> r(property,bean.text.resTextColor, bean.text.textColor);
+            case "property_text_color" -> r(property, bean.text.resTextColor, bean.text.textColor);
             case "property_hint" -> b(property, bean.text.hint);
             case "property_hint_color" -> r(property, bean.text.resHintColor, bean.text.hintColor);
             case "property_single_line" -> e(property, bean.text.singleLine);
@@ -116,8 +115,10 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             case "property_ime_option" -> c(property, bean.text.imeOption);
             case "property_image" -> b(property, bean.image.resName, true);
             case "property_scale_type" -> d(property, bean.image.scaleType);
-            case "property_background_resource" -> b(property, bean.layout.backgroundResource, false);
-            case "property_background_color" -> r(property, bean.layout.backgroundResColor,bean.layout.backgroundColor);
+            case "property_background_resource" ->
+                    b(property, bean.layout.backgroundResource, false);
+            case "property_background_color" ->
+                    r(property, bean.layout.backgroundResColor, bean.layout.backgroundColor);
             case "property_enabled" -> e(property, bean.enabled);
             case "property_rotate" -> b(property, String.valueOf(bean.image.rotate));
             case "property_alpha" -> b(property, String.valueOf(bean.alpha));
@@ -180,18 +181,18 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         addView(indentItem);
     }
 
-    private void r(String name, String value,int value2) {
+    private void r(String name, String value, int value2) {
         PropertyColorItem colorItem = (PropertyColorItem) f.get(name);
         if (colorItem == null) {
-            colorItem = new PropertyColorItem(getContext(), !b,sc_id);
+            colorItem = new PropertyColorItem(getContext(), !b, sc_id);
             colorItem.setOrientationItem(getOrientation());
             colorItem.setKey(name);
-            colorItem.setValue(value2,value);
+            colorItem.setValue(value2, value);
             colorItem.setTag(name);
             colorItem.setOnPropertyValueChangeListener(this);
             f.put(name, colorItem);
         } else {
-            colorItem.setValue(value2,value);
+            colorItem.setValue(value2, value);
         }
         addView(colorItem);
     }
@@ -344,9 +345,9 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
     }
 
     private void b(String key, String value, boolean z) {
-        tx drawableItem = (tx) f.get(key);
+        PropertyResourceItem drawableItem = (PropertyResourceItem) f.get(key);
         if (drawableItem == null) {
-            drawableItem = new tx(getContext(), !b, sc_id, z);
+            drawableItem = new PropertyResourceItem(getContext(), !b, sc_id, z);
             drawableItem.setOrientationItem(getOrientation());
             drawableItem.setKey(key);
             drawableItem.setValue(value);
@@ -520,7 +521,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
 
         addView(switchSingleLineItem);
     }
-    
+
     private void setupAttributes(String key, HashMap<String, String> value) {
         ArrayList<ViewBean> viewBeans = jC.a(sc_id).d(e.getXmlName());
         List<String> ids = new ArrayList<>();
@@ -806,7 +807,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                 } else if (gravityItem.getKey().equals("property_layout_gravity")) {
                     bean.layout.layoutGravity = gravityItem.getValue();
                 }
-            } else if (view instanceof tx image_item) {
+            } else if (view instanceof PropertyResourceItem image_item) {
                 if (image_item.getKey().equals("property_image")) {
                     bean.image.resName = image_item.getValue();
                 } else if (image_item.getKey().equals("property_background_resource")) {
@@ -828,7 +829,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         }
 
         if (!bean.id.equals(bean.preId)) {
-            boolean viewBinding = settings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING,  "false").equals("true");
+            boolean viewBinding = settings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "false").equals("true");
             for (ViewBean viewBean : jC.a(sc_id).d(e.getXmlName())) {
                 if (viewBean.parent.equals(bean.preId)) {
                     viewBean.parent = bean.id;

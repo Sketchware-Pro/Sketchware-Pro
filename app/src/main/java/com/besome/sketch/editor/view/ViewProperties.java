@@ -11,13 +11,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.besome.sketch.ctrls.ViewIdSpinnerItem;
-import pro.sketchware.R;
 
 import java.util.ArrayList;
 
 import a.a.a.Jw;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class ViewProperties extends RelativeLayout implements AdapterView.OnItemSelectedListener {
 
@@ -64,8 +64,8 @@ public class ViewProperties extends RelativeLayout implements AdapterView.OnItem
     private static class SpinnerItemAdapter extends BaseAdapter {
 
         private final Context context;
-        private int layoutPosition;
         private final ArrayList<String> data;
+        private int layoutPosition;
 
         public SpinnerItemAdapter(Context context, ArrayList<String> arrayList) {
             this.context = context;

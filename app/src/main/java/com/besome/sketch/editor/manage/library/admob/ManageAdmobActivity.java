@@ -21,17 +21,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.AdTestDeviceBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageLibraryManageAdmobBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
 import a.a.a.DB;
 import a.a.a.GB;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.mB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryManageAdmobBinding;
 
 public class ManageAdmobActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
@@ -247,36 +247,36 @@ public class ManageAdmobActivity extends BaseAppCompatActivity implements View.O
     }
 
     private void configureLibrary() {
-        final aB dialog = new aB(this);
-        dialog.a(R.drawable.delete_96);
-        dialog.b(Helper.getResString(R.string.common_word_warning));
-        dialog.a(Helper.getResString(R.string.design_library_admob_dialog_description_confirm_uncheck));
+        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.delete_96);
+        dialog.setTitle(Helper.getResString(R.string.common_word_warning));
+        dialog.setMessage(Helper.getResString(R.string.design_library_admob_dialog_description_confirm_uncheck));
         dialog.setCancelable(false);
-        dialog.b(Helper.getResString(R.string.common_word_delete), v -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v, which) -> {
             if (!mB.a()) {
                 admobLibraryBean.useYn = "N";
                 binding.libSwitch.setChecked(false);
-                dialog.dismiss();
+                v.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 
     private void downloadChromeDialog() {
-        final aB dialog = new aB(this);
-        dialog.a(R.drawable.chrome_96);
-        dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
-        dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
-        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
+        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.chrome_96);
+        dialog.setTitle(Helper.getResString(R.string.title_compatible_chrome_browser));
+        dialog.setMessage(Helper.getResString(R.string.message_compatible_chrome_brower));
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
                 startActivity(intent);
-                dialog.dismiss();
+                v.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 

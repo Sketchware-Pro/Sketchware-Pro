@@ -2,7 +2,6 @@ package dev.aldi.sayuti.editor.manage;
 
 import static dev.aldi.sayuti.editor.manage.LocalLibrariesUtil.createLibraryMap;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -15,22 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.cosmic.ide.dependency.resolver.api.Artifact;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
-import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.pranav.dependency.resolver.DependencyResolver;
-
 import pro.sketchware.R;
 import pro.sketchware.databinding.LibraryDownloaderDialogBinding;
 import pro.sketchware.utility.FileUtil;
@@ -39,17 +34,13 @@ import pro.sketchware.utility.SketchwareUtil;
 public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
     private LibraryDownloaderDialogBinding binding;
 
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
     private BuildSettings buildSettings;
 
     private boolean notAssociatedWithProject;
     private String dependencyName;
     private String localLibFile;
     private OnLibraryDownloadedTask onLibraryDownloadedTask;
-
-    public interface OnLibraryDownloadedTask {
-        void invoke();
-    }
 
     @Nullable
     @Override
@@ -235,5 +226,9 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
         if (!downloading) {
             binding.dependencyInfo.setText(R.string.local_library_manager_dependency_info);
         }
+    }
+
+    public interface OnLibraryDownloadedTask {
+        void invoke();
     }
 }

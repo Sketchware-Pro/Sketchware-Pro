@@ -12,13 +12,16 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -28,23 +31,17 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import a.a.a.XB;
-import a.a.a.Zx;
-import a.a.a.aB;
 import a.a.a.xB;
-import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import mod.hey.studios.code.SrcCodeEditor;
-import mod.hilal.saif.activities.tools.ConfigActivity;
 import pro.sketchware.R;
 import pro.sketchware.activities.coloreditor.adapters.ColorsAdapter;
 import pro.sketchware.activities.coloreditor.models.ColorItem;
 import pro.sketchware.databinding.ColorEditorActivityBinding;
 import pro.sketchware.databinding.ColorEditorAddBinding;
-import pro.sketchware.utility.PropertiesUtil;
+import pro.sketchware.lib.validator.ColorInputValidator;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
 
@@ -58,7 +55,7 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
     private ColorEditorActivityBinding binding;
     private ColorsAdapter adapter;
     private Activity activity;
-    private Zx colorpicker;
+    private ColorPickerDialog colorpicker;
     private String title;
     private String xmlPath;
 
@@ -172,7 +169,7 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
         contentPath = getIntent().getStringExtra("content");
         title = getIntent().getStringExtra("title");
         xmlPath = getIntent().getStringExtra("xml");
-        colorpicker = new Zx(this, 0xFFFFFFFF, false, false);
+        colorpicker = new ColorPickerDialog(this, 0xFFFFFFFF, false, false);
 
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
@@ -195,8 +192,7 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
                     if (!binding.addColorButton.isExtended()) {
                         binding.addColorButton.extend();
                     }
-                }
-                else if (dy > 0) {
+                } else if (dy > 0) {
                     if (binding.addColorButton.isExtended()) {
                         binding.addColorButton.shrink();
                     }
@@ -260,16 +256,16 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
     }
 
     private void showExitDialog() {
-        aB dialog = new aB(activity);
-        dialog.b(xB.b().a(activity, R.string.common_word_warning));
-        dialog.a(xB.b().a(activity, R.string.src_code_editor_unsaved_changes_dialog_warning_message));
-        dialog.b(xB.b().a(activity, R.string.common_word_save), v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
+        dialog.setTitle(xB.b().a(activity, R.string.common_word_warning));
+        dialog.setMessage(xB.b().a(activity, R.string.src_code_editor_unsaved_changes_dialog_warning_message));
+        dialog.setPositiveButton(xB.b().a(activity, R.string.common_word_save), (v, which) -> {
             XmlUtil.saveXml(contentPath, convertListToXml(colorList));
-            dialog.dismiss();
+            v.dismiss();
             finish();
         });
-        dialog.a(xB.b().a(activity, R.string.common_word_exit), v -> {
-            dialog.dismiss();
+        dialog.setNegativeButton(xB.b().a(activity, R.string.common_word_exit), (v, which) -> {
+            v.dismiss();
             finish();
         });
         dialog.show();
@@ -313,24 +309,24 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
     }
 
     public void showDeleteDialog(int position) {
-        aB dialog = new aB(activity);
-        dialog.a(R.drawable.ic_mtrl_delete);
-        dialog.b(xB.b().a(activity, R.string.color_editor_delete_color));
-        dialog.a(xB.b().a(activity, R.string.picker_color_message_delete_all_custom_color));
-        dialog.b(xB.b().a(activity, R.string.common_word_delete), v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
+        dialog.setIcon(R.drawable.ic_mtrl_delete);
+        dialog.setTitle(xB.b().a(activity, R.string.color_editor_delete_color));
+        dialog.setMessage(xB.b().a(activity, R.string.picker_color_message_delete_all_custom_color));
+        dialog.setPositiveButton(xB.b().a(activity, R.string.common_word_delete), (v, which) -> {
             colorList.remove(position);
             adapter.notifyItemRemoved(position);
             adapter.notifyItemRangeChanged(position, colorList.size());
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(xB.b().a(activity, R.string.common_word_cancel), v -> dialog.dismiss());
+        dialog.setNegativeButton(xB.b().a(activity, R.string.common_word_cancel), (v, which) -> v.dismiss());
         dialog.show();
     }
 
     public void showColorEditDialog(ColorItem colorItem, int position) {
-        aB dialog = new aB(this);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         ColorEditorAddBinding dialogBinding = ColorEditorAddBinding.inflate(LayoutInflater.from(this));
-        XB colorValidator = new XB(this, dialogBinding.colorValueInputLayout, dialogBinding.colorPreview);
+        ColorInputValidator colorValidator = new ColorInputValidator(this, dialogBinding.colorValueInputLayout, dialogBinding.colorPreview);
 
         if (colorItem != null) {
             dialogBinding.colorKeyInput.setText(colorItem.getColorName());
@@ -348,14 +344,14 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
 
             }
 
-            dialog.b("Edit color");
+            dialog.setTitle("Edit color");
 
         } else {
-            dialog.b("Add new color");
+            dialog.setTitle("Add new color");
             dialogBinding.colorPreview.setBackgroundColor(0xFFFFFF);
         }
 
-        dialog.b("Save", v1 -> {
+        dialog.setPositiveButton("Save", (v1, which) -> {
             String key = Objects.requireNonNull(dialogBinding.colorKeyInput.getText()).toString();
             String value = Objects.requireNonNull(dialogBinding.colorValueInput.getText()).toString();
 
@@ -384,11 +380,11 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
             } else {
                 addColor(key, value);
             }
-            dialog.dismiss();
+            v1.dismiss();
         });
 
         dialogBinding.colorPreviewCard.setOnClickListener(v -> {
-            colorpicker.a(new Zx.b() {
+            colorpicker.a(new ColorPickerDialog.b() {
                 @Override
                 public void a(int colorInt) {
                     String selectedColorHex = "#" + String.format("%06X", colorInt & 0x00FFFFFF);
@@ -407,16 +403,16 @@ public class ColorEditorActivity extends BaseAppCompatActivity {
         });
 
         if (colorItem != null) {
-            dialog.configureDefaultButton("Delete", v1 -> {
+            dialog.setNeutralButton("Delete", (v1, which) -> {
                 colorList.remove(position);
                 adapter.notifyItemRemoved(position);
                 adapter.notifyItemRangeChanged(position, colorList.size());
-                dialog.dismiss();
+                v1.dismiss();
             });
         }
 
-        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
-        dialog.a(dialogBinding.getRoot());
+        dialog.setNegativeButton(getString(R.string.cancel), (v1, which) -> v1.dismiss());
+        dialog.setView(dialogBinding.getRoot());
         dialog.show();
     }
 

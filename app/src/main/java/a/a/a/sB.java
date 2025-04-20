@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
-import pro.sketchware.activities.main.activities.MainActivity;
-import pro.sketchware.R;
-
 import java.util.HashMap;
 
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuiltInLibraries;
+import pro.sketchware.R;
+import pro.sketchware.activities.main.activities.MainActivity;
 
 public class sB {
     public static void a(Context context, boolean resetOnlySettings) {

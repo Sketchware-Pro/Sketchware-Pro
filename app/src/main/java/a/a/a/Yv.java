@@ -114,97 +114,6 @@ public class Yv extends qA {
         outState.putString("dir_path", dirPath);
     }
 
-    private class Adapter extends SoundPlayingAdapter<Adapter.ViewHolder> {
-        private final LayoutInflater inflater;
-
-        public Adapter() {
-            super(requireActivity());
-            this.inflater = LayoutInflater.from(requireActivity());
-        }
-
-        @Override
-        public ProjectResourceBean getData(int position) {
-            return sounds.get(position);
-        }
-
-        @Override
-        public Path getAudio(int position) {
-            return Paths.get(wq.a(), "sound", "data", sounds.get(position).resFullName);
-        }
-
-        private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
-            private final ManageSoundListItemBinding binding;
-            private AudioMetadata audioMetadata;
-
-            public ViewHolder(@NonNull ManageSoundListItemBinding binding) {
-                super(binding.getRoot());
-                this.binding = binding;
-
-                binding.imgPlay.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        soundPlayer.onPlayPressed(getLayoutPosition());
-                    }
-                });
-
-                binding.getRoot().setOnClickListener(v -> binding.chkSelect.setChecked(!binding.chkSelect.isChecked()));
-
-                binding.chkSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    int position = getLayoutPosition();
-                    sounds.get(position).isSelected = isChecked;
-                    updateImportSoundsText();
-                    new Handler().post(() -> notifyItemChanged(position));
-                });
-            }
-
-            @Override
-            protected TextView getCurrentPosition() {
-                return binding.tvCurrenttime;
-            }
-
-            @Override
-            protected ProgressBar getPlaybackProgress() {
-                return binding.progPlaytime;
-            }
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean bean = sounds.get(position);
-            holder.binding.chkSelect.setVisibility(View.VISIBLE);
-
-            var audioMetadata = holder.audioMetadata;
-            var audio = getAudio(position);
-            if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
-                audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
-                bean.totalSoundDuration = audioMetadata.getDurationInMs();
-                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.binding.imgAlbum);
-            }
-
-            int positionInS = bean.curSoundPosition / 1000;
-            holder.binding.tvCurrenttime.setText(String.format(Locale.US, "%d:%02d", positionInS / 60, positionInS % 60));
-            int durationInS = bean.totalSoundDuration / 1000;
-            holder.binding.tvEndtime.setText(String.format(Locale.US, "%d:%02d", durationInS / 60, durationInS % 60));
-            holder.binding.chkSelect.setChecked(bean.isSelected);
-            holder.binding.tvSoundName.setText(bean.resName);
-            boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
-            holder.binding.imgPlay.setImageResource(playing ? R.drawable.ic_mtrl_circle_pause : R.drawable.ic_mtrl_circle_play);
-            holder.binding.progPlaytime.setMax(bean.totalSoundDuration / 100);
-            holder.binding.progPlaytime.setProgress(bean.curSoundPosition / 100);
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ManageSoundListItemBinding binding = ManageSoundListItemBinding.inflate(inflater, parent, false);
-            return new ViewHolder(binding);
-        }
-
-        @Override
-        public int getItemCount() {
-            return sounds.size();
-        }
-    }
-
     public void stopPlayback() {
         adapter.stopPlayback();
     }
@@ -243,6 +152,97 @@ public class Yv extends qA {
         if (!beans.isEmpty()) {
             ((ManageSoundActivity) requireActivity()).projectSounds.handleImportedResources(beans);
             ((ManageSoundActivity) requireActivity()).binding.viewPager.setCurrentItem(0);
+        }
+    }
+
+    private class Adapter extends SoundPlayingAdapter<Adapter.ViewHolder> {
+        private final LayoutInflater inflater;
+
+        public Adapter() {
+            super(requireActivity());
+            this.inflater = LayoutInflater.from(requireActivity());
+        }
+
+        @Override
+        public ProjectResourceBean getData(int position) {
+            return sounds.get(position);
+        }
+
+        @Override
+        public Path getAudio(int position) {
+            return Paths.get(wq.a(), "sound", "data", sounds.get(position).resFullName);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ProjectResourceBean bean = sounds.get(position);
+            holder.binding.chkSelect.setVisibility(View.VISIBLE);
+
+            var audioMetadata = holder.audioMetadata;
+            var audio = getAudio(position);
+            if (audioMetadata == null || !audioMetadata.getSource().equals(audio)) {
+                audioMetadata = holder.audioMetadata = AudioMetadata.fromPath(audio);
+                bean.totalSoundDuration = audioMetadata.getDurationInMs();
+                audioMetadata.setEmbeddedPictureAsAlbumCover(requireActivity(), holder.binding.imgAlbum);
+            }
+
+            int positionInS = bean.curSoundPosition / 1000;
+            holder.binding.tvCurrenttime.setText(String.format(Locale.US, "%d:%02d", positionInS / 60, positionInS % 60));
+            int durationInS = bean.totalSoundDuration / 1000;
+            holder.binding.tvEndtime.setText(String.format(Locale.US, "%d:%02d", durationInS / 60, durationInS % 60));
+            holder.binding.chkSelect.setChecked(bean.isSelected);
+            holder.binding.tvSoundName.setText(bean.resName);
+            boolean playing = position == soundPlayer.getNowPlayingPosition() && soundPlayer.isPlaying();
+            holder.binding.imgPlay.setImageResource(playing ? R.drawable.ic_mtrl_circle_pause : R.drawable.ic_mtrl_circle_play);
+            holder.binding.progPlaytime.setMax(bean.totalSoundDuration / 100);
+            holder.binding.progPlaytime.setProgress(bean.curSoundPosition / 100);
+        }
+
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ManageSoundListItemBinding binding = ManageSoundListItemBinding.inflate(inflater, parent, false);
+            return new ViewHolder(binding);
+        }
+
+        @Override
+        public int getItemCount() {
+            return sounds.size();
+        }
+
+        private class ViewHolder extends SoundPlayingAdapter.ViewHolder {
+            private final ManageSoundListItemBinding binding;
+            private AudioMetadata audioMetadata;
+
+            public ViewHolder(@NonNull ManageSoundListItemBinding binding) {
+                super(binding.getRoot());
+                this.binding = binding;
+
+                binding.imgPlay.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        soundPlayer.onPlayPressed(getLayoutPosition());
+                    }
+                });
+
+                binding.getRoot().setOnClickListener(v -> binding.chkSelect.setChecked(!binding.chkSelect.isChecked()));
+
+                binding.chkSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    int position = getLayoutPosition();
+                    sounds.get(position).isSelected = isChecked;
+                    updateImportSoundsText();
+                    new Handler().post(() -> notifyItemChanged(position));
+                });
+            }
+
+            @Override
+            protected TextView getCurrentPosition() {
+                return binding.tvCurrenttime;
+            }
+
+            @Override
+            protected ProgressBar getPlaybackProgress() {
+                return binding.progPlaytime;
+            }
         }
     }
 }

@@ -10,13 +10,12 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import mod.hilal.saif.blocks.CommandBlock;
+import java.util.HashMap;
 
+import mod.hilal.saif.blocks.CommandBlock;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ItemXmlCommandBinding;
 import pro.sketchware.listeners.ItemClickListener;
-
-import java.util.HashMap;
 
 public class XMLCommandAdapter
         extends ListAdapter<HashMap<String, Object>, XMLCommandAdapter.ViewHolder> {
@@ -36,12 +35,11 @@ public class XMLCommandAdapter
                     return oldItem.equals(newItem);
                 }
             };
+    private ItemClickListener<Pair<View, Integer>> listener;
 
     public XMLCommandAdapter() {
         super(DIFF_CALLBACK);
     }
-
-    private ItemClickListener<Pair<View, Integer>> listener;
 
     public void setOnItemClickListener(
             ItemClickListener<Pair<View, Integer>> listener) {

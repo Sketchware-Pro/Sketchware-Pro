@@ -24,12 +24,6 @@ import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,6 +33,8 @@ import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class ManageSoundImportActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private QB nameValidator;
@@ -262,39 +258,55 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         }
     }
 
-    private class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
-        private class ViewHolder extends RecyclerView.ViewHolder {
-            public LinearLayout layout_item;
-            public ImageView img_conflict;
-            public ImageView img;
-            public TextView tv_name;
+    private void showPreview(int i) {
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setOnPreparedListener(mp -> {
+            mediaPlayerIsPrepared = true;
+            img_play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
+        });
+        mediaPlayer.setOnCompletionListener(mp -> mediaPlayerIsPrepared = false);
+        try {
+            String filePath = selectedCollections.get(i).resFullName;
+            loadSoundEmbeddedPicture(filePath, img_album, -1);
+            mediaPlayer.setDataSource(filePath);
+            mediaPlayer.prepare();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-                layout_item = itemView.findViewById(R.id.layout_item);
-                img_conflict = itemView.findViewById(R.id.img_conflict);
-                img = itemView.findViewById(R.id.img);
-                tv_name = itemView.findViewById(R.id.tv_name);
-                img.setOnClickListener(v -> {
-                    if (!mB.a()) {
-                        pausePlayback();
-                        selectedItem = getLayoutPosition();
-                        showPreview(selectedItem);
-                        tv_currentnum.setText(String.valueOf(selectedItem + 1));
-                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
-                        if (chk_samename.isChecked()) {
-                            nameValidator.c(null);
-                            nameValidator.a(selectedCollections.size());
-                        } else {
-                            nameValidator.c(selectedCollections.get(selectedItem).resName);
-                            nameValidator.a(1);
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+    private boolean isNameInUseByProjectSound(String str) {
+        for (ProjectResourceBean projectSound : projectSounds) {
+            if (projectSound.resName.equals(str)) {
+                return true;
             }
         }
+        return false;
+    }
 
+    private void loadSoundEmbeddedPicture(String filePath, ImageView target, int position) throws IOException {
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        try {
+            mediaMetadataRetriever.setDataSource(filePath);
+            if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
+                Glide.with(getApplicationContext()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(target);
+            } else {
+                target.setImageResource(R.drawable.default_album_art_200dp);
+                if (position != -1 && selectedItem != position) {
+                    target.setBackgroundResource(R.drawable.bg_outline_album);
+                }
+            }
+        } catch (IllegalArgumentException unused) {
+            target.setImageResource(R.drawable.default_album_art_200dp);
+            if (position != -1 && selectedItem != position) {
+                target.setBackgroundResource(R.drawable.bg_outline_album);
+            }
+        }
+        mediaMetadataRetriever.release();
+    }
+
+    private class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         public ItemAdapter() {
         }
 
@@ -329,58 +341,37 @@ public class ManageSoundImportActivity extends BaseAppCompatActivity implements 
         public int getItemCount() {
             return selectedCollections.size();
         }
-    }
 
-    private void showPreview(int i) {
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mediaPlayer.setOnPreparedListener(mp -> {
-            mediaPlayerIsPrepared = true;
-            img_play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
-        });
-        mediaPlayer.setOnCompletionListener(mp -> mediaPlayerIsPrepared = false);
-        try {
-            String filePath = selectedCollections.get(i).resFullName;
-            loadSoundEmbeddedPicture(filePath, img_album, -1);
-            mediaPlayer.setDataSource(filePath);
-            mediaPlayer.prepare();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+        private class ViewHolder extends RecyclerView.ViewHolder {
+            public LinearLayout layout_item;
+            public ImageView img_conflict;
+            public ImageView img;
+            public TextView tv_name;
 
-    private boolean isNameInUseByProjectSound(String str) {
-        for (ProjectResourceBean projectSound : projectSounds) {
-            if (projectSound.resName.equals(str)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void loadSoundEmbeddedPicture(String filePath, ImageView target, int position) throws IOException {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        try {
-            mediaMetadataRetriever.setDataSource(filePath);
-            if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                Glide.with(getApplicationContext()).load(mediaMetadataRetriever.getEmbeddedPicture()).centerCrop().into(new SimpleTarget<GlideDrawable>() {
-                    @Override
-                    public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        target.setImageDrawable(glideDrawable);
+            public ViewHolder(@NonNull View itemView) {
+                super(itemView);
+                layout_item = itemView.findViewById(R.id.layout_item);
+                img_conflict = itemView.findViewById(R.id.img_conflict);
+                img = itemView.findViewById(R.id.img);
+                tv_name = itemView.findViewById(R.id.tv_name);
+                img.setOnClickListener(v -> {
+                    if (!mB.a()) {
+                        pausePlayback();
+                        selectedItem = getLayoutPosition();
+                        showPreview(selectedItem);
+                        tv_currentnum.setText(String.valueOf(selectedItem + 1));
+                        ed_input_edittext.setText(selectedCollections.get(selectedItem).resName);
+                        if (chk_samename.isChecked()) {
+                            nameValidator.c(null);
+                            nameValidator.a(selectedCollections.size());
+                        } else {
+                            nameValidator.c(selectedCollections.get(selectedItem).resName);
+                            nameValidator.a(1);
+                        }
+                        adapter.notifyDataSetChanged();
                     }
                 });
-            } else {
-                target.setImageResource(R.drawable.default_album_art_200dp);
-                if (position != -1 && selectedItem != position) {
-                    target.setBackgroundResource(R.drawable.bg_outline_album);
-                }
-            }
-        } catch (IllegalArgumentException unused) {
-            target.setImageResource(R.drawable.default_album_art_200dp);
-            if (position != -1 && selectedItem != position) {
-                target.setBackgroundResource(R.drawable.bg_outline_album);
             }
         }
-        mediaMetadataRetriever.release();
     }
 }

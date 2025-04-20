@@ -16,8 +16,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 import a.a.a.ProjectBuilder;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.project.ProjectSettings;
+import pro.sketchware.utility.FileUtil;
 
 public class DexCompiler {
     @TargetApi(Build.VERSION_CODES.O)

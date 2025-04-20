@@ -10,25 +10,23 @@ import android.view.View;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.lib.base.BaseDialogActivity;
 
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.databinding.ManageFontAddBinding;
-
 import java.io.File;
 import java.util.ArrayList;
 
 import a.a.a.Np;
-import pro.sketchware.lib.validator.WB2;
 import a.a.a.bB;
 import a.a.a.uq;
 import a.a.a.wq;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageFontAddBinding;
+import pro.sketchware.lib.validator.FontNameValidator;
 
 public class AddFontCollectionActivity extends BaseDialogActivity implements View.OnClickListener {
+    public int requestCode;
     private ArrayList<ProjectResourceBean> projectResourceBeanArrayList;
     private ProjectResourceBean projectResourceBean;
-    private WB2 fontValidator;
-    public int requestCode;
-
+    private FontNameValidator fontValidator;
     private ManageFontAddBinding binding;
 
     public void onCreate(Bundle bundle) {
@@ -50,8 +48,8 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
         binding.fontPreviewView.setVisibility(View.VISIBLE);
         this.r.setOnClickListener(this);
         this.s.setOnClickListener(this);
-        fontValidator = new WB2(this, binding.tiInput, uq.b, getExistingFontNames());
-        fontValidator = new WB2(this, binding.tiInput, uq.b, getExistingFontNames(), projectResourceBean.resName);
+        fontValidator = new FontNameValidator(this, binding.tiInput, uq.b, getExistingFontNames());
+        fontValidator = new FontNameValidator(this, binding.tiInput, uq.b, getExistingFontNames(), projectResourceBean.resName);
         binding.edInput.setText(projectResourceBean.resName);
         binding.fontPreviewTxt.setTypeface(Typeface.createFromFile(getFontFilePath(projectResourceBean)));
         addBasicTextChangedListener(binding.edInput, str -> {

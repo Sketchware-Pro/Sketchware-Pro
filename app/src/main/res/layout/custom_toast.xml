@@ -1,26 +1,22 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/custom_toast_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_toast_normal"
-    android:gravity="center"
-    android:orientation="horizontal"
-    android:paddingHorizontal="24dp"
-    android:paddingVertical="8dp"
-    android:paddingLeft="24dp"
-    android:paddingTop="8dp"
-    android:paddingRight="24dp"
-    android:paddingBottom="8dp">
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="?colorSurface"
+    app:strokeColor="?colorPrimary"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="16dp">
 
     <TextView
         android:id="@+id/tv_stoast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
         android:gravity="center"
-        android:paddingVertical="8dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:textColor="@color/scolor_black_01"
-        android:textSize="13sp" />
-</LinearLayout>
+        android:textSize="14sp"
+        android:textColor="?colorPrimary"
+        tools:text="toast!"/>
+
+</com.google.android.material.card.MaterialCardView>

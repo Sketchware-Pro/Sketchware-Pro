@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import a.a.a.ProjectBuilder;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
+import pro.sketchware.utility.FileUtil;
 
 public class ProguardHandler {
     public static String ANDROID_PROGUARD_RULES_PATH = createAndroidRules();
@@ -179,34 +179,6 @@ public class ProguardHandler {
         FileUtil.writeFile(config_path, new Gson().toJson(config));
     }
 
-    public boolean isR8Enabled() {
-        boolean r8Enabled = true;
-        if (FileUtil.isExistFile(config_path)) {
-            try {
-                var config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
-
-                String enabled = config.get("r8");
-                if (enabled == null) {
-                    r8Enabled = false;
-                } else {
-                    r8Enabled = enabled.equals("true");
-                }
-
-            } catch (Exception e) {
-                r8Enabled = false;
-            }
-        }
-
-        return r8Enabled;
-    }
-
-    public void setR8Enabled(boolean r8Enabled) {
-        var config = new Gson().fromJson(FileUtil.readFile(config_path), Helper.TYPE_STRING_MAP);
-        config.put("r8", String.valueOf(r8Enabled));
-
-        FileUtil.writeFile(config_path, new Gson().toJson(config));
-    }
-
     public boolean libIsProguardFMEnabled(String library) {
         boolean enabled;
         if (isShrinkingEnabled() && FileUtil.isExistFile(fm_config_path)) {
@@ -240,13 +212,9 @@ public class ProguardHandler {
 
     public void start(BuildProgressReceiver progressReceiver, ProjectBuilder builder) throws IOException {
         if (isShrinkingEnabled()) {
-            if (isR8Enabled()) {
-                progressReceiver.onProgress("Running R8 on classes...", 15);
-                builder.runR8();
-            } else {
-                progressReceiver.onProgress("ProGuarding classes...", 16);
-                builder.runProguard();
-            }
+            progressReceiver.onProgress("Running R8 on classes...", 15);
+            builder.runR8();
+
         }
     }
 }

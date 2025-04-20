@@ -26,9 +26,9 @@ public class Hx {
     private final ArrayList<ComponentCallback> callbackEvents = new ArrayList<>();
     private final ArrayList<String> imports = new ArrayList<>();
     private final HashMap<String, String> activityLifecycleEvents = new HashMap<>();
+    private final Boolean isViewBindingEnabled;
     public String k = "";
     public String l = "";
-    private final Boolean isViewBindingEnabled;
 
     public Hx(jq jq, ProjectFileBean projectFileBean, eC eC) {
         this.jq = jq;
@@ -127,7 +127,7 @@ public class Hx {
 
     public void addLifecycleEvent(String eventName, String viewType, String viewId) {
         if (!activityLifecycleEvents.containsKey(eventName)) {
-            activityLifecycleEvents.put(eventName, Lx.getDefaultActivityLifecycleCode(eventName, viewType, isViewBindingEnabled ? ViewBindingBuilder.generateParameterFromId(viewId) : viewId));
+            activityLifecycleEvents.put(eventName, Lx.getDefaultActivityLifecycleCode(eventName, viewType, isViewBindingEnabled ? "binding." + ViewBindingBuilder.generateParameterFromId(viewId) : viewId));
         }
     }
 

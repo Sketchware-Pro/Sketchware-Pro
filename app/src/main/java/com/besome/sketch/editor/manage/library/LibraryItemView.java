@@ -16,13 +16,12 @@ import a.a.a.xB;
 import pro.sketchware.R;
 
 public class LibraryItemView extends FrameLayout {
-    protected final Context context;
-
     public final CardView container;
     public final ImageView icon;
     public final TextView title;
     public final TextView description;
     public final TextView enabled;
+    protected final Context context;
 
     public LibraryItemView(Context context) {
         super(context);
@@ -59,12 +58,12 @@ public class LibraryItemView extends FrameLayout {
     }
 
     @Override
-    public void setTag(Object tag) {
-        container.setTag(tag);
+    public Object getTag() {
+        return container.getTag();
     }
 
     @Override
-    public Object getTag() {
-        return container.getTag();
+    public void setTag(Object tag) {
+        container.setTag(tag);
     }
 }

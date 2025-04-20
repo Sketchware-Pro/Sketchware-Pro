@@ -14,12 +14,10 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.export.ExportProjectActivity;
-import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
+import com.besome.sketch.lib.ui.LoadingDialog;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import pro.sketchware.R;
-import pro.sketchware.databinding.BottomSheetProjectOptionsBinding;
-import pro.sketchware.databinding.MyprojectsItemBinding;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,8 +25,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import a.a.a.ZA;
-import a.a.a.aB;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.wq;
@@ -36,6 +32,10 @@ import a.a.a.yB;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
+import pro.sketchware.databinding.BottomSheetProjectOptionsBinding;
+import pro.sketchware.databinding.MyprojectsItemBinding;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ProjectViewHolder> {
     private final ProjectsFragment projectsFragment;
@@ -181,17 +181,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         return new ProjectViewHolder(binding);
     }
 
-    static class ProjectViewHolder extends RecyclerView.ViewHolder {
-        final MyprojectsItemBinding binding;
-
-        ProjectViewHolder(MyprojectsItemBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
-
     private void deleteProject(HashMap<String, Object> projectMap, int position) {
-        ZA progressDialog = new ZA(activity);
+        LoadingDialog progressDialog = new LoadingDialog(activity);
         progressDialog.show();
 
         String scId = yB.c(projectMap, "sc_id");
@@ -259,17 +250,26 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
         binding.projectDelete.setOnClickListener(v -> {
             projectOptionsBSD.dismiss();
-            aB dialog = new aB(activity);
-            dialog.a(R.drawable.icon_delete);
-            dialog.b(Helper.getResString(R.string.delete_project_dialog_title));
-            dialog.a(Helper.getResString(R.string.delete_project_dialog_message).replace("%1$s", yB.c(projectMap, "my_app_name")));
-            dialog.b(Helper.getResString(R.string.common_word_delete), v1 -> {
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
+            dialog.setIcon(R.drawable.icon_delete);
+            dialog.setTitle(Helper.getResString(R.string.delete_project_dialog_title));
+            dialog.setMessage(Helper.getResString(R.string.delete_project_dialog_message).replace("%1$s", yB.c(projectMap, "my_app_name")));
+            dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v1, which) -> {
                 deleteProject(projectMap, position);
-                dialog.dismiss();
+                v1.dismiss();
             });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
             dialog.show();
         });
         projectOptionsBSD.show();
+    }
+
+    static class ProjectViewHolder extends RecyclerView.ViewHolder {
+        final MyprojectsItemBinding binding;
+
+        ProjectViewHolder(MyprojectsItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
     }
 }

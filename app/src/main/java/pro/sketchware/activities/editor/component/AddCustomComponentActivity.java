@@ -14,37 +14,33 @@ import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
 
-import a.a.a.aB;
-import a.a.a.wq;
-
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import a.a.a.wq;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.IconSelectorDialog;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.util.OldResourceIdMapper;
-
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageCustomComponentAddBinding;
 import pro.sketchware.tools.ComponentHelper;
-import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class AddCustomComponentActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
+    private final String path = wq.getCustomComponent();
     private boolean isEditMode = false;
     private int position = 0;
-
-    private final String path = wq.getCustomComponent();
-
     private ManageCustomComponentAddBinding binding;
 
     @Override
@@ -216,8 +212,8 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
                 .map(component -> (String) component.get("name"))
                 .collect(Collectors.toList());
         if (componentNames.size() > 1) {
-            var dialog = new aB(this);
-            dialog.b(Helper.getResString(R.string.logic_editor_title_select_component));
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+            dialog.setTitle(Helper.getResString(R.string.logic_editor_title_select_component));
             var choiceToImport = new AtomicInteger(-1);
             var listView = new ListView(this);
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, componentNames);
@@ -228,8 +224,8 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
             listView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
                 choiceToImport.set(position);
             });
-            dialog.a(listView);
-            dialog.b(Helper.getResString(R.string.common_word_import), v -> {
+            dialog.setView(listView);
+            dialog.setPositiveButton(Helper.getResString(R.string.common_word_import), (v, which) -> {
                 int position = choiceToImport.get();
                 var component = components.get(position);
                 if (position != -1 && ComponentsHandler.isValidComponent(component)) {
@@ -237,9 +233,9 @@ public class AddCustomComponentActivity extends BaseAppCompatActivity implements
                 } else {
                     SketchwareUtil.toastError(Helper.getResString(R.string.invalid_component));
                 }
-                dialog.dismiss();
+                v.dismiss();
             });
-            dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
             dialog.show();
         } else {
             var component = components.get(0);

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.Window;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.transition.ChangeBounds;
 import androidx.transition.TransitionManager;

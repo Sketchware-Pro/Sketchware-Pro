@@ -3,7 +3,7 @@ package pro.sketchware.fragments.settings.block.selector;
 import static mod.hey.studios.util.Helper.addBasicTextChangedListener;
 import static pro.sketchware.utility.GsonUtils.getGson;
 
-import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -29,7 +31,6 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import a.a.a.aB;
 import a.a.a.qA;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -42,11 +43,10 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class BlockSelectorManagerFragment extends qA {
 
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private FragmentBlockSelectorManagerBinding binding;
-
     private List<Selector> selectors = new ArrayList<>();
     private BlockSelectorAdapter adapter;
-    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -120,10 +120,10 @@ public class BlockSelectorManagerFragment extends qA {
             dialogBinding.tilPalettesPath.setOnClickListener(v -> SketchwareUtil.toast("You cannot change the name of this selector"));
         }
 
-        aB dialog = new aB(requireActivity());
-        dialog.b(!isEdit ? "New selector" : "Edit selector");
-        dialog.a(dialogBinding.getRoot());
-        dialog.b(!isEdit ? "Create" : "Save", v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
+        dialog.setTitle(!isEdit ? "New selector" : "Edit selector");
+        dialog.setView(dialogBinding.getRoot());
+        dialog.setPositiveButton(!isEdit ? "Create" : "Save", (v, which) -> {
             String selectorName = Helper.getText(dialogBinding.palettesPath);
             String selectorTitle = Objects.requireNonNull(dialogBinding.blocksPath.getText()).toString();
 
@@ -156,17 +156,17 @@ public class BlockSelectorManagerFragment extends qA {
             }
             saveAllSelectors();
             adapter.notifyDataSetChanged();
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a("Cancel", v -> dialog.dismiss());
+        dialog.setNegativeButton("Cancel", (v, which) -> v.dismiss());
         dialog.show();
     }
 
     private void showActionsDialog(int index) {
         DialogSelectorActionsBinding dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(requireContext()));
-        aB dialog = new aB(requireActivity());
-        dialog.b("Actions");
-        dialog.a(dialogBinding.getRoot());
+        AlertDialog dialog = new MaterialAlertDialogBuilder(requireActivity()).create();
+        dialog.setTitle("Actions");
+        dialog.setView(dialogBinding.getRoot());
 
         dialogBinding.edit.setOnClickListener(v -> {
             dialog.dismiss();
@@ -189,7 +189,7 @@ public class BlockSelectorManagerFragment extends qA {
                         adapter.notifyDataSetChanged();
                         confirmDialog.dismiss();
                     },
-                    Dialog::dismiss
+                    DialogInterface::dismiss
             );
         });
         dialog.show();
@@ -200,11 +200,11 @@ public class BlockSelectorManagerFragment extends qA {
             ConfirmListener onConfirm,
             CancelListener onCancel
     ) {
-        aB dialog = new aB(requireActivity());
-        dialog.b("Attention");
-        dialog.a(message);
-        dialog.b("Yes", v -> onConfirm.onConfirm(dialog));
-        dialog.a("Cancel", v -> onCancel.onCancel(dialog));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
+        dialog.setTitle("Attention");
+        dialog.setMessage(message);
+        dialog.setPositiveButton("Yes", (v, which) -> onConfirm.onConfirm(v));
+        dialog.setNegativeButton("Cancel", (v, which) -> onCancel.onCancel(v));
         dialog.setCancelable(false);
         dialog.show();
     }
@@ -334,11 +334,11 @@ public class BlockSelectorManagerFragment extends qA {
 
     private List<String> getTypeViewList() {
         return List.of(
-            "View", "ViewGroup", "LinearLayout", "RelativeLayout",
-            "ScrollView", "HorizontalScrollView", "TextView", "EditText",
-            "Button", "RadioButton", "CheckBox", "Switch", "ImageView",
-            "SeekBar", "ListView", "Spinner", "WebView", "MapView",
-            "ProgressBar"
+                "View", "ViewGroup", "LinearLayout", "RelativeLayout",
+                "ScrollView", "HorizontalScrollView", "TextView", "EditText",
+                "Button", "RadioButton", "CheckBox", "Switch", "ImageView",
+                "SeekBar", "ListView", "Spinner", "WebView", "MapView",
+                "ProgressBar"
         );
     }
 
@@ -349,10 +349,10 @@ public class BlockSelectorManagerFragment extends qA {
     }
 
     interface ConfirmListener {
-        void onConfirm(aB dialog);
+        void onConfirm(DialogInterface dialog);
     }
 
     interface CancelListener {
-        void onCancel(aB dialog);
+        void onCancel(DialogInterface dialog);
     }
 }

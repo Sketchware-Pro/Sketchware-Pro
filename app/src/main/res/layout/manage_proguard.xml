@@ -4,7 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar_improved" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,21 +31,6 @@
                 android:paddingBottom="8dp"
                 android:text="Activated"
                 android:textSize="16sp" />
-
-            <!-- R8 code shrinker my beloved, I'll come to your house if your remove it -->
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/r8_enabled"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:checked="true"
-                android:gravity="center|left"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:textColor="?attr/colorPrimary"
-                android:text="@string/code_shrinker_use_r8"
-                android:textSize="16sp" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"

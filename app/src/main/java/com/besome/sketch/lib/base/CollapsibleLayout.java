@@ -14,11 +14,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import pro.sketchware.R;
-
 import java.util.List;
 
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public abstract class CollapsibleLayout<T extends View> extends FrameLayout {
     private View confirmYes;

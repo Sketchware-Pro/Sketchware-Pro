@@ -13,17 +13,19 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity;
-import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
 import com.google.gson.Gson;
-import pro.sketchware.databinding.ViewStoreProjectItemBinding;
 
 import java.util.List;
+
+import pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity;
+import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
+import pro.sketchware.databinding.ViewStoreProjectItemBinding;
 
 public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdapter.ViewHolder> {
 
     private final List<ProjectModel.Project> projects;
     private final FragmentActivity context;
+    private final Gson gson = new Gson();
 
     public StoreProjectsAdapter(List<ProjectModel.Project> projects, FragmentActivity context) {
         this.projects = projects;
@@ -61,17 +63,6 @@ public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdap
         return projects.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ViewStoreProjectItemBinding binding;
-
-        public ViewHolder(ViewStoreProjectItemBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-    }
-
-    private final Gson gson = new Gson();
-
     private void openProject(ProjectModel.Project project, View view) {
         var fm = context.getSupportFragmentManager();
 
@@ -87,6 +78,15 @@ public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdap
                     "project_preview"
             );
             context.startActivity(intent, options.toBundle());
+        }
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ViewStoreProjectItemBinding binding;
+
+        public ViewHolder(ViewStoreProjectItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

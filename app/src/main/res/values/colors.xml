@@ -9,6 +9,7 @@
     <color name="color_btn_ltpink_highlight">#ffff3f3a</color>
     <color name="color_btn_ltpink_normal">#ffff5955</color>
     <color name="color_chk_white_highlight">#ffffccbc</color>
+    <color name="color_error_bg">#FFF2F1</color>
     <color name="color_chk_white_normal">#fff5f5f5</color>
     <color name="color_control_highlight">#20008dcd</color>
     <color name="color_control_normal">#ff57beee</color>

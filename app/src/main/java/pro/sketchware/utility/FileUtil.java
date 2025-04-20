@@ -43,8 +43,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,7 +74,7 @@ public class FileUtil {
             if (!dir.exists())
                 continue;
             File[] listFiles = dir.listFiles();
-            if (listFiles == null || listFiles.length == 0)
+            if (listFiles == null)
                 continue;
             for (File child : listFiles) {
                 if (child.isDirectory()) {
@@ -177,21 +179,21 @@ public class FileUtil {
         return sb.toString();
     }
 
-   public static String readFileIfExist(String path) {
-    StringBuilder sb = new StringBuilder();
-    try (FileReader fr = new FileReader(path)) {
-        char[] buff = new char[1024];
-        int length;
+    public static String readFileIfExist(String path) {
+        StringBuilder sb = new StringBuilder();
+        try (FileReader fr = new FileReader(path)) {
+            char[] buff = new char[1024];
+            int length;
 
-        while ((length = fr.read(buff)) > 0) {
-            sb.append(new String(buff, 0, length));
+            while ((length = fr.read(buff)) > 0) {
+                sb.append(new String(buff, 0, length));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
 
-    return sb.toString();
-  }
+        return sb.toString();
+    }
 
     public static void writeFile(String path, String str) {
         createNewFileIfNotPresent(path);
@@ -331,9 +333,7 @@ public class FileUtil {
         File dir = new File(path);
         if (dir.exists() && !dir.isFile() && (listFiles = dir.listFiles()) != null && listFiles.length > 0 && list != null) {
             list.clear();
-            for (File file : listFiles) {
-                list.add(file);
-            }
+            Collections.addAll(list, listFiles);
         }
     }
 
@@ -458,7 +458,7 @@ public class FileUtil {
 
         if (path != null) {
             try {
-                return URLDecoder.decode(path, "UTF-8");
+                return URLDecoder.decode(path, StandardCharsets.UTF_8);
             } catch (Exception e) {
                 return null;
             }

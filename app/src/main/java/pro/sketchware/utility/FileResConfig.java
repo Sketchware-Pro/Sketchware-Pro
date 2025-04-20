@@ -44,6 +44,7 @@ public class FileResConfig {
 
     /**
      * This helper method will clear and list a specified path into the existing list
+     *
      * @return The listed files
      */
     private ArrayList<String> listDir(String path, ArrayList<String> existing_list) {

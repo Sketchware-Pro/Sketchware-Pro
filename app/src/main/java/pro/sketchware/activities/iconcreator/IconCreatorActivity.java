@@ -1,7 +1,5 @@
 package pro.sketchware.activities.iconcreator;
 
-import static pro.sketchware.utility.UI.animateLayoutChanges;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,21 +21,24 @@ import android.view.Gravity;
 import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Objects;
 
 import a.a.a.HB;
-import a.a.a.Zx;
 import a.a.a.iB;
 import a.a.a.wq;
 import mod.hey.studios.util.Helper;
@@ -45,13 +46,13 @@ import pro.sketchware.R;
 import pro.sketchware.databinding.ActivityIconCreatorBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.UI;
 
 public class IconCreatorActivity extends BaseAppCompatActivity {
 
-    private static final int REQUEST_CODE_PICK_CROPPED_ICON = 216;
-    private static final int REQUEST_CODE_PICK_ICON = 207;
-    static float cardRadius = 20;
-    Intent intent;
+    private final int REQUEST_CODE_PICK_CROPPED_ICON = 216;
+    private final int REQUEST_CODE_PICK_ICON = 207;
+    private float cardRadius = 20;
     private ActivityIconCreatorBinding binding;
     private GradientDrawable.Orientation gradDirection = GradientDrawable.Orientation.BOTTOM_TOP;
     private int bgClr = 0xffffff;
@@ -62,11 +63,15 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
     private int gradClr1 = 0x000000;
     private int imgColor = 0xffffff;
     private int patternColor = 0xffffff;
+    private int selectedTextureType;
     private boolean eff_score;
     private boolean eff_texture;
     private String sc_id;
+    private String iconFilePath;
+    private String texturesFilePath;
+    private Bitmap appIconBitmap;
 
-    public static void saveBitmapTo(Bitmap bitmap, String path) {
+    private void saveBitmapTo(Bitmap bitmap, String path) {
         FileUtil.makeDir(path.substring(0, path.lastIndexOf(File.separator)));
         try (FileOutputStream fileOutputStream = new FileOutputStream(path)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
@@ -76,7 +81,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         }
     }
 
-    public static Bitmap captureAppIco(View view) {
+    private Bitmap captureAppIco(View view) {
         Bitmap bitmap = Bitmap.createBitmap(
                 view.getWidth(),
                 view.getHeight(),
@@ -95,7 +100,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         return bitmap;
     }
 
-    public static Bitmap captureForeground(View view, boolean score, boolean pattern, View pattView, View scoreView, View bg) {
+    private Bitmap captureForeground(View view, boolean score, boolean pattern, View pattView, View scoreView, View bg) {
 
         bg.setVisibility(View.INVISIBLE);
         if (!score) scoreView.setVisibility(View.INVISIBLE);
@@ -146,7 +151,6 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         setSupportActionBar(binding.toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         sc_id = getIntent().getStringExtra("sc_id");
-        intent = new Intent();
 
         binding.appIcoBadge.setVisibility(View.GONE);
         binding.linearGrad.setVisibility(View.GONE);
@@ -188,13 +192,14 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
                 binding.textureCont.setVisibility(View.GONE);
                 eff_texture = false;
             }
-            animateLayoutChanges(binding.getRoot());
+            UI.animateLayoutChanges(binding.getRoot());
         });
 
         binding.appIcoItems.setOnClickListener(v -> showCustomIconOptions());
 
         binding.save.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), MyProjectSettingActivity.class);
+            saveChanges();
             saveIconToRes();
             intent.putExtra("appIco", captureAppIco(binding.appIcoCard));
             if (binding.adaptiveCheck.isChecked()) {
@@ -209,35 +214,38 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         binding.bgType.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 if (checkedId == R.id.bg_color) {
+                    binding.appIcoBg.setBackgroundColor(bgClr);
                     binding.linearClr.setVisibility(View.VISIBLE);
                     binding.linearGrad.setVisibility(View.GONE);
                 } else {
+                    binding.appIcoBg.setBackground(new GradientDrawable(gradDirection, new int[]{gradClr0, gradClr1}));
                     binding.linearGrad.setVisibility(View.VISIBLE);
                     binding.linearClr.setVisibility(View.GONE);
                 }
-                animateLayoutChanges(binding.getRoot());
+                UI.animateLayoutChanges(binding.getRoot());
             }
         });
 
         binding.textureSelect.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 if (checkedId == R.id.texture1) {
-                    binding.appIcoTexture.setPatternFromRes(R.drawable.pattern_tech);
+                    loadSelectedTexture(0);
                 }
 
                 if (checkedId == R.id.texture2) {
-                    binding.appIcoTexture.setPatternFromRes(R.drawable.pattern_seq);
+                    loadSelectedTexture(1);
                 }
 
                 if (checkedId == R.id.texture3) {
-                    binding.appIcoTexture.setPatternFromRes(R.drawable.pattern_waves);
+                    loadSelectedTexture(2);
                 }
-
-                if (checkedId == R.id.texture4) {
-                    pickCustomIcon(712);
+                if (checkedId != R.id.texture4) {
+                    texturesFilePath = null;
                 }
             }
         });
+
+        binding.texture4.setOnClickListener(view -> pickCustomIcon(712));
 
         binding.cornersSlider.addOnChangeListener((slider, value, fromUser) -> {
             binding.appIcoCard.setRadius(value);
@@ -271,7 +279,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
                 } else if (checked == R.id.chip_lt) {
                     gradDirection = GradientDrawable.Orientation.LEFT_RIGHT;
                 } else if (checked == R.id.chip_top) {
-                    gradDirection = GradientDrawable.Orientation.TOP_BOTTOM;
+                    gradDirection = GradientDrawable.Orientation.BOTTOM_TOP;
                 } else if (checked == R.id.chip_bltr) {
                     gradDirection = GradientDrawable.Orientation.BL_TR;
                 } else if (checked == R.id.chip_rt) {
@@ -279,14 +287,13 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
                 } else if (checked == R.id.chip_tlrb) {
                     gradDirection = GradientDrawable.Orientation.TL_BR;
                 } else if (checked == R.id.chip_bt) {
-                    gradDirection = GradientDrawable.Orientation.BOTTOM_TOP;
+                    gradDirection = GradientDrawable.Orientation.TOP_BOTTOM;
                 } else {
                     gradDirection = GradientDrawable.Orientation.TR_BL;
                 }
             }
 
             binding.appIcoBg.setBackground(new GradientDrawable(gradDirection, new int[]{gradClr0, gradClr1}));
-
         });
 
         binding.textValueInput.addTextChangedListener(new TextWatcher() {
@@ -303,7 +310,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
                     binding.appIcoText.setVisibility(View.VISIBLE);
                     binding.appIcoText.setText(s);
                 }
-                animateLayoutChanges(binding.getRoot());
+                UI.animateLayoutChanges(binding.getRoot());
 
             }
 
@@ -334,22 +341,24 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
 
             }
         });
+        loadSavedData();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data == null) {
-            SketchwareUtil.toast("Received invalid data");
+            SketchwareUtil.toastError("Received invalid data");
             return;
         }
         Uri uri = data.getData();
         if (requestCode == REQUEST_CODE_PICK_ICON) {
             if (resultCode == RESULT_OK && uri != null) {
-                String filename = HB.a(getApplicationContext(), uri);
-                Bitmap bitmap = iB.a(filename, 96, 96);
+                iconFilePath = HB.a(getApplicationContext(), uri);
+                appIconBitmap = null;
+                Bitmap bitmap = iB.a(iconFilePath, 96, 96);
                 try {
-                    int attributeInt = new ExifInterface(filename).getAttributeInt("Orientation", -1);
+                    int attributeInt = new ExifInterface(iconFilePath).getAttributeInt("Orientation", -1);
                     Bitmap newBitmap = iB.a(bitmap, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
                     BitmapDrawable bd = new BitmapDrawable(getResources(), newBitmap);
                     binding.appIcoImg.setBackground(bd);
@@ -361,8 +370,9 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             Bundle extras = data.getExtras();
             if (requestCode == REQUEST_CODE_PICK_CROPPED_ICON && resultCode == RESULT_OK && extras != null) {
                 try {
-                    Bitmap bitmap = extras.getParcelable("data");
-                    BitmapDrawable bd = new BitmapDrawable(getResources(), bitmap);
+                    appIconBitmap = extras.getParcelable("data");
+                    iconFilePath = null;
+                    BitmapDrawable bd = new BitmapDrawable(getResources(), appIconBitmap);
                     binding.appIcoImg.setBackground(bd);
                 } catch (Exception ignored) {
                 }
@@ -370,24 +380,29 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
 
             if (requestCode == 712) {
                 if (resultCode == RESULT_OK && uri != null) {
-                    String filename = HB.a(getApplicationContext(), uri);
-                    Bitmap bitmap = iB.a(filename, 96, 96);
-                    try {
-                        int attributeInt = new ExifInterface(filename).getAttributeInt("Orientation", -1);
-                        Bitmap newBitmap = iB.a(bitmap, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
-                        binding.appIcoTexture.setPattern(newBitmap);
-                    } catch (Exception ignored) {
-
-                    }
+                    setAppIcoTexture(HB.a(getApplicationContext(), uri));
                 }
             }
         }
     }
 
-    private void showColorPicker(View v, int r, int oldClr) {
-        Zx colorPicker = new Zx(this, oldClr, true, false);
+    private void setAppIcoTexture(String texturesFilePath) {
+        this.texturesFilePath = texturesFilePath;
+        Bitmap bitmap = iB.a(texturesFilePath, 96, 96);
+        try {
+            int attributeInt = new ExifInterface(texturesFilePath).getAttributeInt("Orientation", -1);
+            Bitmap newBitmap = iB.a(bitmap, attributeInt != 3 ? attributeInt != 6 ? attributeInt != 8 ? 0 : 270 : 90 : 180);
+            binding.appIcoTexture.setPattern(newBitmap);
+            selectedTextureType = 3;
+        } catch (Exception ignored) {
 
-        colorPicker.a(new Zx.b() {
+        }
+    }
+
+    private void showColorPicker(View v, int r, int oldClr) {
+        ColorPickerDialog colorPicker = new ColorPickerDialog(this, oldClr, true, false);
+
+        colorPicker.a(new ColorPickerDialog.b() {
             @Override
             public void a(int colorInt) {
                 switch (r) {
@@ -433,7 +448,6 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
                         binding.patternColorPreview.setBackgroundColor(patternColor);
                         break;
                 }
-
 
             }
 
@@ -513,9 +527,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             switch (which) {
                 case 0 -> pickCustomIcon(REQUEST_CODE_PICK_ICON);
                 case 1 -> pickAndCropCustomIcon();
-                case 2 -> {
-
-                }
+                case 2 -> binding.appIcoImg.setBackgroundResource(R.drawable.default_image);
             }
         });
         AlertDialog create = builder.create();
@@ -551,7 +563,208 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
         saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-xxhdpi", "ic_launcher_background.png"));
         saveBitmapTo(captureAppIco(binding.appIcoBg), getIconPath("mipmap-xxxhdpi", "ic_launcher_background.png"));
 
+    }
 
+    private void loadSelectedTexture(int selectedTextureType) {
+        this.selectedTextureType = selectedTextureType;
+
+        switch (selectedTextureType) {
+            case 0 -> binding.appIcoTexture.setPatternFromRes(R.drawable.pattern_tech);
+            case 1 -> binding.appIcoTexture.setPatternFromRes(R.drawable.pattern_seq);
+            case 2 -> binding.appIcoTexture.setPatternFromRes(R.drawable.pattern_waves);
+        }
+    }
+
+    private void saveChanges() {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("gradient_background_type", binding.bgGradient.isChecked());
+        data.put("background_color", bgClr);
+        data.put("gradient_color1", gradClr0);
+        data.put("gradient_color2", gradClr1);
+        data.put("gradient_direction", gradDirection);
+        data.put("score_effect", binding.scoreCheck.isChecked());
+        data.put("textures", binding.textureCheck.isChecked());
+        data.put("selected_texture", selectedTextureType);
+        data.put("texture_color", patternColor);
+        data.put("opacity", binding.textureAlphaSlider.getValue());
+        data.put("scale", binding.textureScaleSlider.getValue());
+        data.put("rotation", binding.textureRotationSlider.getValue());
+        data.put("corners", binding.cornersSlider.getValue());
+        data.put("icon_color_filter", imgColor);
+        data.put("icon_size", binding.imgSizeSlider.getValue());
+        data.put("icon_vp", binding.imgVerticalSlider.getValue());
+        data.put("icon_hp", binding.imgHorizontalSlider.getValue());
+        data.put("text", binding.textValueInput.getText().toString());
+        data.put("text_color", txtClr);
+        data.put("text_size", binding.txtSizeSlider.getValue());
+        data.put("text_vp", binding.txtVerticalSlider.getValue());
+        data.put("text_hp", binding.txtHorizontalSlider.getValue());
+        data.put("badge", binding.badgeValueInput.getText().toString());
+        data.put("badge_text_color", badgeTxtClr);
+        data.put("badge_bg_color", badgeClr);
+        data.put("adaptive_icon", binding.adaptiveCheck.isChecked());
+        FileUtil.writeFile(baseDir() + "data.json", new Gson().toJson(data));
+        saveIconsToStorage();
+    }
+
+    public void saveIconsToStorage() {
+        if (texturesFilePath != null && !texturesFilePath.equals(baseDir() + "texture.png")) {
+            FileUtil.copyFile(texturesFilePath, baseDir() + "texture.png");
+        }
+        if (iconFilePath != null && !iconFilePath.equals(baseDir() + "app_icon.png")) {
+            FileUtil.copyFile(iconFilePath, baseDir() + "app_icon.png");
+        }
+        if (appIconBitmap != null) {
+            try {
+                String path = baseDir() + "app_icon.png";
+                File file = new File(path);
+                file.getParentFile().mkdirs();
+
+                FileOutputStream fos = new FileOutputStream(file);
+                appIconBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.flush();
+                fos.close();
+
+                iconFilePath = path;
+
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    private void loadSavedData() {
+        Type type = new TypeToken<HashMap<String, Object>>() {
+        }.getType();
+        HashMap<String, Object> data = new Gson().fromJson(FileUtil.readFileIfExist(baseDir() + "data.json"), type);
+
+        if (data == null) return;
+
+        if (data.containsKey("gradient_background_type") && data.get("gradient_background_type") instanceof Boolean state) {
+            binding.bgGradient.setChecked(state);
+        }
+        if (data.containsKey("background_color") && data.get("background_color") instanceof Double value) {
+            bgClr = value.intValue();
+        }
+        if (data.containsKey("gradient_color1") && data.get("gradient_color1") instanceof Double value) {
+            gradClr0 = value.intValue();
+        }
+        if (data.containsKey("gradient_color2") && data.get("gradient_color2") instanceof Double value) {
+            gradClr1 = value.intValue();
+        }
+        if (data.containsKey("gradient_direction") && data.get("gradient_direction") instanceof String value) {
+            switch (value) {
+                case "TR_BL" -> binding.chipTrbl.setChecked(true);
+                case "LEFT_RIGHT" -> binding.chipLt.setChecked(true);
+                case "BOTTOM_TOP" -> binding.chipTop.setChecked(true);
+                case "BL_TR" -> binding.chipBltr.setChecked(true);
+                case "RIGHT_LEFT" -> binding.chipRt.setChecked(true);
+                case "TL_BR" -> binding.chipTlrb.setChecked(true);
+                case "TOP_BOTTOM" -> binding.chipBt.setChecked(true);
+            }
+        }
+        if (data.containsKey("score_effect") && data.get("score_effect") instanceof Boolean value) {
+            binding.scoreCheck.setChecked(value);
+        }
+        if (data.containsKey("textures") && data.get("textures") instanceof Boolean value) {
+            binding.textureCheck.setChecked(value);
+        }
+        if (data.containsKey("selected_texture") && data.get("selected_texture") instanceof Double value) {
+            switch (value.intValue()) {
+                case 0 -> binding.texture1.setChecked(true);
+                case 1 -> binding.texture2.setChecked(true);
+                case 2 -> binding.texture3.setChecked(true);
+                case 3 -> {
+                    String textureImgFilePath = baseDir() + "texture.png";
+                    if (FileUtil.isExistFile(textureImgFilePath)) {
+                        binding.texture4.setChecked(true);
+                        setAppIcoTexture(textureImgFilePath);
+                    }
+                }
+            }
+        }
+        if (data.containsKey("texture_color") && data.get("texture_color") instanceof Double value) {
+            patternColor = value.intValue();
+        }
+        if (data.containsKey("opacity") && data.get("opacity") instanceof Double value) {
+            binding.textureAlphaSlider.setValue(value.floatValue());
+        }
+        if (data.containsKey("scale") && data.get("scale") instanceof Double value) {
+            binding.textureScaleSlider.setValue(value.floatValue());
+        }
+        if (data.containsKey("rotation") && data.get("rotation") instanceof Double value) {
+            binding.textureRotationSlider.setValue(value.floatValue());
+        }
+        if (data.containsKey("corners") && data.get("corners") instanceof Double value) {
+            binding.cornersSlider.setValue(value.floatValue());
+        }
+        if (data.containsKey("icon_color_filter") && data.get("icon_color_filter") instanceof Double value) {
+            imgColor = value.intValue();
+        }
+        if (data.containsKey("icon_size") && data.get("icon_size") instanceof Double value) {
+            binding.imgSizeSlider.setValue(value.floatValue());
+        }
+        if (data.containsKey("icon_vp") && data.get("icon_vp") instanceof Double value) {
+            binding.imgVerticalSlider.setValue(value.floatValue());
+        }
+        if (data.containsKey("icon_hp") && data.get("icon_hp") instanceof Double value) {
+            binding.imgHorizontalSlider.setValue(value.floatValue());
+        }
+        if (data.containsKey("text") && data.get("text") instanceof String value) {
+            binding.textValueInput.setText(value);
+        }
+        if (data.containsKey("text_color") && data.get("text_color") instanceof Double value) {
+            txtClr = value.intValue();
+        }
+        if (data.containsKey("text_size") && data.get("text_size") instanceof Double value) {
+            binding.txtSizeSlider.setValue(value.floatValue());
+        }
+        if (data.containsKey("text_vp") && data.get("text_vp") instanceof Double value) {
+            binding.txtVerticalSlider.setValue(value.floatValue());
+        }
+        if (data.containsKey("text_hp") && data.get("text_hp") instanceof Double value) {
+            binding.txtHorizontalSlider.setValue(value.floatValue());
+        }
+        if (data.containsKey("badge") && data.get("badge") instanceof String value) {
+            binding.badgeValueInput.setText(value);
+        }
+        if (data.containsKey("badge_text_color") && data.get("badge_text_color") instanceof Double value) {
+            badgeTxtClr = value.intValue();
+        }
+        if (data.containsKey("badge_bg_color") && data.get("badge_bg_color") instanceof Double value) {
+            badgeClr = value.intValue();
+        }
+        if (data.containsKey("adaptive_icon") && data.get("adaptive_icon") instanceof Boolean value) {
+            binding.adaptiveCheck.setChecked(value);
+        }
+
+        if (binding.bgGradient.isChecked()) {
+            binding.appIcoBg.setBackground(new GradientDrawable(gradDirection, new int[]{gradClr0, gradClr1}));
+        } else {
+            binding.appIcoBg.setBackgroundColor(bgClr);
+        }
+        binding.colorPreview.setBackgroundColor(bgClr);
+        binding.gradColorPreview.setBackgroundColor(gradClr0);
+        binding.gradColorPreview2.setBackgroundColor(gradClr1);
+        binding.appIcoTexture.setColor(patternColor);
+        binding.patternColorPreview.setBackgroundColor(patternColor);
+        binding.appIcoImg.getBackground().setColorFilter(new PorterDuffColorFilter(imgColor, PorterDuff.Mode.SRC_ATOP));
+        binding.imgColorPreview.setBackgroundColor(imgColor);
+        binding.appIcoText.setTextColor(txtClr);
+        binding.txtColorPreview.setBackgroundColor(txtClr);
+        binding.badgeText.setTextColor(badgeTxtClr);
+        binding.badgeTxtColorPreview.setBackgroundColor(badgeTxtClr);
+        binding.appIcoBadge.setBackgroundColor(badgeClr);
+        binding.badgeBgColorPreview.setBackgroundColor(badgeClr);
+
+        String textureImgFilePath = baseDir() + "texture.png";
+        if (FileUtil.isExistFile(textureImgFilePath)) {
+            setAppIcoTexture(textureImgFilePath);
+        }
+
+    }
+
+    private String baseDir() {
+        return wq.b(sc_id) + File.separator + "files" + File.separator + "app-icon" + File.separator;
     }
 
     private String getIconPath(String folder, String fileName) {

@@ -2,14 +2,15 @@ package a.a.a;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import pro.sketchware.R;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.core.content.ContextCompat;
 
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.databinding.CustomToastBinding;
+import pro.sketchware.utility.ThemeUtils;
 
 public class bB {
 
@@ -24,42 +25,31 @@ public class bB {
         return a(context, charSequence, duration, 48, 0.0f, 64.0f, TOAST_NORMAL);
     }
 
-    public static Toast a(Context context, CharSequence charSequence, int duration, int gravity, float xOffset, float yOffset) {
-        View inflate = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_toast, null);
-        LinearLayout linearLayout = inflate.findViewById(R.id.custom_toast_container);
-        ((TextView) inflate.findViewById(R.id.tv_stoast)).setText(charSequence.toString());
-        Toast toast = new Toast(context);
-        toast.setDuration(duration);
-        toast.setGravity(
-                gravity,
-                (int) xOffset,
-                (int) yOffset
-        );
-        toast.setView(inflate);
-        return toast;
-    }
-
     public static Toast a(Context context, CharSequence charSequence, int duration, int gravity, float xOffset, float yOffset, int toastType) {
         try {
-            View inflate = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_toast, null);
-            LinearLayout linearLayout = inflate.findViewById(R.id.custom_toast_container);
-            TextView textView = inflate.findViewById(R.id.tv_stoast);
-            if (toastType != TOAST_WARNING) {
-                linearLayout.setBackgroundResource(R.drawable.bg_toast_normal);
-                textView.setTextColor(context.getResources().getColor(R.color.scolor_black_01));
-            } else {
-                linearLayout.setBackgroundResource(R.drawable.bg_toast_warning);
-                textView.setTextColor(context.getResources().getColor(R.color.scolor_red_02));
+            Context themedContext = new ContextThemeWrapper(context, R.style.Theme_SketchwarePro);
+
+            CustomToastBinding binding = CustomToastBinding.inflate(LayoutInflater.from(themedContext));
+
+            if (toastType == TOAST_WARNING) {
+                int errorColor = ThemeUtils.getColor(binding.getRoot(), R.attr.colorError);
+
+                binding.cardView.setCardBackgroundColor(ContextCompat.getColor(themedContext, R.color.color_error_bg));
+                binding.cardView.setStrokeColor(errorColor);
+                binding.tvStoast.setTextColor(errorColor);
             }
-            textView.setText(charSequence.toString());
-            Toast toast = new Toast(context);
+
+            binding.tvStoast.setText(charSequence);
+
+            Toast toast = new Toast(themedContext);
             toast.setDuration(duration);
             toast.setGravity(
                     gravity,
-                    (int) wB.a(context, xOffset),
-                    (int) wB.a(context, yOffset)
+                    (int) wB.a(themedContext, xOffset),
+                    (int) wB.a(themedContext, yOffset)
             );
-            toast.setView(inflate);
+            toast.setView(binding.getRoot());
+
             return toast;
         } catch (Exception e) {
             return Toast.makeText(context, charSequence, duration);

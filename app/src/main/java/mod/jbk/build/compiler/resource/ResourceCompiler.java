@@ -5,24 +5,23 @@ import static com.besome.sketch.Config.VAR_DEFAULT_TARGET_SDK_VERSION;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-import pro.sketchware.SketchApplication;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import a.a.a.ProjectBuilder;
 import a.a.a.Jp;
+import a.a.a.ProjectBuilder;
 import a.a.a.zy;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
-import pro.sketchware.utility.BinaryExecutor;
-import pro.sketchware.utility.FileUtil;
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.project.ProjectSettings;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
+import pro.sketchware.SketchApplication;
+import pro.sketchware.utility.BinaryExecutor;
+import pro.sketchware.utility.FileUtil;
 
 /**
  * A class responsible for compiling a Project's resources.

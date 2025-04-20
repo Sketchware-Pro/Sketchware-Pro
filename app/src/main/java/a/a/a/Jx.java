@@ -78,7 +78,7 @@ public class Jx {
      * Filled with request code constants for FilePicker components
      */
     private final ArrayList<String> filePickerRequestCodes = new ArrayList<>();
-    
+
     private final ArrayList<HashMap<String, Object>> extraBlocks;
     private Hx eventManager;
     private ArrayList<String> imports = new ArrayList<>();
@@ -166,7 +166,7 @@ public class Jx {
     /**
      * @return Generated Java code of the current View (not Widget)
      */
-    public String generateCode() {
+    public String generateCode(boolean exportingProject) {
         boolean isDialogFragment = projectFileBean.fileName.contains("_dialog_fragment");
         boolean isBottomDialogFragment = projectFileBean.fileName.contains("_bottomdialog_fragment");
         boolean isFragment = projectFileBean.fileName.contains("_fragment");
@@ -217,6 +217,9 @@ public class Jx {
             }
             addImport("android.Manifest");
             addImport("android.content.pm.PackageManager");
+        }
+        if (exportingProject && isViewBindingEnabled) {
+            addImport(packageName + ".databinding.*");
         }
 
         removeExtraImports();
@@ -636,8 +639,10 @@ public class Jx {
         if (viewType.isEmpty()) {
             viewType = viewBean.getClassInfo().a();
         }
-        addImports(mq.getImportsByTypeName(viewType, viewBean.convert));
-        return Lx.a(viewType, viewBean.id, Lx.AccessModifier.PRIVATE);
+        if (requireImports(viewBean)) {
+            addImports(mq.getImportsByTypeName(viewType, viewBean.convert));
+        }
+        return Lx.a(viewType, viewBean.id, Lx.AccessModifier.PRIVATE, isViewBindingEnabled);
     }
 
     private String getDeprecatedMethodsCode() {
@@ -956,7 +961,7 @@ public class Jx {
             }
         }
     }
-    
+
     private Map<String, Object> getExtraBlockByName(String name) {
         for (Map<String, Object> block : extraBlocks) {
             if (block.containsKey("name") && block.get("name").toString().equals(name)) {
@@ -1032,22 +1037,26 @@ public class Jx {
         for (Pair<Integer, String> next2 : projectDataManager.j(javaName)) {
             lists.add(getListDeclarationAndAddImports(next2.first, next2.second));
         }
-        if (!isViewBindingEnabled) {
-            for (ViewBean viewBean : projectDataManager.d(projectFileBean.getXmlName())) {
-                if (!viewBean.convert.equals("include")) {
-                    Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
-                    if (!toNotAdd.contains("android:id")) {
-                        views.add(getViewDeclarationAndAddImports(viewBean));
+        for (ViewBean viewBean : projectDataManager.d(projectFileBean.getXmlName())) {
+            if (!viewBean.convert.equals("include")) {
+                Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                if (!toNotAdd.contains("android:id")) {
+                    String viewDeclarations = getViewDeclarationAndAddImports(viewBean);
+                    if (!viewDeclarations.isEmpty()) {
+                        views.add(viewDeclarations);
                     }
                 }
             }
+        }
 
-            if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
-                for (ViewBean viewBean : projectDataManager.d(projectFileBean.getDrawerXmlName())) {
-                    if (!viewBean.convert.equals("include")) {
-                        Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
-                        if (!toNotAdd.contains("android:id")) {
-                            views.add(getDrawerViewDeclarationAndAddImports(viewBean));
+        if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_DRAWER)) {
+            for (ViewBean viewBean : projectDataManager.d(projectFileBean.getDrawerXmlName())) {
+                if (!viewBean.convert.equals("include")) {
+                    Set<String> toNotAdd = ox.readAttributesToReplace(viewBean);
+                    if (!toNotAdd.contains("android:id")) {
+                        String drawerViewDeclarations = getDrawerViewDeclarationAndAddImports(viewBean);
+                        if (!drawerViewDeclarations.isEmpty()) {
+                            views.add(drawerViewDeclarations);
                         }
                     }
                 }
@@ -1101,6 +1110,30 @@ public class Jx {
         if (hasRewardedVideoAd) {
             fieldsWithStaticInitializers.add(Lx.getComponentFieldCode("RewardedVideoAd"));
         }
+    }
+
+    private boolean requireImports(ViewBean viewBean) {
+        if (!isViewBindingEnabled) {
+            return true;
+        }
+        return switch (viewBean.type) {
+            case ViewBean.VIEW_TYPE_WIDGET_LISTVIEW,
+                 ViewBeans.VIEW_TYPE_WIDGET_RECYCLERVIEW,
+                 ViewBeans.VIEW_TYPE_LAYOUT_BOTTOMNAVIGATIONVIEW,
+                 ViewBean.VIEW_TYPE_WIDGET_SPINNER,
+                 ViewBean.VIEW_TYPE_WIDGET_WEBVIEW,
+                 ViewBean.VIEW_TYPE_WIDGET_ADVIEW,
+                 ViewBean.VIEW_TYPE_WIDGET_MAPVIEW,
+                 ViewBeans.VIEW_TYPE_LAYOUT_SWIPEREFRESHLAYOUT,
+                 ViewBeans.VIEW_TYPE_WIDGET_PATTERNLOCKVIEW,
+                 ViewBeans.VIEW_TYPE_WIDGET_CODEVIEW,
+                 ViewBeans.VIEW_TYPE_WIDGET_LOTTIEANIMATIONVIEW,
+                 ViewBeans.VIEW_TYPE_WIDGET_YOUTUBEPLAYERVIEW,
+                 ViewBeans.VIEW_TYPE_LAYOUT_TABLAYOUT,
+                 ViewBeans.VIEW_TYPE_LAYOUT_VIEWPAGER ->
+                    true; // it's necessary for the adapters, listeners...
+            default -> false;
+        };
     }
 
     /**

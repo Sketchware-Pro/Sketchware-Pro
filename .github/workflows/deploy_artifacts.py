@@ -16,8 +16,7 @@ bot_token = os.getenv("BOT_TOKEN")
 group_id = int(os.getenv("CHAT_ID"))
 
 # File paths to send
-apk_min_api21 = os.getenv("APK_MIN_API21")
-apk_min_api26 = os.getenv("APK_MIN_API26")
+apk_path = os.getenv("APK_PATH")
 
 # Get the latest commit info
 commit_author, commit_message, commit_hash, commit_hash_short = get_git_commit_info()
@@ -41,7 +40,7 @@ async def progress(current, total):
     print(f"{progress_percentage:.2f}% uploaded - {uploaded_size_readable}/{total_size_readable}", end='\r')
 
 
-async def send_file(file_path, version):
+async def send_file(file_path):
     if not os.path.exists(file_path):
         print("File not found", file_path)
         return
@@ -52,7 +51,7 @@ async def send_file(file_path, version):
         f"**Commit by:** {commit_author}\n"
         f"**Commit message:** {commit_message}\n"
         f"**Commit hash:** #{commit_hash_short}\n"
-        f"**Version:** Android {'< 8' if version == 21 else '>= 8'}"
+        f"**Version:** Android >= 8"
     )
 
     try:
@@ -70,8 +69,7 @@ async def send_file(file_path, version):
 
 try:
     with client:
-        client.loop.run_until_complete(send_file(apk_min_api21, 21))
-        client.loop.run_until_complete(send_file(apk_min_api26, 26))
+        client.loop.run_until_complete(send_file(apk_path))
 finally:
     if client.is_connected():
         client.loop.run_until_complete(client.disconnect())

@@ -19,10 +19,9 @@ import com.besome.sketch.editor.view.EditorListItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import pro.sketchware.utility.PropertiesUtil;
-
 import a.a.a.sy;
 import a.a.a.wB;
+import pro.sketchware.utility.PropertiesUtil;
 
 public class ItemRecyclerView extends RecyclerView implements sy, EditorListItem {
 
@@ -116,9 +115,8 @@ public class ItemRecyclerView extends RecyclerView implements sy, EditorListItem
 
     private static class SimpleAdapter extends RecyclerView.Adapter<SimpleAdapter.ViewHolder> {
 
-        private List<String> dataList;
-
         private final int layout;
+        private List<String> dataList;
 
         public SimpleAdapter(int layout) {
             dataList = new ArrayList<>();

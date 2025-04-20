@@ -53,13 +53,13 @@ import pro.sketchware.widgets.IconCustomWidget;
 
 public class PaletteWidget extends LinearLayout {
 
+    public MaterialCardView cardView;
     private LinearLayout layoutContainer;
     private LinearLayout widgetsContainer;
     private View divider;
     private TextView titleLayouts;
     private TextView titleWidgets;
     private CustomScrollView scrollView;
-    public MaterialCardView cardView;
 
     public PaletteWidget(Context context) {
         super(context);
@@ -184,7 +184,7 @@ public class PaletteWidget extends LinearLayout {
         titleView.setLayoutParams(layoutParams);
         titleView.setText(title);
         titleView.setTextSize(12);
-        titleView.setTextColor(MaterialColors.getColor(titleView, com.google.android.material.R.attr.colorPrimary));
+        titleView.setTextColor(MaterialColors.getColor(titleView, R.attr.colorPrimary));
         target.addView(titleView);
     }
 

@@ -9,10 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import pro.sketchware.R;
-
 import a.a.a.Rs;
 import a.a.a.wB;
+import pro.sketchware.R;
 
 public class ViewDummy extends RelativeLayout {
     public ImageView img_notallowed;
@@ -24,6 +23,14 @@ public class ViewDummy extends RelativeLayout {
 
     public ViewDummy(Context context) {
         super(context);
+        d = new int[2];
+        e = new int[2];
+        allowed = false;
+        initialize(context);
+    }
+
+    public ViewDummy(Context context, AttributeSet attrs) {
+        super(context, attrs);
         d = new int[2];
         e = new int[2];
         allowed = false;
@@ -65,14 +72,6 @@ public class ViewDummy extends RelativeLayout {
         Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
         view.draw(new Canvas(bitmap));
         return bitmap;
-    }
-
-    public ViewDummy(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        d = new int[2];
-        e = new int[2];
-        allowed = false;
-        initialize(context);
     }
 
     public void a(Rs rs) {

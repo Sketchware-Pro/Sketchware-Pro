@@ -29,9 +29,6 @@ import com.google.android.flexbox.FlexboxLayoutManager.LayoutParams;
 import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import pro.sketchware.R;
-import pro.sketchware.databinding.LogicPopupAddComponentTempBinding;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,18 +38,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 import a.a.a.GB;
 import a.a.a.SB;
 import a.a.a.ZB;
-import a.a.a.aB;
 import a.a.a.bB;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.wB;
-import pro.sketchware.lib.DebouncedClickListener;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
+import pro.sketchware.R;
+import pro.sketchware.databinding.LogicPopupAddComponentTempBinding;
+import pro.sketchware.lib.DebouncedClickListener;
 
 public class ComponentAddActivity extends BaseDialogActivity implements View.OnClickListener {
 
+    private final AtomicInteger selectedMime = new AtomicInteger(0);
     private String sc_id;
     private ProjectFileBean projectFileBean;
     private ZB componentNameValidator;
@@ -64,9 +63,7 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
     private HashMap<Integer, Pair<Integer, Integer>> w;
     private boolean x;
     private boolean y;
-
     private LogicPopupAddComponentTempBinding binding;
-    private final AtomicInteger selectedMime = new AtomicInteger(0);
 
     private boolean checks() {
         int componentType = componentList.get(componentsAdapter.layoutPosition).type;
@@ -408,19 +405,19 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
      * Show dialog about installing Google Chrome.
      */
     public final void t() {
-        aB dialog = new aB(this);
-        dialog.a(R.drawable.chrome_96);
-        dialog.b(Helper.getResString(R.string.title_compatible_chrome_browser));
-        dialog.a(Helper.getResString(R.string.message_compatible_chrome_brower));
-        dialog.b(Helper.getResString(R.string.common_word_ok), v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setIcon(R.drawable.chrome_96);
+        dialog.setTitle(Helper.getResString(R.string.title_compatible_chrome_browser));
+        dialog.setMessage(Helper.getResString(R.string.message_compatible_chrome_brower));
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
             if (!mB.a()) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("market://details?id=com.android.chrome"));
                 startActivity(intent);
-                dialog.dismiss();
+                v.dismiss();
             }
         });
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 

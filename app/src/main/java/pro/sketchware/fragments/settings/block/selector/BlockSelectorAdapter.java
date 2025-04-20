@@ -16,14 +16,6 @@ public class BlockSelectorAdapter extends ListAdapter<Selector, BlockSelectorAda
     public final OnClickListener onClick;
     public final OnLongClickListener onLongClick;
 
-    public interface OnClickListener {
-        void onClick(Selector selector, int position);
-    }
-
-    public interface OnLongClickListener {
-        void onLongClick(Selector selector, int position);
-    }
-
     public BlockSelectorAdapter(OnClickListener onClick, OnLongClickListener onLongClick) {
         super(new BlockSelectorAdapterDiffCallback());
         this.onClick = onClick;
@@ -43,6 +35,14 @@ public class BlockSelectorAdapter extends ListAdapter<Selector, BlockSelectorAda
     public void onBindViewHolder(@NonNull BlockSelectorAdapterViewHolder holder, int position) {
         holder.bind(getItem(position), position);
         holder.itemView.setBackgroundResource(UI.getShapedBackgroundForList(getCurrentList(), position));
+    }
+
+    public interface OnClickListener {
+        void onClick(Selector selector, int position);
+    }
+
+    public interface OnLongClickListener {
+        void onLongClick(Selector selector, int position);
     }
 
     public static class BlockSelectorAdapterViewHolder extends RecyclerView.ViewHolder {
@@ -79,7 +79,7 @@ public class BlockSelectorAdapter extends ListAdapter<Selector, BlockSelectorAda
         }
     }
 
-   public static class BlockSelectorAdapterDiffCallback extends DiffUtil.ItemCallback<Selector> {
+    public static class BlockSelectorAdapterDiffCallback extends DiffUtil.ItemCallback<Selector> {
         @Override
         public boolean areItemsTheSame(@NonNull Selector oldItem, @NonNull Selector newItem) {
             return oldItem.getName().equals(newItem.getName());

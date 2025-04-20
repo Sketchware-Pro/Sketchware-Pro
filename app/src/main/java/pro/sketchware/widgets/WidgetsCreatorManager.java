@@ -1,10 +1,11 @@
 package pro.sketchware.widgets;
 
-import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 import static pro.sketchware.utility.GsonUtils.getGson;
+import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +17,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewEditor;
@@ -36,7 +39,6 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import a.a.a.ViewEditorFragment;
-import a.a.a.aB;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -48,7 +50,6 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class WidgetsCreatorManager {
 
-    private ArrayList<HashMap<String, Object>> widgetConfigurationsList = new ArrayList<>();
     private final String widgetResourcesDirectoryPath = "/storage/emulated/0/.sketchware/resources/widgets/";
     private final String widgetsJsonFilePath = widgetResourcesDirectoryPath + "widgets.json";
     private final String widgetExportDirectoryPath = widgetResourcesDirectoryPath + "export/";
@@ -66,12 +67,32 @@ public class WidgetsCreatorManager {
     private final ViewEditor viewEditor;
     private final ViewEditorFragment viewEditorFragment;
     private final Context context;
+    private ArrayList<HashMap<String, Object>> widgetConfigurationsList = new ArrayList<>();
 
     public WidgetsCreatorManager(ViewEditorFragment viewEditorFragment) {
         this.viewEditorFragment = viewEditorFragment;
-        this.viewEditor = viewEditorFragment.viewEditor;
+        viewEditor = viewEditorFragment.viewEditor;
         context = viewEditorFragment.requireContext();
         initialize();
+    }
+
+    public static void clearErrorOnTextChanged(EditText editText, TextInputLayout textInputLayout) {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (textInputLayout.getError() != null) {
+                    textInputLayout.setError(null);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     public void initialize() {
@@ -88,7 +109,7 @@ public class WidgetsCreatorManager {
         try {
             widgetConfigurationsList = getGson().fromJson(
                     FileUtil.readFile(widgetsJsonFilePath),
-                    new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType()
+                    Helper.TYPE_MAP_LIST
             );
             widgetConfigurationsList.removeIf(this::isInvalidWidget);
         } catch (Exception e) {
@@ -119,7 +140,6 @@ public class WidgetsCreatorManager {
         return false;
     }
 
-
     private void initializeAvailableWidgetTypesList() {
         for (String widgetName : availableWidgetsNames) {
             availableWidgetsTypes.add(String.valueOf(ViewBean.getViewTypeByTypeName(widgetName)));
@@ -144,8 +164,8 @@ public class WidgetsCreatorManager {
 
     public void showWidgetsCreatorDialog(int position) {
         boolean isEditing = position != -1;
-        aB dialog = new aB((Activity) context);
-        dialog.b(isEditing ? Helper.getResString(R.string.widget_editor) :Helper.getResString(R.string.create_new_widget));
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+        builder.setTitle(isEditing ? Helper.getResString(R.string.widget_editor) : Helper.getResString(R.string.create_new_widget));
         WidgetsCreatorDialogBinding binding = WidgetsCreatorDialogBinding.inflate(LayoutInflater.from(context));
         View inflate = binding.getRoot();
 
@@ -164,8 +184,7 @@ public class WidgetsCreatorManager {
             binding.addWidgetTo.setText(map.get("Class").toString());
             binding.injectCode.setText(map.get("inject").toString());
         } else {
-            dialog.setDismissOnDefaultButtonClick(false);
-            dialog.configureDefaultButton(Helper.getResString(R.string.common_word_see_more), view -> showMorePopUp(dialog, view));
+            builder.setNeutralButton(Helper.getResString(R.string.common_word_see_more), null);
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -185,7 +204,7 @@ public class WidgetsCreatorManager {
             showCategorySelectorDialog(types, binding.addWidgetTo);
         });
 
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> {
+        builder.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             try {
                 String widgetTitle = Objects.requireNonNull(binding.widgetTitle.getText()).toString().trim();
                 String widgetName = Objects.requireNonNull(binding.widgetName.getText()).toString().trim();
@@ -228,19 +247,27 @@ public class WidgetsCreatorManager {
                     allCategories.add(widgetClass);
                 }
                 viewEditorFragment.e();
-                dialog.dismiss();
+                v.dismiss();
             } catch (Exception e) {
                 SketchwareUtil.toastError("Failed: " + e.getMessage());
             }
         });
 
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        builder.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
 
-        dialog.a(inflate);
+        builder.setView(inflate);
+
+        AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(dialog1 -> {
+            if (!isEditing) {
+                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> showMorePopUp(dialog, v));
+            }
+        });
+
         dialog.show();
     }
 
-    private void showMorePopUp(aB dialog, View anchorView) {
+    private void showMorePopUp(DialogInterface dialog, View anchorView) {
         PopupMenu popupMenu = new PopupMenu(context, anchorView);
         popupMenu.getMenuInflater().inflate(R.menu.widget_creator_menu_more, popupMenu.getMenu());
 
@@ -280,7 +307,8 @@ public class WidgetsCreatorManager {
             String value = FileUtil.readFile(path);
 
             try {
-                Type listType = new TypeToken<ArrayList<HashMap<String, Object>>>() {}.getType();
+                Type listType = new TypeToken<ArrayList<HashMap<String, Object>>>() {
+                }.getType();
                 ArrayList<HashMap<String, Object>> importedWidgets = getGson().fromJson(value, listType);
 
                 if (importedWidgets.isEmpty()) {
@@ -308,25 +336,6 @@ public class WidgetsCreatorManager {
             viewEditorFragment.e();
             SketchwareUtil.toast("Imported!");
         }
-    }
-
-    public static void clearErrorOnTextChanged(final EditText editText, final TextInputLayout textInputLayout) {
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (textInputLayout.getError() != null) {
-                    textInputLayout.setError(null);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
     }
 
     private void showTypeViewSelectorDialog(List<String> choices, List<String> types, TextInputEditText type) {
@@ -456,16 +465,19 @@ public class WidgetsCreatorManager {
                     viewEditor.paletteWidget.extraTitle(item, 1);
                     addWidgetsByTitle(item);
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
     }
 
     public void showActionsDialog(int tag) {
         Activity activity = viewEditorFragment.requireActivity();
         DialogSelectorActionsBinding dialogBinding = DialogSelectorActionsBinding.inflate(LayoutInflater.from(activity));
-        aB dialog = new aB(activity);
-        dialog.b("Actions");
-        dialog.a(dialogBinding.getRoot());
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(activity);
+        dialogBuilder.setTitle("Actions");
+        dialogBuilder.setView(dialogBinding.getRoot());
+
+        AlertDialog dialog = dialogBuilder.create();
 
         int position = getWidgetPosition(tag);
 
@@ -484,15 +496,18 @@ public class WidgetsCreatorManager {
             deleteWidgetMap(position);
             dialog.dismiss();
         });
-        dialog.show();
+
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
     }
 
     private void deleteWidgetMap(int position) {
-        aB dialog = new aB((Activity) context);
-        dialog.b(xB.b().a(context, R.string.view_widget_favorites_delete_title));
-        dialog.a(R.drawable.ic_mtrl_delete);
-        dialog.a(xB.b().a(context, R.string.view_widget_favorites_delete_message));
-        dialog.b(xB.b().a(context, R.string.common_word_delete), v -> {
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
+        dialog.setTitle(xB.b().a(context, R.string.view_widget_favorites_delete_title));
+        dialog.setIcon(R.drawable.ic_mtrl_delete);
+        dialog.setMessage(xB.b().a(context, R.string.view_widget_favorites_delete_message));
+        dialog.setPositiveButton(xB.b().a(context, R.string.common_word_delete), (v, which) -> {
             String Class = Objects.requireNonNull(widgetConfigurationsList.get(position).get("Class")).toString();
             widgetConfigurationsList.remove(position);
             if (isClassEmpty(Class) && !mainCategories.contains(Class)) {
@@ -500,9 +515,9 @@ public class WidgetsCreatorManager {
             }
             FileUtil.writeFile(widgetsJsonFilePath, getGson().toJson(widgetConfigurationsList));
             viewEditorFragment.e();
-            dialog.dismiss();
+            v.dismiss();
         });
-        dialog.a(xB.b().a(context, R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(xB.b().a(context, R.string.common_word_cancel), null);
         dialog.show();
     }
 

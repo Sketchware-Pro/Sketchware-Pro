@@ -10,9 +10,6 @@ import android.widget.PopupMenu;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import a.a.a.jC;
-import a.a.a.mB;
-
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -20,10 +17,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+
+import a.a.a.jC;
+import a.a.a.mB;
 import dev.aldi.sayuti.editor.injection.AppCompatInjection;
-
 import mod.hey.studios.util.Helper;
-
 import pro.sketchware.R;
 import pro.sketchware.activities.appcompat.adapters.AppCompatAdapter;
 import pro.sketchware.databinding.CustomDialogAttributeBinding;
@@ -31,11 +33,6 @@ import pro.sketchware.databinding.ManageAppCompatBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
 
 public class ManageAppCompatActivity extends BaseAppCompatActivity {
 
@@ -133,10 +130,12 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                     }
 
                     @Override
-                    public void onTabReselected(TabLayout.Tab tab) {}
+                    public void onTabReselected(TabLayout.Tab tab) {
+                    }
 
                     @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {}
+                    public void onTabUnselected(TabLayout.Tab tab) {
+                    }
                 });
         List<String> appCompats = new ArrayList<>();
         initializeProjectBean();
@@ -258,13 +257,12 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
                 CustomDialogAttributeBinding.inflate(getLayoutInflater());
         dialog.setView(attributeBinding.getRoot());
 
+        attributeBinding.inputLayoutRes.setVisibility(View.GONE);
+
         if (type.equals("edit")) {
             String injectionValue = activityInjections.get(position).get("value").toString();
-            attributeBinding.inputRes.setText(
-                    injectionValue.substring(0, injectionValue.indexOf(":")));
             attributeBinding.inputAttr.setText(
-                    injectionValue.substring(
-                            injectionValue.indexOf(":") + 1, injectionValue.indexOf("=")));
+                    injectionValue.substring(0, injectionValue.indexOf("=")));
             attributeBinding.inputValue.setText(
                     injectionValue.substring(
                             injectionValue.indexOf("\"") + 1, injectionValue.length() - 1));
@@ -273,14 +271,11 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
         dialog.setPositiveButton(
                 R.string.common_word_save,
                 (dialog1, which) -> {
-                    String namespaceInput = Helper.getText(attributeBinding.inputRes);
                     String nameInput = Helper.getText(attributeBinding.inputAttr);
                     String valueInput = Helper.getText(attributeBinding.inputValue);
-                    if (!namespaceInput.trim().isEmpty()
-                            && !nameInput.trim().isEmpty()
+                    if (!nameInput.trim().isEmpty()
                             && !valueInput.trim().isEmpty()) {
-                        String newValue =
-                                namespaceInput + ":" + nameInput + "=\"" + valueInput + "\"";
+                        String newValue = nameInput + "=\"" + valueInput + "\"";
                         HashMap<String, Object> map = new HashMap<>();
                         map.put("type", tabSelected);
                         map.put("value", newValue);

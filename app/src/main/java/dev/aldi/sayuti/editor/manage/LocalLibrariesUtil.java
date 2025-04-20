@@ -9,17 +9,17 @@ import static pro.sketchware.utility.FileUtil.writeFile;
 
 import com.google.gson.Gson;
 
-import mod.hey.studios.util.Helper;
-
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 
+import mod.hey.studios.util.Helper;
+
 public class LocalLibrariesUtil {
-    private static String localLibsPath = getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
+    private static final String localLibsPath = getExternalStorageDir().concat("/.sketchware/libs/local_libs/");
 
     public static List<LocalLibrary> getAllLocalLibraries() {
         ArrayList<File> localLibraryFiles = new ArrayList<>();
@@ -50,22 +50,25 @@ public class LocalLibrariesUtil {
         localLibraries.removeIf(library -> {
             if (library.isSelected()) {
                 deleteFile(localLibsPath.concat(library.getName()));
-                int indexToRemove = -1;
-                for (int i = 0; i < projectUsedLibs.size(); i++) {
-                    Map<String, Object> libraryMap = projectUsedLibs.get(i);
-                    if (library.getName().equals(libraryMap.get("name").toString())) {
-                        indexToRemove = i;
-                        break;
+                if (projectUsedLibs != null) {
+                    int indexToRemove = -1;
+                    for (int i = 0; i < projectUsedLibs.size(); i++) {
+                        Map<String, Object> libraryMap = projectUsedLibs.get(i);
+                        if (library.getName().equals(libraryMap.get("name").toString())) {
+                            indexToRemove = i;
+                            break;
+                        }
                     }
-                }
-                if (indexToRemove != -1) {
-                    projectUsedLibs.remove(indexToRemove);
+                    if (indexToRemove != -1) {
+                        projectUsedLibs.remove(indexToRemove);
+                    }
                 }
                 return true;
             }
             return false;
         });
-        rewriteLocalLibFile(scId, new Gson().toJson(projectUsedLibs));
+        if (projectUsedLibs != null)
+            rewriteLocalLibFile(scId, new Gson().toJson(projectUsedLibs));
     }
 
     public static File getLocalLibFile(String scId) {

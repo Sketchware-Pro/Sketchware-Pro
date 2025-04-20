@@ -24,9 +24,6 @@ import com.besome.sketch.lib.ui.EasyDeleteEditText;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-
 import java.util.ArrayList;
 
 import a.a.a.QB;
@@ -34,6 +31,8 @@ import a.a.a.bB;
 import a.a.a.mB;
 import a.a.a.uq;
 import a.a.a.xB;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 
 public class ManageImageImportActivity extends BaseAppCompatActivity implements View.OnClickListener {
     private ImageView img;
@@ -221,7 +220,61 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
         selectedCollections.addAll(notDuplicateCollections);
     }
 
+    private void showPreview(int index) {
+        Glide.with(getApplicationContext())
+                .asBitmap()
+                .load(selectedCollections.get(index).resFullName)
+                .centerCrop()
+                .error(R.drawable.ic_remove_grey600_24dp)
+                .into(new BitmapImageViewTarget(img).getView());
+    }
+
+    private boolean isNameInUseByProjectImage(String name) {
+        for (ProjectResourceBean projectImage : projectImages) {
+            if (projectImage.resName.equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+        public ItemAdapter() {
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+            ProjectResourceBean projectResourceBean = selectedCollections.get(position);
+            if (projectResourceBean.isDuplicateCollection) {
+                viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
+            } else {
+                viewHolder.img_conflict.setImageResource(R.drawable.ic_ok_48dp);
+            }
+            if (position == selectedItem) {
+                viewHolder.img.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
+            } else {
+                viewHolder.img.setBackgroundColor(Color.parseColor("#ffffff"));
+            }
+            Glide.with(getApplicationContext())
+                    .load(projectResourceBean.resFullName)
+                    //.asBitmap()
+                    .centerCrop()
+                    .error(R.drawable.ic_remove_grey600_24dp)
+                    .into(new BitmapImageViewTarget(viewHolder.img).getView());
+            viewHolder.tv_name.setText(selectedCollections.get(position).resName);
+        }
+
+        @Override
+        @NonNull
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_import_list_item, parent, false));
+        }
+
+        @Override
+        public int getItemCount() {
+            return selectedCollections.size();
+        }
+
         private class ViewHolder extends RecyclerView.ViewHolder {
             public final LinearLayout layout_item;
             public final ImageView img_conflict;
@@ -252,59 +305,5 @@ public class ManageImageImportActivity extends BaseAppCompatActivity implements 
                 });
             }
         }
-
-        public ItemAdapter() {
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-            ProjectResourceBean projectResourceBean = selectedCollections.get(position);
-            if (projectResourceBean.isDuplicateCollection) {
-                viewHolder.img_conflict.setImageResource(R.drawable.ic_cancel_48dp);
-            } else {
-                viewHolder.img_conflict.setImageResource(R.drawable.ic_ok_48dp);
-            }
-            if (position == selectedItem) {
-                viewHolder.img.setBackgroundResource(R.drawable.bg_outline_dark_yellow);
-            } else {
-                viewHolder.img.setBackgroundColor(Color.parseColor("#ffffff"));
-            }
-            Glide.with(getApplicationContext())
-                    .load(projectResourceBean.resFullName)
-                    .asBitmap()
-                    .centerCrop()
-                    .error(R.drawable.ic_remove_grey600_24dp)
-                    .into(new BitmapImageViewTarget(viewHolder.img));
-            viewHolder.tv_name.setText(selectedCollections.get(position).resName);
-        }
-
-        @Override
-        @NonNull
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.manage_import_list_item, parent, false));
-        }
-
-        @Override
-        public int getItemCount() {
-            return selectedCollections.size();
-        }
-    }
-
-    private void showPreview(int index) {
-        Glide.with(getApplicationContext())
-                .load(selectedCollections.get(index).resFullName)
-                .asBitmap()
-                .centerCrop()
-                .error(R.drawable.ic_remove_grey600_24dp)
-                .into(new BitmapImageViewTarget(img));
-    }
-
-    private boolean isNameInUseByProjectImage(String name) {
-        for (ProjectResourceBean projectImage : projectImages) {
-            if (projectImage.resName.equals(name)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

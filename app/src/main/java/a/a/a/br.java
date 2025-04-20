@@ -28,14 +28,15 @@ import com.besome.sketch.editor.component.ComponentAddActivity;
 import com.besome.sketch.editor.component.ComponentEventButton;
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
-import pro.sketchware.R;
-import pro.sketchware.databinding.FrComponentListBinding;
-import pro.sketchware.databinding.FrLogicListItemComponentBinding;
-import pro.sketchware.databinding.FrLogicListItemEventPreviewBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
+
+import pro.sketchware.R;
+import pro.sketchware.databinding.FrComponentListBinding;
+import pro.sketchware.databinding.FrLogicListItemComponentBinding;
+import pro.sketchware.databinding.FrLogicListItemEventPreviewBinding;
 
 public class br extends qA implements View.OnClickListener {
 
@@ -357,6 +358,10 @@ public class br extends qA implements View.OnClickListener {
                 binding.componentEvents.animate().translationX(0.0f).setStartDelay(200L).setDuration(120L).alpha(1.0f).start();
             }
 
+            private interface EventClickListener {
+                void onEventClick(EventBean bean);
+            }
+
             private class AddedEventsAdapter extends ListAdapter<EventBean, EventViewHolder> {
                 private static final DiffUtil.ItemCallback<EventBean> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
                     @Override
@@ -407,12 +412,11 @@ public class br extends qA implements View.OnClickListener {
                         return true;
                     }
                 };
+                private EventClickListener listener;
 
                 public AvailableEventsAdapter() {
                     super(DIFF_CALLBACK);
                 }
-
-                private EventClickListener listener;
 
                 public void setOnEventClickListener(EventClickListener listener) {
                     this.listener = listener;
@@ -453,10 +457,6 @@ public class br extends qA implements View.OnClickListener {
                     super(itemView);
                     button = itemView;
                 }
-            }
-
-            private interface EventClickListener {
-                void onEventClick(EventBean bean);
             }
         }
     }

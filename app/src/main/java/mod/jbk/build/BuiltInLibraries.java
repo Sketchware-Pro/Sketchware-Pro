@@ -499,6 +499,17 @@ public class BuiltInLibraries {
     }
 
     public static class BuiltInLibrary implements Parcelable {
+        public static final Creator<BuiltInLibrary> CREATOR = new Creator<>() {
+            @Override
+            public BuiltInLibrary createFromParcel(Parcel in) {
+                return new BuiltInLibrary(in);
+            }
+
+            @Override
+            public BuiltInLibrary[] newArray(int size) {
+                return new BuiltInLibrary[size];
+            }
+        };
         private final String name;
         private final List<String> dependencyNames;
         private final String packageName;
@@ -535,18 +546,6 @@ public class BuiltInLibraries {
             packageName = in.readString();
             hasResources = in.readInt() != 0;
         }
-
-        public static final Creator<BuiltInLibrary> CREATOR = new Creator<>() {
-            @Override
-            public BuiltInLibrary createFromParcel(Parcel in) {
-                return new BuiltInLibrary(in);
-            }
-
-            @Override
-            public BuiltInLibrary[] newArray(int size) {
-                return new BuiltInLibrary[size];
-            }
-        };
 
         public static Optional<BuiltInLibrary> ofName(String name) {
             for (BuiltInLibrary builtInLibrary : KNOWN_BUILT_IN_LIBRARIES) {

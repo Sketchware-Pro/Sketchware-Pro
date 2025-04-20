@@ -47,8 +47,16 @@ public class LogicEditorScrollView extends FrameLayout {
         return this.scrollEnabled;
     }
 
+    public void setScrollEnabled(boolean z) {
+        this.scrollEnabled = z;
+    }
+
     public boolean getUseScroll() {
         return this.useScroll;
+    }
+
+    public void setUseScroll(boolean z) {
+        this.useScroll = z;
     }
 
     @Override
@@ -111,7 +119,7 @@ public class LogicEditorScrollView extends FrameLayout {
                 if (getScrollX() <= 0) {
                     i2 = 0;
                 }
-                min = Math.max(0 - getScrollX(), i2);
+                min = Math.max(-getScrollX(), i2);
             } else {
                 int right = ((child.getRight() - getScrollX()) - getWidth()) - getPaddingRight();
                 min = right > 0 ? Math.min(right, i2) : 0;
@@ -120,7 +128,7 @@ public class LogicEditorScrollView extends FrameLayout {
                 if (getScrollY() <= 0) {
                     i3 = 0;
                 }
-                i = Math.max(0 - getScrollY(), i3);
+                i = Math.max(-getScrollY(), i3);
             } else {
                 int bottom = ((child.getBottom() - getScrollY()) - getHeight()) - getPaddingBottom();
                 if (bottom > 0) {
@@ -132,14 +140,6 @@ public class LogicEditorScrollView extends FrameLayout {
             }
         }
         return true;
-    }
-
-    public void setScrollEnabled(boolean z) {
-        this.scrollEnabled = z;
-    }
-
-    public void setUseScroll(boolean z) {
-        this.useScroll = z;
     }
 
     private boolean a() {

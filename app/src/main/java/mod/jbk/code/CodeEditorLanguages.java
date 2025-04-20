@@ -1,7 +1,5 @@
 package mod.jbk.code;
 
-import pro.sketchware.SketchApplication;
-
 import io.github.rosemoe.sora.lang.EmptyLanguage;
 import io.github.rosemoe.sora.lang.Language;
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage;
@@ -11,13 +9,13 @@ import io.github.rosemoe.sora.langs.textmate.registry.dsl.LanguageDefinitionList
 import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver;
 import kotlin.Unit;
 import mod.jbk.util.LogUtil;
+import pro.sketchware.SketchApplication;
 
 public class CodeEditorLanguages {
-    private static final String TAG = "CodeEditorLanguages";
-
     public static final String[] LANGUAGES = {"kotlin.tmLanguage", "xml.tmLanguage.json"};
     public static final String SCOPE_NAME_KOTLIN = "source.kotlin";
     public static final String SCOPE_NAME_XML = "text.xml";
+    private static final String TAG = "CodeEditorLanguages";
 
     static {
         FileProviderRegistry.getInstance().addFileProvider(
