@@ -2,7 +2,6 @@ package com.besome.sketch.editor.property;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -158,11 +157,8 @@ public class PropertyMeasureItem extends RelativeLayout implements View.OnClickL
             binding.rgWidthHeight.check(R.id.rb_matchparent);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.tvInputDp.setVisibility(View.GONE);
-
-            binding.tiInput.setSuffixText("dp");
-        }
+        binding.tvInputDp.setVisibility(View.GONE);
+        binding.tiInput.setSuffixText("dp");
 
         dialog.setView(binding.getRoot());
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_select), (v, which) -> {

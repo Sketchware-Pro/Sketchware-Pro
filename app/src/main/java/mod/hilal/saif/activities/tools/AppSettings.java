@@ -243,18 +243,7 @@ public class AppSettings extends BaseAppCompatActivity {
                         tv_log.setText(Helper.getText(tv_log) + line));
 
                 if (useTestkey) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        signer.signWithTestKey(inputApkPath, outputApkPath, callback);
-                    } else {
-                        try {
-                            ZipSigner zipSigner = new ZipSigner();
-                            zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-                            zipSigner.signZip(inputApkPath, outputApkPath);
-                        } catch (Exception e) {
-                            tv_progress.setText("An error occurred. Check the log for more details.");
-                            tv_log.setText("Failed to sign APK with zipsigner: " + e);
-                        }
-                    }
+                    signer.signWithTestKey(inputApkPath, outputApkPath, callback);
                 } else {
                     signer.signWithKeyStore(inputApkPath, outputApkPath,
                             keyStorePath, keyStorePassword, keyStoreKeyAlias, keyPassword, callback);

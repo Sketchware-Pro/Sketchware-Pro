@@ -12,7 +12,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -473,12 +472,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
     }
 
     private void pickCustomIcon(int code) {
-        Uri uri;
-        if (Build.VERSION.SDK_INT >= 24) {
-            uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon());
-        } else {
-            uri = Uri.fromFile(getCustomIcon());
-        }
+        Uri uri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon());
 
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
@@ -490,17 +484,12 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
     }
 
     private void pickAndCropCustomIcon() {
-        Uri uri;
         Intent intent = new Intent(Intent.ACTION_PICK);
-        if (Build.VERSION.SDK_INT >= 24) {
-            Context applicationContext = getApplicationContext();
-            uri = FileProvider.getUriForFile(applicationContext, getApplicationContext().getPackageName() + ".provider", getCustomIcon());
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        } else {
-            uri = Uri.fromFile(getCustomIcon());
-        }
+        Context applicationContext = getApplicationContext();
+        Uri uri = FileProvider.getUriForFile(applicationContext, getApplicationContext().getPackageName() + ".provider", getCustomIcon());
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
 
         intent.setDataAndType(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, "image/*");
         intent.putExtra("crop", "true");

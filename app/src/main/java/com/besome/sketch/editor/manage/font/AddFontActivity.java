@@ -139,7 +139,7 @@ public class AddFontActivity extends BaseDialogActivity implements View.OnClickL
                     }
                     validFontPicked = true;
                     String extractedFontName = SketchwareUtil.getSafDocumentDisplayName(intentData).orElse("invalid.tff").toLowerCase();
-                    extractedFontName = extractedFontName.replaceAll("[^a-z0-9]", "").replace("ttf", "");
+                    extractedFontName = extractedFontName.replaceAll("^[a-z0-9]", "").replace("ttf", "");
 
                     binding.edInput.requestFocus();
                     binding.fontPreviewView.setVisibility(View.VISIBLE);

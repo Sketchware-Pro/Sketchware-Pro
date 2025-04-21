@@ -584,25 +584,14 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
         }
 
         if (scrollView != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                // onScrollChange
-                scrollView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-                    if (updateHighlight != null) {
-                        textView.removeCallbacks(updateHighlight);
-                        textView.postDelayed(updateHighlight, UPDATE_DELAY);
-                    }
-                });
+            // onScrollChange
+            scrollView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+                if (updateHighlight != null) {
+                    textView.removeCallbacks(updateHighlight);
+                    textView.postDelayed(updateHighlight, UPDATE_DELAY);
+                }
+            });
 
-            } else {
-                // onScrollChange
-                scrollView.getViewTreeObserver()
-                        .addOnScrollChangedListener(() -> {
-                            if (updateHighlight != null) {
-                                textView.removeCallbacks(updateHighlight);
-                                textView.postDelayed(updateHighlight, UPDATE_DELAY);
-                            }
-                        });
-            }
         }
     }
 

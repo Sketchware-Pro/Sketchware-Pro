@@ -380,15 +380,11 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
     private void requestPackageInstallerInstall() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        if (Build.VERSION.SDK_INT >= 24) {
-            Uri apkUri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.finalToInstallApkPath));
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-        } else {
-            intent.setDataAndType(Uri.fromFile(new File(q.finalToInstallApkPath)), "application/vnd.android.package-archive");
-        }
+        Uri apkUri = FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(q.finalToInstallApkPath));
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
 
         startActivity(intent);
     }
@@ -1238,11 +1234,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 }
                 progressText.setText(progress);
                 var progressInt = (step * 100) / totalSteps;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    progressBar.setProgress(progressInt, true);
-                } else {
-                    progressBar.setProgress(progressInt);
-                }
+                progressBar.setProgress(progressInt, true);
                 Log.d("DesignActivity$BuildTask", step + " / " + totalSteps);
             });
         }
@@ -1326,14 +1318,12 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             DesignActivity activity = getActivity();
             if (activity == null) return;
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                CharSequence name = "Build Notifications";
-                String description = "Notifications for build progress";
-                int importance = NotificationManager.IMPORTANCE_LOW;
-                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-                channel.setDescription(description);
-                notificationManager.createNotificationChannel(channel);
-            }
+            CharSequence name = "Build Notifications";
+            String description = "Notifications for build progress";
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            notificationManager.createNotificationChannel(channel);
         }
 
         private void updateRunMenu(boolean isRunning) {

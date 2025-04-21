@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -50,12 +49,10 @@ public class Helper {
     }
 
     public static void fixFileprovider() {
-        if (Build.VERSION.SDK_INT >= 24) {
-            try {
-                StrictMode.class.getMethod("disableDeathOnFileUriExposure").invoke(null);
-            } catch (Exception e) {
-                Log.e("Helper", "An error occurred while trying to fix death on file URI exposure: " + e.getMessage(), e);
-            }
+        try {
+            StrictMode.class.getMethod("disableDeathOnFileUriExposure").invoke(null);
+        } catch (Exception e) {
+            Log.e("Helper", "An error occurred while trying to fix death on file URI exposure: " + e.getMessage(), e);
         }
     }
 
