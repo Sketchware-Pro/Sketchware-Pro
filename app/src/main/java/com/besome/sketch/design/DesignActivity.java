@@ -113,6 +113,8 @@ import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.diagnostic.MissingFileException;
 import mod.jbk.util.LogUtil;
 import mod.khaled.logcat.LogReaderActivity;
+
+import pro.sketchware.activities.resources.editors.ResourcesEditorActivity;
 import pro.sketchware.R;
 import pro.sketchware.activities.appcompat.ManageAppCompatActivity;
 import pro.sketchware.activities.editor.command.ManageXMLCommandActivity;
@@ -149,8 +151,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     });
     private final ActivityResultLauncher<Intent> openResourcesManager = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
-            if (viewTabAdapter != null) {
+            if (viewTabAdapter != null && viewPager.getCurrentItem() == 0) {
                 viewTabAdapter.i();
+                refreshViewTabAdapter();
             }
         }
     });
@@ -934,6 +937,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
      */
     void toResourceManager() {
         launchActivity(ManageResourceActivity.class, openResourcesManager);
+    }
+
+    /**
+     * Opens {@link ResourcesEditorActivity}.
+     */
+    void toResourceEditor() {
+        launchActivity(ResourcesEditorActivity.class, openResourcesManager);
     }
 
     /**

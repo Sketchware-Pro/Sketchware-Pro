@@ -176,7 +176,7 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
         i = a3.findViewById(R.id.rg);
         j = a3.findViewById(R.id.content);
         ArrayList<String> m = jC.d(a).m();
-        ArrayList<String> vectors = XmlToSvgConverter.getVectorDrawables(DesignActivity.sc_id);
+        ArrayList<String> vectors = new XmlToSvgConverter().getVectorDrawables(DesignActivity.sc_id);
         m.addAll(vectors);
         m.add(0, d ? "default_image" : "NONE");
         RadioButton radioButton = null;
@@ -266,7 +266,8 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
                     }
                 } else {
                     try {
-                        XmlToSvgConverter.setImageVectorFromFile(imageView, XmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, str));
+                        XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
+                        xmlToSvgConverter.setImageVectorFromFile(imageView, xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, str));
                     } catch (Exception e) {
                         imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
                     }

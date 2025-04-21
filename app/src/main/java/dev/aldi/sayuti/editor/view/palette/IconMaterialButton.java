@@ -33,7 +33,7 @@ public class IconMaterialButton extends IconBase {
         viewBean.text.textColor = Color.WHITE;
         viewBean.text.text = getName();
         viewBean.convert = "com.google.android.material.button.MaterialButton";
-        viewBean.inject = "android:textAppearance=\"@style/TextAppearance.MaterialComponents.Button\"\napp:backgroundTint=\"@color/colorPrimary\"\napp:cornerRadius=\"8dp\"\nstyle=\"@style/Widget.MaterialComponents.Button\"";
+        viewBean.inject = "app:cornerRadius=\"8dp\"";
         return viewBean;
     }
 }
