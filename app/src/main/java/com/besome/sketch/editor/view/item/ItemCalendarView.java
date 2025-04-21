@@ -30,9 +30,9 @@ public class ItemCalendarView extends CalendarView implements sy {
     }
 
     public void initialize(Context context) {
-        this.oneDp = wB.a(context, 1.0f);
-        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.paint.setColor(0x9599d5d0);
+        oneDp = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
         setFocusable(false);
         setClickable(false);
         setDrawingCacheEnabled(true);
@@ -40,7 +40,7 @@ public class ItemCalendarView extends CalendarView implements sy {
 
     @Override
     public ViewBean getBean() {
-        return this.viewBean;
+        return viewBean;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ItemCalendarView extends CalendarView implements sy {
 
     @Override
     public boolean getFixed() {
-        return this.fixed;
+        return fixed;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ItemCalendarView extends CalendarView implements sy {
     }
 
     public boolean getSelection() {
-        return this.selected;
+        return selected;
     }
 
     @Override
@@ -70,8 +70,8 @@ public class ItemCalendarView extends CalendarView implements sy {
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.selected) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.paint);
+        if (selected) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
         }
         super.onDraw(canvas);
     }

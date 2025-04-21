@@ -164,8 +164,8 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
             }
         });
         binding.selectFile.setOnClickListener(this);
-        this.r.setOnClickListener(this);
-        this.s.setOnClickListener(this);
+        r.setOnClickListener(this);
+        s.setOnClickListener(this);
         if (u) {
             e(xB.b().a(this, R.string.design_manager_sound_title_edit_sound_name));
             M = new WB(this, binding.tiInput, uq.b, getResourceNames(), O.resName);

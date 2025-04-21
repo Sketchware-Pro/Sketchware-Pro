@@ -389,7 +389,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
 
             public ViewHolder(@NonNull FileSelectorPopupSelectXmlActivityItemBinding binding) {
                 super(binding.getRoot());
-                this.itemBinding = binding;
+                itemBinding = binding;
                 itemBinding.cardView.setOnClickListener(v -> {
                     if (!mB.a()) {
                         selectedItem = getLayoutPosition();

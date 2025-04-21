@@ -33,17 +33,17 @@ public class ItemEditText extends AppCompatEditText implements sy {
     }
 
     public void initialize(Context context) {
-        this.oneDp = wB.a(context, 1.0f);
-        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.paint.setColor(0x9599d5d0);
+        oneDp = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
         setFocusable(false);
-        this.background = getBackground();
+        background = getBackground();
     }
 
     @Override
     public ViewBean getBean() {
-        return this.viewBean;
+        return viewBean;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ItemEditText extends AppCompatEditText implements sy {
 
     @Override
     public boolean getFixed() {
-        return this.fixed;
+        return fixed;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ItemEditText extends AppCompatEditText implements sy {
     }
 
     public boolean getSelection() {
-        return this.selected;
+        return selected;
     }
 
     @Override
@@ -73,8 +73,8 @@ public class ItemEditText extends AppCompatEditText implements sy {
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.selected) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.paint);
+        if (selected) {
+            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
         }
         super.onDraw(canvas);
     }
@@ -82,7 +82,7 @@ public class ItemEditText extends AppCompatEditText implements sy {
     @Override
     public void setBackgroundColor(int color) {
         if (color == 0xffffff) {
-            setBackground(this.background);
+            setBackground(background);
         } else {
             super.setBackgroundColor(color);
         }

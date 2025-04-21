@@ -57,7 +57,7 @@ public class MoreblockImporter {
         this.activity = activity;
         this.sc_id = sc_id;
         this.projectActivity = projectActivity;
-        this.activityJavaName = projectActivity.getJavaName();
+        activityJavaName = projectActivity.getJavaName();
     }
 
     public void importMoreblock(MoreBlockCollectionBean moreblock, Callback callback) {

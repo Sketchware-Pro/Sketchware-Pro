@@ -97,7 +97,7 @@ public class ManageAppCompatActivity extends BaseAppCompatActivity {
         adapter = new AppCompatAdapter();
         adapter.setOnItemClickListener(
                 item -> {
-                    PopupMenu popupMenu = new PopupMenu(ManageAppCompatActivity.this, item.first);
+                    PopupMenu popupMenu = new PopupMenu(this, item.first);
                     popupMenu.getMenu().add(Menu.NONE, 0, Menu.NONE, "Edit");
                     popupMenu.getMenu().add(Menu.NONE, 1, Menu.NONE, "Delete");
                     popupMenu.setOnMenuItemClickListener(

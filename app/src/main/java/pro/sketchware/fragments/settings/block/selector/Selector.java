@@ -9,9 +9,9 @@ public class Selector {
     private String title;
 
     public Selector() {
-        this.data = new ArrayList<>();
-        this.name = "";
-        this.title = "";
+        data = new ArrayList<>();
+        name = "";
+        title = "";
     }
 
     public Selector(String title, String name, List<String> data) {

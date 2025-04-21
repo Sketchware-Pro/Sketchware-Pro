@@ -409,7 +409,7 @@ public class Hx {
                 }
 
                 if (d.b) {
-                    this.hx.imports.addAll(mq.d(d.a));
+                    hx.imports.addAll(mq.d(d.a));
                 }
             }
         }

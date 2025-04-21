@@ -302,7 +302,7 @@ public class Fw extends qA {
                         layoutPosition = getLayoutPosition();
                         ProjectFileBean projectFileBean = activitiesFiles.get(layoutPosition);
 
-                        if (Fw.this.k) {
+                        if (k) {
                             if (layoutPosition != 0) {
                                 projectFileBean.isSelected = !projectFileBean.isSelected;
                                 binding.chkSelect.setChecked(projectFileBean.isSelected);

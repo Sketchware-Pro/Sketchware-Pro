@@ -75,7 +75,7 @@ public class IconAdapter extends ListAdapter<Pair<String, String>, IconAdapter.V
 
         public ViewHolder(ImportIconListItemBinding binding) {
             super(binding.getRoot());
-            this.itemBinding = binding;
+            itemBinding = binding;
             binding.getRoot().setOnClickListener(v -> {
                 int position = getLayoutPosition();
                 if (listener != null) {

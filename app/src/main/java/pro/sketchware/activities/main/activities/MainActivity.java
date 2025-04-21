@@ -293,7 +293,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             };
             countDownTimer.start();
 
-            if (!MainActivity.this.isFinishing()) bottomSheetDialog.show();
+            if (!isFinishing()) bottomSheetDialog.show();
         }
     }
 

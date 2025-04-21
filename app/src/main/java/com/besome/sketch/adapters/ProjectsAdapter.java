@@ -44,7 +44,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
     public ProjectsAdapter(ProjectsFragment projectsFragment, List<HashMap<String, Object>> allProjects) {
         this.projectsFragment = projectsFragment;
-        this.activity = projectsFragment.requireActivity();
+        activity = projectsFragment.requireActivity();
         this.allProjects = allProjects;
     }
 
