@@ -60,7 +60,7 @@ public class CustomBlocksDialog {
 
             if (!customBlocks.isEmpty()) {
 
-                final HashMap<Integer, Rs> preloadedBlocks = new HashMap<>();
+                HashMap<Integer, Rs> preloadedBlocks = new HashMap<>();
                 for (int i = 0; i < customBlocks.size(); i++) {
                     BlockBean block = customBlocks.get(i);
                     preloadedBlocks.put(i, createBlock(context, block));

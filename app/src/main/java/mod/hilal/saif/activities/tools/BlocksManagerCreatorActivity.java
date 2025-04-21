@@ -226,7 +226,7 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         new SimpleHighlighter(binding.code);
     }
 
-    private View addBlockMenu(final String menu, String name) {
+    private View addBlockMenu(String menu, String name) {
         TextView textView = new TextView(this);
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,

@@ -62,7 +62,7 @@ public class qA extends Fragment {
     }
 
     public void configureToolbar(MaterialToolbar toolbar) {
-        final OnBackPressedDispatcher onBackPressedDispatcher = requireActivity().getOnBackPressedDispatcher();
+        OnBackPressedDispatcher onBackPressedDispatcher = requireActivity().getOnBackPressedDispatcher();
         toolbar.setNavigationOnClickListener(v -> {
             onBackPressedDispatcher.onBackPressed();
         });

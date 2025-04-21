@@ -86,11 +86,11 @@ public class Helper {
         return String.format(getResString(resId), formatArgs);
     }
 
-    public static View.OnClickListener getBackPressedClickListener(final ComponentActivity activity) {
+    public static View.OnClickListener getBackPressedClickListener(ComponentActivity activity) {
         return v -> activity.getOnBackPressedDispatcher().onBackPressed();
     }
 
-    public static DialogDismissListener getDialogDismissListener(final DialogInterface dialog) {
+    public static DialogDismissListener getDialogDismissListener(DialogInterface dialog) {
         return new DialogDismissListener(dialog);
     }
 
@@ -152,7 +152,7 @@ public class Helper {
      * @param rippleColor   The effect's color
      * @param standardColor The view's color when untouched
      */
-    public static void applyRippleEffect(final View target, final int rippleColor, int standardColor) {
+    public static void applyRippleEffect(View target, int rippleColor, int standardColor) {
         if (!target.isClickable()) {
             target.setClickable(true);
         }

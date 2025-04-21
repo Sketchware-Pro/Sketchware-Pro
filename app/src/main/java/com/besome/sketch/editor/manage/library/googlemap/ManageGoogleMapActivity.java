@@ -52,7 +52,7 @@ public class ManageGoogleMapActivity extends BaseAppCompatActivity implements Vi
     }
 
     private void downloadChromeDialog() {
-        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.chrome_96);
         dialog.setTitle(Helper.getResString(R.string.title_compatible_chrome_browser));
         dialog.setMessage(Helper.getResString(R.string.message_compatible_chrome_brower));

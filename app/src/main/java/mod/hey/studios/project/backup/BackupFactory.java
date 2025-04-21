@@ -293,7 +293,7 @@ public class BackupFactory {
                     .replace("$pkgName", pkgName)
                     .replace("$versionCode", versionCode)
                     .replace("$timeInMs", String.valueOf(Calendar.getInstance(Locale.ENGLISH).getTimeInMillis()));
-            final Matcher matcher = Pattern.compile("\\$time\\((.*?)\\)").matcher(customFileName);
+            Matcher matcher = Pattern.compile("\\$time\\((.*?)\\)").matcher(customFileName);
             while (matcher.find()) {
                 finalFileName = finalFileName.replaceFirst(Pattern.quote(Objects.requireNonNull(matcher.group(0))), getFormattedDateFrom(matcher.group(1)));
             }

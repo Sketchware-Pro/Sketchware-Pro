@@ -82,7 +82,7 @@ public class ActComponentsDialog extends Dialog {
     }
 
     private void addControl() {
-        final LinearLayout linearLayout = new LinearLayout(getContext());
+        LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,

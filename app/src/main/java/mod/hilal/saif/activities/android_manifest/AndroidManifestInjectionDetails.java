@@ -215,7 +215,7 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
         }
 
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
             try {

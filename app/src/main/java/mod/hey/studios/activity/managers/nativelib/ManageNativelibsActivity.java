@@ -254,7 +254,7 @@ public class ManageNativelibsActivity extends BaseAppCompatActivity implements V
         });
     }
 
-    private void showRenameDialog(final String path) {
+    private void showRenameDialog(String path) {
         DialogInputLayoutBinding dialogBinding = DialogInputLayoutBinding.inflate(getLayoutInflater());
         var inputText = dialogBinding.inputText;
 

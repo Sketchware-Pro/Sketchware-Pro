@@ -793,7 +793,7 @@ public class ExtraMenuBean {
         dialog.show();
     }
 
-    private void pathSelectorMenu(final Ss ss) {
+    private void pathSelectorMenu(Ss ss) {
         String menuName = ss.getMenuName();
         ArrayList<String> markedPath = new ArrayList<>();
 

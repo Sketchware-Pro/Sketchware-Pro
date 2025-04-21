@@ -337,7 +337,7 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
         inputText.requestFocus();
     }
 
-    private void showDeleteDialog(final int position) {
+    private void showDeleteDialog(int position) {
         boolean isInManifest = frc.getJavaManifestList().contains(filesAdapter.getFullName(position));
 
         new MaterialAlertDialogBuilder(this)

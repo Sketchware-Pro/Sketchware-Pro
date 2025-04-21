@@ -124,6 +124,7 @@ import pro.sketchware.utility.apk.ApkSignatures;
 
 public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public static String sc_id;
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private ImageView xmlLayoutOrientation;
     private boolean B;
     private int currentTabNumber;
@@ -135,7 +136,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private DB t;
     private Menu bottomMenu;
     private MenuItem directXmlEditorMenu;
-    private final Handler handler = new Handler(Looper.getMainLooper());
     private ProjectFileBean projectFile;
     private TextView fileName;
     private String currentJavaFileName;
@@ -785,8 +785,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         if (projectFile == null) return;
         k();
         new Thread(() -> {
-            final var filename = Helper.getText(fileName);
-            final var code = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
+            var filename = Helper.getText(fileName);
+            var code = new yq(getApplicationContext(), sc_id).getFileSrc(filename, jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
             runOnUiThread(() -> {
                 if (isFinishing()) return;
                 h();
@@ -794,7 +794,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     SketchwareUtil.toast("Failed to generate source.");
                     return;
                 }
-                final var scheme = filename.endsWith(".xml")
+                var scheme = filename.endsWith(".xml")
                         ? CodeViewerActivity.SCHEME_XML
                         : CodeViewerActivity.SCHEME_JAVA;
                 launchActivity(CodeViewerActivity.class, null, new Pair<>("code", code), new Pair<>("sc_id", sc_id), new Pair<>("scheme", scheme));
@@ -837,7 +837,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         if (projectFile == null) return;
         k();
         new Thread(() -> {
-            final String filename = Helper.getText(fileName);
+            String filename = Helper.getText(fileName);
             // var yq = new yq(getApplicationContext(), sc_id);
             var xmlGenerator = new Ox(q.N, projectFile);
             var projectDataManager = jC.a(sc_id);
@@ -845,7 +845,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             var viewFab = projectDataManager.h(filename);
             xmlGenerator.setExcludeAppCompat(true);
             xmlGenerator.a(eC.a(viewBeans), viewFab);
-            final String content = xmlGenerator.b();
+            String content = xmlGenerator.b();
             runOnUiThread(() -> {
                 if (isFinishing()) return;
                 h();
@@ -1012,7 +1012,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         protected final WeakReference<DesignActivity> activityRef;
 
         protected BaseTask(DesignActivity activity) {
-            this.activityRef = new WeakReference<>(activity);
+            activityRef = new WeakReference<>(activity);
         }
 
         protected DesignActivity getActivity() {
@@ -1026,15 +1026,14 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private final ExecutorService executorService = Executors.newSingleThreadExecutor();
         private final NotificationManager notificationManager;
         private final int notificationId = 1;
-        private volatile boolean canceled;
-        private volatile boolean isBuildFinished;
-        private boolean isShowingNotification = false;
         private final MenuItem runMenu;
         private final MenuItem cancelMenu;
-
         private final LinearLayout progressContainer;
         private final TextView progressText;
         private final LinearProgressIndicator progressBar;
+        private volatile boolean canceled;
+        private volatile boolean isBuildFinished;
+        private boolean isShowingNotification = false;
 
         public BuildTask(DesignActivity activity) {
             super(activity);
