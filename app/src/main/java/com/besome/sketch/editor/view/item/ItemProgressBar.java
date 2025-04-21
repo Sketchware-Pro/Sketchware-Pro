@@ -46,18 +46,22 @@ public class ItemProgressBar extends LinearLayout implements sy {
         setGravity(Gravity.CENTER);
     }
 
+    @Override
     public ViewBean getBean() {
         return viewBean;
     }
 
+    @Override
     public void setBean(ViewBean viewBean) {
         this.viewBean = viewBean;
     }
 
+    @Override
     public boolean getFixed() {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean isFixed) {
         this.isFixed = isFixed;
     }
@@ -66,11 +70,13 @@ public class ItemProgressBar extends LinearLayout implements sy {
         return isSelected;
     }
 
+    @Override
     public void setSelection(boolean selection) {
         isSelected = selection;
         invalidate();
     }
 
+    @Override
     public void onDraw(Canvas var1) {
         if (isSelected) {
             var1.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
@@ -78,6 +84,7 @@ public class ItemProgressBar extends LinearLayout implements sy {
         super.onDraw(var1);
     }
 
+    @Override
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding((int) (left * paddingFactor),
                 (int) (top * paddingFactor),

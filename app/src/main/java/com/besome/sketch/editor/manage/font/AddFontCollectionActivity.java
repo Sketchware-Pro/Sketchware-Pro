@@ -29,6 +29,7 @@ public class AddFontCollectionActivity extends BaseDialogActivity implements Vie
     private FontNameValidator fontValidator;
     private ManageFontAddBinding binding;
 
+    @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         binding = ManageFontAddBinding.inflate(getLayoutInflater());

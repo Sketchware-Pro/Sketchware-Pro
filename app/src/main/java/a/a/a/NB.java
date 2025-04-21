@@ -17,6 +17,7 @@ public class NB extends MB {
         preDefNames = names;
     }
 
+    @Override
     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
         String inputValue = charSequence.toString();
         if (preDefNames.contains(inputValue)) {

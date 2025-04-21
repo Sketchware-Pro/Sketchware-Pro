@@ -44,6 +44,7 @@ public class ItemRadioButton extends RadioButton implements sy {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         isFixed = z;
     }

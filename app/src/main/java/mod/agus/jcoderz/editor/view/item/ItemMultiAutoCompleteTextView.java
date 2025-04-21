@@ -48,6 +48,7 @@ public class ItemMultiAutoCompleteTextView extends MultiAutoCompleteTextView imp
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         isFixed = z;
     }

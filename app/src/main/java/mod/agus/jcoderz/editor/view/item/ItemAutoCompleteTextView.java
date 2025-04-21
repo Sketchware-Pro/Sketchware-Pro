@@ -48,6 +48,7 @@ public class ItemAutoCompleteTextView extends AutoCompleteTextView implements sy
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         isFixed = z;
     }

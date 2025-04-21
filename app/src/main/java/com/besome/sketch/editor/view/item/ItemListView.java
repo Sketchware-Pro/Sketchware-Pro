@@ -61,6 +61,7 @@ public class ItemListView extends ListView implements sy {
         return this.fixed;
     }
 
+    @Override
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
     }

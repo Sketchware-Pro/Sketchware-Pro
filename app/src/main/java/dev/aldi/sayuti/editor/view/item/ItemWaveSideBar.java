@@ -52,6 +52,7 @@ public class ItemWaveSideBar extends AppCompatTextView implements sy {
         return hasFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         hasFixed = z;
     }

@@ -57,6 +57,7 @@ public class ItemVideoView extends LinearLayout implements sy {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         isFixed = z;
     }

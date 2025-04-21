@@ -59,6 +59,7 @@ public class ItemBottomNavigationView extends BottomNavigationView implements sy
         return hasFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         hasFixed = z;
     }

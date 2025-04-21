@@ -280,10 +280,12 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             bottomSheetDialog.getPositiveButton().setEnabled(false);
 
             CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {
+                @Override
                 public void onTick(long millisUntilFinished) {
                     bottomSheetDialog.setPositiveButtonText(millisUntilFinished / 1000 + "");
                 }
 
+                @Override
                 public void onFinish() {
                     bottomSheetDialog.setPositiveButtonText("View changes");
                     bottomSheetDialog.getPositiveButton().setEnabled(true);

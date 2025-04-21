@@ -51,6 +51,7 @@ public class ItemCheckBox extends AppCompatCheckBox implements sy {
         return this.fixed;
     }
 
+    @Override
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
     }

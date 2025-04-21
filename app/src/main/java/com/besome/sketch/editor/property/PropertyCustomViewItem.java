@@ -142,6 +142,7 @@ public class PropertyCustomViewItem extends RelativeLayout implements View.OnCli
         tvValue.setText(value);
     }
 
+    @Override
     public void onClick(View var1) {
         if (!mB.a()) {
             if ("property_custom_view_listview".equals(key)) {

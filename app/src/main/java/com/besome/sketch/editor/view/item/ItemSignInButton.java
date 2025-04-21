@@ -84,6 +84,7 @@ public class ItemSignInButton extends AppCompatButton implements sy {
         return hasFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         hasFixed = z;
     }

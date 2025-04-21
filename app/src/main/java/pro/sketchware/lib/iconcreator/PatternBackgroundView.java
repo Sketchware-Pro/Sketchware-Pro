@@ -60,6 +60,7 @@ public class PatternBackgroundView extends View {
         invalidate();
     }
 
+    @Override
     public void setRotation(float degrees) {
         this.rotationDegrees = degrees;
         invalidate();

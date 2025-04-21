@@ -1220,6 +1220,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         }
 
+        @Override
         public void onProgress(String progress, int step) {
             int totalSteps = 20;
 

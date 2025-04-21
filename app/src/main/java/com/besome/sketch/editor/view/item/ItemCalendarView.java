@@ -53,6 +53,7 @@ public class ItemCalendarView extends CalendarView implements sy {
         return this.fixed;
     }
 
+    @Override
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
     }

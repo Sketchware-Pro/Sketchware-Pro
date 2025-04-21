@@ -12,12 +12,14 @@ public class IconProgressBar extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         super.a(context);
         setWidgetImage(R.drawable.ic_mtrl_progress_bar);
         setWidgetName("ProgressBar");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 8;

@@ -36,6 +36,7 @@ public class kv extends LinearLayout implements nv {
         a(var1);
     }
 
+    @Override
     public void a() {
 
     }
@@ -89,6 +90,7 @@ public class kv extends LinearLayout implements nv {
         dialog.show();
     }
 
+    @Override
     public void a(ProjectLibraryBean mProjectLibraryBean) {
         firebaseLibraryBean = mProjectLibraryBean;
         if (lib_switch.isChecked()) {
@@ -98,10 +100,12 @@ public class kv extends LinearLayout implements nv {
         }
     }
 
+    @Override
     public String getDocUrl() {
         return "";
     }
 
+    @Override
     public boolean isValid() {
         return true;
     }

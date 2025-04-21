@@ -33,6 +33,7 @@ public class FontNameValidator extends MB {
         h = str;
     }
 
+    @Override
     public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
         String a2;
         int msgRes;

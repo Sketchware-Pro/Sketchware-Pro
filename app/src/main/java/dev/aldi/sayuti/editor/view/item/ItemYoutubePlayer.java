@@ -58,6 +58,7 @@ public class ItemYoutubePlayer extends LinearLayout implements sy {
         return hasFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         hasFixed = z;
     }

@@ -51,6 +51,7 @@ public class ItemImageView extends AppCompatImageView implements sy {
         return this.fixed;
     }
 
+    @Override
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
     }

@@ -30,6 +30,7 @@ public class PropertyNameValidator extends MB {
         this.value = value;
     }
 
+    @Override
     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
         String trimmedLowerName = charSequence.toString().trim().toLowerCase();
         if (trimmedLowerName.length() < 1) {

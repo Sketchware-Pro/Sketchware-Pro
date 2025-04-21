@@ -59,6 +59,7 @@ public class ItemAdView extends LinearLayout implements sy {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean isFixed) {
         this.isFixed = isFixed;
     }

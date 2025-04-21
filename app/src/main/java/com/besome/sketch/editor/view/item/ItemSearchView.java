@@ -49,6 +49,7 @@ public class ItemSearchView extends SearchView implements sy {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         isFixed = z;
     }
