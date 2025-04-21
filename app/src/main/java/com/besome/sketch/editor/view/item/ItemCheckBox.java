@@ -3,7 +3,6 @@ package com.besome.sketch.editor.view.item;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 
 import androidx.appcompat.widget.AppCompatCheckBox;
 
@@ -69,7 +68,7 @@ public class ItemCheckBox extends AppCompatCheckBox implements sy {
     @Override
     public void onDraw(Canvas canvas) {
         if (selected) {
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
+            canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
         }
         super.onDraw(canvas);
     }

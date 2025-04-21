@@ -3,9 +3,7 @@ package com.besome.sketch.editor.view.item;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.besome.sketch.beans.ViewBean;
@@ -80,7 +78,7 @@ public class ItemListView extends ListView implements sy {
     public void onDraw(Canvas canvas) {
         if (selected) {
             paint.setColor(0x9599d5d0);
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), paint);
+            canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
         } else {
             paint.setColor(0x60000000);
             int measuredWidth2 = getMeasuredWidth();
