@@ -161,12 +161,6 @@ public class lC {
                     if (hashMap.containsKey("custom_icon")) {
                         a.put("custom_icon", hashMap.get("custom_icon"));
                     }
-                    if (hashMap.containsKey("proj_type")) {
-                        a.put("proj_type", hashMap.get("proj_type"));
-                    }
-                    if (hashMap.containsKey("published_dt")) {
-                        a.put("published_dt", hashMap.get("published_dt"));
-                    }
                     a.put("my_sc_pkg_name", hashMap.get("my_sc_pkg_name"));
                     a.put("my_ws_name", hashMap.get("my_ws_name"));
                     a.put("my_app_name", hashMap.get("my_app_name"));
