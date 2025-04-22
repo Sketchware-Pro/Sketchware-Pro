@@ -41,7 +41,7 @@ public class ItemListView extends ListView implements sy {
         items.add("List item 1");
         items.add("List item 2");
         items.add("List item 3");
-        setAdapter(new ArrayAdapter(context, android.R.layout.simple_list_item_1, items));
+        setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, items));
     }
 
     @Override
