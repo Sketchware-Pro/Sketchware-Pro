@@ -322,10 +322,10 @@ public class Fx {
                 opcode = String.format("%s.get((int)(%s))", params.get(1), params.get(0));
                 break;
             case "addListMap":
-                opcode = String.format("{\r\nHashMap<String, Object> _item = new HashMap<>();\r\n_item.put(%s, %s);\r\n%s.add(_item);\r\n}", params.get(0), params.get(1), params.get(2));
+                opcode = String.format("\r\nHashMap<String, Object> _item%s = new HashMap<>();\r\n_item.put(%s, %s);\r\n%s.add(_item%s);\r\n", bean.id, params.get(0), params.get(1), params.get(2), bean.id);
                 break;
             case "insertListMap":
-                opcode = String.format("{\r\nHashMap<String, Object> _item = new HashMap<>();\r\n_item.put(%s, %s);\r\n%s.add((int)%s, _item);\r\n}", params.get(0), params.get(1), params.get(3), params.get(2));
+                opcode = String.format("\r\nHashMap<String, Object> _item%s = new HashMap<>();\r\n_item.put(%s, %s);\r\n%s.add((int)%s, _item%s);\r\n", bean.id, params.get(0), params.get(1), params.get(3), params.get(2), bean.id);
                 break;
             case "getAtListMap":
                 opcode = String.format("%s.get((int)%s).get(%s).toString()", params.get(2), params.get(0), params.get(1));
