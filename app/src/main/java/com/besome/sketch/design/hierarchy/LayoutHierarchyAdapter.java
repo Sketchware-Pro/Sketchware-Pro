@@ -1,4 +1,4 @@
-package com.besome.sketch.design.structure;
+package com.besome.sketch.design.hierarchy;
 
 import static pro.sketchware.SketchApplication.getContext;
 
@@ -18,23 +18,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import pro.sketchware.databinding.LayoutStructureItemBinding;
+import pro.sketchware.databinding.LayoutHierarchyItemBinding;
 
-public class LayoutStructureAdapter extends ListAdapter<ViewBean, LayoutStructureAdapter.LayoutStructureAdapterViewHolder> {
+public class LayoutHierarchyAdapter extends ListAdapter<ViewBean, LayoutHierarchyAdapter.LayoutHierarchyAdapterViewHolder> {
 
-    private LayoutStructureItemListener layoutStructureItemListener;
+    private LayoutHierarchyItemListener layoutHierarchyItemListener;
     private int selectedItemPosition;
     private final ArrayList<ViewBean> viewBeansList;
     private final Map<Integer, Boolean> expandedStateMap;
 
-    public LayoutStructureAdapter(ArrayList<ViewBean> viewBeansList) {
-        super(new LayoutStructureAdapterDiffCallback());
+    public LayoutHierarchyAdapter(ArrayList<ViewBean> viewBeansList) {
+        super(new LayoutHierarchyAdapterDiffCallback());
         this.viewBeansList = viewBeansList;
         this.expandedStateMap = new HashMap<>();
     }
 
-    public void setLayoutStructureItemListener(LayoutStructureItemListener layoutStructureItemListener) {
-        this.layoutStructureItemListener = layoutStructureItemListener;
+    public void setLayoutHierarchyItemListener(LayoutHierarchyItemListener layoutHierarchyItemListener) {
+        this.layoutHierarchyItemListener = layoutHierarchyItemListener;
     }
 
     public void setSelectedItemPosition(int selectedItemPosition) {
@@ -47,13 +47,13 @@ public class LayoutStructureAdapter extends ListAdapter<ViewBean, LayoutStructur
 
     @NonNull
     @Override
-    public LayoutStructureAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        var binding = LayoutStructureItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new LayoutStructureAdapterViewHolder(binding);
+    public LayoutHierarchyAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        var binding = LayoutHierarchyItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new LayoutHierarchyAdapterViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LayoutStructureAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull LayoutHierarchyAdapterViewHolder holder, int position) {
         var bean = getItem(position);
         var imgRes = ViewBean.getViewTypeResId(bean.type);
         boolean isViewGroup = bean.getClassInfo().a("ViewGroup");
@@ -70,7 +70,7 @@ public class LayoutStructureAdapter extends ListAdapter<ViewBean, LayoutStructur
                         childViews.add(viewBean);
                     }
                 }
-                LayoutStructureAdapter adapter = new LayoutStructureAdapter(viewBeansList);
+                LayoutHierarchyAdapter adapter = new LayoutHierarchyAdapter(viewBeansList);
                 holder.binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 holder.binding.recyclerView.setAdapter(adapter);
                 adapter.submitList(childViews);
@@ -86,8 +86,8 @@ public class LayoutStructureAdapter extends ListAdapter<ViewBean, LayoutStructur
                 expandedStateMap.put(position, !currentlyExpanded);
             } else {
                 setSelectedItemPosition(getViewBeanPosition(bean));
-                if (layoutStructureItemListener != null) {
-                    layoutStructureItemListener.onClick(bean);
+                if (layoutHierarchyItemListener != null) {
+                    layoutHierarchyItemListener.onClick(bean);
                 }
             }
         });
@@ -105,16 +105,16 @@ public class LayoutStructureAdapter extends ListAdapter<ViewBean, LayoutStructur
         return -1;
     }
 
-    public static class LayoutStructureAdapterViewHolder extends RecyclerView.ViewHolder {
-        public LayoutStructureItemBinding binding;
+    public static class LayoutHierarchyAdapterViewHolder extends RecyclerView.ViewHolder {
+        public LayoutHierarchyItemBinding binding;
 
-        public LayoutStructureAdapterViewHolder(LayoutStructureItemBinding binding) {
+        public LayoutHierarchyAdapterViewHolder(LayoutHierarchyItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
     }
 
-    public static class LayoutStructureAdapterDiffCallback extends DiffUtil.ItemCallback<ViewBean> {
+    public static class LayoutHierarchyAdapterDiffCallback extends DiffUtil.ItemCallback<ViewBean> {
         @Override
         public boolean areItemsTheSame(@NonNull ViewBean oldItem, @NonNull ViewBean newItem) {
             return oldItem.isEqual(newItem);

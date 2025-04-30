@@ -57,8 +57,8 @@ import com.besome.sketch.editor.manage.view.ManageViewActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
-import com.besome.sketch.design.structure.LayoutStructureSheet;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.besome.sketch.design.hierarchy.LayoutHierarchySheet;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
@@ -190,6 +190,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         }
     });
     private BuildTask currentBuildTask;
+<<<<<<< HEAD
 
     private final BroadcastReceiver buildCancelReceiver = new BroadcastReceiver() {
         @Override
@@ -202,7 +203,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         }
     };
 
-    private LayoutStructureSheet structureSheet;
+    private LayoutHierarchySheet hierarchySheet;
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -412,8 +413,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         }
     }
     
-    public LayoutStructureSheet getLayoutStructureSheet() {
-        return structureSheet;
+    public LayoutHierarchySheet getLayoutHierarchySheet() {
+        return hierarchySheet;
     }
 
     public void hideViewPropertyView() {
@@ -585,7 +586,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         var projectDataManager = jC.a(sc_id);
         var fileName = projectFileSelector.getFileName();
         var viewBeans = projectDataManager.d(fileName);
-        structureSheet = new LayoutStructureSheet(this, viewBeans);
+        hierarchySheet = new LayoutHierarchySheet(this, viewBeans);
     }
 
     private boolean isDebugApkExists() {
@@ -630,8 +631,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             saveProject();
-        } else if (itemId == R.id.design_option_menu_title_show_structure) {
-            structureSheet.show();
+        } else if (itemId == R.id.design_option_menu_title_show_hierarchy) {
+            hierarchySheet.show();
         }
 
         return super.onOptionsItemSelected(item);
