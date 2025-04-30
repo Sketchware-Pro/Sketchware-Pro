@@ -127,7 +127,7 @@ import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.R;
-import pro.sketchware.activities.editor.view.CodeViewerActivity;
+import pro.sketchware.activities.editor.view.JavaEventCodeEditorActivity;
 import pro.sketchware.databinding.ImagePickerItemBinding;
 import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
 import pro.sketchware.databinding.SearchWithRecyclerViewBinding;
@@ -164,6 +164,22 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             paletteSelector.performClickPalette(-1);
         }
     });
+    private final ActivityResultLauncher<Intent> javaEditorResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        // TODO: just for testing
+                        Intent intent = getIntent();
+                        intent.putExtra("beans", data.getSerializableExtra("block_beans"));
+                        finish();
+                        startActivity(intent);
+                    }
+                }
+            });
+
+
     private Rs w;
     private float r, q, s, t;
     private int A, S, x, y;
@@ -194,7 +210,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     private void loadEventBlocks() {
-        ArrayList<BlockBean> eventBlocks = jC.a(B).a(M.getJavaName(), C + "_" + D);
+        ArrayList<BlockBean> eventBlocks = getIntent().hasExtra("beans") ? (ArrayList<BlockBean>) getIntent().getSerializableExtra("beans") : jC.a(B).a(M.getJavaName(), C + "_" + D);
         if (eventBlocks != null) {
             if (eventBlocks.isEmpty()) {
                 e(X);
@@ -2634,11 +2650,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         yq yq = new yq(this, B);
         yq.a(jC.c(B), jC.b(B), jC.a(B), false);
         String code = new Fx(M.getActivityName(), yq.N, o.getBlocks(), isViewBindingEnabled).a();
-        var intent = new Intent(this, CodeViewerActivity.class);
+        var intent = new Intent(this, JavaEventCodeEditorActivity.class);
+        intent.putExtra("javaName", M.getJavaName());
+        intent.putExtra("xmlName", M.getXmlName());
+        intent.putExtra("eventName", D);
         intent.putExtra("code", code);
         intent.putExtra("sc_id", B);
-        intent.putExtra("scheme", CodeViewerActivity.SCHEME_JAVA);
-        startActivity(intent);
+        intent.putExtra("old_beans", o.getBlocks());
+        javaEditorResultLauncher.launch(intent);
     }
 
     public void t() {
