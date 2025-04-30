@@ -2246,8 +2246,13 @@ Please try again later"</string>
 
     <string name="used_custom_blocks">Used Custom Blocks</string>
     <string name="property_enter_value">Enter %s value</string>
-    
+
     <string name="code_viewer">Code Viewer</string>
+    <string name="code_editor">Code Editor</string>
     <string name="block_name">Block Name</string>
+
+    <string name="java_parse_error_message">Failed to parse Java code. Please make sure your syntax is correct and doesn’t contain any errors or unsupported patterns. Check the error message for more details</string>
+    <string name="java_parse_show_error">Show error</string>
+    <string name="java_parse_hide_error">Hide error</string>
 
 </resources>
