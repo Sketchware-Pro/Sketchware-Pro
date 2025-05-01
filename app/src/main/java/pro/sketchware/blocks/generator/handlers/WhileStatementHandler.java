@@ -1,5 +1,6 @@
 package pro.sketchware.blocks.generator.handlers;
 
+import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.besome.sketch.beans.BlockBean;
@@ -29,15 +30,27 @@ public class WhileStatementHandler implements StatementHandler {
     @Override
     public void handle(Statement stmt, int id, HandlerContext context) {
         WhileStmt ws = (WhileStmt) stmt;
+        Expression expr = ws.getCondition();
         List<BlockBean> blockBeans = context.blockBeans();
         List<String> noNextBlocks = context.noNextBlocks();
+        boolean isForeverBlock = false;
+        if (expr.isBooleanLiteralExpr()) {
+            isForeverBlock = expr.toString().equals("true");
+        }
+        BlockBean wb = new BlockBean(String.valueOf(id),
+                isForeverBlock ? "forever" : "while %b",
+                "c",
+                "",
+                isForeverBlock ? "forever" : "whileLoop"
+        );
 
-        List<BlockBean> condTree = booleanTreeBuilder.build(ws.getCondition(), new RequiredBlockType("b"));
-        blockBeans.addAll(condTree);
-        BlockBean condRoot = condTree.get(condTree.size() - 1);
-        condRoot.nextBlock = -1;
-        BlockBean wb = new BlockBean(String.valueOf(id), "while %b", "c", "", "whileLoop");
-        wb.parameters.add("@" + condRoot.id);
+        if (!isForeverBlock) {
+            List<BlockBean> condTree = booleanTreeBuilder.build(ws.getCondition(), new RequiredBlockType("b"));
+            blockBeans.addAll(condTree);
+            BlockBean condRoot = condTree.get(condTree.size() - 1);
+            condRoot.nextBlock = -1;
+            wb.parameters.add("@" + condRoot.id);
+        }
         blockBeans.add(wb);
         if (ws.getBody().isBlockStmt()) {
             var body = ws.getBody().asBlockStmt().getStatements();
@@ -46,7 +59,7 @@ public class WhileStatementHandler implements StatementHandler {
             } else {
                 wb.subStack1 = context.idCounter().get();
                 for (int i = 0; i < body.size(); i++) {
-                    if (i == body.size() - 1) {
+                    if (body.size() == 1 || i == body.size() - 1) {
                         noNextBlocks.add(String.valueOf(context.idCounter().get()));
                     }
                     Statement s = body.get(i);
