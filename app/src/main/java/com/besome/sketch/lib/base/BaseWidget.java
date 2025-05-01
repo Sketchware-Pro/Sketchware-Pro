@@ -58,7 +58,7 @@ public class BaseWidget extends LinearLayout {
     }
 
     public void setWidgetImage(@DrawableRes int image) {
-        this.widgetImgResId = image;
+        widgetImgResId = image;
         img_widget.setImageResource(image);
     }
 

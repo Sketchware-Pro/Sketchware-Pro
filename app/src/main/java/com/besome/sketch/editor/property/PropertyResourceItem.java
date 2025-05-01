@@ -3,7 +3,6 @@ package com.besome.sketch.editor.property;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,12 +106,8 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
 
                 File file = new File(jC.d(a).f(str));
                 if (file.exists()) {
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        Context context = getContext();
-                        fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
-                    } else {
-                        fromFile = Uri.fromFile(file);
-                    }
+                    Context context = getContext();
+                    fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
                     if (file.getAbsolutePath().endsWith(".xml")) {
                         svgUtils.loadImage(g, fpu.getSvgFullPath(a, str));
                         return;
@@ -251,12 +246,8 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
             } else {
                 File file = new File(jC.d(a).f(str));
                 if (file.exists()) {
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        Context context = getContext();
-                        fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
-                    } else {
-                        fromFile = Uri.fromFile(file);
-                    }
+                    Context context = getContext();
+                    fromFile = FileProvider.getUriForFile(context, getContext().getPackageName() + ".provider", file);
 
                     if (file.getAbsolutePath().endsWith(".xml")) {
                         svgUtils.loadImage(imageView, fpu.getSvgFullPath(a, str));

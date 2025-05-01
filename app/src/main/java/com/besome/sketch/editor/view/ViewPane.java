@@ -315,7 +315,7 @@ public class ViewPane extends RelativeLayout {
         return item;
     }
 
-    private final View getUnknownItemView(final ViewBean bean) {
+    private View getUnknownItemView(ViewBean bean) {
         bean.type = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
         return new ItemLinearLayout(context);
     }
@@ -761,7 +761,7 @@ public class ViewPane extends RelativeLayout {
                         int childTopY;
                         if (i == 0) {
                             childTopY = childLocationOnScreen[1] - (int) (topMargin * scaleY);
-                            final int parentLeft = parentRect.left;
+                            int parentLeft = parentRect.left;
                             addViewInfo(
                                     new Rect(
                                             parentLeft,
@@ -784,7 +784,7 @@ public class ViewPane extends RelativeLayout {
                         childRect.bottom = paddingTop;
                         paddingLeft = parentLeft;
                     } else if (verticalGravity == Gravity.BOTTOM) {
-                        final int childTopY = (int) (topMargin * scaleY);
+                        int childTopY = (int) (topMargin * scaleY);
                         paddingLeft = parentRect.left;
                         childRect.left = paddingLeft;
                         childRect.top = paddingTop;
@@ -792,7 +792,7 @@ public class ViewPane extends RelativeLayout {
                         childRect.bottom = paddingTop - childTopY;
                         paddingTop = (int) ((paddingTop + childHeight + bottomMargin) * scaleY);
                     } else {
-                        final int childBottomY =
+                        int childBottomY =
                                 (int) ((childHeight + topMargin + bottomMargin) * scaleY)
                                         + paddingTop;
                         paddingLeft = parentRect.left;

@@ -85,7 +85,7 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
     }
 
     private void addControl() {
-        final LinearLayout layout = new LinearLayout(getContext());
+        LinearLayout layout = new LinearLayout(getContext());
         layout.setLayoutParams(new LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));

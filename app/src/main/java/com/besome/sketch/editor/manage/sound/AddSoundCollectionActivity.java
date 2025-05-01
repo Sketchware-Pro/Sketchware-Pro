@@ -48,6 +48,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
 
     private ManageSoundAddBinding binding;
 
+    @Override
     public void finish() {
         if (H != null) H.cancel();
         if (G != null) {
@@ -76,6 +77,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         binding.play.setImageResource(R.drawable.ic_play_circle_outline_black_36dp);
     }
 
+    @Override
     public void onActivityResult(int i, int i2, Intent intent) {
         MaterialCardView relativeLayout;
         Uri data;
@@ -117,6 +119,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
+    @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         e(xB.b().a(this, R.string.design_manager_sound_title_add_sound));
@@ -161,8 +164,8 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
             }
         });
         binding.selectFile.setOnClickListener(this);
-        this.r.setOnClickListener(this);
-        this.s.setOnClickListener(this);
+        r.setOnClickListener(this);
+        s.setOnClickListener(this);
         if (u) {
             e(xB.b().a(this, R.string.design_manager_sound_title_edit_sound_name));
             M = new WB(this, binding.tiInput, uq.b, getResourceNames(), O.resName);
@@ -171,6 +174,7 @@ public class AddSoundCollectionActivity extends BaseDialogActivity implements Vi
         }
     }
 
+    @Override
     public void onPause() {
         super.onPause();
         o();

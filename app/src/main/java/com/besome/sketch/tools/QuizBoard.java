@@ -161,6 +161,7 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
         b();
     }
 
+    @Override
     public void onClick(View var1) {
         if (!mB.a()) {
             a();
@@ -179,10 +180,12 @@ public class QuizBoard extends LinearLayout implements View.OnClickListener {
             super(var2, var4);
         }
 
+        @Override
         public void onFinish() {
             f();
         }
 
+        @Override
         public void onTick(long millisUntilFinished) {
             (new Handler()).post(() -> quizBinding.tvRemaingTime.setText(String.valueOf(millisUntilFinished / 1000L + 1L)));
         }

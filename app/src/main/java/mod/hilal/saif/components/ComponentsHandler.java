@@ -47,7 +47,7 @@ public class ComponentsHandler {
      * Called at {@link ComponentBean#getComponentTypeByTypeName(String)}.
      */
     //√ give typeName and return id
-    public static int id(final String name) {
+    public static int id(String name) {
         if (name.equals("AsyncTask")) {
             return 36;
         }

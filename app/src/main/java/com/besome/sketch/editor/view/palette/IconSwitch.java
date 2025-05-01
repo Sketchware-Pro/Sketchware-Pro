@@ -12,12 +12,14 @@ public class IconSwitch extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         super.a(context);
         setWidgetImage(R.drawable.ic_mtrl_toggle);
         setWidgetName("Switch");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 13;

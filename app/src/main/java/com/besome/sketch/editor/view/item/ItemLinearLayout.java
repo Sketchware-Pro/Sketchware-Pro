@@ -103,6 +103,7 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean isFixed) {
         this.isFixed = isFixed;
     }

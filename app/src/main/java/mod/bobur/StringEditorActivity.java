@@ -62,7 +62,7 @@ public class StringEditorActivity extends BaseAppCompatActivity {
     private boolean isComingFromSrcCodeEditor = true;
 
     public static void convertXmlToListMap(
-            final String xmlString, final ArrayList<HashMap<String, Object>> listmap) {
+            String xmlString, ArrayList<HashMap<String, Object>> listmap) {
         try {
             listmap.clear();
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -103,7 +103,7 @@ public class StringEditorActivity extends BaseAppCompatActivity {
         return false;
     }
 
-    public static String convertListMapToXml(final ArrayList<HashMap<String, Object>> listmap) {
+    public static String convertListMapToXml(ArrayList<HashMap<String, Object>> listmap) {
         StringBuilder xmlString = new StringBuilder();
         xmlString.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<resources>\n");
         for (HashMap<String, Object> map : listmap) {
@@ -303,7 +303,7 @@ public class StringEditorActivity extends BaseAppCompatActivity {
         dialog.show();
     }
 
-    public void addString(final String key, final String text) {
+    public void addString(String key, String text) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("key", key);
         map.put("text", text);
@@ -323,13 +323,13 @@ public class StringEditorActivity extends BaseAppCompatActivity {
         adapter.notifyItemInserted(listmap.size() - 1);
     }
 
-    public boolean checkDefaultString(final String path) {
+    public boolean checkDefaultString(String path) {
         File file = new File(path);
         String parentFolder = Objects.requireNonNull(file.getParentFile()).getName();
         return parentFolder.equals("values");
     }
 
-    public String getDefaultStringPath(final String path) {
+    public String getDefaultStringPath(String path) {
         return path.replaceFirst("/values-[a-z]{2}", "/values");
     }
 
@@ -339,8 +339,8 @@ public class StringEditorActivity extends BaseAppCompatActivity {
         private ArrayList<HashMap<String, Object>> filteredData;
 
         public RecyclerViewAdapter(ArrayList<HashMap<String, Object>> data) {
-            this.originalData = new ArrayList<>(data);
-            this.filteredData = data;
+            originalData = new ArrayList<>(data);
+            filteredData = data;
         }
 
         @NonNull

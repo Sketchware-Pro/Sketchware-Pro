@@ -4,14 +4,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.widget.RatingBar;
+
+import androidx.appcompat.widget.AppCompatRatingBar;
 
 import com.besome.sketch.beans.ViewBean;
 
 import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemRatingBar extends RatingBar implements sy {
+public class ItemRatingBar extends AppCompatRatingBar implements sy {
 
     private final Paint paint;
     private final int paddingFactor;
@@ -44,6 +45,7 @@ public class ItemRatingBar extends RatingBar implements sy {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         isFixed = z;
     }

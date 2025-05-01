@@ -38,6 +38,7 @@ public class ItemFloatingActionButton extends FloatingActionButton implements sy
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean isFixed) {
         this.isFixed = isFixed;
     }

@@ -2,6 +2,7 @@ package pro.sketchware.fragments.settings.block.selector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Selector {
     private List<String> data;
@@ -9,9 +10,9 @@ public class Selector {
     private String title;
 
     public Selector() {
-        this.data = new ArrayList<>();
-        this.name = "";
-        this.title = "";
+        data = new ArrayList<>();
+        name = "";
+        title = "";
     }
 
     public Selector(String title, String name, List<String> data) {
@@ -42,6 +43,20 @@ public class Selector {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Selector selector = (Selector) o;
+        return Objects.equals(getData(), selector.getData())
+                && Objects.equals(getName(), selector.getName())
+                && Objects.equals(getTitle(), selector.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getData(), getName(), getTitle());
     }
 }
 

@@ -306,7 +306,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         _refreshLists();
     }
 
-    private void _showItemPopup(View view, final int position) {
+    private void _showItemPopup(View view, int position) {
         if (palette == -1) {
             PopupMenu popupMenu = new PopupMenu(this, view);
             Menu menu = popupMenu.getMenu();
@@ -406,7 +406,7 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         _refreshLists();
     }
 
-    private void _changePallette(final int position) {
+    private void _changePallette(int position) {
         ArrayList<String> paletteNames = new ArrayList<>();
         for (int j = 0, pallet_listSize = pallet_list.size(); j < pallet_listSize; j++) {
             HashMap<String, Object> palette = pallet_list.get(j);
@@ -447,10 +447,10 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         builder.show();
     }
 
-    private void _importBlocks(final ArrayList<HashMap<String, Object>> blocks) {
+    private void _importBlocks(ArrayList<HashMap<String, Object>> blocks) {
         try {
             ArrayList<String> names = new ArrayList<>();
-            final ArrayList<Integer> toAdd = new ArrayList<>();
+            ArrayList<Integer> toAdd = new ArrayList<>();
             for (int i = 0; i < blocks.size(); i++) {
                 Object blockName = blocks.get(i).get("name");
 
@@ -541,20 +541,20 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
         }
 
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.block_customview, parent, false);
             }
 
-            final HashMap<String, Object> block = blocks.get(position);
+            HashMap<String, Object> block = blocks.get(position);
 
-            final LinearLayout background = convertView.findViewById(R.id.background);
-            final TextView name = convertView.findViewById(R.id.name);
-            final TextView spec = convertView.findViewById(R.id.spec);
-            final CardView upLayout = convertView.findViewById(R.id.up_layout);
-            final CardView downLayout = convertView.findViewById(R.id.down_layout);
-            final LinearLayout down = convertView.findViewById(R.id.down);
-            final LinearLayout up = convertView.findViewById(R.id.up);
+            LinearLayout background = convertView.findViewById(R.id.background);
+            TextView name = convertView.findViewById(R.id.name);
+            TextView spec = convertView.findViewById(R.id.spec);
+            CardView upLayout = convertView.findViewById(R.id.up_layout);
+            CardView downLayout = convertView.findViewById(R.id.down_layout);
+            LinearLayout down = convertView.findViewById(R.id.down);
+            LinearLayout up = convertView.findViewById(R.id.up);
 
             if (mode.equals("normal")) {
                 downLayout.setVisibility(View.GONE);

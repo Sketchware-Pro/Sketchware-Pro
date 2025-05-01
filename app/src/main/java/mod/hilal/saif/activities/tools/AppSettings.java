@@ -4,7 +4,6 @@ import static com.besome.sketch.editor.view.ViewEditor.shakeView;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Pair;
@@ -34,7 +33,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
-import kellinwood.security.zipsigner.ZipSigner;
 import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
@@ -53,11 +51,11 @@ public class AppSettings extends BaseAppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-        final var binding = ActivityAppSettingsBinding.inflate(getLayoutInflater());
+        var binding = ActivityAppSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.contentScroll, (v, insets) -> {
-            final Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
             return insets;
         });
@@ -67,8 +65,8 @@ public class AppSettings extends BaseAppCompatActivity {
         setupPreferences(binding.content);
     }
 
-    private void setupPreferences(final ViewGroup content) {
-        final var preferences = new ArrayList<LibraryItemView>();
+    private void setupPreferences(ViewGroup content) {
+        var preferences = new ArrayList<LibraryItemView>();
         preferences.add(createPreference(R.drawable.ic_mtrl_block, "Block manager", "Manage your own blocks to use in Logic Editor", new ActivityLauncher(new Intent(getApplicationContext(), BlocksManager.class))));
         preferences.add(createPreference(R.drawable.ic_mtrl_pull_down, "Block selector menu manager", "Manage your own block selector menus", openSettingsActivity(SettingsActivity.BLOCK_SELECTOR_MANAGER_FRAGMENT)));
         preferences.add(createPreference(R.drawable.ic_mtrl_component, "Component manager", "Manage your own components", new ActivityLauncher(new Intent(getApplicationContext(), ManageCustomComponentActivity.class))));
@@ -83,7 +81,7 @@ public class AppSettings extends BaseAppCompatActivity {
         preferences.forEach(content::addView);
     }
 
-    private View.OnClickListener openSettingsActivity(final String fragmentTag) {
+    private View.OnClickListener openSettingsActivity(String fragmentTag) {
         return v -> {
             Intent intent = new Intent(v.getContext(), SettingsActivity.class);
             intent.putExtra(SettingsActivity.FRAGMENT_TAG_EXTRA, fragmentTag);
@@ -92,7 +90,7 @@ public class AppSettings extends BaseAppCompatActivity {
     }
 
     private LibraryItemView createPreference(int icon, String title, String desc, View.OnClickListener listener) {
-        final LibraryItemView preference = new LibraryItemView(this);
+        LibraryItemView preference = new LibraryItemView(this);
         preference.enabled.setVisibility(View.GONE);
         preference.icon.setImageResource(icon);
         preference.title.setText(title);
@@ -111,7 +109,7 @@ public class AppSettings extends BaseAppCompatActivity {
         FilePickerDialog dialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
         dialog.setTitle("Select an entry to modify");
         dialog.setDialogSelectionListener(files -> {
-            final boolean isDirectory = new File(files[0]).isDirectory();
+            boolean isDirectory = new File(files[0]).isDirectory();
             if (files.length > 1 || isDirectory) {
                 new MaterialAlertDialogBuilder(this)
                         .setTitle("Select an action")
@@ -159,7 +157,7 @@ public class AppSettings extends BaseAppCompatActivity {
     }
 
     private void signApkFileDialog() {
-        final boolean[] isAPKSelected = {false};
+        boolean[] isAPKSelected = {false};
         MaterialAlertDialogBuilder apkPathDialog = new MaterialAlertDialogBuilder(this);
         apkPathDialog.setTitle("Sign APK with testkey");
 
@@ -243,18 +241,7 @@ public class AppSettings extends BaseAppCompatActivity {
                         tv_log.setText(Helper.getText(tv_log) + line));
 
                 if (useTestkey) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        signer.signWithTestKey(inputApkPath, outputApkPath, callback);
-                    } else {
-                        try {
-                            ZipSigner zipSigner = new ZipSigner();
-                            zipSigner.setKeymode(ZipSigner.KEY_TESTKEY);
-                            zipSigner.signZip(inputApkPath, outputApkPath);
-                        } catch (Exception e) {
-                            tv_progress.setText("An error occurred. Check the log for more details.");
-                            tv_log.setText("Failed to sign APK with zipsigner: " + e);
-                        }
-                    }
+                    signer.signWithTestKey(inputApkPath, outputApkPath, callback);
                 } else {
                     signer.signWithKeyStore(inputApkPath, outputApkPath,
                             keyStorePath, keyStorePassword, keyStoreKeyAlias, keyPassword, callback);

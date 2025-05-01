@@ -947,7 +947,7 @@ public class Ox {
      * check whether the attribute (attrName) is injected to the ViewBean or not.
      */
     private boolean hasAttr(String attrName, ViewBean bean) {
-        final String inject = bean.inject;
+        String inject = bean.inject;
         if (inject == null || inject.isEmpty()) return false;
         return Pattern.compile("(android|app) *?: *?" + attrName).matcher(inject).find();
     }

@@ -115,7 +115,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         }
     }
 
-    private void readComponents(final String _path) {
+    private void readComponents(String _path) {
         componentsList = getGson().fromJson(FileUtil.readFile(_path), Helper.TYPE_MAP_LIST);
         if (componentsList != null && !componentsList.isEmpty()) {
             ComponentsAdapter adapter = new ComponentsAdapter(componentsList);
@@ -207,7 +207,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         }
     }
 
-    private void save(final HashMap<String, Object> _item) {
+    private void save(HashMap<String, Object> _item) {
         componentsList.remove(_item);
         FileUtil.writeFile(COMPONENT_DIR, getGson().toJson(componentsList));
     }
@@ -235,9 +235,9 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
         private final List<Boolean> confirmation;
 
         public ComponentsAdapter(List<HashMap<String, Object>> itemList) {
-            this.components = itemList;
-            this.collapse = new ArrayList<>(Collections.nCopies(itemList.size(), true));
-            this.confirmation = new ArrayList<>(Collections.nCopies(itemList.size(), false));
+            components = itemList;
+            collapse = new ArrayList<>(Collections.nCopies(itemList.size(), true));
+            confirmation = new ArrayList<>(Collections.nCopies(itemList.size(), false));
         }
 
         @NonNull

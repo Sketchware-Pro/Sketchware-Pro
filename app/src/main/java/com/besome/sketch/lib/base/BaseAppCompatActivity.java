@@ -145,6 +145,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (parent != null) {
             return parent.onCreateOptionsMenu(menu);
@@ -152,6 +153,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (parent != null) {
             return parent.onOptionsItemSelected(item);

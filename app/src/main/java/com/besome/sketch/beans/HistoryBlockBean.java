@@ -45,7 +45,7 @@ public class HistoryBlockBean extends nA {
         this.prevY = prevY;
         this.currentX = currentX;
         this.currentY = currentY;
-        this.prevParentData = preParentData;
+        prevParentData = preParentData;
         this.currentParentData = currentParentData;
         this.prevOriginalParent = prevOriginalParent;
         this.currentOriginalParent = currentOriginalParent;

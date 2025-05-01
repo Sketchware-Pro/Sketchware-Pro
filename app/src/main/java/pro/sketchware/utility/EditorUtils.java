@@ -23,7 +23,7 @@ public class EditorUtils {
     }
 
     @NonNull
-    public static EditorColorScheme getMaterialStyledScheme(final CodeEditor editor) {
+    public static EditorColorScheme getMaterialStyledScheme(CodeEditor editor) {
         var scheme = editor.getColorScheme();
         var primary = MaterialColors.getColor(editor, R.attr.colorPrimary);
         var surface = MaterialColors.getColor(editor, R.attr.colorSurface);
@@ -41,11 +41,11 @@ public class EditorUtils {
     }
 
     @NonNull
-    public static Typeface getTypeface(final Context context) {
+    public static Typeface getTypeface(Context context) {
         return Typeface.createFromAsset(context.getAssets(), "fonts/jetbrainsmono-regular.ttf");
     }
 
-    public static void loadJavaConfig(final CodeEditor editor) {
+    public static void loadJavaConfig(CodeEditor editor) {
         editor.setEditorLanguage(new JavaLanguage());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (isDarkThemeEnabled(editor.getContext())) {
@@ -59,7 +59,7 @@ public class EditorUtils {
         editor.setColorScheme(getMaterialStyledScheme(editor));
     }
 
-    public static void loadXmlConfig(final CodeEditor editor) {
+    public static void loadXmlConfig(CodeEditor editor) {
         editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (isDarkThemeEnabled(editor.getContext())) {

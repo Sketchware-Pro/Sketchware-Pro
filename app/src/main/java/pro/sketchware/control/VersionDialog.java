@@ -23,7 +23,7 @@ public class VersionDialog {
     }
 
     public void show() {
-        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         dialog.setIcon(R.drawable.numbers_48);
         dialog.setTitle("Advanced Version Control");
 
@@ -34,9 +34,9 @@ public class VersionDialog {
 
         dialog.setView(binding.getRoot());
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
-            final String verCode = Helper.getText(binding.versionCode);
-            final String verName = Helper.getText(binding.versionName1);
-            final String verNamePostfix = Helper.getText(binding.versionName2);
+            String verCode = Helper.getText(binding.versionCode);
+            String verName = Helper.getText(binding.versionName1);
+            String verNamePostfix = Helper.getText(binding.versionName2);
 
             boolean validVerCode = !TextUtils.isEmpty(verCode);
             boolean validVerName = !TextUtils.isEmpty(verName);

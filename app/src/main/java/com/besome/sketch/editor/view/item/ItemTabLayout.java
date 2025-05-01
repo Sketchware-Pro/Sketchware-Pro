@@ -53,6 +53,7 @@ public class ItemTabLayout extends TabLayout implements sy {
         return hasFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         hasFixed = z;
     }

@@ -60,10 +60,10 @@ public class UI {
 
     public static void addSystemWindowInsetToPadding(
             View view, boolean left, boolean top, boolean right, boolean bottom) {
-        final int initialLeft = view.getPaddingLeft();
-        final int initialTop = view.getPaddingTop();
-        final int initialRight = view.getPaddingRight();
-        final int initialBottom = view.getPaddingBottom();
+        int initialLeft = view.getPaddingLeft();
+        int initialTop = view.getPaddingTop();
+        int initialRight = view.getPaddingRight();
+        int initialBottom = view.getPaddingBottom();
 
         ViewCompat.setOnApplyWindowInsetsListener(
                 view,
@@ -79,7 +79,7 @@ public class UI {
     }
 
     @DrawableRes
-    public static <T> int getShapedBackgroundForList(final List<T> list, final int position) {
+    public static <T> int getShapedBackgroundForList(List<T> list, int position) {
         if (list.size() == 1) {
             return R.drawable.shape_alone;
         } else if (position == 0) {

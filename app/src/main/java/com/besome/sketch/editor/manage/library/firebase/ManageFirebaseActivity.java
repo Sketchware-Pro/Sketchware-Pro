@@ -96,7 +96,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     }
 
     private void downloadChromeDialog() {
-        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.chrome_96);
         dialog.setTitle(Helper.getResString(R.string.title_compatible_chrome_browser));
         dialog.setMessage(Helper.getResString(R.string.message_compatible_chrome_brower));
@@ -111,7 +111,7 @@ public class ManageFirebaseActivity extends BaseAppCompatActivity implements Vie
     }
 
     private void configureLibraryDialog() {
-        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(Helper.getResString(R.string.common_word_warning));
         dialog.setIcon(R.drawable.delete_96);
         dialog.setMessage(Helper.getResString(R.string.design_library_firebase_dialog_description_confirm_uncheck_firebase));

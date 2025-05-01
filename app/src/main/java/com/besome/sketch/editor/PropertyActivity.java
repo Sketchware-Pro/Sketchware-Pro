@@ -266,6 +266,7 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
             return propertyGroups.size();
         }
 
+        @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             ViewPropertyAnimatorCompat propertyAnimator;
             ColorMatrix colorMatrix;
