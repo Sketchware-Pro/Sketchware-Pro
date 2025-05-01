@@ -18,6 +18,7 @@ public class AppNameValidator extends MB {
         super(context, textInputLayout);
     }
 
+    @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (s.toString().trim().length() == 0) {
             b.setErrorEnabled(true);

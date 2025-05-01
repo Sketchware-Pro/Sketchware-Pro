@@ -431,8 +431,8 @@ public class ManageEvent {
 
     public static String f(String targetId, String eventName, String eventLogic) {
         String code;
-        final String resetInterstitialAd = targetId.isEmpty() ? "" : targetId + " = null;\r\n";
-        final String setAdFullScreenContentCallback = targetId.isEmpty() ? "\r\n" : targetId + " = _param1;\r\n" +
+        String resetInterstitialAd = targetId.isEmpty() ? "" : targetId + " = null;\r\n";
+        String setAdFullScreenContentCallback = targetId.isEmpty() ? "\r\n" : targetId + " = _param1;\r\n" +
                 targetId + ".setFullScreenContentCallback(_" + targetId + "_full_screen_content_callback);\r\n" +
                 eventLogic + "\r\n";
         return switch (eventName) {

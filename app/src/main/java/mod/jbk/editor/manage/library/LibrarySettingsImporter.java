@@ -2,7 +2,6 @@ package mod.jbk.editor.manage.library;
 
 import android.app.Activity;
 import android.net.Uri;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,11 +129,7 @@ public class LibrarySettingsImporter {
             if (yB.a(projectMap, "custom_icon")) {
                 String iconPath = wq.e() + File.separator + sc_id;
                 Uri iconUri;
-                if (Build.VERSION.SDK_INT >= 24) {
-                    iconUri = FileProvider.getUriForFile(activity.getApplicationContext(), activity.getPackageName() + ".provider", new File(iconPath, "icon.png"));
-                } else {
-                    iconUri = Uri.fromFile(new File(iconPath, "icon.png"));
-                }
+                iconUri = FileProvider.getUriForFile(activity.getApplicationContext(), activity.getPackageName() + ".provider", new File(iconPath, "icon.png"));
                 viewHolder.imgIcon.setImageURI(iconUri);
             } else {
                 viewHolder.imgIcon.setImageResource(R.drawable.default_icon);

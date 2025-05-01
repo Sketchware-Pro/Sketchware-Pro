@@ -183,6 +183,7 @@ public class ImportFontFragment extends qA {
         startActivityForResult(intent, 271);
     }
 
+    @Override
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
         oB = new oB();
@@ -205,6 +206,7 @@ public class ImportFontFragment extends qA {
         toggleEmptyStateVisibility();
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         ProjectResourceBean resourceBean;
@@ -226,16 +228,19 @@ public class ImportFontFragment extends qA {
 
     }
 
+    @Override
     public void onConfigurationChanged(@NonNull Configuration configuration) {
         super.onConfigurationChanged(configuration);
     }
 
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
         super.onCreateOptionsMenu(menu, menuInflater);
         menuInflater.inflate(R.menu.manage_font_menu, menu);
         menu.findItem(R.id.menu_font_delete).setVisible(!isSelecting);
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater layoutInflater, ViewGroup root, Bundle bundle) {
 
         binding = FrManageFontListBinding.inflate(layoutInflater, root, false);
@@ -290,6 +295,7 @@ public class ImportFontFragment extends qA {
         return binding.getRoot();
     }
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_font_delete) {
             setSelectingMode(!isSelecting);
@@ -298,6 +304,7 @@ public class ImportFontFragment extends qA {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public void onSaveInstanceState(Bundle bundle) {
         bundle.putString("sc_id", sc_id);
         bundle.putString("dir_path", dirPath);

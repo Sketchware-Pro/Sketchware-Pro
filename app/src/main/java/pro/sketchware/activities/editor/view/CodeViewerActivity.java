@@ -36,7 +36,7 @@ public class CodeViewerActivity extends BaseAppCompatActivity {
         loadColorScheme(scheme);
     }
 
-    private void loadColorScheme(final String scheme) {
+    private void loadColorScheme(String scheme) {
         if (scheme.equals(SCHEME_XML)) {
             EditorUtils.loadXmlConfig(binding.editor);
         } else {

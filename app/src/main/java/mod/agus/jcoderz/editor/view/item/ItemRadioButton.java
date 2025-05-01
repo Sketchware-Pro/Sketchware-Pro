@@ -4,14 +4,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.widget.RadioButton;
+
+import androidx.appcompat.widget.AppCompatRadioButton;
 
 import com.besome.sketch.beans.ViewBean;
 
 import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemRadioButton extends RadioButton implements sy {
+public class ItemRadioButton extends AppCompatRadioButton implements sy {
 
     private final Paint paint;
     private final int paddingFactor;
@@ -44,6 +45,7 @@ public class ItemRadioButton extends RadioButton implements sy {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         isFixed = z;
     }

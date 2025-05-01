@@ -12,12 +12,14 @@ public class IconRelativeLayout extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         super.a(context);
         setWidgetImage(R.drawable.ic_mtrl_view_relative);
         setWidgetName("RelativeLayout");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = ViewBean.VIEW_TYPE_LAYOUT_RELATIVE;

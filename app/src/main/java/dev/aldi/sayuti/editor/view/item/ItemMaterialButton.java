@@ -49,6 +49,7 @@ public class ItemMaterialButton extends MaterialButton implements sy {
         return hasFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         hasFixed = z;
     }

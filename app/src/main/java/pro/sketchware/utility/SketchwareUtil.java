@@ -174,8 +174,9 @@ public class SketchwareUtil {
         builder.show();
     }
 
-    public static void sortListMap(final ArrayList<HashMap<String, Object>> listMap, final String key, final boolean isNumber, final boolean ascending) {
+    public static void sortListMap(ArrayList<HashMap<String, Object>> listMap, String key, boolean isNumber, boolean ascending) {
         Collections.sort(listMap, new Comparator<HashMap<String, Object>>() {
+            @Override
             public int compare(HashMap<String, Object> _compareMap1, HashMap<String, Object> _compareMap2) {
                 if (isNumber) {
                     int _count1 = Integer.valueOf(_compareMap1.get(key).toString());

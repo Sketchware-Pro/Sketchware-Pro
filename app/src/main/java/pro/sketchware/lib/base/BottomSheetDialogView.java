@@ -29,6 +29,7 @@ public class BottomSheetDialogView extends BottomSheetDialog {
         }
     }
 
+    @Override
     public void setOnDismissListener(OnDismissListener listener) {
         super.setOnDismissListener(listener);
     }

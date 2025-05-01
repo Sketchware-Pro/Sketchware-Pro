@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -150,11 +148,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             binding.verName.setText(yB.c(metadata, "sc_ver_name"));
             projectHasCustomIcon = yB.a(metadata, "custom_icon");
             if (projectHasCustomIcon) {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    binding.appIcon.setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
-                } else {
-                    binding.appIcon.setImageURI(Uri.fromFile(getCustomIcon()));
-                }
+                binding.appIcon.setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
             }
 
             for (int i = 0; i < themeColorKeys.length; i++) {
@@ -187,11 +181,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             binding.verName.setText(newProjectVersionName);
             projectHasCustomIcon = getIntent().getBooleanExtra("custom_icon", false);
             if (projectHasCustomIcon) {
-                if (Build.VERSION.SDK_INT >= 24) {
-                    binding.appIcon.setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
-                } else {
-                    binding.appIcon.setImageURI(Uri.fromFile(getCustomIcon()));
-                }
+                binding.appIcon.setImageURI(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", getCustomIcon()));
             }
         }
         syncThemeColors();
@@ -509,7 +499,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
                 lC.a(sc_id, data);
                 wq.a(getApplicationContext(), sc_id);
                 new oB().b(wq.b(sc_id));
-                final ProjectSettings projectSettings = new ProjectSettings(sc_id);
+                ProjectSettings projectSettings = new ProjectSettings(sc_id);
                 projectSettings.setValue(ProjectSettings.SETTING_NEW_XML_COMMAND, ProjectSettings.SETTING_GENERIC_VALUE_TRUE);
                 projectSettings.setValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, ProjectSettings.SETTING_GENERIC_VALUE_TRUE);
 

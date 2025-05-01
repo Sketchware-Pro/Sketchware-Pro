@@ -31,7 +31,7 @@ public class LogicEditorScrollView extends FrameLayout {
 
     public LogicEditorScrollView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        this.scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
     @Override
@@ -44,19 +44,19 @@ public class LogicEditorScrollView extends FrameLayout {
     }
 
     public boolean getScrollEnabled() {
-        return this.scrollEnabled;
+        return scrollEnabled;
     }
 
     public void setScrollEnabled(boolean z) {
-        this.scrollEnabled = z;
+        scrollEnabled = z;
     }
 
     public boolean getUseScroll() {
-        return this.useScroll;
+        return useScroll;
     }
 
     public void setUseScroll(boolean z) {
-        this.useScroll = z;
+        useScroll = z;
     }
 
     @Override
@@ -65,26 +65,26 @@ public class LogicEditorScrollView extends FrameLayout {
             return false;
         }
         int action = ev.getAction();
-        if (action == 2 && this.d) {
+        if (action == 2 && d) {
             return true;
         }
         float x = ev.getX();
         float y = ev.getY();
         if (action == 0) {
-            this.a = x;
-            this.b = y;
-            this.d = false;
+            a = x;
+            b = y;
+            d = false;
         } else if (action == 1) {
-            this.d = false;
+            d = false;
         } else if (action == 2) {
-            int abs = (int) Math.abs(this.a - x);
-            int abs2 = (int) Math.abs(this.b - y);
-            int i = this.scaledTouchSlop;
+            int abs = (int) Math.abs(a - x);
+            int abs2 = (int) Math.abs(b - y);
+            int i = scaledTouchSlop;
             if (abs > i || abs2 > i) {
-                this.d = true;
+                d = true;
             }
         }
-        return this.d;
+        return d;
     }
 
     @Override
@@ -99,22 +99,22 @@ public class LogicEditorScrollView extends FrameLayout {
         float x = event.getX();
         float y = event.getY();
         if (action == 0) {
-            this.g = x;
-            this.h = y;
+            g = x;
+            h = y;
         } else if (action == 1) {
-            this.g = -1.0f;
-            this.h = -1.0f;
+            g = -1.0f;
+            h = -1.0f;
         } else if (action == 2) {
-            if (this.g < 0.0f) {
-                this.g = x;
+            if (g < 0.0f) {
+                g = x;
             }
-            if (this.h < 0.0f) {
-                this.h = y;
+            if (h < 0.0f) {
+                h = y;
             }
-            int i2 = (int) (this.g - x);
-            int i3 = (int) (this.h - y);
-            this.g = x;
-            this.h = y;
+            int i2 = (int) (g - x);
+            int i3 = (int) (h - y);
+            g = x;
+            h = y;
             if (i2 <= 0) {
                 if (getScrollX() <= 0) {
                     i2 = 0;
@@ -143,7 +143,7 @@ public class LogicEditorScrollView extends FrameLayout {
     }
 
     private boolean a() {
-        if (getChildCount() <= 0 || !this.useScroll || !this.scrollEnabled) {
+        if (getChildCount() <= 0 || !useScroll || !scrollEnabled) {
             return false;
         }
         View childAt = getChildAt(0);

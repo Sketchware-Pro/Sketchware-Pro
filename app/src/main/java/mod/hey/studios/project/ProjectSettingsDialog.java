@@ -59,7 +59,7 @@ public class ProjectSettingsDialog {
 
         dialog.setContentView(binding.getRoot());
 
-        final View[] preferences = {
+        View[] preferences = {
                 binding.etMinimumSdkVersion,
                 binding.etTargetSdkVersion,
                 binding.etApplicationClassName,

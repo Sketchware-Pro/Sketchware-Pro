@@ -434,10 +434,12 @@ public class ColorPickerDialog extends PopupWindow {
         public ColorsAdapter() {
         }
 
+        @Override
         public int getItemCount() {
             return colorGroups.get(l).length;
         }
 
+        @Override
         public void onBindViewHolder(ColorViewHolder holder, int position) {
             ColorBean colorBean = ((ColorBean[]) colorGroups.get(l))[position];
 
@@ -463,6 +465,7 @@ public class ColorPickerDialog extends PopupWindow {
 
         }
 
+        @Override
         @NonNull
         public ColorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new ColorViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.color_picker_item, parent, false));

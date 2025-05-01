@@ -321,6 +321,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
             return featureItems.size();
         }
 
+        @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
             d = true;
             FeatureItem featureItem = featureItems.get(position);

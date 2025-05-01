@@ -12,12 +12,14 @@ public class IconScrollViewVertical extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         super.a(context);
         setWidgetImage(R.drawable.ic_mtrl_swipe_vertical);
         setWidgetName("Scroll(V)");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 12;

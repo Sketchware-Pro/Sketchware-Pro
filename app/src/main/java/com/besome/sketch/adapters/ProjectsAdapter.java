@@ -3,7 +3,6 @@ package com.besome.sketch.adapters;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
 
     public ProjectsAdapter(ProjectsFragment projectsFragment, List<HashMap<String, Object>> allProjects) {
         this.projectsFragment = projectsFragment;
-        this.activity = projectsFragment.requireActivity();
+        activity = projectsFragment.requireActivity();
         this.allProjects = allProjects;
     }
 
@@ -135,12 +134,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         if (yB.a(projectMap, "custom_icon")) {
             String iconFolder = wq.e() + File.separator + scId;
             Uri uri;
-            if (Build.VERSION.SDK_INT >= 24) {
-                String providerPath = activity.getPackageName() + ".provider";
-                uri = FileProvider.getUriForFile(activity, providerPath, new File(iconFolder, "icon.png"));
-            } else {
-                uri = Uri.fromFile(new File(iconFolder, "icon.png"));
-            }
+            String providerPath = activity.getPackageName() + ".provider";
+            uri = FileProvider.getUriForFile(activity, providerPath, new File(iconFolder, "icon.png"));
             holder.binding.imgIcon.setImageURI(uri);
         }
 

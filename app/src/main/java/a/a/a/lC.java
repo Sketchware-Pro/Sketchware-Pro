@@ -5,10 +5,8 @@ import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class lC {
     public static DB a;
@@ -37,7 +35,7 @@ public class lC {
         return arrayList;
     }
 
-    public static HashMap a(String str) {
+    public static HashMap<String, Object> a(String str) {
         for (HashMap<String, Object> stringObjectHashMap : a()) {
             if (yB.c(stringObjectHashMap, "my_sc_pkg_name").equals(str) && yB.b(stringObjectHashMap, "proj_type") == 1) {
                 return stringObjectHashMap;
@@ -150,56 +148,31 @@ public class lC {
     }
 
     public static void b(String str, HashMap<String, Object> hashMap) {
-        HashMap<String, Object> hashMap2 = hashMap;
-        String str2 = "color_control_highlight";
-        String str3 = "color_primary_dark";
-        String str4 = "color_primary";
-        String str5 = "color_accent";
-        String str6 = "sketchware_ver";
-        String str7 = "sc_ver_name";
-        String str8 = "sc_ver_code";
-        String str9 = "my_app_name";
-        String str10 = "my_ws_name";
-        String str11 = "my_sc_pkg_name";
-        String str12 = "published_dt";
-        String str13 = "proj_type";
-        String str14 = "custom_icon";
-        String str15 = "color_control_normal";
-        String str18 = "isIconAdaptive";
         File file = new File(wq.c(str));
         if (file.exists()) {
             String path = file + File.separator + "project";
-            oB oBVar = new oB();
+            oB fileUtil = new oB();
             try {
-                HashMap<String, Object> a = vB.a(oBVar.a(oBVar.h(path)));
-                String str17 = path;
+                HashMap<String, Object> a = vB.a(fileUtil.a(fileUtil.h(path)));
                 if (yB.c(a, "sc_id").equals(str)) {
-                    if (hashMap2.containsKey(str18)) {
-                        a.put(str18, hashMap2.get(str18));
+                    if (hashMap.containsKey("isIconAdaptive")) {
+                        a.put("isIconAdaptive", hashMap.get("isIconAdaptive"));
                     }
-                    if (hashMap2.containsKey(str14)) {
-                        a.put(str14, hashMap2.get(str14));
+                    if (hashMap.containsKey("custom_icon")) {
+                        a.put("custom_icon", hashMap.get("custom_icon"));
                     }
-                    if (hashMap2.containsKey(str13)) {
-                        a.put(str13, hashMap2.get(str13));
-                    }
-                    if (hashMap2.containsKey(str12)) {
-                        a.put(str12, hashMap2.get(str12));
-                    }
-                    a.put(str11, hashMap2.get(str11));
-                    a.put(str10, hashMap2.get(str10));
-                    a.put(str9, hashMap2.get(str9));
-                    a.put(str8, hashMap2.get(str8));
-                    a.put(str7, hashMap2.get(str7));
-                    a.put(str6, hashMap2.get(str6));
-                    a.put(str5, hashMap2.get(str5));
-                    a.put(str4, hashMap2.get(str4));
-                    a.put(str3, hashMap2.get(str3));
-                    path = str2;
-                    a.put(path, hashMap2.get(path));
-                    path = str15;
-                    a.put(path, hashMap2.get(path));
-                    oBVar.a(str17, oBVar.d(vB.a(a)));
+                    a.put("my_sc_pkg_name", hashMap.get("my_sc_pkg_name"));
+                    a.put("my_ws_name", hashMap.get("my_ws_name"));
+                    a.put("my_app_name", hashMap.get("my_app_name"));
+                    a.put("sc_ver_code", hashMap.get("sc_ver_code"));
+                    a.put("sc_ver_name", hashMap.get("sc_ver_name"));
+                    a.put("sketchware_ver", hashMap.get("sketchware_ver"));
+                    a.put("color_accent", hashMap.get("color_accent"));
+                    a.put("color_primary", hashMap.get("color_primary"));
+                    a.put("color_primary_dark", hashMap.get("color_primary_dark"));
+                    a.put("color_control_highlight", hashMap.get("color_control_highlight"));
+                    a.put("color_control_normal", hashMap.get("color_control_normal"));
+                    fileUtil.a(path, fileUtil.d(vB.a(a)));
                 }
             } catch (Throwable e) {
                 Log.e("DEBUG", e.getMessage(), e);
@@ -208,33 +181,30 @@ public class lC {
     }
 
     public static String c() {
-        ArrayList var0 = a();
-        ArrayList var1 = new ArrayList();
-        Iterator var7 = var0.iterator();
+        ArrayList<HashMap<String, Object>> var0 = a();
+        ArrayList<Integer> projectIndices = new ArrayList<>();
 
-        while (var7.hasNext()) {
-            String var2 = yB.c((HashMap) var7.next(), "my_ws_name");
-            if (var2.equals("NewProject")) {
-                var1.add(1);
-            } else if (var2.indexOf("NewProject") == 0) {
+        for (HashMap<String, Object> stringObjectHashMap : var0) {
+            String workspaceName = yB.c(stringObjectHashMap, "my_ws_name");
+            if (workspaceName.equals("NewProject")) {
+                projectIndices.add(1);
+            } else if (workspaceName.indexOf("NewProject") == 0) {
                 try {
-                    var1.add(Integer.parseInt(var2.substring(10)));
-                } catch (Exception var6) {
+                    projectIndices.add(Integer.parseInt(workspaceName.substring(10)));
+                } catch (Exception ignored) {
                 }
             }
         }
 
-        Collections.sort(var1, new a());
+        projectIndices.sort(new IntegerComparator());
         int var3 = 0;
-        Iterator var8 = var1.iterator();
 
-        while (var8.hasNext()) {
-            int var4 = (Integer) var8.next();
+        for (int nextProjectIndex : projectIndices) {
             int var5 = var3 + 1;
-            if (var4 == var5) {
+            if (nextProjectIndex == var5) {
                 var3 = var5;
             } else {
-                if (var4 == var3) {
+                if (nextProjectIndex == var3) {
                     continue;
                 }
                 break;
@@ -244,9 +214,7 @@ public class lC {
         if (var3 == 0) {
             return "NewProject";
         } else {
-            String var9 = "NewProject" +
-                    (var3 + 1);
-            return var9;
+            return "NewProject" + (var3 + 1);
         }
     }
 
@@ -257,17 +225,11 @@ public class lC {
         a.a();
     }
 
-    public static class a implements Comparator<Integer> {
-        public a() {
-        }
-
-        public int a(Integer var1, Integer var2) {
-            return var1.compareTo(var2);
-        }
+    private static class IntegerComparator implements Comparator<Integer> {
 
         @Override
-        public int compare(Integer o1, Integer o2) {
-            return 0;
+        public int compare(Integer first, Integer second) {
+            return first.compareTo(second);
         }
     }
 }

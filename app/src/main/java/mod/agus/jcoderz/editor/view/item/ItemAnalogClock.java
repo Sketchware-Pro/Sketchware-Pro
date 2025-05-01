@@ -46,6 +46,7 @@ public class ItemAnalogClock extends AnalogClock implements sy {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         isFixed = z;
     }

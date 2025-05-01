@@ -317,7 +317,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         refreshCount();
     }
 
-    private double getN(final double _p) {
+    private double getN(double _p) {
         int n = 0;
         if (all_blocks_list == null) return 0;
 
@@ -337,7 +337,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         }
     }
 
-    private void recycleBin(final View view) {
+    private void recycleBin(View view) {
         view.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), BlocksManagerDetailsActivity.class);
             intent.putExtra("position", "-1");
@@ -357,7 +357,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         });
     }
 
-    private void removeRelatedBlocks(final double _p) {
+    private void removeRelatedBlocks(double _p) {
         List<Map<String, Object>> newBlocks = new LinkedList<>();
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (!(Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) == _p)) {
@@ -374,7 +374,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         readSettings();
     }
 
-    private void swapRelatedBlocks(final double f, final double s) {
+    private void swapRelatedBlocks(double f, double s) {
         final String TEMP_PALETTE = "TEMP_SWAP";
         for (Map<String, Object> block : all_blocks_list) {
             Object paletteObj = block.get("palette");
@@ -400,7 +400,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         }
     }
 
-    private void insertBlocksAt(final double _p) {
+    private void insertBlocksAt(double _p) {
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if ((Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) > _p) || (Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) == _p)) {
                 all_blocks_list.get(i).put("palette", String.valueOf((long) (Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) + 1)));
@@ -411,7 +411,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         refreshList();
     }
 
-    private void moveRelatedBlocksToRecycleBin(final double _p) {
+    private void moveRelatedBlocksToRecycleBin(double _p) {
         for (int i = 0; i < all_blocks_list.size(); i++) {
             if (Double.parseDouble(Objects.requireNonNull(all_blocks_list.get(i).get("palette")).toString()) == _p) {
                 all_blocks_list.get(i).put("palette", "-1");
@@ -446,7 +446,7 @@ public class BlocksManager extends BaseAppCompatActivity {
         }
 
         dialogBinding.openColorPalette.setOnClickListener(v1 -> {
-            final ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, 0xFFFFFFFF, false, false);
+            ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, 0xFFFFFFFF, false, false);
             colorPickerDialog.a(new ColorPickerDialog.b() {
                 @Override
                 public void a(int colorInt) {

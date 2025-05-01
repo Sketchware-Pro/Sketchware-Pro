@@ -33,7 +33,7 @@ public class PaletteBlock extends LinearLayout {
         initialize(context);
     }
 
-    private void initialize(final Context context) {
+    private void initialize(Context context) {
         this.context = context;
         binding = PaletteBlockBinding.inflate(LayoutInflater.from(context), this, true);
         f = wB.a(context, 1.0F);

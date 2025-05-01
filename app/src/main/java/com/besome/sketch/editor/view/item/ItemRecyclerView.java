@@ -74,6 +74,7 @@ public class ItemRecyclerView extends RecyclerView implements sy, EditorListItem
         return hasFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         hasFixed = z;
     }

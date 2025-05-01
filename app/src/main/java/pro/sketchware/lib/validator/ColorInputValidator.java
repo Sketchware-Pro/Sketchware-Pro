@@ -22,6 +22,7 @@ public class ColorInputValidator extends MB {
         this.colorPreview = colorPreview;
     }
 
+    @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         String hexCode = s.toString().trim();
         if (hexCode.length() > 8) {

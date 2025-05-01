@@ -75,6 +75,7 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean fixed) {
         isFixed = fixed;
     }
@@ -99,6 +100,7 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
         super.onDraw(canvas);
     }
 
+    @Override
     public void setBackgroundColor(int color) {
         super.setCardBackgroundColor(color == 0x00FFFFFF ? 0xFFFFFFFF : color);
     }

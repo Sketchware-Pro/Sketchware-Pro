@@ -36,8 +36,8 @@ public class ManageProguardActivity extends BaseAppCompatActivity
     private void fmDialog() {
         ManageLocalLibrary mll = new ManageLocalLibrary(getIntent().getStringExtra("sc_id"));
 
-        final String[] libraries = new String[mll.list.size()];
-        final boolean[] enabledLibraries = new boolean[mll.list.size()];
+        String[] libraries = new String[mll.list.size()];
+        boolean[] enabledLibraries = new boolean[mll.list.size()];
 
         for (int i = 0; i < mll.list.size(); i++) {
             HashMap<String, Object> current = mll.list.get(i);

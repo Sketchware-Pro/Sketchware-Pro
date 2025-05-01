@@ -13,12 +13,14 @@ public class IconImageView extends IconBase {
         super(context);
     }
 
+    @Override
     public void a(Context context) {
         super.a(context);
         setWidgetImage(R.drawable.ic_mtrl_image);
         setWidgetName("ImageView");
     }
 
+    @Override
     public ViewBean getBean() {
         ViewBean viewBean = new ViewBean();
         viewBean.type = 6;

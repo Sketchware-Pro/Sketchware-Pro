@@ -3,7 +3,6 @@ package mod.hey.studios.activity.managers.java;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Gravity;
@@ -15,7 +14,6 @@ import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -233,13 +231,6 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
                     return;
                 }
 
-                if (Build.VERSION.SDK_INT < 26 && ".kt".equals(extension)) {
-                    SketchwareUtil.toast("Unfortunately you cannot use Kotlin " +
-                            "since kotlinc only works on devices with Android 8 and higher, " +
-                            "sorry for the inconvenience!", Toast.LENGTH_LONG);
-                    return;
-                }
-
                 FileUtil.writeFile(new File(current_path, name + extension).getAbsolutePath(), newFileContent);
                 refresh();
                 SketchwareUtil.toast("File was created successfully");
@@ -279,13 +270,6 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
             for (String path : selections) {
                 String filename = Uri.parse(path).getLastPathSegment();
                 String fileContent = FileUtil.readFile(path);
-
-                if (Build.VERSION.SDK_INT < 26 && filename.endsWith(".kt")) {
-                    SketchwareUtil.toast("Unfortunately you cannot use Kotlin " +
-                            "since kotlinc only works on devices with Android 8 " +
-                            "and higher, skipping " + filename + "!");
-                    continue;
-                }
 
                 if (fileContent.contains("package ")) {
                     fileContent = fileContent.replaceFirst(PACKAGE_DECL_REGEX,
@@ -353,7 +337,7 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
         inputText.requestFocus();
     }
 
-    private void showDeleteDialog(final int position) {
+    private void showDeleteDialog(int position) {
         boolean isInManifest = frc.getJavaManifestList().contains(filesAdapter.getFullName(position));
 
         new MaterialAlertDialogBuilder(this)

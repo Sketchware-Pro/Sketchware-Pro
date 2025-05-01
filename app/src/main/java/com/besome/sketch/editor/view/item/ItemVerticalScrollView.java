@@ -78,6 +78,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         }
     }
 
+    @Override
     public void a() {
         int var1 = 0;
 
@@ -115,6 +116,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         return g.bottom + var2 >= getScrollY() && g.top - var2 <= getScrollY() + var3;
     }
 
+    @Override
     public void addView(View view, int index) {
         int childCount = getChildCount();
         if (index > childCount) {
@@ -146,18 +148,22 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         }
     }
 
+    @Override
     public ViewBean getBean() {
         return viewBean;
     }
 
+    @Override
     public void setBean(ViewBean viewBean) {
         this.viewBean = viewBean;
     }
 
+    @Override
     public boolean getFixed() {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean isFixed) {
         this.isFixed = isFixed;
     }
@@ -166,17 +172,20 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         return isSelected;
     }
 
+    @Override
     public void setSelection(boolean hasSelection) {
         isSelected = hasSelection;
         invalidate();
     }
 
+    @Override
     public void measureChild(View view, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         parentWidthMeasureSpec = FrameLayout.getChildMeasureSpec(parentWidthMeasureSpec, getPaddingLeft() + getPaddingRight(), layoutParams.width);
         view.measure(parentWidthMeasureSpec, MeasureSpec.makeMeasureSpec(Math.max(0, MeasureSpec.getSize(parentHeightMeasureSpec) - (getPaddingTop() + getPaddingBottom())), MeasureSpec.UNSPECIFIED));
     }
 
+    @Override
     public void measureChildWithMargins(View view, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
         int childMeasureSpec = FrameLayout.getChildMeasureSpec(parentWidthMeasureSpec, getPaddingLeft() + getPaddingRight() + layoutParams.leftMargin + layoutParams.rightMargin + widthUsed, layoutParams.width);
@@ -185,6 +194,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         view.measure(childMeasureSpec, MeasureSpec.makeMeasureSpec(Math.max(0, MeasureSpec.getSize(parentHeightMeasureSpec) - (parentWidthMeasureSpec + widthUsed + layoutParams.topMargin + layoutParams.bottomMargin + heightUsed)), MeasureSpec.UNSPECIFIED));
     }
 
+    @Override
     public void onDraw(Canvas canvas) {
         if (!isFixed) {
             int scrollX = getScrollX();
@@ -205,6 +215,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         super.onDraw(canvas);
     }
 
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent motionEvent) {
         if (!f) {
             return false;
@@ -253,6 +264,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         }
     }
 
+    @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.UNSPECIFIED) {
@@ -268,6 +280,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         }
     }
 
+    @Override
     public void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
         super.onSizeChanged(width, height, oldWidth, oldHeight);
         View focusedView = findFocus();
@@ -278,11 +291,13 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         }
     }
 
+    @Override
     public void removeView(View view) {
         super.removeView(view);
         setScrollY(0);
     }
 
+    @Override
     public void setChildScrollEnabled(boolean childScrollEnabled) {
         for (int i = 0; i < getChildCount(); ++i) {
             View child = getChildAt(i);
@@ -300,6 +315,7 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         }
     }
 
+    @Override
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding((int) wB.a(getContext(), (float) left), (int) wB.a(getContext(), (float) top), (int) wB.a(getContext(), (float) right), (int) wB.a(getContext(), (float) bottom));
     }

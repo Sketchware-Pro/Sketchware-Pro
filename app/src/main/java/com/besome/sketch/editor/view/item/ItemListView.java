@@ -3,9 +3,7 @@ package com.besome.sketch.editor.view.item;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.besome.sketch.beans.ViewBean;
@@ -31,24 +29,24 @@ public class ItemListView extends ListView implements sy {
 
     public ItemListView(Context context) {
         super(context);
-        this.items = new ArrayList<>();
+        items = new ArrayList<>();
         initialize(context);
     }
 
     public void initialize(Context context) {
-        this.oneDp = wB.a(context, 1.0f);
-        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.paint.setStrokeWidth(wB.a(getContext(), 2.0f));
+        oneDp = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setStrokeWidth(wB.a(getContext(), 2.0f));
         setDrawingCacheEnabled(true);
-        this.items.add("List item 1");
-        this.items.add("List item 2");
-        this.items.add("List item 3");
-        setAdapter(new ArrayAdapter(context, android.R.layout.simple_list_item_1, this.items));
+        items.add("List item 1");
+        items.add("List item 2");
+        items.add("List item 3");
+        setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, items));
     }
 
     @Override
     public ViewBean getBean() {
-        return this.viewBean;
+        return viewBean;
     }
 
     @Override
@@ -58,15 +56,16 @@ public class ItemListView extends ListView implements sy {
 
     @Override
     public boolean getFixed() {
-        return this.fixed;
+        return fixed;
     }
 
+    @Override
     public void setFixed(boolean fixed) {
         this.fixed = fixed;
     }
 
     public boolean getSelection() {
-        return this.selected;
+        return selected;
     }
 
     @Override
@@ -77,19 +76,19 @@ public class ItemListView extends ListView implements sy {
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (this.selected) {
-            this.paint.setColor(0x9599d5d0);
-            canvas.drawRect(new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), this.paint);
+        if (selected) {
+            paint.setColor(0x9599d5d0);
+            canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
         } else {
-            this.paint.setColor(0x60000000);
+            paint.setColor(0x60000000);
             int measuredWidth2 = getMeasuredWidth();
             int measuredHeight2 = getMeasuredHeight();
             float measuredWidth = measuredWidth2;
-            canvas.drawLine(0.0f, 0.0f, measuredWidth, 0.0f, this.paint);
+            canvas.drawLine(0.0f, 0.0f, measuredWidth, 0.0f, paint);
             float measuredHeight = measuredHeight2;
-            canvas.drawLine(0.0f, 0.0f, 0.0f, measuredHeight, this.paint);
-            canvas.drawLine(measuredWidth, 0.0f, measuredWidth, measuredHeight, this.paint);
-            canvas.drawLine(0.0f, measuredHeight, measuredWidth, measuredHeight, this.paint);
+            canvas.drawLine(0.0f, 0.0f, 0.0f, measuredHeight, paint);
+            canvas.drawLine(measuredWidth, 0.0f, measuredWidth, measuredHeight, paint);
+            canvas.drawLine(0.0f, measuredHeight, measuredWidth, measuredHeight, paint);
         }
         super.onDraw(canvas);
     }

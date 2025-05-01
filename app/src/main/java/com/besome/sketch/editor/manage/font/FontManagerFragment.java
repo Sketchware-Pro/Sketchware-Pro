@@ -123,6 +123,7 @@ public class FontManagerFragment extends qA {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
     public void onActivityCreated(Bundle bundle) {
         super.onActivityCreated(bundle);
 
@@ -139,6 +140,7 @@ public class FontManagerFragment extends qA {
         loadProjectResources();
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 232 && resultCode == Activity.RESULT_OK && data != null) {
@@ -146,6 +148,7 @@ public class FontManagerFragment extends qA {
         }
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         binding = FrManageFontListBinding.inflate(layoutInflater, viewGroup, false);
         actBinding = ((ManageFontActivity) requireActivity()).binding;
@@ -161,11 +164,13 @@ public class FontManagerFragment extends qA {
         return binding.getRoot();
     }
 
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Np.g().d();
     }
 
+    @Override
     public void onSaveInstanceState(@NonNull Bundle bundle) {
         super.onSaveInstanceState(bundle);
         bundle.putString("sc_id", sc_id);

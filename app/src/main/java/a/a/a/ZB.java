@@ -28,6 +28,7 @@ public class ZB extends MB {
         reservedNames = newReservedNames;
     }
 
+    @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (s.toString().trim().isEmpty()) {
             b.setErrorEnabled(true);
