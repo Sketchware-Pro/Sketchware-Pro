@@ -58,6 +58,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomViewPager;
 import com.besome.sketch.tools.CompileLogActivity;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.besome.sketch.design.hierarchy.LayoutHierarchySheet;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
@@ -189,6 +190,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         }
     });
     private BuildTask currentBuildTask;
+
     private final BroadcastReceiver buildCancelReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -199,6 +201,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         }
     };
+
+    private LayoutHierarchySheet hierarchySheet;
 
     /**
      * Saves the app's version information to the currently opened Sketchware project file.
@@ -389,6 +393,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         startActivity(intent);
     }
 
+    public void updateViewPropertiesMenuState() {
+        viewTabAdapter.a(true);
+    }
+
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.END)) {
@@ -441,7 +449,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
         r = new DB(getApplicationContext(), "P1");
         t = new DB(getApplicationContext(), "P12");
-
+        
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(sc_id);
         setSupportActionBar(toolbar);
@@ -573,7 +581,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         } else {
             registerReceiver(buildCancelReceiver, filter);
         }
-
     }
 
     private boolean isDebugApkExists() {
@@ -618,6 +625,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         } else if (itemId == R.id.design_option_menu_title_save_project) {
             saveProject();
+        } else if (itemId == R.id.menu_view_hierarchy) {
+            toLayoutHierarchySheet();
         }
 
         return super.onOptionsItemSelected(item);
@@ -991,7 +1000,22 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     void toXMLCommandManager() {
         launchActivity(ManageXMLCommandActivity.class, null);
     }
+    
+    /**
+     * Opens {@link LayoutHierarchySheet}.
+     */
+    void toLayoutHierarchySheet() {
+        var projectDataManager = jC.a(sc_id);
+        var fileName = projectFile.getXmlName();
+        var viewBeans = eC.a(projectDataManager.d(fileName));
+        var hierarchySheet = new LayoutHierarchySheet(this, viewBeans);
+        hierarchySheet.show();
+    }
 
+    public void initializeProjectActivityViews() {
+        viewTabAdapter.n();
+    }
+    
     @SafeVarargs
     private void launchActivity(Class<? extends Activity> toLaunch, ActivityResultLauncher<Intent> optionalLauncher, Pair<String, String>... extras) {
         Intent intent = new Intent(getApplicationContext(), toLaunch);
