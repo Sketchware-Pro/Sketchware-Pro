@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import dev.aldi.sayuti.block.ExtraBlockFile;
 import pro.sketchware.blocks.generator.builders.BooleanTreeBuilder;
 import pro.sketchware.blocks.generator.builders.ExpressionBlockBuilder;
-import pro.sketchware.blocks.generator.builders.ExtraBlockMatcher;
+import pro.sketchware.blocks.generator.matchers.ExtraBlockMatcher;
 import pro.sketchware.blocks.generator.handlers.*;
 import pro.sketchware.blocks.generator.interfaces.StatementHandler;
 import pro.sketchware.blocks.generator.records.HandlerContext;
@@ -68,7 +68,7 @@ public class EventBlocksGenerator {
         handlers.add(new IfStatementHandler(booleanTreeBuilder, this));
         handlers.add(new WhileStatementHandler(booleanTreeBuilder, this));
         handlers.add(new ExpressionStatementHandler(extraBlockMatcher, expressionBlockBuilder));
-        handlers.add(new OtherStatementHandler());
+        handlers.add(new OtherStatementHandler(extraBlockMatcher));
 
         projectResourcesHelper.initialize(javaCode);
         blocksCategories.loadBlocks(TranslatorUtils.getPreLoadedBlocks(preLoadedBlockBeans, sc_id));

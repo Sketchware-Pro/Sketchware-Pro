@@ -1,10 +1,14 @@
-package pro.sketchware.blocks.generator.builders;
+package pro.sketchware.blocks.generator.matchers;
+
+import android.util.Log;
+import android.util.Pair;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.expr.Expression;
 import com.besome.sketch.beans.BlockBean;
 
 import a.a.a.Fx;
+import pro.sketchware.blocks.generator.builders.ExpressionBlockBuilder;
 import pro.sketchware.blocks.generator.utils.BlockParamUtil;
 import pro.sketchware.blocks.generator.records.RequiredBlockType;
 import pro.sketchware.blocks.generator.utils.TranslatorUtils;
@@ -33,10 +37,20 @@ public class ExtraBlockMatcher {
         String norm = input.trim();
         for (var map : targetBlocks) {
             String code = TranslatorUtils.safeGetString(map.get("code")).trim();
-            ArrayList<String> params = blockParamUtil.extractParams(code, norm);
-            ArrayList<String> paramsHolders = blockParamUtil.extractParamsHolders(TranslatorUtils.safeGetString(map.get("spec")));
+            String spec = TranslatorUtils.safeGetString(map.get("spec")).trim();
+            BlockCodeReformater blockCodeReformater = new BlockCodeReformater(code, norm);
+            norm = blockCodeReformater.getFormattedInputCode();
+            code = blockCodeReformater.getFormattedBlockCode();
+            Pair<ArrayList<String>, ArrayList<String>> blockParamInfo = blockParamUtil.getBlockParamInfo(spec, code, norm);
+            ArrayList<String> params = blockParamInfo.first;
+            ArrayList<String> paramsHolders = blockParamInfo.second;
+            if (params.size() != paramsHolders.size() || blockParamUtil.isParamOnly(code)) {
+                continue;
+            }
             String formatted = params.isEmpty() ? code : String.format(code, params.toArray());
-            if (formatted.equals(norm) && blockParamUtil.isMatchesParamsTypes(params, paramsHolders)) {
+            boolean isCodeEquivalent = formatted.equals(norm);
+            Log.d("BlocksGenerator", "comparing block " + map.get("name") + " : " + formatted + " and " + norm + " result : " + isCodeEquivalent + " params : " + params + " paramsHolders :" + paramsHolders + " original block code " + code + "map content: " + map);
+            if (isCodeEquivalent && blockParamUtil.isMatchesParamsTypes(params, paramsHolders)) {
                 BlockBean b = new BlockBean(
                         String.valueOf(id),
                         TranslatorUtils.safeGetString(map.get("spec")),
@@ -72,7 +86,7 @@ public class ExtraBlockMatcher {
                         if (expr.isMethodCallExpr()) {
                             methodName = expr.asMethodCallExpr().getNameAsString();
                         }
-                        RequiredBlockType reqType = blockParamUtil.getRequiredBlockType(methodName, i, b);
+                        RequiredBlockType reqType = blockParamUtil.getRequiredBlockType(methodName, code, i, b);
                         if (reqType == null) {
                             isCompatibleParams = false;
                             break;

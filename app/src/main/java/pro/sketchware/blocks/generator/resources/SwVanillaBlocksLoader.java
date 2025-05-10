@@ -125,22 +125,22 @@ public class SwVanillaBlocksLoader {
         hashMap = new HashMap<>();
         hashMap.put("name", "addListInt");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.add(Double.valueOf(%s));");
-        hashMap.put("spec", "%m.lisInt add %d");
+        hashMap.put("code", "%2$s.add(Double.valueOf(%1$s));");
+        hashMap.put("spec", "add %d to %m.listInt");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "insertListInt");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.add((int)(%s), Double.valueOf(%s));");
-        hashMap.put("spec", "%m.listInt insert at %d %d");
+        hashMap.put("code", "%3$s.add((int) (%2$s), Double.valueOf(%1$s));");
+        hashMap.put("spec", "insert %d at %d for %m.listInt");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "getAtListInt");
         hashMap.put("type", "d");
-        hashMap.put("code", "%s.get((int) (%s)).doubleValue()");
-        hashMap.put("spec", "get %m.listInt at %d");
+        hashMap.put("code", "%2$s.get((int) (%1$s)).doubleValue()");
+        hashMap.put("spec", "get at %d from %m.listInt");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -152,9 +152,9 @@ public class SwVanillaBlocksLoader {
 
         hashMap = new HashMap<>();
         hashMap.put("name", "indexListStr");
-        hashMap.put("type", "s");
-        hashMap.put("code", "%s.indexOf(%s)");
-        hashMap.put("spec", "%m.listStr indexOf %d");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%2$s.indexOf(%1$s)");
+        hashMap.put("spec", "%s indexOf %m.listStr");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -166,37 +166,37 @@ public class SwVanillaBlocksLoader {
 
         hashMap = new HashMap<>();
         hashMap.put("name", "containListStr");
-        hashMap.put("type", "s");
+        hashMap.put("type", "b");
         hashMap.put("code", "%s.contains(%s)");
-        hashMap.put("spec", "%m.listStr contains %d");
+        hashMap.put("spec", "%m.listStr contains %s");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "addListStr");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.add(%s);");
-        hashMap.put("spec", "%m.listStr add %s");
+        hashMap.put("code", "%2$s.add(%1$s);");
+        hashMap.put("spec", "add %s to %m.listStr");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "addMapToList");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.add(%s);");
-        hashMap.put("spec", "%m.listMap add %m.varMao");
+        hashMap.put("code", "%2$s.add(%1$s);");
+        hashMap.put("spec", "add %m.varMap to %m.listMap");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "insertListStr");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.add((int)(%s), %s);");
-        hashMap.put("spec", "%m.lisStr insert at %d %s");
+        hashMap.put("code", "%3$s.add((int) (%2$s), %1$s);");
+        hashMap.put("spec", "insert %s at %d to %m.listStr");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "getAtListStr");
         hashMap.put("type", "s");
-        hashMap.put("code", "%s.get((int)(%s))");
-        hashMap.put("spec", "%m.lisStr get at %d");
+        hashMap.put("code", "%2$s.get((int) (%1$s))");
+        hashMap.put("spec", "get at %d from %m.listStr");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -218,53 +218,53 @@ public class SwVanillaBlocksLoader {
         hashMap.put("code", """
                 {
                 HashMap<String, Object> _item = new HashMap<>();
-                _item.put(%s, %s);
-                %s.add((int)%s, _item);
+                _item.put(%1$s, %2$s);
+                %4$s.add((int) %3$s, _item);
                 }"""
         );
-        hashMap.put("spec", "new map put key %s value %s insert at %d to %m.listMap");
+        hashMap.put("spec", "insert key %s value %s at %d to %m.listMap");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "getAtListMap");
         hashMap.put("type", "s");
-        hashMap.put("code", "%s.get((int) %s).get(%s).toString()");
-        hashMap.put("spec", "%m.listMap get %d key %s");
+        hashMap.put("code", "%3$s.get((int) %2$s).get(%1$s).toString()");
+        hashMap.put("spec", "get key %s at %d from %m.listMap get");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "setListMap");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.get((int)%s).put(%s, %s);");
-        hashMap.put("spec", "%m.listMap get %m.varMap put key %s value %s");
+        hashMap.put("code", "%4$s.get((int) %3$s).put(%1$s, %2$s);");
+        hashMap.put("spec", "set key %s and value %s at %d in %m.listMap");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "containListMap");
         hashMap.put("type", "b");
-        hashMap.put("code", "%s.get((int)%s).containsKey(%s)");
-        hashMap.put("spec", "%m.listMap get %m.varMap contains key %s");
+        hashMap.put("code", "%s.get((int) %s).containsKey(%s)");
+        hashMap.put("spec", "%m.listMap at %d contains key %s");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "insertMapToList");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.add((int)%s, %s);");
-        hashMap.put("spec", "%m.listMap insert at %d %m.varMap");
+        hashMap.put("code", "%3$s.add((int) %2$s, %1$s);");
+        hashMap.put("spec", "%m.varMap insert at %d in %m.listMap");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "getMapInList");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s = %s.get((int)%s);");
-        hashMap.put("spec", "%m.varMap get from %m.listMap at %d");
+        hashMap.put("code", "%3$s = %2$s.get((int) %1$s);");
+        hashMap.put("spec", "get at %d from %m.listMap to %m.varMap");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "deleteList");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.remove((int)(%s));");
-        hashMap.put("spec", "%m.listInt remove number %d");
+        hashMap.put("code", "%2$s.remove((int)(%1$s));");
+        hashMap.put("spec", "remove %d from %m.list");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();

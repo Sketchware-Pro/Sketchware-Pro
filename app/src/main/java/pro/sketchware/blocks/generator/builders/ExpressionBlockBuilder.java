@@ -4,6 +4,7 @@ import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.besome.sketch.beans.BlockBean;
 
+import pro.sketchware.blocks.generator.matchers.ExtraBlockMatcher;
 import pro.sketchware.blocks.generator.utils.BlockParamUtil;
 import pro.sketchware.blocks.generator.records.RequiredBlockType;
 import pro.sketchware.blocks.generator.resources.BlocksCategories;

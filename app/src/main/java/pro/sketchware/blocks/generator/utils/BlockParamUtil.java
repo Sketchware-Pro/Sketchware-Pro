@@ -18,14 +18,20 @@ public class BlockParamUtil {
 
     private final ProjectResourcesHelper projectResourcesHelper;
 
-    private final Pattern paramHolderPattern = Pattern.compile("%\\d*\\$?m\\.(\\w+)|%\\d+\\$s|%s\\.inputOnly|%s|%d|%b");
-    private final Pattern literalBoolOrNum = Pattern.compile("^(true|false|-?\\d+(\\.\\d+)?)$");
+    private final Pattern paramHolderPattern = Pattern.compile(TranslatorUtils.getParamHolderRegex());
 
     public BlockParamUtil(ProjectResourcesHelper projectResourcesHelper) {
         this.projectResourcesHelper = projectResourcesHelper;
     }
 
-    public ArrayList<String> extractParams(String pattern, String input) {
+    public Pair<ArrayList<String>, ArrayList<String>> getBlockParamInfo(String blockSpec, String blockCode, String input) {
+        ArrayList<String> params = extractParams(blockCode, input);
+        ArrayList<String> paramsHolders = extractParamsHolders(blockSpec);
+        ArrayList<String> secondParamsHolders = extractParamsHolders(blockCode);
+        return new Pair<>(reorderParamsByHolders(secondParamsHolders, params), paramsHolders);
+    }
+
+    private ArrayList<String> extractParams(String pattern, String input) {
         ArrayList<String> results = new ArrayList<>();
         Matcher m = paramHolderPattern.matcher(pattern);
         StringBuilder regexBuilder = new StringBuilder();
@@ -33,7 +39,7 @@ public class BlockParamUtil {
 
         while (m.find()) {
             regexBuilder.append(Pattern.quote(pattern.substring(last, m.start())))
-                    .append("(.*?)");
+                    .append("(.+)");
             last = m.end();
         }
         regexBuilder.append(Pattern.quote(pattern.substring(last)));
@@ -59,6 +65,45 @@ public class BlockParamUtil {
         return results;
     }
 
+    public boolean isParamOnly(String input) {
+        input = input.trim();
+
+        return input.matches("^" + TranslatorUtils.getParamHolderRegex() + "$");
+    }
+
+    private ArrayList<String> reorderParamsByHolders(ArrayList<String> paramsHolders, ArrayList<String> params) {
+        try {
+            ArrayList<String> result = new ArrayList<>(paramsHolders.size());
+            for (int i = 0; i < paramsHolders.size(); i++) result.add("");
+
+            Pattern indexPattern = Pattern.compile("%(\\d+)\\$[sdb]");
+            int paramIndex = 0;
+
+            for (int i = 0; i < paramsHolders.size(); i++) {
+                String holder = paramsHolders.get(i);
+                Matcher m = indexPattern.matcher(holder);
+                if (m.find()) {
+                    int targetIndex = Integer.parseInt(TranslatorUtils.safeGetString(m.group(1))) - 1;
+                    if (targetIndex < result.size()) {
+                        result.set(targetIndex, params.get(i));
+                    }
+                } else {
+                    while (paramIndex < result.size() && !result.get(paramIndex).isEmpty()) {
+                        paramIndex++;
+                    }
+                    if (paramIndex < result.size()) {
+                        result.set(paramIndex, params.get(i));
+                        paramIndex++;
+                    }
+                }
+            }
+
+            return result;
+        } catch (Exception ignored) {
+            return new ArrayList<>();
+        }
+    }
+
     public boolean isMatchesParamsTypes(ArrayList<String> params, ArrayList<String> paramsHolders) {
         for (int i = 0; i < params.size(); i++) {
             if (!isMatchesParamType(params.get(i), paramsHolders.get(i))) {
@@ -72,6 +117,9 @@ public class BlockParamUtil {
         if (paramHolder.equals("%s.inputOnly")) {
             return true;
         }
+        if (TranslatorUtils.isCastExpression(param)) {
+            return false;
+        }
         if (param.startsWith("binding.")) {
             param = param.substring("binding.".length());
         }
@@ -80,7 +128,11 @@ public class BlockParamUtil {
         }
         return switch (paramHolder) {
             case "%s" ->
-                    (TranslatorUtils.isLiteralString(param) || !projectResourcesHelper.getAllFieldsExcept(projectResourcesHelper.STRING_FIELDS).contains(param)) && !literalBoolOrNum.matcher(param).matches();
+                    TranslatorUtils.isLiteralString(param) || !projectResourcesHelper.getAllFieldsExcept(projectResourcesHelper.STRING_FIELDS).contains(param);
+            case "%d" ->
+                    TranslatorUtils.isLiteralNumber(param) || !projectResourcesHelper.getAllFieldsExcept(projectResourcesHelper.DOUBLE_FIELDS).contains(param);
+            case "%b" ->
+                    TranslatorUtils.isLiteralBoolean(param) || !projectResourcesHelper.getAllFieldsExcept(projectResourcesHelper.BOOLEAN_FIELDS).contains(param);
             case "%m.varMap" ->
                     projectResourcesHelper.getFields(projectResourcesHelper.MAP_FIELDS).contains(param);
             case "%m.list" -> projectResourcesHelper.getFields(
@@ -101,18 +153,18 @@ public class BlockParamUtil {
                     projectResourcesHelper.getFields(projectResourcesHelper.LIST_INT_FIELDS).contains(param);
             case "%m.listMap" ->
                     projectResourcesHelper.getFields(projectResourcesHelper.LIST_MAP_FIELDS).contains(param);
-            default -> true;
+            default -> false;
         };
     }
 
-    public RequiredBlockType getRequiredBlockType(String methodName, int targetPosition, BlockBean block) {
+    public RequiredBlockType getRequiredBlockType(String methodName, String blockCode, int targetPosition, BlockBean block) {
         Pair<String, String> moreBlockType = projectResourcesHelper.getMoreBlockType(methodName);
         RequiredBlockType foundedType = null;
         RequiredBlockType expectedRequireType = null;
         if (moreBlockType != null) {
             expectedRequireType = new RequiredBlockType(moreBlockType.first, moreBlockType.second);
         }
-        List<String> holders = extractParamsHolders(block.spec);
+        List<String> holders = getBlockParamInfo(block.spec, blockCode, "").second;
         if (targetPosition < holders.size()) {
             String holder = holders.get(targetPosition);
             if (holder.equals("%s")) {
