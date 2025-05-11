@@ -228,8 +228,8 @@ public class SwVanillaBlocksLoader {
         hashMap = new HashMap<>();
         hashMap.put("name", "getAtListMap");
         hashMap.put("type", "s");
-        hashMap.put("code", "%3$s.get((int) %2$s).get(%1$s).toString()");
-        hashMap.put("spec", "get key %s at %d from %m.listMap get");
+        hashMap.put("code", "%3$s.get((int) %1$s).get(%2$s).toString()");
+        hashMap.put("spec", "get at %d key %s from %m.listMap");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
