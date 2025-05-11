@@ -62,14 +62,14 @@ public class ExpressionBlockBuilder {
                 bean.subStack2 = -1;
                 res.add(bean);
                 return res;
-            } else if (expr.isBinaryExpr() || requiredBlockType.blockType().equals("b")) {
+            } else if (requiredBlockType.blockType().equals("b")) {
                 ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, this)
                         .tryExtraBlockMatch(expr.toString(), id, -1, blocksCategories.getBooleanBlocks());
                 if (extra != null) return extra;
                 opCode = "asdBoolean";
                 spec = "boolean %s.inputOnly";
                 type = "b";
-            } else if (expr.isIntegerLiteralExpr() || expr.isDoubleLiteralExpr() || requiredBlockType.blockType().equals("d")) {
+            } else if (requiredBlockType.blockType().equals("d")) {
                 ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, this)
                         .tryExtraBlockMatch(expr.toString(), id, -1, blocksCategories.getDoubleBlocks());
                 if (extra != null) return extra;

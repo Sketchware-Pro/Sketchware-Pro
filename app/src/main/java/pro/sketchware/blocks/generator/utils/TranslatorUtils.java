@@ -1,7 +1,5 @@
 package pro.sketchware.blocks.generator.utils;
 
-import android.util.Log;
-
 import com.besome.sketch.beans.BlockBean;
 
 import java.util.ArrayList;

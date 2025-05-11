@@ -67,6 +67,7 @@ public class EventBlocksGenerator {
 
         handlers.add(new IfStatementHandler(booleanTreeBuilder, this));
         handlers.add(new WhileStatementHandler(booleanTreeBuilder, this));
+        handlers.add(new ForStatementHandler(this, expressionBlockBuilder));
         handlers.add(new ExpressionStatementHandler(extraBlockMatcher, expressionBlockBuilder));
         handlers.add(new OtherStatementHandler(extraBlockMatcher));
 
@@ -90,6 +91,7 @@ public class EventBlocksGenerator {
             return blockBeans;
         }
         String TAG = "BlocksGenerator";
+        Log.d(TAG, "loading for code : " + javaCode);
         try {
             initialize();
             BlockStmt body = StaticJavaParser.parseBlock("{" + javaCode + "}");

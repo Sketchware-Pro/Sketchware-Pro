@@ -2125,16 +2125,6 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
-        hashMap.put("name", "repeatKnownNum");
-        hashMap.put("type", "c");
-        hashMap.put("typeName", "");
-        hashMap.put("code", "for (int %2$s = 0; %2$s < (int)(%1$s); %2$s++) {\r\n%3$s\r\n}");
-        hashMap.put("color", "#e1a92a");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "repeat %d: %s.inputOnly ++");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
         hashMap.put("name", "whileLoop");
         hashMap.put("type", "c");
         hashMap.put("typeName", "");
@@ -2503,6 +2493,16 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
+        hashMap.put("name", "repeatKnownNum");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "for (int %2$s = 0; %2$s < (int)(%1$s); %2$s++) {\r\n%3$s\r\n}");
+        hashMap.put("color", "#e1a92a");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "repeat %d: %s.inputOnly ++");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
         hashMap.put("name", "RepeatKnownNumDescending");
         hashMap.put("type", "c");
         hashMap.put("typeName", "");
@@ -2510,6 +2510,16 @@ public class BlocksHandler {
         hashMap.put("color", "#e1a92a");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "repeat %d: %s.inputOnly --");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "ASDForLoop");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "for (%s) {\r\n%s\r\n}");
+        hashMap.put("color", "#e1a92a");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "for %s.inputOnly");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
