@@ -33,25 +33,49 @@ public class BlockParamUtil {
 
     private ArrayList<String> extractParams(String pattern, String input) {
         ArrayList<String> results = new ArrayList<>();
-        Matcher m = paramHolderPattern.matcher(pattern);
-        StringBuilder regexBuilder = new StringBuilder();
-        int last = 0;
 
-        while (m.find()) {
-            regexBuilder.append(Pattern.quote(pattern.substring(last, m.start())))
-                    .append("(.+)");
-            last = m.end();
-        }
-        regexBuilder.append(Pattern.quote(pattern.substring(last)));
+        try {
+            Pattern placeholderPattern = Pattern.compile(TranslatorUtils.getParamHolderRegex());
 
-        Pattern fullPattern = Pattern.compile(regexBuilder.toString());
-        Matcher fm = fullPattern.matcher(input);
+            Matcher matcher = placeholderPattern.matcher(pattern);
+            int patternCursor = 0;
+            int inputCursor = 0;
 
-        if (fm.find()) {
-            for (int i = 1; i <= fm.groupCount(); i++) {
-                results.add(TranslatorUtils.safeGetString(fm.group(i)).trim());
+            while (matcher.find()) {
+                String staticPart = pattern.substring(patternCursor, matcher.start());
+                patternCursor = matcher.end();
+
+                int index = input.indexOf(staticPart, inputCursor);
+                if (index < 0) break;
+                inputCursor = index + staticPart.length();
+
+                int start = inputCursor;
+                int depth = 0;
+
+                while (inputCursor < input.length()) {
+                    char c = input.charAt(inputCursor++);
+                    if (c == '(') depth++;
+                    else if (c == ')') {
+                        if (depth == 0) break;
+                        depth--;
+                    }
+
+                    if (depth == 0 && patternCursor < pattern.length()) {
+                        Matcher next = placeholderPattern.matcher(pattern);
+                        if (next.find(patternCursor)) {
+                            String nextStatic = pattern.substring(patternCursor, next.start());
+                            if (input.startsWith(nextStatic, inputCursor)) break;
+                        } else {
+                            String remaining = pattern.substring(patternCursor);
+                            if (input.startsWith(remaining, inputCursor)) break;
+                        }
+                    }
+                }
+
+                results.add(input.substring(start, inputCursor).trim());
             }
-        }
+        } catch (Exception ignored) {}
+
         return results;
     }
 
