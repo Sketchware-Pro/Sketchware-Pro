@@ -36,7 +36,7 @@ public class BooleanTreeBuilder {
         if (expr instanceof BinaryExpr bin) {
             String op = bin.getOperator().asString();
             if (op.equals("==")) op = "=";
-            BlockBean opB = new BlockBean(String.valueOf(idCounter.getAndIncrement()), "", "b", "", op);
+            BlockBean opB = new BlockBean(String.valueOf(idCounter.getAndIncrement()), "", requiredBlockType.blockType(), "", op);
             if (swVanillaBooleanBlocks.containsKey(op)) {
                 Expression left = getEnclosedInner(bin.getLeft());
                 Expression right = getEnclosedInner(bin.getRight());
