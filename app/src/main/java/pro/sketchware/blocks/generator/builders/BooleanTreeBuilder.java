@@ -4,6 +4,7 @@ import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.besome.sketch.beans.BlockBean;
 
+import pro.sketchware.blocks.generator.matchers.ExtraBlockMatcher;
 import pro.sketchware.blocks.generator.utils.BlockParamUtil;
 import pro.sketchware.blocks.generator.records.RequiredBlockType;
 import pro.sketchware.blocks.generator.resources.BlocksCategories;
@@ -15,6 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class BooleanTreeBuilder {
 
+    private final ExpressionBlockBuilder expressionBlockBuilder;
     private final BlockParamUtil blockParamUtil;
     private final BlocksCategories blocksCategories;
     private final AtomicInteger idCounter;
@@ -25,10 +27,11 @@ public class BooleanTreeBuilder {
         this.blocksCategories = blocksCategories;
         this.idCounter = idCounter;
         loadSwVanillaBooleanBlocks();
+        expressionBlockBuilder = new ExpressionBlockBuilder(this, blockParamUtil, blocksCategories, idCounter);
     }
 
-    public List<BlockBean> build(Expression expr, RequiredBlockType requiredBlockType) {
-        List<BlockBean> list = new ArrayList<>();
+    public ArrayList<BlockBean> build(Expression expr, RequiredBlockType requiredBlockType) {
+        ArrayList<BlockBean> list = new ArrayList<>();
         expr = getEnclosedInner(expr);
         if (expr instanceof BinaryExpr bin) {
             String op = bin.getOperator().asString();
@@ -78,8 +81,39 @@ public class BooleanTreeBuilder {
             list.add(ub);
             return list;
         }
-        list.addAll(new ExpressionBlockBuilder(blockParamUtil, blocksCategories, idCounter)
-                .build(expr, idCounter.getAndIncrement(), requiredBlockType, expr.toString()));
+        String opCode = null;
+        String spec = null;
+        String type = null;
+        if (expr.isBooleanLiteralExpr()) {
+            opCode = expr.toString();
+            spec = opCode;
+            type = "b";
+        } else if (requiredBlockType.blockType().equals("b")) {
+            ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, expressionBlockBuilder)
+                    .tryExtraBlockMatch(expr.toString(), idCounter.getAndIncrement(), -1, blocksCategories.getBooleanBlocks());
+            if (extra != null) {
+                idCounter.getAndDecrement();
+                list.addAll(extra);
+                return list;
+            }
+            opCode = "asdBoolean";
+            spec = "boolean %s.inputOnly";
+            type = "b";
+        }
+        if (opCode != null) {
+            BlockBean bean = new BlockBean(
+                    String.valueOf(idCounter.getAndIncrement()),
+                    spec,
+                    type,
+                    "",
+                    opCode
+            );
+            bean.subStack1 = -1;
+            bean.subStack2 = -1;
+            list.add(bean);
+        } else {
+            list.addAll(expressionBlockBuilder.build(expr, idCounter.getAndIncrement(), requiredBlockType, expr.toString()));
+        }
         return list;
     }
 

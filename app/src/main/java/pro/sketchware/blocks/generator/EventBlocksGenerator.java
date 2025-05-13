@@ -62,7 +62,7 @@ public class EventBlocksGenerator {
 
     private void initialize() {
         BooleanTreeBuilder booleanTreeBuilder = new BooleanTreeBuilder(blockParamUtil, blocksCategories, idCounter);
-        ExpressionBlockBuilder expressionBlockBuilder = new ExpressionBlockBuilder(blockParamUtil, blocksCategories, idCounter);
+        ExpressionBlockBuilder expressionBlockBuilder = new ExpressionBlockBuilder(booleanTreeBuilder, blockParamUtil, blocksCategories, idCounter);
         ExtraBlockMatcher extraBlockMatcher = new ExtraBlockMatcher(blockParamUtil, idCounter, expressionBlockBuilder);
 
         handlers.add(new IfStatementHandler(booleanTreeBuilder, this));

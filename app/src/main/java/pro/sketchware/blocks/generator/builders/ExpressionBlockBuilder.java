@@ -14,15 +14,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExpressionBlockBuilder {
 
+    private final BooleanTreeBuilder booleanTreeBuilder;
     private final BlockParamUtil blockParamUtil;
     private final BlocksCategories blocksCategories;
     private final AtomicInteger idCounter;
 
     public ExpressionBlockBuilder(
-            BlockParamUtil blockParamUtil,
+            BooleanTreeBuilder booleanTreeBuilder, BlockParamUtil blockParamUtil,
             BlocksCategories blocksCategories,
             AtomicInteger idCounter
     ) {
+        this.booleanTreeBuilder = booleanTreeBuilder;
         this.blockParamUtil = blockParamUtil;
         this.blocksCategories = blocksCategories;
         this.idCounter = idCounter;
@@ -47,28 +49,8 @@ public class ExpressionBlockBuilder {
                 bean.subStack2 = -1;
                 res.add(bean);
                 return res;
-            } else if (expr.isBooleanLiteralExpr()) {
-                opCode = expr.toString();
-                spec = opCode;
-                type = "b";
-                BlockBean bean = new BlockBean(
-                        String.valueOf(id),
-                        spec,
-                        type,
-                        "",
-                        opCode
-                );
-                bean.subStack1 = -1;
-                bean.subStack2 = -1;
-                res.add(bean);
-                return res;
-            } else if (requiredBlockType.blockType().equals("b")) {
-                ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, this)
-                        .tryExtraBlockMatch(expr.toString(), id, -1, blocksCategories.getBooleanBlocks());
-                if (extra != null) return extra;
-                opCode = "asdBoolean";
-                spec = "boolean %s.inputOnly";
-                type = "b";
+            } else if (expr.isBooleanLiteralExpr() || requiredBlockType.blockType().equals("b")) {
+                return booleanTreeBuilder.build(expr, requiredBlockType);
             } else if (requiredBlockType.blockType().equals("d")) {
                 ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, this)
                         .tryExtraBlockMatch(expr.toString(), id, -1, blocksCategories.getDoubleBlocks());
