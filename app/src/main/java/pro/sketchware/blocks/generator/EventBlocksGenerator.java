@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
-import pro.sketchware.blocks.generator.builders.BooleanTreeBuilder;
+import pro.sketchware.blocks.generator.builders.BinaryExprOperatorsTreeBuilder;
 import pro.sketchware.blocks.generator.builders.ExpressionBlockBuilder;
 import pro.sketchware.blocks.generator.matchers.ExtraBlockMatcher;
 import pro.sketchware.blocks.generator.handlers.*;
@@ -61,12 +61,12 @@ public class EventBlocksGenerator {
     }
 
     private void initialize() {
-        BooleanTreeBuilder booleanTreeBuilder = new BooleanTreeBuilder(blockParamUtil, blocksCategories, idCounter);
-        ExpressionBlockBuilder expressionBlockBuilder = new ExpressionBlockBuilder(booleanTreeBuilder, blockParamUtil, blocksCategories, idCounter);
+        BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder = new BinaryExprOperatorsTreeBuilder(projectResourcesHelper, blockParamUtil, blocksCategories, idCounter);
+        ExpressionBlockBuilder expressionBlockBuilder = new ExpressionBlockBuilder(binaryExprOperatorsTreeBuilder, blockParamUtil, blocksCategories, idCounter);
         ExtraBlockMatcher extraBlockMatcher = new ExtraBlockMatcher(blockParamUtil, idCounter, expressionBlockBuilder);
 
-        handlers.add(new IfStatementHandler(booleanTreeBuilder, this));
-        handlers.add(new WhileStatementHandler(booleanTreeBuilder, this));
+        handlers.add(new IfStatementHandler(binaryExprOperatorsTreeBuilder, this));
+        handlers.add(new WhileStatementHandler(binaryExprOperatorsTreeBuilder, this));
         handlers.add(new ForStatementHandler(this, expressionBlockBuilder));
         handlers.add(new ExpressionStatementHandler(extraBlockMatcher, expressionBlockBuilder));
         handlers.add(new OtherStatementHandler(extraBlockMatcher));

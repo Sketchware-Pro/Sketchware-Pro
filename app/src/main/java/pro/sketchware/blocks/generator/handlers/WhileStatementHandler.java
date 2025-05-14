@@ -4,7 +4,7 @@ import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.besome.sketch.beans.BlockBean;
-import pro.sketchware.blocks.generator.builders.BooleanTreeBuilder;
+import pro.sketchware.blocks.generator.builders.BinaryExprOperatorsTreeBuilder;
 import pro.sketchware.blocks.generator.EventBlocksGenerator;
 import pro.sketchware.blocks.generator.interfaces.StatementHandler;
 import pro.sketchware.blocks.generator.records.HandlerContext;
@@ -14,11 +14,11 @@ import java.util.List;
 
 public class WhileStatementHandler implements StatementHandler {
 
-    private final BooleanTreeBuilder booleanTreeBuilder;
+    private final BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder;
     private final EventBlocksGenerator parent;
 
-    public WhileStatementHandler(BooleanTreeBuilder booleanTreeBuilder, EventBlocksGenerator parent) {
-        this.booleanTreeBuilder = booleanTreeBuilder;
+    public WhileStatementHandler(BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder, EventBlocksGenerator parent) {
+        this.binaryExprOperatorsTreeBuilder = binaryExprOperatorsTreeBuilder;
         this.parent = parent;
     }
 
@@ -45,7 +45,7 @@ public class WhileStatementHandler implements StatementHandler {
         );
 
         if (!isForeverBlock) {
-            List<BlockBean> condTree = booleanTreeBuilder.build(ws.getCondition(), new RequiredBlockType("b"));
+            List<BlockBean> condTree = binaryExprOperatorsTreeBuilder.build(ws.getCondition(), new RequiredBlockType("b"));
             blockBeans.addAll(condTree);
             BlockBean condRoot = condTree.get(condTree.size() - 1);
             condRoot.nextBlock = -1;

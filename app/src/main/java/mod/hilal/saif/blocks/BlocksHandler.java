@@ -2453,6 +2453,116 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
+        hashMap.put("name", "^");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s ^ %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%s XOR %s");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "|");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s | %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "binary %s or %s");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "&");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s & %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "binary %s and %s");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "NOT_EQUALS_NUM");
+        hashMap.put("type", "b");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "%s != %s");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d != %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "NOT_EQUALS_OBJ");
+        hashMap.put("type", "b");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "%s != %s");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%s != %s");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "<=");
+        hashMap.put("type", "b");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "%s <= %s");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d <= %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", ">=");
+        hashMap.put("type", "b");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "%s >= %s");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d >= %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "<<");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s << %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d signed left shift %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", ">>");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s >> %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d signed right shift %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "<<<");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s <<< %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d unsigned left shift %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", ">>>");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s >>> %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d unsigned right shift %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
         hashMap.put("name", "addSourceDirectly");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");

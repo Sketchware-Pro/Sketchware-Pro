@@ -14,17 +14,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExpressionBlockBuilder {
 
-    private final BooleanTreeBuilder booleanTreeBuilder;
+    private final BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder;
     private final BlockParamUtil blockParamUtil;
     private final BlocksCategories blocksCategories;
     private final AtomicInteger idCounter;
 
     public ExpressionBlockBuilder(
-            BooleanTreeBuilder booleanTreeBuilder, BlockParamUtil blockParamUtil,
+            BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder, BlockParamUtil blockParamUtil,
             BlocksCategories blocksCategories,
             AtomicInteger idCounter
     ) {
-        this.booleanTreeBuilder = booleanTreeBuilder;
+        this.binaryExprOperatorsTreeBuilder = binaryExprOperatorsTreeBuilder;
         this.blockParamUtil = blockParamUtil;
         this.blocksCategories = blocksCategories;
         this.idCounter = idCounter;
@@ -50,7 +50,7 @@ public class ExpressionBlockBuilder {
                 res.add(bean);
                 return res;
             } else if (expr.isBooleanLiteralExpr() || requiredBlockType.blockType().equals("b")) {
-                return booleanTreeBuilder.build(expr, requiredBlockType);
+                return binaryExprOperatorsTreeBuilder.build(expr, requiredBlockType);
             } else if (requiredBlockType.blockType().equals("d")) {
                 ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, this)
                         .tryExtraBlockMatch(expr.toString(), id, -1, blocksCategories.getDoubleBlocks());

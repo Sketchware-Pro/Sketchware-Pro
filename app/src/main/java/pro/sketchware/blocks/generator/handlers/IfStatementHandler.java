@@ -3,7 +3,7 @@ package pro.sketchware.blocks.generator.handlers;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.besome.sketch.beans.BlockBean;
-import pro.sketchware.blocks.generator.builders.BooleanTreeBuilder;
+import pro.sketchware.blocks.generator.builders.BinaryExprOperatorsTreeBuilder;
 import pro.sketchware.blocks.generator.EventBlocksGenerator;
 import pro.sketchware.blocks.generator.interfaces.StatementHandler;
 import pro.sketchware.blocks.generator.records.HandlerContext;
@@ -13,11 +13,11 @@ import java.util.List;
 
 public class IfStatementHandler implements StatementHandler {
 
-    private final BooleanTreeBuilder booleanTreeBuilder;
+    private final BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder;
     private final EventBlocksGenerator parent;
 
-    public IfStatementHandler(BooleanTreeBuilder booleanTreeBuilder, EventBlocksGenerator parent) {
-        this.booleanTreeBuilder = booleanTreeBuilder;
+    public IfStatementHandler(BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder, EventBlocksGenerator parent) {
+        this.binaryExprOperatorsTreeBuilder = binaryExprOperatorsTreeBuilder;
         this.parent = parent;
     }
 
@@ -32,7 +32,7 @@ public class IfStatementHandler implements StatementHandler {
         List<BlockBean> blockBeans = context.blockBeans();
         List<String> noNextBlocks = context.noNextBlocks();
 
-        List<BlockBean> condTree = booleanTreeBuilder.build(ifStmt.getCondition(), new RequiredBlockType("b"));
+        List<BlockBean> condTree = binaryExprOperatorsTreeBuilder.build(ifStmt.getCondition(), new RequiredBlockType("b"));
         blockBeans.addAll(condTree);
         BlockBean condRoot = condTree.get(condTree.size() - 1);
         condRoot.nextBlock = -1;
