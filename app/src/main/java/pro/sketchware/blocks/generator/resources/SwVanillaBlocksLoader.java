@@ -435,6 +435,174 @@ public class SwVanillaBlocksLoader {
         hashMap.put("spec", "json %s to %m.varListMao");
         blocks.add(hashMap);
 
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathGetDip");
+        hashMap.put("type", "d");
+        hashMap.put("code", "SketchwareUtil.getDip(getApplicationContext(), (int)(%s))");
+        hashMap.put("spec", "getDip %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathGetDisplayWidth");
+        hashMap.put("type", "d");
+        hashMap.put("code", "SketchwareUtil.getDisplayWidthPixels(getApplicationContext())");
+        hashMap.put("spec", "getDisplayWidthPixels");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathGetDisplayHeight");
+        hashMap.put("type", "d");
+        hashMap.put("code", "SketchwareUtil.getDisplayHeightPixels(getApplicationContext())");
+        hashMap.put("spec", "getDisplayHeightPixels");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathPi");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.PI");
+        hashMap.put("spec", "Math PI");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathE");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.E");
+        hashMap.put("spec", "math E");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathPow");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.pow(%s, %s)");
+        hashMap.put("spec", "pow %d %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathMin");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.min(%s, %s)");
+        hashMap.put("spec", "min %d %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathMax");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.max(%s, %s)");
+        hashMap.put("spec", "max %d %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathSqrt");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.sqrt(%s)");
+        hashMap.put("spec", "sqrt %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathAbs");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.abs(%s)");
+        hashMap.put("spec", "abs %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathRound");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.round(%s)");
+        hashMap.put("spec", "round %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathCeil");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.ceil(%s)");
+        hashMap.put("spec", "ceil %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathFloor");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.floor(%s)");
+        hashMap.put("spec", "floor %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathSin");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.sin(%s)");
+        hashMap.put("spec", "sin %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathCos");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.cos(%s)");
+        hashMap.put("spec", "cos %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathTan");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.tan(%s)");
+        hashMap.put("spec", "tan %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathAsin");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.asin(%s)");
+        hashMap.put("spec", "asin %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathAcos");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.acos(%s)");
+        hashMap.put("spec", "acos %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathAtan");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.atan(%s)");
+        hashMap.put("spec", "atan %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathExp");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.exp(%s)");
+        hashMap.put("spec", "exp %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathLog");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.log(%s)");
+        hashMap.put("spec", "log %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathLog10");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.log10(%s)");
+        hashMap.put("spec", "log10 %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathToRadian");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.toRadians(%s)");
+        hashMap.put("spec", "toRadians %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mathToDegree");
+        hashMap.put("type", "d");
+        hashMap.put("code", "Math.toDegrees(%s)");
+        hashMap.put("spec", "toDegrees %d");
+        blocks.add(hashMap);
+
         return blocks;
     }
 
