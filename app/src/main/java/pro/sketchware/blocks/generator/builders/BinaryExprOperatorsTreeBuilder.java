@@ -120,9 +120,10 @@ public class BinaryExprOperatorsTreeBuilder {
             ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, expressionBlockBuilder)
                     .tryExtraBlockMatch(expr.toString(), idCounter.getAndIncrement(), -1, blocksCategories.getBooleanBlocks());
             if (extra != null) {
-                idCounter.getAndDecrement();
                 list.addAll(extra);
                 return list;
+            } else {
+                idCounter.getAndDecrement();
             }
             param = expr.toString();
             opCode = "asdBoolean";
