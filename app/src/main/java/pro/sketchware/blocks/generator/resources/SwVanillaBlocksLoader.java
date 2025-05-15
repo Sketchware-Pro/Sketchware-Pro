@@ -297,16 +297,16 @@ public class SwVanillaBlocksLoader {
 
         hashMap = new HashMap<>();
         hashMap.put("name", "stringIndex");
-        hashMap.put("type", "s");
-        hashMap.put("code", "%s.indexOf(%s)");
-        hashMap.put("spec", "%s indexOf %s");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%2$s.indexOf(%1$s)");
+        hashMap.put("spec", "index %s Of %s");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
         hashMap.put("name", "stringLastIndex");
-        hashMap.put("type", "s");
-        hashMap.put("code", "%s.lastIndexOf(%s)");
-        hashMap.put("spec", "%s lastIndexOf %s");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%2$s.lastIndexOf(%1$s)");
+        hashMap.put("spec", "lastIndex %s Of %s");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -359,17 +359,80 @@ public class SwVanillaBlocksLoader {
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
-        hashMap.put("name", "mapClear");
-        hashMap.put("type", " ");
-        hashMap.put("code", "%s.clear();");
-        hashMap.put("spec", "clear %m.varMap");
+        hashMap.put("name", "currentTime");
+        hashMap.put("type", "d");
+        hashMap.put("code", "System.currentTimeMillis()");
+        hashMap.put("spec", "System get currentTimeMillis");
         blocks.add(hashMap);
 
         hashMap = new HashMap<>();
-        hashMap.put("name", "clearList");
+        hashMap.put("name", "trim");
+        hashMap.put("type", "s");
+        hashMap.put("code", "%s.trim()");
+        hashMap.put("spec", "trim %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "toUpperCase");
+        hashMap.put("type", "s");
+        hashMap.put("code", "%s.toUpperCase()");
+        hashMap.put("spec", "%s toUpperCase");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "toLowerCase");
+        hashMap.put("type", "s");
+        hashMap.put("code", "%s.toLowerCase()");
+        hashMap.put("spec", "%s toLowerCase");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "toString");
+        hashMap.put("type", "s");
+        hashMap.put("code", "String.valueOf((long)(%s))");
+        hashMap.put("spec", "%s toString");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "toStringWithDecimal");
+        hashMap.put("type", "s");
+        hashMap.put("code", "String.valueOf(%s)");
+        hashMap.put("spec", "%s to string with decimal");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "toStringFormat");
+        hashMap.put("type", "s");
+        hashMap.put("code", "new DecimalFormat(%2$s).format(%1$s)");
+        hashMap.put("spec", "%d to decimalFormat %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "strToMap");
         hashMap.put("type", " ");
-        hashMap.put("code", "%s.clear();");
-        hashMap.put("spec", "clear %m.list");
+        hashMap.put("code", "%2$s = new Gson().fromJson(%1$s, new TypeToken<HashMap<String, Object>>(){}.getType());");
+        hashMap.put("spec", "json %s to %m.varMap");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapToStr");
+        hashMap.put("type", "s");
+        hashMap.put("code", "new Gson().toJson(%s)");
+        hashMap.put("spec", "%m.varMap");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "listMapToStr");
+        hashMap.put("type", "s");
+        hashMap.put("code", "new Gson().toJson(%s)");
+        hashMap.put("spec", "%m.varListMap");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "strToListMap");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%2$s = new Gson().fromJson(%1$s, new TypeToken<ArrayList<HashMap<String, Object>>>(){}.getType());");
+        hashMap.put("spec", "json %s to %m.varListMao");
         blocks.add(hashMap);
 
         return blocks;
