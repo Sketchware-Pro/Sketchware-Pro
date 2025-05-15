@@ -15,6 +15,7 @@ import pro.sketchware.blocks.generator.utils.TranslatorUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExtraBlockMatcher {
@@ -22,6 +23,8 @@ public class ExtraBlockMatcher {
     private final BlockParamUtil blockParamUtil;
     private final AtomicInteger idCounter;
     private final ExpressionBlockBuilder expressionBlockBuilder;
+
+    private final ArrayList<String> asdBlocks = new ArrayList<>(List.of("addSourceDirectly", "asdString", "asdNumber", "asdBoolean"));
 
     public ExtraBlockMatcher(
             BlockParamUtil blockParamUtil,
@@ -35,6 +38,8 @@ public class ExtraBlockMatcher {
 
     public ArrayList<BlockBean> tryExtraBlockMatch(String input, int id, int nextId, ArrayList<HashMap<String, Object>> targetBlocks) {
         String norm = input.trim();
+        ArrayList<BlockBean> fallbackBean = new ArrayList<>();
+
         for (var map : targetBlocks) {
             String code = TranslatorUtils.safeGetString(map.get("code")).trim();
             String spec = TranslatorUtils.safeGetString(map.get("spec")).trim();
@@ -62,6 +67,7 @@ public class ExtraBlockMatcher {
                 ArrayList<BlockBean> resultBlocks = new ArrayList<>();
 
                 boolean isCompatibleParams = true;
+                boolean isFallBackBlock = false;
 
                 for (int i = 0; i < params.size(); i++) {
                     String paramHolder = paramsHolders.size() > i ? paramsHolders.get(i) : "%s";
@@ -69,7 +75,7 @@ public class ExtraBlockMatcher {
 
                     boolean isStringParam = TranslatorUtils.isLiteralString(paramValue);
                     boolean isDirectValue = paramHolder.equals("%s.inputOnly") || paramHolder.startsWith("%m.") ||
-                                            (paramHolder.startsWith("%s") && isStringParam || paramValue.matches("^-?\\d+(\\.\\d+)?$"));
+                            (paramHolder.startsWith("%s") && isStringParam || paramValue.matches("^-?\\d+(\\.\\d+)?$"));
 
                     if (isDirectValue) {
                         if (isStringParam) {
@@ -102,6 +108,9 @@ public class ExtraBlockMatcher {
                             BlockBean last = paramBlocks.get(paramBlocks.size() - 1);
                             last.nextBlock = -1;
                             resultBlocks.addAll(paramBlocks);
+                            if (!isFallBackBlock) {
+                                isFallBackBlock = asdBlocks.contains(last.opCode);
+                            }
                             b.parameters.add("@" + last.id);
                         } else {
                             b.parameters.add(paramValue);
@@ -109,14 +118,25 @@ public class ExtraBlockMatcher {
                     }
                 }
 
-                if (isCompatibleParams) {
+                if (isFallBackBlock) {
+                    fallbackBean.clear();
+                    fallbackBean.addAll(resultBlocks);
+                    fallbackBean.add(b);
+                    idCounter.set(idCounter.get() - fallbackBean.size());
+                } else if (isCompatibleParams) {
                     b.nextBlock = nextId == -1 ? -1 : idCounter.get();
                     resultBlocks.add(b);
                     return resultBlocks;
                 }
             }
         }
-        return null;
+
+        if (!fallbackBean.isEmpty()) {
+            idCounter.set(idCounter.get() + fallbackBean.size());
+            return fallbackBean;
+        } else {
+            return null;
+        }
     }
 
 }
