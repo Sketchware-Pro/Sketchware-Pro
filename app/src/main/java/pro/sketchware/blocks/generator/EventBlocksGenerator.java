@@ -113,15 +113,10 @@ public class EventBlocksGenerator {
         return blockBeans;
     }
 
-    private int nextId() {
-        return idCounter.getAndIncrement();
-    }
-
     public void processStatement(Statement stmt) {
-        int id = nextId();
         for (StatementHandler handler : handlers) {
             if (handler.canHandle(stmt)) {
-                handler.handle(stmt, id, handlerContext);
+                handler.handle(stmt, handlerContext);
                 return;
             }
         }

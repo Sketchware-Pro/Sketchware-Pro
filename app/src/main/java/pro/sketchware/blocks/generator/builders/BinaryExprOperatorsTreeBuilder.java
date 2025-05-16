@@ -117,13 +117,14 @@ public class BinaryExprOperatorsTreeBuilder {
             opCode = expr.toString();
             spec = opCode;
         } else if (requiredBlockType.blockType().equals("b")) {
+            int start = idCounter.get();
             ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, expressionBlockBuilder)
-                    .tryExtraBlockMatch(expr.toString(), idCounter.getAndIncrement(), -1, blocksCategories.getBooleanBlocks());
+                    .tryExtraBlockMatch(expr.toString(), false, blocksCategories.getBooleanBlocks());
             if (extra != null) {
                 list.addAll(extra);
                 return list;
             } else {
-                idCounter.getAndDecrement();
+                idCounter.set(start);
             }
             param = expr.toString();
             opCode = "asdBoolean";
@@ -144,7 +145,7 @@ public class BinaryExprOperatorsTreeBuilder {
             bean.subStack2 = -1;
             list.add(bean);
         } else {
-            list.addAll(expressionBlockBuilder.build(expr, idCounter.getAndIncrement(), requiredBlockType, expr.toString()));
+            list.addAll(expressionBlockBuilder.build(expr, requiredBlockType, expr.toString()));
         }
         return list;
     }

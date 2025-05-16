@@ -28,19 +28,18 @@ public class ExpressionStatementHandler implements StatementHandler {
     }
 
     @Override
-    public void handle(Statement stmt, int id, HandlerContext context) {
+    public void handle(Statement stmt, HandlerContext context) {
         Expression expr = ((ExpressionStmt) stmt).getExpression();
         String code = stmt.toString().trim();
-        int next = context.idCounter().get();
 
-        ArrayList<BlockBean> extraBlocks = extraBlockMatcher.tryExtraBlockMatch(code, id, next, context.blocksCategories().getRegularBlocks());
+        ArrayList<BlockBean> extraBlocks = extraBlockMatcher.tryExtraBlockMatch(code, true, context.blocksCategories().getRegularBlocks());
         if (extraBlocks != null) {
             context.blockBeans().addAll(extraBlocks);
             return;
         }
-        ArrayList<BlockBean> exprBlocks = expressionBlockBuilder.build(expr, id, null, code);
+        ArrayList<BlockBean> exprBlocks = expressionBlockBuilder.build(expr, null, code);
         BlockBean bean = exprBlocks.get(exprBlocks.size() - 1);
-        bean.nextBlock = next;
+        bean.nextBlock = context.idCounter().incrementAndGet();
         context.blockBeans().addAll(exprBlocks);
     }
 

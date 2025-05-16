@@ -28,7 +28,7 @@ public class WhileStatementHandler implements StatementHandler {
     }
 
     @Override
-    public void handle(Statement stmt, int id, HandlerContext context) {
+    public void handle(Statement stmt, HandlerContext context) {
         WhileStmt ws = (WhileStmt) stmt;
         Expression expr = ws.getCondition();
         List<BlockBean> blockBeans = context.blockBeans();
@@ -37,7 +37,7 @@ public class WhileStatementHandler implements StatementHandler {
         if (expr.isBooleanLiteralExpr()) {
             isForeverBlock = expr.toString().equals("true");
         }
-        BlockBean wb = new BlockBean(String.valueOf(id),
+        BlockBean wb = new BlockBean(String.valueOf(context.idCounter().getAndIncrement()),
                 isForeverBlock ? "forever" : "while %b",
                 "c",
                 "",

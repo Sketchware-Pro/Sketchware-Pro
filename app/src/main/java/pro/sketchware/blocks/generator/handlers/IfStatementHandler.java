@@ -27,15 +27,8 @@ public class IfStatementHandler implements StatementHandler {
     }
 
     @Override
-    public void handle(Statement stmt, int id, HandlerContext context) {
+    public void handle(Statement stmt, HandlerContext context) {
         IfStmt ifStmt = (IfStmt) stmt;
-        List<BlockBean> blockBeans = context.blockBeans();
-        List<String> noNextBlocks = context.noNextBlocks();
-
-        List<BlockBean> condTree = binaryExprOperatorsTreeBuilder.build(ifStmt.getCondition(), new RequiredBlockType("b"));
-        blockBeans.addAll(condTree);
-        BlockBean condRoot = condTree.get(condTree.size() - 1);
-        condRoot.nextBlock = -1;
 
         boolean hasElse = ifStmt.getElseStmt().isPresent();
         String spec = hasElse ? "if %b then" : "if %b";
@@ -43,8 +36,13 @@ public class IfStatementHandler implements StatementHandler {
         String type = hasElse ? "e" : "c";
 
         BlockBean ifBean = new BlockBean(
-                String.valueOf(id), spec, type, "", opCode
+                String.valueOf(context.idCounter().getAndIncrement()), spec, type, "", opCode
         );
+
+        List<BlockBean> condTree = binaryExprOperatorsTreeBuilder.build(ifStmt.getCondition(), new RequiredBlockType("b"));
+        context.blockBeans().addAll(condTree);
+        BlockBean condRoot = condTree.get(condTree.size() - 1);
+
         ifBean.parameters.add("@" + condRoot.id);
 
         if (ifStmt.getThenStmt().isBlockStmt()) {
@@ -55,7 +53,7 @@ public class IfStatementHandler implements StatementHandler {
                 ifBean.subStack1 = context.idCounter().get();
                 for (int i = 0; i < thenStatements.size(); i++) {
                     if (i == thenStatements.size() - 1) {
-                        noNextBlocks.add(String.valueOf(context.idCounter().get()));
+                        context.noNextBlocks().add(String.valueOf(context.idCounter().get()));
                     }
                     Statement s = thenStatements.get(i);
                     parent.processStatement(s);
@@ -67,9 +65,8 @@ public class IfStatementHandler implements StatementHandler {
         if (hasElse) {
             Statement es = ifStmt.getElseStmt().get();
             if (es.isIfStmt()) {
-                int elseId = context.idCounter().getAndIncrement();
-                ifBean.subStack2 = elseId;
-                handle(es, elseId, context);
+                ifBean.subStack2 = context.idCounter().get();
+                handle(es, context);
             } else if (es.isBlockStmt()) {
                 var elseStatements = es.asBlockStmt().getStatements();
                 if (elseStatements.isEmpty()) {
@@ -78,7 +75,7 @@ public class IfStatementHandler implements StatementHandler {
                     ifBean.subStack2 = context.idCounter().get();
                     for (int i = 0; i < elseStatements.size(); i++) {
                         if (i == elseStatements.size() - 1) {
-                            noNextBlocks.add(String.valueOf(context.idCounter().get()));
+                            context.noNextBlocks().add(String.valueOf(context.idCounter().get()));
                         }
                         Statement s = elseStatements.get(i);
                         parent.processStatement(s);
@@ -92,8 +89,7 @@ public class IfStatementHandler implements StatementHandler {
         }
 
         ifBean.nextBlock = context.idCounter().get();
-        int pos = blockBeans.indexOf(condRoot) + 1;
-        blockBeans.add(pos, ifBean);
+        context.blockBeans().add(ifBean);
     }
 
 }

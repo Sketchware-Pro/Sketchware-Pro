@@ -37,7 +37,7 @@ public class ForStatementHandler implements StatementHandler {
     }
 
     @Override
-    public void handle(Statement stmt, int id, HandlerContext context) {
+    public void handle(Statement stmt, HandlerContext context) {
         String opCode;
         String spec;
         ArrayList<String> parameters = new ArrayList<>();
@@ -59,10 +59,10 @@ public class ForStatementHandler implements StatementHandler {
 
                             if (ue.getOperator() == UnaryExpr.Operator.POSTFIX_INCREMENT && be.getOperator() == BinaryExpr.Operator.LESS && varDeclaration.getInitializer().get().toString().equals("0")) {
                                 if (varName.matches("^_repeat\\d+$")) {
-                                    buildBlock(id, context, "repeat", "repeat %s", parameters, right, bodyStmt);
+                                    buildBlock(context, "repeat", "repeat %s", parameters, right, bodyStmt);
                                 } else {
                                     parameters.add(varName);
-                                    buildBlock(id, context, "repeatKnownNum", "repeat %d: %s.inputOnly ++", parameters, right, bodyStmt);
+                                    buildBlock(context, "repeatKnownNum", "repeat %d: %s.inputOnly ++", parameters, right, bodyStmt);
                                 }
                                 return;
 
@@ -78,7 +78,7 @@ public class ForStatementHandler implements StatementHandler {
 
                                     parameters.add(varName);
                                     right = getEnclosedInner(binExpr.getLeft());
-                                    buildBlock(id, context, "RepeatKnownNumDescending", "repeat %d: %s.inputOnly --", parameters, right, bodyStmt);
+                                    buildBlock(context, "RepeatKnownNumDescending", "repeat %d: %s.inputOnly --", parameters, right, bodyStmt);
                                     return;
                                 }
                             }
@@ -98,17 +98,17 @@ public class ForStatementHandler implements StatementHandler {
             String header = fes.getVariable() + " : " + fes.getIterable();
             parameters.add(header);
         }
-        buildBlock(id, context, opCode, spec, parameters, null, bodyStmt);
+        buildBlock(context, opCode, spec, parameters, null, bodyStmt);
     }
 
-    private void buildBlock(int id, HandlerContext context, String opCode, String spec, ArrayList<String> parameters, Expression expression, Statement bodyStmt) {
+    private void buildBlock(HandlerContext context, String opCode, String spec, ArrayList<String> parameters, Expression expression, Statement bodyStmt) {
 
-        BlockBean forBlock = new BlockBean(String.valueOf(id), spec, "c", "", opCode);
+        BlockBean forBlock = new BlockBean(String.valueOf(context.idCounter().getAndIncrement()), spec, "c", "", opCode);
         if (expression != null) {
             if (expression instanceof IntegerLiteralExpr expr) {
                 parameters.add(0, expr.getValue());
             } else {
-                ArrayList<BlockBean> exprBlocks = expressionBlockBuilder.build(expression, context.idCounter().getAndIncrement(), new RequiredBlockType("d", null), "");
+                ArrayList<BlockBean> exprBlocks = expressionBlockBuilder.build(expression, new RequiredBlockType("d", null), "");
                 BlockBean bean = exprBlocks.get(exprBlocks.size() - 1);
                 parameters.add(0, "@" + bean.id);
                 context.blockBeans().addAll(exprBlocks);

@@ -30,7 +30,7 @@ public class ExpressionBlockBuilder {
         this.idCounter = idCounter;
     }
 
-    public ArrayList<BlockBean> build(Expression expr, int id, RequiredBlockType requiredBlockType, String codeLine) {
+    public ArrayList<BlockBean> build(Expression expr, RequiredBlockType requiredBlockType, String codeLine) {
         ArrayList<BlockBean> res = new ArrayList<>();
         String opCode, spec, type;
         if (requiredBlockType != null) {
@@ -39,7 +39,7 @@ public class ExpressionBlockBuilder {
                 spec = nameExpr.getNameAsString();
                 type = requiredBlockType.blockType();
                 BlockBean bean = new BlockBean(
-                        String.valueOf(id),
+                        String.valueOf(idCounter.getAndIncrement()),
                         spec,
                         type,
                         "",
@@ -53,14 +53,14 @@ public class ExpressionBlockBuilder {
                 return binaryExprOperatorsTreeBuilder.build(expr, requiredBlockType);
             } else if (requiredBlockType.blockType().equals("d")) {
                 ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, this)
-                        .tryExtraBlockMatch(expr.toString(), id, -1, blocksCategories.getDoubleBlocks());
+                        .tryExtraBlockMatch(expr.toString(), false, blocksCategories.getDoubleBlocks());
                 if (extra != null) return extra;
                 opCode = "asdNumber";
                 spec = "number %s.inputOnly";
                 type = "d";
             } else {
                 ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, this)
-                        .tryExtraBlockMatch(expr.toString(), id, -1, blocksCategories.getStringBlocks());
+                        .tryExtraBlockMatch(expr.toString(), false, blocksCategories.getStringBlocks());
                 if (extra != null) return extra;
                 opCode = "asdString";
                 spec = "string %s.inputOnly";
@@ -73,7 +73,7 @@ public class ExpressionBlockBuilder {
         }
 
         BlockBean bean = new BlockBean(
-                String.valueOf(id),
+                String.valueOf(idCounter.getAndIncrement()),
                 spec,
                 type,
                 "",

@@ -8,6 +8,6 @@ public interface StatementHandler {
 
     boolean canHandle(Statement stmt);
 
-    void handle(Statement stmt, int id, HandlerContext context);
+    void handle(Statement stmt, HandlerContext context);
 
 }

@@ -36,7 +36,8 @@ public class ExtraBlockMatcher {
         this.expressionBlockBuilder = expressionBlockBuilder;
     }
 
-    public ArrayList<BlockBean> tryExtraBlockMatch(String input, int id, int nextId, ArrayList<HashMap<String, Object>> targetBlocks) {
+    public ArrayList<BlockBean> tryExtraBlockMatch(String input, boolean hasNext, ArrayList<HashMap<String, Object>> targetBlocks) {
+        int startId = idCounter.get();
         String norm = input.trim();
         ArrayList<BlockBean> fallbackBean = new ArrayList<>();
 
@@ -57,7 +58,7 @@ public class ExtraBlockMatcher {
             Log.d("BlocksGenerator", "comparing block " + map.get("name") + " : " + formatted + " and " + norm + " result : " + isCodeEquivalent + " params : " + params + " paramsHolders :" + paramsHolders + " original block code " + code + "map content: " + map);
             if (isCodeEquivalent && blockParamUtil.isMatchesParamsTypes(params, paramsHolders)) {
                 BlockBean b = new BlockBean(
-                        String.valueOf(id),
+                        String.valueOf(idCounter.getAndIncrement()),
                         TranslatorUtils.safeGetString(map.get("spec")),
                         TranslatorUtils.safeGetString(map.get("type")),
                         TranslatorUtils.safeGetString(map.get("typeName")),
@@ -97,10 +98,8 @@ public class ExtraBlockMatcher {
                             isCompatibleParams = false;
                             break;
                         }
-                        int paramBlockId = idCounter.getAndIncrement();
                         ArrayList<BlockBean> paramBlocks = expressionBlockBuilder.build(
                                 expr,
-                                paramBlockId,
                                 reqType,
                                 paramValue
                         );
@@ -119,12 +118,13 @@ public class ExtraBlockMatcher {
                 }
 
                 if (isFallBackBlock) {
+                    b.nextBlock = hasNext ? idCounter.get() : -1;
                     fallbackBean.clear();
                     fallbackBean.addAll(resultBlocks);
                     fallbackBean.add(b);
                     idCounter.set(idCounter.get() - fallbackBean.size());
                 } else if (isCompatibleParams) {
-                    b.nextBlock = nextId == -1 ? -1 : idCounter.get();
+                    b.nextBlock = hasNext ? idCounter.get() : -1;
                     resultBlocks.add(b);
                     return resultBlocks;
                 }
@@ -135,6 +135,7 @@ public class ExtraBlockMatcher {
             idCounter.set(idCounter.get() + fallbackBean.size());
             return fallbackBean;
         } else {
+            idCounter.set(startId);
             return null;
         }
     }

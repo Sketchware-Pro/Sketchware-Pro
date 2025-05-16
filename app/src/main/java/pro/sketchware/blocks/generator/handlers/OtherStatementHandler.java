@@ -23,18 +23,18 @@ public class OtherStatementHandler implements StatementHandler {
     }
 
     @Override
-    public void handle(Statement stmt, int id, HandlerContext context) {
+    public void handle(Statement stmt, HandlerContext context) {
         int next = context.idCounter().get();
         String code = stmt.toString().trim();
 
-        ArrayList<BlockBean> extraBlocks = extraBlockMatcher.tryExtraBlockMatch(code, id, next, context.blocksCategories().getRegularBlocks());
+        ArrayList<BlockBean> extraBlocks = extraBlockMatcher.tryExtraBlockMatch(code, true, context.blocksCategories().getRegularBlocks());
         if (extraBlocks != null) {
             context.blockBeans().addAll(extraBlocks);
             return;
         }
 
         BlockBean bean = new BlockBean(
-                String.valueOf(id),
+                String.valueOf(context.idCounter().get()),
                 "add source directly %s.inputOnly",
                 " ",
                 "",
