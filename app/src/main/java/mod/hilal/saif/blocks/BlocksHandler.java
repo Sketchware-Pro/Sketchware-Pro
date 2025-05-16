@@ -2146,6 +2146,16 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
+        hashMap.put("name", "finally");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "finally {\r\n%s\r\n}");
+        hashMap.put("color", "#e1a92a");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "finally");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
         hashMap.put("name", "switchStr");
         hashMap.put("type", "c");
         hashMap.put("typeName", "");
