@@ -17,21 +17,21 @@
             android:id="@+id/rb_matchparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="match_parent"
+            android:text="@string/property_dialog_match_parent"
             android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/rb_wrapcontent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="wrap_content"
+            android:text="@string/property_dialog_wrap_content"
             android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/rb_directinput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Custom value"
+            android:text="@string/property_dialog_Custom_value"
             android:textSize="15sp" />
     </RadioGroup>
 

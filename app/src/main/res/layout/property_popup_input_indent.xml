@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Enter padding value"
+            android:hint="@string/property_enter_value"
             android:importantForAutofill="noExcludeDescendants"
             app:errorEnabled="true">
 
@@ -62,7 +62,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="left"
+                android:hint="@string/property_indent_left"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -94,7 +94,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="right"
+                android:hint="@string/property_indent_right"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -129,7 +129,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="top"
+                android:hint="@string/property_indent_top"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -161,7 +161,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="bottom"
+                android:hint="@string/property_indent_bottom"
                 android:importantForAutofill="noExcludeDescendants"
                 app:errorEnabled="true">
 
@@ -192,6 +192,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:minHeight="0dp"
-        android:text="Padding on all sides" />
+        android:text="@string/property_on_all_sides" />
 
 </LinearLayout>

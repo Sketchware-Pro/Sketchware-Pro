@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="14dp"
         android:layout_marginTop="10dp"
-        android:text="Pick your color"
+        android:text="@string/property_color_title"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="14dp"
         android:layout_marginTop="4dp"
-        android:text="Either enter a hex color code or pick a color from the list below." />
+        android:text="@string/property_color_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:hint="Hex color code"
+                    android:hint="@string/property_color_Hex_color_code"
                     android:inputType="text"
                     android:lines="1"
                     android:maxLength="8" />
@@ -98,7 +98,7 @@
                 android:background="?attr/colorPrimary"
                 android:gravity="center"
                 android:textColor="?attr/colorOnPrimary"
-                tools:text="ADD" />
+                tools:text="@string/property_color_ADD" />
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
