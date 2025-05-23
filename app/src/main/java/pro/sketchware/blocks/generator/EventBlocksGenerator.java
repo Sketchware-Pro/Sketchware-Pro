@@ -69,6 +69,7 @@ public class EventBlocksGenerator {
         handlers.add(new WhileStatementHandler(binaryExprOperatorsTreeBuilder, this));
         handlers.add(new ForStatementHandler(this, expressionBlockBuilder));
         handlers.add(new TryCatchFinallyStatementHandler(this));
+        handlers.add(new SwitchStatementHandler(this, projectResourcesHelper, expressionBlockBuilder));
         handlers.add(new ExpressionStatementHandler(extraBlockMatcher, expressionBlockBuilder));
         handlers.add(new OtherStatementHandler(extraBlockMatcher));
 
