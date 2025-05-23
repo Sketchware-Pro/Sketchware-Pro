@@ -24,8 +24,6 @@ public class ExtraBlockMatcher {
     private final AtomicInteger idCounter;
     private final ExpressionBlockBuilder expressionBlockBuilder;
 
-    private final ArrayList<String> asdBlocks = new ArrayList<>(List.of("addSourceDirectly", "asdString", "asdNumber", "asdBoolean"));
-
     public ExtraBlockMatcher(
             BlockParamUtil blockParamUtil,
             AtomicInteger idCounter,
@@ -108,7 +106,7 @@ public class ExtraBlockMatcher {
                             last.nextBlock = -1;
                             resultBlocks.addAll(paramBlocks);
                             if (!isFallBackBlock) {
-                                isFallBackBlock = asdBlocks.contains(last.opCode);
+                                isFallBackBlock = TranslatorUtils.isASDBlock(last);
                             }
                             b.parameters.add("@" + last.id);
                         } else {

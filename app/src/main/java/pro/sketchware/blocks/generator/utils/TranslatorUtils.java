@@ -54,6 +54,10 @@ public class TranslatorUtils {
         return param.matches("^\\(\\s*\\w+\\s*\\)\\s*.+");
     }
 
+    public static boolean isASDBlock(BlockBean blockBean) {
+        return new ArrayList<>(List.of("addSourceDirectly", "asdString", "asdNumber", "asdBoolean")).contains(blockBean.opCode);
+    }
+
     public static ArrayList<HashMap<String, Object>> getPreLoadedBlocks(ArrayList<BlockBean> preLoadedBlockBeans, String sc_id) {
         ArrayList<HashMap<String, Object>> result = new ArrayList<>();
 
