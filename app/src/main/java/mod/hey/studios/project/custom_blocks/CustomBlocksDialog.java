@@ -1,6 +1,7 @@
 package mod.hey.studios.project.custom_blocks;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -48,11 +49,12 @@ public class CustomBlocksDialog {
 
         dialogBinding = ViewUsedCustomBlocksBinding.inflate(context.getLayoutInflater());
 
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context)
+        var dialog = new MaterialAlertDialogBuilder(context)
                 .setTitle(Helper.getResString(R.string.used_custom_blocks))
                 .setPositiveButton(Helper.getResString(R.string.common_word_import), null)
                 .setNegativeButton(Helper.getResString(R.string.common_word_dismiss), (dialogInterface, which) -> dialogInterface.dismiss())
-                .setView(dialogBinding.getRoot());
+                .setView(dialogBinding.getRoot())
+                .show();
 
         Executors.newSingleThreadExecutor().execute(() -> {
             customBlocksManager = new CustomBlocksManager(sc_id);
@@ -84,7 +86,7 @@ public class CustomBlocksDialog {
                     dialogBinding.recyclerView.setAdapter(adapter);
                     dialogBinding.progressIndicator.setVisibility(View.GONE);
 
-                    dialog.setPositiveButton(Helper.getResString(R.string.common_word_import), (dialogInterface, which) -> {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
                         ArrayList<BlockBean> selectedBeans = new ArrayList<>();
                         for (BlockBean bean : customBlocks) {
                             if (bean.isSelected) {
@@ -98,7 +100,7 @@ public class CustomBlocksDialog {
                         }
 
                         importAll(context, customBlocksManager, selectedBeans);
-                        dialogInterface.dismiss();
+                        dialog.dismiss();
                     });
                 });
 
@@ -110,7 +112,6 @@ public class CustomBlocksDialog {
             }
 
         });
-        dialog.show();
     }
 
     private void importAll(Context context, CustomBlocksManager customBlocksManager, ArrayList<BlockBean> list) {
