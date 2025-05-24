@@ -69,11 +69,19 @@ jobs:
           SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
         run: gradle assembleRelease
 
+      - name: Set short SHA
+        run: echo "SHORT_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
+      - name: Rename APK with commit hash
+        run: |
+          mv app/build/outputs/apk/release/app-release.apk \
+             app/build/outputs/apk/release/app-release-${SHORT_SHA}.apk
+
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: apk-release
-          path: app/build/outputs/apk/release
+          name: apk-release-${{ env.SHORT_SHA }}
+          path: app/build/outputs/apk/release/app-release-${{ env.SHORT_SHA }}.apk
 
   aggregateAndSend:
     name: Send APKs to Telegram
@@ -85,7 +93,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: apk-release
+
           path: ./downloaded-artifact
 
       - name: Set up Python 3
@@ -116,7 +124,7 @@ jobs:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-          APK_PATH: ./downloaded-artifact/app-release.apk
+          APK_PATH: ./downloaded-artifact/*.apk
         run: |
           python ./.github/workflows/deploy_artifacts.py
         continue-on-error: true
