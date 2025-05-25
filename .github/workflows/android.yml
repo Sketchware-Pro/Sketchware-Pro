@@ -96,6 +96,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
+          name: apk-release-${{ needs.build.outputs.short_sha }}
           path: ./downloaded-artifact
 
       - name: Set up Python 3
