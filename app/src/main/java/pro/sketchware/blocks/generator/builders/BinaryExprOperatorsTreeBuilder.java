@@ -129,6 +129,19 @@ public class BinaryExprOperatorsTreeBuilder {
             param = expr.toString();
             opCode = "asdBoolean";
             spec = "boolean %s.inputOnly";
+        } else if (requiredBlockType.blockType().equals("d")) {
+            int start = idCounter.get();
+            ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, expressionBlockBuilder)
+                    .tryExtraBlockMatch(expr.toString(), false, blocksCategories.getDoubleBlocks());
+            if (extra != null) {
+                list.addAll(extra);
+                return list;
+            } else {
+                idCounter.set(start);
+            }
+            param = expr.toString();
+            opCode = "asdNumber";
+            spec = "number %s.inputOnly";
         }
         if (opCode != null) {
             BlockBean bean = new BlockBean(

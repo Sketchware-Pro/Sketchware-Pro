@@ -49,15 +49,8 @@ public class ExpressionBlockBuilder {
                 bean.subStack2 = -1;
                 res.add(bean);
                 return res;
-            } else if (expr.isBooleanLiteralExpr() || requiredBlockType.blockType().equals("b")) {
+            } else if (expr.isBooleanLiteralExpr() || requiredBlockType.blockType().equals("b") || requiredBlockType.blockType().equals("d")) {
                 return binaryExprOperatorsTreeBuilder.build(expr, requiredBlockType);
-            } else if (requiredBlockType.blockType().equals("d")) {
-                ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, this)
-                        .tryExtraBlockMatch(expr.toString(), false, blocksCategories.getDoubleBlocks());
-                if (extra != null) return extra;
-                opCode = "asdNumber";
-                spec = "number %s.inputOnly";
-                type = "d";
             } else {
                 ArrayList<BlockBean> extra = new ExtraBlockMatcher(blockParamUtil, idCounter, this)
                         .tryExtraBlockMatch(expr.toString(), false, blocksCategories.getStringBlocks());
