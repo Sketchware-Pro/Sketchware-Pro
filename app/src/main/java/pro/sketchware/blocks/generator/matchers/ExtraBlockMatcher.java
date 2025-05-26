@@ -80,8 +80,9 @@ public class ExtraBlockMatcher {
                         if (isStringParam) {
                             b.parameters.add(paramValue.substring(1, paramValue.length() - 1));
                         } else {
-                            if (Fx.viewParamsTypes.contains(paramHolder)) {
-                                paramValue = paramValue.substring("binding.".length());
+                            String bindingStarting = "binding.";
+                            if (Fx.viewParamsTypes.contains(paramHolder) && paramValue.startsWith(bindingStarting)) {
+                                paramValue = paramValue.substring(bindingStarting.length());
                             }
                             b.parameters.add(paramValue);
                         }
