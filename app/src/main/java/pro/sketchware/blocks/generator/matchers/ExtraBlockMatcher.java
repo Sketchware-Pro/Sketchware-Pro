@@ -1,21 +1,18 @@
 package pro.sketchware.blocks.generator.matchers;
 
 import android.util.Log;
-import android.util.Pair;
-
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.expr.Expression;
 import com.besome.sketch.beans.BlockBean;
 
 import a.a.a.Fx;
 import pro.sketchware.blocks.generator.builders.ExpressionBlockBuilder;
-import pro.sketchware.blocks.generator.utils.BlockParamUtil;
 import pro.sketchware.blocks.generator.records.RequiredBlockType;
+import pro.sketchware.blocks.generator.utils.BlockParamUtil;
 import pro.sketchware.blocks.generator.utils.TranslatorUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExtraBlockMatcher {
@@ -42,19 +39,28 @@ public class ExtraBlockMatcher {
         for (var map : targetBlocks) {
             String code = TranslatorUtils.safeGetString(map.get("code")).trim();
             String spec = TranslatorUtils.safeGetString(map.get("spec")).trim();
-            BlockCodeReformater blockCodeReformater = new BlockCodeReformater(code, norm);
-            norm = blockCodeReformater.getFormattedInputCode();
-            code = blockCodeReformater.getFormattedBlockCode();
-            Pair<ArrayList<String>, ArrayList<String>> blockParamInfo = blockParamUtil.getBlockParamInfo(spec, code, norm);
-            ArrayList<String> params = blockParamInfo.first;
-            ArrayList<String> paramsHolders = blockParamInfo.second;
-            if (params.size() != paramsHolders.size() || blockParamUtil.isParamOnly(code)) {
-                continue;
-            }
-            String formatted = params.isEmpty() ? code : String.format(code, params.toArray());
-            boolean isCodeEquivalent = formatted.equals(norm);
-            Log.d("BlocksGenerator", "comparing block " + map.get("name") + " : " + formatted + " and " + norm + " result : " + isCodeEquivalent + " params : " + params + " paramsHolders :" + paramsHolders + " original block code " + code + "map content: " + map);
-            if (isCodeEquivalent && blockParamUtil.isMatchesParamsTypes(params, paramsHolders)) {
+
+            BlockCodeMatcher matcher = new BlockCodeMatcher(spec, code, norm, blockParamUtil);
+
+            Log.d("BlocksGenerator", String.format("""
+                    
+                    |---------------------------------------
+                         |------block name "%s" : %s and %s
+                         |------result : %s
+                         |------params : %s
+                         |------paramsHolders :%s
+                         |------block map content: %s
+                    |---------------------------------------
+                    """,
+                    map.get("name"), matcher.getFormattedBlockCode(),
+                    matcher.getFormattedInputCode(),
+                    matcher.isMatch() ? "matching ✅" : "failed ❌",
+                    matcher.getParams(),
+                    matcher.getParamsHolders(),
+                    map
+            ));
+
+            if (matcher.isMatch()) {
                 BlockBean b = new BlockBean(
                         String.valueOf(idCounter.getAndIncrement()),
                         TranslatorUtils.safeGetString(map.get("spec")),
@@ -64,13 +70,12 @@ public class ExtraBlockMatcher {
                 );
 
                 ArrayList<BlockBean> resultBlocks = new ArrayList<>();
-
                 boolean isCompatibleParams = true;
                 boolean isFallBackBlock = false;
 
-                for (int i = 0; i < params.size(); i++) {
-                    String paramHolder = paramsHolders.size() > i ? paramsHolders.get(i) : "%s";
-                    String paramValue = params.get(i);
+                for (int i = 0; i < matcher.getParams().size(); i++) {
+                    String paramHolder = matcher.getParamsHolders().size() > i ? matcher.getParamsHolders().get(i) : "%s";
+                    String paramValue = matcher.getParams().get(i);
 
                     boolean isStringParam = TranslatorUtils.isLiteralString(paramValue);
                     boolean isDirectValue = paramHolder.equals("%s.inputOnly") || paramHolder.startsWith("%m.") ||

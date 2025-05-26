@@ -4,24 +4,39 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.Statement;
+import pro.sketchware.blocks.generator.utils.BlockParamUtil;
+import pro.sketchware.blocks.generator.utils.TranslatorUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pro.sketchware.blocks.generator.utils.TranslatorUtils;
+public class BlockCodeMatcher {
 
-public class BlockCodeReformater {
-
-    private final String formattedCode1;
-    private final String formattedCode2;
-
+    private final String formattedBlockCode;
+    private final String formattedInputCode;
+    private final ArrayList<String> params;
+    private final ArrayList<String> paramsHolders;
+    private final boolean match;
     private final Pattern holderPattern = Pattern.compile(TranslatorUtils.getParamHolderRegex());
 
-    public BlockCodeReformater(String code1, String code2) {
-        this.formattedCode1 = formatAndRestore(code1);
-        this.formattedCode2 = tryFormat(code2);
+    public BlockCodeMatcher(String spec, String code, String norm, BlockParamUtil blockParamUtil) {
+        this.formattedBlockCode = formatAndRestore(code);
+        this.formattedInputCode = tryFormat(norm);
+
+        var info = blockParamUtil.getBlockParamInfo(spec, formattedBlockCode, formattedInputCode);
+        this.params = info.first;
+        this.paramsHolders = info.second;
+
+        boolean validSize = params.size() == paramsHolders.size();
+        boolean notParamOnly = !blockParamUtil.isParamOnly(formattedBlockCode);
+        String formatted = params.isEmpty() ? formattedBlockCode : String.format(formattedBlockCode, params.toArray());
+        boolean codeEqual = formatted.equals(formattedInputCode);
+        boolean typeMatch = blockParamUtil.isMatchesParamsTypes(params, paramsHolders);
+
+        this.match = validSize && notParamOnly && codeEqual && typeMatch;
     }
 
     private String formatAndRestore(String code) {
@@ -73,12 +88,24 @@ public class BlockCodeReformater {
         return code.trim();
     }
 
+    public boolean isMatch() {
+        return match;
+    }
+
+    public ArrayList<String> getParams() {
+        return params;
+    }
+
+    public ArrayList<String> getParamsHolders() {
+        return paramsHolders;
+    }
+
     public String getFormattedBlockCode() {
-        return formattedCode1;
+        return formattedBlockCode;
     }
 
     public String getFormattedInputCode() {
-        return formattedCode2;
+        return formattedInputCode;
     }
 
 }
