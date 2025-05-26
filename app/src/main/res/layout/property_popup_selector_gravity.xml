@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="left"
+            android:text="@string/property_gravity_left"
             android:textSize="16sp" />
 
         <CheckBox
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="right"
+            android:text="@string/property_gravity_right"
             android:textSize="16sp" />
             
         <CheckBox
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="center"
+            android:text="@string/property_gravity_center"
             android:textSize="16sp" />
 
         <CheckBox
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="center_horizontal"
+            android:text="@string/property_gravity_center_horizontal"
             android:textSize="16sp" />
 
         <CheckBox
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="top"
+            android:text="@string/property_gravity_top"
             android:textSize="16sp" />
 
         <CheckBox
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="bottom"
+            android:text="@string/property_gravity_bottom"
             android:textSize="16sp" />
 
         <CheckBox
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="center_vertical"
+            android:text="@string/property_gravity_center_vertical"
             android:textSize="16sp" />
     </LinearLayout>
 </ScrollView>

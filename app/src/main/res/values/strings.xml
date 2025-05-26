@@ -2245,9 +2245,27 @@ Please try again later"</string>
     <string name="title_activity_icon_creator">IconCreatorActivity</string>
 
     <string name="used_custom_blocks">Used Custom Blocks</string>
-    <string name="property_enter_value">Enter %s value</string>
-    
     <string name="code_viewer">Code Viewer</string>
     <string name="block_name">Block Name</string>
+    <string name="property_dialog_match_parent">match_parent</string>
+    <string name="property_dialog_wrap_content">wrap_content</string>
+    <string name="property_dialog_Custom_value">Custom value</string>
+    <string name="property_enter_value">Enter %s value</string>
+    <string name="property_indent_left">left</string>
+    <string name="property_indent_right">right</string>
+    <string name="property_indent_top">top</string>
+    <string name="property_indent_bottom">bottom</string>
+    <string name="property_on_all_sides">%s on all sides</string>
+    <string name="property_gravity_left">left</string>
+    <string name="property_gravity_right">right</string>
+    <string name="property_gravity_center">center</string>
+    <string name="property_gravity_center_horizontal">center_horizontal</string>
+    <string name="property_gravity_top">top</string>
+    <string name="property_gravity_bottom">bottom</string>
+    <string name="property_gravity_center_vertical">center_vertical</string>
+    <string name="property_color_title">Pick your color</string>
+    <string name="property_color_content">Either enter a hex color code or pick a color from the list below.</string>
+    <string name="property_color_Hex_color_code">Hex color code</string>
+    <string name="property_color_ADD">ADD</string>
 
 </resources>
