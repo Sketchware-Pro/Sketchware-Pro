@@ -1,6 +1,7 @@
 package mod.hey.studios.project.custom_blocks;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.Gravity;
@@ -22,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiConsumer;
 
 import a.a.a.Rs;
 import mod.hey.studios.editor.manage.block.ExtraBlockInfo;
@@ -38,7 +38,6 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class CustomBlocksDialog {
 
-    private final HashMap<Integer, Boolean> selectedBlocks = new HashMap<>();
     private ViewUsedCustomBlocksBinding dialogBinding;
     private String sc_id;
 
@@ -48,9 +47,14 @@ public class CustomBlocksDialog {
     public void show(Activity context, String sc_id) {
         this.sc_id = sc_id;
 
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(context);
-        dialog.setTitle(Helper.getResString(R.string.used_custom_blocks));
         dialogBinding = ViewUsedCustomBlocksBinding.inflate(context.getLayoutInflater());
+
+        var dialog = new MaterialAlertDialogBuilder(context)
+                .setTitle(Helper.getResString(R.string.used_custom_blocks))
+                .setPositiveButton(Helper.getResString(R.string.common_word_import), null)
+                .setNegativeButton(Helper.getResString(R.string.common_word_dismiss), (dialogInterface, which) -> dialogInterface.dismiss())
+                .setView(dialogBinding.getRoot())
+                .show();
 
         Executors.newSingleThreadExecutor().execute(() -> {
             customBlocksManager = new CustomBlocksManager(sc_id);
@@ -78,15 +82,15 @@ public class CustomBlocksDialog {
                     }
 
                     dialogBinding.subtitle.setText(subtitle);
-                    BlocksAdapter adapter = new BlocksAdapter(customBlocks, selectedBlocks::put, preloadedBlocks);
+                    BlocksAdapter adapter = new BlocksAdapter(customBlocks, preloadedBlocks);
                     dialogBinding.recyclerView.setAdapter(adapter);
                     dialogBinding.progressIndicator.setVisibility(View.GONE);
 
-                    dialog.setPositiveButton(Helper.getResString(R.string.common_word_import), (dialogInterface, which) -> {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
                         ArrayList<BlockBean> selectedBeans = new ArrayList<>();
-                        for (int i = 0; i < customBlocks.size(); i++) {
-                            if (Boolean.TRUE.equals(selectedBlocks.getOrDefault(i, false))) {
-                                selectedBeans.add(customBlocks.get(i));
+                        for (BlockBean bean : customBlocks) {
+                            if (bean.isSelected) {
+                                selectedBeans.add(bean);
                             }
                         }
 
@@ -96,7 +100,7 @@ public class CustomBlocksDialog {
                         }
 
                         importAll(context, customBlocksManager, selectedBeans);
-                        dialogInterface.dismiss();
+                        dialog.dismiss();
                     });
                 });
 
@@ -108,10 +112,6 @@ public class CustomBlocksDialog {
             }
 
         });
-
-        dialog.setNegativeButton(Helper.getResString(R.string.common_word_dismiss), null);
-        dialog.setView(dialogBinding.getRoot());
-        dialog.show();
     }
 
     private void importAll(Context context, CustomBlocksManager customBlocksManager, ArrayList<BlockBean> list) {
@@ -293,14 +293,11 @@ public class CustomBlocksDialog {
     public class BlocksAdapter extends RecyclerView.Adapter<BlocksAdapter.ViewHolder> {
 
         private final ArrayList<BlockBean> blockBeans;
-        private final BiConsumer<Integer, Boolean> onCheckedChangeListener;
         private final HashMap<Integer, Rs> preloadedBlocks;
 
         public BlocksAdapter(ArrayList<BlockBean> blockBeans,
-                             BiConsumer<Integer, Boolean> onCheckedChangeListener,
                              HashMap<Integer, Rs> preloadedBlocks) {
             this.blockBeans = blockBeans;
-            this.onCheckedChangeListener = onCheckedChangeListener;
             this.preloadedBlocks = preloadedBlocks;
         }
 
@@ -336,7 +333,7 @@ public class CustomBlocksDialog {
                 String blockInfo = getBlockInfo(block);
                 binding.tvBlockId.setText(blockInfo);
                 addCustomBlockView(binding.customBlocksContainer, itemView.getContext(), block, position);
-                setupCheckBox(block, position);
+                setupCheckBox(block);
                 setupClickListener(block, blockInfo);
             }
 
@@ -355,14 +352,12 @@ public class CustomBlocksDialog {
                 }
             }
 
-            private void setupCheckBox(@NonNull BlockBean block, int position) {
+            private void setupCheckBox(@NonNull BlockBean block) {
                 boolean canImport = isBlockImportable(block);
                 binding.checkBox.setEnabled(canImport);
 
                 if (canImport) {
-                    binding.checkBox.setChecked(Boolean.TRUE.equals(selectedBlocks.getOrDefault(position, false)));
-                    binding.checkBox.setOnCheckedChangeListener((buttonView, isChecked) ->
-                            onCheckedChangeListener.accept(position, isChecked));
+                    binding.checkBox.setChecked(block.isSelected);
                 } else {
                     binding.checkBox.setOnCheckedChangeListener(null);
                     binding.checkBox.setChecked(false);
@@ -373,7 +368,9 @@ public class CustomBlocksDialog {
                 boolean canImport = isBlockImportable(block);
                 binding.transparentOverlay.setOnClickListener(view -> {
                     if (canImport) {
-                        binding.checkBox.setChecked(!binding.checkBox.isChecked());
+                        boolean reversedState = !binding.checkBox.isChecked();
+                        binding.checkBox.setChecked(reversedState);
+                        block.isSelected = reversedState;
                     } else if (blockInfo.equals("Missing")) {
                         SketchwareUtil.toastError("This block is Missing");
                     } else {
