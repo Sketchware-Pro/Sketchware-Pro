@@ -5,6 +5,7 @@ import com.github.javaparser.ast.expr.NameExpr;
 import com.besome.sketch.beans.BlockBean;
 
 import pro.sketchware.blocks.generator.matchers.ExtraBlockMatcher;
+import pro.sketchware.blocks.generator.resources.ProjectResourcesHelper;
 import pro.sketchware.blocks.generator.utils.BlockParamUtil;
 import pro.sketchware.blocks.generator.records.RequiredBlockType;
 import pro.sketchware.blocks.generator.resources.BlocksCategories;
@@ -14,16 +15,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExpressionBlockBuilder {
 
+    private final ProjectResourcesHelper projectResourcesHelper;
     private final BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder;
     private final BlockParamUtil blockParamUtil;
     private final BlocksCategories blocksCategories;
     private final AtomicInteger idCounter;
 
     public ExpressionBlockBuilder(
-            BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder, BlockParamUtil blockParamUtil,
+            ProjectResourcesHelper projectResourcesHelper, BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder, BlockParamUtil blockParamUtil,
             BlocksCategories blocksCategories,
             AtomicInteger idCounter
     ) {
+        this.projectResourcesHelper = projectResourcesHelper;
         this.binaryExprOperatorsTreeBuilder = binaryExprOperatorsTreeBuilder;
         this.blockParamUtil = blockParamUtil;
         this.blocksCategories = blocksCategories;
@@ -35,19 +38,7 @@ public class ExpressionBlockBuilder {
         String opCode, spec, type;
         if (requiredBlockType != null) {
             if (expr instanceof NameExpr nameExpr) {
-                opCode = "getVar";
-                spec = nameExpr.getNameAsString();
-                type = requiredBlockType.blockType();
-                BlockBean bean = new BlockBean(
-                        String.valueOf(idCounter.getAndIncrement()),
-                        spec,
-                        type,
-                        "",
-                        opCode
-                );
-                bean.subStack1 = -1;
-                bean.subStack2 = -1;
-                res.add(bean);
+                res.add(projectResourcesHelper.getNameExprBlockBean(String.valueOf(idCounter.getAndIncrement()), nameExpr.getNameAsString(), requiredBlockType));
                 return res;
             } else if (expr.isBooleanLiteralExpr() || requiredBlockType.blockType().equals("b") || requiredBlockType.blockType().equals("d")) {
                 return binaryExprOperatorsTreeBuilder.build(expr, requiredBlockType);

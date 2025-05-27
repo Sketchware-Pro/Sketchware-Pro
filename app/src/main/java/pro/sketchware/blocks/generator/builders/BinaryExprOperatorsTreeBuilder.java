@@ -31,7 +31,7 @@ public class BinaryExprOperatorsTreeBuilder {
         this.blocksCategories = blocksCategories;
         this.idCounter = idCounter;
         loadBinaryExprOperatorBlocksRequiredType();
-        expressionBlockBuilder = new ExpressionBlockBuilder(this, blockParamUtil, blocksCategories, idCounter);
+        expressionBlockBuilder = new ExpressionBlockBuilder(projectResourcesHelper, this, blockParamUtil, blocksCategories, idCounter);
     }
 
     public ArrayList<BlockBean> build(Expression expr, RequiredBlockType requiredBlockType) {
@@ -107,13 +107,14 @@ public class BinaryExprOperatorsTreeBuilder {
             list.add(ub);
             return list;
         }
+        if (expr instanceof NameExpr nameExpr) {
+            list.add(projectResourcesHelper.getNameExprBlockBean(String.valueOf(idCounter.getAndIncrement()), nameExpr.getNameAsString(), requiredBlockType));
+            return list;
+        }
         String param = null;
         String opCode = null;
         String spec = null;
-        if (expr instanceof NameExpr nameExpr) {
-            opCode = "getVar";
-            spec = nameExpr.getNameAsString();
-        } else if (expr.isBooleanLiteralExpr()) {
+        if (expr.isBooleanLiteralExpr()) {
             opCode = expr.toString();
             spec = opCode;
         } else if (requiredBlockType.blockType().equals("b")) {

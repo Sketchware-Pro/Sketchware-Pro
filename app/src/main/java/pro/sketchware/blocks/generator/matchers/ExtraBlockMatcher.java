@@ -78,7 +78,7 @@ public class ExtraBlockMatcher {
                     String paramValue = matcher.getParams().get(i);
 
                     boolean isStringParam = TranslatorUtils.isLiteralString(paramValue);
-                    boolean isDirectValue = paramHolder.equals("%s.inputOnly") || paramHolder.startsWith("%m.") ||
+                    boolean isDirectValue = paramHolder.equals("%s.inputOnly") || (paramHolder.startsWith("%m.") && !paramValue.startsWith("_")) ||
                             (paramHolder.startsWith("%s") && isStringParam || paramValue.matches("^-?\\d+(\\.\\d+)?$"));
 
                     if (isDirectValue) {

@@ -2,6 +2,7 @@ package pro.sketchware.blocks.generator.resources;
 
 import android.util.Pair;
 
+import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ViewBean;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.body.VariableDeclarator;
@@ -13,8 +14,13 @@ import com.github.javaparser.ast.stmt.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import a.a.a.FB;
+import a.a.a.Fx;
 import a.a.a.eC;
 import a.a.a.jC;
+import a.a.a.kq;
+import pro.sketchware.blocks.generator.records.EventArgument;
+import pro.sketchware.blocks.generator.records.RequiredBlockType;
 import pro.sketchware.blocks.generator.utils.TranslatorUtils;
 
 public class ProjectResourcesHelper {
@@ -34,6 +40,8 @@ public class ProjectResourcesHelper {
     public final int LIST_MAP_FIELDS = 8;
     public final int LIST_CUSTOM_FIELDS = 9;
 
+    private final HashMap<String, EventArgument> eventArguments = new HashMap<>();
+
     private final ArrayList<String> stringFields = new ArrayList<>();
     private final ArrayList<String> doubleFields = new ArrayList<>();
     private final ArrayList<String> booleanFields = new ArrayList<>();
@@ -51,18 +59,21 @@ public class ProjectResourcesHelper {
 
     private final String javaName;
     private final String xmlName;
+    private final String eventTitle;
     private final String sc_id;
 
-    public ProjectResourcesHelper(String sc_id, String javaName, String xmlName) {
+    public ProjectResourcesHelper(String sc_id, String javaName, String xmlName, String eventTitle) {
         this.sc_id = sc_id;
         this.javaName = javaName;
         this.xmlName = xmlName;
+        this.eventTitle = eventTitle;
         projectDataManager = jC.a(sc_id);
     }
 
     public void initialize(String javaCode) {
         loadFields();
         loadLocalVariables(javaCode);
+        loadEventArguments();
         loadWidgetFields();
         loadMoreBlocks();
     }
@@ -127,6 +138,39 @@ public class ProjectResourcesHelper {
             String convert = viewBean.convert;
             if (!convert.equals("include")) {
                 widgetFields.add(viewBean.id);
+            }
+        }
+    }
+
+    private void loadEventArguments() {
+        for (var specPart : FB.c(eventTitle)) {
+            if (specPart.charAt(0) != '%') {
+                continue;
+            }
+            String type = String.valueOf(specPart.charAt(1));
+            String varName = "_" + specPart.substring(3);
+            switch (type) {
+                case "d" -> doubleFields.add(varName);
+                case "b" -> booleanFields.add(varName);
+                case "s" -> stringFields.add(varName);
+                case "m" -> {
+                    varName = "_" + specPart.substring(specPart.lastIndexOf(".") + 1);
+                    String specFirst = specPart.substring(specPart.indexOf(".") + 1, specPart.lastIndexOf("."));
+                    eventArguments.put(varName, new EventArgument(varName.substring(1), kq.a(specFirst), kq.b(specFirst)));
+                    if (Fx.viewParamsTypes.contains("%m." + specFirst)) {
+                        widgetFields.add(varName);
+                    } else {
+                        switch (specFirst) {
+                            case "varMap" -> mapFields.add(varName);
+                            case "listMap" -> listMapFields.add(varName);
+                            case "listInt" -> listIntFields.add(varName);
+                            case "listStr" -> listStringFields.add(varName);
+                        }
+                    }
+                }
+            }
+            if (!type.equals("m")) {
+                eventArguments.put(varName, new EventArgument(varName.substring(1), type));
             }
         }
     }
@@ -212,6 +256,16 @@ public class ProjectResourcesHelper {
 
     public ArrayList<HashMap<String, Object>> getMoreBlocks() {
         return moreBlocks;
+    }
+
+    public BlockBean getNameExprBlockBean(String blockId, String varName, RequiredBlockType requiredBlockType) {
+        if (varName.startsWith("_") && eventArguments.containsKey(varName)) {
+            EventArgument eventArgument = eventArguments.get(varName);
+            assert eventArgument != null;
+            return new BlockBean(blockId, eventArgument.varName(), eventArgument.blockType(), eventArgument.blockTypeName(), eventArgument.opCode());
+        } else {
+            return new BlockBean(blockId, varName, requiredBlockType.blockType(), requiredBlockType.blockTypeName(), "getVar");
+        }
     }
 
 }

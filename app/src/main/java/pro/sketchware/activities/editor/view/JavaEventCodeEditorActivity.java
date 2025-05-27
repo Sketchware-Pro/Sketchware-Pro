@@ -53,7 +53,7 @@ public class JavaEventCodeEditorActivity extends BaseAppCompatActivity {
     private void saveChanges(String javaCode) {
         k();
         Executors.newSingleThreadExecutor().execute(() -> {
-            EventBlocksGenerator javaEvent2Blocks = new EventBlocksGenerator(sc_id, getIntent().getStringExtra("javaName"), getIntent().getStringExtra("xmlName"), javaCode);
+            EventBlocksGenerator javaEvent2Blocks = new EventBlocksGenerator(sc_id, getIntent().getStringExtra("javaName"), getIntent().getStringExtra("xmlName"), getIntent().getStringExtra("eventTitle"), javaCode);
             //noinspection unchecked
             javaEvent2Blocks.setPreLoadedBlockBeans((ArrayList<BlockBean>) getIntent().getSerializableExtra("old_beans"));
             ArrayList<BlockBean> blockBeans = javaEvent2Blocks.getEventBlockBeans();

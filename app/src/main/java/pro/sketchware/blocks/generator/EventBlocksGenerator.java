@@ -44,10 +44,10 @@ public class EventBlocksGenerator {
     private final String sc_id;
     private String errorMessage = "";
 
-    public EventBlocksGenerator(String sc_id, String javaName, String xmlName, String javaCode) {
+    public EventBlocksGenerator(String sc_id, String javaName, String xmlName, String eventTitle, String javaCode) {
         this.javaCode = javaCode;
         this.sc_id = sc_id;
-        projectResourcesHelper = new ProjectResourcesHelper(sc_id, javaName, xmlName);
+        projectResourcesHelper = new ProjectResourcesHelper(sc_id, javaName, xmlName, eventTitle);
         blockParamUtil = new BlockParamUtil(projectResourcesHelper);
         blocksCategories = new BlocksCategories();
 
@@ -62,7 +62,7 @@ public class EventBlocksGenerator {
 
     private void initialize() {
         BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder = new BinaryExprOperatorsTreeBuilder(projectResourcesHelper, blockParamUtil, blocksCategories, idCounter);
-        ExpressionBlockBuilder expressionBlockBuilder = new ExpressionBlockBuilder(binaryExprOperatorsTreeBuilder, blockParamUtil, blocksCategories, idCounter);
+        ExpressionBlockBuilder expressionBlockBuilder = new ExpressionBlockBuilder(projectResourcesHelper, binaryExprOperatorsTreeBuilder, blockParamUtil, blocksCategories, idCounter);
         ExtraBlockMatcher extraBlockMatcher = new ExtraBlockMatcher(blockParamUtil, idCounter, expressionBlockBuilder);
 
         handlers.add(new IfStatementHandler(binaryExprOperatorsTreeBuilder, this));

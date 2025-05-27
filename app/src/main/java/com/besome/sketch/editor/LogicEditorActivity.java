@@ -149,6 +149,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public String B = "";
     public String C = "";
     public String D = "";
+    private String eventTitle;
     private Vibrator F;
     private LinearLayout J, K;
     private FloatingActionButton openBlocksMenuButton;
@@ -2201,19 +2202,17 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void onPostCreate(Bundle bundle) {
         super.onPostCreate(bundle);
 
-        String title;
         if (D.equals("moreBlock")) {
-            title = getTranslatedString(R.string.root_spec_common_define) + " " + ReturnMoreblockManager.getLogicEditorTitle(jC.a(B).b(M.getJavaName(), C));
+            eventTitle = getTranslatedString(R.string.root_spec_common_define) + " " + ReturnMoreblockManager.getLogicEditorTitle(jC.a(B).b(M.getJavaName(), C));
         } else if (C.equals("_fab")) {
-            title = xB.b().a(getContext(), "fab", D);
+            eventTitle = xB.b().a(getContext(), "fab", D);
         } else {
-            title = xB.b().a(getContext(), C, D);
+            eventTitle = xB.b().a(getContext(), C, D);
         }
-        String e1 = title;
 
-        o.a(e1, D);
+        o.a(eventTitle, D);
 
-        ArrayList<String> spec = FB.c(e1);
+        ArrayList<String> spec = FB.c(eventTitle);
         int blockId = 0;
         for (int i = 0; i < spec.size(); i++) {
             String specBit = spec.get(i);
@@ -2654,6 +2653,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         intent.putExtra("javaName", M.getJavaName());
         intent.putExtra("xmlName", M.getXmlName());
         intent.putExtra("eventName", D);
+        intent.putExtra("eventTitle", eventTitle);
         intent.putExtra("code", code);
         intent.putExtra("sc_id", B);
         intent.putExtra("old_beans", o.getBlocks());
