@@ -17,41 +17,56 @@ public class BlockCodeMatcher {
 
     private final String formattedBlockCode;
     private final String formattedInputCode;
-    private final ArrayList<String> params;
-    private final ArrayList<String> paramsHolders;
-    private final boolean match;
+    private ArrayList<String> params;
+    private ArrayList<String> paramsHolders;
+    private boolean match;
     private final Pattern holderPattern = Pattern.compile(TranslatorUtils.getParamHolderRegex());
 
-    public BlockCodeMatcher(String spec, String code, String norm, BlockParamUtil blockParamUtil) {
-        this.formattedBlockCode = formatAndRestore(code);
+    public BlockCodeMatcher(String blockType, String spec, String code, String norm, BlockParamUtil blockParamUtil) {
+        this.formattedBlockCode = formatAndRestore(code, blockType);
         this.formattedInputCode = tryFormat(norm);
 
-        var info = blockParamUtil.getBlockParamInfo(spec, formattedBlockCode, formattedInputCode);
-        this.params = info.first;
-        this.paramsHolders = info.second;
+        try {
+           var info = blockParamUtil.getBlockParamInfo(spec, formattedBlockCode, formattedInputCode);
+           this.params = info.first;
+           this.paramsHolders = info.second;
 
-        boolean validSize = params.size() == paramsHolders.size();
-        boolean notParamOnly = !blockParamUtil.isParamOnly(formattedBlockCode);
-        String formatted = params.isEmpty() ? formattedBlockCode : String.format(formattedBlockCode, params.toArray());
-        boolean codeEqual = formatted.equals(formattedInputCode);
-        boolean typeMatch = blockParamUtil.isMatchesParamsTypes(params, paramsHolders);
+           boolean validSize = params.size() == paramsHolders.size();
+           boolean notParamOnly = !blockParamUtil.isParamOnly(formattedBlockCode);
+           String formatted = params.isEmpty() ? formattedBlockCode : String.format(formattedBlockCode, params.toArray());
+           boolean codeEqual = formatted.equals(formattedInputCode);
+           boolean typeMatch = blockParamUtil.isMatchesParamsTypes(params, paramsHolders);
 
-        this.match = validSize && notParamOnly && codeEqual && typeMatch;
+           this.match = validSize && notParamOnly && codeEqual && typeMatch;
+       } catch (Exception e) {
+           this.match = false;
+       }
     }
 
-    private String formatAndRestore(String code) {
+    private String formatAndRestore(String code, String blockType) {
+        Matcher countMatcher = holderPattern.matcher(code);
+        int total = 0;
+        while (countMatcher.find()) total++;
+
         Map<String, String> placeholderMap = new HashMap<>();
         Matcher matcher = holderPattern.matcher(code);
-        int i = 0;
         StringBuilder tempCode = new StringBuilder();
         int lastEnd = 0;
+        int index = 0;
 
         while (matcher.find()) {
-            String key = "PLACEHOLDER_" + (i++);
+            String key = "PLACEHOLDER_" + index;
+            if ("c".equals(blockType) && index == total - 1) {
+                key += "();";
+            } else if ("e".equals(blockType) && index >= total - 2) {
+                key += "();";
+            }
             placeholderMap.put(key, matcher.group());
+
             tempCode.append(code, lastEnd, matcher.start());
             tempCode.append(key);
             lastEnd = matcher.end();
+            index++;
         }
         tempCode.append(code.substring(lastEnd));
 

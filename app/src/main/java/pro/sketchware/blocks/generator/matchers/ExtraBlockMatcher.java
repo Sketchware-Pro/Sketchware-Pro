@@ -39,8 +39,9 @@ public class ExtraBlockMatcher {
         for (var map : targetBlocks) {
             String code = TranslatorUtils.safeGetString(map.get("code")).trim();
             String spec = TranslatorUtils.safeGetString(map.get("spec")).trim();
+            String type = TranslatorUtils.safeGetString(map.get("type"));
 
-            BlockCodeMatcher matcher = new BlockCodeMatcher(spec, code, norm, blockParamUtil);
+            BlockCodeMatcher matcher = new BlockCodeMatcher(type, spec, code, norm, blockParamUtil);
 
             Log.d("BlocksGenerator", String.format("""
                     
