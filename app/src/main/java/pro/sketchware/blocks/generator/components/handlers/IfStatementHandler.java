@@ -47,13 +47,7 @@ public class IfStatementHandler implements StatementHandler {
                 ifBean.subStack1 = -1;
             } else {
                 ifBean.subStack1 = blockGeneratorCoordinator.idCounter().get();
-                for (int i = 0; i < thenStatements.size(); i++) {
-                    if (i == thenStatements.size() - 1) {
-                        blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
-                    }
-                    Statement s = thenStatements.get(i);
-                    blockGeneratorCoordinator.processStatement(s);
-                }
+                blockGeneratorCoordinator.processStatements(thenStatements);
             }
         } else {
             ifBean.subStack1 = -1;
@@ -69,13 +63,7 @@ public class IfStatementHandler implements StatementHandler {
                     ifBean.subStack2 = -1;
                 } else {
                     ifBean.subStack2 = blockGeneratorCoordinator.idCounter().get();
-                    for (int i = 0; i < elseStatements.size(); i++) {
-                        if (i == elseStatements.size() - 1) {
-                            blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
-                        }
-                        Statement s = elseStatements.get(i);
-                        blockGeneratorCoordinator.processStatement(s);
-                    }
+                    blockGeneratorCoordinator.processStatements(elseStatements);
                 }
             } else {
                 ifBean.subStack2 = -1;

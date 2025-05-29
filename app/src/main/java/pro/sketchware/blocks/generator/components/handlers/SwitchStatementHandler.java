@@ -116,14 +116,7 @@ public class SwitchStatementHandler implements StatementHandler {
 
             if (!caseStatements.isEmpty()) {
                 caseBean.subStack1 = blockGeneratorCoordinator.idCounter().get();
-                for (int i = 0; i < caseStatements.size(); i++) {
-                    if (i == caseStatements.size() - 1) {
-                        blockGeneratorCoordinator.noNextBlocks().add(
-                                String.valueOf(blockGeneratorCoordinator.idCounter().get())
-                        );
-                    }
-                    blockGeneratorCoordinator.processStatement(caseStatements.get(i));
-                }
+                blockGeneratorCoordinator.processStatements(caseStatements);
             } else {
                 caseBean.subStack1 = -1;
             }

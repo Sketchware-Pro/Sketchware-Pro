@@ -37,12 +37,7 @@ public class TryCatchFinallyStatementHandler implements StatementHandler {
         if (!ts.getTryBlock().isEmpty()) {
             tryBean.subStack1 = blockGeneratorCoordinator.idCounter().get();
             var tryStatements = ts.getTryBlock().getStatements();
-            for (int i = 0; i < tryStatements.size(); i++) {
-                if (i == tryStatements.size() - 1) {
-                    blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
-                }
-                blockGeneratorCoordinator.processStatement(tryStatements.get(i));
-            }
+            blockGeneratorCoordinator.processStatements(tryStatements);
         } else {
             tryBean.subStack1 = -1;
         }
@@ -51,12 +46,7 @@ public class TryCatchFinallyStatementHandler implements StatementHandler {
             var catchStmt = ts.getCatchClauses().get(0).getBody().getStatements();
             if (!catchStmt.isEmpty()) {
                 tryBean.subStack2 = blockGeneratorCoordinator.idCounter().get();
-                for (int i = 0; i < catchStmt.size(); i++) {
-                    if (i == catchStmt.size() - 1) {
-                        blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
-                    }
-                    blockGeneratorCoordinator.processStatement(catchStmt.get(i));
-                }
+                blockGeneratorCoordinator.processStatements(catchStmt);
             } else {
                 tryBean.subStack2 = -1;
             }
@@ -81,12 +71,7 @@ public class TryCatchFinallyStatementHandler implements StatementHandler {
             if (!finallyBlock.getStatements().isEmpty()) {
                 finBean.subStack1 = blockGeneratorCoordinator.idCounter().get();
                 var finStatements = finallyBlock.getStatements();
-                for (int i = 0; i < finStatements.size(); i++) {
-                    if (i == finStatements.size() - 1) {
-                        blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
-                    }
-                    blockGeneratorCoordinator.processStatement(finStatements.get(i));
-                }
+                blockGeneratorCoordinator.processStatements(finStatements);
             } else {
                 finBean.subStack1 = -1;
             }

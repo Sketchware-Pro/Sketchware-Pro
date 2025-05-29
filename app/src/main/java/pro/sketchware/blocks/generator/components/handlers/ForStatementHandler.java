@@ -116,11 +116,7 @@ public class ForStatementHandler implements StatementHandler {
         if (bodyStmt.isBlockStmt()) {
             var statements = bodyStmt.asBlockStmt().getStatements();
             forBlock.subStack1 = statements.isEmpty() ? -1 : blockGeneratorCoordinator.idCounter().get();
-            for (int i = 0; i < statements.size(); i++) {
-                if (i == statements.size() - 1)
-                    blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
-                blockGeneratorCoordinator.processStatement(statements.get(i));
-            }
+            blockGeneratorCoordinator.processStatements(statements);
         } else forBlock.subStack1 = -1;
 
         forBlock.nextBlock = blockGeneratorCoordinator.idCounter().get();

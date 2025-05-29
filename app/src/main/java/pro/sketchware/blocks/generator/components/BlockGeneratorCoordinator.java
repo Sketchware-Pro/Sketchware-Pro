@@ -9,6 +9,7 @@ import pro.sketchware.blocks.generator.components.utils.BlockParamUtils;
 import pro.sketchware.blocks.generator.components.interfaces.StatementProcessor;
 
 import com.besome.sketch.beans.BlockBean;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.stmt.Statement;
 
 import java.util.ArrayList;
@@ -41,9 +42,15 @@ public class BlockGeneratorCoordinator {
         this.statementProcessor = statementProcessor;
     }
 
-    public void processStatement(Statement stmt) {
+    public void processStatements(NodeList<Statement> statements) {
         if (statementProcessor != null) {
-            statementProcessor.processStatement(stmt);
+            for (int i = 0; i < statements.size(); i++) {
+                if (i == statements.size() - 1) {
+                    noNextBlocks().add(String.valueOf(idCounter().get()));
+                }
+                Statement stmt = statements.get(i);
+                statementProcessor.processStatement(stmt);
+            }
         }
     }
 

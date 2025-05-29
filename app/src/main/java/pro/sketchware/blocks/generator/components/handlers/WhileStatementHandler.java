@@ -29,7 +29,6 @@ public class WhileStatementHandler implements StatementHandler {
         WhileStmt ws = (WhileStmt) stmt;
         Expression expr = ws.getCondition();
         List<BlockBean> blockBeans = blockGeneratorCoordinator.blockBeans();
-        List<String> noNextBlocks = blockGeneratorCoordinator.noNextBlocks();
         boolean isForeverBlock = false;
         if (expr.isBooleanLiteralExpr()) {
             isForeverBlock = expr.toString().equals("true");
@@ -50,18 +49,12 @@ public class WhileStatementHandler implements StatementHandler {
         }
         blockBeans.add(wb);
         if (ws.getBody().isBlockStmt()) {
-            var body = ws.getBody().asBlockStmt().getStatements();
-            if (body.isEmpty()) {
+            var whileStatements = ws.getBody().asBlockStmt().getStatements();
+            if (whileStatements.isEmpty()) {
                 wb.subStack1 = -1;
             } else {
                 wb.subStack1 = blockGeneratorCoordinator.idCounter().get();
-                for (int i = 0; i < body.size(); i++) {
-                    if (body.size() == 1 || i == body.size() - 1) {
-                        noNextBlocks.add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
-                    }
-                    Statement s = body.get(i);
-                    blockGeneratorCoordinator.processStatement(s);
-                }
+                blockGeneratorCoordinator.processStatements(whileStatements);
             }
         } else {
             wb.subStack1 = -1;
