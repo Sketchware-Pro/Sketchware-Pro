@@ -152,11 +152,11 @@ public class BlockParamUtils {
         }
         return switch (paramHolder) {
             case "%s" ->
-                    TranslatorUtils.isLiteralString(param) || !projectResourcesHelper.getAllFieldsExcept(projectResourcesHelper.STRING_FIELDS).contains(param);
+                    (TranslatorUtils.isLiteralString(param) || !projectResourcesHelper.getAllFieldsExcept(projectResourcesHelper.STRING_FIELDS).contains(param) && !(TranslatorUtils.isLiteralNumber(param) || TranslatorUtils.isLiteralBoolean(param)));
             case "%d" ->
-                    TranslatorUtils.isLiteralNumber(param) || !projectResourcesHelper.getAllFieldsExcept(projectResourcesHelper.DOUBLE_FIELDS).contains(param);
+                    (TranslatorUtils.isLiteralNumber(param) || !projectResourcesHelper.getAllFieldsExcept(projectResourcesHelper.DOUBLE_FIELDS).contains(param)) && !(TranslatorUtils.isLiteralString(param) || TranslatorUtils.isLiteralBoolean(param));
             case "%b" ->
-                    TranslatorUtils.isLiteralBoolean(param) || !projectResourcesHelper.getAllFieldsExcept(projectResourcesHelper.BOOLEAN_FIELDS).contains(param);
+                    (TranslatorUtils.isLiteralBoolean(param) || !projectResourcesHelper.getAllFieldsExcept(projectResourcesHelper.BOOLEAN_FIELDS).contains(param) && !(TranslatorUtils.isLiteralString(param) || TranslatorUtils.isLiteralNumber(param)));
             case "%m.varMap" ->
                     projectResourcesHelper.getFields(projectResourcesHelper.MAP_FIELDS).contains(param);
             case "%m.list" -> projectResourcesHelper.getFields(
