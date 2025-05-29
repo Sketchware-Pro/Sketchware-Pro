@@ -1,9 +1,9 @@
-package pro.sketchware.blocks.generator.resources;
+package pro.sketchware.blocks.generator.components.resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import pro.sketchware.blocks.generator.utils.TranslatorUtils;
+import pro.sketchware.blocks.generator.components.utils.TranslatorUtils;
 
 public class BlocksCategories {
 

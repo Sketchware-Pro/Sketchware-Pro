@@ -1,4 +1,4 @@
-package pro.sketchware.blocks.generator.utils;
+package pro.sketchware.blocks.generator.components.utils;
 
 import android.util.Log;
 import android.util.Pair;
@@ -11,16 +11,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import a.a.a.Fx;
-import pro.sketchware.blocks.generator.records.RequiredBlockType;
-import pro.sketchware.blocks.generator.resources.ProjectResourcesHelper;
+import pro.sketchware.blocks.generator.components.records.RequiredBlockType;
+import pro.sketchware.blocks.generator.components.resources.ProjectResourcesHelper;
 
-public class BlockParamUtil {
+public class BlockParamUtils {
 
     private final ProjectResourcesHelper projectResourcesHelper;
 
     private final Pattern paramHolderPattern = Pattern.compile(TranslatorUtils.getParamHolderRegex());
 
-    public BlockParamUtil(ProjectResourcesHelper projectResourcesHelper) {
+    public BlockParamUtils(ProjectResourcesHelper projectResourcesHelper) {
         this.projectResourcesHelper = projectResourcesHelper;
     }
 

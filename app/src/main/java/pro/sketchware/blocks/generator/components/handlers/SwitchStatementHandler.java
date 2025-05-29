@@ -1,4 +1,4 @@
-package pro.sketchware.blocks.generator.handlers;
+package pro.sketchware.blocks.generator.components.handlers;
 
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.Expression;
@@ -7,27 +7,20 @@ import com.github.javaparser.ast.stmt.SwitchEntry;
 import com.github.javaparser.ast.stmt.SwitchStmt;
 import com.besome.sketch.beans.BlockBean;
 
-import pro.sketchware.blocks.generator.EventBlocksGenerator;
-import pro.sketchware.blocks.generator.builders.ExpressionBlockBuilder;
-import pro.sketchware.blocks.generator.interfaces.StatementHandler;
-import pro.sketchware.blocks.generator.records.HandlerContext;
-import pro.sketchware.blocks.generator.records.RequiredBlockType;
-import pro.sketchware.blocks.generator.resources.ProjectResourcesHelper;
-import pro.sketchware.blocks.generator.utils.TranslatorUtils;
+import pro.sketchware.blocks.generator.components.interfaces.StatementHandler;
+import pro.sketchware.blocks.generator.components.BlockGeneratorCoordinator;
+import pro.sketchware.blocks.generator.components.records.RequiredBlockType;
+import pro.sketchware.blocks.generator.components.utils.TranslatorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SwitchStatementHandler implements StatementHandler {
 
-    private final ProjectResourcesHelper projectResourcesHelper;
-    private final ExpressionBlockBuilder expressionBlockBuilder;
-    private final EventBlocksGenerator parent;
+    private final BlockGeneratorCoordinator blockGeneratorCoordinator;
 
-    public SwitchStatementHandler(EventBlocksGenerator parent, ProjectResourcesHelper projectResourcesHelper, ExpressionBlockBuilder expressionBlockBuilder) {
-        this.parent = parent;
-        this.projectResourcesHelper = projectResourcesHelper;
-        this.expressionBlockBuilder = expressionBlockBuilder;
+    public SwitchStatementHandler(BlockGeneratorCoordinator blockGeneratorCoordinator) {
+        this.blockGeneratorCoordinator = blockGeneratorCoordinator;
     }
 
     @Override
@@ -36,12 +29,12 @@ public class SwitchStatementHandler implements StatementHandler {
     }
 
     @Override
-    public void handle(Statement stmt, HandlerContext context) {
+    public void handle(Statement stmt) {
         SwitchStmt switchStmt = (SwitchStmt) stmt;
-        int switchId = context.idCounter().getAndIncrement();
+        int switchId = blockGeneratorCoordinator.idCounter().getAndIncrement();
 
         Expression selector = switchStmt.getSelector();
-        ParamInfo paramInfo = getSwitchParamInfo(context, selector);
+        ParamInfo paramInfo = getSwitchParamInfo(selector);
 
         boolean isStringSwitch = paramInfo.isStringParam();
 
@@ -55,22 +48,22 @@ public class SwitchStatementHandler implements StatementHandler {
 
         switchBean.parameters.add(paramInfo.paramValue());
 
-        context.blockBeans().addAll(paramInfo.paramBlocks());
+        blockGeneratorCoordinator.blockBeans().addAll(paramInfo.paramBlocks());
 
         List<SwitchEntry> entries = switchStmt.getEntries();
 
         if (!entries.isEmpty()) {
-            switchBean.subStack1 = context.idCounter().get();
+            switchBean.subStack1 = blockGeneratorCoordinator.idCounter().get();
         }
 
         for (int j = 0; j < entries.size(); j++) {
             if (j == entries.size() - 1) {
-                context.noNextBlocks().add(
-                        String.valueOf(context.idCounter().get())
+                blockGeneratorCoordinator.noNextBlocks().add(
+                        String.valueOf(blockGeneratorCoordinator.idCounter().get())
                 );
             }
 
-            int caseId = context.idCounter().getAndIncrement();
+            int caseId = blockGeneratorCoordinator.idCounter().getAndIncrement();
             String name;
             String spec;
             String type;
@@ -106,10 +99,10 @@ public class SwitchStatementHandler implements StatementHandler {
 
             if (!isDefaultBlock) {
                 Expression caseLabel = entry.getLabels().get(0);
-                ParamInfo caseParamInfo = getCaseParamInfo(context, caseLabel, isStringSwitch);
+                ParamInfo caseParamInfo = getCaseParamInfo(caseLabel, isStringSwitch);
 
                 caseBean.parameters.add(caseParamInfo.paramValue());
-                context.blockBeans().addAll(caseParamInfo.paramBlocks());
+                blockGeneratorCoordinator.blockBeans().addAll(caseParamInfo.paramBlocks());
             }
 
             if (caseStatements.size() == 1 && caseStatements.get(0).isBlockStmt()) {
@@ -122,28 +115,28 @@ public class SwitchStatementHandler implements StatementHandler {
             }
 
             if (!caseStatements.isEmpty()) {
-                caseBean.subStack1 = context.idCounter().get();
+                caseBean.subStack1 = blockGeneratorCoordinator.idCounter().get();
                 for (int i = 0; i < caseStatements.size(); i++) {
                     if (i == caseStatements.size() - 1) {
-                        context.noNextBlocks().add(
-                                String.valueOf(context.idCounter().get())
+                        blockGeneratorCoordinator.noNextBlocks().add(
+                                String.valueOf(blockGeneratorCoordinator.idCounter().get())
                         );
                     }
-                    parent.processStatement(caseStatements.get(i));
+                    blockGeneratorCoordinator.processStatement(caseStatements.get(i));
                 }
             } else {
                 caseBean.subStack1 = -1;
             }
 
-            caseBean.nextBlock = context.idCounter().get();
-            context.blockBeans().add(caseBean);
+            caseBean.nextBlock = blockGeneratorCoordinator.idCounter().get();
+            blockGeneratorCoordinator.blockBeans().add(caseBean);
         }
 
-        switchBean.nextBlock = context.idCounter().get();
-        context.blockBeans().add(switchBean);
+        switchBean.nextBlock = blockGeneratorCoordinator.idCounter().get();
+        blockGeneratorCoordinator.blockBeans().add(switchBean);
     }
 
-    private ParamInfo getSwitchParamInfo(HandlerContext context, Expression expression) {
+    private ParamInfo getSwitchParamInfo(Expression expression) {
         expression = getEnclosedInner(expression);
         String exprValue = expression.toString();
         if (TranslatorUtils.isLiteralNumber(exprValue)) {
@@ -153,8 +146,8 @@ public class SwitchStatementHandler implements StatementHandler {
             return new ParamInfo(true, exprValue.substring(1, exprValue.length() - 1));
         }
         if (expression.isNameExpr()) {
-            boolean isStringVar = !projectResourcesHelper.getFields(projectResourcesHelper.DOUBLE_FIELDS).contains(exprValue);
-            int blockId = context.idCounter().getAndIncrement();
+            boolean isStringVar = !blockGeneratorCoordinator.projectResourcesHelper().getFields(blockGeneratorCoordinator.projectResourcesHelper().DOUBLE_FIELDS).contains(exprValue);
+            int blockId = blockGeneratorCoordinator.idCounter().getAndIncrement();
             BlockBean varBlock = new BlockBean(
                     String.valueOf(blockId),
                     exprValue,
@@ -166,18 +159,18 @@ public class SwitchStatementHandler implements StatementHandler {
 
         }
 
-        ArrayList<BlockBean> paramBlocks = new ArrayList<>(expressionBlockBuilder.build(expression, new RequiredBlockType("d"), ""));
+        ArrayList<BlockBean> paramBlocks = new ArrayList<>(blockGeneratorCoordinator.expressionBlockBuilder().build(expression, new RequiredBlockType("d"), ""));
 
         if (!(paramBlocks.size() == 1 && TranslatorUtils.isASDBlock(paramBlocks.get(0)))) {
             return new ParamInfo(false, "@" + paramBlocks.get(paramBlocks.size() - 1).id, paramBlocks);
         } else {
             paramBlocks.clear();
-            paramBlocks.addAll(expressionBlockBuilder.build(expression, new RequiredBlockType("s"), ""));
+            paramBlocks.addAll(blockGeneratorCoordinator.expressionBlockBuilder().build(expression, new RequiredBlockType("s"), ""));
             return new ParamInfo(true, "@" + paramBlocks.get(paramBlocks.size() - 1).id, paramBlocks);
         }
     }
 
-    private ParamInfo getCaseParamInfo(HandlerContext context, Expression expression, boolean isStringSwitch) {
+    private ParamInfo getCaseParamInfo(Expression expression, boolean isStringSwitch) {
         expression = getEnclosedInner(expression);
         String exprValue = expression.toString();
         if (TranslatorUtils.isLiteralNumber(exprValue)) {
@@ -187,7 +180,7 @@ public class SwitchStatementHandler implements StatementHandler {
             return new ParamInfo(isStringSwitch, exprValue.substring(1, exprValue.length() - 1));
         }
         if (expression.isNameExpr()) {
-            int blockId = context.idCounter().getAndIncrement();
+            int blockId = blockGeneratorCoordinator.idCounter().getAndIncrement();
             BlockBean varBlock = new BlockBean(
                     String.valueOf(blockId),
                     exprValue,
@@ -198,7 +191,7 @@ public class SwitchStatementHandler implements StatementHandler {
             return new ParamInfo(isStringSwitch, "@" + blockId, varBlock);
         }
 
-        ArrayList<BlockBean> paramBlocks = new ArrayList<>(expressionBlockBuilder.build(expression, new RequiredBlockType(isStringSwitch ? "s" : "d"), ""));
+        ArrayList<BlockBean> paramBlocks = new ArrayList<>(blockGeneratorCoordinator.expressionBlockBuilder().build(expression, new RequiredBlockType(isStringSwitch ? "s" : "d"), ""));
         return new ParamInfo(isStringSwitch, "@" + paramBlocks.get(paramBlocks.size() - 1).id, paramBlocks);
     }
 

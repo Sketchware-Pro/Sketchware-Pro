@@ -1,25 +1,22 @@
-package pro.sketchware.blocks.generator.handlers;
+package pro.sketchware.blocks.generator.components.handlers;
 
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.besome.sketch.beans.BlockBean;
-import pro.sketchware.blocks.generator.builders.BinaryExprOperatorsTreeBuilder;
-import pro.sketchware.blocks.generator.EventBlocksGenerator;
-import pro.sketchware.blocks.generator.interfaces.StatementHandler;
-import pro.sketchware.blocks.generator.records.HandlerContext;
-import pro.sketchware.blocks.generator.records.RequiredBlockType;
+
+import pro.sketchware.blocks.generator.components.interfaces.StatementHandler;
+import pro.sketchware.blocks.generator.components.BlockGeneratorCoordinator;
+import pro.sketchware.blocks.generator.components.records.RequiredBlockType;
 
 import java.util.List;
 
 public class WhileStatementHandler implements StatementHandler {
 
-    private final BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder;
-    private final EventBlocksGenerator parent;
+    private final BlockGeneratorCoordinator blockGeneratorCoordinator;
 
-    public WhileStatementHandler(BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder, EventBlocksGenerator parent) {
-        this.binaryExprOperatorsTreeBuilder = binaryExprOperatorsTreeBuilder;
-        this.parent = parent;
+    public WhileStatementHandler(BlockGeneratorCoordinator blockGeneratorCoordinator) {
+        this.blockGeneratorCoordinator = blockGeneratorCoordinator;
     }
 
     @Override
@@ -28,16 +25,16 @@ public class WhileStatementHandler implements StatementHandler {
     }
 
     @Override
-    public void handle(Statement stmt, HandlerContext context) {
+    public void handle(Statement stmt) {
         WhileStmt ws = (WhileStmt) stmt;
         Expression expr = ws.getCondition();
-        List<BlockBean> blockBeans = context.blockBeans();
-        List<String> noNextBlocks = context.noNextBlocks();
+        List<BlockBean> blockBeans = blockGeneratorCoordinator.blockBeans();
+        List<String> noNextBlocks = blockGeneratorCoordinator.noNextBlocks();
         boolean isForeverBlock = false;
         if (expr.isBooleanLiteralExpr()) {
             isForeverBlock = expr.toString().equals("true");
         }
-        BlockBean wb = new BlockBean(String.valueOf(context.idCounter().getAndIncrement()),
+        BlockBean wb = new BlockBean(String.valueOf(blockGeneratorCoordinator.idCounter().getAndIncrement()),
                 isForeverBlock ? "forever" : "while %b",
                 "c",
                 "",
@@ -45,7 +42,7 @@ public class WhileStatementHandler implements StatementHandler {
         );
 
         if (!isForeverBlock) {
-            List<BlockBean> condTree = binaryExprOperatorsTreeBuilder.build(ws.getCondition(), new RequiredBlockType("b"));
+            List<BlockBean> condTree = blockGeneratorCoordinator.binaryExprOperatorsTreeBuilder().build(ws.getCondition(), new RequiredBlockType("b"));
             blockBeans.addAll(condTree);
             BlockBean condRoot = condTree.get(condTree.size() - 1);
             condRoot.nextBlock = -1;
@@ -57,19 +54,19 @@ public class WhileStatementHandler implements StatementHandler {
             if (body.isEmpty()) {
                 wb.subStack1 = -1;
             } else {
-                wb.subStack1 = context.idCounter().get();
+                wb.subStack1 = blockGeneratorCoordinator.idCounter().get();
                 for (int i = 0; i < body.size(); i++) {
                     if (body.size() == 1 || i == body.size() - 1) {
-                        noNextBlocks.add(String.valueOf(context.idCounter().get()));
+                        noNextBlocks.add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
                     }
                     Statement s = body.get(i);
-                    parent.processStatement(s);
+                    blockGeneratorCoordinator.processStatement(s);
                 }
             }
         } else {
             wb.subStack1 = -1;
         }
-        wb.nextBlock = context.idCounter().get();
+        wb.nextBlock = blockGeneratorCoordinator.idCounter().get();
     }
 
 }

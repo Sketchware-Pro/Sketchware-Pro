@@ -1,24 +1,20 @@
-package pro.sketchware.blocks.generator.handlers;
+package pro.sketchware.blocks.generator.components.handlers;
 
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.besome.sketch.beans.BlockBean;
-import pro.sketchware.blocks.generator.builders.BinaryExprOperatorsTreeBuilder;
-import pro.sketchware.blocks.generator.EventBlocksGenerator;
-import pro.sketchware.blocks.generator.interfaces.StatementHandler;
-import pro.sketchware.blocks.generator.records.HandlerContext;
-import pro.sketchware.blocks.generator.records.RequiredBlockType;
+import pro.sketchware.blocks.generator.components.interfaces.StatementHandler;
+import pro.sketchware.blocks.generator.components.BlockGeneratorCoordinator;
+import pro.sketchware.blocks.generator.components.records.RequiredBlockType;
 
 import java.util.List;
 
 public class IfStatementHandler implements StatementHandler {
 
-    private final BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder;
-    private final EventBlocksGenerator parent;
+    private final BlockGeneratorCoordinator blockGeneratorCoordinator;
 
-    public IfStatementHandler(BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder, EventBlocksGenerator parent) {
-        this.binaryExprOperatorsTreeBuilder = binaryExprOperatorsTreeBuilder;
-        this.parent = parent;
+    public IfStatementHandler(BlockGeneratorCoordinator blockGeneratorCoordinator) {
+        this.blockGeneratorCoordinator = blockGeneratorCoordinator;
     }
 
     @Override
@@ -27,7 +23,7 @@ public class IfStatementHandler implements StatementHandler {
     }
 
     @Override
-    public void handle(Statement stmt, HandlerContext context) {
+    public void handle(Statement stmt) {
         IfStmt ifStmt = (IfStmt) stmt;
 
         boolean hasElse = ifStmt.getElseStmt().isPresent();
@@ -36,11 +32,11 @@ public class IfStatementHandler implements StatementHandler {
         String type = hasElse ? "e" : "c";
 
         BlockBean ifBean = new BlockBean(
-                String.valueOf(context.idCounter().getAndIncrement()), spec, type, "", opCode
+                String.valueOf(blockGeneratorCoordinator.idCounter().getAndIncrement()), spec, type, "", opCode
         );
 
-        List<BlockBean> condTree = binaryExprOperatorsTreeBuilder.build(ifStmt.getCondition(), new RequiredBlockType("b"));
-        context.blockBeans().addAll(condTree);
+        List<BlockBean> condTree = blockGeneratorCoordinator.binaryExprOperatorsTreeBuilder().build(ifStmt.getCondition(), new RequiredBlockType("b"));
+        blockGeneratorCoordinator.blockBeans().addAll(condTree);
         BlockBean condRoot = condTree.get(condTree.size() - 1);
 
         ifBean.parameters.add("@" + condRoot.id);
@@ -50,13 +46,13 @@ public class IfStatementHandler implements StatementHandler {
             if (thenStatements.isEmpty()) {
                 ifBean.subStack1 = -1;
             } else {
-                ifBean.subStack1 = context.idCounter().get();
+                ifBean.subStack1 = blockGeneratorCoordinator.idCounter().get();
                 for (int i = 0; i < thenStatements.size(); i++) {
                     if (i == thenStatements.size() - 1) {
-                        context.noNextBlocks().add(String.valueOf(context.idCounter().get()));
+                        blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
                     }
                     Statement s = thenStatements.get(i);
-                    parent.processStatement(s);
+                    blockGeneratorCoordinator.processStatement(s);
                 }
             }
         } else {
@@ -65,20 +61,20 @@ public class IfStatementHandler implements StatementHandler {
         if (hasElse) {
             Statement es = ifStmt.getElseStmt().get();
             if (es.isIfStmt()) {
-                ifBean.subStack2 = context.idCounter().get();
-                handle(es, context);
+                ifBean.subStack2 = blockGeneratorCoordinator.idCounter().get();
+                handle(es);
             } else if (es.isBlockStmt()) {
                 var elseStatements = es.asBlockStmt().getStatements();
                 if (elseStatements.isEmpty()) {
                     ifBean.subStack2 = -1;
                 } else {
-                    ifBean.subStack2 = context.idCounter().get();
+                    ifBean.subStack2 = blockGeneratorCoordinator.idCounter().get();
                     for (int i = 0; i < elseStatements.size(); i++) {
                         if (i == elseStatements.size() - 1) {
-                            context.noNextBlocks().add(String.valueOf(context.idCounter().get()));
+                            blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
                         }
                         Statement s = elseStatements.get(i);
-                        parent.processStatement(s);
+                        blockGeneratorCoordinator.processStatement(s);
                     }
                 }
             } else {
@@ -88,8 +84,8 @@ public class IfStatementHandler implements StatementHandler {
             ifBean.subStack2 = -1;
         }
 
-        ifBean.nextBlock = context.idCounter().get();
-        context.blockBeans().add(ifBean);
+        ifBean.nextBlock = blockGeneratorCoordinator.idCounter().get();
+        blockGeneratorCoordinator.blockBeans().add(ifBean);
     }
 
 }

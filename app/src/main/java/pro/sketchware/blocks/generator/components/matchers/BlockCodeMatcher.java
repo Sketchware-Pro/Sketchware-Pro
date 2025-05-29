@@ -1,11 +1,11 @@
-package pro.sketchware.blocks.generator.matchers;
+package pro.sketchware.blocks.generator.components.matchers;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.Statement;
-import pro.sketchware.blocks.generator.utils.BlockParamUtil;
-import pro.sketchware.blocks.generator.utils.TranslatorUtils;
+import pro.sketchware.blocks.generator.components.utils.BlockParamUtils;
+import pro.sketchware.blocks.generator.components.utils.TranslatorUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,20 +22,20 @@ public class BlockCodeMatcher {
     private boolean match;
     private final Pattern holderPattern = Pattern.compile(TranslatorUtils.getParamHolderRegex());
 
-    public BlockCodeMatcher(String blockType, String spec, String code, String norm, BlockParamUtil blockParamUtil) {
+    public BlockCodeMatcher(String blockType, String spec, String code, String norm, BlockParamUtils blockParamUtils) {
         this.formattedBlockCode = formatAndRestore(code, blockType);
         this.formattedInputCode = tryFormat(norm);
 
         try {
-           var info = blockParamUtil.getBlockParamInfo(spec, formattedBlockCode, formattedInputCode);
+           var info = blockParamUtils.getBlockParamInfo(spec, formattedBlockCode, formattedInputCode);
            this.params = info.first;
            this.paramsHolders = info.second;
 
            boolean validSize = params.size() == paramsHolders.size();
-           boolean notParamOnly = !blockParamUtil.isParamOnly(formattedBlockCode);
+           boolean notParamOnly = !blockParamUtils.isParamOnly(formattedBlockCode);
            String formatted = params.isEmpty() ? formattedBlockCode : String.format(formattedBlockCode, params.toArray());
            boolean codeEqual = formatted.equals(formattedInputCode);
-           boolean typeMatch = blockParamUtil.isMatchesParamsTypes(params, paramsHolders);
+           boolean typeMatch = blockParamUtils.isMatchesParamsTypes(params, paramsHolders);
 
            this.match = validSize && notParamOnly && codeEqual && typeMatch;
        } catch (Exception e) {

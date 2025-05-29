@@ -1,4 +1,4 @@
-package pro.sketchware.blocks.generator.records;
+package pro.sketchware.blocks.generator.components.records;
 
 public record RequiredBlockType(String blockType, String blockTypeName) {
 

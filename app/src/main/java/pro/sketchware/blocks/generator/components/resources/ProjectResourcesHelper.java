@@ -1,4 +1,4 @@
-package pro.sketchware.blocks.generator.resources;
+package pro.sketchware.blocks.generator.components.resources;
 
 import android.util.Pair;
 
@@ -19,9 +19,9 @@ import a.a.a.Fx;
 import a.a.a.eC;
 import a.a.a.jC;
 import a.a.a.kq;
-import pro.sketchware.blocks.generator.records.EventArgument;
-import pro.sketchware.blocks.generator.records.RequiredBlockType;
-import pro.sketchware.blocks.generator.utils.TranslatorUtils;
+import pro.sketchware.blocks.generator.components.records.EventArgument;
+import pro.sketchware.blocks.generator.components.records.RequiredBlockType;
+import pro.sketchware.blocks.generator.components.utils.TranslatorUtils;
 
 public class ProjectResourcesHelper {
 
@@ -62,15 +62,12 @@ public class ProjectResourcesHelper {
     private final String eventTitle;
     private final String sc_id;
 
-    public ProjectResourcesHelper(String sc_id, String javaName, String xmlName, String eventTitle) {
+    public ProjectResourcesHelper(String sc_id, String javaName, String xmlName, String eventTitle, String javaCode) {
         this.sc_id = sc_id;
         this.javaName = javaName;
         this.xmlName = xmlName;
         this.eventTitle = eventTitle;
         projectDataManager = jC.a(sc_id);
-    }
-
-    public void initialize(String javaCode) {
         loadFields();
         loadLocalVariables(javaCode);
         loadEventArguments();

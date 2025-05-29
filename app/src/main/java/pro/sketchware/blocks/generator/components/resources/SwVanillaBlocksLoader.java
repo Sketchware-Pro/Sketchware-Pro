@@ -1,4 +1,4 @@
-package pro.sketchware.blocks.generator.resources;
+package pro.sketchware.blocks.generator.components.resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;

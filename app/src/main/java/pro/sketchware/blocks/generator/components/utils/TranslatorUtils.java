@@ -1,4 +1,4 @@
-package pro.sketchware.blocks.generator.utils;
+package pro.sketchware.blocks.generator.components.utils;
 
 import com.besome.sketch.beans.BlockBean;
 

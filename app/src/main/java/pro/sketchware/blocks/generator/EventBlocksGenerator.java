@@ -10,74 +10,53 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import dev.aldi.sayuti.block.ExtraBlockFile;
-import pro.sketchware.blocks.generator.builders.BinaryExprOperatorsTreeBuilder;
-import pro.sketchware.blocks.generator.builders.ExpressionBlockBuilder;
-import pro.sketchware.blocks.generator.matchers.ExtraBlockMatcher;
-import pro.sketchware.blocks.generator.handlers.*;
-import pro.sketchware.blocks.generator.interfaces.StatementHandler;
-import pro.sketchware.blocks.generator.records.HandlerContext;
-import pro.sketchware.blocks.generator.resources.BlocksCategories;
-import pro.sketchware.blocks.generator.resources.ProjectResourcesHelper;
-import pro.sketchware.blocks.generator.resources.SwVanillaBlocksLoader;
-import pro.sketchware.blocks.generator.utils.BlockParamUtil;
-import pro.sketchware.blocks.generator.utils.TranslatorUtils;
+import pro.sketchware.blocks.generator.components.handlers.*;
+import pro.sketchware.blocks.generator.components.interfaces.StatementHandler;
+import pro.sketchware.blocks.generator.components.BlockGeneratorCoordinator;
+import pro.sketchware.blocks.generator.components.resources.SwVanillaBlocksLoader;
+import pro.sketchware.blocks.generator.components.utils.TranslatorUtils;
 
 public class EventBlocksGenerator {
 
-    private final HandlerContext handlerContext;
-    private final BlockParamUtil blockParamUtil;
-    private final ProjectResourcesHelper projectResourcesHelper;
-    private final BlocksCategories blocksCategories;
+    private BlockGeneratorCoordinator blockGeneratorCoordinator;
 
     private ArrayList<BlockBean> preLoadedBlockBeans = new ArrayList<>();
-    private final ArrayList<BlockBean> blockBeans = new ArrayList<>();
-    private final ArrayList<String> noNextBlocks = new ArrayList<>();
 
     private final ArrayList<StatementHandler> handlers = new ArrayList<>();
 
-    private final AtomicInteger idCounter = new AtomicInteger(10);
-
     private final String javaCode;
+    private final String javaName;
+    private final String xmlName;
+    private final String eventTitle;
     private final String sc_id;
     private String errorMessage = "";
 
     public EventBlocksGenerator(String sc_id, String javaName, String xmlName, String eventTitle, String javaCode) {
         this.javaCode = javaCode;
+        this.javaName = javaName;
+        this.xmlName = xmlName;
+        this.eventTitle = eventTitle;
         this.sc_id = sc_id;
-        projectResourcesHelper = new ProjectResourcesHelper(sc_id, javaName, xmlName, eventTitle);
-        blockParamUtil = new BlockParamUtil(projectResourcesHelper);
-        blocksCategories = new BlocksCategories();
-
-        handlerContext = new HandlerContext(
-                blockParamUtil,
-                blocksCategories,
-                idCounter,
-                blockBeans,
-                noNextBlocks
-        );
     }
 
     private void initialize() {
-        BinaryExprOperatorsTreeBuilder binaryExprOperatorsTreeBuilder = new BinaryExprOperatorsTreeBuilder(projectResourcesHelper, blockParamUtil, blocksCategories, idCounter);
-        ExpressionBlockBuilder expressionBlockBuilder = new ExpressionBlockBuilder(projectResourcesHelper, binaryExprOperatorsTreeBuilder, blockParamUtil, blocksCategories, idCounter);
-        ExtraBlockMatcher extraBlockMatcher = new ExtraBlockMatcher(blockParamUtil, idCounter, expressionBlockBuilder);
+        blockGeneratorCoordinator = new BlockGeneratorCoordinator(sc_id, javaName, xmlName, eventTitle, javaCode);
+        blockGeneratorCoordinator.setStatementProcessor(this::processStatement);
 
-        handlers.add(new IfStatementHandler(binaryExprOperatorsTreeBuilder, this));
-        handlers.add(new WhileStatementHandler(binaryExprOperatorsTreeBuilder, this));
-        handlers.add(new ForStatementHandler(this, expressionBlockBuilder));
-        handlers.add(new TryCatchFinallyStatementHandler(this));
-        handlers.add(new SwitchStatementHandler(this, projectResourcesHelper, expressionBlockBuilder));
-        handlers.add(new ExpressionStatementHandler(extraBlockMatcher, expressionBlockBuilder));
-        handlers.add(new OtherStatementHandler(extraBlockMatcher));
+        handlers.add(new IfStatementHandler(blockGeneratorCoordinator));
+        handlers.add(new WhileStatementHandler(blockGeneratorCoordinator));
+        handlers.add(new ForStatementHandler(blockGeneratorCoordinator));
+        handlers.add(new TryCatchFinallyStatementHandler(blockGeneratorCoordinator));
+        handlers.add(new SwitchStatementHandler(blockGeneratorCoordinator));
+        handlers.add(new ExpressionStatementHandler(blockGeneratorCoordinator));
+        handlers.add(new OtherStatementHandler(blockGeneratorCoordinator));
 
-        projectResourcesHelper.initialize(javaCode);
-        blocksCategories.loadBlocks(TranslatorUtils.getPreLoadedBlocks(preLoadedBlockBeans, sc_id));
-        blocksCategories.loadBlocks(projectResourcesHelper.getMoreBlocks());
-        blocksCategories.loadBlocks(new SwVanillaBlocksLoader().getSwVanillaBlocks());
-        blocksCategories.loadBlocks(ExtraBlockFile.getExtraBlockData());
+        blockGeneratorCoordinator.blocksCategories().loadBlocks(TranslatorUtils.getPreLoadedBlocks(preLoadedBlockBeans, sc_id));
+        blockGeneratorCoordinator.blocksCategories().loadBlocks(blockGeneratorCoordinator.projectResourcesHelper().getMoreBlocks());
+        blockGeneratorCoordinator.blocksCategories().loadBlocks(new SwVanillaBlocksLoader().getSwVanillaBlocks());
+        blockGeneratorCoordinator.blocksCategories().loadBlocks(ExtraBlockFile.getExtraBlockData());
     }
 
     public void setPreLoadedBlockBeans(ArrayList<BlockBean> preLoadedBlockBeans) {
@@ -86,11 +65,8 @@ public class EventBlocksGenerator {
 
     public ArrayList<BlockBean> getEventBlockBeans() {
         errorMessage = "";
-        idCounter.set(10);
-        blockBeans.clear();
-        noNextBlocks.clear();
         if (javaCode.trim().isEmpty()) {
-            return blockBeans;
+            return new ArrayList<>();
         }
         String TAG = "BlocksGenerator";
         Log.d(TAG, "loading for code : " + javaCode);
@@ -100,25 +76,26 @@ public class EventBlocksGenerator {
             NodeList<Statement> statements = body.getStatements();
             for (int i = 0; i < statements.size(); i++) {
                 if (i == statements.size() - 1) {
-                    noNextBlocks.add(String.valueOf(idCounter.get()));
+                    blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
                 }
                 Statement stmt = statements.get(i);
                 processStatement(stmt);
             }
-            TranslatorUtils.reorderBlocks(blockBeans);
-            TranslatorUtils.removeUnnecessaryNextIds(blockBeans, noNextBlocks);
-            Log.d(TAG, "result : " + new GsonBuilder().setPrettyPrinting().create().toJson(blockBeans));
+            TranslatorUtils.reorderBlocks(blockGeneratorCoordinator.blockBeans());
+            TranslatorUtils.removeUnnecessaryNextIds(blockGeneratorCoordinator.blockBeans(), blockGeneratorCoordinator.noNextBlocks());
+            Log.d(TAG, "result : " + new GsonBuilder().setPrettyPrinting().create().toJson(blockGeneratorCoordinator.blockBeans()));
+            return blockGeneratorCoordinator.blockBeans();
         } catch (Exception e) {
             errorMessage = Log.getStackTraceString(e);
             Log.wtf(TAG, errorMessage);
+            return new ArrayList<>();
         }
-        return blockBeans;
     }
 
     public void processStatement(Statement stmt) {
         for (StatementHandler handler : handlers) {
             if (handler.canHandle(stmt)) {
-                handler.handle(stmt, handlerContext);
+                handler.handle(stmt);
                 return;
             }
         }

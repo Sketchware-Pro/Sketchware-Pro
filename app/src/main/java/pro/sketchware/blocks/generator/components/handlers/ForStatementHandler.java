@@ -1,4 +1,4 @@
-package pro.sketchware.blocks.generator.handlers;
+package pro.sketchware.blocks.generator.components.handlers;
 
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.CastExpr;
@@ -12,23 +12,19 @@ import com.github.javaparser.ast.stmt.ForStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.besome.sketch.beans.BlockBean;
 
-import pro.sketchware.blocks.generator.EventBlocksGenerator;
-import pro.sketchware.blocks.generator.builders.ExpressionBlockBuilder;
-import pro.sketchware.blocks.generator.interfaces.StatementHandler;
-import pro.sketchware.blocks.generator.records.HandlerContext;
-import pro.sketchware.blocks.generator.records.RequiredBlockType;
+import pro.sketchware.blocks.generator.components.interfaces.StatementHandler;
+import pro.sketchware.blocks.generator.components.BlockGeneratorCoordinator;
+import pro.sketchware.blocks.generator.components.records.RequiredBlockType;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class ForStatementHandler implements StatementHandler {
 
-    private final EventBlocksGenerator parent;
-    private final ExpressionBlockBuilder expressionBlockBuilder;
+    private final BlockGeneratorCoordinator blockGeneratorCoordinator;
 
-    public ForStatementHandler(EventBlocksGenerator parent, ExpressionBlockBuilder expressionBlockBuilder) {
-        this.parent = parent;
-        this.expressionBlockBuilder = expressionBlockBuilder;
+    public ForStatementHandler(BlockGeneratorCoordinator blockGeneratorCoordinator) {
+        this.blockGeneratorCoordinator = blockGeneratorCoordinator;
     }
 
     @Override
@@ -37,7 +33,7 @@ public class ForStatementHandler implements StatementHandler {
     }
 
     @Override
-    public void handle(Statement stmt, HandlerContext context) {
+    public void handle(Statement stmt) {
         String opCode;
         String spec;
         ArrayList<String> parameters = new ArrayList<>();
@@ -59,10 +55,10 @@ public class ForStatementHandler implements StatementHandler {
 
                             if (ue.getOperator() == UnaryExpr.Operator.POSTFIX_INCREMENT && be.getOperator() == BinaryExpr.Operator.LESS && varDeclaration.getInitializer().get().toString().equals("0")) {
                                 if (varName.matches("^_repeat\\d+$")) {
-                                    buildBlock(context, "repeat", "repeat %s", parameters, right, bodyStmt);
+                                    buildBlock("repeat", "repeat %s", parameters, right, bodyStmt);
                                 } else {
                                     parameters.add(varName);
-                                    buildBlock(context, "repeatKnownNum", "repeat %d: %s.inputOnly ++", parameters, right, bodyStmt);
+                                    buildBlock("repeatKnownNum", "repeat %d: %s.inputOnly ++", parameters, right, bodyStmt);
                                 }
                                 return;
 
@@ -78,7 +74,7 @@ public class ForStatementHandler implements StatementHandler {
 
                                     parameters.add(varName);
                                     right = getEnclosedInner(binExpr.getLeft());
-                                    buildBlock(context, "RepeatKnownNumDescending", "repeat %d: %s.inputOnly --", parameters, right, bodyStmt);
+                                    buildBlock("RepeatKnownNumDescending", "repeat %d: %s.inputOnly --", parameters, right, bodyStmt);
                                     return;
                                 }
                             }
@@ -98,36 +94,36 @@ public class ForStatementHandler implements StatementHandler {
             String header = fes.getVariable() + " : " + fes.getIterable();
             parameters.add(header);
         }
-        buildBlock(context, opCode, spec, parameters, null, bodyStmt);
+        buildBlock(opCode, spec, parameters, null, bodyStmt);
     }
 
-    private void buildBlock(HandlerContext context, String opCode, String spec, ArrayList<String> parameters, Expression expression, Statement bodyStmt) {
+    private void buildBlock(String opCode, String spec, ArrayList<String> parameters, Expression expression, Statement bodyStmt) {
 
-        BlockBean forBlock = new BlockBean(String.valueOf(context.idCounter().getAndIncrement()), spec, "c", "", opCode);
+        BlockBean forBlock = new BlockBean(String.valueOf(blockGeneratorCoordinator.idCounter().getAndIncrement()), spec, "c", "", opCode);
         if (expression != null) {
             if (expression instanceof IntegerLiteralExpr expr) {
                 parameters.add(0, expr.getValue());
             } else {
-                ArrayList<BlockBean> exprBlocks = expressionBlockBuilder.build(expression, new RequiredBlockType("d", null), "");
+                ArrayList<BlockBean> exprBlocks = blockGeneratorCoordinator.expressionBlockBuilder().build(expression, new RequiredBlockType("d", null), "");
                 BlockBean bean = exprBlocks.get(exprBlocks.size() - 1);
                 parameters.add(0, "@" + bean.id);
-                context.blockBeans().addAll(exprBlocks);
+                blockGeneratorCoordinator.blockBeans().addAll(exprBlocks);
             }
         }
         forBlock.parameters = parameters;
-        context.blockBeans().add(forBlock);
+        blockGeneratorCoordinator.blockBeans().add(forBlock);
 
         if (bodyStmt.isBlockStmt()) {
             var statements = bodyStmt.asBlockStmt().getStatements();
-            forBlock.subStack1 = statements.isEmpty() ? -1 : context.idCounter().get();
+            forBlock.subStack1 = statements.isEmpty() ? -1 : blockGeneratorCoordinator.idCounter().get();
             for (int i = 0; i < statements.size(); i++) {
                 if (i == statements.size() - 1)
-                    context.noNextBlocks().add(String.valueOf(context.idCounter().get()));
-                parent.processStatement(statements.get(i));
+                    blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
+                blockGeneratorCoordinator.processStatement(statements.get(i));
             }
         } else forBlock.subStack1 = -1;
 
-        forBlock.nextBlock = context.idCounter().get();
+        forBlock.nextBlock = blockGeneratorCoordinator.idCounter().get();
     }
 
     private Expression getEnclosedInner(Expression expr) {

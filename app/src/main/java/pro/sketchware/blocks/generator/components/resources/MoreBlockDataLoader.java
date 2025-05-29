@@ -1,4 +1,4 @@
-package pro.sketchware.blocks.generator.resources;
+package pro.sketchware.blocks.generator.components.resources;
 
 import static mod.hey.studios.moreblock.ReturnMoreblockManager.getMbType;
 
@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import a.a.a.jC;
-import pro.sketchware.blocks.generator.records.RequiredMoreBlockType;
+import pro.sketchware.blocks.generator.components.records.RequiredMoreBlockType;
 
 public class MoreBlockDataLoader {
 

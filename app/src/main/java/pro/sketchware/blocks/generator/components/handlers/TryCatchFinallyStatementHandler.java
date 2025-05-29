@@ -1,19 +1,18 @@
-package pro.sketchware.blocks.generator.handlers;
+package pro.sketchware.blocks.generator.components.handlers;
 
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.TryStmt;
 import com.besome.sketch.beans.BlockBean;
 
-import pro.sketchware.blocks.generator.EventBlocksGenerator;
-import pro.sketchware.blocks.generator.interfaces.StatementHandler;
-import pro.sketchware.blocks.generator.records.HandlerContext;
+import pro.sketchware.blocks.generator.components.interfaces.StatementHandler;
+import pro.sketchware.blocks.generator.components.BlockGeneratorCoordinator;
 
 public class TryCatchFinallyStatementHandler implements StatementHandler {
 
-    private final EventBlocksGenerator parent;
+    private final BlockGeneratorCoordinator blockGeneratorCoordinator;
 
-    public TryCatchFinallyStatementHandler(EventBlocksGenerator parent) {
-        this.parent = parent;
+    public TryCatchFinallyStatementHandler(BlockGeneratorCoordinator blockGeneratorCoordinator) {
+        this.blockGeneratorCoordinator = blockGeneratorCoordinator;
     }
 
     @Override
@@ -22,10 +21,10 @@ public class TryCatchFinallyStatementHandler implements StatementHandler {
     }
 
     @Override
-    public void handle(Statement stmt, HandlerContext context) {
+    public void handle(Statement stmt) {
         TryStmt ts = (TryStmt) stmt;
 
-        int tryId = context.idCounter().getAndIncrement();
+        int tryId = blockGeneratorCoordinator.idCounter().getAndIncrement();
 
         BlockBean tryBean = new BlockBean(
                 String.valueOf(tryId),
@@ -36,13 +35,13 @@ public class TryCatchFinallyStatementHandler implements StatementHandler {
         );
 
         if (!ts.getTryBlock().isEmpty()) {
-            tryBean.subStack1 = context.idCounter().get();
+            tryBean.subStack1 = blockGeneratorCoordinator.idCounter().get();
             var tryStatements = ts.getTryBlock().getStatements();
             for (int i = 0; i < tryStatements.size(); i++) {
                 if (i == tryStatements.size() - 1) {
-                    context.noNextBlocks().add(String.valueOf(context.idCounter().get()));
+                    blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
                 }
-                parent.processStatement(tryStatements.get(i));
+                blockGeneratorCoordinator.processStatement(tryStatements.get(i));
             }
         } else {
             tryBean.subStack1 = -1;
@@ -51,12 +50,12 @@ public class TryCatchFinallyStatementHandler implements StatementHandler {
         if (!ts.getCatchClauses().isEmpty()) {
             var catchStmt = ts.getCatchClauses().get(0).getBody().getStatements();
             if (!catchStmt.isEmpty()) {
-                tryBean.subStack2 = context.idCounter().get();
+                tryBean.subStack2 = blockGeneratorCoordinator.idCounter().get();
                 for (int i = 0; i < catchStmt.size(); i++) {
                     if (i == catchStmt.size() - 1) {
-                        context.noNextBlocks().add(String.valueOf(context.idCounter().get()));
+                        blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
                     }
-                    parent.processStatement(catchStmt.get(i));
+                    blockGeneratorCoordinator.processStatement(catchStmt.get(i));
                 }
             } else {
                 tryBean.subStack2 = -1;
@@ -65,12 +64,12 @@ public class TryCatchFinallyStatementHandler implements StatementHandler {
             tryBean.subStack2 = -1;
         }
 
-        tryBean.nextBlock = context.idCounter().get();
+        tryBean.nextBlock = blockGeneratorCoordinator.idCounter().get();
 
-        context.blockBeans().add(tryBean);
+        blockGeneratorCoordinator.blockBeans().add(tryBean);
 
         ts.getFinallyBlock().ifPresent(finallyBlock -> {
-            int finId = context.idCounter().getAndIncrement();
+            int finId = blockGeneratorCoordinator.idCounter().getAndIncrement();
             BlockBean finBean = new BlockBean(
                     String.valueOf(finId),
                     "finally",
@@ -80,25 +79,25 @@ public class TryCatchFinallyStatementHandler implements StatementHandler {
             );
 
             if (!finallyBlock.getStatements().isEmpty()) {
-                finBean.subStack1 = context.idCounter().get();
+                finBean.subStack1 = blockGeneratorCoordinator.idCounter().get();
                 var finStatements = finallyBlock.getStatements();
                 for (int i = 0; i < finStatements.size(); i++) {
                     if (i == finStatements.size() - 1) {
-                        context.noNextBlocks().add(String.valueOf(context.idCounter().get()));
+                        blockGeneratorCoordinator.noNextBlocks().add(String.valueOf(blockGeneratorCoordinator.idCounter().get()));
                     }
-                    parent.processStatement(finStatements.get(i));
+                    blockGeneratorCoordinator.processStatement(finStatements.get(i));
                 }
             } else {
                 finBean.subStack1 = -1;
             }
 
-            finBean.nextBlock = context.idCounter().get();
-            context.blockBeans().add(finBean);
+            finBean.nextBlock = blockGeneratorCoordinator.idCounter().get();
+            blockGeneratorCoordinator.blockBeans().add(finBean);
 
-            for (int i = 0; i < context.noNextBlocks().size(); i++) {
-                String id = context.noNextBlocks().get(i);
+            for (int i = 0; i < blockGeneratorCoordinator.noNextBlocks().size(); i++) {
+                String id = blockGeneratorCoordinator.noNextBlocks().get(i);
                 if (id.equals(tryBean.id)) {
-                    context.noNextBlocks().set(i, finBean.id);
+                    blockGeneratorCoordinator.noNextBlocks().set(i, finBean.id);
                 }
                 // JavaParser handles try–catch–finally as a single statement
                 // so we must manually replace the tryCatch block ID with the finally block ID (if present)

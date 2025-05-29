@@ -1,4 +1,4 @@
-package pro.sketchware.blocks.generator.matchers;
+package pro.sketchware.blocks.generator.components.matchers;
 
 import android.util.Log;
 import com.github.javaparser.StaticJavaParser;
@@ -6,33 +6,23 @@ import com.github.javaparser.ast.expr.Expression;
 import com.besome.sketch.beans.BlockBean;
 
 import a.a.a.Fx;
-import pro.sketchware.blocks.generator.builders.ExpressionBlockBuilder;
-import pro.sketchware.blocks.generator.records.RequiredBlockType;
-import pro.sketchware.blocks.generator.utils.BlockParamUtil;
-import pro.sketchware.blocks.generator.utils.TranslatorUtils;
+import pro.sketchware.blocks.generator.components.BlockGeneratorCoordinator;
+import pro.sketchware.blocks.generator.components.records.RequiredBlockType;
+import pro.sketchware.blocks.generator.components.utils.TranslatorUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExtraBlockMatcher {
 
-    private final BlockParamUtil blockParamUtil;
-    private final AtomicInteger idCounter;
-    private final ExpressionBlockBuilder expressionBlockBuilder;
+    private final BlockGeneratorCoordinator blockGeneratorCoordinator;
 
-    public ExtraBlockMatcher(
-            BlockParamUtil blockParamUtil,
-            AtomicInteger idCounter,
-            ExpressionBlockBuilder expressionBlockBuilder
-    ) {
-        this.blockParamUtil = blockParamUtil;
-        this.idCounter = idCounter;
-        this.expressionBlockBuilder = expressionBlockBuilder;
+    public ExtraBlockMatcher(BlockGeneratorCoordinator blockGeneratorCoordinator) {
+        this.blockGeneratorCoordinator = blockGeneratorCoordinator;
     }
 
     public ArrayList<BlockBean> tryExtraBlockMatch(String input, boolean hasNext, ArrayList<HashMap<String, Object>> targetBlocks) {
-        int startId = idCounter.get();
+        int startId = blockGeneratorCoordinator.idCounter().get();
         String norm = input.trim();
         ArrayList<BlockBean> fallbackBean = new ArrayList<>();
 
@@ -41,7 +31,7 @@ public class ExtraBlockMatcher {
             String spec = TranslatorUtils.safeGetString(map.get("spec")).trim();
             String type = TranslatorUtils.safeGetString(map.get("type"));
 
-            BlockCodeMatcher matcher = new BlockCodeMatcher(type, spec, code, norm, blockParamUtil);
+            BlockCodeMatcher matcher = new BlockCodeMatcher(type, spec, code, norm, blockGeneratorCoordinator.blockParamUtil());
 
             Log.d("BlocksGenerator", String.format("""
                     
@@ -63,7 +53,7 @@ public class ExtraBlockMatcher {
 
             if (matcher.isMatch()) {
                 BlockBean b = new BlockBean(
-                        String.valueOf(idCounter.getAndIncrement()),
+                        String.valueOf(blockGeneratorCoordinator.idCounter().getAndIncrement()),
                         TranslatorUtils.safeGetString(map.get("spec")),
                         TranslatorUtils.safeGetString(map.get("type")),
                         TranslatorUtils.safeGetString(map.get("typeName")),
@@ -98,12 +88,12 @@ public class ExtraBlockMatcher {
                         if (expr.isMethodCallExpr()) {
                             methodName = expr.asMethodCallExpr().getNameAsString();
                         }
-                        RequiredBlockType reqType = blockParamUtil.getRequiredBlockType(methodName, code, i, b);
+                        RequiredBlockType reqType = blockGeneratorCoordinator.blockParamUtil().getRequiredBlockType(methodName, code, i, b);
                         if (reqType == null) {
                             isCompatibleParams = false;
                             break;
                         }
-                        ArrayList<BlockBean> paramBlocks = expressionBlockBuilder.build(
+                        ArrayList<BlockBean> paramBlocks = blockGeneratorCoordinator.expressionBlockBuilder().build(
                                 expr,
                                 reqType,
                                 paramValue
@@ -123,13 +113,13 @@ public class ExtraBlockMatcher {
                 }
 
                 if (isFallBackBlock) {
-                    b.nextBlock = hasNext ? idCounter.get() : -1;
+                    b.nextBlock = hasNext ? blockGeneratorCoordinator.idCounter().get() : -1;
                     fallbackBean.clear();
                     fallbackBean.addAll(resultBlocks);
                     fallbackBean.add(b);
-                    idCounter.set(idCounter.get() - fallbackBean.size());
+                    blockGeneratorCoordinator.idCounter().set(blockGeneratorCoordinator.idCounter().get() - fallbackBean.size());
                 } else if (isCompatibleParams) {
-                    b.nextBlock = hasNext ? idCounter.get() : -1;
+                    b.nextBlock = hasNext ? blockGeneratorCoordinator.idCounter().get() : -1;
                     resultBlocks.add(b);
                     return resultBlocks;
                 }
@@ -137,10 +127,10 @@ public class ExtraBlockMatcher {
         }
 
         if (!fallbackBean.isEmpty()) {
-            idCounter.set(idCounter.get() + fallbackBean.size());
+            blockGeneratorCoordinator.idCounter().set(blockGeneratorCoordinator.idCounter().get() + fallbackBean.size());
             return fallbackBean;
         } else {
-            idCounter.set(startId);
+            blockGeneratorCoordinator.idCounter().set(startId);
             return null;
         }
     }
