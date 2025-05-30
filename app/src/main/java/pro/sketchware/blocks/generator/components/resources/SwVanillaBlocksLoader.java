@@ -603,6 +603,20 @@ public class SwVanillaBlocksLoader {
         hashMap.put("spec", "toDegrees %d");
         blocks.add(hashMap);
 
+        hashMap = new HashMap<>();
+        hashMap.put("name", "viewOnClick");
+        hashMap.put("type", "c");
+        hashMap.put("code", """
+                %s.setOnClickListener(new View.OnClickListener() {
+                
+                    @Override
+                    public void onClick(View _view) {
+                        %s
+                    }
+                });""");
+        hashMap.put("spec", "when %m.view clicked");
+        blocks.add(hashMap);
+
         return blocks;
     }
 

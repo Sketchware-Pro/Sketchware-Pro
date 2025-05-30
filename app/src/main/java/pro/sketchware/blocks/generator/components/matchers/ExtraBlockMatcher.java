@@ -1,6 +1,7 @@
 package pro.sketchware.blocks.generator.components.matchers;
 
 import android.util.Log;
+
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.expr.Expression;
 import com.besome.sketch.beans.BlockBean;
@@ -34,15 +35,15 @@ public class ExtraBlockMatcher {
             BlockCodeMatcher matcher = new BlockCodeMatcher(type, spec, code, norm, blockGeneratorCoordinator.blockParamUtil());
 
             Log.d("BlocksGenerator", String.format("""
-                    
-                    |---------------------------------------
-                         |------block name "%s" : %s and %s
-                         |------result : %s
-                         |------params : %s
-                         |------paramsHolders :%s
-                         |------block map content: %s
-                    |---------------------------------------
-                    """,
+                            
+                            |---------------------------------------
+                                 |------block name "%s" : %s and %s
+                                 |------result : %s
+                                 |------params : %s
+                                 |------paramsHolders : %s
+                                 |------block map content: %s
+                            |---------------------------------------
+                            """,
                     map.get("name"), matcher.getFormattedBlockCode(),
                     matcher.getFormattedInputCode(),
                     matcher.isMatch() ? "matching ✅" : "failed ❌",
@@ -64,52 +65,70 @@ public class ExtraBlockMatcher {
                 boolean isCompatibleParams = true;
                 boolean isFallBackBlock = false;
 
-                for (int i = 0; i < matcher.getParams().size(); i++) {
-                    String paramHolder = matcher.getParamsHolders().size() > i ? matcher.getParamsHolders().get(i) : "%s";
+                int paramsSize = matcher.getParams().size();
+                for (int i = 0; i < paramsSize; i++) {
+                    String paramHolder = matcher.getParamsHolders().get(i);
                     String paramValue = matcher.getParams().get(i);
 
-                    boolean isStringParam = TranslatorUtils.isLiteralString(paramValue);
-                    boolean isDirectValue = paramHolder.equals("%s.inputOnly") || (paramHolder.startsWith("%m.") && !paramValue.startsWith("_")) ||
-                            (paramHolder.startsWith("%s") && isStringParam || paramValue.matches("^-?\\d+(\\.\\d+)?$"));
+                    boolean isSubStack1 = type.equals("c") && i == paramsSize - 1 || type.equals("e") && i == paramsSize - 2;
+                    boolean isSubStack2 = type.equals("e") && i == paramsSize - 1;
 
-                    if (isDirectValue) {
-                        if (isStringParam) {
-                            b.parameters.add(paramValue.substring(1, paramValue.length() - 1));
-                        } else {
-                            String bindingStarting = "binding.";
-                            if (Fx.viewParamsTypes.contains(paramHolder) && paramValue.startsWith(bindingStarting)) {
-                                paramValue = paramValue.substring(bindingStarting.length());
-                            }
-                            b.parameters.add(paramValue);
-                        }
-                    } else {
-                        Expression expr = StaticJavaParser.parseExpression(paramValue);
-                        String methodName = "";
-                        if (expr.isMethodCallExpr()) {
-                            methodName = expr.asMethodCallExpr().getNameAsString();
-                        }
-                        RequiredBlockType reqType = blockGeneratorCoordinator.blockParamUtil().getRequiredBlockType(methodName, code, i, b);
-                        if (reqType == null) {
-                            isCompatibleParams = false;
-                            break;
-                        }
-                        ArrayList<BlockBean> paramBlocks = blockGeneratorCoordinator.expressionBlockBuilder().build(
-                                expr,
-                                reqType,
-                                paramValue
+                    if (isSubStack1) {
+                        b.subStack1 = blockGeneratorCoordinator.idCounter().get();
+                    } else if (isSubStack2) {
+                        b.subStack2 = blockGeneratorCoordinator.idCounter().get();
+                    }
+
+                    if (isSubStack1 || isSubStack2) {
+                        blockGeneratorCoordinator.processStatements(
+                                StaticJavaParser.parseBlock("{" + paramValue + "}")
+                                        .getStatements()
                         );
-                        if (!paramBlocks.isEmpty()) {
-                            BlockBean last = paramBlocks.get(paramBlocks.size() - 1);
-                            last.nextBlock = -1;
-                            resultBlocks.addAll(paramBlocks);
-                            if (!isFallBackBlock) {
-                                isFallBackBlock = TranslatorUtils.isASDBlock(last);
+                    } else {
+                        boolean isStringParam = TranslatorUtils.isLiteralString(paramValue);
+                        boolean isDirectValue = paramHolder.equals("%s.inputOnly") || (paramHolder.startsWith("%m.") && !paramValue.startsWith("_")) ||
+                                (paramHolder.startsWith("%s") && isStringParam || TranslatorUtils.isLiteralNumber(paramValue));
+
+                        if (isDirectValue) {
+                            if (isStringParam) {
+                                b.parameters.add(paramValue.substring(1, paramValue.length() - 1));
+                            } else {
+                                String bindingStarting = "binding.";
+                                if (Fx.viewParamsTypes.contains(paramHolder) && paramValue.startsWith(bindingStarting)) {
+                                    paramValue = paramValue.substring(bindingStarting.length());
+                                }
+                                b.parameters.add(paramValue);
                             }
-                            b.parameters.add("@" + last.id);
                         } else {
-                            b.parameters.add(paramValue);
+                            Expression expr = StaticJavaParser.parseExpression(paramValue);
+                            String methodName = "";
+                            if (expr.isMethodCallExpr()) {
+                                methodName = expr.asMethodCallExpr().getNameAsString();
+                            }
+                            RequiredBlockType reqType = blockGeneratorCoordinator.blockParamUtil().getRequiredBlockType(methodName, code, i, b);
+                            if (reqType == null) {
+                                isCompatibleParams = false;
+                                break;
+                            }
+                            ArrayList<BlockBean> paramBlocks = blockGeneratorCoordinator.expressionBlockBuilder().build(
+                                    expr,
+                                    reqType,
+                                    paramValue
+                            );
+                            if (!paramBlocks.isEmpty()) {
+                                BlockBean last = paramBlocks.get(paramBlocks.size() - 1);
+                                last.nextBlock = -1;
+                                resultBlocks.addAll(paramBlocks);
+                                if (!isFallBackBlock) {
+                                    isFallBackBlock = TranslatorUtils.isASDBlock(last);
+                                }
+                                b.parameters.add("@" + last.id);
+                            } else {
+                                b.parameters.add(paramValue);
+                            }
                         }
                     }
+
                 }
 
                 if (isFallBackBlock) {

@@ -4,6 +4,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.Statement;
+
 import pro.sketchware.blocks.generator.components.utils.BlockParamUtils;
 import pro.sketchware.blocks.generator.components.utils.TranslatorUtils;
 
@@ -23,24 +24,31 @@ public class BlockCodeMatcher {
     private final Pattern holderPattern = Pattern.compile(TranslatorUtils.getParamHolderRegex());
 
     public BlockCodeMatcher(String blockType, String spec, String code, String norm, BlockParamUtils blockParamUtils) {
-        this.formattedBlockCode = formatAndRestore(code, blockType);
-        this.formattedInputCode = tryFormat(norm);
+        String normalizedCode = normalizeWhitespace(code);
+        String normalizedInput = normalizeWhitespace(norm);
+
+        this.formattedBlockCode = formatAndRestore(normalizedCode, blockType);
+        this.formattedInputCode = tryFormat(normalizedInput);
 
         try {
-           var info = blockParamUtils.getBlockParamInfo(spec, formattedBlockCode, formattedInputCode);
-           this.params = info.first;
-           this.paramsHolders = info.second;
+            var info = blockParamUtils.getBlockParamInfo(blockType, spec, formattedBlockCode, formattedInputCode);
+            this.params = info.first;
+            this.paramsHolders = info.second;
 
-           boolean validSize = params.size() == paramsHolders.size();
-           boolean notParamOnly = !blockParamUtils.isParamOnly(formattedBlockCode);
-           String formatted = params.isEmpty() ? formattedBlockCode : String.format(formattedBlockCode, params.toArray());
-           boolean codeEqual = formatted.equals(formattedInputCode);
-           boolean typeMatch = blockParamUtils.isMatchesParamsTypes(params, paramsHolders);
+            boolean validSize = params.size() == paramsHolders.size();
+            boolean notParamOnly = !blockParamUtils.isParamOnly(formattedBlockCode);
+            String formatted = params.isEmpty() ? formattedBlockCode : String.format(formattedBlockCode, params.toArray());
+            boolean codeEqual = formatted.equals(formattedInputCode);
+            boolean typeMatch = blockParamUtils.isMatchesParamsTypes(params, paramsHolders);
 
-           this.match = validSize && notParamOnly && codeEqual && typeMatch;
-       } catch (Exception e) {
-           this.match = false;
-       }
+            this.match = validSize && notParamOnly && codeEqual && typeMatch;
+        } catch (Exception e) {
+            this.match = false;
+        }
+    }
+
+    private String normalizeWhitespace(String input) {
+        return input.replaceAll("\\s+", " ").trim();
     }
 
     private String formatAndRestore(String code, String blockType) {

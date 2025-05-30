@@ -24,7 +24,12 @@ public class BlockParamUtils {
         this.projectResourcesHelper = projectResourcesHelper;
     }
 
-    public Pair<ArrayList<String>, ArrayList<String>> getBlockParamInfo(String blockSpec, String blockCode, String input) {
+    public Pair<ArrayList<String>, ArrayList<String>> getBlockParamInfo(String blockType, String blockSpec, String blockCode, String input) {
+        if (blockType.equals("c")) {
+            blockSpec += " %s";
+        } else if (blockType.equals("e")) { // for subStack1, subStack2
+            blockSpec += " %s".repeat(2);
+        }
         ArrayList<String> params = extractParams(blockCode, input);
         ArrayList<String> paramsHolders = extractParamsHolders(blockSpec);
         ArrayList<String> secondParamsHolders = extractParamsHolders(blockCode);
@@ -188,7 +193,7 @@ public class BlockParamUtils {
         if (moreBlockType != null) {
             expectedRequireType = new RequiredBlockType(moreBlockType.first, moreBlockType.second);
         }
-        List<String> holders = getBlockParamInfo(block.spec, blockCode, "").second;
+        List<String> holders = getBlockParamInfo("", block.spec, blockCode, "").second;
         if (targetPosition < holders.size()) {
             String holder = holders.get(targetPosition);
             if (holder.equals("%s")) {

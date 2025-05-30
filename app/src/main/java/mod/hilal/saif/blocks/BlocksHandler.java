@@ -59,23 +59,6 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
-        hashMap.put("name", "viewOnClick");
-        hashMap.put("type", "c");
-        hashMap.put("typeName", "");
-        hashMap.put(
-                "code",
-                "%s.setOnClickListener(new View.OnClickListener() {\n"
-                        + "@Override\n"
-                        + "public void onClick(View _view) {\n"
-                        + "%s\n"
-                        + "}\n"
-                        + "});");
-        hashMap.put("color", "#4A6CD4");
-        hashMap.put("palette", "0");
-        hashMap.put("spec", "When %m.view clicked");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
         hashMap.put("name", "setRecyclerViewLayoutParams");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
