@@ -4,6 +4,8 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.besome.sketch.beans.BlockBean;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +27,43 @@ public class BlockParamUtils {
     }
 
     public Pair<ArrayList<String>, ArrayList<String>> getBlockParamInfo(String blockType, String blockSpec, String blockCode, String input) {
-        if (blockType.equals("c")) {
-            blockSpec += " %s";
-        } else if (blockType.equals("e")) { // for subStack1, subStack2
-            blockSpec += " %s".repeat(2);
-        }
+        String adjustedSpec = adjustBlockSpec(blockType, blockSpec);
         ArrayList<String> params = extractParams(blockCode, input);
-        ArrayList<String> paramsHolders = extractParamsHolders(blockSpec);
+        ArrayList<String> paramsHolders = extractParamsHolders(adjustedSpec);
         ArrayList<String> secondParamsHolders = extractParamsHolders(blockCode);
         return new Pair<>(reorderParamsByHolders(secondParamsHolders, params), paramsHolders);
     }
 
-    private ArrayList<String> extractParams(String pattern, String input) {
+    public Pair<ArrayList<String>, ArrayList<String>> getBlockParamInfo(String blockType, String blockSpec, String blockCode, Expression blockCodeExpr, Expression inputExpr) {
+        String adjustedSpec = adjustBlockSpec(blockType, blockSpec);
+        ArrayList<String> params = extractParams(blockCodeExpr, inputExpr);
+        ArrayList<String> paramsHolders = extractParamsHolders(adjustedSpec);
+        ArrayList<String> secondParamsHolders = extractParamsHolders(blockCode);
+        return new Pair<>(reorderParamsByHolders(secondParamsHolders, params), paramsHolders);
+    }
+
+    private ArrayList<String> extractParamsWithParser(Expression patternExpr, Expression inputExpr) {
+        try {
+            if (patternExpr instanceof MethodCallExpr patternCall && inputExpr instanceof MethodCallExpr inputCall) {
+                ArrayList<String> results = new ArrayList<>();
+
+            if (inputCall.getScope().isPresent()) {
+                results.add(inputCall.getScope().get().toString());
+            }
+
+            for (int i = 0; i < patternCall.getArguments().size(); i++) {
+                if (i < inputCall.getArguments().size()) {
+                    results.add(inputCall.getArgument(i).toString());
+                }
+            }
+
+                return results;
+            }
+        } catch (Exception ignored) {}
+        return null;
+    }
+
+    private ArrayList<String> extractParamsFallback(String pattern, String input) {
         ArrayList<String> results = new ArrayList<>();
 
         try {
@@ -82,6 +109,23 @@ public class BlockParamUtils {
         } catch (Exception ignored) {}
 
         return results;
+    }
+
+    private ArrayList<String> extractParams(Expression expr1, Expression expr2) {
+        return extractParamsWithParser(expr1, expr2);
+    }
+
+    private ArrayList<String> extractParams(String pattern, String input) {
+        return extractParamsFallback(pattern, input);
+    }
+
+    private String adjustBlockSpec(String blockType, String blockSpec) {
+        // for subStack1, subStack2 params
+        return switch (blockType) {
+            case "c" -> blockSpec + " %s";
+            case "e" -> blockSpec + " %s".repeat(2);
+            default -> blockSpec;
+        };
     }
 
     public ArrayList<String> extractParamsHolders(String pattern) {

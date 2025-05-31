@@ -1,6 +1,9 @@
 package pro.sketchware.blocks.generator.components.matchers;
 
+import android.util.Pair;
+
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.Statement;
@@ -22,6 +25,8 @@ public class BlockCodeMatcher {
     private ArrayList<String> paramsHolders;
     private boolean match;
     private final Pattern holderPattern = Pattern.compile(TranslatorUtils.getParamHolderRegex());
+    private Expression blockCodeExpr;
+    private Expression inputExpr;
 
     public BlockCodeMatcher(String blockType, String spec, String code, String norm, BlockParamUtils blockParamUtils) {
         String normalizedCode = normalizeWhitespace(code);
@@ -31,7 +36,12 @@ public class BlockCodeMatcher {
         this.formattedInputCode = tryFormat(normalizedInput);
 
         try {
-            var info = blockParamUtils.getBlockParamInfo(blockType, spec, formattedBlockCode, formattedInputCode);
+            Pair<ArrayList<String>, ArrayList<String>> info;
+            if (blockCodeExpr != null && inputExpr != null) {
+                info = blockParamUtils.getBlockParamInfo(blockType, spec, formattedBlockCode, blockCodeExpr, inputExpr);
+            } else {
+                info = blockParamUtils.getBlockParamInfo(blockType, spec, formattedBlockCode, formattedInputCode);
+            }
             this.params = info.first;
             this.paramsHolders = info.second;
 
@@ -63,7 +73,7 @@ public class BlockCodeMatcher {
         int index = 0;
 
         while (matcher.find()) {
-            String key = "PLACEHOLDER_" + index;
+            String key = "SKETCHWARE_PRO_PLACEHOLDER_" + index;
             if ("c".equals(blockType) && index == total - 1) {
                 key += "();";
             } else if ("e".equals(blockType) && index >= total - 2) {
@@ -95,6 +105,13 @@ public class BlockCodeMatcher {
     private String tryFormat(String code) {
         try {
             Expression expr = StaticJavaParser.parseExpression(code);
+            if (expr instanceof MethodCallExpr) {
+                if (blockCodeExpr == null) {
+                    blockCodeExpr = expr;
+                } else if (inputExpr == null) {
+                    inputExpr = expr;
+                }
+            }
             return expr.toString();
         } catch (Exception ignored) {}
 

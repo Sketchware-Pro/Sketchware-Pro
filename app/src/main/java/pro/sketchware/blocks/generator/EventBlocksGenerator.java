@@ -53,7 +53,6 @@ public class EventBlocksGenerator {
         handlers.add(new ExpressionStatementHandler(blockGeneratorCoordinator));
         handlers.add(new OtherStatementHandler(blockGeneratorCoordinator));
 
-        blockGeneratorCoordinator.blocksCategories().loadBlocks(TranslatorUtils.getPreLoadedBlocks(preLoadedBlockBeans, sc_id));
         blockGeneratorCoordinator.blocksCategories().loadBlocks(blockGeneratorCoordinator.projectResourcesHelper().getMoreBlocks());
         blockGeneratorCoordinator.blocksCategories().loadBlocks(new SwVanillaBlocksLoader().getSwVanillaBlocks());
         blockGeneratorCoordinator.blocksCategories().loadBlocks(ExtraBlockFile.getExtraBlockData());
