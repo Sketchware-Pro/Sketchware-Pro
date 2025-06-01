@@ -28,6 +28,8 @@ public class BlockCodeMatcher {
     private Expression blockCodeExpr;
     private Expression inputExpr;
 
+    private String result;
+
     public BlockCodeMatcher(String blockType, String spec, String code, String norm, BlockParamUtils blockParamUtils) {
         String normalizedCode = normalizeWhitespace(code);
         String normalizedInput = normalizeWhitespace(norm);
@@ -51,9 +53,13 @@ public class BlockCodeMatcher {
             boolean codeEqual = formatted.equals(formattedInputCode);
             boolean typeMatch = blockParamUtils.isMatchesParamsTypes(params, paramsHolders);
 
+            this.result = String.format("validSize = %s ---|--- notParamOnly = %s ---|--- codeEqual = %s ---|--- typeMatch = %s",
+                    validSize, notParamOnly, codeEqual, typeMatch);
+
             this.match = validSize && notParamOnly && codeEqual && typeMatch;
         } catch (Exception e) {
             this.match = false;
+            this.result = "Failed with exception : " + e.getMessage();
         }
     }
 
@@ -73,7 +79,7 @@ public class BlockCodeMatcher {
         int index = 0;
 
         while (matcher.find()) {
-            String key = "SKETCHWARE_PRO_PLACEHOLDER_" + index;
+            String key = BlockParamUtils.PLACEHOLDER_PARAM + index;
             if ("c".equals(blockType) && index == total - 1) {
                 key += "();";
             } else if ("e".equals(blockType) && index >= total - 2) {
@@ -146,6 +152,10 @@ public class BlockCodeMatcher {
 
     public String getFormattedInputCode() {
         return formattedInputCode;
+    }
+
+    public String getResult() {
+        return result;
     }
 
 }

@@ -41,7 +41,7 @@ public class ExtraBlockMatcher {
                                  |------result : %s
                                  |------params : %s
                                  |------paramsHolders : %s
-                                 |------block map content: %s
+                                 |------BlockCodeMatcherResult : %s
                             |---------------------------------------
                             """,
                     map.get("name"), matcher.getFormattedBlockCode(),
@@ -49,7 +49,7 @@ public class ExtraBlockMatcher {
                     matcher.isMatch() ? "matching ✅" : "failed ❌",
                     matcher.getParams(),
                     matcher.getParamsHolders(),
-                    map
+                    matcher.getResult()
             ));
 
             if (matcher.isMatch()) {

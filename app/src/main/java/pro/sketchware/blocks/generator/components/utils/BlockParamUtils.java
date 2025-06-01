@@ -5,6 +5,7 @@ import android.util.Pair;
 
 import com.besome.sketch.beans.BlockBean;
 import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ public class BlockParamUtils {
     private final ProjectResourcesHelper projectResourcesHelper;
 
     private final Pattern paramHolderPattern = Pattern.compile(TranslatorUtils.getParamHolderRegex());
+
+    public static final String PLACEHOLDER_PARAM = "SKETCHWARE_PRO_PLACEHOLDER";
 
     public BlockParamUtils(ProjectResourcesHelper projectResourcesHelper) {
         this.projectResourcesHelper = projectResourcesHelper;
@@ -44,23 +47,49 @@ public class BlockParamUtils {
 
     private ArrayList<String> extractParamsWithParser(Expression patternExpr, Expression inputExpr) {
         try {
-            if (patternExpr instanceof MethodCallExpr patternCall && inputExpr instanceof MethodCallExpr inputCall) {
-                ArrayList<String> results = new ArrayList<>();
+            return extractMatchingExpressions(patternExpr, inputExpr);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
 
-            if (inputCall.getScope().isPresent()) {
-                results.add(inputCall.getScope().get().toString());
-            }
+    private ArrayList<String> extractMatchingExpressions(Expression patternExpr, Expression inputExpr) {
+        ArrayList<String> results = new ArrayList<>();
 
-            for (int i = 0; i < patternCall.getArguments().size(); i++) {
-                if (i < inputCall.getArguments().size()) {
-                    results.add(inputCall.getArgument(i).toString());
-                }
-            }
+        if (patternExpr == null || inputExpr == null) {
+            return results;
+        }
 
+        if (patternExpr.isNameExpr() && patternExpr.asNameExpr().getNameAsString().startsWith(PLACEHOLDER_PARAM)) {
+            results.add(inputExpr.toString());
+            return results;
+        }
+
+        if (patternExpr instanceof MethodCallExpr patternCall && inputExpr instanceof MethodCallExpr inputCall) {
+            if (!patternCall.getNameAsString().equals(inputCall.getNameAsString())) {
                 return results;
             }
-        } catch (Exception ignored) {}
-        return null;
+
+            if (patternCall.getScope().isPresent() && inputCall.getScope().isPresent()) {
+                results.addAll(extractMatchingExpressions(patternCall.getScope().get(), inputCall.getScope().get()));
+            }
+
+            List<Expression> patternArgs = patternCall.getArguments();
+            List<Expression> inputArgs = inputCall.getArguments();
+            if (patternArgs.size() == inputArgs.size()) {
+                for (int i = 0; i < patternArgs.size(); i++) {
+                    results.addAll(extractMatchingExpressions(patternArgs.get(i), inputArgs.get(i)));
+                }
+            }
+            return results;
+        }
+
+        if (patternExpr instanceof FieldAccessExpr patternField && inputExpr instanceof FieldAccessExpr inputField) {
+            results.addAll(extractMatchingExpressions(patternField.getScope(), inputField.getScope()));
+            return results;
+        }
+
+        return results;
     }
 
     private ArrayList<String> extractParamsFallback(String pattern, String input) {
