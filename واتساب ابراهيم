@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق الاتصالات</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f5f7fa;
+        }
+        
+        .chat-bubble {
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto max-w-md min-h-screen bg-white shadow-lg flex flex-col">
+        <!-- App Header -->
+        <header class="bg-blue-600 text-white p-4 shadow-md">
+            <div class="flex items-center justify-between">
+                <h1 class="text-xl font-bold">تطبيق الاتصالات</h1>
+                <div id="userStatus" class="flex items-center">
+                    <span class="text-sm hidden md:inline-block mr-2">جار التحميل...</span>
+                    <div class="w-3 h-3 rounded-full bg-gray-300 animate-pulse"></div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-hidden">
+            <!-- Registration Screen (Initial View) -->
+            <div id="registrationScreen" class="p-6 h-full flex flex-col items-center justify-center">
+                <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                    <i class="fas fa-user-plus text-blue-600 text-4xl"></i>
+                </div>
+                <h2 class="text-xl font-bold mb-4 text-gray-800">تسجيل رقم الهاتف</h2>
+                <p class="text-gray-600 text-center mb-6">من فضلك قم بإدخال رقم هاتفك لتسجيل حساب جديد. سيتم استخدام هذا الرقم كمعرف لك في التطبيق.</p>
+                
+                <div class="w-full max-w-xs mb-6">
+                    <label for="phoneNumber" class="block text-gray-700 text-sm font-medium mb-2">رقم الهاتف</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <span class="text-gray-500">+966</span>
+                        </div>
+                        <input type="tel" id="phoneNumber" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-2 pr-16 py-3" placeholder="5XXXXXXXX" pattern="[0-9]{9}" required>
+                    </div>
+                    <p id="phoneError" class="text-red-500 text-xs mt-1 hidden">الرجاء إدخال رقم هاتف صحيح (9 أرقام)</p>
+                </div>
+                
+                <button id="registerBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg transition duration-200 flex items-center">
+                    <span>متابعة</span>
+                    <i class="fas fa-arrow-left ml-2"></i>
+                </button>
+            </div>
+            
+            <!-- Main Menu Screen (Hidden Initially) -->
+            <div id="mainMenuScreen" class="h-full hidden flex-col">
+                <!-- Contacts Header -->
+                <div class="bg-blue-600 text-white p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="fas fa-phone-alt mr-2"></i>
+                        <h2 class="font-medium">الاتصالات</h2>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button id="newChatBtn" class="p-1 rounded-full hover:bg-blue-700 transition">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button id="refreshBtn" class="p-1 rounded-full hover:bg-blue-700 transition">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="p-3 bg-gray-50">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" id="searchContact" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pr-10 py-2 pl-3" placeholder="ابحث عن جهة اتصال...">
+                    </div>
+                </div>
+                
+                <!-- Contacts List -->
+                <div id="contactsList" class="flex-1 overflow-y-auto custom-scrollbar">
+                    <!-- Contacts will be added here dynamically -->
+                    <div class="text-center py-10 text-gray-500">
+                        <i class="fas fa-users text-4xl mb-3 opacity-30"></i>
+                        <p>لا توجد جهات اتصال</p>
+                    </div>
+                </div>
+                
+                <!-- Bottom Navigation -->
+                <div class="bg-white border-t border-gray-200 flex justify-around py-2">
+                    <button class="p-2 text-blue-600 flex flex-col items-center">
+                        <i class="fas fa-phone-alt"></i>
+                        <span class="text-xs mt-1">الاتصالات</span>
+                    </button>
+                    <button class="p-2 text-gray-500 flex flex-col items-center">
+                        <i class="fas fa-comment-alt"></i>
+                        <span class="text-xs mt-1">الدردشة</span>
+                    </button>
+                    <button class="p-2 text-gray-500 flex flex-col items-center">
+                        <i class="fas fa-users"></i>
+                        <span class="text-xs mt-1">المجموعات</span>
+                    </button>
+                    <button class="p-2 text-gray-500 flex flex-col items-center">
+                        <i class="fas fa-cog"></i>
+                        <span class="text-xs mt-1">الإعدادات</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- New Contact Modal (Hidden) -->
+            <div id="newContactModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+                <div class="bg-white rounded-lg shadow-xl w-full max-w-md transform transition-all fade-in">
+                    <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="text-lg font-medium">إضافة جهة اتصال جديدة</h3>
+                        <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-4">
+                        <div class="mb-4">
+                            <label for="contactPhone" class="block text-gray-700 text-sm font-medium mb-2">رقم الهاتف</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <span class="text-gray-500">+966</span>
+                                </div>
+                                <input type="tel" id="contactPhone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-2 pr-16 py-3" placeholder="5XXXXXXXX" pattern="[0-9]{9}" required>
+                            </div>
+                            <p id="contactPhoneError" class="text-red-500 text-xs mt-1 hidden">الرجاء إدخال رقم هاتف صحيح (9 أرقام)</p>
+                        </div>
+                        <div class="mb-4">
+                            <label for="contactName" class="block text-gray-700 text-sm font-medium mb-2">الاسم (اختياري)</label>
+                            <input type="text" id="contactName" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-3 px-3" placeholder="اسم المستخدم">
+                        </div>
+                    </div>
+                    <div class="p-4 border-t border-gray-200 flex justify-end">
+                        <button id="cancelContactBtn" class="px-4 py-2 text-gray-600 hover:text-gray-800 mr-2">إلغاء</button>
+                        <button id="saveContactBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">حفظ</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Screen (Hidden) -->
+            <div id="chatScreen" class="h-full hidden flex-col">
+                <!-- Chat Header -->
+                <div class="bg-blue-600 text-white p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <button id="backToContactsBtn" class="mr-3">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <div>
+                            <h2 id="chatContactName" class="font-medium">محمد أحمد</h2>
+                            <p id="chatContactStatus" class="text-xs opacity-80">متصل الآن</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="p-1 rounded-full hover:bg-blue-700 transition">
+                            <i class="fas fa-phone-alt"></i>
+                        </button>
+                        <button class="p-1 rounded-full hover:bg-blue-700 transition">
+                            <i class="fas fa-video"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Chat Messages -->
+                <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
+                    <!-- Messages will be added here dynamically -->
+                    <div class="text-center py-10 text-gray-500">
+                        <i class="fas fa-comments text-4xl mb-3 opacity-30"></i>
+                        <p>ابدأ محادثة جديدة</p>
+                    </div>
+                </div>
+                
+                <!-- Message Input -->
+                <div class="p-3 bg-gray-50 border-t border-gray-200">
+                    <div class="flex items-center">
+                        <button class="p-2 text-gray-500 hover:text-gray-700 mx-1">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <input type="text" id="messageInput" class="flex-1 border border-gray-300 rounded-full py-2 px-4 focus:outline-none focus:ring-1 focus:ring-blue-500" placeholder="اكتب رسالة...">
+                        <button id="sendMessageBtn" class="p-2 text-blue-600 hover:text-blue-800 mx-1">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const registrationScreen = document.getElementById('registrationScreen');
+            const mainMenuScreen = document.getElementById('mainMenuScreen');
+            const newContactModal = document.getElementById('newContactModal');
+            const chatScreen = document.getElementById('chatScreen');
+            const phoneNumberInput = document.getElementById('phoneNumber');
+            const phoneError = document.getElementById('phoneError');
+            const registerBtn = document.getElementById('registerBtn');
+            const newChatBtn = document.getElementById('newChatBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const cancelContactBtn = document.getElementById('cancelContactBtn');
+            const saveContactBtn = document.getElementById('saveContactBtn');
+            const contactPhoneInput = document.getElementById('contactPhone');
+            const contactPhoneError = document.getElementById('contactPhoneError');
+            const contactNameInput = document.getElementById('contactName');
+            const contactsList = document.getElementById('contactsList');
+            const backToContactsBtn = document.getElementById('backToContactsBtn');
+            const messageInput = document.getElementById('messageInput');
+            const sendMessageBtn = document.getElementById('sendMessageBtn');
+            const chatMessages = document.getElementById('chatMessages');
+            const chatContactName = document.getElementById('chatContactName');
+            const chatContactStatus = document.getElementById('chatContactStatus');
+            const userStatus = document.getElementById('userStatus');
+            const refreshBtn = document.getElementById('refreshBtn');
+            
+            // App State
+            let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+            let contacts = JSON.parse(localStorage.getItem('contacts')) || [];
+            let currentChatContact = null;
+            
+            // Initialize the app
+            function initApp() {
+                if (currentUser) {
+                    // User is already registered
+                    showMainMenu();
+                    updateUserStatus();
+                } else {
+                    // Show registration screen
+                    registrationScreen.classList.remove('hidden');
+                }
+            }
+            
+            // Show main menu
+            function showMainMenu() {
+                registrationScreen.classList.add('hidden');
+                mainMenuScreen.classList.remove('hidden');
+                renderContacts();
+            }
+            
+            // Show chat screen
+            function showChatScreen(contact) {
+                currentChatContact = contact;
+                mainMenuScreen.classList.add('hidden');
+                chatScreen.classList.remove('hidden');
+                chatContactName.textContent = contact.name || `مستخدم ${contact.phone}`;
+                chatContactStatus.textContent = getRandomStatus();
+                renderMessages();
+            }
+            
+            // Show new contact modal
+            function showNewContactModal() {
+                newContactModal.classList.remove('hidden');
+                contactPhoneInput.value = '';
+                contactNameInput.value = '';
+            }
+            
+            // Hide new contact modal
+            function hideNewContactModal() {
+                newContactModal.classList.add('hidden');
+            }
+            
+            // Update user status
+            function updateUserStatus() {
+                if (currentUser) {
+                    const statusText = document.createElement('span');
+                    statusText.className = 'text-sm hidden md:inline-block mr-2';
+                    statusText.textContent = currentUser.phone;
+                    
+                    const statusDot = document.createElement('div');
+                    statusDot.className = 'w-3 h-3 rounded-full bg-green-500';
+                    
+                    userStatus.innerHTML = '';
+                    userStatus.appendChild(statusText);
+                    userStatus.appendChild(statusDot);
+                }
+            }
+            
+            // Get random status for contacts
+            function getRandomStatus() {
+                const statuses = ['متصل الآن', 'كان متصلاً قبل ساعة', 'غير متصل', 'مشغول'];
+                return statuses[Math.floor(Math.random() * statuses.length)];
+            }
+            
+            // Render contacts list
+            function renderContacts() {
+                contactsList.innerHTML = '';
+                
+                if (contacts.length === 0) {
+                    contactsList.innerHTML = `
+                        <div class="text-center py-10 text-gray-500">
+                            <i class="fas fa-users text-4xl mb-3 opacity-30"></i>
+                            <p>لا توجد جهات اتصال</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                contacts.forEach(contact => {
+                    const contactElement = document.createElement('div');
+                    contactElement.className = 'p-3 border-b border-gray-100 flex items-center hover:bg-gray-50 cursor-pointer transition';
+                    contactElement.innerHTML = `
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-medium">${contact.name || `مستخدم ${contact.phone}`}</h3>
+                            <p class="text-xs text-gray-500">${getRandomStatus()}</p>
+                        </div>
+                        <div class="text-gray-400">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    `;
+                    
+                    contactElement.addEventListener('click', () => showChatScreen(contact));
+                    contactsList.appendChild(contactElement);
+                });
+            }
+            
+            // Render messages in chat
+            function renderMessages() {
+                chatMessages.innerHTML = '';
+                
+                if (!currentChatContact.messages || currentChatContact.messages.length === 0) {
+                    chatMessages.innerHTML = `
+                        <div class="text-center py-10 text-gray-500">
+                            <i class="fas fa-comments text-4xl mb-3 opacity-30"></i>
+                            <p>ابدأ محادثة جديدة</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                currentChatContact.messages.forEach(message => {
+                    const isCurrentUser = message.sender === currentUser.phone;
+                    
+                    const messageElement = document.createElement('div');
+                    messageElement.className = `flex ${isCurrentUser ? 'justify-start' : 'justify-end'}`;
+                    
+                    const bubble = document.createElement('div');
+                    bubble.className = `chat-bubble p-3 rounded-lg ${isCurrentUser ? 'bg-blue-100 text-gray-800' : 'bg-blue-600 text-white'} rounded-${isCurrentUser ? 'tr' : 'tl'}-none`;
+                    bubble.textContent = message.text;
+                    
+                    me
