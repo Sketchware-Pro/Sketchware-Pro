@@ -98,7 +98,7 @@ dependencies {
 
     implementation "com.github.bumptech.glide:glide:4.16.0"
 
-    implementation 'androidx.exifinterface:exifinterface:1.4.0'
+    implementation 'androidx.exifinterface:exifinterface:1.4.1'
     implementation "androidx.preference:preference:1.2.1"
     implementation files('libs/android-svg.jar')
 
