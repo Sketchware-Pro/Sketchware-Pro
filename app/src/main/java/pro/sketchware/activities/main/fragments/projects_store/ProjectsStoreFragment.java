@@ -19,7 +19,6 @@ import pro.sketchware.activities.main.fragments.projects_store.adapters.StorePro
 import pro.sketchware.activities.main.fragments.projects_store.api.SketchHubAPI;
 import pro.sketchware.activities.main.fragments.projects_store.classes.CenterZoomListener;
 import pro.sketchware.databinding.FragmentProjectsStoreBinding;
-import pro.sketchware.utility.SketchwareUtil;
 
 public class ProjectsStoreFragment extends Fragment {
     private FragmentProjectsStoreBinding binding;
@@ -54,9 +53,6 @@ public class ProjectsStoreFragment extends Fragment {
 
         recyclerView.addOnScrollListener(new CenterZoomListener());
 
-        int spacing = SketchwareUtil.dpToPx(12f);
-        // recyclerView.addItemDecoration(new HorizontalItemDecoration(spacing));
-
         recyclerView.setClipToPadding(false);
         recyclerView.setClipChildren(false);
 
@@ -65,8 +61,6 @@ public class ProjectsStoreFragment extends Fragment {
             ((ViewGroup) parent).setClipChildren(false);
             ((ViewGroup) parent).setClipToPadding(false);
         }
-
-        // recyclerView.setPadding(spacing, 0, spacing, 0);
     }
 
     private void fetchData() {

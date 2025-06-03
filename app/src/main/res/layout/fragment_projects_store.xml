@@ -32,13 +32,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:drawablePadding="8dp"
-                    android:drawableTint="?attr/colorOnErrorContainer"
                     android:maxLines="3"
                     android:scrollHorizontally="true"
                     android:text="This is still a basic implementation of the projects store. We're actively working on improving it. Stay tuned!"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnErrorContainer"
-                    app:drawableStartCompat="@drawable/ic_mtrl_info" />
+                    app:drawableStartCompat="@drawable/ic_mtrl_info"
+                    app:drawableTint="?attr/colorOnErrorContainer" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
