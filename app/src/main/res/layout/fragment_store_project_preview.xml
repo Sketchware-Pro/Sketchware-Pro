@@ -92,8 +92,8 @@
                     android:id="@+id/what_is_new"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="We have added a lot of cars in this fire update!\nAdded the description of each car.\n\nTry it now!"
-                    android:textAppearance="?attr/textAppearanceBodyMedium" />
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    tools:text="Meet Sketchware Pro v7.0.0!\nFinally, the long-awaited version has been released!" />
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
@@ -115,7 +115,9 @@
                 android:nestedScrollingEnabled="false"
                 android:orientation="horizontal"
                 android:paddingHorizontal="24dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/view_store_project_screenshot" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -238,8 +240,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
-            android:visibility="gone"
             android:text="Comments"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/btn_download"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/buttons_divider" />
