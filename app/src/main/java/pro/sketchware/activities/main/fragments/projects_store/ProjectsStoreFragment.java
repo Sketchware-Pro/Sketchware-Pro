@@ -14,13 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import pro.sketchware.BuildConfig;
-import pro.sketchware.R;
 import pro.sketchware.activities.main.fragments.projects_store.adapters.StorePagerProjectsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.adapters.StoreProjectsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.api.SketchHubAPI;
 import pro.sketchware.activities.main.fragments.projects_store.classes.CenterZoomListener;
-import pro.sketchware.activities.main.fragments.projects_store.classes.HorizontalItemDecoration;
 import pro.sketchware.databinding.FragmentProjectsStoreBinding;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ProjectsStoreFragment extends Fragment {
     private FragmentProjectsStoreBinding binding;
@@ -55,8 +54,8 @@ public class ProjectsStoreFragment extends Fragment {
 
         recyclerView.addOnScrollListener(new CenterZoomListener());
 
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.recycler_view_item_spacing);
-        recyclerView.addItemDecoration(new HorizontalItemDecoration(spacingInPixels));
+        int spacing = SketchwareUtil.dpToPx(12f);
+        // recyclerView.addItemDecoration(new HorizontalItemDecoration(spacing));
 
         recyclerView.setClipToPadding(false);
         recyclerView.setClipChildren(false);
@@ -67,8 +66,7 @@ public class ProjectsStoreFragment extends Fragment {
             ((ViewGroup) parent).setClipToPadding(false);
         }
 
-        int sidePadding = getResources().getDimensionPixelSize(R.dimen.recycler_view_item_spacing);
-        recyclerView.setPadding(sidePadding, 0, sidePadding, 0);
+        // recyclerView.setPadding(spacing, 0, spacing, 0);
     }
 
     private void fetchData() {

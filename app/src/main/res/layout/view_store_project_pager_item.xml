@@ -1,13 +1,13 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/materialCardViewFilledStyle"
     android:layout_width="300dp"
     android:layout_height="180dp"
     android:clickable="true"
     android:focusable="true"
     app:cardBackgroundColor="?attr/colorSurfaceContainer"
-    app:cardCornerRadius="10dp"
-    app:strokeWidth="0.5dp">
+    app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -83,7 +83,6 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -91,12 +90,14 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/projectImageCard"
+            style="?attr/materialCardViewFilledStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:cardBackgroundColor="?attr/colorSurfaceContainer"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeWidth="0.5dp">
 
             <ImageView
                 android:id="@+id/projectImage"
@@ -116,9 +117,8 @@
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="6dp"
             android:singleLine="true"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textAppearance="?attr/textAppearanceBodyLargeEmphasized"
             android:textColor="#fff"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/projectImageCard"
             app:layout_constraintTop_toTopOf="@+id/projectImageCard"

@@ -1,98 +1,76 @@
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="120dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="6dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:transitionName="project_preview"
-    app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
-    app:cardCornerRadius="16dp"
-    app:strokeWidth="0.5dp">
+    android:layout_marginEnd="16dp"
+    android:minHeight="150dp"
+    android:orientation="vertical"
+    android:paddingTop="4dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+        app:cardCornerRadius="16dp"
+        app:strokeColor="?attr/colorSurfaceContainerHighest"
+        app:strokeWidth="0.5dp">
 
         <ImageView
-            android:id="@+id/projectImage"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:contentDescription="@null"
+            android:id="@+id/icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/full_image_48" />
+            android:src="@drawable/default_image" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textAppearance="?attr/textAppearanceBodyMediumEmphasized"
+        tools:text="Sketchware Pro" />
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/heart_empty_white_outline_96"
+            app:tint="?attr/colorOnSurface" />
 
         <TextView
-            android:id="@+id/projectTitle"
+            android:id="@+id/likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:singleLine="true"
-            android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:textStyle="bold"
-            tools:text="Sketchware Pro Demo" />
+            android:layout_marginStart="2dp"
+            android:gravity="center_vertical"
+            android:text="1.2K"
+            android:textAppearance="?attr/textAppearanceBodySmallEmphasized" />
 
+        <ImageView
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_marginStart="8dp"
+            app:srcCompat="@drawable/ic_mtrl_download"
+            app:tint="?attr/colorOnSurface" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/downloads"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginBottom="10dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_mtrl_download" />
-
-                <TextView
-                    android:id="@+id/projectDownloads"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:maxLines="2"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    tools:text="14" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/heart_empty_white_outline_96"
-                    app:tint="?attr/colorOnSurfaceVariant" />
-
-                <TextView
-                    android:id="@+id/projectLikes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:maxLines="2"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    tools:text="14" />
-            </LinearLayout>
-        </LinearLayout>
-
+            android:layout_marginStart="2dp"
+            android:gravity="center_vertical"
+            android:text="1.2K"
+            android:textAppearance="?attr/textAppearanceBodySmallEmphasized" />
     </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>

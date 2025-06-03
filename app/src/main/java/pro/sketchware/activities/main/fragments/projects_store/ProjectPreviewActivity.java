@@ -3,23 +3,21 @@ package pro.sketchware.activities.main.fragments.projects_store;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Window;
+import android.text.format.DateUtils;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
-import androidx.core.content.ContextCompat;
-import androidx.transition.ChangeBounds;
-import androidx.transition.TransitionManager;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.transition.platform.MaterialContainerTransform;
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import pro.sketchware.activities.main.fragments.projects_store.adapters.ProjectScreenshotsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
 import pro.sketchware.databinding.FragmentStoreProjectPreviewBinding;
+import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.utility.UI;
 
 public class ProjectPreviewActivity extends BaseAppCompatActivity {
@@ -28,70 +26,39 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
 
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-
         binding = FragmentStoreProjectPreviewBinding.inflate(getLayoutInflater());
-
-        EdgeToEdge.enable(this);
-
         setContentView(binding.getRoot());
 
-        binding.getRoot().setTransitionName("project_preview");
-        setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-        getWindow().setSharedElementEnterTransition(new MaterialContainerTransform().addTarget(binding.getRoot()).setDuration(400L));
-        getWindow().setSharedElementReturnTransition(new MaterialContainerTransform().addTarget(binding.getRoot()).setDuration(400L));
-
         loadProjectData(getIntent().getExtras());
-
-        initializeLogic();
     }
 
-    private void initializeLogic() {
-        binding.projectTitle.setText(project.getTitle());
-        binding.projectAuthor.setText(project.getUserName());
-        binding.projectDownloads.setText(project.getDownloads());
-        binding.projectLikes.setText(project.getLikes());
-        binding.projectComments.setText(project.getComments());
-        binding.projectSize.setText(project.getProjectSize());
-        binding.projectCategory.setText(project.getCategory());
-        binding.btnOpenProject.setOnClickListener(v -> openProject());
-        binding.projectDescription.setText(project.getDescription());
-        binding.projectDescription.setMaxLines(4);
-        binding.seeMore.setOnClickListener(v -> {
-            if (binding.projectDescription.getMaxLines() == 4) {
-                ChangeBounds changeBounds = new ChangeBounds();
+    private void loadProjectData(Bundle bundle) {
+        if (bundle == null) return;
 
-                changeBounds.addTarget(binding.projectDescription);
-                changeBounds.setDuration(300);
-                TransitionManager.beginDelayedTransition(binding.getRoot(), changeBounds);
+        String json = bundle.getString("project_json");
+        project = new Gson().fromJson(json, ProjectModel.Project.class);
 
-                binding.projectDescription.setMaxLines(Integer.MAX_VALUE);
-                binding.seeMore.setText("See less");
-            } else {
-                ChangeBounds changeBounds = new ChangeBounds();
+        binding.name.setText(project.getTitle());
+        binding.author.setText(project.getUserName());
+        binding.description.setText(project.getDescription());
 
-                changeBounds.addTarget(binding.projectDescription);
-                changeBounds.setDuration(300);
-                TransitionManager.beginDelayedTransition(binding.getRoot(), changeBounds);
+        String whatIsNew = project.getWhatsnew();
+        if (whatIsNew.isEmpty()) {
+            binding.cardWhatIsNew.setVisibility(View.GONE);
+        } else {
+            binding.cardWhatIsNew.setVisibility(View.VISIBLE);
+            binding.whatIsNew.setText(whatIsNew);
+        }
 
-                binding.projectDescription.setMaxLines(4);
-                binding.seeMore.setText("See more");
-            }
-        });
-        UI.loadImageFromUrl(binding.projectImage, project.getIcon());
-        UI.loadImageFromUrl(binding.screenshot1, project.getScreenshot1());
-        UI.loadImageFromUrl(binding.screenshot2, project.getScreenshot2());
-        UI.loadImageFromUrl(binding.screenshot3, project.getScreenshot3());
+        binding.downloads.setText(project.getDownloads());
+        binding.filesize.setText(project.getProjectSize());
+        binding.timestamp.setText(DateUtils.formatDateTime(this, TimeUnit.SECONDS.toMillis(Long.parseLong(project.getPublishedTimestamp())), DateUtils.FORMAT_ABBREV_RELATIVE));
+        binding.btnDownload.setOnClickListener(v -> openProject());
 
-        binding.collapsingToolbar.setTitle(project.getTitle());
-        binding.collapsingToolbar.setExpandedTitleTextColor(ContextCompat.getColorStateList(this, android.R.color.transparent));
-        setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        binding.toolbar.setNavigationOnClickListener(v -> finishAfterTransition());
+        binding.toolbar.setNavigationOnClickListener(v -> finish());
 
         ArrayList<String> screenshots = new ArrayList<>();
         for (int i = 0; i <= 4; i++) {
@@ -101,7 +68,16 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
             }
         }
 
-        binding.projectScreenshots.setAdapter(new ProjectScreenshotsAdapter(screenshots));
+        binding.screenshots.setAdapter(new ProjectScreenshotsAdapter(screenshots));
+
+        UI.loadImageFromUrl(binding.icon, project.getIcon());
+        UI.addSystemWindowInsetToPadding(binding.buttonsContainer, true, false, true, true);
+
+        if (ThemeUtils.isDarkThemeEnabled(this)) {
+            getWindow().setStatusBarColor(0x33000000);
+        } else {
+            getWindow().setStatusBarColor(0x12000000);
+        }
     }
 
     private String getScreenshot(int index) {
@@ -113,13 +89,6 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
             case 4 -> project.getScreenshot5();
             default -> null;
         };
-    }
-
-    private void loadProjectData(Bundle bundle) {
-        if (bundle != null) {
-            String json = bundle.getString("project_json");
-            project = new Gson().fromJson(json, ProjectModel.Project.class);
-        }
     }
 
     private void openProject() {
