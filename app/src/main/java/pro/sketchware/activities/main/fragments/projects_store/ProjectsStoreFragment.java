@@ -16,18 +16,18 @@ import androidx.recyclerview.widget.SnapHelper;
 import pro.sketchware.BuildConfig;
 import pro.sketchware.activities.main.fragments.projects_store.adapters.StorePagerProjectsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.adapters.StoreProjectsAdapter;
-import pro.sketchware.activities.main.fragments.projects_store.api.SketchHubAPI;
+import pro.sketchware.activities.main.fragments.projects_store.api.SketchubAPI;
 import pro.sketchware.activities.main.fragments.projects_store.classes.CenterZoomListener;
 import pro.sketchware.databinding.FragmentProjectsStoreBinding;
 
 public class ProjectsStoreFragment extends Fragment {
     private FragmentProjectsStoreBinding binding;
-    private SketchHubAPI sketchHubAPI;
+    private SketchubAPI sketchubAPI;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentProjectsStoreBinding.inflate(inflater, container, false);
-        sketchHubAPI = new SketchHubAPI(BuildConfig.SKETCHUB_API_KEY);
+        sketchubAPI = new SketchubAPI(BuildConfig.SKETCHUB_API_KEY);
         return binding.getRoot();
     }
 
@@ -65,17 +65,17 @@ public class ProjectsStoreFragment extends Fragment {
 
     private void fetchData() {
         var activity = getActivity();
-        sketchHubAPI.getEditorsChoicerProjects(1, projectModel -> {
+        sketchubAPI.getEditorsChoicerProjects(1, projectModel -> {
             if (projectModel != null) {
                 binding.editorsChoiceProjectsRecyclerView.setAdapter(new StorePagerProjectsAdapter(projectModel.getProjects(), activity));
             }
         });
-        sketchHubAPI.getMostDownloadedProjects(1, projectModel -> {
+        sketchubAPI.getMostDownloadedProjects(1, projectModel -> {
             if (projectModel != null) {
                 binding.mostDownloadedProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), activity));
             }
         });
-        sketchHubAPI.getRecentProjects(1, projectModel -> {
+        sketchubAPI.getRecentProjects(1, projectModel -> {
             if (projectModel != null) {
                 binding.recentProjectsRecyclerView.setAdapter(new StoreProjectsAdapter(projectModel.getProjects(), activity));
             }
