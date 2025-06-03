@@ -54,7 +54,7 @@ public class EventBlocksGenerator {
         handlers.add(new OtherStatementHandler(blockGeneratorCoordinator));
 
         blockGeneratorCoordinator.blocksCategories().loadBlocks(blockGeneratorCoordinator.projectResourcesHelper().getMoreBlocks());
-        blockGeneratorCoordinator.blocksCategories().loadBlocks(new SwVanillaBlocksLoader().getSwVanillaBlocks());
+        blockGeneratorCoordinator.blocksCategories().loadBlocks(new SwVanillaBlocksLoader().getSwVanillaBlocks(blockGeneratorCoordinator.isViewBindingEnabled()));
         blockGeneratorCoordinator.blocksCategories().loadBlocks(ExtraBlockFile.getExtraBlockData());
     }
 

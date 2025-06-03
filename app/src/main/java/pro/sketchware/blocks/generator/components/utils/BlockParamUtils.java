@@ -9,11 +9,13 @@ import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import a.a.a.Fx;
+import a.a.a.uq;
 import pro.sketchware.blocks.generator.components.records.RequiredBlockType;
 import pro.sketchware.blocks.generator.components.resources.ProjectResourcesHelper;
 
@@ -255,7 +257,11 @@ public class BlockParamUtils {
                     projectResourcesHelper.getFields(projectResourcesHelper.LIST_INT_FIELDS).contains(param);
             case "%m.listMap" ->
                     projectResourcesHelper.getFields(projectResourcesHelper.LIST_MAP_FIELDS).contains(param);
-            default -> false;
+            case "%m.visible" ->
+                    new ArrayList<>(Arrays.asList(uq.g)).contains(param);
+            case "%m.cacheMode" ->
+                    new ArrayList<>(Arrays.asList(uq.h)).contains(param);
+            default -> true;
         };
     }
 

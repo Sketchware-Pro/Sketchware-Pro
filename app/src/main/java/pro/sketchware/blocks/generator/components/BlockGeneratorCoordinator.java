@@ -1,5 +1,6 @@
 package pro.sketchware.blocks.generator.components;
 
+import mod.hey.studios.project.ProjectSettings;
 import pro.sketchware.blocks.generator.components.builders.BinaryExprOperatorsTreeBuilder;
 import pro.sketchware.blocks.generator.components.builders.ExpressionBlockBuilder;
 import pro.sketchware.blocks.generator.components.matchers.ExtraBlockMatcher;
@@ -24,6 +25,7 @@ public class BlockGeneratorCoordinator {
     private final BlocksCategories blocksCategories;
     private StatementProcessor statementProcessor;
     private final BlockParamUtils blockParamUtils;
+    private final ProjectSettings projectSettings;
 
     private final ArrayList<BlockBean> blockBeans = new ArrayList<>();
     private final ArrayList<String> noNextBlocks = new ArrayList<>();
@@ -36,6 +38,8 @@ public class BlockGeneratorCoordinator {
         binaryExprOperatorsTreeBuilder = new BinaryExprOperatorsTreeBuilder(this);
         expressionBlockBuilder = new ExpressionBlockBuilder(this);
         extraBlockMatcher = new ExtraBlockMatcher(this);
+
+        projectSettings = new ProjectSettings(sc_id);
     }
 
     public void setStatementProcessor(StatementProcessor statementProcessor) {
@@ -88,6 +92,10 @@ public class BlockGeneratorCoordinator {
 
     public ArrayList<String> noNextBlocks() {
         return noNextBlocks;
+    }
+
+    public boolean isViewBindingEnabled() {
+        return projectSettings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "false").equals("true");
     }
 
 }

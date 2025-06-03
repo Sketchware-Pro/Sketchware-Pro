@@ -7,8 +7,10 @@ import com.github.javaparser.ast.expr.Expression;
 import com.besome.sketch.beans.BlockBean;
 
 import a.a.a.Fx;
+import a.a.a.Lx;
 import pro.sketchware.blocks.generator.components.BlockGeneratorCoordinator;
 import pro.sketchware.blocks.generator.components.records.RequiredBlockType;
+import pro.sketchware.blocks.generator.components.utils.BlockParamUtils;
 import pro.sketchware.blocks.generator.components.utils.TranslatorUtils;
 
 import java.util.ArrayList;
@@ -22,6 +24,26 @@ public class ExtraBlockMatcher {
         this.blockGeneratorCoordinator = blockGeneratorCoordinator;
     }
 
+    public String getModifiedBlockCode(String oldBlockCode, String code, String runTimeName) {
+        if (runTimeName.equals("setAdapter")) {
+            int viewParamIndex = code.indexOf(".setAdapter");
+            if (viewParamIndex != -1) {
+                String viewBindingStarting = "binding.";
+                String viewParam = code.substring(0, viewParamIndex);
+
+                if (blockGeneratorCoordinator.isViewBindingEnabled() && viewParam.startsWith(viewBindingStarting)) {
+                    viewParam = viewParam.substring(viewBindingStarting.length());
+                }
+
+                return oldBlockCode.replace(
+                        BlockParamUtils.PLACEHOLDER_PARAM,
+                        Lx.a(viewParam, blockGeneratorCoordinator.isViewBindingEnabled())
+                );
+            }
+        }
+        return oldBlockCode;
+    }
+
     public ArrayList<BlockBean> tryExtraBlockMatch(String input, boolean hasNext, ArrayList<HashMap<String, Object>> targetBlocks) {
         int startId = blockGeneratorCoordinator.idCounter().get();
         String norm = input.trim();
@@ -32,6 +54,10 @@ public class ExtraBlockMatcher {
             String spec = TranslatorUtils.safeGetString(map.get("spec")).trim();
             String type = TranslatorUtils.safeGetString(map.get("type"));
 
+            if (map.containsKey("runtimeHandling")) {
+                code = getModifiedBlockCode(code, norm, TranslatorUtils.safeGetString(map.get("runtimeHandling")));
+            }
+
             BlockCodeMatcher matcher = new BlockCodeMatcher(type, spec, code, norm, blockGeneratorCoordinator.blockParamUtil());
 
             Log.d("BlocksGenerator", String.format("""
@@ -41,6 +67,7 @@ public class ExtraBlockMatcher {
                                  |------result : %s
                                  |------params : %s
                                  |------paramsHolders : %s
+                                 |------hasRuntimeHandling : %s
                                  |------BlockCodeMatcherResult : %s
                             |---------------------------------------
                             """,
@@ -49,6 +76,7 @@ public class ExtraBlockMatcher {
                     matcher.isMatch() ? "matching ✅" : "failed ❌",
                     matcher.getParams(),
                     matcher.getParamsHolders(),
+                    map.containsKey("runtimeHandling"),
                     matcher.getResult()
             ));
 

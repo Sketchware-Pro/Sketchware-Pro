@@ -3,9 +3,11 @@ package pro.sketchware.blocks.generator.components.resources;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import pro.sketchware.blocks.generator.components.utils.BlockParamUtils;
+
 public class SwVanillaBlocksLoader {
 
-    public ArrayList<HashMap<String, Object>> getSwVanillaBlocks() {
+    public ArrayList<HashMap<String, Object>> getSwVanillaBlocks(boolean isViewBindingEnabled) {
         ArrayList<HashMap<String, Object>> blocks = new ArrayList<>();
 
         // TODO: need to add every single block from a.a.a.Fx#getBlockCode(...)
@@ -617,7 +619,705 @@ public class SwVanillaBlocksLoader {
         hashMap.put("spec", "when %m.view clicked");
         blocks.add(hashMap);
 
+        hashMap = new HashMap<>();
+        hashMap.put("name", "isDrawerOpen");
+        hashMap.put("type", "b");
+        hashMap.put("code",
+                isViewBindingEnabled ? "binding.Drawer.isDrawerOpen(GravityCompat.START)" : "_drawer.isDrawerOpen(GravityCompat.START)"
+        );
+        hashMap.put("spec", "is drawer open");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "openDrawer");
+        hashMap.put("type", " ");
+        hashMap.put("code",
+                isViewBindingEnabled ? "binding.Drawer.openDrawer(GravityCompat.START);" : "_drawer.openDrawer(GravityCompat.START);"
+        );
+        hashMap.put("spec", "open drawer");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "closeDrawer");
+        hashMap.put("type", " ");
+        hashMap.put("code",
+                isViewBindingEnabled ? "binding.Drawer.closeDrawer(GravityCompat.START);" : "_drawer.closeDrawer(GravityCompat.START);"
+        );
+        hashMap.put("spec", "close drawer");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setEnable");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setEnabled(%s);");
+        hashMap.put("spec", "%m.view set enabled %b");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getEnable");
+        hashMap.put("type", "b");
+        hashMap.put("code", "%s.isEnabled()");
+        hashMap.put("spec", "%m.view is enabled");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setText");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setText(%s);");
+        hashMap.put("spec", "%m.textview set text %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setTypeface");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setTypeface(Typeface.DEFAULT, %s);");
+        hashMap.put("spec", "%m.textview set typeface %m.font with style %m.typeface");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setTypeface");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setTypeface(Typeface.createFromAsset(getAssets(),\"fonts/%s.ttf\"), %s);");
+        hashMap.put("spec", "%m.textview set typeface %m.font with style %m.typeface");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getText");
+        hashMap.put("type", "s");
+        hashMap.put("code", "%s.getText().toString()");
+        hashMap.put("spec", "%m.textview get text");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setBgColor");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setBackgroundColor(%s);");
+        hashMap.put("spec", "%m.view set background color %m.color");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setBgResource");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setBackgroundResource(R.drawable.%s);");
+        hashMap.put("spec", "%m.view set background resource %m.drawable");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setBgResource");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setBackgroundResource(%s);");
+        hashMap.put("spec", "%m.view set background resource %m.drawable");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setTextColor");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setTextColor(%s);");
+        hashMap.put("spec", "%m.textview set text color %m.color");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setImage");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setImageResource(R.drawable.%s);");
+        hashMap.put("spec", "%m.imageview set image %m.drawable");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setColorFilter");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setColorFilter(%s, PorterDuff.Mode.MULTIPLY);");
+        hashMap.put("spec", "%m.imageview set color filter %m.color");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "requestFocus");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.requestFocus();");
+        hashMap.put("spec", "%m.view request focus");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "doToast");
+        hashMap.put("type", " ");
+        hashMap.put("code", "SketchwareUtil.showMessage(getApplicationContext(), %s);");
+        hashMap.put("spec", "show toast %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "copyToClipboard");
+        hashMap.put("type", " ");
+        hashMap.put("code", "((ClipboardManager) getSystemService(getApplicationContext().CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText(\"clipboard\", %s));");
+        hashMap.put("spec", "copy to clipboard %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setTitle");
+        hashMap.put("type", " ");
+        hashMap.put("code", "setTitle(%s);");
+        hashMap.put("spec", "set title %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "intentSetAction");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setAction(Intent.%s);");
+        hashMap.put("spec", "%m.intent set action %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "intentSetData");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setData(Uri.parse(%s));");
+        hashMap.put("spec", "%m.intent set data %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "intentSetScreen");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setClass(getApplicationContext(), %s.class);");
+        hashMap.put("spec", "%m.intent set screen %m.class");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "intentPutExtra");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.putExtra(%s, %s);");
+        hashMap.put("spec", "%m.intent put extra %s %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "intentSetFlags");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setFlags(Intent.FLAG_ACTIVITY_%s);");
+        hashMap.put("spec", "%m.intent set flags %m.intentAction");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "intentGetString");
+        hashMap.put("type", "s");
+        hashMap.put("code", "getIntent().getStringExtra(%s)");
+        hashMap.put("spec", "get intent string extra %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "startActivity");
+        hashMap.put("type", " ");
+        hashMap.put("code", "startActivity(%s);");
+        hashMap.put("spec", "start activity %m.intent");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "finishActivity");
+        hashMap.put("type", " ");
+        hashMap.put("code", "finish();");
+        hashMap.put("spec", "finish activity");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "fileGetData");
+        hashMap.put("type", "s");
+        hashMap.put("code", "%s.getString(%s, \"\")");
+        hashMap.put("spec", "%m.SharedPreferences get string %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "fileSetData");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.edit().putString(%s, %s).commit();");
+        hashMap.put("spec", "%m.SharedPreferences set string %s to %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "fileRemoveData");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.edit().remove(%s).commit();");
+        hashMap.put("spec", "%m.SharedPreferences remove string %s");
+        blocks.add(hashMap);
+
+
+        // skipping calendar blocks for now
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setVisible");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setVisibility(View.%s);");
+        hashMap.put("spec", "%m.view set visibility %m.visible");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setClickable");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setClickable(%s);");
+        hashMap.put("spec", "%m.view set clickable %b");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setRotate");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setRotation((float)(%s));");
+        hashMap.put("spec", "%m.view set rotation %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getRotate");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.getRotation()");
+        hashMap.put("spec", "%m.view get rotation");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setAlpha");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setAlpha((float)(%s));");
+        hashMap.put("spec", "%m.view set alpha %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getAlpha");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.getAlpha()");
+        hashMap.put("spec", "%m.view get alpha");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setTranslationX");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setTranslationX((float)(%s));");
+        hashMap.put("spec", "%m.view set translation x %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getTranslationX");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.getTranslationX()");
+        hashMap.put("spec", "%m.view get translation x");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setTranslationY");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setTranslationY((float)(%s));");
+        hashMap.put("spec", "%m.view set translation y %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getTranslationY");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.getTranslationY()");
+        hashMap.put("spec", "%m.view get translation y");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setScaleX");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setScaleX((float)(%s));");
+        hashMap.put("spec", "%m.view set scale x %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getScaleX");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.getScaleX()");
+        hashMap.put("spec", "%m.view get scale x");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setScaleY");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setScaleY((float)(%s));");
+        hashMap.put("spec", "%m.view set scale y %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getScaleY");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.getScaleY()");
+        hashMap.put("spec", "%m.view get scale y");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getLocationX");
+        hashMap.put("type", "d");
+        hashMap.put("code", "SketchwareUtil.getLocationX(%s)");
+        hashMap.put("spec", "%m.view get location x");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getLocationY");
+        hashMap.put("type", "d");
+        hashMap.put("code", "SketchwareUtil.getLocationY(%s)");
+        hashMap.put("spec", "%m.view get location y");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "setChecked");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setChecked(%s);");
+        hashMap.put("spec", "%m.checkbox set checked %b");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "getChecked");
+        hashMap.put("type", "b");
+        hashMap.put("code", "%s.isChecked()");
+        hashMap.put("spec", "%m.checkbox get checked");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "listSetData");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, %s));");
+        hashMap.put("spec", "%m.listview set data %m.listStr");
+        blocks.add(hashMap);
+
+        blocks.addAll(getAdaptersList(
+                "listSetCustomViewData",
+                "recyclerSetCustomViewData",
+                "spnSetCustomViewData",
+                "pagerSetCustomViewData",
+                "gridSetCustomViewData"
+        ));
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "listRefresh");
+        hashMap.put("type", " ");
+        hashMap.put("code", "((BaseAdapter)%s.getAdapter()).notifyDataSetChanged();");
+        hashMap.put("spec", "%m.listview refresh");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "listSetItemChecked");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setItemChecked((int)(%s), %s);");
+        hashMap.put("spec", "%m.listview set item at %d checked %b");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "listGetCheckedPosition");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.getCheckedItemPosition()");
+        hashMap.put("spec", "%m.listview get checked item position");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "listGetCheckedPositions");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%2$s = SketchwareUtil.getCheckedItemPositionsToArray(%1$s);");
+        hashMap.put("spec", "%m.listview getCheckedItemPositionsToArray %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "listGetCheckedCount");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.getCheckedItemCount()");
+        hashMap.put("spec", "%m.listview get checked item count");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "listSmoothScrollTo");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.smoothScrollToPosition((int)(%s));");
+        hashMap.put("spec", "%m.listview smooth scroll to position %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "spnSetData");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, %s));");
+        hashMap.put("spec", "%m.spinner set data %m.list");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "spnRefresh");
+        hashMap.put("type", " ");
+        hashMap.put("code", "((ArrayAdapter)%s.getAdapter()).notifyDataSetChanged();");
+        hashMap.put("spec", "%m.spinner refresh");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "spnSetSelection");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setSelection((int)(%s));");
+        hashMap.put("spec", "%m.spinner set selection to %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "spnGetSelection");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.getSelectedItemPosition()");
+        hashMap.put("spec", "%m.spinner get selected item position");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewLoadUrl");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.loadUrl(%s);");
+        hashMap.put("spec", "%m.webview load url %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewGetUrl");
+        hashMap.put("type", "s");
+        hashMap.put("code", "%s.getUrl()");
+        hashMap.put("spec", "%m.webview get url");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewSetCacheMode");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.getSettings().setCacheMode(WebSettings.%s);");
+        hashMap.put("spec", "%m.webview set cache mode %m.cacheMode");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewCanGoBack");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.canGoBack()");
+        hashMap.put("spec", "%m.webview can go back");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewCanGoForward");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.canGoForward()");
+        hashMap.put("spec", "%m.webview can go forward");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewGoBack");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.goBack();");
+        hashMap.put("spec", "%m.webview go back");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewGoForward");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.goForward();");
+        hashMap.put("spec", "%m.webview go forward");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewClearCache");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.clearCache(true);");
+        hashMap.put("spec", "%m.webview clear cache");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewClearHistory");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.clearHistory();");
+        hashMap.put("spec", "%m.webview clear history");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewStopLoading");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.stopLoading();");
+        hashMap.put("spec", "%m.webview stop loading");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewZoomIn");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.zoomIn();");
+        hashMap.put("spec", "%m.webview zoom in");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "webViewZoomOut");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.zoomOut();");
+        hashMap.put("spec", "%m.webview zoom out");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "calendarViewGetDate");
+        hashMap.put("type", "d");
+        hashMap.put("code", "%s.getDate()");
+        hashMap.put("spec", "%m.calendarview get date");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "calendarViewSetDate");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setDate((long)(%s), true, true);");
+        hashMap.put("spec", "%m.calendarview set date %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "calendarViewSetMinDate");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setMinDate((long)(%s));");
+        hashMap.put("spec", "%m.calendarview set min date %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "calnedarViewSetMaxDate");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.setMaxDate((long)(%s));");
+        hashMap.put("spec", "%m.calendarview set max date %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "adViewLoadAd");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.loadAd(new AdRequest.Builder()%s.build());");
+        hashMap.put("spec", "%m.adview load ad");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewSetMapType");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.setMapType(GoogleMap.%s);");
+        hashMap.put("spec", "%m.mapview set map type %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewMoveCamera");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.moveCamera(%s, %s);");
+        hashMap.put("spec", "%m.mapview move camera to %s with zoom %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewZoomTo");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.zoomTo(%s);");
+        hashMap.put("spec", "%m.mapview zoom to %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewZoomIn");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.zoomIn();");
+        hashMap.put("spec", "%m.mapview zoom in");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewZoomOut");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.zoomOut();");
+        hashMap.put("spec", "%m.mapview zoom out");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewAddMarker");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.addMarker(%s, %s, %s);");
+        hashMap.put("spec", "%m.mapview add marker at %s with title %s and snippet %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewSetMarkerInfo");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.setMarkerInfo(%s, %s, %s);");
+        hashMap.put("spec", "%m.mapview set marker info for %s title %s snippet %s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewSetMarkerPosition");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.setMarkerPosition(%s, %s, %s);");
+        hashMap.put("spec", "%m.mapview move marker %s to %s,%s");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewSetMarkerColor");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.setMarkerColor(%s, BitmapDescriptorFactory.%s, %s);");
+        hashMap.put("spec", "%m.mapview set marker %s color %s with alpha %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewSetMarkerIcon");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.setMarkerIcon(%s, R.drawable.%s);");
+        hashMap.put("spec", "%m.mapview set marker %s icon %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "mapViewSetMarkerVisible");
+        hashMap.put("type", " ");
+        hashMap.put("code", "_%s_controller.setMarkerVisible(%s, %s);");
+        hashMap.put("spec", "%m.mapview set marker %s visible %b");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "vibratorAction");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.vibrate((long)(%s));");
+        hashMap.put("spec", "%m.vibrator vibrate for %d");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "timerAfter");
+        hashMap.put("type", "c");
+        hashMap.put("code", """
+        %1$s = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        %3$s
+                    }
+                });
+            }
+        };
+        _timer.schedule(%1$s, (int)(%2$s));
+        """);
+        hashMap.put("spec", "%m.timer after %d delay");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "timerEvery");
+        hashMap.put("type", "c");
+        hashMap.put("code", """
+        %1$s = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        %4$s
+                    }
+                });
+            }
+        };
+        _timer.scheduleAtFixedRate(%1$s, (int)(%2$s), (int)(%3$s));
+        """);
+        hashMap.put("spec", "%m.timer every %d delay %d run");
+        blocks.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "timerCancel");
+        hashMap.put("type", " ");
+        hashMap.put("code", "%s.cancel();");
+        hashMap.put("spec", "%m.timer cancel");
+        blocks.add(hashMap);
+
         return blocks;
+    }
+
+    private ArrayList<HashMap<String, Object>> getAdaptersList(String... Names) {
+
+        ArrayList<HashMap<String, Object>> blocks = new ArrayList<>();
+        HashMap<String, Object> hashMap;
+
+        for (String name : Names) {
+            hashMap = new HashMap<>();
+            hashMap.put("name", name);
+            hashMap.put("type", " ");
+            hashMap.put("code", "%s.setAdapter(new " + BlockParamUtils.PLACEHOLDER_PARAM + "(%s));");
+            hashMap.put("spec", "%m.listview set list %m.listMap");
+            hashMap.put("runtimeHandling", "setAdapter");
+            blocks.add(hashMap);
+        }
+        return blocks;
+
     }
 
 }
