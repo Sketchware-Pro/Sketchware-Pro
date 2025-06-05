@@ -10,15 +10,12 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/screenshot1Card"
             style="?attr/materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
-            app:cardBackgroundColor="?attr/colorErrorContainer"
-            app:layout_constraintEnd_toStartOf="@+id/screenshot2Card"
-            app:layout_constraintTop_toTopOf="parent">
+            app:cardBackgroundColor="?attr/colorErrorContainer">
 
             <LinearLayout
                 android:layout_width="match_parent"
