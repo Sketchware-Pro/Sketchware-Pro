@@ -27,6 +27,7 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.manage.image.ManageImageActivity;
+import com.besome.sketch.editor.property.PropertyResourceItem;
 import com.besome.sketch.editor.property.ViewPropertyItems;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.CustomScrollView;
@@ -39,7 +40,6 @@ import a.a.a.cC;
 import a.a.a.jC;
 import a.a.a.mB;
 import a.a.a.ro;
-import com.besome.sketch.editor.property.PropertyResourceItem;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -55,7 +55,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
     private int layoutPosition;
 
     private LinearLayout content;
-    private LinearLayout layoutAds;
     private CustomScrollView scrollView;
     private RecyclerView propertyGroupList;
 
@@ -117,10 +116,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         }
     }
 
-    public void n() {
-        layoutAds.setVisibility(View.GONE);
-    }
-
     public void o() {
         ViewBean viewBean;
         if (this.viewBean.id.equals("_fab")) {
@@ -165,7 +160,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         setContentView(R.layout.property);
 
         content = findViewById(R.id.content);
-        layoutAds = findViewById(R.id.layout_ads);
         scrollView = findViewById(R.id.scroll_view);
         propertyGroupList = findViewById(R.id.property_group_list);
 
@@ -209,7 +203,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         }
 
         toolbar.setSubtitle(viewId);
-        layoutAds.setVisibility(View.GONE);
     }
 
     @Override
@@ -241,7 +234,6 @@ public class PropertyActivity extends BaseAppCompatActivity implements Kw {
         if (!j()) {
             finish();
         }
-        n();
     }
 
     @Override
