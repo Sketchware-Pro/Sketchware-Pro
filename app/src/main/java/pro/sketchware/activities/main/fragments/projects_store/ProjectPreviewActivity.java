@@ -5,10 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 import pro.sketchware.activities.main.fragments.projects_store.adapters.ProjectScreenshotsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
 import pro.sketchware.databinding.FragmentStoreProjectPreviewBinding;
-import pro.sketchware.utility.ThemeUtils;
+import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
 
 public class ProjectPreviewActivity extends BaseAppCompatActivity {
@@ -53,12 +55,19 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
             binding.whatIsNew.setText(whatIsNew);
         }
 
-        binding.downloads.setText(project.getDownloads());
-        binding.filesize.setText(project.getProjectSize());
-        binding.timestamp.setText(DateUtils.formatDateTime(this, TimeUnit.SECONDS.toMillis(Long.parseLong(project.getPublishedTimestamp())), DateUtils.FORMAT_ABBREV_RELATIVE));
+        if (project.getIsVerified().equals("1")) {
+            addChip("Verified");
+        }
+
+        addChip(project.getCategory());
+
+        binding.downloads.setText("Downloads: " + project.getDownloads());
+        binding.filesize.setText("Size: " + project.getProjectSize());
+        binding.timestamp.setText("Uploaded: " + DateUtils.formatDateTime(this, TimeUnit.SECONDS.toMillis(Long.parseLong(project.getPublishedTimestamp())), DateUtils.FORMAT_ABBREV_RELATIVE));
         binding.btnDownload.setOnClickListener(v -> openProject());
 
         binding.toolbar.setNavigationOnClickListener(v -> finish());
+        binding.btnComments.setOnClickListener(v -> openCommentsSheet());
 
         ArrayList<String> screenshots = new ArrayList<>();
         for (int i = 0; i <= 4; i++) {
@@ -71,13 +80,21 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
         binding.screenshots.setAdapter(new ProjectScreenshotsAdapter(screenshots));
 
         UI.loadImageFromUrl(binding.icon, project.getIcon());
+        UI.addSystemWindowInsetToPadding(binding.content, true, false, true, false);
         UI.addSystemWindowInsetToPadding(binding.buttonsContainer, true, false, true, true);
+    }
 
-        if (ThemeUtils.isDarkThemeEnabled(this)) {
-            getWindow().setStatusBarColor(0x33000000);
-        } else {
-            getWindow().setStatusBarColor(0x12000000);
-        }
+    private void addChip(String name) {
+        Chip chip = new Chip(binding.chipsContainer.getContext());
+        chip.setText(name);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -1);
+        params.setMarginEnd(SketchwareUtil.dpToPx(12f));
+        binding.chipsContainer.addView(chip, params);
+    }
+
+    private void openCommentsSheet() {
+        CommentsBottomSheet sheet = new CommentsBottomSheet();
+        sheet.show(getSupportFragmentManager(), /* tag= */ CommentsBottomSheet.class.getSimpleName());
     }
 
     private String getScreenshot(int index) {

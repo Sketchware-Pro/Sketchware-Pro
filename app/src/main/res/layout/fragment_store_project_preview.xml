@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,12 +8,13 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
+        android:layout_height="match_parent"
+        android:fadingEdgeLength="136dp"
+        android:requiresFadingEdge="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -22,8 +23,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
-                android:paddingStart="8dp"
+                android:layout_marginStart="8dp"
                 app:navigationIcon="?attr/homeAsUpIndicator" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,6 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textIsSelectable="true"
                     tools:text="Meet Sketchware Pro v7.0.0!\nFinally, the long-awaited version has been released!" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -119,10 +120,26 @@
                 tools:itemCount="3"
                 tools:listitem="@layout/view_store_project_screenshot" />
 
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/chips_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="24dp"
+                    android:theme="@style/ThemeOverlay.SketchwarePro.Chip.ProjectPreview" />
+
+            </HorizontalScrollView>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:paddingHorizontal="24dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="16dp"
@@ -151,7 +168,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/icon_downloads"
                     app:layout_constraintStart_toEndOf="@id/icon_downloads"
                     app:layout_constraintTop_toTopOf="@id/icon_downloads"
-                    tools:text="14" />
+                    tools:text="Downloads: 140920" />
 
                 <ImageView
                     android:id="@+id/icon_timestamp"
@@ -171,7 +188,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/icon_timestamp"
                     app:layout_constraintStart_toEndOf="@id/icon_timestamp"
                     app:layout_constraintTop_toTopOf="@id/icon_timestamp"
-                    tools:text="14.12.2001" />
+                    tools:text="Uploaded: 26.09.2024" />
 
                 <ImageView
                     android:id="@+id/icon_filesize"
@@ -191,7 +208,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/icon_filesize"
                     app:layout_constraintStart_toEndOf="@id/icon_filesize"
                     app:layout_constraintTop_toTopOf="@id/icon_filesize"
-                    tools:text="14" />
+                    tools:text="Size: 112 MB" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.card.MaterialCardView
@@ -200,7 +217,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
-                android:layout_marginVertical="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="108dp"
                 app:cardBackgroundColor="?attr/colorSurfaceContainer"
                 app:cardCornerRadius="18dp"
                 app:contentPadding="14dp">
@@ -210,6 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textIsSelectable="true"
                     tools:text="Sketchware Pro's sources in Java. Now anyone can contribute to Sketchware Pro." />
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
@@ -219,19 +238,10 @@
         android:id="@+id/buttons_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
-        android:orientation="horizontal"
-        android:paddingHorizontal="24dp"
-        android:paddingBottom="24dp">
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/buttons_divider"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:dividerColor="?attr/colorSurfaceContainerHighest"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_comments"
@@ -244,7 +254,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@id/btn_download"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttons_divider" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_download"
@@ -253,8 +263,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Download"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_like"
             app:layout_constraintStart_toEndOf="@id/btn_comments"
-            app:layout_constraintTop_toBottomOf="@id/buttons_divider" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_like"
+            style="@style/Widget.Material3.Button.IconButton.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="?attr/colorSurface"
+            android:visibility="gone"
+            app:icon="@drawable/heart_empty_white_outline_96"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_download"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+</FrameLayout>

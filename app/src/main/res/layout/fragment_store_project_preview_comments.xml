@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title"
+        style="?attr/textAppearanceHeadlineSmallEmphasized"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:text="Comments" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="?attr/colorSurfaceContainerHighest" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
+        android:scrollbarSize="2dp"
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/view_store_project_preview_comment" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="?attr/colorSurfaceContainerHighest" />
+</androidx.appcompat.widget.LinearLayoutCompat>
