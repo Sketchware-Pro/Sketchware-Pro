@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -119,25 +120,41 @@ public class ProjectSettings {
         }
     }
 
+    private void processView(View v) {
+        if (v.getTag() != null && !hashmap.containsKey(v.getTag())) {
+            String key = (String) v.getTag();
+            String value;
+
+            if (v instanceof EditText editText) {
+                value = Helper.getText(editText);
+            } else if (v instanceof Checkable checkable) {
+                value = Boolean.toString(checkable.isChecked());
+            } else if (v instanceof RadioGroup radioGroup) {
+                value = getCheckedRbValue(radioGroup);
+            } else {
+                return;
+            }
+
+            hashmap.put(key, value);
+        }
+    }
+
+    public void setValues(ViewGroup parent) {
+        int count = parent.getChildCount();
+        for (int i = 0; i < count; i++) {
+            View v = parent.getChildAt(i);
+            if (v instanceof ViewGroup vg) {
+                setValues(vg);
+            } else {
+                processView(v);
+            }
+        }
+        save();
+    }
+
     public void setValues(View... views) {
         for (View v : views) {
-            if (v.getTag() != null) {
-                String key = (String) v.getTag();  // v.getTag(0);
-                //String value = (String) v.getTag(1);
-                String value;
-
-                if (v instanceof EditText editText) {
-                    value = Helper.getText(editText);
-                } else if (v instanceof Checkable checkable) {
-                    value = checkable.isChecked() ? "true" : "false";
-                } else if (v instanceof RadioGroup radioGroup) {
-                    value = getCheckedRbValue(radioGroup);
-                } else {
-                    continue;
-                }
-
-                hashmap.put(key, value);
-            }
+            processView(v);
         }
         save();
     }
