@@ -80,8 +80,6 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
         binding.screenshots.setAdapter(new ProjectScreenshotsAdapter(screenshots));
 
         UI.loadImageFromUrl(binding.icon, project.getIcon());
-        UI.addSystemWindowInsetToPadding(binding.content, true, false, true, false);
-        UI.addSystemWindowInsetToPadding(binding.buttonsContainer, true, false, true, true);
     }
 
     private void addChip(String name) {
