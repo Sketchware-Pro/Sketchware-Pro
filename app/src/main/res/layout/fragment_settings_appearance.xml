@@ -14,10 +14,10 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
             android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:title="Appearance settings">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="Theme Settings">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
@@ -37,56 +37,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="24dp"
             android:paddingBottom="32dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:text="Theme Settings"
-                android:textAppearance="?attr/textAppearanceTitleMedium" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="4dp"
-                android:text="Choose how your app looks"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorOnSurfaceVariant" />
-
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewElevatedStyle"
                 android:id="@+id/theme_system"
+                style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="14dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
                 android:checkable="true"
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium">
+                app:shapeAppearanceOverlay="?attr/shapeAppearanceCornerLarge">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="16dp">
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp">
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:padding="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:src="@drawable/ic_mtrl_palette"
                         app:tint="?attr/colorPrimary" />
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
+                        android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 
@@ -94,13 +77,12 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="System default"
-                            android:textAppearance="?attr/textAppearanceBodyLarge"
-                            android:textStyle="bold" />
+                            android:textAppearance="?attr/textAppearanceBodyLargeEmphasized" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="2dp"
                             android:text="Follow system theme settings"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?attr/colorOnSurfaceVariant" />
@@ -113,46 +95,37 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewElevatedStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="14dp"
-                android:layout_marginTop="24dp"
-                app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
                     android:orientation="horizontal">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/theme_light"
-                        style="?attr/materialCardViewOutlinedStyle"
+                        style="?attr/materialCardViewFilledStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="12dp"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginEnd="12dp"
                         android:layout_weight="1"
                         android:checkable="true"
                         android:clickable="true"
-                        app:cardCornerRadius="12dp">
+                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                        app:contentPadding="14dp"
+                        app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
+                            android:orientation="vertical">
 
                             <com.google.android.material.imageview.ShapeableImageView
                                 android:layout_width="100dp"
                                 android:layout_height="120dp"
                                 android:background="@drawable/img_preview_light_theme"
-                                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
+                                app:shapeAppearance="?attr/shapeAppearanceCornerMedium" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -165,29 +138,27 @@
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/theme_dark"
-                        style="?attr/materialCardViewOutlinedStyle"
+                        style="?attr/materialCardViewFilledStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="12dp"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="12dp"
                         android:layout_weight="1"
                         android:checkable="true"
                         android:clickable="true"
-                        app:cardCornerRadius="12dp">
+                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                        app:contentPadding="14dp"
+                        app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
+                            android:orientation="vertical">
 
                             <com.google.android.material.imageview.ShapeableImageView
                                 android:layout_width="100dp"
                                 android:layout_height="120dp"
                                 android:background="@drawable/img_preview_dark_theme"
-                                app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Medium" />
+                                app:shapeAppearance="?attr/shapeAppearanceCornerMedium" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -198,7 +169,6 @@
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
