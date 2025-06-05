@@ -64,12 +64,17 @@
     </style>
 
     <style name="TabLayoutStyle" parent="Widget.Material3.TabLayout">
-        <item name="android:background">@android:color/transparent</item>
         <item name="tabIndicator">@drawable/view_tab_indicator</item>
     </style>
 
     <style name="ThemeOverlay.SketchwarePro.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.SketchwarePro.BottomSheet.Modal</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.BottomSheet.Modal" parent="Widget.Material3.BottomSheet">
+        <item name="android:elevation">0dp</item>
+        <item name="backgroundTint">?attr/colorSurface</item>
     </style>
 
     <!--    AutoCompleteTextInputEditTextStyle    -->
@@ -150,5 +155,17 @@
 
     <style name="Widget.SketchwarePro.MaterialCardView" parent="Widget.Material3.CardView.Filled">
         <item name="cardCornerRadius">16dp</item>
+    </style>
+
+    <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
+        <item name="chipStyle">@style/Widget.SketchwarePro.Chip.ProjectPreview</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.Chip.ProjectPreview" parent="Widget.Material3.Chip.Suggestion">
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="rippleColor">@null</item>
+        <item name="shapeAppearance">?attr/shapeAppearanceCornerLarge</item>
     </style>
 </resources>
