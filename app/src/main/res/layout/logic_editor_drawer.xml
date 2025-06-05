@@ -4,17 +4,18 @@
     android:layout_width="150dp"
     android:layout_height="match_parent"
     android:layout_marginTop="56dp"
-    android:background="?attr/colorSurfaceContainerHigh"
+    android:background="?attr/colorSurfaceContainer"
     android:orientation="vertical">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/new_button"
-        style="?attr/materialCardViewOutlinedStyle"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
+        android:layout_marginHorizontal="8dp"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="4dp">
+        android:layout_marginBottom="4dp"
+        app:cardBackgroundColor="?attr/colorSurface">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,16 +25,15 @@
             android:padding="8dp">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginBottom="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
                 android:src="@drawable/ic_mtrl_settings" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Settings"
-                android:textSize="12sp" />
+                android:text="Settings" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -44,8 +44,7 @@
         android:layout_marginVertical="4dp"
         android:gravity="center"
         android:text="@string/logic_editor_title_block_collection"
-        android:textColor="@color/scolor_red_02"
-        android:textSize="12sp" />
+        android:textColor="?attr/colorTertiary" />
 
     <com.besome.sketch.lib.ui.CustomScrollView
         android:id="@+id/scv"
