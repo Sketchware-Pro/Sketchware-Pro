@@ -36,7 +36,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_marginStart="24dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="16dp"
                     android:adjustViewBounds="true"
                     android:background="?attr/colorSurfaceContainer"
                     app:layout_constraintStart_toStartOf="parent"
