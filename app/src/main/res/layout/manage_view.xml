@@ -14,36 +14,17 @@
         android:fitsSystemWindows="true"
         app:liftOnScrollColor="@color/transparent">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="@string/design_actionbar_title_manager_view" />
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/mainTabsCard"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="5dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/transparent"
-            app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
-            app:strokeWidth="0dp">
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/design_actionbar_title_manager_view" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:dividerThickness="0.5dp" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -98,9 +79,9 @@
                 style="?attr/materialIconButtonFilledTonalStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/cancel"
                 android:layout_marginHorizontal="4dp"
                 android:layout_weight="1"
+                android:text="@string/cancel"
                 android:textSize="@dimen/text_size_button_material"
                 app:cornerRadius="15dp" />
 
@@ -108,9 +89,9 @@
                 android:id="@+id/btn_delete"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/common_word_delete"
                 android:layout_marginHorizontal="4dp"
                 android:layout_weight="1"
+                android:text="@string/common_word_delete"
                 android:textSize="@dimen/text_size_button_material"
                 app:cornerRadius="15dp" />
         </LinearLayout>
