@@ -31,6 +31,16 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
     public static final String TAG = BuildSettingsBottomSheet.class.getSimpleName();
+    private static int totalViews = 0;
+
+    private static final int VIEW_ANDROIR_JAR_PATH = totalViews++;
+    private static final int VIEW_CLASS_PATH = totalViews++;
+    private static final int VIEW_DEXER = totalViews++;
+    private static final int VIEW_JAVA_VERSION = totalViews++;
+    private static final int VIEW_NO_WARNINGS = totalViews++;
+    private static final int VIEW_NO_HTTP_LEGACY = totalViews++;
+    private static final int VIEW_ENABLE_LOGCAT = totalViews++;
+    private View[] views;
 
     private ProjectConfigLayoutBinding binding;
     private BuildSettings projectSettings;
@@ -59,6 +69,7 @@ public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
 
         Bundle arguments = getArguments();
         projectSettings = new BuildSettings(arguments.getString("sc_id"));
+        views = new View[totalViews];
     }
 
     @Override
@@ -71,7 +82,7 @@ public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setTags();
+        initializeViews();
 
         binding.noWarnings.setOnClickListener(v -> binding.cbNoWarnings.performClick());
         binding.noHttpLegacy.setOnClickListener(v -> binding.cbNoHttpLegacy.performClick());
@@ -89,7 +100,7 @@ public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
 
         binding.btnCancel.setOnClickListener(v -> dismiss());
         binding.btnSave.setOnClickListener(v -> {
-            projectSettings.setValues(binding.getRoot());
+            projectSettings.setValues(views);
             dismiss();
         });
     }
@@ -100,14 +111,22 @@ public class BuildSettingsBottomSheet extends BottomSheetDialogFragment {
         binding = null;
     }
 
-    private void setTags() {
+    private void initializeViews() {
         binding.tilAndroidJar.getEditText().setTag(SETTING_ANDROID_JAR_PATH);
         binding.tilClasspath.getEditText().setTag(SETTING_CLASSPATH);
         binding.rgDexer.setTag(SETTING_DEXER);
-        binding.cbEnableLogcat.setTag(SETTING_ENABLE_LOGCAT);
         binding.rgJavaVersion.setTag(SETTING_JAVA_VERSION);
-        binding.cbNoHttpLegacy.setTag(SETTING_NO_HTTP_LEGACY);
         binding.cbNoWarnings.setTag(SETTING_NO_WARNINGS);
+        binding.cbNoHttpLegacy.setTag(SETTING_NO_HTTP_LEGACY);
+        binding.cbEnableLogcat.setTag(SETTING_ENABLE_LOGCAT);
+
+        views[VIEW_ANDROIR_JAR_PATH] = binding.tilAndroidJar.getEditText();
+        views[VIEW_CLASS_PATH] = binding.tilClasspath.getEditText();
+        views[VIEW_DEXER] = binding.rgDexer;
+        views[VIEW_ENABLE_LOGCAT] = binding.cbEnableLogcat;
+        views[VIEW_JAVA_VERSION] = binding.rgJavaVersion;
+        views[VIEW_NO_HTTP_LEGACY] = binding.cbNoHttpLegacy;
+        views[VIEW_NO_WARNINGS] = binding.cbNoWarnings;
     }
 
     private void setRadioGroupOptions(RadioGroup radioGroup, String[] options, String key, String defaultValue) {
