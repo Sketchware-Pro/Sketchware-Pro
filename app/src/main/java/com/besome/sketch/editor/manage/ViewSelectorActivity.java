@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.manage;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.besome.sketch.editor.manage.view.AddCustomViewActivity;
 import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 
@@ -203,17 +201,12 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 }
             }
         });
-        var onSurface = MaterialColors.getColor(binding.optionsSelector, com.google.android.material.R.attr.colorOnSurface);
         binding.optionsSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 if (checkedId == R.id.option_view) {
                     selectedTab = TAB_ACTIVITY;
-                    binding.optionView.setTextColor(onSurface);
-                    binding.optionCustomView.setTextColor(Color.parseColor("#FFFFFF"));
                 } else if (checkedId == R.id.option_custom_view) {
                     selectedTab = TAB_CUSTOM_VIEW;
-                    binding.optionView.setTextColor(Color.parseColor("#FFFFFF"));
-                    binding.optionCustomView.setTextColor(onSurface);
                 }
                 viewSelectorAdapter.notifyDataSetChanged();
                 binding.emptyMessage.setVisibility(viewSelectorAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);

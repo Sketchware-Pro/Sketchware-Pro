@@ -7,7 +7,6 @@
     android:background="#80000000"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:paddingTop="64dp">
 
@@ -22,21 +21,19 @@
 
         <Button
             android:id="@+id/option_view"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/common_word_view"
-            android:textColor="?attr/colorOnSurface" />
+            android:text="@string/common_word_view" />
 
         <Button
             android:id="@+id/option_custom_view"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/common_word_custom_view"
-            android:textColor="#ffffffff" />
+            android:text="@string/common_word_custom_view" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 

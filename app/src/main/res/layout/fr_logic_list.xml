@@ -27,7 +27,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tv_import"
-                style="?attr/materialButtonElevatedStyle"
+                style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"

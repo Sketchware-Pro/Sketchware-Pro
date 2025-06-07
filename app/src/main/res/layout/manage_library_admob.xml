@@ -146,21 +146,23 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btn_import"
+        android:id="@+id/btn_open_doc"
+        style="@style/Widget.Material3Expressive.Button.TonalButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        tools:text="@string/design_library_button_import_from_other_project" />
+        tools:text="@string/common_word_go_to_documentation" />
 
     <Button
-        android:id="@+id/btn_open_doc"
-        style="?attr/materialButtonOutlinedStyle"
+        android:id="@+id/btn_import"
+        style="@style/Widget.Material3Expressive.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        tools:text="@string/common_word_go_to_documentation" />
+        tools:text="@string/design_library_button_import_from_other_project" />
+
 </LinearLayout>

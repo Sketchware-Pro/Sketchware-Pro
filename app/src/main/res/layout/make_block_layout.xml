@@ -249,7 +249,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_variable"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
@@ -289,7 +289,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_label"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cornerRadius="14dp"
@@ -366,7 +366,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cornerRadius="14dp"

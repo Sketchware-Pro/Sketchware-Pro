@@ -433,6 +433,7 @@
 
         <Button
             android:id="@+id/btn_console"
+            style="@style/Widget.Material3Expressive.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="@string/design_library_admob_button_goto_console" />

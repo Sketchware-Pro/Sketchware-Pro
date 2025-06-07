@@ -51,7 +51,7 @@
 
     <Button
         android:id="@+id/btn_reset"
-        style="?attr/materialButtonOutlinedStyle"
+        style="@style/Widget.Material3Expressive.Button.TonalButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -64,7 +64,7 @@
 
     <Button
         android:id="@+id/btn_upgrade"
-        style="?attr/materialButtonStyle"
+        style="@style/Widget.Material3Expressive.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

@@ -10,7 +10,7 @@
       — '*' - instead of using the asterisk (*), replace it with the specific name of the component whose style is being modified or created.
     -->
 
-    <style name="Widget.SketchwarePro.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
+    <style name="Widget.SketchwarePro.CollapsingToolbar" parent="Widget.Material3Expressive.CollapsingToolbar.Large">
         <item name="collapsedTitleTextAppearance">
             @style/TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed
         </item>
@@ -24,7 +24,7 @@
 
     <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Expanded" parent="TextAppearance.SketchwarePro.HeadlineMedium" />
 
-    <style name="Widget.SketchwarePro.Toolbar.SmallText" parent="Widget.Material3.Toolbar">
+    <style name="Widget.SketchwarePro.Toolbar.SmallText" parent="Widget.Material3Expressive.Toolbar">
         <item name="titleTextAppearance">?attr/textAppearanceBodyLarge</item>
         <item name="subtitleTextAppearance">?attr/textAppearanceBodyMedium</item>
     </style>
@@ -114,7 +114,7 @@
         <item name="chipMinTouchTargetSize">32dp</item>
     </style>
 
-    <style name="Widget.App.Button.OutlinedButton.IconOnly" parent="Widget.Material3.Button.OutlinedButton">
+    <style name="Widget.App.Button.OutlinedButton.IconOnly" parent="Widget.Material3Expressive.Button.OutlinedButton">
         <item name="iconPadding">0dp</item>
         <item name="cornerRadius">5dp</item>
         <item name="iconSize">30dp</item>
