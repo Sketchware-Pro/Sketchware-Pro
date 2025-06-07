@@ -3,15 +3,15 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingLeft="32dp"
-    android:paddingTop="32dp"
+    android:paddingTop="56dp"
     android:paddingRight="32dp"
-    android:paddingBottom="32dp">
+    android:paddingBottom="32dp"
+    tools:background="#80000000">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -93,28 +93,39 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@drawable/bottom_corner_surface_variant"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/cancel_button"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="0dp"
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    tools:text="@string/common_word_cancel" />
+                    android:layout_marginHorizontal="16dp" />
 
-                <Button
-                    android:id="@+id/add_button"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    tools:text="@string/common_word_add" />
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/cancel_button"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="1"
+                        tools:text="@string/common_word_cancel" />
+
+                    <Button
+                        android:id="@+id/add_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        tools:text="@string/common_word_add" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
