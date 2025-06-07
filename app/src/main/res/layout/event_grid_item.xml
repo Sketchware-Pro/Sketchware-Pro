@@ -7,30 +7,25 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="4dp"
     android:layout_marginTop="10dp"
-    android:minWidth="96dp"
-    app:strokeWidth="0.5dp"
-    android:minHeight="74dp"
     app:cardBackgroundColor="?attr/colorSurfaceContainerHighest">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="96dp"
+        android:layout_height="74dp"
         android:gravity="center"
-        android:minWidth="96dp"
-        android:minHeight="74dp"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginBottom="8dp">
+            android:layout_height="32dp">
 
             <ImageView
                 android:id="@+id/img_icon"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_centerInParent="true"
-                tools:src="@drawable/event_on_click_48dp" />
+                tools:src="@drawable/event_on_click_48dp"
+                tools:tint="?attr/colorOnSurface" />
 
             <ImageView
                 android:id="@+id/img_used_event"
@@ -46,10 +41,8 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:lines="1"
+            android:maxLines="2"
             android:paddingHorizontal="4dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
             android:textColor="?attr/colorOnSurface"
             android:textSize="11sp"
             tools:text="onClick" />
