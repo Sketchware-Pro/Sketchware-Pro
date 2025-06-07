@@ -37,8 +37,8 @@ public class ComponentEventButton extends LinearLayout {
 
     public void onEventAdded() {
         addEvent.setVisibility(GONE);
-        icon.setColorFilter(MaterialColors.getColor(name, com.google.android.material.R.attr.colorSecondary));
-
+        icon.setColorFilter(MaterialColors.getColor(name, com.google.android.material.R.attr.colorOnSurface));
+        name.setTextColor(MaterialColors.getColor(name, com.google.android.material.R.attr.colorOnSurface));
     }
 
     public void setClickListener(View.OnClickListener onClickListener) {
@@ -47,8 +47,8 @@ public class ComponentEventButton extends LinearLayout {
 
     public void onEventAvailableToAdd() {
         addEvent.setVisibility(VISIBLE);
-        icon.setColorFilter(MaterialColors.getColor(name, com.google.android.material.R.attr.colorOutlineVariant));
-
+        icon.setColorFilter(MaterialColors.getColor(name, com.google.android.material.R.attr.colorOutline));
+        name.setTextColor(MaterialColors.getColor(name, com.google.android.material.R.attr.colorOutline));
     }
 
     public ImageView getIcon() {
