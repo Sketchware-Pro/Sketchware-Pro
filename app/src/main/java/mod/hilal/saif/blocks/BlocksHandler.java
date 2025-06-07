@@ -59,23 +59,6 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
-        hashMap.put("name", "viewOnClick");
-        hashMap.put("type", "c");
-        hashMap.put("typeName", "");
-        hashMap.put(
-                "code",
-                "%s.setOnClickListener(new View.OnClickListener() {\n"
-                        + "@Override\n"
-                        + "public void onClick(View _view) {\n"
-                        + "%s\n"
-                        + "}\n"
-                        + "});");
-        hashMap.put("color", "#4A6CD4");
-        hashMap.put("palette", "0");
-        hashMap.put("spec", "When %m.view clicked");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
         hashMap.put("name", "setRecyclerViewLayoutParams");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
@@ -2125,16 +2108,6 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
-        hashMap.put("name", "repeatKnownNum");
-        hashMap.put("type", "c");
-        hashMap.put("typeName", "");
-        hashMap.put("code", "for (int %2$s = 0; %2$s < (int)(%1$s); %2$s++) {\r\n%3$s\r\n}");
-        hashMap.put("color", "#e1a92a");
-        hashMap.put("palette", "-1");
-        hashMap.put("spec", "repeat %d: %s.inputOnly ++");
-        arrayList.add(hashMap);
-
-        hashMap = new HashMap<>();
         hashMap.put("name", "whileLoop");
         hashMap.put("type", "c");
         hashMap.put("typeName", "");
@@ -2153,6 +2126,16 @@ public class BlocksHandler {
         hashMap.put("palette", "-1");
         hashMap.put("spec", "try");
         hashMap.put("spec2", "catch");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "finally");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "finally {\r\n%s\r\n}");
+        hashMap.put("color", "#e1a92a");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "finally");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
@@ -2463,6 +2446,116 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
+        hashMap.put("name", "^");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s ^ %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%s XOR %s");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "|");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s | %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "binary %s or %s");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "&");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s & %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "binary %s and %s");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "NOT_EQUALS_NUM");
+        hashMap.put("type", "b");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "%s != %s");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d != %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "NOT_EQUALS_OBJ");
+        hashMap.put("type", "b");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "%s != %s");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%s != %s");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "<=");
+        hashMap.put("type", "b");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "%s <= %s");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d <= %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", ">=");
+        hashMap.put("type", "b");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "%s >= %s");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d >= %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "<<");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s << %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d signed left shift %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", ">>");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s >> %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d signed right shift %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "<<<");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s <<< %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d unsigned left shift %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", ">>>");
+        hashMap.put("type", "d");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "(%s >>> %s)");
+        hashMap.put("color", "#5cb722");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "%d unsigned right shift %d");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
         hashMap.put("name", "addSourceDirectly");
         hashMap.put("type", " ");
         hashMap.put("typeName", "");
@@ -2503,6 +2596,16 @@ public class BlocksHandler {
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
+        hashMap.put("name", "repeatKnownNum");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "for (int %2$s = 0; %2$s < (int)(%1$s); %2$s++) {\r\n%3$s\r\n}");
+        hashMap.put("color", "#e1a92a");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "repeat %d: %s.inputOnly ++");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
         hashMap.put("name", "RepeatKnownNumDescending");
         hashMap.put("type", "c");
         hashMap.put("typeName", "");
@@ -2510,6 +2613,16 @@ public class BlocksHandler {
         hashMap.put("color", "#e1a92a");
         hashMap.put("palette", "-1");
         hashMap.put("spec", "repeat %d: %s.inputOnly --");
+        arrayList.add(hashMap);
+
+        hashMap = new HashMap<>();
+        hashMap.put("name", "ASDForLoop");
+        hashMap.put("type", "c");
+        hashMap.put("typeName", "");
+        hashMap.put("code", "for (%s) {\r\n%s\r\n}");
+        hashMap.put("color", "#e1a92a");
+        hashMap.put("palette", "-1");
+        hashMap.put("spec", "for %s.inputOnly");
         arrayList.add(hashMap);
 
         hashMap = new HashMap<>();
