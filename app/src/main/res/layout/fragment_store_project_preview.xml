@@ -246,7 +246,7 @@
 
         <Button
             android:id="@+id/btn_comments"
-            style="@style/Widget.Material3.Button.TonalButton"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -259,7 +259,7 @@
 
         <Button
             android:id="@+id/btn_download"
-            style="@style/Widget.Material3.Button"
+            style="@style/Widget.Material3Expressive.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -270,7 +270,7 @@
 
         <Button
             android:id="@+id/btn_like"
-            style="@style/Widget.Material3.Button.IconButton.Outlined"
+            style="@style/Widget.Material3Expressive.Button.IconButton.Outlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
