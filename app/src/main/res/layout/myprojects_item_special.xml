@@ -34,8 +34,9 @@
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginHorizontal="16dp"
             android:orientation="vertical">
 
@@ -55,5 +56,12 @@
                 android:textAppearance="?attr/textAppearanceBodySmall"
                 android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/ic_chevron_right_white_24dp"
+            app:tint="?attr/colorControlNormal" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
