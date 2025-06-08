@@ -59,7 +59,7 @@
         <item name="android:navigationBarColor">@color/splash_bg_color</item>
         <item name="android:statusBarColor">@color/splash_bg_color</item>
         <item name="android:windowLightStatusBar">@bool/is_light_theme</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">@bool/is_light_theme
+        <item name="android:windowLightNavigationBar">@bool/is_light_theme
         </item>
     </style>
 
