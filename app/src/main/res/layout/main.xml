@@ -41,7 +41,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
-                    tools:menu="@menu/projects_fragment_menu" />
+                    tools:menu="@menu/projects_fragment_menu">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Search for projects..."
+                        android:textColor="?attr/colorOnSurfaceVariant" />
+                </com.google.android.material.appbar.MaterialToolbar>
             </com.google.android.material.card.MaterialCardView>
         </com.google.android.material.appbar.AppBarLayout>
 
