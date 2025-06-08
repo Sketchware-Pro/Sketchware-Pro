@@ -3,18 +3,19 @@ package pro.sketchware.activities.main.fragments.projects_store;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
+import androidx.core.widget.NestedScrollView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.Date;
 
 import pro.sketchware.activities.main.fragments.projects_store.adapters.ProjectScreenshotsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
@@ -55,6 +56,10 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
             binding.whatIsNew.setText(whatIsNew);
         }
 
+        if (project.getIsEditorChoice().equals("1")) {
+            addChip("Editor's Choice");
+        }
+
         if (project.getIsVerified().equals("1")) {
             addChip("Verified");
         }
@@ -63,10 +68,17 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
 
         binding.downloads.setText("Downloads: " + project.getDownloads());
         binding.filesize.setText("Size: " + project.getProjectSize());
-        binding.timestamp.setText("Uploaded: " + DateUtils.formatDateTime(this, TimeUnit.SECONDS.toMillis(Long.parseLong(project.getPublishedTimestamp())), DateUtils.FORMAT_ABBREV_RELATIVE));
+        binding.timestamp.setText("Released: " + DateFormat.getDateInstance().format(new Date(Long.parseLong(project.getPublishedTimestamp()))));
         binding.btnComments.setOnClickListener(v -> openCommentsSheet());
-        binding.btnDownload.setOnClickListener(v -> openProject());
-        binding.toolbar.setNavigationOnClickListener(v -> finish());
+        binding.btnDownload.setOnClickListener(v -> {
+            SketchwareUtil.toastError("Downloading projects is unavailable right now!");
+        });
+        binding.btnOpenIn.setOnClickListener(v -> openProject());
+        binding.btnBack.setOnClickListener(v -> finish());
+
+        binding.toolbarTitle.setSelected(true);
+        binding.toolbarTitle.setText(project.getTitle());
+        binding.toolbarSubtitle.setText(project.getUserName());
 
         ArrayList<String> screenshots = new ArrayList<>();
         for (int i = 0; i <= 4; i++) {
@@ -81,6 +93,23 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
         UI.loadImageFromUrl(binding.icon, project.getIcon());
         UI.addSystemWindowInsetToPadding(binding.content, true, true, true, true);
         UI.addSystemWindowInsetToMargin(binding.buttonsContainer, true, false, true, true);
+        UI.addSystemWindowInsetToPadding(binding.topScrim, false, true, false, false);
+        UI.addSystemWindowInsetToPadding(binding.toolbar, true, true, true, false);
+
+        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, v1, v2, v3, v4) -> {
+            int[] location = new int[2];
+            binding.author.getLocationOnScreen(location);
+
+            if (location[1] + binding.author.getHeight() + UI.getStatusBarHeight(ProjectPreviewActivity.this) < binding.toolbar.getHeight()) {
+                // animate showing scrim (fade) and title container from bottom to top (translationY)
+                binding.topScrim.setVisibility(View.VISIBLE);
+                binding.toolbarTitleContainer.setVisibility(View.VISIBLE);
+            } else {
+                // animate hiding scrim (fade) and title container from top to bottom (translationY)
+                binding.topScrim.setVisibility(View.GONE);
+                binding.toolbarTitleContainer.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     private void addChip(String name) {
