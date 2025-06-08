@@ -20,6 +20,7 @@ import pro.sketchware.activities.main.fragments.projects_store.adapters.StorePro
 import pro.sketchware.activities.main.fragments.projects_store.api.SketchubAPI;
 import pro.sketchware.activities.main.fragments.projects_store.classes.CenterZoomListener;
 import pro.sketchware.databinding.FragmentProjectsStoreBinding;
+import pro.sketchware.utility.UI;
 
 public class ProjectsStoreFragment extends Fragment {
     private FragmentProjectsStoreBinding binding;
@@ -47,6 +48,20 @@ public class ProjectsStoreFragment extends Fragment {
 
         setupRecyclerView(binding.editorsChoiceProjectsRecyclerView);
         fetchData();
+
+        UI.addSystemWindowInsetToPadding(binding.textEditorsChoice, true, false, true, false);
+        UI.addSystemWindowInsetToPadding(binding.editorsChoiceProjectsRecyclerView, true, false, true, false);
+        UI.addSystemWindowInsetToPadding(binding.textRecent, true, false, true, false);
+        UI.addSystemWindowInsetToPadding(binding.recentProjectsRecyclerView, true, false, true, false);
+        UI.addSystemWindowInsetToPadding(binding.textMostDownloaded, true, false, true, false);
+        UI.addSystemWindowInsetToPadding(binding.mostDownloadedProjectsRecyclerView, true, false, true, true);
+        UI.addSystemWindowInsetToMargin(binding.cardWarning, true, false, true, false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null; // avoid memory leaks
     }
 
     private void setupRecyclerView(RecyclerView recyclerView) {

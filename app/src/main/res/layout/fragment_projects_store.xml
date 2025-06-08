@@ -2,7 +2,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fadingEdgeLength="30dp"
+    android:requiresFadingEdge="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,6 +14,7 @@
 
         <com.google.android.material.card.MaterialCardView
             style="?attr/materialCardViewFilledStyle"
+            android:id="@+id/card_warning"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -41,6 +45,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
+            android:id="@+id/text_editors_choice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -57,11 +62,13 @@
             android:nestedScrollingEnabled="false"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
+            android:transitionGroup="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="10"
             tools:listitem="@layout/view_store_project_pager_item" />
 
         <TextView
+            android:id="@+id/text_recent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -78,11 +85,13 @@
             android:nestedScrollingEnabled="false"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
+            android:transitionGroup="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="10"
             tools:listitem="@layout/view_store_project_item" />
 
         <TextView
+            android:id="@+id/text_most_downloaded"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -95,11 +104,12 @@
             android:id="@+id/mostDownloadedProjectsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
+            android:paddingBottom="96dp"
+            android:transitionGroup="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="10"
             tools:listitem="@layout/view_store_project_item" />
