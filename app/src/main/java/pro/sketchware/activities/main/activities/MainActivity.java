@@ -274,9 +274,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                 }).copyFile(data);
             }
         } else if (!ConfigActivity.isSettingEnabled(ConfigActivity.SETTING_CRITICAL_UPDATE_REMINDER)) {
-
             BottomSheetDialogView bottomSheetDialog = getBottomSheetDialogView();
-
             bottomSheetDialog.getPositiveButton().setEnabled(false);
 
             CountDownTimer countDownTimer = new CountDownTimer(10000, 1000) {

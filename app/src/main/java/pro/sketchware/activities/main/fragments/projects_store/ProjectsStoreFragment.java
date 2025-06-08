@@ -35,11 +35,6 @@ public class ProjectsStoreFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.storeSideNote.setSelected(true);
-
-        var activity = getActivity();
-        if (activity == null) return;
-
         setupRecyclerView(binding.editorsChoiceProjectsRecyclerView);
         fetchData();
     }

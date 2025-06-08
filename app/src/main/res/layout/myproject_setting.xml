@@ -48,7 +48,7 @@
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
                         android:src="@drawable/default_icon"
-                        app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
+                        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
                 </FrameLayout>
 
                 <TextView

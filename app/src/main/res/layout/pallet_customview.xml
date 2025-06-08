@@ -1,21 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/background_card"
-        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="14dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="4dp"
-        android:orientation="vertical"
-        app:cardBackgroundColor="?attr/colorSurfaceContainer"
-        app:cardCornerRadius="8dp"
-        app:strokeColor="?attr/colorSurfaceContainer"
-        app:strokeWidth="1dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/background"
@@ -26,9 +20,9 @@
 
             <LinearLayout
                 android:id="@+id/color"
-                android:layout_width="10dp"
+                android:layout_width="8dp"
                 android:layout_height="match_parent"
-                android:background="#ff009688"
+                tools:background="#ff009688"
                 android:gravity="center"
                 android:orientation="vertical" />
 
@@ -36,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginHorizontal="8dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -44,20 +38,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
+                    android:textAppearance="?attr/textAppearanceBodyLargeEmphasized"
+                    android:textSize="20sp"
                     tools:text="Operator 2" />
 
                 <TextView
                     android:id="@+id/sub"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:textSize="14sp"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     tools:text="Blocks: 22" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
+
     <LinearLayout
         android:id="@+id/drag_handler"
         android:layout_width="35dp"
