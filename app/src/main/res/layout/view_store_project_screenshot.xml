@@ -4,6 +4,7 @@
     android:layout_height="240dp"
     android:layout_marginEnd="12dp"
     app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:cardCornerRadius="12dp"
     app:strokeColor="?attr/colorSurfaceContainerHighest"
     app:strokeWidth="0.5dp">
 

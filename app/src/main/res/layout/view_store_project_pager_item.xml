@@ -7,8 +7,7 @@
     android:clickable="true"
     android:focusable="true"
     android:transitionGroup="true"
-    app:cardBackgroundColor="?attr/colorSurfaceContainer"
-    app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
+    app:cardBackgroundColor="?attr/colorSurfaceContainerLowest">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
