@@ -108,4 +108,14 @@ public class UI {
             return R.drawable.shape_middle;
         }
     }
+
+    @SuppressLint("DiscouragedApi, InternalInsetResource")
+    public static int getStatusBarHeight(Context ctx) {
+        int result = 0;
+        int resourceId = ctx.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = ctx.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 }

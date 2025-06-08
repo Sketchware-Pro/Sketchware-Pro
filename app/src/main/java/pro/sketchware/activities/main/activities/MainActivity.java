@@ -13,26 +13,23 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.splashscreen.SplashScreen;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.tabs.TabLayoutMediator;
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.File;
@@ -45,8 +42,6 @@ import a.a.a.oB;
 import a.a.a.sB;
 import a.a.a.wq;
 import a.a.a.xB;
-import dev.chrisbanes.insetter.Insetter;
-import dev.chrisbanes.insetter.Side;
 import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
@@ -61,12 +56,14 @@ import pro.sketchware.databinding.MainBinding;
 import pro.sketchware.lib.base.BottomSheetDialogView;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.UI;
 
 public class MainActivity extends BasePermissionAppCompatActivity {
+    private static final String PROJECTS_FRAGMENT_TAG = "projects_fragment";
+    private static final String PROJECTS_STORE_FRAGMENT_TAG = "projects_store_fragment";
     private ActionBarDrawerToggle drawerToggle;
     private DB u;
     private Snackbar storageAccessDenied;
-    private FragmentsAdapter fragmentsAdapter;
     private MainBinding binding;
     private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
         @Override
@@ -75,6 +72,11 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             binding.drawerLayout.closeDrawers();
         }
     };
+    private ProjectsFragment projectsFragment;
+    private ProjectsStoreFragment projectsStoreFragment;
+    private Fragment activeFragment;
+    @IdRes
+    private int currentNavItemId = R.id.item_projects;
 
     @Override
     // onRequestPermissionsResult but for Storage access only, and only when granted
@@ -82,8 +84,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         if (i == 9501) {
             allFilesAccessCheck();
 
-            ProjectsFragment projectsFragment = fragmentsAdapter != null ? fragmentsAdapter.getProjectsFragment() : null;
-            if (projectsFragment != null) {
+            if (activeFragment instanceof ProjectsFragment) {
                 projectsFragment.refreshProjectsList();
             }
         }
@@ -105,8 +106,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     }
 
     public void n() {
-        ProjectsFragment projectsFragment = fragmentsAdapter != null ? fragmentsAdapter.getProjectsFragment() : null;
-        if (projectsFragment != null) {
+        if (activeFragment instanceof ProjectsFragment) {
             projectsFragment.refreshProjectsList();
         }
     }
@@ -132,8 +132,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
                 case 212:
                     if (!(data.getStringExtra("save_as_new_id") == null ? "" : data.getStringExtra("save_as_new_id")).isEmpty() && isStoragePermissionGranted()) {
-                        ProjectsFragment projectsFragment = fragmentsAdapter != null ? fragmentsAdapter.getProjectsFragment() : null;
-                        if (projectsFragment != null) {
+                        if (activeFragment instanceof ProjectsFragment) {
                             projectsFragment.refreshProjectsList();
                         }
                     }
@@ -152,19 +151,16 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
 
         tryLoadingCustomizedAppStrings();
         binding = MainBinding.inflate(getLayoutInflater());
 
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-        setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-        getWindow().setSharedElementsUseOverlay(false);
-
         setContentView(binding.getRoot());
-        Insetter.builder()
-                .padding(WindowInsetsCompat.Type.navigationBars(), Side.create(true, false, true, false))
-                .applyToView(binding.layoutCoordinator);
-        setSupportActionBar(binding.toolbar.toolbar);
+        setSupportActionBar(binding.toolbar);
+
+        binding.statusBarOverlapper.setMinimumHeight(UI.getStatusBarHeight(this));
+        UI.addSystemWindowInsetToPadding(binding.appbar, true, false, true, false);
 
         u = new DB(getApplicationContext(), "U1");
         int u1I0 = u.a("U1I0", -1);
@@ -201,32 +197,6 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             }
         });
 
-        binding.viewPager.setOffscreenPageLimit(2);
-
-        fragmentsAdapter = new FragmentsAdapter(this);
-        binding.viewPager.setAdapter(fragmentsAdapter);
-        binding.viewPager.setUserInputEnabled(false);
-
-        String[] tabTitles = new String[]{
-                Helper.getResString(R.string.main_tab_title_myproject),
-                Helper.getResString(R.string.main_tab_title_projects_store)
-        };
-
-        new TabLayoutMediator(binding.tabLayout, binding.viewPager,
-                (tab, position) -> tab.setText(tabTitles[position])
-        ).attach();
-
-        binding.viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 0) {
-                    binding.createNewProject.show();
-                } else {
-                    binding.createNewProject.hide();
-                }
-            }
-        });
-
         boolean hasStorageAccess = isStoragePermissionGranted();
         if (!hasStorageAccess) {
             showNoticeNeedStorageAccess();
@@ -250,7 +220,6 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                     @Override
                     public void onCopyPostExecute(String path, boolean wasSuccessful, String reason) {
                         if (wasSuccessful) {
-                            ProjectsFragment projectsFragment = fragmentsAdapter != null ? fragmentsAdapter.getProjectsFragment() : null;
                             BackupRestoreManager manager = new BackupRestoreManager(MainActivity.this, projectsFragment);
 
                             if (BackupFactory.zipContainsFile(path, "local_libs")) {
@@ -293,6 +262,93 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
             if (!isFinishing()) bottomSheetDialog.show();
         }
+
+        binding.bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.item_projects) {
+                navigateToProjectsFragment();
+                return true;
+            } else if (id == R.id.item_sketchub) {
+                navigateToSketchubFragment();
+                return true;
+            }
+            return false;
+        });
+
+        if (savedInstanceState != null) {
+            projectsFragment = (ProjectsFragment) getSupportFragmentManager().findFragmentByTag(PROJECTS_FRAGMENT_TAG);
+            projectsStoreFragment = (ProjectsStoreFragment) getSupportFragmentManager().findFragmentByTag(PROJECTS_STORE_FRAGMENT_TAG);
+            currentNavItemId = savedInstanceState.getInt("selected_tab_id");
+            Fragment current = getFragmentForNavId(currentNavItemId);
+            if (current instanceof ProjectsFragment) {
+                navigateToProjectsFragment();
+            } else if (current instanceof ProjectsStoreFragment) {
+                navigateToSketchubFragment();
+            }
+
+            return;
+        }
+
+        navigateToProjectsFragment();
+    }
+
+    private Fragment getFragmentForNavId(int navItemId) {
+        if (navItemId == R.id.item_projects) {
+            return projectsFragment;
+        } else if (navItemId == R.id.item_sketchub) {
+            return projectsStoreFragment;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("selected_tab_id", currentNavItemId);
+    }
+
+    private void navigateToProjectsFragment() {
+        if (projectsFragment == null) {
+            projectsFragment = new ProjectsFragment();
+        }
+
+        boolean shouldShow = true;
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        binding.createNewProject.show();
+        if (activeFragment != null) transaction.hide(activeFragment);
+        if (fm.findFragmentByTag(PROJECTS_FRAGMENT_TAG) == null) {
+            shouldShow = false;
+            transaction.add(binding.container.getId(), projectsFragment, PROJECTS_FRAGMENT_TAG);
+        }
+        if (shouldShow) transaction.show(projectsFragment);
+        transaction.commit();
+
+        activeFragment = projectsFragment;
+        currentNavItemId = R.id.item_projects;
+    }
+
+    private void navigateToSketchubFragment() {
+        if (projectsStoreFragment == null) {
+            projectsStoreFragment = new ProjectsStoreFragment();
+        }
+
+        boolean shouldShow = true;
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        binding.createNewProject.hide();
+        if (activeFragment != null) transaction.hide(activeFragment);
+        if (fm.findFragmentByTag(PROJECTS_STORE_FRAGMENT_TAG) == null) {
+            shouldShow = false;
+            transaction.add(binding.container.getId(), projectsStoreFragment, PROJECTS_STORE_FRAGMENT_TAG);
+        }
+        if (shouldShow) transaction.show(projectsStoreFragment);
+        transaction.commit();
+
+        activeFragment = projectsStoreFragment;
+        currentNavItemId = R.id.item_sketchub;
     }
 
     @NonNull
@@ -362,9 +418,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                 dialog.setIcon(R.drawable.ic_expire_48dp);
                 dialog.setTitle("Android 11 storage access");
-                dialog.setMessage("Starting with Android 11, Sketchware Pro needs a new permission to avoid " +
-                        "taking ages to build projects. Don't worry, we can't do more to storage than " +
-                        "with current granted permissions.");
+                dialog.setMessage("Starting with Android 11, Sketchware Pro needs a new permission to avoid " + "taking ages to build projects. Don't worry, we can't do more to storage than " + "with current granted permissions.");
                 dialog.setPositiveButton(Helper.getResString(R.string.common_word_settings), (v, which) -> {
                     FileUtil.requestAllFilesAccessPermission(this);
                     v.dismiss();
@@ -375,8 +429,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                         if (!optOutFile.createNewFile())
                             throw new IOException("Failed to create file " + optOutFile);
                     } catch (IOException e) {
-                        Log.e("MainActivity", "Error while trying to create " +
-                                "\"Don't show Android 11 hint\" dialog file: " + e.getMessage(), e);
+                        Log.e("MainActivity", "Error while trying to create " + "\"Don't show Android 11 hint\" dialog file: " + e.getMessage(), e);
                     }
                     v.dismiss();
                 });
@@ -392,10 +445,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         dialog.setMessage(Helper.getResString(R.string.common_message_permission_need_load_project));
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
             v.dismiss();
-            ActivityCompat.requestPermissions(this, new String[]{
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE},
-                    9501);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 9501);
         });
         dialog.show();
     }
@@ -414,10 +464,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             storageAccessDenied = Snackbar.make(binding.layoutCoordinator, Helper.getResString(R.string.common_message_permission_denied), Snackbar.LENGTH_INDEFINITE);
             storageAccessDenied.setAction(Helper.getResString(R.string.common_word_settings), v -> {
                 storageAccessDenied.dismiss();
-                ActivityCompat.requestPermissions(this, new String[]{
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_EXTERNAL_STORAGE},
-                        9501);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 9501);
             });
             storageAccessDenied.setActionTextColor(Color.YELLOW);
             storageAccessDenied.show();
@@ -430,8 +477,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         oB oB = new oB();
         try {
             File extractedStringsProvidedXml = new File(wq.m());
-            if (oB.a(getApplicationContext(), "localization/strings.xml") !=
-                    (extractedStringsProvidedXml.exists() ? extractedStringsProvidedXml.length() : 0)) {
+            if (oB.a(getApplicationContext(), "localization/strings.xml") != (extractedStringsProvidedXml.exists() ? extractedStringsProvidedXml.length() : 0)) {
                 oB.a(extractedStringsProvidedXml);
                 oB.a(getApplicationContext(), "localization/strings.xml", wq.m());
             }
@@ -444,43 +490,6 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         // Actual loading part
         if (xB.b().b(getApplicationContext())) {
             SketchwareUtil.toast(Helper.getResString(R.string.message_strings_xml_loaded));
-        }
-    }
-
-    // ----------------- Inner Classes ----------------- //
-
-    public static class FragmentsAdapter extends FragmentStateAdapter {
-
-        private final ProjectsFragment projectsFragment;
-        private final ProjectsStoreFragment projectsStoreFragment;
-
-        public FragmentsAdapter(@NonNull FragmentActivity fragmentActivity) {
-            super(fragmentActivity);
-            projectsFragment = new ProjectsFragment();
-            projectsStoreFragment = new ProjectsStoreFragment();
-        }
-
-        @NonNull
-        @Override
-        public Fragment createFragment(int position) {
-            if (position == 1) {
-                return projectsStoreFragment;
-            } else {
-                return projectsFragment;
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            return 2;
-        }
-
-        public ProjectsFragment getProjectsFragment() {
-            return projectsFragment;
-        }
-
-        public ProjectsStoreFragment getProjectsStoreFragment() {
-            return projectsStoreFragment;
         }
     }
 }
