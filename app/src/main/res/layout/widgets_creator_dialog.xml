@@ -26,7 +26,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/TextDropDownLayoutStyle"
             android:id="@+id/input_name"
             style="@style/Widget.SketchwarePro.TextInputLayout.ExposedDropdownMenu"
             android:layout_width="match_parent"
@@ -55,8 +54,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:digits="0123456789"
-                android:inputType="number"
                 android:focusable="false"
+                android:inputType="number"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
