@@ -6,6 +6,7 @@
     android:layout_height="180dp"
     android:clickable="true"
     android:focusable="true"
+    android:transitionGroup="true"
     app:cardBackgroundColor="?attr/colorSurfaceContainer"
     app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
 

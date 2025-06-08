@@ -13,7 +13,8 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import pro.sketchware.BuildConfig;
+import com.google.android.material.transition.MaterialSharedAxis;
+
 import pro.sketchware.activities.main.fragments.projects_store.adapters.StorePagerProjectsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.adapters.StoreProjectsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.api.SketchubAPI;
@@ -23,6 +24,15 @@ import pro.sketchware.databinding.FragmentProjectsStoreBinding;
 public class ProjectsStoreFragment extends Fragment {
     private FragmentProjectsStoreBinding binding;
     private SketchubAPI sketchubAPI;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setEnterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+        setReturnTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+        setExitTransition(new MaterialSharedAxis(MaterialSharedAxis.X, true));
+        setReenterTransition(new MaterialSharedAxis(MaterialSharedAxis.X, false));
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
