@@ -64,10 +64,9 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
         binding.downloads.setText("Downloads: " + project.getDownloads());
         binding.filesize.setText("Size: " + project.getProjectSize());
         binding.timestamp.setText("Uploaded: " + DateUtils.formatDateTime(this, TimeUnit.SECONDS.toMillis(Long.parseLong(project.getPublishedTimestamp())), DateUtils.FORMAT_ABBREV_RELATIVE));
-        binding.btnDownload.setOnClickListener(v -> openProject());
-
-        binding.toolbar.setNavigationOnClickListener(v -> finish());
         binding.btnComments.setOnClickListener(v -> openCommentsSheet());
+        binding.btnDownload.setOnClickListener(v -> openProject());
+        binding.toolbar.setNavigationOnClickListener(v -> finish());
 
         ArrayList<String> screenshots = new ArrayList<>();
         for (int i = 0; i <= 4; i++) {
@@ -80,6 +79,8 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
         binding.screenshots.setAdapter(new ProjectScreenshotsAdapter(screenshots));
 
         UI.loadImageFromUrl(binding.icon, project.getIcon());
+        UI.addSystemWindowInsetToPadding(binding.content, true, true, true, true);
+        UI.addSystemWindowInsetToMargin(binding.buttonsContainer, true, false, true, true);
     }
 
     private void addChip(String name) {

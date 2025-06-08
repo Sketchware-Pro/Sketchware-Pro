@@ -17,7 +17,6 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
             android:orientation="vertical">
 
             <com.google.android.material.appbar.MaterialToolbar
@@ -219,7 +218,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="108dp"
+                android:layout_marginBottom="96dp"
                 app:cardBackgroundColor="?attr/colorSurfaceContainer"
                 app:cardCornerRadius="18dp"
                 app:contentPadding="14dp">
