@@ -80,9 +80,7 @@
                     android:hint="Block name"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:lines="1"
-                    android:padding="12dp"
-                    android:textSize="12sp" />
+                    android:lines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -242,14 +240,12 @@
                         android:hint="Variable name"
                         android:imeOptions="actionNext"
                         android:inputType="text"
-                        android:lines="1"
-                        android:padding="12dp"
-                        android:textSize="12sp" />
+                        android:lines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_variable"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
@@ -282,14 +278,12 @@
                         android:hint="Label text"
                         android:imeOptions="actionDone"
                         android:inputType="text"
-                        android:lines="1"
-                        android:padding="12dp"
-                        android:textSize="12sp" />
+                        android:lines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_label"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cornerRadius="14dp"
@@ -325,7 +319,6 @@
                     android:layout_weight="1"
                     android:hint="Parameter"
                     app:placeholderText="m.name (without % sign)"
-                    app:placeholderTextAppearance="@style/PlaceholderStyle"
                     app:counterEnabled="true"
                     app:counterMaxLength="100"
                     app:endIconMode="clear_text">
@@ -337,9 +330,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
-                        android:padding="12dp"
-                        android:singleLine="true"
-                        android:textSize="12sp" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -359,14 +350,12 @@
                         android:imeOptions="actionDone"
                         android:inputType="text"
                         android:lines="1"
-                        android:padding="12dp"
-                        android:singleLine="true"
-                        android:textSize="12sp" />
+                        android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cornerRadius="14dp"

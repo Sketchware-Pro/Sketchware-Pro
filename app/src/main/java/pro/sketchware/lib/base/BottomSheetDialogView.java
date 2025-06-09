@@ -3,10 +3,10 @@ package pro.sketchware.lib.base;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.button.MaterialButton;
 
 import pro.sketchware.R;
 import pro.sketchware.databinding.ViewBottomSheetDialogBinding;
@@ -24,8 +24,7 @@ public class BottomSheetDialogView extends BottomSheetDialog {
     public void show() {
         super.show();
         if (getWindow() != null) {
-            getWindow().findViewById(R.id.design_bottom_sheet)
-                    .setBackgroundResource(android.R.color.transparent);
+            getWindow().findViewById(R.id.design_bottom_sheet).setBackgroundResource(android.R.color.transparent);
         }
     }
 
@@ -79,11 +78,11 @@ public class BottomSheetDialogView extends BottomSheetDialog {
 
     // ----------------- Getters -----------------
 
-    public MaterialButton getPositiveButton() {
+    public Button getPositiveButton() {
         return binding.positiveButton;
     }
 
-    public MaterialButton getNegativeButton() {
+    public Button getNegativeButton() {
         return binding.negativeButton;
     }
 }

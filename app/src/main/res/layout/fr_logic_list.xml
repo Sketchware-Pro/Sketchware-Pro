@@ -27,22 +27,22 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tv_import"
-                style="?attr/materialButtonElevatedStyle"
+                style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="4dp"
-                android:textColor="?colorControlNormal"
+                android:layout_marginTop="8dp"
                 android:text="@string/logic_button_import_more_block"
-                android:textSize="14sp" />
+                android:textColor="?attr/colorOnSurface" />
 
             <TextView
                 android:id="@+id/tv_no_events"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:visibility="gone"
+                tools:text="No events to display" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/event_list"

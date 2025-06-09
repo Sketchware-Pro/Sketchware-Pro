@@ -1,12 +1,12 @@
 package com.besome.sketch.editor.manage;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +17,6 @@ import com.besome.sketch.editor.manage.view.AddCustomViewActivity;
 import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 
@@ -165,9 +164,11 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         binding = FileSelectorPopupSelectXmlBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             sc_id = intent.getStringExtra("sc_id");
@@ -178,11 +179,13 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             currentXml = savedInstanceState.getString("current_xml");
             isCustomView = savedInstanceState.getBoolean("is_custom_view");
         }
+
         if (isCustomView) {
             selectedTab = TAB_CUSTOM_VIEW;
         } else {
             selectedTab = TAB_ACTIVITY;
         }
+
         binding.optionsSelector.check(selectedTab == TAB_ACTIVITY ? R.id.option_view : R.id.option_custom_view);
         binding.emptyMessage.setText(xB.b().a(this, R.string.design_manager_view_message_no_view));
         viewSelectorAdapter = new ViewSelectorAdapter();
@@ -198,17 +201,12 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 }
             }
         });
-        var onSurface = MaterialColors.getColor(binding.optionsSelector, com.google.android.material.R.attr.colorOnSurface);
         binding.optionsSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 if (checkedId == R.id.option_view) {
                     selectedTab = TAB_ACTIVITY;
-                    binding.optionView.setTextColor(onSurface);
-                    binding.optionCustomView.setTextColor(Color.parseColor("#FFFFFF"));
                 } else if (checkedId == R.id.option_custom_view) {
                     selectedTab = TAB_CUSTOM_VIEW;
-                    binding.optionView.setTextColor(Color.parseColor("#FFFFFF"));
-                    binding.optionCustomView.setTextColor(onSurface);
                 }
                 viewSelectorAdapter.notifyDataSetChanged();
                 binding.emptyMessage.setVisibility(viewSelectorAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);

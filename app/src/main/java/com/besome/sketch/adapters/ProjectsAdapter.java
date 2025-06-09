@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DiffUtil;
@@ -113,8 +114,21 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         return false;
     }
 
+    @DrawableRes
+    public static <T> int getShapedBackgroundForList(List<T> list, int position) {
+        if (list.size() == 1) {
+            return R.drawable.project_item_shape_alone;
+        } else if (position == 0) {
+            return R.drawable.project_item_shape_top;
+        } else if (position == list.size() - 1) {
+            return R.drawable.project_item_shape_bottom;
+        } else {
+            return R.drawable.project_item_shape_middle;
+        }
+    }
     @Override
     public void onBindViewHolder(@NonNull ProjectViewHolder holder, int position) {
+        holder.itemView.setBackgroundResource(getShapedBackgroundForList(shownProjects, position));
         HashMap<String, Object> projectMap = shownProjects.get(position);
         String scId = yB.c(projectMap, "sc_id");
 

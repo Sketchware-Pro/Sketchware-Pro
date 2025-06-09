@@ -10,7 +10,12 @@
       — '*' - instead of using the asterisk (*), replace it with the specific name of the component whose style is being modified or created.
     -->
 
-    <style name="Widget.SketchwarePro.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar.Large">
+    <style name="Widget.SketchwarePro.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">?attr/colorSurface</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.CollapsingToolbar" parent="Widget.Material3Expressive.CollapsingToolbar.Large">
         <item name="collapsedTitleTextAppearance">
             @style/TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed
         </item>
@@ -21,10 +26,9 @@
     </style>
 
     <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed" parent="TextAppearance.SketchwarePro.TitleLarge" />
-
     <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Expanded" parent="TextAppearance.SketchwarePro.HeadlineMedium" />
 
-    <style name="Widget.SketchwarePro.Toolbar.SmallText" parent="Widget.Material3.Toolbar">
+    <style name="Widget.SketchwarePro.Toolbar.SmallText" parent="Widget.Material3Expressive.Toolbar.OnSurface">
         <item name="titleTextAppearance">?attr/textAppearanceBodyLarge</item>
         <item name="subtitleTextAppearance">?attr/textAppearanceBodyMedium</item>
     </style>
@@ -42,113 +46,78 @@
     </style>
 
     <style name="Widget.SketchwarePro.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
-        <item name="hintEnabled">true</item>
-        <item name="shapeAppearanceOverlay">
-            @style/ShapeAppearanceOverlay.SketchwarePro.TextInputLayout
-        </item>
-        <item name="android:bottomLeftRadius">14dp</item>
-        <item name="android:bottomRightRadius">14dp</item>
-        <item name="android:topLeftRadius">14dp</item>
-        <item name="android:topRightRadius">14dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Medium</item>
     </style>
 
-    <style name="ShapeAppearanceOverlay.SketchwarePro.TextInputLayout" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">14dp</item>
+    <style name="Widget.SketchwarePro.TextInputLayout.ExposedDropdownMenu" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Medium</item>
     </style>
 
     <style name="ThemeOverlay.SketchwarePro.ViewEditor" parent="Base.Theme.MaterialComponents.Light" />
 
-    <style name="Preference.SketchwarePro.SwitchPreferenceCompat" parent="@style/Preference.SwitchPreferenceCompat.Material">
+    <style name="Preference.SketchwarePro.SwitchPreferenceCompat" parent="Preference.SwitchPreferenceCompat.Material">
         <item name="widgetLayout">@layout/preference_widget_layout_m3_switch</item>
     </style>
 
-    <style name="TabLayoutStyle" parent="Widget.Material3.TabLayout">
-        <item name="android:background">@android:color/transparent</item>
+    <style name="Widget.SketchwarePro.TabLayout" parent="Widget.Material3.TabLayout">
         <item name="tabIndicator">@drawable/view_tab_indicator</item>
     </style>
 
     <style name="ThemeOverlay.SketchwarePro.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.SketchwarePro.BottomSheet.Modal</item>
     </style>
 
-    <!--    AutoCompleteTextInputEditTextStyle    -->
-    <style name="TextInputEditTextStyle" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:imeOptions">actionNext</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:textSize">14sp</item>
+    <style name="Widget.SketchwarePro.BottomSheet.Modal" parent="Widget.Material3.BottomSheet">
+        <item name="android:elevation">0dp</item>
+        <item name="backgroundTint">?attr/colorSurface</item>
     </style>
 
-    <style name="TextDropDownLayoutStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-        <item name="errorTextAppearance">@style/error_appearance</item>
-        <item name="hintTextAppearance">@style/hint_appearance</item>
-        <item name="shapeAppearanceOverlay">
-            @style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded
+    <style name="ThemeOverlay.SketchwarePro.AlertDialog" parent="ThemeOverlay.Material3Expressive.MaterialAlertDialog.Centered">
+        <item name="android:colorBackground">?attr/colorSurfaceContainer</item>
+        <item name="android:windowAnimationStyle">@style/MaterialAlertDialog.Material3.Animation
         </item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:windowMinWidthMajor">65%</item>
+        <item name="android:windowMinWidthMinor">98%</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.SketchwarePro</item>
     </style>
 
-    <style name="ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">14dp</item>
-    </style>
-    <!--    end AutoCompleteTextInputEditTextStyle    -->
-
-    <style name="ChipStyle.SWPro.Chip.Rounded" parent="">
-        <item name="chipCornerRadius">5dp</item>
-        <item name="checkedIconEnabled">false</item>
-        <item name="chipStrokeWidth">0.5dp</item>
-        <item name="chipIconVisible">true</item>
-        <item name="textEndPadding">0dp</item>
-        <item name="checkedIconVisible">false</item>
-        <item name="textStartPadding">1dp</item>
-        <item name="chipIconTint">?attr/colorOutline</item>
-        <item name="chipStrokeColor">?attr/colorOutline</item>
-        <item name="chipBackgroundColor">@color/bg_chip_states</item>
-        <item name="chipStartPadding">2dp</item>
-        <item name="chipMinTouchTargetSize">32dp</item>
+    <style name="MaterialAlertDialog.SketchwarePro" parent="MaterialAlertDialog.Material3Expressive">
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
     </style>
 
-    <style name="Widget.App.Button.OutlinedButton.IconOnly" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="iconPadding">0dp</item>
-        <item name="cornerRadius">5dp</item>
-        <item name="iconSize">30dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
-        <item name="android:minWidth">48dp</item>
-        <item name="android:minHeight">48dp</item>
+    <style name="Widget.SketchwarePro.CardView" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">18dp</item>
+        <item name="cardBackgroundColor">?attr/colorSurfaceContainer</item>
     </style>
 
-    <style name="error_appearance" parent="@android:style/TextAppearance">
-        <item name="android:textSize">12sp</item>
+    <style name="Widget.SketchwarePro.Chip" parent="Widget.Material3.Chip.Input.Icon.Elevated">
+        <item name="closeIconEnabled">false</item>
+        <item name="closeIcon">@null</item>
+        <item name="checkedIconEnabled">true</item>
+        <item name="checkedIconTint">?attr/colorOnSecondary</item>
+        <item name="checkedIcon">@drawable/ic_mtrl_done</item>
+        <item name="chipBackgroundColor">?attr/colorSecondary</item>
+        <item name="chipCornerRadius">90dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.SketchwarePro.Chip</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
-    <style name="hint_appearance" parent="@android:style/TextAppearance">
-        <item name="android:textSize">12sp</item>
+    <style name="Widget.SketchwarePro.Chip.ProjectPreview" parent="Widget.Material3.Chip.Suggestion">
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="rippleColor">@null</item>
+        <item name="shapeAppearance">?attr/shapeAppearanceCornerLarge</item>
+    </style>
+
+    <style name="TextAppearance.SketchwarePro.Chip" parent="TextAppearance.SketchwarePro.BodyMedium">
         <item name="android:fontFamily">@font/gilroy</item>
         <item name="fontFamily">@font/gilroy</item>
     </style>
 
-    <style name="RoundedCornersDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="dialogCornerRadius">16dp</item>
-        <item name="android:background">?attr/colorSurfaceContainer</item>
-        <item name="shapeAppearanceOverlay">
-            @style/ShapeAppearanceOverlay.SWPro.TextInputLayout.Rounded
-        </item>
-        <item name="android:windowFullscreen">false</item>
-        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
-        <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowIsFloating">true</item>
-    </style>
-
-    <style name="PlaceholderStyle" parent="TextAppearance.Design.Placeholder">
-        <item name="android:textSize">10sp</item>
-        <item name="alpha">0.6</item>
-    </style>
-
-    <style name="Widget.SketchwarePro.MaterialCardView" parent="Widget.Material3.CardView.Filled">
-        <item name="cardCornerRadius">16dp</item>
+    <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
+        <item name="chipStyle">@style/Widget.SketchwarePro.Chip.ProjectPreview</item>
     </style>
 </resources>

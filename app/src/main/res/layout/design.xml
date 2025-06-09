@@ -32,35 +32,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         app:navigationIcon="?attr/homeAsUpIndicator"
+                        app:subtitleTextColor="?attr/colorSecondary"
                         tools:menu="@menu/design_menu"
                         tools:subtitle="605"
-                        app:subtitleTextColor="?attr/colorSecondary"
                         tools:title="InternalDemo" />
                 </com.google.android.material.appbar.AppBarLayout>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/mainTabsCard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginTop="3dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:cardBackgroundColor="@color/transparent"
-                    app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
-                    app:strokeWidth="0dp">
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:dividerThickness="0.5dp" />
 
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:id="@+id/layout_coordinator"
@@ -82,27 +63,27 @@
                     android:id="@+id/progress_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    android:orientation="vertical">
+                    tools:visibility="visible">
 
                     <TextView
                         android:id="@+id/progress_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
-                        android:padding="10dp"
-                        tools:text="Building your awesome app..."
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp"
                         android:singleLine="true"
-                        android:textAppearance="?attr/textAppearanceBodyMedium" />
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        tools:text="Building your awesome app..." />
 
                     <com.google.android.material.progressindicator.LinearProgressIndicator
                         android:id="@+id/progress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:progress="0"
                         android:indeterminate="false"
-                        app:trackStopIndicatorSize="0dp"/>
+                        android:progress="0"
+                        app:trackStopIndicatorSize="0dp" />
                 </LinearLayout>
 
                 <com.google.android.material.bottomappbar.BottomAppBar
@@ -112,17 +93,17 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     app:menu="@menu/design_bottom_menu"
+                    app:paddingBottomSystemWindowInsets="false"
                     app:paddingLeftSystemWindowInsets="false"
-                    app:paddingBottomSystemWindowInsets="false">
+                    tools:ignore="BottomAppBar">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/file_name_container"
-                        style="?attr/materialCardViewStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="8dp"
                         android:clickable="true"
-                        app:contentPadding="12dp"
+                        app:contentPadding="8dp"
                         app:strokeWidth="0dp">
 
                         <LinearLayout
@@ -134,7 +115,8 @@
                                 android:id="@+id/img_orientation"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:layout_marginHorizontal="6dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginEnd="8dp"
                                 android:src="@drawable/ic_mtrl_screen"
                                 app:tint="?attr/colorControlNormal" />
 
@@ -142,8 +124,8 @@
                                 android:id="@+id/file_name"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
                                 android:layout_weight="1"
-                                android:layout_marginHorizontal="5dp"
                                 android:singleLine="true"
                                 android:text="main"
                                 android:textAppearance="?attr/textAppearanceBodyMedium" />
@@ -151,7 +133,7 @@
                             <ImageView
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:layout_marginEnd="8dp"
+                                android:layout_marginEnd="4dp"
                                 android:src="@drawable/ic_arrow_drop_down_24px"
                                 app:tint="?attr/colorControlNormal" />
 

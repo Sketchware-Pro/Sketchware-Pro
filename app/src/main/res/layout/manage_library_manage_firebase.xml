@@ -241,16 +241,17 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/btn_import"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Import from google-services.json" />
-
-        <Button
             android:id="@+id/btn_console"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="@string/design_library_firebase_button_goto_firebase_console" />
+
+        <Button
+            android:id="@+id/btn_import"
+            style="@style/Widget.Material3Expressive.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Import from google-services.json" />
     </LinearLayout>
 </LinearLayout>

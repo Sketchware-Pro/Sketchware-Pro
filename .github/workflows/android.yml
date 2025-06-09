@@ -44,6 +44,8 @@ jobs:
   build:
     name: Build APKs
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
+    outputs:
+      short_sha: ${{ steps.set_sha.outputs.short_sha }}
     steps:
       - uses: actions/checkout@v4
 
@@ -63,17 +65,28 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-disabled: true
 
       - name: Build Release APK
         env:
           SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
         run: gradle assembleRelease
 
+      - name: Set short SHA
+        id: set_sha
+        run: echo "short_sha=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+
+      - name: Rename APK with commit hash
+        run: |
+          mv app/build/outputs/apk/release/app-release.apk \
+             app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
+
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: apk-release
-          path: app/build/outputs/apk/release
+          name: apk-release-${{ steps.set_sha.outputs.short_sha }}
+          path: app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
 
   aggregateAndSend:
     name: Send APKs to Telegram
@@ -85,7 +98,7 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: apk-release
+          name: apk-release-${{ needs.build.outputs.short_sha }}
           path: ./downloaded-artifact
 
       - name: Set up Python 3
@@ -116,7 +129,7 @@ jobs:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-          APK_PATH: ./downloaded-artifact/app-release.apk
+          APK_PATH: ./downloaded-artifact/app-release-${{ needs.build.outputs.short_sha }}.apk
         run: |
           python ./.github/workflows/deploy_artifacts.py
         continue-on-error: true

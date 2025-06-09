@@ -1,6 +1,8 @@
 package pro.sketchware.utility;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -23,9 +25,7 @@ import pro.sketchware.R;
 
 public class UI {
     public static void loadImageFromUrl(ImageView image, String url) {
-        Glide.with(image.getContext())
-                .load(url)
-                .into(image);
+        Glide.with(image.getContext()).load(url).into(image);
     }
 
     public static void advancedCorners(View view, int color) {
@@ -58,24 +58,42 @@ public class UI {
         view.setBackground(RE);
     }
 
-    public static void addSystemWindowInsetToPadding(
-            View view, boolean left, boolean top, boolean right, boolean bottom) {
+    public static void addSystemWindowInsetToPadding(View view, boolean left, boolean top, boolean right, boolean bottom) {
         int initialLeft = view.getPaddingLeft();
         int initialTop = view.getPaddingTop();
         int initialRight = view.getPaddingRight();
         int initialBottom = view.getPaddingBottom();
 
-        ViewCompat.setOnApplyWindowInsetsListener(
-                view,
-                (v, windowInsets) -> {
-                    Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-                    view.setPadding(
-                            initialLeft + (left ? insets.left : 0),
-                            initialTop + (top ? insets.top : 0),
-                            initialRight + (right ? insets.right : 0),
-                            initialBottom + (bottom ? insets.bottom : 0));
-                    return windowInsets;
-                });
+        ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            view.setPadding(
+                    initialLeft + (left ? insets.left : 0),
+                    initialTop + (top ? insets.top : 0),
+                    initialRight + (right ? insets.right : 0),
+                    initialBottom + (bottom ? insets.bottom : 0)
+            );
+            return windowInsets;
+        });
+    }
+
+    public static void addSystemWindowInsetToMargin(View view, boolean left, boolean top, boolean right, boolean bottom) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        int initialLeft = params.leftMargin;
+        int initialTop = params.topMargin;
+        int initialRight = params.rightMargin;
+        int initialBottom = params.bottomMargin;
+
+        ViewCompat.setOnApplyWindowInsetsListener(view, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            params.setMargins(
+                    initialLeft + (left ? insets.left : 0),
+                    initialTop + (top ? insets.top : 0),
+                    initialRight + (right ? insets.right : 0),
+                    initialBottom + (bottom ? insets.bottom : 0)
+            );
+            view.requestLayout();
+            return windowInsets;
+        });
     }
 
     @DrawableRes
@@ -89,5 +107,15 @@ public class UI {
         } else {
             return R.drawable.shape_middle;
         }
+    }
+
+    @SuppressLint("DiscouragedApi, InternalInsetResource")
+    public static int getStatusBarHeight(Context ctx) {
+        int result = 0;
+        int resourceId = ctx.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = ctx.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }

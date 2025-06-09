@@ -2,11 +2,9 @@ package pro.sketchware.activities.main.fragments.projects_store.adapters;
 
 import static pro.sketchware.utility.UI.loadImageFromUrl;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -44,15 +42,12 @@ public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdap
     public void onBindViewHolder(StoreProjectsAdapter.ViewHolder holder, int position) {
         ProjectModel.Project project = projects.get(position);
 
-        holder.binding.projectTitle.setText(project.getTitle());
-        holder.binding.projectLikes.setText(project.getLikes());
-        holder.binding.projectDownloads.setText(project.getDownloads());
-        loadImageFromUrl(holder.binding.projectImage, project.getIcon());
+        holder.binding.title.setText(project.getTitle());
+        holder.binding.likes.setText(project.getLikes());
+        holder.binding.downloads.setText(project.getDownloads());
+        loadImageFromUrl(holder.binding.icon, project.getIcon());
 
-        holder.itemView.setScaleX(1f);
-        holder.itemView.setScaleY(1f);
-
-        holder.binding.getRoot().setOnClickListener(v -> openProject(project, v));
+        holder.binding.getRoot().setOnClickListener(v -> openProject(project));
     }
 
     @Override
@@ -63,7 +58,7 @@ public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdap
         return projects.size();
     }
 
-    private void openProject(ProjectModel.Project project, View view) {
+    private void openProject(ProjectModel.Project project) {
         var fm = context.getSupportFragmentManager();
 
         if (fm.findFragmentByTag("project_preview") == null) {
@@ -72,12 +67,7 @@ public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdap
 
             var intent = new Intent(context, ProjectPreviewActivity.class);
             intent.putExtras(bundle);
-            var options = ActivityOptions.makeSceneTransitionAnimation(
-                    context,
-                    view,
-                    "project_preview"
-            );
-            context.startActivity(intent, options.toBundle());
+            context.startActivity(intent);
         }
     }
 

@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/abc_ic_ab_back_material" />
+                app:navigationIcon="?attr/homeAsUpIndicator" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -34,230 +34,205 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:paddingBottom="60dp">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/layout_item"
-                style="?attr/materialCardViewFilledStyle"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="14dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginBottom="56dp"
-                android:transitionGroup="true"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_name"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_id"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberSigned"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
+                        android:layout_weight="1">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_name"
+                            android:id="@+id/component_icon"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_name"
+                            android:hint="@string/developer_tools_component_icon"
                             android:imeOptions="actionNext"
                             android:inputType="text"
-                            android:singleLine="true"
-                            android:textSize="14sp" />
+                            android:singleLine="true" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_id"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_id"
-                            android:imeOptions="actionNext"
-                            android:inputType="numberSigned"
-                            android:singleLine="true"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/component_icon"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/developer_tools_component_icon"
-                                android:imeOptions="actionNext"
-                                android:inputType="text"
-                                android:singleLine="true"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <ImageView
-                            android:id="@+id/pick"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_marginLeft="8dp"
-                            android:scaleType="fitCenter"
-                            android:src="@drawable/ic_mtrl_add" 
-                            android:background="?selectableItemBackgroundBorderless"/>
-                    </LinearLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_var_type_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_var_type_name"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:singleLine="true"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_type_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_type_name"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:singleLine="true"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_build_class"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_build_class"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:singleLine="true"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_type_class"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_type_class"
-                            android:imeOptions="actionNext"
-                            android:inputType="text"
-                            android:singleLine="true"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_description"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_description"
-                            android:inputType="textMultiLine"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_doc_url"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_url"
-                            android:imeOptions="actionNext"
-                            android:inputType="text|textUri"
-                            android:singleLine="true"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_add_var"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_add_var"
-                            android:inputType="textMultiLine"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_def_add_var"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_define_add_var"
-                            android:inputType="textMultiLine"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/component_imports"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/developer_tools_component_imports"
-                            android:inputType="textMultiLine"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <ImageView
+                        android:id="@+id/pick"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="8dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_mtrl_add" />
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_var_type_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_var_type_name"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_type_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_type_name"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_build_class"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_build_class"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_type_class"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_type_class"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_description"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_doc_url"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_url"
+                        android:imeOptions="actionNext"
+                        android:inputType="text|textUri"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_add_var"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_add_var"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_def_add_var"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_define_add_var"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/component_imports"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/developer_tools_component_imports"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
@@ -267,28 +242,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:paddingHorizontal="14dp"
-        android:paddingBottom="4dp"
-        android:orientation="horizontal">
+        android:background="?attr/colorSurface"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
 
         <Button
-            style="?attr/materialButtonOutlinedStyle"
             android:id="@+id/btn_cancel"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="7dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:text="@string/common_word_cancel"
-            android:textSize="@dimen/text_size_button_material" />
+            android:text="@string/common_word_cancel" />
 
         <Button
             android:id="@+id/btn_save"
+            style="@style/Widget.Material3Expressive.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
             android:layout_weight="1"
-            android:text="@string/common_word_save"
-            android:textSize="@dimen/text_size_button_material" />
+            android:text="@string/common_word_save" />
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
