@@ -59,16 +59,12 @@ public class StoreProjectsAdapter extends RecyclerView.Adapter<StoreProjectsAdap
     }
 
     private void openProject(ProjectModel.Project project) {
-        var fm = context.getSupportFragmentManager();
+        var bundle = new Bundle();
+        bundle.putString("project_json", gson.toJson(project));
 
-        if (fm.findFragmentByTag("project_preview") == null) {
-            var bundle = new Bundle();
-            bundle.putString("project_json", gson.toJson(project));
-
-            var intent = new Intent(context, ProjectPreviewActivity.class);
-            intent.putExtras(bundle);
-            context.startActivity(intent);
-        }
+        var intent = new Intent(context, ProjectPreviewActivity.class);
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
