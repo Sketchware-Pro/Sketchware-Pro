@@ -68,6 +68,7 @@
             android:layout_marginBottom="96dp"
             android:text="New project"
             app:icon="@drawable/ic_mtrl_add"
+            app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
             tools:ignore="ContentDescription" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
