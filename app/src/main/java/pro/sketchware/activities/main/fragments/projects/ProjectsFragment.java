@@ -243,7 +243,7 @@ public class ProjectsFragment extends DA {
             if (newProject != null) {
                 requireActivity().runOnUiThread(() -> {
                     projectsList.add(0, newProject);
-                    projectsAdapter.notifyItemInserted(0);
+                    projectsAdapter.notifyDataSetChanged();
                     binding.myprojects.scrollToPosition(0);
                 });
             }
@@ -257,7 +257,7 @@ public class ProjectsFragment extends DA {
                 int index = IntStream.range(0, projectsList.size()).filter(i -> projectsList.get(i).get("sc_id").equals(sc_id)).findFirst().orElse(-1);
                 if (index != -1) {
                     projectsList.set(index, updatedProject);
-                    requireActivity().runOnUiThread(() -> projectsAdapter.notifyItemChanged(index));
+                    requireActivity().runOnUiThread(() -> projectsAdapter.notifyDataSetChanged());
                 }
             }
         });

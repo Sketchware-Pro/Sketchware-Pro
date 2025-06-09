@@ -97,6 +97,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
         }, true);
         shownProjects = newProjects;
         result.dispatchUpdatesTo(this);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -200,7 +201,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.Projec
             activity.runOnUiThread(() -> {
                 progressDialog.dismiss();
                 shownProjects.remove(position);
-                notifyItemRemoved(position);
+                notifyDataSetChanged();
                 allProjects.remove(projectMap);
             });
         }).start();
