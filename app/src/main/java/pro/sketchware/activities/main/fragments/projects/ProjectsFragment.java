@@ -145,6 +145,7 @@ public class ProjectsFragment extends DA {
 
         binding.myprojects.post(this::refreshProjectsList); // wait for RecyclerView to be ready
         UI.addSystemWindowInsetToPadding(binding.specialActionContainer, true, false, true, false);
+        UI.addSystemWindowInsetToPadding(binding.loadingContainer, true, false, true, true);
         UI.addSystemWindowInsetToPadding(binding.titleContainer, true, false, true, false);
         UI.addSystemWindowInsetToPadding(binding.myprojects, true, false, true, true);
 
@@ -225,8 +226,8 @@ public class ProjectsFragment extends DA {
 
             requireActivity().runOnUiThread(() -> {
                 if (binding.swipeRefresh.isRefreshing()) binding.swipeRefresh.setRefreshing(false);
-                if (binding.loading3balls.getVisibility() == View.VISIBLE) {
-                    binding.loading3balls.setVisibility(View.GONE);
+                if (binding.loadingContainer.getVisibility() == View.VISIBLE) {
+                    binding.loadingContainer.setVisibility(View.GONE);
                     binding.myprojects.setVisibility(View.VISIBLE);
                 }
                 projectsList.clear();
