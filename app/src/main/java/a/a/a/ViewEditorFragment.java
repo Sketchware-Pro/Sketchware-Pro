@@ -25,10 +25,9 @@ import com.besome.sketch.editor.view.ViewEditor;
 import com.besome.sketch.editor.view.ViewProperty;
 import com.besome.sketch.editor.view.palette.PaletteWidget;
 
-import mod.hey.studios.util.Helper;
-
 import java.util.ArrayList;
 
+import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.widgets.WidgetsCreatorManager;
@@ -306,6 +305,7 @@ public class ViewEditorFragment extends qA {
         }
 
         if (o == null) {
+            if (getActivity() == null) return;
             o = ObjectAnimator.ofFloat(viewProperty, View.TRANSLATION_Y, wB.a(requireActivity(), (float) viewProperty.getHeight()));
             o.setDuration(300L);
             o.setInterpolator(new DecelerateInterpolator());
