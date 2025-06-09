@@ -94,6 +94,8 @@
     </style>
 
     <style name="MaterialAlertDialog.SketchwarePro" parent="MaterialAlertDialog.Material3Expressive">
+        <item name="backgroundInsetBottom">8dp</item>
+        <item name="backgroundInsetTop">8dp</item>
         <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
     </style>
 
