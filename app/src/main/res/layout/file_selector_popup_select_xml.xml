@@ -8,7 +8,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    android:paddingTop="64dp">
+    android:paddingTop="36dp">
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/options_selector"
@@ -67,7 +67,7 @@
             android:id="@+id/createNewView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="16dp"
             android:text="Create new view"
             app:icon="@drawable/ic_add_white_24dp" />
 

@@ -29,6 +29,7 @@ import a.a.a.xB;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
 import pro.sketchware.databinding.FileSelectorPopupSelectXmlBinding;
+import pro.sketchware.utility.UI;
 
 public class ViewSelectorActivity extends BaseAppCompatActivity {
     private final int[] x = new int[19];
@@ -228,6 +229,9 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         });
         binding.container.setOnClickListener(v -> finish());
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+
+        UI.addSystemWindowInsetToPadding(binding.container, true, true, true, false);
+        UI.addSystemWindowInsetToMargin(binding.createNewView, false, false, false, true);
     }
 
     @Override
