@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 
 import androidx.core.widget.NestedScrollView;
@@ -23,8 +24,11 @@ import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
 
 public class ProjectPreviewActivity extends BaseAppCompatActivity {
+    private static final long TITLE_CONTAINER_FADE_DURATION = 150L;
+
     private FragmentStoreProjectPreviewBinding binding;
     private ProjectModel.Project project;
+    private boolean isTitleContainerShown;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,9 +73,7 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
         binding.filesize.setText("Size: " + project.getProjectSize());
         binding.timestamp.setText("Released: " + DateFormat.getDateInstance().format(new Date(Long.parseLong(project.getPublishedTimestamp()))));
         binding.btnComments.setOnClickListener(v -> openCommentsSheet());
-        binding.btnDownload.setOnClickListener(v -> {
-            SketchwareUtil.toastError("Downloading projects is unavailable right now!");
-        });
+        binding.btnDownload.setOnClickListener(v -> SketchwareUtil.toastError("Downloading projects is unavailable right now!"));
         binding.btnOpenIn.setOnClickListener(v -> openProject());
         binding.btnBack.setOnClickListener(v -> finish());
 
@@ -100,13 +102,29 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
             binding.author.getLocationOnScreen(location);
 
             if (location[1] + binding.author.getHeight() + UI.getStatusBarHeight(ProjectPreviewActivity.this) < binding.toolbar.getHeight()) {
-                // animate showing scrim (fade) and title container from bottom to top (translationY)
-                binding.topScrim.setVisibility(View.VISIBLE);
-                binding.toolbarTitleContainer.setVisibility(View.VISIBLE);
+                if (isTitleContainerShown) return;
+                isTitleContainerShown = true;
+
+                binding.topScrim.animate().alpha(1f).setDuration(TITLE_CONTAINER_FADE_DURATION).start();
+                binding.toolbarTitleContainer.animate()
+                        .alpha(1f)
+                        .translationY(0f)
+                        .setInterpolator(new LinearInterpolator())
+                        .setDuration(TITLE_CONTAINER_FADE_DURATION)
+                        .withStartAction(() -> binding.toolbarTitleContainer.setVisibility(View.VISIBLE))
+                        .start();
             } else {
-                // animate hiding scrim (fade) and title container from top to bottom (translationY)
-                binding.topScrim.setVisibility(View.GONE);
-                binding.toolbarTitleContainer.setVisibility(View.INVISIBLE);
+                if (!isTitleContainerShown) return;
+                isTitleContainerShown = false;
+
+                binding.topScrim.animate().alpha(0f).setDuration(TITLE_CONTAINER_FADE_DURATION).start();
+                binding.toolbarTitleContainer.animate()
+                        .translationY(24f)
+                        .alpha(0f)
+                        .setInterpolator(new LinearInterpolator())
+                        .setDuration(TITLE_CONTAINER_FADE_DURATION)
+                        .withEndAction(() -> binding.toolbarTitleContainer.setVisibility(View.INVISIBLE))
+                        .start();
             }
         });
     }
