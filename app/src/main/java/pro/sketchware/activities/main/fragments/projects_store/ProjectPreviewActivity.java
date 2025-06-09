@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import androidx.activity.EdgeToEdge;
 import androidx.core.widget.NestedScrollView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -29,7 +28,7 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
 
         binding = FragmentStoreProjectPreviewBinding.inflate(getLayoutInflater());

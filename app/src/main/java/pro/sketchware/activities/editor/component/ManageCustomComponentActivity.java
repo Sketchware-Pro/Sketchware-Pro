@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,7 +57,7 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle _savedInstanceState) {
-        EdgeToEdge.enable(this);
+        enableEdgeToEdgeNoContrast();
         super.onCreate(_savedInstanceState);
         setContentView(R.layout.manage_custom_component);
         handleInsetts(findViewById(R.id.root));

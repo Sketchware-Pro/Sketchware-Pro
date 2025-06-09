@@ -2,8 +2,6 @@ package pro.sketchware.activities.preview;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
-
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewPane;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -28,7 +26,7 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
         binding = ActivityLayoutPreviewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
