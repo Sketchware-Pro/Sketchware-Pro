@@ -37,7 +37,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.Corner.Top">
 
