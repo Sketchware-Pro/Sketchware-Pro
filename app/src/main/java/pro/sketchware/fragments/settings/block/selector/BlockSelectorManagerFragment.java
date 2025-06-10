@@ -149,8 +149,8 @@ public class BlockSelectorManagerFragment extends qA {
                 }
             } else {
                 selectors.set(index, new Selector(
-                        selectorName,
                         selectorTitle,
+                        selectorName,
                         selectors.get(index).getData()
                 ));
             }
