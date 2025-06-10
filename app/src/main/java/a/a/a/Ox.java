@@ -183,6 +183,8 @@ public class Ox {
         var injectHandler = new InjectAttributeHandler(viewBean);
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
         String backgroundResource = viewBean.layout.backgroundResource;
+        int type = viewBean.type;
+
         if (backgroundResource == null || "NONE".equalsIgnoreCase(backgroundResource)) {
             int backgroundColor = viewBean.layout.backgroundColor;
             String backgroundResColor = viewBean.layout.backgroundResColor;
@@ -197,7 +199,7 @@ public class Ox {
                         } else if (!toNotAdd.contains("app:backgroundTint") && !injectHandler.contains("backgroundTint")) {
                             nx.addAttribute("app", "backgroundTint", formatColor(color));
                         }
-                    } else if (nx.c().equals("CardView") || nx.c().equals("MaterialCardView")) {
+                    } else if (type == ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW) {
                         if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor") && backgroundResColor != null) {
                             nx.addAttribute("app", "cardBackgroundColor", colorPath);
                         } else if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor")) {
@@ -224,7 +226,7 @@ public class Ox {
                     if (!toNotAdd.contains("app:contentScrim") && !injectHandler.contains("contentScrim")) {
                         nx.addAttribute("app", "contentScrim", "?attr/colorPrimary");
                     }
-                } else if (nx.c().equals("CardView") || nx.c().equals("MaterialCardView")) {
+                } else if (type == ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW) {
                     if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor")) {
                         nx.addAttribute("app", "cardBackgroundColor", "@android:color/transparent");
                     }
@@ -323,7 +325,7 @@ public class Ox {
             }
 
             writeLayoutMargin(widgetTag, viewBean);
-            if (nx.c().equals("CardView") || nx.c().equals("MaterialCardView")) {
+            if (type == ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW) {
                 writeCardViewPadding(widgetTag, viewBean);
             } else {
                 writeViewPadding(widgetTag, viewBean);
