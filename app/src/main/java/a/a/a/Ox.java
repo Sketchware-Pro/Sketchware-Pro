@@ -323,7 +323,7 @@ public class Ox {
             }
 
             writeLayoutMargin(widgetTag, viewBean);
-            if (widgetTag.c().equals("CardView")) {
+            if (nx.c().equals("CardView") || nx.c().equals("MaterialCardView")) {
                 writeCardViewPadding(widgetTag, viewBean);
             } else {
                 writeViewPadding(widgetTag, viewBean);
