@@ -21,7 +21,7 @@
 
         <Button
             android:id="@+id/option_view"
-            style="@style/Widget.Material3Expressive.Button.TonalButton"
+            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -29,7 +29,7 @@
 
         <Button
             android:id="@+id/option_custom_view"
-            style="@style/Widget.Material3Expressive.Button.TonalButton"
+            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

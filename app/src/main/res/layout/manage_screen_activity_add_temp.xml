@@ -246,7 +246,6 @@
                     <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:requiresFadingEdge="horizontal"
                         android:scrollbars="none">
 
                         <com.google.android.material.button.MaterialButtonToggleGroup
@@ -262,28 +261,28 @@
 
                             <Button
                                 android:id="@+id/select_activity"
-                                style="@style/Widget.Material3Expressive.Button.TonalButton"
+                                style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Activity" />
 
                             <Button
                                 android:id="@+id/select_fragment"
-                                style="@style/Widget.Material3Expressive.Button.TonalButton"
+                                style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Fragment" />
 
                             <Button
                                 android:id="@+id/select_dialogfragment"
-                                style="@style/Widget.Material3Expressive.Button.TonalButton"
+                                style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="DialogFragment" />
 
                             <Button
                                 android:id="@+id/select_bottomsheetdialogfragment"
-                                style="@style/Widget.Material3Expressive.Button.TonalButton"
+                                style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="BottomSheetDialogFragment" />
@@ -297,7 +296,6 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:paddingTop="16dp">
-
 
                     <TextView
                         android:layout_width="match_parent"
@@ -319,7 +317,7 @@
 
                         <Button
                             android:id="@+id/select_portrait"
-                            style="@style/Widget.Material3Expressive.Button.TonalButton"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -327,7 +325,7 @@
 
                         <Button
                             android:id="@+id/select_landscape"
-                            style="@style/Widget.Material3Expressive.Button.TonalButton"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -335,7 +333,7 @@
 
                         <Button
                             android:id="@+id/select_both"
-                            style="@style/Widget.Material3Expressive.Button.TonalButton"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -371,7 +369,7 @@
 
                         <Button
                             android:id="@+id/select_unspecified"
-                            style="@style/Widget.Material3Expressive.Button.TonalButton"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -379,7 +377,7 @@
 
                         <Button
                             android:id="@+id/select_visible"
-                            style="@style/Widget.Material3Expressive.Button.TonalButton"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -387,7 +385,7 @@
 
                         <Button
                             android:id="@+id/select_hidden"
-                            style="@style/Widget.Material3Expressive.Button.TonalButton"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
