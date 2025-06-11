@@ -5,7 +5,6 @@ import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.JsonElement;
@@ -32,6 +28,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import a.a.a.qA;
+import dev.pranav.filepicker.FilePickerCallback;
+import dev.pranav.filepicker.FilePickerDialogFragment;
+import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogBlockConfigurationBinding;
@@ -228,21 +227,21 @@ public class BlockSelectorManagerFragment extends qA {
     }
 
     private void showImportSelectorDialog() {
-        DialogProperties properties = new DialogProperties();
+        FilePickerOptions options = new FilePickerOptions();
+        options.setTitle("Select .json selector file");
+        options.setExtensions(new String[]{"json"});
 
-        properties.selection_mode = DialogConfigs.SINGLE_MODE;
-        properties.selection_type = DialogConfigs.FILE_SELECT;
-        properties.root = Environment.getExternalStorageDirectory();
-        properties.error_dir = Environment.getExternalStorageDirectory();
-        properties.offset = Environment.getExternalStorageDirectory();
-        properties.extensions = new String[]{"json"};
+        FilePickerCallback callback = new FilePickerCallback() {
+            @Override
+            public void onFileSelected(File file) {
+                handleToImportFile(file);
+            }
 
-        FilePickerDialog pickerDialog = new FilePickerDialog(requireContext(), properties, R.style.RoundedCornersDialog);
+        };
 
-        pickerDialog.setTitle("Select .json selector file");
-        pickerDialog.setDialogSelectionListener(selections -> handleToImportFile(new File(selections[0])));
+        FilePickerDialogFragment pickerDialog = new FilePickerDialogFragment(options, callback);
 
-        pickerDialog.show();
+        pickerDialog.show(getChildFragmentManager(), "file_picker_dialog");
     }
 
     private void saveAllSelectors() {

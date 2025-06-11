@@ -6,7 +6,6 @@ import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -22,14 +21,14 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ViewEditor;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.reflect.TypeToken;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +39,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import a.a.a.ViewEditorFragment;
 import a.a.a.xB;
+import dev.pranav.filepicker.FilePickerCallback;
+import dev.pranav.filepicker.FilePickerDialogFragment;
+import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogSelectorActionsBinding;
@@ -274,21 +276,19 @@ public class WidgetsCreatorManager {
         popupMenu.setOnMenuItemClickListener(menuItem -> {
             dialog.dismiss();
             if (menuItem.getItemId() == R.id.import_widgets) {
-                DialogProperties properties = new DialogProperties();
+                FilePickerOptions options = new FilePickerOptions();
+                options.setMultipleSelection(true);
+                options.setExtensions(new String[]{"json"});
+                options.setTitle("Select .json widgets files");
 
-                properties.selection_mode = DialogConfigs.MULTI_MODE;
-                properties.selection_type = DialogConfigs.FILE_SELECT;
-                properties.root = Environment.getExternalStorageDirectory();
-                properties.error_dir = Environment.getExternalStorageDirectory();
-                properties.offset = Environment.getExternalStorageDirectory();
-                properties.extensions = new String[]{"json"};
+                FilePickerCallback callback = new FilePickerCallback() {
+                    @Override
+                    public void onFilesSelected(@NotNull List<? extends File> files) {
+                        importWidgets(files.stream().map(File::getAbsolutePath).toArray(String[]::new));
+                    }
+                };
 
-                FilePickerDialog pickerDialog = new FilePickerDialog(context, properties, R.style.RoundedCornersDialog);
-
-                pickerDialog.setTitle("Select .json widgets files");
-                pickerDialog.setDialogSelectionListener(this::importWidgets);
-
-                pickerDialog.show();
+                new FilePickerDialogFragment(options, callback).show(viewEditorFragment.getChildFragmentManager(), "file_picker");
             } else {
                 String exportFilePath = widgetExportDirectoryPath + "allWidgets.json";
                 FileUtil.writeFile(exportFilePath, getGson().toJson(widgetConfigurationsList));

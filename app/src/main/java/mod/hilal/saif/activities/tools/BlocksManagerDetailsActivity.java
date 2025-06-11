@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,9 +26,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.JsonParseException;
 
@@ -39,6 +35,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import dev.pranav.filepicker.FilePickerCallback;
+import dev.pranav.filepicker.FilePickerDialogFragment;
+import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.utility.FileUtil;
@@ -101,31 +100,31 @@ public class BlocksManagerDetailsActivity extends BaseAppCompatActivity {
     }
 
     public void openFileExplorerImport() {
-        DialogProperties properties = new DialogProperties();
-        properties.selection_mode = DialogConfigs.SINGLE_MODE;
-        properties.selection_type = DialogConfigs.FILE_SELECT;
-        File externalStorageDir = Environment.getExternalStorageDirectory();
-        properties.root = externalStorageDir;
-        properties.error_dir = externalStorageDir;
-        properties.offset = externalStorageDir;
-        properties.extensions = new String[]{"json"};
-        FilePickerDialog filePickerDialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
-        filePickerDialog.setTitle("Select a JSON file");
-        filePickerDialog.setDialogSelectionListener(selections -> {
-            if (FileUtil.readFile(selections[0]).isEmpty()) {
-                SketchwareUtil.toastError("The selected file is empty!");
-            } else if (FileUtil.readFile(selections[0]).equals("[]")) {
-                SketchwareUtil.toastError("The selected file is empty!");
-            } else {
-                try {
-                    ArrayList<HashMap<String, Object>> readMap = getGson().fromJson(FileUtil.readFile(selections[0]), Helper.TYPE_MAP_LIST);
-                    _importBlocks(readMap);
-                } catch (JsonParseException e) {
-                    SketchwareUtil.toastError("Invalid JSON file");
+        FilePickerOptions options = new FilePickerOptions();
+        options.setExtensions(new String[]{"json"});
+        options.setTitle("Select a JSON file");
+
+        FilePickerCallback callback = new FilePickerCallback() {
+            @Override
+            public void onFileSelected(File file) {
+                if (FileUtil.readFile(file.getAbsolutePath()).isEmpty()) {
+                    SketchwareUtil.toastError("The selected file is empty!");
+                } else if (FileUtil.readFile(file.getAbsolutePath()).equals("[]")) {
+                    SketchwareUtil.toastError("The selected file is empty!");
+                } else {
+                    try {
+                        ArrayList<HashMap<String, Object>> readMap = getGson().fromJson(FileUtil.readFile(file.getAbsolutePath()), Helper.TYPE_MAP_LIST);
+                        _importBlocks(readMap);
+                    } catch (JsonParseException e) {
+                        SketchwareUtil.toastError("Invalid JSON file");
+                    }
                 }
             }
-        });
-        filePickerDialog.show();
+        };
+
+        FilePickerDialogFragment dialog = new FilePickerDialogFragment(options, callback);
+
+        dialog.show(getSupportFragmentManager(), "filePickerDialog");
     }
 
     @Override
