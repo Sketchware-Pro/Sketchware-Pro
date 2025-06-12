@@ -31,6 +31,7 @@ import java.util.List;
 import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
+import dev.pranav.filepicker.SelectionMode;
 import mod.bobur.StringEditorActivity;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.code.SrcCodeEditor;
@@ -250,6 +251,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
 
     private void setupDialog() {
         FilePickerOptions options = new FilePickerOptions();
+        options.setSelectionMode(SelectionMode.BOTH);
         options.setMultipleSelection(true);
         options.setTitle("Select resource files");
 
