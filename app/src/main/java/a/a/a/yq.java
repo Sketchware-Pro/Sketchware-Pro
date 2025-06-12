@@ -664,7 +664,7 @@ public class yq {
             XmlBuilder externalPathTag = new XmlBuilder("external-path");
             externalPathTag.addAttribute("", "name", "external_files");
             externalPathTag.addAttribute("", "path", ".");
-            pathsTag.a(externalPathTag);
+            pathsTag.addChildNode(externalPathTag);
             srcCodeBeans.add(new SrcCodeBean("provider_paths.xml",
                     CommandBlock.applyCommands("xml/provider_paths.xml", pathsTag.toCode())));
         }

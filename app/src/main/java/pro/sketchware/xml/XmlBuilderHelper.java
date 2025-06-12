@@ -14,15 +14,15 @@ public class XmlBuilderHelper {
     public void addInteger(String name, int value) {
         XmlBuilder integerBuilder = new XmlBuilder("integer", true);
         integerBuilder.addAttribute("", "name", name);
-        integerBuilder.a(String.valueOf(value));
-        rootBuilder.a(integerBuilder);
+        integerBuilder.setNodeValue(String.valueOf(value));
+        rootBuilder.addChildNode(integerBuilder);
     }
 
     public void addColor(String name, String value) {
         XmlBuilder colorBuilder = new XmlBuilder("color", true);
         colorBuilder.addAttribute("", "name", name);
-        colorBuilder.a(value);
-        rootBuilder.a(colorBuilder);
+        colorBuilder.setNodeValue(value);
+        rootBuilder.addChildNode(colorBuilder);
     }
 
     public void addItemToStyle(String styleName, String itemName, String itemValue) {
@@ -30,8 +30,8 @@ public class XmlBuilderHelper {
         if (styleBuilder != null) {
             XmlBuilder itemBuilder = new XmlBuilder("item", true);
             itemBuilder.addAttribute("", "name", itemName);
-            itemBuilder.a(itemValue);
-            styleBuilder.a(itemBuilder);
+            itemBuilder.setNodeValue(itemValue);
+            styleBuilder.addChildNode(itemBuilder);
         }
     }
 
@@ -56,8 +56,8 @@ public class XmlBuilderHelper {
             }
         }
 
-        stringBuilder.a(value);
-        rootBuilder.a(stringBuilder);
+        stringBuilder.setNodeValue(value);
+        rootBuilder.addChildNode(stringBuilder);
     }
 
     public void addNonTranslatableString(String name, String value) {
@@ -71,7 +71,7 @@ public class XmlBuilderHelper {
             styleBuilder.addAttribute("", "parent", parentStyleName);
         }
 
-        rootBuilder.a(styleBuilder);
+        rootBuilder.addChildNode(styleBuilder);
         styleBuilders.put(styleName, styleBuilder);
     }
 }
