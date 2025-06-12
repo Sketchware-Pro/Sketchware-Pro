@@ -23,7 +23,7 @@ import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.blocks.BlocksHandler;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 
-import pro.sketchware.activities.resources.editors.utils.StringsEditorManager;
+import pro.sketchware.activities.resourceseditor.components.utils.StringsEditorManager;
 import pro.sketchware.blocks.ExtraBlocks;
 import pro.sketchware.control.logic.LogicClickListener;
 import pro.sketchware.utility.CustomVariableUtil;

@@ -32,7 +32,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
-import pro.sketchware.activities.resources.editors.utils.ColorsEditorManager;
+import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
 import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
 import pro.sketchware.databinding.DialogSaveIconBinding;
 import pro.sketchware.databinding.ImportIconBinding;
@@ -55,12 +55,7 @@ import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.wq;
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
 import pro.sketchware.activities.importicon.adapters.IconAdapter;
-import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
-import pro.sketchware.databinding.DialogSaveIconBinding;
-import pro.sketchware.databinding.ImportIconBinding;
 import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.SvgUtils;
 

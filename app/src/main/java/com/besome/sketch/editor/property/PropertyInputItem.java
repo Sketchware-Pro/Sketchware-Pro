@@ -58,7 +58,7 @@ import a.a.a.wB;
 import a.a.a.yB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
-import pro.sketchware.activities.resources.editors.utils.StringsEditorManager;
+import pro.sketchware.activities.resourceseditor.components.utils.StringsEditorManager;
 import pro.sketchware.databinding.PropertyInputItemBinding;
 import pro.sketchware.databinding.PropertyPopupInputTextBinding;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;

@@ -1,4 +1,4 @@
-package pro.sketchware.activities.resources.editors.adapters;
+package pro.sketchware.activities.resourceseditor.components.adapters;
 
 import static com.besome.sketch.design.DesignActivity.sc_id;
 import static com.besome.sketch.editor.LogicEditorActivity.getAllJavaFileNames;
@@ -29,7 +29,7 @@ import a.a.a.eC;
 import a.a.a.jC;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
-import pro.sketchware.activities.resources.editors.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
 import pro.sketchware.databinding.PalletCustomviewBinding;
 import pro.sketchware.databinding.ViewStringEditorAddBinding;
 import pro.sketchware.utility.SketchwareUtil;

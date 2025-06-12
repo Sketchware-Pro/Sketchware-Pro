@@ -1,10 +1,10 @@
-package pro.sketchware.activities.resources.editors.adapters;
+package pro.sketchware.activities.resourceseditor.components.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import pro.sketchware.activities.resources.editors.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
 
 public class EditorsAdapter extends FragmentStateAdapter {
 

@@ -1,4 +1,4 @@
-package pro.sketchware.activities.resources.editors.utils;
+package pro.sketchware.activities.resourceseditor.components.utils;
 
 import static com.besome.sketch.design.DesignActivity.sc_id;
 import static mod.hey.studios.util.ProjectFile.getDefaultColor;
@@ -32,7 +32,7 @@ import a.a.a.wq;
 import a.a.a.yB;
 import pro.sketchware.R;
 import pro.sketchware.SketchApplication;
-import pro.sketchware.activities.resources.editors.models.ColorModel;
+import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.ThemeUtils;

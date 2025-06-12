@@ -1,4 +1,4 @@
-package pro.sketchware.activities.resources.editors.fragments;
+package pro.sketchware.activities.resourceseditor.components.fragments;
 
 import static pro.sketchware.utility.UI.animateLayoutChanges;
 
@@ -26,12 +26,12 @@ import a.a.a.aB;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 import pro.sketchware.R;
-import pro.sketchware.activities.resources.editors.ResourcesEditorActivity;
-import pro.sketchware.activities.resources.editors.utils.ColorsEditorManager;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
 import pro.sketchware.databinding.ColorEditorAddBinding;
 import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
-import pro.sketchware.activities.resources.editors.adapters.ColorsAdapter;
-import pro.sketchware.activities.resources.editors.models.ColorModel;
+import pro.sketchware.activities.resourceseditor.components.adapters.ColorsAdapter;
+import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
 import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;

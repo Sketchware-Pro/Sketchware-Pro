@@ -1,4 +1,4 @@
-package pro.sketchware.activities.resources.editors.fragments;
+package pro.sketchware.activities.resourceseditor.components.fragments;
 
 import android.os.Bundle;
 import android.text.InputType;
@@ -20,14 +20,14 @@ import a.a.a.aB;
 import mod.hey.studios.util.Helper;
 
 import pro.sketchware.R;
-import pro.sketchware.activities.resources.editors.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
 import pro.sketchware.databinding.ArraysEditorAddAttrBinding;
 import pro.sketchware.databinding.ArraysEditorAddBinding;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
 import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
-import pro.sketchware.activities.resources.editors.models.ArrayModel;
-import pro.sketchware.activities.resources.editors.adapters.ArraysAdapter;
-import pro.sketchware.activities.resources.editors.utils.ArraysEditorManager;
+import pro.sketchware.activities.resourceseditor.components.models.ArrayModel;
+import pro.sketchware.activities.resourceseditor.components.adapters.ArraysAdapter;
+import pro.sketchware.activities.resourceseditor.components.utils.ArraysEditorManager;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 

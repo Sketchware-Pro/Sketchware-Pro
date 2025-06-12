@@ -1,4 +1,4 @@
-package pro.sketchware.activities.resources.editors.fragments;
+package pro.sketchware.activities.resourceseditor.components.fragments;
 
 import static pro.sketchware.utility.UI.animateLayoutChanges;
 
@@ -22,14 +22,14 @@ import a.a.a.aB;
 
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
-import pro.sketchware.activities.resources.editors.ResourcesEditorActivity;
-import pro.sketchware.activities.resources.editors.utils.StringsEditorManager;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.components.utils.StringsEditorManager;
 import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
 import pro.sketchware.databinding.ViewStringEditorAddBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
-import pro.sketchware.activities.resources.editors.adapters.StringsAdapter;
+import pro.sketchware.activities.resourceseditor.components.adapters.StringsAdapter;
 
 public class StringsEditor extends Fragment {
 
@@ -122,7 +122,7 @@ public class StringsEditor extends Fragment {
         }
     }
 
-    public void addStringDialog() {
+    public void showAddStringDialog() {
         aB dialog = new aB(requireActivity());
         ViewStringEditorAddBinding binding = ViewStringEditorAddBinding.inflate(getLayoutInflater());
         dialog.b("Create new string");
@@ -163,6 +163,7 @@ public class StringsEditor extends Fragment {
     }
 
     public void addString(final String key, final String text, String note) {
+        hasUnsavedChanges = true;
         HashMap<String, Object> map = new HashMap<>();
         map.put("key", key);
         map.put("text", text);
@@ -180,7 +181,6 @@ public class StringsEditor extends Fragment {
             notesMap.put(notifyPosition, note);
         }
         adapter.notifyItemInserted(notifyPosition);
-        hasUnsavedChanges = true;
     }
 
     public void saveStringsFile() {

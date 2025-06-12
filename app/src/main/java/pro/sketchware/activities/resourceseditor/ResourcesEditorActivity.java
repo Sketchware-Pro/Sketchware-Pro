@@ -1,4 +1,4 @@
-package pro.sketchware.activities.resources.editors;
+package pro.sketchware.activities.resourceseditor;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -37,15 +38,15 @@ import a.a.a.jC;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
-import pro.sketchware.activities.resources.editors.fragments.ArraysEditor;
-import pro.sketchware.activities.resources.editors.models.ColorModel;
+import pro.sketchware.activities.resourceseditor.components.fragments.ArraysEditor;
+import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
 import pro.sketchware.databinding.ResourcesEditorImportDialogBinding;
 import pro.sketchware.databinding.ResourcesEditorsActivityBinding;
-import pro.sketchware.activities.resources.editors.adapters.EditorsAdapter;
-import pro.sketchware.activities.resources.editors.fragments.ColorsEditor;
-import pro.sketchware.activities.resources.editors.fragments.StringsEditor;
-import pro.sketchware.activities.resources.editors.fragments.StylesEditor;
-import pro.sketchware.activities.resources.editors.fragments.ThemesEditor;
+import pro.sketchware.activities.resourceseditor.components.adapters.EditorsAdapter;
+import pro.sketchware.activities.resourceseditor.components.fragments.ColorsEditor;
+import pro.sketchware.activities.resourceseditor.components.fragments.StringsEditor;
+import pro.sketchware.activities.resourceseditor.components.fragments.StylesEditor;
+import pro.sketchware.activities.resourceseditor.components.fragments.ThemesEditor;
 import pro.sketchware.databinding.ResourcesVariantSelectorDialogBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.PropertiesUtil;
@@ -77,9 +78,15 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
     public ThemesEditor themesEditor;
     public ArraysEditor arraysEditor;
 
+    private int currentTabPosition = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            currentTabPosition = savedInstanceState.getInt("current_tab_position", 0);
+        }
 
         setupUI();
         initializeManagers();
@@ -130,7 +137,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         binding.fab.setOnClickListener(view -> {
             int currentItem = binding.viewPager.getCurrentItem();
             switch (currentItem) {
-                case 0 -> stringsEditor.addStringDialog();
+                case 0 -> stringsEditor.showAddStringDialog();
                 case 1 -> colorsEditor.showColorEditDialog(null, -1);
                 case 2 -> stylesEditor.showAddStyleDialog();
                 case 3 -> themesEditor.showAddThemeDialog();
@@ -262,6 +269,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         }
         return unsavedFiles;
     }
+
     @Override
     public void onResume() {
         if (isComingFromSrcCodeEditor) {
@@ -375,6 +383,12 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("current_tab_position", binding.viewPager.getCurrentItem());
+    }
+
     private void saveEditorsChanges() {
         stringsEditor.saveStringsFile();
         colorsEditor.saveColorsFile();
@@ -408,6 +422,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
     private void setupViewPager() {
         EditorsAdapter adapter = new EditorsAdapter(this);
         binding.viewPager.setAdapter(adapter);
+        binding.viewPager.setCurrentItem(currentTabPosition, false);
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager, (tab, position) -> {
             switch (position) {
@@ -524,6 +539,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
     }
 
     private void saveVariant(ResourcesVariantSelectorDialogBinding binding, ArrayList<String> variants, AtomicInteger selectedChoice) {
+        currentTabPosition = this.binding.viewPager.getCurrentItem();
         String newVariant = Objects.requireNonNull(binding.input.getText()).toString().trim();
         if (!newVariant.equals(variantFullNameStarts)) {
             if (newVariant.startsWith(variantFullNameStarts)) {

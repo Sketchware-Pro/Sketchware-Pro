@@ -1,4 +1,4 @@
-package pro.sketchware.activities.resources.editors.adapters;
+package pro.sketchware.activities.resourceseditor.components.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-import pro.sketchware.activities.resources.editors.ResourcesEditorActivity;
-import pro.sketchware.activities.resources.editors.models.ColorModel;
-import pro.sketchware.activities.resources.editors.utils.ColorsEditorManager;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
+import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
 import pro.sketchware.databinding.PalletCustomviewBinding;
 import pro.sketchware.utility.PropertiesUtil;
 

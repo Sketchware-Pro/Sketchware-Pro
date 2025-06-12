@@ -1,4 +1,4 @@
-package pro.sketchware.activities.resources.editors.models;
+package pro.sketchware.activities.resourceseditor.components.models;
 
 import java.util.LinkedHashMap;
 

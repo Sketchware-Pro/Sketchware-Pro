@@ -1,8 +1,8 @@
-package pro.sketchware.activities.resources.editors.models;
+package pro.sketchware.activities.resourceseditor.components.models;
 
 import java.util.LinkedHashMap;
 
-import pro.sketchware.activities.resources.editors.fragments.ArraysEditor.ARRAYS_TYPES;
+import pro.sketchware.activities.resourceseditor.components.fragments.ArraysEditor.ARRAYS_TYPES;
 
 public class ArrayModel {
 

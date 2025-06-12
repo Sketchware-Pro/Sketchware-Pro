@@ -22,8 +22,8 @@ import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager
 import com.besome.sketch.editor.view.ColorGroupItem;
 
 import pro.sketchware.R;
-import pro.sketchware.activities.resources.editors.models.ColorModel;
-import pro.sketchware.activities.resources.editors.utils.ColorsEditorManager;
+import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
+import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
 import pro.sketchware.databinding.ColorPickerBinding;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;

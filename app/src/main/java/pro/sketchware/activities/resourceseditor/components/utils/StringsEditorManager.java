@@ -1,4 +1,4 @@
- package pro.sketchware.activities.resources.editors.utils;
+ package pro.sketchware.activities.resourceseditor.components.utils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,7 +18,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import a.a.a.lC;
 import a.a.a.wq;
 import a.a.a.yB;
-import pro.sketchware.activities.resources.editors.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
 import pro.sketchware.utility.XmlUtil;
 
 public class StringsEditorManager {

@@ -24,7 +24,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import a.a.a.wq;
 import pro.sketchware.SketchApplication;
-import pro.sketchware.activities.resources.editors.utils.ColorsEditorManager;
+import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
 import pro.sketchware.utility.FileUtil;
 
 /**

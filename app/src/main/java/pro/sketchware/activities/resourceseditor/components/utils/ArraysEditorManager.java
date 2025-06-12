@@ -1,4 +1,4 @@
-package pro.sketchware.activities.resources.editors.utils;
+package pro.sketchware.activities.resourceseditor.components.utils;
 
 import androidx.annotation.NonNull;
 
@@ -18,9 +18,9 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import pro.sketchware.activities.resources.editors.ResourcesEditorActivity;
-import pro.sketchware.activities.resources.editors.fragments.ArraysEditor.ARRAYS_TYPES;
-import pro.sketchware.activities.resources.editors.models.ArrayModel;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.components.fragments.ArraysEditor.ARRAYS_TYPES;
+import pro.sketchware.activities.resourceseditor.components.models.ArrayModel;
 
 public class ArraysEditorManager {
 

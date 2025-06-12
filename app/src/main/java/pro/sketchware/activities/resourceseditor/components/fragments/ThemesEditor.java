@@ -1,4 +1,4 @@
-package pro.sketchware.activities.resources.editors.fragments;
+package pro.sketchware.activities.resourceseditor.components.fragments;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,15 +23,15 @@ import a.a.a.aB;
 import mod.hey.studios.util.Helper;
 
 import pro.sketchware.R;
-import pro.sketchware.activities.resources.editors.ResourcesEditorActivity;
-import pro.sketchware.activities.resources.editors.utils.AttributeSuggestions;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.components.utils.AttributeSuggestions;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
 import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
 import pro.sketchware.databinding.StyleEditorAddAttrBinding;
 import pro.sketchware.databinding.StyleEditorAddBinding;
-import pro.sketchware.activities.resources.editors.models.StyleModel;
-import pro.sketchware.activities.resources.editors.adapters.StylesAdapter;
-import pro.sketchware.activities.resources.editors.utils.StylesEditorManager;
+import pro.sketchware.activities.resourceseditor.components.models.StyleModel;
+import pro.sketchware.activities.resourceseditor.components.adapters.StylesAdapter;
+import pro.sketchware.activities.resourceseditor.components.utils.StylesEditorManager;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
@@ -42,23 +42,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class StylesEditor extends Fragment {
+public class ThemesEditor extends Fragment {
 
     private ResourcesEditorFragmentBinding binding;
+    private final ResourcesEditorActivity activity;
 
     public StylesAdapter adapter;
     private PropertyInputItem.AttributesAdapter attributesAdapter;
 
-    private final ArrayList<StyleModel> stylesList = new ArrayList<>();
+    private final ArrayList<StyleModel> themesList = new ArrayList<>();
     private HashMap<Integer, String> notesMap = new HashMap<>();
 
-    public final StylesEditorManager stylesEditorManager = new StylesEditorManager();
+    public final StylesEditorManager themesEditorManager = new StylesEditorManager();
 
     public boolean hasUnsavedChanges;
     private String filePath;
-    private final ResourcesEditorActivity activity;
 
-    public StylesEditor(ResourcesEditorActivity activity) {
+    public ThemesEditor(ResourcesEditorActivity activity) {
         this.activity = activity;
     }
 
@@ -69,140 +69,129 @@ public class StylesEditor extends Fragment {
         return binding.getRoot();
     }
 
-    public void updateStylesList(String filePath, int updateMode, boolean hasUnsavedChangesStatus) {
+    public void updateThemesList(String filePath, int updateMode, boolean hasUnsavedChangesStatus) {
         hasUnsavedChanges = hasUnsavedChangesStatus;
         this.filePath = filePath;
         boolean isSkippingMode = updateMode == 1;
         boolean isMergeAndReplace = updateMode == 2;
 
-        ArrayList<StyleModel> defaultStyles;
-
-        if ((activity.variant.isEmpty() || hasUnsavedChanges) && !FileUtil.isExistFile(filePath)) {
-            String generatedContent = activity.yq.getXMLStyle();
-            defaultStyles = stylesEditorManager.parseStylesFile(generatedContent);
-        } else {
-            defaultStyles = stylesEditorManager.parseStylesFile(FileUtil.readFileIfExist(filePath));
-        }
+        ArrayList<StyleModel> defaultStyles = themesEditorManager.parseStylesFile(FileUtil.readFileIfExist(filePath));
 
         if (isSkippingMode) {
-            HashSet<String> existingStyleNames = new HashSet<>();
-            for (StyleModel existingStyle : stylesList) {
-                existingStyleNames.add(existingStyle.getStyleName());
+            HashSet<String> existingThemeNames = new HashSet<>();
+            for (StyleModel existingStyle : themesList) {
+                existingThemeNames.add(existingStyle.getStyleName());
             }
 
             for (StyleModel style : defaultStyles) {
-                if (!existingStyleNames.contains(style.getStyleName())) {
-                    stylesList.add(style);
+                if (!existingThemeNames.contains(style.getStyleName())) {
+                    themesList.add(style);
                 }
             }
         } else {
             if (isMergeAndReplace) {
-                HashSet<String> newStyleNames = new HashSet<>();
-                for (StyleModel style : defaultStyles) {
-                    newStyleNames.add(style.getStyleName());
+                HashSet<String> newThemeNames = new HashSet<>();
+                for (StyleModel theme : defaultStyles) {
+                    newThemeNames.add(theme.getStyleName());
                 }
 
-                stylesList.removeIf(existingStyle -> newStyleNames.contains(existingStyle.getStyleName()));
+                themesList.removeIf(existingStyle -> newThemeNames.contains(existingStyle.getStyleName()));
             } else {
-                stylesList.clear();
+                themesList.clear();
             }
-            stylesList.addAll(defaultStyles);
+            themesList.addAll(defaultStyles);
         }
 
         activity.runOnUiThread(() -> {
-            notesMap = new HashMap<>(stylesEditorManager.notesMap);
-            adapter = new StylesAdapter(stylesList, this, notesMap);
+            notesMap = new HashMap<>(themesEditorManager.notesMap);
+            adapter = new StylesAdapter(themesList, this, notesMap);
             binding.recyclerView.setAdapter(adapter);
             activity.checkForInvalidResources();
             updateNoContentLayout();
             if (hasUnsavedChanges) {
-                this.filePath = activity.stylesFilePath;
+                this.filePath = activity.themesFilePath;
             }
         });
     }
 
     private void updateNoContentLayout() {
-        if (stylesList.isEmpty()) {
+        if (themesList.isEmpty()) {
             binding.noContentLayout.setVisibility(View.VISIBLE);
-            binding.noContentTitle.setText(String.format(Helper.getResString(R.string.resource_manager_no_list_title), "Styles"));
-            binding.noContentBody.setText(String.format(Helper.getResString(R.string.resource_manager_no_list_body), "styles"));
+            binding.noContentTitle.setText(String.format(Helper.getResString(R.string.resource_manager_no_list_title), "Themes"));
+            binding.noContentBody.setText(String.format(Helper.getResString(R.string.resource_manager_no_list_body), "themes"));
         } else {
             binding.noContentLayout.setVisibility(View.GONE);
         }
     }
 
-    public void showAddStyleDialog() {
-        aB dialog = new aB(requireActivity());
+    public void showAddThemeDialog() {
+        aB dialog = new aB(activity);
         StyleEditorAddBinding binding = StyleEditorAddBinding.inflate(getLayoutInflater());
-        dialog.b("Create new style");
+        dialog.b("Create new theme");
         dialog.b("Create", v1 -> {
-            String styleName = Objects.requireNonNull(binding.styleName.getText()).toString();
+            String themeName = Objects.requireNonNull(binding.styleName.getText()).toString();
             String parent = Objects.requireNonNull(binding.styleParent.getText()).toString();
             String header = Objects.requireNonNull(binding.styleHeaderInput.getText()).toString();
 
-            if (styleName.isEmpty()) {
-                SketchwareUtil.toastError("Style name Input is Empty");
+            if (themeName.isEmpty()) {
+                SketchwareUtil.toastError("Theme name Input is Empty");
                 return;
             }
 
-            if (stylesEditorManager.isStyleExist(stylesList, styleName)) {
-                SketchwareUtil.toastError("\"" + styleName + "\" is already exist");
-                return;
-            }
-
-            StyleModel style = new StyleModel(styleName, parent);
-            stylesList.add(style);
-            int notifyPosition = stylesList.size() - 1;
+            StyleModel theme = new StyleModel(themeName, parent);
+            themesList.add(theme);
+            int notifyPosition = themesList.size() - 1;
             if (!header.isEmpty()) {
                 notesMap.put(notifyPosition, header);
             }
-            hasUnsavedChanges = true;
             adapter.notifyItemInserted(notifyPosition);
             updateNoContentLayout();
+            hasUnsavedChanges = true;
         });
         dialog.a(getString(R.string.cancel), Helper.getDialogDismissListener(dialog));
         dialog.a(binding.getRoot());
         dialog.show();
     }
 
-    public void showEditStyleDialog(int position) {
-        StyleModel style = stylesList.get(position);
-        aB dialog = new aB(requireActivity());
+    public void showEditThemeDialog(int position) {
+        StyleModel theme = themesList.get(position);
+        aB dialog = new aB(activity);
         StyleEditorAddBinding binding = StyleEditorAddBinding.inflate(getLayoutInflater());
 
-        binding.styleName.setText(style.getStyleName());
-        binding.styleParent.setText(style.getParent());
+        binding.styleName.setText(theme.getStyleName());
+        binding.styleParent.setText(theme.getParent());
         if (notesMap.containsKey(position)) {
             binding.styleHeaderInput.setText(notesMap.get(position));
         }
 
-        dialog.b("Edit style");
+        dialog.b("Edit theme");
         dialog.b("Edit", v1 -> {
-            String styleName = Objects.requireNonNull(binding.styleName.getText()).toString();
+            String themeName = Objects.requireNonNull(binding.styleName.getText()).toString();
             String parent = Objects.requireNonNull(binding.styleParent.getText()).toString();
             String header = Objects.requireNonNull(binding.styleHeaderInput.getText()).toString();
 
-            if (styleName.isEmpty()) {
-                SketchwareUtil.toastError("Style name Input is Empty");
+            if (themeName.isEmpty()) {
+                SketchwareUtil.toastError("Theme name Input is Empty");
                 return;
             }
 
-            style.setStyleName(styleName);
-            style.setParent(parent);
+            theme.setStyleName(themeName);
+            theme.setParent(parent);
             if (header.isEmpty()) {
                 notesMap.remove(position);
             } else {
                 notesMap.put(position, header);
             }
-            hasUnsavedChanges = true;
+
             adapter.notifyItemChanged(position);
+            hasUnsavedChanges = true;
         });
         dialog.setDismissOnDefaultButtonClick(false);
         dialog.configureDefaultButton(Helper.getResString(R.string.common_word_delete), view -> new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Warning")
-                .setMessage("Are you sure you want to delete " + style.getStyleName() + "?")
+                .setMessage("Are you sure you want to delete " + theme.getStyleName() + "?")
                 .setPositiveButton(R.string.common_word_yes, (d, w) -> {
-                    stylesList.remove(position);
+                    themesList.remove(position);
                     notesMap.remove(position);
                     adapter.notifyItemRemoved(position);
                     dialog.dismiss();
@@ -217,21 +206,21 @@ public class StylesEditor extends Fragment {
         dialog.show();
     }
 
-    public void showStyleAttributesDialog(int position) {
-        StyleModel style = stylesList.get(position);
+    public void showThemeAttributesDialog(int position) {
+        StyleModel theme = themesList.get(position);
         BottomSheetDialog dialog = new BottomSheetDialog(requireContext());
         var binding = PropertyPopupParentAttrBinding.inflate(getLayoutInflater());
         dialog.setContentView(binding.getRoot());
         dialog.show();
 
-        binding.title.setText(style.getStyleName() + " attributes");
+        binding.title.setText(theme.getStyleName() + " attributes");
 
         attributesAdapter = new PropertyInputItem.AttributesAdapter();
         attributesAdapter.setOnItemClickListener(
                 new PropertyInputItem.AttributesAdapter.ItemClickListener() {
                     @Override
                     public void onItemClick(LinkedHashMap<String, String> attributes, String attr) {
-                        showAttributeDialog(style, attr);
+                        showAttributeDialog(theme, attr);
                     }
 
                     @Override
@@ -241,7 +230,7 @@ public class StylesEditor extends Fragment {
                                 .setMessage("Are you sure you want to delete " + attr + "?")
                                 .setPositiveButton(R.string.common_word_yes, (d, w) -> {
                                     attributes.remove(attr);
-                                    style.setAttributes(attributes);
+                                    theme.setAttributes(attributes);
                                     attributesAdapter.submitList(new ArrayList<>(attributes.keySet()));
                                     hasUnsavedChanges = true;
                                 })
@@ -255,28 +244,28 @@ public class StylesEditor extends Fragment {
                 new DividerItemDecoration(
                         binding.recyclerView.getContext(), LinearLayoutManager.VERTICAL);
         binding.recyclerView.addItemDecoration(dividerItemDecoration);
-        var attributes = style.getAttributes();
+        var attributes = theme.getAttributes();
         attributesAdapter.setAttributes(attributes);
         List<String> keys = new ArrayList<>(attributes.keySet());
         attributesAdapter.submitList(keys);
 
         binding.add.setOnClickListener(
-                v -> showAttributeDialog(style, ""));
+                v -> showAttributeDialog(theme, ""));
     }
 
-    private void showAttributeDialog(StyleModel style, String attr) {
+    private void showAttributeDialog(StyleModel theme, String attr) {
         boolean isEditing = !attr.isEmpty();
 
-        aB dialog = new aB(requireActivity());
+        aB dialog = new aB(activity);
         StyleEditorAddAttrBinding binding = StyleEditorAddAttrBinding.inflate(getLayoutInflater());
         setupAutoComplete(binding.attrName, binding.attrValue);
 
         if (isEditing) {
             binding.attrName.setText(attr);
-            binding.attrValue.setText(style.getAttribute(attr));
+            binding.attrValue.setText(theme.getAttribute(attr));
         }
 
-        dialog.b(isEditing ? "Edit attribute" : "Create new attribute");
+        dialog.b(isEditing ? "Edit attribute " : "Create new attribute");
 
         dialog.b(Helper.getResString(R.string.common_word_save), v1 -> {
             String attribute = Objects.requireNonNull(binding.attrName.getText()).toString();
@@ -287,10 +276,10 @@ public class StylesEditor extends Fragment {
                 return;
             }
 
-            if (!attribute.equals(attr)) style.getAttributes().remove(attr);
+            if (!attribute.equals(attr)) theme.getAttributes().remove(attr);
 
-            style.addAttribute(attribute, value);
-            attributesAdapter.submitList(new ArrayList<>(style.getAttributes().keySet()));
+            theme.addAttribute(attribute, value);
+            attributesAdapter.submitList(new ArrayList<>(theme.getAttributes().keySet()));
             attributesAdapter.notifyDataSetChanged();
             hasUnsavedChanges = true;
         });
@@ -300,21 +289,21 @@ public class StylesEditor extends Fragment {
         dialog.show();
     }
 
-    public void saveStylesFile() {
+    public void saveThemesFile() {
         if (hasUnsavedChanges) {
-        FileUtil.writeFile(filePath, stylesEditorManager.convertStylesToXML(stylesList, notesMap));
+        FileUtil.writeFile(filePath, themesEditorManager.convertStylesToXML(themesList, notesMap));
         hasUnsavedChanges = false;
         }
     }
 
     private void setupAutoComplete(MaterialAutoCompleteTextView attrView, MaterialAutoCompleteTextView valueView) {
-       AttributeSuggestions attributeSuggestions = new AttributeSuggestions(binding.getRoot());
+        AttributeSuggestions attributeSuggestions = new AttributeSuggestions(binding.getRoot());
         String[] attributes = attributeSuggestions.ATTRIBUTE_SUGGESTIONS.toArray(new String[0]);
 
-        ArrayAdapter<String> attrAdapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_dropdown_item_1line, attributes);
+        ArrayAdapter<String> attrAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_dropdown_item_1line, attributes);
         attrView.setAdapter(attrAdapter);
 
-        ArrayAdapter<String> valueAdapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
+        ArrayAdapter<String> valueAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
         valueView.setAdapter(valueAdapter);
 
         attrView.addTextChangedListener(new TextWatcher() {
@@ -325,7 +314,7 @@ public class StylesEditor extends Fragment {
                 List<String> suggestions = attributeSuggestions.getSuggestions(attribute);
 
                 if (suggestions != null && !suggestions.isEmpty()) {
-                    ArrayAdapter<String> newValueAdapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_dropdown_item_1line, suggestions);
+                    ArrayAdapter<String> newValueAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_dropdown_item_1line, suggestions);
                     valueView.setAdapter(newValueAdapter);
                 }
             }
