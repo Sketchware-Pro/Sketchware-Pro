@@ -7,7 +7,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/40118124",
       "isTitled": true,
       "isMainModder": true,
-      "isActive": true,
+      "isActive": false,
       "title": "Main modders"
     },
     {
@@ -25,7 +25,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/113604229",
       "isTitled": false,
       "isMainModder": true,
-      "isActive": true,
+      "isActive": false,
       "title": null
     },
     {
@@ -34,7 +34,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/171992413",
       "isTitled": false,
       "isMainModder": true,
-      "isActive": true,
+      "isActive": false,
       "title": null
     },
     {
@@ -106,7 +106,7 @@
       "modder_img": "https://avatars.githubusercontent.com/u/71333407",
       "isTitled": true,
       "isMainModder": false,
-      "isActive": true,
+      "isActive": false,
       "title": "Contributors"
     },
     {
@@ -115,7 +115,7 @@
       "modder_img": "https://i.imgur.com/i8PHDA7.png",
       "isTitled": false,
       "isMainModder": false,
-      "isActive": true,
+      "isActive": false,
       "title": null
     },
     {
