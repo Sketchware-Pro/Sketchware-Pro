@@ -38,6 +38,7 @@ import a.a.a.wB;
 import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
+import dev.pranav.filepicker.SelectionMode;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.activities.tools.ConfigActivity;
 import mod.hilal.saif.asd.AsdDialog;
@@ -77,7 +78,6 @@ public class ExtraMenuBean {
     private final eC projectDataManager;
     private final String sc_id;
     private final String javaName;
-    private String splitter;
 
     public ExtraMenuBean(LogicEditorActivity logicA) {
         logicEditor = logicA;
@@ -796,19 +796,16 @@ public class ExtraMenuBean {
         String menuName = ss.getMenuName();
         ArrayList<String> markedPath = new ArrayList<>();
 
+        mOptions.setSelectionMode(SelectionMode.BOTH);
         String path;
         if (menuName.equals("Assets")) {
             mOptions.setTitle("Select an Asset");
             path = String.format(ASSETS_PATH, sc_id);
             markedPath.add(0, path + ss.getArgValue().toString());
-            String[] strArr = path.split("/");
-            splitter = strArr[strArr.length - 1];
         } else if (menuName.equals("NativeLib")) {
             mOptions.setTitle("Select a Native library");
             path = String.format(NATIVE_PATH, sc_id);
             markedPath.add(0, path + ss.getArgValue().toString());
-            String[] strArr = path.split("/");
-            splitter = strArr[strArr.length - 1];
         }
         FilePickerCallback callback = new FilePickerCallback() {
             @Override

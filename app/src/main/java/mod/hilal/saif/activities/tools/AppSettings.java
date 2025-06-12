@@ -35,6 +35,7 @@ import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
 import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
+import dev.pranav.filepicker.SelectionMode;
 import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
@@ -103,6 +104,7 @@ public class AppSettings extends BaseAppCompatActivity {
 
     private void openWorkingDirectory() {
         FilePickerOptions options = new FilePickerOptions();
+        options.setSelectionMode(SelectionMode.BOTH);
         options.setMultipleSelection(true);
         options.setTitle("Select an entry to modify");
 
