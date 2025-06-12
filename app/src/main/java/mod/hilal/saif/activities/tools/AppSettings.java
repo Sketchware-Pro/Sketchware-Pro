@@ -107,6 +107,7 @@ public class AppSettings extends BaseAppCompatActivity {
         options.setSelectionMode(SelectionMode.BOTH);
         options.setMultipleSelection(true);
         options.setTitle("Select an entry to modify");
+        options.setInitialDirectory(getFilesDir().getParentFile().getAbsolutePath());
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
@@ -138,7 +139,7 @@ public class AppSettings extends BaseAppCompatActivity {
                                     case 0 -> {
                                         Intent intent = new Intent(getApplicationContext(), SrcCodeEditor.class);
                                         intent.putExtra("title", Uri.fromFile(files.get(0)).getLastPathSegment());
-                                        intent.putExtra("content", files.get(0));
+                                        intent.putExtra("content", files.get(0).getAbsolutePath());
                                         intent.putExtra("xml", "");
                                         startActivity(intent);
                                     }

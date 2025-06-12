@@ -135,7 +135,7 @@ dependencies {
 
     implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
     implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
-    implementation "com.github.PranavPurwar:filepicker:869c18f9e4"
+    implementation "com.github.PranavPurwar:filepicker:74526bea66"
 
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
