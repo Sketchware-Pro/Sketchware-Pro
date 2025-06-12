@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="200dp"
@@ -31,18 +32,21 @@
                 android:id="@+id/view_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceLabelMedium" />
+                android:textAppearance="?attr/textAppearanceLabelMedium"
+                tools:text="linear1" />
 
         </LinearLayout>
 
         <ImageView
             android:id="@+id/add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/mtrl_min_touch_target_size"
+            android:layout_height="@dimen/mtrl_min_touch_target_size"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:src="@drawable/ic_mtrl_add"
-            android:background="?selectableItemBackgroundBorderless"/>
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerInside"
+            tools:ignore="PrivateResource" />
 
         <ImageView
             android:id="@+id/source_code"

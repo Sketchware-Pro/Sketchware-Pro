@@ -7,8 +7,6 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.provider.Settings;
 
-import androidx.activity.EdgeToEdge;
-
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.PropertyOneLineItem;
 import com.besome.sketch.lib.ui.PropertyTwoLineItem;
@@ -25,7 +23,7 @@ public class SystemInfoActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
         binding = ActivitySystemInfoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

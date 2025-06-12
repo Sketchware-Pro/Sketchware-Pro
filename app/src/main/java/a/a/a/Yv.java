@@ -160,7 +160,7 @@ public class Yv extends qA {
 
         public Adapter() {
             super(requireActivity());
-            this.inflater = LayoutInflater.from(requireActivity());
+            inflater = LayoutInflater.from(requireActivity());
         }
 
         @Override

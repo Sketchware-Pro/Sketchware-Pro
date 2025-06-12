@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.Insets;
@@ -48,20 +47,18 @@ import pro.sketchware.databinding.ViewItemLocalLibSearchBinding;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
+    private final LibraryAdapter adapter = new LibraryAdapter();
+    private final SearchAdapter searchAdapter = new SearchAdapter();
     private ArrayList<HashMap<String, Object>> projectUsedLibs;
-
     private boolean notAssociatedWithProject;
     private boolean searchBarExpanded;
     private BuildSettings buildSettings;
     private ManageLocallibrariesBinding binding;
     private String scId;
 
-    private final LibraryAdapter adapter = new LibraryAdapter();
-    private final SearchAdapter searchAdapter = new SearchAdapter();
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
         binding = ManageLocallibrariesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -302,9 +299,9 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, final int position) {
-            final var binding = holder.binding;
-            final var library = localLibraries.get(position);
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            var binding = holder.binding;
+            var library = localLibraries.get(position);
 
             binding.libraryName.setText(library.getName());
             binding.librarySize.setText(library.getSize());
@@ -444,9 +441,9 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(ViewHolder holder, final int position) {
-            final var binding = holder.binding;
-            final var library = filteredLocalLibraries.get(position);
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            var binding = holder.binding;
+            var library = filteredLocalLibraries.get(position);
 
             binding.libraryName.setText(library.getName());
             binding.librarySize.setText(library.getSize());

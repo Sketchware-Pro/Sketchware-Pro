@@ -27,7 +27,7 @@ public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelector
 
     public PaletteSelectorAdapter(PaletteSelector paletteSelector, Vs onBlockCategorySelectListener) {
         this.paletteSelector = paletteSelector;
-        this.context = paletteSelector.getContext();
+        context = paletteSelector.getContext();
         this.onBlockCategorySelectListener = onBlockCategorySelectListener;
     }
 

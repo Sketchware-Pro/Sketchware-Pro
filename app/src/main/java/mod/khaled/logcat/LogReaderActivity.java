@@ -15,9 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -57,7 +55,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
 
         binding = ActivityLogcatreaderBinding.inflate(getLayoutInflater());
@@ -100,7 +98,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         binding.searchInput.addTextChangedListener(new BaseTextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                final String _charSeq = s.toString();
+                String _charSeq = s.toString();
                 if (_charSeq.isEmpty() && (pkgFilterList.isEmpty())) {
                     binding.logsRecyclerView.setAdapter(new Adapter(mainList));
                 } else {
@@ -265,7 +263,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
             this.data = data;
         }
 
-        public void updateList(final HashMap<String, Object> _map) {
+        public void updateList(HashMap<String, Object> _map) {
             data.add(_map);
             binding.logsRecyclerView.getAdapter().notifyItemInserted(data.size() + 1);
 
@@ -293,7 +291,7 @@ public class LogReaderActivity extends BaseAppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             var binding = holder.listBinding;
 
             if (data.get(position).containsKey("pkgName")) {

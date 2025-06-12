@@ -75,6 +75,7 @@ public class ItemRelativeLayout extends RelativeLayout implements sy, ty {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean isFixed) {
         this.isFixed = isFixed;
     }

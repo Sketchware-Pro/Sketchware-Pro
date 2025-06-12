@@ -3,51 +3,108 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurfaceContainer">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/loading_3balls"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_centerInParent="true"
-            app:lottie_autoPlay="true"
-            app:lottie_fileName="anim/loading_3balls.json"
-            app:lottie_loop="true"
-            app:lottie_colorFilter="?colorPrimary"/>
-
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nested_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:fadingEdgeLength="30dp"
             android:requiresFadingEdge="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <include
-                    android:id="@+id/special_action"
-                    layout="@layout/myprojects_item_special" />
+                <FrameLayout
+                    android:id="@+id/special_action_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/myprojects"
+                    <include
+                        android:id="@+id/special_action"
+                        layout="@layout/myprojects_item_special" />
+                </FrameLayout>
+
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:nestedScrollingEnabled="true"
-                    android:paddingBottom="80dp"
-                    android:splitMotionEvents="false"
-                    android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/myprojects_item"
-                    tools:visibility="visible" />
+                    android:layout_marginTop="12dp"
+                    app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.Corner.Top">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/title_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Projects"
+                                android:textAppearance="?attr/textAppearanceTitleLargeEmphasized" />
+
+                            <ImageView
+                                android:id="@+id/icon_sort"
+                                android:layout_width="@dimen/mtrl_min_touch_target_size"
+                                android:layout_height="@dimen/mtrl_min_touch_target_size"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:scaleType="centerInside"
+                                app:srcCompat="@drawable/ic_mtrl_sort" />
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:id="@+id/loading_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                style="@style/Widget.Material3Expressive.CircularProgressIndicator.Wavy"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="80dp"
+                                android:indeterminate="true"
+                                app:indicatorSize="64dp"
+                                app:waveAmplitude="2dp"
+                                app:wavelength="20dp" />
+                        </FrameLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/myprojects"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:nestedScrollingEnabled="true"
+                            android:paddingBottom="96dp"
+                            android:splitMotionEvents="false"
+                            android:transitionGroup="true"
+                            android:visibility="gone"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:listitem="@layout/myprojects_item"
+                            tools:visibility="visible" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

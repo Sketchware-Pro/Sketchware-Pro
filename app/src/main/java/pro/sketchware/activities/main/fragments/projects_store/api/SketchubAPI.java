@@ -11,9 +11,9 @@ import java.util.function.Consumer;
 
 import pro.sketchware.utility.Network;
 
-public class SketchHubAPI {
+public class SketchubAPI {
 
-    private static final String TAG = "SketchHubAPI";
+    private static final String TAG = "SketchubAPI";
     private static final String BASE_URL = "https://sketchub.in/api/v3/";
     private static final String GET_PROJECTS_ENDPOINT = "get_project_list";
 
@@ -21,7 +21,7 @@ public class SketchHubAPI {
     private final Network network = new Network();
     private final Gson gson = new Gson();
 
-    public SketchHubAPI(String apiKey) {
+    public SketchubAPI(String apiKey) {
         this.apiKey = apiKey;
     }
 

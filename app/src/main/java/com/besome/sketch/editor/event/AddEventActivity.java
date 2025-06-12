@@ -26,6 +26,7 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.makeblock.MoreBlockBuilderView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -274,6 +275,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logic_popup_add_event);
         Intent intent = getIntent();
@@ -369,7 +371,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             holder.events_preview.removeAllViews();
             holder.events_preview.setVisibility(View.VISIBLE);
             EventBean event = categories.get(categoryAdapter.lastSelectedCategory).get(position);
-            ImageView imageView = new ImageView(getApplicationContext());
+            ImageView imageView = new ImageView(holder.itemView.getContext());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0, 0, (int) wB.a(getApplicationContext(), 2.0f), 0);
             int a = (int) wB.a(getApplicationContext(), 16.0f);
@@ -377,6 +379,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             layoutParams.height = a;
             imageView.setLayoutParams(layoutParams);
             imageView.setImageResource(oq.a(event.eventName));
+            imageView.setColorFilter(MaterialColors.getColor(imageView, com.google.android.material.R.attr.colorOutline));
             holder.events_preview.addView(imageView);
             holder.img_icon.setImageResource(EventBean.getEventIconResource(event.eventType, event.targetType));
             int eventType = event.eventType;
@@ -392,7 +395,6 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             } else if (eventType == EventBean.EVENT_TYPE_ETC) {
                 holder.events_preview.setVisibility(View.GONE);
             }
-            holder.tv_sep.setText(" : ");
             if (event.targetId.equals("_fab")) {
                 holder.tv_target_id.setText("fab");
             } else {
@@ -428,7 +430,6 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             public final LinearLayout events_preview;
             public final ImageView img_icon;
             public final TextView tv_target_type;
-            public final TextView tv_sep;
             public final TextView tv_target_id;
             public final TextView tv_event_name;
             public final CheckBox checkbox;
@@ -438,7 +439,6 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 events_preview = itemView.findViewById(R.id.events_preview);
                 img_icon = itemView.findViewById(R.id.img_icon);
                 tv_target_type = itemView.findViewById(R.id.tv_target_type);
-                tv_sep = itemView.findViewById(R.id.tv_sep);
                 tv_target_id = itemView.findViewById(R.id.tv_target_id);
                 tv_event_name = itemView.findViewById(R.id.tv_event_name);
                 checkbox = itemView.findViewById(R.id.checkbox);

@@ -1,7 +1,8 @@
 <resources>
     <style name="Base.Theme.SketchwarePro" parent="Scheme.SketchwarePro.DayNight" />
     <style name="Theme.SketchwarePro" parent="Platform.Theme.SketchwarePro">
-        <item name="chipStyle">@style/ChipStyle</item>
+        <item name="bottomNavigationStyle">@style/Widget.SketchwarePro.BottomNavigationView</item>
+        <item name="chipStyle">@style/Widget.SketchwarePro.Chip</item>
         <item name="collapsingToolbarLayoutStyle">?attr/collapsingToolbarLayoutLargeStyle</item>
         <item name="collapsingToolbarLayoutLargeSize">@dimen/collapsing_toolbar_large_size</item>
         <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.SketchwarePro.CollapsingToolbar</item>
@@ -12,11 +13,14 @@
         <item name="switchPreferenceCompatStyle">
             @style/Preference.SketchwarePro.SwitchPreferenceCompat
         </item>
-        <item name="tabStyle">@style/TabLayoutStyle</item>
+        <item name="tabStyle">@style/Widget.SketchwarePro.TabLayout</item>
         <item name="bottomSheetDialogTheme">@style/ThemeOverlay.SketchwarePro.BottomSheetDialog</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.SketchwarePro.AlertDialog</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.SketchwarePro.AlertDialog</item>
         <item name="popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
         <item name="android:popupMenuStyle">@style/Widget.Material3.PopupMenu</item>
-        <item name="materialCardViewFilledStyle">@style/Widget.SketchwarePro.MaterialCardView</item>
+        <item name="materialCardViewStyle">?attr/materialCardViewFilledStyle</item>
+        <item name="materialCardViewFilledStyle">@style/Widget.SketchwarePro.CardView</item>
         <!-- Type styles. -->
         <item name="textAppearanceDisplayLarge">@style/TextAppearance.SketchwarePro.DisplayLarge</item>
         <item name="textAppearanceDisplayMedium">@style/TextAppearance.SketchwarePro.DisplayMedium</item>
@@ -53,7 +57,8 @@
         <item name="android:navigationBarColor">@color/splash_bg_color</item>
         <item name="android:statusBarColor">@color/splash_bg_color</item>
         <item name="android:windowLightStatusBar">@bool/is_light_theme</item>
-        <item name="android:windowLightNavigationBar">@bool/is_light_theme</item>
+        <item name="android:windowLightNavigationBar">@bool/is_light_theme
+        </item>
     </style>
 
     <style name="Theme.SketchwarePro.Starting" parent="Theme.SketchwarePro.Starting.Base" />

@@ -46,6 +46,7 @@ public class ItemDigitalClock extends DigitalClock implements sy {
         return isFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         isFixed = z;
     }

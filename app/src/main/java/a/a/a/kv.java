@@ -32,10 +32,11 @@ public class kv extends LinearLayout implements nv {
 
     public kv(FirebaseActivity var1) {
         super(var1);
-        this.a = var1;
-        this.a(var1);
+        a = var1;
+        a(var1);
     }
 
+    @Override
     public void a() {
 
     }
@@ -72,7 +73,7 @@ public class kv extends LinearLayout implements nv {
     }
 
     private void configureLibraryDialog() {
-        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(a);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(a);
         dialog.setTitle(Helper.getResString(R.string.common_word_warning));
         dialog.setIcon(R.drawable.delete_96);
         dialog.setMessage(Helper.getResString(R.string.design_library_firebase_dialog_description_confirm_uncheck_firebase));
@@ -89,6 +90,7 @@ public class kv extends LinearLayout implements nv {
         dialog.show();
     }
 
+    @Override
     public void a(ProjectLibraryBean mProjectLibraryBean) {
         firebaseLibraryBean = mProjectLibraryBean;
         if (lib_switch.isChecked()) {
@@ -98,10 +100,12 @@ public class kv extends LinearLayout implements nv {
         }
     }
 
+    @Override
     public String getDocUrl() {
         return "";
     }
 
+    @Override
     public boolean isValid() {
         return true;
     }

@@ -325,7 +325,7 @@ public class ViewPane extends RelativeLayout {
         return item;
     }
 
-    private final View getUnknownItemView(final ViewBean bean) {
+    private View getUnknownItemView(ViewBean bean) {
         bean.type = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
         return new ItemLinearLayout(context);
     }
@@ -772,7 +772,7 @@ public class ViewPane extends RelativeLayout {
                         int childTopY;
                         if (i == 0) {
                             childTopY = childLocationOnScreen[1] - (int) (topMargin * scaleY);
-                            final int parentLeft = parentRect.left;
+                            int parentLeft = parentRect.left;
                             addViewInfo(
                                     new Rect(
                                             parentLeft,
@@ -795,7 +795,7 @@ public class ViewPane extends RelativeLayout {
                         childRect.bottom = paddingTop;
                         paddingLeft = parentLeft;
                     } else if (verticalGravity == Gravity.BOTTOM) {
-                        final int childTopY = (int) (topMargin * scaleY);
+                        int childTopY = (int) (topMargin * scaleY);
                         paddingLeft = parentRect.left;
                         childRect.left = paddingLeft;
                         childRect.top = paddingTop;
@@ -803,7 +803,7 @@ public class ViewPane extends RelativeLayout {
                         childRect.bottom = paddingTop - childTopY;
                         paddingTop = (int) ((paddingTop + childHeight + bottomMargin) * scaleY);
                     } else {
-                        final int childBottomY =
+                        int childBottomY =
                                 (int) ((childHeight + topMargin + bottomMargin) * scaleY)
                                         + paddingTop;
                         paddingLeft = parentRect.left;
@@ -989,8 +989,11 @@ public class ViewPane extends RelativeLayout {
         int rightMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginRight);
         int bottomMargin = (int) wB.a(getContext(), (float) viewBean.layout.marginBottom);
 
-        viewBean.parentType = getActualParentType(view, viewBean.parentType);
-        view.setBackgroundColor(viewBean.layout.backgroundColor);
+        if (viewBean.layout.backgroundResColor == null) {
+            view.setBackgroundColor(viewBean.layout.backgroundColor);
+        } else {
+            view.setBackgroundColor(PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(context, viewBean.layout.backgroundResColor, 3)));
+        }
         if (viewBean.parentType == ViewBean.VIEW_TYPE_LAYOUT_LINEAR) {
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(width, height);
             layoutParams2.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);
@@ -1284,11 +1287,8 @@ public class ViewPane extends RelativeLayout {
         String strokeColor = handler.getAttributeValueOf("strokeColor");
         String strokeWidth = handler.getAttributeValueOf("strokeWidth");
 
-        if (PropertiesUtil.isHexColor(cardBackgroundColor)) {
-            cardView.setBackgroundColor(PropertiesUtil.parseColor(cardBackgroundColor));
-        } else {
-            cardView.setBackgroundColor(PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(context, bean.layout.backgroundResColor, 3)));
-        }
+        cardView.setBackgroundColor(PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(context, bean.layout.backgroundResColor, 3)));
+
         cardView.setCardElevation(PropertiesUtil.resolveSize(cardElevation, 4));
         cardView.setRadius(PropertiesUtil.resolveSize(cardCornerRadius, 8));
         cardView.setUseCompatPadding(Boolean.parseBoolean(TextUtils.isEmpty(compatPadding) ? "false" : compatPadding));

@@ -162,7 +162,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/bg_color"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="Color"
@@ -170,7 +170,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/bg_gradient"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="Gradient"
@@ -1078,23 +1078,21 @@
         android:paddingHorizontal="14dp"
         android:paddingVertical="10dp">
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/cancel"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="7dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
-            android:text="@string/common_word_cancel"
-            android:textSize="@dimen/text_size_button_material"
-            app:backgroundTint="?colorAccent" />
+            android:text="@string/common_word_cancel" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/save"
+            style="@style/Widget.Material3Expressive.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
             android:layout_weight="1"
-            android:text="@string/common_word_save"
-            android:textSize="@dimen/text_size_button_material" />
+            android:text="@string/common_word_save" />
     </LinearLayout>
 </LinearLayout>

@@ -4,12 +4,16 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface.OnCancelListener;
+import android.graphics.Color;
 import android.os.AsyncTask.Status;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.activity.EdgeToEdge;
+import androidx.activity.SystemBarStyle;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
@@ -145,6 +149,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (parent != null) {
             return parent.onCreateOptionsMenu(menu);
@@ -152,6 +157,7 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (parent != null) {
             return parent.onOptionsItemSelected(item);
@@ -163,5 +169,13 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
         Insetter.builder()
                 .padding(WindowInsetsCompat.Type.navigationBars())
                 .applyToView(root);
+    }
+
+    protected void enableEdgeToEdgeNoContrast() {
+        SystemBarStyle systemBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT);
+        EdgeToEdge.enable(this, systemBarStyle);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            getWindow().setNavigationBarContrastEnforced(false);
+        }
     }
 }

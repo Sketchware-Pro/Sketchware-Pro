@@ -1,6 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -60,6 +59,7 @@
 
                     <Button
                         android:id="@+id/sign_apk_button"
+                        style="@style/Widget.Material3Expressive.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/myprojects_export_project_button_sign_apk"
@@ -170,6 +170,7 @@
 
                     <Button
                         android:id="@+id/export_source_button"
+                        style="@style/Widget.Material3Expressive.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/myprojects_export_project_button_export_src"
@@ -230,6 +231,7 @@
 
                             <Button
                                 android:id="@+id/export_source_send_button"
+                                style="@style/Widget.Material3Expressive.Button"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
@@ -289,6 +291,7 @@
 
                     <Button
                         android:id="@+id/export_aab_button"
+                        style="@style/Widget.Material3Expressive.Button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Export AAB"

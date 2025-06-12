@@ -60,8 +60,9 @@ public class PatternBackgroundView extends View {
         invalidate();
     }
 
+    @Override
     public void setRotation(float degrees) {
-        this.rotationDegrees = degrees;
+        rotationDegrees = degrees;
         invalidate();
     }
 
@@ -71,7 +72,7 @@ public class PatternBackgroundView extends View {
     }
 
     public void setPattern(Bitmap bitmap) {
-        this.patternBitmap = bitmap;
+        patternBitmap = bitmap;
         bitmapShader = new BitmapShader(patternBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
         paint.setShader(bitmapShader);
 
@@ -79,7 +80,7 @@ public class PatternBackgroundView extends View {
     }
 
     public void setPatternFromRes(int id) {
-        this.patternBitmap = convertVectorToBitmap(getContext(), id, 500, 500);
+        patternBitmap = convertVectorToBitmap(getContext(), id, 500, 500);
         setPattern(patternBitmap);
     }
 

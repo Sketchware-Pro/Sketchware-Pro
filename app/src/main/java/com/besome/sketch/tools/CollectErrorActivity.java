@@ -33,7 +33,7 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            final String error = intent.getStringExtra("error");
+            String error = intent.getStringExtra("error");
 
             var dialog = new MaterialAlertDialogBuilder(this)
                     .setTitle(xB.b().a(getApplicationContext(), R.string.common_error_an_error_occurred))

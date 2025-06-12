@@ -246,7 +246,6 @@
                     <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:requiresFadingEdge="horizontal"
                         android:scrollbars="none">
 
                         <com.google.android.material.button.MaterialButtonToggleGroup
@@ -262,28 +261,28 @@
 
                             <Button
                                 android:id="@+id/select_activity"
-                                style="?attr/materialButtonOutlinedStyle"
+                                style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Activity" />
 
                             <Button
                                 android:id="@+id/select_fragment"
-                                style="?attr/materialButtonOutlinedStyle"
+                                style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Fragment" />
 
                             <Button
                                 android:id="@+id/select_dialogfragment"
-                                style="?attr/materialButtonOutlinedStyle"
+                                style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="DialogFragment" />
 
                             <Button
                                 android:id="@+id/select_bottomsheetdialogfragment"
-                                style="?attr/materialButtonOutlinedStyle"
+                                style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="BottomSheetDialogFragment" />
@@ -298,14 +297,12 @@
                     android:orientation="vertical"
                     android:paddingTop="16dp">
 
-
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:text="Screen orientation"
                         android:textColor="?colorPrimary" />
-
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/screenOrientationSelector"
@@ -320,7 +317,7 @@
 
                         <Button
                             android:id="@+id/select_portrait"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -328,7 +325,7 @@
 
                         <Button
                             android:id="@+id/select_landscape"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -336,7 +333,7 @@
 
                         <Button
                             android:id="@+id/select_both"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -372,7 +369,7 @@
 
                         <Button
                             android:id="@+id/select_unspecified"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -380,7 +377,7 @@
 
                         <Button
                             android:id="@+id/select_visible"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -388,7 +385,7 @@
 
                         <Button
                             android:id="@+id/select_hidden"
-                            style="?attr/materialButtonOutlinedStyle"
+                            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -404,26 +401,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="?android:colorBackground"
+        android:background="?attr/colorSurface"
         android:orientation="horizontal"
-        android:paddingVertical="16dp">
+        android:padding="16dp">
 
         <Button
             android:id="@+id/btn_cancel"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:text="Cancel" />
 
         <Button
             android:id="@+id/btn_save"
+            style="@style/Widget.Material3Expressive.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:text="Save" />
 

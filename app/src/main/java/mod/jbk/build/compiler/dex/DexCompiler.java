@@ -1,8 +1,5 @@
 package mod.jbk.build.compiler.dex;
 
-import android.annotation.TargetApi;
-import android.os.Build;
-
 import com.android.tools.r8.CompilationFailedException;
 import com.android.tools.r8.CompilationMode;
 import com.android.tools.r8.D8;
@@ -20,7 +17,6 @@ import mod.hey.studios.project.ProjectSettings;
 import pro.sketchware.utility.FileUtil;
 
 public class DexCompiler {
-    @TargetApi(Build.VERSION_CODES.O)
     public static void compileDexFiles(ProjectBuilder builder) throws CompilationFailedException {
         int minApiLevel;
 
@@ -29,10 +25,6 @@ public class DexCompiler {
                     ProjectSettings.SETTING_MINIMUM_SDK_VERSION, "21"));
         } catch (NumberFormatException e) {
             throw new CompilationFailedException("Invalid minSdkVersion specified in Project Settings" + e.getMessage());
-        }
-
-        if (!(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)) {
-            throw new IllegalStateException("Can't use d8 as API level " + Build.VERSION.SDK_INT + " < 26");
         }
 
         Collection<Path> programFiles = new LinkedList<>();

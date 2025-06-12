@@ -26,32 +26,32 @@ public class ViewLogicEditor extends LogicEditorScrollView {
 
     public ViewLogicEditor(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        this.blockPane = new BlockPane(context);
-        this.blockPane.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+        blockPane = new BlockPane(context);
+        blockPane.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        addView(this.blockPane);
+        addView(blockPane);
     }
 
     public BlockPane getBlockPane() {
-        return this.blockPane;
+        return blockPane;
     }
 
     @Override
     public void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (this.k) {
-            this.blockPane.getLayoutParams().width = right - left;
-            this.blockPane.getLayoutParams().height = bottom - top;
-            this.blockPane.b();
-            this.k = false;
+        if (k) {
+            blockPane.getLayoutParams().width = right - left;
+            blockPane.getLayoutParams().height = bottom - top;
+            blockPane.b();
+            k = false;
         }
     }
 
     public boolean a(float x, float y) {
-        getLocationOnScreen(this.locationOnScreen);
-        int[] iArr = this.locationOnScreen;
+        getLocationOnScreen(locationOnScreen);
+        int[] iArr = locationOnScreen;
         if (x > iArr[0] && x < iArr[0] + getWidth()) {
-            int[] iArr2 = this.locationOnScreen;
+            int[] iArr2 = locationOnScreen;
             return y > iArr2[1] && y < iArr2[1] + getHeight();
         }
         return false;

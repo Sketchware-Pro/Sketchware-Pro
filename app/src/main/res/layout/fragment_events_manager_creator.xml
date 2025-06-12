@@ -39,24 +39,13 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingTop="16dp">
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/layout_item"
-                style="?attr/materialCardViewFilledStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:transitionGroup="true"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+            android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="16dp">
+                    android:padding="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -76,7 +65,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Event Name"
-                            android:textSize="14sp"
                             android:transitionGroup="true" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -90,8 +78,7 @@
                             android:id="@+id/events_creator_varname"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Widget/Component name"
-                            android:textSize="14sp" />
+                            android:hint="Widget/Component name" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
@@ -113,8 +100,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="Icon"
-                                android:inputType="number"
-                                android:textSize="14sp" />
+                                android:inputType="number" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <LinearLayout
@@ -143,8 +129,7 @@
                             android:id="@+id/events_creator_desc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Description"
-                            android:textSize="14sp" />
+                            android:hint="Description" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -157,8 +142,7 @@
                             android:id="@+id/events_creator_params"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Parameters"
-                            android:textSize="14sp" />
+                            android:hint="Parameters" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -185,11 +169,9 @@
                             android:id="@+id/events_creator_code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Event code (### ==> Variable name)"
-                            android:textSize="14sp" />
+                            android:hint="Event code (### ==> Variable name)" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
@@ -262,24 +244,23 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:padding="14dp"
-        android:transitionGroup="true"
-        android:background="?attr/colorSurface">
+        android:padding="16dp"
+        android:transitionGroup="true">
 
         <Button
             android:id="@+id/events_creator_cancel"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="7dp"
+            android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:text="@string/common_word_cancel" />
 
         <Button
             android:id="@+id/events_creator_save"
+            style="@style/Widget.Material3Expressive.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
             android:layout_weight="1"
             android:text="@string/common_word_save" />
 

@@ -72,7 +72,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     private void checkAttrs() {
-        final String path =
+        String path =
                 FileUtil.getExternalStorageDir()
                         .concat("/.sketchware/data/")
                         .concat(sc_id)
@@ -98,7 +98,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     private void setupOptions() {
-        final List<LibraryItemView> options = new ArrayList<>();
+        List<LibraryItemView> options = new ArrayList<>();
 
         options.add(
                 createOption(
@@ -160,10 +160,10 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         options.forEach(binding.cards::addView);
     }
 
-    private final LibraryItemView createOption(
-            final String title,
-            final String description,
-            final int icon,
+    private LibraryItemView createOption(
+            String title,
+            String description,
+            int icon,
             View.OnClickListener onClick) {
         var card = new LibraryItemView(this);
         makeup(card, icon, title, description);
@@ -172,10 +172,10 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     private void showAppComponentDialog() {
-        final Intent intent = new Intent();
+        Intent intent = new Intent();
         intent.setClass(getApplicationContext(), SrcCodeEditor.class);
 
-        final String APP_COMPONENTS_PATH =
+        String APP_COMPONENTS_PATH =
                 FileUtil.getExternalStorageDir()
                         .concat("/.sketchware/data/")
                         .concat(sc_id)
@@ -189,12 +189,12 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     private void showLauncherActDialog(String actnamr) {
-        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.ic_mtrl_lifecycle);
         dialog.setTitle(Helper.getResString(R.string.change_launcher_activity_dialog_title));
         View view = wB.a(this, R.layout.dialog_add_custom_activity);
 
-        final TextInputEditText activity_name_input = view.findViewById(R.id.activity_name_input);
+        TextInputEditText activity_name_input = view.findViewById(R.id.activity_name_input);
 
         activity_name_input.setText(actnamr);
 
@@ -214,12 +214,12 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     public void showAddActivityDialog() {
-        final MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setIcon(R.drawable.ic_mtrl_add);
         dialog.setTitle(Helper.getResString(R.string.common_word_add_activtiy));
         View inflate = wB.a(this, R.layout.dialog_add_custom_activity);
 
-        final TextInputEditText activity_name_input =
+        TextInputEditText activity_name_input =
                 inflate.findViewById(R.id.activity_name_input);
 
         activity_name_input.setText(currentActivityName);
@@ -404,7 +404,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         k();
         new Thread(
                 () -> {
-                    final String source =
+                    String source =
                             new yq(getApplicationContext(), sc_id)
                                     .getFileSrc(
                                             "AndroidManifest.xml",
@@ -460,7 +460,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         }
 
         @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent) {
             CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
             attributeView.getImageView().setVisibility(View.GONE);

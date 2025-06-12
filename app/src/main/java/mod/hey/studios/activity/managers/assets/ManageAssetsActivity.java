@@ -14,7 +14,6 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,7 +54,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
         binding = ManageFileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -186,7 +185,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         dialog.show();
     }
 
-    private void showRenameDialog(final int position) {
+    private void showRenameDialog(int position) {
         DialogInputLayoutBinding dialogBinding = DialogInputLayoutBinding.inflate(getLayoutInflater());
 
         var inputText = dialogBinding.inputText;
@@ -213,7 +212,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         inputText.requestFocus();
     }
 
-    private void showDeleteDialog(final int position) {
+    private void showDeleteDialog(int position) {
         new MaterialAlertDialogBuilder(this)
                 .setTitle("Delete " + assetsAdapter.getFileName(position) + "?")
                 .setMessage("Are you sure you want to delete this " + (assetsAdapter.isFolder(position) ? "folder" : "file") + "? "

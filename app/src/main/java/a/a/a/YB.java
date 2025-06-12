@@ -29,6 +29,7 @@ public class YB extends MB {
         this.originalName = originalName;
     }
 
+    @Override
     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
         if (charSequence.toString().trim().length() < 3) {
             b.setErrorEnabled(true);

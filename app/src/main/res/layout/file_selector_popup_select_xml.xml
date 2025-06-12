@@ -4,7 +4,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#b6000000"
+    android:background="#80000000"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
@@ -12,35 +12,30 @@
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/options_selector"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:maxWidth="325dp"
-        android:minWidth="300dp"
+        android:layout_marginHorizontal="32dp"
         app:checkedButton="@id/option_view"
         app:selectionRequired="true"
         app:singleSelection="true">
 
         <Button
             android:id="@+id/option_view"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/common_word_view"
-            android:textColor="?attr/colorOnSurface" />
+            android:text="@string/common_word_view" />
 
         <Button
             android:id="@+id/option_custom_view"
-            style="?attr/materialButtonOutlinedStyle"
+            style="@style/Widget.Material3Expressive.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/common_word_custom_view"
-            android:textColor="#ffffffff" />
+            android:text="@string/common_word_custom_view" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
-
 
     <TextView
         android:id="@+id/empty_message"
@@ -52,10 +47,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_xml"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/options_selector"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@id/options_selector"
         android:layout_marginTop="20dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="4"
@@ -63,7 +57,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="172dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/shadow_gradient_bottom_top"
@@ -73,7 +67,7 @@
             android:id="@+id/createNewView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="16dp"
             android:text="Create new view"
             app:icon="@drawable/ic_add_white_24dp" />
 

@@ -18,13 +18,13 @@ public class QuizBean extends nA {
     public int type;
 
     public QuizBean(String question, int answer) {
-        this.type = QUIZ_TYPE_OX;
+        type = QUIZ_TYPE_OX;
         this.question = question;
         this.answer = answer;
     }
 
     public QuizBean(String question, int answer, String answerA, String answerB) {
-        this.type = QUIZ_TYPE_ANSWER;
+        type = QUIZ_TYPE_ANSWER;
         this.question = question;
         this.answer = answer;
         this.answerA = answerA;

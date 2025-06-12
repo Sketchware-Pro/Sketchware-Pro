@@ -3,49 +3,39 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="16dp"
+    android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    android:paddingStart="16dp">
+    android:paddingBottom="16dp">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-        android:id="@+id/drag_handle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="8dp" />
+        android:layout_height="wrap_content" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/title"
+        style="?attr/textAppearanceHeadlineSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:text="StringFog Manager"
-        android:textAppearance="?attr/textAppearanceTitleLarge" />
+        android:text="StringFog Manager" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/sw_pg_enabled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:checked="true"
         android:text="Activated" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:drawablePadding="16dp"
+        android:text="Activating StringFog will encrypt the strings in compilation time, which will make your app more difficult to reverse-engineer."
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        app:drawableStartCompat="@drawable/ic_mtrl_info"
+        app:drawableTint="?attr/colorOnSurface" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:scaleType="fitStart"
-            android:src="@drawable/ic_mtrl_info" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Activating StringFog will encrypt the strings in compilation time, which will make your app more difficult to reverse-engineer."
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:textAppearance="?attr/textAppearanceBodyMedium" />
-    </LinearLayout>
 </LinearLayout>

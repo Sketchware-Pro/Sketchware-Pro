@@ -1,7 +1,6 @@
 package com.besome.sketch.editor.manage;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import com.besome.sketch.editor.manage.view.AddCustomViewActivity;
 import com.besome.sketch.editor.manage.view.AddViewActivity;
 import com.besome.sketch.editor.manage.view.PresetSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.color.MaterialColors;
 
 import java.util.ArrayList;
 
@@ -31,6 +29,7 @@ import a.a.a.xB;
 import pro.sketchware.R;
 import pro.sketchware.databinding.FileSelectorPopupSelectXmlActivityItemBinding;
 import pro.sketchware.databinding.FileSelectorPopupSelectXmlBinding;
+import pro.sketchware.utility.UI;
 
 public class ViewSelectorActivity extends BaseAppCompatActivity {
     private final int[] x = new int[19];
@@ -165,9 +164,11 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
         binding = FileSelectorPopupSelectXmlBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             sc_id = intent.getStringExtra("sc_id");
@@ -178,11 +179,13 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
             currentXml = savedInstanceState.getString("current_xml");
             isCustomView = savedInstanceState.getBoolean("is_custom_view");
         }
+
         if (isCustomView) {
             selectedTab = TAB_CUSTOM_VIEW;
         } else {
             selectedTab = TAB_ACTIVITY;
         }
+
         binding.optionsSelector.check(selectedTab == TAB_ACTIVITY ? R.id.option_view : R.id.option_custom_view);
         binding.emptyMessage.setText(xB.b().a(this, R.string.design_manager_view_message_no_view));
         viewSelectorAdapter = new ViewSelectorAdapter();
@@ -198,17 +201,12 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
                 }
             }
         });
-        var onSurface = MaterialColors.getColor(binding.optionsSelector, com.google.android.material.R.attr.colorOnSurface);
         binding.optionsSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 if (checkedId == R.id.option_view) {
                     selectedTab = TAB_ACTIVITY;
-                    binding.optionView.setTextColor(onSurface);
-                    binding.optionCustomView.setTextColor(Color.parseColor("#FFFFFF"));
                 } else if (checkedId == R.id.option_custom_view) {
                     selectedTab = TAB_CUSTOM_VIEW;
-                    binding.optionView.setTextColor(Color.parseColor("#FFFFFF"));
-                    binding.optionCustomView.setTextColor(onSurface);
                 }
                 viewSelectorAdapter.notifyDataSetChanged();
                 binding.emptyMessage.setVisibility(viewSelectorAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
@@ -231,6 +229,9 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
         });
         binding.container.setOnClickListener(v -> finish());
         overridePendingTransition(R.anim.ani_fade_in, R.anim.ani_fade_out);
+
+        UI.addSystemWindowInsetToPadding(binding.container, true, true, true, false);
+        UI.addSystemWindowInsetToMargin(binding.createNewView, false, false, false, true);
     }
 
     @Override
@@ -389,7 +390,7 @@ public class ViewSelectorActivity extends BaseAppCompatActivity {
 
             public ViewHolder(@NonNull FileSelectorPopupSelectXmlActivityItemBinding binding) {
                 super(binding.getRoot());
-                this.itemBinding = binding;
+                itemBinding = binding;
                 itemBinding.cardView.setOnClickListener(v -> {
                     if (!mB.a()) {
                         selectedItem = getLayoutPosition();

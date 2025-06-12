@@ -130,10 +130,11 @@ public class ViewEvents extends LinearLayout {
                 binding.container.setOnClickListener(v -> createEvent(getLayoutPosition()));
                 binding.imgIcon.setImageResource(oq.a(event.eventName));
                 binding.tvTitle.setText(event.eventName);
+                binding.tvTitle.setTextColor(MaterialColors.getColor(binding.tvTitle, event.isSelected ? com.google.android.material.R.attr.colorOnSurface : com.google.android.material.R.attr.colorOutline));
+                binding.imgIcon.setColorFilter(MaterialColors.getColor(binding.tvTitle, event.isSelected ? com.google.android.material.R.attr.colorOnSurface : com.google.android.material.R.attr.colorOutline));
+                binding.imgUsedEvent.setVisibility(event.isSelected ? View.GONE : View.VISIBLE);
 
                 if (event.isSelected) {
-                    binding.imgIcon.setColorFilter(MaterialColors.getColor(binding.tvTitle, com.google.android.material.R.attr.colorSecondary));
-                    binding.imgUsedEvent.setVisibility(View.GONE);
                     binding.container.setOnLongClickListener(v -> {
                         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(itemView.getContext());
                         dialog.setIcon(R.drawable.delete_96);
@@ -151,9 +152,6 @@ public class ViewEvents extends LinearLayout {
                         dialog.show();
                         return true;
                     });
-                } else {
-                    binding.imgUsedEvent.setVisibility(View.VISIBLE);
-                    binding.imgIcon.setColorFilter(MaterialColors.getColor(binding.tvTitle, com.google.android.material.R.attr.colorOutlineVariant));
                 }
             }
         }

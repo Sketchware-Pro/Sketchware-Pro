@@ -405,19 +405,19 @@ public class FileUtil {
         return Environment.getExternalStoragePublicDirectory(type).getAbsolutePath();
     }
 
-    public static String convertUriToFilePath(final Context context, final Uri uri) {
+    public static String convertUriToFilePath(Context context, Uri uri) {
         String path = null;
         if (DocumentsContract.isDocumentUri(context, uri)) {
             if (isExternalStorageDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
+                String docId = DocumentsContract.getDocumentId(uri);
+                String[] split = docId.split(":");
+                String type = split[0];
 
                 if ("primary".equalsIgnoreCase(type)) {
                     path = Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
             } else if (isDownloadsDocument(uri)) {
-                final String id = DocumentsContract.getDocumentId(uri);
+                String id = DocumentsContract.getDocumentId(uri);
 
                 if (!TextUtils.isEmpty(id)) {
                     if (id.startsWith("raw:")) {
@@ -425,14 +425,14 @@ public class FileUtil {
                     }
                 }
 
-                final Uri contentUri = ContentUris
+                Uri contentUri = ContentUris
                         .withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
 
                 path = getDataColumn(context, contentUri, null, null);
             } else if (isMediaDocument(uri)) {
-                final String docId = DocumentsContract.getDocumentId(uri);
-                final String[] split = docId.split(":");
-                final String type = split[0];
+                String docId = DocumentsContract.getDocumentId(uri);
+                String[] split = docId.split(":");
+                String type = split[0];
 
                 Uri contentUri = null;
                 if ("image".equals(type)) {
@@ -444,7 +444,7 @@ public class FileUtil {
                 }
 
                 final String selection = "_id=?";
-                final String[] selectionArgs = {
+                String[] selectionArgs = {
                         split[1]
                 };
 
@@ -470,14 +470,14 @@ public class FileUtil {
         Cursor cursor = null;
 
         final String column = MediaStore.Images.Media.DATA;
-        final String[] projection = {
+        String[] projection = {
                 column
         };
 
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
-                final int column_index = cursor.getColumnIndexOrThrow(column);
+                int column_index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(column_index);
             }
         } catch (Exception ignored) {
@@ -528,13 +528,13 @@ public class FileUtil {
     }
 
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int width = options.outWidth;
-        final int height = options.outHeight;
+        int width = options.outWidth;
+        int height = options.outHeight;
         int inSampleSize = 1;
 
         if (height > reqHeight || width > reqWidth) {
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
+            int halfHeight = height / 2;
+            int halfWidth = width / 2;
 
             while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
                 inSampleSize *= 2;
@@ -744,7 +744,7 @@ public class FileUtil {
             available = 0;
         }
 
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[available];
 
         try {

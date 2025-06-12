@@ -307,7 +307,7 @@ public class ow extends qA {
 
         public Adapter(RecyclerView recyclerView) {
             super(requireActivity());
-            this.inflater = LayoutInflater.from(requireActivity());
+            inflater = LayoutInflater.from(requireActivity());
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
                 recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override

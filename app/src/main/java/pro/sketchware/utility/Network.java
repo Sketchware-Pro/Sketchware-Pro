@@ -22,7 +22,7 @@ public class Network {
     private final OkHttpClient client;
 
     public Network() {
-        this.client = new OkHttpClient();
+        client = new OkHttpClient();
     }
 
     public static void runOnUiThread(Runnable runnable) {

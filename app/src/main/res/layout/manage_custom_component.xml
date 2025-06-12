@@ -21,9 +21,9 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
+                android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/abc_ic_ab_back_material"
+                app:navigationIcon="?attr/homeAsUpIndicator"
                 app:menu="@menu/events_manager_menu"
                 app:title="@string/developer_tools_component_manager" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>

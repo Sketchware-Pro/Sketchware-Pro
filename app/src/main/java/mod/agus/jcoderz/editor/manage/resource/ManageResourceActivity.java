@@ -14,7 +14,6 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.PopupMenu;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,7 +73,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        EdgeToEdge.enable(this);
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
         binding = ManageFileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -187,7 +186,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         super.onBackPressed();
     }
 
-    private void createNewDialog(final boolean isFolder) {
+    private void createNewDialog(boolean isFolder) {
         DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
         var inputText = dialogBinding.inputText;
 
@@ -271,7 +270,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         });
     }
 
-    private void showRenameDialog(final String path) {
+    private void showRenameDialog(String path) {
         DialogInputLayoutBinding dialogBinding = DialogInputLayoutBinding.inflate(getLayoutInflater());
 
         var inputText = dialogBinding.inputText;
@@ -308,7 +307,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
         inputText.requestFocus();
     }
 
-    private void showDeleteDialog(final int position) {
+    private void showDeleteDialog(int position) {
         new MaterialAlertDialogBuilder(this)
                 .setTitle("Delete " + Uri.fromFile(new File(adapter.getItem(position))).getLastPathSegment() + "?")
                 .setMessage("Are you sure you want to delete this " + (FileUtil.isDirectory(adapter.getItem(position)) ? "folder" : "file") + "? "

@@ -437,7 +437,7 @@ public class br extends qA implements View.OnClickListener {
                     holder.button.getIcon().setImageResource(oq.a(eventName));
                     holder.button.setClickListener(v -> {
                         if (!mB.a()) {
-                            var component = components.get(ViewHolder.this.getLayoutPosition());
+                            var component = components.get(getLayoutPosition());
                             var event = new EventBean(EventBean.EVENT_TYPE_COMPONENT, component.type, component.componentId, eventName);
                             jC.a(sc_id).a(projectFile.getJavaName(), event);
                             bB.a(requireContext(), xB.b().a(requireContext(), R.string.event_message_new_event), 0).show();

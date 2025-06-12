@@ -15,21 +15,21 @@
 
         <RadioButton
             android:id="@+id/rb_matchparent"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="match_parent"
             android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/rb_wrapcontent"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="wrap_content"
             android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/rb_directinput"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Custom value"
             android:textSize="15sp" />
@@ -60,8 +60,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="numberSigned"
                 android:lines="1"
-                android:maxLength="3"
-                android:textSize="16sp" />
+                android:maxLength="3" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView

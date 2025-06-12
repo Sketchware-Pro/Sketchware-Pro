@@ -10,9 +10,4 @@
         app:showAsAction="always|collapseActionView"
         tools:ignore="AlwaysShowAction" />
 
-    <item
-        android:id="@+id/sortProject"
-        android:title="@string/sort_projects"
-        android:icon="@drawable/ic_mtrl_sort"
-        app:showAsAction="always" />
 </menu>

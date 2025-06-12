@@ -45,6 +45,7 @@ public class ItemCircleImageView extends CircleImageView implements sy {
         return hasFixed;
     }
 
+    @Override
     public void setFixed(boolean z) {
         hasFixed = z;
     }

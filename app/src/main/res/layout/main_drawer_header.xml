@@ -1,11 +1,21 @@
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/main_drawer_horizontal_padding"
-    android:layout_marginTop="16dp"
-    android:layout_marginRight="@dimen/main_drawer_horizontal_padding"
-    android:layout_marginBottom="8dp"
-    android:fitsSystemWindows="true"
-    app:srcCompat="@drawable/swpro_header_logo"
-    app:tint="?attr/colorControlNormal" />
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/main_drawer_horizontal_padding"
+    android:paddingTop="16dp"
+    android:paddingBottom="8dp">
+
+    <View
+        android:id="@+id/status_bar_overlapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/swpro_header_logo"
+        app:tint="?attr/colorControlNormal" />
+
+</LinearLayout>

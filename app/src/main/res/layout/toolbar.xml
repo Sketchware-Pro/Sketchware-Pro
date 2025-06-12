@@ -1,7 +1,7 @@
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
-    style="@style/Widget.Material3.Toolbar.Surface"
+    style="@style/Widget.Material3Expressive.Toolbar.OnSurface"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:contentInsetStart="0dp"
@@ -17,6 +17,7 @@
         android:contentDescription="@string/title_sketchware"
         android:scaleType="fitCenter"
         android:src="@drawable/top_title_logo"
+        android:padding="4dp"
         app:tint="?attr/colorPrimary" />
 
 </androidx.appcompat.widget.Toolbar>

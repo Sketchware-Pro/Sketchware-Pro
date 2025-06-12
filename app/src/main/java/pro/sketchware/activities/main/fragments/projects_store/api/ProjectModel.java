@@ -42,6 +42,11 @@ public class ProjectModel {
         this.projects = projects;
     }
 
+    // not supported right now due of API requirements
+    public static class Comment {
+
+    }
+
     public static class Project {
 
         @SerializedName("id")

@@ -3,95 +3,83 @@ package pro.sketchware.activities.main.fragments.projects_store;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Window;
+import android.view.View;
+import android.view.animation.LinearInterpolator;
+import android.widget.LinearLayout;
 
-import androidx.activity.EdgeToEdge;
-import androidx.core.content.ContextCompat;
-import androidx.transition.ChangeBounds;
-import androidx.transition.TransitionManager;
+import androidx.core.widget.NestedScrollView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.google.android.material.transition.platform.MaterialContainerTransform;
-import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
+import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import pro.sketchware.activities.main.fragments.projects_store.adapters.ProjectScreenshotsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.api.ProjectModel;
 import pro.sketchware.databinding.FragmentStoreProjectPreviewBinding;
+import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
 
 public class ProjectPreviewActivity extends BaseAppCompatActivity {
+    private static final long TITLE_CONTAINER_FADE_DURATION = 150L;
+
     private FragmentStoreProjectPreviewBinding binding;
     private ProjectModel.Project project;
+    private boolean isTitleContainerShown;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
 
-        getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-
         binding = FragmentStoreProjectPreviewBinding.inflate(getLayoutInflater());
-
-        EdgeToEdge.enable(this);
-
         setContentView(binding.getRoot());
 
-        binding.getRoot().setTransitionName("project_preview");
-        setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-        getWindow().setSharedElementEnterTransition(new MaterialContainerTransform().addTarget(binding.getRoot()).setDuration(400L));
-        getWindow().setSharedElementReturnTransition(new MaterialContainerTransform().addTarget(binding.getRoot()).setDuration(400L));
-
         loadProjectData(getIntent().getExtras());
-
-        initializeLogic();
     }
 
-    private void initializeLogic() {
-        binding.projectTitle.setText(project.getTitle());
-        binding.projectAuthor.setText(project.getUserName());
-        binding.projectDownloads.setText(project.getDownloads());
-        binding.projectLikes.setText(project.getLikes());
-        binding.projectComments.setText(project.getComments());
-        binding.projectSize.setText(project.getProjectSize());
-        binding.projectCategory.setText(project.getCategory());
-        binding.btnOpenProject.setOnClickListener(v -> openProject());
-        binding.projectDescription.setText(project.getDescription());
-        binding.projectDescription.setMaxLines(4);
-        binding.seeMore.setOnClickListener(v -> {
-            if (binding.projectDescription.getMaxLines() == 4) {
-                ChangeBounds changeBounds = new ChangeBounds();
+    private void loadProjectData(Bundle bundle) {
+        if (bundle == null) return;
 
-                changeBounds.addTarget(binding.projectDescription);
-                changeBounds.setDuration(300);
-                TransitionManager.beginDelayedTransition(binding.getRoot(), changeBounds);
+        String json = bundle.getString("project_json");
+        project = new Gson().fromJson(json, ProjectModel.Project.class);
 
-                binding.projectDescription.setMaxLines(Integer.MAX_VALUE);
-                binding.seeMore.setText("See less");
-            } else {
-                ChangeBounds changeBounds = new ChangeBounds();
+        binding.name.setText(project.getTitle());
+        binding.author.setText(project.getUserName());
+        binding.description.setText(project.getDescription());
 
-                changeBounds.addTarget(binding.projectDescription);
-                changeBounds.setDuration(300);
-                TransitionManager.beginDelayedTransition(binding.getRoot(), changeBounds);
+        String whatIsNew = project.getWhatsnew();
+        if (whatIsNew.isEmpty()) {
+            binding.cardWhatIsNew.setVisibility(View.GONE);
+        } else {
+            binding.cardWhatIsNew.setVisibility(View.VISIBLE);
+            binding.whatIsNew.setText(whatIsNew);
+        }
 
-                binding.projectDescription.setMaxLines(4);
-                binding.seeMore.setText("See more");
-            }
-        });
-        UI.loadImageFromUrl(binding.projectImage, project.getIcon());
-        UI.loadImageFromUrl(binding.screenshot1, project.getScreenshot1());
-        UI.loadImageFromUrl(binding.screenshot2, project.getScreenshot2());
-        UI.loadImageFromUrl(binding.screenshot3, project.getScreenshot3());
+        if (project.getIsEditorChoice().equals("1")) {
+            addChip("Editor's Choice");
+        }
 
-        binding.collapsingToolbar.setTitle(project.getTitle());
-        binding.collapsingToolbar.setExpandedTitleTextColor(ContextCompat.getColorStateList(this, android.R.color.transparent));
-        setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (project.getIsVerified().equals("1")) {
+            addChip("Verified");
+        }
 
-        binding.toolbar.setNavigationOnClickListener(v -> finishAfterTransition());
+        addChip(project.getCategory());
+
+        binding.downloads.setText("Downloads: " + project.getDownloads());
+        binding.filesize.setText("Size: " + project.getProjectSize());
+        binding.timestamp.setText("Released: " + DateFormat.getDateInstance().format(new Date(Long.parseLong(project.getPublishedTimestamp()))));
+        binding.btnComments.setOnClickListener(v -> openCommentsSheet());
+        binding.btnDownload.setOnClickListener(v -> SketchwareUtil.toastError("Downloading projects is unavailable right now!"));
+        binding.btnOpenIn.setOnClickListener(v -> openProject());
+        binding.btnBack.setOnClickListener(v -> finish());
+
+        binding.toolbarTitle.setSelected(true);
+        binding.toolbarTitle.setText(project.getTitle());
+        binding.toolbarSubtitle.setText(project.getUserName());
 
         ArrayList<String> screenshots = new ArrayList<>();
         for (int i = 0; i <= 4; i++) {
@@ -101,7 +89,57 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
             }
         }
 
-        binding.projectScreenshots.setAdapter(new ProjectScreenshotsAdapter(screenshots));
+        binding.screenshots.setAdapter(new ProjectScreenshotsAdapter(screenshots));
+
+        UI.loadImageFromUrl(binding.icon, project.getIcon());
+        UI.addSystemWindowInsetToPadding(binding.content, true, true, true, true);
+        UI.addSystemWindowInsetToMargin(binding.buttonsContainer, true, false, true, true);
+        UI.addSystemWindowInsetToPadding(binding.topScrim, false, true, false, false);
+        UI.addSystemWindowInsetToPadding(binding.toolbar, true, true, true, false);
+
+        binding.scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, v1, v2, v3, v4) -> {
+            int[] location = new int[2];
+            binding.author.getLocationOnScreen(location);
+
+            if (location[1] + binding.author.getHeight() + UI.getStatusBarHeight(ProjectPreviewActivity.this) < binding.toolbar.getHeight()) {
+                if (isTitleContainerShown) return;
+                isTitleContainerShown = true;
+
+                binding.topScrim.animate().alpha(1f).setDuration(TITLE_CONTAINER_FADE_DURATION).start();
+                binding.toolbarTitleContainer.animate()
+                        .alpha(1f)
+                        .translationY(0f)
+                        .setInterpolator(new LinearInterpolator())
+                        .setDuration(TITLE_CONTAINER_FADE_DURATION)
+                        .withStartAction(() -> binding.toolbarTitleContainer.setVisibility(View.VISIBLE))
+                        .start();
+            } else {
+                if (!isTitleContainerShown) return;
+                isTitleContainerShown = false;
+
+                binding.topScrim.animate().alpha(0f).setDuration(TITLE_CONTAINER_FADE_DURATION).start();
+                binding.toolbarTitleContainer.animate()
+                        .translationY(24f)
+                        .alpha(0f)
+                        .setInterpolator(new LinearInterpolator())
+                        .setDuration(TITLE_CONTAINER_FADE_DURATION)
+                        .withEndAction(() -> binding.toolbarTitleContainer.setVisibility(View.INVISIBLE))
+                        .start();
+            }
+        });
+    }
+
+    private void addChip(String name) {
+        Chip chip = new Chip(binding.chipsContainer.getContext());
+        chip.setText(name);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(-1, -1);
+        params.setMarginEnd(SketchwareUtil.dpToPx(12f));
+        binding.chipsContainer.addView(chip, params);
+    }
+
+    private void openCommentsSheet() {
+        CommentsBottomSheet sheet = new CommentsBottomSheet();
+        sheet.show(getSupportFragmentManager(), /* tag= */ CommentsBottomSheet.class.getSimpleName());
     }
 
     private String getScreenshot(int index) {
@@ -113,13 +151,6 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
             case 4 -> project.getScreenshot5();
             default -> null;
         };
-    }
-
-    private void loadProjectData(Bundle bundle) {
-        if (bundle != null) {
-            String json = bundle.getString("project_json");
-            project = new Gson().fromJson(json, ProjectModel.Project.class);
-        }
     }
 
     private void openProject() {

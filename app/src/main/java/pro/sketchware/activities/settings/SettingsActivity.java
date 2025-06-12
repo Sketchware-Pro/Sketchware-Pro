@@ -2,7 +2,6 @@ package pro.sketchware.activities.settings;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.fragment.app.Fragment;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -22,8 +21,8 @@ public class SettingsActivity extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
