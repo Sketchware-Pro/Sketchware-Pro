@@ -50,13 +50,50 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
     // works for both Java & Kotlin files
     private static final String PACKAGE_DECL_REGEX = "package (.*?);?\\n";
 
-    private static final String ACTIVITY_TEMPLATE = "package %s;\n" + "\n" + "import android.app.Activity;\n" + "import android.os.Bundle;\n" + "\n" + "public class %s extends Activity {\n" + "\n" + "    @Override\n" + "    protected void onCreate(Bundle savedInstanceState) {\n" + "        super.onCreate(savedInstanceState);\n" + "    }" + "\n" + "}\n";
+    private static final String ACTIVITY_TEMPLATE = """
+            package %s;
+            
+            import android.app.Activity;
+            import android.os.Bundle;
+            
+            public class %s extends Activity {
+            
+                @Override
+                protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                }
+            }
+            """;
 
-    private static final String CLASS_TEMPLATE = "package %s;\n" + "\n" + "public class %s {\n" + "    \n" + "}\n";
+    private static final String CLASS_TEMPLATE = """
+            package %s;
+            
+            public class %s {
+               \s
+            }
+            """;
 
-    private static final String KT_ACTIVITY_TEMPLATE = "package %s\n" + "\n" + "import android.app.Activity\n" + "import android.os.Bundle\n" + "\n" + "class %s : Activity() {\n" + "\n" + "    override fun onCreate(savedInstanceState: Bundle?) {\n" + "        super.onCreate(savedInstanceState)\n" + "    }" + "\n" + "}\n";
+    private static final String KT_ACTIVITY_TEMPLATE = """
+            package %s
+            
+            import android.app.Activity
+            import android.os.Bundle
+            
+            class %s : Activity() {
+            
+                override fun onCreate(savedInstanceState: Bundle?) {
+                    super.onCreate(savedInstanceState)
+                }
+            }
+            """;
 
-    private static final String KT_CLASS_TEMPLATE = "package %s\n" + "\n" + "class %s {\n" + "    \n" + "}\n";
+    private static final String KT_CLASS_TEMPLATE = """
+            package %s
+            
+            class %s {
+               \s
+            }
+            """;
 
     private final ArrayList<String> currentTree = new ArrayList<>();
     ManageFileBinding binding;
@@ -140,7 +177,13 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
         DialogCreateNewFileLayoutBinding dialogBinding = DialogCreateNewFileLayoutBinding.inflate(getLayoutInflater());
         var inputText = dialogBinding.inputText;
 
-        var dialog = new MaterialAlertDialogBuilder(this).setView(dialogBinding.getRoot()).setTitle("Create new").setMessage("File extension will be added automatically based on the file type you select").setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).setPositiveButton("Create", null).create();
+        var dialog = new MaterialAlertDialogBuilder(this)
+                .setView(dialogBinding.getRoot())
+                .setTitle("Create new")
+                .setMessage("File extension will be added automatically based on the file type you select")
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Create", null)
+                .create();
 
         dialog.setOnShowListener(dialogInterface -> {
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
