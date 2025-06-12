@@ -42,14 +42,12 @@ import pro.sketchware.utility.UI;
 
 public class ManageLibraryActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
-    private static final int REQUEST_CODE_ADMOB_ACTIVITY = 234;
-    private static final int REQUEST_CODE_APPCOMPAT_ACTIVITY = 231;
-    private static final int REQUEST_CODE_FIREBASE_ACTIVITY = 230;
-    private static final int REQUEST_CODE_GOOGLE_MAPS_ACTIVITY = 241;
-    private static final int REQUEST_CODE_CUSTOM_ITEM_LIBRARY_ACTIVITY = 242;
-    private final int PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES = 6;
-    private final int PROJECT_LIB_TYPE_MATERIAL3 = 7;
-
+    private final int REQUEST_CODE_ADMOB_ACTIVITY = 234;
+    private final int REQUEST_CODE_APPCOMPAT_ACTIVITY = 231;
+    private final int REQUEST_CODE_FIREBASE_ACTIVITY = 230;
+    private final int REQUEST_CODE_GOOGLE_MAPS_ACTIVITY = 241;
+    private final int REQUEST_CODE_MATERIAL3_ACTIVITY = 242;
+    private final int REQUEST_CODE_CUSTOM_ITEM_LIBRARY_ACTIVITY = 243;
 
     private String sc_id;
     private LinearLayout libraryItemLayout;
@@ -88,17 +86,18 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
     private void addCustomLibraryItem(int type) {
         LibraryItemView libraryItemView;
-        if (type == PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES) {
+        if (type == ProjectLibraryBean.PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES) {
             libraryItemView = new ExcludeBuiltInLibrariesLibraryItemView(this, sc_id);
+            libraryItemView.setData(null);
         } else {
-            libraryItemView = new Material3LibraryItemView(this, sc_id, compatLibraryBean.useYn.equals("Y"));
+            libraryItemView = new Material3LibraryItemView(this);
+            libraryItemView.setData(compatLibraryBean);
         }
         libraryItemView.setTag(type);
         //noinspection ConstantConditions since the variant if it's nullable handles nulls correctly
-        libraryItemView.setData(null);
         libraryItemView.setOnClickListener(this);
 
-        if (type == PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES) {
+        if (type == ProjectLibraryBean.PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES) {
             TextView title = findViewById(R.id.title);
             title.setText("Advanced");
             ((ViewGroup) title.getParent()).removeView(title);
@@ -133,8 +132,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             if (child instanceof ExcludeBuiltInLibrariesLibraryItemView libraryItemView) {
                 libraryItemView.setData(null);
             } if (child instanceof Material3LibraryItemView libraryItemView) {
-                libraryItemView.setAppCombatEnabled(compatLibraryBean.useYn.equals("Y"));
-                libraryItemView.setData(null);
+                libraryItemView.setData(compatLibraryBean);
             } else if (child instanceof LibraryItemView libraryItemView) {
                 if (libraryBean != null && libraryBean.libType == (Integer) libraryItemView.getTag()) {
                     libraryItemView.setData(libraryBean);
@@ -177,8 +175,15 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         Intent intent = new Intent(getApplicationContext(), toLaunch);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra("sc_id", sc_id);
-        intent.putExtra("is_app_compat_enabled", compatLibraryBean.useYn.equals("Y"));
+        intent.putExtra("app_compat", compatLibraryBean);
         startActivityForResult(intent, REQUEST_CODE_CUSTOM_ITEM_LIBRARY_ACTIVITY);
+    }
+
+    private void toMaterial3Activity() {
+        Intent intent = new Intent(getApplicationContext(), Material3LibraryActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("compat", compatLibraryBean);
+        startActivityForResult(intent, REQUEST_CODE_MATERIAL3_ACTIVITY);
     }
 
     private void launchActivity(Class<? extends Activity> toLaunch) {
@@ -217,7 +222,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                     }
                     break;
 
-                case REQUEST_CODE_APPCOMPAT_ACTIVITY:
+                case REQUEST_CODE_APPCOMPAT_ACTIVITY, REQUEST_CODE_MATERIAL3_ACTIVITY:
                     initializeLibrary(data.getParcelableExtra("compat"));
                     break;
 
@@ -278,11 +283,11 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                     case ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB:
                         launchActivity(ManageNativelibsActivity.class);
                         break;
-                    case PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES:
+                    case ProjectLibraryBean.PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES:
                         launchCustomActivity(ExcludeBuiltInLibrariesActivity.class);
                         break;
-                    case PROJECT_LIB_TYPE_MATERIAL3:
-                        launchCustomActivity(Material3LibraryActivity.class);
+                    case ProjectLibraryBean.PROJECT_LIB_TYPE_MATERIAL3:
+                        toMaterial3Activity();
                 }
             }
         }
@@ -360,14 +365,14 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         }
 
         addLibraryItem(compatLibraryBean);
-        addCustomLibraryItem(PROJECT_LIB_TYPE_MATERIAL3);
+        addCustomLibraryItem(ProjectLibraryBean.PROJECT_LIB_TYPE_MATERIAL3);
         addLibraryItem(firebaseLibraryBean);
         addLibraryItem(admobLibraryBean);
         addLibraryItem(googleMapLibraryBean);
         addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB));
         addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB));
         // Exclude built-in libraries
-        addCustomLibraryItem(PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES);
+        addCustomLibraryItem(ProjectLibraryBean.PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES);
     }
 
     @Override

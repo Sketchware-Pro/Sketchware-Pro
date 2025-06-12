@@ -1,12 +1,16 @@
 package com.besome.sketch.editor.manage.library.material3;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.besome.sketch.beans.ProjectLibraryBean;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.Objects;
 
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -29,10 +33,8 @@ public class Material3LibraryActivity extends AppCompatActivity {
     private void initialize() {
         binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
 
-        String sc_id = getIntent().getStringExtra("sc_id");
-        boolean isAppCombatEnabled = getIntent().getBooleanExtra("is_app_compat_enabled", false);
-        material3LibraryManager = new Material3LibraryManager(sc_id, isAppCombatEnabled);
-        if (!isAppCombatEnabled) {
+        material3LibraryManager = new Material3LibraryManager((ProjectLibraryBean) Objects.requireNonNull(getIntent().getParcelableExtra("compat")));
+        if (!material3LibraryManager.isAppCompatEnabled()) {
             new MaterialAlertDialogBuilder(this)
                     .setIcon(R.drawable.ic_mtrl_warning)
                     .setTitle("AppCompat is disabled!")
@@ -61,7 +63,9 @@ public class Material3LibraryActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                setResult(RESULT_OK);
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("compat", material3LibraryManager.getAppCombatLibraryBean());
+                setResult(RESULT_OK, resultIntent);
                 finish();
             }
         });
@@ -69,12 +73,12 @@ public class Material3LibraryActivity extends AppCompatActivity {
 
     private CompoundButton.OnCheckedChangeListener getOnCheckedChangeListener() {
         return (buttonView, isChecked) -> {
-            boolean isLibEnabled = binding.libSwitch.isChecked();
+            boolean isMaterial3Enabled = binding.libSwitch.isChecked();
             boolean isDynamicColorsEnabled = binding.dynamicColorsSwitch.isChecked();
-            binding.dynamicColorsSwitch.setEnabled(isLibEnabled);
+            binding.dynamicColorsSwitch.setEnabled(isMaterial3Enabled);
 
-            Material3LibraryManager.ConfigData configData = new Material3LibraryManager.ConfigData(isLibEnabled, isDynamicColorsEnabled);
-            material3LibraryManager.setConfigData(configData);
+            material3LibraryManager.getAppCombatLibraryBean().material3Configurations.put("material3", isMaterial3Enabled);
+            material3LibraryManager.getAppCombatLibraryBean().material3Configurations.put("dynamic_colors", isDynamicColorsEnabled);
         };
     }
 }

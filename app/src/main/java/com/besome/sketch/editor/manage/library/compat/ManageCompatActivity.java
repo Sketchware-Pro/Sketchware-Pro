@@ -70,7 +70,7 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
                 return;
             }
 
-            if (!binding.libSwitch.isChecked() && new Material3LibraryManager(getIntent().getStringExtra("sc_id"), !binding.libSwitch.isChecked()).isMaterial3Enabled()) {
+            if (!binding.libSwitch.isChecked() && new Material3LibraryManager(compatLibraryBean).isMaterial3Enabled()) {
                 showWarningDialog(Helper.getResString(R.string.design_library_appcompat_need_m3_disable));
                 binding.libSwitch.setChecked(true);
                 return;
