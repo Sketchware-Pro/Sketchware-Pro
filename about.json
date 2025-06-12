@@ -20,7 +20,7 @@
       "user_img": "https://avatars.githubusercontent.com/u/46769766?v=4",
       "description": "Joined GitHub on 01/2019 with 11 public repositories, and 70 followers.",
       "is_core_team": true,
-      "is_active": true
+      "is_active": false
     },
     {
       "user_username": "PranavPurwar",
@@ -41,14 +41,14 @@
       "user_img": "https://avatars.githubusercontent.com/u/113604229?v=4",
       "description": "Joined GitHub on 09/2022 with 4 public repositories, and 8 followers.",
       "is_core_team": true,
-      "is_active": true
+      "is_active": false
     },
     {
       "user_username": "trindadedev13",
       "user_img": "https://avatars.githubusercontent.com/u/171992413?v=4",
       "description": "@Robok-Engine Owner, founder and Main Developer",
       "is_core_team": true,
-      "is_active": true
+      "is_active": false
     },
     {
       "user_username": "Edward-NewGate-KOC",
@@ -97,7 +97,7 @@
       "user_img": "https://avatars.githubusercontent.com/u/87241434?v=4",
       "description": "Joined GitHub on 07/2021 with 3 public repositories, and 2 followers.",
       "is_core_team": false,
-      "is_active": true
+      "is_active": false
     },
     {
       "user_username": "Raival-e",
