@@ -23,7 +23,7 @@ public class Fx {
 
     private static final Pattern PARAM_PATTERN = Pattern.compile("%m(?!\\.[\\w]+)");
     public final boolean isViewBindingEnabled;
-    private final ArrayList<String> viewParamsTypes = new ArrayList<>(List.of(
+    public static final ArrayList<String> viewParamsTypes = new ArrayList<>(List.of(
             "%m.view", "%m.layout", "%m.textview", "%m.button", "%m.edittext", "%m.imageview", "%m.recyclerview",
             "%m.listview", "%m.gridview", "%m.cardview", "%m.viewpager", "%m.webview", "%m.videoview", "%m.progressbar",
             "%m.seekbar", "%m.switch", "%m.checkbox", "%m.spinner", "%m.tablayout", "%m.bottomnavigation", "%m.adview",
