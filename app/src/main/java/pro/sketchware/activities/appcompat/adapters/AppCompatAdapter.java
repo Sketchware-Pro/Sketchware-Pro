@@ -38,6 +38,7 @@ public class AppCompatAdapter
                     return true;
                 }
             };
+
     private ItemClickListener<Pair<View, HashMap<String, Object>>> listener;
 
     public AppCompatAdapter() {
@@ -79,21 +80,41 @@ public class AppCompatAdapter
 
             String value = item.get("value").toString();
             SpannableString spannableString = new SpannableString(value);
-            spannableString.setSpan(
-                    new ForegroundColorSpan(violet),
-                    0,
-                    value.indexOf(":"),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(
-                    new ForegroundColorSpan(onSurface),
-                    value.indexOf(":"),
-                    value.indexOf("=") + 1,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(
-                    new ForegroundColorSpan(green),
-                    value.indexOf("\""),
-                    value.length(),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            int colonIndex = value.indexOf(":");
+            int equalIndex = value.indexOf("=");
+            int quoteIndex = value.indexOf("\"");
+
+            // Violet span: from 0 to colonIndex
+            if (colonIndex > 0 && colonIndex <= value.length()) {
+                spannableString.setSpan(
+                        new ForegroundColorSpan(violet),
+                        0,
+                        colonIndex,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+            }
+
+            // OnSurface span: from colonIndex to equalIndex + 1
+            if (colonIndex >= 0 && equalIndex >= colonIndex && (equalIndex + 1) <= value.length()) {
+                spannableString.setSpan(
+                        new ForegroundColorSpan(onSurface),
+                        colonIndex,
+                        equalIndex + 1,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+            }
+
+            // Green span: from quoteIndex to end
+            if (quoteIndex >= 0 && quoteIndex < value.length()) {
+                spannableString.setSpan(
+                        new ForegroundColorSpan(green),
+                        quoteIndex,
+                        value.length(),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                );
+            }
+
             binding.cusAttrText.setText(spannableString);
             binding.cusAttrBtn.setVisibility(View.INVISIBLE);
             binding.cusAttrLayout.setOnClickListener(
