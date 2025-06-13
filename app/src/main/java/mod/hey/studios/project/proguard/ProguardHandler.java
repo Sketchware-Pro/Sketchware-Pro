@@ -31,74 +31,76 @@ public class ProguardHandler {
         String rulePath = FileUtil.getExternalStorageDir() + "/.sketchware/libs/android-proguard-rules.pro";
 
         if (!FileUtil.isExistFile(rulePath)) {
-            FileUtil.writeFile(rulePath, "-dontusemixedcaseclassnames\n" +
-                    "-dontskipnonpubliclibraryclasses\n" +
-                    "-verbose\n" +
-                    "\n" +
-                    "-dontoptimize\n" +
-                    "-dontpreverify\n" +
-                    "\n" +
-                    "-keepattributes *Annotation*\n" +
-                    "-keep public class com.google.vending.licensing.ILicensingService\n" +
-                    "-keep public class com.android.vending.licensing.ILicensingService\n" +
-                    "\n" +
-                    "-keepclasseswithmembernames class * {\n" +
-                    "    native <methods>;\n" +
-                    "}\n" +
-                    "\n" +
-                    "-keepclassmembers public class * extends android.view.View {\n" +
-                    "   void set*(***);\n" +
-                    "   *** get*();\n" +
-                    "}\n" +
-                    "\n" +
-                    "-keepclassmembers class * extends android.app.Activity {\n" +
-                    "   public void *(android.view.View);\n" +
-                    "}\n" +
-                    "\n" +
-                    "-keepclassmembers enum * {\n" +
-                    "    public static **[] values();\n" +
-                    "    public static ** valueOf(java.lang.String);\n" +
-                    "}\n" +
-                    "\n" +
-                    "-keepclassmembers class * implements android.os.Parcelable {\n" +
-                    "  public static final android.os.Parcelable$Creator CREATOR;\n" +
-                    "}\n" +
-                    "\n" +
-                    "-keepclassmembers class **.R$* {\n" +
-                    "    public static <fields>;\n" +
-                    "}\n" +
-                    "\n" +
-                    "-dontwarn android.support.**\n" +
-                    "\n" +
-                    "-keep class android.support.annotation.Keep\n" +
-                    "\n" +
-                    "-keep @android.support.annotation.Keep class * {*;}\n" +
-                    "\n" +
-                    "-keepclasseswithmembers class * {\n" +
-                    "    @android.support.annotation.Keep <methods>;\n" +
-                    "}\n" +
-                    "\n" +
-                    "-keepclasseswithmembers class * {\n" +
-                    "    @android.support.annotation.Keep <fields>;\n" +
-                    "}\n" +
-                    "\n" +
-                    "-keepclasseswithmembers class * {\n" +
-                    "    @android.support.annotation.Keep <init>(...);\n" +
-                    "}\n" +
-                    "\n" +
-                    "-keepclassmembers class * {\n" +
-                    "    @android.webkit.JavascriptInterface <methods>;" +
-                    "}\n" +
-                    "\n" +
-                    "-dontwarn android.arch.**\n" +
-                    "-dontwarn android.lifecycle.**\n" +
-                    "-keep class android.arch.** { *; }\n" +
-                    "-keep class android.lifecycle.** { *; }\n" +
-                    "\n" +
-                    "-dontwarn androidx.arch.**\n" +
-                    "-dontwarn androidx.lifecycle.**\n" +
-                    "-keep class androidx.arch.** { *; }\n" +
-                    "-keep class androidx.lifecycle.** { *; }\n");
+            FileUtil.writeFile(rulePath, """
+                    -dontusemixedcaseclassnames
+                    -dontskipnonpubliclibraryclasses
+                    -verbose
+                    
+                    -dontoptimize
+                    -dontpreverify
+                    
+                    -keepattributes *Annotation*
+                    -keep public class com.google.vending.licensing.ILicensingService
+                    -keep public class com.android.vending.licensing.ILicensingService
+                    
+                    -keepclasseswithmembernames class * {
+                        native <methods>;
+                    }
+                    
+                    -keepclassmembers public class * extends android.view.View {
+                       void set*(***);
+                       *** get*();
+                    }
+                    
+                    -keepclassmembers class * extends android.app.Activity {
+                       public void *(android.view.View);
+                    }
+                    
+                    -keepclassmembers enum * {
+                        public static **[] values();
+                        public static ** valueOf(java.lang.String);
+                    }
+                    
+                    -keepclassmembers class * implements android.os.Parcelable {
+                      public static final android.os.Parcelable$Creator CREATOR;
+                    }
+                    
+                    -keepclassmembers class **.R$* {
+                        public static <fields>;
+                    }
+                    
+                    -dontwarn android.support.**
+                    
+                    -keep class android.support.annotation.Keep
+                    
+                    -keep @android.support.annotation.Keep class * {*;}
+                    
+                    -keepclasseswithmembers class * {
+                        @android.support.annotation.Keep <methods>;
+                    }
+                    
+                    -keepclasseswithmembers class * {
+                        @android.support.annotation.Keep <fields>;
+                    }
+                    
+                    -keepclasseswithmembers class * {
+                        @android.support.annotation.Keep <init>(...);
+                    }
+                    
+                    -keepclassmembers class * {
+                        @android.webkit.JavascriptInterface <methods>;\
+                    }
+                    
+                    -dontwarn android.arch.**
+                    -dontwarn android.lifecycle.**
+                    -keep class android.arch.** { *; }
+                    -keep class android.lifecycle.** { *; }
+                    
+                    -dontwarn androidx.arch.**
+                    -dontwarn androidx.lifecycle.**
+                    -keep class androidx.arch.** { *; }
+                    -keep class androidx.lifecycle.** { *; }
+                    """);
         }
 
         return rulePath;
@@ -108,10 +110,12 @@ public class ProguardHandler {
         String path = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/proguard-rules.pro";
 
         if (!FileUtil.isExistFile(path)) {
-            FileUtil.writeFile(path, "-repackageclasses\n" +
-                    "-ignorewarnings\n" +
-                    "-dontwarn\n" +
-                    "-dontnote\n");
+            FileUtil.writeFile(path, """
+                    -repackageclasses
+                    -ignorewarnings
+                    -dontwarn
+                    -dontnote
+                    """);
         }
 
         return path;

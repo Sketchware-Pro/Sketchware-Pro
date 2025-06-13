@@ -13,8 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
@@ -24,6 +22,9 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import a.a.a.qA;
+import dev.pranav.filepicker.FilePickerCallback;
+import dev.pranav.filepicker.FilePickerDialogFragment;
+import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.DialogAddNewListenerBinding;
@@ -139,32 +140,32 @@ public class EventsManagerFragment extends qA {
     }
 
     private void showImportEventsDialog() {
-        DialogProperties dialogProperties = new DialogProperties();
-        dialogProperties.selection_mode = 0;
-        dialogProperties.selection_type = 0;
-        File file = new File(FileUtil.getExternalStorageDir());
-        dialogProperties.root = file;
-        dialogProperties.error_dir = file;
-        dialogProperties.offset = file;
-        dialogProperties.extensions = null;
-        FilePickerDialog filePickerDialog = new FilePickerDialog(requireContext(), dialogProperties, R.style.RoundedCornersDialog);
-        filePickerDialog.setTitle("Select a .txt file");
-        filePickerDialog.setDialogSelectionListener(selections -> {
-            if (FileUtil.readFile(selections[0]).isEmpty()) {
-                SketchwareUtil.toastError("The selected file is empty!");
-            } else if (FileUtil.readFile(selections[0]).equals("[]")) {
-                SketchwareUtil.toastError("The selected file is empty!");
-            } else {
-                try {
-                    String[] split = FileUtil.readFile(selections[0]).split("\n");
-                    importEvents(new Gson().fromJson(split[0], Helper.TYPE_MAP_LIST),
-                            new Gson().fromJson(split[1], Helper.TYPE_MAP_LIST));
-                } catch (Exception e) {
-                    SketchwareUtil.toastError("Invalid file");
+        FilePickerOptions options = new FilePickerOptions();
+        options.setTitle("Select a .txt file");
+        options.setExtensions(new String[]{".txt"});
+
+        FilePickerCallback callback = new FilePickerCallback() {
+            @Override
+            public void onFileSelected(File file) {
+                if (FileUtil.readFile(file.getAbsolutePath()).isEmpty()) {
+                    SketchwareUtil.toastError("The selected file is empty!");
+                } else if (FileUtil.readFile(file.getAbsolutePath()).equals("[]")) {
+                    SketchwareUtil.toastError("The selected file is empty!");
+                } else {
+                    try {
+                        String[] split = FileUtil.readFile(file.getAbsolutePath()).split("\n");
+                        importEvents(new Gson().fromJson(split[0], Helper.TYPE_MAP_LIST),
+                                new Gson().fromJson(split[1], Helper.TYPE_MAP_LIST));
+                    } catch (Exception e) {
+                        SketchwareUtil.toastError("Invalid file");
+                    }
                 }
             }
-        });
-        filePickerDialog.show();
+
+        };
+        FilePickerDialogFragment filePickerDialog = new FilePickerDialogFragment(options, callback);
+
+        filePickerDialog.show(getChildFragmentManager(), "filePickerDialog");
     }
 
     private void importEvents(ArrayList<HashMap<String, Object>> data, ArrayList<HashMap<String, Object>> data2) {

@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,11 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,6 +30,9 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import dev.pranav.filepicker.FilePickerCallback;
+import dev.pranav.filepicker.FilePickerDialogFragment;
+import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -49,48 +50,50 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
     // works for both Java & Kotlin files
     private static final String PACKAGE_DECL_REGEX = "package (.*?);?\\n";
 
-    private static final String ACTIVITY_TEMPLATE =
-            "package %s;\n" +
-                    "\n" +
-                    "import android.app.Activity;\n" +
-                    "import android.os.Bundle;\n" +
-                    "\n" +
-                    "public class %s extends Activity {\n" +
-                    "\n" +
-                    "    @Override\n" +
-                    "    protected void onCreate(Bundle savedInstanceState) {\n" +
-                    "        super.onCreate(savedInstanceState);\n" +
-                    "    }" +
-                    "\n" +
-                    "}\n";
+    private static final String ACTIVITY_TEMPLATE = """
+            package %s;
+            
+            import android.app.Activity;
+            import android.os.Bundle;
+            
+            public class %s extends Activity {
+            
+                @Override
+                protected void onCreate(Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                }
+            }
+            """;
 
-    private static final String CLASS_TEMPLATE =
-            "package %s;\n" +
-                    "\n" +
-                    "public class %s {\n" +
-                    "    \n" +
-                    "}\n";
+    private static final String CLASS_TEMPLATE = """
+            package %s;
+            
+            public class %s {
+               \s
+            }
+            """;
 
-    private static final String KT_ACTIVITY_TEMPLATE =
-            "package %s\n" +
-                    "\n" +
-                    "import android.app.Activity\n" +
-                    "import android.os.Bundle\n" +
-                    "\n" +
-                    "class %s : Activity() {\n" +
-                    "\n" +
-                    "    override fun onCreate(savedInstanceState: Bundle?) {\n" +
-                    "        super.onCreate(savedInstanceState)\n" +
-                    "    }" +
-                    "\n" +
-                    "}\n";
+    private static final String KT_ACTIVITY_TEMPLATE = """
+            package %s
+            
+            import android.app.Activity
+            import android.os.Bundle
+            
+            class %s : Activity() {
+            
+                override fun onCreate(savedInstanceState: Bundle?) {
+                    super.onCreate(savedInstanceState)
+                }
+            }
+            """;
 
-    private static final String KT_CLASS_TEMPLATE =
-            "package %s\n" +
-                    "\n" +
-                    "class %s {\n" +
-                    "    \n" +
-                    "}\n";
+    private static final String KT_CLASS_TEMPLATE = """
+            package %s
+            
+            class %s {
+               \s
+            }
+            """;
 
     private final ArrayList<String> currentTree = new ArrayList<>();
     ManageFileBinding binding;
@@ -118,9 +121,7 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (Objects.equals(
-                Uri.parse(current_path).getPath(),
-                Uri.parse(fpu.getPathJava(sc_id)).getPath())) {
+        if (Objects.equals(Uri.parse(current_path).getPath(), Uri.parse(fpu.getPathJava(sc_id)).getPath())) {
             super.onBackPressed();
         } else {
             current_path = current_path.substring(0, current_path.lastIndexOf("/"));
@@ -145,15 +146,9 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
     }
 
     private void hideShowOptionsButton(boolean isHide) {
-        binding.optionsLayout.animate()
-                .translationY(isHide ? 300 : 0)
-                .alpha(isHide ? 0 : 1)
-                .setInterpolator(new OvershootInterpolator());
+        binding.optionsLayout.animate().translationY(isHide ? 300 : 0).alpha(isHide ? 0 : 1).setInterpolator(new OvershootInterpolator());
 
-        binding.showOptionsButton.animate()
-                .translationY(isHide ? 0 : 300)
-                .alpha(isHide ? 1 : 0)
-                .setInterpolator(new OvershootInterpolator());
+        binding.showOptionsButton.animate().translationY(isHide ? 0 : 300).alpha(isHide ? 1 : 0).setInterpolator(new OvershootInterpolator());
     }
 
     private String getCurrentPkgName() {
@@ -252,38 +247,28 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
     }
 
     private void showImportDialog() {
-        DialogProperties properties = new DialogProperties();
+        FilePickerOptions options = new FilePickerOptions();
+        options.setMultipleSelection(true);
+        options.setExtensions(new String[]{"java", "kt"});
+        options.setTitle("Select Java/Kotlin file(s)");
 
-        properties.selection_mode = DialogConfigs.MULTI_MODE;
-        properties.selection_type = DialogConfigs.FILE_SELECT;
-        properties.root = Environment.getExternalStorageDirectory();
-        properties.error_dir = Environment.getExternalStorageDirectory();
-        properties.offset = Environment.getExternalStorageDirectory();
-        properties.extensions = new String[]{"java", "kt"};
+        FilePickerCallback callback = new FilePickerCallback() {
+            @Override
+            public void onFilesSelected(@NotNull List<? extends File> files) {
+                for (File file : files) {
+                    String fileContent = FileUtil.readFile(file.getAbsolutePath());
 
-        FilePickerDialog pickerDialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
+                    if (fileContent.contains("package ")) {
+                        fileContent = fileContent.replaceFirst(PACKAGE_DECL_REGEX, "package " + getCurrentPkgName() + (file.getName().endsWith(".java") ? ";" : "") + "\n");
+                    }
 
-        pickerDialog.setTitle("Select Java/Kotlin file(s)");
-        pickerDialog.setDialogSelectionListener(selections -> {
-
-            for (String path : selections) {
-                String filename = Uri.parse(path).getLastPathSegment();
-                String fileContent = FileUtil.readFile(path);
-
-                if (fileContent.contains("package ")) {
-                    fileContent = fileContent.replaceFirst(PACKAGE_DECL_REGEX,
-                            "package " + getCurrentPkgName()
-                                    + (filename.endsWith(".java") ? ";" : "")
-                                    + "\n");
+                    FileUtil.writeFile(new File(current_path, file.getName()).getAbsolutePath(), fileContent);
+                    refresh();
                 }
-
-                FileUtil.writeFile(new File(current_path, filename).getAbsolutePath(),
-                        fileContent);
-                refresh();
             }
-        });
+        };
 
-        pickerDialog.show();
+        new FilePickerDialogFragment(options, callback).show(getSupportFragmentManager(), "filePicker");
     }
 
     private void showRenameDialog(int position) {
@@ -292,34 +277,27 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
         var inputText = dialogBinding.inputText;
         var renameOccurrencesCheckBox = dialogBinding.renameOccurrencesCheckBox;
 
-        var dialog = new MaterialAlertDialogBuilder(this)
-                .setTitle("Rename " + filesAdapter.getFileName(position))
-                .setView(dialogBinding.getRoot())
-                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
-                .setPositiveButton("Rename", (dialogInterface, i) -> {
-                    if (!Helper.getText(inputText).isEmpty()) {
-                        if (!filesAdapter.isFolder(position)) {
-                            if (frc.getJavaManifestList().contains(filesAdapter.getFullName(position))) {
-                                frc.getJavaManifestList().remove(filesAdapter.getFullName(position));
-                                FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
-                                SketchwareUtil.toast("NOTE: Removed Activity from manifest");
-                            }
-
-                            if (renameOccurrencesCheckBox.isChecked()) {
-                                String fileContent = FileUtil.readFile(filesAdapter.getItem(position));
-                                FileUtil.writeFile(filesAdapter.getItem(position),
-                                        fileContent.replaceAll(filesAdapter.getFileNameWoExt(position),
-                                                FileUtil.getFileNameNoExtension(Helper.getText(inputText))));
-                            }
-                        }
-
-                        FileUtil.renameFile(filesAdapter.getItem(position), new File(current_path, Helper.getText(inputText)).getAbsolutePath());
-                        refresh();
-                        SketchwareUtil.toast("Renamed successfully");
+        var dialog = new MaterialAlertDialogBuilder(this).setTitle("Rename " + filesAdapter.getFileName(position)).setView(dialogBinding.getRoot()).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).setPositiveButton("Rename", (dialogInterface, i) -> {
+            if (!Helper.getText(inputText).isEmpty()) {
+                if (!filesAdapter.isFolder(position)) {
+                    if (frc.getJavaManifestList().contains(filesAdapter.getFullName(position))) {
+                        frc.getJavaManifestList().remove(filesAdapter.getFullName(position));
+                        FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
+                        SketchwareUtil.toast("NOTE: Removed Activity from manifest");
                     }
-                    dialogInterface.dismiss();
-                })
-                .create();
+
+                    if (renameOccurrencesCheckBox.isChecked()) {
+                        String fileContent = FileUtil.readFile(filesAdapter.getItem(position));
+                        FileUtil.writeFile(filesAdapter.getItem(position), fileContent.replaceAll(filesAdapter.getFileNameWoExt(position), FileUtil.getFileNameNoExtension(Helper.getText(inputText))));
+                    }
+                }
+
+                FileUtil.renameFile(filesAdapter.getItem(position), new File(current_path, Helper.getText(inputText)).getAbsolutePath());
+                refresh();
+                SketchwareUtil.toast("Renamed successfully");
+            }
+            dialogInterface.dismiss();
+        }).create();
 
         inputText.setText(filesAdapter.getFileName(position));
         boolean isFolder = filesAdapter.isFolder(position);
@@ -339,24 +317,16 @@ public class ManageJavaActivity extends BaseAppCompatActivity {
     private void showDeleteDialog(int position) {
         boolean isInManifest = frc.getJavaManifestList().contains(filesAdapter.getFullName(position));
 
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("Delete " + filesAdapter.getFileName(position) + "?")
-                .setMessage("Are you sure you want to delete this " + (filesAdapter.isFolder(position) ? "folder" : "file") + "? "
-                        + (isInManifest ? "This will also remove it from AndroidManifest. " : "")
-                        + "This action cannot be undone.")
-                .setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
-                    if (!filesAdapter.isFolder(position) && isInManifest) {
-                        frc.getJavaManifestList().remove(filesAdapter.getFullName(position));
-                        FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
-                    }
+        new MaterialAlertDialogBuilder(this).setTitle("Delete " + filesAdapter.getFileName(position) + "?").setMessage("Are you sure you want to delete this " + (filesAdapter.isFolder(position) ? "folder" : "file") + "? " + (isInManifest ? "This will also remove it from AndroidManifest. " : "") + "This action cannot be undone.").setPositiveButton(R.string.common_word_delete, (dialog, which) -> {
+            if (!filesAdapter.isFolder(position) && isInManifest) {
+                frc.getJavaManifestList().remove(filesAdapter.getFullName(position));
+                FileUtil.writeFile(fpu.getManifestJava(sc_id), new Gson().toJson(frc.listJavaManifest));
+            }
 
-                    FileUtil.deleteFile(filesAdapter.getItem(position));
-                    refresh();
-                    SketchwareUtil.toast("Deleted successfully");
-                })
-                .setNegativeButton(R.string.common_word_cancel, null)
-                .create()
-                .show();
+            FileUtil.deleteFile(filesAdapter.getItem(position));
+            refresh();
+            SketchwareUtil.toast("Deleted successfully");
+        }).setNegativeButton(R.string.common_word_cancel, null).create().show();
     }
 
     private void refresh() {

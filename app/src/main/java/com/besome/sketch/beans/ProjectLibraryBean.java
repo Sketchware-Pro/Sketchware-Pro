@@ -84,7 +84,7 @@ public class ProjectLibraryBean implements Parcelable {
         testDevices = new ArrayList<>();
         parcel.readTypedList(testDevices, AdTestDeviceBean.getCreator());
         material3Configurations = new HashMap<>();
-        parcel.readMap(material3Configurations, HashMap.class.getClassLoader());
+        parcel.readMap(material3Configurations, ProjectLibraryBean.class.getClassLoader());
     }
 
     public static Parcelable.Creator<ProjectLibraryBean> getCreator() {

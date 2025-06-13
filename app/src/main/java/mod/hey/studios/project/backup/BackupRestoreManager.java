@@ -2,7 +2,6 @@ package mod.hey.studios.project.backup;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -11,16 +10,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.List;
 
 import a.a.a.lC;
+import dev.pranav.filepicker.FilePickerCallback;
+import dev.pranav.filepicker.FilePickerDialogFragment;
+import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
@@ -128,39 +130,37 @@ public class BackupRestoreManager {
     /*** Restore ***/
 
     public void restore() {
-        DialogProperties properties = new DialogProperties();
-        properties.selection_mode = DialogConfigs.MULTI_MODE;
-        properties.selection_type = DialogConfigs.FILE_SELECT;
-        properties.root = Environment.getExternalStorageDirectory();
-        properties.error_dir = Environment.getExternalStorageDirectory();
-        properties.offset = new File(BackupFactory.getBackupDir());
-        properties.extensions = new String[]{BackupFactory.EXTENSION};
+        FilePickerOptions options = new FilePickerOptions();
+        options.setMultipleSelection(true);
+        options.setExtensions(new String[]{BackupFactory.EXTENSION});
+        options.setTitle("Select backups to restore (" + BackupFactory.EXTENSION + ")");
 
-        FilePickerDialog fpd = new FilePickerDialog(act, properties, R.style.RoundedCornersDialog);
-        fpd.setTitle("Select backups to restore (" + BackupFactory.EXTENSION + ")");
-        fpd.setDialogSelectionListener(files -> {
-            for (int i = 0; i < files.length; i++) {
-                String backupFilePath = files[i];
+        FilePickerCallback callback = new FilePickerCallback() {
+            @Override
+            public void onFilesSelected(@NotNull List<? extends File> files) {
+                for (int i = 0; i < files.size(); i++) {
+                    String backupFilePath = files.get(i).getAbsolutePath();
 
-                if (BackupFactory.zipContainsFile(backupFilePath, "local_libs")) {
-                    boolean restoringMultipleBackups = files.length > 1;
+                    if (BackupFactory.zipContainsFile(backupFilePath, "local_libs")) {
+                        boolean restoringMultipleBackups = files.size() > 1;
 
-                    new MaterialAlertDialogBuilder(act)
-                            .setTitle("Warning")
-                            .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, i, files.length,
-                                    FileUtil.getFileNameNoExtension(backupFilePath)))
-                            .setPositiveButton("Copy", (dialog, which) -> doRestore(backupFilePath, true))
-                            .setNegativeButton("Don't copy", (dialog, which) -> doRestore(backupFilePath, false))
-                            .setNeutralButton(R.string.common_word_cancel, null)
-                            .show();
+                        new MaterialAlertDialogBuilder(act)
+                                .setTitle("Warning")
+                                .setMessage(getRestoreIntegratedLocalLibrariesMessage(restoringMultipleBackups, i, files.size(),
+                                        FileUtil.getFileNameNoExtension(backupFilePath)))
+                                .setPositiveButton("Copy", (dialog, which) -> doRestore(backupFilePath, true))
+                                .setNegativeButton("Don't copy", (dialog, which) -> doRestore(backupFilePath, false))
+                                .setNeutralButton(R.string.common_word_cancel, null)
+                                .show();
 
-                } else {
-                    doRestore(backupFilePath, false);
+                    } else {
+                        doRestore(backupFilePath, false);
+                    }
                 }
             }
-        });
+        };
 
-        fpd.show();
+        new FilePickerDialogFragment(options, callback).show(projectsFragment.getChildFragmentManager(), "file_picker");
     }
 
     public void doRestore(String file, boolean restoreLocalLibs) {

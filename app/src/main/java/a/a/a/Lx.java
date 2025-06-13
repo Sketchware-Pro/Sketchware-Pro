@@ -3280,9 +3280,11 @@ public class Lx {
                     "View _view = _holder.itemView;\r\n" +
                     bindingName + " binding = " + bindingName + ".bind(_view);\r\n";
         } else {
-            baseCode += "@Override\r\n" +
-                    "public void onBindViewHolder(ViewHolder _holder, final int _position) {\r\n" +
-                    "View _view = _holder.itemView;\r\n";
+            baseCode += """
+                    @Override\r
+                    public void onBindViewHolder(ViewHolder _holder, final int _position) {\r
+                    View _view = _holder.itemView;\r
+                    """;
 
             if (!TextUtils.isEmpty(viewsInitializer)) {
                 baseCode += "\r\n" +

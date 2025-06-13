@@ -10,7 +10,7 @@ if (analyticsEnabled) {
 }
 
 android {
-    compileSdk 35
+    compileSdk 36
 
     def gitCommitHash = "git rev-parse HEAD".execute().text.trim()
 
@@ -85,7 +85,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
 
-    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation "androidx.appcompat:appcompat:1.7.1"
     implementation "androidx.core:core-splashscreen:1.0.1"
     implementation "androidx.activity:activity:1.10.1"
     implementation "androidx.recyclerview:recyclerview:1.4.0"
@@ -123,19 +123,19 @@ dependencies {
     implementation "com.android.tools:r8:8.9.35"
     implementation "com.github.Iyxan23:zipalign-java:1.2.1"
 
-    implementation "com.google.code.gson:gson:2.11.0"
+    implementation "com.google.code.gson:gson:2.13.1"
     implementation "com.madgag:scpkix-jdk15on:1.47.0.2"
 
     implementation 'io.noties.markwon:core:4.6.2'
 
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
-    implementation "com.squareup.okio:okio:3.11.0"
-
-    implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
+    implementation "com.squareup.okio:okio:3.12.0"
 
     implementation "org.eclipse.jdt:ecj:3.26.0"
 
+    implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
     implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
+    implementation "com.github.PranavPurwar:filepicker:74526bea66"
 
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"

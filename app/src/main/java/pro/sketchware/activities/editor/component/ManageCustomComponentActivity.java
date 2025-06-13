@@ -4,7 +4,6 @@ import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcelable;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -25,9 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -40,6 +36,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import a.a.a.wq;
+import dev.pranav.filepicker.FilePickerCallback;
+import dev.pranav.filepicker.FilePickerDialogFragment;
+import dev.pranav.filepicker.FilePickerOptions;
 import mod.hey.studios.util.Helper;
 import mod.hilal.saif.components.ComponentsHandler;
 import mod.jbk.util.OldResourceIdMapper;
@@ -131,21 +130,20 @@ public class ManageCustomComponentActivity extends BaseAppCompatActivity {
     }
 
     private void showFilePickerDialog() {
-        DialogProperties properties = new DialogProperties();
+        FilePickerOptions options = new FilePickerOptions();
+        options.setTitle("Select .json selector file");
+        options.setExtensions(new String[]{"json"});
 
-        properties.selection_mode = DialogConfigs.SINGLE_MODE;
-        properties.selection_type = DialogConfigs.FILE_SELECT;
-        properties.root = Environment.getExternalStorageDirectory();
-        properties.error_dir = Environment.getExternalStorageDirectory();
-        properties.offset = Environment.getExternalStorageDirectory();
-        properties.extensions = new String[]{"json"};
+        FilePickerCallback callback = new FilePickerCallback() {
+            @Override
+            public void onFileSelected(File file) {
+                selectComponentToImport(file.getAbsolutePath());
+            }
+        };
 
-        FilePickerDialog pickerDialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
+        FilePickerDialogFragment pickerDialog = new FilePickerDialogFragment(options, callback);
 
-        pickerDialog.setTitle("Select .json selector file");
-        pickerDialog.setDialogSelectionListener(selections -> selectComponentToImport(selections[0]));
-
-        pickerDialog.show();
+        pickerDialog.show(getSupportFragmentManager(), "filePickerDialog");
     }
 
     private void selectComponentToImport(String path) {

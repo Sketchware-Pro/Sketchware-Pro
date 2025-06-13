@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,17 +19,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.bumptech.glide.Glide;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
+import dev.pranav.filepicker.FilePickerCallback;
+import dev.pranav.filepicker.FilePickerDialogFragment;
+import dev.pranav.filepicker.FilePickerOptions;
+import dev.pranav.filepicker.SelectionMode;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
@@ -104,7 +107,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
         )) {
             super.onBackPressed();
         } else {
-            current_path = current_path.substring(0, current_path.lastIndexOf(DialogConfigs.DIRECTORY_SEPERATOR));
+            current_path = current_path.substring(0, current_path.lastIndexOf(File.separator));
             refresh();
         }
     }
@@ -159,30 +162,26 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
     }
 
     private void showImportDialog() {
-        DialogProperties properties = new DialogProperties();
+        FilePickerOptions options = new FilePickerOptions();
+        options.setSelectionMode(SelectionMode.BOTH);
+        options.setMultipleSelection(true);
+        options.setTitle("Select an asset file");
 
-        properties.selection_mode = DialogConfigs.MULTI_MODE;
-        properties.selection_type = DialogConfigs.FILE_AND_DIR_SELECT;
-        properties.root = Environment.getExternalStorageDirectory();
-        properties.error_dir = Environment.getExternalStorageDirectory();
-        properties.offset = Environment.getExternalStorageDirectory();
-        properties.extensions = null;
-
-        FilePickerDialog dialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
-        dialog.setTitle("Select an asset file");
-        dialog.setDialogSelectionListener(selections -> {
-            for (String path : selections) {
-                File file = new File(path);
-                try {
-                    FileUtil.copyDirectory(file, new File(current_path, file.getName()));
-                    refresh();
-                } catch (IOException e) {
-                    SketchwareUtil.toastError("Couldn't import file! [" + e.getMessage() + "]");
+        FilePickerCallback callback = new FilePickerCallback() {
+            @Override
+            public void onFilesSelected(@NotNull List<? extends File> files) {
+                for (File file : files) {
+                    try {
+                        FileUtil.copyDirectory(file, new File(current_path, file.getName()));
+                        refresh();
+                    } catch (IOException e) {
+                        SketchwareUtil.toastError("Couldn't import file! [" + e.getMessage() + "]");
+                    }
                 }
             }
-        });
+        };
 
-        dialog.show();
+        new FilePickerDialogFragment(options, callback).show(getSupportFragmentManager(), "filePicker");
     }
 
     private void showRenameDialog(int position) {
@@ -335,7 +334,7 @@ public class ManageAssetsActivity extends BaseAppCompatActivity {
 
         public String getFileName(int position) {
             String item = getItem(position);
-            return item.substring(item.lastIndexOf(DialogConfigs.DIRECTORY_SEPERATOR) + 1);
+            return item.substring(item.lastIndexOf(File.separator) + 1);
         }
 
         public boolean isFolder(int position) {
