@@ -23,15 +23,19 @@ import androidx.core.view.WindowInsetsCompat;
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.besome.sketch.help.SystemSettingActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
-import com.github.angads25.filepicker.model.DialogConfigs;
-import com.github.angads25.filepicker.model.DialogProperties;
-import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity;
+import dev.pranav.filepicker.FilePickerCallback;
+import dev.pranav.filepicker.FilePickerDialogFragment;
+import dev.pranav.filepicker.FilePickerOptions;
+import dev.pranav.filepicker.SelectionMode;
 import mod.alucard.tn.apksigner.ApkSigner;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
@@ -99,60 +103,62 @@ public class AppSettings extends BaseAppCompatActivity {
     }
 
     private void openWorkingDirectory() {
-        DialogProperties properties = new DialogProperties();
-        properties.selection_mode = DialogConfigs.MULTI_MODE;
-        properties.selection_type = DialogConfigs.FILE_AND_DIR_SELECT;
-        properties.root = getFilesDir().getParentFile();
-        properties.error_dir = getExternalCacheDir();
-        properties.extensions = null;
-        FilePickerDialog dialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
-        dialog.setTitle("Select an entry to modify");
-        dialog.setDialogSelectionListener(files -> {
-            boolean isDirectory = new File(files[0]).isDirectory();
-            if (files.length > 1 || isDirectory) {
-                new MaterialAlertDialogBuilder(this)
-                        .setTitle("Select an action")
-                        .setSingleChoiceItems(new String[]{"Delete"}, -1, (actionDialog, which) -> {
-                            new MaterialAlertDialogBuilder(this)
-                                    .setTitle("Delete " + (isDirectory ? "folder" : "file") + "?")
-                                    .setMessage("Are you sure you want to delete this " + (isDirectory ? "folder" : "file") + " permanently? This cannot be undone.")
-                                    .setPositiveButton(R.string.common_word_delete, (deleteConfirmationDialog, pressedButton) -> {
-                                        for (String file : files) {
-                                            FileUtil.deleteFile(file);
-                                            deleteConfirmationDialog.dismiss();
-                                        }
-                                    })
-                                    .setNegativeButton(R.string.common_word_cancel, null)
-                                    .show();
-                            actionDialog.dismiss();
-                        })
-                        .show();
-            } else {
-                new MaterialAlertDialogBuilder(this)
-                        .setTitle("Select an action")
-                        .setSingleChoiceItems(new String[]{"Edit", "Delete"}, -1, (actionDialog, which) -> {
-                            switch (which) {
-                                case 0 -> {
-                                    Intent intent = new Intent(getApplicationContext(), SrcCodeEditor.class);
-                                    intent.putExtra("title", Uri.parse(files[0]).getLastPathSegment());
-                                    intent.putExtra("content", files[0]);
-                                    intent.putExtra("xml", "");
-                                    startActivity(intent);
-                                }
-                                case 1 -> new MaterialAlertDialogBuilder(this)
-                                        .setTitle("Delete file?")
-                                        .setMessage("Are you sure you want to delete this file permanently? This cannot be undone.")
-                                        .setPositiveButton(R.string.common_word_delete, (deleteDialog, pressedButton) ->
-                                                FileUtil.deleteFile(files[0]))
+        FilePickerOptions options = new FilePickerOptions();
+        options.setSelectionMode(SelectionMode.BOTH);
+        options.setMultipleSelection(true);
+        options.setTitle("Select an entry to modify");
+        options.setInitialDirectory(getFilesDir().getParentFile().getAbsolutePath());
+
+        FilePickerCallback callback = new FilePickerCallback() {
+            @Override
+            public void onFilesSelected(@NotNull List<? extends File> files) {
+                boolean isDirectory = files.get(0).isDirectory();
+                if (files.size() > 1 || isDirectory) {
+                    new MaterialAlertDialogBuilder(AppSettings.this)
+                            .setTitle("Select an action")
+                            .setSingleChoiceItems(new String[]{"Delete"}, -1, (actionDialog, which) -> {
+                                new MaterialAlertDialogBuilder(AppSettings.this)
+                                        .setTitle("Delete " + (isDirectory ? "folder" : "file") + "?")
+                                        .setMessage("Are you sure you want to delete this " + (isDirectory ? "folder" : "file") + " permanently? This cannot be undone.")
+                                        .setPositiveButton(R.string.common_word_delete, (deleteConfirmationDialog, pressedButton) -> {
+                                            for (File file : files) {
+                                                FileUtil.deleteFile(file.getAbsolutePath());
+                                                deleteConfirmationDialog.dismiss();
+                                            }
+                                        })
                                         .setNegativeButton(R.string.common_word_cancel, null)
                                         .show();
-                            }
-                            actionDialog.dismiss();
-                        })
-                        .show();
+                                actionDialog.dismiss();
+                            })
+                            .show();
+                } else {
+                    new MaterialAlertDialogBuilder(AppSettings.this)
+                            .setTitle("Select an action")
+                            .setSingleChoiceItems(new String[]{"Edit", "Delete"}, -1, (actionDialog, which) -> {
+                                switch (which) {
+                                    case 0 -> {
+                                        Intent intent = new Intent(getApplicationContext(), SrcCodeEditor.class);
+                                        intent.putExtra("title", Uri.fromFile(files.get(0)).getLastPathSegment());
+                                        intent.putExtra("content", files.get(0).getAbsolutePath());
+                                        intent.putExtra("xml", "");
+                                        startActivity(intent);
+                                    }
+                                    case 1 -> new MaterialAlertDialogBuilder(AppSettings.this)
+                                            .setTitle("Delete file?")
+                                            .setMessage("Are you sure you want to delete this file permanently? This cannot be undone.")
+                                            .setPositiveButton(R.string.common_word_delete, (deleteDialog, pressedButton) ->
+                                                    FileUtil.deleteFile(files.get(0).getAbsolutePath()))
+                                            .setNegativeButton(R.string.common_word_cancel, null)
+                                            .show();
+                                }
+                                actionDialog.dismiss();
+                            })
+                            .show();
+                }
             }
-        });
-        dialog.show();
+        };
+
+        new FilePickerDialogFragment(options, callback).show(getSupportFragmentManager(), "file_picker");
     }
 
     private void signApkFileDialog() {
@@ -165,16 +171,21 @@ public class AppSettings extends BaseAppCompatActivity {
         TextView apk_path_txt = binding.apkPathTxt;
 
         binding.selectFile.setOnClickListener(v -> {
-            DialogProperties properties = new DialogProperties();
-            properties.selection_mode = DialogConfigs.SINGLE_MODE;
-            properties.selection_type = DialogConfigs.FILE_SELECT;
-            properties.extensions = new String[]{"apk"};
-            FilePickerDialog dialog = new FilePickerDialog(this, properties, R.style.RoundedCornersDialog);
-            dialog.setDialogSelectionListener(files -> {
-                isAPKSelected[0] = true;
-                apk_path_txt.setText(files[0]);
-            });
-            dialog.show();
+            FilePickerOptions options = new FilePickerOptions();
+            options.setExtensions(new String[]{"apk"});
+            FilePickerCallback callback = new FilePickerCallback() {
+                @Override
+                public void onFilesSelected(@NotNull List<? extends File> files) {
+                    if (files.isEmpty()) {
+                        SketchwareUtil.toast("No APK file selected", Toast.LENGTH_SHORT);
+                        return;
+                    }
+                    isAPKSelected[0] = true;
+                    apk_path_txt.setText(files.get(0).getAbsolutePath());
+                }
+            };
+            FilePickerDialogFragment dialog = new FilePickerDialogFragment(options, callback);
+            dialog.show(getSupportFragmentManager(), "file_picker");
         });
 
         apkPathDialog.setPositiveButton("Continue", (v, which) -> {
