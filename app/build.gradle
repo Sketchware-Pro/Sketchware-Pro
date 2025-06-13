@@ -1,8 +1,11 @@
+import com.sketchware.SketchwareLibsPlugin
+
 def secrets = System.getenv("GOOGLE_SERVICES_JSON")
 def analyticsEnabled = secrets != null
 
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
+apply plugin: SketchwareLibsPlugin
 
 if (analyticsEnabled) {
     apply plugin: "com.google.gms.google-services"
@@ -80,6 +83,15 @@ android {
     configurations.implementation {
         exclude group: 'javax.inject', module: 'javax.inject'
     }
+
+    sourceSets {
+        main {
+            java {
+                srcDir("$buildDir/generated/source/libraryVersions")
+            }
+        }
+    }
+
 }
 
 dependencies {
@@ -148,4 +160,7 @@ dependencies {
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.1.5"
+
+    sketchwareLibs "androidx.activity:activity:1.10.1" // just for testing
+    sketchwareLibs "androidx.recyclerview:recyclerview:1.4.0"
 }
