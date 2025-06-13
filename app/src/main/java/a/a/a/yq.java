@@ -14,7 +14,6 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
 import com.besome.sketch.beans.ViewBean;
-import com.besome.sketch.editor.manage.library.material3.Material3LibraryActivity;
 import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
 
 import java.io.File;
@@ -392,7 +391,7 @@ public class yq {
                                 "                    Process.killProcess(Process.myPid());"
                 );
             }
-            if (new Material3LibraryManager(sc_id).isMaterial3Enabled()) {
+            if (new Material3LibraryManager(sc_id).isDynamicColorsEnabled()) {
                 sketchApplicationFileContent = sketchApplicationFileContent.replace(
                         "mApplicationContext = getApplicationContext();", "mApplicationContext = getApplicationContext();\n" +
                                         "        DynamicColors.applyToActivitiesIfAvailable(this);")

@@ -28,7 +28,7 @@ public class Material3LibraryManager {
     }
 
     public boolean isDynamicColorsEnabled() {
-        return isAppCompatEnabled && safeGet("dynamic_colors");
+        return isMaterial3Enabled() && safeGet("dynamic_colors");
     }
 
     public boolean safeGet(String key) {
