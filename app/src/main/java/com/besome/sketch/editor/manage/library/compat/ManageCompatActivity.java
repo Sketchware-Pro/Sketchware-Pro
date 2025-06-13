@@ -34,10 +34,14 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         dialog.setCancelable(false);
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v, which) -> {
             binding.libSwitch.setChecked(false);
+            binding.switchMtrlTheme.setChecked(false);
+            binding.switchMtrlWidget.setChecked(false);
             v.dismiss();
         });
         dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), (v, which) -> {
             binding.libSwitch.setChecked(true);
+            binding.switchMtrlTheme.setChecked(!binding.switchMtrlTheme.isChecked());
+            binding.switchMtrlWidget.setChecked(!binding.switchMtrlWidget.isChecked());
             v.dismiss();
         });
         dialog.show();
@@ -45,11 +49,22 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
 
     private void configure() {
         binding.libSwitch.setChecked("Y".equals(compatLibraryBean.useYn));
+        binding.switchMtrlTheme.setChecked("true".equals(compatLibraryBean.reserved1));
+        binding.switchMtrlWidget.setChecked("true".equals(compatLibraryBean.reserved2));
     }
 
     @Override
     public void onBackPressed() {
-        compatLibraryBean.useYn = binding.libSwitch.isChecked() ? "Y" : "N";
+        if (binding.libSwitch.isChecked()) {
+            compatLibraryBean.useYn = "Y";
+        } else {
+            compatLibraryBean.useYn = "N";
+            binding.switchMtrlTheme.setChecked(false);
+            binding.switchMtrlWidget.setChecked(false);
+        }
+        compatLibraryBean.reserved1 = String.valueOf(binding.switchMtrlTheme.isChecked());
+        compatLibraryBean.reserved2 = String.valueOf(binding.switchMtrlWidget.isChecked());
+
         Intent intent = new Intent();
         intent.putExtra("compat", compatLibraryBean);
         setResult(RESULT_OK, intent);
@@ -69,6 +84,10 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
             if ("Y".equals(compatLibraryBean.useYn) && !binding.libSwitch.isChecked()) {
                 configureLibraryDialog();
             }
+        } else if (v.getId() == binding.layoutMtrlTheme.getId()) {
+            binding.switchMtrlTheme.setChecked(!binding.switchMtrlTheme.isChecked());
+        } else if (v.getId() == binding.layoutMtrlWidget.getId()) {
+            binding.switchMtrlWidget.setChecked(!binding.switchMtrlWidget.isChecked());
         }
     }
 
@@ -86,6 +105,14 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         compatLibraryBean = getIntent().getParcelableExtra("compat");
         firebaseLibraryBean = getIntent().getParcelableExtra("firebase");
         binding.layoutSwitch.setOnClickListener(this);
+        binding.layoutMtrlTheme.setOnClickListener(this);
+        binding.layoutMtrlWidget.setOnClickListener(this);
+        binding.libSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            binding.switchMtrlTheme.setEnabled(isChecked);
+            binding.switchMtrlWidget.setEnabled(isChecked);
+
+        });
+
         binding.tvDesc.setText(Helper.getResString(R.string.design_library_appcompat_description));
         binding.tvEnable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
         binding.tvWarning.setText(Helper.getResString(R.string.design_library_message_slow_down_compilation_time));
