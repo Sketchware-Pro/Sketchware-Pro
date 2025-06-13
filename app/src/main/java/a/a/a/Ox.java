@@ -133,18 +133,18 @@ public class Ox {
                     appBarLayoutTag.addAttribute("android", "id", "@+id/_app_bar");
                     aci.inject(appBarLayoutTag, "AppBarLayout");
                     if (collapsingToolbarLayout != null) {
-                        collapsingToolbarLayout.a(toolbarTag);
-                        appBarLayoutTag.a(collapsingToolbarLayout);
+                        collapsingToolbarLayout.addChildNode(toolbarTag);
+                        appBarLayoutTag.addChildNode(collapsingToolbarLayout);
                     } else {
-                        appBarLayoutTag.a(toolbarTag);
+                        appBarLayoutTag.addChildNode(toolbarTag);
                     }
-                    rootLayout.a(appBarLayoutTag);
-                    rootLayout.a(nx);
+                    rootLayout.addChildNode(appBarLayoutTag);
+                    rootLayout.addChildNode(nx);
                 } else {
                     if (rootLayout == null) {
                         rootLayout = nx;
                     } else {
-                        rootLayout.a(nx);
+                        rootLayout.addChildNode(nx);
                     }
                 }
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
@@ -157,15 +157,15 @@ public class Ox {
                     XmlBuilder drawerLayoutTag = new XmlBuilder("androidx.drawerlayout.widget.DrawerLayout");
                     drawerLayoutTag.addAttribute("android", "id", "@+id/_drawer");
                     aci.inject(drawerLayoutTag, "DrawerLayout");
-                    drawerLayoutTag.a(rootLayout);
+                    drawerLayoutTag.addChildNode(rootLayout);
                     XmlBuilder linearLayoutTag = new XmlBuilder("LinearLayout");
                     linearLayoutTag.addAttribute("android", "id", "@+id/_nav_view");
                     aci.inject(linearLayoutTag, "NavigationDrawer");
                     XmlBuilder includeTag = new XmlBuilder("include", true);
                     includeTag.addAttribute("", "layout", "@layout/_drawer_" + projectFile.fileName);
                     includeTag.addAttribute("android", "id", "@+id/drawer");
-                    linearLayoutTag.a(includeTag);
-                    drawerLayoutTag.a(linearLayoutTag);
+                    linearLayoutTag.addChildNode(includeTag);
+                    drawerLayoutTag.addChildNode(linearLayoutTag);
                     rootLayout = drawerLayoutTag;
                 }
             } else {
@@ -437,7 +437,7 @@ public class Ox {
                 widgetTag.addAttribute("tools", "listitem", "@layout/" + customView);
             }
         }
-        nx.a(widgetTag);
+        nx.addChildNode(widgetTag);
     }
 
     private void writeFabView(XmlBuilder nx, ViewBean viewBean) {
@@ -465,7 +465,7 @@ public class Ox {
             aci.inject(floatingActionButtonTag, "FloatingActionButton");
         }
         k(floatingActionButtonTag, viewBean);
-        nx.a(floatingActionButtonTag);
+        nx.addChildNode(floatingActionButtonTag);
     }
 
     private void writeViewGravity(XmlBuilder nx, ViewBean viewBean) {

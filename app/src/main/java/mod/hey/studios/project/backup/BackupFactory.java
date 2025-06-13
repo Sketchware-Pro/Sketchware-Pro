@@ -1,6 +1,7 @@
 package mod.hey.studios.project.backup;
 
 import android.os.Environment;
+import android.util.Log;
 
 import com.besome.sketch.beans.BlockBean;
 import com.google.gson.Gson;
@@ -410,13 +411,13 @@ public class BackupFactory {
         } catch (Exception e) {
             // An error occurred
 
-            StringBuilder sb = new StringBuilder();
-            for (StackTraceElement el : e.getStackTrace()) {
-                sb.append(el.toString());
-                sb.append("\n");
-            }
+//            StringBuilder sb = new StringBuilder();
+//            for (StackTraceElement el : e.getStackTrace()) {
+//                sb.append(el.toString());
+//                sb.append("\n");
+//            }
 
-            error = sb.toString();
+            error = Log.getStackTraceString(e);
             outPath = null;
 
             return;
