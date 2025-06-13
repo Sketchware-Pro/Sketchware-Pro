@@ -7,24 +7,15 @@ import org.gradle.api.artifacts.ResolvedArtifact;
 import org.gradle.api.artifacts.ResolvedDependency;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
-
-import java.nio.file.StandardCopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 public class SketchwareLibsPlugin implements Plugin<Project> {
 
@@ -41,17 +32,27 @@ public class SketchwareLibsPlugin implements Plugin<Project> {
                     .resolve("sketchwareLibs");
 
             Path libsZip = buildDir.resolve("libs.zip");
+            Path dexsZip = buildDir.resolve("dexs.zip");
+
+            Path dexCacheDirPath = project.getRootProject().file(".jar2dex-cache").toPath();
+            try {
+                Files.createDirectories(dexCacheDirPath);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to create dex cache directory: " + dexCacheDirPath, e);
+            }
 
             project.getTasks().register("buildSketchwareLibs", task -> task.doLast(t -> {
                 try {
                     Files.createDirectories(buildDir);
 
                     Path libsFolder = buildDir.resolve("libs");
+                    Path dexsFolder = buildDir.resolve("dexs");
+
                     Files.createDirectories(libsFolder);
+                    Files.createDirectories(dexsFolder);
 
                     Map<String, ArrayList<String>> libsMap = new LinkedHashMap<>();
-                    Set<ResolvedDependency> firstLevelDeps = sketchwareLibs.getResolvedConfiguration()
-                            .getFirstLevelModuleDependencies();
+                    Set<ResolvedDependency> firstLevelDeps = sketchwareLibs.getResolvedConfiguration().getFirstLevelModuleDependencies();
                     for (ResolvedDependency dep : firstLevelDeps) {
                         LinkedHashSet<String> artifacts = new LinkedHashSet<>();
                         collectDependencyArtifacts(dep, artifacts);
@@ -61,24 +62,47 @@ public class SketchwareLibsPlugin implements Plugin<Project> {
                         );
                     }
 
+                    File localPropsFile = project.getRootProject().file("local.properties");
+                    String sdkDir = IOUtils.getProperty(localPropsFile, "sdk.dir");
+                    if (sdkDir == null) throw new RuntimeException("sdk.dir not found in local.properties");
+
+                    String buildToolsDir = IOUtils.getLatestBuildToolsDir(sdkDir);
+
                     for (ResolvedArtifact dep : sketchwareLibs.getResolvedConfiguration().getResolvedArtifacts()) {
+                        String group = dep.getModuleVersion().getId().getGroup();
                         String name = dep.getModuleVersion().getId().getName();
+                        String version = dep.getModuleVersion().getId().getVersion();
                         Path libFolder = libsFolder.resolve(name);
                         Files.createDirectories(libFolder);
 
                         File depFile = dep.getFile();
-                        if (depFile.getName().endsWith(".aar")) {
-                            unzipAAR(depFile, libFolder);
-                        } else if (depFile.getName().endsWith(".jar")) {
-                            Files.copy(depFile.toPath(), libFolder.resolve("classes.jar"), StandardCopyOption.REPLACE_EXISTING);
+                        // for dexs.zip : we must use DEX caching because dexing is a heavy task. It took 2 minutes for just two libs with their sub-dependencies
+                        // for libs.zip : Gradle's caching will handle this, so no extra code is needed
+
+                        String dexCacheName = JarDexer.getCacheDexName(group, name, version);
+                        File cachedDex = dexCacheDirPath.resolve(dexCacheName).toFile();
+
+                        Path dexOutputPath = dexsFolder.resolve(dexCacheName);
+
+                        if (cachedDex.exists()) {
+                            Files.copy(cachedDex.toPath(), dexOutputPath, StandardCopyOption.REPLACE_EXISTING);
+                        } else {
+                            JarDexer.extractAndDexWithCache(depFile, libFolder, cachedDex.toPath(), buildToolsDir);
+
+                            if (cachedDex.exists()) {
+                                Files.copy(cachedDex.toPath(), dexOutputPath, StandardCopyOption.REPLACE_EXISTING);
+                            }
                         }
                     }
 
-                    zipFolder(libsFolder.toFile(), libsZip.toFile());
+                    IOUtils.zipFolder(libsFolder.toFile(), libsZip.toFile());
+                    IOUtils.zipFolder(dexsFolder.toFile(), dexsZip.toFile());
 
                     Path assetsLibs = project.file("src/main/assets/libs").toPath();
+
                     Files.createDirectories(assetsLibs);
                     Files.copy(libsZip, assetsLibs.resolve("libs.zip"), StandardCopyOption.REPLACE_EXISTING);
+                    Files.copy(dexsZip, assetsLibs.resolve("dexs.zip"), StandardCopyOption.REPLACE_EXISTING);
 
                     Path generatedDir = project.getLayout()
                             .getBuildDirectory()
@@ -100,44 +124,10 @@ public class SketchwareLibsPlugin implements Plugin<Project> {
         });
     }
 
-    private void collectDependencyArtifacts(ResolvedDependency dep, Set<String> acc) {
+    private void collectDependencyArtifacts(org.gradle.api.artifacts.ResolvedDependency dep, Set<String> acc) {
         acc.add(dep.getModuleName() + ":" + dep.getModuleVersion());
         for (ResolvedDependency child : dep.getChildren()) {
             collectDependencyArtifacts(child, acc);
-        }
-    }
-
-    private void unzipAAR(File aar, Path destDir) throws IOException {
-        try (ZipInputStream zis = new ZipInputStream(new FileInputStream(aar))) {
-            ZipEntry entry;
-            while ((entry = zis.getNextEntry()) != null) {
-                Path newPath = destDir.resolve(entry.getName());
-
-                if (entry.isDirectory()) {
-                    Files.createDirectories(newPath);
-                    continue;
-                }
-
-                Files.createDirectories(newPath.getParent());
-                Files.copy(zis, newPath, StandardCopyOption.REPLACE_EXISTING);
-            }
-        }
-    }
-
-    private void zipFolder(File sourceDir, File zipFile) throws IOException {
-        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFile));
-             Stream<Path> files = Files.walk(sourceDir.toPath())) {
-            files.filter(Files::isRegularFile).forEach(path -> {
-                try {
-                    ZipEntry entry = new ZipEntry(sourceDir.toPath().relativize(path).toString());
-                    zos.putNextEntry(entry);
-                    Files.copy(path, zos);
-                    zos.closeEntry();
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            });
-
         }
     }
 
