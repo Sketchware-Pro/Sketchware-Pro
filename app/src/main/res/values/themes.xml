@@ -37,6 +37,7 @@
         <item name="textAppearanceLabelLarge">@style/TextAppearance.SketchwarePro.LabelLarge</item>
         <item name="textAppearanceLabelMedium">@style/TextAppearance.SketchwarePro.LabelMedium</item>
         <item name="textAppearanceLabelSmall">@style/TextAppearance.SketchwarePro.LabelSmall</item>
+        <item name="sideSheetDialogTheme">@style/ThemeOverlay.SketchwarePro.SideSheetDialog</item>
     </style>
 
     <style name="Theme.SketchwarePro.Main">
