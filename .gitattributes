@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Remove python files to make Java 100% detect
+*.py -linguistic-detectable
