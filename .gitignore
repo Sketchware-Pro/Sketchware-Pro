@@ -65,3 +65,9 @@ fastlane/readme.md
 # For users who uses android ide for building app
 .androidide/
 /actions-runner
+
+# VSCode
+.vscode
+
+# Android
+.nomedia
