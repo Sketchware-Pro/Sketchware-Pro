@@ -74,4 +74,5 @@ public class XmlBuilderHelper {
         rootBuilder.addChildNode(styleBuilder);
         styleBuilders.put(styleName, styleBuilder);
     }
+
 }
