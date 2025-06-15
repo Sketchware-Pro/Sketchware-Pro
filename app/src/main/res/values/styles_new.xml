@@ -67,6 +67,10 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="bottomSheetStyle">@style/Widget.SketchwarePro.BottomSheet.Modal</item>
     </style>
+    
+    <style name="ThemeOverlay.SketchwarePro.SideSheetDialog" parent="ThemeOverlay.Material3.SideSheetDialog">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
 
     <style name="Widget.SketchwarePro.BottomSheet.Modal" parent="Widget.Material3.BottomSheet">
         <item name="android:elevation">0dp</item>
