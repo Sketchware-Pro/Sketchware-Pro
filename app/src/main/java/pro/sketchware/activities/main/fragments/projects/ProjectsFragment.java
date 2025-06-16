@@ -153,14 +153,11 @@ public class ProjectsFragment extends DA {
         dividerItemDecoration.setDividerColor(MaterialColors.getColor(binding.myprojects, com.google.android.material.R.attr.colorSurfaceContainerLowest));
         binding.myprojects.addItemDecoration(dividerItemDecoration);
 
-        binding.nestedScroll.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY > oldScrollY) {
-                    fab.shrink();
-                } else if (scrollY < oldScrollY) {
-                    fab.extend();
-                }
+        binding.nestedScroll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > oldScrollY) {
+                fab.shrink();
+            } else if (scrollY < oldScrollY) {
+                fab.extend();
             }
         });
 
