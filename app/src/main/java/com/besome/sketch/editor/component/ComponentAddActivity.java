@@ -480,8 +480,8 @@ public class ComponentAddActivity extends BaseDialogActivity implements View.OnC
         @NonNull
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View itemView = wB.a(parent.getContext(), R.layout.component_add_item);
-            int lengthAndWidth = (int) wB.a(parent.getContext(), 76.0f);
-            itemView.setLayoutParams(new FlexboxLayoutManager.LayoutParams(lengthAndWidth, lengthAndWidth));
+            int heightAndWidth = (int) wB.a(parent.getContext(), 76f);
+            itemView.setLayoutParams(new FlexboxLayoutManager.LayoutParams(heightAndWidth, heightAndWidth));
             return new ViewHolder(itemView);
         }
 
