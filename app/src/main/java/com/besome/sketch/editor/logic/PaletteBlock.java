@@ -44,6 +44,7 @@ public class PaletteBlock extends LinearLayout {
         view.setLayoutParams(getLayoutParams(8.0F));
         binding.blockBuilder.addView(view);
         Rs blockView = new Rs(context, -1, var1, var2, var3);
+        blockView.setContentDescription(generateContentDescription(var3));
         blockView.setBlockType(1);
         binding.blockBuilder.addView(blockView);
         return blockView;
@@ -54,6 +55,7 @@ public class PaletteBlock extends LinearLayout {
         view.setLayoutParams(getLayoutParams(8.0F));
         binding.blockBuilder.addView(view);
         Rs blockView = new Rs(context, -1, var1, var2, var3, var4);
+        blockView.setContentDescription(generateContentDescription(var4));
         blockView.setBlockType(1);
         binding.blockBuilder.addView(blockView);
         return blockView;
@@ -106,6 +108,27 @@ public class PaletteBlock extends LinearLayout {
         Ts blockView = a("", type, opCode);
         blockView.e = 0xFFBDBDBD;
         blockView.setTag(opCode);
+    }
+
+    private String generateContentDescription(String name) {
+        if (name == null || name.isEmpty()) {
+            return "";
+        }
+        StringBuilder result = new StringBuilder();
+        result.append(name.charAt(0));
+        for (int i = 1; i < name.length(); i++) {
+            char currentChar = name.charAt(i);
+            if (Character.isUpperCase(currentChar)) {
+                // Check if previous char is not already a space (for acronyms like "HTTPExample")
+                // and if the current char is not part of an acronym (e.g. the TTP in HTTP)
+                // For simplicity here, just add a space before any uppercase unless it's followed by lowercase.
+                if (i + 1 < name.length() && Character.isLowerCase(name.charAt(i+1)) || Character.isLowerCase(name.charAt(i-1))) {
+                    result.append(' ');
+                }
+            }
+            result.append(currentChar);
+        }
+        return result.toString();
     }
 
     private LinearLayout.LayoutParams getLayoutParams(float heightMultiplier) {
