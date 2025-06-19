@@ -1,0 +1,49 @@
+dateStatus();
+        }
+    });
+}
+
+private void updateStatus() {
+    statusText.setText("Population: " + colonyPopulation + "\nEnerg// New Planetia v0.1 - Android APK Game Source Code (Simplified Colony Sim) // Language: Java | Platform: Android Studio Compatible
+
+// ---------------------- MainActivity.java ---------------------- package com.newplanetia;
+
+import android.app.Activity; import android.os.Bundle; import android.view.View; import android.widget.Button; import android.widget.TextView;
+
+public class MainActivity extends Activity { private int colonyPopulation = 5; private int energy = 100; private TextView statusText;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    statusText = findViewById(R.id.statusText);
+    Button buildButton = findViewById(R.id.buildButton);
+    Button exploreButton = findViewById(R.id.exploreButton);
+
+    updateStatus();
+
+    buildButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            colonyPopulation += 2;
+            energy -= 10;
+            updateStatus();
+        }
+    });
+
+    exploreButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            energy += 15;
+            updateStatus();
+        }
+    });
+}
+
+private void updateStatus() {
+    statusText.setText("Population: " + colonyPopulation + "\nEnergy: " + energy);
+}
+
+}
+
