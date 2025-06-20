@@ -1,6 +1,8 @@
 // ImportIconActivity.java
 package pro.sketchware.activities.importicon;
 
+import static android.content.res.Configuration.UI_MODE_NIGHT_MASK;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -81,6 +83,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             }
         }
     };
+
     private IconAdapter adapter = null;
     private ArrayList<String> alreadyAddedImageNames;
     private SvgUtils svgUtils;
@@ -124,7 +127,25 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
         binding = ImportIconBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        colorpicker = new ColorPickerDialog(this, 0xFF9E9E9E, false, false);
+        int isNightMode = getResources().getConfiguration().uiMode & UI_MODE_NIGHT_MASK;
+        switch (isNightMode) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                selected_color = Color.parseColor("#FFFFFF");
+                selected_color_hex = "#FFFFFF";
+                colorpicker = new ColorPickerDialog(this, 0xFFFFFFFF, false, false);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                selected_color = Color.parseColor("#000000");
+                selected_color_hex = "#000000";
+                colorpicker = new ColorPickerDialog(this, 0xFF000000, false, false);
+                break;
+            case Configuration.UI_MODE_NIGHT_UNDEFINED:
+                selected_color = Color.parseColor("#9E9E9E");
+                selected_color_hex = "#9E9E9E";
+                colorpicker = new ColorPickerDialog(this, 0xFF9E9E9E, false, false);
+                break;
+        }
+
         svgUtils = new SvgUtils(this);
         Toolbar toolbar = binding.toolbar.toolbar;
         binding.toolbar.layoutMainLogo.setVisibility(View.GONE);

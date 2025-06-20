@@ -20,7 +20,7 @@ import java.nio.file.Paths
 import kotlin.math.roundToInt
 
 
-const val SIZE_MULTIPLIER = 2
+const val SIZE_MULTIPLIER = 1
 
 class SvgUtils(private val context: Context) {
     private var imageLoader: ImageLoader? = null
@@ -87,8 +87,8 @@ class SvgUtils(private val context: Context) {
                     // Apply scaling to width and height
                     val scaledBitmap = Bitmap.createScaledBitmap(
                         bitmap,
-                        48 * densityScale,
-                        48 * densityScale,
+                        24 * densityScale,
+                        24 * densityScale,
                         true
                     )
                     // Set the scaled image on the ImageView
