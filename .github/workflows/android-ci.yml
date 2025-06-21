@@ -1,0 +1,117 @@
+name: Android CI v1.0.0
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+env:
+  APP_NAME: "Sketchware Pro"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK and Gradle Cache
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: gradle
+
+      - name: Build Application Package (APK)
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Verify and Stage APK
+        id: verify_apk
+        run: |
+          APK_PATH="app/build/outputs/apk/release/app-release.apk"
+          if [ ! -f "$APK_PATH" ]; then
+            echo "::error::PRIMARY FAILURE: The Release APK was not found. Halting workflow."
+            exit 1
+          fi
+          echo "APK found. Renaming for release."
+          mv "$APK_PATH" "release.apk"
+          echo "path=release.apk" >> $GITHUB_OUTPUT
+
+      - name: Prepare Release Information
+        id: prepare_info
+        continue-on-error: true
+        run: |
+          BUILD_ID=$(date +'%Y-%m-%d-%H%M%S')
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          RELEASE_TAG="build-${BUILD_ID}-${SHORT_SHA}"
+          
+          git log -10 --pretty=format:"- **%s** (%h)" > CHANGELOG.md || echo "Could not generate changelog. APK is attached." > CHANGELOG.md
+          git log -5 --pretty=format:"- %s" > TELEGRAM_SUMMARY.txt || echo "Build completed successfully." > TELEGRAM_SUMMARY.txt
+
+          echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_OUTPUT
+          echo "RELEASE_NAME=Build ${RELEASE_TAG}" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}
+          name: ${{ steps.prepare_info.outputs.RELEASE_NAME || format('Build {0}', github.run_id) }}
+          body_file: CHANGELOG.md
+          files: release.apk
+          prerelease: true
+
+      - name: Prepare Telegram Message
+        id: prepare_telegram
+        run: |
+          CONTENT=$(cat TELEGRAM_SUMMARY.txt)
+          # Escape HTML special characters
+          CONTENT=$(echo "$CONTENT" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
+          
+          # Create message with proper formatting
+          MESSAGE="<b>✅ New Build Available: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}</b>%0A%0A"
+          MESSAGE+="<b>🚀 Recent Changes:</b>%0A"
+          MESSAGE+="<pre>$CONTENT</pre>%0A%0A"
+          MESSAGE+="<i>Download the APK from the full release notes on GitHub.</i>"
+          
+          echo "message=${MESSAGE}" >> $GITHUB_OUTPUT
+
+      - name: Send Telegram Notification
+        if: steps.create_release.outputs.html_url != ''
+        continue-on-error: true
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message_thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
+          parse_mode: HTML
+          message: ${{ steps.prepare_telegram.outputs.message }}
+          reply_markup: |
+            { "inline_keyboard": [[{ "text": "⬇️ Download & Notes", "url": "${{ steps.create_release.outputs.html_url }}" }]] }
+
+      - name: Debug if Telegram skipped
+        if: always()
+        run: |
+          echo "Telegram notification skipped because:"
+          echo "Release URL exists: ${{ steps.create_release.outputs.html_url != '' }}"
+          echo "Release URL: ${{ steps.create_release.outputs.html_url || 'Not created' }}"
+          echo "Workflow status: ${{ job.status }}"
+
+  cleanup-runs:
+    runs-on: ubuntu-latest
+    needs: release
+    if: ${{ success() }}
+    continue-on-error: true
+    steps:
+      - name: Clean up workflow runs
+        uses: rokroskar/workflow-run-cleanup-action@v1
+        with:
+          preserve_days: 7
+          keep_minimum_runs: 1
+          only_workflow: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
