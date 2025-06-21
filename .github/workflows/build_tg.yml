@@ -1,10 +1,14 @@
 name: Release Publisher
 
 on:
-  workflow_dispatch:
   push:
     tags:
-      - 'v*.*.*'  # Semantic versioning (v1.2.3)
+      - 'v*.*.*'  # Triggers only on tags like v1.2.3
+
+# <-- POINT 3: Permissions required for the cleanup job to delete old workflow runs.
+permissions:
+  contents: write   # Needed for softprops/action-gh-release to create releases
+  actions: write    # Needed for the cleanup job to delete workflow runs
 
 env:
   APP_NAME: "Sketchware Pro"
@@ -12,11 +16,13 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+    # This job will only run for tag pushes, preventing errors on other commits.
+    if: startsWith(github.ref, 'refs/tags/v')
+
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Needed for full changelog
+          fetch-depth: 0  # Needed for full changelog generation
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -31,69 +37,63 @@ jobs:
       - name: Prepare Release Assets
         id: prepare
         run: |
-          # Get version from tag (v1.2.3 -> 1.2.3)
-          VERSION=${GITHUB_REF#refs/tags/v}
+          # <-- POINT 1 & 2: Using the most robust method for versioning.
+          # github.ref_name is provided by GitHub directly, removing any chance of parsing errors.
+          VERSION_TAG="${GITHUB_REF_NAME}" # e.g., "v1.2.3"
+          APK_PATH="app/build/outputs/apk/release/app-release.apk"
+
+          # <-- POINT 2 & 4: Better error handling. Fail fast if the APK wasn't built.
+          if [ ! -f "$APK_PATH" ]; then
+            echo "::error::Build failed: Release APK not found at $APK_PATH"
+            exit 1
+          fi
+
+          # Find previous tag for a clean changelog, works even for the first release.
+          PREVIOUS_TAG=$(git describe --abbrev=0 --tags HEAD~ 2>/dev/null || git rev-list --max-parents=0 HEAD)
           
           # Generate build info
-          BUILD_DATE=$(date +'%Y-%m-%d %H:%M:%S %Z')
           BUILD_TIMESTAMP=$(date +'%s')
-          APK_PATH="app/build/outputs/apk/release/app-release.apk"
           APK_SIZE=$(du -h "$APK_PATH" | cut -f1)
           APK_SHA256=$(sha256sum "$APK_PATH" | cut -d' ' -f1)
           
-          # Create formatted filename
-          RELEASE_FILENAME="${APP_NAME}-v${VERSION}-${BUILD_TIMESTAMP}.apk"
+          # Create a reliable filename
+          RELEASE_FILENAME="${APP_NAME}-${VERSION_TAG}-${BUILD_TIMESTAMP}.apk"
           mv "$APK_PATH" "$RELEASE_FILENAME"
           
           # Generate professional changelog
-          echo "# Release Notes v${VERSION}" > CHANGELOG.md
-          echo "### Build Date: ${BUILD_DATE}" >> CHANGELOG.md
-          echo "### File SHA256: \`${APK_SHA256}\`" >> CHANGELOG.md
-          echo "" >> CHANGELOG.md
-          echo "## What's Changed" >> CHANGELOG.md
-          git log --pretty=format:"- **%s** ([%h](https://github.com/$GITHUB_REPOSITORY/commit/%H))" \
-            --no-merges v$(git describe --abbrev=0 --tags | sed 's/^v//')..HEAD >> CHANGELOG.md
+          {
+            echo "# Release Notes ${VERSION_TAG}"
+            echo ""
+            echo "## What's Changed"
+            git log --pretty=format:"- **%s** ([%h](https://github.com/$GITHUB_REPOSITORY/commit/%H))" --no-merges ${PREVIOUS_TAG}..HEAD
+          } > CHANGELOG.md
           
-          # Create summary for Telegram
-          echo "SUMMARY<<EOF" >> $GITHUB_ENV
-          git log --pretty=format:"- %s" --no-merges v$(git describe --abbrev=0 --tags | sed 's/^v//')..HEAD | head -n 3 >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-          
-          # Set outputs
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-          echo "BUILD_DATE=${BUILD_DATE}" >> $GITHUB_ENV
+          # Create summary for Telegram using a multiline-safe method
+          {
+            echo "SUMMARY<<EOF"
+            git log --pretty=format:"- %s" --no-merges ${PREVIOUS_TAG}..HEAD | head -n 5
+            echo "EOF"
+          } >> $GITHUB_ENV
+
+          # Set outputs for other steps
+          echo "VERSION_TAG=${VERSION_TAG}" >> $GITHUB_ENV
           echo "APK_SIZE=${APK_SIZE}" >> $GITHUB_ENV
           echo "RELEASE_FILENAME=${RELEASE_FILENAME}" >> $GITHUB_ENV
           echo "SHA256=${APK_SHA256}" >> $GITHUB_ENV
 
-      - name: Upload Release Assets
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-assets
-          path: |
-            ${{ env.RELEASE_FILENAME }}
-            CHANGELOG.md
-
-      - name: Generate Secure Download
-        id: download
-        run: |
-          # Create time-limited download URL
-          DL_LINK="https://nightly.link/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts/$RELEASE_FILENAME.zip"
-          echo "DOWNLOAD_URL=${DL_LINK}" >> $GITHUB_ENV
-          echo "url=${DL_LINK}" >> $GITHUB_OUTPUT
-
       - name: Create GitHub Release
+        id: create_release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref }}
-          name: "${{ env.APP_NAME }} v${{ env.VERSION }}"
-          body: file://CHANGELOG.md
-          files: |
-            ${{ env.RELEASE_FILENAME }}
-          draft: false
-          prerelease: false
+          name: "${{ env.APP_NAME }} ${{ env.VERSION_TAG }}"
+          body_path: CHANGELOG.md
+          files: ${{ env.RELEASE_FILENAME }}
 
-      - name: Send Professional Announcement
+      # <-- POINT 4: Handle "best effort" delivery. This step can fail without failing the whole workflow.
+      - name: Send Telegram Announcement
+        if: success() # Only run if the release was created successfully
+        continue-on-error: true # The workflow will succeed even if the Telegram message fails
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -101,34 +101,43 @@ jobs:
           message_thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
           parse_mode: HTML
           message: |
-            <b>🎉 ${{ env.APP_NAME }} v${{ env.VERSION }} Released!</b>
+            <b>🎉 ${{ env.APP_NAME }} ${{ env.VERSION_TAG }} Released!</b>
             
-            <b>📅 Release Date:</b> <code>${{ env.BUILD_DATE }}</code>
             <b>📦 Package Size:</b> <code>${{ env.APK_SIZE }}</code>
-            <b>🔒 Integrity Check:</b> <code>SHA256:${{ env.SHA256 }}</code>
+            <b>🔒 Integrity Check:</b> <code>${{ env.SHA256 }}</code>
             
             <b>🚀 Key Changes:</b>
             <pre>${{ env.SUMMARY }}</pre>
             
-            <i>Full changelog and additional downloads available on GitHub</i>
+            <i>Full changelog and downloads available on GitHub.</i>
           reply_markup: |
             {
               "inline_keyboard": [
                 [
                   {
-                    "text": "⬇️ Download Now",
-                    "url": "${{ env.DOWNLOAD_URL }}"
-                  },
-                  {
-                    "text": "📝 Release Notes",
-                    "url": "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}"
-                  }
-                ],
-                [
-                  {
-                    "text": "🔍 Verify Checksum",
-                    "url": "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}#user-content-file-sha256"
+                    "text": "⬇️ Download & Notes",
+                    "url": "${{ steps.create_release.outputs.html_url }}"
                   }
                 ]
               ]
             }
+
+  # <-- POINT 3: New job to clean up previous failed runs.
+  cleanup-runs:
+    runs-on: ubuntu-latest
+    # This job runs *after* the release job, and *only if* the release job was successful.
+    needs: release
+    if: success()
+
+    steps:
+      - name: Delete previous failed workflow runs
+        uses: matt-flo/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          retain_days: 7 # Keep all runs for 7 days
+          keep_minimum_runs: 1 # Always keep the most recent run, regardless of status
+          # This specifies we are deleting runs of THIS workflow ("Release Publisher")
+          delete_workflow_pattern: ${{ github.workflow }}
+          # Only delete runs that have failed or were cancelled
+          delete_run_by_conclusion_pattern: failure,cancelled
