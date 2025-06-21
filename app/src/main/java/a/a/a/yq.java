@@ -14,6 +14,7 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.beans.SrcCodeBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -389,6 +390,12 @@ public class yq {
                         "SketchLogger.broadcastLog(Log.getStackTraceString(throwable));\n" +
                                 "                    Process.killProcess(Process.myPid());"
                 );
+            }
+            if (new Material3LibraryManager(sc_id).isDynamicColorsEnabled()) {
+                sketchApplicationFileContent = sketchApplicationFileContent.replace(
+                        "mApplicationContext = getApplicationContext();", "mApplicationContext = getApplicationContext();\n" +
+                                        "        DynamicColors.applyToActivitiesIfAvailable(this);")
+                        .replace("import android.util.Log;", "import android.util.Log;\nimport com.google.android.material.color.DynamicColors;");
             }
 
             fileUtil.b(javaFilesPath + File.separator
@@ -941,7 +948,23 @@ public class yq {
         if (FileUtil.isExistFile(filePath)) {
             return FileUtil.readFile(filePath);
         }
-        if (N.g) {
+        Material3LibraryManager material3LibraryManager = new Material3LibraryManager(sc_id);
+        if (material3LibraryManager.isMaterial3Enabled()) {
+            XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
+            stylesFileBuilder.addStyle("AppTheme", String.format("Theme.Material3.%s.NoActionBar", material3LibraryManager.getTheme()));
+            stylesFileBuilder.addItemToStyle("AppTheme", "android:statusBarColor", "@android:color/transparent");
+            stylesFileBuilder.addItemToStyle("AppTheme", "android:navigationBarColor", "@android:color/transparent");
+            stylesFileBuilder.addItemToStyle("AppTheme", "android:windowLightStatusBar", "?attr/isLightTheme");
+            stylesFileBuilder.addStyle("AppTheme.FullScreen", "AppTheme");
+            stylesFileBuilder.addItemToStyle("AppTheme.FullScreen", "android:windowFullscreen", "true");
+            stylesFileBuilder.addItemToStyle("AppTheme.FullScreen", "android:windowContentOverlay", "@null");
+            stylesFileBuilder.addStyle("AppTheme.AppBarOverlay", "ThemeOverlay.Material3");
+            stylesFileBuilder.addStyle("AppTheme.PopupOverlay", "ThemeOverlay.Material3");
+            stylesFileBuilder.addStyle("AppTheme.DebugActivity", "AppTheme");
+            stylesFileBuilder.addItemToStyle("AppTheme.DebugActivity", "windowActionBar", "true");
+            stylesFileBuilder.addItemToStyle("AppTheme.DebugActivity", "windowNoTitle", "false");
+            return CommandBlock.applyCommands("styles.xml", stylesFileBuilder.toCode());
+        } else if (N.g) {
             boolean useNewMaterialComponentsTheme = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
                     BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
             XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
