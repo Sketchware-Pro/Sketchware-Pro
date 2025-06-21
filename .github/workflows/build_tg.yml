@@ -1,4 +1,4 @@
-name: Android CI v2.4
+name: Android CI (Debug)
 
 on:
   workflow_dispatch:
@@ -13,6 +13,7 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout Source Code
@@ -28,33 +29,44 @@ jobs:
           cache: gradle
 
       - name: Build Application Package (APK)
-        run: ./gradlew assembleRelease --no-daemon
+        id: build_apk
+        run: |
+          ./gradlew assembleRelease --no-daemon
+          APK_PATH="app/build/outputs/apk/release/app-release.apk"
+          if [ ! -f "$APK_PATH" ]; then
+            echo "::error::APK not found at expected path: $APK_PATH"
+            exit 1
+          fi
+          echo "APK_PATH=$APK_PATH" >> $GITHUB_ENV
 
       - name: Verify and Stage APK
         id: verify_apk
         run: |
-          APK_PATH="app/build/outputs/apk/release/app-release.apk"
           if [ ! -f "$APK_PATH" ]; then
             echo "::error::PRIMARY FAILURE: The Release APK was not found. Halting workflow."
             exit 1
           fi
-          echo "APK found. Renaming for release."
           mv "$APK_PATH" "release.apk"
+          echo "APK size: $(du -h release.apk | cut -f1)"
           echo "path=release.apk" >> $GITHUB_OUTPUT
 
       - name: Prepare Release Information
         id: prepare_info
-        continue-on-error: true
         run: |
           BUILD_ID=$(date +'%Y-%m-%d-%H%M%S')
           SHORT_SHA=$(git rev-parse --short HEAD)
           RELEASE_TAG="build-${BUILD_ID}-${SHORT_SHA}"
           
-          git log -10 --pretty=format:"- **%s** (%h)" > CHANGELOG.md || echo "Could not generate changelog. APK is attached." > CHANGELOG.md
-          git log -5 --pretty=format:"- %s" > TELEGRAM_SUMMARY.txt || echo "Build completed successfully." > TELEGRAM_SUMMARY.txt
-
+          # Generate changelog with error handling
+          {
+            echo "# Build Notes for ${RELEASE_TAG}"
+            echo ""
+            git log -10 --pretty=format:"- **%s** (%h)" || echo "- Could not generate full changelog"
+          } > CHANGELOG.md
+          
           echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_OUTPUT
           echo "RELEASE_NAME=Build ${RELEASE_TAG}" >> $GITHUB_OUTPUT
+          echo "Generated changelog with $(wc -l < CHANGELOG.md) lines"
 
       - name: Create GitHub Release
         id: create_release
@@ -66,40 +78,26 @@ jobs:
           files: release.apk
           prerelease: true
 
-      - name: Prepare Telegram Message
-        id: prepare_telegram
+      - name: Show Release Info
+        if: always()
         run: |
-          CONTENT=$(cat TELEGRAM_SUMMARY.txt | sed 's/"/\\"/g')
-          echo "message={\"text\":\"<b>✅ New Build Available: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}</b>\n\n<b>🚀 Recent Changes:</b>\n<pre>$CONTENT</pre>\n\n<i>Download the APK from the full release notes on GitHub.</i>\",\"parse_mode\":\"HTML\"}" >> $GITHUB_OUTPUT
-
-      - name: Send Telegram Notification
-        if: ${{ !failure() && steps.create_release.outputs.html_url }}
-        continue-on-error: true
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          message_thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
-          parse_mode: HTML
-          message: ${{ fromJson(steps.prepare_telegram.outputs.message).text }}
-          reply_markup: |
-            { "inline_keyboard": [[{ "text": "⬇️ Download & Notes", "url": "${{ steps.create_release.outputs.html_url }}" }]] }
-
-      - name: Debug if Telegram skipped
-        if: ${{ always() && (!steps.create_release.outputs.html_url || failure()) }}
-        run: |
-          echo "Telegram notification skipped because:"
-          echo "Release URL exists: ${{ steps.create_release.outputs.html_url != '' }}"
+          echo "Release status: ${{ job.status }}"
           echo "Release URL: ${{ steps.create_release.outputs.html_url || 'Not created' }}"
-          echo "Workflow status: ${{ job.status }}"
+          echo "Release Tag: ${{ steps.prepare_info.outputs.RELEASE_TAG || 'Unknown' }}"
 
-  cleanup-runs:
+  cleanup:
     runs-on: ubuntu-latest
     needs: release
-    if: ${{ success() }}
-    continue-on-error: true
+    if: ${{ always() }}
     steps:
-      - name: Clean up workflow runs
+      - name: Cleanup Artifacts
+        run: |
+          echo "Cleaning up workspace..."
+          rm -f release.apk CHANGELOG.md || true
+          echo "Cleanup complete"
+
+      - name: Workflow Run Cleanup
+        if: success()
         uses: rokroskar/workflow-run-cleanup-action@v1
         with:
           preserve_days: 7
