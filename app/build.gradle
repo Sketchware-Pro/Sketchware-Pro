@@ -83,7 +83,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"], exclude: "proguard-base-7.2.2.jar")
 
     implementation "androidx.appcompat:appcompat:1.7.1"
     implementation "androidx.core:core-splashscreen:1.0.1"
@@ -136,6 +136,9 @@ dependencies {
     implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
     implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
     implementation "com.github.PranavPurwar:filepicker:74526bea66"
+
+    implementation files('libs/proguard-base-7.2.2.jar')
+    implementation 'com.guardsquare:proguard-core:9.0.2'
 
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
