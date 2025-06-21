@@ -68,4 +68,31 @@
         <item name="android:statusBarColor">@android:color/black</item>
     </style>
     <style name="Platform.Theme.SketchwarePro" parent="Platform.V21.Theme.SketchwarePro" />
+
+    <!--
+    ================================================================================================
+    NEW THEME DEFINITIONS
+    ================================================================================================
+    -->
+
+    <!-- This is the base Light theme. It inherits all custom styles from the main app theme. -->
+    <style name="Theme.Sketchware.Light" parent="Theme.SketchwarePro" />
+
+    <!-- NEW: Sky Theme (inherits from our new base Light theme) -->
+    <style name="Theme.Sketchware.Sky" parent="Theme.Sketchware.Light">
+        <item name="colorPrimary">@color/sky_primary</item>
+        <item name="colorOnPrimary">@color/sky_on_primary</item>
+        <item name="colorPrimaryContainer">@color/sky_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/sky_on_primary_container</item>
+        <item name="colorSecondary">@color/sky_secondary</item>
+        <item name="colorOnSecondary">@color/sky_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/sky_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/sky_on_secondary_container</item>
+        <item name="android:colorBackground">@color/sky_background</item>
+        <item name="colorOnBackground">@color/sky_on_background</item>
+        <item name="colorSurface">@color/sky_surface</item>
+        <item name="colorOnSurface">@color/sky_on_surface</item>
+        <item name="colorSurfaceVariant">@color/sky_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/sky_on_surface_variant</item>
+    </style>
 </resources>

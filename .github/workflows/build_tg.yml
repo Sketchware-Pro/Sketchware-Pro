@@ -1,0 +1,62 @@
+name: Android CI - Build and Telegram Upload
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-notify:
+    name: Build APK and Notify Telegram
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      # Step 3: Setup Gradle
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      # Step 4: Build Release APK
+      - name: Build Release APK
+        env:
+          SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
+        run: |
+          gradle assembleRelease
+
+      # Step 5: Rename APK with short commit hash
+      - name: Rename APK
+        run: |
+          SHORT_SHA=${GITHUB_SHA::7}
+          mv app/build/outputs/apk/release/app-release.apk \
+             app/build/outputs/apk/release/app-release-$SHORT_SHA.apk
+          echo "APK_PATH=app/build/outputs/apk/release/app-release-$SHORT_SHA.apk" >> $GITHUB_ENV
+          echo "APK_NAME=app-release-$SHORT_SHA.apk" >> $GITHUB_ENV
+
+      # Step 6: Upload APK as artifact (optional)
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-apk
+          path: ${{ env.APK_PATH }}
+
+      # Step 7: Send to Telegram group topic
+      - name: Notify Telegram group
+        uses: appleboy/telegram-action@master
+        with:
+          to: "-1002136675546"  # Your StudioAs Inc. group ID
+          token: "8034519004:AAGk0Zu1KmAWztdNt52dRqAjPIWCw74Ok5Y"  # Your bot token
+          message_thread_id: 3481  # Sketchware Pro topic ID
+          document: ${{ env.APK_PATH }}
+          caption: |
+            🚀 New Sketchware Pro Build!
+            📅 Build date: $(date +'%Y-%m-%d %H:%M:%S')
+            🔖 Commit: [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+            📦 Download the APK above!

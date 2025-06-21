@@ -88,4 +88,19 @@
     <color name="splash_bg_color">@color/md_theme_light_background</color>
     <color name="splash_content_color">@color/md_theme_light_on_background</color>
 
+    <!-- NEW COLORS FOR SKY THEME -->
+    <color name="sky_primary">#0091ea</color>
+    <color name="sky_on_primary">#ffffff</color>
+    <color name="sky_primary_container">#b3e5fc</color>
+    <color name="sky_on_primary_container">#001d32</color>
+    <color name="sky_secondary">#5b5f62</color>
+    <color name="sky_on_secondary">#ffffff</color>
+    <color name="sky_secondary_container">#dee3e7</color>
+    <color name="sky_on_secondary_container">#181c1f</color>
+    <color name="sky_background">#fcfcff</color>
+    <color name="sky_on_background">#1a1c1e</color>
+    <color name="sky_surface">#fcfcff</color>
+    <color name="sky_on_surface">#1a1c1e</color>
+    <color name="sky_surface_variant">#dfe3e8</color>
+    <color name="sky_on_surface_variant">#42474c</color>
 </resources>

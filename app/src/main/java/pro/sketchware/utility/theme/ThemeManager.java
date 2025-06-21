@@ -11,6 +11,8 @@ public class ThemeManager {
     public static final int THEME_SYSTEM = 0;
     public static final int THEME_LIGHT = 1;
     public static final int THEME_DARK = 2;
+    public static final int THEME_AMOLED = 3;
+    public static final int THEME_SKY = 4;
     private static final String THEME_PREF = "themedata";
     private static final String THEME_KEY = "idetheme";
 
@@ -19,9 +21,11 @@ public class ThemeManager {
 
         switch (type) {
             case THEME_LIGHT:
+            case THEME_SKY:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 break;
             case THEME_DARK:
+            case THEME_AMOLED:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
             default:
@@ -53,6 +57,7 @@ public class ThemeManager {
     }
 
     private static SharedPreferences getPreferences(Context context) {
+        // This is the corrected line. We re-add THEME_PREF.
         return context.getSharedPreferences(THEME_PREF, Context.MODE_PRIVATE);
     }
 }

@@ -29,7 +29,9 @@ import a.a.a.MA;
 import a.a.a.lC;
 import a.a.a.xB;
 import dev.chrisbanes.insetter.Insetter;
+import pro.sketchware.R;
 import pro.sketchware.dialogs.ProgressDialog;
+import pro.sketchware.utility.theme.ThemeManager;
 
 public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
@@ -111,6 +113,26 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // Apply the specific theme BEFORE super.onCreate() and setContentView().
+        // This is crucial for the theme to be applied correctly to the window and its components.
+        int themeType = ThemeManager.getCurrentTheme(this);
+        switch (themeType) {
+            case ThemeManager.THEME_LIGHT:
+                setTheme(R.style.Theme_Sketchware_Light);
+                break;
+            case ThemeManager.THEME_DARK:
+                setTheme(R.style.Theme_Sketchware_Dark);
+                break;
+            case ThemeManager.THEME_AMOLED:
+                setTheme(R.style.Theme_Sketchware_Amoled);
+                break;
+            case ThemeManager.THEME_SKY:
+                setTheme(R.style.Theme_Sketchware_Sky);
+                break;
+            // For THEME_SYSTEM, we do not call setTheme().
+            // This allows the default DayNight theme set in the AndroidManifest.xml to handle it.
+        }
+
         super.onCreate(savedInstanceState);
         e = getApplicationContext();
         taskList = new ArrayList<>();
@@ -178,4 +200,4 @@ public abstract class BaseAppCompatActivity extends AppCompatActivity {
             getWindow().setNavigationBarContrastEnforced(false);
         }
     }
-}
+    }

@@ -5,4 +5,24 @@
     </style>
 
     <style name="Platform.Theme.SketchwarePro" parent="Platform.V21.Theme.SketchwarePro" />
+
+    <!--
+    ================================================================================================
+    NEW THEME DEFINITIONS (NIGHT)
+    ================================================================================================
+    -->
+
+    <!-- This is the base Dark theme. It inherits all custom styles from the main app theme.
+         Since this is in the values-night folder, it will automatically use the dark color scheme. -->
+    <style name="Theme.Sketchware.Dark" parent="Theme.SketchwarePro" />
+
+    <!-- NEW: Amoled Theme (inherits from our new base Dark theme) -->
+    <style name="Theme.Sketchware.Amoled" parent="Theme.Sketchware.Dark">
+        <!-- Override background and surface colors for a true black experience -->
+        <item name="android:colorBackground">@android:color/black</item>
+        <item name="colorSurface">@android:color/black</item>
+        <item name="colorSurfaceContainer">@android:color/black</item>
+        <item name="colorSurfaceContainerLow">@android:color/black</item>
+        <item name="colorSurfaceContainerLowest">@android:color/black</item>
+    </style>
 </resources>
