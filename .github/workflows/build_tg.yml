@@ -1,36 +1,52 @@
+# ==============================================================================
+#  Android CI v2.3 - Resilient Build Publisher
+# ==============================================================================
+#  This workflow builds, verifies, and publishes a new release of the Android
+#  application. It is designed to be triggered manually and prioritizes
+#  delivering the build artifact even if secondary tasks (like generating
+#  changelogs or sending notifications) encounter issues.
+# ==============================================================================
 name: Android CI v2.3
 
 on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  actions: write
+  contents: write   # Required to create GitHub Releases and tags.
+  actions: write    # Required for the cleanup job to delete old workflow runs.
 
 env:
   APP_NAME: "Sketchware Pro"
 
+# ==============================================================================
+#  JOBS
+# ==============================================================================
 jobs:
+  # ----------------------------------------------------------------------------
+  #  JOB 1: Build and Release the Application
+  # ----------------------------------------------------------------------------
   release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout the latest code
+      # --- 1. Setup Environment ---
+      - name: Checkout Source Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Fetches all history for full changelog generation.
 
-      - name: Set up JDK 17
+      - name: Set up JDK and Gradle Cache
         uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: temurin
           cache: gradle
 
-      - name: Building APK
+      # --- 2. Build and Verify ---
+      - name: Build Application Package (APK)
         run: ./gradlew assembleRelease --no-daemon
 
-      - name: Anti-virus running
+      - name: Verify and Stage APK
         id: verify_apk
         run: |
           APK_PATH="app/build/outputs/apk/release/app-release.apk"
@@ -42,28 +58,39 @@ jobs:
           mv "$APK_PATH" "release.apk"
           echo "path=release.apk" >> $GITHUB_OUTPUT
 
-      - name: Preparing for release
+      # --- 3. Prepare Release Metadata (Best Effort) ---
+      - name: Prepare Release Information
         id: prepare_info
-        continue-on-error: true
+        continue-on-error: true # This step is non-critical.
         run: |
-          # Use seconds for a guaranteed unique tag
+          # Use seconds for a guaranteed unique tag.
           BUILD_ID=$(date +'%Y-%m-%d-%H%M%S')
           SHORT_SHA=$(git rev-parse --short HEAD)
           RELEASE_TAG="build-${BUILD_ID}-${SHORT_SHA}"
           
-          # Use fallbacks in case git log fails (e.g., new repo)
+          # Use fallbacks in case git log fails (e.g., new repo).
           CHANGELOG_BODY=$(git log -10 --pretty=format:"- **%s** (%h)") || CHANGELOG_BODY="Could not generate changelog. APK is attached."
           
           echo "# Build Notes for ${RELEASE_TAG}" > CHANGELOG.md
           echo "" >> CHANGELOG.md
           echo "${CHANGELOG_BODY}" >> CHANGELOG.md
           
-          # We write the summary to a file instead of trying to use environment variables.
+          # Write the summary to a file for the next step to read.
           git log -5 --pretty=format:"- %s" > TELEGRAM_SUMMARY.txt || echo "Build completed successfully." > TELEGRAM_SUMMARY.txt
 
           echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_OUTPUT
           echo "RELEASE_NAME=Build ${RELEASE_TAG}" >> $GITHUB_OUTPUT
 
+      # --- 4. Read Summary File for Telegram (Best Effort) ---
+      # THE FIX: Use a dedicated action to read the file content into an output.
+      - name: Read Changelog Summary for Telegram
+        id: read_summary
+        if: steps.prepare_info.outcome == 'success'
+        uses: jakejarvis/read-file-action@v1
+        with:
+          path: ./TELEGRAM_SUMMARY.txt
+
+      # --- 5. Publish Release ---
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -75,7 +102,8 @@ jobs:
           files: ${{ steps.verify_apk.outputs.path }}
           prerelease: true
 
-      - name: Sending to Telegram
+      # --- 6. Announce on Telegram (Best Effort) ---
+      - name: Send Telegram Notification
         if: success() && steps.create_release.outputs.html_url != ''
         continue-on-error: true
         uses: appleboy/telegram-action@master
@@ -88,22 +116,22 @@ jobs:
             <b>✅ New Build Available: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('Build {0}', github.run_id) }}</b>
             
             <b>🚀 Recent Changes:</b>
-            <pre>${{ fromJSON(format('"%s"', steps.prepare_info.outcome == 'success' && join(file('TELEGRAM_SUMMARY.txt'), '\n') || 'Build completed.')) }}</pre>
+            <pre>${{ steps.read_summary.outputs.content || 'Build completed successfully.' }}</pre>
             
             <i>Download the APK from the full release notes on GitHub.</i>
           reply_markup: |
             { "inline_keyboard": [[{ "text": "⬇️ Download & Notes", "url": "${{ steps.create_release.outputs.html_url }}" }]] }
 
+  # ----------------------------------------------------------------------------
+  #  JOB 2: Cleanup Old Workflow Runs (Best Effort)
+  # ----------------------------------------------------------------------------
   cleanup-runs:
     runs-on: ubuntu-latest
     needs: release
-    # This job will run if the 'release' job succeeded.
     if: success()
-    # <--- THE FIX: This entire job is now "best effort".
-    # If it fails, it will NOT cause the entire workflow run to be marked as failed.
-    continue-on-error: true
+    continue-on-error: true # This entire job is non-critical.
     steps:
-      - name: Deleting Failed Workflows
+      - name: Delete Old Failed Workflows
         uses: matic-for/delete-workflow-runs@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
