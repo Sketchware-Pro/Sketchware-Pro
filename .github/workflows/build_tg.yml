@@ -43,7 +43,7 @@ jobs:
           echo "path=release.apk" >> $GITHUB_OUTPUT
 
       - name: Prepare Release Information
-        id: prepare_info  # Fixed ID (was prepare_info)
+        id: prepare_info
         continue-on-error: true
         run: |
           BUILD_ID=$(date +'%Y-%m-%d-%H%M%S')
@@ -63,18 +63,21 @@ jobs:
 
       - name: Read Changelog Summary into Output
         id: read_summary
-        if: steps.prepare_info.outcome == 'success'  # Fixed reference
+        if: steps.prepare_info.outcome == 'success'
         run: |
-          # Generate base64-encoded content to avoid delimiter conflicts
-          CONTENT_BASE64=$(base64 -w0 TELEGRAM_SUMMARY.txt)
-          echo "content_base64=${CONTENT_BASE64}" >> $GITHUB_OUTPUT
+          CONTENT=$(cat TELEGRAM_SUMMARY.txt)
+          # Proper multiline output syntax
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "content<<$EOF" >> $GITHUB_OUTPUT
+          echo "$CONTENT" >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}  # Fixed reference
-          name: ${{ steps.prepare_info.outputs.RELEASE_NAME || format('Build {0}', github.run_id) }}  # Fixed reference
+          tag_name: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}
+          name: ${{ steps.prepare_info.outputs.RELEASE_NAME || format('Build {0}', github.run_id) }}
           body_path: ${{ steps.prepare_info.outcome == 'success' && 'CHANGELOG.md' || '' }}
           body: ${{ steps.prepare_info.outcome == 'success' && '' || 'Build artifact attached.' }}
           files: ${{ steps.verify_apk.outputs.path }}
@@ -90,12 +93,10 @@ jobs:
           message_thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
           parse_mode: HTML
           message: |
-            <b>✅ New Build Available: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}</b>  <!-- Fixed reference -->
+            <b>✅ New Build Available: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}</b>
             
             <b>🚀 Recent Changes:</b>
-            <pre>
-${{ fromBase64(steps.read_summary.outputs.content_base64) || 'Build completed successfully.' }}
-            </pre>
+            <pre>${{ steps.read_summary.outputs.content || 'Build completed successfully.' }}</pre>
             
             <i>Download the APK from the full release notes on GitHub.</i>
           reply_markup: |
