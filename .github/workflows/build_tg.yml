@@ -1,19 +1,18 @@
 # ==============================================================================
-#  Android CI v2.3 - Resilient Build Publisher
+#  Android CI v2.4 - Truly Resilient Build Publisher
 # ==============================================================================
-#  This workflow builds, verifies, and publishes a new release of the Android
-#  application. It is designed to be triggered manually and prioritizes
-#  delivering the build artifact even if secondary tasks (like generating
-#  changelogs or sending notifications) encounter issues.
+#  This workflow builds, verifies, and publishes a new release. It is designed
+#  to be extremely robust, eliminating unnecessary external dependencies and
+#  prioritizing the delivery of the build artifact above all else.
 # ==============================================================================
-name: Android CI v2.3
+name: Android CI v2.4
 
 on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # Required to create GitHub Releases and tags.
-  actions: write    # Required for the cleanup job to delete old workflow runs.
+  contents: write
+  actions: write
 
 env:
   APP_NAME: "Sketchware Pro"
@@ -33,7 +32,7 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetches all history for full changelog generation.
+          fetch-depth: 0
 
       - name: Set up JDK and Gradle Cache
         uses: actions/setup-java@v4
@@ -63,32 +62,31 @@ jobs:
         id: prepare_info
         continue-on-error: true # This step is non-critical.
         run: |
-          # Use seconds for a guaranteed unique tag.
           BUILD_ID=$(date +'%Y-%m-%d-%H%M%S')
           SHORT_SHA=$(git rev-parse --short HEAD)
           RELEASE_TAG="build-${BUILD_ID}-${SHORT_SHA}"
           
-          # Use fallbacks in case git log fails (e.g., new repo).
           CHANGELOG_BODY=$(git log -10 --pretty=format:"- **%s** (%h)") || CHANGELOG_BODY="Could not generate changelog. APK is attached."
           
           echo "# Build Notes for ${RELEASE_TAG}" > CHANGELOG.md
           echo "" >> CHANGELOG.md
           echo "${CHANGELOG_BODY}" >> CHANGELOG.md
           
-          # Write the summary to a file for the next step to read.
           git log -5 --pretty=format:"- %s" > TELEGRAM_SUMMARY.txt || echo "Build completed successfully." > TELEGRAM_SUMMARY.txt
 
           echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_OUTPUT
           echo "RELEASE_NAME=Build ${RELEASE_TAG}" >> $GITHUB_OUTPUT
 
       # --- 4. Read Summary File for Telegram (Best Effort) ---
-      # THE FIX: Use a dedicated action to read the file content into an output.
-      - name: Read Changelog Summary for Telegram
+      # THE FIX: Replaced the failing external action with a dependency-free shell command.
+      # This is the standard, most reliable way to read a file's content into an output.
+      - name: Read Changelog Summary into Output
         id: read_summary
         if: steps.prepare_info.outcome == 'success'
-        uses: jakejarvis/read-file-action@v1
-        with:
-          path: ./TELEGRAM_SUMMARY.txt
+        run: |
+          echo "content<<EOF" >> $GITHUB_OUTPUT
+          cat TELEGRAM_SUMMARY.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       # --- 5. Publish Release ---
       - name: Create GitHub Release
@@ -113,7 +111,7 @@ jobs:
           message_thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
           parse_mode: HTML
           message: |
-            <b>✅ New Build Available: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('Build {0}', github.run_id) }}</b>
+            <b>✅ New Build Available: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}</b>
             
             <b>🚀 Recent Changes:</b>
             <pre>${{ steps.read_summary.outputs.content || 'Build completed successfully.' }}</pre>
