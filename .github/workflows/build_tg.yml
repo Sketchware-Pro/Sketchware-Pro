@@ -50,37 +50,14 @@ jobs:
           SHORT_SHA=$(git rev-parse --short HEAD)
           RELEASE_TAG="build-${BUILD_ID}-${SHORT_SHA}"
           
-          # Generate changelog body
-          if CHANGELOG_BODY=$(git log -10 --pretty=format:"- **%s** (%h)"); then
-            echo "Changelog generated successfully"
-          else
-            CHANGELOG_BODY="Could not generate changelog. APK is attached."
-          fi
-          
-          echo "# Build Notes for ${RELEASE_TAG}" > CHANGELOG.md
-          echo "" >> CHANGELOG.md
-          echo "${CHANGELOG_BODY}" >> CHANGELOG.md
+          # Generate changelog
+          git log -10 --pretty=format:"- **%s** (%h)" > CHANGELOG.md || echo "Could not generate changelog. APK is attached." > CHANGELOG.md
           
           # Generate Telegram summary
-          if git log -5 --pretty=format:"- %s" > TELEGRAM_SUMMARY.txt; then
-            echo "Telegram summary generated"
-          else
-            echo "Build completed successfully." > TELEGRAM_SUMMARY.txt
-          fi
+          git log -5 --pretty=format:"- %s" > TELEGRAM_SUMMARY.txt || echo "Build completed successfully." > TELEGRAM_SUMMARY.txt
 
           echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_OUTPUT
           echo "RELEASE_NAME=Build ${RELEASE_TAG}" >> $GITHUB_OUTPUT
-
-      - name: Read Changelog Summary into Output
-        id: read_summary
-        if: steps.prepare_info.outcome == 'success'
-        run: |
-          CONTENT=$(cat TELEGRAM_SUMMARY.txt)
-          # Use heredoc syntax for multiline output
-          EOF_MARKER=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-          echo "content<<${EOF_MARKER}" >> $GITHUB_OUTPUT
-          echo "${CONTENT}" >> $GITHUB_OUTPUT
-          echo "${EOF_MARKER}" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         id: create_release
@@ -88,30 +65,30 @@ jobs:
         with:
           tag_name: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}
           name: ${{ steps.prepare_info.outputs.RELEASE_NAME || format('Build {0}', github.run_id) }}
-          body_path: CHANGELOG.md
+          body_file: CHANGELOG.md
           files: release.apk
           prerelease: true
-
-      - name: Show Release URL
-        run: echo "Release created at: ${{ steps.create_release.outputs.html_url }}"
 
       - name: Prepare Telegram Message
         id: prepare_telegram
         run: |
-          # Simplified message without complex expressions
-          RELEASE_TAG="${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}"
-          SUMMARY_CONTENT="${{ steps.read_summary.outputs.content || 'Build completed successfully.' }}"
-          RELEASE_URL="${{ steps.create_release.outputs.html_url }}"
+          # Read summary content
+          CONTENT=$(cat TELEGRAM_SUMMARY.txt)
+          # Escape special characters for JSON
+          ESCAPED_CONTENT=$(jq -Rs . <<< "$CONTENT" | sed 's/^"//;s/"$//')
           
-          MESSAGE="<b>✅ New Build Available: ${RELEASE_TAG}</b>
-
-<b>🚀 Recent Changes:</b>
-<pre>${SUMMARY_CONTENT}</pre>
-
-<i>Download the APK from the full release notes on GitHub.</i>"
+          # Create complete message
+          MESSAGE=$(cat <<EOF
+          <b>✅ New Build Available: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}</b>
+          
+          <b>🚀 Recent Changes:</b>
+          <pre>${ESCAPED_CONTENT}</pre>
+          
+          <i>Download the APK from the full release notes on GitHub.</i>
+          EOF
+          )
           
           echo "message=${MESSAGE}" >> $GITHUB_OUTPUT
-          echo "release_url=${RELEASE_URL}" >> $GITHUB_OUTPUT
 
       - name: Send Telegram Notification
         if: success() && steps.create_release.outputs.html_url != ''
@@ -124,7 +101,7 @@ jobs:
           parse_mode: HTML
           message: ${{ steps.prepare_telegram.outputs.message }}
           reply_markup: |
-            { "inline_keyboard": [[{ "text": "⬇️ Download & Notes", "url": "${{ steps.prepare_telegram.outputs.release_url }}" }]] }
+            { "inline_keyboard": [[{ "text": "⬇️ Download & Notes", "url": "${{ steps.create_release.outputs.html_url }}" }]] }
 
       - name: Debug if Telegram skipped
         if: always() && !(success() && steps.create_release.outputs.html_url != '')
