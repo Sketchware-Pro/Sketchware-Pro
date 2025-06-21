@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- This is the style for when an item IS SELECTED -->
+    <item android:state_activated="true">
+        <shape android:shape="rectangle">
+            <!-- This is the soft blue background color -->
+            <solid android:color="#1A007DFF" />
+            <!-- This is a thin blue border -->
+            <stroke android:width="1.5dp" android:color="?attr/colorPrimary" />
+            <!-- This makes the corners rounded -->
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+    <!-- This is the style for when an item IS NOT SELECTED (the default) -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="8dp" />
+        </shape>
+    </item>
+
+</selector>
