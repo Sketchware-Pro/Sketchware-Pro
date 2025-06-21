@@ -1,7 +1,10 @@
 name: Android CI - Build and Telegram Upload
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Allows manual triggering
+  push:               # Optional: also run on push to main
+    branches:
+      - main
 
 jobs:
   build-and-notify:
@@ -10,8 +13,7 @@ jobs:
     
     steps:
       # Step 1: Checkout code
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       # Step 2: Set up JDK 17
       - name: Set up JDK 17
@@ -28,7 +30,11 @@ jobs:
       - name: Build Release APK
         env:
           SKETCHUB_API_KEY: ${{ secrets.SKETCHUB_API_KEY }}
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
         run: |
+          if [ -n "$GOOGLE_SERVICES_JSON" ]; then
+            echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
+          fi
           gradle assembleRelease
 
       # Step 5: Rename APK with short commit hash
@@ -51,9 +57,9 @@ jobs:
       - name: Notify Telegram group
         uses: appleboy/telegram-action@master
         with:
-          to: "-1002136675546"  # Your StudioAs Inc. group ID
-          token: "8034519004:AAGk0Zu1KmAWztdNt52dRqAjPIWCw74Ok5Y"  # Your bot token
-          message_thread_id: 3481  # Sketchware Pro topic ID
+          to: ${{ secrets.TELEGRAM_CHAT_ID || '-1002136675546' }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN || '8034519004:AAGk0Zu1KmAWztdNt52dRqAjPIWCw74Ok5Y' }}
+          message_thread_id: ${{ secrets.TELEGRAM_TOPIC_ID || '3481' }}
           document: ${{ env.APK_PATH }}
           caption: |
             🚀 New Sketchware Pro Build!
