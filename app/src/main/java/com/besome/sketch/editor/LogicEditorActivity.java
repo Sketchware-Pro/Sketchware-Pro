@@ -1443,7 +1443,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public void b(Ss ss) {
-        ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, (ss.getArgValue() == null || ss.getArgValue().toString().length() <= 0 || ss.getArgValue().toString().indexOf("0xFF") != 0) ? 0 : Color.parseColor(ss.getArgValue().toString().replace("0xFF", "#")), true, false, B);
+        ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, (ss.getArgValue() == null || ss.getArgValue().toString().isEmpty()) ? "Color.TRANSPARENT" : ss.getArgValue().toString().replace("0xFF", "#"), true, false, B);
         colorPickerDialog.a(new ColorPickerDialog.b() {
             @Override
             public void a(int var1) {
@@ -1459,6 +1459,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 LogicEditorActivity.this.a(ss, "getResources().getColor(R.color." + var1 + ")");
             }
         });
+        colorPickerDialog.materialColorAttr((attr, attrId) -> LogicEditorActivity.this.a(ss, "getMaterialColor(R.attr." + attr + ")"));
         colorPickerDialog.showAtLocation(ss, Gravity.CENTER, 0, 0);
     }
 
