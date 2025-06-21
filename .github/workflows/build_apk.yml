@@ -1,4 +1,4 @@
-name: Android CI (Flash)
+name: Android CI (Stable)
 on:
   workflow_dispatch:
 
