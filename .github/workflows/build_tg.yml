@@ -1,4 +1,4 @@
-name: Android CI v2.1
+name: Android CI v2.2
 
 on:
   workflow_dispatch:
@@ -30,7 +30,6 @@ jobs:
       - name: Build Release APK
         run: ./gradlew assembleRelease --no-daemon
 
-      # --- This is now the ONLY hard failure point after the build ---
       - name: Verify and Rename APK
         id: verify_apk
         run: |
@@ -39,61 +38,65 @@ jobs:
             echo "::error::PRIMARY FAILURE: The Release APK was not found. Halting workflow."
             exit 1
           fi
-          # If APK exists, rename it and set the path for upload
           echo "APK found. Renaming for release."
           mv "$APK_PATH" "release.apk"
           echo "path=release.apk" >> $GITHUB_OUTPUT
 
-      # --- From this point on, all steps are "best effort" and will not fail the job ---
-
       - name: Prepare Release Information (Best Effort)
         id: prepare_info
-        # This whole step can fail, but the workflow will continue.
         continue-on-error: true
         run: |
-          # Generate a unique tag
-          BUILD_ID=$(date +'%Y-%m-%d-%H%M')
+          # <--- THE FIX: Add %S for seconds to guarantee a unique tag every time.
+          BUILD_ID=$(date +'%Y-%m-%d-%H%M%S')
           SHORT_SHA=$(git rev-parse --short HEAD)
           RELEASE_TAG="build-${BUILD_ID}-${SHORT_SHA}"
-          echo "Generated Tag: ${RELEASE_TAG}"
           
-          # Try to generate a changelog, but provide a fallback if it fails
           CHANGELOG_BODY=$(git log -10 --pretty=format:"- **%s** (%h)") || CHANGELOG_BODY="Could not generate changelog. APK is attached."
-          
-          # Try to generate a Telegram summary, with a fallback
           TELEGRAM_SUMMARY=$(git log -5 --pretty=format:"- %s") || TELEGRAM_SUMMARY="Build completed successfully."
 
-          # Write to files and environment for later steps
           echo "# Build Notes for ${RELEASE_TAG}" > CHANGELOG.md
           echo "" >> CHANGELOG.md
           echo "${CHANGELOG_BODY}" >> CHANGELOG.md
 
-          # Use the safe method for multiline env vars
+          # Safely set environment variable for Telegram
           {
             echo "SUMMARY<<EOF"
             echo "${TELEGRAM_SUMMARY}"
             echo "EOF"
           } >> $GITHUB_ENV
           
-          echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_ENV
-          echo "RELEASE_NAME=Build ${RELEASE_TAG}" >> $GITHUB_ENV
+          # Use outputs for robust cross-step communication
+          echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_OUTPUT
+          echo "RELEASE_NAME=Build ${RELEASE_TAG}" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          # Use the generated tag, or a fallback timestamp tag if the prepare step failed completely
           tag_name: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}
           name: ${{ steps.prepare_info.outputs.RELEASE_NAME || format('Build {0}', github.run_id) }}
-          # Use the generated changelog file, or a simple text body if the file wasn't created
           body_path: ${{ steps.prepare_info.outcome == 'success' && 'CHANGELOG.md' || '' }}
           body: ${{ steps.prepare_info.outcome == 'success' && '' || 'Build artifact attached.' }}
-          # The path to the APK was set in the verified step, so it's always available
           files: ${{ steps.verify_apk.outputs.path }}
           prerelease: true
 
       - name: Send Telegram Announcement (Best Effort)
-        # Only run if the release was successfully created, but don't fail the job if Telegram fails
+        if: success() && steps.create_release.outputs.html_url != ''
+        continue-on-error: true
+        run: |
+          SUMMARY="${{ env.SUMMARY || 'Build completed.' }}"
+          RELEASE_TAG="${{ steps.prepare_info.outputs.RELEASE_TAG || format('Build {0}', github.run_id) }}"
+          
+          cat << EOF > telegram_message.txt
+          <b>✅ New Build Available: ${RELEASE_TAG}</b>
+          
+          <b>🚀 Recent Changes:</b>
+          <pre>${SUMMARY}</pre>
+          
+          <i>Download the APK from the full release notes on GitHub.</i>
+          EOF
+
+      - name: Dispatch Telegram Message
         if: success() && steps.create_release.outputs.html_url != ''
         continue-on-error: true
         uses: appleboy/telegram-action@master
@@ -102,24 +105,9 @@ jobs:
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message_thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
           parse_mode: HTML
-          message: |
-            <b>✅ New Build Available: ${{ env.RELEASE_TAG || format('Build {0}', github.run_id) }}</b>
-            
-            <b>🚀 Recent Changes:</b>
-            <pre>${{ env.SUMMARY || 'Build completed.' }}</pre>
-            
-            <i>Download the APK from the full release notes on GitHub.</i>
+          message_file: telegram_message.txt
           reply_markup: |
-            {
-              "inline_keyboard": [
-                [
-                  {
-                    "text": "⬇️ Download & Notes",
-                    "url": "${{ steps.create_release.outputs.html_url }}"
-                  }
-                ]
-              ]
-            }
+            { "inline_keyboard": [[{ "text": "⬇️ Download & Notes", "url": "${{ steps.create_release.outputs.html_url }}" }]] }
 
   cleanup-runs:
     runs-on: ubuntu-latest
@@ -127,7 +115,7 @@ jobs:
     if: success()
     steps:
       - name: Delete previous failed workflow runs
-        uses: matt-flo/delete-workflow-runs@v2
+        uses: matic-for/delete-workflow-runs@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
