@@ -54,6 +54,11 @@ jobs:
           git log --pretty=format:"- **%s** ([%h](https://github.com/$GITHUB_REPOSITORY/commit/%H))" \
             --no-merges v$(git describe --abbrev=0 --tags | sed 's/^v//')..HEAD >> CHANGELOG.md
           
+          # Create summary for Telegram
+          echo "SUMMARY<<EOF" >> $GITHUB_ENV
+          git log --pretty=format:"- %s" --no-merges v$(git describe --abbrev=0 --tags | sed 's/^v//')..HEAD | head -n 3 >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
           # Set outputs
           echo "VERSION=${VERSION}" >> $GITHUB_ENV
           echo "BUILD_DATE=${BUILD_DATE}" >> $GITHUB_ENV
@@ -72,7 +77,7 @@ jobs:
       - name: Generate Secure Download
         id: download
         run: |
-          # Create time-limited download URL (24h validity)
+          # Create time-limited download URL
           DL_LINK="https://nightly.link/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts/$RELEASE_FILENAME.zip"
           echo "DOWNLOAD_URL=${DL_LINK}" >> $GITHUB_ENV
           echo "url=${DL_LINK}" >> $GITHUB_OUTPUT
@@ -98,12 +103,12 @@ jobs:
           message: |
             <b>🎉 ${{ env.APP_NAME }} v${{ env.VERSION }} Released!</b>
             
-            📅 <b>Release Date:</b> <code>${{ env.BUILD_DATE }}</code>
-            📦 <b>Package Size:</b> <code>${{ env.APK_SIZE }}</code>
-            🔒 <b>Integrity Check:</b> <code>SHA256:${{ env.SHA256 }}</code>
+            <b>📅 Release Date:</b> <code>${{ env.BUILD_DATE }}</code>
+            <b>📦 Package Size:</b> <code>${{ env.APK_SIZE }}</code>
+            <b>🔒 Integrity Check:</b> <code>SHA256:${{ env.SHA256 }}</code>
             
             <b>🚀 Key Changes:</b>
-            <blockquote>${{ join(split(steps.prepare.outputs.changelog, '\n')[0..3], '\n') }}</blockquote>
+            <pre>${{ env.SUMMARY }}</pre>
             
             <i>Full changelog and additional downloads available on GitHub</i>
           reply_markup: |
@@ -111,7 +116,7 @@ jobs:
               "inline_keyboard": [
                 [
                   {
-                    "text": "⬇️ Download (v${{ env.VERSION }})",
+                    "text": "⬇️ Download Now",
                     "url": "${{ env.DOWNLOAD_URL }}"
                   },
                   {
@@ -122,7 +127,7 @@ jobs:
                 [
                   {
                     "text": "🔍 Verify Checksum",
-                    "callback_data": "checksum_${{ env.SHA256 }}"
+                    "url": "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}#user-content-file-sha256"
                   }
                 ]
               ]
