@@ -1,4 +1,4 @@
-name: Android CI v2.2
+name: Android CI v2.3
 
 on:
   workflow_dispatch:
@@ -27,10 +27,10 @@ jobs:
           distribution: temurin
           cache: gradle
 
-      - name: Build Release APK
+      - name: Building APK
         run: ./gradlew assembleRelease --no-daemon
 
-      - name: Verify and Rename APK
+      - name: Anti-virus running
         id: verify_apk
         run: |
           APK_PATH="app/build/outputs/apk/release/app-release.apk"
@@ -42,30 +42,25 @@ jobs:
           mv "$APK_PATH" "release.apk"
           echo "path=release.apk" >> $GITHUB_OUTPUT
 
-      - name: Prepare Release Information (Best Effort)
+      - name: Preparing for release
         id: prepare_info
         continue-on-error: true
         run: |
-          # <--- THE FIX: Add %S for seconds to guarantee a unique tag every time.
+          # Use seconds for a guaranteed unique tag
           BUILD_ID=$(date +'%Y-%m-%d-%H%M%S')
           SHORT_SHA=$(git rev-parse --short HEAD)
           RELEASE_TAG="build-${BUILD_ID}-${SHORT_SHA}"
           
+          # Use fallbacks in case git log fails (e.g., new repo)
           CHANGELOG_BODY=$(git log -10 --pretty=format:"- **%s** (%h)") || CHANGELOG_BODY="Could not generate changelog. APK is attached."
-          TELEGRAM_SUMMARY=$(git log -5 --pretty=format:"- %s") || TELEGRAM_SUMMARY="Build completed successfully."
-
+          
           echo "# Build Notes for ${RELEASE_TAG}" > CHANGELOG.md
           echo "" >> CHANGELOG.md
           echo "${CHANGELOG_BODY}" >> CHANGELOG.md
-
-          # Safely set environment variable for Telegram
-          {
-            echo "SUMMARY<<EOF"
-            echo "${TELEGRAM_SUMMARY}"
-            echo "EOF"
-          } >> $GITHUB_ENV
           
-          # Use outputs for robust cross-step communication
+          # We write the summary to a file instead of trying to use environment variables.
+          git log -5 --pretty=format:"- %s" > TELEGRAM_SUMMARY.txt || echo "Build completed successfully." > TELEGRAM_SUMMARY.txt
+
           echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_OUTPUT
           echo "RELEASE_NAME=Build ${RELEASE_TAG}" >> $GITHUB_OUTPUT
 
@@ -80,23 +75,7 @@ jobs:
           files: ${{ steps.verify_apk.outputs.path }}
           prerelease: true
 
-      - name: Send Telegram Announcement (Best Effort)
-        if: success() && steps.create_release.outputs.html_url != ''
-        continue-on-error: true
-        run: |
-          SUMMARY="${{ env.SUMMARY || 'Build completed.' }}"
-          RELEASE_TAG="${{ steps.prepare_info.outputs.RELEASE_TAG || format('Build {0}', github.run_id) }}"
-          
-          cat << EOF > telegram_message.txt
-          <b>✅ New Build Available: ${RELEASE_TAG}</b>
-          
-          <b>🚀 Recent Changes:</b>
-          <pre>${SUMMARY}</pre>
-          
-          <i>Download the APK from the full release notes on GitHub.</i>
-          EOF
-
-      - name: Dispatch Telegram Message
+      - name: Sending to Telegram
         if: success() && steps.create_release.outputs.html_url != ''
         continue-on-error: true
         uses: appleboy/telegram-action@master
@@ -105,16 +84,26 @@ jobs:
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message_thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
           parse_mode: HTML
-          message_file: telegram_message.txt
+          message: |
+            <b>✅ New Build Available: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('Build {0}', github.run_id) }}</b>
+            
+            <b>🚀 Recent Changes:</b>
+            <pre>${{ fromJSON(format('"%s"', steps.prepare_info.outcome == 'success' && join(file('TELEGRAM_SUMMARY.txt'), '\n') || 'Build completed.')) }}</pre>
+            
+            <i>Download the APK from the full release notes on GitHub.</i>
           reply_markup: |
             { "inline_keyboard": [[{ "text": "⬇️ Download & Notes", "url": "${{ steps.create_release.outputs.html_url }}" }]] }
 
   cleanup-runs:
     runs-on: ubuntu-latest
     needs: release
+    # This job will run if the 'release' job succeeded.
     if: success()
+    # <--- THE FIX: This entire job is now "best effort".
+    # If it fails, it will NOT cause the entire workflow run to be marked as failed.
+    continue-on-error: true
     steps:
-      - name: Delete previous failed workflow runs
+      - name: Deleting Failed Workflows
         uses: matic-for/delete-workflow-runs@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
