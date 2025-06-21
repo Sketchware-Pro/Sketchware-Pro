@@ -182,6 +182,9 @@ public class yq {
     public final String importedSoundsPath;
     private final oB fileUtil;
     private final Context context;
+
+    public final HashMap<String, Object> metadata;
+
     public jq N;
     public boolean generateDataBindingClasses;
     public boolean exportingProject;
@@ -192,6 +195,7 @@ public class yq {
 
     public yq(Context context, String myscFolderPath, HashMap<String, Object> metadata) {
         this.context = context;
+        this.metadata = metadata;
         N = new jq();
         sc_id = yB.c(metadata, "sc_id");
         N.sc_id = sc_id;
@@ -908,13 +912,21 @@ public class yq {
         return "";
     }
 
-    private String getXMLString() {
+    public String getXMLString() {
+        String filePath = wq.b(sc_id) + "/files/resource/values/strings.xml";
+        if (FileUtil.isExistFile(filePath)) {
+            return FileUtil.readFile(filePath);
+        }
         XmlBuilderHelper stringsFileBuilder = new XmlBuilderHelper();
         stringsFileBuilder.addNonTranslatableString("app_name", applicationName);
         return CommandBlock.applyCommands("strings.xml", stringsFileBuilder.toCode());
     }
 
-    private String getXMLColor() {
+    public String getXMLColor() {
+        String filePath = wq.b(sc_id) + "/files/resource/values/colors.xml";
+        if (FileUtil.isExistFile(filePath)) {
+            return FileUtil.readFile(filePath);
+        }
         XmlBuilderHelper colorsFileBuilder = new XmlBuilderHelper();
         colorsFileBuilder.addColor("colorPrimary", String.format("#%06X", colorPrimary & 0xffffff));
         colorsFileBuilder.addColor("colorPrimaryDark", String.format("#%06X", colorPrimaryDark & 0xffffff));
@@ -924,7 +936,11 @@ public class yq {
         return CommandBlock.applyCommands("colors.xml", colorsFileBuilder.toCode());
     }
 
-    private String getXMLStyle() {
+    public String getXMLStyle() {
+        String filePath = wq.b(sc_id) + "/files/resource/values/styles.xml";
+        if (FileUtil.isExistFile(filePath)) {
+            return FileUtil.readFile(filePath);
+        }
         if (N.g) {
             boolean useNewMaterialComponentsTheme = projectSettings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES,
                     BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);

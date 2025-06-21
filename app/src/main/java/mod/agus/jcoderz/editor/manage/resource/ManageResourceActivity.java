@@ -32,12 +32,10 @@ import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
 import dev.pranav.filepicker.SelectionMode;
-import mod.bobur.StringEditorActivity;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
-import pro.sketchware.activities.coloreditor.ColorEditorActivity;
 import pro.sketchware.databinding.DialogCreateNewFileLayoutBinding;
 import pro.sketchware.databinding.DialogInputLayoutBinding;
 import pro.sketchware.databinding.ManageFileBinding;
@@ -330,20 +328,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
     }
 
     private void goEdit(int position) {
-        if (frc.listFileResource.get(position).endsWith("strings.xml")) {
-            Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), StringEditorActivity.class);
-            intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
-            intent.putExtra("content", frc.listFileResource.get(position));
-            intent.putExtra("xml", "");
-            startActivity(intent);
-        } else if (frc.listFileResource.get(position).endsWith("colors.xml")) {
-            Intent intent = new Intent();
-            intent.setClass(getApplicationContext(), ColorEditorActivity.class);
-            intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
-            intent.putExtra("content", frc.listFileResource.get(position));
-            startActivity(intent);
-        } else if (frc.listFileResource.get(position).endsWith("xml")) {
+        if (frc.listFileResource.get(position).endsWith("xml")) {
             Intent intent = new Intent();
             intent.setClass(getApplicationContext(), SrcCodeEditor.class);
             intent.putExtra("title", Uri.parse(frc.listFileResource.get(position)).getLastPathSegment());
@@ -401,7 +386,7 @@ public class ManageResourceActivity extends BaseAppCompatActivity {
                     if (FileUtil.isImageFile(path)) {
                         Glide.with(ManageResourceActivity.this).load(new File(path)).into(binding.icon);
                     } else if (path.endsWith(".xml") && "drawable".equals(getLastDirectory(path))) {
-                        XmlToSvgConverter.setImageVectorFromFile(binding.icon, path);
+                        new XmlToSvgConverter().setImageVectorFromFile(binding.icon, path);
                     } else {
                         binding.icon.setImageResource(R.drawable.ic_mtrl_file);
                     }

@@ -24,7 +24,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import a.a.a.wq;
 import pro.sketchware.SketchApplication;
-import pro.sketchware.activities.coloreditor.ColorEditorActivity;
+import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
 import pro.sketchware.utility.FileUtil;
 
 /**
@@ -33,7 +33,7 @@ import pro.sketchware.utility.FileUtil;
 
 public class XmlToSvgConverter {
 
-    public static String xml2svg(String xmlContent) {
+    public String xml2svg(String xmlContent) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -75,14 +75,14 @@ public class XmlToSvgConverter {
         }
     }
 
-    private static double parseNumber(String input) {
+    private double parseNumber(String input) {
         if (input == null || input.trim().isEmpty()) {
             return 0;
         }
         return Double.parseDouble(input.replaceAll("[^0-9.]", ""));
     }
 
-    private static void processElement(Element element, StringWriter svg) {
+    private void processElement(Element element, StringWriter svg) {
         String tagName = element.getTagName();
 
         switch (tagName) {
@@ -106,7 +106,7 @@ public class XmlToSvgConverter {
         }
     }
 
-    private static void handleGroup(Element group, StringWriter svg) {
+    private void handleGroup(Element group, StringWriter svg) {
         svg.append("<g ");
         String rotation = group.getAttribute("android:rotation");
         String pivotX = group.getAttribute("android:pivotX");
@@ -148,7 +148,9 @@ public class XmlToSvgConverter {
         svg.append("</g>\n");
     }
 
-    private static void handlePath(Element path, StringWriter svg) {
+    private void handlePath(Element path, StringWriter svg) {
+        ColorsEditorManager colorsEditorManager = new ColorsEditorManager();
+
         String pathData = path.getAttribute("android:pathData");
         String fillColor = getVectorColor(path);
         String strokeColor = path.getAttribute("android:strokeColor");
@@ -162,7 +164,7 @@ public class XmlToSvgConverter {
         svg.append("<path d=\"").append(pathData).append("\" ");
 
         if (!fillColor.isEmpty()) {
-            svg.append("fill=\"").append(convertHexColor(fillColor, path)).append("\" ");
+            svg.append("fill=\"").append(colorsEditorManager.getColorValue(SketchApplication.getContext(), fillColor, 4)).append("\" ");
             if (!fillAlpha.isEmpty()) {
                 svg.append("fill-opacity=\"").append(fillAlpha).append("\" ");
             }
@@ -171,7 +173,7 @@ public class XmlToSvgConverter {
         }
 
         if (!strokeColor.isEmpty()) {
-            svg.append("stroke=\"").append(convertHexColor(strokeColor, path)).append("\" ");
+            svg.append("stroke=\"").append(colorsEditorManager.getColorValue(SketchApplication.getContext(), strokeColor, 4)).append("\" ");
             if (!strokeWidth.isEmpty()) {
                 svg.append("stroke-width=\"").append(parseDimension(strokeWidth)).append("\" ");
             }
@@ -192,7 +194,7 @@ public class XmlToSvgConverter {
         svg.append("/>\n");
     }
 
-    public static ArrayList<String> getVectorDrawables(String sc_id) {
+    public ArrayList<String> getVectorDrawables(String sc_id) {
         ArrayList<String> cache = new ArrayList<>();
         FileUtil.listDir(wq.b(sc_id) + "/files/resource/drawable/", cache);
         cache.sort(Comparator.comparingLong(path -> new File(path).lastModified()));
@@ -212,59 +214,37 @@ public class XmlToSvgConverter {
         return files;
     }
 
-    public static String getVectorFullPath(String sc_id, String fileName) {
+    public String getVectorFullPath(String sc_id, String fileName) {
         return wq.b(sc_id) + "/files/resource/drawable/" + fileName + ".xml";
     }
 
-    private static String parseDimension(String value) {
+    private String parseDimension(String value) {
         return value.replaceAll("[^\\d.]", "");
     }
 
-    private static String convertHexColor(String argb, Element vectorElement) {
-        if (argb.startsWith("@") || argb.startsWith("?")) {
-            return getVectorColor(vectorElement);
-        }
-
-        String digits = argb.replaceAll("^#", "");
-        if (digits.length() != 4 && digits.length() != 8) return argb;
-
-        String red, green, blue, alpha;
-        if (digits.length() == 4) {
-            alpha = String.valueOf(digits.charAt(0));
-            red = String.valueOf(digits.charAt(1));
-            green = String.valueOf(digits.charAt(2));
-            blue = String.valueOf(digits.charAt(3));
-        } else {
-            alpha = digits.substring(0, 2);
-            red = digits.substring(2, 4);
-            green = digits.substring(4, 6);
-            blue = digits.substring(6, 8);
-        }
-        return "#" + red + green + blue + alpha;
-    }
-
-    public static String getVectorColor(Element vectorElement) {
+    public String getVectorColor(Element vectorElement) {
+        ColorsEditorManager colorsEditorManager = new ColorsEditorManager();
         Element root = vectorElement.getOwnerDocument().getDocumentElement();
         String tint = root.getAttribute("android:tint");
         // check colors file
         String filePath = wq.b(sc_id) + "/files/resource/values/colors.xml";
         if (!FileUtil.isExistFile(filePath)) {
-            filePath = wq.d(sc_id) + "/app/src/main/res/values/colors.xml";
+            filePath = wq.d( sc_id) + "/app/src/main/res/values/colors.xml";
             if (!FileUtil.isExistFile(filePath)) {
                 return "#FFFFFF";
             }
         }
-        ColorEditorActivity.contentPath = filePath;
+        colorsEditorManager.contentPath = filePath;
         if (!tint.isEmpty()) {
-            return ColorEditorActivity.getColorValue(SketchApplication.getContext(), tint, 4);
+            return colorsEditorManager.getColorValue(SketchApplication.getContext(), tint, 4);
         } else {
             String fillColor = vectorElement.getAttribute("android:fillColor");
-            return ColorEditorActivity.getColorValue(SketchApplication.getContext(), fillColor, 4);
+            return colorsEditorManager.getColorValue(SketchApplication.getContext(), fillColor, 4);
         }
     }
 
-    public static void setImageVectorFromFile(ImageView imageView, String filePath) throws Exception {
-        SVG svg = SVG.getFromString(XmlToSvgConverter.xml2svg(FileUtil.readFile(filePath)));
+    public void setImageVectorFromFile(ImageView imageView, String filePath) throws Exception {
+        SVG svg = SVG.getFromString(xml2svg(FileUtil.readFile(filePath)));
         Picture picture = svg.renderToPicture();
         imageView.setImageDrawable(new PictureDrawable(picture));
     }
