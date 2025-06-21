@@ -57,6 +57,7 @@ public class ThemeManager {
     }
 
     private static SharedPreferences getPreferences(Context context) {
-        return context.getSharedPreferences(Context.MODE_PRIVATE);
+        // This is the corrected line. We re-add THEME_PREF.
+        return context.getSharedPreferences(THEME_PREF, Context.MODE_PRIVATE);
     }
 }
