@@ -1,12 +1,11 @@
-name: Android CI v2
+name: Android CI v2.1
 
 on:
-  # The ONLY trigger is a manual button press from the Actions tab.
   workflow_dispatch:
 
 permissions:
-  contents: write   # To create releases and tags
-  actions: write    # To clean up old workflow runs
+  contents: write
+  actions: write
 
 env:
   APP_NAME: "Sketchware Pro"
@@ -19,7 +18,6 @@ jobs:
       - name: Checkout the latest code
         uses: actions/checkout@v4
         with:
-          # Fetches all history to generate a changelog
           fetch-depth: 0
 
       - name: Set up JDK 17
@@ -30,53 +28,73 @@ jobs:
           cache: gradle
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease --no-daemon
 
-      - name: Prepare Release Assets
-        id: prepare
+      # --- This is now the ONLY hard failure point after the build ---
+      - name: Verify and Rename APK
+        id: verify_apk
         run: |
-          # 1. Create a unique build ID based on date and commit SHA
+          APK_PATH="app/build/outputs/apk/release/app-release.apk"
+          if [ ! -f "$APK_PATH" ]; then
+            echo "::error::PRIMARY FAILURE: The Release APK was not found. Halting workflow."
+            exit 1
+          fi
+          # If APK exists, rename it and set the path for upload
+          echo "APK found. Renaming for release."
+          mv "$APK_PATH" "release.apk"
+          echo "path=release.apk" >> $GITHUB_OUTPUT
+
+      # --- From this point on, all steps are "best effort" and will not fail the job ---
+
+      - name: Prepare Release Information (Best Effort)
+        id: prepare_info
+        # This whole step can fail, but the workflow will continue.
+        continue-on-error: true
+        run: |
+          # Generate a unique tag
           BUILD_ID=$(date +'%Y-%m-%d-%H%M')
           SHORT_SHA=$(git rev-parse --short HEAD)
           RELEASE_TAG="build-${BUILD_ID}-${SHORT_SHA}"
+          echo "Generated Tag: ${RELEASE_TAG}"
+          
+          # Try to generate a changelog, but provide a fallback if it fails
+          CHANGELOG_BODY=$(git log -10 --pretty=format:"- **%s** (%h)") || CHANGELOG_BODY="Could not generate changelog. APK is attached."
+          
+          # Try to generate a Telegram summary, with a fallback
+          TELEGRAM_SUMMARY=$(git log -5 --pretty=format:"- %s") || TELEGRAM_SUMMARY="Build completed successfully."
 
-          APK_PATH="app/build/outputs/apk/release/app-release.apk"
-          if [ ! -f "$APK_PATH" ]; then
-            echo "::error::Build failed: Release APK not found."
-            exit 1
-          fi
-
-          # 2. Create a simple changelog of the last 10 commits
+          # Write to files and environment for later steps
           echo "# Build Notes for ${RELEASE_TAG}" > CHANGELOG.md
           echo "" >> CHANGELOG.md
-          echo "## Recent Changes" >> CHANGELOG.md
-          git log -10 --pretty=format:"- **%s** (%h)" >> CHANGELOG.md
+          echo "${CHANGELOG_BODY}" >> CHANGELOG.md
 
-          # 3. Create a summary for Telegram
+          # Use the safe method for multiline env vars
           {
             echo "SUMMARY<<EOF"
-            git log -5 --pretty=format:"- %s"
+            echo "${TELEGRAM_SUMMARY}"
             echo "EOF"
           } >> $GITHUB_ENV
-
-          # 4. Set outputs for other steps
+          
           echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_ENV
-          mv "$APK_PATH" "release.apk"
+          echo "RELEASE_NAME=Build ${RELEASE_TAG}" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          # This action will CREATE the git tag for you automatically. No more headaches.
-          tag_name: ${{ env.RELEASE_TAG }}
-          name: "Build ${{ env.RELEASE_TAG }}"
-          body_path: CHANGELOG.md
-          files: release.apk
-          # Marks it as a development/testing build on GitHub, which is perfect for this model.
+          # Use the generated tag, or a fallback timestamp tag if the prepare step failed completely
+          tag_name: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}
+          name: ${{ steps.prepare_info.outputs.RELEASE_NAME || format('Build {0}', github.run_id) }}
+          # Use the generated changelog file, or a simple text body if the file wasn't created
+          body_path: ${{ steps.prepare_info.outcome == 'success' && 'CHANGELOG.md' || '' }}
+          body: ${{ steps.prepare_info.outcome == 'success' && '' || 'Build artifact attached.' }}
+          # The path to the APK was set in the verified step, so it's always available
+          files: ${{ steps.verify_apk.outputs.path }}
           prerelease: true
 
-      - name: Send Telegram Announcement
-        if: success()
+      - name: Send Telegram Announcement (Best Effort)
+        # Only run if the release was successfully created, but don't fail the job if Telegram fails
+        if: success() && steps.create_release.outputs.html_url != ''
         continue-on-error: true
         uses: appleboy/telegram-action@master
         with:
@@ -85,10 +103,10 @@ jobs:
           message_thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
           parse_mode: HTML
           message: |
-            <b>✅ New Build Available: ${{ env.RELEASE_TAG }}</b>
+            <b>✅ New Build Available: ${{ env.RELEASE_TAG || format('Build {0}', github.run_id) }}</b>
             
             <b>🚀 Recent Changes:</b>
-            <pre>${{ env.SUMMARY }}</pre>
+            <pre>${{ env.SUMMARY || 'Build completed.' }}</pre>
             
             <i>Download the APK from the full release notes on GitHub.</i>
           reply_markup: |
