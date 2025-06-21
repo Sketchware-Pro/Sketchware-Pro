@@ -1,10 +1,3 @@
-# ==============================================================================
-#  Android CI v2.4 - Truly Resilient Build Publisher
-# ==============================================================================
-#  This workflow builds, verifies, and publishes a new release. It is designed
-#  to be extremely robust, eliminating unnecessary external dependencies and
-#  prioritizing the delivery of the build artifact above all else.
-# ==============================================================================
 name: Android CI v2.4
 
 on:
@@ -17,18 +10,11 @@ permissions:
 env:
   APP_NAME: "Sketchware Pro"
 
-# ==============================================================================
-#  JOBS
-# ==============================================================================
 jobs:
-  # ----------------------------------------------------------------------------
-  #  JOB 1: Build and Release the Application
-  # ----------------------------------------------------------------------------
   release:
     runs-on: ubuntu-latest
 
     steps:
-      # --- 1. Setup Environment ---
       - name: Checkout Source Code
         uses: actions/checkout@v4
         with:
@@ -41,7 +27,6 @@ jobs:
           distribution: temurin
           cache: gradle
 
-      # --- 2. Build and Verify ---
       - name: Build Application Package (APK)
         run: ./gradlew assembleRelease --no-daemon
 
@@ -57,10 +42,9 @@ jobs:
           mv "$APK_PATH" "release.apk"
           echo "path=release.apk" >> $GITHUB_OUTPUT
 
-      # --- 3. Prepare Release Metadata (Best Effort) ---
       - name: Prepare Release Information
         id: prepare_info
-        continue-on-error: true # This step is non-critical.
+        continue-on-error: true
         run: |
           BUILD_ID=$(date +'%Y-%m-%d-%H%M%S')
           SHORT_SHA=$(git rev-parse --short HEAD)
@@ -77,18 +61,17 @@ jobs:
           echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_OUTPUT
           echo "RELEASE_NAME=Build ${RELEASE_TAG}" >> $GITHUB_OUTPUT
 
-      # --- 4. Read Summary File for Telegram (Best Effort) ---
-      # THE FIX: Replaced the failing external action with a dependency-free shell command.
-      # This is the standard, most reliable way to read a file's content into an output.
       - name: Read Changelog Summary into Output
         id: read_summary
         if: steps.prepare_info.outcome == 'success'
         run: |
-          echo "content<<EOF" >> $GITHUB_OUTPUT
-          cat TELEGRAM_SUMMARY.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          DELIMITER=$(openssl rand -hex 16)
+          {
+            echo "content<<$DELIMITER"
+            cat TELEGRAM_SUMMARY.txt
+            echo "$DELIMITER"
+          } >> "$GITHUB_OUTPUT"
 
-      # --- 5. Publish Release ---
       - name: Create GitHub Release
         id: create_release
         uses: softprops/action-gh-release@v1
@@ -100,7 +83,6 @@ jobs:
           files: ${{ steps.verify_apk.outputs.path }}
           prerelease: true
 
-      # --- 6. Announce on Telegram (Best Effort) ---
       - name: Send Telegram Notification
         if: success() && steps.create_release.outputs.html_url != ''
         continue-on-error: true
@@ -120,14 +102,11 @@ jobs:
           reply_markup: |
             { "inline_keyboard": [[{ "text": "⬇️ Download & Notes", "url": "${{ steps.create_release.outputs.html_url }}" }]] }
 
-  # ----------------------------------------------------------------------------
-  #  JOB 2: Cleanup Old Workflow Runs (Best Effort)
-  # ----------------------------------------------------------------------------
   cleanup-runs:
     runs-on: ubuntu-latest
     needs: release
     if: success()
-    continue-on-error: true # This entire job is non-critical.
+    continue-on-error: true
     steps:
       - name: Delete Old Failed Workflows
         uses: matic-for/delete-workflow-runs@v2
