@@ -30,6 +30,13 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
+import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
+import pro.sketchware.databinding.DialogSaveIconBinding;
+import pro.sketchware.databinding.ImportIconBinding;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -48,12 +55,8 @@ import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.wq;
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
 import pro.sketchware.activities.importicon.adapters.IconAdapter;
-import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
-import pro.sketchware.databinding.DialogSaveIconBinding;
-import pro.sketchware.databinding.ImportIconBinding;
+import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.SvgUtils;
 
 public class ImportIconActivity extends BaseAppCompatActivity implements IconAdapter.OnIconSelectedListener {
@@ -64,7 +67,6 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
     private static final String ICON_TYPE_ROUND = "round";
     private static final String ICON_TYPE_BASELINE = "baseline";
     private final int ITEMS_PER_PAGE = 40;
-    private ImportIconBinding binding;
     private String iconName;
     private WB iconNameValidator;
     private MenuItem search;
@@ -81,6 +83,10 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             }
         }
     };
+
+    private ImportIconBinding binding;
+
+    private String sc_id;
     private IconAdapter adapter = null;
     private ArrayList<String> alreadyAddedImageNames;
     private SvgUtils svgUtils;
@@ -138,6 +144,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             }
         });
 
+        sc_id = getIntent().getStringExtra("sc_id");
         alreadyAddedImageNames = getIntent().getStringArrayListExtra("imageNames");
 
         binding.imageList.setLayoutManager(new GridLayoutManager(getBaseContext(), getGridLayoutColumnCount()));
@@ -161,7 +168,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                     int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0) {
+                        && firstVisibleItemPosition >= 0) {
                         // Reached the end, load more items
                         isLoading = true;
                         loadMoreItems();
@@ -290,7 +297,8 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
             dialogBinding.selectColour.setTextColor(Color.WHITE);
         }
         dialogBinding.selectColour.setOnClickListener(view -> {
-            colorpicker.a(new ColorPickerDialog.b() {
+            ColorPickerDialog colorPicker = new ColorPickerDialog(this, selected_color_hex, false, false, sc_id);
+            colorPicker.a(new ColorPickerDialog.b() {
                 @Override
                 public void a(int var1) {
                     selected_color = var1;
@@ -311,7 +319,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                 @Override
                 public void a(String var1, int var2) {
                     selected_color = var2;
-                    selected_color_hex = "#" + String.format("%06X", var2 & (0x00FFFFFF));
+                    selected_color_hex = "@color/" + var1;
                     dialogBinding.selectColour.setText(selected_color_hex);
                     adapter.setSelectedColor(selected_color);
                     adapter.notifyDataSetChanged();
@@ -325,7 +333,23 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                     }
                 }
             });
-            colorpicker.showAtLocation(view, Gravity.CENTER, 0, 0);
+            colorPicker.materialColorAttr((attr, attrId) -> {
+                attr = "?attr/" + attr;
+                selected_color = PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(getApplicationContext(), attr, 3));
+                selected_color_hex = attr;
+                dialogBinding.selectColour.setText(selected_color_hex);
+                adapter.setSelectedColor(selected_color);
+                adapter.notifyDataSetChanged();
+
+                dialogBinding.selectColour.setBackgroundColor(selected_color);
+
+                if (Color.red(selected_color) * 0.299 + Color.green(selected_color) * 0.587 + Color.blue(selected_color) * 0.114 > 186) {
+                    dialogBinding.selectColour.setTextColor(Color.BLACK);
+                } else {
+                    dialogBinding.selectColour.setTextColor(Color.WHITE);
+                }
+            });
+            colorPicker.showAtLocation(view, Gravity.CENTER, 0, 0);
         });
 
         switch (selected_icon_type) {
