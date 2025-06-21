@@ -1,4 +1,4 @@
-name: Android CI v2.5
+name: Android CI v2.5 (beta)
 
 on:
   workflow_dispatch:
@@ -65,12 +65,8 @@ jobs:
         id: read_summary
         if: steps.prepare_info.outcome == 'success'
         run: |
-          CONTENT=$(cat TELEGRAM_SUMMARY.txt)
-          # Proper multiline output syntax
-          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-          echo "content<<$EOF" >> $GITHUB_OUTPUT
-          echo "$CONTENT" >> $GITHUB_OUTPUT
-          echo "$EOF" >> $GITHUB_OUTPUT
+          CONTENT=$(cat TELEGRAM_SUMMARY.txt | sed 's/"/\\"/g')
+          echo "content=\"$CONTENT\"" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
         id: create_release
@@ -96,7 +92,7 @@ jobs:
             <b>✅ New Build Available: ${{ steps.prepare_info.outputs.RELEASE_TAG || format('build-{0}', github.run_id) }}</b>
             
             <b>🚀 Recent Changes:</b>
-            <pre>${{ steps.read_summary.outputs.content || 'Build completed successfully.' }}</pre>
+            <pre>${{ fromJson(format('"{0}"', steps.read_summary.outputs.content) || 'Build completed successfully.' }}</pre>
             
             <i>Download the APK from the full release notes on GitHub.</i>
           reply_markup: |
@@ -108,12 +104,10 @@ jobs:
     if: success()
     continue-on-error: true
     steps:
-      - name: Delete Old Failed Workflows
-        uses: matic-for/delete-workflow-runs@v2
+      - name: Clean up workflow runs
+        uses: rokroskar/workflow-run-cleanup-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          retain_days: 7
+          preserve_days: 7
           keep_minimum_runs: 1
-          delete_workflow_pattern: ${{ github.workflow }}
-          delete_run_by_conclusion_pattern: failure,cancelled
+          only_workflow: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
