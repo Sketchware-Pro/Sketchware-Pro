@@ -1,4 +1,4 @@
-name: Android CI (Personal)
+name: Android CI (Stable)
 on:
   workflow_dispatch:
 
