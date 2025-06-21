@@ -1,18 +1,5 @@
-name: Compiler
+name: Android CI (Personal)
 on:
-  push:
-    paths:
-      - '.github/workflows/android.yml'
-      - 'app/**'
-      - 'gradle/**'
-      - 'build.gradle'
-      - 'gradle.properties'
-      - 'gradlew'
-      - 'gradlew.bat'
-      - 'public-stable-ids.txt'
-      - 'settings.gradle'
-    branches-ignore:
-      - 'wip/**'
   workflow_dispatch:
 
 jobs:
