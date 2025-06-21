@@ -7,13 +7,12 @@
     android:paddingTop="10dp">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/string_key_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="String key">
+        android:hint="Array name">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/string_key_input"
+            android:id="@+id/array_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_"
@@ -25,20 +24,21 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/string_value_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="String value">
+        android:hint="Array type">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/string_value_input"
+            android:id="@+id/array_type"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textMultiLine"
             android:textSize="16sp"
+            android:focusable="false"
             tools:ignore="LabelFor" />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <TextView
         android:id="@+id/tv_title"
@@ -57,10 +57,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="String header value ( optional )">
+        android:hint="Array header value ( optional )">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/string_header_input"
+            android:id="@+id/array_header_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textMultiLine"
@@ -68,38 +68,5 @@
             tools:ignore="LabelFor" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/importantNote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingVertical="12dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
-                android:text="@string/resources_manager_xml_important_note_title"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
-                android:layout_marginTop="4dp"
-                android:text="@string/resources_manager_xml_important_note_message_strings"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

@@ -1,8 +1,5 @@
 package com.besome.sketch.editor.view;
 
-import static mod.bobur.StringEditorActivity.convertXmlToListMap;
-import static mod.bobur.StringEditorActivity.isXmlStringsContains;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -105,6 +102,8 @@ import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.util.ProjectFile;
 import pro.sketchware.R;
 import pro.sketchware.managers.inject.InjectRootLayoutManager;
+import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
+import pro.sketchware.activities.resourceseditor.components.utils.StringsEditorManager;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.InjectAttributeHandler;
@@ -473,7 +472,8 @@ public class ViewPane extends RelativeLayout {
                             ((ImageView) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile3, decodeFile3.getWidth() * round3, decodeFile3.getHeight() * round3, true));
                         }
                     } else {
-                        XmlToSvgConverter.setImageVectorFromFile(((ImageView) view), XmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                        XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
+                        xmlToSvgConverter.setImageVectorFromFile(((ImageView) view), xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                     }
                 } catch (Exception unused2) {
                     ((ImageView) view).setImageResource(R.drawable.default_image);
@@ -1233,9 +1233,10 @@ public class ViewPane extends RelativeLayout {
 
         ArrayList<HashMap<String, Object>> stringsListMap = new ArrayList<>();
 
-        convertXmlToListMap(FileUtil.readFileIfExist(filePath), stringsListMap);
+        StringsEditorManager stringsEditorManager = new StringsEditorManager();
+        stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFileIfExist(filePath), stringsListMap);
 
-        if (key.equals("@string/app_name") && !isXmlStringsContains(stringsListMap, "app_name")) {
+        if (key.equals("@string/app_name") && !stringsEditorManager.isXmlStringsExist(stringsListMap, "app_name")) {
             return yB.c(lC.b(sc_id), "my_app_name");
         }
 
