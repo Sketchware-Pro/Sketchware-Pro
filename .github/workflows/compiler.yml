@@ -1,4 +1,4 @@
-name: Android CI v3.3
+name: Android CI (Manual+old)
 
 run-name: ${{ github.event.inputs.release_title || github.workflow }}
 
