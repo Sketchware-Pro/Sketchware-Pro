@@ -1,21 +1,12 @@
-name: Release Publisher
+name: Android CI v2
 
 on:
-  # 1. Automatic trigger on tag push
-  push:
-    tags:
-      - 'v*.*.*'
-  # 2. Manual trigger from the Actions tab
+  # The ONLY trigger is a manual button press from the Actions tab.
   workflow_dispatch:
-    inputs:
-      tag_to_release:
-        description: 'The tag to build and release (e.g., v1.2.3)'
-        required: true
-        type: string
 
 permissions:
-  contents: write
-  actions: write
+  contents: write   # To create releases and tags
+  actions: write    # To clean up old workflow runs
 
 env:
   APP_NAME: "Sketchware Pro"
@@ -23,20 +14,13 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
-    # The job now runs if it's a tag push OR a manual dispatch.
-    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
 
     steps:
-      # Initial checkout is on the branch you run it from (e.g., main)
-      - uses: actions/checkout@v4
+      - name: Checkout the latest code
+        uses: actions/checkout@v4
         with:
+          # Fetches all history to generate a changelog
           fetch-depth: 0
-
-      # This new step is CRUCIAL for manual runs.
-      # It ensures we are building the code from the tag you specified, not from the default branch.
-      - name: Checkout Correct Tag for Manual Run
-        if: github.event_name == 'workflow_dispatch'
-        run: git checkout ${{ github.event.inputs.tag_to_release }}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -51,56 +35,45 @@ jobs:
       - name: Prepare Release Assets
         id: prepare
         run: |
-          # Determine the version tag based on how the workflow was triggered
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            VERSION_TAG="${{ github.event.inputs.tag_to_release }}"
-          else
-            VERSION_TAG="${{ github.ref_name }}"
-          fi
+          # 1. Create a unique build ID based on date and commit SHA
+          BUILD_ID=$(date +'%Y-%m-%d-%H%M')
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          RELEASE_TAG="build-${BUILD_ID}-${SHORT_SHA}"
 
           APK_PATH="app/build/outputs/apk/release/app-release.apk"
           if [ ! -f "$APK_PATH" ]; then
-            echo "::error::Build failed: Release APK not found at $APK_PATH"
+            echo "::error::Build failed: Release APK not found."
             exit 1
           fi
 
-          # The changelog now correctly finds the previous tag relative to the current one
-          PREVIOUS_TAG=$(git describe --abbrev=0 --tags ${VERSION_TAG}^ 2>/dev/null || git rev-list --max-parents=0 HEAD)
-          
-          BUILD_TIMESTAMP=$(date +'%s')
-          APK_SIZE=$(du -h "$APK_PATH" | cut -f1)
-          APK_SHA256=$(sum "$APK_PATH" | cut -d' ' -f1)
-          
-          RELEASE_FILENAME="${APP_NAME}-${VERSION_TAG}-${BUILD_TIMESTAMP}.apk"
-          mv "$APK_PATH" "$RELEASE_FILENAME"
-          
-          {
-            echo "# Release Notes ${VERSION_TAG}"
-            echo ""
-            echo "## What's Changed"
-            git log --pretty=format:"- **%s** ([%h](https://github.com/$GITHUB_REPOSITORY/commit/%H))" --no-merges ${PREVIOUS_TAG}..${VERSION_TAG}
-          } > CHANGELOG.md
-          
+          # 2. Create a simple changelog of the last 10 commits
+          echo "# Build Notes for ${RELEASE_TAG}" > CHANGELOG.md
+          echo "" >> CHANGELOG.md
+          echo "## Recent Changes" >> CHANGELOG.md
+          git log -10 --pretty=format:"- **%s** (%h)" >> CHANGELOG.md
+
+          # 3. Create a summary for Telegram
           {
             echo "SUMMARY<<EOF"
-            git log --pretty=format:"- %s" --no-merges ${PREVIOUS_TAG}..${VERSION_TAG} | head -n 5
+            git log -5 --pretty=format:"- %s"
             echo "EOF"
           } >> $GITHUB_ENV
 
-          echo "VERSION_TAG=${VERSION_TAG}" >> $GITHUB_ENV
-          echo "APK_SIZE=${APK_SIZE}" >> $GITHUB_ENV
-          echo "RELEASE_FILENAME=${RELEASE_FILENAME}" >> $GITHUB_ENV
-          echo "SHA256=${APK_SHA256}" >> $GITHUB_ENV
+          # 4. Set outputs for other steps
+          echo "RELEASE_TAG=${RELEASE_TAG}" >> $GITHUB_ENV
+          mv "$APK_PATH" "release.apk"
 
       - name: Create GitHub Release
         id: create_release
-        # Use the correct tag depending on the trigger
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ (github.event_name == 'workflow_dispatch' && github.event.inputs.tag_to_release) || github.ref }}
-          name: "${{ env.APP_NAME }} ${{ env.VERSION_TAG }}"
+          # This action will CREATE the git tag for you automatically. No more headaches.
+          tag_name: ${{ env.RELEASE_TAG }}
+          name: "Build ${{ env.RELEASE_TAG }}"
           body_path: CHANGELOG.md
-          files: ${{ env.RELEASE_FILENAME }}
+          files: release.apk
+          # Marks it as a development/testing build on GitHub, which is perfect for this model.
+          prerelease: true
 
       - name: Send Telegram Announcement
         if: success()
@@ -112,14 +85,23 @@ jobs:
           message_thread_id: ${{ secrets.TELEGRAM_TOPIC_ID }}
           parse_mode: HTML
           message: |
-            <b>🎉 ${{ env.APP_NAME }} ${{ env.VERSION_TAG }} Released!</b>
-            <b>📦 Package Size:</b> <code>${{ env.APK_SIZE }}</code>
-            <b>🔒 Integrity Check:</b> <code>${{ env.SHA256 }}</code>
-            <b>🚀 Key Changes:</b>
+            <b>✅ New Build Available: ${{ env.RELEASE_TAG }}</b>
+            
+            <b>🚀 Recent Changes:</b>
             <pre>${{ env.SUMMARY }}</pre>
-            <i>Full changelog and downloads available on GitHub.</i>
+            
+            <i>Download the APK from the full release notes on GitHub.</i>
           reply_markup: |
-            { "inline_keyboard": [[{ "text": "⬇️ Download & Notes", "url": "${{ steps.create_release.outputs.html_url }}" }]] }
+            {
+              "inline_keyboard": [
+                [
+                  {
+                    "text": "⬇️ Download & Notes",
+                    "url": "${{ steps.create_release.outputs.html_url }}"
+                  }
+                ]
+              ]
+            }
 
   cleanup-runs:
     runs-on: ubuntu-latest
