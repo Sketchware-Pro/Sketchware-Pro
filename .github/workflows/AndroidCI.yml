@@ -1,12 +1,12 @@
-name: Android CI v2.9
+name: Android CI v3.2
 
-run-name: Android CI Build (Triggered by @${{ github.actor }})
+run-name: ${{ github.event.inputs.release_title || github.workflow }}
 
 on:
   workflow_dispatch:
     inputs:
       release_title:
-        description: 'Optional: Custom title for the GitHub Release. Defaults to the workflow name.'
+        description: 'Title for this run AND the GitHub Release. If empty, uses the workflow name.'
         required: false
         default: ''
       key_changes:
@@ -36,10 +36,10 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Build Debug APK
+      - name: Clean and Build Debug APK
         id: build_apk
         run: |
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew clean assembleDebug --no-daemon
           APK_PATH=$(find app/build/outputs/apk/debug -name "*.apk" | head -n 1)
           if [ ! -f "$APK_PATH" ]; then
             echo "::error::Debug APK not found after build."
@@ -91,10 +91,11 @@ jobs:
           name: ${{ steps.prepare_info.outputs.RELEASE_TITLE }}
           tag_name: ${{ steps.prepare_info.outputs.RELEASE_TAG }}
           files: ${{ steps.stage_apk.outputs.path }}
-          body_file: CHANGELOG.md
+          # FIXED: Changed 'body_file' to 'body_path' to match the action's correct input name.
+          body_path: CHANGELOG.md
           prerelease: true
-        env:
-          GITHUB_TOKEN: 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
+          # FIXED: Using the standard, secure, and automatic token provided by GitHub.
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   cleanup:
     runs-on: ubuntu-latest
@@ -104,6 +105,7 @@ jobs:
       - name: Clean up old workflow runs
         uses: matt-ball/workflow-run-cleanup-action@v2
         with:
-          token: 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
+          # FIXED: Using the standard, secure, and automatic token provided by GitHub.
+          token: ${{ secrets.GITHUB_TOKEN }}
           retain_days: 7
           retain_minimum_runs: 3
