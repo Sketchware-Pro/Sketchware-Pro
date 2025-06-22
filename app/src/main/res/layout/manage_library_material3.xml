@@ -113,7 +113,7 @@
                             app:selectionRequired="true"
                             app:singleSelection="true">
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/select_day_night"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="0dp"
@@ -121,7 +121,7 @@
                                 android:layout_weight="1"
                                 android:text="DayNight" />
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/select_light"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="0dp"
@@ -129,7 +129,7 @@
                                 android:layout_weight="1"
                                 android:text="Light" />
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/select_dark"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="0dp"
