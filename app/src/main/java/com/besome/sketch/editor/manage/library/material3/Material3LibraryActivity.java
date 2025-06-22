@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.activity.OnBackPressedCallback;
 
@@ -77,9 +76,9 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
         binding.switchDynamicColors.setChecked(material3LibraryManager.isDynamicColorsEnabled());
 
         switch (material3LibraryManager.getTheme()) {
-            case "Light" -> binding.selectLight.setChecked(true);
-            case "Dark" -> binding.selectDark.setChecked(true);
-            default -> binding.selectDayNight.setChecked(true);
+            case "Light" -> binding.toggleGroupTheme.check(R.id.select_light);
+            case "Dark" -> binding.toggleGroupTheme.check(R.id.select_dark);
+            default -> binding.toggleGroupTheme.check(R.id.select_day_night);
         }
 
         updateConfigurationViews(isMaterial3Enabled);
