@@ -7,11 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.activity.result.ActivityResultLauncher; // ADDED
-import androidx.activity.result.contract.ActivityResultContracts; // ADDED
 
 import com.besome.sketch.beans.ProjectLibraryBean;
-import com.besome.sketch.editor.manage.library.compat.ManageCompatActivity;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -28,13 +25,7 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
     private Material3LibraryManager material3LibraryManager;
     private ProjectLibraryBean libraryBean;
 
-    // ADDED: A launcher to start ManageCompatActivity and get a result back.
-    private final ActivityResultLauncher<Intent> manageCompatLauncher =
-            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        // When ManageCompatActivity returns, recreate this activity to re-check all dependencies.
-        // This is the simplest and most robust way to handle the state change.
-        recreate();
-    });
+    // REVERTED: The ActivityResultLauncher has been removed.
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +42,6 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
         material3LibraryManager = new Material3LibraryManager(libraryBean);
 
         setupToolbar();
-        // The check will now correctly use the launcher
         checkAppCompatDependency();
         loadInitialState();
         setupListeners();
@@ -60,7 +50,8 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
 
     private void setupToolbar() {
         setSupportActionBar(binding.toolbar);
-        binding.toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
+        // We set the navigation click listener on the toolbar itself.
+        binding.toolbar.setNavigationOnClickListener(v -> handleOnBackPressed());
         enableEdgeToEdgeNoContrast();
     }
 
@@ -70,13 +61,8 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
                     .setIcon(R.drawable.ic_mtrl_warning)
                     .setTitle("AppCompat is disabled!")
                     .setMessage("To use the Material You (M3) library, you must first enable AppCompat & Design from the Library Manager.")
-                    .setPositiveButton("Enable AppCompat", (dialog, which) -> {
-                        // CHANGED: Use the launcher instead of startActivity and DO NOT call finish().
-                        Intent intent = new Intent(getApplicationContext(), ManageCompatActivity.class);
-                        intent.putExtra("compat", libraryBean);
-                        manageCompatLauncher.launch(intent);
-                    })
-                    .setNegativeButton("OK", (dialog, which) -> finish())
+                    // REVERTED: Dialog now only has an "OK" button that finishes the activity.
+                    .setPositiveButton("OK", (dialog, which) -> finish())
                     .setCancelable(false)
                     .show();
         }
@@ -156,5 +142,11 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
         resultIntent.putExtra("compat", libraryBean);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
+    }
+    
+    // This is the method from the OnBackPressedCallback.
+    // We call it directly from the toolbar's navigation listener now.
+    private void handleOnBackPressed() {
+        saveStateAndFinish();
     }
 }
