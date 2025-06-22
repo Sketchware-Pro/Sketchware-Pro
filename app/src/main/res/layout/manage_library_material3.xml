@@ -4,20 +4,39 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+    <!-- The AppBarLayout now has a larger height to allow for collapsing. -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <!-- This is the new CollapsingToolbarLayout. -->
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="?attr/homeAsUpIndicator"
-            app:title="@string/design_library_title_material3" />
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorSurface"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:title="@string/design_library_title_material3"
+            app:expandedTitleTextAppearance="?attr/textAppearanceHeadlineSmall"
+            app:collapsedTitleTextAppearance="?attr/textAppearanceTitleLarge">
+
+            <!-- The Toolbar is now inside the CollapsingToolbarLayout. -->
+            <!-- It is "pinned" to the top when the layout collapses. -->
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="?attr/homeAsUpIndicator"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- The NestedScrollView remains the same, but its behavior will now
+         trigger the app bar to collapse when scrolled. -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,6 +49,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
+
+            <!-- All content below this point remains exactly the same. -->
 
             <!-- Enable/Disable Material3 Card -->
             <com.google.android.material.card.MaterialCardView
@@ -223,7 +244,6 @@
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorError" />
             </LinearLayout>
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
