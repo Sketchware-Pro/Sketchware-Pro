@@ -140,13 +140,7 @@ public class AttributeSuggestions {
         if (sc_id == null) {
             return new ArrayList<>();
         }
-        String filePath = wq.b(sc_id) + "/files/resource/values/colors.xml";
-
-        ArrayList<ColorModel> colorList = new ArrayList<>();
-
-        new ColorsEditorManager().parseColorsXML(colorList, FileUtil.readFileIfExist(filePath));
-
-        return colorList.stream().map(colorModel -> "@color/" + colorModel.getColorName()).collect(Collectors.toList());
+        return new ColorsEditorManager().getResColorsList().stream().map(colorModel -> "@color/" + colorModel.getColorName()).collect(Collectors.toList());
 
     }
 

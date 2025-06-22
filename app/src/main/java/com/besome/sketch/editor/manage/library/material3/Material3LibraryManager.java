@@ -1,22 +1,40 @@
 package com.besome.sketch.editor.manage.library.material3;
 
+import static pro.sketchware.SketchApplication.getContext;
+
+import android.content.Context;
+
+import androidx.annotation.StyleRes;
+
 import com.besome.sketch.beans.ProjectLibraryBean;
 
 import a.a.a.jC;
+import pro.sketchware.R;
+import pro.sketchware.utility.ThemeUtils;
 
 public class Material3LibraryManager {
 
     private final boolean isEditingState;
     private final boolean isAppCompatEnabled;
     private final ProjectLibraryBean appCombatLibraryBean;
+    private final Context context;
 
     public Material3LibraryManager(String sc_id) {
+        this.isEditingState = false;
+        this.appCombatLibraryBean = jC.c(sc_id).c();
+        this.isAppCompatEnabled = appCombatLibraryBean.isEnabled();
+        this.context = getContext();
+    }
+
+    public Material3LibraryManager(Context context, String sc_id) {
+        this.context = context;
         this.isEditingState = false;
         this.appCombatLibraryBean = jC.c(sc_id).c();
         this.isAppCompatEnabled = appCombatLibraryBean.isEnabled();
     }
 
     public Material3LibraryManager(ProjectLibraryBean projectLibraryBean) {
+        this.context = getContext();
         this.isEditingState = true;
         this.appCombatLibraryBean = projectLibraryBean;
         this.isAppCompatEnabled = projectLibraryBean.isEnabled();
@@ -54,6 +72,35 @@ public class Material3LibraryManager {
             return keyValue;
         }
         return false;
+    }
+
+    @StyleRes
+    public int getViewEditorThemeOverlay() {
+        if (!isMaterial3Enabled()) {
+            return R.style.ThemeOverlay_SketchwarePro_ViewEditor;
+        }
+
+        boolean isDark = getTheme().equals("Dark") ||
+                (!getTheme().equals("Light") && ThemeUtils.isDarkThemeEnabled(context));
+
+        if (isDynamicColorsEnabled()) {
+            return isDark
+                    ? R.style.ThemeOverlay_SketchwarePro_ViewEditor_Material3_Dark
+                    : R.style.ThemeOverlay_SketchwarePro_ViewEditor_Material3_Light;
+        } else {
+            return isDark
+                    ? R.style.ThemeOverlay_SketchwarePro_ViewEditor_Material3_NON_DYNAMIC_Dark
+                    : R.style.ThemeOverlay_SketchwarePro_ViewEditor_Material3_NON_DYNAMIC_Light;
+        }
+    }
+
+    public boolean canUseNightVariantColors() {
+        if (!isMaterial3Enabled()) {
+            return false;
+        }
+
+        return getTheme().equals("Dark") ||
+                (!getTheme().equals("Light") && ThemeUtils.isDarkThemeEnabled(context));
     }
 
     public ProjectLibraryBean getAppCombatLibraryBean() {
