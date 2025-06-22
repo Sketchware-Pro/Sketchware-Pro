@@ -75,10 +75,11 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
         binding.switchEnableM3.setChecked(isMaterial3Enabled);
         binding.switchDynamicColors.setChecked(material3LibraryManager.isDynamicColorsEnabled());
 
+        // This is the improved, more robust way
         switch (material3LibraryManager.getTheme()) {
-            case "Light" -> binding.toggleGroupTheme.check(R.id.select_light);
-            case "Dark" -> binding.toggleGroupTheme.check(R.id.select_dark);
-            default -> binding.toggleGroupTheme.check(R.id.select_day_night);
+            case "Light" -> binding.toggleGroupTheme.check(binding.selectLight.getId());
+            case "Dark" -> binding.toggleGroupTheme.check(binding.selectDark.getId());
+            default -> binding.toggleGroupTheme.check(binding.selectDayNight.getId());
         }
 
         updateConfigurationViews(isMaterial3Enabled);
@@ -131,9 +132,10 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
 
         String theme;
         int checkedId = binding.toggleGroupTheme.getCheckedButtonId();
-        if (checkedId == R.id.select_light) {
+        // And we use the same robust approach here for checking the saved state
+        if (checkedId == binding.selectLight.getId()) {
             theme = "Light";
-        } else if (checkedId == R.id.select_dark) {
+        } else if (checkedId == binding.selectDark.getId()) {
             theme = "Dark";
         } else {
             theme = "DayNight";
