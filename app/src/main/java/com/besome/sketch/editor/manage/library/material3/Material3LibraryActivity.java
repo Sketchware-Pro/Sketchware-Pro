@@ -1,11 +1,14 @@
 package com.besome.sketch.editor.manage.library.material3;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher; // ADDED
+import androidx.activity.result.contract.ActivityResultContracts; // ADDED
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.compat.ManageCompatActivity;
@@ -25,6 +28,14 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
     private Material3LibraryManager material3LibraryManager;
     private ProjectLibraryBean libraryBean;
 
+    // ADDED: A launcher to start ManageCompatActivity and get a result back.
+    private final ActivityResultLauncher<Intent> manageCompatLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        // When ManageCompatActivity returns, recreate this activity to re-check all dependencies.
+        // This is the simplest and most robust way to handle the state change.
+        recreate();
+    });
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +51,7 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
         material3LibraryManager = new Material3LibraryManager(libraryBean);
 
         setupToolbar();
+        // The check will now correctly use the launcher
         checkAppCompatDependency();
         loadInitialState();
         setupListeners();
@@ -59,10 +71,10 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
                     .setTitle("AppCompat is disabled!")
                     .setMessage("To use the Material You (M3) library, you must first enable AppCompat & Design from the Library Manager.")
                     .setPositiveButton("Enable AppCompat", (dialog, which) -> {
+                        // CHANGED: Use the launcher instead of startActivity and DO NOT call finish().
                         Intent intent = new Intent(getApplicationContext(), ManageCompatActivity.class);
                         intent.putExtra("compat", libraryBean);
-                        startActivity(intent);
-                        finish();
+                        manageCompatLauncher.launch(intent);
                     })
                     .setNegativeButton("OK", (dialog, which) -> finish())
                     .setCancelable(false)
@@ -74,8 +86,7 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
         boolean isMaterial3Enabled = material3LibraryManager.isMaterial3Enabled();
         binding.switchEnableM3.setChecked(isMaterial3Enabled);
         binding.switchDynamicColors.setChecked(material3LibraryManager.isDynamicColorsEnabled());
-
-        // This is the improved, more robust way
+        
         switch (material3LibraryManager.getTheme()) {
             case "Light" -> binding.toggleGroupTheme.check(binding.selectLight.getId());
             case "Dark" -> binding.toggleGroupTheme.check(binding.selectDark.getId());
@@ -89,8 +100,7 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
         binding.switchEnableM3.setOnCheckedChangeListener((buttonView, isChecked) -> {
             updateConfigurationViews(isChecked);
         });
-
-        // Make the entire row clickable to toggle the switch
+        
         binding.layoutEnableM3.setOnClickListener(v -> binding.switchEnableM3.toggle());
         binding.layoutEnableDynamicColors.setOnClickListener(v -> {
             if (binding.switchEnableM3.isChecked()) {
@@ -132,7 +142,7 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
 
         String theme;
         int checkedId = binding.toggleGroupTheme.getCheckedButtonId();
-        // And we use the same robust approach here for checking the saved state
+        
         if (checkedId == binding.selectLight.getId()) {
             theme = "Light";
         } else if (checkedId == binding.selectDark.getId()) {
@@ -144,7 +154,7 @@ public class Material3LibraryActivity extends BaseAppCompatActivity {
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra("compat", libraryBean);
-        setResult(RESULT_OK, resultIntent);
+        setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }
 }
