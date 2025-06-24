@@ -9,6 +9,7 @@ import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -623,13 +624,13 @@ public class Jx {
 
     private String getListDeclarationAndAddImports(int listType, String listName) {
         String typeName = mq.b(listType);
-        addImports(mq.getImportsByTypeName(typeName, null));
+        addImports(mq.getImportsByTypeName(projectDataManager.a, typeName, null));
         return Lx.a(typeName, listName, Lx.AccessModifier.PRIVATE);
     }
 
     private String getComponentDeclarationAndAddImports(ComponentBean componentBean) {
         String typeName = mq.a(componentBean.type);
-        addImports(mq.getImportsByTypeName(typeName, null));
+        addImports(mq.getImportsByTypeName(projectDataManager.a, typeName, null));
         return Lx.a(typeName, componentBean.componentId, Lx.AccessModifier.PRIVATE, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
@@ -638,7 +639,7 @@ public class Jx {
         if (viewType.isEmpty()) {
             viewType = viewBean.getClassInfo().a();
         }
-        addImports(mq.getImportsByTypeName(viewType, null));
+        addImports(mq.getImportsByTypeName(projectDataManager.a, viewType, null));
         return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
@@ -647,7 +648,7 @@ public class Jx {
      */
     private String getVariableDeclarationAndAddImports(int variableType, String name) {
         String variableTypeName = mq.c(variableType);
-        addImports(mq.getImportsByTypeName(variableTypeName, null));
+        addImports(mq.getImportsByTypeName(projectDataManager.a, variableTypeName, null));
         return Lx.a(variableTypeName, name, Lx.AccessModifier.PRIVATE);
     }
 
@@ -657,7 +658,7 @@ public class Jx {
             viewType = viewBean.getClassInfo().a();
         }
         if (requireImports(viewBean)) {
-            addImports(mq.getImportsByTypeName(viewType, viewBean.convert));
+            addImports(mq.getImportsByTypeName(projectDataManager.a, viewType, viewBean.convert));
         }
         return Lx.a(viewType, viewBean.id, Lx.AccessModifier.PRIVATE, isViewBindingEnabled);
     }
@@ -750,7 +751,10 @@ public class Jx {
 
         if (buildConfig.g) {
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) && !projectFileBean.fileName.contains("_fragment")) {
-                addImport("androidx.appcompat.widget.Toolbar");
+                Material3LibraryManager materialLibraryManager = new Material3LibraryManager(projectDataManager.a);
+                addImport(
+                    (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
+                 );
                 addImport("androidx.coordinatorlayout.widget.CoordinatorLayout");
                 addImport("com.google.android.material.appbar.AppBarLayout");
 
@@ -828,7 +832,7 @@ public class Jx {
                             "LinearLayout _nav_view = findViewById(R.id._nav_view);" + EOL
                     );
                 }
-                addImports(mq.getImportsByTypeName("LinearLayout", null));
+                addImports(mq.getImportsByTypeName(projectDataManager.a, "LinearLayout", null));
             }
         }
         addImport("android.app.*");
