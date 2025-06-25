@@ -156,6 +156,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
         featureStatusBar = (option & ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN) != ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
         featureFab = (option & ProjectFileBean.OPTION_ACTIVITY_FAB) == ProjectFileBean.OPTION_ACTIVITY_FAB;
         featureDrawer = (option & ProjectFileBean.OPTION_ACTIVITY_DRAWER) == ProjectFileBean.OPTION_ACTIVITY_DRAWER;
+        
     }
 
     private void initializeItems() {
@@ -211,9 +212,8 @@ public class AddViewActivity extends BaseAppCompatActivity {
         binding.viewTypeSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (isChecked) {
                 if (checkedId == R.id.select_activity) {
-                    setManifestViewState(true); // Hide orientation and keyboard settings for Activity
+                    setManifestViewState(true);
                 } else {
-                    // For fragments and dialog fragments, show orientation and keyboard settings
                     setManifestViewState(false);
                 }
             }
@@ -270,6 +270,9 @@ public class AddViewActivity extends BaseAppCompatActivity {
             binding.edName.setBackgroundResource(R.color.transparent);
             initItem(projectFileBean.options);
             binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
+            if (!projectFileBean.fileType == projectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+                setManifestViewState(false);
+            }
             binding.screenOrientationSelector.check(binding.screenOrientationSelector.getChildAt(projectFileBean.orientation).getId());
             binding.keyboardSettingsSelector.check(binding.keyboardSettingsSelector.getChildAt(projectFileBean.keyboardSetting).getId());
 
@@ -396,13 +399,13 @@ public class AddViewActivity extends BaseAppCompatActivity {
         }
     }
 
-    private void setManifestViewState(boolean gone) {
-        if (gone) {
-            binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
-            binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
-        } else {
+    private void setManifestViewState(boolean vis) {
+        if (vis) {
             binding.viewOrientationSelectorLayout.setVisibility(View.VISIBLE);
             binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
+            binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
         }
     }
 }
