@@ -43,15 +43,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
     private ManageScreenActivityAddTempBinding binding;
 
-    private void setManifestViewState(boolean gone) {
-        if (gone) {
-            binding.view_orientation_selector_layout.setVisibility(View.GONE);
-            binding.view_keyboard_settings_selector_layout.setVisibility(View.GONE);
-        } else {
-            binding.view_orientation_selector_layout.setVisibility(View.VISIBLE);
-            binding.view_keyboard_settings_selector_layout.setVisibility(View.VISIBLE);
-        }
-    }
+    
     
     private void a(FeatureItem featureItem) {
         int type = featureItem.type;
@@ -404,6 +396,16 @@ public class AddViewActivity extends BaseAppCompatActivity {
                     }
                 });
             }
+        }
+    }
+
+    private void setManifestViewState(boolean gone) {
+        if (gone) {
+            binding.view_orientation_selector_layout.setVisibility(View.GONE);
+            binding.view_keyboard_settings_selector_layout.setVisibility(View.GONE);
+        } else {
+            binding.view_orientation_selector_layout.setVisibility(View.VISIBLE);
+            binding.view_keyboard_settings_selector_layout.setVisibility(View.VISIBLE);
         }
     }
 }
