@@ -43,7 +43,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
     private ManageScreenActivityAddTempBinding binding;
 
-    private void setManifestViewState(bool gone) {
+    private void setManifestViewState(boolean gone) {
         if (gone) {
             binding.view_orientation_selector_layout.setVisibility(View.GONE);
             binding.view_keyboard_settings_selector_layout.setVisibility(View.GONE);
