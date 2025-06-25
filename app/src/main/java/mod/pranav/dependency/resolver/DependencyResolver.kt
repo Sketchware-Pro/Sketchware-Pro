@@ -21,6 +21,8 @@ import org.cosmic.ide.dependency.resolver.eventReciever
 import org.cosmic.ide.dependency.resolver.getArtifact
 import org.cosmic.ide.dependency.resolver.repositories
 import pro.sketchware.utility.FileUtil
+import java.io.File
+import java.net.URL
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -100,6 +102,7 @@ class DependencyResolver(
         override fun onInvalidPOM(artifact: Artifact) {}
         override fun onDownloadStart(artifact: Artifact) {}
         override fun onDownloadEnd(artifact: Artifact) {}
+        open fun onDownloadProgress(artifact: Artifact, bytesDownloaded: Long, totalBytes: Long) {}
         override fun onDownloadError(artifact: Artifact, error: Throwable) {}
         open fun unzipping(artifact: Artifact) {}
         open fun dexing(artifact: Artifact) {}
@@ -174,7 +177,7 @@ class DependencyResolver(
             Files.createDirectories(path.parent)
             callback.onDownloadStart(artifact)
             try {
-                artifact.downloadTo(path.toFile())
+                downloadWithProgress(artifact, path.toFile(), callback)
                 if (path.toFile().exists().not()) {
                     latestDeps.remove(artifact)
                     callback.onDependenciesNotFound(artifact)
@@ -281,5 +284,41 @@ class DependencyResolver(
         )
 
         Main.run(arguments)
+    }
+
+    private fun downloadWithProgress(artifact: Artifact, targetFile: File, callback: DependencyResolverCallback) {
+        try {
+            // Construir URL basándose en el repositorio del artifact
+            val repository = artifact.repository
+            val baseUrl = repository?.getURL()
+            val artifactPath = "${artifact.groupId.replace('.', '/')}/${artifact.artifactId}/${artifact.version}/${artifact.artifactId}-${artifact.version}.${artifact.extension}"
+            val downloadUrl = "$baseUrl/$artifactPath"
+
+            val url = URL(downloadUrl)
+            val connection = url.openConnection()
+            val totalBytes = connection.contentLengthLong
+
+            connection.getInputStream().use { input ->
+                targetFile.outputStream().use { output ->
+                    val buffer = ByteArray(8192)
+                    var bytesDownloaded = 0L
+                    var bytesRead: Int
+
+                    while (input.read(buffer).also { bytesRead = it } != -1) {
+                        output.write(buffer, 0, bytesRead)
+                        bytesDownloaded += bytesRead
+
+                        // Llamar al callback de progreso cada 64KB para no saturar la UI
+                        if (bytesDownloaded % 65536 == 0L || bytesRead == -1) {
+                            callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
+                        }
+                    }
+                    // Llamada final para asegurar 100% de progreso
+                    callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
+                }
+            }
+        } catch (e: Exception) {
+            callback.onDownloadError(artifact, e)
+        }
     }
 }

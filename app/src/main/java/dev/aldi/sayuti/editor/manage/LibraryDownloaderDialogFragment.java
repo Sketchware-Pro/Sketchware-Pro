@@ -160,12 +160,20 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
 
                 @Override
                 public void onDownloadStart(@NonNull Artifact dep) {
-                    handler.post(new SetTextRunnable("Downloading dependency " + dep + "..."));
+                    handler.post(() -> {
+                        new SetTextRunnable("Downloading dependency " + dep + "...").run();
+                        binding.progressBarInfo.setVisibility(View.VISIBLE);
+                        binding.progressBarInfo.setProgress(0);
+                    });
                 }
 
                 @Override
                 public void onDownloadEnd(@NonNull Artifact dep) {
-                    handler.post(new SetTextRunnable("Dependency " + dep + " downloaded"));
+                    handler.post(() -> {
+                        new SetTextRunnable("Dependency " + dep + " downloaded").run();
+                        binding.progressBarInfo.setVisibility(View.GONE);
+                        binding.bytesDownloadInfo.setVisibility(View.GONE);
+                    });
                 }
 
                 @Override
@@ -212,6 +220,26 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                         if (onLibraryDownloadedTask != null) onLibraryDownloadedTask.invoke();
                     });
                 }
+
+                @Override
+                public void onDownloadProgress(@NonNull Artifact artifact, long bytesDownloaded, long totalBytes) {
+                    handler.post(() -> {
+                        // Actualizar ProgressBar
+                        if (totalBytes > 0) {
+                            int progress = (int) ((bytesDownloaded * 100) / totalBytes);
+                            binding.progressBarInfo.setProgress(progress);
+                            binding.progressBarInfo.setVisibility(View.VISIBLE);
+                        }
+
+                        // Actualizar TextView de bytes
+                        String progressText = formatBytes(bytesDownloaded) + " / " + formatBytes(totalBytes);
+                        binding.bytesDownloadInfo.setText(progressText);
+                        binding.bytesDownloadInfo.setVisibility(View.VISIBLE);
+                    });
+                }
+
+
+
             });
         });
     }
@@ -231,4 +259,11 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
     public interface OnLibraryDownloadedTask {
         void invoke();
     }
+
+    private String formatBytes(long bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1024 * 1024) return String.format("%.1f KB", bytes / 1024.0);
+        return String.format("%.1f MB", bytes / (1024.0 * 1024.0));
+    }
+
 }
