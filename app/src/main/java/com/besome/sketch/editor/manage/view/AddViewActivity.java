@@ -270,7 +270,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
             binding.edName.setBackgroundResource(R.color.transparent);
             initItem(projectFileBean.options);
             binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
-            if (!projectFileBean.fileType == projectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
+            if (projectFileBean.fileType != projectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
                 setManifestViewState(false);
             }
             binding.screenOrientationSelector.check(binding.screenOrientationSelector.getChildAt(projectFileBean.orientation).getId());
