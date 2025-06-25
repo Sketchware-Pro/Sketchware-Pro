@@ -94,8 +94,6 @@
             android:layout_weight="1"
             android:text="@string/common_word_cancel" />
 
-        <!-- Somehow `?attr/materialButtonStyle` doesn't work, I mean it works, but
-             it's shows TextButton style somehow, currently using style directly, until we fix it -->
         <Button
             android:id="@+id/btn_download"
             style="@style/Widget.Material3Expressive.Button"

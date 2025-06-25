@@ -94,6 +94,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
             return;
         }
 
+
         binding.dependencyInfo.setText("Looking for dependency...");
         binding.dependencyInfo.setVisibility(View.GONE);
 
@@ -133,16 +134,16 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                         libraryAdapter.updateLibraryProgress(dependency.toString(),
                                 LibraryDownloadItem.Status.SEARCHING, "", 0, 0);
                         binding.librariesRecyclerView.setVisibility(View.VISIBLE);
+
+                        binding.cbSkipSubdependencies.setVisibility(View.GONE);
+                        binding.btnDownload.setVisibility(View.GONE);
                     });
                 }
 
                 @Override
                 public void onResolutionComplete(@NonNull Artifact dep) {
                     handler.post(() -> {
-                        // Primera vez que sabemos el total de dependencias
                         if (totalLibraries == 0) {
-                            // Aquí necesitarías obtener el total de dependencias del resolver
-                            // Por ahora, incrementamos conforme las encontramos
                             totalLibraries++;
                             updateLinearProgress();
                         }
@@ -203,7 +204,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 public void onDownloadStart(@NonNull Artifact dep) {
                     handler.post(() -> {
                         libraryAdapter.updateLibraryProgress(dep.toString(),
-                                LibraryDownloadItem.Status.DOWNLOADING, "Iniciando descarga...", 0, 0);
+                                LibraryDownloadItem.Status.DOWNLOADING, "Starting download...", 0, 0);
                     });
                 }
 
@@ -212,7 +213,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                     handler.post(() -> {
                         completedLibraries++;
                         libraryAdapter.updateLibraryProgress(dep.toString(),
-                                LibraryDownloadItem.Status.COMPLETED, "Completado", 0, 0);
+                                LibraryDownloadItem.Status.COMPLETED, "Completed", 0, 0);
                         updateLinearProgress();
                     });
                 }
@@ -237,7 +238,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                     handler.post(() -> {
                         completedLibraries++;
                         libraryAdapter.updateLibraryProgress(dep.toString(),
-                                LibraryDownloadItem.Status.COMPLETED, "Indexado", 0, 0);
+                                LibraryDownloadItem.Status.COMPLETED, "Indexed", 0, 0);
                         updateLinearProgress();
                     });
                 }
@@ -253,7 +254,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 @Override
                 public void onTaskCompleted(@NonNull List<String> dependencies) {
                     handler.post(() -> {
-                        binding.linearProgressIndicator.setVisibility(View.GONE);
+                        binding.linearProgressIndicator.setIndeterminate(true);
                         binding.dependencyInfo.setVisibility(View.VISIBLE);
                         SketchwareUtil.toast("Library downloaded successfully");
                         if (!notAssociatedWithProject) {
@@ -279,9 +280,6 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                                 LibraryDownloadItem.Status.DOWNLOADING, progressText, bytesDownloaded, totalBytes);
                     });
                 }
-
-
-
             });
         });
     }
@@ -298,7 +296,9 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
             binding.dependencyInfo.setVisibility(View.VISIBLE);
             binding.dependencyInfo.setText(R.string.local_library_manager_dependency_info);
 
-            // Resetear contadores
+            binding.cbSkipSubdependencies.setVisibility(View.VISIBLE);
+            binding.btnDownload.setVisibility(View.VISIBLE);
+
             totalLibraries = 0;
             completedLibraries = 0;
         }
@@ -331,7 +331,6 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
             this.progressText = "";
         }
 
-        // Getters y setters
         public String getName() { return name; }
         public Status getStatus() { return status; }
         public void setStatus(Status status) { this.status = status; }
@@ -393,13 +392,13 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                     } else {
                         progressBar.setProgress(0);
                     }
-                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.color_primary));
+                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.design_tab_indicator_color));
                     progressBar.setVisibility(View.VISIBLE);
                     break;
 
                 case INDEXING:
                     progressBar.setIndeterminate(true);
-                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.color_primary));
+                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.design_tab_indicator_color));
                     progressBar.setVisibility(View.VISIBLE);
                     break;
 
@@ -423,6 +422,11 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
             for (int i = 0; i < libraries.size(); i++) {
                 LibraryDownloadItem item = libraries.get(i);
                 if (item.getName().equals(name)) {
+                    if (item.getStatus() == LibraryDownloadItem.Status.COMPLETED &&
+                            status != LibraryDownloadItem.Status.COMPLETED) {
+                        return;
+                    }
+
                     item.setStatus(status);
                     item.setProgressText(progressText);
                     item.setBytesDownloaded(bytesDownloaded);

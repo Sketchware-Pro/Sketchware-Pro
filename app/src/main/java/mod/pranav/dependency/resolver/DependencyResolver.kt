@@ -113,7 +113,7 @@ class DependencyResolver(
 
     fun resolveDependency(callback: DependencyResolverCallback) {
         eventReciever = callback
-        // this is pretty much the same as `Artifact.downloadArtifact()`, but with some modifications for checks and callbacks
+
         val dependency = getArtifact(groupId, artifactId, version)
 
         if (dependency == null) {
@@ -288,7 +288,6 @@ class DependencyResolver(
 
     private fun downloadWithProgress(artifact: Artifact, targetFile: File, callback: DependencyResolverCallback) {
         try {
-            // Construir URL basándose en el repositorio del artifact
             val repository = artifact.repository
             val baseUrl = repository?.getURL()
             val artifactPath = "${artifact.groupId.replace('.', '/')}/${artifact.artifactId}/${artifact.version}/${artifact.artifactId}-${artifact.version}.${artifact.extension}"
@@ -308,12 +307,11 @@ class DependencyResolver(
                         output.write(buffer, 0, bytesRead)
                         bytesDownloaded += bytesRead
 
-                        // Llamar al callback de progreso cada 64KB para no saturar la UI
                         if (bytesDownloaded % 65536 == 0L || bytesRead == -1) {
                             callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
                         }
                     }
-                    // Llamada final para asegurar 100% de progreso
+
                     callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
                 }
             }
