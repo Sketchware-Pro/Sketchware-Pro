@@ -35,40 +35,27 @@
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/dependency_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="20dp"
-        android:gravity="center">
-        <TextView
-            android:id="@+id/dependency_info"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:text="@string/local_library_manager_dependency_info"
-            android:textColor="?attr/colorOnSurface"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:layout_weight="1"/>
-
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progressBarInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/bytesDownloadInfo"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="20dp"
         android:maxLines="2"
-        android:text="0/0"
+        android:text="@string/local_library_manager_dependency_info"
         android:textColor="?attr/colorOnSurface"
         android:textAppearance="?attr/textAppearanceBodyMedium"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"/>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/linear_progress_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="8dp"
+            android:indeterminate="true"
+            style="@style/Widget.Material3.LinearProgressIndicator"
+            android:visibility="gone"/>
 
     <CheckBox
         android:id="@+id/cb_skip_subdependencies"
@@ -79,6 +66,16 @@
         android:layout_marginTop="8dp"
         android:paddingStart="8dp"
         android:text="@string/local_library_manager_skip_downloading_dependencies" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/libraries_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:maxHeight="200dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <LinearLayout
         android:layout_width="match_parent"
