@@ -43,6 +43,16 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
     private ManageScreenActivityAddTempBinding binding;
 
+    private void setManifestViewState(bool gone) {
+        if (gone) {
+            binding.view_orientation_selector_layout.setVisibility(View.GONE);
+            binding.view_keyboard_settings_selector_layout.setVisibility(View.GONE);
+        } else {
+            binding.view_orientation_selector_layout.setVisibility(View.VISIBLE);
+            binding.view_keyboard_settings_selector_layout.setVisibility(View.VISIBLE);
+        }
+    }
+    
     private void a(FeatureItem featureItem) {
         int type = featureItem.type;
         switch (type) {
@@ -247,6 +257,23 @@ public class AddViewActivity extends BaseAppCompatActivity {
             setResult(RESULT_CANCELED);
             finish();
         });
+
+        binding.select_activity.setOnClickListener(v -> {
+            setManifestViewState(true);
+        });
+        
+        binding.select_fragment.setOnClickListener(v -> {
+            setManifestViewState(false);
+        });
+
+        binding.select_dialogfragment.setOnClickListener(v -> {
+            setManifestViewState(false);
+        });
+
+        binding.select_bottomsheetdialogfragment.setOnClickListener(v -> {
+            setManifestViewState(false);
+        });
+        
         if (requestCode == 265) {
             nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), projectFileBean.fileName);
             binding.edName.setText(projectFileBean.fileName);
