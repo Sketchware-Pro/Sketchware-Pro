@@ -85,6 +85,9 @@
         android:layout_marginTop="12dp"
         android:orientation="horizontal">
 
+        <!-- Somehow `?attr/materialButtonStyle` doesn't work, I mean it works, but
+                 it's shows TextButton style somehow, currently using style directly, until we fix it -->
+
         <Button
             android:id="@+id/btn_cancel"
             style="@style/Widget.Material3Expressive.Button.TonalButton"

@@ -373,14 +373,12 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
             switch (item.getStatus()) {
                 case SEARCHING:
                     progressBar.setIndeterminate(true);
-                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.color_primary));
                     progressBar.setVisibility(View.VISIBLE);
                     break;
 
                 case FOUND:
                     progressBar.setIndeterminate(false);
                     progressBar.setProgress(0);
-                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.color_primary));
                     progressBar.setVisibility(View.VISIBLE);
                     break;
 
@@ -412,7 +410,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 case COMPLETED:
                     progressBar.setIndeterminate(false);
                     progressBar.setProgress(100);
-                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.scolor_green_normal));
+                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.view_property_tab_active));
                     progressBar.setVisibility(View.VISIBLE);
                     break;
             }
