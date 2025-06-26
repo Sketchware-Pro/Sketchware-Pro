@@ -271,23 +271,7 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
     }
 
     
-    public boolean isFragment() {
-     
-        if (fileType == PROJECT_FILE_TYPE_ACTIVITY) {
-            return false;
-        }
-
-   
-        String lowerCaseFileName = fileName.toLowerCase();
-        return lowerCaseFileName.endsWith("_fragment") ||
-               lowerCaseFileName.endsWith("_dialog_fragment") ||
-               lowerCaseFileName.endsWith("_bottomdialog_fragment");
-    }
-
-   
-    public boolean isNotActivity() {
-        return fileType != PROJECT_FILE_TYPE_ACTIVITY;
-    }
+    
 
 
     @IntDef(flag = true,
