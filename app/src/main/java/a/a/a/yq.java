@@ -470,7 +470,7 @@ public class yq {
         N.sc_id = sc_id;
         N.isDebugBuild = exportingType == ExportType.DEBUG_APP;
         isAndroidStudioExport = exportingType == ExportType.SOURCE_CODE;
-        generateDataBindingClasses = !isAndroidStudioExport;
+        generateDataBindingClasses = !(exportingType == ExportType.DEBUG_APP || exportingType == ExportType.SOURCE_CODE);
         if (firebase.useYn.equals(ProjectLibraryBean.LIB_USE_Y)) {
             N.isFirebaseEnabled = true;
             N.addPermission(jq.PERMISSION_INTERNET);
