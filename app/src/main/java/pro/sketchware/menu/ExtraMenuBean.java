@@ -797,7 +797,7 @@ public class ExtraMenuBean {
         ArrayList<String> markedPath = new ArrayList<>();
 
         mOptions.setSelectionMode(SelectionMode.BOTH);
-        String path;
+        String path = null;
         if (menuName.equals("Assets")) {
             mOptions.setTitle("Select an Asset");
             path = String.format(ASSETS_PATH, sc_id);
