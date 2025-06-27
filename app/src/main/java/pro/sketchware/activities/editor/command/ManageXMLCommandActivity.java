@@ -75,7 +75,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         var projectLibraryManager = jC.c(sc_id);
         var projectFileManager = jC.b(sc_id);
         var projectDataManager = jC.a(sc_id);
-        yq.a(projectLibraryManager, projectFileManager, projectDataManager, false);
+        yq.a(projectLibraryManager, projectFileManager, projectDataManager);
         CommandBlock.x();
         ArrayList<ProjectFileBean> files = new ArrayList<>(projectFileManager.b());
         files.addAll(new ArrayList<>(projectFileManager.c()));

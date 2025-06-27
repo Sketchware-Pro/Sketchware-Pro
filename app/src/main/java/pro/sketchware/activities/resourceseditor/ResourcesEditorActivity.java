@@ -107,7 +107,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         sc_id = getIntent().getStringExtra("sc_id");
 
         yq = new yq(getApplicationContext(), sc_id);
-        yq.a(jC.c(sc_id), jC.b(sc_id), jC.a(sc_id), false);
+        yq.a(jC.c(sc_id), jC.b(sc_id), jC.a(sc_id));
     }
 
     private void initializeEditors() {

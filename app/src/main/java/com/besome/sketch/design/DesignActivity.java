@@ -1116,7 +1116,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 var fileManager = jC.b(sc_id);
                 var dataManager = jC.a(sc_id);
                 var libraryManager = jC.c(sc_id);
-                q.a(libraryManager, fileManager, dataManager, false);
+                q.a(libraryManager, fileManager, dataManager);
                 builder.buildBuiltInLibraryInformation();
                 q.b(fileManager, dataManager, libraryManager, builder.getBuiltInLibraryManager());
                 q.f();

@@ -187,7 +187,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
             /* Start generating project files */
             ProjectBuilder builder = new ProjectBuilder(this, project_metadata);
-            project_metadata.a(iCVar, hCVar, eCVar, true);
+            project_metadata.a(iCVar, hCVar, eCVar, yq.ExportType.SOURCE_CODE);
             builder.buildBuiltInLibraryInformation();
             project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
             if (yB.a(lC.b(sc_id), "custom_icon")) {
@@ -281,7 +281,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
                 R.drawable.ic_mtrl_key, "Sign outputted AAB", "Fill in the keystore details to sign the AAB.");
         credentialsDialog.setListener(credentials -> {
-            BuildingAsyncTask task = new BuildingAsyncTask(this);
+            BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.AAB);
             task.enableAppBundleBuild();
             if (credentials != null) {
                 if (credentials.isForSigningWithTestkey()) {
@@ -361,7 +361,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             sign_apk_loading_anim.setVisibility(View.VISIBLE);
             sign_apk_loading_anim.playAnimation();
 
-            BuildingAsyncTask task = new BuildingAsyncTask(this);
+            BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.SIGN_APP);
             if (credentials != null) {
                 if (credentials.isForSigningWithTestkey()) {
                     task.setSignWithTestkey(true);
@@ -425,6 +425,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         private final WeakReference<ExportProjectActivity> activity;
         private final yq project_metadata;
         private final WeakReference<LottieAnimationView> loading_sign_apk;
+        private final yq.ExportType exportType;
 
         private ProjectBuilder builder;
         private boolean canceled = false;
@@ -436,8 +437,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         private String signingAlgorithm = null;
         private boolean signWithTestkey = false;
 
-        public BuildingAsyncTask(ExportProjectActivity exportProjectActivity) {
+        public BuildingAsyncTask(ExportProjectActivity exportProjectActivity, yq.ExportType exportType) {
             super(exportProjectActivity);
+            this.exportType = exportType;
             activity = new WeakReference<>(exportProjectActivity);
             project_metadata = exportProjectActivity.project_metadata;
             loading_sign_apk = new WeakReference<>(exportProjectActivity.sign_apk_loading_anim);
@@ -523,7 +525,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 builder = new ProjectBuilder(this, a, project_metadata);
                 builder.setBuildAppBundle(buildingAppBundle);
 
-                project_metadata.a(iCVar, hCVar, eCVar, true);
+                project_metadata.a(iCVar, hCVar, eCVar, exportType);
                 builder.buildBuiltInLibraryInformation();
                 project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
                 if (canceled) {
