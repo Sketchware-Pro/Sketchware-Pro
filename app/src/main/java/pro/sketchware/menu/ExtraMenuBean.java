@@ -807,11 +807,13 @@ public class ExtraMenuBean {
             path = String.format(NATIVE_PATH, sc_id);
             markedPath.add(0, path + ss.getArgValue().toString());
         }
+        String[] strArr = path.split("/");
+        splitter = strArr[strArr.length - 1];
         mOptions.setInitialDirectory(path);
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
             public void onFileSelected(File file) {
-                logicEditor.a(ss, file.getAbsolutePath());
+                logicEditor.a(ss, file.getAbsolutePath().split(splitter)[1]);
             }
         };
         fpd = new FilePickerDialogFragment(mOptions, callback);
