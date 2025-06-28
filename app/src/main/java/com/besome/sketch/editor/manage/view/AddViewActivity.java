@@ -156,6 +156,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
         featureStatusBar = (option & ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN) != ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
         featureFab = (option & ProjectFileBean.OPTION_ACTIVITY_FAB) == ProjectFileBean.OPTION_ACTIVITY_FAB;
         featureDrawer = (option & ProjectFileBean.OPTION_ACTIVITY_DRAWER) == ProjectFileBean.OPTION_ACTIVITY_DRAWER;
+        featureActivity = (option & ProjectFileBean.fileName) == ProjectFileBean.fileName;
         
     }
 
@@ -270,7 +271,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
             binding.edName.setBackgroundResource(R.color.transparent);
             initItem(projectFileBean.options);
             binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
-            if (projectFileBean.isFragment()) {
+            if (featureActivity.endsWith("_fragment.java")) {
                 setManifestViewState(false);
             }
             binding.screenOrientationSelector.check(binding.screenOrientationSelector.getChildAt(projectFileBean.orientation).getId());
