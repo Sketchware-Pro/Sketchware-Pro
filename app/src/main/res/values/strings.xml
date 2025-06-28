@@ -1138,8 +1138,6 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_library_admob_widget_setup_first">In order to use this widget, you have to setup the settings in the Library Manager first.</string>
     <string name="design_library_appcompat_description">Activating App Compat library will let you add Drawer Layout and Floating Action Button to the Activities.</string>
     
-     <!-- Material3 Library Manager Activity  --->
-    
     <string name="design_library_material_3_description">Enable Material 3 for a modern Material You UI with customizable components and advanced theming.</string>
     <string name="design_library_material_3_enable_warning">This library may affect your app’s overall design. Backup your project before using in a old project </string>
     <string name="design_library_material_3_theme_mode_description">Adjust your project theme. Your project app will automatically change theme according to the system theme if enables "DayNight"</string>
@@ -1147,8 +1145,6 @@ ex)\"*/*\", \"image/*\", \"audio/*\", \"text/*\""</string>
     <string name="design_library_title_material3">"Material3 Manager"</string>
     <string name="design_library_appcompat_need_firebase_disable">You can not disable the AppCompat Library when Firebase is in use.</string>
     <string name="design_library_appcompat_need_m3_disable">You can not disable the AppCompat Library when Material3 and Dynamic Colors is in use.</string>
-    
-    <!--- M3 Lib manager (End) -->
     
     <string name="design_library_button_import_from_other_project">Import from the other project</string>
     <string name="design_library_description_admob">Use Google AdMob</string>
