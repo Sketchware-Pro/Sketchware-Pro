@@ -797,7 +797,7 @@ public class ExtraMenuBean {
         ArrayList<String> markedPath = new ArrayList<>();
 
         mOptions.setSelectionMode(SelectionMode.BOTH);
-        String path;
+        String path = null;
         if (menuName.equals("Assets")) {
             mOptions.setTitle("Select an Asset");
             path = String.format(ASSETS_PATH, sc_id);
@@ -807,6 +807,7 @@ public class ExtraMenuBean {
             path = String.format(NATIVE_PATH, sc_id);
             markedPath.add(0, path + ss.getArgValue().toString());
         }
+        mOptions.setInitialDirectory(path);
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
             public void onFileSelected(File file) {

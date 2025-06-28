@@ -14,6 +14,7 @@ import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.TextBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -126,7 +127,11 @@ public class Ox {
                     rootLayout = coordinatorLayoutTag;
                 }
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
-                    XmlBuilder toolbarTag = new XmlBuilder("androidx.appcompat.widget.Toolbar");
+                    Material3LibraryManager materialLibraryManager = new Material3LibraryManager(buildConfig.sc_id);
+
+                    XmlBuilder toolbarTag = new XmlBuilder(
+                        (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
+                    );
                     toolbarTag.addAttribute("android", "id", "@+id/_toolbar");
                     aci.inject(toolbarTag, "Toolbar");
                     XmlBuilder appBarLayoutTag = new XmlBuilder("com.google.android.material.appbar.AppBarLayout");
