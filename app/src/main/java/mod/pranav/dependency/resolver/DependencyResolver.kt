@@ -22,7 +22,11 @@ import org.cosmic.ide.dependency.resolver.getArtifact
 import org.cosmic.ide.dependency.resolver.repositories
 import pro.sketchware.utility.FileUtil
 import java.io.File
+import java.io.IOException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 import java.net.URL
+import java.net.UnknownHostException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -295,6 +299,10 @@ class DependencyResolver(
 
             val url = URL(downloadUrl)
             val connection = url.openConnection()
+
+            connection.connectTimeout = 10000
+            connection.readTimeout = 30000
+
             val totalBytes = connection.contentLengthLong
 
             connection.getInputStream().use { input ->
@@ -311,10 +319,17 @@ class DependencyResolver(
                             callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
                         }
                     }
-
                     callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
                 }
             }
+        } catch (e: SocketTimeoutException) {
+            callback.onDownloadError(artifact, Exception("Download timeout: ${e.message}"))
+        } catch (e: ConnectException) {
+            callback.onDownloadError(artifact, Exception("Connection failed: ${e.message}"))
+        } catch (e: UnknownHostException) {
+            callback.onDownloadError(artifact, Exception("Network unavailable: ${e.message}"))
+        } catch (e: IOException) {
+            callback.onDownloadError(artifact, Exception("Download interrupted: ${e.message}"))
         } catch (e: Exception) {
             callback.onDownloadError(artifact, e)
         }
