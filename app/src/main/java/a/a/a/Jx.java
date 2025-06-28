@@ -84,6 +84,7 @@ public class Jx {
     private Hx eventManager;
     private ArrayList<String> imports = new ArrayList<>();
     private String onCreateEventCode = "";
+    private Material3LibraryManager materialLibraryManager;
 
     public Jx(jq jqVar, ProjectFileBean projectFileBean, eC eCVar) {
         packageName = jqVar.packageName;
@@ -97,6 +98,7 @@ public class Jx {
         extraBlocks = getExtraBlockData();
         isViewBindingEnabled = settings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
+        materialLibraryManager = new Material3LibraryManager(projectDataManager.a);
     }
 
     public String activityResult() {
@@ -751,7 +753,6 @@ public class Jx {
 
         if (buildConfig.g) {
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) && !projectFileBean.fileName.contains("_fragment")) {
-                Material3LibraryManager materialLibraryManager = new Material3LibraryManager(projectDataManager.a);
                 addImport(
                     (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
                  );
@@ -771,7 +772,9 @@ public class Jx {
                                     "});"
                     );
                 } else {
-                    fields.add("private Toolbar _toolbar;");
+                    fields.add("private " +
+                               (materialLibraryManager.isMaterial3Enabled() ? "MaterialToolbar" : "Toolbar") +
+                               " _toolbar;");
                     fields.add("private AppBarLayout _app_bar;");
                     fields.add("private CoordinatorLayout _coordinator;");
 
