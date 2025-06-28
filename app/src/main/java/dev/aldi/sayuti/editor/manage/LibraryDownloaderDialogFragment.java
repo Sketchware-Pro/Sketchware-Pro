@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.gson.Gson;
 
@@ -390,27 +391,24 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                     } else {
                         progressBar.setProgress(0);
                     }
-                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.design_tab_indicator_color));
                     progressBar.setVisibility(View.VISIBLE);
                     break;
 
                 case INDEXING:
                     progressBar.setIndeterminate(true);
-                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.design_tab_indicator_color));
                     progressBar.setVisibility(View.VISIBLE);
                     break;
 
                 case ERROR:
                     progressBar.setIndeterminate(false);
                     progressBar.setProgress(0);
-                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.scolor_red_01));
+                    progressBar.setIndicatorColor(MaterialColors.getColor(progressBar, R.attr.colorError));
                     progressBar.setVisibility(View.VISIBLE);
                     break;
 
                 case COMPLETED:
                     progressBar.setIndeterminate(false);
                     progressBar.setProgress(100);
-                    progressBar.setIndicatorColor(ContextCompat.getColor(getContext(),R.color.view_property_tab_active));
                     progressBar.setVisibility(View.VISIBLE);
                     break;
             }
