@@ -1,5 +1,4 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,105 +7,44 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.Material3.DynamicColors.Dark">
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimaryContainer"
-            app:expandedTitleGravity="bottom|start"
-            app:expandedTitleMarginStart="72dp"
-            app:expandedTitleMarginBottom="16dp"
-            app:expandedTitleTextAppearance="@style/TextAppearance.Material3.HeadlineLarge"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            app:statusBarScrim="@android:color/transparent"
-            app:toolbarId="@+id/toolbar">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/design_library_title_material3"
-                android:fitsSystemWindows="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/material3_background"
-                app:layout_collapseMode="parallax" />
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="@string/design_library_title_material3" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/design_library_title_material3" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardElevation="8dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.LargeComponent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="16dp">
 
-            <!-- M3UI Section starting-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingVertical="8dp">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="16dp"
-                    android:src="@drawable/ic_material3"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
-                    app:strokeColor="?attr/colorOutline"
-                    app:strokeWidth="1dp"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/design_library_material_3_description"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                    android:textColor="?attr/colorOnSurface"/>
-
-            </LinearLayout>
-
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="16dp"
-                app:color="?attr/colorOutline"/>
-
-            <!-- Material 3 Switch -->
+            <!-- Material 3 Toggle Section -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/layout_switch_lib"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
                 app:strokeColor="?attr/colorOutline"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?selectableItemBackground"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
@@ -115,65 +53,126 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Enable Material 3"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                        android:textColor="?attr/colorOnSurface"/>
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="16sp"
+                        android:text="Enable Material3"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/lib_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"/>
+                        android:layout_marginStart="8dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Theme Preference Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingVertical="8dp">
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:tint="?attr/colorOnSurfaceVariant"
+                    android:src="@drawable/ic_mtrl_design" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Theme Preference"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="?attr/colorOnSurface"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_weight="1"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="14sp"
+                    android:text="@string/design_library_material_3_description" />
+            </LinearLayout>
 
-                <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/toggle_group"
+            <!-- Theme Preference Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:strokeColor="?attr/colorOutline"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:checkedButton="@id/select_day_night"
-                    app:selectionRequired="true"
-                    app:singleSelection="true">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/select_day_night"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="DayNight"/>
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="16sp"
+                        android:text="Material3 Theme Preference"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/select_light"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggle_group"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Light"/>
+                        android:gravity="center_horizontal"
+                        app:checkedButton="@id/select_day_night"
+                        app:selectionRequired="true"
+                        app:singleSelection="true">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/select_dark"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Dark"/>
-                </com.google.android.material.button.MaterialButtonToggleGroup>
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/select_day_night"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="DayNight" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/select_light"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Light" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/select_dark"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Dark" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:tint="?attr/colorOnSurfaceVariant"
+                    android:src="@drawable/ic_mtrl_design" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="14sp"
+                    android:text="@string/design_library_material_3_theme_mode_description" />
             </LinearLayout>
 
             <!-- Dynamic Colors Section -->
@@ -181,15 +180,16 @@
                 android:id="@+id/layout_switch_dynamic_colors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardBackgroundColor="?attr/colorSurfaceContainerLow"
+                android:layout_marginBottom="8dp"
+                style="?attr/materialCardViewFilledStyle"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
                 app:strokeColor="?attr/colorOutline"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
+                    android:background="?selectableItemBackground"
                     android:padding="16dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
@@ -198,32 +198,55 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="16sp"
                         android:text="Enable Dynamic Colors"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                        android:textColor="?attr/colorOnSurface"/>
+                        android:textStyle="bold" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/dynamic_colors_switch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"/>
+                        android:layout_marginStart="8dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:tint="?attr/colorOnSurfaceVariant"
+                    android:src="@drawable/ic_mtrl_design" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="14sp"
+                    android:text="@string/design_library_dynamic_colors_description" />
+            </LinearLayout>
 
             <!-- Warning Text -->
             <TextView
                 android:id="@+id/tv_warning"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:drawableStart="@drawable/ic_warning"
-                android:drawablePadding="8dp"
-                android:drawableTint="?attr/colorError"
-                android:gravity="start|center_vertical"
+                android:layout_marginTop="8dp"
+                android:gravity="start"
                 android:padding="8dp"
-                android:text="@string/design_library_material_3_enable_warning"
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                android:textColor="?attr/colorError"/>
+                android:textColor="?colorError"
+                android:textSize="14sp"
+                android:text="@string/design_library_material_3_enable_warning" />
+
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
