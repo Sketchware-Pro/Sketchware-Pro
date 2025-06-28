@@ -127,7 +127,7 @@
                             app:selectionRequired="true"
                             app:singleSelection="true">
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/select_day_night"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="0dp"
@@ -135,7 +135,7 @@
                                 android:layout_weight="1"
                                 android:text="DayNight" />
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/select_light"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="0dp"
@@ -143,7 +143,7 @@
                                 android:layout_weight="1"
                                 android:text="Light" />
 
-                            <Button
+                            <com.google.android.material.button.MaterialButton
                                 android:id="@+id/select_dark"
                                 style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="0dp"
@@ -161,9 +161,9 @@
                         android:id="@+id/layout_switch_dynamic_colors"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
                         android:clickable="true"
                         android:focusable="true"
-                        android:background="?attr/selectableItemBackground"
                         android:paddingHorizontal="16dp"
                         android:paddingVertical="12dp">
 
