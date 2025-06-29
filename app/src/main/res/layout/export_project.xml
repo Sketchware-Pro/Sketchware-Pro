@@ -95,7 +95,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_done_white_48dp"
+                            android:src="@drawable/ic_folder_48dp"
                             app:tint="?attr/colorTertiary" />
 
                         <TextView
