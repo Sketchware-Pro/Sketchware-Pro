@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_save"
         android:title="Save"
-        android:icon="@drawable/ic_apk_color_48dp"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/ic_save"
+        app:showAsAction="always" />
 </menu>
