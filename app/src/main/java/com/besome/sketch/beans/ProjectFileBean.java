@@ -270,6 +270,10 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
         dest.writeString(presetName);
     }
 
+    
+    
+
+
     @IntDef(flag = true,
             value = {OPTION_ACTIVITY_FAB,
                     OPTION_ACTIVITY_DRAWER,

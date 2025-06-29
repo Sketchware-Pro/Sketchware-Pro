@@ -43,6 +43,8 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
     private ManageScreenActivityAddTempBinding binding;
 
+    
+    
     private void a(FeatureItem featureItem) {
         int type = featureItem.type;
         switch (type) {
@@ -154,6 +156,8 @@ public class AddViewActivity extends BaseAppCompatActivity {
         featureStatusBar = (option & ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN) != ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
         featureFab = (option & ProjectFileBean.OPTION_ACTIVITY_FAB) == ProjectFileBean.OPTION_ACTIVITY_FAB;
         featureDrawer = (option & ProjectFileBean.OPTION_ACTIVITY_DRAWER) == ProjectFileBean.OPTION_ACTIVITY_DRAWER;
+        featureActivity = (option & ProjectFileBean.fileName) == ProjectFileBean.fileName;
+        
     }
 
     private void initializeItems() {
@@ -206,6 +210,16 @@ public class AddViewActivity extends BaseAppCompatActivity {
             }
         });
 
+        binding.viewTypeSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                if (checkedId == R.id.select_activity) {
+                    setManifestViewState(true);
+                } else {
+                    setManifestViewState(false);
+                }
+            }
+        });
+        
         binding.btnSave.setOnClickListener(v -> {
             int options = ProjectFileBean.OPTION_ACTIVITY_TOOLBAR;
             if (265 == requestCode) {
@@ -247,6 +261,9 @@ public class AddViewActivity extends BaseAppCompatActivity {
             setResult(RESULT_CANCELED);
             finish();
         });
+
+        
+        
         if (requestCode == 265) {
             nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), projectFileBean.fileName);
             binding.edName.setText(projectFileBean.fileName);
@@ -254,6 +271,9 @@ public class AddViewActivity extends BaseAppCompatActivity {
             binding.edName.setBackgroundResource(R.color.transparent);
             initItem(projectFileBean.options);
             binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
+            if (featureActivity.endsWith("_fragment.java")) {
+                setManifestViewState(false);
+            }
             binding.screenOrientationSelector.check(binding.screenOrientationSelector.getChildAt(projectFileBean.orientation).getId());
             binding.keyboardSettingsSelector.check(binding.keyboardSettingsSelector.getChildAt(projectFileBean.keyboardSetting).getId());
 
@@ -377,6 +397,21 @@ public class AddViewActivity extends BaseAppCompatActivity {
                     }
                 });
             }
+        }
+    }
+
+    private void setManifestViewState(boolean vis) {
+        if (vis) {
+            //binding.viewOrientationSelectorLayout.setVisibility(View.VISIBLE);
+            //binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.VISIBLE);
+            resetTranslationX(binding.viewOrientationSelectorLayout);
+            resetTranslationX(binding.viewKeyboardSettingsSelectorLayout);
+            
+        } else {
+            //binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
+            //binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
+            slideOutHorizontally(binding.viewOrientationSelectorLayout, "left");
+            slideOutHorizontally(binding.viewKeyboardSettingsSelectorLayout, "left");
         }
     }
 }
