@@ -120,7 +120,6 @@
         <item name="checkedIcon">@drawable/ic_mtrl_done</item>
         <item name="chipBackgroundColor">?attr/colorSecondary</item>
         <item name="chipCornerRadius">90dp</item>
-        <!-- FIX: Replaced undefined style with a standard Material 3 theme attribute -->
         <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
@@ -131,22 +130,4 @@
         <item name="android:stateListAnimator">@null</item>
         <item name="rippleColor">@null</item>
         <item name="shapeAppearance">?attr/shapeAppearanceCornerLarge</item>
-    </style>
-
-    <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
-        <item name="chipStyle">@style/Widget.SketchwarePro.Chip.ProjectPreview</item>
-    </style>
-
-    <!--
-    ========================================================================================
-    ==                        NEW STYLES FOR EXPORT PROJECT DIALOG                        ==
-    ========================================================================================
-    -->
-
-    <style name="Theme.App.Dialog.FullScreen" parent="Theme.Material3.DayNight">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
-    </style>
-</resources>
+    </p
