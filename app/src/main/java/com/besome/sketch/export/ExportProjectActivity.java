@@ -25,6 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.security.Security;
 import java.util.ArrayList;
@@ -310,7 +311,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         return exportedFilename;
     }
 
-    private void copyExtraFiles(FilePathUtil util, String type, String dest) {
+    private void copyExtraFiles(FilePathUtil util, String type, String dest) throws IOException {
         File sourceDir;
         if ("java".equals(type)) sourceDir = new File(util.getPathJava(sc_id));
         else if ("resource".equals(type)) sourceDir = new File(util.getPathResource(sc_id));
