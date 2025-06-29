@@ -120,7 +120,8 @@
         <item name="checkedIcon">@drawable/ic_mtrl_done</item>
         <item name="chipBackgroundColor">?attr/colorSecondary</item>
         <item name="chipCornerRadius">90dp</item>
-        <item name="android:textAppearance">@style/TextAppearance.SketchwarePro.Chip</item>
+        <!-- FIX: Replaced undefined style with a standard Material 3 theme attribute -->
+        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
