@@ -21,6 +21,12 @@ import org.cosmic.ide.dependency.resolver.eventReciever
 import org.cosmic.ide.dependency.resolver.getArtifact
 import org.cosmic.ide.dependency.resolver.repositories
 import pro.sketchware.utility.FileUtil
+import java.io.File
+import java.io.IOException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.URL
+import java.net.UnknownHostException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -100,6 +106,7 @@ class DependencyResolver(
         override fun onInvalidPOM(artifact: Artifact) {}
         override fun onDownloadStart(artifact: Artifact) {}
         override fun onDownloadEnd(artifact: Artifact) {}
+        open fun onDownloadProgress(artifact: Artifact, bytesDownloaded: Long, totalBytes: Long) {}
         override fun onDownloadError(artifact: Artifact, error: Throwable) {}
         open fun unzipping(artifact: Artifact) {}
         open fun dexing(artifact: Artifact) {}
@@ -110,7 +117,7 @@ class DependencyResolver(
 
     fun resolveDependency(callback: DependencyResolverCallback) {
         eventReciever = callback
-        // this is pretty much the same as `Artifact.downloadArtifact()`, but with some modifications for checks and callbacks
+
         val dependency = getArtifact(groupId, artifactId, version)
 
         if (dependency == null) {
@@ -174,7 +181,7 @@ class DependencyResolver(
             Files.createDirectories(path.parent)
             callback.onDownloadStart(artifact)
             try {
-                artifact.downloadTo(path.toFile())
+                downloadWithProgress(artifact, path.toFile(), callback)
                 if (path.toFile().exists().not()) {
                     latestDeps.remove(artifact)
                     callback.onDependenciesNotFound(artifact)
@@ -281,5 +288,50 @@ class DependencyResolver(
         )
 
         Main.run(arguments)
+    }
+
+    private fun downloadWithProgress(artifact: Artifact, targetFile: File, callback: DependencyResolverCallback) {
+        try {
+            val repository = artifact.repository
+            val baseUrl = repository?.getURL()
+            val artifactPath = "${artifact.groupId.replace('.', '/')}/${artifact.artifactId}/${artifact.version}/${artifact.artifactId}-${artifact.version}.${artifact.extension}"
+            val downloadUrl = "$baseUrl/$artifactPath"
+
+            val url = URL(downloadUrl)
+            val connection = url.openConnection()
+
+            connection.connectTimeout = 10000
+            connection.readTimeout = 30000
+
+            val totalBytes = connection.contentLengthLong
+
+            connection.getInputStream().use { input ->
+                targetFile.outputStream().use { output ->
+                    val buffer = ByteArray(8192)
+                    var bytesDownloaded = 0L
+                    var bytesRead: Int
+
+                    while (input.read(buffer).also { bytesRead = it } != -1) {
+                        output.write(buffer, 0, bytesRead)
+                        bytesDownloaded += bytesRead
+
+                        if (bytesDownloaded % 65536 == 0L || bytesRead == -1) {
+                            callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
+                        }
+                    }
+                    callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
+                }
+            }
+        } catch (e: SocketTimeoutException) {
+            callback.onDownloadError(artifact, Exception("Download timeout: ${e.message}"))
+        } catch (e: ConnectException) {
+            callback.onDownloadError(artifact, Exception("Connection failed: ${e.message}"))
+        } catch (e: UnknownHostException) {
+            callback.onDownloadError(artifact, Exception("Network unavailable: ${e.message}"))
+        } catch (e: IOException) {
+            callback.onDownloadError(artifact, Exception("Download interrupted: ${e.message}"))
+        } catch (e: Exception) {
+            callback.onDownloadError(artifact, e)
+        }
     }
 }

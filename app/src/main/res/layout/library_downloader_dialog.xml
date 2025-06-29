@@ -37,14 +37,25 @@
 
     <TextView
         android:id="@+id/dependency_info"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="16dp"
         android:maxLines="2"
         android:text="@string/local_library_manager_dependency_info"
         android:textColor="?attr/colorOnSurface"
-        android:textAppearance="?attr/textAppearanceBodyMedium" />
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"/>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/linear_progress_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="8dp"
+            android:indeterminate="true"
+            style="@style/Widget.Material3.LinearProgressIndicator"
+            android:visibility="gone"/>
 
     <CheckBox
         android:id="@+id/cb_skip_subdependencies"
@@ -56,6 +67,16 @@
         android:paddingStart="8dp"
         android:text="@string/local_library_manager_skip_downloading_dependencies" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/libraries_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="16dp"
+        android:maxHeight="200dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,6 +84,9 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="12dp"
         android:orientation="horizontal">
+
+        <!-- Somehow `?attr/materialButtonStyle` doesn't work, I mean it works, but
+                 it's shows TextButton style somehow, currently using style directly, until we fix it -->
 
         <Button
             android:id="@+id/btn_cancel"
@@ -73,8 +97,6 @@
             android:layout_weight="1"
             android:text="@string/common_word_cancel" />
 
-        <!-- Somehow `?attr/materialButtonStyle` doesn't work, I mean it works, but
-             it's shows TextButton style somehow, currently using style directly, until we fix it -->
         <Button
             android:id="@+id/btn_download"
             style="@style/Widget.Material3Expressive.Button"
