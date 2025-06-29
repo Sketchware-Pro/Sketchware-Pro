@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            android:animateLayoutChanges="true"> <!-- This enables animations for the whole layout -->
+            android:animateLayoutChanges="true">
 
             <TextView
                 android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:animateLayoutChanges="true"> <!-- This enables animations for the inner section -->
+                    android:animateLayoutChanges="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -117,7 +117,7 @@
                             android:text="Authorized as user"
                             android:textAlignment="center"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:background="@drawable/bg_round_outline"
+                            android:background="@drawable/bg_round_light_grey"
                             android:layout_marginTop="16dp"/>
 
                         <TextView
@@ -133,7 +133,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_round_outline"
+                            android:background="@drawable/bg_round_light_grey"
                             android:padding="12dp"
                             android:minHeight="48dp" />
 
@@ -152,7 +152,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_round_outline"
+                            android:background="@drawable/bg_round_light_grey"
                             android:padding="12dp"
                             android:minHeight="48dp"
                             android:visibility="gone"/>
@@ -212,11 +212,11 @@
 
             <!-- Placeholder for GitLab with Click Animation -->
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewOutlineStyle"
+                style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:clickable="true"
+                android.clickable="true"
                 android:focusable="true"
                 app:contentPadding="16dp">
 
@@ -225,7 +225,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:alpha="0.6"> <!-- Make it look disabled -->
+                    android:alpha="0.6">
 
                     <ImageView
                         android:layout_width="24dp"
