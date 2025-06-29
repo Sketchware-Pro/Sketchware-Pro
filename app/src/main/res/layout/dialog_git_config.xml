@@ -15,7 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="Configure Git Repository"
-            app:navigationIcon="@drawable/ic_clear_white_48dp" />
+            app:navigationIcon="@drawable/abc_ic_ab_back_material" />
+            <!-- FIX: Replaced 'ic_clear_white_48dp' with a standard, known-good back icon -->
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -49,8 +50,9 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/github_icon"
+                            android:src="@drawable/android_icon"
                             app:tint="?attr/colorOnSurface" />
+                            <!-- FIX: Replaced 'github_icon' with 'android_icon' -->
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -187,8 +189,9 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:alpha="0.5"
-                        android:src="@drawable/gitlab_icon"
+                        android:src="@drawable/android_icon"
                         app:tint="?attr/colorOnSurface" />
+                        <!-- FIX: Replaced 'gitlab_icon' with 'android_icon' -->
 
                     <TextView
                         android:layout_width="wrap_content"
