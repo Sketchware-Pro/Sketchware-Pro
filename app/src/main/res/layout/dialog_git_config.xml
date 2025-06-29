@@ -8,7 +8,8 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -27,18 +28,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:animateLayoutChanges="true"> <!-- This enables animations for the whole layout -->
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Connect a Git Provider"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="?attr/textAppearanceTitleMedium"/>
+
+            <!-- GitHub Card -->
             <com.google.android.material.card.MaterialCardView
                 style="?attr/materialCardViewFilledStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
                 app:contentPadding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true"> <!-- This enables animations for the inner section -->
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -49,7 +61,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/android_icon"
+                            android:src="@drawable/ic_github_mark"
                             app:tint="?attr/colorOnSurface" />
 
                         <TextView
@@ -66,7 +78,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:hint="Personal Access Token (PAT)"
+                        android:hint="Personal Access Token"
+                        app:helperText="Required scopes: 'repo' and 'user'"
                         app:endIconMode="password_toggle">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -77,16 +90,18 @@
                             android:maxLines="1" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                     <TextView
+                    <TextView
                         android:id="@+id/text_pat_helper"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:padding="4dp"
+                        android:paddingVertical="4dp"
                         android:textColor="?attr/colorPrimary"
-                        android:text="What is a PAT? How do I get one?"
-                        android:textAppearance="?attr/textAppearanceBodySmall" />
+                        android:text="How to get a Classic PAT"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:textAppearance="?attr/textAppearanceLabelLarge" />
 
+                     <!-- This section appears after successful authorization -->
                     <LinearLayout
                         android:id="@+id/github_authorized_section"
                         android:layout_width="match_parent"
@@ -98,27 +113,46 @@
                             android:id="@+id/text_user_info"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:padding="8dp"
                             android:text="Authorized as user"
+                            android:textAlignment="center"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:gravity="center"
+                            android:background="@drawable/bg_round_outline"
                             android:layout_marginTop="16dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="Repository"
+                            android:textAppearance="?attr/textAppearanceLabelMedium"
+                            android:textColor="?attr/colorOnSurfaceVariant"/>
 
                         <Spinner
                             android:id="@+id/spinner_repos"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/bg_round_light_grey"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/bg_round_outline"
                             android:padding="12dp"
-                            android:minHeight="48dp"
-                             />
+                            android:minHeight="48dp" />
+
+                        <TextView
+                            android:id="@+id/text_branch_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:visibility="gone"
+                            android:text="Branch"
+                            android:textAppearance="?attr/textAppearanceLabelMedium"
+                            android:textColor="?attr/colorOnSurfaceVariant"/>
 
                         <Spinner
                             android:id="@+id/spinner_branches"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/bg_round_light_grey"
+                            android:layout_marginTop="4dp"
+                            android:background="@drawable/bg_round_outline"
                             android:padding="12dp"
                             android:minHeight="48dp"
                             android:visibility="gone"/>
@@ -141,54 +175,63 @@
                         android:textColor="?attr/colorError"
                         android:visibility="gone"
                         android:text="Error message" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_authorize"
-                        android:layout_width="wrap_content"
+                    
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="16dp"
-                        android:text="Authorize" />
+                        android:layout_marginTop="16dp">
 
-                    <CheckBox
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_authorize"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="Authorize" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_forget_token"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:text="Forget Token"/>
+
+                    </RelativeLayout>
+                     <CheckBox
                         android:id="@+id/checkbox_remember_token"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Remember Token"
-                        android:layout_gravity="center_horizontal"/>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_forget_token"
-                        style="@style/Widget.Material3.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
-                        android:text="Forget Token"/>
+                        android:text="Remember Token"
+                        android:layout_gravity="end"/>
+
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Placeholder for GitLab -->
+            <!-- Placeholder for GitLab with Click Animation -->
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewOutlineStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
                 app:contentPadding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:alpha="0.6"> <!-- Make it look disabled -->
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:alpha="0.5"
-                        android:src="@drawable/android_icon"
-                        app:tint="?attr/colorOnSurface" />
+                        android:src="@drawable/ic_gitlab_logo"
+                        app:tint="?attr/colorOnSurfaceVariant" />
 
                     <TextView
                         android:layout_width="wrap_content"
