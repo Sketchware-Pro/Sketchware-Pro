@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,7 +58,7 @@ public class GitConfigDialogFragment extends DialogFragment {
     private CheckBox rememberTokenCheckbox;
     private View authorizedSection;
     private ProgressBar progressBar;
-    private TextView errorText, userInfoText;
+    private TextView errorText, userInfoText, branchLabel;
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -67,7 +68,8 @@ public class GitConfigDialogFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_App_Dialog_FullScreen);
+        // MODIFIED: Use the new animated, dynamic color theme
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_App_Dialog_FullScreen_Git);
         prefs = requireActivity().getSharedPreferences("git_config", Context.MODE_PRIVATE);
     }
 
@@ -83,10 +85,12 @@ public class GitConfigDialogFragment extends DialogFragment {
         initializeViews(view);
         setupToolbar(view);
 
+        // MODIFIED: Automatically authorize if token is remembered
         if (prefs.getBoolean("remember_token", false)) {
-            patEditText.setText(prefs.getString("github_pat", ""));
+            String savedPat = prefs.getString("github_pat", "");
+            patEditText.setText(savedPat);
             rememberTokenCheckbox.setChecked(true);
-            if (!patEditText.getText().toString().isEmpty()) {
+            if (!savedPat.isEmpty()) {
                 authorize();
             }
         }
@@ -94,9 +98,10 @@ public class GitConfigDialogFragment extends DialogFragment {
         authorizeButton.setOnClickListener(v -> authorize());
         forgetButton.setOnClickListener(v -> forgetToken());
         
-        view.findViewById(R.id.text_pat_helper).setOnClickListener(v -> 
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens")))
-        );
+        view.findViewById(R.id.text_pat_helper).setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic"));
+            startActivity(intent);
+        });
 
         repoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -105,6 +110,7 @@ public class GitConfigDialogFragment extends DialogFragment {
                     fetchBranches(repoData.get(position - 1));
                 } else {
                     branchSpinner.setVisibility(View.GONE);
+                    branchLabel.setVisibility(View.GONE);
                 }
             }
             @Override
@@ -123,11 +129,14 @@ public class GitConfigDialogFragment extends DialogFragment {
         progressBar = view.findViewById(R.id.progress_bar);
         errorText = view.findViewById(R.id.text_error);
         userInfoText = view.findViewById(R.id.text_user_info);
+        // MODIFIED: Find the new branch label
+        branchLabel = view.findViewById(R.id.text_branch_label);
     }
 
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> dismiss());
+        // MODIFIED: Inflate the new menu with the save icon
         toolbar.inflateMenu(R.menu.dialog_save_menu);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_save) {
@@ -149,9 +158,8 @@ public class GitConfigDialogFragment extends DialogFragment {
         executor.execute(() -> {
             try {
                 HttpURLConnection userConn = createConnection("https://api.github.com/user", token);
-                int userResponseCode = userConn.getResponseCode();
-                if (userResponseCode != HttpURLConnection.HTTP_OK) {
-                    handler.post(() -> showError("Authorization failed. Please check your token and its permissions."));
+                if (userConn.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    handler.post(() -> showError("Authorization failed. Check your token and permissions."));
                     return;
                 }
                 
@@ -230,11 +238,12 @@ public class GitConfigDialogFragment extends DialogFragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, branchNames);
         branchSpinner.setAdapter(adapter);
         branchSpinner.setVisibility(View.VISIBLE);
+        branchLabel.setVisibility(View.VISIBLE); // MODIFIED: Show the branch label
     }
 
     private void saveConfiguration() {
         if (repoSpinner.getSelectedItemPosition() <= 0 || branchSpinner.getSelectedItemPosition() <= 0) {
-            showError("Please select a repository and a branch.");
+            Toast.makeText(getContext(), "Please select both a repository and a branch.", Toast.LENGTH_SHORT).show();
             return;
         }
         String repoFullName = repoSpinner.getSelectedItem().toString();
@@ -252,7 +261,7 @@ public class GitConfigDialogFragment extends DialogFragment {
         editor.putString("git_branch", branchName);
         editor.apply();
 
-        SketchwareUtil.toast("Configuration Saved!");
+        Toast.makeText(getContext(), "Configuration Saved!", Toast.LENGTH_SHORT).show();
         if (listener != null) {
             listener.onGitConfigured();
         }
@@ -264,13 +273,13 @@ public class GitConfigDialogFragment extends DialogFragment {
         patEditText.setText("");
         rememberTokenCheckbox.setChecked(false);
         authorizedSection.setVisibility(View.GONE);
-        SketchwareUtil.toast("Forgotten Token.");
+        Toast.makeText(getContext(), "Forgotten Token.", Toast.LENGTH_SHORT).show();
     }
 
     private void showLoading(boolean isLoading) {
         progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
         authorizeButton.setEnabled(!isLoading);
-        errorText.setVisibility(View.GONE);
+        if(isLoading) errorText.setVisibility(View.GONE);
     }
 
     private void showError(String message) {
