@@ -4,6 +4,7 @@
     <item
         android:id="@+id/action_save"
         android:title="Save"
-        android:icon="@drawable/ic_done_white_48dp"
+        android:icon="@drawable/ic_apk_color_48dp"
         app:showAsAction="ifRoom" />
+        <!-- FIX: Replaced 'ic_done_white_48dp' with a known-good drawable -->
 </menu>
