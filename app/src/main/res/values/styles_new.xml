@@ -132,12 +132,20 @@
         <item name="shapeAppearance">?attr/shapeAppearanceCornerLarge</item>
     </style>
 
-    <style name="TextAppearance.SketchwarePro.Chip" parent="TextAppearance.SketchwarePro.BodyMedium">
-        <item name="android:fontFamily">@font/gilroy</item>
-        <item name="fontFamily">@font/gilroy</item>
-    </style>
-
     <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
         <item name="chipStyle">@style/Widget.SketchwarePro.Chip.ProjectPreview</item>
+    </style>
+
+    <!--
+    ========================================================================================
+    ==                        NEW STYLES FOR EXPORT PROJECT DIALOG                        ==
+    ========================================================================================
+    -->
+
+    <style name="Theme.App.Dialog.FullScreen" parent="Theme.Material3.DayNight">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
     </style>
 </resources>
