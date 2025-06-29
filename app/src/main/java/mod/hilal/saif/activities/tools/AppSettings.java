@@ -176,10 +176,6 @@ public class AppSettings extends BaseAppCompatActivity {
             FilePickerCallback callback = new FilePickerCallback() {
                 @Override
                 public void onFileSelected(File file) {
-                    if (file.isEmpty()) {
-                        SketchwareUtil.toast("No APK file selected", Toast.LENGTH_SHORT);
-                        return;
-                    }
                     isAPKSelected[0] = true;
                     apk_path_txt.setText(file.getAbsolutePath());
                 }
