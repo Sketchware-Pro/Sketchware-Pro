@@ -13,6 +13,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/root_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:animateLayoutChanges="true"
@@ -36,7 +37,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_export_color"
+                        android:src="@drawable/open_box_48"
                         app:tint="?attr/colorPrimary" />
 
                     <TextView
@@ -59,7 +60,7 @@
 
                     <Button
                         android:id="@+id/export_project_button"
-                        style="@style/Widget.Material3.Button.Tonal"
+                        style="@style/Widget.Material3Expressive.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -94,7 +95,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_done_48dp"
+                            android:src="@drawable/ic_done_white_48dp"
                             app:tint="?attr/colorTertiary" />
 
                         <TextView
@@ -112,7 +113,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:background="@drawable/bg_round_outline"
+                        android:background="@drawable/bg_round_light_grey"
                         android:padding="12dp"
                         android:text="/sketchware/export_src/MyProject.zip"
                         android:textAppearance="?attr/textAppearanceBodySmall"
@@ -120,7 +121,7 @@
 
                     <Button
                         android:id="@+id/export_result_share_button"
-                        style="@style/Widget.Material3.Button.TextButton"
+                        style="@style/Widget.Material3Expressive.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
