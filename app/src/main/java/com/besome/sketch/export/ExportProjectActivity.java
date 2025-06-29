@@ -1,5 +1,6 @@
 package com.besome.sketch.export;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -61,12 +62,14 @@ import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
-public class ExportProjectActivity extends BaseAppCompatActivity {
+// MODIFIED: Implement the listener interface to receive callbacks from the dialog
+public class ExportProjectActivity extends BaseAppCompatActivity implements GitConfigDialogFragment.GitConfigListener {
 
     private String sc_id;
     private HashMap<String, Object> sc_metadata;
     private yq project_metadata;
     private SharedPreferences gitPrefs;
+    public ProgressDialog progressDialog;
 
     private ViewGroup rootLayout;
     private Button exportProjectButton;
@@ -148,6 +151,39 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 .show();
     }
 
+    // MODIFIED: This method now launches the dialog if no configuration is found
+    private void startGitExport() {
+        String repo = gitPrefs.getString("git_repo", null);
+        if (repo == null) {
+            GitConfigDialogFragment dialog = new GitConfigDialogFragment();
+            dialog.show(getSupportFragmentManager(), "git_config_dialog");
+            return;
+        }
+
+        showLoading(true);
+        new Thread(() -> {
+            try {
+                exportProjectSources();
+                Thread.sleep(1500); // Simulate commit
+                runOnUiThread(() -> {
+                    String branch = gitPrefs.getString("git_branch", "main");
+                    String successMessage = "Project committed to:\n" + repo + " (branch: " + branch + ")\n(This is a mock operation)";
+                    showResult(successMessage, null, null, false);
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> onExportError(Log.getStackTraceString(e)));
+            }
+        }).start();
+    }
+    
+    // MODIFIED: This new method is the callback from the dialog
+    @Override
+    public void onGitConfigured() {
+        SketchwareUtil.toast("Configuration saved! You can now commit.");
+        // We can now call startGitExport() again, and this time it will proceed.
+        startGitExport();
+    }
+
     private void startApkExport() {
         GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
                 R.drawable.ic_apk_color_48dp,
@@ -214,35 +250,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             }
         }).start();
     }
-
-    private void startGitExport() {
-        String repo = gitPrefs.getString("git_repo", null);
-        if (repo == null) {
-            new MaterialAlertDialogBuilder(this)
-                    .setTitle("Git Not Configured")
-                    .setMessage("You need to configure your Git repository before you can commit. This feature is a placeholder and doesn't perform real Git operations.")
-                    .setPositiveButton("Configure (Mock)", (d, w) -> SketchwareUtil.toast("This would open the Git configuration screen."))
-                    .setNegativeButton(R.string.common_word_cancel, null)
-                    .show();
-            return;
-        }
-
-        showLoading(true);
-        new Thread(() -> {
-            try {
-                exportProjectSources();
-                Thread.sleep(1500);
-                runOnUiThread(() -> {
-                    String branch = gitPrefs.getString("git_branch", "main");
-                    String successMessage = "Project committed to:\n" + repo + " (branch: " + branch + ")";
-                    showResult(successMessage, null, null, false);
-                });
-            } catch (Exception e) {
-                runOnUiThread(() -> onExportError(Log.getStackTraceString(e)));
-            }
-        }).start();
-    }
-
+    
     private String exportProjectSources() throws Exception {
         FileUtil.deleteFile(project_metadata.projectMyscPath);
 
@@ -403,6 +411,29 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
     }
+    
+    public void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+    
+    public void a(DialogInterface.OnCancelListener listener) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Building...");
+        }
+        progressDialog.setOnCancelListener(listener);
+        if(!isFinishing()) progressDialog.show();
+    }
+    
+    public void a(String message) {
+        if (progressDialog != null) {
+            progressDialog.setMessage(message);
+        }
+    }
+
 
     private static class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener, BuildProgressReceiver {
         private final WeakReference<ExportProjectActivity> activity;
@@ -432,7 +463,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         @Override
         public void b() {
             if (canceled) return;
-            String sc_id = activity.get().sc_id;
+            ExportProjectActivity currentActivity = activity.get();
+            if (currentActivity == null) return;
+            String sc_id = currentActivity.sc_id;
             try {
                 publishProgress("Initializing build...");
                 FileUtil.deleteFile(project_metadata.projectMyscPath);
@@ -453,9 +486,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     throw new IllegalStateException("Couldn't delete file " + outputFile.getAbsolutePath());
                 }
 
-                project_metadata.c(a);
+                project_metadata.c(currentActivity);
                 if (canceled) return;
-                project_metadata.a(a, wq.e("600"));
+                project_metadata.a(currentActivity, wq.e("600"));
                 if (canceled) return;
 
                 if (yB.a(lC.b(sc_id), "custom_icon")) {
@@ -478,7 +511,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 kCVar.c(project_metadata.resDirectoryPath + File.separator + "raw");
                 kCVar.a(project_metadata.assetsPath + File.separator + "fonts");
 
-                builder = new ProjectBuilder(this, a, project_metadata);
+                builder = new ProjectBuilder(this, currentActivity, project_metadata);
                 builder.setBuildAppBundle(buildingAppBundle);
                 project_metadata.a(iCVar, hCVar, eCVar, exportType);
                 builder.buildBuiltInLibraryInformation();
@@ -524,11 +557,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             } catch (Throwable throwable) {
                 if (throwable instanceof LoadKeystoreException &&
                         "Incorrect password, or integrity check failed.".equals(throwable.getMessage())) {
-                    activity.get().runOnUiThread(() -> activity.get().onExportError(
+                    currentActivity.runOnUiThread(() -> currentActivity.onExportError(
                             "Either an incorrect password was entered, or your key store is corrupt."));
                 } else {
                     Log.e("AppExporter", "Build failed", throwable);
-                    activity.get().runOnUiThread(() -> activity.get().onExportError(Log.getStackTraceString(throwable)));
+                    currentActivity.runOnUiThread(() -> currentActivity.onExportError(Log.getStackTraceString(throwable)));
                 }
                 cancel(true);
             }
@@ -593,9 +626,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         @Override
         public void onCancelled() {
             super.onCancelled();
-            activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            activity.get().i();
-            activity.get().showLoading(false);
+            ExportProjectActivity currentActivity = activity.get();
+            if (currentActivity == null) return;
+            currentActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            currentActivity.dismissProgressDialog();
+            currentActivity.showLoading(false);
         }
 
         @Override
@@ -612,23 +647,29 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
         @Override
         public void a() {
-            activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            activity.get().i();
+            ExportProjectActivity currentActivity = activity.get();
+            if (currentActivity == null) return;
+            
+            currentActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            currentActivity.dismissProgressDialog();
 
             if (buildingAppBundle) {
                 String aabFilename = getCorrectResultFilename(project_metadata.projectName + ".aab");
-                activity.get().onAabExportSuccess(aabFilename);
+                currentActivity.onAabExportSuccess(aabFilename);
             } else {
                 String apkFilename = getCorrectResultFilename(project_metadata.projectName + "_release.apk");
-                activity.get().onApkExportSuccess(apkFilename);
+                currentActivity.onApkExportSuccess(apkFilename);
             }
         }
 
         @Override
         public void a(String str) {
-            activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            activity.get().i();
-            activity.get().onExportError(str);
+            ExportProjectActivity currentActivity = activity.get();
+            if (currentActivity == null) return;
+
+            currentActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            currentActivity.dismissProgressDialog();
+            currentActivity.onExportError(str);
         }
 
         public void enableAppBundleBuild() { buildingAppBundle = true; }
