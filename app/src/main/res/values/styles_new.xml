@@ -130,4 +130,32 @@
         <item name="android:stateListAnimator">@null</item>
         <item name="rippleColor">@null</item>
         <item name="shapeAppearance">?attr/shapeAppearanceCornerLarge</item>
-    </p
+    </style>
+
+    <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
+        <item name="chipStyle">@style/Widget.SketchwarePro.Chip.ProjectPreview</item>
+    </style>
+
+
+    <!--
+    ========================================================================================
+    ==                        NEW STYLES FOR EXPORT PROJECT DIALOG                        ==
+    ========================================================================================
+    -->
+
+    <!-- Custom Animation for the Dialog to slide up and down -->
+    <style name="Animation.App.Dialog.SlideUp" parent="Animation.AppCompat.Dialog">
+        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
+
+    <!-- New Theme for Full-Screen Git Configuration Dialog -->
+    <style name="Theme.App.Dialog.FullScreen.Git" parent="ThemeOverlay.Material3.DynamicColors.DayNight">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:windowAnimationStyle">@style/Animation.App.Dialog.SlideUp</item>
+    </style>
+
+</resources>
