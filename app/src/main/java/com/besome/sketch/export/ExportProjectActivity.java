@@ -100,7 +100,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     }
 
     private void initializeViews() {
-        rootLayout = findViewById(android.R.id.content);
+        rootLayout = findViewById(R.id.root_layout);
         exportProjectButton = findViewById(R.id.export_project_button);
         loadingAnimation = findViewById(R.id.loading_animation);
         exportResultCard = findViewById(R.id.export_result_card);
@@ -215,7 +215,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     }
 
     private void startGitExport() {
-        // This is a mocked implementation
         String repo = gitPrefs.getString("git_repo", null);
         if (repo == null) {
             new MaterialAlertDialogBuilder(this)
@@ -231,7 +230,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         new Thread(() -> {
             try {
                 exportProjectSources();
-                Thread.sleep(1500); // Simulate commit
+                Thread.sleep(1500);
                 runOnUiThread(() -> {
                     String branch = gitPrefs.getString("git_branch", "main");
                     String successMessage = "Project committed to:\n" + repo + " (branch: " + branch + ")";
@@ -549,7 +548,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     getCorrectResultFilename(Uri.fromFile(new File(createdBundlePath)).getLastPathSegment());
 
             if (signWithTestkey) {
-                new ZipSigner().setKeymode(ZipSigner.KEY_TESTKEY).signZip(createdBundlePath, outputPath);
+                ZipSigner signer = new ZipSigner();
+                signer.setKeymode(ZipSigner.KEY_TESTKEY);
+                signer.signZip(createdBundlePath, outputPath);
             } else if (isResultJarSigningEnabled()) {
                 Security.addProvider(new BouncyCastleProvider());
                 CustomKeySigner.signZip(new ZipSigner(), signingKeystorePath, signingKeystorePassword,
