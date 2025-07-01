@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -62,8 +63,6 @@ import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
-// What's new: Implement the listener interface to receive callbacks from the dialog (Dear contributors, you can remove these comments)
-
 public class ExportProjectActivity extends BaseAppCompatActivity implements GitConfigDialogFragment.GitConfigListener {
 
     private String sc_id;
@@ -78,6 +77,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     private MaterialCardView exportResultCard;
     private TextView exportResultPath;
     private Button exportResultShareButton;
+    private ImageView projectIcon;
+    private TextView projectAppName, projectPackageName, projectVersionName, projectWorkspaceName;
 
     private String lastExportedFilePath;
     private String lastExportedFileRelativePath;
@@ -100,6 +101,19 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         sc_metadata = lC.b(sc_id);
         project_metadata = new yq(getApplicationContext(), wq.d(sc_id), sc_metadata);
 
+        projectAppName.setText(yB.c(sc_metadata, "my_app_name"));
+        projectPackageName.setText(yB.c(sc_metadata, "my_sc_pkg_name"));
+        String versionName = yB.c(sc_metadata, "my_sc_ver_name");
+        String versionCode = yB.c(sc_metadata, "my_sc_ver_code");
+        projectVersionName.setText("Version " + versionName + " (" + versionCode + ")");
+        projectWorkspaceName.setText("Project: " + yB.c(sc_metadata, "my_ws_name"));
+
+        String iconPath = wq.e() + File.separator + sc_id + File.separator + "icon.png";
+        File iconFile = new File(iconPath);
+        if (iconFile.exists()) {
+            projectIcon.setImageURI(Uri.fromFile(iconFile));
+        }
+
         initializeOutputDirectories();
         exportProjectButton.setOnClickListener(v -> showExportOptionsDialog());
     }
@@ -111,6 +125,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         exportResultCard = findViewById(R.id.export_result_card);
         exportResultPath = findViewById(R.id.export_result_path);
         exportResultShareButton = findViewById(R.id.export_result_share_button);
+        projectIcon = findViewById(R.id.project_icon);
+        projectAppName = findViewById(R.id.project_app_name);
+        projectPackageName = findViewById(R.id.project_package_name);
+        projectVersionName = findViewById(R.id.project_version_name);
+        projectWorkspaceName = findViewById(R.id.project_workspace_name);
     }
 
     private void setupToolbar() {
@@ -152,7 +171,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                 .show();
     }
 
-    // MODIFIED: This method now launches the dialog if no configuration is found
     private void startGitExport() {
         String repo = gitPrefs.getString("git_repo", null);
         if (repo == null) {
@@ -177,11 +195,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         }).start();
     }
     
-    // MODIFIED: This new method is the callback from the dialog
     @Override
     public void onGitConfigured() {
         SketchwareUtil.toast("Configuration saved! You can now commit.");
-        // We can now call startGitExport() again, and this time it will proceed.
         startGitExport();
     }
 
