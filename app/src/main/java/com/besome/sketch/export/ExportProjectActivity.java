@@ -62,7 +62,8 @@ import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
-// MODIFIED: Implement the listener interface to receive callbacks from the dialog
+// What's new: Implement the listener interface to receive callbacks from the dialog (Dear contributors, you can remove these comments)
+
 public class ExportProjectActivity extends BaseAppCompatActivity implements GitConfigDialogFragment.GitConfigListener {
 
     private String sc_id;
