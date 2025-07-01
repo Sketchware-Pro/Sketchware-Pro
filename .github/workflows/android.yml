@@ -17,30 +17,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  notifyTelegram:
-    name: Notify Telegram
-    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Python 3
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
-      - name: Install Dependencies
-        run: |
-          pip install requests
-
-      - name: Send a message to Telegram
-        env:
-          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
-        run: |
-          python ./.github/workflows/notify_telegram.py
-        continue-on-error: true
-
   build:
     name: Build APKs
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
@@ -87,6 +63,31 @@ jobs:
         with:
           name: apk-release-${{ steps.set_sha.outputs.short_sha }}
           path: app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
+
+  notifyTelegram:
+    name: Notify Telegram
+    runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests
+
+      - name: Send a message to Telegram
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TOPIC_ID: ${{ secrets.TELEGRAM_TOPIC_ID }}
+        run: |
+          python ./.github/workflows/notify_telegram.py
+        continue-on-error: true
 
   aggregateAndSend:
     name: Send APKs to Telegram
