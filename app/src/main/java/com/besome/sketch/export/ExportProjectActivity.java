@@ -24,14 +24,19 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.security.Security;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import a.a.a.KB;
 import a.a.a.MA;
@@ -56,6 +61,7 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
+import mod.jbk.build.progress.BuildProgressMonitorForJgit;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
 import pro.sketchware.R;
@@ -180,21 +186,91 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         }
 
         showLoading(true);
+        a((DialogInterface.OnCancelListener) null);
+        progressDialog.setCancelable(false);
+        a("Starting Git export...");
+
         new Thread(() -> {
             try {
-                exportProjectSources();
-                Thread.sleep(1500); // Simulate commit
+                prepareProjectSourcesForExport();
+
+                String repoUrl = gitPrefs.getString("git_repo", null);
+                String branch = gitPrefs.getString("git_branch", "main");
+                String username = gitPrefs.getString("git_user", null);
+                String token = gitPrefs.getString("git_pass", null);
+                String email = gitPrefs.getString("git_email", "");
+                String commitMessage = gitPrefs.getString("git_commit_msg", "Sketchware auto-commit");
+
+                if (repoUrl == null || username == null || token == null) {
+                    throw new Exception("Git repository, username, or password/token not configured.");
+                }
+
+                String projectName = yB.c(sc_metadata, "my_ws_name").replaceAll("[^a-zA-Z0-9.-]", "_");
+                File localRepoPath = new File(wq.s() + File.separator + "git" + File.separator + projectName);
+                UsernamePasswordCredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(username, token);
+
+                Git git;
+                if (new File(localRepoPath, ".git").exists()) {
+                    runOnUiThread(() -> a("Opening existing repository..."));
+                    git = Git.open(localRepoPath);
+                    if (!git.status().call().isClean()) {
+                        git.stashCreate().call();
+                    }
+                    runOnUiThread(() -> a("Pulling latest changes from origin/" + branch));
+                    git.pull().setCredentialsProvider(credentialsProvider).setRemote("origin").setRemoteBranchName(branch).call();
+                } else {
+                    runOnUiThread(() -> a("Cloning repository..."));
+                    if (localRepoPath.exists()) FileUtil.deleteFile(localRepoPath.getAbsolutePath());
+                    localRepoPath.mkdirs();
+                    git = Git.cloneRepository()
+                            .setURI(repoUrl)
+                            .setDirectory(localRepoPath)
+                            .setBranch(branch)
+                            .setCredentialsProvider(credentialsProvider)
+                            .setProgressMonitor(new BuildProgressMonitorForJgit(this::a))
+                            .call();
+                }
+
+                runOnUiThread(() -> a("Updating project files..."));
+                cleanGitRepository(localRepoPath);
+                FileUtil.copyDirectory(new File(project_metadata.projectMyscPath), localRepoPath);
+                project_metadata.e();
+
+                runOnUiThread(() -> a("Adding files to commit..."));
+                git.add().addFilepattern(".").call();
+                if (git.status().call().isClean()) {
+                    git.close();
+                    runOnUiThread(() -> {
+                        dismissProgressDialog();
+                        String successMessage = "No changes detected in the project.\nRepository is up to date.";
+                        showResult(successMessage, null, null, false);
+                    });
+                    return;
+                }
+
+                runOnUiThread(() -> a("Committing changes..."));
+                String finalCommitMessage = commitMessage + " (" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()) + ")";
+                git.commit().setAuthor(username, email).setMessage(finalCommitMessage).call();
+
+                runOnUiThread(() -> a("Pushing to remote..."));
+                git.push().setCredentialsProvider(credentialsProvider).setProgressMonitor(new BuildProgressMonitorForJgit(this::a)).call();
+                git.close();
+
                 runOnUiThread(() -> {
-                    String branch = gitPrefs.getString("git_branch", "main");
-                    String successMessage = "Project committed to:\n" + repo + " (branch: " + branch + ")\n(This is a mock operation)";
+                    dismissProgressDialog();
+                    String successMessage = "Project successfully pushed to:\n" + repoUrl + " (branch: " + branch + ")";
                     showResult(successMessage, null, null, false);
                 });
             } catch (Exception e) {
-                runOnUiThread(() -> onExportError(Log.getStackTraceString(e)));
+                project_metadata.e();
+                runOnUiThread(() -> {
+                    dismissProgressDialog();
+                    onExportError("Git operation failed: " + e.getMessage() + "\n\n" + Log.getStackTraceString(e));
+                });
             }
         }).start();
     }
-    
+
     @Override
     public void onGitConfigured() {
         SketchwareUtil.toast("Configuration saved! You can now commit.");
@@ -267,10 +343,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
             }
         }).start();
     }
-    
-    private String exportProjectSources() throws Exception {
-        FileUtil.deleteFile(project_metadata.projectMyscPath);
 
+    private void prepareProjectSourcesForExport() throws Exception {
+        FileUtil.deleteFile(project_metadata.projectMyscPath);
         hC hCVar = new hC(sc_id);
         kC kCVar = new kC(sc_id);
         eC eCVar = new eC(sc_id);
@@ -291,13 +366,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         if (yB.a(lC.b(sc_id), "custom_icon")) {
             project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
             if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
-                project_metadata.cf("""
-                        <?xml version="1.0" encoding="utf-8"?>
-                        <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
-                        <background android:drawable="@mipmap/ic_launcher_background"/>
-                        <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
-                        <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
-                        </adaptive-icon>""");
+                project_metadata.cf("<?xml version=\"1.0\" encoding=\"utf-8\"?><adaptive-icon xmlns:android=\"http://schemas.android.com/apk/res/android\" ><background android:drawable=\"@mipmap/ic_launcher_background\"/><foreground android:drawable=\"@mipmap/ic_launcher_foreground\"/><monochrome android:drawable=\"@mipmap/ic_launcher_monochrome\"/></adaptive-icon>");
             }
         }
         project_metadata.a();
@@ -316,7 +385,26 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         if (FileUtil.isExistFile(pathProguard)) {
             FileUtil.copyFile(pathProguard, project_metadata.proguardFilePath);
         }
+    }
 
+    private void cleanGitRepository(File directory) throws IOException {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.getName().equals(".git")) {
+                    continue;
+                }
+                if (file.isDirectory()) {
+                    FileUtil.deleteFile(file.getAbsolutePath());
+                } else if (!file.delete()) {
+                    throw new IOException("Failed to delete file: " + file);
+                }
+            }
+        }
+    }
+
+    private String exportProjectSources() throws Exception {
+        prepareProjectSourcesForExport();
         ArrayList<String> toCompress = new ArrayList<>();
         toCompress.add(project_metadata.projectMyscPath);
         String exportedFilename = yB.c(sc_metadata, "my_ws_name") + ".zip";
@@ -361,7 +449,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         String relativePath = File.separator + "sketchware" + File.separator + "signed_apk" + File.separator + filename;
         showResult(relativePath, fullPath, "application/vnd.android.package-archive", false);
     }
-    
+
     public void onAabExportSuccess(String filename) {
         String signedAabDir = Environment.getExternalStorageDirectory() + File.separator + "sketchware" + File.separator + "signed_aab";
         String fullPath = signedAabDir + File.separator + filename;
@@ -420,6 +508,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         oB fileUtil = new oB();
         fileUtil.f(wq.o());
         fileUtil.f(wq.s() + File.separator + "export_src");
+        fileUtil.f(wq.s() + File.separator + "git");
         fileUtil.f(Environment.getExternalStorageDirectory() + File.separator + "sketchware" + File.separator + "signed_aab");
     }
 
@@ -428,13 +517,13 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         outState.putString("sc_id", sc_id);
         super.onSaveInstanceState(outState);
     }
-    
+
     public void dismissProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }
-    
+
     public void a(DialogInterface.OnCancelListener listener) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
@@ -442,9 +531,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
             progressDialog.setMessage("Building...");
         }
         progressDialog.setOnCancelListener(listener);
-        if(!isFinishing()) progressDialog.show();
+        if (!isFinishing()) progressDialog.show();
     }
-    
+
     public void a(String message) {
         if (progressDialog != null) {
             progressDialog.setMessage(message);
@@ -511,13 +600,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                 if (yB.a(lC.b(sc_id), "custom_icon")) {
                     project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
                     if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
-                        project_metadata.cf("""
-                                <?xml version="1.0" encoding="utf-8"?>
-                                <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
-                                <background android:drawable="@mipmap/ic_launcher_background"/>
-                                <foreground android:drawable="@mipmap/ic_launcher_foreground"/>
-                                <monochrome android:drawable="@mipmap/ic_launcher_monochrome"/>
-                                </adaptive-icon>""");
+                        project_metadata.cf("<?xml version=\"1.0\" encoding=\"utf-8\"?><adaptive-icon xmlns:android=\"http://schemas.android.com/apk/res/android\" ><background android:drawable=\"@mipmap/ic_launcher_background\"/><foreground android:drawable=\"@mipmap/ic_launcher_foreground\"/><monochrome android:drawable=\"@mipmap/ic_launcher_monochrome\"/></adaptive-icon>");
                     } else {
                         project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
                     }
@@ -666,7 +749,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         public void a() {
             ExportProjectActivity currentActivity = activity.get();
             if (currentActivity == null) return;
-            
+
             currentActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             currentActivity.dismissProgressDialog();
 
@@ -689,7 +772,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
             currentActivity.onExportError(str);
         }
 
-        public void enableAppBundleBuild() { buildingAppBundle = true; }
+        public void enableAppBundleBuild() {
+            buildingAppBundle = true;
+        }
 
         public void configureResultJarSigning(String keystorePath, char[] keystorePassword, String aliasName, char[] aliasPassword, String signatureAlgorithm) {
             this.signingKeystorePath = keystorePath;
@@ -699,7 +784,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
             this.signingAlgorithm = signatureAlgorithm;
         }
 
-        public void setSignWithTestkey(boolean signWithTestkey) { this.signWithTestkey = signWithTestkey; }
+        public void setSignWithTestkey(boolean signWithTestkey) {
+            this.signWithTestkey = signWithTestkey;
+        }
 
         public void disableResultJarSigning() {
             this.signingKeystorePath = null;
@@ -726,6 +813,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         }
 
         @Override
-        public void onProgress(String progress, int step) { publishProgress(progress); }
+        public void onProgress(String progress, int step) {
+            publishProgress(progress);
+        }
     }
 }
