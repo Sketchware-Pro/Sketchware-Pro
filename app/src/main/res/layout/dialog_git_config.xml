@@ -38,12 +38,10 @@
                 android:layout_marginBottom="8dp"
                 android:textAppearance="?attr/textAppearanceTitleMedium"/>
 
-            <!-- GitHub Card -->
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
                 app:contentPadding="16dp">
 
                 <LinearLayout
@@ -65,9 +63,10 @@
                             app:tint="?attr/colorOnSurface" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="16dp"
                             android:text="GitHub"
                             android:textAppearance="?attr/textAppearanceTitleMedium" />
                     </LinearLayout>
@@ -77,7 +76,7 @@
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="24dp"
                         android:hint="Personal Access Token"
                         app:helperText="Required scopes: 'repo' and 'user'"
                         app:endIconMode="password_toggle">
@@ -101,7 +100,14 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:textAppearance="?attr/textAppearanceLabelLarge" />
 
-                     <!-- This section appears after successful authorization -->
+                    <com.google.android.material.checkbox.MaterialCheckBox
+                        android:id="@+id/checkbox_remember_token"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Remember Token"
+                        android:layout_gravity="start"/>
+
                     <LinearLayout
                         android:id="@+id/github_authorized_section"
                         android:layout_width="match_parent"
@@ -113,110 +119,82 @@
                             android:id="@+id/text_user_info"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:text="Authorized as user"
+                            android:padding="12dp"
+                            android:layout_marginTop="16dp"
                             android:textAlignment="center"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:background="@drawable/bg_round_light_grey"
-                            android:layout_marginTop="16dp"/>
+                            android:background="@drawable/bg_round_light_grey"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="Repository"
-                            android:textAppearance="?attr/textAppearanceLabelMedium"
-                            android:textColor="?attr/colorOnSurfaceVariant"/>
-
-                        <Spinner
-                            android:id="@+id/spinner_repos"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/menu_layout_repos"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_round_light_grey"
-                            android:padding="12dp"
-                            android:minHeight="48dp" />
+                            android:layout_marginTop="16dp"
+                            android:hint="Repository">
 
-                        <TextView
-                            android:id="@+id/text_branch_label"
-                            android:layout_width="wrap_content"
+                            <AutoCompleteTextView
+                                android:id="@+id/auto_complete_repos"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="none"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/menu_layout_branches"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:visibility="gone"
-                            android:text="Branch"
-                            android:textAppearance="?attr/textAppearanceLabelMedium"
-                            android:textColor="?attr/colorOnSurfaceVariant"/>
+                            android:hint="Branch">
 
-                        <Spinner
-                            android:id="@+id/spinner_branches"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:background="@drawable/bg_round_light_grey"
-                            android:padding="12dp"
-                            android:minHeight="48dp"
-                            android:visibility="gone"/>
+                            <AutoCompleteTextView
+                                android:id="@+id/auto_complete_branches"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="none" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
-                    <ProgressBar
-                        android:id="@+id/progress_bar"
-                        style="?android:attr/progressBarStyleHorizontal"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:indeterminate="true"
-                        android:visibility="gone"
-                        android:layout_marginTop="16dp"/>
-
-                    <TextView
-                        android:id="@+id/text_error"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:textColor="?attr/colorError"
-                        android:visibility="gone"
-                        android:text="Error message" />
-                    
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/button_authorize"
-                            style="@style/Widget.Material3.Button.TonalButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="Authorize" />
+                        android:layout_marginTop="24dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/button_forget_token"
                             style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
                             android:text="Forget Token"/>
 
-                    </RelativeLayout>
-                     <CheckBox
-                        android:id="@+id/checkbox_remember_token"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Remember Token"
-                        android:layout_gravity="end"/>
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
 
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_authorize"
+                            style="@style/Widget.Material3.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Authorize" />
+                    </LinearLayout>
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Placeholder for GitLab with Click Animation -->
             <com.google.android.material.card.MaterialCardView
-                style="?attr/materialCardViewFilledStyle"
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android.clickable="true"
+                android:clickable="true"
                 android:focusable="true"
                 app:contentPadding="16dp">
 
@@ -236,14 +214,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="16dp"
                         android:text="GitLab (Coming Soon)"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textColor="?attr/colorOnSurfaceVariant"/>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-            
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
