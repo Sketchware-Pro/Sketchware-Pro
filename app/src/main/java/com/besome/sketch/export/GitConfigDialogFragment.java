@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -52,10 +54,12 @@ public class GitConfigDialogFragment extends DialogFragment {
     private TextInputEditText patEditText;
     private AutoCompleteTextView repoAutoComplete, branchAutoComplete;
     private TextInputLayout repoMenuLayout, branchMenuLayout;
-    private Button authorizeButton, forgetButton;
+    private Button mainActionButton; // Formerly authorizeButton
+    private Button forgetButton;
     private CheckBox rememberTokenCheckbox;
     private View authorizedSection;
     private TextView userInfoText;
+    private MenuItem saveMenuItem; // Toolbar save icon
 
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -80,6 +84,28 @@ public class GitConfigDialogFragment extends DialogFragment {
         initializeViews(view);
         setupToolbar(view);
 
+        // MODIFIED: Setup main button with dynamic functionality
+        mainActionButton.setOnClickListener(v -> {
+            if (mainActionButton.getText().toString().equals(getString(R.string.common_word_save))) {
+                saveConfiguration();
+            } else {
+                authorize();
+            }
+        });
+
+        forgetButton.setOnClickListener(v -> forgetToken());
+        repoAutoComplete.setOnItemClickListener((parent, v, position, id) -> {
+            branchAutoComplete.setText("", false);
+            fetchBranches(repoData.get(position));
+            updateUiState();
+        });
+
+        // MODIFIED: Add listener to branch selection to update UI
+        branchAutoComplete.setOnItemClickListener((parent, v, position, id) -> {
+            updateUiState();
+        });
+
+
         if (prefs.getBoolean("remember_token", false)) {
             String savedPat = prefs.getString("github_pat", "");
             patEditText.setText(savedPat);
@@ -88,18 +114,10 @@ public class GitConfigDialogFragment extends DialogFragment {
                 authorize();
             }
         }
-
-        authorizeButton.setOnClickListener(v -> authorize());
-        forgetButton.setOnClickListener(v -> forgetToken());
-
+        
         view.findViewById(R.id.text_pat_helper).setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic"));
             startActivity(intent);
-        });
-
-        repoAutoComplete.setOnItemClickListener((parent, v, position, id) -> {
-            branchAutoComplete.setText("", false);
-            fetchBranches(repoData.get(position));
         });
     }
 
@@ -109,17 +127,24 @@ public class GitConfigDialogFragment extends DialogFragment {
         repoAutoComplete = view.findViewById(R.id.auto_complete_repos);
         branchMenuLayout = view.findViewById(R.id.menu_layout_branches);
         branchAutoComplete = view.findViewById(R.id.auto_complete_branches);
-        authorizeButton = view.findViewById(R.id.button_authorize);
+        mainActionButton = view.findViewById(R.id.button_authorize); // ID is the same
         forgetButton = view.findViewById(R.id.button_forget_token);
         rememberTokenCheckbox = view.findViewById(R.id.checkbox_remember_token);
         authorizedSection = view.findViewById(R.id.github_authorized_section);
         userInfoText = view.findViewById(R.id.text_user_info);
+        
+        // MODIFIED: Set initial button text
+        mainActionButton.setText(R.string.common_word_continue);
     }
 
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> dismiss());
         toolbar.inflateMenu(R.menu.dialog_save_menu);
+        
+        // MODIFIED: Get a reference to the save menu item
+        saveMenuItem = toolbar.getMenu().findItem(R.id.action_save);
+        
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_save) {
                 saveConfiguration();
@@ -129,10 +154,28 @@ public class GitConfigDialogFragment extends DialogFragment {
         });
     }
 
+    // NEW: Method to validate PAT structure
+    private boolean isPatValid(String token) {
+        if (TextUtils.isEmpty(token)) {
+            return false;
+        }
+        if (token.startsWith("ghp_")) {
+            // Classic PAT: ghp_ + 36 characters = 40 total
+            return token.length() == 40;
+        }
+        if (token.startsWith("github_pat_")) {
+            // Fine-grained PAT: github_pat_ + 82-92 characters = 95-105 total
+            return token.length() >= 95 && token.length() <= 105;
+        }
+        return false;
+    }
+
     private void authorize() {
         String token = patEditText.getText().toString().trim();
-        if (token.isEmpty()) {
-            showError("Personal Access Token cannot be empty.");
+        
+        // MODIFIED: Use the new validation method
+        if (!isPatValid(token)) {
+            showError("Invalid Personal Access Token format.");
             return;
         }
 
@@ -144,7 +187,6 @@ public class GitConfigDialogFragment extends DialogFragment {
                     handler.post(() -> showError("Authorization failed. Check your token and permissions."));
                     return;
                 }
-
                 JSONObject user = new JSONObject(readResponse(userConn));
                 String login = user.getString("login");
 
@@ -183,11 +225,28 @@ public class GitConfigDialogFragment extends DialogFragment {
             showError("Invalid repository data.");
         }
     }
+    
+    // NEW: Centralized method to manage UI state
+    private void updateUiState() {
+        boolean repoSelected = !repoAutoComplete.getText().toString().isEmpty();
+        boolean branchSelected = !branchAutoComplete.getText().toString().isEmpty();
+
+        if (repoSelected && branchSelected) {
+            mainActionButton.setText(R.string.common_word_save);
+            if (saveMenuItem != null) {
+                saveMenuItem.setVisible(false);
+            }
+        } else {
+            mainActionButton.setText(R.string.common_word_continue);
+            if (saveMenuItem != null) {
+                saveMenuItem.setVisible(true);
+            }
+        }
+    }
 
     private void onReposFetched(JSONArray repos, String login) {
         showLoading(false);
         userInfoText.setText("Authorized as: " + login);
-
         ArrayList<String> repoNames = new ArrayList<>();
         repoData.clear();
 
@@ -204,6 +263,7 @@ public class GitConfigDialogFragment extends DialogFragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, repoNames);
         repoAutoComplete.setAdapter(adapter);
         authorizedSection.setVisibility(View.VISIBLE);
+        updateUiState();
     }
 
     private void onBranchesFetched(JSONArray branches) {
@@ -220,6 +280,7 @@ public class GitConfigDialogFragment extends DialogFragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, branchNames);
         branchAutoComplete.setAdapter(adapter);
         branchMenuLayout.setVisibility(View.VISIBLE);
+        updateUiState();
     }
 
     private void saveConfiguration() {
@@ -258,11 +319,12 @@ public class GitConfigDialogFragment extends DialogFragment {
         repoAutoComplete.setText("", false);
         branchAutoComplete.setText("", false);
         branchMenuLayout.setVisibility(View.GONE);
+        updateUiState(); // MODIFIED: Reset button state
         Toast.makeText(getContext(), "Forgotten Token.", Toast.LENGTH_SHORT).show();
     }
 
     private void showLoading(boolean isLoading) {
-        authorizeButton.setEnabled(!isLoading);
+        mainActionButton.setEnabled(!isLoading);
         forgetButton.setEnabled(!isLoading);
         patEditText.setEnabled(!isLoading);
         repoMenuLayout.setEnabled(!isLoading);
@@ -294,7 +356,8 @@ public class GitConfigDialogFragment extends DialogFragment {
         reader.close();
         return response.toString();
     }
-
+    
+    // Unchanged below this line
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
