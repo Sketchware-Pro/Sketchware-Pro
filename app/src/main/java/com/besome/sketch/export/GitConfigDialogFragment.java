@@ -271,7 +271,9 @@ public class GitConfigDialogFragment extends DialogFragment {
 
     private void showError(String message) {
         showLoading(false);
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        if (getContext() != null) {
+            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+        }
     }
 
     private HttpURLConnection createConnection(String urlString, String token) throws IOException {
@@ -296,12 +298,16 @@ public class GitConfigDialogFragment extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof GitConfigListener) {
-            listener = (GitConfigListener) context;
-        } else if (getParentFragment() instanceof GitConfigListener) {
-            listener = (GitConfigListener) getParentFragment();
-        } else {
-            throw new ClassCastException(context.toString() + " must implement GitConfigListener");
+        try {
+            if (context instanceof GitConfigListener) {
+                listener = (GitConfigListener) context;
+            } else if (getParentFragment() instanceof GitConfigListener) {
+                listener = (GitConfigListener) getParentFragment();
+            } else {
+                throw new ClassCastException(context.toString() + " must implement GitConfigListener");
+            }
+        } catch (ClassCastException e) {
+             throw new ClassCastException(context.toString() + " must implement GitConfigListener");
         }
     }
 
