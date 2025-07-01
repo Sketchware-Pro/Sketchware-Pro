@@ -37,7 +37,7 @@
                         android:layout_width="48dp"
                         android:layout_height="48dp"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/open_box_48"
+                        android:src="@drawable/ic_backup_m3"
                         app:tint="?attr/colorPrimary" />
 
                     <TextView
