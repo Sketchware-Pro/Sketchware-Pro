@@ -158,7 +158,7 @@ public class GitConfigDialogFragment extends DialogFragment {
             return token.length() == 40;
         }
         if (token.startsWith("github_pat_")) {
-            return token.length() >= 95 && token.length() <= 105;
+            return token.length() >= 90 && token.length() <= 105;
         }
         return false;
     }
