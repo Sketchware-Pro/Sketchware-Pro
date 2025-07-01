@@ -61,7 +61,7 @@
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_github_mark"
+                            android:src="@drawable/ic_github"
                             app:tint="?attr/colorOnSurface" />
 
                         <TextView
