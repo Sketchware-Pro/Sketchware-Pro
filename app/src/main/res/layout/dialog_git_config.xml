@@ -78,7 +78,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
                         android:hint="Personal Access Token"
-                        app:helperText="Required scopes: 'repo' and 'user'"
                         app:endIconMode="password_toggle">
 
                         <com.google.android.material.textfield.TextInputEditText
