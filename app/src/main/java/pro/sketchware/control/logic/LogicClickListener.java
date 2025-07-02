@@ -92,7 +92,6 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void addCustomVariable() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
-        dialog.setIcon(R.drawable.abc_96_color);
         dialog.setTitle("Add a new custom variable");
 
         AddCustomVariableBinding binding = AddCustomVariableBinding.inflate(logicEditor.getLayoutInflater());
@@ -101,7 +100,6 @@ public class LogicClickListener implements View.OnClickListener {
 
         VariableModifierValidator modifiersValidator = new VariableModifierValidator(getContext(), binding.modifierLayout);
         binding.modifier.addTextChangedListener(modifiersValidator);
-
 
         VariableTypeValidator varTypeValidator = new VariableTypeValidator(getContext(), binding.typeLayout);
         binding.type.addTextChangedListener(varTypeValidator);
@@ -162,7 +160,6 @@ public class LogicClickListener implements View.OnClickListener {
     private void removeVariable() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
         dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_variable));
-        dialog.setIcon(R.drawable.delete_96);
 
         RecyclerView recyclerView = new RecyclerView(logicEditor);
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
@@ -217,7 +214,6 @@ public class LogicClickListener implements View.OnClickListener {
 
     private void addCustomList() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
-        dialog.setIcon(R.drawable.ic_mtrl_add);
         dialog.setTitle("Add a new custom List");
 
         AddCustomListBinding listBinding = AddCustomListBinding.inflate(logicEditor.getLayoutInflater());
@@ -264,7 +260,6 @@ public class LogicClickListener implements View.OnClickListener {
     private void removeList() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
         dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_list));
-        dialog.setIcon(R.drawable.delete_96);
 
         RecyclerView recyclerView = new RecyclerView(logicEditor);
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
@@ -332,7 +327,7 @@ public class LogicClickListener implements View.OnClickListener {
                         LayoutParams.WRAP_CONTENT,
                         LayoutParams.WRAP_CONTENT));
                 textView.setPadding(
-                        dpToPx(2),
+                        dpToPx(4),
                         dpToPx(4),
                         dpToPx(4),
                         dpToPx(4)
