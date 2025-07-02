@@ -41,8 +41,8 @@ public class PropertySwitchSingleLineItem extends LinearLayout implements View.O
         propertyItem = findViewById(R.id.property_item);
         propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
-            setOnClickListener(this);
-            setSoundEffectsEnabled(true);
+            propertyMenuItem.setOnClickListener(this);
+            propertyMenuItem.setSoundEffectsEnabled(true);
         }
     }
 

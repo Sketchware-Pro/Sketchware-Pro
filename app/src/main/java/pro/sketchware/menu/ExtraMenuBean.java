@@ -757,7 +757,6 @@ public class ExtraMenuBean {
     private void asdDialog(Ss ss, String message) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
         dialog.setTitle(Helper.getResString(R.string.logic_editor_title_enter_string_value));
-        dialog.setIcon(R.drawable.rename_96_blue);
 
         if (!isEmpty(message)) dialog.setMessage(message);
 

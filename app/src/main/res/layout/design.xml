@@ -30,18 +30,24 @@
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
+                        android:layout_height="wrap_content"
                         app:navigationIcon="?attr/homeAsUpIndicator"
                         app:subtitleTextColor="?attr/colorSecondary"
                         tools:menu="@menu/design_menu"
                         tools:subtitle="605"
                         tools:title="InternalDemo" />
-                </com.google.android.material.appbar.AppBarLayout>
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:dividerColor="?attr/colorSurfaceContainerHighest" />
+                </com.google.android.material.appbar.AppBarLayout>
 
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:id="@+id/layout_coordinator"

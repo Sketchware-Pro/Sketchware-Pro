@@ -6,15 +6,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp">
 
         <RadioGroup
             android:id="@+id/rg_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:orientation="vertical">
 
             <RadioButton
@@ -47,7 +45,6 @@
             android:id="@+id/ti_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
             android:hint="@string/logic_editor_hint_enter_variable_name"
             android:importantForAutofill="noExcludeDescendants">

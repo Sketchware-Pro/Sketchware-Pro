@@ -25,7 +25,6 @@ public abstract class MB implements TextWatcher, InputFilter {
         c = textInputLayout.getEditText();
         c.setFilters(new InputFilter[]{this});
         c.addTextChangedListener(this);
-        b.setErrorEnabled(true);
     }
 
     public String a() {
@@ -50,6 +49,7 @@ public abstract class MB implements TextWatcher, InputFilter {
     public void afterTextChanged(Editable editable) {
         if (editable.toString().isEmpty()) {
             b.setError(null);
+            b.setErrorEnabled(false);
         }
     }
 
