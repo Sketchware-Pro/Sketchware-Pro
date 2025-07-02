@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.color.MaterialColors;
 
+import io.github.rosemoe.sora.lang.Language;
 import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.schemes.EditorColorScheme;
@@ -50,30 +51,27 @@ public class EditorUtils {
     }
 
     public static void loadJavaConfig(CodeEditor editor) {
-        editor.setEditorLanguage(new JavaLanguage());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (isDarkThemeEnabled(editor.getContext())) {
-                editor.setColorScheme(new SchemeDarcula());
-            } else {
-                editor.setColorScheme(new EditorColorScheme());
-            }
-        } else {
-            editor.setColorScheme(new EditorColorScheme());
-        }
-        editor.setColorScheme(getMaterialStyledScheme(editor));
-        editor.setPinLineNumber(true);
+        loadConfigByLanguage(editor, new JavaLanguage(), false);
     }
 
     public static void loadXmlConfig(CodeEditor editor) {
-        editor.setEditorLanguage(CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML));
+        loadConfigByLanguage(editor, CodeEditorLanguages.loadTextMateLanguage(CodeEditorLanguages.SCOPE_NAME_XML), true);
+    }
+
+    // todo: use dynamic color scheme for textmate language too
+    private static void loadConfigByLanguage(CodeEditor editor, Language language, boolean isTextMate) {
+        editor.setEditorLanguage(language);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (isDarkThemeEnabled(editor.getContext())) {
-                editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA));
+                editor.setColorScheme(isTextMate ?
+                        CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_DRACULA) : new SchemeDarcula());
             } else {
-                editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+                editor.setColorScheme(isTextMate ?
+                        CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB) : new EditorColorScheme());
             }
         } else {
-            editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
+            editor.setColorScheme(isTextMate ?
+                    CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB) : new EditorColorScheme());
         }
         editor.setColorScheme(getMaterialStyledScheme(editor));
         editor.setPinLineNumber(true);
