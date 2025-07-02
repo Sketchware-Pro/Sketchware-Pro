@@ -143,6 +143,10 @@ dependencies {
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
 
+implementation 'org.eclipse.jgit:org.eclipse.jgit:6.9.0.202403050737-r'
+
+implementation 'org.slf4j:slf4j-nop:2.0.12'
+
     // Analytics and Crashlytics
     if (analyticsEnabled) {
         new File("$projectDir/google-services.json").text = secrets
