@@ -79,13 +79,13 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"], exclude: "proguard-base-7.2.2.jar")
 
-    implementation "androidx.appcompat:appcompat:1.8.0-beta01"
+    implementation "androidx.appcompat:appcompat:1.7.1"
     implementation "androidx.activity:activity:1.10.0-beta01"
     implementation "androidx.core:core-splashscreen:1.1.0-rc01"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
     implementation "androidx.recyclerview:recyclerview:1.4.0-beta01"
     implementation "androidx.preference:preference:1.3.0-alpha01"
-    implementation "androidx.viewpager2:viewpager2:1.2.0-alpha02"
+    implementation "androidx.viewpager2:viewpager2:1.1.0"
     implementation "androidx.exifinterface:exifinterface:1.4.0-beta01"
     implementation "androidx.cardview:cardview:1.0.0"
 
@@ -110,7 +110,7 @@ dependencies {
     implementation "com.android.tools.build:bundletool:1.16.0"
     implementation "com.android.tools:sdklib:31.4.1"
 
-    implementation "com.android.tools:r8:8.4.47"
+    implementation "com.android.tools:r8:8.9.35"
     implementation "org.eclipse.jdt:ecj:3.39.0"
     implementation "com.github.Iyxan23:zipalign-java:1.2.2"
     implementation "com.guardsquare:proguard-core:9.1.4"
