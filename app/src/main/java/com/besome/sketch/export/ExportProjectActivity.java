@@ -1,6 +1,5 @@
 package com.besome.sketch.export;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,17 +8,19 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.transition.TransitionManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -75,11 +76,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     private HashMap<String, Object> sc_metadata;
     private yq project_metadata;
     private SharedPreferences gitPrefs;
-    public ProgressDialog progressDialog;
 
     private ViewGroup rootLayout;
     private Button exportProjectButton;
-    private LottieAnimationView loadingAnimation;
+    private LinearLayout embeddedProgressLayout;
+    private TextView embeddedProgressText;
     private MaterialCardView exportResultCard;
     private TextView exportResultPath;
     private Button exportResultShareButton;
@@ -89,6 +90,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     private String lastExportedFilePath;
     private String lastExportedFileRelativePath;
     private String lastExportedMimeType;
+
+    private AlertDialog gitProgressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,7 +130,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     private void initializeViews() {
         rootLayout = findViewById(R.id.root_layout);
         exportProjectButton = findViewById(R.id.export_project_button);
-        loadingAnimation = findViewById(R.id.loading_animation);
+        embeddedProgressLayout = findViewById(R.id.embedded_progress_layout);
+        embeddedProgressText = findViewById(R.id.embedded_progress_text);
         exportResultCard = findViewById(R.id.export_result_card);
         exportResultPath = findViewById(R.id.export_result_path);
         exportResultShareButton = findViewById(R.id.export_result_share_button);
@@ -141,10 +145,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
-        getSupportActionBar().setTitle("Export Project");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Export Project");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+        }
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
     }
 
@@ -177,49 +182,68 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                 .show();
     }
 
-    private void startGitExport() {
-        String repo = gitPrefs.getString("git_repo", null);
-        if (repo == null) {
-            GitConfigDialogFragment dialog = new GitConfigDialogFragment();
-            dialog.show(getSupportFragmentManager(), "git_config_dialog");
+    private void setupGitProgressDialog() {
+        if (gitProgressDialog != null && gitProgressDialog.isShowing()) {
             return;
         }
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.progress_dialog_wave, null);
+        gitProgressDialog = new MaterialAlertDialogBuilder(this)
+                .setView(dialogView)
+                .setCancelable(false)
+                .create();
+    }
 
-        showLoading(true);
-        a((DialogInterface.OnCancelListener) null);
-        progressDialog.setCancelable(false);
-        a("Starting Git export...");
+    private void updateGitProgressDialog(String message) {
+        if (gitProgressDialog == null || !gitProgressDialog.isShowing()) {
+            setupGitProgressDialog();
+            gitProgressDialog.show();
+        }
+        TextView progressText = gitProgressDialog.findViewById(R.id.progress_dialog_text);
+        if (progressText != null) {
+            progressText.setText(message);
+        }
+    }
 
+    private void dismissGitProgressDialog() {
+        if (gitProgressDialog != null && gitProgressDialog.isShowing()) {
+            gitProgressDialog.dismiss();
+            gitProgressDialog = null;
+        }
+    }
+
+    private void startGitExport() {
+        if (gitPrefs.getString("git_repo", null) == null) {
+            new GitConfigDialogFragment().show(getSupportFragmentManager(), "git_config_dialog");
+            return;
+        }
+        updateGitProgressDialog("Starting Git export...");
         new Thread(() -> {
             try {
                 prepareProjectSourcesForExport();
-
-                String repoUrl = gitPrefs.getString("git_repo", null);
+                String repoUrl = gitPrefs.getString("git_repo", "");
                 String branch = gitPrefs.getString("git_branch", "main");
-                String username = gitPrefs.getString("git_user", null);
-                String token = gitPrefs.getString("git_pass", null);
+                String username = gitPrefs.getString("git_user", "");
+                String token = gitPrefs.getString("git_pass", "");
                 String email = gitPrefs.getString("git_email", "");
-                String commitMessage = gitPrefs.getString("git_commit_msg", "Sketchware auto-commit");
-
-                if (repoUrl == null || username == null || token == null) {
-                    throw new Exception("Git repository, username, or password/token not configured.");
+                String commitMessage = "Sketchware auto-commit";
+                if (repoUrl.isEmpty() || username.isEmpty() || token.isEmpty()) {
+                    throw new Exception("Git repository, username, or token not configured.");
                 }
 
                 String projectName = yB.c(sc_metadata, "my_ws_name").replaceAll("[^a-zA-Z0-9.-]", "_");
                 File localRepoPath = new File(wq.s() + File.separator + "git" + File.separator + projectName);
                 UsernamePasswordCredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(username, token);
-
                 Git git;
                 if (new File(localRepoPath, ".git").exists()) {
-                    runOnUiThread(() -> a("Opening existing repository..."));
+                    runOnUiThread(() -> updateGitProgressDialog("Opening repository..."));
                     git = Git.open(localRepoPath);
                     if (!git.status().call().isClean()) {
                         git.stashCreate().call();
                     }
-                    runOnUiThread(() -> a("Pulling latest changes from origin/" + branch));
+                    runOnUiThread(() -> updateGitProgressDialog("Pulling latest changes..."));
                     git.pull().setCredentialsProvider(credentialsProvider).setRemote("origin").setRemoteBranchName(branch).call();
                 } else {
-                    runOnUiThread(() -> a("Cloning repository..."));
+                    runOnUiThread(() -> updateGitProgressDialog("Cloning repository..."));
                     if (localRepoPath.exists()) FileUtil.deleteFile(localRepoPath.getAbsolutePath());
                     localRepoPath.mkdirs();
                     git = Git.cloneRepository()
@@ -227,44 +251,50 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                             .setDirectory(localRepoPath)
                             .setBranch(branch)
                             .setCredentialsProvider(credentialsProvider)
-                            .setProgressMonitor(new BuildProgressMonitorForJgit(this::a))
+                            .setProgressMonitor(new BuildProgressMonitorForJgit(message -> runOnUiThread(() -> updateGitProgressDialog(message))))
                             .call();
                 }
 
-                runOnUiThread(() -> a("Updating project files..."));
+                runOnUiThread(() -> updateGitProgressDialog("Updating project files..."));
                 cleanGitRepository(localRepoPath);
                 FileUtil.copyDirectory(new File(project_metadata.projectMyscPath), localRepoPath);
                 project_metadata.e();
-
-                runOnUiThread(() -> a("Adding files to commit..."));
+                runOnUiThread(() -> updateGitProgressDialog("Staging files..."));
                 git.add().addFilepattern(".").call();
+
                 if (git.status().call().isClean()) {
                     git.close();
                     runOnUiThread(() -> {
-                        dismissProgressDialog();
-                        String successMessage = "No changes detected in the project.\nRepository is up to date.";
+                        dismissGitProgressDialog();
+                        String successMessage = "No changes detected in the project. Repository is up to date.";
                         showResult(successMessage, null, null, false);
                     });
                     return;
                 }
 
-                runOnUiThread(() -> a("Committing changes..."));
+                runOnUiThread(() -> updateGitProgressDialog("Committing changes..."));
                 String finalCommitMessage = commitMessage + " (" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()) + ")";
                 git.commit().setAuthor(username, email).setMessage(finalCommitMessage).call();
 
-                runOnUiThread(() -> a("Pushing to remote..."));
-                git.push().setCredentialsProvider(credentialsProvider).setProgressMonitor(new BuildProgressMonitorForJgit(this::a)).call();
+                runOnUiThread(() -> updateGitProgressDialog("Pushing to remote..."));
+                git.push().setCredentialsProvider(credentialsProvider)
+                        .setProgressMonitor(new BuildProgressMonitorForJgit(message -> runOnUiThread(() -> updateGitProgressDialog(message))))
+                        .call();
                 git.close();
 
+                if (!gitPrefs.getBoolean("remember_credentials", false)) {
+                    gitPrefs.edit().remove("git_pass").remove("git_user").remove("git_email").apply();
+                }
+
                 runOnUiThread(() -> {
-                    dismissProgressDialog();
+                    dismissGitProgressDialog();
                     String successMessage = "Project successfully pushed to:\n" + repoUrl + " (branch: " + branch + ")";
                     showResult(successMessage, null, null, false);
                 });
             } catch (Exception e) {
                 project_metadata.e();
                 runOnUiThread(() -> {
-                    dismissProgressDialog();
+                    dismissGitProgressDialog();
                     onExportError("Git operation failed: " + e.getMessage() + "\n\n" + Log.getStackTraceString(e));
                 });
             }
@@ -278,62 +308,52 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     }
 
     private void startApkExport() {
-        GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
+        new GetKeyStoreCredentialsDialog(this,
                 R.drawable.ic_apk_color_48dp,
                 "Sign & Export APK",
-                "To sign the APK, provide your keystore credentials or use the test key.");
-        credentialsDialog.setListener(credentials -> {
-            showLoading(true);
-            BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.SIGN_APP);
-            if (credentials != null) {
-                if (credentials.isForSigningWithTestkey()) {
-                    task.setSignWithTestkey(true);
-                } else {
-                    task.configureResultJarSigning(
-                            wq.j(),
-                            credentials.getKeyStorePassword().toCharArray(),
-                            credentials.getKeyAlias(),
-                            credentials.getKeyPassword().toCharArray(),
-                            credentials.getSigningAlgorithm()
-                    );
-                }
-            } else {
-                task.disableResultJarSigning();
-            }
-            task.execute();
-        });
-        credentialsDialog.show();
+                "To sign the APK, provide your keystore credentials or use the test key.")
+                .setListener(credentials -> {
+                    showEmbeddedProgress(true, "Starting APK export...");
+                    BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.SIGN_APP);
+                    if (credentials != null) {
+                        if (credentials.isForSigningWithTestkey()) {
+                            task.setSignWithTestkey(true);
+                        } else {
+                            task.configureResultJarSigning(wq.j(), credentials.getKeyStorePassword().toCharArray(),
+                                    credentials.getKeyAlias(), credentials.getKeyPassword().toCharArray(),
+                                    credentials.getSigningAlgorithm());
+                        }
+                    } else {
+                        task.disableResultJarSigning();
+                    }
+                    task.execute();
+                }).show();
     }
 
     private void startAabExport() {
-        GetKeyStoreCredentialsDialog credentialsDialog = new GetKeyStoreCredentialsDialog(this,
+        new GetKeyStoreCredentialsDialog(this,
                 R.drawable.open_box_48,
                 "Sign & Export AAB",
-                "AABs must be signed. Provide your keystore credentials to proceed.");
-        credentialsDialog.setListener(credentials -> {
-            showLoading(true);
-            BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.AAB);
-            task.enableAppBundleBuild();
-            if (credentials != null) {
-                if (credentials.isForSigningWithTestkey()) {
-                    task.setSignWithTestkey(true);
-                } else {
-                    task.configureResultJarSigning(
-                            wq.j(),
-                            credentials.getKeyStorePassword().toCharArray(),
-                            credentials.getKeyAlias(),
-                            credentials.getKeyPassword().toCharArray(),
-                            credentials.getSigningAlgorithm()
-                    );
-                }
-            }
-            task.execute();
-        });
-        credentialsDialog.show();
+                "AABs must be signed. Provide your keystore credentials to proceed.")
+                .setListener(credentials -> {
+                    showEmbeddedProgress(true, "Starting AAB export...");
+                    BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.AAB);
+                    task.enableAppBundleBuild();
+                    if (credentials != null) {
+                        if (credentials.isForSigningWithTestkey()) {
+                            task.setSignWithTestkey(true);
+                        } else {
+                            task.configureResultJarSigning(wq.j(), credentials.getKeyStorePassword().toCharArray(),
+                                    credentials.getKeyAlias(), credentials.getKeyPassword().toCharArray(),
+                                    credentials.getSigningAlgorithm());
+                        }
+                    }
+                    task.execute();
+                }).show();
     }
 
     private void startSourceCodeExport() {
-        showLoading(true);
+        showEmbeddedProgress(true, "Exporting source code...");
         new Thread(() -> {
             try {
                 String exportedSrcFilename = exportProjectSources();
@@ -355,14 +375,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         eCVar.g();
         eCVar.e();
         iCVar.i();
-
         project_metadata.a(getApplicationContext(), wq.e(xq.a(sc_id) ? "600" : sc_id));
-
         ProjectBuilder builder = new ProjectBuilder(this, project_metadata);
         project_metadata.a(iCVar, hCVar, eCVar, yq.ExportType.SOURCE_CODE);
         builder.buildBuiltInLibraryInformation();
         project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
-
         if (yB.a(lC.b(sc_id), "custom_icon")) {
             project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
             if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
@@ -374,13 +391,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         kCVar.c(project_metadata.resDirectoryPath + File.separator + "raw");
         kCVar.a(project_metadata.assetsPath + File.separator + "fonts");
         project_metadata.f();
-
         FilePathUtil util = new FilePathUtil();
         copyExtraFiles(util, "java", project_metadata.javaFilesPath + File.separator + project_metadata.packageNameAsFolders);
         copyExtraFiles(util, "resource", project_metadata.resDirectoryPath);
         copyExtraFiles(util, "assets", project_metadata.assetsPath);
         copyExtraFiles(util, "nativelibs", new File(project_metadata.generatedFilesPath, "jniLibs").getAbsolutePath());
-
         String pathProguard = util.getPathProguard(sc_id);
         if (FileUtil.isExistFile(pathProguard)) {
             FileUtil.copyFile(pathProguard, project_metadata.proguardFilePath);
@@ -391,9 +406,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         File[] files = directory.listFiles();
         if (files != null) {
             for (File file : files) {
-                if (file.getName().equals(".git")) {
-                    continue;
-                }
+                if (file.getName().equals(".git")) continue;
                 if (file.isDirectory()) {
                     FileUtil.deleteFile(file.getAbsolutePath());
                 } else if (!file.delete()) {
@@ -412,13 +425,11 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         if (new oB().e(exportedSourcesZipPath)) {
             new oB().c(exportedSourcesZipPath);
         }
-
         ArrayList<String> toExclude = new ArrayList<>();
         toExclude.add("DebugActivity.java");
         if (!new File(new FilePathUtil().getPathJava(sc_id) + File.separator + "SketchApplication.java").exists()) {
             toExclude.add("SketchApplication.java");
         }
-
         new KB().a(exportedSourcesZipPath, toCompress, toExclude);
         project_metadata.e();
         return exportedFilename;
@@ -431,12 +442,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         else if ("assets".equals(type)) sourceDir = new File(util.getPathAssets(sc_id));
         else if ("nativelibs".equals(type)) sourceDir = new File(util.getPathNativelibs(sc_id));
         else return;
-
-        if (sourceDir.exists()) {
-            FileUtil.copyDirectory(sourceDir, new File(dest));
-        }
+        if (sourceDir.exists()) FileUtil.copyDirectory(sourceDir, new File(dest));
     }
-
 
     private void onSourceCodeExportSuccess(String exportedFilename) {
         String fullPath = wq.s() + File.separator + "export_src" + File.separator + exportedFilename;
@@ -458,28 +465,33 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     }
 
     public void onExportError(String error) {
-        showLoading(false);
+        showEmbeddedProgress(false, null);
+        dismissGitProgressDialog();
         SketchwareUtil.showAnErrorOccurredDialog(this, error);
     }
 
-    private void showLoading(boolean show) {
+    private void showEmbeddedProgress(boolean show, String message) {
         TransitionManager.beginDelayedTransition(rootLayout);
-        loadingAnimation.setVisibility(show ? View.VISIBLE : View.GONE);
         exportProjectButton.setEnabled(!show);
         exportResultCard.setVisibility(View.GONE);
+        if (show) {
+            embeddedProgressLayout.setVisibility(View.VISIBLE);
+            embeddedProgressText.setText(message);
+        } else {
+            embeddedProgressLayout.setVisibility(View.GONE);
+        }
     }
 
     private void showResult(String relativePath, String fullPath, String mimeType, boolean canShare) {
-        showLoading(false);
+        showEmbeddedProgress(false, null);
+        dismissGitProgressDialog();
         TransitionManager.beginDelayedTransition(rootLayout);
         exportResultPath.setText(relativePath);
         exportResultCard.setVisibility(View.VISIBLE);
         exportResultShareButton.setVisibility(canShare ? View.VISIBLE : View.GONE);
-
         lastExportedFilePath = fullPath;
         lastExportedFileRelativePath = relativePath;
         lastExportedMimeType = mimeType;
-
         if (canShare) {
             exportResultShareButton.setOnClickListener(v -> shareLastExport());
         }
@@ -490,7 +502,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
             try {
                 File file = new File(lastExportedFilePath);
                 Uri fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
-
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType(lastExportedMimeType);
                 intent.putExtra(Intent.EXTRA_STREAM, fileUri);
@@ -518,34 +529,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         super.onSaveInstanceState(outState);
     }
 
-    public void dismissProgressDialog() {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
-
-    public void a(DialogInterface.OnCancelListener listener) {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setMessage("Building...");
-        }
-        progressDialog.setOnCancelListener(listener);
-        if (!isFinishing()) progressDialog.show();
-    }
-
-    public void a(String message) {
-        if (progressDialog != null) {
-            progressDialog.setMessage(message);
-        }
-    }
-
-
     private static class BuildingAsyncTask extends MA implements DialogInterface.OnCancelListener, BuildProgressReceiver {
         private final WeakReference<ExportProjectActivity> activity;
         private final yq project_metadata;
         private final yq.ExportType exportType;
-
         private ProjectBuilder builder;
         private boolean canceled = false;
         private boolean buildingAppBundle = false;
@@ -562,8 +549,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
             activity = new WeakReference<>(exportProjectActivity);
             project_metadata = exportProjectActivity.project_metadata;
             activity.get().addTask(this);
-            activity.get().a((DialogInterface.OnCancelListener) this);
-            activity.get().progressDialog.setCancelable(false);
         }
 
         @Override
@@ -575,7 +560,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
             try {
                 publishProgress("Initializing build...");
                 FileUtil.deleteFile(project_metadata.projectMyscPath);
-
                 hC hCVar = new hC(sc_id);
                 kC kCVar = new kC(sc_id);
                 eC eCVar = new eC(sc_id);
@@ -586,17 +570,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                 eCVar.e();
                 iCVar.i();
                 if (canceled) return;
-
                 File outputFile = new File(getCorrectResultFilename(project_metadata.releaseApkPath));
                 if (outputFile.exists() && !outputFile.delete()) {
                     throw new IllegalStateException("Couldn't delete file " + outputFile.getAbsolutePath());
                 }
-
                 project_metadata.c(currentActivity);
                 if (canceled) return;
                 project_metadata.a(currentActivity, wq.e("600"));
                 if (canceled) return;
-
                 if (yB.a(lC.b(sc_id), "custom_icon")) {
                     project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
                     if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
@@ -605,60 +586,48 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                         project_metadata.a(wq.e() + File.separator + sc_id + File.separator + "icon.png");
                     }
                 }
-
                 project_metadata.a();
                 kCVar.b(project_metadata.resDirectoryPath + File.separator + "drawable-xhdpi");
                 kCVar.c(project_metadata.resDirectoryPath + File.separator + "raw");
                 kCVar.a(project_metadata.assetsPath + File.separator + "fonts");
-
                 builder = new ProjectBuilder(this, currentActivity, project_metadata);
                 builder.setBuildAppBundle(buildingAppBundle);
                 project_metadata.a(iCVar, hCVar, eCVar, exportType);
                 builder.buildBuiltInLibraryInformation();
                 project_metadata.b(hCVar, eCVar, iCVar, builder.getBuiltInLibraryManager());
                 if (canceled) return;
-
                 publishProgress("Extracting AAPT2 binaries...");
                 builder.maybeExtractAapt2();
                 if (canceled) return;
                 publishProgress("Extracting built-in libraries...");
                 BuiltInLibraries.extractCompileAssets(this);
                 if (canceled) return;
-
                 publishProgress("AAPT2 is running...");
                 builder.compileResources();
                 if (canceled) return;
-
                 KotlinCompilerBridge.compileKotlinCodeIfPossible(this, builder);
                 if (canceled) return;
-
                 publishProgress("Java is compiling...");
                 builder.compileJavaCode();
                 if (canceled) return;
-
                 new StringfogHandler(project_metadata.sc_id).start(this, builder);
                 if (canceled) return;
                 new ProguardHandler(project_metadata.sc_id).start(this, builder);
                 if (canceled) return;
-
                 publishProgress(builder.getDxRunningText());
                 builder.createDexFilesFromClasses();
                 if (canceled) return;
-
                 publishProgress("Merging DEX files...");
                 builder.getDexFilesReady();
                 if (canceled) return;
-
                 if (buildingAppBundle) {
                     handleAppBundleBuild();
                 } else {
                     handleApkBuild();
                 }
             } catch (Throwable throwable) {
-                if (throwable instanceof LoadKeystoreException &&
-                        "Incorrect password, or integrity check failed.".equals(throwable.getMessage())) {
-                    currentActivity.runOnUiThread(() -> currentActivity.onExportError(
-                            "Either an incorrect password was entered, or your key store is corrupt."));
+                if (throwable instanceof LoadKeystoreException && "Incorrect password, or integrity check failed.".equals(throwable.getMessage())) {
+                    currentActivity.runOnUiThread(() -> currentActivity.onExportError("Either an incorrect password was entered, or your key store is corrupt."));
                 } else {
                     Log.e("AppExporter", "Build failed", throwable);
                     currentActivity.runOnUiThread(() -> currentActivity.onExportError(Log.getStackTraceString(throwable)));
@@ -674,21 +643,16 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
             publishProgress("Building app bundle...");
             compiler.buildBundle();
             publishProgress("Signing app bundle...");
-
             String createdBundlePath = AppBundleCompiler.getDefaultAppBundleOutputFile(project_metadata).getAbsolutePath();
-            String signedAppBundleDirectoryPath = Environment.getExternalStorageDirectory()
-                    + File.separator + "sketchware" + File.separator + "signed_aab";
-            String outputPath = signedAppBundleDirectoryPath + File.separator +
-                    getCorrectResultFilename(Uri.fromFile(new File(createdBundlePath)).getLastPathSegment());
-
+            String signedAppBundleDirectoryPath = Environment.getExternalStorageDirectory() + File.separator + "sketchware" + File.separator + "signed_aab";
+            String outputPath = signedAppBundleDirectoryPath + File.separator + getCorrectResultFilename(Uri.fromFile(new File(createdBundlePath)).getLastPathSegment());
             if (signWithTestkey) {
                 ZipSigner signer = new ZipSigner();
                 signer.setKeymode(ZipSigner.KEY_TESTKEY);
                 signer.signZip(createdBundlePath, outputPath);
             } else if (isResultJarSigningEnabled()) {
                 Security.addProvider(new BouncyCastleProvider());
-                CustomKeySigner.signZip(new ZipSigner(), signingKeystorePath, signingKeystorePassword,
-                        signingAliasName, signingAliasPassword, signingAlgorithm, createdBundlePath, outputPath);
+                CustomKeySigner.signZip(new ZipSigner(), signingKeystorePath, signingKeystorePassword, signingAliasName, signingAliasPassword, signingAlgorithm, createdBundlePath, outputPath);
             } else {
                 FileUtil.copyFile(createdBundlePath, outputPath);
             }
@@ -698,20 +662,16 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
             publishProgress("Building APK...");
             builder.buildApk();
             if (canceled) return;
-
             publishProgress("Aligning APK...");
             builder.runZipalign(builder.yq.unsignedUnalignedApkPath, builder.yq.unsignedAlignedApkPath);
             if (canceled) return;
-
             publishProgress("Signing APK...");
             String outputLocation = getCorrectResultFilename(builder.yq.releaseApkPath);
             if (signWithTestkey) {
                 TestkeySignBridge.signWithTestkey(builder.yq.unsignedAlignedApkPath, outputLocation);
             } else if (isResultJarSigningEnabled()) {
                 Security.addProvider(new BouncyCastleProvider());
-                CustomKeySigner.signZip(new ZipSigner(), wq.j(), signingKeystorePassword,
-                        signingAliasName, signingAliasPassword, signingAlgorithm,
-                        builder.yq.unsignedAlignedApkPath, outputLocation);
+                CustomKeySigner.signZip(new ZipSigner(), wq.j(), signingKeystorePassword, signingAliasName, signingAliasPassword, signingAlgorithm, builder.yq.unsignedAlignedApkPath, outputLocation);
             } else {
                 FileUtil.copyFile(builder.yq.unsignedAlignedApkPath, outputLocation);
             }
@@ -729,8 +689,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
             ExportProjectActivity currentActivity = activity.get();
             if (currentActivity == null) return;
             currentActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            currentActivity.dismissProgressDialog();
-            currentActivity.showLoading(false);
+            currentActivity.showEmbeddedProgress(false, null);
         }
 
         @Override
@@ -742,17 +701,17 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         @Override
         public void onProgressUpdate(String... strArr) {
             super.onProgressUpdate(strArr);
-            activity.get().a(strArr[0]);
+            ExportProjectActivity currentActivity = activity.get();
+            if (currentActivity != null) {
+                currentActivity.showEmbeddedProgress(true, strArr[0]);
+            }
         }
 
         @Override
         public void a() {
             ExportProjectActivity currentActivity = activity.get();
             if (currentActivity == null) return;
-
             currentActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            currentActivity.dismissProgressDialog();
-
             if (buildingAppBundle) {
                 String aabFilename = getCorrectResultFilename(project_metadata.projectName + ".aab");
                 currentActivity.onAabExportSuccess(aabFilename);
@@ -766,9 +725,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         public void a(String str) {
             ExportProjectActivity currentActivity = activity.get();
             if (currentActivity == null) return;
-
             currentActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            currentActivity.dismissProgressDialog();
             currentActivity.onExportError(str);
         }
 
@@ -797,8 +754,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         }
 
         public boolean isResultJarSigningEnabled() {
-            return signingKeystorePath != null && signingKeystorePassword != null &&
-                    signingAliasName != null && signingAliasPassword != null && signingAlgorithm != null;
+            return signingKeystorePath != null && signingKeystorePassword != null && signingAliasName != null && signingAliasPassword != null && signingAlgorithm != null;
         }
 
         private String getCorrectResultFilename(String oldFormatFilename) {
