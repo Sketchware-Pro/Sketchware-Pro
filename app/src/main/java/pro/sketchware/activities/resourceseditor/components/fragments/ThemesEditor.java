@@ -19,28 +19,26 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
-import a.a.a.aB;
-import mod.hey.studios.util.Helper;
-
-import pro.sketchware.R;
-import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
-import pro.sketchware.activities.resourceseditor.components.utils.AttributeSuggestions;
-import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
-import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
-import pro.sketchware.databinding.StyleEditorAddAttrBinding;
-import pro.sketchware.databinding.StyleEditorAddBinding;
-import pro.sketchware.activities.resourceseditor.components.models.StyleModel;
-import pro.sketchware.activities.resourceseditor.components.adapters.StylesAdapter;
-import pro.sketchware.activities.resourceseditor.components.utils.StylesEditorManager;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.components.adapters.StylesAdapter;
+import pro.sketchware.activities.resourceseditor.components.models.StyleModel;
+import pro.sketchware.activities.resourceseditor.components.utils.AttributeSuggestions;
+import pro.sketchware.activities.resourceseditor.components.utils.StylesEditorManager;
+import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
+import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
+import pro.sketchware.databinding.StyleEditorAddAttrBinding;
+import pro.sketchware.databinding.StyleEditorAddBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ThemesEditor extends Fragment {
 
@@ -125,10 +123,10 @@ public class ThemesEditor extends Fragment {
     }
 
     public void showAddThemeDialog() {
-        aB dialog = new aB(activity);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         StyleEditorAddBinding binding = StyleEditorAddBinding.inflate(getLayoutInflater());
-        dialog.b("Create new theme");
-        dialog.b("Create", v1 -> {
+        dialog.setTitle("Create new theme");
+        dialog.setPositiveButton("Create", (d, which) -> {
             String themeName = Objects.requireNonNull(binding.styleName.getText()).toString();
             String parent = Objects.requireNonNull(binding.styleParent.getText()).toString();
             String header = Objects.requireNonNull(binding.styleHeaderInput.getText()).toString();
@@ -148,14 +146,14 @@ public class ThemesEditor extends Fragment {
             updateNoContentLayout();
             hasUnsavedChanges = true;
         });
-        dialog.a(getString(R.string.cancel), Helper.getDialogDismissListener(dialog));
-        dialog.a(binding.getRoot());
+        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setView(binding.getRoot());
         dialog.show();
     }
 
     public void showEditThemeDialog(int position) {
         StyleModel theme = themesList.get(position);
-        aB dialog = new aB(activity);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         StyleEditorAddBinding binding = StyleEditorAddBinding.inflate(getLayoutInflater());
 
         binding.styleName.setText(theme.getStyleName());
@@ -164,8 +162,8 @@ public class ThemesEditor extends Fragment {
             binding.styleHeaderInput.setText(notesMap.get(position));
         }
 
-        dialog.b("Edit theme");
-        dialog.b("Edit", v1 -> {
+        dialog.setTitle("Edit theme");
+        dialog.setPositiveButton("Edit", (d, which) -> {
             String themeName = Objects.requireNonNull(binding.styleName.getText()).toString();
             String parent = Objects.requireNonNull(binding.styleParent.getText()).toString();
             String header = Objects.requireNonNull(binding.styleHeaderInput.getText()).toString();
@@ -186,23 +184,21 @@ public class ThemesEditor extends Fragment {
             adapter.notifyItemChanged(position);
             hasUnsavedChanges = true;
         });
-        dialog.setDismissOnDefaultButtonClick(false);
-        dialog.configureDefaultButton(Helper.getResString(R.string.common_word_delete), view -> new MaterialAlertDialogBuilder(requireContext())
+        dialog.setNeutralButton(Helper.getResString(R.string.common_word_delete), (d, which) -> new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Warning")
                 .setMessage("Are you sure you want to delete " + theme.getStyleName() + "?")
-                .setPositiveButton(R.string.common_word_yes, (d, w) -> {
+                .setPositiveButton(R.string.common_word_yes, (d2, w) -> {
                     themesList.remove(position);
                     notesMap.remove(position);
                     adapter.notifyItemRemoved(position);
-                    dialog.dismiss();
+                    d.dismiss();
                     updateNoContentLayout();
                     hasUnsavedChanges = true;
                 })
                 .setNegativeButton("Cancel", null)
-                .create()
                 .show());
-        dialog.a(getString(R.string.cancel), Helper.getDialogDismissListener(dialog));
-        dialog.a(binding.getRoot());
+        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setView(binding.getRoot());
         dialog.show();
     }
 
@@ -256,7 +252,7 @@ public class ThemesEditor extends Fragment {
     private void showAttributeDialog(StyleModel theme, String attr) {
         boolean isEditing = !attr.isEmpty();
 
-        aB dialog = new aB(activity);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         StyleEditorAddAttrBinding binding = StyleEditorAddAttrBinding.inflate(getLayoutInflater());
         setupAutoComplete(binding.attrName, binding.attrValue);
 
@@ -265,9 +261,9 @@ public class ThemesEditor extends Fragment {
             binding.attrValue.setText(theme.getAttribute(attr));
         }
 
-        dialog.b(isEditing ? "Edit attribute " : "Create new attribute");
+        dialog.setTitle(isEditing ? "Edit attribute " : "Create new attribute");
 
-        dialog.b(Helper.getResString(R.string.common_word_save), v1 -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (d, which) -> {
             String attribute = Objects.requireNonNull(binding.attrName.getText()).toString();
             String value = Objects.requireNonNull(binding.attrValue.getText()).toString();
 
@@ -284,8 +280,8 @@ public class ThemesEditor extends Fragment {
             hasUnsavedChanges = true;
         });
 
-        dialog.a(getString(R.string.cancel), Helper.getDialogDismissListener(dialog));
-        dialog.a(binding.getRoot());
+        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setView(binding.getRoot());
         dialog.show();
     }
 

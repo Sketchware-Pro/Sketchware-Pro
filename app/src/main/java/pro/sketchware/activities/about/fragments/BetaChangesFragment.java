@@ -33,6 +33,8 @@ public class BetaChangesFragment extends Fragment {
     private int nextPage = 1;
     private boolean isLoading = false;
 
+    private static final int COMMITS_PER_PAGE = 100;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentBetaChangesBinding.inflate(inflater, container, false);
@@ -59,7 +61,6 @@ public class BetaChangesFragment extends Fragment {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
                 if (!recyclerView.canScrollVertically(1) && !isLoading) {
                     adapter.showLoading();
                     loadCommitData(nextPage);
@@ -74,26 +75,34 @@ public class BetaChangesFragment extends Fragment {
         if (isLoading) return;
 
         isLoading = true;
+
         String commitsUrl = String.format(Helper.getResString(R.string.link_github_commits_url),
-                100, // 100 ==> commits per page
+                COMMITS_PER_PAGE,
                 page);
 
-        try {
+        new Network().get(commitsUrl, response -> {
+            isLoading = false;
+            adapter.hideLoading();
 
-            new Network().get(commitsUrl, response -> {
-                isLoading = false;
-
+            try {
                 if (response != null) {
                     Gson gson = new Gson();
                     AboutResponseModel.CommitDetails[] commitDetailsArray = gson.fromJson(response, AboutResponseModel.CommitDetails[].class);
                     if (commitDetailsArray != null) {
-                        aboutAppData.setCommitDetailsList(new ArrayList<>(Arrays.asList(commitDetailsArray)));
+                        ArrayList<AboutResponseModel.CommitDetails> existing = aboutAppData.getCommitDetailsList().getValue();
+                        if (existing == null) {
+                            existing = new ArrayList<>();
+                        }
+                        existing.addAll(Arrays.asList(commitDetailsArray));
+                        aboutAppData.setCommitDetailsList(existing);
                         nextPage++;
                     }
+                } else {
+                    SketchwareUtil.toastError(Helper.getResString(R.string.github_api_error_message));
                 }
-            });
-        } catch (Exception ignored) {
-            SketchwareUtil.toastError(Helper.getResString(R.string.github_api_error_message));
-        }
+            } catch (Exception e) {
+                SketchwareUtil.toastError(Helper.getResString(R.string.github_api_error_message));
+            }
+        });
     }
 }

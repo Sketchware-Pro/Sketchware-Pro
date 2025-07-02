@@ -28,25 +28,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import a.a.a.aB;
+import a.a.a.jC;
 import a.a.a.lC;
 import a.a.a.wq;
-
 import a.a.a.yq;
-import a.a.a.jC;
-
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
-import pro.sketchware.activities.resourceseditor.components.fragments.ArraysEditor;
-import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
-import pro.sketchware.databinding.ResourcesEditorImportDialogBinding;
-import pro.sketchware.databinding.ResourcesEditorsActivityBinding;
 import pro.sketchware.activities.resourceseditor.components.adapters.EditorsAdapter;
+import pro.sketchware.activities.resourceseditor.components.fragments.ArraysEditor;
 import pro.sketchware.activities.resourceseditor.components.fragments.ColorsEditor;
 import pro.sketchware.activities.resourceseditor.components.fragments.StringsEditor;
 import pro.sketchware.activities.resourceseditor.components.fragments.StylesEditor;
 import pro.sketchware.activities.resourceseditor.components.fragments.ThemesEditor;
+import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
+import pro.sketchware.databinding.ResourcesEditorImportDialogBinding;
+import pro.sketchware.databinding.ResourcesEditorsActivityBinding;
 import pro.sketchware.databinding.ResourcesVariantSelectorDialogBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.PropertiesUtil;
@@ -472,17 +469,17 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         AtomicInteger selectedChoice = new AtomicInteger(variants.indexOf("values" + variant));
 
         ResourcesVariantSelectorDialogBinding binding = ResourcesVariantSelectorDialogBinding.inflate(getLayoutInflater());
-        aB dialog = new aB(this);
-        dialog.b(Helper.getResString(R.string.common_word_select_variant));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setTitle(Helper.getResString(R.string.common_word_select_variant));
 
         setupDialog(binding, dialog, variants, selectedChoice);
 
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
-        dialog.a(binding.getRoot());
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        dialog.setView(binding.getRoot());
         dialog.show();
     }
 
-    private void setupDialog(ResourcesVariantSelectorDialogBinding binding, aB dialog, ArrayList<String> variants, AtomicInteger selectedChoice) {
+    private void setupDialog(ResourcesVariantSelectorDialogBinding binding, MaterialAlertDialogBuilder dialog, ArrayList<String> variants, AtomicInteger selectedChoice) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, variants);
         binding.listView.setAdapter(adapter);
         binding.listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -535,7 +532,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             }
         });
 
-        dialog.b(Helper.getResString(R.string.common_word_save), v -> saveVariant(binding, variants, selectedChoice));
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (d, which) -> saveVariant(binding, variants, selectedChoice));
     }
 
     private void saveVariant(ResourcesVariantSelectorDialogBinding binding, ArrayList<String> variants, AtomicInteger selectedChoice) {
@@ -568,9 +565,9 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
 
     private void importFromDefaultVariant() {
         ResourcesEditorImportDialogBinding binding = ResourcesEditorImportDialogBinding.inflate(getLayoutInflater());
-        aB dialog = new aB(this);
-        dialog.a(binding.getRoot());
-        dialog.b(Helper.getResString(R.string.common_word_import_variant));
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+        dialog.setView(binding.getRoot());
+        dialog.setTitle(Helper.getResString(R.string.common_word_import_variant));
 
         ArrayList<String> resourcesFileNames = new ArrayList<>(List.of(
                 "strings.xml",
@@ -586,7 +583,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
         listView.setAdapter(adapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        dialog.b(Helper.getResString(R.string.common_word_save), view -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (d, which) -> {
             SparseBooleanArray selectedItems = listView.getCheckedItemPositions();
             boolean isSkippingMode = binding.chipMergeAndSkip.isChecked();
             boolean isMergeAndReplace = binding.chipMergeAndReplace.isChecked();
@@ -604,7 +601,7 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             }
         });
 
-        dialog.a(Helper.getResString(R.string.common_word_cancel), Helper.getDialogDismissListener(dialog));
+        dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.show();
     }
 

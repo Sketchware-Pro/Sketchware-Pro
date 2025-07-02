@@ -758,7 +758,7 @@ public class yq {
         for (ProjectFileBean activity : projectFileManager.b()) {
             if (!javaFiles.contains(new File(javaDir + activity.getJavaName()))) {
                 srcCodeBeans.add(new SrcCodeBean(activity.getJavaName(),
-                        new Jx(N, activity, projectDataManager).generateCode(isAndroidStudioExport)));
+                        new Jx(N, activity, projectDataManager).generateCode(isAndroidStudioExport, sc_id)));
             }
         }
 
@@ -890,7 +890,7 @@ public class yq {
                  Generating every java file is necessary to make command blocks for xml work
                  */
                 for (ProjectFileBean file : files) {
-                    CommandBlock.CBForXml(new Jx(N, file, projectDataManager).generateCode(isAndroidStudioExport));
+                    CommandBlock.CBForXml(new Jx(N, file, projectDataManager).generateCode(isAndroidStudioExport, sc_id));
                 }
             }
         }
@@ -918,7 +918,7 @@ public class yq {
         for (ProjectFileBean file : files) {
             if (filename.equals(isJavaFile ? file.getJavaName() : file.getXmlName())) {
                 if (isJavaFile) {
-                    return new Jx(N, file, projectDataManager).generateCode(isAndroidStudioExport);
+                    return new Jx(N, file, projectDataManager).generateCode(isAndroidStudioExport, sc_id);
                 } else if (isXmlFile) {
                     Ox xmlGenerator = new Ox(N, file);
                     xmlGenerator.a(eC.a(projectDataManager.d(filename)), projectDataManager.h(filename));

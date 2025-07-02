@@ -16,43 +16,39 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.besome.sketch.lib.ui.ColorPickerDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 
-import a.a.a.aB;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
 import pro.sketchware.R;
 import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.components.adapters.ColorsAdapter;
+import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
 import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
 import pro.sketchware.databinding.ColorEditorAddBinding;
 import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
-import pro.sketchware.activities.resourceseditor.components.adapters.ColorsAdapter;
-import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
-import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
 
 public class ColorsEditor extends Fragment {
 
-    private ResourcesEditorFragmentBinding binding;
-
-    private final ResourcesEditorActivity activity;
-
-    public ColorsAdapter adapter;
-
-    public boolean hasUnsavedChanges;
     public static String contentPath;
-    private boolean isNightVariant;
     public final ArrayList<ColorModel> colorList = new ArrayList<>();
-    public final HashMap <String, String> defaultColors = new HashMap<>();
-    private HashMap<Integer, String> notesMap = new HashMap<>();
-
+    public final HashMap<String, String> defaultColors = new HashMap<>();
+    private final ResourcesEditorActivity activity;
+    public ColorsAdapter adapter;
+    public boolean hasUnsavedChanges;
     public ColorsEditorManager colorsEditorManager;
+    private ResourcesEditorFragmentBinding binding;
+    private boolean isNightVariant;
+    private HashMap<Integer, String> notesMap = new HashMap<>();
 
     public ColorsEditor(ResourcesEditorActivity activity) {
         this.activity = activity;
@@ -145,7 +141,7 @@ public class ColorsEditor extends Fragment {
     }
 
     public void showColorEditDialog(ColorModel colorModel, int position) {
-        aB dialog = new aB(activity);
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
         ColorEditorAddBinding dialogBinding = ColorEditorAddBinding.inflate(getLayoutInflater());
 
         if (colorModel != null) {
@@ -158,10 +154,10 @@ public class ColorsEditor extends Fragment {
             dialogBinding.colorPreview.setBackgroundColor(PropertiesUtil.parseColor(colorsEditorManager.getColorValue(activity.getApplicationContext(), colorModel.getColorValue(), 3, isNightVariant)));
             dialogBinding.importantNote.setVisibility(defaultColors.containsKey(colorModel.getColorName()) ? View.VISIBLE : View.GONE);
 
-            dialog.b("Edit color");
+            dialog.setTitle("Edit color");
 
         } else {
-            dialog.b("Create new color");
+            dialog.setTitle("Create new color");
             dialogBinding.colorPreview.setBackgroundColor(0xFFFFFF);
         }
 
@@ -207,7 +203,7 @@ public class ColorsEditor extends Fragment {
             }
         });
 
-        dialog.b("Save", v1 -> {
+        dialog.setPositiveButton("Save", (v1, which) -> {
             String key = Objects.requireNonNull(dialogBinding.colorKeyInput.getText()).toString();
             String value = Objects.requireNonNull(dialogBinding.colorValueInput.getText()).toString();
 
@@ -261,18 +257,18 @@ public class ColorsEditor extends Fragment {
         });
 
         if (colorModel != null && !defaultColors.containsKey(colorModel.getColorName())) {
-            dialog.configureDefaultButton("Delete", v1 -> {
+            dialog.setNeutralButton("Delete", (v1, which) -> {
                 colorList.remove(position);
                 adapter.notifyItemRemoved(position);
                 adapter.notifyItemRangeChanged(position, colorList.size());
                 updateNoContentLayout();
                 hasUnsavedChanges = true;
-                dialog.dismiss();
+                v1.dismiss();
             });
         }
 
-        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
-        dialog.a(dialogBinding.getRoot());
+        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setView(dialogBinding.getRoot());
         dialog.show();
     }
 
@@ -295,8 +291,8 @@ public class ColorsEditor extends Fragment {
 
     public void saveColorsFile() {
         if (hasUnsavedChanges) {
-        XmlUtil.saveXml(contentPath, colorsEditorManager.convertListToXml(colorList, notesMap));
-        hasUnsavedChanges = false;
+            XmlUtil.saveXml(contentPath, colorsEditorManager.convertListToXml(colorList, notesMap));
+            hasUnsavedChanges = false;
         }
     }
 }

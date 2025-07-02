@@ -16,27 +16,25 @@ import com.besome.sketch.editor.property.PropertyInputItem;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import a.a.a.aB;
-import mod.hey.studios.util.Helper;
-
-import pro.sketchware.R;
-import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
-import pro.sketchware.databinding.ArraysEditorAddAttrBinding;
-import pro.sketchware.databinding.ArraysEditorAddBinding;
-import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
-import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
-import pro.sketchware.activities.resourceseditor.components.models.ArrayModel;
-import pro.sketchware.activities.resourceseditor.components.adapters.ArraysAdapter;
-import pro.sketchware.activities.resourceseditor.components.utils.ArraysEditorManager;
-import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.SketchwareUtil;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.components.adapters.ArraysAdapter;
+import pro.sketchware.activities.resourceseditor.components.models.ArrayModel;
+import pro.sketchware.activities.resourceseditor.components.utils.ArraysEditorManager;
+import pro.sketchware.databinding.ArraysEditorAddAttrBinding;
+import pro.sketchware.databinding.ArraysEditorAddBinding;
+import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
+import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
+import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.SketchwareUtil;
 
 public class ArraysEditor extends Fragment {
 
@@ -126,9 +124,9 @@ public class ArraysEditor extends Fragment {
     }
 
     public void showAddArrayDialog() {
-        aB dialog = new aB(requireActivity());
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
         ArraysEditorAddBinding binding = ArraysEditorAddBinding.inflate(getLayoutInflater());
-        dialog.b("Create new array");
+        dialog.setTitle("Create new array");
 
         binding.arrayType.setOnClickListener(view -> {
             String[] arrayTypes = {"STRING", "INTEGER", "OBJECT"};
@@ -141,7 +139,7 @@ public class ArraysEditor extends Fragment {
                     .show();
         });
 
-        dialog.b("Create", v1 -> {
+        dialog.setPositiveButton("Create", (d, which) -> {
             String arrayName = Objects.requireNonNull(binding.arrayName.getText()).toString();
             String arrayTypeString = Objects.requireNonNull(binding.arrayType.getText()).toString();
             String header = Objects.requireNonNull(binding.arrayHeaderInput.getText()).toString();
@@ -169,13 +167,13 @@ public class ArraysEditor extends Fragment {
             hasUnsavedChanges = true;
         });
 
-        dialog.a(getString(R.string.cancel), Helper.getDialogDismissListener(dialog));
-        dialog.a(binding.getRoot());
+        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setView(binding.getRoot());
         dialog.show();
     }
     public void showEditArrayDialog(int position) {
         ArrayModel array = arraysList.get(position);
-        aB dialog = new aB(requireActivity());
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
         ArraysEditorAddBinding binding = ArraysEditorAddBinding.inflate(getLayoutInflater());
 
         binding.arrayName.setText(array.getArrayName());
@@ -194,8 +192,8 @@ public class ArraysEditor extends Fragment {
                     .show();
         });
 
-        dialog.b("Edit array");
-        dialog.b("Edit", v1 -> {
+        dialog.setTitle("Edit array");
+        dialog.setPositiveButton("Edit", (d, which) -> {
             String arrayName = Objects.requireNonNull(binding.arrayName.getText()).toString();
             String arrayType = Objects.requireNonNull(binding.arrayType.getText()).toString();
             String header = Objects.requireNonNull(binding.arrayHeaderInput.getText()).toString();
@@ -215,23 +213,21 @@ public class ArraysEditor extends Fragment {
             adapter.notifyItemChanged(position);
             hasUnsavedChanges = true;
         });
-        dialog.setDismissOnDefaultButtonClick(false);
-        dialog.configureDefaultButton(Helper.getResString(R.string.common_word_delete), view -> new MaterialAlertDialogBuilder(requireContext())
+        dialog.setNeutralButton(Helper.getResString(R.string.common_word_delete), (d, which) -> new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Warning")
                 .setMessage("Are you sure you want to delete " + array.getArrayName() + "?")
-                .setPositiveButton(R.string.common_word_yes, (d, w) -> {
+                .setPositiveButton(R.string.common_word_yes, (d2, w) -> {
                     arraysList.remove(position);
                     notesMap.remove(position);
                     adapter.notifyItemRemoved(position);
-                    dialog.dismiss();
+                    d.dismiss();
                     updateNoContentLayout();
                     hasUnsavedChanges = true;
                 })
                 .setNegativeButton("Cancel", null)
-                .create()
                 .show());
-        dialog.a(getString(R.string.cancel), Helper.getDialogDismissListener(dialog));
-        dialog.a(binding.getRoot());
+        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setView(binding.getRoot());
         dialog.show();
     }
 
@@ -285,7 +281,7 @@ public class ArraysEditor extends Fragment {
     private void showAttributeDialog(ArrayModel array, String attr) {
         boolean isEditing = !attr.isEmpty();
 
-        aB dialog = new aB(requireActivity());
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
         ArraysEditorAddAttrBinding binding = ArraysEditorAddAttrBinding.inflate(getLayoutInflater());
 
         if (array.getArrayType() == ARRAYS_TYPES.INTEGER) {
@@ -302,9 +298,9 @@ public class ArraysEditor extends Fragment {
             binding.itemValue.requestFocus();
         }
 
-        dialog.b(isEditing ? "Edit item" : "Create new item");
+        dialog.setTitle(isEditing ? "Edit item" : "Create new item");
 
-        dialog.b(Helper.getResString(R.string.common_word_save), v1 -> {
+        dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (d, which) -> {
             String attribute = Objects.requireNonNull(binding.itemName.getText()).toString();
             String value = Objects.requireNonNull(binding.itemValue.getText()).toString();
 
@@ -321,8 +317,8 @@ public class ArraysEditor extends Fragment {
             hasUnsavedChanges = true;
         });
 
-        dialog.a(getString(R.string.cancel), Helper.getDialogDismissListener(dialog));
-        dialog.a(binding.getRoot());
+        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setView(binding.getRoot());
         dialog.show();
     }
     public void saveArraysFile() {
