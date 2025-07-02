@@ -142,9 +142,13 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         projectWorkspaceName = findViewById(R.id.project_workspace_name);
     }
 
-    private void setupToolbar() {
+        private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // This code removes Sketchware Pro Logo (Dont remove it please)
+        toolbar.setLogo(null);
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Export Project");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
