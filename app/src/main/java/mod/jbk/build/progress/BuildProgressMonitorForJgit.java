@@ -7,9 +7,9 @@ import java.util.function.Consumer;
 public class BuildProgressMonitorForJgit implements ProgressMonitor {
 
     private final Consumer<String> progressUpdater;
+    private String currentTask;
     private int totalWork;
     private int workCompleted;
-    private String currentTask;
 
     public BuildProgressMonitorForJgit(Consumer<String> updater) {
         this.progressUpdater = updater;
@@ -21,19 +21,17 @@ public class BuildProgressMonitorForJgit implements ProgressMonitor {
 
     @Override
     public void beginTask(String title, int totalWork) {
-        this.workCompleted = 0;
-        this.totalWork = totalWork;
         this.currentTask = title;
-        progressUpdater.accept(title);
+        this.totalWork = totalWork;
+        this.workCompleted = 0;
+        if (progressUpdater != null) {
+            progressUpdater.accept(title);
+        }
     }
 
     @Override
     public void update(int completed) {
-        workCompleted += completed;
-        if (totalWork > 0 && totalWork != UNKNOWN) {
-            int percent = (100 * workCompleted) / totalWork;
-            progressUpdater.accept(currentTask + " (" + percent + "%)");
-        }
+        this.workCompleted += completed;
     }
 
     @Override
@@ -43,5 +41,9 @@ public class BuildProgressMonitorForJgit implements ProgressMonitor {
     @Override
     public boolean isCancelled() {
         return false;
+    }
+
+    @Override
+    public void showDuration(boolean enabled) {
     }
 }
