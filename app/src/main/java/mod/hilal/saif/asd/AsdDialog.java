@@ -99,14 +99,6 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                 if (!failed) {
                     codeEditor.setText(code);
                 }
-            } else if (id == R.id.action_switch_language) {
-                SketchwareUtil.toast("Currently not supported, sorry!");
-            } else if (id == R.id.action_switch_theme) {
-                SrcCodeEditor.showSwitchThemeDialog(act, codeEditor, (dialog, which) -> {
-                    SrcCodeEditor.selectTheme(codeEditor, which);
-                    AsdDialog.pref.edit().putInt("dlg_theme", which).apply();
-                    dialog.dismiss();
-                });
             } else if (id == R.id.action_word_wrap) {
                 item.setChecked(!item.isChecked());
                 codeEditor.setWordwrap(item.isChecked());
@@ -121,6 +113,9 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                 pref.edit().putBoolean("dlg_ac", item.isChecked()).apply();
             } else if (id == R.id.action_paste) {
                 codeEditor.pasteText();
+            } else if (id == R.id.action_find_replace) {
+                codeEditor.getSearcher().stopSearch();
+                codeEditor.beginSearchMode();
             }
             return true;
         });
