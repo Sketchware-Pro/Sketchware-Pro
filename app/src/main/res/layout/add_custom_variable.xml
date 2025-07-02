@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="20dp"
-    android:paddingTop="20dp">
+    android:paddingTop="16dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/modifierLayout"

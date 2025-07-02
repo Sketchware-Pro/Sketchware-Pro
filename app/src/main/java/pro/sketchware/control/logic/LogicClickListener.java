@@ -161,7 +161,9 @@ public class LogicClickListener implements View.OnClickListener {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
         dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_variable));
 
+        int horizontalPadding = SketchwareUtil.dpToPx(20f);
         RecyclerView recyclerView = new RecyclerView(logicEditor);
+        recyclerView.setPadding(horizontalPadding, SketchwareUtil.dpToPx(8f), horizontalPadding, 0);
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
 
         List<Item> data = new LinkedList<>();
@@ -242,6 +244,7 @@ public class LogicClickListener implements View.OnClickListener {
                 } else {
                     listBinding.nameLayout.requestFocus();
                     listBinding.nameLayout.setError("Name can't be empty");
+                    listBinding.nameLayout.setErrorEnabled(true);
                 }
             }
 
@@ -261,7 +264,9 @@ public class LogicClickListener implements View.OnClickListener {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
         dialog.setTitle(Helper.getResString(R.string.logic_editor_title_remove_list));
 
+        int horizontalPadding = SketchwareUtil.dpToPx(20f);
         RecyclerView recyclerView = new RecyclerView(logicEditor);
+        recyclerView.setPadding(horizontalPadding, SketchwareUtil.dpToPx(8f), horizontalPadding, 0);
         recyclerView.setLayoutManager(new LinearLayoutManager(null));
 
         List<Item> data = new LinkedList<>();
