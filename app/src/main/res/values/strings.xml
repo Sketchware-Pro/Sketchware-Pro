@@ -2,6 +2,7 @@
     <string name="app_name">Sketchware Pro</string>
     <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
     <string name="besome_blog_url">http://medium.com/sketchware</string>
+<string name="dialog_loading_text">Loading…</string>
     <string name="block_add_list_int_body_1">to</string>
     <string name="block_add_list_int_head">add</string>
     <string name="block_add_list_int_tail" />
