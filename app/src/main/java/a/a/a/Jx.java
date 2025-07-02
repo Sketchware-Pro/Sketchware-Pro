@@ -169,7 +169,7 @@ public class Jx {
     /**
      * @return Generated Java code of the current View (not Widget)
      */
-    public String generateCode(boolean isAndroidStudioExport) {
+    public String generateCode(boolean isAndroidStudioExport, String sc_id) {
         boolean isDialogFragment = projectFileBean.fileName.contains("_dialog_fragment");
         boolean isBottomDialogFragment = projectFileBean.fileName.contains("_bottomdialog_fragment");
         boolean isFragment = projectFileBean.fileName.contains("_fragment");
@@ -576,21 +576,19 @@ public class Jx {
                 sb.append(EOL);
             }
         }
-        if (buildConfig.g) {
-            String rootView;
-            if (isViewBindingEnabled) {
-                rootView = "binding.getRoot()";
-            } else if (isFragment || isDialogFragment || isBottomDialogFragment) {
-                rootView = "getView()";
+        if (new Material3LibraryManager(sc_id).isMaterial3Enabled()) {
+            String contextReference;
+            if (isFragment || isDialogFragment || isBottomDialogFragment) {
+                contextReference = "getContext()";
             } else {
-                rootView = "getWindow().getDecorView().getRootView()";
+                contextReference = "this";
             }
             sb.append(String.format("""
                 
                 private int getMaterialColor(int resourceId) {
-                    return MaterialColors.getColor(%s, resourceId);
+                return MaterialColors.getColor(%s, resourceId, "getMaterialColor");
                 }
-                """, rootView));
+                """, contextReference));
         }
         if (!isFragment && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {

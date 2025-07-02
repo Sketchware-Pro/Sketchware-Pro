@@ -57,6 +57,7 @@ public class EditorUtils {
             editor.setColorScheme(new EditorColorScheme());
         }
         editor.setColorScheme(getMaterialStyledScheme(editor));
+        editor.setPinLineNumber(true);
     }
 
     public static void loadXmlConfig(CodeEditor editor) {
@@ -71,5 +72,6 @@ public class EditorUtils {
             editor.setColorScheme(CodeEditorColorSchemes.loadTextMateColorScheme(CodeEditorColorSchemes.THEME_GITHUB));
         }
         editor.setColorScheme(getMaterialStyledScheme(editor));
+        editor.setPinLineNumber(true);
     }
 }

@@ -14,8 +14,13 @@ public class ThemeUtils {
     }
 
     @ColorInt
+    public static int getColor(Context context, @AttrRes int resourceId) {
+        return MaterialColors.getColor(context, resourceId, "getColor");
+    }
+
+    @ColorInt
     public static int getColor(View view, @AttrRes int resourceId) {
-        return MaterialColors.getColor(view, resourceId);
+        return getColor(view.getContext(), resourceId);
     }
 
     public static boolean isDarkThemeEnabled(Context context) {

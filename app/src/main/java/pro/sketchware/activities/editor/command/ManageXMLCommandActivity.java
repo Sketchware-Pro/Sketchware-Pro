@@ -80,7 +80,7 @@ public class ManageXMLCommandActivity extends BaseAppCompatActivity {
         ArrayList<ProjectFileBean> files = new ArrayList<>(projectFileManager.b());
         files.addAll(new ArrayList<>(projectFileManager.c()));
         for (ProjectFileBean file : files) {
-            CommandBlock.CBForXml(new Jx(yq.N, file, projectDataManager).generateCode(false));
+            CommandBlock.CBForXml(new Jx(yq.N, file, projectDataManager).generateCode(false, sc_id));
         }
         String commandPath = FileUtil.getExternalStorageDir().concat("/.sketchware/temp/commands");
         if (FileUtil.isExistFile(commandPath)) {
