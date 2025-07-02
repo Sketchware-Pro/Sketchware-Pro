@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -9,25 +8,17 @@
     android:gravity="center_vertical"
     android:background="?attr/colorSurfaceContainerHigh">
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/wave_progress"
-        android:layout_width="64dp"
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        app:indicatorColor="?attr/colorPrimary"
-        app:trackColor="?attr/colorSurfaceContainerHighest"
-        app:trackThickness="4dp"
-        app:indeterminateAnimationType="wave"
-        app:waveAnimationSpeed="1.5"
-        app:waveAnimationSmoothness="0.5"
-        app:waveDecay="false"/>
+        android:indeterminate="true"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/progress_dialog_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:text="@string/common_word_loading"
+        android:text="@string/dialog_loading_text"
         android:textAppearance="?attr/textAppearanceTitleMedium"
         android:textColor="?attr/colorOnSurface"/>
 
