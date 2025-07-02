@@ -1,7 +1,6 @@
 package mod.hey.studios.code;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -64,6 +64,7 @@ import pro.sketchware.utility.EditorUtils;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.ThemeUtils;
+import pro.sketchware.utility.UI;
 
 public class SrcCodeEditor extends BaseAppCompatActivity {
     public static final List<Pair<String, Class<? extends EditorColorScheme>>> KNOWN_COLOR_SCHEMES = List.of(
@@ -83,6 +84,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
     private ImageView menu_view_undo;
     private ImageView menu_view_redo;
     private CodeEditor editor;
+    private AppBarLayout appBarLayout;
     private MaterialToolbar toolbar;
 
     public static void loadCESettings(Context c, CodeEditor ed, String prefix) {
@@ -202,7 +204,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         String[] themeItems = KNOWN_COLOR_SCHEMES.stream()
                 .map(pair -> pair.first)
                 .toArray(String[]::new);
-        new AlertDialog.Builder(activity)
+        new MaterialAlertDialogBuilder(activity)
                 .setTitle("Select Theme")
                 .setSingleChoiceItems(themeItems, selectedThemeIndex, listener)
                 .setNegativeButton(R.string.common_word_cancel, null)
@@ -216,7 +218,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                 "XML"
         };
 
-        new AlertDialog.Builder(activity)
+        new MaterialAlertDialogBuilder(activity)
                 .setTitle("Select Language")
                 .setSingleChoiceItems(languagesList, languageId, listener)
                 .setNegativeButton(R.string.common_word_cancel, null)
@@ -230,10 +232,12 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.code_editor_hs);
 
         editor = findViewById(R.id.editor);
+        appBarLayout = findViewById(R.id.app_bar_layout);
         toolbar = findViewById(R.id.toolbar);
 
         initialize();
@@ -268,6 +272,9 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
 
         loadCESettings(this, editor, "act");
         loadToolbar();
+
+        UI.addSystemWindowInsetToPadding(appBarLayout, true, true, true, false);
+        UI.addSystemWindowInsetToMargin(editor, true, false, true, true);
     }
 
     public void save() {
