@@ -99,15 +99,6 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:textAppearance="?attr/textAppearanceLabelLarge" />
 
-                    <com.google.android.material.checkbox.MaterialCheckBox
-                        android:id="@+id/checkbox_remember_token"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:visibility="gone"
-                        android:text="Remember Token"
-                        android:layout_gravity="start"/>
-
                     <LinearLayout
                         android:id="@+id/github_authorized_section"
                         android:layout_width="match_parent"
@@ -124,7 +115,7 @@
                             android:textAlignment="center"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:background="@drawable/bg_round_light_grey"/>
-
+                        
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/menu_layout_repos"
                             style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -157,6 +148,61 @@
                                 android:inputType="none" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/input_layout_username"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Git Username">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_text_username"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/input_layout_email"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Git Author Email">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_text_email"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textEmailAddress"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/input_layout_commit_msg"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Default Commit Message">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edit_text_commit_msg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/checkbox_remember_token"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Remember Token"
+                            android:layout_gravity="start"/>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -170,7 +216,7 @@
                             android:id="@+id/button_forget_token"
                             style="@style/Widget.Material3.Button.TextButton"
                             android:layout_width="wrap_content"
-                        android:visibility="gone"
+                            android:visibility="gone"
                             android:layout_height="wrap_content"
                             android:text="Forget Token"/>
 
@@ -180,11 +226,11 @@
                             android:layout_weight="1"/>
 
                         <Button
-                        android:id="@+id/button_authorize"
-                        style="@style/Widget.Material3Expressive.Button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Continue" />
+                            android:id="@+id/button_authorize"
+                            style="@style/Widget.Material3Expressive.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Continue" />
                     </LinearLayout>
                 </LinearLayout>
 
