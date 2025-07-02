@@ -26,6 +26,9 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.errors.NoRemoteRepositoryException;
+import org.eclipse.jgit.errors.TransportException;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
@@ -142,11 +145,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         projectWorkspaceName = findViewById(R.id.project_workspace_name);
     }
 
-        private void setupToolbar() {
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // This code removes Sketchware Pro Logo (Dont remove it please)
         toolbar.setLogo(null);
 
         if (getSupportActionBar() != null) {
@@ -230,8 +232,15 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                 String token = gitPrefs.getString("git_pass", "");
                 String email = gitPrefs.getString("git_email", "");
                 String commitMessage = "Sketchware auto-commit";
-                if (repoUrl.isEmpty() || username.isEmpty() || token.isEmpty()) {
-                    throw new Exception("Git repository, username, or token not configured.");
+
+                StringBuilder missingConfig = new StringBuilder();
+                if (repoUrl.isEmpty()) missingConfig.append("Repository URL, ");
+                if (username.isEmpty()) missingConfig.append("Username, ");
+                if (token.isEmpty()) missingConfig.append("Token, ");
+                if (email.isEmpty()) missingConfig.append("Email for commit author, ");
+                if (missingConfig.length() > 0) {
+                    String missingItems = missingConfig.substring(0, missingConfig.length() - 2);
+                    throw new Exception(missingItems + " not configured. Please check Git settings.");
                 }
 
                 String projectName = yB.c(sc_metadata, "my_ws_name").replaceAll("[^a-zA-Z0-9.-]", "_");
@@ -295,11 +304,32 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                     String successMessage = "Project successfully pushed to:\n" + repoUrl + " (branch: " + branch + ")";
                     showResult(successMessage, null, null, false);
                 });
+            } catch (InvalidRemoteException | NoRemoteRepositoryException e) {
+                project_metadata.e();
+                runOnUiThread(() -> {
+                    dismissGitProgressDialog();
+                    onExportError("Git Error: Invalid Repository\n\nThe URL might be incorrect, or the repository does not exist. Please verify the URL and your network connection.");
+                });
+            } catch (TransportException e) {
+                project_metadata.e();
+                runOnUiThread(() -> {
+                    dismissGitProgressDialog();
+                    String userFriendlyMessage;
+                    String detailedMessage = e.getMessage() != null ? e.getMessage().toLowerCase(Locale.ROOT) : "";
+                    if (detailedMessage.contains("not authorized") || detailedMessage.contains("authentication not supported")) {
+                        userFriendlyMessage = "Authentication Failed.\nPlease check your username and personal access token. The token may be invalid, expired, or lack the necessary permissions.";
+                    } else {
+                        userFriendlyMessage = "A network transport error occurred.\nPlease check your internet connection and the repository URL.";
+                    }
+                    onExportError("Git Error: Transport Failed\n\n" + userFriendlyMessage);
+                });
             } catch (Exception e) {
                 project_metadata.e();
                 runOnUiThread(() -> {
                     dismissGitProgressDialog();
-                    onExportError("Git operation failed: " + e.getMessage() + "\n\n" + Log.getStackTraceString(e));
+                    String message = e.getMessage() != null ? e.getMessage() : "An unknown error occurred.";
+                    onExportError("Git Operation Failed\n\n" + message);
+                    Log.e("GitExport", "An unexpected error occurred during Git export.", e);
                 });
             }
         }).start();
