@@ -308,48 +308,50 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     }
 
     private void startApkExport() {
-        new GetKeyStoreCredentialsDialog(this,
+        GetKeyStoreCredentialsDialog dialog = new GetKeyStoreCredentialsDialog(this,
                 R.drawable.ic_apk_color_48dp,
                 "Sign & Export APK",
-                "To sign the APK, provide your keystore credentials or use the test key.")
-                .setListener(credentials -> {
-                    showEmbeddedProgress(true, "Starting APK export...");
-                    BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.SIGN_APP);
-                    if (credentials != null) {
-                        if (credentials.isForSigningWithTestkey()) {
-                            task.setSignWithTestkey(true);
-                        } else {
-                            task.configureResultJarSigning(wq.j(), credentials.getKeyStorePassword().toCharArray(),
-                                    credentials.getKeyAlias(), credentials.getKeyPassword().toCharArray(),
-                                    credentials.getSigningAlgorithm());
-                        }
-                    } else {
-                        task.disableResultJarSigning();
-                    }
-                    task.execute();
-                }).show();
+                "To sign the APK, provide your keystore credentials or use the test key.");
+        dialog.setListener(credentials -> {
+            showEmbeddedProgress(true, "Starting APK export...");
+            BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.SIGN_APP);
+            if (credentials != null) {
+                if (credentials.isForSigningWithTestkey()) {
+                    task.setSignWithTestkey(true);
+                } else {
+                    task.configureResultJarSigning(wq.j(), credentials.getKeyStorePassword().toCharArray(),
+                            credentials.getKeyAlias(), credentials.getKeyPassword().toCharArray(),
+                            credentials.getSigningAlgorithm());
+                }
+            } else {
+                task.disableResultJarSigning();
+            }
+            task.execute();
+        });
+        dialog.show();
     }
 
     private void startAabExport() {
-        new GetKeyStoreCredentialsDialog(this,
+        GetKeyStoreCredentialsDialog dialog = new GetKeyStoreCredentialsDialog(this,
                 R.drawable.open_box_48,
                 "Sign & Export AAB",
-                "AABs must be signed. Provide your keystore credentials to proceed.")
-                .setListener(credentials -> {
-                    showEmbeddedProgress(true, "Starting AAB export...");
-                    BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.AAB);
-                    task.enableAppBundleBuild();
-                    if (credentials != null) {
-                        if (credentials.isForSigningWithTestkey()) {
-                            task.setSignWithTestkey(true);
-                        } else {
-                            task.configureResultJarSigning(wq.j(), credentials.getKeyStorePassword().toCharArray(),
-                                    credentials.getKeyAlias(), credentials.getKeyPassword().toCharArray(),
-                                    credentials.getSigningAlgorithm());
-                        }
-                    }
-                    task.execute();
-                }).show();
+                "AABs must be signed. Provide your keystore credentials to proceed.");
+        dialog.setListener(credentials -> {
+            showEmbeddedProgress(true, "Starting AAB export...");
+            BuildingAsyncTask task = new BuildingAsyncTask(this, yq.ExportType.AAB);
+            task.enableAppBundleBuild();
+            if (credentials != null) {
+                if (credentials.isForSigningWithTestkey()) {
+                    task.setSignWithTestkey(true);
+                } else {
+                    task.configureResultJarSigning(wq.j(), credentials.getKeyStorePassword().toCharArray(),
+                            credentials.getKeyAlias(), credentials.getKeyPassword().toCharArray(),
+                            credentials.getSigningAlgorithm());
+                }
+            }
+            task.execute();
+        });
+        dialog.show();
     }
 
     private void startSourceCodeExport() {
