@@ -1,6 +1,8 @@
+// Environment Variables & Analytics Setup
 def secrets = System.getenv("GOOGLE_SERVICES_JSON")
 def analyticsEnabled = secrets != null
 
+// Plugin Applications
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
 
@@ -9,13 +11,15 @@ if (analyticsEnabled) {
     apply plugin: "com.google.firebase.crashlytics"
 }
 
+// Android Configuration
 android {
     compileSdk 36
 
+    // Version Control Information
     def gitCommitHash = "git rev-parse HEAD".execute().text.trim()
-
     def shortCommitHash = "git rev-parse --short HEAD".execute().text.trim()
 
+    // Default Configurations
     defaultConfig {
         applicationId "pro.sketchware"
         namespace "pro.sketchware"
@@ -25,16 +29,15 @@ android {
         versionCode 150
         versionName "v7.0.0-SNAPSHOT-" + shortCommitHash
 
+        // Build Config Fields
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
-
         buildConfigField("String", "FLAVOR_NAME_WITH_AABS", "\"minApi26\"")
         buildConfigField("String", "FLAVOR_NAME_WITHOUT_AABS", "\"minApi21\"")
-
         buildConfigField("String", "VERSION_NAME_WITHOUT_FLAVOR", "\"v7.0.0-SNAPSHOT-${shortCommitHash}\"")
-
         buildConfigField("String", "SKETCHUB_API_KEY", "\"${System.getenv("SKETCHUB_API_KEY")}\"")
     }
 
+    // Build Types
     buildTypes {
         release {
             minifyEnabled false
@@ -43,26 +46,31 @@ android {
         }
     }
 
+    // Packaging Options
     packagingOptions {
         resources.excludes += "license/*"
         resources.excludes += "META-INF/DEPENDENCIES"
         resources.pickFirsts += "api_database/*"
     }
 
+    // Compile Options
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
 
+    // Kotlin Options
     kotlinOptions {
         jvmTarget = "17"
     }
 
+    // Android Resources
     androidResources {
         additionalParameters.addAll("--stable-ids", "${rootDir}/public-stable-ids.txt")
     }
 
+    // Signing Configs
     signingConfigs {
         debug {
             storeFile file("../testkey.keystore")
@@ -72,19 +80,24 @@ android {
         }
     }
 
+    // Build Features
     buildFeatures {
         viewBinding true
         buildConfig true
     }
 
+    // Dependency Configurations
     configurations.implementation {
         exclude group: 'javax.inject', module: 'javax.inject'
     }
 }
 
+// Dependencies
 dependencies {
+    // Local File Dependencies
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"], exclude: "proguard-base-7.2.2.jar")
 
+    // AndroidX Libraries
     implementation "androidx.appcompat:appcompat:1.7.1"
     implementation "androidx.core:core-splashscreen:1.0.1"
     implementation "androidx.activity:activity:1.10.1"
@@ -92,63 +105,63 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
     implementation "androidx.viewpager:viewpager:1.1.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "com.google.android.material:material:1.14.0-alpha01"
+    implementation "com.google.android.material:material:1.14.0-alpha02"
+    implementation "androidx.exifinterface:exifinterface:1.4.1"
+    implementation "androidx.preference:preference:1.2.1"
+
+    // UI Components
     implementation "com.airbnb.android:lottie:6.5.2"
     implementation "com.google.android.flexbox:flexbox:3.0.0"
+    implementation "de.hdodenhof:circleimageview:3.1.0"
+    implementation "com.github.angads25:filepicker:1.1.1"
 
+    // Image Loading
     implementation "com.github.bumptech.glide:glide:4.16.0"
-
-    implementation 'androidx.exifinterface:exifinterface:1.4.1'
-    implementation "androidx.preference:preference:1.2.1"
+    implementation 'io.coil-kt:coil:2.0.0'
+    implementation 'io.coil-kt:coil-svg:2.0.0'
     implementation files('libs/android-svg.jar')
 
+    // Code Editor
     def editorGroupId = "io.github.Rosemoe.sora-editor"
     implementation platform("$editorGroupId:bom:0.23.5")
     implementation "$editorGroupId:editor"
     implementation "$editorGroupId:language-java"
     implementation "$editorGroupId:language-textmate"
 
-    implementation "de.hdodenhof:circleimageview:3.1.0"
-    implementation "com.github.angads25:filepicker:1.1.1"
-
-    implementation 'io.coil-kt:coil:2.0.0'
-    implementation 'io.coil-kt:coil-svg:2.0.0'
-
+    // Build Tools
     implementation "com.android.tools.build:bundletool:1.18.1"
-
-    //noinspection GradleDependency copied from above dependency for not just runtime access
     implementation "com.google.protobuf:protobuf-java:3.19.2"
-    //noinspection GradleDependency
     implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
     implementation "com.android.tools:r8:8.9.35"
     implementation "com.github.Iyxan23:zipalign-java:1.2.2"
+    implementation files('libs/proguard-base-7.2.2.jar')
+    implementation 'com.guardsquare:proguard-core:9.0.2'
 
+    // Utility Libraries
     implementation "com.google.code.gson:gson:2.13.1"
     implementation "com.madgag:scpkix-jdk15on:1.47.0.2"
-
     implementation 'io.noties.markwon:core:4.6.2'
-
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
     implementation "com.squareup.okio:okio:3.12.0"
-
     implementation "org.eclipse.jdt:ecj:3.26.0"
+    implementation "com.github.topjohnwu.libsu:core:5.0.4"
+    implementation "dev.chrisbanes.insetter:insetter:0.6.1"
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:6.9.0.202403050737-r'
+    implementation 'org.slf4j:slf4j-nop:2.0.12'
 
+    // GitHub Dependencies
     implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
     implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
     implementation "com.github.PranavPurwar:filepicker:74526bea66"
 
-    implementation files('libs/proguard-base-7.2.2.jar')
-    implementation 'com.guardsquare:proguard-core:9.0.2'
-
-    implementation "com.github.topjohnwu.libsu:core:5.0.4"
-    implementation "dev.chrisbanes.insetter:insetter:0.6.1"
-
-    // Analytics and Crashlytics
+    // Firebase Services
     if (analyticsEnabled) {
         new File("$projectDir/google-services.json").text = secrets
     }
     implementation platform("com.google.firebase:firebase-bom:33.14.0")
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
+    
+    // Core Library Desugaring
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.1.5"
 }
