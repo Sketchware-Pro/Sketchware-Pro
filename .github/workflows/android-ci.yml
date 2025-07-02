@@ -16,14 +16,14 @@ on:
       - 'wip/**'
   workflow_dispatch:
     inputs:
-      title:
+      run_title:
         description: 'Custom title for this manual run'
         required: false
-        default: 'Manual trigger'
+        default: 'Manual run'
 
 jobs:
   build:
-    name: Build APKs ${{ github.event_name == 'workflow_dispatch' && format('(Manual: {0})', github.event.inputs.title) || '' }}
+    name: Build APKs ${{ github.event_name == 'workflow_dispatch' && format('({0})', github.event.inputs.run_title) || '' }}
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     outputs:
       short_sha: ${{ steps.set_sha.outputs.short_sha }}
@@ -70,7 +70,7 @@ jobs:
           path: app/build/outputs/apk/release/app-release-${{ steps.set_sha.outputs.short_sha }}.apk
 
   notifyTelegram:
-    name: Notify Telegram ${{ github.event_name == 'workflow_dispatch' && format('(Manual: {0})', github.event.inputs.title) || '' }}
+    name: Notify Telegram ${{ github.event_name == 'workflow_dispatch' && format('({0})', github.event.inputs.run_title) || '' }}
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     needs: build
     steps:
@@ -95,7 +95,7 @@ jobs:
         continue-on-error: true
 
   aggregateAndSend:
-    name: Send APKs to Telegram ${{ github.event_name == 'workflow_dispatch' && format('(Manual: {0})', github.event.inputs.title) || '' }}
+    name: Send APKs to Telegram ${{ github.event_name == 'workflow_dispatch' && format('({0})', github.event.inputs.run_title) || '' }}
     runs-on: ${{ vars.IS_USING_HOSTED_RUNNERS == 'true' && 'self-hosted' || 'ubuntu-latest' }}
     needs: build
     steps:
@@ -141,7 +141,7 @@ jobs:
         continue-on-error: true
 
   updateAppData:
-    name: Update App Data ${{ github.event_name == 'workflow_dispatch' && format('(Manual: {0})', github.event.inputs.title) || '' }}
+    name: Update App Data ${{ github.event_name == 'workflow_dispatch' && format('({0})', github.event.inputs.run_title) || '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
