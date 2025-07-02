@@ -52,10 +52,9 @@ public class GitConfigDialogFragment extends DialogFragment {
     private GitConfigListener listener;
     private SharedPreferences prefs;
 
-    private TextInputEditText patEditText;
+    private TextInputEditText patEditText, usernameEditText, emailEditText, commitMsgEditText;
     private AutoCompleteTextView repoAutoComplete, branchAutoComplete;
     private TextInputLayout repoMenuLayout, branchMenuLayout;
-    // MODIFIED: Type changed from MaterialButton to Button
     private Button mainActionButton;
     private MaterialButton forgetButton;
     private CheckBox rememberTokenCheckbox;
@@ -87,7 +86,7 @@ public class GitConfigDialogFragment extends DialogFragment {
         setupToolbar(view);
 
         mainActionButton.setOnClickListener(v -> {
-            if (mainActionButton.getText().toString().equals(getString(R.string.common_word_save))) {
+            if (authorizedSection.getVisibility() == View.VISIBLE) {
                 saveConfiguration();
             } else {
                 authorize();
@@ -98,13 +97,7 @@ public class GitConfigDialogFragment extends DialogFragment {
         repoAutoComplete.setOnItemClickListener((parent, v, position, id) -> {
             branchAutoComplete.setText("", false);
             fetchBranches(repoData.get(position));
-            updateUiState();
         });
-
-        branchAutoComplete.setOnItemClickListener((parent, v, position, id) -> {
-            updateUiState();
-        });
-
 
         if (prefs.getBoolean("remember_token", false)) {
             String savedPat = prefs.getString("github_pat", "");
@@ -131,9 +124,9 @@ public class GitConfigDialogFragment extends DialogFragment {
         rememberTokenCheckbox = view.findViewById(R.id.checkbox_remember_token);
         authorizedSection = view.findViewById(R.id.github_authorized_section);
         userInfoText = view.findViewById(R.id.text_user_info);
-
-        // The initial text is set in XML, but we ensure the state is correct here.
-        mainActionButton.setText(R.string.common_word_continue);
+        usernameEditText = view.findViewById(R.id.edit_text_username);
+        emailEditText = view.findViewById(R.id.edit_text_email);
+        commitMsgEditText = view.findViewById(R.id.edit_text_commit_msg);
     }
 
     private void setupToolbar(View view) {
@@ -141,6 +134,7 @@ public class GitConfigDialogFragment extends DialogFragment {
         toolbar.setNavigationOnClickListener(v -> dismiss());
         toolbar.inflateMenu(R.menu.dialog_save_menu);
         saveMenuItem = toolbar.getMenu().findItem(R.id.action_save);
+        saveMenuItem.setVisible(false);
         toolbar.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.action_save) {
                 saveConfiguration();
@@ -179,12 +173,11 @@ public class GitConfigDialogFragment extends DialogFragment {
                     return;
                 }
                 JSONObject user = new JSONObject(readResponse(userConn));
-                String login = user.getString("login");
 
                 HttpURLConnection repoConn = createConnection("https://api.github.com/user/repos?type=owner&sort=updated&per_page=100", token);
                 if (repoConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     JSONArray repos = new JSONArray(readResponse(repoConn));
-                    handler.post(() -> onReposFetched(repos, login));
+                    handler.post(() -> onUserAndReposFetched(user, repos));
                 } else {
                     handler.post(() -> showError("Failed to fetch repositories."));
                 }
@@ -217,30 +210,23 @@ public class GitConfigDialogFragment extends DialogFragment {
         }
     }
 
-    private void updateUiState() {
-        boolean repoSelected = !repoAutoComplete.getText().toString().isEmpty();
-        boolean branchSelected = !branchAutoComplete.getText().toString().isEmpty();
-
-        if (repoSelected && branchSelected) {
-            mainActionButton.setText(R.string.common_word_save);
-            if (saveMenuItem != null) {
-                saveMenuItem.setVisible(false);
-            }
-        } else {
-            mainActionButton.setText(R.string.common_word_continue);
-            if (saveMenuItem != null) {
-                saveMenuItem.setVisible(true);
-            }
-        }
-    }
-
-    private void onReposFetched(JSONArray repos, String login) {
+    private void onUserAndReposFetched(JSONObject user, JSONArray repos) {
         showLoading(false);
-        userInfoText.setText("Authorized as: " + login);
+        try {
+            String login = user.getString("login");
+            String email = user.optString("email", "");
 
-        // MODIFIED: Show hidden controls upon successful authorization
+            userInfoText.setText("Authorized as: " + login);
+            usernameEditText.setText(prefs.getString("git_user", login));
+            emailEditText.setText(prefs.getString("git_email", email));
+            commitMsgEditText.setText(prefs.getString("git_commit_msg", "Sketchware auto-commit"));
+
+        } catch (JSONException e) {
+            showError("Failed to parse user data.");
+            return;
+        }
+
         forgetButton.setVisibility(View.VISIBLE);
-        rememberTokenCheckbox.setVisibility(View.VISIBLE);
         rememberTokenCheckbox.setChecked(prefs.getBoolean("remember_token", false));
 
         ArrayList<String> repoNames = new ArrayList<>();
@@ -257,8 +243,10 @@ public class GitConfigDialogFragment extends DialogFragment {
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, repoNames);
         repoAutoComplete.setAdapter(adapter);
+
         authorizedSection.setVisibility(View.VISIBLE);
-        updateUiState();
+        mainActionButton.setText(R.string.common_word_save);
+        saveMenuItem.setVisible(true);
     }
 
     private void onBranchesFetched(JSONArray branches) {
@@ -275,21 +263,24 @@ public class GitConfigDialogFragment extends DialogFragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, branchNames);
         branchAutoComplete.setAdapter(adapter);
         branchMenuLayout.setVisibility(View.VISIBLE);
-        updateUiState();
     }
 
     private void saveConfiguration() {
         String repoFullName = repoAutoComplete.getText().toString();
         String branchName = branchAutoComplete.getText().toString();
+        String username = usernameEditText.getText().toString().trim();
+        String email = emailEditText.getText().toString().trim();
+        String commitMsg = commitMsgEditText.getText().toString().trim();
+        String token = patEditText.getText().toString().trim();
 
-        if (repoFullName.isEmpty() || branchName.isEmpty()) {
-            Toast.makeText(getContext(), "Please select both a repository and a branch.", Toast.LENGTH_SHORT).show();
+        if (repoFullName.isEmpty() || branchName.isEmpty() || username.isEmpty() || email.isEmpty()) {
+            Toast.makeText(getContext(), "Please select a repository/branch and fill in your user details.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         SharedPreferences.Editor editor = prefs.edit();
         if(rememberTokenCheckbox.isChecked()) {
-             editor.putString("github_pat", patEditText.getText().toString().trim());
+             editor.putString("github_pat", token);
              editor.putBoolean("remember_token", true);
         } else {
              editor.remove("github_pat");
@@ -297,6 +288,10 @@ public class GitConfigDialogFragment extends DialogFragment {
         }
         editor.putString("git_repo", "https://github.com/" + repoFullName);
         editor.putString("git_branch", branchName);
+        editor.putString("git_user", username);
+        editor.putString("git_pass", token);
+        editor.putString("git_email", email);
+        editor.putString("git_commit_msg", commitMsg.isEmpty() ? "Sketchware auto-commit" : commitMsg);
         editor.apply();
 
         Toast.makeText(getContext(), "Configuration Saved!", Toast.LENGTH_SHORT).show();
@@ -307,20 +302,32 @@ public class GitConfigDialogFragment extends DialogFragment {
     }
 
     private void forgetToken() {
-        prefs.edit().remove("github_pat").remove("remember_token").apply();
+        prefs.edit()
+                .remove("github_pat")
+                .remove("remember_token")
+                .remove("git_repo")
+                .remove("git_branch")
+                .remove("git_user")
+                .remove("git_pass")
+                .remove("git_email")
+                .remove("git_commit_msg")
+                .apply();
         patEditText.setText("");
         authorizedSection.setVisibility(View.GONE);
         repoAutoComplete.setText("", false);
         branchAutoComplete.setText("", false);
         branchMenuLayout.setVisibility(View.GONE);
+        usernameEditText.setText("");
+        emailEditText.setText("");
+        commitMsgEditText.setText("");
 
-        // MODIFIED: Hide controls when token is forgotten
         forgetButton.setVisibility(View.GONE);
         rememberTokenCheckbox.setChecked(false);
-        rememberTokenCheckbox.setVisibility(View.GONE);
+        
+        mainActionButton.setText(R.string.common_word_continue);
+        saveMenuItem.setVisible(false);
 
-        updateUiState();
-        Toast.makeText(getContext(), "Forgotten Token.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Forgotten Token and Configuration.", Toast.LENGTH_SHORT).show();
     }
 
     private void showLoading(boolean isLoading) {
@@ -329,6 +336,9 @@ public class GitConfigDialogFragment extends DialogFragment {
         patEditText.setEnabled(!isLoading);
         repoMenuLayout.setEnabled(!isLoading);
         branchMenuLayout.setEnabled(!isLoading);
+        usernameEditText.setEnabled(!isLoading);
+        emailEditText.setEnabled(!isLoading);
+        commitMsgEditText.setEnabled(!isLoading);
     }
 
     private void showError(String message) {
@@ -360,16 +370,14 @@ public class GitConfigDialogFragment extends DialogFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        try {
-            if (context instanceof GitConfigListener) {
-                listener = (GitConfigListener) context;
-            } else if (getParentFragment() instanceof GitConfigListener) {
-                listener = (GitConfigListener) getParentFragment();
-            } else {
-                throw new ClassCastException(context.toString() + " must implement GitConfigListener");
-            }
-        } catch (ClassCastException e) {
-             throw new ClassCastException(context.toString() + " must implement GitConfigListener");
+        if (context instanceof GitConfigListener) {
+            listener = (GitConfigListener) context;
+        } else if (getParentFragment() instanceof GitConfigListener) {
+            listener = (GitConfigListener) getParentFragment();
+        } else if (getActivity() instanceof GitConfigListener) {
+            listener = (GitConfigListener) getActivity();
+        } else {
+             throw new ClassCastException(context + " must implement GitConfigListener");
         }
     }
 
