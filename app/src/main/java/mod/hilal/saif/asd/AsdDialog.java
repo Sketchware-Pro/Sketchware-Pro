@@ -25,10 +25,10 @@ import pro.sketchware.utility.EditorUtils;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class AsdDialog extends Dialog implements DialogInterface.OnDismissListener {
-    private static SharedPreferences pref;
+    private SharedPreferences pref;
     private Activity act;
     private CodeEditorHsAsdBinding binding;
-    private String str;
+    private String content;
 
     public AsdDialog(Activity activity) {
         super(activity);
@@ -49,7 +49,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         }
 
         binding.editor.setTypefaceText(EditorUtils.getTypeface(act));
-        binding.editor.setText(Lx.j(str, false));
+        binding.editor.setText(Lx.j(content, false));
         binding.editor.setWordwrap(false);
 
         EditorUtils.loadJavaConfig(binding.editor);
@@ -121,15 +121,15 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         act = null;
     }
 
-    public void saveLis(LogicEditorActivity logicEditorActivity, boolean z, Ss ss, AsdDialog asdDialog) {
+    public void setOnSaveClickListener(LogicEditorActivity logicEditorActivity, boolean z, Ss ss, AsdDialog asdDialog) {
         binding.btnSave.setOnClickListener(new AsdHandlerCodeEditor(logicEditorActivity, z, ss, asdDialog, binding.editor));
     }
 
-    public void cancelLis(AsdDialog asdDialog) {
+    public void setOnCancelClickListener(AsdDialog asdDialog) {
         binding.btnCancel.setOnClickListener(Helper.getDialogDismissListener(asdDialog));
     }
 
-    public void setCon(String str2) {
-        str = str2;
+    public void setContent(String content) {
+        this.content = content;
     }
 }
