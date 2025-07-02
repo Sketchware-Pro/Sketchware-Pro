@@ -97,8 +97,8 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         propertyItem = findViewById(R.id.property_item);
         propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
-            setSoundEffectsEnabled(true);
-            setOnClickListener(this);
+            propertyMenuItem.setSoundEffectsEnabled(true);
+            propertyMenuItem.setOnClickListener(this);
         }
     }
 

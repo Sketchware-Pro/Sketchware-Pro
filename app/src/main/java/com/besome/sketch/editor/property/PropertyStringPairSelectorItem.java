@@ -99,8 +99,8 @@ public class PropertyStringPairSelectorItem extends RelativeLayout implements Vi
         propertyItem = findViewById(R.id.property_item);
         propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
-            setOnClickListener(this);
-            setSoundEffectsEnabled(true);
+            propertyMenuItem.setOnClickListener(this);
+            propertyMenuItem.setSoundEffectsEnabled(true);
         }
     }
 

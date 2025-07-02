@@ -98,8 +98,8 @@ public class PropertyGravityItem extends RelativeLayout implements View.OnClickL
         propertyItem = findViewById(R.id.property_item);
         propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
-            setOnClickListener(this);
-            setSoundEffectsEnabled(true);
+            propertyMenuItem.setOnClickListener(this);
+            propertyMenuItem.setSoundEffectsEnabled(true);
         }
     }
 

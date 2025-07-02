@@ -6,15 +6,12 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
-        style="@style/Widget.Material3.CardView.Filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="4dp"
         android:layout_marginVertical="6dp"
-        app:cardBackgroundColor="?colorSurfaceContainerHigh"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp"
-        app:strokeWidth="0.5dp">
+        app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+        app:cardCornerRadius="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,7 +21,7 @@
             android:padding="5dp">
 
             <ImageView
-                android:layout_width="match_parent"
+                android:layout_width="28dp"
                 android:layout_height="28dp"
                 app:srcCompat="@drawable/ic_mtrl_add" />
 
@@ -64,13 +61,6 @@
                 android:orientation="vertical"
                 android:paddingRight="4dp"
                 android:paddingBottom="4dp" />
-
-            <LinearLayout
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#00000000"
-                android:orientation="horizontal" />
 
             <TextView
                 android:id="@+id/tv_widget"
