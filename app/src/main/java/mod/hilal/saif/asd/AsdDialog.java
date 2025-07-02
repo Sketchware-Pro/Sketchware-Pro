@@ -1,21 +1,17 @@
 package mod.hilal.saif.asd;
 
-import static pro.sketchware.utility.SketchwareUtil.getDip;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.Window;
+import android.widget.Button;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -23,23 +19,21 @@ import com.besome.sketch.editor.LogicEditorActivity;
 
 import a.a.a.Lx;
 import a.a.a.Ss;
-import io.github.rosemoe.sora.langs.java.JavaLanguage;
 import io.github.rosemoe.sora.widget.CodeEditor;
 import io.github.rosemoe.sora.widget.component.EditorAutoCompletion;
 import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.utility.EditorUtils;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class AsdDialog extends Dialog implements DialogInterface.OnDismissListener {
     private static SharedPreferences pref;
-    private final Activity act;
-    private ViewGroup base;
-    private TextView cancel;
+    private Activity act;
     private CodeEditor codeEditor;
-    private TextView save;
     private String str;
-    private LinearLayout lin;
+    private Button cancel;
+    private Button save;
 
     public AsdDialog(Activity activity) {
         super(activity);
@@ -51,10 +45,21 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.code_editor_hs_asd);
 
+        Window window = getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+
+        cancel = findViewById(R.id.btn_cancel);
+        save = findViewById(R.id.btn_save);
+
         codeEditor = findViewById(R.id.editor);
-        codeEditor.setTypefaceText(Typeface.MONOSPACE);
-        codeEditor.setEditorLanguage(new JavaLanguage());
-        codeEditor.setText(str);
+        codeEditor.setTypefaceText(EditorUtils.getTypeface(act));
+        codeEditor.setText(Lx.j(str, false));
+        codeEditor.setWordwrap(false);
+
+        EditorUtils.loadJavaConfig(codeEditor);
         SrcCodeEditor.loadCESettings(act, codeEditor, "dlg");
         pref = SrcCodeEditor.pref;
 
@@ -100,19 +105,6 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
                 SrcCodeEditor.showSwitchThemeDialog(act, codeEditor, (dialog, which) -> {
                     SrcCodeEditor.selectTheme(codeEditor, which);
                     AsdDialog.pref.edit().putInt("dlg_theme", which).apply();
-                    if (isDark()) {
-                        lin.setBackgroundColor(0xff292929);
-                        save.setBackground(new DialogButtonGradientDrawable()
-                                .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
-                        cancel.setBackground(new DialogButtonGradientDrawable()
-                                .getIns((int) getDip(4), 0, 0xff333333, 0xff333333));
-                    } else {
-                        lin.setBackgroundColor(Color.WHITE);
-                        save.setBackground(new DialogButtonGradientDrawable()
-                                .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-                        cancel.setBackground(new DialogButtonGradientDrawable()
-                                .getIns((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-                    }
                     dialog.dismiss();
                 });
             } else if (id == R.id.action_word_wrap) {
@@ -133,130 +125,14 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
             return true;
         });
 
-        codeEditor.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                0,
-                1.0f
-        ));
-        base = (ViewGroup) codeEditor.getParent();
-        addControl();
-        getWindow().setLayout(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT
-        );
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setOnDismissListener(this);
     }
 
     @Override
     public void onDismiss(DialogInterface dialog) {
         pref.edit().putInt("dlg_ts", (int) (codeEditor.getTextSizePx() / act.getResources().getDisplayMetrics().scaledDensity)).apply();
-    }
-
-    private boolean isThemeDark(int theme) {
-        return theme == 3 || theme == 4;
-    }
-
-    private boolean isDark() {
-        return isThemeDark(pref.getInt("dlg_theme", 3));
-    }
-
-    private void addControl() {
-        lin = new LinearLayout(getContext());
-        lin.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                0.0f
-        ));
-        lin.setPadding(0, 0, 0, 0);
-        lin.setOrientation(LinearLayout.HORIZONTAL);
-        if (isDark()) {
-            lin.setBackgroundColor(0xff292929);
-        } else {
-            lin.setBackgroundColor(Color.WHITE);
-        }
-        cancel = new TextView(getContext());
-        cancel.setLayoutParams(new LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                1.0f
-        ));
-        ((LinearLayout.LayoutParams) cancel.getLayoutParams()).setMargins(
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8)
-        );
-        cancel.setText(R.string.common_word_cancel);
-        cancel.setTextColor(-1);
-        cancel.setPadding(
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8)
-        );
-        cancel.setGravity(17);
-        if (isDark()) {
-            cancel.setBackgroundColor(0xff333333);
-        } else {
-            cancel.setBackgroundColor(0xff008dcd);
-        }
-        cancel.setTextSize(15.0f);
-        lin.addView(cancel);
-        save = new TextView(getContext());
-        save.setLayoutParams(new LinearLayout.LayoutParams(
-                0,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                1.0f
-        ));
-        ((LinearLayout.LayoutParams) save.getLayoutParams()).setMargins(
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8)
-        );
-        save.setText(R.string.common_word_save);
-        save.setTextColor(Color.WHITE);
-        save.setPadding(
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8)
-        );
-        save.setGravity(17);
-        if (isDark()) {
-            save.setBackgroundColor(0xff333333);
-        } else {
-            save.setBackgroundColor(0xff008dcd);
-        }
-        save.setTextSize(15.0f);
-        lin.addView(save);
-        if (isDark()) {
-            save.setBackground(new DialogButtonGradientDrawable()
-                    .getIns(getDip(4),
-                            0,
-                            0xff333333,
-                            0xff333333));
-            cancel.setBackground(new DialogButtonGradientDrawable()
-                    .getIns(getDip(4),
-                            0,
-                            0xff333333,
-                            0xff333333));
-        } else {
-            save.setBackground(new DialogButtonGradientDrawable()
-                    .getIns(getDip(4),
-                            0,
-                            0xff2196f3,
-                            0xff2196f3));
-            cancel.setBackground(new DialogButtonGradientDrawable()
-                    .getIns(getDip(4),
-                            0,
-                            0xff2196f3,
-                            0xff2196f3));
-        }
-        save.setElevation(getDip(1));
-        cancel.setElevation(getDip(1));
-        base.addView(lin);
+        pref = null;
+        act = null;
     }
 
     public void saveLis(LogicEditorActivity logicEditorActivity, boolean z, Ss ss, AsdDialog asdDialog) {
