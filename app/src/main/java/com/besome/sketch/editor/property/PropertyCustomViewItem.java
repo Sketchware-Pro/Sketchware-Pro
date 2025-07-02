@@ -102,8 +102,8 @@ public class PropertyCustomViewItem extends RelativeLayout implements View.OnCli
         propertyMenuItem = findViewById(R.id.property_menu_item);
         imgLeftIcon = findViewById(R.id.img_left_icon);
         if (var2) {
-            setOnClickListener(this);
-            setSoundEffectsEnabled(true);
+            propertyMenuItem.setOnClickListener(this);
+            propertyMenuItem.setSoundEffectsEnabled(true);
         }
 
     }

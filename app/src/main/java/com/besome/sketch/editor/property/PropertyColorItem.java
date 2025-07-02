@@ -9,16 +9,16 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.Objects;
-
 import com.besome.sketch.lib.ui.ColorPickerDialog;
+
+import java.util.Objects;
 
 import a.a.a.Kw;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
-import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.R;
+import pro.sketchware.utility.ThemeUtils;
 
 @SuppressLint("ViewConstructor")
 public class PropertyColorItem extends RelativeLayout implements View.OnClickListener {
@@ -134,8 +134,8 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         propertyItem = findViewById(R.id.property_item);
         propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
-            setOnClickListener(this);
-            setSoundEffectsEnabled(true);
+            propertyMenuItem.setOnClickListener(this);
+            propertyMenuItem.setSoundEffectsEnabled(true);
         }
     }
 
