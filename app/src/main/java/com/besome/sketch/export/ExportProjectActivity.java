@@ -82,6 +82,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
 
     private ViewGroup rootLayout;
     private Button exportProjectButton;
+    private Button gitConfigureButton;
     private LinearLayout embeddedProgressLayout;
     private TextView embeddedProgressText;
     private MaterialCardView exportResultCard;
@@ -102,7 +103,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         setContentView(R.layout.export_project);
         gitPrefs = getSharedPreferences("git_config", MODE_PRIVATE);
         initializeViews();
-    //    setupToolbar();
+        setupToolbar();
 
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
@@ -128,11 +129,15 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
 
         initializeOutputDirectories();
         exportProjectButton.setOnClickListener(v -> showExportOptionsDialog());
+        gitConfigureButton.setOnClickListener(v -> {
+            new GitConfigDialogFragment().show(getSupportFragmentManager(), "git_config_dialog");
+        });
     }
 
     private void initializeViews() {
         rootLayout = findViewById(R.id.root_layout);
         exportProjectButton = findViewById(R.id.export_project_button);
+        gitConfigureButton = findViewById(R.id.git_configure_button);
         embeddedProgressLayout = findViewById(R.id.embedded_progress_layout);
         embeddedProgressText = findViewById(R.id.embedded_progress_text);
         exportResultCard = findViewById(R.id.export_result_card);
@@ -148,14 +153,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-     //   toolbar.setLogo(null);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Export Project");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
     }
 
@@ -509,6 +508,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     private void showEmbeddedProgress(boolean show, String message) {
         TransitionManager.beginDelayedTransition(rootLayout);
         exportProjectButton.setEnabled(!show);
+        gitConfigureButton.setEnabled(!show);
         exportResultCard.setVisibility(View.GONE);
         if (show) {
             embeddedProgressLayout.setVisibility(View.VISIBLE);
