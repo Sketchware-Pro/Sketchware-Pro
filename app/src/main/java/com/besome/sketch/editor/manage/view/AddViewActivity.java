@@ -253,13 +253,12 @@ public class AddViewActivity extends BaseAppCompatActivity {
             }
 
         });
+
         binding.btnCancel.setOnClickListener(v -> {
             setResult(RESULT_CANCELED);
             finish();
         });
 
-        
-        
         if (requestCode == 265) {
             nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), projectFileBean.fileName);
             binding.edName.setText(projectFileBean.fileName);
