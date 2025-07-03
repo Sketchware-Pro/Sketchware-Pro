@@ -199,10 +199,10 @@ public class GitConfigDialogFragment extends DialogFragment {
                         JSONArray branches = new JSONArray(readResponse(conn));
                         handler.post(() -> onBranchesFetched(branches));
                     } else {
-                         handler.post(() -> showError("Failed to fetch branches."));
+                        handler.post(() -> showError("Failed to fetch branches."));
                     }
                 } catch (Exception e) {
-                     handler.post(() -> showError("An error occurred: " + e.getMessage()));
+                    handler.post(() -> showError("An error occurred: " + e.getMessage()));
                 }
             });
         } catch (JSONException e) {
@@ -211,6 +211,9 @@ public class GitConfigDialogFragment extends DialogFragment {
     }
 
     private void onUserAndReposFetched(JSONObject user, JSONArray repos) {
+        if (getContext() == null || !isAdded()) {
+            return;
+        }
         showLoading(false);
         try {
             String login = user.getString("login");
@@ -241,7 +244,7 @@ public class GitConfigDialogFragment extends DialogFragment {
             showError("Failed to parse repository data.");
             return;
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, repoNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, repoNames);
         repoAutoComplete.setAdapter(adapter);
 
         authorizedSection.setVisibility(View.VISIBLE);
@@ -250,6 +253,9 @@ public class GitConfigDialogFragment extends DialogFragment {
     }
 
     private void onBranchesFetched(JSONArray branches) {
+        if (getContext() == null || !isAdded()) {
+            return;
+        }
         showLoading(false);
         ArrayList<String> branchNames = new ArrayList<>();
         try {
@@ -260,7 +266,7 @@ public class GitConfigDialogFragment extends DialogFragment {
             showError("Failed to parse branch data.");
             return;
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, branchNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, branchNames);
         branchAutoComplete.setAdapter(adapter);
         branchMenuLayout.setVisibility(View.VISIBLE);
     }
@@ -274,17 +280,19 @@ public class GitConfigDialogFragment extends DialogFragment {
         String token = patEditText.getText().toString().trim();
 
         if (repoFullName.isEmpty() || branchName.isEmpty() || username.isEmpty() || email.isEmpty()) {
-            Toast.makeText(getContext(), "Please select a repository/branch and fill in your user details.", Toast.LENGTH_SHORT).show();
+            if (getContext() != null) {
+                Toast.makeText(getContext(), "Please select a repository/branch and fill in your user details.", Toast.LENGTH_SHORT).show();
+            }
             return;
         }
 
         SharedPreferences.Editor editor = prefs.edit();
-        if(rememberTokenCheckbox.isChecked()) {
-             editor.putString("github_pat", token);
-             editor.putBoolean("remember_token", true);
+        if (rememberTokenCheckbox.isChecked()) {
+            editor.putString("github_pat", token);
+            editor.putBoolean("remember_token", true);
         } else {
-             editor.remove("github_pat");
-             editor.remove("remember_token");
+            editor.remove("github_pat");
+            editor.remove("remember_token");
         }
         editor.putString("git_repo", "https://github.com/" + repoFullName);
         editor.putString("git_branch", branchName);
@@ -294,7 +302,9 @@ public class GitConfigDialogFragment extends DialogFragment {
         editor.putString("git_commit_msg", commitMsg.isEmpty() ? "Sketchware auto-commit" : commitMsg);
         editor.apply();
 
-        Toast.makeText(getContext(), "Configuration Saved!", Toast.LENGTH_SHORT).show();
+        if (getContext() != null) {
+            Toast.makeText(getContext(), "Configuration Saved!", Toast.LENGTH_SHORT).show();
+        }
         if (listener != null) {
             listener.onGitConfigured();
         }
@@ -323,11 +333,13 @@ public class GitConfigDialogFragment extends DialogFragment {
 
         forgetButton.setVisibility(View.GONE);
         rememberTokenCheckbox.setChecked(false);
-        
+
         mainActionButton.setText(R.string.common_word_continue);
         saveMenuItem.setVisible(false);
 
-        Toast.makeText(getContext(), "Forgotten Token and Configuration.", Toast.LENGTH_SHORT).show();
+        if (getContext() != null) {
+            Toast.makeText(getContext(), "Forgotten Token and Configuration.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showLoading(boolean isLoading) {
@@ -377,7 +389,7 @@ public class GitConfigDialogFragment extends DialogFragment {
         } else if (getActivity() instanceof GitConfigListener) {
             listener = (GitConfigListener) getActivity();
         } else {
-             throw new ClassCastException(context + " must implement GitConfigListener");
+            throw new ClassCastException(context + " must implement GitConfigListener");
         }
     }
 
