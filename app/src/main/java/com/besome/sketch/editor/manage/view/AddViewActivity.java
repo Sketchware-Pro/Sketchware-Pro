@@ -276,7 +276,8 @@ public class AddViewActivity extends BaseAppCompatActivity {
             Log.d("AddViewActivity", projectFileBean.fileName);
             Log.d("AddViewActivity", Boolean.toString(projectFileBean.fileName.endsWith("_fragment")));
             if (projectFileBean.fileName.endsWith("_fragment")) {
-                setManifestViewState(false);
+                binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
+                binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
             }
             binding.screenOrientationSelector.check(binding.screenOrientationSelector.getChildAt(projectFileBean.orientation).getId());
             binding.keyboardSettingsSelector.check(binding.keyboardSettingsSelector.getChildAt(projectFileBean.keyboardSetting).getId());
