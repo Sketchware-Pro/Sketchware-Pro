@@ -465,7 +465,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
         btnRun = findViewById(R.id.btn_run);
         btnRun.setOnClickListener(v -> {
-            if (currentBuildTask != null) {
+            if (currentBuildTask != null && !currentBuildTask.canceled) {
                 currentBuildTask.cancelBuild();
                 return;
             }
@@ -1036,7 +1036,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private final LinearLayout progressContainer;
         private final TextView progressText;
         private final LinearProgressIndicator progressBar;
-        private volatile boolean canceled;
+        public volatile boolean canceled;
         private volatile boolean isBuildFinished;
         private boolean isShowingNotification = false;
 
