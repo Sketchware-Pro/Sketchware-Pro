@@ -273,7 +273,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
             binding.edName.setBackgroundResource(R.color.transparent);
             initItem(projectFileBean.options);
             binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
-            Log.d("AddViewActivity", projectFileBean.filename);
+            Log.d("AddViewActivity", projectFileBean.fileName);
             if (projectFileBean.fileName.endsWith("FragmentActivity.java")) {
                 setManifestViewState(false);
             }
