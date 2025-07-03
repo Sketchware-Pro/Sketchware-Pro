@@ -48,8 +48,9 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
                 .setTitle("Error Occurred")
                 .setMessage(originalMessage)
                 .setPositiveButton("Copy", null)
-                .setNegativeButton("Cancel", (d, which) -> finish())
+                .setNegativeButton("Cancel", (d, which) -> finishAffinity())
                 .setNeutralButton("Expand", null)
+                .setOnCancelListener(d -> finishAffinity())
                 .show();
 
         TextView messageView = dialog.findViewById(android.R.id.message);
@@ -83,7 +84,7 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
                 ClipData clip = ClipData.newPlainText("error", deviceInfo + "\n\n```\n" + fullError + "\n```");
                 clipboard.setPrimaryClip(clip);
                 SketchwareUtil.toast("Copied", Toast.LENGTH_LONG);
-                dialog.dismiss();
+                finishAffinity();
             } catch (PackageManager.NameNotFoundException e) {
                 messageView.setTextIsSelectable(true);
                 messageView.setText("Couldn't get package info:\n" + Log.getStackTraceString(e));
