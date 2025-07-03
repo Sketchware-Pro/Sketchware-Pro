@@ -102,7 +102,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         setContentView(R.layout.export_project);
         gitPrefs = getSharedPreferences("git_config", MODE_PRIVATE);
         initializeViews();
-        setupToolbar();
+    //    setupToolbar();
 
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
@@ -149,7 +149,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setLogo(null);
+     //   toolbar.setLogo(null);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Export Project");
