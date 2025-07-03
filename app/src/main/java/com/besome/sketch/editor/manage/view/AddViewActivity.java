@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -273,8 +271,6 @@ public class AddViewActivity extends BaseAppCompatActivity {
             binding.edName.setBackgroundResource(R.color.transparent);
             initItem(projectFileBean.options);
             binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
-            Log.d("AddViewActivity", projectFileBean.fileName);
-            Log.d("AddViewActivity", Boolean.toString(projectFileBean.fileName.endsWith("_fragment")));
             if (projectFileBean.fileName.endsWith("_fragment")) {
                 binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
                 binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
