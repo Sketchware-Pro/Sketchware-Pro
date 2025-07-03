@@ -4,10 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurfaceContainerLowest"
+    android:background="?attr/colorSurfaceContainer"
     android:orientation="vertical">
 
-<!--    <include layout="@layout/toolbar" /> -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.Material3.Toolbar.Surface"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Export Project" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -86,17 +97,32 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <Button
-                android:id="@+id/export_project_button"
-                style="@style/Widget.Material3.Button.TonalButton"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:paddingTop="12dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="12dp"
-                android:text="Start Export" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/export_project_button"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:text="Start Export" />
+
+                <Button
+                    android:id="@+id/git_configure_button"
+                    style="@style/Widget.Material3.Button.TextButton.Icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Git"
+                    app:icon="@drawable/ic_settings_48dp" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/embedded_progress_layout"
@@ -164,7 +190,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:background="?attr/colorSurfaceContainer"
+                        android:background="?attr/colorSurfaceContainerHigh"
+                        android:fontFamily="monospace"
                         android:padding="12dp"
                         android:textAppearance="?attr/textAppearanceBodySmall"
                         android:textColor="?attr/colorOnSurfaceVariant"
