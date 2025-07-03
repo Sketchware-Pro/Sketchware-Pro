@@ -274,7 +274,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
             initItem(projectFileBean.options);
             binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
             Log.d("AddViewActivity", projectFileBean.fileName);
-            if (projectFileBean.fileName.endsWith("FragmentActivity.java")) {
+            if (projectFileBean.fileName.endsWith("_fragment")) {
                 setManifestViewState(false);
             }
             binding.screenOrientationSelector.check(binding.screenOrientationSelector.getChildAt(projectFileBean.orientation).getId());
