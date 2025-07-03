@@ -146,6 +146,7 @@ public class InnerAddComponentBottomSheet extends BottomSheetDialogFragment {
             }
         });
 
+        binding.btnCancel.setOnClickListener(v -> dismiss());
         binding.btnSave.setOnClickListener(new DebouncedClickListener() {
             @Override
             protected void onDebouncedClick(View v) {
