@@ -145,11 +145,6 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent" />
         <activity
-            android:name="com.besome.sketch.editor.component.ComponentAddActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
             android:name="com.besome.sketch.editor.manage.ViewSelectorActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
@@ -281,7 +276,8 @@
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
         <activity android:name="pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.SketchwarePro.ProjectPreview" />
 
         <activity android:name="pro.sketchware.activities.settings.SettingsActivity" />
 
