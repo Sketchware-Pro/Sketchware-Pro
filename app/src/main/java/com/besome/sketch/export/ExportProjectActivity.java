@@ -296,7 +296,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                 git.close();
 
                 if (!gitPrefs.getBoolean("remember_credentials", false)) {
-                    gitPrefs.edit().remove("git_pass").remove("git_user").remove("git_email").apply();
+                    gitPrefs.edit().remove("git_pass_unused").remove("git_user_unused").remove("git_email_unused").apply();
                 }
 
                 runOnUiThread(() -> {
