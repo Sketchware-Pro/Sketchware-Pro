@@ -20,7 +20,7 @@
             android:id="@+id/icon"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            app:tint="?attr/colorPrimary"
+            app:tint="?attr/colorControlNormal"
             tools:src="@drawable/file_48_blue" />
 
         <TextView
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:ellipsize="marquee"
+            android:ellipsize="end"
             android:gravity="center"
             android:maxLines="3"
             android:textAppearance="?attr/textAppearanceBodyMedium"
