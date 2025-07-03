@@ -234,7 +234,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                 String username = gitPrefs.getString("git_user", "");
                 String token = gitPrefs.getString("git_pass", "");
                 String email = gitPrefs.getString("git_email", "");
-                String commitMessage = "Sketchware auto-commit";
+                String commitMessage = gitPrefs.getString("git_commit_msg", "Sketchware auto-commit");
 
                 StringBuilder missingConfig = new StringBuilder();
                 if (repoUrl.isEmpty()) missingConfig.append("Repository URL, ");
