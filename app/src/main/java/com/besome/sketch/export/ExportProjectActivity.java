@@ -129,8 +129,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
 
         initializeOutputDirectories();
         exportProjectButton.setOnClickListener(v -> showExportOptionsDialog());
+
+        // FIX: Prevent crash on double-click by checking if the dialog is already shown.
         gitConfigureButton.setOnClickListener(v -> {
-            new GitConfigDialogFragment().show(getSupportFragmentManager(), "git_config_dialog");
+            if (getSupportFragmentManager().findFragmentByTag("git_config_dialog") == null) {
+                new GitConfigDialogFragment().show(getSupportFragmentManager(), "git_config_dialog");
+            }
         });
     }
 
