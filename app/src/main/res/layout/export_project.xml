@@ -117,7 +117,7 @@
 
                 <Button
                     android:id="@+id/git_configure_button"
-                    style="@style/Widget.Material3Expressive.Button.OutlinedButton.Icon"
+                    style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
