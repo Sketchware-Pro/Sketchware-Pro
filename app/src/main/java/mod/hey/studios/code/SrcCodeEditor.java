@@ -77,6 +77,10 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
     private CodeEditorHsBinding binding;
 
     public static void loadCESettings(Context c, CodeEditor ed, String prefix) {
+        loadCESettings(c, ed, prefix, false);
+    }
+
+    public static void loadCESettings(Context c, CodeEditor ed, String prefix, boolean loadTheme) {
         pref = c.getSharedPreferences("hsce", Activity.MODE_PRIVATE);
 
         int text_size = pref.getInt(prefix + "_ts", 12);
@@ -85,6 +89,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         boolean auto_c = pref.getBoolean(prefix + "_ac", true);
         boolean auto_complete_symbol_pairs = pref.getBoolean(prefix + "_acsp", true);
 
+        if (loadTheme) selectTheme(ed, theme);
         ed.setTextSize(text_size);
         ed.setWordwrap(word_wrap);
         ed.getProps().symbolPairAutoCompletion = auto_complete_symbol_pairs;
@@ -248,7 +253,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
             languageId = 2;
         }
 
-        loadCESettings(this, binding.editor, "act");
+        loadCESettings(this, binding.editor, "act", true);
         loadToolbar();
 
         UI.addSystemWindowInsetToPadding(binding.appBarLayout, true, true, true, false);
