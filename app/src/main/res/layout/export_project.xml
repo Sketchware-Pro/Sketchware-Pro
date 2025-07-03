@@ -107,7 +107,7 @@
 
                 <Button
                     android:id="@+id/export_project_button"
-                    style="@style/Widget.Material3.Button.Filled"
+                    style="@style/Widget.Material3Expressive.Button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -117,7 +117,7 @@
 
                 <Button
                     android:id="@+id/git_configure_button"
-                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                    style="@style/Widget.Material3Expressive.Button.OutlinedButton.Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
