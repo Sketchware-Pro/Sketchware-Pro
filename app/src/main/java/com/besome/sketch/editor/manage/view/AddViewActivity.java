@@ -274,7 +274,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
             initItem(projectFileBean.options);
             binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
             Log.d("AddViewActivity", projectFileBean.fileName);
-            Log.d("AddViewActivity", projectFileBean.fileName).endsWith("_fragment"));
+            Log.d("AddViewActivity", projectFileBean.fileName.endsWith("_fragment"));
             if (projectFileBean.fileName.endsWith("_fragment")) {
                 setManifestViewState(false);
             }
