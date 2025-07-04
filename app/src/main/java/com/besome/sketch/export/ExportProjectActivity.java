@@ -131,7 +131,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         initializeOutputDirectories();
         exportProjectButton.setOnClickListener(v -> showExportOptionsDialog());
 
-        // FIX: Prevent crash on double-click by checking if the dialog is already shown.
         gitConfigureButton.setOnClickListener(v -> {
             if (getSupportFragmentManager().findFragmentByTag("git_config_dialog") == null) {
                 new GitConfigDialogFragment().show(getSupportFragmentManager(), "git_config_dialog");
@@ -222,10 +221,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     }
 
     private void startGitExport() {
-        if (Build.VERSION.SDK_INT < 29) {
-            SketchwareUtil.toastError("Git export is only supported on Android 10 (API 29) and higher.");
-            return;
-        }
         if (gitPrefs.getString("git_repo", null) == null) {
             new GitConfigDialogFragment().show(getSupportFragmentManager(), "git_config_dialog");
             return;
