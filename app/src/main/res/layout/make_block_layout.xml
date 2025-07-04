@@ -116,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:checked="true"
                         android:text="Void"
-                        app:checkedIconTint="@color/colorPrimary"
+                        app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
 
@@ -126,7 +126,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="String"
-                        app:checkedIconTint="@color/colorPrimary"
+                        app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
 
@@ -136,7 +136,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Number"
-                        app:checkedIconTint="@color/colorPrimary"
+                        app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
 
@@ -146,7 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Boolean"
-                        app:checkedIconTint="@color/colorPrimary"
+                        app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
 
@@ -156,7 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Map"
-                        app:checkedIconTint="@color/colorPrimary"
+                        app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
 
@@ -166,7 +166,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="List String"
-                        app:checkedIconTint="@color/colorPrimary"
+                        app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
 
@@ -176,7 +176,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="List Map"
-                        app:checkedIconTint="@color/colorPrimary"
+                        app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
 
@@ -186,7 +186,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="View"
-                        app:checkedIconTint="@color/colorPrimary"
+                        app:checkedIconTint="?colorPrimary"
                         app:chipCornerRadius="8dp"
                         app:closeIconVisible="false" />
 
