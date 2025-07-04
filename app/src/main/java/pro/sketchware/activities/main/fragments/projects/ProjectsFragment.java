@@ -28,7 +28,6 @@ import com.besome.sketch.design.DesignActivity;
 import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.ArrayList;
@@ -147,12 +146,6 @@ public class ProjectsFragment extends DA {
         UI.addSystemWindowInsetToPadding(binding.loadingContainer, true, false, true, true);
         UI.addSystemWindowInsetToPadding(binding.titleContainer, true, false, true, false);
         UI.addSystemWindowInsetToPadding(binding.myprojects, true, false, true, true);
-
-        MaterialDividerItemDecoration dividerItemDecoration = new MaterialDividerItemDecoration(requireContext(), MaterialDividerItemDecoration.VERTICAL);
-        dividerItemDecoration.setDividerInsetEnd(36);
-        dividerItemDecoration.setDividerInsetStart(36);
-        dividerItemDecoration.setLastItemDecorated(false);
-        binding.myprojects.addItemDecoration(dividerItemDecoration);
 
         binding.nestedScroll.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (scrollY > oldScrollY) {

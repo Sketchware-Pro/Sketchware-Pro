@@ -132,8 +132,8 @@ dependencies {
 
     implementation "org.eclipse.jdt:ecj:3.26.0"
 
-    implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
-    implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
+    implementation "com.github.Cosmic-Ide:DependencyResolver:05ec26af0b"
+    implementation "com.github.Cosmic-IDE:kotlinc-android:fce2462f00"
     implementation "com.github.PranavPurwar:filepicker:74526bea66"
 
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
