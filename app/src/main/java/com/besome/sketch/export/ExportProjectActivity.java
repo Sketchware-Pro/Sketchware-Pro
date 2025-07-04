@@ -25,12 +25,8 @@ import androidx.core.content.FileProvider;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.mod.studioasinc.gitexport.GitHubApiClient;
 
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.errors.InvalidRemoteException;
-import org.eclipse.jgit.errors.NoRemoteRepositoryException;
-import org.eclipse.jgit.errors.TransportException;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.File;
@@ -41,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import a.a.a.KB;
@@ -66,7 +63,6 @@ import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuildProgressReceiver;
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.compiler.bundle.AppBundleCompiler;
-import mod.jbk.build.progress.BuildProgressMonitorForJgit;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
 import pro.sketchware.R;
@@ -229,6 +225,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
         new Thread(() -> {
             try {
                 prepareProjectSourcesForExport();
+
                 String repoUrl = gitPrefs.getString("git_repo", "");
                 String branch = gitPrefs.getString("git_branch", "main");
                 String username = gitPrefs.getString("git_user", "");
@@ -238,94 +235,33 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
 
                 StringBuilder missingConfig = new StringBuilder();
                 if (repoUrl.isEmpty()) missingConfig.append("Repository URL, ");
-                if (username.isEmpty()) missingConfig.append("Username, ");
                 if (token.isEmpty()) missingConfig.append("Token, ");
                 if (email.isEmpty()) missingConfig.append("Email for commit author, ");
                 if (missingConfig.length() > 0) {
-                    String missingItems = missingConfig.substring(0, missingConfig.length() - 2);
-                    throw new Exception(missingItems + " not configured. Please check Git settings.");
+                    throw new Exception(missingConfig.substring(0, missingConfig.length() - 2) + " not configured.");
                 }
 
-                String projectName = yB.c(sc_metadata, "my_ws_name").replaceAll("[^a-zA-Z0-9.-]", "_");
-                File localRepoPath = new File(wq.s() + File.separator + "git" + File.separator + projectName);
-                UsernamePasswordCredentialsProvider credentialsProvider = new UsernamePasswordCredentialsProvider(username, token);
-                Git git;
-                if (new File(localRepoPath, ".git").exists()) {
-                    runOnUiThread(() -> updateGitProgressDialog("Opening repository..."));
-                    git = Git.open(localRepoPath);
-                    if (!git.status().call().isClean()) {
-                        git.stashCreate().call();
-                    }
-                    runOnUiThread(() -> updateGitProgressDialog("Pulling latest changes..."));
-                    git.pull().setCredentialsProvider(credentialsProvider).setRemote("origin").setRemoteBranchName(branch).call();
-                } else {
-                    runOnUiThread(() -> updateGitProgressDialog("Cloning repository..."));
-                    if (localRepoPath.exists()) FileUtil.deleteFile(localRepoPath.getAbsolutePath());
-                    localRepoPath.mkdirs();
-                    git = Git.cloneRepository()
-                            .setURI(repoUrl)
-                            .setDirectory(localRepoPath)
-                            .setBranch(branch)
-                            .setCredentialsProvider(credentialsProvider)
-                            .setProgressMonitor(new BuildProgressMonitorForJgit(message -> runOnUiThread(() -> updateGitProgressDialog(message))))
-                            .call();
+                List<File> filesToCommit = new ArrayList<>();
+                getFilesToCommit(new File(project_metadata.projectMyscPath), filesToCommit);
+
+                if (filesToCommit.isEmpty()) {
+                    throw new Exception("No project files found to commit.");
                 }
 
-                runOnUiThread(() -> updateGitProgressDialog("Updating project files..."));
-                cleanGitRepository(localRepoPath);
-                FileUtil.copyDirectory(new File(project_metadata.projectMyscPath), localRepoPath);
-                project_metadata.e();
-                runOnUiThread(() -> updateGitProgressDialog("Staging files..."));
-                git.add().addFilepattern(".").call();
+                GitHubApiClient apiClient = new GitHubApiClient(repoUrl, token,
+                        message -> runOnUiThread(() -> updateGitProgressDialog(message)));
 
-                if (git.status().call().isClean()) {
-                    git.close();
-                    runOnUiThread(() -> {
-                        dismissGitProgressDialog();
-                        String successMessage = "No changes detected in the project. Repository is up to date.";
-                        showResult(successMessage, null, null, false);
-                    });
-                    return;
-                }
-
-                runOnUiThread(() -> updateGitProgressDialog("Committing changes..."));
                 String finalCommitMessage = commitMessage + " (" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(new Date()) + ")";
-                git.commit().setAuthor(username, email).setMessage(finalCommitMessage).call();
 
-                runOnUiThread(() -> updateGitProgressDialog("Pushing to remote..."));
-                git.push().setCredentialsProvider(credentialsProvider)
-                        .setProgressMonitor(new BuildProgressMonitorForJgit(message -> runOnUiThread(() -> updateGitProgressDialog(message))))
-                        .call();
-                git.close();
+                apiClient.commitFiles(filesToCommit, project_metadata.projectMyscPath, branch, finalCommitMessage, username, email);
 
-                if (!gitPrefs.getBoolean("remember_credentials", false)) {
-                    gitPrefs.edit().remove("git_pass_unused").remove("git_user_unused").remove("git_email_unused").apply();
-                }
-
+                project_metadata.e();
                 runOnUiThread(() -> {
                     dismissGitProgressDialog();
                     String successMessage = "Project successfully pushed to:\n" + repoUrl + " (branch: " + branch + ")";
                     showResult(successMessage, null, null, false);
                 });
-            } catch (InvalidRemoteException | NoRemoteRepositoryException e) {
-                project_metadata.e();
-                runOnUiThread(() -> {
-                    dismissGitProgressDialog();
-                    onExportError("Git Error: Invalid Repository\n\nThe URL might be incorrect, or the repository does not exist. Please verify the URL and your network connection.");
-                });
-            } catch (TransportException e) {
-                project_metadata.e();
-                runOnUiThread(() -> {
-                    dismissGitProgressDialog();
-                    String userFriendlyMessage;
-                    String detailedMessage = e.getMessage() != null ? e.getMessage().toLowerCase(Locale.ROOT) : "";
-                    if (detailedMessage.contains("not authorized") || detailedMessage.contains("authentication not supported")) {
-                        userFriendlyMessage = "Authentication Failed.\nPlease check your username and personal access token. The token may be invalid, expired, or lack the necessary permissions.";
-                    } else {
-                        userFriendlyMessage = "A network transport error occurred.\nPlease check your internet connection and the repository URL.";
-                    }
-                    onExportError("Git Error: Transport Failed\n\n" + userFriendlyMessage);
-                });
+
             } catch (Exception e) {
                 project_metadata.e();
                 runOnUiThread(() -> {
@@ -336,6 +272,19 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
                 });
             }
         }).start();
+    }
+
+    private void getFilesToCommit(File directory, List<File> fileList) {
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    getFilesToCommit(file, fileList);
+                } else {
+                    fileList.add(file);
+                }
+            }
+        }
     }
 
     @Override
