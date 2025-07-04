@@ -132,7 +132,7 @@ dependencies {
     implementation "com.squareup.okio:okio:3.12.0"
 
     implementation "org.eclipse.jdt:ecj:3.26.0"
-    implementation "org.eclipse.jgit:org.eclipse.jgit:5.7.0.202003110725-r"
+    implementation "org.eclipse.jgit:org.eclipse.jgit:4.11.0.201803080745-r"
 
     implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
     implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
