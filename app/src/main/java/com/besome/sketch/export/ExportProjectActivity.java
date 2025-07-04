@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.transition.TransitionManager;
@@ -221,6 +222,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity implements GitC
     }
 
     private void startGitExport() {
+        if (Build.VERSION.SDK_INT < 29) {
+            SketchwareUtil.toastError("Git export is only supported on Android 10 (API 29) and higher.");
+            return;
+        }
         if (gitPrefs.getString("git_repo", null) == null) {
             new GitConfigDialogFragment().show(getSupportFragmentManager(), "git_config_dialog");
             return;
