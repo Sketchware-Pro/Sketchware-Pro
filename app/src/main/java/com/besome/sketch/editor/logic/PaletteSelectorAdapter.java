@@ -1,9 +1,11 @@
 package com.besome.sketch.editor.logic;
 
 import static com.besome.sketch.editor.logic.PaletteSelector.paletteSelectorRecord;
+import static com.google.android.material.color.MaterialColors.harmonizeWithPrimary;
+import static com.google.android.material.color.MaterialColors.isColorLight;
+import static pro.sketchware.utility.ThemeUtils.getColor;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -15,6 +17,7 @@ import java.util.List;
 
 import a.a.a.Vs;
 import a.a.a.wB;
+import pro.sketchware.R;
 import pro.sketchware.databinding.PaletteSelectorItemBinding;
 
 public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelectorAdapter.PaletteSelectorViewHolder> {
@@ -56,15 +59,15 @@ public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelector
         paletteSelectorRecord item = paletteList.get(position);
         int id = item.index();
         String title = item.text();
-        int color = item.color();
+        int color = harmonizeWithPrimary(context, item.color());
 
         holder.binding.tvCategory.setText(title);
         holder.binding.bg.setBackgroundColor(color);
         holder.binding.tvCategory.setTextColor(
-                position == selectedPosition ? Color.WHITE : Color.parseColor("#b3b3b3")
-        );
-        holder.binding.bg.getLayoutParams().width =
-                position == selectedPosition ? ViewGroup.LayoutParams.MATCH_PARENT : (int) wB.a(context, 4f);
+                position == selectedPosition ?
+                        isColorLight(color) ? getColor(context, R.attr.colorOnSurface) : getColor(context, R.attr.colorOnSurfaceInverse)
+                        : getColor(context, R.attr.colorOnSurface));
+        holder.binding.bg.getLayoutParams().width = position == selectedPosition ? ViewGroup.LayoutParams.MATCH_PARENT : (int) wB.a(context, 4f);
 
         holder.itemView.setOnClickListener(v -> {
             selectedPosition = holder.getAbsoluteAdapterPosition();
@@ -99,9 +102,7 @@ public class PaletteSelectorAdapter extends RecyclerView.Adapter<PaletteSelector
             selectedPosition = pos;
             notifyDataSetChanged();
             if (onBlockCategorySelectListener != null) {
-                onBlockCategorySelectListener.a(
-                        paletteList.get(pos).index(), paletteList.get(pos).color()
-                );
+                onBlockCategorySelectListener.a(paletteList.get(pos).index(), paletteList.get(pos).color());
             }
         }
     }

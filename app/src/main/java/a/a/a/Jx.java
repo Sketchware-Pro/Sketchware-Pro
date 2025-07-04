@@ -9,6 +9,7 @@ import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,6 +84,7 @@ public class Jx {
     private Hx eventManager;
     private ArrayList<String> imports = new ArrayList<>();
     private String onCreateEventCode = "";
+    private Material3LibraryManager materialLibraryManager;
 
     public Jx(jq jqVar, ProjectFileBean projectFileBean, eC eCVar) {
         packageName = jqVar.packageName;
@@ -96,6 +98,7 @@ public class Jx {
         extraBlocks = getExtraBlockData();
         isViewBindingEnabled = settings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
+        materialLibraryManager = new Material3LibraryManager(projectDataManager.a);
     }
 
     public String activityResult() {
@@ -166,7 +169,7 @@ public class Jx {
     /**
      * @return Generated Java code of the current View (not Widget)
      */
-    public String generateCode(boolean exportingProject) {
+    public String generateCode(boolean isAndroidStudioExport, String sc_id) {
         boolean isDialogFragment = projectFileBean.fileName.contains("_dialog_fragment");
         boolean isBottomDialogFragment = projectFileBean.fileName.contains("_bottomdialog_fragment");
         boolean isFragment = projectFileBean.fileName.contains("_fragment");
@@ -205,6 +208,7 @@ public class Jx {
             if (isBottomDialogFragment) {
                 addImport("com.google.android.material.bottomsheet.BottomSheetDialogFragment");
             }
+            addImport("com.google.android.material.color.MaterialColors");
         } else {
             addImport("android.app.Fragment");
             addImport("android.app.FragmentManager");
@@ -218,7 +222,7 @@ public class Jx {
             addImport("android.Manifest");
             addImport("android.content.pm.PackageManager");
         }
-        if (exportingProject && isViewBindingEnabled) {
+        if (isAndroidStudioExport && isViewBindingEnabled) {
             addImport(packageName + ".databinding.*");
         }
 
@@ -572,6 +576,20 @@ public class Jx {
                 sb.append(EOL);
             }
         }
+        if (new Material3LibraryManager(sc_id).isMaterial3Enabled()) {
+            String contextReference;
+            if (isFragment || isDialogFragment || isBottomDialogFragment) {
+                contextReference = "getContext()";
+            } else {
+                contextReference = "this";
+            }
+            sb.append(String.format("""
+                    
+                    private int getMaterialColor(int resourceId) {
+                    return MaterialColors.getColor(%s, resourceId, "getMaterialColor");
+                    }
+                    """, contextReference));
+        }
         if (!isFragment && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
             sb.append(getDeprecatedMethodsCode());
@@ -606,13 +624,13 @@ public class Jx {
 
     private String getListDeclarationAndAddImports(int listType, String listName) {
         String typeName = mq.b(listType);
-        addImports(mq.getImportsByTypeName(typeName, null));
+        addImports(mq.getImportsByTypeName(projectDataManager.a, typeName, null));
         return Lx.a(typeName, listName, Lx.AccessModifier.PRIVATE);
     }
 
     private String getComponentDeclarationAndAddImports(ComponentBean componentBean) {
         String typeName = mq.a(componentBean.type);
-        addImports(mq.getImportsByTypeName(typeName, null));
+        addImports(mq.getImportsByTypeName(projectDataManager.a, typeName, null));
         return Lx.a(typeName, componentBean.componentId, Lx.AccessModifier.PRIVATE, componentBean.param1, componentBean.param2, componentBean.param3);
     }
 
@@ -621,7 +639,7 @@ public class Jx {
         if (viewType.isEmpty()) {
             viewType = viewBean.getClassInfo().a();
         }
-        addImports(mq.getImportsByTypeName(viewType, null));
+        addImports(mq.getImportsByTypeName(projectDataManager.a, viewType, null));
         return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
     }
 
@@ -630,7 +648,7 @@ public class Jx {
      */
     private String getVariableDeclarationAndAddImports(int variableType, String name) {
         String variableTypeName = mq.c(variableType);
-        addImports(mq.getImportsByTypeName(variableTypeName, null));
+        addImports(mq.getImportsByTypeName(projectDataManager.a, variableTypeName, null));
         return Lx.a(variableTypeName, name, Lx.AccessModifier.PRIVATE);
     }
 
@@ -640,7 +658,7 @@ public class Jx {
             viewType = viewBean.getClassInfo().a();
         }
         if (requireImports(viewBean)) {
-            addImports(mq.getImportsByTypeName(viewType, viewBean.convert));
+            addImports(mq.getImportsByTypeName(projectDataManager.a, viewType, viewBean.convert));
         }
         return Lx.a(viewType, viewBean.id, Lx.AccessModifier.PRIVATE, isViewBindingEnabled);
     }
@@ -733,7 +751,9 @@ public class Jx {
 
         if (buildConfig.g) {
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) && !projectFileBean.fileName.contains("_fragment")) {
-                addImport("androidx.appcompat.widget.Toolbar");
+                addImport(
+                        (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
+                );
                 addImport("androidx.coordinatorlayout.widget.CoordinatorLayout");
                 addImport("com.google.android.material.appbar.AppBarLayout");
 
@@ -750,7 +770,9 @@ public class Jx {
                                     "});"
                     );
                 } else {
-                    fields.add("private Toolbar _toolbar;");
+                    fields.add("private " +
+                            (materialLibraryManager.isMaterial3Enabled() ? "MaterialToolbar" : "Toolbar") +
+                            " _toolbar;");
                     fields.add("private AppBarLayout _app_bar;");
                     fields.add("private CoordinatorLayout _coordinator;");
 
@@ -811,7 +833,7 @@ public class Jx {
                             "LinearLayout _nav_view = findViewById(R.id._nav_view);" + EOL
                     );
                 }
-                addImports(mq.getImportsByTypeName("LinearLayout", null));
+                addImports(mq.getImportsByTypeName(projectDataManager.a, "LinearLayout", null));
             }
         }
         addImport("android.app.*");

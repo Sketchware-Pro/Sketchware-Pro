@@ -30,18 +30,24 @@
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
+                        android:layout_height="wrap_content"
                         app:navigationIcon="?attr/homeAsUpIndicator"
                         app:subtitleTextColor="?attr/colorSecondary"
                         tools:menu="@menu/design_menu"
                         tools:subtitle="605"
                         tools:title="InternalDemo" />
-                </com.google.android.material.appbar.AppBarLayout>
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent" />
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:dividerColor="?attr/colorSurfaceContainerHighest" />
+                </com.google.android.material.appbar.AppBarLayout>
 
                 <androidx.coordinatorlayout.widget.CoordinatorLayout
                     android:id="@+id/layout_coordinator"
@@ -57,12 +63,14 @@
 
                 <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:dividerColor="?attr/colorSurfaceContainerHighest" />
 
                 <LinearLayout
                     android:id="@+id/progress_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?attr/colorSurfaceContainer"
                     android:orientation="vertical"
                     android:visibility="gone"
                     tools:visibility="visible">
@@ -86,29 +94,30 @@
                         app:trackStopIndicatorSize="0dp" />
                 </LinearLayout>
 
-                <com.google.android.material.bottomappbar.BottomAppBar
-                    android:id="@+id/bottom_app_bar"
-                    style="@style/Widget.Material3.BottomAppBar.Legacy"
+                <LinearLayout
+                    android:id="@+id/bottom_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="?attr/colorSurfaceContainer"
                     android:gravity="center_vertical"
-                    app:menu="@menu/design_bottom_menu"
-                    app:paddingBottomSystemWindowInsets="false"
-                    app:paddingLeftSystemWindowInsets="false"
-                    tools:ignore="BottomAppBar">
+                    android:orientation="horizontal"
+                    android:paddingVertical="4dp">
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/file_name_container"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginVertical="8dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
                         android:clickable="true"
-                        app:contentPadding="8dp"
-                        app:strokeWidth="0dp">
+                        app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
+                        app:contentPadding="8dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:paddingVertical="2dp"
                             android:gravity="center_vertical">
 
                             <ImageView
@@ -139,7 +148,25 @@
 
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
-                </com.google.android.material.bottomappbar.BottomAppBar>
+
+                    <Button
+                        android:id="@+id/btn_run"
+                        style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="4dp"
+                        android:paddingHorizontal="8dp"
+                        app:icon="@drawable/ic_mtrl_run" />
+
+                    <Button
+                        android:id="@+id/btn_options"
+                        style="@style/Widget.Material3Expressive.Button.IconButton.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:paddingHorizontal="8dp"
+                        app:icon="@drawable/ic_tune_24" />
+                </LinearLayout>
             </LinearLayout>
 
             <com.besome.sketch.editor.view.ViewProperty

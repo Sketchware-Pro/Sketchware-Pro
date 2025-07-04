@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
+import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -18,12 +19,13 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
     private ProjectLibraryBean firebaseLibraryBean;
     private ManageLibraryManageCompatBinding binding;
 
-    private void showFirebaseNeedDisableDialog() {
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setIcon(R.drawable.chrome_96);
-        dialog.setMessage(Helper.getResString(R.string.design_library_appcompat_need_firebase_disable));
-        dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
-        dialog.show();
+    private void showWarningDialog(String value) {
+        new MaterialAlertDialogBuilder(this)
+                .setIcon(R.drawable.ic_mtrl_warning)
+                .setTitle(Helper.getResString(R.string.common_word_warning))
+                .setMessage(value)
+                .setPositiveButton(R.string.common_word_ok, (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private void configureLibraryDialog() {
@@ -61,7 +63,13 @@ public class ManageCompatActivity extends BaseAppCompatActivity implements View.
         if (v.getId() == R.id.layout_switch) {
             binding.libSwitch.setChecked(!binding.libSwitch.isChecked());
             if (!binding.libSwitch.isChecked() && "Y".equals(firebaseLibraryBean.useYn)) {
-                showFirebaseNeedDisableDialog();
+                showWarningDialog(Helper.getResString(R.string.design_library_appcompat_need_firebase_disable));
+                binding.libSwitch.setChecked(true);
+                return;
+            }
+
+            if (!binding.libSwitch.isChecked() && new Material3LibraryManager(compatLibraryBean).isMaterial3Enabled()) {
+                showWarningDialog(Helper.getResString(R.string.design_library_appcompat_need_m3_disable));
                 binding.libSwitch.setChecked(true);
                 return;
             }

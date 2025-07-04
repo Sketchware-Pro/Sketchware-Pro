@@ -11,11 +11,14 @@ import android.widget.TextView;
 
 import com.besome.sketch.lib.ui.ColorPickerDialog;
 
+import java.util.Objects;
+
 import a.a.a.Kw;
 import a.a.a.mB;
 import a.a.a.wB;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.utility.ThemeUtils;
 
 @SuppressLint("ViewConstructor")
 public class PropertyColorItem extends RelativeLayout implements View.OnClickListener {
@@ -131,8 +134,8 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         propertyItem = findViewById(R.id.property_item);
         propertyMenuItem = findViewById(R.id.property_menu_item);
         if (z) {
-            setOnClickListener(this);
-            setSoundEffectsEnabled(true);
+            propertyMenuItem.setOnClickListener(this);
+            propertyMenuItem.setSoundEffectsEnabled(true);
         }
     }
 
@@ -146,7 +149,14 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
             colorTransparentAvailable = false;
             colorNoneAvailable = false;
         }
-        ColorPickerDialog colorPicker = new ColorPickerDialog((Activity) context, value, colorTransparentAvailable, colorNoneAvailable, sc_id);
+        String color;
+        String tvValueStr = tvValue.getText().toString();
+        if (tvValueStr.equals("NONE") || tvValueStr.equals("TRANSPARENT")) {
+            color = tvValueStr;
+        } else
+            color = Objects.requireNonNullElseGet(resValue, () -> String.format("#%06X", value));
+
+        ColorPickerDialog colorPicker = new ColorPickerDialog((Activity) context, color, colorTransparentAvailable, colorNoneAvailable, sc_id);
         colorPicker.a(new ColorPickerDialog.b() {
             @Override
             public void a(int var1) {
@@ -158,10 +168,16 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
 
             @Override
             public void a(String var1, int var2) {
-                setValue(var2, var1);
+                setValue(var2, "@color/" + var1);
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, value);
                 }
+            }
+        });
+        colorPicker.materialColorAttr((attr, attrId) -> {
+            setValue(ThemeUtils.getColor(viewColor, attrId), "?" + attr);
+            if (valueChangeListener != null) {
+                valueChangeListener.a(key, value);
             }
         });
         colorPicker.showAtLocation(anchorView, Gravity.CENTER, 0, 0);

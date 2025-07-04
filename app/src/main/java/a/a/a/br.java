@@ -1,6 +1,5 @@
 package a.a.a;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
@@ -10,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ConcatAdapter;
@@ -24,7 +21,7 @@ import com.besome.sketch.beans.ComponentBean;
 import com.besome.sketch.beans.EventBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.editor.LogicEditorActivity;
-import com.besome.sketch.editor.component.ComponentAddActivity;
+import com.besome.sketch.editor.component.AddComponentBottomSheet;
 import com.besome.sketch.editor.component.ComponentEventButton;
 import com.besome.sketch.lib.base.CollapsibleViewHolder;
 import com.besome.sketch.lib.ui.CollapsibleButton;
@@ -44,11 +41,6 @@ public class br extends qA implements View.OnClickListener {
     private Adapter adapter;
     private String sc_id;
     private ArrayList<ComponentBean> components = new ArrayList<>();
-    private final ActivityResultLauncher<Intent> addComponent = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == Activity.RESULT_OK) {
-            refreshData();
-        }
-    });
 
     private FrComponentListBinding binding;
 
@@ -62,10 +54,8 @@ public class br extends qA implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (!mB.a() && v.getId() == binding.fab.getId()) {
-            Intent intent = new Intent(requireContext(), ComponentAddActivity.class);
-            intent.putExtra("sc_id", sc_id);
-            intent.putExtra("project_file", projectFile);
-            addComponent.launch(intent);
+            AddComponentBottomSheet addComponentBottomSheet = AddComponentBottomSheet.newInstance(sc_id, projectFile, () -> refreshData());
+            addComponentBottomSheet.show(getParentFragmentManager(), null);
         }
     }
 

@@ -201,7 +201,7 @@ public class BackupRestoreManager {
             bm.setBackupLocalLibs(options.get(0));
             bm.setBackupCustomBlocks(options.get(1));
 
-            bm.backup(project_name);
+            bm.backup(activityWeakReference.get(), project_name);
 
             return "";
         }

@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_drawer"
     android:layout_width="250dp"
@@ -27,7 +28,8 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                app:dividerColor="?attr/colorSurfaceContainerHighest" />
 
             <LinearLayout
                 android:id="@+id/layout_menus"
@@ -45,13 +47,14 @@
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:dividerColor="?attr/colorSurfaceContainerHighest" />
 
         <TextView
             android:id="@+id/tv_title_global"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="6dp"
+            android:padding="8dp"
             android:textAppearance="?textAppearanceBodyMedium"
             tools:text="@string/design_drawer_menu_bottom_title" />
     </LinearLayout>

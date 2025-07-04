@@ -1,0 +1,34 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_mtrl_search"
+        android:title="@string/search_menu_title"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="always|collapseActionView"
+        tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/action_save"
+        android:title="Save"
+        android:icon="@drawable/ic_mtrl_save"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_select_variant"
+        android:title="@string/common_word_change_variant"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_get_from_variant"
+        android:title="@string/common_word_import_variant"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_open_editor"
+        android:title="Open in editor"
+        app:showAsAction="never" />
+
+</menu>

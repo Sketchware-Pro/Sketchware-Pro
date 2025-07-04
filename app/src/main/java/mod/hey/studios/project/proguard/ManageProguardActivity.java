@@ -80,6 +80,8 @@ public class ManageProguardActivity extends BaseAppCompatActivity
         int id = buttonView.getId();
         if (id == binding.swPgEnabled.getId()) {
             pg.setProguardEnabled(isChecked);
+        } else if (id == binding.r8Enabled.getId()) {
+            pg.setR8Enabled(isChecked);
         } else if (id == binding.swPgDebug.getId()) {
             pg.setDebugEnabled(isChecked);
         }
@@ -98,6 +100,7 @@ public class ManageProguardActivity extends BaseAppCompatActivity
     private void initialize() {
         binding.swPgEnabled.setOnCheckedChangeListener(this);
         binding.lnPgRules.setOnClickListener(this);
+        binding.r8Enabled.setOnCheckedChangeListener(this);
         binding.swPgDebug.setOnCheckedChangeListener(this);
         binding.lnPgFm.setOnClickListener(this);
     }
@@ -107,6 +110,7 @@ public class ManageProguardActivity extends BaseAppCompatActivity
         pg = new ProguardHandler(getIntent().getStringExtra("sc_id"));
         binding.swPgEnabled.setChecked(pg.isShrinkingEnabled());
         binding.swPgDebug.setChecked(pg.isDebugFilesEnabled());
+        binding.r8Enabled.setChecked(pg.isR8Enabled());
     }
 
     private void _initToolbar() {

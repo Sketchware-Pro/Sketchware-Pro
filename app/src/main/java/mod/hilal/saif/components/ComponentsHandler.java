@@ -348,7 +348,7 @@ public class ComponentsHandler {
 
     /**
      * Adds Custom Components to available Components section.
-     * Used at {@link com.besome.sketch.editor.component.ComponentAddActivity#onPostCreate(Bundle)}.
+     * Used at {@link com.besome.sketch.editor.component.AddComponentBottomSheet#onCreate(Bundle)}.
      */
     // √ add components to sk
     //structure : list.add(new ComponentBean(27));

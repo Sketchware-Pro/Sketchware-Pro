@@ -206,6 +206,16 @@ public class AddViewActivity extends BaseAppCompatActivity {
             }
         });
 
+        binding.viewTypeSelector.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                if (checkedId == R.id.select_activity) {
+                    setManifestViewState(true);
+                } else {
+                    setManifestViewState(false);
+                }
+            }
+        });
+        
         binding.btnSave.setOnClickListener(v -> {
             int options = ProjectFileBean.OPTION_ACTIVITY_TOOLBAR;
             if (265 == requestCode) {
@@ -243,10 +253,12 @@ public class AddViewActivity extends BaseAppCompatActivity {
             }
 
         });
+
         binding.btnCancel.setOnClickListener(v -> {
             setResult(RESULT_CANCELED);
             finish();
         });
+
         if (requestCode == 265) {
             nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), projectFileBean.fileName);
             binding.edName.setText(projectFileBean.fileName);
@@ -254,6 +266,10 @@ public class AddViewActivity extends BaseAppCompatActivity {
             binding.edName.setBackgroundResource(R.color.transparent);
             initItem(projectFileBean.options);
             binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
+            if (projectFileBean.fileName.endsWith("_fragment")) {
+                binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
+                binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
+            }
             binding.screenOrientationSelector.check(binding.screenOrientationSelector.getChildAt(projectFileBean.orientation).getId());
             binding.keyboardSettingsSelector.check(binding.keyboardSettingsSelector.getChildAt(projectFileBean.keyboardSetting).getId());
 
@@ -377,6 +393,16 @@ public class AddViewActivity extends BaseAppCompatActivity {
                     }
                 });
             }
+        }
+    }
+
+    private void setManifestViewState(boolean vis) {
+        if (vis) {
+            resetTranslationX(binding.viewOrientationSelectorLayout);
+            resetTranslationX(binding.viewKeyboardSettingsSelectorLayout);
+        } else {
+            slideOutHorizontally(binding.viewOrientationSelectorLayout, "left");
+            slideOutHorizontally(binding.viewKeyboardSettingsSelectorLayout, "left");
         }
     }
 }

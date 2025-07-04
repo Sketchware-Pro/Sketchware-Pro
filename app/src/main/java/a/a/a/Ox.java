@@ -14,6 +14,7 @@ import com.besome.sketch.beans.LayoutBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.TextBean;
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -126,7 +127,11 @@ public class Ox {
                     rootLayout = coordinatorLayoutTag;
                 }
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
-                    XmlBuilder toolbarTag = new XmlBuilder("androidx.appcompat.widget.Toolbar");
+                    Material3LibraryManager materialLibraryManager = new Material3LibraryManager(buildConfig.sc_id);
+
+                    XmlBuilder toolbarTag = new XmlBuilder(
+                            (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
+                    );
                     toolbarTag.addAttribute("android", "id", "@+id/_toolbar");
                     aci.inject(toolbarTag, "Toolbar");
                     XmlBuilder appBarLayoutTag = new XmlBuilder("com.google.android.material.appbar.AppBarLayout");
@@ -188,32 +193,51 @@ public class Ox {
         if (backgroundResource == null || "NONE".equalsIgnoreCase(backgroundResource)) {
             int backgroundColor = viewBean.layout.backgroundColor;
             String backgroundResColor = viewBean.layout.backgroundResColor;
-            String colorPath = "@color/" + backgroundResColor;
 
             if (backgroundColor != 0xffffff) {
                 if (backgroundColor != 0) {
                     int color = backgroundColor & 0xffffff;
                     if (nx.c().equals("BottomAppBar")) {
                         if (!toNotAdd.contains("app:backgroundTint") && !injectHandler.contains("backgroundTint") && (backgroundResColor != null)) {
-                            nx.addAttribute("app", "backgroundTint", colorPath);
+                            if (backgroundResColor.startsWith("?") || backgroundResColor.startsWith("@color/")) {
+                                nx.addAttribute("app", "backgroundTint", backgroundResColor);
+                            } else {
+                                nx.addAttribute("app", "backgroundTint", "@color/" + backgroundResColor);
+                            }
                         } else if (!toNotAdd.contains("app:backgroundTint") && !injectHandler.contains("backgroundTint")) {
                             nx.addAttribute("app", "backgroundTint", formatColor(color));
                         }
                     } else if (type == ViewBeans.VIEW_TYPE_LAYOUT_CARDVIEW) {
                         if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor") && backgroundResColor != null) {
-                            nx.addAttribute("app", "cardBackgroundColor", colorPath);
+                            if (backgroundResColor.startsWith("?") || backgroundResColor.startsWith("@color/")) {
+                                nx.addAttribute("app", "cardBackgroundColor", backgroundResColor);
+                            } else {
+                                nx.addAttribute("app", "cardBackgroundColor", "@color/" + backgroundResColor);
+                            }
                         } else if (!toNotAdd.contains("app:cardBackgroundColor") && !injectHandler.contains("cardBackgroundColor")) {
                             nx.addAttribute("app", "cardBackgroundColor", formatColor(color));
                         }
+                    } else if (nx.c().equals("MaterialButton")) {
+                        if (!toNotAdd.contains("app:backgroundTint") && !injectHandler.contains("backgroundTint")) {
+                            nx.addAttribute("app", "backgroundTint", backgroundResColor == null ? formatColor(color) : backgroundResColor);
+                        }
                     } else if (nx.c().equals("CollapsingToolbarLayout")) {
                         if (!toNotAdd.contains("app:contentScrim") && !injectHandler.contains("contentScrim") && backgroundResColor != null) {
-                            nx.addAttribute("app", "contentScrim", colorPath);
+                            if (backgroundResColor.startsWith("?") || backgroundResColor.startsWith("@color/")) {
+                                nx.addAttribute("app", "contentScrim", backgroundResColor);
+                            } else {
+                                nx.addAttribute("app", "contentScrim", "@color/" + backgroundResColor);
+                            }
                         } else if (!toNotAdd.contains("app:contentScrim") && !injectHandler.contains("contentScrim")) {
                             nx.addAttribute("app", "contentScrim", formatColor(color));
                         }
                     } else {
                         if (!hasAttr("background", viewBean) && !toNotAdd.contains("android:background") && !injectHandler.contains("background") && backgroundResColor != null) {
-                            nx.addAttribute("android", "background", colorPath);
+                            if (backgroundResColor.startsWith("?") || backgroundResColor.startsWith("@color/")) {
+                                nx.addAttribute("android", "background", backgroundResColor);
+                            } else {
+                                nx.addAttribute("android", "background", "@color/" + backgroundResColor);
+                            }
                         } else if (!hasAttr("background", viewBean) && !toNotAdd.contains("android:background") && !injectHandler.contains("background")) {
                             nx.addAttribute("android", "background", formatColor(color));
                         }
@@ -378,7 +402,11 @@ public class Ox {
             int textColor = viewBean.text.textColor;
             String resTextColor = viewBean.text.resTextColor;
             if (textColor != 0 && !toNotAdd.contains("app:sidebar_text_color") && resTextColor != null) {
-                widgetTag.addAttribute("app", "sidebar_text_color", "@color/" + resTextColor);
+                if (resTextColor.startsWith("?") || resTextColor.startsWith("@color/")) {
+                    widgetTag.addAttribute("app", "sidebar_text_color", resTextColor);
+                } else {
+                    widgetTag.addAttribute("app", "sidebar_text_color", "@color/" + resTextColor);
+                }
             } else if (textColor != 0 && !toNotAdd.contains("app:sidebar_text_color")) {
                 widgetTag.addAttribute("app", "sidebar_text_color", formatColor(textColor & 0xffffff));
             }
@@ -742,7 +770,11 @@ public class Ox {
         }
         if (viewBean.text.textColor != 0) {
             if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor") && viewBean.text.resTextColor != null) {
-                nx.addAttribute("android", "textColor", "@color/" + viewBean.text.resTextColor);
+                if (viewBean.text.resTextColor.startsWith("?") || viewBean.text.resTextColor.startsWith("@color/")) {
+                    nx.addAttribute("android", "textColor", viewBean.text.resTextColor);
+                } else {
+                    nx.addAttribute("android", "textColor", "@color/" + viewBean.text.resTextColor);
+                }
             } else if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor")) {
                 nx.addAttribute("android", "textColor", formatColor(viewBean.text.textColor & 0xffffff));
             }
@@ -761,7 +793,11 @@ public class Ox {
                 }
                 if (viewBean.text.hintColor != 0) {
                     if (!hasAttr("textColorHint", viewBean) && !toNotAdd.contains("android:textColorHint") && (viewBean.text.resHintColor != null)) {
-                        nx.addAttribute("android", "textColorHint", "@color/" + viewBean.text.resHintColor);
+                        if (viewBean.text.resHintColor.startsWith("?") || viewBean.text.resHintColor.startsWith("@color/")) {
+                            nx.addAttribute("android", "textColorHint", viewBean.text.resHintColor);
+                        } else {
+                            nx.addAttribute("android", "textColorHint", "@color/" + viewBean.text.resHintColor);
+                        }
                     } else if (!hasAttr("textColorHint", viewBean) && !toNotAdd.contains("android:textColorHint")) {
                         nx.addAttribute("android", "textColorHint", formatColor(viewBean.text.hintColor & 0xffffff));
                     }
