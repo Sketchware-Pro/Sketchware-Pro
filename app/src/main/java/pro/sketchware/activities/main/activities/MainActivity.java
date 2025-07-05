@@ -57,6 +57,10 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
 
+// 双击返回键退出应用，不残留后台
+import androidx.core.view.GravityCompat;
+
+
 public class MainActivity extends BasePermissionAppCompatActivity {
     private static final String PROJECTS_FRAGMENT_TAG = "projects_fragment";
     private static final String PROJECTS_STORE_FRAGMENT_TAG = "projects_store_fragment";
@@ -64,6 +68,26 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     private DB u;
     private Snackbar storageAccessDenied;
     private MainBinding binding;
+
+// 双击返回键退出应用，不残留后台
+private long backPressedTime = 0;
+@Override
+public void onBackPressed() {
+    if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+    } else {
+    	if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            super.onBackPressed();
+            finishAffinity();
+            System.exit(0);
+        } else {
+            Toast.makeText(this, "Try again to exit !", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+}
+
+
     private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
@@ -148,6 +172,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         enableEdgeToEdgeNoContrast();
@@ -366,7 +391,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             launcher.putExtra("select", "changelog");
             startActivity(launcher);
         });
-        bottomSheetDialog.setCancelable(false);
+        bottomSheetDialog.setCancelable(true);
         return bottomSheetDialog;
     }
 
