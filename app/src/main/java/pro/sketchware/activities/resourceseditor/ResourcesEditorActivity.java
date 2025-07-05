@@ -591,11 +591,16 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
             for (int i = 0; i < resourcesFileNames.size(); i++) {
                 if (selectedItems.get(i)) {
                     switch (i) {
-                        case 0 -> stringsEditor.updateStringsList(stringsFilePath.replace(variant, ""), updateMode, true);
-                        case 1 -> colorsEditor.updateColorsList(colorsFilePath.replace(variant, ""), updateMode, true);
-                        case 2 -> stylesEditor.updateStylesList(stylesFilePath.replace(variant, ""), updateMode, true);
-                        case 3 -> themesEditor.updateThemesList(themesFilePath.replace(variant, ""), updateMode, true);
-                        case 4 -> arraysEditor.updateArraysList(arrayFilePath.replace(variant, ""), updateMode, true);
+                        case 0 ->
+                                stringsEditor.updateStringsList(stringsFilePath.replace(variant, ""), updateMode, true);
+                        case 1 ->
+                                colorsEditor.updateColorsList(colorsFilePath.replace(variant, ""), updateMode, true);
+                        case 2 ->
+                                stylesEditor.updateStylesList(stylesFilePath.replace(variant, ""), updateMode, true);
+                        case 3 ->
+                                themesEditor.updateThemesList(themesFilePath.replace(variant, ""), updateMode, true);
+                        case 4 ->
+                                arraysEditor.updateArraysList(arrayFilePath.replace(variant, ""), updateMode, true);
                     }
                 }
             }

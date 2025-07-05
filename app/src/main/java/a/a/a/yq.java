@@ -189,6 +189,7 @@ public class yq {
     public jq N;
     public boolean generateDataBindingClasses;
     public boolean isAndroidStudioExport;
+
     public enum ExportType {
         AAB,
         DEBUG_APP,
@@ -399,7 +400,7 @@ public class yq {
             }
             if (new Material3LibraryManager(sc_id).isDynamicColorsEnabled()) {
                 sketchApplicationFileContent = sketchApplicationFileContent.replace(
-                        "mApplicationContext = getApplicationContext();", "mApplicationContext = getApplicationContext();\n" +
+                                "mApplicationContext = getApplicationContext();", "mApplicationContext = getApplicationContext();\n" +
                                         "        DynamicColors.applyToActivitiesIfAvailable(this);")
                         .replace("import android.util.Log;", "import android.util.Log;\nimport com.google.android.material.color.DynamicColors;");
             }

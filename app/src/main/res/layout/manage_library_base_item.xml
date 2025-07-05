@@ -1,25 +1,18 @@
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginTop="10dp"
-    android:clickable="true"
-    app:cardBackgroundColor="@color/transparent"
-    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Large"
-    app:strokeWidth="0dp">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:minHeight="72dp"
-        android:gravity="center"
-        android:paddingVertical="8dp">
+    android:paddingHorizontal="6dp"
+    android:paddingVertical="16dp"
+    android:gravity="center"
+    android:foreground="?selectableItemBackground"
+    android:focusable="true"
+    android:clickable="true">
 
         <LinearLayout
-            android:layout_width="48dp"
+            android:layout_width="44dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="6dp"
             android:gravity="center"
@@ -29,6 +22,7 @@
                 android:id="@+id/lib_icon"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
+                tools:src="@drawable/ic_mtrl_component"
                 app:tint="?attr/colorPrimary" />
 
             <TextView
@@ -51,7 +45,8 @@
                 android:id="@+id/lib_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
+                android:textAppearance="?attr/textAppearanceBodyLargeEmphasized"
+                tools:text="Component Manager"
                 android:textColor="?attr/colorOnSurface" />
 
             <TextView
@@ -62,6 +57,7 @@
                 android:layout_marginTop="4dp"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="Something something something"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -77,6 +73,4 @@
             android:src="@drawable/side_menu_setting_icon_over"
             android:visibility="gone" />
 
-    </LinearLayout>
-
-</com.google.android.material.card.MaterialCardView>
+</LinearLayout>

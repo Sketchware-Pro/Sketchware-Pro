@@ -584,11 +584,11 @@ public class Jx {
                 contextReference = "this";
             }
             sb.append(String.format("""
-                
-                private int getMaterialColor(int resourceId) {
-                return MaterialColors.getColor(%s, resourceId, "getMaterialColor");
-                }
-                """, contextReference));
+                    
+                    private int getMaterialColor(int resourceId) {
+                    return MaterialColors.getColor(%s, resourceId, "getMaterialColor");
+                    }
+                    """, contextReference));
         }
         if (!isFragment && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
@@ -752,8 +752,8 @@ public class Jx {
         if (buildConfig.g) {
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) && !projectFileBean.fileName.contains("_fragment")) {
                 addImport(
-                    (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
-                 );
+                        (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
+                );
                 addImport("androidx.coordinatorlayout.widget.CoordinatorLayout");
                 addImport("com.google.android.material.appbar.AppBarLayout");
 
@@ -771,8 +771,8 @@ public class Jx {
                     );
                 } else {
                     fields.add("private " +
-                               (materialLibraryManager.isMaterial3Enabled() ? "MaterialToolbar" : "Toolbar") +
-                               " _toolbar;");
+                            (materialLibraryManager.isMaterial3Enabled() ? "MaterialToolbar" : "Toolbar") +
+                            " _toolbar;");
                     fields.add("private AppBarLayout _app_bar;");
                     fields.add("private CoordinatorLayout _coordinator;");
 

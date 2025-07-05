@@ -168,7 +168,7 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
 
             @Override
             public void a(String var1, int var2) {
-                setValue(var2, "@color/" +  var1);
+                setValue(var2, "@color/" + var1);
                 if (valueChangeListener != null) {
                     valueChangeListener.a(key, value);
                 }

@@ -37,7 +37,7 @@
             android:layout_marginRight="16dp"
             android:textColor="?attr/colorOnSurface"
             android:textSize="16sp"
-            tools:text="RoundedCornersDialog"/>
+            tools:text="RoundedCornersDialog" />
 
         <TextView
             android:id="@+id/style_parent"
@@ -48,7 +48,7 @@
             android:layout_marginRight="16dp"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="14sp"
-            tools:text="ThemeOverlay.MaterialComponents.MaterialAlertDialog"/>
+            tools:text="ThemeOverlay.MaterialComponents.MaterialAlertDialog" />
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

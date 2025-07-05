@@ -171,6 +171,7 @@ public class ArraysEditor extends Fragment {
         dialog.setView(binding.getRoot());
         dialog.show();
     }
+
     public void showEditArrayDialog(int position) {
         ArrayModel array = arraysList.get(position);
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
@@ -321,10 +322,11 @@ public class ArraysEditor extends Fragment {
         dialog.setView(binding.getRoot());
         dialog.show();
     }
+
     public void saveArraysFile() {
         if (hasUnsavedChanges) {
-        FileUtil.writeFile(filePath, arraysEditorManager.convertArraysToXML(arraysList, notesMap));
-        hasUnsavedChanges = false;
+            FileUtil.writeFile(filePath, arraysEditorManager.convertArraysToXML(arraysList, notesMap));
+            hasUnsavedChanges = false;
         }
     }
 

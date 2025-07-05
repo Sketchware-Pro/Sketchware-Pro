@@ -3,18 +3,19 @@ package pro.sketchware.activities.resourceseditor.components.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import pro.sketchware.activities.resourceseditor.components.fragments.StylesEditor;
-import pro.sketchware.activities.resourceseditor.components.fragments.ThemesEditor;
-import pro.sketchware.databinding.PalletCustomviewBinding;
-import pro.sketchware.activities.resourceseditor.components.models.StyleModel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import pro.sketchware.activities.resourceseditor.components.fragments.StylesEditor;
+import pro.sketchware.activities.resourceseditor.components.fragments.ThemesEditor;
+import pro.sketchware.activities.resourceseditor.components.models.StyleModel;
+import pro.sketchware.databinding.PalletCustomviewBinding;
 
 public class StylesAdapter extends RecyclerView.Adapter<StylesAdapter.StyleViewHolder> {
 
@@ -84,7 +85,7 @@ public class StylesAdapter extends RecyclerView.Adapter<StylesAdapter.StyleViewH
                 binding.tvTitle.setVisibility(View.GONE);
             }
 
-            binding.backgroundCard.setOnClickListener(view ->{
+            binding.backgroundCard.setOnClickListener(view -> {
                 if (fragment instanceof StylesEditor stylesEditor) {
                     stylesEditor.showStyleAttributesDialog(getAbsoluteAdapterPosition());
                 } else if (fragment instanceof ThemesEditor themesEditor) {

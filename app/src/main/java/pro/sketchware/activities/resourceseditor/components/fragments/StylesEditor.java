@@ -305,7 +305,7 @@ public class StylesEditor extends Fragment {
     }
 
     private void setupAutoComplete(MaterialAutoCompleteTextView attrView, MaterialAutoCompleteTextView valueView) {
-       AttributeSuggestions attributeSuggestions = new AttributeSuggestions(binding.getRoot());
+        AttributeSuggestions attributeSuggestions = new AttributeSuggestions(binding.getRoot());
         String[] attributes = attributeSuggestions.ATTRIBUTE_SUGGESTIONS.toArray(new String[0]);
 
         ArrayAdapter<String> attrAdapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_dropdown_item_1line, attributes);
@@ -328,10 +328,12 @@ public class StylesEditor extends Fragment {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 

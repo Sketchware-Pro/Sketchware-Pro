@@ -6,7 +6,6 @@ import static mod.hey.studios.util.ProjectFile.getDefaultColor;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.ContextThemeWrapper;
-import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
@@ -36,7 +35,6 @@ import pro.sketchware.SketchApplication;
 import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.PropertiesUtil;
-import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.utility.XmlUtil;
 
 @SuppressLint("DiscouragedApi")

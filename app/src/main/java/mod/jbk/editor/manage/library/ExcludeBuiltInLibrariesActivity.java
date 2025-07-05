@@ -22,6 +22,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -171,12 +172,8 @@ public class ExcludeBuiltInLibrariesActivity extends BaseAppCompatActivity {
 
         TextView enable = findViewById(R.id.tv_enable);
         enable.setText(Helper.getResString(R.string.design_library_settings_title_enabled));
-        TextView warning = findViewById(R.id.tv_desc);
-        warning.setText("This might break your project if you don't know what you're doing!");
-        TextView label = findViewById(R.id.tv_title);
-        label.setText("Excluded built-in libraries");
 
-        LinearLayout excludedLibraries = findViewById(R.id.item);
+        CardView excludedLibraries = findViewById(R.id.item);
         excludedLibraries.setOnClickListener(v -> showSelectBuiltInLibrariesDialog());
         LinearLayout enabledContainer = findViewById(R.id.layout_switch);
         enabledContainer.setOnClickListener(v -> enabled.setChecked(!enabled.isChecked()));

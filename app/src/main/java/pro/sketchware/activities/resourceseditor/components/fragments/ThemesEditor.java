@@ -287,8 +287,8 @@ public class ThemesEditor extends Fragment {
 
     public void saveThemesFile() {
         if (hasUnsavedChanges) {
-        FileUtil.writeFile(filePath, themesEditorManager.convertStylesToXML(themesList, notesMap));
-        hasUnsavedChanges = false;
+            FileUtil.writeFile(filePath, themesEditorManager.convertStylesToXML(themesList, notesMap));
+            hasUnsavedChanges = false;
         }
     }
 
@@ -316,10 +316,12 @@ public class ThemesEditor extends Fragment {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
