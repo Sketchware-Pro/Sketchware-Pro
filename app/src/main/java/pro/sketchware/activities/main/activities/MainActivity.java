@@ -388,6 +388,7 @@ public void onBackPressed() {
             launcher.putExtra("select", "changelog");
             startActivity(launcher);
         });
+        bottomSheetDialog.setCancelable(true);
         return bottomSheetDialog;
     }
 
