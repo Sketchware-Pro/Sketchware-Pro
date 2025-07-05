@@ -60,7 +60,6 @@ import pro.sketchware.utility.UI;
 // 双击返回键退出应用，不残留后台
 import androidx.core.view.GravityCompat;
 
-
 public class MainActivity extends BasePermissionAppCompatActivity {
     private static final String PROJECTS_FRAGMENT_TAG = "projects_fragment";
     private static final String PROJECTS_STORE_FRAGMENT_TAG = "projects_store_fragment";
@@ -86,7 +85,6 @@ public void onBackPressed() {
         backPressedTime = System.currentTimeMillis();
     }
 }
-
 
     private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
         @Override
@@ -172,7 +170,6 @@ public void onBackPressed() {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         enableEdgeToEdgeNoContrast();
@@ -391,7 +388,6 @@ public void onBackPressed() {
             launcher.putExtra("select", "changelog");
             startActivity(launcher);
         });
-        bottomSheetDialog.setCancelable(true);
         return bottomSheetDialog;
     }
 
@@ -495,25 +491,4 @@ public void onBackPressed() {
         }
     }
 
-    //This is annoying Please remove/togglize it
-    private void tryLoadingCustomizedAppStrings() {
-        // Refresh extracted provided strings file if necessary
-        oB oB = new oB();
-        try {
-            File extractedStringsProvidedXml = new File(wq.m());
-            if (oB.a(getApplicationContext(), "localization/strings.xml") != (extractedStringsProvidedXml.exists() ? extractedStringsProvidedXml.length() : 0)) {
-                oB.a(extractedStringsProvidedXml);
-                oB.a(getApplicationContext(), "localization/strings.xml", wq.m());
-            }
-        } catch (Exception e) {
-            String message = "Couldn't extract default strings to storage";
-            SketchwareUtil.toastError(message + ": " + e.getMessage());
-            LogUtil.e("MainActivity", message, e);
-        }
-
-        // Actual loading part
-        if (xB.b().b(getApplicationContext())) {
-            SketchwareUtil.toast(Helper.getResString(R.string.message_strings_xml_loaded));
-        }
-    }
-}
+    //Thi
