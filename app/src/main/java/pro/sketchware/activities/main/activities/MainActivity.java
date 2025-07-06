@@ -399,7 +399,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
-        //FirebaseMessaging.getInstance().subscribeToTopic("all");
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
     }
 
     @Override
