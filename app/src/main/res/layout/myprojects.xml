@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?colorSurface">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,8 +14,8 @@
             android:id="@+id/nested_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true"
             android:fadingEdgeLength="30dp"
+            android:fillViewport="true"
             android:requiresFadingEdge="vertical">
 
             <LinearLayout
@@ -43,9 +42,9 @@
                         android:id="@+id/title_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginVertical="6dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginEnd="4dp"
-                        android:layout_marginVertical="6dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
@@ -83,18 +82,18 @@
                     </FrameLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/myprojects"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:clipToPadding="false"
-                            android:nestedScrollingEnabled="true"
-                            android:paddingBottom="96dp"
-                            android:splitMotionEvents="false"
-                            android:transitionGroup="true"
-                            android:visibility="gone"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:listitem="@layout/myprojects_item"
-                            tools:visibility="visible" />
+                        android:id="@+id/myprojects"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clipToPadding="false"
+                        android:nestedScrollingEnabled="true"
+                        android:paddingBottom="96dp"
+                        android:splitMotionEvents="false"
+                        android:transitionGroup="true"
+                        android:visibility="gone"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/myprojects_item"
+                        tools:visibility="visible" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
