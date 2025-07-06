@@ -387,11 +387,31 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     }
 
     @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        drawerToggle.syncState();
-        FirebaseMessaging.getInstance().subscribeToTopic("all");
+public void onPostCreate(Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    drawerToggle.syncState();
+    
+    // Safe Firebase initialization and topic subscription
+    try {
+        // Initialize Firebase if not already initialized
+        if (FirebaseApp.getApps(this).isEmpty()) {
+            FirebaseApp.initializeApp(this);
+        }
+        
+        // Subscribe to topic with error handling
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
+            .addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    Exception e = task.getException();
+                    if (e != null) {
+                        Log.e("Firebase", "Subscribe failed", e);
+                    }
+                }
+            });
+    } catch (Exception e) {
+        Log.e("Firebase", "Firebase initialization error", e);
     }
+}
 
     @Override
     public void onResume() {
