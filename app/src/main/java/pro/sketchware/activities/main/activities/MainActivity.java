@@ -57,6 +57,7 @@ import pro.sketchware.activities.main.fragments.projects_store.ProjectsStoreFrag
 import pro.sketchware.databinding.MainBinding;
 import pro.sketchware.lib.base.BottomSheetDialogView;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.MemoryUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
 
@@ -67,6 +68,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     private DB u;
     private Snackbar storageAccessDenied;
     private MainBinding binding;
+    public static String jvmargs = "";
     private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
         @Override
         public void handleOnBackPressed() {
@@ -266,17 +268,16 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         }
 
         binding.bottomNav.setOnItemSelectedListener(item -> {
-            AppBarLayout _appbar = findViewById(R.id.appbar);
             int id = item.getItemId();
             if (id == R.id.item_projects) {
                 navigateToProjectsFragment();
                 TypedValue typedValue = new TypedValue();
                 getTheme().resolveAttribute(com.google.android.material.R.attr.colorSurface, typedValue, true);
-                _appbar.setBackgroundColor(typedValue.data);
+                binding.appbar.setBackgroundColor(typedValue.data);
                 return true;
             } else if (id == R.id.item_sketchub) {
                 navigateToSketchubFragment();
-                _appbar.setBackgroundColor(getColor(android.R.color.transparent));
+                binding.appbar.setBackgroundColor(getColor(android.R.color.transparent));
                 return true;
             }
             return false;
@@ -297,6 +298,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         }
 
         navigateToProjectsFragment();
+        setupjvmargs();
     }
 
     private Fragment getFragmentForNavId(int navItemId) {
@@ -397,7 +399,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
-        FirebaseMessaging.getInstance().subscribeToTopic("all");
+        //FirebaseMessaging.getInstance().subscribeToTopic("all");
     }
 
     @Override
@@ -498,6 +500,19 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         // Actual loading part
         if (xB.b().b(getApplicationContext())) {
             SketchwareUtil.toast(Helper.getResString(R.string.message_strings_xml_loaded));
+        }
+    }
+
+    private void setupjvmargs() {
+        long totalRAMInMB = MemoryUtil.getTotalRAMInMB(MainActivity.this);
+        if (totalRAMInMB > 15360) {
+            jvmargs = "org.gradle.jvmargs=-Xmx4g -Dfile.encoding=UTF-8 -XX:+UseParallelGC";
+        } else if (totalRAMInMB > 11264) {
+            jvmargs = "org.gradle.jvmargs=-Xmx2g -Dfile.encoding=UTF-8 -XX:+UseParallelGC";
+        } else if (totalRAMInMB > 7168) {
+            jvmargs = "org.gradle.jvmargs=-Xmx1g -Dfile.encoding=UTF-8 -XX:+UseParallelGC";
+        } else {
+            jvmargs = "";
         }
     }
 }
