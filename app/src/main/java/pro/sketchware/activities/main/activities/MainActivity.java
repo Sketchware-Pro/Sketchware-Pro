@@ -71,23 +71,23 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     private Snackbar storageAccessDenied;
     private MainBinding binding;
 
-// when back pressed twice, exit the app completely
-private long backPressedTime = 0;
-@Override
-public void onBackPressed() {
-    if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-        binding.drawerLayout.closeDrawer(GravityCompat.START);
-    } else {
-            if (backPressedTime + 2000 > System.currentTimeMillis()) {
-            super.onBackPressed();
-            finishAffinity();
-            System.exit(0);
+    // when back pressed twice, exit the app completely
+    private long backPressedTime = 0;
+    @Override
+    public void onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            Toast.makeText(this, "Try again to exit !", Toast.LENGTH_SHORT).show();
+                if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                super.onBackPressed();
+                finishAffinity();
+                System.exit(0);
+            } else {
+                Toast.makeText(this, "Try again to exit !", Toast.LENGTH_SHORT).show();
+            }
+            backPressedTime = System.currentTimeMillis();
         }
-        backPressedTime = System.currentTimeMillis();
     }
-}
 
     private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
         @Override
@@ -305,10 +305,6 @@ public void onBackPressed() {
             }
             return false;
         });
-        
-        // when init, if internet_permission=true,then item_sketchub.enabled=true
-        //MenuItem sketchubItem = binding.bottomNav.getMenu().findItem(R.id.item_sketchub);
-        //sketchubItem.setEnabled(checkInternetPermission());
 
         if (savedInstanceState != null) {
             projectsFragment = (ProjectsFragment) getSupportFragmentManager().findFragmentByTag(PROJECTS_FRAGMENT_TAG);
@@ -442,10 +438,6 @@ public void onBackPressed() {
         if (isStoragePermissionGranted() && storageAccessDenied != null && storageAccessDenied.isShown()) {
             storageAccessDenied.dismiss();
         }
-        
-        // if internet_permission=true,then item_sketchub.enabled=true
-        //MenuItem sketchubItem = binding.bottomNav.getMenu().findItem(R.id.item_sketchub);
-        //sketchubItem.setEnabled(checkInternetPermission());
 
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "MainActivity");
