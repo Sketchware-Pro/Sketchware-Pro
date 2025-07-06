@@ -11,7 +11,7 @@
     -->
 
     <style name="Widget.SketchwarePro.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
-        <item name="android:background">?attr/colorSurface</item>
+        <item name="android:background">?attr/colorSurfaceContainer</item>
         <item name="elevation">0dp</item>
     </style>
 
