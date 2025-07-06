@@ -73,21 +73,21 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 
     // when back pressed twice, exit the app completely
     private long backPressedTime = 0;
-    @Override
-    public void onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-                if (backPressedTime + 2000 > System.currentTimeMillis()) {
-                    super.onBackPressed();
-                    finishAffinity();
-                    System.exit(0);
-                } else {
-                    Toast.makeText(this, "Try again to exit !", Toast.LENGTH_SHORT).show();
-                }
-            	backPressedTime = System.currentTimeMillis();
-        }
-    }
+	@Override
+	public void onBackPressed() {
+		if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+			binding.drawerLayout.closeDrawer(GravityCompat.START);
+		} else {
+			if (backPressedTime + 2000 > System.currentTimeMillis()) {
+				super.onBackPressed();
+				finishAffinity();
+				System.exit(0);
+			} else {
+				Toast.makeText(this, "Try again to exit !", Toast.LENGTH_SHORT).show();
+			}
+			backPressedTime = System.currentTimeMillis();
+		}
+	}
 
     private final OnBackPressedCallback closeDrawer = new OnBackPressedCallback(true) {
         @Override
