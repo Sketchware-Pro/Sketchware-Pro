@@ -57,8 +57,11 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
 
-// 双击返回键退出应用，不残留后台
+// when back pressed twice, exit the app completely
 import androidx.core.view.GravityCompat;
+
+// about internet_permission=false 
+import android.content.pm.PackageManager;
 
 public class MainActivity extends BasePermissionAppCompatActivity {
     private static final String PROJECTS_FRAGMENT_TAG = "projects_fragment";
@@ -68,7 +71,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     private Snackbar storageAccessDenied;
     private MainBinding binding;
 
-// 双击返回键退出应用，不残留后台
+// when back pressed twice, exit the app completely
 private long backPressedTime = 0;
 @Override
 public void onBackPressed() {
