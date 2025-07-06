@@ -11,7 +11,7 @@ public class GradleUtil {
         }
         long availableRAMInMB = MemoryUtil.getAvailableRAMInMB(context);
         if (availableRAMInMB >= 1024) {
-            return "org.gradle.jvmargs=-Xmx" + (int) (availableRAMInMB / 1.5) + "m -Dfile.encoding=UTF-8 -XX:+UseParallelGC";
+            return "org.gradle.jvmargs=-Xmx" + (int) (availableRAMInMB / 1.3) + "m -Dfile.encoding=UTF-8 -XX:+UseParallelGC";
         }
         return "";
     }
