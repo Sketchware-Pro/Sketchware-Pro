@@ -290,11 +290,22 @@ public void onBackPressed() {
                 navigateToProjectsFragment();
                 return true;
             } else if (id == R.id.item_sketchub) {
-                navigateToSketchubFragment();
-                return true;
+                if (checkInternetPermission()) {
+                    // if internet_permission=true,then select and navigate 
+                    navigateToSketchubFragment();
+                    return true;
+                } else {
+                    // if internet_permission=false,then toast 
+                    Toast.makeText(this, "Internet permission is required", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             }
             return false;
         });
+        
+        // when init, if internet_permission=true,then item_sketchub.enabled=true
+        MenuItem sketchubItem = binding.bottomNav.getMenu().findItem(R.id.item_sketchub);
+        sketchubItem.setEnabled(checkInternetPermission());
 
         if (savedInstanceState != null) {
             projectsFragment = (ProjectsFragment) getSupportFragmentManager().findFragmentByTag(PROJECTS_FRAGMENT_TAG);
@@ -311,6 +322,10 @@ public void onBackPressed() {
         }
 
         navigateToProjectsFragment();
+    }
+
+    private boolean checkInternetPermission() {
+        return ActivityCompat.checkSelfPermission(this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED;
     }
 
     private Fragment getFragmentForNavId(int navItemId) {
@@ -424,6 +439,11 @@ public void onBackPressed() {
         if (isStoragePermissionGranted() && storageAccessDenied != null && storageAccessDenied.isShown()) {
             storageAccessDenied.dismiss();
         }
+        
+        // if internet_permission=true,then item_sketchub.enabled=true
+        MenuItem sketchubItem = binding.bottomNav.getMenu().findItem(R.id.item_sketchub);
+        sketchubItem.setEnabled(checkInternetPermission());
+
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "MainActivity");
         bundle.putString(FirebaseAnalytics.Param.SCREEN_CLASS, "MainActivity");
