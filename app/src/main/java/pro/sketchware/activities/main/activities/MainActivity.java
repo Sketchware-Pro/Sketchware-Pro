@@ -307,8 +307,8 @@ public void onBackPressed() {
         });
         
         // when init, if internet_permission=true,then item_sketchub.enabled=true
-        MenuItem sketchubItem = binding.bottomNav.getMenu().findItem(R.id.item_sketchub);
-        sketchubItem.setEnabled(checkInternetPermission());
+        //MenuItem sketchubItem = binding.bottomNav.getMenu().findItem(R.id.item_sketchub);
+        //sketchubItem.setEnabled(checkInternetPermission());
 
         if (savedInstanceState != null) {
             projectsFragment = (ProjectsFragment) getSupportFragmentManager().findFragmentByTag(PROJECTS_FRAGMENT_TAG);
@@ -444,8 +444,8 @@ public void onBackPressed() {
         }
         
         // if internet_permission=true,then item_sketchub.enabled=true
-        MenuItem sketchubItem = binding.bottomNav.getMenu().findItem(R.id.item_sketchub);
-        sketchubItem.setEnabled(checkInternetPermission());
+        //MenuItem sketchubItem = binding.bottomNav.getMenu().findItem(R.id.item_sketchub);
+        //sketchubItem.setEnabled(checkInternetPermission());
 
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.SCREEN_NAME, "MainActivity");
