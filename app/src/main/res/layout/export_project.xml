@@ -91,7 +91,7 @@
                             android:layout_marginTop="2dp"
                             android:textAppearance="?attr/textAppearanceBodySmall"
                             android:textColor="?attr/colorOnSurfaceVariant"
-                            tools:text="Project: MyGreatApp" />
+                            tools:text="Project: MyProject" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -104,7 +104,7 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <Button
+   ing             <Button
                     android:id="@+id/export_project_button"
                     style="@style/Widget.Material3Expressive.Button"
                     android:layout_width="0dp"
@@ -120,7 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:text="Git" />
+                    android:text="Configure" />
 
             </LinearLayout>
 
