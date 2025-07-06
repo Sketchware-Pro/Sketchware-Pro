@@ -16,8 +16,6 @@
             android:layout_height="wrap_content"
             app:elevation="0dp"
             app:liftOnScroll="false">
-<!--            android:background="@android:color/transparent"-->
-<!--            app:liftOnScrollColor="@android:color/transparent">-->
 
             <View
                 android:id="@+id/status_bar_overlapper"

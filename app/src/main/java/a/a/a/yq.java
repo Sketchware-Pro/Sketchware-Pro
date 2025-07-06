@@ -30,8 +30,8 @@ import mod.hey.studios.util.ProjectFile;
 import mod.hilal.saif.blocks.CommandBlock;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.SketchApplication;
-import pro.sketchware.activities.main.activities.MainActivity;
 import pro.sketchware.utility.FileUtil;
+import pro.sketchware.utility.GradleUtil;
 import pro.sketchware.xml.XmlBuilder;
 import pro.sketchware.xml.XmlBuilderHelper;
 
@@ -309,8 +309,8 @@ public class yq {
                 android.enableJetifier=true
                 android.useAndroidX=true
                 """ + (
-                MainActivity.jvmargs == null || MainActivity.jvmargs.isBlank()
-                        ? "" : "\n" + MainActivity.jvmargs
+                GradleUtil.getjvmargs().isBlank()
+                        ? "" : "\n" + GradleUtil.getjvmargs()
                 )).trim());
     }
 
