@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Restore your projects"
+                android:text="Get your projects in a couple of clicks"
                 android:textAppearance="?attr/textAppearanceBodySmall"
                 android:textColor="?attr/colorOnSurfaceVariant" />
         </LinearLayout>
