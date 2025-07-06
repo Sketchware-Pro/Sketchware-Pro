@@ -79,13 +79,13 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
                 if (backPressedTime + 2000 > System.currentTimeMillis()) {
-                super.onBackPressed();
-                finishAffinity();
-                System.exit(0);
-            } else {
-                Toast.makeText(this, "Try again to exit !", Toast.LENGTH_SHORT).show();
-            }
-            backPressedTime = System.currentTimeMillis();
+                    super.onBackPressed();
+                    finishAffinity();
+                    System.exit(0);
+                } else {
+                    Toast.makeText(this, "Try again to exit !", Toast.LENGTH_SHORT).show();
+                }
+            	backPressedTime = System.currentTimeMillis();
         }
     }
 
