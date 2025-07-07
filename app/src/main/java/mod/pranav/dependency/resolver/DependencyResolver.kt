@@ -13,6 +13,8 @@ import mod.agus.jcoderz.dx.command.dexer.Main
 import mod.hey.studios.build.BuildSettings
 import mod.hey.studios.util.Helper
 import mod.jbk.build.BuiltInLibraries
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.internal.immutableListOf
 import org.cosmic.ide.dependency.resolver.api.Artifact
 import org.cosmic.ide.dependency.resolver.api.EventReciever
@@ -25,11 +27,11 @@ import java.io.File
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
-import java.net.URL
 import java.net.UnknownHostException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import java.util.zip.ZipFile
 import javax.xml.parsers.DocumentBuilderFactory
@@ -297,29 +299,45 @@ class DependencyResolver(
             val artifactPath = "${artifact.groupId.replace('.', '/')}/${artifact.artifactId}/${artifact.version}/${artifact.artifactId}-${artifact.version}.${artifact.extension}"
             val downloadUrl = "$baseUrl/$artifactPath"
 
-            val url = URL(downloadUrl)
-            val connection = url.openConnection()
+            val client = OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build()
 
-            connection.connectTimeout = 10000
-            connection.readTimeout = 30000
+            val request = Request.Builder()
+                .url(downloadUrl)
+                .build()
 
-            val totalBytes = connection.contentLengthLong
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    callback.onDownloadError(artifact, Exception("HTTP ${response.code}: ${response.message}"))
+                    return
+                }
 
-            connection.getInputStream().use { input ->
-                targetFile.outputStream().use { output ->
-                    val buffer = ByteArray(8192)
-                    var bytesDownloaded = 0L
-                    var bytesRead: Int
+                val responseBody = response.body
+                if (responseBody == null) {
+                    callback.onDownloadError(artifact, Exception("Empty response body"))
+                    return
+                }
 
-                    while (input.read(buffer).also { bytesRead = it } != -1) {
-                        output.write(buffer, 0, bytesRead)
-                        bytesDownloaded += bytesRead
+                val totalBytes = responseBody.contentLength()
 
-                        if (bytesDownloaded % 65536 == 0L || bytesRead == -1) {
-                            callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
+                responseBody.byteStream().use { input ->
+                    targetFile.outputStream().use { output ->
+                        val buffer = ByteArray(8192)
+                        var bytesDownloaded = 0L
+                        var bytesRead: Int
+
+                        while (input.read(buffer).also { bytesRead = it } != -1) {
+                            output.write(buffer, 0, bytesRead)
+                            bytesDownloaded += bytesRead
+
+                            if (bytesDownloaded % 65536 == 0L || bytesRead == -1) {
+                                callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
+                            }
                         }
+                        callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
                     }
-                    callback.onDownloadProgress(artifact, bytesDownloaded, totalBytes)
                 }
             }
         } catch (e: SocketTimeoutException) {

@@ -288,7 +288,6 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                             binding.dependencyInfo.setVisibility(View.VISIBLE);
                             SketchwareUtil.toast("Library downloaded successfully");
                             if (!notAssociatedWithProject) {
-                                new SetTextRunnable("Adding dependencies to project...").run();
                                 var fileContent = FileUtil.readFile(localLibFile);
                                 var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);
                                 enabledLibs.addAll(dependencies.stream()
@@ -375,6 +374,18 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
             this.name = name;
             this.status = Status.SEARCHING;
             this.progressText = "";
+        }
+
+        public int getStatusPriority() {
+            switch (status) {
+                case COMPLETED: return 1;
+                case SEARCHING: return 2;
+                case DOWNLOADING: return 3;
+                case FOUND: return 4;
+                case INDEXING: return 5;
+                case ERROR: return 6;
+                default: return 7;
+            }
         }
 
         public String getName() { return name; }
@@ -484,6 +495,22 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
             newItem.setTotalBytes(totalBytes);
             libraries.add(newItem);
             notifyItemInserted(libraries.size() - 1);
+
+            sortLibraries();
+            notifyDataSetChanged();
+        }
+
+        private void sortLibraries() {
+            libraries.sort((item1, item2) -> {
+                int priority1 = item1.getStatusPriority();
+                int priority2 = item2.getStatusPriority();
+
+                if (priority1 != priority2) {
+                    return Integer.compare(priority1, priority2);
+                }
+
+                return item1.getName().compareTo(item2.getName());
+            });
         }
 
         class ViewHolder extends RecyclerView.ViewHolder {
