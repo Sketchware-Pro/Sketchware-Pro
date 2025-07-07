@@ -31,13 +31,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_switch_language"
-        android:title="Switch language"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_switch_theme"
-        android:title="Switch theme"
+        android:id="@+id/action_find_replace"
+        android:title="Find &amp; Replace"
         app:showAsAction="never" />
 
     <item

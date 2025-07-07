@@ -141,10 +141,14 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
         if (i == 0) {
             k.setVisibility(GONE);
             l.setVisibility(VISIBLE);
-            return;
+            k.setOnClickListener(null);
+            l.setOnClickListener(this);
+        } else {
+            k.setVisibility(VISIBLE);
+            l.setVisibility(GONE);
+            k.setOnClickListener(this);
+            l.setOnClickListener(null);
         }
-        k.setVisibility(VISIBLE);
-        l.setVisibility(GONE);
     }
 
     public final void a(Context context, boolean z, boolean z2) {
@@ -156,10 +160,10 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
         k = findViewById(R.id.property_item);
         l = findViewById(R.id.property_menu_item);
         d = z2;
-        if (z) {
-            setOnClickListener(this);
-            setSoundEffectsEnabled(true);
-        }
+//        if (z) {
+//            l.setOnClickListener(this);
+//            l.setSoundEffectsEnabled(true);
+//        }
     }
 
     public final void a() {

@@ -30,13 +30,6 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import mod.hey.studios.util.Helper;
-import pro.sketchware.R;
-import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
-import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
-import pro.sketchware.databinding.DialogSaveIconBinding;
-import pro.sketchware.databinding.ImportIconBinding;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -55,7 +48,13 @@ import a.a.a.mB;
 import a.a.a.oB;
 import a.a.a.uq;
 import a.a.a.wq;
+import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
 import pro.sketchware.activities.importicon.adapters.IconAdapter;
+import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
+import pro.sketchware.databinding.DialogFilterIconsLayoutBinding;
+import pro.sketchware.databinding.DialogSaveIconBinding;
+import pro.sketchware.databinding.ImportIconBinding;
 import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.SvgUtils;
 
@@ -168,7 +167,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                     int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
                     if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                        && firstVisibleItemPosition >= 0) {
+                            && firstVisibleItemPosition >= 0) {
                         // Reached the end, load more items
                         isLoading = true;
                         loadMoreItems();

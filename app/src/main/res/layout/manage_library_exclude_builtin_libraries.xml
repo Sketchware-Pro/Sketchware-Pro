@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
-                android:paddingHorizontal="14dp"
+                android:paddingHorizontal="16dp"
                 android:paddingVertical="6dp"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -86,7 +86,7 @@
                         android:gravity="left"
                         android:textColor="?colorAmber"
                         android:textSize="14sp"
-                        tools:text="This might break your project if you don't know what you're doing!" />
+                        android:text="This might break your project if you don't know what you're doing!" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -110,35 +110,25 @@
                         android:textColor="?colorControlNormal"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        tools:text="Excluded built-in libraries" />
+                        android:text="Excluded built-in libraries" />
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/item"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    style="?attr/materialCardViewFilledStyle"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                    app:contentPadding="12dp">
 
-                    <LinearLayout
-                        android:id="@+id/item"
+                    <TextView
+                        android:id="@+id/item_desc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?selectableItemBackground"
-                        android:orientation="horizontal"
-                        android:padding="8dp">
-
-                        <TextView
-                            android:id="@+id/item_desc"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="1"
-                            android:padding="8dp"
-                            android:textColor="?colorControlNormal"
-                            android:textSize="12sp"
-                            tools:text="firebase-common-19.3.1, firebase-database-19.3.1" />
-                    </LinearLayout>
+                        android:layout_gravity="center_vertical"
+                        android:padding="8dp"
+                        android:textColor="?colorControlNormal"
+                        android:textSize="12sp"
+                        tools:text="firebase-common-19.3.1, firebase-database-19.3.1" />
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </ScrollView>

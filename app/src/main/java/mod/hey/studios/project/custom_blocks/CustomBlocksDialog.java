@@ -57,7 +57,7 @@ public class CustomBlocksDialog {
                 .show();
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            customBlocksManager = new CustomBlocksManager(sc_id);
+            customBlocksManager = new CustomBlocksManager(context, sc_id);
             customBlocks = customBlocksManager.getUsedBlocks();
 
             int missingBlocks = (int) customBlocks.stream().filter(this::isMissingBlock).count();

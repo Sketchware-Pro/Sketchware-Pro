@@ -169,7 +169,7 @@ public class Jx {
     /**
      * @return Generated Java code of the current View (not Widget)
      */
-    public String generateCode(boolean isAndroidStudioExport) {
+    public String generateCode(boolean isAndroidStudioExport, String sc_id) {
         boolean isDialogFragment = projectFileBean.fileName.contains("_dialog_fragment");
         boolean isBottomDialogFragment = projectFileBean.fileName.contains("_bottomdialog_fragment");
         boolean isFragment = projectFileBean.fileName.contains("_fragment");
@@ -576,21 +576,19 @@ public class Jx {
                 sb.append(EOL);
             }
         }
-        if (buildConfig.g) {
-            String rootView;
-            if (isViewBindingEnabled) {
-                rootView = "binding.getRoot()";
-            } else if (isFragment || isDialogFragment || isBottomDialogFragment) {
-                rootView = "getView()";
+        if (new Material3LibraryManager(sc_id).isMaterial3Enabled()) {
+            String contextReference;
+            if (isFragment || isDialogFragment || isBottomDialogFragment) {
+                contextReference = "getContext()";
             } else {
-                rootView = "getWindow().getDecorView().getRootView()";
+                contextReference = "this";
             }
             sb.append(String.format("""
-                
-                private int getMaterialColor(int resourceId) {
-                    return MaterialColors.getColor(%s, resourceId);
-                }
-                """, rootView));
+                    
+                    private int getMaterialColor(int resourceId) {
+                    return MaterialColors.getColor(%s, resourceId, "getMaterialColor");
+                    }
+                    """, contextReference));
         }
         if (!isFragment && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
@@ -754,8 +752,8 @@ public class Jx {
         if (buildConfig.g) {
             if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) && !projectFileBean.fileName.contains("_fragment")) {
                 addImport(
-                    (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
-                 );
+                        (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
+                );
                 addImport("androidx.coordinatorlayout.widget.CoordinatorLayout");
                 addImport("com.google.android.material.appbar.AppBarLayout");
 
@@ -773,8 +771,8 @@ public class Jx {
                     );
                 } else {
                     fields.add("private " +
-                               (materialLibraryManager.isMaterial3Enabled() ? "MaterialToolbar" : "Toolbar") +
-                               " _toolbar;");
+                            (materialLibraryManager.isMaterial3Enabled() ? "MaterialToolbar" : "Toolbar") +
+                            " _toolbar;");
                     fields.add("private AppBarLayout _app_bar;");
                     fields.add("private CoordinatorLayout _coordinator;");
 

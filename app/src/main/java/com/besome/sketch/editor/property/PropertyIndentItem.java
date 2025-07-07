@@ -105,9 +105,13 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         if (orientationItem == 0) {
             propertyItem.setVisibility(GONE);
             propertyMenuItem.setVisibility(VISIBLE);
+            propertyItem.setOnClickListener(null);
+            propertyMenuItem.setOnClickListener(this);
         } else {
             propertyItem.setVisibility(VISIBLE);
             propertyMenuItem.setVisibility(GONE);
+            propertyItem.setOnClickListener(this);
+            propertyMenuItem.setOnClickListener(null);
         }
     }
 
@@ -119,10 +123,10 @@ public class PropertyIndentItem extends RelativeLayout implements View.OnClickLi
         imgLeftIcon = findViewById(R.id.img_left_icon);
         propertyItem = findViewById(R.id.property_item);
         propertyMenuItem = findViewById(R.id.property_menu_item);
-        if (z) {
-            setSoundEffectsEnabled(true);
-            setOnClickListener(this);
-        }
+//        if (z) {
+//            propertyMenuItem.setSoundEffectsEnabled(true);
+//            propertyMenuItem.setOnClickListener(this);
+//        }
     }
 
     public void a(int left, int top, int right, int bottom) {

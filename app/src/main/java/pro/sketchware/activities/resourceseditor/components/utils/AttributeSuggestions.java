@@ -12,8 +12,6 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import a.a.a.wq;
-
-import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
 import pro.sketchware.utility.FileUtil;
 
 public class AttributeSuggestions {
@@ -111,7 +109,7 @@ public class AttributeSuggestions {
 
     private List<String> generateNumberSuggestions(float step, float max) {
         List<String> suggestions = new ArrayList<>();
-        for (float i = step; i <= max; i+= step) {
+        for (float i = step; i <= max; i += step) {
             if (i == Math.floor(i)) {
                 suggestions.add(String.format(Locale.US, "%.0f", i));
             } else {

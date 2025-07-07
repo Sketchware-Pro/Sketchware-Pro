@@ -20,7 +20,6 @@ import org.cosmic.ide.dependency.resolver.api.Artifact;
 
 import java.util.List;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 import mod.hey.studios.build.BuildSettings;
 import mod.hey.studios.util.Helper;
@@ -121,11 +120,6 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                 }
 
                 @Override
-                public void onArtifactFound(@NonNull Artifact dep) {
-                    handler.post(new SetTextRunnable("Found " + dep + " in " + dep.getRepository().getName()));
-                }
-
-                @Override
                 public void onArtifactNotFound(@NonNull Artifact dep) {
                     handler.post(() -> {
                         setDownloadState(false);
@@ -204,7 +198,7 @@ public class LibraryDownloaderDialogFragment extends BottomSheetDialogFragment {
                             var enabledLibs = gson.fromJson(fileContent, Helper.TYPE_MAP_LIST);
                             enabledLibs.addAll(dependencies.stream()
                                     .map(name -> createLibraryMap(name, dependencyName))
-                                    .collect(Collectors.toList()));
+                                    .toList());
                             FileUtil.writeFile(localLibFile, gson.toJson(enabledLibs));
                         }
                         if (getActivity() == null) return;

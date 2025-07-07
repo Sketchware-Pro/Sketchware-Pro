@@ -44,6 +44,7 @@ public class ZB extends MB {
         }
         String previousValidName = lastValidName;
         if (previousValidName != null && !previousValidName.isEmpty() && s.toString().equals(lastValidName)) {
+            b.setError(null);
             b.setErrorEnabled(false);
             d = true;
             return;
@@ -77,6 +78,7 @@ public class ZB extends MB {
             return;
         }
         if (validNamePattern.matcher(s.toString()).matches()) {
+            b.setError(null);
             b.setErrorEnabled(false);
             d = true;
         } else {

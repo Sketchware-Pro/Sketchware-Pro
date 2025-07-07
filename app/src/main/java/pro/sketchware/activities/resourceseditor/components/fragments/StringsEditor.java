@@ -13,32 +13,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 
-import a.a.a.aB;
-
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
+import pro.sketchware.activities.resourceseditor.components.adapters.StringsAdapter;
 import pro.sketchware.activities.resourceseditor.components.utils.StringsEditorManager;
 import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
 import pro.sketchware.databinding.ViewStringEditorAddBinding;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
-import pro.sketchware.activities.resourceseditor.components.adapters.StringsAdapter;
 
 public class StringsEditor extends Fragment {
 
     private ResourcesEditorFragmentBinding binding;
-    
+
     private final ResourcesEditorActivity activity;
-    
+
     public StringsAdapter adapter;
-    
+
     public final ArrayList<HashMap<String, Object>> listmap = new ArrayList<>();
     private HashMap<Integer, String> notesMap = new HashMap<>();
 
@@ -55,7 +55,8 @@ public class StringsEditor extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = ResourcesEditorFragmentBinding.inflate(inflater, container, false);
-        stringsEditorManager.sc_id = activity.sc_id;return binding.getRoot();
+        stringsEditorManager.sc_id = activity.sc_id;
+        return binding.getRoot();
     }
 
     public void updateStringsList(String filePath, int updateMode, boolean hasUnsavedChangesStatus) {
@@ -123,9 +124,9 @@ public class StringsEditor extends Fragment {
     }
 
     public void showAddStringDialog() {
-        aB dialog = new aB(requireActivity());
+        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
         ViewStringEditorAddBinding binding = ViewStringEditorAddBinding.inflate(getLayoutInflater());
-        dialog.b("Create new string");
+        dialog.setTitle("Create new string");
         binding.stringKeyInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -141,7 +142,7 @@ public class StringsEditor extends Fragment {
                 binding.importantNote.setVisibility(s.toString().equals("app_name") ? View.VISIBLE : View.GONE);
             }
         });
-        dialog.b("Create", v1 -> {
+        dialog.setPositiveButton("Create", (d, which) -> {
             String key = Objects.requireNonNull(binding.stringKeyInput.getText()).toString();
             String value = Objects.requireNonNull(binding.stringValueInput.getText()).toString();
 
@@ -157,8 +158,8 @@ public class StringsEditor extends Fragment {
             addString(key, value, Objects.requireNonNull(binding.stringHeaderInput.getText()).toString().trim());
             updateNoContentLayout();
         });
-        dialog.a(getString(R.string.cancel), v1 -> dialog.dismiss());
-        dialog.a(binding.getRoot());
+        dialog.setNegativeButton(getString(R.string.cancel), null);
+        dialog.setView(binding.getRoot());
         dialog.show();
     }
 
@@ -185,8 +186,8 @@ public class StringsEditor extends Fragment {
 
     public void saveStringsFile() {
         if (hasUnsavedChanges) {
-        XmlUtil.saveXml(filePath, stringsEditorManager.convertListMapToXmlStrings(listmap, notesMap));
-        hasUnsavedChanges = false;
+            XmlUtil.saveXml(filePath, stringsEditorManager.convertListMapToXmlStrings(listmap, notesMap));
+            hasUnsavedChanges = false;
         }
     }
 }

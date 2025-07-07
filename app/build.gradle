@@ -109,7 +109,6 @@ dependencies {
     implementation "$editorGroupId:language-textmate"
 
     implementation "de.hdodenhof:circleimageview:3.1.0"
-    implementation "com.github.angads25:filepicker:1.1.1"
 
     implementation 'io.coil-kt:coil:2.0.0'
     implementation 'io.coil-kt:coil-svg:2.0.0'
@@ -133,8 +132,8 @@ dependencies {
 
     implementation "org.eclipse.jdt:ecj:3.26.0"
 
-    implementation "com.github.Cosmic-Ide:DependencyResolver:290880eb6c"
-    implementation "com.github.Cosmic-IDE:kotlinc-android:f49c67a8c0"
+    implementation "com.github.Cosmic-Ide:DependencyResolver:05ec26af0b"
+    implementation "com.github.Cosmic-IDE:kotlinc-android:fce2462f00"
     implementation "com.github.PranavPurwar:filepicker:74526bea66"
 
     implementation files('libs/proguard-base-7.2.2.jar')
@@ -150,5 +149,6 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:33.14.0")
     implementation "com.google.firebase:firebase-crashlytics"
     implementation "com.google.firebase:firebase-analytics"
+    implementation "com.google.firebase:firebase-messaging"
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.1.5"
 }

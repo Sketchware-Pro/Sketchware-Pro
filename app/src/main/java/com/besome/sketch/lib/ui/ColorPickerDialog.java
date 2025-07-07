@@ -20,12 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.besome.sketch.beans.ColorBean;
 import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
 import com.besome.sketch.editor.view.ColorGroupItem;
-
-import pro.sketchware.R;
-import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
-import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
-import pro.sketchware.databinding.ColorPickerBinding;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -33,19 +27,23 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import pro.sketchware.databinding.ItemAttrBinding;
 import a.a.a.DB;
-import a.a.a.wq;
 import a.a.a.GB;
 import a.a.a.bB;
 import a.a.a.sq;
+import a.a.a.wq;
 import a.a.a.xB;
 import mod.hey.studios.util.Helper;
+import pro.sketchware.R;
+import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
+import pro.sketchware.activities.resourceseditor.components.utils.ColorsEditorManager;
+import pro.sketchware.databinding.ColorPickerBinding;
+import pro.sketchware.databinding.ItemAttrBinding;
+import pro.sketchware.lib.validator.ColorInputValidator;
+import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.ThemeUtils;
-import pro.sketchware.lib.validator.ColorInputValidator;
-import pro.sketchware.utility.FileUtil;
 
 public class ColorPickerDialog extends PopupWindow {
 

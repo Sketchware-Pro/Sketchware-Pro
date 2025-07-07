@@ -3,7 +3,6 @@ package com.besome.sketch.editor.view.palette;
 import static pro.sketchware.utility.SketchwareUtil.dpToPx;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +55,6 @@ public class PaletteWidget extends LinearLayout {
     public MaterialCardView cardView;
     private LinearLayout layoutContainer;
     private LinearLayout widgetsContainer;
-    private View divider;
     private TextView titleLayouts;
     private TextView titleWidgets;
     private CustomScrollView scrollView;
@@ -156,7 +154,6 @@ public class PaletteWidget extends LinearLayout {
         wB.a(context, this, R.layout.palette_widget);
         layoutContainer = findViewById(R.id.layout);
         widgetsContainer = findViewById(R.id.widget);
-        divider = findViewById(R.id.divider);
         titleLayouts = findViewById(R.id.tv_layout);
         titleWidgets = findViewById(R.id.tv_widget);
         titleLayouts.setText(Helper.getResString(R.string.view_panel_title_layouts));
@@ -171,12 +168,6 @@ public class PaletteWidget extends LinearLayout {
 
     public void extraTitle(String title, int targetType) {
         LinearLayout target = targetType == 0 ? layoutContainer : widgetsContainer;
-
-        LinearLayout divider = new LinearLayout(getContext());
-        divider.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dpToPx(1)));
-        divider.setOrientation(LinearLayout.HORIZONTAL);
-        divider.setBackgroundColor(Color.parseColor("#00000000"));
-        target.addView(divider);
 
         TextView titleView = new TextView(getContext());
         LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -251,7 +242,6 @@ public class PaletteWidget extends LinearLayout {
 
     public void setLayoutVisible(int visibility) {
         layoutContainer.setVisibility(visibility);
-        divider.setVisibility(visibility);
         titleLayouts.setVisibility(visibility);
     }
 

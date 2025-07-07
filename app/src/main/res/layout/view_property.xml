@@ -1,12 +1,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/colorSurfaceContainer"
     android:orientation="vertical">
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="1dp" />
+        android:layout_height="wrap_content"
+        app:dividerColor="?attr/colorSurfaceContainerHighest" />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="12dp"
-        app:strokeColor="@color/cardStrokeColor">
+        app:contentPadding="12dp">
 
 
         <LinearLayout
@@ -41,22 +41,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/select_file"
-        style="?attr/materialIconButtonOutlinedStyle"
+        style="@style/Widget.Material3Expressive.Button.TonalButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/transparent"
-        android:insetLeft="0dp"
-        android:insetTop="0dp"
-        android:insetRight="0dp"
-        android:insetBottom="0dp"
         android:scaleType="fitCenter"
-        app:cornerRadius="10dp"
         app:icon="@drawable/ic_mtrl_upload"
         app:iconGravity="textStart"
         app:iconPadding="0dp"
-        app:iconSize="22dp"
-        app:iconTint="?colorPrimary"
-        app:strokeColor="?colorPrimary"
-        app:strokeWidth="1dp" />
+        app:iconSize="28dp" />
 
 </LinearLayout>

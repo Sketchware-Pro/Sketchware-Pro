@@ -1,14 +1,13 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="?attr/materialCardViewFilledStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginTop="12dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
-    app:cardCornerRadius="18dp">
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:cardCornerRadius="20dp">
 
     <LinearLayout
         android:id="@+id/project_one"
@@ -22,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            app:cardBackgroundColor="?attr/colorSurfaceContainer">
+            app:cardBackgroundColor="?attr/colorSurface">
 
             <ImageView
                 android:id="@+id/iv_create_new"
@@ -30,7 +29,7 @@
                 android:layout_height="60dp"
                 android:padding="16dp"
                 android:src="@drawable/ic_mtrl_history"
-                app:tint="?attr/colorControlNormal" />
+                app:tint="?attr/colorPrimary" />
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout

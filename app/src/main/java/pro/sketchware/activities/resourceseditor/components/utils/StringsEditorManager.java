@@ -1,4 +1,4 @@
- package pro.sketchware.activities.resourceseditor.components.utils;
+package pro.sketchware.activities.resourceseditor.components.utils;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

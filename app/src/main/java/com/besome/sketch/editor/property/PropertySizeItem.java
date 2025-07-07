@@ -82,9 +82,13 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         if (orientationItem == 0) {
             propertyItem.setVisibility(GONE);
             propertyMenuItem.setVisibility(VISIBLE);
+            propertyItem.setOnClickListener(null);
+            propertyMenuItem.setOnClickListener(this);
         } else {
             propertyItem.setVisibility(VISIBLE);
             propertyMenuItem.setVisibility(GONE);
+            propertyItem.setOnClickListener(this);
+            propertyMenuItem.setOnClickListener(null);
         }
     }
 
@@ -96,10 +100,10 @@ public class PropertySizeItem extends RelativeLayout implements View.OnClickList
         imgLeftIcon = findViewById(R.id.img_left_icon);
         propertyItem = findViewById(R.id.property_item);
         propertyMenuItem = findViewById(R.id.property_menu_item);
-        if (z) {
-            setSoundEffectsEnabled(true);
-            setOnClickListener(this);
-        }
+//        if (z) {
+//            propertyMenuItem.setSoundEffectsEnabled(true);
+//            propertyMenuItem.setOnClickListener(this);
+//        }
     }
 
     private void showDialog() {
