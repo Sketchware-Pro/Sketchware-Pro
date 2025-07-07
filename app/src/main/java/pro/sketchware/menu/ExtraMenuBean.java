@@ -116,11 +116,10 @@ public class ExtraMenuBean {
 
     private void codeMenu(Ss menu) {
         AsdDialog asdDialog = new AsdDialog(logicEditor);
-        asdDialog.setCon(menu.getArgValue().toString());
+        asdDialog.setContent(menu.getArgValue().toString());
         asdDialog.show();
-        /* p2 as true is for number */
-        asdDialog.saveLis(logicEditor, false, menu, asdDialog);
-        asdDialog.cancelLis(asdDialog);
+        asdDialog.setOnSaveClickListener(logicEditor, false, menu, asdDialog);
+        asdDialog.setOnCancelClickListener(asdDialog);
     }
 
     public void defineMenuSelector(Ss ss) {
@@ -734,10 +733,10 @@ public class ExtraMenuBean {
         dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.setNeutralButton("Code Editor", (v, which) -> {
             AsdDialog editor = new AsdDialog(logicEditor);
-            editor.setCon(menu.getArgValue().toString());
+            editor.setContent(menu.getArgValue().toString());
             editor.show();
-            editor.saveLis(logicEditor, false, menu, editor);
-            editor.cancelLis(editor);
+            editor.setOnSaveClickListener(logicEditor, false, menu, editor);
+            editor.setOnCancelClickListener(editor);
             v.dismiss();
         });
         dialog.show();
@@ -758,7 +757,6 @@ public class ExtraMenuBean {
     private void asdDialog(Ss ss, String message) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(logicEditor);
         dialog.setTitle(Helper.getResString(R.string.logic_editor_title_enter_string_value));
-        dialog.setIcon(R.drawable.rename_96_blue);
 
         if (!isEmpty(message)) dialog.setMessage(message);
 
@@ -783,10 +781,10 @@ public class ExtraMenuBean {
         dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
         dialog.setNeutralButton("Code Editor", (v, which) -> {
             AsdDialog asdDialog = new AsdDialog(logicEditor);
-            asdDialog.setCon(Helper.getText(edittext));
+            asdDialog.setContent(Helper.getText(edittext));
             asdDialog.show();
-            asdDialog.saveLis(logicEditor, false, ss, asdDialog);
-            asdDialog.cancelLis(asdDialog);
+            asdDialog.setOnSaveClickListener(logicEditor, false, ss, asdDialog);
+            asdDialog.setOnCancelClickListener(asdDialog);
             v.dismiss();
         });
         dialog.show();

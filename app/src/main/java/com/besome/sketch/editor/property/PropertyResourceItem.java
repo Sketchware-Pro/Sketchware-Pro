@@ -157,8 +157,8 @@ public class PropertyResourceItem extends RelativeLayout implements View.OnClick
         l = findViewById(R.id.property_menu_item);
         d = z2;
         if (z) {
-            setOnClickListener(this);
-            setSoundEffectsEnabled(true);
+            l.setOnClickListener(this);
+            l.setSoundEffectsEnabled(true);
         }
     }
 
