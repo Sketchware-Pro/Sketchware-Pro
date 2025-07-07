@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import androidx.annotation.NonNull;
 
@@ -381,10 +382,60 @@ public class ViewPane extends RelativeLayout {
             view.setLayoutParams(layoutParams);
             if (viewBean.getClassInfo().b("FloatingActionButton") && (imageBean = viewBean.image) != null && (str = imageBean.resName) != null && !str.isEmpty()) {
                 try {
-                    Bitmap decodeFile = BitmapFactory.decodeFile(resourcesManager.f(viewBean.image.resName));
-                    int round = Math.round(getResources().getDisplayMetrics().density / 2.0f);
-                    ((FloatingActionButton) view).setImageBitmap(Bitmap.createScaledBitmap(decodeFile, decodeFile.getWidth() * round, decodeFile.getHeight() * round, true));
-                } catch (Exception ignored) {
+                    FloatingActionButton fab = (FloatingActionButton) view;
+                    if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
+                        int resourceId = getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName());
+                        if (resourceId != 0) {
+                            fab.setImageResource(resourceId);
+                        }
+                    } else if (viewBean.image.resName.equals("default_image")) {
+                        fab.setImageResource(R.drawable.default_image);
+                    } else {
+                        String imagePath = resourcesManager.f(viewBean.image.resName);
+                        File imageFile = new File(imagePath);
+
+                        if (imageFile.exists()) {
+                            int scaleFactor = Math.round(getResources().getDisplayMetrics().density / 2.0f);
+
+                            if (imagePath.endsWith(".xml")) {
+                                FilePathUtil fpu = new FilePathUtil();
+                                svgUtils.loadScaledSvgIntoImageView(new AppCompatImageView(getContext()) {
+                                    @Override
+                                    public void setImageBitmap(Bitmap bitmap) {
+                                        fab.setImageBitmap(bitmap);
+                                    }
+                                }, fpu.getSvgFullPath(sc_id, viewBean.image.resName), scaleFactor);
+                            } else {
+                                Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+                                if (bitmap != null) {
+                                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(
+                                            bitmap,
+                                            bitmap.getWidth() * scaleFactor,
+                                            bitmap.getHeight() * scaleFactor,
+                                            true
+                                    );
+                                    fab.setImageBitmap(scaledBitmap);
+                                }
+                            }
+                        } else {
+                            try {
+                                XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
+                                ImageView tempImageView = new AppCompatImageView(getContext()) {
+                                    @Override
+                                    public void setImageDrawable(android.graphics.drawable.Drawable drawable) {
+                                        fab.setImageDrawable(drawable);
+                                    }
+                                };
+                                xmlToSvgConverter.setImageVectorFromFile(tempImageView,
+                                        xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                            } catch (Exception fallbackException) {
+                                fab.setImageResource(R.drawable.default_image);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    Log.e("ViewPane", "Error setting FAB icon: " + e.getMessage(), e);
+                    ((FloatingActionButton) view).setImageResource(R.drawable.default_image);
                 }
             }
             view.setRotation(viewBean.image.rotate);
