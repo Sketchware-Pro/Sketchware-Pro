@@ -21,75 +21,62 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.File;
 
 import a.a.a.GB;
+import a.a.a.xB;
+import pro.sketchware.R;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class CollectErrorActivity extends BaseAppCompatActivity {
-    private boolean isErrorExpanded = false;
-    private String originalMessage;
-    private String fullError;
-
     @SuppressLint("SetTextI18n")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        if (intent == null || !intent.hasExtra("error")) {
-            finish();
-            return;
-        }
+        if (intent != null) {
+            String error = intent.getStringExtra("error");
 
-        fullError = intent.getStringExtra("error");
-        originalMessage = "An error occurred while running Sketchware Pro.\n\n" +
-                "Do you want to report this error log so that we can fix it? " +
-                "No personal information will be included.";
+            var dialog = new MaterialAlertDialogBuilder(this)
+                    .setTitle(xB.b().a(getApplicationContext(), R.string.common_error_an_error_occurred))
+                    .setMessage("An error occurred while running Sketchware Pro. " +
+                            "Do you want to report this error log so that we can fix it? " +
+                            "No personal information will be included.")
+                    .setPositiveButton("Copy", null)
+                    .setNegativeButton("Cancel", (dialogInterface, which) -> finish())
+                    .setNeutralButton("Show error", null) // null to set proper onClick listeners later without dismissing the AlertDialog
+                    .show();
 
-        var dialog = new MaterialAlertDialogBuilder(this)
-                .setTitle("Error Occurred")
-                .setMessage(originalMessage)
-                .setPositiveButton("Copy", null)
-                .setNegativeButton("Cancel", (d, which) -> finish())
-                .setNeutralButton("Expand", null)
-                .show();
+            TextView messageView = dialog.findViewById(android.R.id.message);
 
-        TextView messageView = dialog.findViewById(android.R.id.message);
-
-        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
-            if (isErrorExpanded) {
-                messageView.setText(originalMessage);
-                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setText("Expand");
-            } else {
+            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(v -> {
                 messageView.setTextIsSelectable(true);
-                messageView.setText(fullError);
-                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setText("Collapse");
-            }
-            isErrorExpanded = !isErrorExpanded;
-        });
+                messageView.setText(error);
+            });
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+                PackageInfo info;
 
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-            try {
-                PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+                try {
+                    info = getPackageManager().getPackageInfo(getPackageName(), 0);
+                } catch (PackageManager.NameNotFoundException e) {
+                    messageView.setTextIsSelectable(true);
+                    messageView.setText("Somehow couldn't get package info. Stack trace:\n" + Log.getStackTraceString(e));
+                    return;
+                }
+
                 long fileSizeInBytes = new File(info.applicationInfo.sourceDir).length();
 
                 String deviceInfo = "Sketchware Pro " + info.versionName + " (" + info.versionCode + ")\n"
                         + "base.apk size: " + Formatter.formatFileSize(this, fileSizeInBytes) + " (" + fileSizeInBytes + " B)\n"
-                        + "Locale: " + GB.g(this) + "\n"
+                        + "Locale: " + GB.g(getApplicationContext()) + "\n"
                         + "SDK version: " + Build.VERSION.SDK_INT + "\n"
                         + "Brand: " + Build.BRAND + "\n"
                         + "Manufacturer: " + Build.MANUFACTURER + "\n"
                         + "Model: " + Build.MODEL;
 
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("error", deviceInfo + "\n\n```\n" + fullError + "\n```");
+                ClipData clip = ClipData.newPlainText("error", deviceInfo + "\n\n```\n" + error + "\n```");
                 clipboard.setPrimaryClip(clip);
-                SketchwareUtil.toast("Copied", Toast.LENGTH_LONG);
-                dialog.dismiss();
-            } catch (PackageManager.NameNotFoundException e) {
-                messageView.setTextIsSelectable(true);
-                messageView.setText("Couldn't get package info:\n" + Log.getStackTraceString(e));
-            } catch (Exception e) {
-                SketchwareUtil.toast("Failed to copy: " + e.getMessage(), Toast.LENGTH_LONG);
-            }
-        });
+                runOnUiThread(() -> SketchwareUtil.toast("Copied", Toast.LENGTH_LONG));
+            });
+        }
     }
 }

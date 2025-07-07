@@ -278,7 +278,8 @@
             android:name="mod.khaled.logcat.LogReaderActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
-        <activity android:name="pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity"
+        <activity
+            android:name="pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.SketchwarePro.ProjectPreview" />
 
@@ -311,7 +312,7 @@
         <activity
             android:name=".activities.editor.view.ViewCodeEditorActivity"
             android:configChanges="orientation|screenSize" />
-            
+
         <activity
             android:name=".activities.editor.view.CodeViewerActivity"
             android:configChanges="orientation|screenSize" />
@@ -323,6 +324,14 @@
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
+
+        <service
+            android:name="pro.sketchware.firebase.FirebaseMessagingServiceImpl"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

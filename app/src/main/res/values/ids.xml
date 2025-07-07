@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="img_back" type="id" />
+
+    <!-- Ids for design right drawer -->
+    <item name="item_library_manager" type="id" />
+    <item name="item_view_manager" type="id" />
+    <item name="item_image_manager" type="id" />
+    <item name="item_sound_manager" type="id" />
+    <item name="item_font_manager" type="id" />
+    <item name="item_java_manager" type="id" />
+    <item name="item_resource_manager" type="id" />
+    <item name="item_resource_editor" type="id" />
+    <item name="item_assets_manager" type="id" />
+    <item name="item_permission_manager" type="id" />
+    <item name="item_appcompat_manager" type="id" />
+    <item name="item_manifest_manager" type="id" />
+    <item name="item_used_custom_blocks" type="id" />
+    <item name="item_code_shrinking_manager" type="id" />
+    <item name="item_stringfog_manager" type="id" />
+    <item name="item_show_src" type="id" />
+    <item name="item_xml_command_manager" type="id" />
+    <item name="item_logcat_reader" type="id" />
+    <item name="item_collection_manager" type="id" />
 </resources>

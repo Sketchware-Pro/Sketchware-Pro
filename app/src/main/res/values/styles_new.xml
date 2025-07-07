@@ -11,7 +11,7 @@
     -->
 
     <style name="Widget.SketchwarePro.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
-        <item name="android:background">?attr/colorSurface</item>
+        <item name="android:background">?attr/colorSurfaceContainer</item>
         <item name="elevation">0dp</item>
     </style>
 
@@ -120,7 +120,7 @@
         <item name="checkedIcon">@drawable/ic_mtrl_done</item>
         <item name="chipBackgroundColor">?attr/colorSecondary</item>
         <item name="chipCornerRadius">90dp</item>
-        <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+        <item name="android:textAppearance">@style/TextAppearance.SketchwarePro.Chip</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
@@ -132,30 +132,12 @@
         <item name="shapeAppearance">?attr/shapeAppearanceCornerLarge</item>
     </style>
 
+    <style name="TextAppearance.SketchwarePro.Chip" parent="TextAppearance.SketchwarePro.BodyMedium">
+        <item name="android:fontFamily">@font/gilroy</item>
+        <item name="fontFamily">@font/gilroy</item>
+    </style>
+
     <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
         <item name="chipStyle">@style/Widget.SketchwarePro.Chip.ProjectPreview</item>
     </style>
-
-
-    <!--
-    ========================================================================================
-    ==                        NEW STYLES FOR EXPORT PROJECT DIALOG                        ==
-    ========================================================================================
-    -->
-
-    <!-- Custom Animation for the Dialog to slide up and down -->
-    <style name="Animation.App.Dialog.SlideUp" parent="Animation.AppCompat.Dialog">
-        <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
-        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
-    </style>
-
-    <!-- New Theme for Full-Screen Git Configuration Dialog -->
-    <style name="Theme.App.Dialog.FullScreen.Git" parent="ThemeOverlay.Material3.DynamicColors.DayNight">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:statusBarColor">?attr/colorSurface</item>
-        <item name="android:windowAnimationStyle">@style/Animation.App.Dialog.SlideUp</item>
-    </style>
-
 </resources>
