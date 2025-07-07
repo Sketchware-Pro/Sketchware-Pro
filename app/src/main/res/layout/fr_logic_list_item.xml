@@ -16,20 +16,6 @@
             android:layout_height="match_parent"
             android:layout_marginVertical="8dp">
 
-            <TextView
-                android:id="@+id/tv_event_type"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="24dp"
-                android:alpha="0.87"
-                android:fontFamily="sans-serif-medium"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:textSize="12sp"
-                android:visibility="gone" />
-
             <ImageView
                 android:id="@+id/img_icon"
                 android:layout_width="24dp"

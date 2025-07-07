@@ -37,7 +37,7 @@ public abstract class DA extends qA {
         if (!Sp.a) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(super.a);
             dialog.setTitle(xB.b().a(getContext(), R.string.common_message_permission_title_storage));
-            dialog.setIcon(R.drawable.break_warning_96_red);
+            dialog.setIcon(R.drawable.ic_mtrl_warning);
             dialog.setMessage(xB.b().a(getContext(), R.string.common_message_permission_storage));
             dialog.setPositiveButton(xB.b().a(getContext(), R.string.common_word_ok), (view, which) -> {
                 if (!mB.a()) {
@@ -64,7 +64,7 @@ public abstract class DA extends qA {
         if (!Sp.a) {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(super.a);
             builder.setTitle(xB.b().a(getContext(), R.string.common_message_permission_title_storage));
-            builder.setIcon(R.drawable.break_warning_96_red);
+            builder.setIcon(R.drawable.ic_mtrl_warning);
             builder.setMessage(xB.b().a(getContext(), R.string.common_message_permission_storage1));
             builder.setPositiveButton(xB.b().a(getContext(), R.string.common_word_settings), (view, which) -> {
                 if (!mB.a()) {

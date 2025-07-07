@@ -73,26 +73,6 @@ public class EventBean extends CollapsibleBean implements Parcelable {
         a2.k(javaName, event.targetId + "_" + event.eventName);
     }
 
-    public static int getEventTypeBgRes(int eventType) {
-        return switch (eventType) {
-            case EVENT_TYPE_VIEW -> R.drawable.bg_event_type_view;
-            case EVENT_TYPE_COMPONENT -> R.drawable.bg_event_type_component;
-            case EVENT_TYPE_ACTIVITY -> R.drawable.bg_event_type_activity;
-            case EVENT_TYPE_DRAWER_VIEW -> R.drawable.bg_event_type_drawer_view;
-            default -> 0;
-        };
-    }
-
-    public static String getEventTypeName(int eventType) {
-        return switch (eventType) {
-            case EVENT_TYPE_VIEW -> "view event";
-            case EVENT_TYPE_COMPONENT -> "component event";
-            case EVENT_TYPE_ACTIVITY -> "activity event";
-            case EVENT_TYPE_DRAWER_VIEW -> "drawer view event";
-            default -> "";
-        };
-    }
-
     public void copy(EventBean other) {
         eventType = other.eventType;
         targetType = other.targetType;

@@ -1,6 +1,3 @@
-pro.sketchware:anim/ani_1 = 0x7f01000c
-pro.sketchware:anim/ani_fade_in = 0x7f01000e
-pro.sketchware:anim/ani_fade_out = 0x7f01000f
 pro.sketchware:color/color_accent = 0x7f05002f
 pro.sketchware:color/scolor_blue_01 = 0x7f0500ac
 pro.sketchware:color/scolor_dark_yellow_01 = 0x7f0500ad

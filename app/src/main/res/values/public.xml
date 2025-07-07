@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <public name="ani_1" id="0x7f01000c" type="anim" />
-    <public name="ani_fade_in" id="0x7f01000e" type="anim" />
-    <public name="ani_fade_out" id="0x7f01000f" type="anim" />
     <public name="color_accent" id="0x7f05002f" type="color" />
     <public name="scolor_blue_01" id="0x7f0500ac" type="color" />
     <public name="scolor_dark_yellow_01" id="0x7f0500ad" type="color" />

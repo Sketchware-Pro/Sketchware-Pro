@@ -726,7 +726,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private void warnAboutInsufficientStorageSpace() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(Helper.getResString(R.string.common_word_warning));
-        dialog.setIcon(R.drawable.break_warning_96_red);
+        dialog.setIcon(R.drawable.ic_mtrl_warning);
         dialog.setMessage(Helper.getResString(R.string.common_message_insufficient_storage_space));
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
         dialog.show();

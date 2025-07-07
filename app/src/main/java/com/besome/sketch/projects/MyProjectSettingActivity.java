@@ -413,7 +413,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         shownPackageNameChangeWarning = true;
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(Helper.getResString(R.string.common_word_warning));
-        dialog.setIcon(R.drawable.break_warning_96_red);
+        dialog.setIcon(R.drawable.ic_mtrl_warning);
         dialog.setMessage(Helper.getResString(R.string.myprojects_settings_message_package_rename));
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), null);
         dialog.show();

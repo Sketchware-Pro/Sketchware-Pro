@@ -160,7 +160,7 @@ public class MoreblockImporter {
     private void showAutoAddDialog(MoreBlockCollectionBean moreBlock) {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(activity);
         aBVar.setTitle(xB.b().a(activity, R.string.logic_more_block_title_add_variable_resource));
-        aBVar.setIcon(R.drawable.break_warning_96_red);
+        aBVar.setIcon(R.drawable.ic_mtrl_warning);
         aBVar.setMessage(xB.b().a(activity, R.string.logic_more_block_desc_add_variable_resource));
         aBVar.setPositiveButton(xB.b().a(activity, R.string.common_word_continue), (v, which) -> {
             for (Pair<Integer, String> pair : toBeAddedVariables) {

@@ -407,7 +407,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     holder.optionsLayout.hideDelete();
                 }
                 holder.targetId.setText(eventBean.targetId);
-                holder.type.setBackgroundResource(oq.a(eventBean.eventName));
                 holder.name.setText(eventBean.eventName);
                 holder.description.setText(oq.a(eventBean.eventName, requireContext()));
                 holder.icon.setImageResource(R.drawable.ic_mtrl_code);
@@ -431,8 +430,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 } else {
                     holder.targetId.setText(ReturnMoreblockManager.getMbName(eventBean.targetId));
                 }
-                holder.type.setText(EventBean.getEventTypeName(eventBean.eventType));
-                holder.type.setBackgroundResource(EventBean.getEventTypeBgRes(eventBean.eventType));
                 holder.name.setText(eventBean.eventName);
                 holder.description.setText(oq.a(eventBean.eventName, requireContext()));
                 if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
@@ -488,7 +485,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             public final ImageView icon;
             public final TextView targetType;
             public final TextView targetId;
-            public final TextView type;
             public final TextView name;
             public final TextView description;
 
@@ -498,7 +494,6 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 icon = itemView.findViewById(R.id.img_icon);
                 targetType = itemView.findViewById(R.id.tv_target_type);
                 targetId = itemView.findViewById(R.id.tv_target_id);
-                type = itemView.findViewById(R.id.tv_event_type);
                 name = itemView.findViewById(R.id.tv_event_name);
                 description = itemView.findViewById(R.id.tv_event_text);
                 menu = itemView.findViewById(R.id.img_menu);

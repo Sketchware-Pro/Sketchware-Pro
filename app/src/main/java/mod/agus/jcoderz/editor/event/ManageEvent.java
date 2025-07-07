@@ -347,8 +347,7 @@ public class ManageEvent {
             case "onError" -> R.drawable.ic_mtrl_vid_error;
             case "onVerificationCompleted" -> R.drawable.ic_mtrl_verified_user;
             case "onSaveInstanceState", "onCreateOptionsMenu", "onCreateContextMenu",
-                 "onContextItemSelected", "onOptionsItemSelected" ->
-                    R.drawable.bg_event_type_activity;
+                 "onContextItemSelected", "onOptionsItemSelected" -> R.drawable.ic_empty;
             case "onSuccessLink" -> R.drawable.ic_mtrl_link_check;
             case "onPatternLockCleared", "onPatternLockProgress", "onPatternLockStarted",
                  "onPatternLockComplete" -> R.drawable.ic_mtrl_pattern;

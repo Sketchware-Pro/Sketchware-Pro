@@ -31,7 +31,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
         if (!Sp.a) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
             dialog.setTitle(Helper.getResString(R.string.common_message_permission_title_storage));
-            dialog.setIcon(R.drawable.break_warning_96_red);
+            dialog.setIcon(R.drawable.ic_mtrl_warning);
             dialog.setMessage(Helper.getResString(R.string.common_message_permission_storage));
             dialog.setPositiveButton(Helper.getResString(R.string.common_word_ok), (v, which) -> {
                 if (!mB.a()) {
@@ -86,7 +86,7 @@ public abstract class BasePermissionAppCompatActivity extends BaseAppCompatActiv
         if (!Sp.a) {
             MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
             dialog.setTitle(Helper.getResString(R.string.common_message_permission_title_storage));
-            dialog.setIcon(R.drawable.break_warning_96_red);
+            dialog.setIcon(R.drawable.ic_mtrl_warning);
             dialog.setMessage(Helper.getResString(R.string.common_message_permission_storage1));
             dialog.setPositiveButton(Helper.getResString(R.string.common_word_settings), (v, which) -> {
                 if (!mB.a()) {

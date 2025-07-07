@@ -22,8 +22,7 @@ public class oq {
     public static int a(String eventName) {
         return switch (eventName) {
             case "initializeLogic", "onBackPressed", "onPostCreate", "onStart", "onStop",
-                 "onDestroy", "onResume", "onPause", "moreBlock" ->
-                    R.drawable.bg_event_type_activity;
+                 "onDestroy", "onResume", "onPause", "moreBlock" -> R.drawable.ic_empty;
             case "onBannerAdClicked", "onClick" -> R.drawable.ic_mtrl_touch;
             case "onCheckedChange" -> R.drawable.ic_mtrl_checkbox;
             case "onItemSelected" -> R.drawable.ic_mtrl_pull_down;
@@ -49,7 +48,7 @@ public class oq {
             case "onCreateUserComplete" -> R.drawable.ic_mtrl_user_create;
             case "onSignInUserComplete" -> R.drawable.ic_mtrl_signin;
             case "onResetPasswordEmailSent" -> R.drawable.ic_mtrl_reset;
-            case "onSensorChanged" -> R.drawable.ic_mtrl_sensor;
+            case "onSensorChanged", "onResponse" -> R.drawable.ic_mtrl_sensor;
             case "onAccuracyChanged" -> R.drawable.ic_mtrl_center;
             case "onInterstitialAdLoaded", "onBannerAdLoaded", "onRewardAdLoaded" ->
                     R.drawable.ic_mtrl_loaded;
@@ -67,7 +66,6 @@ public class oq {
             case "onPictureTakenCancel" -> R.drawable.ic_mtrl_pic_cancel;
             case "onFilesPicked" -> R.drawable.ic_mtrl_file_picked;
             case "onFilesPickedCancel" -> R.drawable.ic_mtrl_pick_cancel;
-            case "onResponse" -> R.drawable.ic_mtrl_sensor;
             case "onErrorResponse" -> R.drawable.ic_mtrl_sensor_cancel;
             case "onSpeechResult" -> R.drawable.ic_mtrl_speech;
             case "onSpeechError" -> R.drawable.ic_mtrl_speech_cancel;
