@@ -1,6 +1,7 @@
 def secrets = System.getenv("GOOGLE_SERVICES_JSON")
 def analyticsEnabled = secrets != null
 
+
 apply plugin: "com.android.application"
 apply plugin: "kotlin-android"
 
