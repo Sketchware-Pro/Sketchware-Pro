@@ -80,7 +80,11 @@ public class MainActivity extends BasePermissionAppCompatActivity {
 		} else {
 			if (backPressedTime + 2000 > System.currentTimeMillis()) {
 				super.onBackPressed();
-				finishAffinity();
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            		finishAndRemoveTask();
+                            	} else {
+                            		finishAffinity();
+                            	}
 				System.exit(0);
 			} else {
 				Toast.makeText(this, "Try again to exit !", Toast.LENGTH_SHORT).show();
