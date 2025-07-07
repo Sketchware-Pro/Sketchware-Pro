@@ -138,6 +138,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
             case "property_indeterminate" -> d(property, bean.indeterminate);
             case "property_inject" -> b(property, bean.inject);
             case "property_convert" -> b(property, bean.convert, String.valueOf(bean.type));
+            case "property_tint_color" -> r(property, bean.image.resTintColor, bean.image.tintColor);
         }
     }
 
@@ -660,12 +661,14 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                 a(xB.b().a(getResources(), R.string.property_header_image), this);
                 a(bean, "property_image");
                 a(bean, "property_scale_type");
+                a(bean, "property_tint_color");
             } else {
                 a(xB.b().a(getResources(), R.string.property_header_image));
             }
         } else if (classInfo.a("ImageView")) {
             a(bean, "property_image");
             a(bean, "property_scale_type");
+            a(bean, "property_tint_color");
         }
 
         if (bean.type != ViewBean.VIEW_TYPE_WIDGET_MAPVIEW) {
@@ -785,6 +788,10 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
                     case "property_background_color" -> {
                         bean.layout.backgroundResColor = colorItem.getResValue();
                         bean.layout.backgroundColor = colorItem.getValue();
+                    }
+                    case "property_tint_color" -> {
+                        bean.image.tintColor = colorItem.getValue();
+                        bean.image.resTintColor = colorItem.getResValue();
                     }
                 }
             } else if (view instanceof PropertyIndentItem indentItem) {

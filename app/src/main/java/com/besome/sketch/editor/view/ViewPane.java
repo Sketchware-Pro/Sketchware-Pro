@@ -488,6 +488,11 @@ public class ViewPane extends RelativeLayout {
                 updateCircleImageView((ItemCircleImageView) view, injectHandler);
             } else {
                 ((ImageView) view).setScaleType(ImageView.ScaleType.valueOf(viewBean.image.scaleType));
+                if (viewBean.image.tintColor != 0xffffff) {
+                    ((ImageView) view).setColorFilter(viewBean.image.tintColor);
+                } else {
+                    ((ImageView) view).clearColorFilter();
+                }
             }
         }
         if (classInfo.a("CompoundButton")) {

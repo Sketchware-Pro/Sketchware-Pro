@@ -34,16 +34,24 @@ public class ImageBean extends nA implements Parcelable {
     public int rotate;
     @Expose
     public String scaleType;
+    @Expose
+    public int tintColor;
+    @Expose
+    public String resTintColor;
 
     public ImageBean() {
         scaleType = ImageView.ScaleType.CENTER.name();
         rotate = 0;
+        tintColor = 0xffffff;
+        resTintColor = "";
     }
 
     public ImageBean(Parcel parcel) {
         resName = parcel.readString();
         scaleType = parcel.readString();
         rotate = parcel.readInt();
+        tintColor = parcel.readInt();
+        resTintColor = parcel.readString();
     }
 
     public static Parcelable.Creator<ImageBean> getCreator() {
@@ -54,6 +62,8 @@ public class ImageBean extends nA implements Parcelable {
         resName = imageBean.resName;
         scaleType = imageBean.scaleType;
         rotate = imageBean.rotate;
+        tintColor = imageBean.tintColor;
+        resTintColor = imageBean.resTintColor;
     }
 
     @Override
@@ -71,6 +81,7 @@ public class ImageBean extends nA implements Parcelable {
         } else if (imageBean.resName != null) {
             return false;
         }
+
         String str3 = scaleType;
         if (str3 != null) {
             String str4 = imageBean.scaleType;
@@ -80,7 +91,17 @@ public class ImageBean extends nA implements Parcelable {
         } else if (imageBean.scaleType != null) {
             return false;
         }
-        return rotate == imageBean.rotate;
+
+        if (rotate != imageBean.rotate || tintColor != imageBean.tintColor) {
+            return false;
+        }
+
+        String resTint = this.resTintColor;
+        if (resTint != null) {
+            return resTint.equals(imageBean.resTintColor);
+        } else {
+            return imageBean.resTintColor == null;
+        }
     }
 
     public void print() {
@@ -91,5 +112,7 @@ public class ImageBean extends nA implements Parcelable {
         parcel.writeString(resName);
         parcel.writeString(scaleType);
         parcel.writeInt(rotate);
+        parcel.writeInt(tintColor);
+        parcel.writeString(resTintColor);
     }
 }

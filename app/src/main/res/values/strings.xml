@@ -1690,6 +1690,7 @@ ACTION_VIEW
     <string name="property_spinner_mode">Spinner mode</string>
     <string name="property_text">Text</string>
     <string name="property_text_color">Text color</string>
+    <string name="property_tint_color">Tint color</string>
     <string name="property_text_font">Text font</string>
     <string name="property_text_size">Text size</string>
     <string name="property_text_style">Text style</string>

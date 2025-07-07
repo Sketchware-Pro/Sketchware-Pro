@@ -385,6 +385,7 @@ public class Ox {
             writeImgSrcAttr(widgetTag, viewBean);
             if (!widgetTag.toCode().contains(".")) {
                 writeImageScaleType(widgetTag, viewBean);
+                writeImageTint(widgetTag, viewBean);
             }
         }
         if (viewBean.getClassInfo().b("SeekBar")) {
@@ -581,6 +582,21 @@ public class Ox {
                 nx.addAttribute("android", "scaleType", "centerCrop");
             } else if (viewBean.image.scaleType.equals(ImageBean.SCALE_TYPE_CENTER_INSIDE)) {
                 nx.addAttribute("android", "scaleType", "centerInside");
+            }
+        }
+    }
+
+    private void writeImageTint(XmlBuilder nx, ViewBean viewBean) {
+        var injectHandler = new InjectAttributeHandler(viewBean);
+        Set<String> toNotAdd = readAttributesToReplace(viewBean);
+
+        if (viewBean.image.tintColor != 0xffffff) {
+            if (!toNotAdd.contains("android:tint") && !injectHandler.contains("tint")) {
+                if (viewBean.image.resTintColor != null && !viewBean.image.resTintColor.isEmpty()) {
+                    nx.addAttribute("android", "tint", "@color/" + viewBean.image.resTintColor);
+                } else {
+                    nx.addAttribute("android", "tint", formatColor(viewBean.image.tintColor & 0xffffff));
+                }
             }
         }
     }
