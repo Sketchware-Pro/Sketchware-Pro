@@ -23,7 +23,7 @@ android {
         targetSdkVersion 28
         minSdkVersion 26
         versionCode 150
-        versionName "7.0.0-SNAPSHOT-" + shortCommitHash
+        versionName "7.0.0-" + shortCommitHash
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
