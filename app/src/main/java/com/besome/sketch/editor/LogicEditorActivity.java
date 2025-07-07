@@ -57,7 +57,7 @@ import com.besome.sketch.beans.MoreBlockCollectionBean;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.design.DesignActivity;
-import com.besome.sketch.editor.component.ComponentAddActivity;
+import com.besome.sketch.editor.component.AddComponentBottomSheet;
 import com.besome.sketch.editor.logic.BlockPane;
 import com.besome.sketch.editor.logic.LogicTopMenu;
 import com.besome.sketch.editor.logic.PaletteBlock;
@@ -112,7 +112,6 @@ import a.a.a.xB;
 import a.a.a.yq;
 import a.a.a.yy;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
-
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.editor.view.IdGenerator;
 import mod.hey.studios.moreblock.ReturnMoreblockManager;
@@ -125,6 +124,7 @@ import mod.jbk.util.BlockUtil;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.R;
 import pro.sketchware.activities.editor.view.CodeViewerActivity;
+import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
 import pro.sketchware.activities.resourceseditor.components.utils.StringsEditorManager;
 import pro.sketchware.databinding.ImagePickerItemBinding;
 import pro.sketchware.databinding.PropertyPopupSelectorSingleBinding;
@@ -135,7 +135,6 @@ import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.SvgUtils;
-import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
 
 @SuppressLint({"ClickableViewAccessibility", "RtlHardcoded", "SetTextI18n", "DefaultLocale"})
 public class LogicEditorActivity extends BaseAppCompatActivity implements View.OnClickListener, Vs, View.OnTouchListener, MoreblockImporterDialog.CallBack {
@@ -174,7 +173,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     });
 
-    private Boolean isViewBindingEnabled;private void loadEventBlocks() {
+    private Boolean isViewBindingEnabled;
+
+    private void loadEventBlocks() {
         ArrayList<BlockBean> eventBlocks = jC.a(B).a(M.getJavaName(), C + "_" + D);
         if (eventBlocks != null) {
             if (eventBlocks.isEmpty()) {
@@ -309,7 +310,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void G() {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
         aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_add_new_list));
-        aBVar.setIcon(R.drawable.ic_mtrl_add);
         View a2 = wB.a(this, R.layout.logic_popup_add_list);
         RadioGroup radioGroup = a2.findViewById(R.id.rg_type);
         TextInputEditText editText = a2.findViewById(R.id.ed_input);
@@ -338,7 +338,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private void showAddNewVariableDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(getTranslatedString(R.string.logic_editor_title_add_new_variable));
-        dialog.setIcon(R.drawable.ic_mtrl_add);
 
         View customView = wB.a(this, R.layout.logic_popup_add_variable);
         RadioGroup radioGroup = customView.findViewById(R.id.rg_type);
@@ -414,7 +413,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(getTranslatedString(R.string.logic_editor_title_remove_xml_strings));
-        dialog.setIcon(R.drawable.delete_96);
 
         PropertyPopupSelectorSingleBinding binding = PropertyPopupSelectorSingleBinding.inflate(LayoutInflater.from(this));
         ViewGroup viewGroup = binding.rgContent;
@@ -473,7 +471,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private boolean isKeyHasNonSavedUsage(String key) {
         for (BlockBean block : o.getBlocks()) {
             if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
 
                 showToastError();
                 return true;
@@ -485,7 +483,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private boolean isKeyHasSavedUsage(String key) {
         for (BlockBean block : savedBlockBean) {
             if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
 
                 return true;
             }
@@ -503,7 +501,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
                 for (BlockBean block : entry.getValue()) {
                     if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                        (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
 
                         showToastError();
                         return true;
@@ -518,7 +516,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         for (String xmlFileName : getAllXmlFileNames(projectScId)) {
             for (ViewBean view : projectDataManager.d(xmlFileName)) {
                 if (view.text.text.equals("@string/" + key) ||
-                    (view.text.hint.equals("@string/" + key))) {
+                        (view.text.hint.equals("@string/" + key))) {
 
                     showToastError();
                     return true;
@@ -538,7 +536,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
                 for (BlockBean block : entry.getValue()) {
                     if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                        (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
 
                         length++;
                     }
@@ -563,7 +561,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void J() {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
         aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_remove_list));
-        aBVar.setIcon(R.drawable.ic_mtrl_delete);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         for (Pair<Integer, String> list : jC.a(B).j(M.getJavaName())) {
@@ -595,7 +592,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void K() {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
         aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_remove_variable));
-        aBVar.setIcon(R.drawable.ic_mtrl_delete);
         View a2 = wB.a(this, R.layout.property_popup_selector_single);
         ViewGroup viewGroup = a2.findViewById(R.id.rg_content);
         for (Pair<Integer, String> next : jC.a(B).k(M.getJavaName())) {
@@ -904,8 +900,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             dialog.setTitle(getTranslatedString(R.string.logic_editor_title_select_image_background));
         }
 
-        dialog.setIcon(R.drawable.ic_picture_48dp);
-
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ArrayList<String> images = jC.d(B).m();
@@ -951,7 +945,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void a(Ss ss, boolean z) {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
         aBVar.setTitle(getTranslatedString(z ? R.string.logic_editor_title_enter_number_value : R.string.logic_editor_title_enter_string_value));
-        aBVar.setIcon(R.drawable.rename_96_blue);
         View a2 = wB.a(this, R.layout.property_popup_input_text);
         EditText editText = a2.findViewById(R.id.ed_input);
         if (z) {
@@ -1488,7 +1481,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void c(Rs rs) {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
         aBVar.setTitle(getTranslatedString(R.string.logic_block_favorites_save_title));
-        aBVar.setIcon(R.drawable.ic_bookmark_red_48dp);
         View a2 = wB.a(this, R.layout.property_popup_save_to_favorite);
         ((TextView) a2.findViewById(R.id.tv_favorites_guide)).setText(getTranslatedString(R.string.logic_block_favorites_save_guide));
         EditText editText = a2.findViewById(R.id.ed_input);
@@ -1511,7 +1503,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void c(Ss ss) {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
         aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_enter_string_value));
-        aBVar.setIcon(R.drawable.rename_96_blue);
         View a2 = wB.a(this, R.layout.property_popup_input_text);
         ((TextInputLayout) a2.findViewById(R.id.ti_input)).setHint(getTranslatedString(R.string.property_hint_enter_value));
         EditText editText = a2.findViewById(R.id.ed_input);
@@ -1589,7 +1580,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void d(Ss ss) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(getTranslatedString(R.string.logic_editor_title_select_font));
-        dialog.setIcon(R.drawable.abc_96_color);
 
         View customView = wB.a(this, R.layout.property_popup_selector_color);
         RadioGroup radioGroup = customView.findViewById(R.id.rg);
@@ -1655,7 +1645,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void e(Ss ss) {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
         aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_enter_data_value));
-        aBVar.setIcon(R.drawable.rename_96_blue);
         View a2 = wB.a(this, R.layout.property_popup_input_intent_data);
         ((TextView) a2.findViewById(R.id.tv_desc_intent_usage)).setText(getTranslatedString(R.string.property_description_component_intent_usage));
         EditText editText = a2.findViewById(R.id.ed_input);
@@ -1761,10 +1750,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         dialog.setView(customView);
         dialog.setNeutralButton("Code Editor", (v, which) -> {
             AsdDialog editor = new AsdDialog(this);
-            editor.setCon(ss.getArgValue().toString());
+            editor.setContent(ss.getArgValue().toString());
             editor.show();
-            editor.saveLis(this, false, ss, editor);
-            editor.cancelLis(editor);
+            editor.setOnSaveClickListener(this, false, ss, editor);
+            editor.setOnCancelClickListener(editor);
             v.dismiss();
         });
         dialog.setPositiveButton(getTranslatedString(R.string.common_word_select), (v, which) -> {
@@ -1876,7 +1865,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void h(Ss ss) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
         dialog.setTitle(getTranslatedString(R.string.logic_editor_title_select_sound));
-        dialog.setIcon(R.drawable.music_48);
 
         View customView = wB.a(this, R.layout.property_popup_selector_single);
         RadioGroup radioGroup = customView.findViewById(R.id.rg_content);
@@ -1930,7 +1918,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void i(Ss ss) {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
         aBVar.setTitle(getTranslatedString(R.string.logic_editor_title_select_typeface));
-        aBVar.setIcon(R.drawable.abc_96_color);
         View a3 = wB.a(this, R.layout.property_popup_selector_single);
         RadioGroup radioGroup = a3.findViewById(R.id.rg_content);
         for (Pair<Integer, String> pair : sq.a("property_text_style")) {
@@ -1997,7 +1984,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     public void n(String str) {
         MaterialAlertDialogBuilder aBVar = new MaterialAlertDialogBuilder(this);
         aBVar.setTitle(getTranslatedString(R.string.logic_block_favorites_delete_title));
-        aBVar.setIcon(R.drawable.high_priority_96_red);
         aBVar.setMessage(getTranslatedString(R.string.logic_block_favorites_delete_message));
         aBVar.setPositiveButton(getTranslatedString(R.string.common_word_delete), (v, which) -> {
             Mp.h().a(str, true);
@@ -2074,11 +2060,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivityForResult(intent, 222);
                 } else if (tag.equals("componentAdd")) {
-                    Intent intent = new Intent(getContext(), ComponentAddActivity.class);
-                    intent.putExtra("sc_id", B);
-                    intent.putExtra("project_file", M);
-                    intent.putExtra("filename", M.getJavaName());
-                    startActivityForResult(intent, 224);
+                    AddComponentBottomSheet addComponentBottomSheet = AddComponentBottomSheet.newInstance(B, M, () -> a(7, 0xff2ca5e2));
+                    addComponentBottomSheet.show(getSupportFragmentManager(), null);
                 } else if (tag.equals("blockImport")) {
                     I();
                 }

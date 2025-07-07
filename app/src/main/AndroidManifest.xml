@@ -81,7 +81,7 @@
             android:configChanges="orientation|screenSize" />
         <activity
             android:name="com.besome.sketch.design.DesignActivity"
-            android:configChanges="orientation|screenSize"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|keyboard"
             android:theme="@style/Theme.SketchwarePro.SmallToolbar" />
         <activity
             android:name="pro.sketchware.activities.main.activities.MainActivity"
@@ -145,11 +145,6 @@
             android:name="com.besome.sketch.editor.event.AddEventActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent" />
-        <activity
-            android:name="com.besome.sketch.editor.component.ComponentAddActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.besome.sketch.editor.manage.ViewSelectorActivity"
             android:configChanges="orientation|screenSize"
@@ -283,8 +278,10 @@
             android:name="mod.khaled.logcat.LogReaderActivity"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
 
-        <activity android:name="pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity"
-            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.SketchwarePro.ProjectPreview" />
 
         <activity android:name="pro.sketchware.activities.settings.SettingsActivity" />
 
@@ -315,7 +312,7 @@
         <activity
             android:name=".activities.editor.view.ViewCodeEditorActivity"
             android:configChanges="orientation|screenSize" />
-            
+
         <activity
             android:name=".activities.editor.view.CodeViewerActivity"
             android:configChanges="orientation|screenSize" />
@@ -327,6 +324,14 @@
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="true" />
+
+        <service
+            android:name="pro.sketchware.firebase.FirebaseMessagingServiceImpl"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

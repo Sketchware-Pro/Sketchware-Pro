@@ -6,6 +6,8 @@
     android:layout_width="80dp"
     android:layout_height="80dp"
     android:layout_margin="4dp"
+    android:clickable="true"
+    android:focusable="true"
     app:cardBackgroundColor="?attr/colorSurfaceContainerHighest">
 
     <LinearLayout

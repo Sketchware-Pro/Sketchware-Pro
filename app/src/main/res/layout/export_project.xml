@@ -25,8 +25,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
-                app:contentPadding="14dp">
+                app:contentPadding="14dp"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -51,8 +51,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
-                            android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:text="@string/myprojects_export_project_button_sign_apk"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -136,8 +136,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
-                app:contentPadding="14dp">
+                app:contentPadding="14dp"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -162,8 +162,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
-                            android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:text="@string/myprojects_export_project_title_export_src"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -257,8 +257,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium"
-                app:contentPadding="14dp">
+                app:contentPadding="14dp"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -283,8 +283,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
-                            android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:text="Export AAB (Android App Bundle)"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textSize="16sp"
                             android:textStyle="bold" />
                     </LinearLayout>

@@ -21,6 +21,11 @@ apk_path = os.getenv("APK_PATH")
 # Get the latest commit info
 commit_author, commit_message, commit_hash, commit_hash_short = get_git_commit_info()
 
+# Cleanup last session(if exists) before create client
+session_file = "bot_session.session"
+if os.path.exists(session_file):
+    os.remove(session_file)
+
 # Create the client with bot token directly
 client = TelegramClient('bot_session', api_id, api_hash).start(bot_token=bot_token)
 client.parse_mode = 'markdown'

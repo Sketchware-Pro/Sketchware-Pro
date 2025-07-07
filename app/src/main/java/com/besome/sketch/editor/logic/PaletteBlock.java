@@ -1,7 +1,9 @@
 package com.besome.sketch.editor.logic;
 
+import static pro.sketchware.utility.ThemeUtils.getColor;
+import static pro.sketchware.utility.ThemeUtils.isDarkThemeEnabled;
+
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -15,6 +17,7 @@ import com.google.android.material.card.MaterialCardView;
 import a.a.a.Rs;
 import a.a.a.Ts;
 import a.a.a.wB;
+import pro.sketchware.R;
 import pro.sketchware.databinding.PaletteBlockBinding;
 
 public class PaletteBlock extends LinearLayout {
@@ -65,18 +68,17 @@ public class PaletteBlock extends LinearLayout {
         var textView = new TextView(context);
         textView.setText(title);
         textView.setTextSize(10.0F);
+        textView.setTypeface(null, Typeface.BOLD);
         textView.setGravity(Gravity.CENTER);
         textView.setPadding((int) (f * 8.0F), 0, (int) (f * 8.0F), 0);
 
         var cardView = new MaterialCardView(context);
         var params = getLayoutParams(30.0F);
-        params.setMargins(0, 0, 3, 3);
+        params.setMargins(0, 0, (int) (f * 4), (int) (f * 6));
         cardView.setLayoutParams(params);
-
-        cardView.setCardElevation(0f); // I don't remember if the card has elevation by default 
-        cardView.setRadius(12.0f);
-        cardView.setStrokeWidth(0);
+        cardView.setCardBackgroundColor(getColor(context, isDarkThemeEnabled(context) ? R.attr.colorSurfaceContainerHigh : R.attr.colorSurfaceContainerHighest));
         cardView.addView(textView);
+
         binding.actionsContainer.addView(cardView);
         return textView;
     }
@@ -87,23 +89,27 @@ public class PaletteBlock extends LinearLayout {
     }
 
     public void a(String title, int color) {
+        var cardView = new MaterialCardView(context);
+        var params = getLayoutParams(18.0F);
+        params.topMargin = (int) (f * 16.0F);
+        cardView.setLayoutParams(params);
+        cardView.setCardBackgroundColor(color);
+        cardView.setRadius(f * 8f);
+
         TextView textView = new TextView(context);
-        LayoutParams layoutParams = getLayoutParams(16.0F);
-        layoutParams.topMargin = (int) (f * 16.0F);
-        textView.setLayoutParams(layoutParams);
-        textView.setBackgroundColor(color);
         textView.setText(title);
-        textView.setTextColor(Color.WHITE);
-        textView.setTextSize(9.0F);
-        textView.setTypeface(null, Typeface.BOLD);
-        textView.setGravity(Gravity.TOP | Gravity.LEFT);
+        textView.setTextColor(getColor(context, isDarkThemeEnabled(context) ? R.attr.colorOnSurface : R.attr.colorOnSurfaceInverse));
+        textView.setTextSize(10.0F);
+        textView.setGravity(Gravity.CENTER | Gravity.LEFT);
         textView.setPadding((int) (f * 12.0F), 0, (int) (f * 12.0F), 0);
-        binding.blockBuilder.addView(textView);
+        cardView.addView(textView);
+
+        binding.blockBuilder.addView(cardView);
     }
 
     public void addDeprecatedBlock(String message, String type, String opCode) {
         if (message != null && !message.isEmpty()) {
-            a(message, 0xff555555);
+            a(message, getColor(context, isDarkThemeEnabled(context) ? R.attr.colorSurfaceContainerHigh : R.attr.colorSurfaceInverse));
         }
         Ts blockView = a("", type, opCode);
         blockView.e = 0xFFBDBDBD;
@@ -122,7 +128,7 @@ public class PaletteBlock extends LinearLayout {
                 // Check if previous char is not already a space (for acronyms like "HTTPExample")
                 // and if the current char is not part of an acronym (e.g. the TTP in HTTP)
                 // For simplicity here, just add a space before any uppercase unless it's followed by lowercase.
-                if (i + 1 < name.length() && Character.isLowerCase(name.charAt(i+1)) || Character.isLowerCase(name.charAt(i-1))) {
+                if (i + 1 < name.length() && Character.isLowerCase(name.charAt(i + 1)) || Character.isLowerCase(name.charAt(i - 1))) {
                     result.append(' ');
                 }
             }
@@ -132,10 +138,7 @@ public class PaletteBlock extends LinearLayout {
     }
 
     private LinearLayout.LayoutParams getLayoutParams(float heightMultiplier) {
-        return new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                (int) (f * heightMultiplier)
-        );
+        return new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) (f * heightMultiplier));
     }
 
     public void setDragEnabled(boolean dragEnabled) {

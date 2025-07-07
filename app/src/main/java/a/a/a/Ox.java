@@ -130,7 +130,7 @@ public class Ox {
                     Material3LibraryManager materialLibraryManager = new Material3LibraryManager(buildConfig.sc_id);
 
                     XmlBuilder toolbarTag = new XmlBuilder(
-                        (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
+                            (materialLibraryManager.isMaterial3Enabled()) ? "com.google.android.material.appbar.MaterialToolbar" : "androidx.appcompat.widget.Toolbar"
                     );
                     toolbarTag.addAttribute("android", "id", "@+id/_toolbar");
                     aci.inject(toolbarTag, "Toolbar");

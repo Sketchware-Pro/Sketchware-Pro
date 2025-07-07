@@ -6,11 +6,11 @@ import static mod.hey.studios.util.ProjectFile.getDefaultColor;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.ContextThemeWrapper;
-import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
 import com.besome.sketch.editor.manage.library.material3.Material3LibraryManager;
+import com.google.android.material.color.MaterialColors;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -35,7 +35,6 @@ import pro.sketchware.SketchApplication;
 import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.PropertiesUtil;
-import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.utility.XmlUtil;
 
 @SuppressLint("DiscouragedApi")
@@ -112,7 +111,7 @@ public class ColorsEditorManager {
                         themedContext = new ContextThemeWrapper(context, R.style.ThemeOverlay_SketchwarePro_ViewEditor_Material3_NON_DYNAMIC_Light);
                     }
                 }
-                return String.format("#%06X", (0xFFFFFF & ThemeUtils.getColor(new View(themedContext), attrId)));
+                return String.format("#%06X", (0xFFFFFF & MaterialColors.getColor(themedContext, attrId, "getColorValue")));
             }
         } catch (Exception ignored) {
         }

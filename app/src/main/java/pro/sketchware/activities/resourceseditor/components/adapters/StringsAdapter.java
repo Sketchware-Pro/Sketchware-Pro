@@ -3,7 +3,6 @@ package pro.sketchware.activities.resourceseditor.components.adapters;
 import static com.besome.sketch.design.DesignActivity.sc_id;
 import static com.besome.sketch.editor.LogicEditorActivity.getAllJavaFileNames;
 import static com.besome.sketch.editor.LogicEditorActivity.getAllXmlFileNames;
-
 import static pro.sketchware.utility.UI.animateLayoutChanges;
 
 import android.text.Editable;
@@ -18,13 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.BlockBean;
 import com.besome.sketch.beans.ViewBean;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import a.a.a.aB;
 import a.a.a.eC;
 import a.a.a.jC;
 import mod.hey.studios.util.Helper;
@@ -74,7 +73,7 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
             int adapterPosition = holder.getAbsoluteAdapterPosition();
             HashMap<String, Object> currentItem = filteredData.get(adapterPosition);
 
-            aB dialog = new aB(activity);
+            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity);
             ViewStringEditorAddBinding dialogBinding = ViewStringEditorAddBinding.inflate(activity.getLayoutInflater());
 
             dialogBinding.stringKeyInput.addTextChangedListener(new TextWatcher() {
@@ -100,8 +99,8 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
                 dialogBinding.stringKeyInput.setEnabled(false);
             }
 
-            dialog.b("Edit string");
-            dialog.b("Save", v1 -> {
+            dialog.setTitle("Edit string");
+            dialog.setPositiveButton("Save", (d, which) -> {
                 String keyInput = Objects.requireNonNull(dialogBinding.stringKeyInput.getText()).toString();
                 String valueInput = Objects.requireNonNull(dialogBinding.stringValueInput.getText()).toString();
                 if (keyInput.isEmpty() || valueInput.isEmpty()) {
@@ -122,7 +121,7 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
 
             String keyInput = Objects.requireNonNull(dialogBinding.stringKeyInput.getText()).toString();
             if (!keyInput.equals("app_name")) {
-                dialog.configureDefaultButton(Helper.getResString(R.string.common_word_delete), v1 -> {
+                dialog.setNeutralButton(Helper.getResString(R.string.common_word_delete), (d, which) -> {
                     if (isXmlStringUsed(key)) {
                         SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_title_remove_xml_string_error));
                     } else {
@@ -133,8 +132,8 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
                     }
                 });
             }
-            dialog.a(Helper.getResString(R.string.cancel), v1 -> dialog.dismiss());
-            dialog.a(dialogBinding.getRoot());
+            dialog.setNegativeButton(Helper.getResString(R.string.cancel), null);
+            dialog.setView(dialogBinding.getRoot());
             dialog.show();
         });
     }

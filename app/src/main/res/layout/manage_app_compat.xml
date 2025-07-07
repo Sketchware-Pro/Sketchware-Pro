@@ -23,15 +23,14 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:visibility="gone"
             app:tabMode="scrollable" />
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/tabs_divider"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:dividerThickness="0.5dp" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView

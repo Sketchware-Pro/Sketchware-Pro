@@ -142,7 +142,7 @@ public class EventsManagerFragment extends qA {
     private void showImportEventsDialog() {
         FilePickerOptions options = new FilePickerOptions();
         options.setTitle("Select a .txt file");
-        options.setExtensions(new String[]{".txt"});
+        options.setExtensions(new String[]{"txt"});
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override

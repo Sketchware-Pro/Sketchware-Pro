@@ -3,7 +3,7 @@
     <item
         android:id="@+id/action_reset"
         android:icon="@drawable/ic_mtrl_reset"
-        android:iconTint="@color/colorPrimary"
+        android:iconTint="?colorPrimary"
         android:title="Reset"
         app:showAsAction="always" />
 </menu>
