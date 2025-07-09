@@ -49,7 +49,7 @@ public class AsdDialog extends Dialog implements DialogInterface.OnDismissListen
         }
 
         binding.editor.setTypefaceText(EditorUtils.getTypeface(act));
-        binding.editor.setText(Lx.j(content, false));
+        binding.editor.setText(content);
         binding.editor.setWordwrap(false);
 
         EditorUtils.loadJavaConfig(binding.editor);
