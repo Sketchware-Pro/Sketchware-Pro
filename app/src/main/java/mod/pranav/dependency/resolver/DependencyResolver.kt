@@ -1,7 +1,6 @@
 package mod.pranav.dependency.resolver
 
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import com.android.tools.r8.CompilationMode
 import com.android.tools.r8.D8
@@ -9,7 +8,6 @@ import com.android.tools.r8.D8Command
 import com.android.tools.r8.OutputMode
 import com.google.gson.Gson
 import kotlinx.coroutines.runBlocking
-import mod.agus.jcoderz.dx.command.dexer.Main
 import mod.hey.studios.build.BuildSettings
 import mod.hey.studios.util.Helper
 import mod.jbk.build.BuiltInLibraries
@@ -265,31 +263,16 @@ class DependencyResolver(
     }
 
     private fun compileJar(jarFile: Path, jars: List<Path>, libraryJars: List<Path>) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            D8.run(
-                D8Command.builder().setIntermediate(true).setMode(CompilationMode.RELEASE)
-                    .addProgramFiles(jarFile).addLibraryFiles(libraryJars).addClasspathFiles(jars)
-                    .setOutput(jarFile.parent, OutputMode.DexIndexed).build()
-            )
-            return
-        }
-        Main.clearInternTables()
-        val arguments = Main.Arguments()
-
-        val parseMethod =
-            Main.Arguments::class.java.getDeclaredMethod("parse", Array<String>::class.java)
-        parseMethod.isAccessible = true
-        parseMethod.invoke(
-            arguments, arrayOf(
-                "--debug",
-                "--verbose",
-                "--multi-dex",
-                "--output=${jarFile.parent}",
-                jarFile.toString()
-            )
+        D8.run(
+            D8Command.builder()
+                .setIntermediate(true)
+                .setMode(CompilationMode.RELEASE)
+                .addProgramFiles(jarFile)
+                .addLibraryFiles(libraryJars)
+                .addClasspathFiles(jars)
+                .setOutput(jarFile.parent, OutputMode.DexIndexed)
+                .build()
         )
-
-        Main.run(arguments)
     }
 
     private fun downloadWithProgress(artifact: Artifact, targetFile: File, callback: DependencyResolverCallback) {
