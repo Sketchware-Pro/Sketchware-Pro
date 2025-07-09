@@ -1,5 +1,4 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,7 +17,7 @@
         android:layout_height="wrap_content"
         android:paddingHorizontal="12dp"
         android:textAppearance="?attr/textAppearanceTitleMedium"
-        android:text="Select Import option"/>
+        android:text="Select Import option" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_import_type"

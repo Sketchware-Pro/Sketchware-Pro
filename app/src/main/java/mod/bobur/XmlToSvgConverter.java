@@ -229,7 +229,7 @@ public class XmlToSvgConverter {
         // check colors file
         String filePath = wq.b(sc_id) + "/files/resource/values/colors.xml";
         if (!FileUtil.isExistFile(filePath)) {
-            filePath = wq.d( sc_id) + "/app/src/main/res/values/colors.xml";
+            filePath = wq.d(sc_id) + "/app/src/main/res/values/colors.xml";
             if (!FileUtil.isExistFile(filePath)) {
                 return "#FFFFFF";
             }

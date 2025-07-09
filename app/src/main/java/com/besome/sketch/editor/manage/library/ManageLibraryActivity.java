@@ -131,7 +131,8 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             View child = libraryItemLayout.getChildAt(i);
             if (child instanceof ExcludeBuiltInLibrariesLibraryItemView libraryItemView) {
                 libraryItemView.setData(null);
-            } if (child instanceof Material3LibraryItemView libraryItemView) {
+            }
+            if (child instanceof Material3LibraryItemView libraryItemView) {
                 libraryItemView.setData(compatLibraryBean);
             } else if (child instanceof LibraryItemView libraryItemView) {
                 if (libraryBean != null && libraryBean.libType == (Integer) libraryItemView.getTag()) {

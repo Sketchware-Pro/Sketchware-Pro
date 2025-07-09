@@ -34,11 +34,11 @@ import pro.sketchware.utility.XmlUtil;
 public class StringsEditor extends Fragment {
 
     private ResourcesEditorFragmentBinding binding;
-    
+
     private final ResourcesEditorActivity activity;
-    
+
     public StringsAdapter adapter;
-    
+
     public final ArrayList<HashMap<String, Object>> listmap = new ArrayList<>();
     private HashMap<Integer, String> notesMap = new HashMap<>();
 
@@ -55,7 +55,8 @@ public class StringsEditor extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = ResourcesEditorFragmentBinding.inflate(inflater, container, false);
-        stringsEditorManager.sc_id = activity.sc_id;return binding.getRoot();
+        stringsEditorManager.sc_id = activity.sc_id;
+        return binding.getRoot();
     }
 
     public void updateStringsList(String filePath, int updateMode, boolean hasUnsavedChangesStatus) {
@@ -185,8 +186,8 @@ public class StringsEditor extends Fragment {
 
     public void saveStringsFile() {
         if (hasUnsavedChanges) {
-        XmlUtil.saveXml(filePath, stringsEditorManager.convertListMapToXmlStrings(listmap, notesMap));
-        hasUnsavedChanges = false;
+            XmlUtil.saveXml(filePath, stringsEditorManager.convertListMapToXmlStrings(listmap, notesMap));
+            hasUnsavedChanges = false;
         }
     }
 }

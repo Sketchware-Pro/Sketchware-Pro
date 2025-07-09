@@ -173,7 +173,9 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     });
 
-    private Boolean isViewBindingEnabled;private void loadEventBlocks() {
+    private Boolean isViewBindingEnabled;
+
+    private void loadEventBlocks() {
         ArrayList<BlockBean> eventBlocks = jC.a(B).a(M.getJavaName(), C + "_" + D);
         if (eventBlocks != null) {
             if (eventBlocks.isEmpty()) {
@@ -469,7 +471,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private boolean isKeyHasNonSavedUsage(String key) {
         for (BlockBean block : o.getBlocks()) {
             if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
 
                 showToastError();
                 return true;
@@ -481,7 +483,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private boolean isKeyHasSavedUsage(String key) {
         for (BlockBean block : savedBlockBean) {
             if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
 
                 return true;
             }
@@ -499,7 +501,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
                 for (BlockBean block : entry.getValue()) {
                     if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                        (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
 
                         showToastError();
                         return true;
@@ -514,7 +516,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         for (String xmlFileName : getAllXmlFileNames(projectScId)) {
             for (ViewBean view : projectDataManager.d(xmlFileName)) {
                 if (view.text.text.equals("@string/" + key) ||
-                    (view.text.hint.equals("@string/" + key))) {
+                        (view.text.hint.equals("@string/" + key))) {
 
                     showToastError();
                     return true;
@@ -534,7 +536,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
                 for (BlockBean block : entry.getValue()) {
                     if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                        (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
+                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
 
                         length++;
                     }

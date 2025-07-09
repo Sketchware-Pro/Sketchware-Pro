@@ -78,8 +78,8 @@
 
     <ImageView
         android:id="@+id/expand"
-        android:layout_width="@dimen/mtrl_min_touch_target_size"
-        android:layout_height="@dimen/mtrl_min_touch_target_size"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:scaleType="centerInside"
         android:src="@drawable/selector_ic_expand_more_24"
