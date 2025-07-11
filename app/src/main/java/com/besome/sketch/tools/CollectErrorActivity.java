@@ -43,6 +43,7 @@ public class CollectErrorActivity extends BaseAppCompatActivity {
                     .setPositiveButton("Copy", null)
                     .setNegativeButton("Cancel", (dialogInterface, which) -> finish())
                     .setNeutralButton("Show error", null) // null to set proper onClick listeners later without dismissing the AlertDialog
+                    .setCancelable(false)
                     .show();
 
             TextView messageView = dialog.findViewById(android.R.id.message);
