@@ -3045,117 +3045,119 @@ public class Lx {
     /**
      * @return Formatted code
      */
-public static String j(String code, boolean indentMultiLineComments) {
-    StringBuilder formattedCode = new StringBuilder(4096);
-    char[] codeChars = code.toCharArray();
-    boolean processingSingleLineComment = false;
-    boolean processingMultiLineComment = false;
-    boolean processingEscape = false;
-    int openBraces = 0;
-    boolean processingChar = false;
-    boolean processingString = false;
-    boolean isNewLine = true;
 
-    for (int i = 0; i < codeChars.length; i++) {
-        char codeBit = codeChars[i];
+    public static String j(String code, boolean indentMultiLineComments) {
+        StringBuilder formattedCode = new StringBuilder(4096);
+        char[] codeChars = code.toCharArray();
+        boolean processingSingleLineComment = false;
+        boolean processingMultiLineComment = false;
+        boolean processingEscape = false;
+        int openBraces = 0;
+        boolean processingChar = false;
+        boolean processingString = false;
+        boolean isNewLine = true;
 
-        if (isNewLine && !processingSingleLineComment && !processingMultiLineComment
-                && !processingChar && !processingString) {
-            if (codeBit == ' ' || codeBit == '\t') {
-                continue;
-            }
-            appendIndent(formattedCode, openBraces);
-            isNewLine = false;
-        }
+        for (int i = 0; i < codeChars.length; i++) {
+            char codeBit = codeChars[i];
 
-        if (processingSingleLineComment) {
-            if (codeBit == '\n') {
-                formattedCode.append(codeBit);
-                isNewLine = true;
-                processingSingleLineComment = false;
-            } else {
-                formattedCode.append(codeBit);
-            }
-        } else if (processingMultiLineComment) {
-            if (codeBit == '*' && codeChars.length > i + 1) {
-                char nextChar = codeChars[i + 1];
-                if (nextChar == '/') {
-                    formattedCode.append(codeBit);
-                    formattedCode.append(nextChar);
-                    i += 1;
-                    processingMultiLineComment = false;
+            if (isNewLine && !processingSingleLineComment && !processingMultiLineComment
+                    && !processingChar && !processingString) {
+                if (codeBit == ' ' || codeBit == '\t') {
                     continue;
                 }
-            }
-            formattedCode.append(codeBit);
-            if (indentMultiLineComments && codeBit == '\n') {
-                isNewLine = true;
-            }
-        } else if (processingEscape) {
-            formattedCode.append(codeBit);
-            processingEscape = false;
-        } else if (codeBit == '\\') {
-            formattedCode.append(codeBit);
-            processingEscape = true;
-        } else if (processingChar) {
-            if (codeBit == '\'') {
-                formattedCode.append(codeBit);
-                processingChar = false;
-            } else {
-                formattedCode.append(codeBit);
-            }
-        } else if (processingString) {
-            if (codeBit == '"') {
-                formattedCode.append(codeBit);
-                processingString = false;
-            } else {
-                formattedCode.append(codeBit);
-            }
-        } else {
-            if (codeBit == '/' && codeChars.length > i + 1) {
-                char nextChar = codeChars[i + 1];
-                if (nextChar == '/') {
-                    formattedCode.append(codeBit);
-                    formattedCode.append(nextChar);
-                    i += 1;
-                    processingSingleLineComment = true;
-                    continue;
-                }
-                if (nextChar == '*') {
-                    formattedCode.append(codeBit);
-                    formattedCode.append(nextChar);
-                    i += 1;
-                    processingMultiLineComment = true;
-                    continue;
-                }
+                appendIndent(formattedCode, openBraces);
+                isNewLine = false;
             }
 
-            if (codeBit == '\n') {
-                formattedCode.append(codeBit);
-                isNewLine = true;
-            } else {
-                if (codeBit == '\'') {
-                    processingChar = true;
+            if (processingSingleLineComment) {
+                if (codeBit == '\n') {
+                    formattedCode.append(codeBit);
+                    isNewLine = true;
+                    processingSingleLineComment = false;
+                } else {
+                    formattedCode.append(codeBit);
                 }
-                if (codeBit == '"') {
-                    processingString = true;
-                }
-                if (codeBit == '{') {
-                    openBraces += 1;
-                }
-                if (codeBit == '}' && openBraces > 0) {
-                    openBraces -= 1;
-                    if (formattedCode.length() > 0 && formattedCode.charAt(formattedCode.length() - 1) == '\t') {
-                        formattedCode.deleteCharAt(formattedCode.length() - 1);
+            } else if (processingMultiLineComment) {
+                if (codeBit == '*' && codeChars.length > i + 1) {
+                    char nextChar = codeChars[i + 1];
+                    if (nextChar == '/') {
+                        formattedCode.append(codeBit);
+                        formattedCode.append(nextChar);
+                        i += 1;
+                        processingMultiLineComment = false;
+                        continue;
                     }
                 }
                 formattedCode.append(codeBit);
+                if (indentMultiLineComments && codeBit == '\n') {
+                    isNewLine = true;
+                }
+            } else if (processingEscape) {
+                formattedCode.append(codeBit);
+                processingEscape = false;
+            } else if (codeBit == '\\') {
+                formattedCode.append(codeBit);
+                processingEscape = true;
+            } else if (processingChar) {
+                if (codeBit == '\'') {
+                    formattedCode.append(codeBit);
+                    processingChar = false;
+                } else {
+                    formattedCode.append(codeBit);
+                }
+            } else if (processingString) {
+                if (codeBit == '"') {
+                    formattedCode.append(codeBit);
+                    processingString = false;
+                } else {
+                    formattedCode.append(codeBit);
+                }
+            } else {
+                if (codeBit == '/' && codeChars.length > i + 1) {
+                    char nextChar = codeChars[i + 1];
+                    if (nextChar == '/') {
+                        formattedCode.append(codeBit);
+                        formattedCode.append(nextChar);
+                        i += 1;
+                        processingSingleLineComment = true;
+                        continue;
+                    }
+                    if (nextChar == '*') {
+                        formattedCode.append(codeBit);
+                        formattedCode.append(nextChar);
+                        i += 1;
+                        processingMultiLineComment = true;
+                        continue;
+                    }
+                }
+
+                if (codeBit == '\n') {
+                    formattedCode.append(codeBit);
+                    isNewLine = true;
+                } else {
+                    if (codeBit == '\'') {
+                        processingChar = true;
+                    }
+                    if (codeBit == '"') {
+                        processingString = true;
+                    }
+                    if (codeBit == '{') {
+                        openBraces += 1;
+                    }
+                    if (codeBit == '}' && openBraces > 0) {
+                        openBraces -= 1;
+                        if (formattedCode.length() > 0
+                                && formattedCode.charAt(formattedCode.length() - 1) == '\t') {
+                            formattedCode.deleteCharAt(formattedCode.length() - 1);
+                        }
+                    }
+                    formattedCode.append(codeBit);
+                }
             }
         }
-    }
 
-    return formattedCode.toString();
-        }
+        return formattedCode.toString();
+    }
 
     public static String pagerAdapter(Ox ox, String pagerName, String pagerItemLayoutName, ArrayList<ViewBean> pagerItemViews, String onBindCustomViewLogic, boolean isViewBindingEnabled) {
         String adapterName = a(pagerName, isViewBindingEnabled);
