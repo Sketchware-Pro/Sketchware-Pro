@@ -3045,6 +3045,7 @@ public class Lx {
     /**
      * @return Formatted code
      */
+
     public static String j(String code, boolean indentMultiLineComments) {
         StringBuilder formattedCode = new StringBuilder(4096);
         char[] codeChars = code.toCharArray();
@@ -3054,101 +3055,103 @@ public class Lx {
         int openBraces = 0;
         boolean processingChar = false;
         boolean processingString = false;
+        boolean isNewLine = true;
 
         for (int i = 0; i < codeChars.length; i++) {
             char codeBit = codeChars[i];
+
+            if (isNewLine && !processingSingleLineComment && !processingMultiLineComment
+                    && !processingChar && !processingString) {
+                if (codeBit == ' ' || codeBit == '\t') {
+                    continue;
+                }
+                appendIndent(formattedCode, openBraces);
+                isNewLine = false;
+            }
+
             if (processingSingleLineComment) {
                 if (codeBit == '\n') {
                     formattedCode.append(codeBit);
-                    appendIndent(formattedCode, openBraces);
+                    isNewLine = true;
                     processingSingleLineComment = false;
                 } else {
                     formattedCode.append(codeBit);
                 }
-            } else {
-                if (processingMultiLineComment) {
-                    if (codeBit == '*' && codeChars.length > i + 1) {
-                        char nextChar = codeChars[i + 1];
-                        if (nextChar == '/') {
-                            formattedCode.append(codeBit);
-                            formattedCode.append(nextChar);
-                            i += 1;
-                            processingMultiLineComment = false;
-                            continue;
-                        }
-                    }
-
-                    formattedCode.append(codeBit);
-
-                    if (indentMultiLineComments && codeBit == '\n') {
-                        appendIndent(formattedCode, openBraces);
-                    }
-                } else if (processingEscape) {
-                    formattedCode.append(codeBit);
-                    processingEscape = false;
-                } else if (codeBit == '\\') {
-                    formattedCode.append(codeBit);
-                    processingEscape = true;
-                } else if (processingChar) {
-                    if (codeBit == '\'') {
+            } else if (processingMultiLineComment) {
+                if (codeBit == '*' && codeChars.length > i + 1) {
+                    char nextChar = codeChars[i + 1];
+                    if (nextChar == '/') {
                         formattedCode.append(codeBit);
-                        processingChar = false;
-                    } else {
-                        formattedCode.append(codeBit);
-                    }
-                } else if (processingString) {
-                    if (codeBit == '"') {
-                        formattedCode.append(codeBit);
-                        processingString = false;
-                    } else {
-                        formattedCode.append(codeBit);
-                    }
-                } else {
-                    if (codeBit == '/' && codeChars.length > i + 1) {
-                        char nextChar = codeChars[i + 1];
-                        if (nextChar == '/') {
-                            formattedCode.append(codeBit);
-                            formattedCode.append(nextChar);
-                            i += 1;
-                            processingSingleLineComment = true;
-                            continue;
-                        }
-
-                        if (nextChar == '*') {
-                            formattedCode.append(codeBit);
-                            formattedCode.append(nextChar);
-                            i += 1;
-                            processingMultiLineComment = true;
-                            continue;
-                        }
-                    }
-
-                    if (codeBit != '\n') {
-                        if (codeBit == '\'') {
-                            processingChar = true;
-                        }
-
-                        if (codeBit == '"') {
-                            processingString = true;
-                        }
-
-                        if (codeBit == '{') {
-                            openBraces += 1;
-                        }
-
-                        if (codeBit == '}' && openBraces > 0) {
-                            openBraces -= 1;
-                            if (formattedCode.charAt(formattedCode.length() - 1) == '\t') {
-                                formattedCode.deleteCharAt(formattedCode.length() - 1);
-                            }
-                        }
-
-                        formattedCode.append(codeBit);
+                        formattedCode.append(nextChar);
+                        i += 1;
+                        processingMultiLineComment = false;
                         continue;
                     }
-
+                }
+                formattedCode.append(codeBit);
+                if (indentMultiLineComments && codeBit == '\n') {
+                    isNewLine = true;
+                }
+            } else if (processingEscape) {
+                formattedCode.append(codeBit);
+                processingEscape = false;
+            } else if (codeBit == '\\') {
+                formattedCode.append(codeBit);
+                processingEscape = true;
+            } else if (processingChar) {
+                if (codeBit == '\'') {
                     formattedCode.append(codeBit);
-                    appendIndent(formattedCode, openBraces);
+                    processingChar = false;
+                } else {
+                    formattedCode.append(codeBit);
+                }
+            } else if (processingString) {
+                if (codeBit == '"') {
+                    formattedCode.append(codeBit);
+                    processingString = false;
+                } else {
+                    formattedCode.append(codeBit);
+                }
+            } else {
+                if (codeBit == '/' && codeChars.length > i + 1) {
+                    char nextChar = codeChars[i + 1];
+                    if (nextChar == '/') {
+                        formattedCode.append(codeBit);
+                        formattedCode.append(nextChar);
+                        i += 1;
+                        processingSingleLineComment = true;
+                        continue;
+                    }
+                    if (nextChar == '*') {
+                        formattedCode.append(codeBit);
+                        formattedCode.append(nextChar);
+                        i += 1;
+                        processingMultiLineComment = true;
+                        continue;
+                    }
+                }
+
+                if (codeBit == '\n') {
+                    formattedCode.append(codeBit);
+                    isNewLine = true;
+                } else {
+                    if (codeBit == '\'') {
+                        processingChar = true;
+                    }
+                    if (codeBit == '"') {
+                        processingString = true;
+                    }
+                    if (codeBit == '{') {
+                        openBraces += 1;
+                    }
+                    if (codeBit == '}' && openBraces > 0) {
+                        openBraces -= 1;
+                        if (formattedCode.length() > 0
+                                && formattedCode.charAt(formattedCode.length() - 1) == '\t') {
+                            formattedCode.deleteCharAt(formattedCode.length() - 1);
+                        }
+                    }
+                    formattedCode.append(codeBit);
                 }
             }
         }
