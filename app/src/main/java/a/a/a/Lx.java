@@ -934,12 +934,6 @@ public class Lx {
         }
     }
 
-    public static void appendIndent(StringBuilder stringBuilder, int indentSize) {
-        for (int i = 0; i < indentSize; ++i) {
-            stringBuilder.append('\t');
-        }
-    }
-
     /**
      * @return Content of a generated <code>BluetoothConnect.java</code> file, without indentation
      */
@@ -3049,10 +3043,11 @@ public class Lx {
     public static String j(String code, boolean indentMultiLineComments) {
         StringBuilder formattedCode = new StringBuilder(4096);
         char[] codeChars = code.toCharArray();
+        boolean isXML = isXML(code);
         boolean processingSingleLineComment = false;
         boolean processingMultiLineComment = false;
         boolean processingEscape = false;
-        int openBraces = 0;
+        int indentLevel = 0;
         boolean processingChar = false;
         boolean processingString = false;
         boolean isNewLine = true;
@@ -3062,10 +3057,27 @@ public class Lx {
 
             if (isNewLine && !processingSingleLineComment && !processingMultiLineComment
                     && !processingChar && !processingString) {
-                if (codeBit == ' ' || codeBit == '\t') {
-                    continue;
+                if (!isXML) {
+                    if (codeBit == ' ' || codeBit == '\t') {
+                        continue;
+                    }
+                    if (codeBit == '}') {
+                        if (indentLevel > 0) {
+                            appendIndent(formattedCode, indentLevel - 1);
+                        }
+                        formattedCode.append(codeBit);
+                        if (indentLevel > 0) {
+                            indentLevel -= 1;
+                        }
+                        if (i + 1 < codeChars.length && codeChars[i + 1] == ';') {
+                            formattedCode.append(';');
+                            i += 1;
+                        }
+                        isNewLine = false;
+                        continue;
+                    }
+                    appendIndent(formattedCode, indentLevel);
                 }
-                appendIndent(formattedCode, openBraces);
                 isNewLine = false;
             }
 
@@ -3078,19 +3090,18 @@ public class Lx {
                     formattedCode.append(codeBit);
                 }
             } else if (processingMultiLineComment) {
-                if (codeBit == '*' && codeChars.length > i + 1) {
-                    char nextChar = codeChars[i + 1];
-                    if (nextChar == '/') {
-                        formattedCode.append(codeBit);
-                        formattedCode.append(nextChar);
-                        i += 1;
-                        processingMultiLineComment = false;
-                        continue;
-                    }
+                if (codeBit == '*' && codeChars.length > i + 1 && codeChars[i + 1] == '/') {
+                    formattedCode.append(codeBit).append(codeChars[i + 1]);
+                    i += 1;
+                    processingMultiLineComment = false;
+                    continue;
                 }
                 formattedCode.append(codeBit);
                 if (indentMultiLineComments && codeBit == '\n') {
                     isNewLine = true;
+                    if (isXML) {
+                        appendIndent(formattedCode, indentLevel);
+                    }
                 }
             } else if (processingEscape) {
                 formattedCode.append(codeBit);
@@ -3116,42 +3127,87 @@ public class Lx {
                 if (codeBit == '/' && codeChars.length > i + 1) {
                     char nextChar = codeChars[i + 1];
                     if (nextChar == '/') {
-                        formattedCode.append(codeBit);
-                        formattedCode.append(nextChar);
+                        formattedCode.append(codeBit).append(nextChar);
                         i += 1;
                         processingSingleLineComment = true;
                         continue;
                     }
                     if (nextChar == '*') {
-                        formattedCode.append(codeBit);
-                        formattedCode.append(nextChar);
+                        formattedCode.append(codeBit).append(nextChar);
                         i += 1;
                         processingMultiLineComment = true;
                         continue;
                     }
                 }
 
-                if (codeBit == '\n') {
-                    formattedCode.append(codeBit);
-                    isNewLine = true;
-                } else {
-                    if (codeBit == '\'') {
-                        processingChar = true;
-                    }
-                    if (codeBit == '"') {
-                        processingString = true;
-                    }
-                    if (codeBit == '{') {
-                        openBraces += 1;
-                    }
-                    if (codeBit == '}' && openBraces > 0) {
-                        openBraces -= 1;
-                        if (formattedCode.length() > 0
-                                && formattedCode.charAt(formattedCode.length() - 1) == '\t') {
-                            formattedCode.deleteCharAt(formattedCode.length() - 1);
+                if (isXML) {
+                    if (codeBit == '<' && codeChars.length > i + 1) {
+                        char nextChar = codeChars[i + 1];
+                        if (nextChar == '/') {
+                            if (indentLevel > 0) {
+                                indentLevel -= 1;
+                            }
+                            if (isNewLine) {
+                                appendIndent(formattedCode, indentLevel);
+                            }
+                            formattedCode.append(codeBit);
+                        } else if (nextChar == '!' || nextChar == '?') {
+                            if (isNewLine) {
+                                appendIndent(formattedCode, indentLevel);
+                            }
+                            formattedCode.append(codeBit);
+                        } else {
+                            if (isNewLine) {
+                                appendIndent(formattedCode, indentLevel);
+                            }
+                            formattedCode.append(codeBit);
+                            indentLevel += 1;
                         }
+                    } else if (codeBit == '>') {
+                        formattedCode.append(codeBit);
+                        if (i > 0 && codeChars[i - 1] == '/') {
+                            if (indentLevel > 0) {
+                                indentLevel -= 1;
+                            }
+                        }
+                    } else if (codeBit == '\n') {
+                        formattedCode.append(codeBit);
+                        isNewLine = true;
+                    } else {
+                        if (isNewLine) {
+                            appendIndent(formattedCode, indentLevel);
+                        }
+                        formattedCode.append(codeBit);
                     }
-                    formattedCode.append(codeBit);
+                } else {
+                    if (codeBit == '\n') {
+                        formattedCode.append(codeBit);
+                        isNewLine = true;
+                    } else {
+                        if (codeBit == '\'') {
+                            processingChar = true;
+                        }
+                        if (codeBit == '"') {
+                            processingString = true;
+                        }
+                        if (codeBit == '{') {
+                            indentLevel += 1;
+                            formattedCode.append(codeBit);
+                            continue;
+                        }
+                        if (codeBit == '}') {
+                            if (indentLevel > 0) {
+                                indentLevel -= 1;
+                            }
+                            formattedCode.append(codeBit);
+                            if (i + 1 < codeChars.length && codeChars[i + 1] == ';') {
+                                formattedCode.append(';');
+                                i += 1;
+                            }
+                            continue;
+                        }
+                        formattedCode.append(codeBit);
+                    }
                 }
             }
         }
@@ -3159,6 +3215,17 @@ public class Lx {
         return formattedCode.toString();
     }
 
+    private static boolean isXML(String code) {
+        String trimmed = code.trim();
+        return trimmed.startsWith("<?xml") || trimmed.startsWith("<") && trimmed.contains(">");
+    }
+
+    public static void appendIndent(StringBuilder stringBuilder, int indentSize) {
+        for (int i = 0; i < indentSize; ++i) {
+            stringBuilder.append('\t');
+        }
+    }
+    
     public static String pagerAdapter(Ox ox, String pagerName, String pagerItemLayoutName, ArrayList<ViewBean> pagerItemViews, String onBindCustomViewLogic, boolean isViewBindingEnabled) {
         String adapterName = a(pagerName, isViewBindingEnabled);
 
