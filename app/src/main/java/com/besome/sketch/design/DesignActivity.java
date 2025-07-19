@@ -1186,8 +1186,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
                 activity.installBuiltApk();
                 isBuildFinished = true;
+                canceled = false; // Added to reset the canceled flag
             } catch (MissingFileException e) {
                 isBuildFinished = true;
+                canceled = false; // Added to reset the canceled flag
                 activity.runOnUiThread(() -> {
                     boolean isMissingDirectory = e.isMissingDirectory();
 
@@ -1214,15 +1216,18 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 });
             } catch (zy zy) {
                 isBuildFinished = true;
+                canceled = false; // Added to reset the canceled flag
                 activity.indicateCompileErrorOccurred(zy.getMessage());
             } catch (Throwable tr) {
                 isBuildFinished = true;
+                canceled = false; // Added to reset the canceled flag
                 LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
                 activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));
             } finally {
                 activity.runOnUiThread(this::onPostExecute);
             }
         }
+
 
         @Override
         public void onProgress(String progress, int step) {
