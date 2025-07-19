@@ -319,32 +319,32 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="10dp"
+    android:background="@android:color/transparent">
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.Material3Expressive.Button.TonalButton"
+        android:id="@+id/cancel"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="10dp">
+        android:layout_marginEnd="7dp"
+        android:layout_weight="1"
+        android:text="@string/common_word_cancel"
+        android:textSize="@dimen/text_size_button_material" />
 
-        <Button
-            style="@style/Widget.Material3Expressive.Button.TonalButton"
-            android:id="@+id/cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="7dp"
-            android:layout_weight="1"
-            android:text="@string/common_word_cancel"
-            android:textSize="@dimen/text_size_button_material" />
-
-        <Button
-            android:id="@+id/save"
-            style="@style/Widget.Material3Expressive.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:layout_weight="1"
-            android:text="@string/common_word_save"
-            android:textSize="@dimen/text_size_button_material" />
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/save"
+        style="@style/Widget.Material3Expressive.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_weight="1"
+        android:text="@string/common_word_save"
+        android:textSize="@dimen/text_size_button_material" />
+</com.google.android.material.button.MaterialButtonGroup>
 </LinearLayout>
