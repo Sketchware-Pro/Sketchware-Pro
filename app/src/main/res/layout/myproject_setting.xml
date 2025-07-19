@@ -264,16 +264,13 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
+    <com.google.android.material.button.MaterialButtonGroup
     android:id="@+id/button_group"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:background="?attr/colorSurface"
     android:paddingHorizontal="16dp"
-    android:paddingVertical="12dp"
-    app:singleSelection="true"
-    app:selectionRequired="true">
+    android:paddingVertical="12dp">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancel"
@@ -291,5 +288,5 @@
         android:layout_weight="1"
         android:text="@string/common_word_create" />
 
-</com.google.android.material.button.MaterialButtonToggleGroup>
+</com.google.android.material.button.MaterialButtonGroup>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
