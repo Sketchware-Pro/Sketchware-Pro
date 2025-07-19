@@ -74,7 +74,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="40dp"
-        android:paddingEnd="4dp">
+        android:paddingEnd="4dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/sub_items"
