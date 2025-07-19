@@ -208,19 +208,16 @@
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-    android:id="@+id/button_group"
+    <com.google.android.material.button.MaterialButtonGroup
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp"
     android:layout_marginVertical="8dp"
-    app:spacing="4dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent">
+    app:singleLine="true"
+    app:spacing="4dp">
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/cancel"
         style="@style/Widget.Material3Expressive.Button.TonalButton"
         android:layout_width="0dp"
@@ -228,7 +225,7 @@
         android:layout_weight="1"
         android:text="@string/common_word_cancel" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/save"
         style="@style/Widget.Material3Expressive.Button"
         android:layout_width="0dp"
@@ -236,5 +233,5 @@
         android:layout_weight="1"
         android:text="@string/common_word_save" />
 
-</com.google.android.material.button.MaterialButtonToggleGroup>
+</com.google.android.material.button.MaterialButtonGroup>
 </LinearLayout>
