@@ -53,78 +53,77 @@
                 android:src="@drawable/ic_user" />
         </androidx.cardview.widget.CardView>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingLeft="8dp">
 
-            <LinearLayout
-                android:id="@+id/status_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/tv_user_name"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="3dp"
-                android:orientation="horizontal"
-                android:paddingRight="4dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tv_status"
+                    android:id="@+id/tv_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="4dp"
-                    android:background="#676767"
-                    android:focusable="false"
-                    android:gravity="center"
-                    android:paddingHorizontal="6dp"
-                    android:paddingVertical="1dp"
-                    android:textColor="#FFF"
-                    android:textSize="11sp"
-                    tools:text="Core Team" />
+                    android:layout_alignParentLeft="true"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="2dp"
+                    android:singleLine="true"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    tools:text="A contributor" />
 
-                <TextView
-                    android:id="@+id/update_status"
+                <LinearLayout
+                    android:id="@+id/status_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#676767"
-                    android:focusable="false"
-                    android:gravity="center"
-                    android:paddingHorizontal="6dp"
-                    android:paddingVertical="1dp"
-                    android:textColor="#FFF"
-                    android:textSize="11sp"
-                    tools:text="New update" />
-            </LinearLayout>
+                    android:layout_alignBottom="@+id/tv_user_name"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="3dp"
+                    android:orientation="horizontal"
+                    android:paddingRight="4dp">
 
-            <TextView
-                android:id="@+id/tv_user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="false"
-                android:layout_toLeftOf="@id/status_layout"
-                android:paddingLeft="8dp"
-                android:paddingTop="8dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="2dp"
-                android:singleLine="true"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                tools:text="A contributor" />
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:background="#676767"
+                        android:focusable="false"
+                        android:gravity="center"
+                        android:paddingHorizontal="6dp"
+                        android:paddingVertical="1dp"
+                        android:textColor="#FFF"
+                        android:textSize="11sp"
+                        tools:text="Core Team" />
+
+                    <TextView
+                        android:id="@+id/update_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#676767"
+                        android:focusable="false"
+                        android:gravity="center"
+                        android:paddingHorizontal="6dp"
+                        android:paddingVertical="1dp"
+                        android:textColor="#FFF"
+                        android:textSize="11sp"
+                        tools:text="New update" />
+                </LinearLayout>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_description"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_user_name"
                 android:autoLink="all"
                 android:focusable="false"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
                 android:paddingBottom="8dp"
+                android:paddingRight="8dp"
                 android:textAppearance="?attr/textAppearanceBodySmall"
                 tools:text="Their commit description" />
-
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
