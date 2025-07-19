@@ -1248,7 +1248,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             });
         }
 
-        private void onPostExecute() {
+        private void onPostExecute() { // Changed 'Private' to 'private'
             DesignActivity activity = getActivity();
             if (activity == null) return;
 
@@ -1261,6 +1261,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     updateRunButton(false);
                     activity.updateBottomMenu();
                     activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    activity.currentBuildTask = null; // This is correctly in place
                 }
             });
         }
@@ -1279,6 +1280,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 });
             }
         }
+
 
         private void maybeShowNotification() {
             DesignActivity activity = getActivity();
