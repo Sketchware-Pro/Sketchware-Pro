@@ -209,15 +209,16 @@
     </ScrollView>
 
     <com.google.android.material.button.MaterialButtonGroup
+    android:id="@+id/button_group"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="24dp"
     android:layout_marginEnd="24dp"
     android:layout_marginVertical="8dp"
-    app:singleLine="true"
+    android:background="?attr/colorSurface"
     app:spacing="4dp">
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/cancel"
         style="@style/Widget.Material3Expressive.Button.TonalButton"
         android:layout_width="0dp"
@@ -225,7 +226,7 @@
         android:layout_weight="1"
         android:text="@string/common_word_cancel" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/save"
         style="@style/Widget.Material3Expressive.Button"
         android:layout_width="0dp"
