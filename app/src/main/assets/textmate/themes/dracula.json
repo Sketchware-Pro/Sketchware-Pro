@@ -1,14 +1,14 @@
 {
     "name": "darcula",
-    "settings": [
-        {
-            "settings": {
-                "background": "#242424",
-                "foreground": "#cccccc",
-                "lineHighlight": "#2b2b2b",
-                "selection": "#214283"
-            }
-        },
+    "settings": [{
+        "settings": {
+            "background": "#1C1B20",
+            "foreground": "#cccccc",
+            "lineHighlight": "#2B2B2B",
+            "selection": "#214283",
+            "highlightedDelimetersForeground": "#57f6c0"
+        }
+    },
         {
             "name": "Comment",
             "scope": "comment",
@@ -435,37 +435,28 @@
         },
         {
             "name": "PHP variables",
-            "scope": [
-                "variable.language.php",
-                "variable.other.php"
-            ],
+            "scope": ["variable.language.php", "variable.other.php"],
             "settings": {
                 "foreground": "#9E7BB0"
             }
         },
         {
             "name": "Perl specific",
-            "scope": [
-                "variable.other.readwrite.perl"
-            ],
+            "scope": ["variable.other.readwrite.perl"],
             "settings": {
                 "foreground": "#9E7BB0"
             }
         },
         {
             "name": "PHP variables",
-            "scope": [
-                "variable.other.property.php"
-            ],
+            "scope": ["variable.other.property.php"],
             "settings": {
                 "foreground": "#CC8242"
             }
         },
         {
             "name": "PHP variables",
-            "scope": [
-                "support.variable.property.php"
-            ],
+            "scope": ["support.variable.property.php"],
             "settings": {
                 "foreground": "#FFC66D"
             }
