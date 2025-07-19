@@ -396,31 +396,29 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <LinearLayout
-        android:id="@+id/layout_btn_group"
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButtonGroup
+    android:id="@+id/layout_btn_group"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@android:color/transparent"
+    android:padding="16dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancel"
+        style="@style/Widget.Material3Expressive.Button.TonalButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="?attr/colorSurface"
-        android:orientation="horizontal"
-        android:padding="16dp">
+        android:layout_marginEnd="16dp"
+        android:layout_weight="1"
+        android:text="Cancel" />
 
-        <Button
-            android:id="@+id/btn_cancel"
-            style="@style/Widget.Material3Expressive.Button.TonalButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:text="Cancel" />
-
-        <Button
-            android:id="@+id/btn_save"
-            style="@style/Widget.Material3Expressive.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Save" />
-
-    </LinearLayout>
-</RelativeLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        style="@style/Widget.Material3Expressive.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Save" />
+    </com.google.android.material.button.MaterialButtonGroup>
+    </RelativeLayout>
