@@ -106,10 +106,15 @@ class DependencyResolver(
 
     fun resolveDependency(callback: DependencyResolverCallback) = runBlocking {
         eventReciever = callback
-        val dependency = getArtifact(groupId, artifactId, version) ?: return@runBlocking
+        try {
+            val dependency = getArtifact(groupId, artifactId, version) ?: return@runBlocking
 
-        if (dependency.extension != "jar" && dependency.extension != "aar") {
-            callback.invalidPackaging(dependency)
+            if (dependency.extension != "jar" && dependency.extension != "aar") {
+                callback.invalidPackaging(dependency)
+                return@runBlocking
+            }
+        } catch (e: NullPointerException) {
+            callback.onArtifactNotFound(getArtifact(groupId, artifactId, version)!!)
             return@runBlocking
         }
 
