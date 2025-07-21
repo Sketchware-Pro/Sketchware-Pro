@@ -106,15 +106,21 @@ class DependencyResolver(
 
     fun resolveDependency(callback: DependencyResolverCallback) = runBlocking {
         eventReciever = callback
-        try {
-            val dependency = getArtifact(groupId, artifactId, version) ?: return@runBlocking
-
-            if (dependency.extension != "jar" && dependency.extension != "aar") {
-                callback.invalidPackaging(dependency)
-                return@runBlocking
-            }
+        val dependency = try {
+            getArtifact(groupId, artifactId, version) ?: return@runBlocking
         } catch (e: NullPointerException) {
-            callback.onArtifactNotFound(getArtifact(groupId, artifactId, version)!!)
+            callback.onArtifactNotFound(
+                object : Artifact {
+                    override fun getGroupId(): String = groupId
+                    override fun getArtifactId(): String = artifactId
+                    override fun getVersion(): String = version
+                }
+            )
+            return@runBlocking
+        }
+
+        if (dependency.extension != "jar" && dependency.extension != "aar") {
+            callback.invalidPackaging(dependency)
             return@runBlocking
         }
 
@@ -247,7 +253,7 @@ class DependencyResolver(
         }
 
         callback.onTaskCompleted(
-            dependency.getAllDependencies().map { "${it.artifactId}-v${it.version}" })
+            dependency.getAllDependencies().map { dep -> "${dep.artifactId}-v${dep.version}" })
     }
 
     private fun findPackageName(path: String, defaultValue: String): String {
