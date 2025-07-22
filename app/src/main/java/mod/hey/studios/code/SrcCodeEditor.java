@@ -137,7 +137,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
     
     public static String prettifyXml(String xml, int indentAmount, Intent extras) {
         if (xml == null || xml.trim().isEmpty()) return xml;
-        
+
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -188,7 +188,7 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
 
                     int indentBase = line.indexOf('<');
                     String baseIndent = " ".repeat(Math.max(0, indentBase));
-                    String attrIndent = baseIndent + "    ";
+                    String attrIndent = baseIndent + "    "; // 4-space attribute indent
 
                     boolean selfClosing = trimmed.endsWith("/>");
                     int tagEnd = trimmed.indexOf(' ');
@@ -203,8 +203,13 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                         for (String attr : attrs) {
                             formatted.append(attrIndent).append(attr.trim()).append("\n");
                         }
-                        formatted.append(baseIndent)
-                            .append(selfClosing ? "/>" : ">").append("\n");
+
+                        int lastNewline = formatted.lastIndexOf("\n");
+                        if (lastNewline != -1) {
+                            formatted.delete(lastNewline, formatted.length());
+                        }
+
+                        formatted.append(selfClosing ? " />" : ">").append("\n");
                     } else {
                         formatted.append(line).append("\n");
                     }
