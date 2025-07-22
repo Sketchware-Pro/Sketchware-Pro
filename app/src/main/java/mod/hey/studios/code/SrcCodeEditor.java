@@ -134,9 +134,10 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         }
 
     }
+    
     public static String prettifyXml(String xml, int indentAmount, Intent extras) {
         if (xml == null || xml.trim().isEmpty()) return xml;
-
+        
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -176,7 +177,43 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
                 }
             }
 
-            return result;
+            String[] lines = result.split("\n");
+            StringBuilder formatted = new StringBuilder();
+            for (String line : lines) {
+                String trimmed = line.trim();
+
+                if (trimmed.startsWith("<") && !trimmed.startsWith("<?")
+                    && !trimmed.startsWith("<!") && trimmed.contains(" ")
+                    && !trimmed.startsWith("</")) {
+
+                    int indentBase = line.indexOf('<');
+                    String baseIndent = " ".repeat(Math.max(0, indentBase));
+                    String attrIndent = baseIndent + "    ";
+
+                    boolean selfClosing = trimmed.endsWith("/>");
+                    int tagEnd = trimmed.indexOf(' ');
+
+                    if (tagEnd > 0) {
+                        String tagName = trimmed.substring(1, tagEnd);
+                        String attrPart = trimmed.substring(tagEnd + 1)
+                            .replaceAll("/?>$", "").trim();
+                        String[] attrs = attrPart.split("\\s+(?=[^=]+\\=)");
+
+                        formatted.append(baseIndent).append("<").append(tagName).append("\n");
+                        for (String attr : attrs) {
+                            formatted.append(attrIndent).append(attr.trim()).append("\n");
+                        }
+                        formatted.append(baseIndent)
+                            .append(selfClosing ? "/>" : ">").append("\n");
+                    } else {
+                        formatted.append(line).append("\n");
+                    }
+                } else {
+                    formatted.append(line).append("\n");
+                }
+            }
+
+            return formatted.toString().trim();
 
         } catch (Exception e) {
             return null;
