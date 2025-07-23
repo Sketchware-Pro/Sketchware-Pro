@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.*;
+import android.view.View.*;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -79,13 +81,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
             finish();
         }
 
-        setSupportActionBar(binding.topAppBar);
-        binding.topAppBar.setTitle(getTranslatedString(R.string.design_actionbar_title_manager_image));
-        binding.topAppBar.setNavigationOnClickListener(v -> {
-            if (!mB.a()) {
-                onBackPressed();
-            }
-        });
+        setNormalAppBarState(true);
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
         } else {
@@ -96,6 +92,8 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         binding.viewPager.setOffscreenPageLimit(2);
         binding.viewPager.addOnPageChangeListener(this);
         binding.tabLayout.setupWithViewPager(binding.viewPager);
+
+
     }
 
     @Override
@@ -125,6 +123,22 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
             binding.fab.animate().translationY(400F).setDuration(200L).start();
             binding.fab.hide();
             projectImagesFragment.a(false);
+        }
+    }
+
+    private void setNormalAppBarState(boolean visible) {
+        if (visible) {
+            binding.appbarSearch.setVisibility(GONE);
+            setSupportActionBar(binding.topAppBar);
+            binding.topAppBar.setTitle(getTranslatedString(R.string.design_actionbar_title_manager_image));
+            binding.topAppBar.setNavigationOnClickListener(v -> {
+                if (!mB.a()) {
+                    onBackPressed();
+                }
+            });
+        } else {
+            binding.appbarSearch.setVisibility(VISIBLE);
+            setSupportActionBar(binding.toolbarSearch);
         }
     }
 

@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorSurface"
         android:fitsSystemWindows="true"
+        android:orientation="horizontal"
         app:liftOnScrollColor="@color/transparent">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -24,6 +25,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:elevation="0dp"
+        app:liftOnScroll="false"
+        app:liftOnScrollColor="@android:color/transparent">
+
+        <View
+            android:id="@+id/status_bar_overlapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="?colorSurfaceContainer"
+            app:cardCornerRadius="50dp"
+            app:layout_scrollFlags="scroll|enterAlways|snap">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbarSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                tools:menu="@menu/projects_fragment_menu">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search for projects..."
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.card.MaterialCardView>
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
