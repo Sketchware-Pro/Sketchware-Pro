@@ -2,6 +2,7 @@ package pro.sketchware.activities.main.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -32,6 +33,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.FirebaseApp;
 
 import java.io.File;
 import java.io.IOException;
@@ -391,7 +393,9 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
-        FirebaseMessaging.getInstance().subscribeToTopic("all");
+        if (isFirebaseInitialized(this)) {
+            FirebaseMessaging.getInstance().subscribeToTopic("all");
+        }
     }
 
     @Override
@@ -494,4 +498,13 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             SketchwareUtil.toast(Helper.getResString(R.string.message_strings_xml_loaded));
         }
     }
+    
+    private static boolean isFirebaseInitialized(Context context) {
+    	try {
+	    	return FirebaseApp.getApps(context) != null && !FirebaseApp.getApps(context).isEmpty();
+    	} catch (Exception e) {
+	    	return false;
+    	}
+    }
+
 }
