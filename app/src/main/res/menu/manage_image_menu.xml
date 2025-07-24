@@ -1,6 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_image_search"
+        android:icon="@drawable/ic_mtrl_search"
+        android:title="@string/search"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/menu_image_import"
         android:icon="@drawable/ic_mtrl_download"
         android:title="@string/common_word_import"

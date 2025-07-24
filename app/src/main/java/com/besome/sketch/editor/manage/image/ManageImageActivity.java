@@ -60,6 +60,8 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
+
         if (projectImagesFragment.isSelecting) {
             projectImagesFragment.a(false);
         } else if (collectionImagesFragment.isSelecting()) {
@@ -126,9 +128,12 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         }
     }
 
-    private void setNormalAppBarState(boolean visible) {
+    // Why does this break the icon list in some cases
+    // I'll keep it like this until I find a fix
+    // or someones else find a fix ^_^
+    public void setNormalAppBarState(boolean visible) {
         if (visible) {
-            binding.appbarSearch.setVisibility(GONE);
+            binding.appbarSearch.setVisibility(View.GONE);
             setSupportActionBar(binding.topAppBar);
             binding.topAppBar.setTitle(getTranslatedString(R.string.design_actionbar_title_manager_image));
             binding.topAppBar.setNavigationOnClickListener(v -> {
@@ -137,8 +142,10 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
                 }
             });
         } else {
-            binding.appbarSearch.setVisibility(VISIBLE);
+            binding.topAppBar.setVisibility(View.GONE);
+            binding.appbarSearch.setVisibility(View.VISIBLE);
             setSupportActionBar(binding.toolbarSearch);
+            binding.toolbarSearch.setTitle("");  // WE DON'T WANT TITLE ELSE BUGGY :P
         }
     }
 
