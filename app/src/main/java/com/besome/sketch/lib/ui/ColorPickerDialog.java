@@ -30,9 +30,11 @@ import java.util.regex.Pattern;
 import a.a.a.DB;
 import a.a.a.GB;
 import a.a.a.bB;
+import a.a.a.jC;
 import a.a.a.sq;
 import a.a.a.wq;
 import a.a.a.xB;
+import a.a.a.yq;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.activities.resourceseditor.components.models.ColorModel;
@@ -64,6 +66,7 @@ public class ColorPickerDialog extends PopupWindow {
     private boolean hasMaterialColors;
     private final ColorsAdapter colorsAdapter = new ColorsAdapter();
     private Material3LibraryManager material3LibraryManager;
+    private yq yq;
 
     public ColorPickerDialog(Activity activity, int var3, boolean isTransparentColor, boolean isNoneColor) {
         super(activity);
@@ -75,6 +78,8 @@ public class ColorPickerDialog extends PopupWindow {
         super(activity);
         binding = ColorPickerBinding.inflate(activity.getLayoutInflater());
         sc_id = scId;
+        yq = new yq(activity, sc_id);
+        yq.a(jC.c(sc_id), jC.b(sc_id), jC.a(sc_id));
         material3LibraryManager = new Material3LibraryManager(scId);
         hasMaterialColors = true;
         initialize(activity, color, isTransparentColor, isNoneColor);
@@ -448,16 +453,15 @@ public class ColorPickerDialog extends PopupWindow {
     }
 
     private void initializeResColors() {
-        if (sc_id == null)
+        if (sc_id == null || yq == null)
             return;
         ColorsEditorManager colorsEditorManager = new ColorsEditorManager();
-        String filePath = wq.b(sc_id) + "/files/resource/values/colors.xml";
         String fileNightPath = wq.b(sc_id) + "/files/resource/values-night/colors.xml";
 
         ArrayList<ColorModel> colorList = new ArrayList<>();
         ArrayList<ColorModel> colorNightList = new ArrayList<>();
 
-        colorsEditorManager.parseColorsXML(colorList, FileUtil.readFileIfExist(filePath));
+        colorsEditorManager.parseColorsXML(colorList, yq.getXMLColor());
         colorsEditorManager.parseColorsXML(colorNightList, FileUtil.readFileIfExist(fileNightPath));
 
         HashMap<String, String> nightColorsMap = new HashMap<>();
