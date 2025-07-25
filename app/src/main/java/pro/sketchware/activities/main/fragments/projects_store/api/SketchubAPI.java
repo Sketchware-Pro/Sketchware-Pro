@@ -47,21 +47,18 @@ public class SketchubAPI {
                 try {
                     ProjectModel projectModel = gson.fromJson(response, ProjectModel.class);
                     consumer.accept(projectModel);
-                    if (listener != null) {
+                    if (listener != null)
                         listener.onComplete(true);
-                    }
                 } catch (JsonSyntaxException e) {
                     Log.e(TAG, "Failed to parse response", e);
                     consumer.accept(null);
-                    if (listener != null) {
+                    if (listener != null)
                         listener.onComplete(false);
-                    }
                 }
             } else {
                 consumer.accept(null);
-                if (listener != null) {
+                if (listener != null)
                     listener.onComplete(false);
-                }
             }
         });
     }
