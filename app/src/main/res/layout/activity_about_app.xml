@@ -59,7 +59,7 @@
         android:text="@string/about_joindiscord"
         android:textColor="#FFF"
         app:backgroundTint="#5865F2"
-        app:icon="@drawable/ic_discord"
+        app:icon="@drawable/discord_logo"
         app:iconTint="#FFF" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
