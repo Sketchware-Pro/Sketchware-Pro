@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bharath Life Journey – Snake & Ladder Game</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #111;
+      color: white;
+    }
+    h1 {
+      margin-top: 20px;
+      color: #ffd700;
+    }
+    table {
+      border-collapse: collapse;
+      margin: 20px auto;
+    }
+    td {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #fff;
+      text-align: center;
+      vertical-align: middle;
+      font-weight: bold;
+      color: #ccc;
+    }
+    .player {
+      background-color: #0f0;
+      color: #000;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background: gold;
+      color: #111;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>BHARATH LIFE JOURNEY</h1>
+  <h3>🎲 Snake & Ladder Game 🎲</h3>
+  <div id="board"></div>
+  <p>🎲 Dice: <span id="dice">-</span></p>
+  <button onclick="rollDice()">Roll Dice</button>
+
+  <script>
+    const boardSize = 100;
+    let position = 1;
+
+    const snakes = {
+      25: 5,
+      40: 10,
+      55: 30,
+      70: 45,
+      90: 60
+    };
+
+    const ladders = {
+      5: 15,
+      20: 35,
+      35: 50,
+      50: 65,
+      75: 90,
+      95: 99
+    };
+
+    function drawBoard() {
+      let html = "<table>";
+      for (let i = 10; i > 0; i--) {
+        html += "<tr>";
+        for (let j = 1; j <= 10; j++) {
+          let cellNum = (i % 2 == 0) ? (10 * (10 - i) + j) : (10 * (10 - i) + (11 - j));
+          html += `<td id="cell${cellNum}">${cellNum}</td>`;
+        }
+        html += "</tr>";
+      }
+      html += "</table>";
+      document.getElementById("board").innerHTML = html;
+      updatePosition();
+    }
+
+    function updatePosition() {
+      for (let i = 1; i <= boardSize; i++) {
+        document.getElementById(`cell${i}`).className = '';
+      }
+      document.getElementById(`cell${position}`).className = 'player';
+    }
+
+    function rollDice() {
+      const roll = Math.floor(Math.random() * 6) + 1;
+      document.getElementById("dice").textContent = roll;
+      position += roll;
+      if (position > boardSize) position = boardSize;
+
+      // Check ladder
+      if (ladders[position]) {
+        alert("🪜 You climbed a ladder!");
+        position = ladders[position];
+      }
+
+      // Check snake
+      if (snakes[position]) {
+        alert("🐍 Snake bite! You fall down...");
+        position = snakes[position];
+      }
+
+      updatePosition();
+
+      if (position === 100) {
+        alert("🏆 Congratulations! You completed Bharath Life Journey!");
+        position = 1;
+      }
+    }
+
+    drawBoard();
+  </script>
+</body>
+</html>
+
+<audio autoplay loop>
+  <source src="mahabharata-theme.mp3" type="audio/mpeg">
+</audio>
