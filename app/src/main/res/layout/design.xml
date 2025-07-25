@@ -86,11 +86,7 @@
                     android:indeterminate="false"
                     android:progress="0"
                     app:trackStopIndicatorSize="0dp"
-                    app:showAnimationBehavior="inward"
-                    app:indeterminateAnimationType="disjoint"
-                    app:wavelength="20dp"
-                    app:waveAmplitude="2dp"
-                    app:waveSpeed="10dp"/>
+                    app:showAnimationBehavior="inward"/>
             </LinearLayout>
 
             <LinearLayout

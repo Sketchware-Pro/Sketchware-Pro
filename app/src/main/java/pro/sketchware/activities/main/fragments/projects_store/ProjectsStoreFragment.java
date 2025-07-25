@@ -1,6 +1,7 @@
 package pro.sketchware.activities.main.fragments.projects_store;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,15 @@ public class ProjectsStoreFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentProjectsStoreBinding.inflate(inflater, container, false);
         sketchubAPI = new SketchubAPI(BuildConfig.SKETCHUB_API_KEY);
+        sketchubAPI.setOnCompleteListener(new SketchubAPI.OnCompleteListener() {
+            @Override
+            public void onComplete(boolean validdata) {
+                binding.loading.setVisibility(View.GONE);
+                if (!validdata) {
+                    binding.error.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         return binding.getRoot();
     }
 
@@ -85,6 +95,7 @@ public class ProjectsStoreFragment extends Fragment {
     }
 
     private void fetchData() {
+        Log.d("ProjectsStoreFragment", "Fetching data...");
         var activity = getActivity();
         sketchubAPI.getEditorsChoicerProjects(1, projectModel -> {
             if (projectModel != null) {
