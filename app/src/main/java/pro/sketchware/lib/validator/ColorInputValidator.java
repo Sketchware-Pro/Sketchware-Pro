@@ -25,6 +25,9 @@ public class ColorInputValidator extends MB {
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         String hexCode = s.toString().trim();
+        if (hexCode.startsWith("#")) {
+            hexCode = hexCode.substring(1);
+        }
         if (hexCode.length() > 8) {
             b.setErrorEnabled(true);
             b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, 8));

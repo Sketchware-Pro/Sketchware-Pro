@@ -332,7 +332,7 @@ public class ImportIconActivity extends BaseAppCompatActivity implements IconAda
                     }
                 }
             });
-            colorPicker.materialColorAttr((attr, attrId) -> {
+            colorPicker.materialColorAttr((attr, attrColor) -> {
                 attr = "?attr/" + attr;
                 selected_color = PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(getApplicationContext(), attr, 3));
                 selected_color_hex = attr;
