@@ -6,6 +6,7 @@ import a.a.a.Gx;
 import a.a.a.Lx;
 import mod.hilal.saif.events.EventsHandler;
 import pro.sketchware.R;
+import androidx.fragment.app.Fragment;
 
 public class ManageEvent {
 
@@ -554,10 +555,10 @@ public class ManageEvent {
                     "}";
             case "onFragmentAdded" -> //noinspection DuplicateExpressions
                     "@Override\r\n" +
-                            "public Fragment getItem(int _position) {\r\n" +
-                            (!eventLogic.isEmpty() ? eventLogic + "\r\n" :
-                                    "return null;\r\n") +
-                            "}";
+                           "public Fragment getItem(int _position) {\r\n" +
+                           (!eventLogic.isEmpty() ? eventLogic + "\r\n" : "") +
+                                    "return new Fragment();\r\n" +
+                           "}";
             case "onTimeSet" -> "@Override\r\n" +
                     "public void onTimeSet(TimePicker _timePicker, int _hour, int _minute) {\r\n" +
                     eventLogic + "\r\n" +
@@ -648,10 +649,11 @@ public class ManageEvent {
                     "public void onAdLoaded(Ad ad) {\r\n" +
                     eventLogic + "\r\n" +
                     "}";
+                    
             case "onTabAdded" -> "@Override\r\n" +
                     "public CharSequence getPageTitle(int _position) {\r\n" +
-                    (!eventLogic.isEmpty() ? eventLogic + "\r\n" :
-                            "return \"\";\r\n") +
+                    (!eventLogic.isEmpty() ? eventLogic + "\r\n" : "") +
+                            "return \"\";\r\n" +
                     "}";
             case "onCompleteRegister" -> "@Override\r\n" +
                     "public void onComplete(Task<InstanceIdResult> task) {\r\n" +
