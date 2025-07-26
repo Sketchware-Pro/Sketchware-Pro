@@ -43,8 +43,8 @@
                         <ImageView
                             android:id="@+id/sign_apk_ic"
                             android:layout_width="24dp"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/apk_document_24px" />
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_apk_color_48dp" />
 
                         <TextView
                             android:id="@+id/sign_apk_title"
@@ -86,7 +86,7 @@
                                 <ImageView
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
-                                    android:src="@drawable/outline_folder_24" />
+                                    android:src="@drawable/ic_folder_48dp" />
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -155,7 +155,7 @@
                             android:id="@+id/export_source_ic"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/architecture_24px" />
+                            android:src="@drawable/android_icon" />
 
                         <TextView
                             android:id="@+id/export_source_title"
@@ -197,7 +197,7 @@
                                 <ImageView
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
-                                    android:src="@drawable/outline_folder_24" />
+                                    android:src="@drawable/ic_folder_48dp" />
 
                                 <TextView
                                     android:layout_width="match_parent"
@@ -276,7 +276,7 @@
                             android:id="@+id/export_aab_ic"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@drawable/ic_mtrl_box" />
+                            android:src="@drawable/open_box_48" />
 
                         <TextView
                             android:id="@+id/export_aab_title"

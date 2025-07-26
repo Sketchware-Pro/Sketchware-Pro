@@ -745,7 +745,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             String aabFilename = getCorrectResultFilename(project_metadata.projectName + ".aab");
             if (buildingAppBundle && new File(Environment.getExternalStorageDirectory(), "sketchware" + File.separator + "signed_aab" + File.separator + aabFilename).exists()) {
                 MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(activity.get());
-                dialog.setIcon(R.drawable.ic_mtrl_box);
+                dialog.setIcon(R.drawable.open_box_48);
                 dialog.setTitle("Finished exporting AAB");
                 dialog.setMessage("You can find the generated, signed AAB file at:\n" +
                         "/Internal storage/sketchware/signed_aab/" + aabFilename);
