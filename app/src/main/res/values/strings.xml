@@ -1615,6 +1615,7 @@ But, components should be added manually for working correctly."</string>
     <string name="picker_color_message_delete_custom_color">Are you sure you want to continue? This action can not be undone.</string>
     <string name="picker_color_title_delete_all_custom_color">Delete All Custom Colors</string>
     <string name="picker_color_title_delete_custom_color">Delete Custom Color</string>
+    <string name="picker_color_title_delete_custom_attr">Delete Custom Attribute</string>
     <string name="preset_setting_edit_warning">If you apply a Preset, exiting View data will be deleted. Continue?</string>
     <string name="preset_setting_title">Preset Settings</string>
     <string name="program_information_actionbar_title">Program Information</string>
@@ -2276,5 +2277,9 @@ Please try again later"</string>
     <string name="resources_manager_xml_important_note_message_colors">Changing primary colors will affect the app\'s visual theme, including buttons and highlights</string>
     <string name="resources_editor_unsaved_changes_message">You have unsaved changes in \"%s\"\nDo you want to save your changes before quitting?</string>
     <string name="resources_editor_unsaved_changes_message_variant_change">You have unsaved changes in \"%s\"\nDo you want to save your changes before changing the variant?</string>
+    <string name="save_to_collection">Save to collection</string>
+    <string name="unknown_attr">Unknown Attribute</string>
+    <string name="attr_already_exist">This attribute already exists</string>
+
 
 </resources>

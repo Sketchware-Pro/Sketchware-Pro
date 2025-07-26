@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 import org.xml.sax.InputSource;
 
 import java.io.ByteArrayInputStream;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -131,52 +134,97 @@ public class SrcCodeEditor extends BaseAppCompatActivity {
         }
 
     }
-
+    
     public static String prettifyXml(String xml, int indentAmount, Intent extras) {
+        if (xml == null || xml.trim().isEmpty()) return xml;
+
         try {
-            // Turn xml string into a document
-            Document document = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder()
-                    .parse(new InputSource(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))));
-
-            // Remove whitespaces outside tags
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document document = builder.parse(new InputSource(
+                new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8))));
             document.normalize();
-            XPath xPath = XPathFactory.newInstance().newXPath();
-            NodeList nodeList = (NodeList)
-                    xPath.evaluate(
-                            "//text()[normalize-space()='']",
-                            document,
-                            XPathConstants.NODESET
-                    );
 
+            XPath xPath = XPathFactory.newInstance().newXPath();
+            NodeList nodeList = (NodeList) xPath.evaluate(
+                "//text()[normalize-space()='']", document, XPathConstants.NODESET);
             for (int i = 0; i < nodeList.getLength(); ++i) {
                 Node node = nodeList.item(i);
                 node.getParentNode().removeChild(node);
             }
 
-            // Setup pretty print options
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", String.valueOf(indentAmount));
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount",
+                String.valueOf(indentAmount));
 
-            if (extras.hasExtra("disableHeader"))
+            boolean omitXmlDecl = extras != null && extras.hasExtra("disableHeader");
+            if (omitXmlDecl) {
                 transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+            }
 
+            StringWriter writer = new StringWriter();
+            transformer.transform(new DOMSource(document), new StreamResult(writer));
+            String result = writer.toString();
 
-            // Return pretty print xml string
-            StringWriter stringWriter = new StringWriter();
-            transformer.transform(new DOMSource(document), new StreamResult(stringWriter));
-            return stringWriter.toString();
+            if (!omitXmlDecl && result.startsWith("<?xml")) {
+                int endOfDecl = result.indexOf("?>");
+                if (endOfDecl != -1 && endOfDecl + 2 < result.length()
+                    && result.charAt(endOfDecl + 2) != '\n') {
+                    result = result.substring(0, endOfDecl + 2) + "\n"
+                        + result.substring(endOfDecl + 2);
+                }
+            }
+
+            String[] lines = result.split("\n");
+            StringBuilder formatted = new StringBuilder();
+            for (String line : lines) {
+                String trimmed = line.trim();
+
+                if (trimmed.startsWith("<") && !trimmed.startsWith("<?")
+                    && !trimmed.startsWith("<!") && trimmed.contains(" ")
+                    && !trimmed.startsWith("</")) {
+
+                    int indentBase = line.indexOf('<');
+                    String baseIndent = " ".repeat(Math.max(0, indentBase));
+                    String attrIndent = baseIndent + "    "; // 4-space attribute indent
+
+                    boolean selfClosing = trimmed.endsWith("/>");
+                    int tagEnd = trimmed.indexOf(' ');
+
+                    if (tagEnd > 0) {
+                        String tagName = trimmed.substring(1, tagEnd);
+                        String attrPart = trimmed.substring(tagEnd + 1)
+                            .replaceAll("/?>$", "").trim();
+                        String[] attrs = attrPart.split("\\s+(?=[^=]+\\=)");
+
+                        formatted.append(baseIndent).append("<").append(tagName).append("\n");
+                        for (String attr : attrs) {
+                            formatted.append(attrIndent).append(attr.trim()).append("\n");
+                        }
+
+                        int lastNewline = formatted.lastIndexOf("\n");
+                        if (lastNewline != -1) {
+                            formatted.delete(lastNewline, formatted.length());
+                        }
+
+                        formatted.append(selfClosing ? " />" : ">").append("\n");
+                    } else {
+                        formatted.append(line).append("\n");
+                    }
+                } else {
+                    formatted.append(line).append("\n");
+                }
+            }
+
+            return formatted.toString().trim();
 
         } catch (Exception e) {
             return null;
         }
     }
-
+    
     /**
      * Adds a specified amount of tabs.
      */

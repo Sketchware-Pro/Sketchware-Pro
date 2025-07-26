@@ -768,7 +768,6 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     jC.a(sc_id).a(jC.b(sc_id));
                 }
                 if (q) {
-                    jC.a(sc_id).b(jC.d(sc_id));
                     jC.a(sc_id).c(jC.d(sc_id));
                     jC.a(sc_id).a(jC.d(sc_id));
                 }

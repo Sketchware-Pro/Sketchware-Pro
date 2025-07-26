@@ -252,7 +252,7 @@ public class ColorsEditor extends Fragment {
                 public void a(String var1, int var2) {
                 }
             });
-            colorPicker.materialColorAttr((attr, attrId) -> dialogBinding.colorValueInput.setText("?" + attr));
+            colorPicker.materialColorAttr((attr, attrColor) -> dialogBinding.colorValueInput.setText("?" + attr));
             colorPicker.showAtLocation(v, Gravity.CENTER, 0, 0);
         });
 

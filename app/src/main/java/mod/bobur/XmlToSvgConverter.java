@@ -49,18 +49,8 @@ public class XmlToSvgConverter {
             String viewportHeight = root.getAttribute("android:viewportHeight");
 
             if (root.getTagName().equals("vector")) {
-                if (!width.isEmpty() || !height.isEmpty()) {
-                    if (parseNumber(width) > 40 || parseNumber(height) > 40) {
-                        svg.append("width=\"").append(width.isEmpty() ? "150" : width).append("px\" ");
-                        svg.append("height=\"").append(height.isEmpty() ? "150" : height).append("px\" ");
-                    } else {
-                        svg.append("width=\"150").append("px\" ");
-                        svg.append("height=\"150").append("px\" ");
-                    }
-                } else {
-                    svg.append("width=\"150").append("px\" ");
-                    svg.append("height=\"150").append("px\" ");
-                }
+                svg.append("width=\"").append(width.isEmpty() ? "150" : dpToPx(width)).append("px\" ");
+                svg.append("height=\"").append(height.isEmpty() ? "150" : dpToPx(height)).append("px\" ");
                 svg.append("viewBox=\"0 0 ").append(viewportWidth.isEmpty() ? "100" : viewportWidth).append(" ").append(viewportHeight.isEmpty() ? "100" : viewportHeight).append("\" ");
             } else {
                 return "NOT_SUPPORTED_YET";
@@ -247,5 +237,14 @@ public class XmlToSvgConverter {
         SVG svg = SVG.getFromString(xml2svg(FileUtil.readFile(filePath)));
         Picture picture = svg.renderToPicture();
         imageView.setImageDrawable(new PictureDrawable(picture));
+    }
+    private int dpToPx(int dp) {
+        return (int) (dp * SketchApplication.getContext()
+                .getResources()
+                .getDisplayMetrics().density);
+    }
+
+    private String dpToPx(String dp) {
+        return String.valueOf(dpToPx(Integer.parseInt(dp.replaceAll("[^0-9]", ""))));
     }
 }
