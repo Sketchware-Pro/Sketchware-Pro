@@ -28,7 +28,7 @@ To build the app, you must use Gradle. It's highly recommended to use Android St
 | `a.a.a.yq`      | Organizes Sketchware projects' file paths    |
 
 > [!TIP]
-> You can also check the `mod` package, which contains the majority of contributors' changes.
+> You can also check the `mod` package, which contains the majority of contributors changes.
 
 ## Contributing
 
@@ -54,7 +54,10 @@ When you make changes to one or more files, you need to commit those changes wit
   - `refactor:` for refactoring a specific section of the codebase.
   - `test:` for everything related to testing.
   - `docs:` for everything related to documentation.
-  - `chore:` for code maintenance (you can also use emojis to represent commit types).
+  - `chore:` for code maintenance without changing the core logic
+
+> [!TIP]
+> Use emojis to represent commit types.
 
 Examples:
 - `feat: Speed up compiling with new technique`
@@ -78,6 +81,6 @@ Want to chat with us, discuss changes, or just hang out? We have a Discord serve
 
 This mod was not created for any harmful purposes, such as harming Sketchware; quite the opposite, actually. It was made to keep Sketchware alive by the community for the community. Please use it at your own discretion and consider becoming a Patreon backer to support the developers. Unfortunately, other ways to support them are not working anymore, so Patreon is the only available option currently. You can find their Patreon page [here](https://www.patreon.com/sketchware).
 
-We do NOT permit publishing Sketchware Pro as it is, or with modifications, on Play Store or on any other app store. Keep in mind that this project is still a mod. Unauthorized modding of apps is considered illegal and we discourage such behavior.
+We don't permit publishing Sketchware Pro as it is, or with modifications, on Play Store or on any other app store. Keep in mind that this project is still a mod. Unauthorized modding of apps is considered illegal and we discourage such behavior.
 
 We love Sketchware very much and are grateful to Sketchware's developers for creating such an amazing app. However, we haven't received updates for a long time. That's why we decided to keep Sketchware alive by creating this mod, and it's completely free. We don't demand any money :)
