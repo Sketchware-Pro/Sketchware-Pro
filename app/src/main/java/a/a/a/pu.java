@@ -348,10 +348,13 @@ public class pu extends qA {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        ManageImageActivity manageImageActivity = (ManageImageActivity) requireActivity();
         if (id == R.id.menu_image_delete) {
             a(!isSelecting);
         } else if (id == R.id.menu_image_import) {
             openImportIconActivity();
+        } else if (id == R.id.menu_image_search) {
+            manageImageActivity.setNormalAppBarState(false);
         }
         return super.onOptionsItemSelected(item);
     }
