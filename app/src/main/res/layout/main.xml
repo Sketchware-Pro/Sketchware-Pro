@@ -37,7 +37,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
-                    tools:menu="@menu/projects_fragment_menu">
+                    tools:menu="@menu/projects_fragment_menu"
+                    android:animateLayoutChanges="true">
 
                     <TextView
                         android:layout_width="wrap_content"

@@ -31,7 +31,6 @@ import mod.hilal.saif.blocks.CommandBlock;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.SketchApplication;
 import pro.sketchware.utility.FileUtil;
-import pro.sketchware.utility.GradleUtil;
 import pro.sketchware.xml.XmlBuilder;
 import pro.sketchware.xml.XmlBuilderHelper;
 
@@ -308,10 +307,7 @@ public class yq {
                 android.enableR8.fullMode=false
                 android.enableJetifier=true
                 android.useAndroidX=true
-                """ + (
-                GradleUtil.getjvmargs().isBlank()
-                        ? "" : "\n" + GradleUtil.getjvmargs()
-                )).trim());
+                """).trim());
     }
 
     /**
