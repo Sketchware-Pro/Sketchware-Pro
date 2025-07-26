@@ -40,43 +40,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="25dp"
-                android:layout_margin="20dp"
-                android:backgroundTint="?attr/colorPrimaryContainer"
-                style="@style/Widget.Material3.CardView.Filled">
-
-                <LinearLayout
-                    android:id="@+id/ln_pg_enabled"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:padding="15dp"
-                    android:background="?attr/selectableItemBackground">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="Use Code Shrinking"
-                        android:textSize="18sp"
-                        android:layout_weight="1">
-
-                    </TextView>
-
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/sw_pg_enabled"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:textColor="?attr/colorAccent"/>
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
+            android:orientation="vertical"
+            android:paddingTop="100dp">
 
             <LinearLayout
                 android:id="@+id/ln_all_options"
@@ -302,4 +267,47 @@
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="?attr/colorSurface"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="25dp"
+        android:layout_margin="16dp"
+        android:backgroundTint="?attr/colorPrimaryContainer"
+        style="@style/Widget.Material3.CardView.Filled"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/ln_pg_enabled"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:background="?attr/selectableItemBackground">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Use Code Shrinking"
+                android:textSize="18sp"
+                android:layout_weight="1">
+
+            </TextView>
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/sw_pg_enabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:textColor="?attr/colorAccent"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
