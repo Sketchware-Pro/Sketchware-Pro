@@ -42,19 +42,34 @@ public class SketchubAPI {
         formData.put("api_key", apiKey);
         formData.put("page_number", String.valueOf(pageNumber));
         if (scope != null) formData.put("scope", scope);
-
         network.postForm(BASE_URL + GET_PROJECTS_ENDPOINT, null, formData, response -> {
             if (response != null && !response.isEmpty()) {
                 try {
                     ProjectModel projectModel = gson.fromJson(response, ProjectModel.class);
                     consumer.accept(projectModel);
+                    if (listener != null)
+                        listener.onComplete(true);
                 } catch (JsonSyntaxException e) {
                     Log.e(TAG, "Failed to parse response", e);
                     consumer.accept(null);
+                    if (listener != null)
+                        listener.onComplete(false);
                 }
             } else {
                 consumer.accept(null);
+                if (listener != null)
+                    listener.onComplete(false);
             }
         });
+    }
+
+    public interface OnCompleteListener {
+        void onComplete(boolean validdata);
+    }
+
+    private OnCompleteListener listener;
+
+    public void setOnCompleteListener(OnCompleteListener listener) {
+        this.listener = listener;
     }
 }

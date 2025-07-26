@@ -10,12 +10,23 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/top_app_bar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="@string/common_word_settings" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            style="?attr/collapsingToolbarLayoutLargeStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:fitsSystemWindows="true"
+            app:title="@string/common_word_settings"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.Material3.TitleMedium"
+            app:expandedTitleTextAppearance="@style/TextAppearance.Material3.DisplaySmall">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/top_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:layout_collapseMode="pin" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView

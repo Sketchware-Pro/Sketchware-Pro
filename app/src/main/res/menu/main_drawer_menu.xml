@@ -29,17 +29,17 @@
         <menu>
             <item
                 android:id="@+id/social_discord"
-                android:icon="@drawable/ic_discord"
+                android:icon="@drawable/discord_logo"
                 android:title="Discord" />
 
             <item
                 android:id="@+id/social_telegram"
-                android:icon="@drawable/ic_telegram"
+                android:icon="@drawable/telegram_logo"
                 android:title="Telegram" />
 
             <item
                 android:id="@+id/social_github"
-                android:icon="@drawable/ic_github"
+                android:icon="@drawable/github_logo"
                 android:title="GitHub" />
         </menu>
     </item>

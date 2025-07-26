@@ -69,16 +69,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <com.google.android.material.progressindicator.CircularProgressIndicator
-                            style="@style/Widget.Material3Expressive.CircularProgressIndicator.Wavy"
+                        <com.google.android.material.loadingindicator.LoadingIndicator
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginBottom="80dp"
                             android:indeterminate="true"
-                            app:indicatorSize="64dp"
-                            app:waveAmplitude="2dp"
-                            app:wavelength="20dp" />
+                            app:indicatorSize="64dp" />
                     </FrameLayout>
 
                     <androidx.recyclerview.widget.RecyclerView

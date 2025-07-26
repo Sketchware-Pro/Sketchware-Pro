@@ -1,118 +1,175 @@
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:fadingEdgeLength="30dp"
-    android:requiresFadingEdge="vertical">
+    android:orientation="horizontal"
+    android:requiresFadingEdge="vertical"
+    android:animateLayoutChanges="true">
 
     <LinearLayout
+        android:id="@+id/loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewFilledStyle"
-            android:id="@+id/card_warning"
-            android:layout_width="match_parent"
+        <com.google.android.material.loadingindicator.LoadingIndicator
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="?attr/colorTertiaryContainer">
+            android:layout_marginBottom="150dp"
+            app:indicatorSize="64dp"/>
+    </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:paddingVertical="10dp">
+    <LinearLayout
+        android:id="@+id/error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/storeSideNote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:drawablePadding="8dp"
-                    android:maxLines="3"
-                    android:scrollHorizontally="true"
-                    android:text="This is still a basic implementation of the projects store. We're actively working on improving it. Stay tuned!"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?attr/colorOnErrorContainer"
-                    app:drawableStartCompat="@drawable/ic_mtrl_info"
-                    app:drawableTint="?attr/colorOnErrorContainer" />
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
+        <ImageView
+            android:id="@+id/img_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/cloud_alert_96px" />
         <TextView
-            android:id="@+id/text_editors_choice"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:padding="16dp"
-            android:text="Editor\'s Choice"
-            android:textAppearance="?attr/textAppearanceTitleMediumEmphasized"
-            android:textSize="20sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/editorsChoiceProjectsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp"
-            android:transitionGroup="true"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="10"
-            tools:listitem="@layout/view_store_project_pager_item" />
-
+            android:text="Oops!"
+            android:textSize="18sp"/>
         <TextView
-            android:id="@+id/text_recent"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="16dp"
-            android:text="New &amp; Updated"
-            android:textAppearance="?attr/textAppearanceTitleMediumEmphasized"
-            android:textSize="20sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recentProjectsRecyclerView"
-            android:layout_width="match_parent"
+            android:text="Unable to load."
+            android:padding="8dp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/tryagainbutton"
+            style="@style/Widget.Material3Expressive.Button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp"
-            android:transitionGroup="true"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="10"
-            tools:listitem="@layout/view_store_project_item" />
-
-        <TextView
-            android:id="@+id/text_most_downloaded"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:padding="16dp"
-            android:text="Most downloaded projects"
-            android:textAppearance="?attr/textAppearanceTitleMediumEmphasized"
-            android:textSize="20sp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mostDownloadedProjectsRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="96dp"
-            android:transitionGroup="true"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="10"
-            tools:listitem="@layout/view_store_project_item" />
+            android:padding="8dp"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/common_word_try_again"
+            android:layout_marginBottom="142dp" />
 
     </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fadingEdgeLength="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_warning"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="?attr/colorTertiaryContainer">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:id="@+id/storeSideNote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:drawablePadding="8dp"
+                        android:maxLines="3"
+                        android:scrollHorizontally="true"
+                        android:text="This is still a basic implementation of the projects store. We're actively working on improving it. Stay tuned!"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnErrorContainer"
+                        app:drawableStartCompat="@drawable/ic_mtrl_info"
+                        app:drawableTint="?attr/colorOnErrorContainer" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/text_editors_choice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:padding="16dp"
+                android:text="Editor\'s Choice"
+                android:textAppearance="?attr/textAppearanceTitleMediumEmphasized"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/editorsChoiceProjectsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:transitionGroup="true"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/view_store_project_pager_item" />
+
+            <TextView
+                android:id="@+id/text_recent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="16dp"
+                android:text="New &amp; Updated"
+                android:textAppearance="?attr/textAppearanceTitleMediumEmphasized"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recentProjectsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:transitionGroup="true"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/view_store_project_item" />
+
+            <TextView
+                android:id="@+id/text_most_downloaded"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="16dp"
+                android:text="Most downloaded projects"
+                android:textAppearance="?attr/textAppearanceTitleMediumEmphasized"
+                android:textSize="20sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mostDownloadedProjectsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="96dp"
+                android:transitionGroup="true"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="10"
+                tools:listitem="@layout/view_store_project_item" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

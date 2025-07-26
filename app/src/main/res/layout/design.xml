@@ -85,7 +85,8 @@
                     android:layout_height="wrap_content"
                     android:indeterminate="false"
                     android:progress="0"
-                    app:trackStopIndicatorSize="0dp" />
+                    app:trackStopIndicatorSize="0dp"
+                    app:showAnimationBehavior="inward"/>
             </LinearLayout>
 
             <LinearLayout
