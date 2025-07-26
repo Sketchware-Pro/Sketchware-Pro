@@ -50,6 +50,13 @@ public class ProjectsStoreFragment extends Fragment {
                 }
             }
         });
+
+        binding.tryagainbutton.setOnClickListener(v -> {
+            binding.loading.setVisibility(View.VISIBLE);
+            binding.error.setVisibility(View.GONE);
+            fetchData();
+        });
+
         return binding.getRoot();
     }
 
