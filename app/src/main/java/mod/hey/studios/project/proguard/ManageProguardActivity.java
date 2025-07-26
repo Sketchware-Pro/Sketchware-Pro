@@ -97,6 +97,7 @@ public class ManageProguardActivity extends BaseAppCompatActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        enableEdgeToEdgeNoContrast();
         binding = ManageProguardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -125,9 +126,7 @@ public class ManageProguardActivity extends BaseAppCompatActivity
 
     private void _initToolbar() {
         setSupportActionBar(binding.toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Code Shrinking Manager");
         binding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
     }
 
