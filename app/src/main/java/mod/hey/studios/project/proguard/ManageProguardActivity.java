@@ -30,6 +30,12 @@ public class ManageProguardActivity extends BaseAppCompatActivity
             new ProguardRulesDialog(this, pg).show();
         } else if (id == R.id.ln_pg_fm) {
             fmDialog();
+        } else if (id == R.id.ln_pg_enabled) {
+            binding.swPgEnabled.setChecked(!binding.swPgEnabled.isChecked());
+        } else if (id == R.id.ln_r8_enabled) {
+            binding.r8Enabled.setChecked(!binding.r8Enabled.isChecked());
+        } else if (id == R.id.ln_sw_pg_debug) {
+            binding.swPgDebug.setChecked(!binding.swPgDebug.isChecked());
         }
     }
 
@@ -80,6 +86,7 @@ public class ManageProguardActivity extends BaseAppCompatActivity
         int id = buttonView.getId();
         if (id == binding.swPgEnabled.getId()) {
             pg.setProguardEnabled(isChecked);
+            allOptionsUIController(isChecked);
         } else if (id == binding.r8Enabled.getId()) {
             pg.setR8Enabled(isChecked);
         } else if (id == binding.swPgDebug.getId()) {
@@ -103,6 +110,9 @@ public class ManageProguardActivity extends BaseAppCompatActivity
         binding.r8Enabled.setOnCheckedChangeListener(this);
         binding.swPgDebug.setOnCheckedChangeListener(this);
         binding.lnPgFm.setOnClickListener(this);
+        binding.lnPgEnabled.setOnClickListener(this);
+        binding.lnR8Enabled.setOnClickListener(this);
+        binding.lnSwPgDebug.setOnClickListener(this);
     }
 
     private void initializeLogic() {
@@ -119,5 +129,20 @@ public class ManageProguardActivity extends BaseAppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Code Shrinking Manager");
         binding.toolbar.setNavigationOnClickListener(view -> onBackPressed());
+    }
+
+    private void allOptionsUIController (boolean isEnabled) {
+        if (isEnabled) {
+            binding.lnAllOptions.setAlpha(1f);
+        } else {
+            binding.lnAllOptions.setAlpha(0.5f);
+        }
+
+        binding.lnPgRules.setEnabled(isEnabled);
+        binding.lnPgFm.setEnabled(isEnabled);
+        binding.r8Enabled.setEnabled(isEnabled);
+        binding.swPgDebug.setEnabled(isEnabled);
+        binding.lnR8Enabled.setEnabled(isEnabled);
+        binding.lnSwPgDebug.setEnabled(isEnabled);
     }
 }
