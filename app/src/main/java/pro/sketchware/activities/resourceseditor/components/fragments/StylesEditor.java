@@ -1,12 +1,9 @@
 package pro.sketchware.activities.resourceseditor.components.fragments;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.besome.sketch.editor.property.PropertyInputItem;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.textfield.MaterialAutoCompleteTextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +27,6 @@ import pro.sketchware.R;
 import pro.sketchware.activities.resourceseditor.ResourcesEditorActivity;
 import pro.sketchware.activities.resourceseditor.components.adapters.StylesAdapter;
 import pro.sketchware.activities.resourceseditor.components.models.StyleModel;
-import pro.sketchware.activities.resourceseditor.components.utils.AttributeSuggestions;
 import pro.sketchware.activities.resourceseditor.components.utils.StylesEditorManager;
 import pro.sketchware.databinding.PropertyPopupParentAttrBinding;
 import pro.sketchware.databinding.ResourcesEditorFragmentBinding;
@@ -266,7 +261,6 @@ public class StylesEditor extends Fragment {
 
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(requireActivity());
         StyleEditorAddAttrBinding binding = StyleEditorAddAttrBinding.inflate(getLayoutInflater());
-        setupAutoComplete(binding.attrName, binding.attrValue);
 
         if (isEditing) {
             binding.attrName.setText(attr);
@@ -302,39 +296,6 @@ public class StylesEditor extends Fragment {
             FileUtil.writeFile(filePath, stylesEditorManager.convertStylesToXML(stylesList, notesMap));
             hasUnsavedChanges = false;
         }
-    }
-
-    private void setupAutoComplete(MaterialAutoCompleteTextView attrView, MaterialAutoCompleteTextView valueView) {
-        AttributeSuggestions attributeSuggestions = new AttributeSuggestions(binding.getRoot());
-        String[] attributes = attributeSuggestions.ATTRIBUTE_SUGGESTIONS.toArray(new String[0]);
-
-        ArrayAdapter<String> attrAdapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_dropdown_item_1line, attributes);
-        attrView.setAdapter(attrAdapter);
-
-        ArrayAdapter<String> valueAdapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_dropdown_item_1line, new ArrayList<>());
-        valueView.setAdapter(valueAdapter);
-
-        attrView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String attribute = s.toString().trim().toLowerCase();
-
-                List<String> suggestions = attributeSuggestions.getSuggestions(attribute);
-
-                if (suggestions != null && !suggestions.isEmpty()) {
-                    ArrayAdapter<String> newValueAdapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_dropdown_item_1line, suggestions);
-                    valueView.setAdapter(newValueAdapter);
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
     }
 
 }
