@@ -1,21 +1,44 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <include layout="@layout/toolbar" />
-
-    <ScrollView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$Behavior">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            style="?attr/collapsingToolbarLayoutLargeStyle"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+            android:fitsSystemWindows="true"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.Material3.TitleMedium"
+            app:expandedTitleTextAppearance="@style/TextAppearance.Material3.DisplaySmall"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="@string/common_word_export">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="0dp"
+                app:layout_collapseMode="pin" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="8dp">
 
@@ -53,8 +76,7 @@
                             android:layout_marginLeft="8dp"
                             android:text="@string/myprojects_export_project_button_sign_apk"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <Button
@@ -86,15 +108,13 @@
                                 <ImageView
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
-                                    android:src="@drawable/outline_folder_24" />
+                                    android:src="@drawable/ic_mtrl_check" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="8dp"
-                                    android:text="@string/myprojects_export_project_title_local_path"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:text="Done and saved in:" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -117,6 +137,15 @@
                                         android:textSize="13sp" />
                                 </HorizontalScrollView>
                             </LinearLayout>
+                            <Button
+                                android:id="@+id/export_apk_send_button"
+                                style="@style/Widget.Material3Expressive.Button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="14dp"
+                                android:text="Share APK"
+                                android:textSize="12sp" />
                         </LinearLayout>
 
                         <com.airbnb.lottie.LottieAnimationView
@@ -164,8 +193,7 @@
                             android:layout_marginLeft="8dp"
                             android:text="@string/myprojects_export_project_title_export_src"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <Button
@@ -197,15 +225,13 @@
                                 <ImageView
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
-                                    android:src="@drawable/outline_folder_24" />
+                                    android:src="@drawable/ic_mtrl_check" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="8dp"
-                                    android:text="@string/myprojects_export_project_title_local_path"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
+                                    android:text="Done and saved in:" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -236,7 +262,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
                                 android:layout_marginTop="14dp"
-                                android:text="@string/myprojects_export_project_button_send_src_zip"
+                                android:text="Share with zip file"
                                 android:textSize="12sp" />
                         </LinearLayout>
 
@@ -285,8 +311,7 @@
                             android:layout_marginLeft="8dp"
                             android:text="Export AAB (Android App Bundle)"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
+                            android:textSize="18sp" />
                     </LinearLayout>
 
                     <Button
@@ -298,6 +323,57 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/ln_r8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/r8_arrow"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Code Shrinking Manager"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Change settings for code shrinking before signing and exporting APK or AAB."
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/r8_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:src="@drawable/ic_mtrl_arrow_right" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

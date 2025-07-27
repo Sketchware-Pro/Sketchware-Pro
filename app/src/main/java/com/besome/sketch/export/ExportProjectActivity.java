@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -45,6 +46,7 @@ import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import kellinwood.security.zipsigner.optional.LoadKeystoreException;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
+import mod.hey.studios.project.proguard.ManageProguardActivity;
 import mod.hey.studios.project.proguard.ProguardHandler;
 import mod.hey.studios.project.stringfog.StringfogHandler;
 import mod.hey.studios.util.Helper;
@@ -72,6 +74,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     /**
      * /sdcard/sketchware/export_src
      */
+    private String signed_apk_full_path;
     private String export_src_full_path;
     private String export_src_filename;
     private String sc_id;
@@ -98,6 +101,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        enableEdgeToEdgeNoContrast();
         setContentView(R.layout.export_project);
 
         sign_apk_ic = findViewById(R.id.sign_apk_ic);
@@ -116,10 +120,10 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         export_source_send_button = findViewById(R.id.export_source_send_button);
         export_source_output_stage = findViewById(R.id.export_source_output_stage);
         export_source_loading_anim = findViewById(R.id.export_source_loading_anim);
+        ConstraintLayout ln_r8 = findViewById(R.id.ln_r8);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         getSupportActionBar().setTitle(Helper.getResString(R.string.myprojects_export_project_actionbar_title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -138,6 +142,13 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         initializeSignApkViews();
         initializeExportSrcViews();
         initializeAppBundleExportViews();
+
+        ln_r8.setOnClickListener(view -> {
+            Intent intent = new Intent(this, ManageProguardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("sc_id", sc_id);
+            startActivity(intent);
+        });
     }
 
     @Override
@@ -347,6 +358,9 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             });
             confirmationDialog.show();
         });
+
+        Button export_apk_send_button = findViewById(R.id.export_apk_send_button);
+        export_apk_send_button.setOnClickListener(view -> shareAPK());
     }
 
     private void showApkSigningDialog() {
@@ -386,7 +400,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         signed_apk_postfix = File.separator + "sketchware" + File.separator + "signed_apk";
         export_src_postfix = File.separator + "sketchware" + File.separator + "export_src";
         /* /sdcard/sketchware/signed_apk */
-        String signed_apk_full_path = wq.s() + File.separator + "signed_apk";
+        signed_apk_full_path = wq.s() + File.separator + "signed_apk";
         export_src_full_path = wq.s() + File.separator + "export_src";
 
         /* Check if they exist, if not, create them */
@@ -394,8 +408,39 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         file_utility.f(export_src_full_path);
     }
 
+    private void shareAPK() {
+        if (!signed_apk_full_path.isEmpty()) {
+
+            File file = new File(signed_apk_full_path);
+            if (!file.exists()) {
+                SketchwareUtil.toast("Cannot share because the file does not exist.");
+                return;
+            }
+            String fileName = file.getName();
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("plain/text");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Here is my APK file just exported.");
+            intent.putExtra(Intent.EXTRA_TEXT, Helper.getResString(R.string.myprojects_export_src_title_email_body, fileName));
+            String filePath = signed_apk_full_path;
+            intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(filePath)));
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(Intent.createChooser(intent, Helper.getResString(R.string.myprojects_export_src_chooser_title_email)));
+        }
+    }
+
     private void shareExportedSourceCode() {
         if (!export_src_filename.isEmpty()) {
+
+            File file = new File(export_src_filename);
+            if (!file.exists()) {
+                SketchwareUtil.toast("Cannot share because the file does not exist.");
+                return;
+            }
+
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("plain/text");
             intent.putExtra(Intent.EXTRA_SUBJECT, Helper.getResString(R.string.myprojects_export_src_title_email_subject, export_src_filename));

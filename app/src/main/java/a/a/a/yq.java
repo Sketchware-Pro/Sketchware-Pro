@@ -307,6 +307,7 @@ public class yq {
                 android.enableR8.fullMode=false
                 android.enableJetifier=true
                 android.useAndroidX=true
+                org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8 -XX:+UseParallelGC
                 """).trim());
     }
 
