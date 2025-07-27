@@ -411,18 +411,22 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private void shareAPK() {
         if (!signed_apk_full_path.isEmpty()) {
 
-            File file = new File(signed_apk_full_path);
+            File file = new File(sign_apk_output_path.getText().toString());
+            String fileName = file.getName();
+            String filePath = (signed_apk_full_path + File.separator + fileName);
+
+            file = new File(filePath);
             if (!file.exists()) {
+                findViewById(R.id.sign_apk_button).setVisibility(View.VISIBLE);
+                findViewById(R.id.sign_apk_output_stage).setVisibility(View.GONE);
                 SketchwareUtil.toast("Cannot share because the file does not exist.");
                 return;
             }
-            String fileName = file.getName();
 
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("plain/text");
             intent.putExtra(Intent.EXTRA_SUBJECT, "Here is my APK file just exported.");
             intent.putExtra(Intent.EXTRA_TEXT, Helper.getResString(R.string.myprojects_export_src_title_email_body, fileName));
-            String filePath = signed_apk_full_path;
             intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", new File(filePath)));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -437,6 +441,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
             File file = new File(export_src_filename);
             if (!file.exists()) {
+                findViewById(R.id.export_source_button).setVisibility(View.VISIBLE);
+                findViewById(R.id.export_source_output_stage).setVisibility(View.GONE);
                 SketchwareUtil.toast("Cannot share because the file does not exist.");
                 return;
             }
