@@ -6,6 +6,7 @@ import a.a.a.Gx;
 import a.a.a.Lx;
 import mod.hilal.saif.events.EventsHandler;
 import pro.sketchware.R;
+import pro.sketchware.blocks.generator.components.analyzers.BlockReturnAnalyzer;
 
 public class ManageEvent {
 
@@ -552,12 +553,12 @@ public class ManageEvent {
                     "final String _errorMessage = task.getException() != null ? task.getException().getMessage() : \"\";\r\n" +
                     eventLogic + "\r\n" +
                     "}";
-            case "onFragmentAdded" -> //noinspection DuplicateExpressions
-                    "@Override\r\n" +
-                            "public Fragment getItem(int _position) {\r\n" +
-                            (!eventLogic.isEmpty() ? eventLogic + "\r\n" :
-                                    "return null;\r\n") +
-                            "}";
+            case "onFragmentAdded" -> buildMethodWithFallbackReturn("""
+                    @Override
+                    public Fragment getItem(int _position) {
+                        %s
+                    }
+                    """, eventLogic, "new Fragment()");
             case "onTimeSet" -> "@Override\r\n" +
                     "public void onTimeSet(TimePicker _timePicker, int _hour, int _minute) {\r\n" +
                     eventLogic + "\r\n" +
@@ -648,11 +649,12 @@ public class ManageEvent {
                     "public void onAdLoaded(Ad ad) {\r\n" +
                     eventLogic + "\r\n" +
                     "}";
-            case "onTabAdded" -> "@Override\r\n" +
-                    "public CharSequence getPageTitle(int _position) {\r\n" +
-                    (!eventLogic.isEmpty() ? eventLogic + "\r\n" :
-                            "return \"\";\r\n") +
-                    "}";
+            case "onTabAdded" -> buildMethodWithFallbackReturn("""
+                    @Override
+                    public CharSequence getPageTitle(int _position) {
+                        %s
+                    }
+                    """, eventLogic, "\"\"");
             case "onCompleteRegister" -> "@Override\r\n" +
                     "public void onComplete(Task<InstanceIdResult> task) {\r\n" +
                     "final boolean _success = task.isSuccessful();\r\n" +
@@ -1095,4 +1097,19 @@ public class ManageEvent {
             default -> EventsHandler.getSpec(targetId, eventName);
         };
     }
+
+    public static String buildMethodWithFallbackReturn(String template, String logicCode, String returnValue) {
+        String fallbackReturn = String.format("return %s;", returnValue);
+        String finalCode;
+
+        if (logicCode.isEmpty()) {
+            finalCode = fallbackReturn;
+        } else {
+            boolean missingReturn = new BlockReturnAnalyzer().hasAnyMissingReturn(logicCode);
+            finalCode = missingReturn ? logicCode + "\r\n" + fallbackReturn : logicCode;
+        }
+
+        return String.format(template, finalCode);
+    }
+
 }
