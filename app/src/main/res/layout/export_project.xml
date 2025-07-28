@@ -181,6 +181,15 @@
                                 android:indeterminate="false"
                                 android:max="11"
                                 app:showAnimationBehavior="inward"/>
+                            <Button
+                                android:id="@+id/sign_apk_cancel_button"
+                                style="@style/Widget.Material3Expressive.Button.TonalButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="14dp"
+                                android:text="Stop"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -326,6 +335,15 @@
                                 android:indeterminate="false"
                                 android:max="11"
                                 app:showAnimationBehavior="inward"/>
+                            <Button
+                                android:id="@+id/export_aab_cancel_button"
+                                style="@style/Widget.Material3Expressive.Button.TonalButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="14dp"
+                                android:text="Stop"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -455,6 +473,7 @@
                                     android:src="@drawable/front_loader_24px"/>
 
                                 <TextView
+                                    android:id="@+id/export_source_progress_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="8dp"
@@ -463,10 +482,21 @@
                             </LinearLayout>
 
                             <com.google.android.material.progressindicator.LinearProgressIndicator
+                                android:id="@+id/export_source_progress"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:indeterminate="true"
+                                android:indeterminate="false"
+                                android:max="4"
                                 app:showAnimationBehavior="inward"/>
+                            <Button
+                                android:id="@+id/export_source_cancel_button"
+                                style="@style/Widget.Material3Expressive.Button.TonalButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="14dp"
+                                android:text="Stop"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
