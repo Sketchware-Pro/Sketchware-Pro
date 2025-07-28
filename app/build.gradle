@@ -142,7 +142,8 @@ dependencies {
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
 
-    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.26.4'
+    //Deprecated because it conflicts with com.android.tools.build:bundletool: https://github.com/Sketchware-Pro/Sketchware-Pro/commit/6d32e85165db36d5803bdc25cd50bccecade1c10
+    //implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.26.4'
 
     // Analytics and Crashlytics
     if (analyticsEnabled) {

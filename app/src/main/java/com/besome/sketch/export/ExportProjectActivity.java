@@ -977,7 +977,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                             Log.getStackTraceString(throwable)));
                 }
 
-                activity.get().exportAABUIController(0, "");
+                onError();
 
                 cancel(true);
             }
@@ -1000,11 +1000,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             activity.get().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // Dismiss the ProgressDialog
             //activity.get().i();
-            if (buildingAppBundle) {
-                activity.get().exportAABUIController(0, "");
-            } else {
-                activity.get().signAPKUIController(0, "");
-            }
+            onError();
         }
 
         @Override
@@ -1051,7 +1047,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             // Dismiss the ProgressDialog
             //activity.get().i();
             SketchwareUtil.showAnErrorOccurredDialog(activity.get(), str);
-            activity.get().exportAABUIController(0, "");
+            onError();
         }
 
         public void enableAppBundleBuild() {
@@ -1142,6 +1138,16 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                         }
                     }
 
+                }
+            });
+        }
+
+        private void onError() {
+            activity.get().runOnUiThread(() -> {
+                if (buildingAppBundle) {
+                    activity.get().exportAABUIController(0, "");
+                } else {
+                    activity.get().signAPKUIController(0, "");
                 }
             });
         }
