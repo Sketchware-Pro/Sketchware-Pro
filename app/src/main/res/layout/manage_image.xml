@@ -21,7 +21,7 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
+             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -57,11 +57,25 @@
                 android:layout_marginHorizontal="4dp"
                 tools:menu="@menu/projects_fragment_menu">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutSearch"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Search..."
-                    android:textColor="?attr/colorOnSurfaceVariant" />
+                    android:layout_margin="8dp"
+                    app:endIconMode="clear_text"
+                    app:boxBackgroundMode="filled"
+                    app:boxCornerRadiusTopStart="25dp"
+                    app:boxCornerRadiusTopEnd="25dp"
+                    app:boxCornerRadiusBottomStart="25dp"
+                    app:boxCornerRadiusBottomEnd="25dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Search..."
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.card.MaterialCardView>
     </com.google.android.material.appbar.AppBarLayout>

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.*;
@@ -32,6 +34,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     private pu projectImagesFragment;
     private fu collectionImagesFragment;
     private ManageImageBinding binding;
+    public boolean isSearching = false;
 
     public static int getImageGridColumnCount(Context context) {
         var displayMetrics = context.getResources().getDisplayMetrics();
@@ -95,7 +98,34 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         binding.viewPager.addOnPageChangeListener(this);
         binding.tabLayout.setupWithViewPager(binding.viewPager);
 
+        binding.editTextSearch.addTextChangedListener(new TextWatcher() {
+            pu fragment = (pu) getSupportFragmentManager()
+                    .findFragmentById(R.id.view_pager);
 
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().isEmpty()) { // we can't use charSequence.isEmpty() api level 35 required (current min is 26)
+                    isSearching = false;
+                    return; // we don't want to search for nothing
+                } else {
+                    isSearching = true;
+                }
+
+                if (fragment != null) {
+                    fragment.searchImages(charSequence.toString());
+                }
+            }
+        });
     }
 
     @Override

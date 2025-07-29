@@ -63,6 +63,7 @@ public class pu extends qA {
     private FrManageImageListBinding binding;
     private String sc_id;
     private ArrayList<ProjectResourceBean> images;
+    private ArrayList<ProjectResourceBean> searchedImages;
     private MaterialCardView actionButtonContainer;
     private FloatingActionButton fab;
     private String projectImagesDirectory = "";
@@ -141,6 +142,10 @@ public class pu extends qA {
 
     public ArrayList<ProjectResourceBean> d() {
         return images;
+    }
+
+    public ArrayList<ProjectResourceBean> e() {
+        return searchedImages;
     }
 
     private void initialize() {
@@ -454,6 +459,23 @@ public class pu extends qA {
         images.addAll(arrayList);
     }
 
+    public void searchImages(String toSearch) {
+        searchedImages.clear();
+        if (toSearch == null || toSearch.isEmpty()) return;
+
+        String lowerSearch = toSearch.toLowerCase();
+
+        for (ProjectResourceBean image : images) {
+            if (image.resName != null && image.resName.toLowerCase().contains(lowerSearch)) {
+                searchedImages.add(image);
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+    }
+
+
+
     private class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public Adapter(RecyclerView recyclerView) {
             if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
@@ -477,7 +499,17 @@ public class pu extends qA {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ProjectResourceBean image = images.get(position);
+            ProjectResourceBean image;
+            ManageImageActivity a = (ManageImageActivity) requireActivity();
+            ArrayList<ProjectResourceBean> b = new ArrayList<ProjectResourceBean>();
+            if (a.isSearching) {
+                image = searchedImages.get(position);
+                b.addAll(searchedImages);
+            } else {
+                image = images.get(position);
+                b.addAll(images);
+            }
+
 
             holder.binding.deleteImgContainer.setVisibility(isSelecting ? View.VISIBLE : View.GONE);
             holder.binding.imgNinePatch.setVisibility(image.isNinePatch() ? View.VISIBLE : View.GONE);
@@ -508,7 +540,7 @@ public class pu extends qA {
                 Glide.with(requireActivity())
                         .asBitmap()
                         .load(image.savedPos == 0 ? projectImagesDirectory + File.separator + image.resFullName
-                                : images.get(position).resFullName)
+                                : b.get(position).resFullName)
                         .transform(new BitmapTransformation() {
 
                             final String ID = "my-transformation";
@@ -540,8 +572,15 @@ public class pu extends qA {
 
         @Override
         public int getItemCount() {
-            return images.size();
+            ManageImageActivity a = (ManageImageActivity) requireActivity();
+            if (a != null && a.isSearching) {
+                return searchedImages != null ? searchedImages.size() : 0;
+            } else {
+                return images != null ? images.size() : 0;
+            }
         }
+
+
 
         private class ViewHolder extends RecyclerView.ViewHolder {
             private final ManageImageListItemBinding binding;
@@ -571,5 +610,7 @@ public class pu extends qA {
                 });
             }
         }
+
+
     }
 }
