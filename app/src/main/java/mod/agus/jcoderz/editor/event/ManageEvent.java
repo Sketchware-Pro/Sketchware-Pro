@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import a.a.a.Gx;
 import a.a.a.Lx;
+import extensions.anbui.sketchware.fragment.FragmentUtils;
 import mod.hilal.saif.events.EventsHandler;
 import pro.sketchware.R;
 
@@ -555,8 +556,7 @@ public class ManageEvent {
             case "onFragmentAdded" -> //noinspection DuplicateExpressions
                     "@Override\r\n" +
                             "public Fragment getItem(int _position) {\r\n" +
-                            (!eventLogic.isEmpty() ? eventLogic + "\r\n" :
-                                    "return null;\r\n") +
+                            FragmentUtils.returnFragmentgetItem(eventLogic) + "\r\n" +
                             "}";
             case "onTimeSet" -> "@Override\r\n" +
                     "public void onTimeSet(TimePicker _timePicker, int _hour, int _minute) {\r\n" +

@@ -48,6 +48,8 @@ import a.a.a.wq;
 import a.a.a.xq;
 import a.a.a.yB;
 import a.a.a.yq;
+import extensions.anbui.sketchware.configs.Configs;
+import extensions.anbui.sketchware.fragment.FragmentUtils;
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
 import kellinwood.security.zipsigner.optional.LoadKeystoreException;
@@ -62,6 +64,7 @@ import mod.jbk.build.compiler.bundle.AppBundleCompiler;
 import mod.jbk.export.GetKeyStoreCredentialsDialog;
 import mod.jbk.util.TestkeySignBridge;
 import pro.sketchware.R;
+import pro.sketchware.dialogs.BuildSettingsBottomSheet;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
@@ -147,6 +150,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
     //Other UI
     private ConstraintLayout ln_r8;
+    private ConstraintLayout ln_buid_settings;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -222,6 +226,14 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.putExtra("sc_id", sc_id);
             startActivity(intent);
+        });
+
+        //Build Settings Card
+        ln_buid_settings = findViewById(R.id.ln_buid_settings);
+        //Set On Click
+        ln_buid_settings.setOnClickListener(view -> {
+            BuildSettingsBottomSheet sheet = BuildSettingsBottomSheet.newInstance(sc_id);
+            sheet.show(getSupportFragmentManager(), BuildSettingsBottomSheet.TAG);
         });
 
 
@@ -531,10 +543,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             setEnableAABCard(false);
             setEnableSourceCard(false);
             setEnableR8Card(false);
+            setEnableBuildSettingsCard(false);
         } else {
             setEnableAABCard(true);
             setEnableSourceCard(true);
             setEnableR8Card(true);
+            setEnableBuildSettingsCard(true);
         }
     }
 
@@ -571,10 +585,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             setEnableAPKCard(false);
             setEnableSourceCard(false);
             setEnableR8Card(false);
+            setEnableBuildSettingsCard(false);
         } else {
             setEnableAPKCard(true);
             setEnableSourceCard(true);
             setEnableR8Card(true);
+            setEnableBuildSettingsCard(true);
         }
     }
 
@@ -611,10 +627,12 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             setEnableAPKCard(false);
             setEnableAABCard(false);
             setEnableR8Card(false);
+            setEnableBuildSettingsCard(false);
         } else {
             setEnableAPKCard(true);
             setEnableAABCard(true);
             setEnableR8Card(true);
+            setEnableBuildSettingsCard(true);
         }
     }
 
@@ -662,6 +680,18 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 ln_r8.setAlpha(1);
             } else {
                 ln_r8.setAlpha(0.5f);
+            }
+        }
+    }
+
+    //Enable or disable Code Shrinking Manager Card
+    private void setEnableBuildSettingsCard(boolean enable) {
+        if (isSetupInOnCreate) {
+            ln_buid_settings.setEnabled(enable);
+            if (enable) {
+                ln_buid_settings.setAlpha(1);
+            } else {
+                ln_buid_settings.setAlpha(0.5f);
             }
         }
     }
@@ -823,6 +853,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                     cancel(true);
                     return;
                 }
+
+                FragmentUtils.prepareFallbackFragmentFile(project_metadata.sc_id);
 
                 /* Check AAPT/AAPT2 */
                 onProgress("Extracting AAPT/AAPT2 binaries...", 3);

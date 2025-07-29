@@ -41,6 +41,7 @@ import a.a.a.DA;
 import a.a.a.DB;
 import a.a.a.lC;
 import dev.chrisbanes.insetter.Insetter;
+import extensions.anbui.sketchware.configs.Configs;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import pro.sketchware.R;
@@ -77,6 +78,7 @@ public class ProjectsFragment extends DA {
     }
 
     public void toDesignActivity(String sc_id) {
+        Configs.currentProjectID = sc_id;
         Intent intent = new Intent(requireContext(), DesignActivity.class);
         ProjectTracker.setScId(sc_id);
         intent.putExtra("sc_id", sc_id);
