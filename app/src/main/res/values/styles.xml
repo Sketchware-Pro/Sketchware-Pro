@@ -113,4 +113,10 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsFloating">true</item>
     </style>
+
+    <!-- Dialog Animation Style -->
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>

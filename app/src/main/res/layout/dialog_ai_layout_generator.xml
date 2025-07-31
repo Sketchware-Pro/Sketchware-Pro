@@ -180,7 +180,7 @@
                             android:layout_weight="1"
                             android:text="@string/ai_layout_generator_generating"
                             android:textSize="14sp"
-                            android:textStyle="medium"
+                            android:textStyle="normal"
                             android:textColor="?attr/colorOnSecondaryContainer" />
 
                     </LinearLayout>
