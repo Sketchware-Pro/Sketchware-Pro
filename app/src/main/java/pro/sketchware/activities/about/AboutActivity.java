@@ -102,7 +102,7 @@ public class AboutActivity extends BaseAppCompatActivity {
                 response = sharedPref.getString("aboutData", null);
             }
             
-            // Se não conseguir carregar dados da API, usar dados estáticos
+            // If unable to load data from API, use static data
             if (response == null) {
                 createStaticTeamData();
                 return;
@@ -117,22 +117,22 @@ public class AboutActivity extends BaseAppCompatActivity {
     }
     
     private void createStaticTeamData() {
-        // Criar dados estáticos da equipe incluindo Fábio Silva
+        // Create static team data including Fábio Silva
         ArrayList<AboutResponseModel.TeamMember> staticTeam = new ArrayList<>();
         
-        // Adicionar Fábio Silva como contribuidor ativo
+        // Add Fábio Silva as active contributor
         AboutResponseModel.TeamMember fabioSilva = new AboutResponseModel.TeamMember();
         fabioSilva.setMemberUsername("FabioSilva11");
-        fabioSilva.setDescription("Desenvolvedor apaixonado por tecnologia e inovação. Contribuindo para o desenvolvimento do Sketchware Pro com foco em melhorias de UX/UI e funcionalidades avançadas.");
+        fabioSilva.setDescription("Passionate developer focused on technology and innovation. Contributing to Sketchware Pro development with focus on UX/UI improvements and advanced features.");
         fabioSilva.setMemberImg("https://github.com/FabioSilva11.png");
         fabioSilva.setCoreTeamMember(false);
         fabioSilva.setActive(true);
         staticTeam.add(fabioSilva);
         
-        // Adicionar outros membros da equipe (exemplo)
+        // Add other team members (example)
         AboutResponseModel.TeamMember coreMember = new AboutResponseModel.TeamMember();
         coreMember.setMemberUsername("Sketchware-Pro");
-        coreMember.setDescription("Equipe principal do Sketchware Pro - IDE visual para desenvolvimento Android.");
+        coreMember.setDescription("Main Sketchware Pro team - Visual IDE for Android development.");
         coreMember.setMemberImg("https://github.com/Sketchware-Pro.png");
         coreMember.setCoreTeamMember(true);
         coreMember.setActive(true);

@@ -96,35 +96,48 @@ public class GroqErrorExplainer {
         prompt.append("You are a helpful programming assistant. A user is getting an error in their Android development project. ");
         prompt.append("Please explain what this error means in simple terms and provide steps to fix it. ");
         prompt.append("Keep your response concise but helpful. ");
+        prompt.append("**IMPORTANT: Format your response using Markdown syntax for better readability.** ");
         
-        // Usar o idioma configurado pelo usuário
+        // Use the language configured by the user
         String selectedLanguage = this.context != null ? GroqConfig.getResponseLanguage(this.context) : GroqConfig.DEFAULT_LANGUAGE;
         String languageInstruction = getLanguageInstruction(selectedLanguage);
         prompt.append(languageInstruction).append("\n\n");
         
-        prompt.append("Error message:\n");
+        prompt.append("**Error message:**\n");
+        prompt.append("```\n");
         prompt.append(errorMessage);
-        prompt.append("\n\n");
+        prompt.append("\n```\n\n");
         
         if (context != null && !context.isEmpty()) {
-            prompt.append("Additional context:\n");
+            prompt.append("**Additional context:**\n");
             prompt.append(context);
             prompt.append("\n\n");
         }
         
-        prompt.append("Please provide:\n");
-        prompt.append("1. A simple explanation of what the error means\n");
-        prompt.append("2. Common causes of this error\n");
-        prompt.append("3. Steps to fix the error\n");
-        prompt.append("4. Tips to prevent this error in the future");
+        prompt.append("**Please provide your response in the following format:**\n\n");
+        prompt.append("## 📋 **Explanation**\n");
+        prompt.append("[Simple explanation of what the error means]\n\n");
+        prompt.append("## 🔍 **Common Causes**\n");
+        prompt.append("- [Cause 1]\n");
+        prompt.append("- [Cause 2]\n");
+        prompt.append("- [Cause 3]\n\n");
+        prompt.append("## 🛠️ **How to Fix**\n");
+        prompt.append("1. [Step 1]\n");
+        prompt.append("2. [Step 2]\n");
+        prompt.append("3. [Step 3]\n\n");
+        prompt.append("## 💡 **Prevention Tips**\n");
+        prompt.append("- [Tip 1]\n");
+        prompt.append("- [Tip 2]\n");
+        prompt.append("- [Tip 3]\n\n");
+        prompt.append("**Use proper Markdown formatting with headers, lists, code blocks, and emphasis for better readability.**");
         
         return prompt.toString();
     }
     
     /**
-     * Obtém a instrução de idioma baseada na configuração do usuário
-     * @param languageCode Código do idioma configurado
-     * @return Instrução para a IA responder no idioma correto
+     * Gets the language instruction based on user configuration
+     * @param languageCode Configured language code
+     * @return Instruction for AI to respond in the correct language
      */
     private String getLanguageInstruction(String languageCode) {
         switch (languageCode) {
@@ -155,7 +168,7 @@ public class GroqErrorExplainer {
             case GroqConfig.LANGUAGE_HINDI:
                 return "Respond in Hindi. Use clear and simple Hindi.";
             default:
-                return "Respond in Portuguese (Brazil). Use clear and simple Portuguese.";
+                return "Respond in English. Use clear and simple English.";
         }
     }
     
@@ -212,14 +225,18 @@ public class GroqErrorExplainer {
      * Get a formatted error explanation with loading state
      */
     public static String getLoadingMessage() {
-        return "🤖 Analisando o erro com IA...\n\nPor favor, aguarde enquanto analisamos o problema.";
+        // This method is static, so we need to use a different approach
+        // The strings will be accessed through the context in the calling methods
+        return "🤖 Analyzing error with AI...\n\nPlease wait while we analyze the problem.";
     }
     
     /**
      * Get a formatted error message when API is not available
      */
     public static String getNoApiMessage() {
-        return "⚠️ Explicação por IA não disponível\n\n" +
-               "Para usar a explicação de erros por IA, configure a variável de ambiente GROQ_API_KEY.";
+        // This method is static, so we need to use a different approach
+        // The strings will be accessed through the context in the calling methods
+        return "⚠️ AI Explanation Not Available\n\n" +
+               "To use AI error explanations, configure the GROQ_API_KEY environment variable.";
     }
 } 

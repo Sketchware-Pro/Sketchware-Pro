@@ -2197,10 +2197,10 @@ Please try again later"</string>
     <string name="settings_appearance_theme_system">System default</string>
     <string name="settings_appearance_theme_light">Light theme</string>
     <string name="settings_appearance_theme_dark">Dark theme</string>
-    <string name="theme_section_title">Temas de Cores</string>
-    <string name="theme_section_description">Escolha um tema predefinido ou gere um tema com cores aleatórias</string>
-    <string name="theme_generate_random">Gerar Aleatório</string>
-    <string name="theme_random_generated">Tema aleatório gerado: %s</string>
+    <string name="theme_section_title">Color Themes</string>
+    <string name="theme_section_description">Choose a predefined theme or generate a theme with random colors</string>
+    <string name="theme_generate_random">Generate Random</string>
+    <string name="theme_random_generated">Random theme generated: %s</string>
     <string name="settings_events_manager">Events manager</string>
     <string name="settings_events_manager_activity_events">Activity events</string>
     <string name="settings_events_manager_listeners">Listeners</string>
@@ -2336,7 +2336,7 @@ Please try again later"</string>
     <string name="groq_ai_settings_help">Get AI-powered explanations for programming errors</string>
     <string name="groq_ai_response_language">Response Language</string>
     <string name="groq_ai_response_language_description">Choose the language in which the AI should respond</string>
-    <string name="groq_ai_language_portuguese_brazil">Português do Brasil</string>
+    <string name="groq_ai_language_portuguese_brazil">Portuguese (Brazil)</string>
     <string name="groq_ai_language_english">English</string>
     <string name="groq_ai_language_spanish">Español</string>
     <string name="groq_ai_language_french">Français</string>
@@ -2351,24 +2351,96 @@ Please try again later"</string>
     <string name="groq_ai_language_hindi">हिन्दी</string>
 
     <!-- AI Layout Generator -->
-    <string name="ai_layout_generator_title">Gerador de Layout com IA</string>
-    <string name="ai_layout_generator_description">Descreva o layout que você deseja criar. A IA irá gerar o código XML automaticamente.</string>
-    <string name="ai_layout_generator_prompt_hint">Descreva o layout (ex: tela de login com email, senha e botão)</string>
-    <string name="ai_layout_generator_examples_title">Exemplos de prompts:</string>
-    <string name="ai_layout_generator_examples">• Tela de login com campos de email e senha\n• Lista de produtos com imagens e preços\n• Formulário de cadastro com validação\n• Dashboard com cards de estatísticas\n• Galeria de fotos em grid</string>
-    <string name="ai_layout_generator_generating">Gerando layout com IA...</string>
-    <string name="ai_layout_generator_generating_description">Isso pode levar alguns segundos. A IA está criando o melhor layout para sua descrição.</string>
-    <string name="ai_layout_generator_generate">Gerar Layout</string>
-    <string name="ai_layout_generator_cancel">Cancelar</string>
-    <string name="ai_layout_generator_success">Layout gerado com sucesso! Revise e salve as alterações.</string>
-    <string name="ai_layout_generator_error_prompt_empty">Por favor, descreva o layout que você deseja criar.</string>
-    <string name="ai_layout_generator_error_not_configured">Groq AI não está configurado. Configure a API key nas configurações.</string>
-    <string name="ai_layout_generator_error_api_key">Chave da API da Groq não encontrada.</string>
-    <string name="ai_layout_generator_error_generation">Erro ao gerar layout: %s</string>
-    <string name="ai_layout_generator_not_configured_title">Groq AI não configurado</string>
-    <string name="ai_layout_generator_not_configured_message">Para usar o gerador de layout com IA, você precisa configurar a API da Groq primeiro. Deseja ir para as configurações?</string>
-    <string name="ai_layout_generator_configure">Configurar</string>
-    <string name="ai_layout_generator_settings_not_found">Configurações da Groq AI não encontradas.</string>
+    <string name="ai_layout_generator_title">AI Layout Generator</string>
+    <string name="ai_layout_generator_description">Describe the layout you want to create. The AI will generate the XML code automatically.</string>
+    <string name="ai_layout_generator_prompt_hint">Describe the layout (e.g., login screen with email, password and button)</string>
+    <string name="ai_layout_generator_examples_title">Prompt examples:</string>
+    <string name="ai_layout_generator_examples">• Login screen with email and password fields\n• Product list with images and prices\n• Registration form with validation\n• Dashboard with statistics cards\n• Photo gallery in grid</string>
+    <string name="ai_layout_generator_generating">Generating layout with AI...</string>
+    <string name="ai_layout_generator_generating_description">This may take a few seconds. The AI is creating the best layout for your description.</string>
+    <string name="ai_layout_generator_generate">Generate Layout</string>
+    <string name="ai_layout_generator_cancel">Cancel</string>
+    <string name="ai_layout_generator_success">Layout generated successfully! Review and save the changes.</string>
+    <string name="ai_layout_generator_error_prompt_empty">Please describe the layout you want to create.</string>
+    <string name="ai_layout_generator_error_not_configured">Groq AI is not configured. Configure the API key in settings.</string>
+    <string name="ai_layout_generator_error_api_key">Groq API key not found.</string>
+    <string name="ai_layout_generator_error_generation">Error generating layout: %s</string>
+    <string name="ai_layout_generator_not_configured_title">Groq AI not configured</string>
+    <string name="ai_layout_generator_not_configured_message">To use the AI layout generator, you need to configure the Groq API first. Do you want to go to settings?</string>
+    <string name="ai_layout_generator_configure">Configure</string>
+    <string name="ai_layout_generator_settings_not_found">Groq AI settings not found.</string>
     <string name="ai_layout_generator_menu_title">Generate with AI</string>
+    <string name="ai_layout_generator_groq_not_configured">Groq AI is not configured. Configure the API key in settings to use the AI layout generator.</string>
+    <string name="ai_layout_generator_configure_groq">Configure Groq</string>
+    <string name="ai_layout_generator_error_settings_not_found">Groq AI settings not found.</string>
+
+    <!-- Groq AI Layout Generator Prompts -->
+    <string name="groq_layout_generator_prompt_expert">You are an Android development and XML layouts expert.</string>
+    <string name="groq_layout_generator_prompt_rules">Generate only the Android XML layout code based on the provided description. Follow these rules strictly:</string>
+    <string name="groq_layout_generator_rule_1">1. Generate ONLY the XML code, without explanations or comments</string>
+    <string name="groq_layout_generator_rule_2">2. Use LinearLayout, RelativeLayout, ConstraintLayout or other standard Android layouts</string>
+    <string name="groq_layout_generator_rule_3">3. Include unique IDs for all elements (e.g., android:id=\"@+id/button1\")</string>
+    <string name="groq_layout_generator_rule_4">4. Use appropriate dimensions (dp, sp, match_parent, wrap_content)</string>
+    <string name="groq_layout_generator_rule_5">5. Include margins and padding when appropriate</string>
+    <string name="groq_layout_generator_rule_6">6. Use Material Design colors when specified</string>
+    <string name="groq_layout_generator_rule_7">7. Include accessibility attributes (contentDescription)</string>
+    <string name="groq_layout_generator_rule_8">8. Use standard Android widgets (TextView, Button, EditText, ImageView, etc.)</string>
+    <string name="groq_layout_generator_rule_9">9. If Material Design is mentioned, use Material Design components</string>
+    <string name="groq_layout_generator_rule_10">10. The layout should be responsive and follow Android best practices</string>
+    <string name="groq_layout_generator_prompt_language_instruction">%s</string>
+    <string name="groq_layout_generator_prompt_project_config">Project Configuration:\n%s</string>
+    <string name="groq_layout_generator_prompt_supported_widgets">Supported Widgets and Components:\n%s</string>
+    <string name="groq_layout_generator_prompt_description">Layout description: %s</string>
+    <string name="groq_layout_generator_prompt_generate">Generate the layout XML:</string>
+
+    <!-- Groq AI Language Instructions -->
+    <string name="groq_language_instruction_english">Respond in English. Generate only the XML code.</string>
+    <string name="groq_language_instruction_spanish">Responde en español. Genera solo el código XML.</string>
+    <string name="groq_language_instruction_french">Réponds en français. Génère uniquement le code XML.</string>
+    <string name="groq_language_instruction_german">Antworte auf Deutsch. Generiere nur den XML-Code.</string>
+    <string name="groq_language_instruction_italian">Rispondi in italiano. Genera solo il codice XML.</string>
+    <string name="groq_language_instruction_japanese">日本語で回答してください。XMLコードのみを生成してください。</string>
+    <string name="groq_language_instruction_korean">한국어로 답변하세요. XML 코드만 생성하세요.</string>
+    <string name="groq_language_instruction_chinese_simplified">用中文回答。只生成XML代码。</string>
+    <string name="groq_language_instruction_chinese_traditional">用繁體中文回答。只生成XML代碼。</string>
+    <string name="groq_language_instruction_russian">Отвечайте на русском языке. Генерируйте только XML-код.</string>
+    <string name="groq_language_instruction_arabic">أجب باللغة العربية. أنشئ كود XML فقط.</string>
+    <string name="groq_language_instruction_hindi">हिंदी में जवाब दें। केवल XML कोड उत्पन्न करें।</string>
+    <string name="groq_language_instruction_portuguese">Respond in Portuguese. Generate only the XML code.</string>
+
+    <!-- Groq AI Error Messages -->
+    <string name="groq_error_unknown_api">Unknown API error</string>
+    <string name="groq_error_invalid_response">Invalid API response: no choices found</string>
+    <string name="groq_error_processing">Error processing API response</string>
+    <string name="groq_error_api_groq">Groq API error: %s</string>
+    <string name="groq_error_api_response">API error: %s %s</string>
+    <string name="groq_error_parsing_response">Error parsing JSON response</string>
+    <string name="groq_error_no_content">No content in response</string>
+
+    <!-- Groq AI Loading Messages -->
+    <string name="groq_loading_analyzing">🤖 Analyzing error with AI...</string>
+    <string name="groq_loading_wait">Please wait while we analyze the problem.</string>
+    <string name="groq_not_available_title">⚠️ AI Explanation Not Available</string>
+    <string name="groq_not_available_message">To use AI error explanations, configure the GROQ_API_KEY environment variable.</string>
+
+    <!-- Groq AI Project Configuration -->
+    <string name="groq_project_config_appcompat_enabled">• AppCompat is enabled - Use compatible components</string>
+    <string name="groq_project_config_appcompat_disabled">• AppCompat is not enabled - Use standard Android components</string>
+    <string name="groq_project_config_material3_enabled">• Material 3 is enabled - Use Material 3 components</string>
+    <string name="groq_project_config_material3_disabled">• Material 3 is not enabled - Use Material Design 1</string>
+    <string name="groq_project_config_min_sdk">• Minimum Android version: API %d</string>
+    <string name="groq_project_config_target_sdk">• Target Android version: API %d</string>
+    <string name="groq_project_config_sketchware">• This is a Sketchware project</string>
+    <string name="groq_project_config_use_appcompat">• Use androidx.appcompat.widget.* when appropriate</string>
+    <string name="groq_project_config_avoid_appcompat">• Avoid components that require AppCompat</string>
+    <string name="groq_project_config_use_material3">• Use com.google.android.material.* when appropriate</string>
+    <string name="groq_project_config_avoid_material3">• Avoid Material 3 specific components</string>
+
+    <!-- Layout XML Strings -->
+    <string name="groq_layout_hint_api_key">Enter your Groq API key</string>
+    <string name="groq_layout_btn_open_docs">Open Documentation</string>
+    <string name="groq_layout_btn_test_connection">Test Connection</string>
+    <string name="groq_layout_info_title">ℹ️ Information</string>
+    <string name="groq_layout_info_text">• Groq AI offers intelligent explanations for programming errors\n\n• You can get a free key at console.groq.com\n\n• The API key is stored locally on your device\n\n• This feature requires internet connection</string>
 
 </resources>

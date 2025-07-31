@@ -7,8 +7,8 @@ import android.text.TextUtils;
 import pro.sketchware.R;
 
 /**
- * Classe de configuração para gerenciar a chave da API da Groq
- * Permite salvar e recuperar a chave da API de forma segura
+ * Configuration class for managing the Groq API key
+ * Allows saving and retrieving the API key securely
  */
 public class GroqConfig {
     
@@ -17,7 +17,7 @@ public class GroqConfig {
     private static final String KEY_ENABLED = "enabled";
     private static final String KEY_RESPONSE_LANGUAGE = "response_language";
     
-    // Idiomas disponíveis para resposta da IA
+    // Available languages for AI response
     public static final String LANGUAGE_PORTUGUESE_BRAZIL = "pt-BR";
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_SPANISH = "es";
@@ -32,13 +32,13 @@ public class GroqConfig {
     public static final String LANGUAGE_ARABIC = "ar";
     public static final String LANGUAGE_HINDI = "hi";
     
-    // Idioma padrão (Português do Brasil)
-    public static final String DEFAULT_LANGUAGE = LANGUAGE_PORTUGUESE_BRAZIL;
+    // Default language (English)
+    public static final String DEFAULT_LANGUAGE = LANGUAGE_ENGLISH;
     
     /**
-     * Salva a chave da API da Groq
-     * @param context Contexto da aplicação
-     * @param apiKey Chave da API da Groq
+     * Saves the Groq API key
+     * @param context Application context
+     * @param apiKey Groq API key
      */
     public static void saveApiKey(Context context, String apiKey) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -48,9 +48,9 @@ public class GroqConfig {
     }
     
     /**
-     * Recupera a chave da API da Groq
-     * @param context Contexto da aplicação
-     * @return Chave da API ou null se não estiver configurada
+     * Retrieves the Groq API key
+     * @param context Application context
+     * @return API key or null if not configured
      */
     public static String getApiKey(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -58,9 +58,9 @@ public class GroqConfig {
     }
     
     /**
-     * Verifica se a API da Groq está habilitada
-     * @param context Contexto da aplicação
-     * @return true se estiver habilitada
+     * Checks if the Groq API is enabled
+     * @param context Application context
+     * @return true if enabled
      */
     public static boolean isEnabled(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -68,9 +68,9 @@ public class GroqConfig {
     }
     
     /**
-     * Habilita ou desabilita a API da Groq
-     * @param context Contexto da aplicação
-     * @param enabled true para habilitar, false para desabilitar
+     * Enables or disables the Groq API
+     * @param context Application context
+     * @param enabled true to enable, false to disable
      */
     public static void setEnabled(Context context, boolean enabled) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -80,9 +80,9 @@ public class GroqConfig {
     }
     
     /**
-     * Salva o idioma de resposta da IA
-     * @param context Contexto da aplicação
-     * @param language Código do idioma (ex: "pt-BR", "en")
+     * Saves the AI response language
+     * @param context Application context
+     * @param language Language code (e.g., "pt-BR", "en")
      */
     public static void saveResponseLanguage(Context context, String language) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -92,9 +92,9 @@ public class GroqConfig {
     }
     
     /**
-     * Recupera o idioma de resposta da IA
-     * @param context Contexto da aplicação
-     * @return Código do idioma ou o idioma padrão se não estiver configurado
+     * Retrieves the AI response language
+     * @param context Application context
+     * @return Language code or default language if not configured
      */
     public static String getResponseLanguage(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -102,10 +102,10 @@ public class GroqConfig {
     }
     
     /**
-     * Obtém o nome do idioma para exibição
-     * @param context Contexto da aplicação
-     * @param languageCode Código do idioma
-     * @return Nome do idioma em português
+     * Gets the language name for display
+     * @param context Application context
+     * @param languageCode Language code
+     * @return Language name in Portuguese
      */
     public static String getLanguageDisplayName(Context context, String languageCode) {
         switch (languageCode) {
@@ -141,8 +141,8 @@ public class GroqConfig {
     }
     
     /**
-     * Obtém todos os idiomas disponíveis
-     * @return Array com os códigos dos idiomas disponíveis
+     * Gets all available languages
+     * @return Array with available language codes
      */
     public static String[] getAvailableLanguages() {
         return new String[]{
@@ -163,9 +163,9 @@ public class GroqConfig {
     }
     
     /**
-     * Obtém os nomes de exibição de todos os idiomas disponíveis
-     * @param context Contexto da aplicação
-     * @return Array com os nomes dos idiomas em português
+     * Gets display names for all available languages
+     * @param context Application context
+     * @return Array with language names in Portuguese
      */
     public static String[] getAvailableLanguageNames(Context context) {
         String[] languages = getAvailableLanguages();
@@ -177,17 +177,17 @@ public class GroqConfig {
     }
     
     /**
-     * Verifica se a API da Groq está configurada e disponível
-     * @param context Contexto da aplicação
-     * @return true se estiver configurada e habilitada
+     * Checks if the Groq API is configured and available
+     * @param context Application context
+     * @return true if configured and enabled
      */
     public static boolean isAvailable(Context context) {
         return isEnabled(context) && !TextUtils.isEmpty(getApiKey(context));
     }
     
     /**
-     * Limpa todas as configurações da Groq
-     * @param context Contexto da aplicação
+     * Clears all Groq configurations
+     * @param context Application context
      */
     public static void clearConfig(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -197,19 +197,19 @@ public class GroqConfig {
     }
     
     /**
-     * Obtém a chave da API da Groq de forma segura
-     * Primeiro tenta obter da configuração local, depois da variável de ambiente
-     * @param context Contexto da aplicação
-     * @return Chave da API ou null se não estiver disponível
+     * Gets the Groq API key securely
+     * First tries to get from local configuration, then environment variable
+     * @param context Application context
+     * @return API key or null if not available
      */
     public static String getApiKeySafely(Context context) {
-        // Primeiro tenta obter da configuração local
+        // First tries to get from local configuration
         String localApiKey = getApiKey(context);
         if (!TextUtils.isEmpty(localApiKey) && isEnabled(context)) {
             return localApiKey;
         }
         
-        // Se não estiver configurada localmente, tenta a variável de ambiente
+        // If not configured locally, tries environment variable
         String envApiKey = System.getenv("GROQ_API_KEY");
         if (!TextUtils.isEmpty(envApiKey)) {
             return envApiKey;

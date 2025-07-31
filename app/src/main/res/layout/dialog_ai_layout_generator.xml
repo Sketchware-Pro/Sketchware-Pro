@@ -2,156 +2,106 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="?attr/colorSurface"
-    android:padding="0dp">
+    android:background="?attr/colorSurface">
+
+    <!-- Handle do BottomSheet -->
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <!-- Header com Material Design 3 -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardElevation="0dp"
+        android:layout_margin="10dp"
         app:cardBackgroundColor="?attr/colorPrimaryContainer"
         app:cardCornerRadius="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:padding="20dp">
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="10dp">
 
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_mtrl_ai"
-                android:contentDescription="AI Icon"
-                android:tint="?attr/colorOnPrimaryContainer"
-                android:layout_marginEnd="16dp" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:text="@string/ai_layout_generator_title"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 android:textSize="22sp"
-                android:textStyle="bold"
-                android:textColor="?attr/colorOnPrimaryContainer" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Conteúdo principal -->
-    <LinearLayout
+    <!-- Conteúdo principal com ScrollView -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
-        <!-- Descrição -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/ai_layout_generator_description"
-            android:textSize="14sp"
-            android:textColor="?attr/colorOnSurfaceVariant"
-            android:lineSpacingExtra="2dp"
-            android:layout_marginBottom="20dp" />
-
-        <!-- Campo de entrada para o prompt -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/ai_layout_generator_prompt_hint"
-            app:boxStrokeColor="?attr/colorPrimary"
-            app:hintTextColor="?attr/colorPrimary"
-            app:boxStrokeWidth="2dp"
-            app:endIconMode="clear_text"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/prompt_input"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine|textCapSentences"
-                android:minLines="3"
-                android:maxLines="6"
-                android:gravity="top"
-                android:textColor="?attr/colorOnSurface" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Exemplos de prompts com design melhorado -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:cardElevation="1dp"
-            app:cardCornerRadius="12dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="?attr/colorOutline">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_mtrl_info"
-                        android:contentDescription="Examples"
-                        android:tint="?attr/colorPrimary"
-                        android:layout_marginEnd="8dp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/ai_layout_generator_examples_title"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="?attr/colorOnSurface" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ai_layout_generator_examples"
-                    android:textSize="13sp"
-                    android:textColor="?attr/colorOnSurfaceVariant"
-                    android:lineSpacingExtra="3dp" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Progress bar com design melhorado -->
         <LinearLayout
-            android:id="@+id/progress_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="20dp"
-            android:visibility="gone">
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="20dp">
 
+            <!-- Descrição -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ai_layout_generator_description"
+                android:textSize="14sp"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:lineSpacingExtra="2dp"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Campo de entrada para o prompt -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ai_layout_generator_prompt_hint"
+                app:boxStrokeColor="?attr/colorPrimary"
+                app:hintTextColor="?attr/colorPrimary"
+                app:boxStrokeWidth="2dp"
+                app:endIconMode="clear_text"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/prompt_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:minLines="3"
+                    android:maxLines="6"
+                    android:gravity="top"
+                    android:textColor="?attr/colorOnSurface" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Exemplos de prompts com design melhorado -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 app:cardElevation="1dp"
                 app:cardCornerRadius="12dp"
-                app:cardBackgroundColor="?attr/colorSecondaryContainer">
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -164,69 +114,133 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="12dp">
 
-                        <com.google.android.material.progressindicator.CircularProgressIndicator
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginEnd="12dp"
-                            android:indeterminate="true"
-                            app:indicatorColor="?attr/colorPrimary"
-                            app:trackColor="?attr/colorPrimaryContainer" />
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_mtrl_info"
+                            android:contentDescription="Examples"
+                            android:tint="?attr/colorPrimary"
+                            android:layout_marginEnd="8dp" />
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/ai_layout_generator_generating"
+                            android:text="@string/ai_layout_generator_examples_title"
                             android:textSize="14sp"
-                            android:textStyle="normal"
-                            android:textColor="?attr/colorOnSecondaryContainer" />
+                            android:textStyle="bold"
+                            android:textColor="?attr/colorOnSurface" />
 
                     </LinearLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/ai_layout_generator_generating_description"
-                        android:textSize="12sp"
-                        android:textColor="?attr/colorOnSecondaryContainer"
-                        android:alpha="0.8" />
+                        android:text="@string/ai_layout_generator_examples"
+                        android:textSize="13sp"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:lineSpacingExtra="3dp" />
 
                 </LinearLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- Progress bar com design melhorado -->
+            <LinearLayout
+                android:id="@+id/progress_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:visibility="gone">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="1dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardBackgroundColor="?attr/colorSecondaryContainer">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="8dp">
+
+                            <com.google.android.material.progressindicator.CircularProgressIndicator
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="12dp"
+                                android:indeterminate="true"
+                                app:indicatorColor="?attr/colorPrimary"
+                                app:trackColor="?attr/colorPrimaryContainer" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/ai_layout_generator_generating"
+                                android:textSize="14sp"
+                                android:textStyle="normal"
+                                android:textColor="?attr/colorOnSecondaryContainer" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ai_layout_generator_generating_description"
+                            android:textSize="12sp"
+                            android:textColor="?attr/colorOnSecondaryContainer"
+                            android:alpha="0.8" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <!-- Botões com design Material 3 -->
-        <LinearLayout
-            android:layout_width="match_parent"
+    </ScrollView>
+
+    <!-- Botões com design Material 3 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="16dp"
+        android:gravity="end"
+        android:background="?attr/colorSurface">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp"
-            android:gravity="end">
+            android:text="@string/ai_layout_generator_cancel"
+            android:layout_marginEnd="8dp"
+            style="@style/Widget.Material3.Button.TextButton" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ai_layout_generator_cancel"
-                android:layout_marginEnd="8dp"
-                style="@style/Widget.Material3.Button.TextButton" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/generate_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ai_layout_generator_generate"
-                app:icon="@drawable/ic_mtrl_ai"
-                app:iconGravity="textStart"
-                app:iconTint="?attr/colorOnPrimary"
-                style="@style/Widget.Material3.Button" />
-
-        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/generate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ai_layout_generator_generate"
+            app:icon="@drawable/ic_mtrl_ai"
+            app:iconGravity="textStart"
+            app:iconTint="?attr/colorOnPrimary"
+            style="@style/Widget.Material3.Button" />
 
     </LinearLayout>
 
-</LinearLayout> 
+</LinearLayout>

@@ -281,27 +281,27 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
     }
     
     /**
-     * Mostra o dialog para geração de layout com IA
+     * Shows the AI layout generation dialog
      */
     private void showAiLayoutGenerator() {
         AiLayoutGeneratorDialog dialog = new AiLayoutGeneratorDialog(this, new AiLayoutGeneratorDialog.LayoutGenerationCallback() {
             @Override
             public void onLayoutGenerated(String xmlLayout) {
-                // Substituir o conteúdo do editor com o layout gerado
+                // Replace editor content with generated layout
                 editor.setText(xmlLayout);
                 SketchwareUtil.toast(getString(R.string.ai_layout_generator_success));
             }
             
             @Override
             public void onError(String errorMessage) {
-                // Erro já foi mostrado pelo dialog
+                // Error already shown by dialog
             }
             
             @Override
             public void onCancelled() {
-                // Usuário cancelou a operação
+                // User cancelled the operation
             }
-        }, sc_id); // Passar o ID do projeto para contexto
+        }, sc_id); // Pass project ID for context
         dialog.show();
     }
 }

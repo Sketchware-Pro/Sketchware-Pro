@@ -1,27 +1,28 @@
 package pro.sketchware.dialogs;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import pro.sketchware.R;
+import pro.sketchware.activities.settings.ManageGroqActivity;
 import pro.sketchware.utility.GroqLayoutGenerator;
 import pro.sketchware.utility.SketchwareUtil;
 
 /**
- * Dialog para gerar layouts XML usando IA
- * Permite ao usuário descrever um layout e gerar o código XML automaticamente
+ * BottomSheet Dialog to generate XML layouts using AI
+ * Allows the user to describe a layout and generate the XML code automatically
+ * Occupies the full screen when opened
  */
-public class AiLayoutGeneratorDialog extends Dialog {
+public class AiLayoutGeneratorDialog extends BottomSheetDialog {
     
     private final Context context;
     private final LayoutGenerationCallback callback;
@@ -35,7 +36,7 @@ public class AiLayoutGeneratorDialog extends Dialog {
     private GroqLayoutGenerator layoutGenerator;
     
     /**
-     * Interface para callback do resultado da geração
+     * Interface for callback of the generation result
      */
     public interface LayoutGenerationCallback {
         void onLayoutGenerated(String xmlLayout);
@@ -59,31 +60,19 @@ public class AiLayoutGeneratorDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        // Configurar o dialog
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        // Configure the BottomSheet to occupy full screen
         setContentView(R.layout.dialog_ai_layout_generator);
         
-        // Configurar tamanho da janela
-        Window window = getWindow();
-        if (window != null) {
-            window.setLayout(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT
-            );
-            
-            // Aplicar estilos Material Design 3
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-            window.setStatusBarColor(context.getResources().getColor(android.R.color.transparent));
-            
-            // Configurar animações suaves
-            window.setWindowAnimations(R.style.DialogAnimation);
-        }
+        // Set the BottomSheet to expand to full screen
+        getBehavior().setState(com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED);
+        getBehavior().setSkipCollapsed(true);
+        getBehavior().setDraggable(true);
         
-        // Inicializar views
+        // Initialize views
         initializeViews();
         setupListeners();
         
-        // Verificar se a Groq AI está disponível
+        // Check if Groq AI is available
         if (!layoutGenerator.isAvailable()) {
             showGroqNotConfiguredDialog();
         }
@@ -114,10 +103,10 @@ public class AiLayoutGeneratorDialog extends Dialog {
             return;
         }
         
-        // Mostrar progresso
+        // Show progress
         showProgress(true);
         
-        // Gerar layout com contexto do projeto
+        // Generate layout with project context
         if (projectId != null) {
             layoutGenerator.generateLayoutWithContext(prompt, projectId, new GroqLayoutGenerator.LayoutGenerationCallback() {
                 @Override
@@ -178,38 +167,33 @@ public class AiLayoutGeneratorDialog extends Dialog {
     
     private void showGroqNotConfiguredDialog() {
         new MaterialAlertDialogBuilder(context)
-            .setTitle(context.getString(R.string.ai_layout_generator_not_configured_title))
-            .setMessage(context.getString(R.string.ai_layout_generator_not_configured_message))
-            .setPositiveButton(context.getString(R.string.ai_layout_generator_configure), (dialog, which) -> {
-                // Abrir configurações da Groq
-                openGroqSettings();
-                dismiss();
-            })
-            .setNegativeButton(context.getString(R.string.ai_layout_generator_cancel), (dialog, which) -> {
-                dismiss();
-                if (callback != null) {
-                    callback.onCancelled();
-                }
-            })
-            .setCancelable(false)
-            .show();
+                .setTitle(R.string.ai_layout_generator_title)
+                .setMessage(R.string.ai_layout_generator_groq_not_configured)
+                .setPositiveButton(R.string.ai_layout_generator_configure_groq, (dialog, which) -> {
+                    // Open Groq settings
+                    openGroqSettings();
+                })
+                .setNegativeButton(R.string.common_word_cancel, null)
+                .show();
     }
     
     private void openGroqSettings() {
         try {
-            // Tentar abrir a activity de configuração da Groq
-            Class<?> groqSettingsClass = Class.forName("pro.sketchware.activities.settings.ManageGroqActivity");
-            android.content.Intent intent = new android.content.Intent(context, groqSettingsClass);
+            // Try to open the Groq settings activity
+            Intent intent = new Intent(context, ManageGroqActivity.class);
             context.startActivity(intent);
-        } catch (ClassNotFoundException e) {
-            // Se a activity não existir, mostrar mensagem
-            SketchwareUtil.toastError(context.getString(R.string.ai_layout_generator_settings_not_found));
+        } catch (Exception e) {
+            // If the activity doesn't exist, show message
+            SketchwareUtil.toastError(context.getString(R.string.ai_layout_generator_error_settings_not_found));
         }
     }
     
     private void runOnUiThread(Runnable runnable) {
         if (getWindow() != null && getWindow().getDecorView() != null) {
             getWindow().getDecorView().post(runnable);
+        } else {
+            // Fallback for BottomSheetDialog
+            runnable.run();
         }
     }
 } 

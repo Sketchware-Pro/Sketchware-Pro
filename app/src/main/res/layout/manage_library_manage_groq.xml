@@ -29,19 +29,21 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🤖"
-                android:textSize="48sp" />
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_mtrl_star"
+                android:contentDescription="@string/groq_ai_settings"
+                android:tint="?attr/colorPrimary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Groq AI"
+                android:text="@string/groq_ai_settings"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnSurface" />
 
         </LinearLayout>
 
@@ -66,17 +68,18 @@
                     android:id="@+id/tv_enable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Habilitar Groq AI"
+                    android:text="@string/groq_ai_enable"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface" />
 
                 <TextView
                     android:id="@+id/tv_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Groq AI pode explicar erros de forma inteligente"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:text="@string/groq_ai_description"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -108,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="Insira sua chave da API da Groq"
+                android:hint="@string/groq_layout_hint_api_key"
                 app:endIconMode="password_toggle"
                 app:endIconTint="?attr/colorPrimary">
 
@@ -168,14 +171,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="Abrir Documentação"
+                android:text="@string/groq_layout_btn_open_docs"
                 android:textAllCaps="false" />
 
             <Button
                 android:id="@+id/btn_test"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Testar Conexão"
+                android:text="@string/groq_layout_btn_test_connection"
                 android:textAllCaps="false" />
 
         </LinearLayout>
@@ -193,7 +196,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ℹ️ Informações"
+                android:text="@string/groq_layout_info_title"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -201,7 +204,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="• A Groq AI oferece explicações inteligentes para erros de programação\n\n• Você pode obter uma chave gratuita em console.groq.com\n\n• A chave da API é armazenada localmente no seu dispositivo\n\n• Esta funcionalidade requer conexão com a internet"
+                android:text="@string/groq_layout_info_text"
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="14sp" />
 

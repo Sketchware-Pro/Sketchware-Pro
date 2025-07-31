@@ -1,235 +1,235 @@
-# 🤖 Gerador de Layout com IA - Sketchware-Pro
+# 🤖 AI Layout Generator - Sketchware-Pro
 
-## 📋 Visão Geral
+## 📋 Overview
 
-Esta nova funcionalidade integra a Groq AI ao editor XML do Sketchware-Pro, permitindo que os usuários gerem layouts Android XML através de descrições em linguagem natural. Em vez de editar XML manualmente, você pode simplesmente descrever o layout desejado e a IA irá gerar o código automaticamente.
+This new feature integrates Groq AI into the Sketchware-Pro XML editor, allowing users to generate Android XML layouts through natural language descriptions. Instead of manually editing XML, you can simply describe the desired layout and the AI will generate the code automatically.
 
-## ✨ Funcionalidades
+## ✨ Features
 
-### 🎯 Geração Inteligente de Layouts
-- **Descrição em Linguagem Natural**: Descreva o layout que você quer criar
-- **Geração Automática**: A IA gera o código XML completo
-- **Validação**: Verificação automática de dependências circulares
-- **Integração Perfeita**: Substitui diretamente o conteúdo do editor
+### 🎯 Intelligent Layout Generation
+- **Natural Language Description**: Describe the layout you want to create
+- **Automatic Generation**: The AI generates complete XML code
+- **Validation**: Automatic circular dependency checking
+- **Perfect Integration**: Directly replaces editor content
 
-### 🌍 Suporte Multi-idioma
-- **13 Idiomas**: Português, Inglês, Espanhol, Francês, Alemão, Italiano, Japonês, Coreano, Chinês (Simplificado e Tradicional), Russo, Árabe e Hindi
-- **Configurável**: Escolha o idioma de resposta da IA nas configurações
-- **Prompts Inteligentes**: Instruções específicas por idioma
+### 🌍 Multi-language Support
+- **13 Languages**: Portuguese, English, Spanish, French, German, Italian, Japanese, Korean, Chinese (Simplified and Traditional), Russian, Arabic and Hindi
+- **Configurable**: Choose the AI response language in settings
+- **Smart Prompts**: Language-specific instructions
 
-### 🔧 Recursos Técnicos
-- **Layouts Responsivos**: Gera layouts que seguem as melhores práticas Android
-- **Material Design**: Suporte a componentes do Material Design
-- **IDs Únicos**: Gera automaticamente IDs únicos para todos os elementos
-- **Acessibilidade**: Inclui atributos de acessibilidade quando apropriado
+### 🔧 Technical Features
+- **Responsive Layouts**: Generates layouts that follow Android best practices
+- **Material Design**: Support for Material Design components
+- **Unique IDs**: Automatically generates unique IDs for all elements
+- **Accessibility**: Includes accessibility attributes when appropriate
 
-## 🚀 Como Usar
+## 🚀 How to Use
 
-### 1. Acessar o Gerador
-1. Abra o **Direct XML Editor** (Editor XML Direto)
-2. Clique no ícone **🤖 Generate with AI** na barra de ferramentas
-3. O dialog de geração será aberto
+### 1. Access the Generator
+1. Open the **Direct XML Editor**
+2. Click the **🤖 Generate with AI** icon in the toolbar
+3. The generation dialog will open
 
-### 2. Descrever o Layout
-Digite uma descrição detalhada do layout que você deseja criar. Exemplos:
+### 2. Describe the Layout
+Type a detailed description of the layout you want to create. Examples:
 
 ```
-• Tela de login com campos de email e senha
-• Lista de produtos com imagens e preços
-• Formulário de cadastro com validação
-• Dashboard com cards de estatísticas
-• Galeria de fotos em grid
+• Login screen with email and password fields
+• Product list with images and prices
+• Registration form with validation
+• Dashboard with statistics cards
+• Photo gallery in grid
 ```
 
-### 3. Gerar e Aplicar
-1. Clique em **"Gerar Layout"**
-2. Aguarde alguns segundos enquanto a IA processa
-3. O código XML será automaticamente inserido no editor
-4. Revise e salve as alterações
+### 3. Generate and Apply
+1. Click **"Generate Layout"**
+2. Wait a few seconds while the AI processes
+3. The XML code will be automatically inserted into the editor
+4. Review and save the changes
 
-## ⚙️ Configuração
+## ⚙️ Configuration
 
-### Pré-requisitos
-1. **API Key da Groq**: Obtenha uma chave gratuita em [console.groq.com/keys](https://console.groq.com/keys)
-2. **Configuração**: Acesse Settings → Groq AI Settings
-3. **Habilitar**: Ative a funcionalidade e insira sua API key
+### Prerequisites
+1. **Groq API Key**: Get a free key at [console.groq.com/keys](https://console.groq.com/keys)
+2. **Configuration**: Go to Settings → Groq AI Settings
+3. **Enable**: Activate the feature and enter your API key
 
-### Configuração de Idioma
-1. Acesse **Settings → Groq AI Settings**
-2. Selecione o idioma desejado no spinner "Idioma da Resposta"
-3. A IA responderá no idioma escolhido
+### Language Configuration
+1. Go to **Settings → Groq AI Settings**
+2. Select the desired language in the "Response Language" spinner
+3. The AI will respond in the chosen language
 
-## 📱 Interface do Usuário
+## 📱 User Interface
 
-### Dialog de Geração
-- **Design Material 3**: Interface moderna e intuitiva
-- **Campo de Prompt**: Área de texto para descrição do layout
-- **Exemplos**: Sugestões de prompts para facilitar o uso
-- **Progresso**: Indicador visual durante a geração
-- **Botões**: Gerar e Cancelar
+### Generation Dialog
+- **Material Design 3**: Modern and intuitive interface
+- **Prompt Field**: Text area for layout description
+- **Examples**: Prompt suggestions to facilitate use
+- **Progress**: Visual indicator during generation
+- **Buttons**: Generate and Cancel
 
-### Integração no Editor
-- **Ícone na Toolbar**: Botão "Generate with AI" com ícone 🤖
-- **Substituição Automática**: O XML gerado substitui o conteúdo atual
-- **Feedback**: Mensagens de sucesso e erro
-- **Validação**: Verificação antes de salvar
+### Editor Integration
+- **Toolbar Icon**: "Generate with AI" button with 🤖 icon
+- **Automatic Replacement**: Generated XML replaces current content
+- **Feedback**: Success and error messages
+- **Validation**: Verification before saving
 
-## 🔧 Arquitetura Técnica
+## 🔧 Technical Architecture
 
-### Classes Principais
+### Main Classes
 
 #### 1. **GroqLayoutGenerator.java**
-- **Localização**: `app/src/main/java/pro/sketchware/utility/GroqLayoutGenerator.java`
-- **Função**: Comunicação com a API da Groq para geração de layouts
-- **Funcionalidades**:
-  - Construção de prompts específicos para layouts
-  - Comunicação HTTP com a API da Groq
-  - Parsing e limpeza das respostas XML
-  - Suporte a múltiplos idiomas
+- **Location**: `app/src/main/java/pro/sketchware/utility/GroqLayoutGenerator.java`
+- **Function**: Communication with Groq API for layout generation
+- **Features**:
+  - Building specific prompts for layouts
+  - HTTP communication with Groq API
+  - Parsing and cleaning XML responses
+  - Multi-language support
 
 #### 2. **AiLayoutGeneratorDialog.java**
-- **Localização**: `app/src/main/java/pro/sketchware/dialogs/AiLayoutGeneratorDialog.java`
-- **Função**: Interface do usuário para geração de layouts
-- **Funcionalidades**:
-  - Dialog Material Design 3
-  - Validação de entrada
-  - Integração com GroqLayoutGenerator
-  - Tratamento de erros e feedback
+- **Location**: `app/src/main/java/pro/sketchware/dialogs/AiLayoutGeneratorDialog.java`
+- **Function**: User interface for layout generation
+- **Features**:
+  - Material Design 3 dialog
+  - Input validation
+  - Integration with GroqLayoutGenerator
+  - Error handling and feedback
 
-#### 3. **ViewCodeEditorActivity.java** (Modificado)
-- **Localização**: `app/src/main/java/pro/sketchware/activities/editor/view/ViewCodeEditorActivity.java`
-- **Modificações**:
-  - Adicionado botão "Generate with AI" na toolbar
-  - Integração com AiLayoutGeneratorDialog
-  - Substituição automática do conteúdo do editor
+#### 3. **ViewCodeEditorActivity.java** (Modified)
+- **Location**: `app/src/main/java/pro/sketchware/activities/editor/view/ViewCodeEditorActivity.java`
+- **Modifications**:
+  - Added "Generate with AI" button to toolbar
+  - Integration with AiLayoutGeneratorDialog
+  - Automatic replacement of editor content
 
-### Arquivos de Interface
+### Interface Files
 
-#### 1. **Layout do Dialog**
-- **Arquivo**: `app/src/main/res/layout/dialog_ai_layout_generator.xml`
-- **Características**:
+#### 1. **Dialog Layout**
+- **File**: `app/src/main/res/layout/dialog_ai_layout_generator.xml`
+- **Features**:
   - Material Design 3
-  - Campo de texto para prompt
-  - Exemplos de prompts
-  - Indicador de progresso
-  - Botões de ação
+  - Text field for prompt
+  - Prompt examples
+  - Progress indicator
+  - Action buttons
 
-#### 2. **Ícone da IA**
-- **Arquivo**: `app/src/main/res/drawable/ic_mtrl_ai.xml`
-- **Design**: Ícone vetorial representando IA
+#### 2. **AI Icon**
+- **File**: `app/src/main/res/drawable/ic_mtrl_ai.xml`
+- **Design**: Vector icon representing AI
 
-#### 3. **Strings de Localização**
-- **Arquivo**: `app/src/main/res/values/strings.xml`
-- **Adições**: 15 novas strings para a funcionalidade
-- **Categorias**: Títulos, mensagens, botões, erros
+#### 3. **Localization Strings**
+- **File**: `app/src/main/res/values/strings.xml`
+- **Additions**: 15 new strings for the feature
+- **Categories**: Titles, messages, buttons, errors
 
-## 🎯 Exemplos de Uso
+## 🎯 Usage Examples
 
-### Exemplo 1: Tela de Login
-**Prompt**: "Crie uma tela de login com campos de email e senha, botão de login e link para recuperar senha"
+### Example 1: Login Screen
+**Prompt**: "Create a login screen with email and password fields, login button and password recovery link"
 
-**Resultado**: Layout XML com:
-- LinearLayout vertical como container
-- TextInputLayout para email
-- TextInputLayout para senha (com passwordToggleEnabled)
-- MaterialButton para login
-- TextView para link de recuperação
+**Result**: XML layout with:
+- Vertical LinearLayout as container
+- TextInputLayout for email
+- TextInputLayout for password (with passwordToggleEnabled)
+- MaterialButton for login
+- TextView for recovery link
 
-### Exemplo 2: Lista de Produtos
-**Prompt**: "Crie uma lista de produtos com imagem, título, preço e botão de compra"
+### Example 2: Product List
+**Prompt**: "Create a product list with image, title, price and purchase button"
 
-**Resultado**: Layout XML com:
-- RecyclerView ou ScrollView
-- CardView para cada produto
-- ImageView para imagem do produto
-- TextView para título e preço
-- Button para compra
+**Result**: XML layout with:
+- RecyclerView or ScrollView
+- CardView for each product
+- ImageView for product image
+- TextView for title and price
+- Button for purchase
 
-### Exemplo 3: Dashboard
-**Prompt**: "Crie um dashboard com cards de estatísticas em grid 2x2"
+### Example 3: Dashboard
+**Prompt**: "Create a dashboard with statistics cards in 2x2 grid"
 
-**Resultado**: Layout XML com:
-- GridLayout ou ConstraintLayout
-- CardView para cada estatística
-- Ícones e números
-- Cores do Material Design
+**Result**: XML layout with:
+- GridLayout or ConstraintLayout
+- CardView for each statistic
+- Icons and numbers
+- Material Design colors
 
-## 🔒 Segurança e Privacidade
+## 🔒 Security and Privacy
 
-### Dados Enviados
-- **Apenas o prompt**: A descrição do layout é enviada para a API
-- **Sem dados pessoais**: Nenhuma informação pessoal é coletada
-- **Sem código existente**: O código atual não é enviado
+### Data Sent
+- **Only the prompt**: The layout description is sent to the API
+- **No personal data**: No personal information is collected
+- **No existing code**: Current code is not sent
 
-### Armazenamento
-- **Local**: Configurações salvas localmente no dispositivo
-- **API Key**: Armazenada de forma segura em SharedPreferences
-- **Sem cache**: Não há armazenamento de layouts gerados
+### Storage
+- **Local**: Settings saved locally on device
+- **API Key**: Stored securely in SharedPreferences
+- **No cache**: No storage of generated layouts
 
-## 🐛 Tratamento de Erros
+## 🐛 Error Handling
 
-### Cenários de Erro
-1. **API não configurada**: Dialog para configurar
-2. **Sem conexão**: Mensagem de erro específica
-3. **API key inválida**: Dialog de erro
-4. **Timeout**: Mensagem de timeout
-5. **Prompt vazio**: Validação de entrada
+### Error Scenarios
+1. **API not configured**: Dialog to configure
+2. **No connection**: Specific error message
+3. **Invalid API key**: Error dialog
+4. **Timeout**: Timeout message
+5. **Empty prompt**: Input validation
 
 ### Fallbacks
-- **Erro de API**: Mantém o conteúdo atual do editor
-- **Sem configuração**: Redireciona para configurações
-- **Falha de rede**: Mensagem informativa
+- **API error**: Keeps current editor content
+- **No configuration**: Redirects to settings
+- **Network failure**: Informative message
 
-## 🔮 Melhorias Futuras
+## 🔮 Future Improvements
 
-### Funcionalidades Planejadas
-1. **Histórico de Prompts**: Salvar prompts anteriores
-2. **Templates**: Prompts pré-definidos para layouts comuns
-3. **Preview em Tempo Real**: Visualizar layout antes de aplicar
-4. **Edição Inteligente**: Modificar layouts existentes
-5. **Análise de Contexto**: Considerar o layout atual
+### Planned Features
+1. **Prompt History**: Save previous prompts
+2. **Templates**: Pre-defined prompts for common layouts
+3. **Real-time Preview**: Preview layout before applying
+4. **Smart Editing**: Modify existing layouts
+5. **Context Analysis**: Consider current layout
 
-### Otimizações
-1. **Cache de Respostas**: Evitar requisições repetidas
-2. **Compressão**: Reduzir uso de banda
-3. **Modo Offline**: Prompts básicos sem internet
-4. **Personalização**: Prompts customizados por usuário
+### Optimizations
+1. **Response Cache**: Avoid repeated requests
+2. **Compression**: Reduce bandwidth usage
+3. **Offline Mode**: Basic prompts without internet
+4. **Customization**: Custom prompts per user
 
-## 📊 Métricas e Analytics
+## 📊 Metrics and Analytics
 
-### Dados Coletados (Opcional)
-- **Uso da funcionalidade**: Quantidade de layouts gerados
-- **Tipos de layouts**: Categorização dos prompts
-- **Taxa de sucesso**: Layouts gerados vs. aplicados
-- **Tempo de geração**: Performance da API
+### Data Collected (Optional)
+- **Feature usage**: Number of layouts generated
+- **Layout types**: Prompt categorization
+- **Success rate**: Generated vs. applied layouts
+- **Generation time**: API performance
 
-### Privacidade
-- **Anônimo**: Sem identificação pessoal
-- **Opcional**: Usuário pode desabilitar
-- **Local**: Dados processados localmente
+### Privacy
+- **Anonymous**: No personal identification
+- **Optional**: User can disable
+- **Local**: Data processed locally
 
-## 🤝 Contribuição
+## 🤝 Contribution
 
-### Como Contribuir
-1. **Fork** do repositório
-2. **Criar branch** para feature
-3. **Implementar** funcionalidade
-4. **Testar** extensivamente
-5. **Submeter** pull request
+### How to Contribute
+1. **Fork** the repository
+2. **Create branch** for feature
+3. **Implement** functionality
+4. **Test** extensively
+5. **Submit** pull request
 
-### Padrões de Código
-- Seguir convenções Java do projeto
-- Documentar métodos públicos
-- Usar strings de localização
-- Implementar tratamento de erros
-- Testar em diferentes idiomas
+### Code Standards
+- Follow project Java conventions
+- Document public methods
+- Use localization strings
+- Implement error handling
+- Test in different languages
 
-## 📄 Licença
+## 📄 License
 
-Esta implementação segue a mesma licença do projeto Sketchware-Pro.
+This implementation follows the same license as the Sketchware-Pro project.
 
 ---
 
-**Desenvolvido com ❤️ para a comunidade Sketchware-Pro**
+**Developed with ❤️ for the Sketchware-Pro community**
 
-*Transforme suas ideias em layouts Android com o poder da IA!* 🤖✨ 
+*Transform your ideas into Android layouts with the power of AI!* 🤖✨ 

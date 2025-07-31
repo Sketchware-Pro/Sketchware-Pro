@@ -1,358 +1,416 @@
-# 🤖 Integração da API Groq no Sketchware-Pro
+# 🤖 Groq API Integration in Sketchware-Pro
 
-## 📋 Visão Geral
+## 📋 Overview
 
-Esta implementação adiciona funcionalidade de explicação de erros inteligente ao Sketchware-Pro usando a API da Groq. Os usuários podem obter explicações detalhadas e soluções para erros de programação através de IA.
+This implementation adds intelligent error explanation functionality to Sketchware-Pro using the Groq API. Users can get detailed explanations and solutions for programming errors through AI.
 
-## 🏗️ Arquitetura da Implementação
+## 🏗️ Implementation Architecture
 
-### Classes Principais
+### Main Classes
 
 #### 1. **GroqConfig.java**
-- **Localização**: `app/src/main/java/pro/sketchware/utility/GroqConfig.java`
-- **Função**: Gerenciamento de configurações da API da Groq
-- **Funcionalidades**:
-  - Salvar/recuperar chave da API
-  - Habilitar/desabilitar funcionalidade
-  - Verificar disponibilidade da API
-  - Suporte a variável de ambiente como fallback
-  - Configuração de idioma de resposta da IA
-  - Suporte a 13 idiomas diferentes
+- **Location**: `app/src/main/java/pro/sketchware/utility/GroqConfig.java`
+- **Function**: Groq API configuration management
+- **Features**:
+  - Save/retrieve API key
+  - Enable/disable functionality
+  - Check API availability
+  - Environment variable fallback support
+  - AI response language configuration
+  - Support for 13 different languages
 
 #### 2. **GroqErrorExplainer.java**
-- **Localização**: `app/src/main/java/pro/sketchware/utility/GroqErrorExplainer.java`
-- **Função**: Comunicação com a API da Groq
-- **Funcionalidades**:
-  - Enviar erros para análise da IA
-  - Construir prompts personalizados
-  - Processar respostas da API
-  - Tratamento de erros de rede
-  - Suporte a múltiplos idiomas de resposta
-  - Instruções específicas por idioma
+- **Location**: `app/src/main/java/pro/sketchware/utility/GroqErrorExplainer.java`
+- **Function**: Communication with Groq API
+- **Features**:
+  - Send errors for AI analysis
+  - Build custom prompts
+  - Process API responses
+  - Network error handling
+  - Multi-language response support
+  - Language-specific instructions
 
 #### 3. **ErrorHelper.java**
-- **Localização**: `app/src/main/java/pro/sketchware/utility/ErrorHelper.java`
-- **Função**: Interface para exibição de erros
-- **Funcionalidades**:
-  - Mostrar dialogs de erro com IA
-  - Integração com Material Design
-  - Opções de confirmação
-  - Fallback para erros originais
+- **Location**: `app/src/main/java/pro/sketchware/utility/ErrorHelper.java`
+- **Function**: Error display interface with Markdown formatting
+- **Features**:
+  - Show AI error dialogs with Markwon formatting
+  - Material Design integration
+  - Confirmation options
+  - Fallback to original errors
+  - Markdown rendering for AI responses
+  - Custom TextView with selectable text
+  - Toggle between formatted and plain text views
 
 #### 4. **ManageGroqActivity.java**
-- **Localização**: `app/src/main/java/pro/sketchware/activities/settings/ManageGroqActivity.java`
-- **Função**: Interface de configuração da API
-- **Funcionalidades**:
-  - Configurar chave da API
-  - Selecionar idioma de resposta da IA
-  - Testar conexão
-  - Abrir documentação
-  - Validação de entrada
+- **Location**: `app/src/main/java/pro/sketchware/activities/settings/ManageGroqActivity.java`
+- **Function**: API configuration interface
+- **Features**:
+  - Configure API key
+  - Select AI response language
+  - Test connection
+  - Open documentation
+  - Input validation
 
 #### 5. **GroqExampleUsage.java**
-- **Localização**: `app/src/main/java/pro/sketchware/utility/GroqExampleUsage.java`
-- **Função**: Exemplos de uso da funcionalidade
-- **Funcionalidades**:
-  - Demonstrações de diferentes cenários
-  - Integração com tarefas assíncronas
-  - Personalização de prompts
-  - Tratamento de erros
+- **Location**: `app/src/main/java/pro/sketchware/utility/GroqExampleUsage.java`
+- **Function**: Feature usage examples
+- **Features**:
+  - Demonstrations of different scenarios
+  - Async task integration
+  - Prompt customization
+  - Error handling
 
-### Arquivos de Interface
+### Interface Files
 
-#### 1. **Layout da Configuração**
-- **Arquivo**: `app/src/main/res/layout/manage_library_manage_groq.xml`
-- **Características**:
+#### 1. **Configuration Layout**
+- **File**: `app/src/main/res/layout/manage_library_manage_groq.xml`
+- **Features**:
   - Material Design 3
-  - Switch para habilitar/desabilitar
-  - Campo seguro para API key
-  - Spinner para seleção de idioma
-  - Botões de teste e documentação
-  - Informações explicativas
+  - Switch to enable/disable
+  - Secure field for API key
+  - Spinner for language selection
+  - Test and documentation buttons
+  - Explanatory information
 
-#### 2. **Strings de Localização**
-- **Arquivo**: `app/src/main/res/values/strings.xml`
-- **Adições**: 55 novas strings para a funcionalidade
-- **Idiomas**: Suporte a português e inglês
-- **Categorias**: Configuração, mensagens de erro, UI, seleção de idioma
+#### 2. **Localization Strings**
+- **File**: `app/src/main/res/values/strings.xml`
+- **Additions**: 55 new strings for the feature
+- **Languages**: Support for Portuguese and English
+- **Categories**: Configuration, error messages, UI, language selection
 
-## 🔧 Configuração e Uso
+## 🔧 Configuration and Usage
 
-### 1. Configuração Inicial
+### 📚 Markdown Integration with Markwon
 
-1. **Acessar Configurações**:
-   - Menu principal → Settings → Groq AI Settings
+The AI responses are now formatted using the **Markwon** library (`io.noties.markwon:core:4.6.2`) to provide rich text formatting:
 
-2. **Obter Chave da API**:
-   - Visitar [console.groq.com/keys](https://console.groq.com/keys)
-   - Criar conta gratuita
-   - Gerar chave da API
+#### Features:
+- **Markdown Rendering**: AI responses are rendered with proper markdown formatting
+- **Rich Text Display**: Headers, lists, code blocks, and emphasis are properly displayed
+- **Selectable Text**: Users can select and copy formatted content
+- **Fallback Support**: If markdown rendering fails, content is displayed as plain text
+- **HTML Support**: Includes HTML plugin for enhanced formatting
 
-3. **Configurar no App**:
-   - Habilitar switch "Enable Groq AI"
-   - Inserir chave da API
-   - Selecionar idioma de resposta da IA
-   - Testar conexão
-
-### 2. Uso da Funcionalidade
-
-#### Método Simples
+#### Implementation Details:
 ```java
-// Mostrar erro com explicação da IA
-ErrorHelper.showError(context, errorMessage, "Erro", true);
+// Initialize Markwon with HTML plugin
+private static Markwon getMarkwon() {
+    if (markwon == null) {
+        markwon = Markwon.builder()
+                .usePlugin(HtmlPlugin.create())
+                .build();
+    }
+    return markwon;
+}
+
+// Render markdown content
+private static Spanned renderMarkdown(String markdownContent) {
+    try {
+        return getMarkwon().toMarkdown(markdownContent);
+    } catch (Exception e) {
+        // Fallback to plain text
+        return new SpannedString(markdownContent);
+    }
+}
 ```
 
-#### Método com Confirmação
+#### AI Prompt Enhancement:
+The AI is instructed to format responses using markdown syntax:
+- **Headers** (`## 📋 Explanation`)
+- **Lists** (`- Item 1`, `1. Step 1`)
+- **Code blocks** (```code```)
+- **Emphasis** (`**bold**`, `*italic*`)
+- **Emojis** for visual appeal
+
+### 1. Initial Configuration
+
+1. **Access Settings**:
+   - Main menu → Settings → Groq AI Settings
+
+2. **Get API Key**:
+   - Visit [console.groq.com/keys](https://console.groq.com/keys)
+   - Create free account
+   - Generate API key
+
+3. **Configure in App**:
+   - Enable "Enable Groq AI" switch
+   - Enter API key
+   - Select AI response language
+   - Test connection
+
+### 2. Feature Usage
+
+#### Simple Method with Markdown Formatting
 ```java
-// Mostrar erro com opção de IA
-ErrorHelper.showErrorWithConfirmation(context, errorMessage, "Erro", () -> {
-    // Callback quando usuário confirma
+// Basic usage with automatic markdown formatting
+ErrorHelper.showError(context, errorMessage, "Error Analysis", true);
+
+// Show custom markdown content
+ErrorHelper.showAIExplanation(context, markdownContent, "Custom Title");
+
+// Advanced usage with context
+GroqErrorExplainer explainer = new GroqErrorExplainer(context);
+explainer.explainError(errorMessage, additionalContext, explanation -> {
+    // The explanation will be automatically formatted with markdown
+    ErrorHelper.showAIExplanation(context, explanation, "AI Explanation");
+});
+```
+// Show error with AI explanation
+ErrorHelper.showError(context, errorMessage, "Error", true);
+```
+
+#### Confirmation Method
+```java
+// Show error with AI option
+ErrorHelper.showErrorWithConfirmation(context, errorMessage, "Error", () -> {
+    // Callback when user confirms
 });
 ```
 
-#### Uso Direto da API
+#### Direct API Usage
 ```java
 GroqErrorExplainer explainer = new GroqErrorExplainer(context);
 explainer.explainError(errorMessage, explanation -> {
-    // Processar explicação recebida
+    // Process received explanation
 });
 ```
 
-## 🌍 Configuração de Idioma
+## 🌍 Language Configuration
 
-### Idiomas Suportados
-A funcionalidade Groq AI suporta 13 idiomas diferentes para respostas da IA:
+### Supported Languages
+The Groq AI feature supports 13 different languages for AI responses:
 
-1. **Português do Brasil** (Padrão) - `pt-BR`
+1. **Portuguese (Brazil)** (Default) - `pt-BR`
 2. **English** - `en`
-3. **Español** - `es`
-4. **Français** - `fr`
-5. **Deutsch** - `de`
-6. **Italiano** - `it`
-7. **日本語** - `ja`
-8. **한국어** - `ko`
-9. **中文 (简体)** - `zh-CN`
-10. **中文 (繁體)** - `zh-TW`
-11. **Русский** - `ru`
-12. **العربية** - `ar`
-13. **हिन्दी** - `hi`
+3. **Spanish** - `es`
+4. **French** - `fr`
+5. **German** - `de`
+6. **Italian** - `it`
+7. **Japanese** - `ja`
+8. **Korean** - `ko`
+9. **Chinese (Simplified)** - `zh-CN`
+10. **Chinese (Traditional)** - `zh-TW`
+11. **Russian** - `ru`
+12. **Arabic** - `ar`
+13. **Hindi** - `hi`
 
-### Como Configurar o Idioma
-1. Acesse **Settings → Groq AI Settings**
-2. Na seção "Idioma da Resposta", use o spinner para selecionar o idioma desejado
-3. O idioma selecionado será usado para todas as explicações de erro da IA
-4. A configuração é salva automaticamente
+### How to Configure Language
+1. Go to **Settings → Groq AI Settings**
+2. In the "Response Language" section, use the spinner to select the desired language
+3. The selected language will be used for all AI error explanations
+4. The configuration is saved automatically
 
-### Comportamento Padrão
-- **Idioma padrão**: Português do Brasil
-- **Persistência**: A seleção é mantida entre sessões
-- **Fallback**: Se não houver configuração, usa português do Brasil
+### Default Behavior
+- **Default language**: Portuguese (Brazil)
+- **Persistence**: Selection is maintained between sessions
+- **Fallback**: If no configuration, uses Portuguese (Brazil)
 
-## 🔒 Segurança e Privacidade
+## 🔒 Security and Privacy
 
-### Armazenamento Seguro
-- Chave da API armazenada em SharedPreferences privado
-- Suporte a variável de ambiente como alternativa
-- Validação de entrada do usuário
+### Secure Storage
+- API key stored in private SharedPreferences
+- Environment variable support as alternative
+- User input validation
 
-### Comunicação Segura
-- Requisições HTTPS para API da Groq
-- Headers de autorização apropriados
-- Timeout configurado para evitar travamentos
+### Secure Communication
+- HTTPS requests to Groq API
+- Appropriate authorization headers
+- Configured timeout to prevent hangs
 
-### Privacidade
-- Dados de erro enviados apenas para API da Groq
-- Não há coleta de dados pessoais
-- Usuário controla quando usar a funcionalidade
+### Privacy
+- Error data sent only to Groq API
+- No personal data collection
+- User controls when to use the feature
 
-## 🌐 Integração com o Sistema
+## 🌐 System Integration
 
-### Pontos de Integração
-1. **Sistema de Compilação**: Erros de compilação podem ser explicados
-2. **Runtime Errors**: Erros durante execução do app
-3. **Configurações**: Interface dedicada para configuração
-4. **Logs de Erro**: Integração com sistema de logs existente
+### Integration Points
+1. **Compilation System**: Compilation errors can be explained
+2. **Runtime Errors**: Errors during app execution
+3. **Settings**: Dedicated interface for configuration
+4. **Error Logs**: Integration with existing logging system
 
-### Menu de Configurações
-- Adicionado item "Groq AI Settings" no menu principal
-- Ícone: `ic_mtrl_settings_applications`
-- Descrição: "Configure Groq AI for intelligent error explanations"
+### Settings Menu
+- Added "Groq AI Settings" item in main menu
+- Icon: `ic_mtrl_settings_applications`
+- Description: "Configure Groq AI for intelligent error explanations"
 
-## 📱 Interface do Usuário
+## 📱 User Interface
 
-### Tela de Configuração
+### Configuration Screen
 - **Design**: Material Design 3
-- **Elementos**:
-  - Logo da Groq com emoji 🤖
-  - Switch para habilitar/desabilitar
-  - Campo de texto seguro para API key
-  - Spinner para seleção de idioma de resposta
-  - Botão "Open Documentation"
-  - Botão "Test Connection"
-  - Seção informativa
+- **Elements**:
+  - Groq logo with emoji 🤖
+  - Switch to enable/disable
+  - Secure text field for API key
+  - Spinner for response language selection
+  - "Open Documentation" button
+  - "Test Connection" button
+  - Informative section
 
-### Dialogs de Erro
-- **Tipos**:
-  - Dialog simples (sem IA)
-  - Dialog com explicação da IA
-  - Dialog de confirmação com opção de IA
-- **Características**:
-  - Loading state durante análise
-  - Botão "Show Original" para ver erro original
-  - Mensagens em português/inglês
+### Error Dialogs
+- **Types**:
+  - Simple dialog (without AI)
+  - Dialog with AI explanation
+  - Confirmation dialog with AI option
+- **Features**:
+  - Loading state during analysis
+  - "Show Original" button to see original error
+  - Messages in Portuguese/English
 
-## 🚀 Funcionalidades Avançadas
+## 🚀 Advanced Features
 
-### 1. Contexto Personalizado
+### 1. Custom Context
 ```java
-String contexto = "Este erro ocorreu durante a compilação de um projeto Android.";
-explainer.explainError(errorMessage, contexto, callback);
+String context = "This error occurred during Android project compilation.";
+explainer.explainError(errorMessage, context, callback);
 ```
 
-### 2. Verificação de Disponibilidade
+### 2. Availability Check
 ```java
 if (ErrorHelper.isGroqAvailable(context)) {
-    // Usar explicação da IA
+    // Use AI explanation
 } else {
-    // Mostrar erro original
+    // Show original error
 }
 ```
 
-### 3. Tratamento de Erros
-- Fallback automático para erro original
-- Mensagens informativas quando API não disponível
-- Logs detalhados para debugging
+### 3. Error Handling
+- Automatic fallback to original error
+- Informative messages when API not available
+- Detailed logs for debugging
 
-## 📊 Exemplos de Uso
+## 📊 Usage Examples
 
-### Exemplo 1: Erro de Compilação
+### Example 1: Compilation Error
 ```java
 try {
-    // Código que pode falhar
+    // Code that may fail
 } catch (Exception e) {
-    ErrorHelper.showError(this, e.getMessage(), "Erro de Compilação", true);
+    ErrorHelper.showError(this, e.getMessage(), "Compilation Error", true);
 }
 ```
 
-### Exemplo 2: Erro de Runtime
+### Example 2: Runtime Error
 ```java
 if (ErrorHelper.isGroqAvailable(this)) {
-    ErrorHelper.showError(this, errorMessage, "Erro", true);
+    ErrorHelper.showError(this, errorMessage, "Error", true);
 } else {
-    ErrorHelper.showError(this, errorMessage, "Erro");
+    ErrorHelper.showError(this, errorMessage, "Error");
 }
 ```
 
-### Exemplo 3: Integração Assíncrona
+### Example 3: Async Integration
 ```java
 new Thread(() -> {
     try {
-        // Tarefa assíncrona
+        // Async task
     } catch (Exception e) {
         runOnUiThread(() -> {
-            ErrorHelper.showError(this, e.getMessage(), "Erro na Tarefa", true);
+            ErrorHelper.showError(this, e.getMessage(), "Task Error", true);
         });
     }
 }).start();
 ```
 
-### Exemplo 4: Uso com Diferentes Idiomas
+### Example 4: Usage with Different Languages
 ```java
-// A IA responderá no idioma configurado pelo usuário
-// Se o usuário configurou inglês, a resposta será em inglês
-// Se configurou português, a resposta será em português
-ErrorHelper.showError(this, errorMessage, "Erro", true);
+// The AI will respond in the language configured by the user
+// If the user configured English, the response will be in English
+// If configured Portuguese, the response will be in Portuguese
+ErrorHelper.showError(this, errorMessage, "Error", true);
 ```
 
-## 🔧 Configuração Técnica
+## 🔧 Technical Configuration
 
-### Dependências
-- **OkHttp**: Para requisições HTTP
-- **Gson**: Para parsing JSON
-- **Material Design**: Para interface
+### Dependencies
+- **OkHttp**: For HTTP requests
+- **Gson**: For JSON parsing
+- **Material Design**: For interface
 
-### Permissões
-- `INTERNET`: Para comunicação com API
-- `ACCESS_NETWORK_STATE`: Para verificar conectividade
+### Permissions
+- `INTERNET`: For API communication
+- `ACCESS_NETWORK_STATE`: To check connectivity
 
-### Configurações
+### Settings
 - **API URL**: `https://api.groq.com/openai/v1/chat/completions`
-- **Modelo**: `llama-3.3-70b-versatile`
-- **Timeout**: Configurado no OkHttpClient
+- **Model**: `llama-3.3-70b-versatile`
+- **Timeout**: Configured in OkHttpClient
 
-## 🐛 Tratamento de Erros
+## 🐛 Error Handling
 
-### Cenários de Erro
-1. **API não configurada**: Mensagem informativa
-2. **Sem conexão**: Fallback para erro original
-3. **API key inválida**: Dialog de erro específico
-4. **Timeout**: Mensagem de timeout
-5. **Erro de parsing**: Fallback para erro original
+### Error Scenarios
+1. **API not configured**: Informative message
+2. **No connection**: Fallback to original error
+3. **Invalid API key**: Specific error dialog
+4. **Timeout**: Timeout message
+5. **Parsing error**: Fallback to original error
 
 ### Logs
-- Logs detalhados para debugging
-- Tags específicos para cada classe
-- Informações de erro sem dados sensíveis
+- Detailed logs for debugging
+- Specific tags for each class
+- Error information without sensitive data
 
-## 🔮 Melhorias Futuras
+## 🔮 Future Improvements
 
-### Funcionalidades Planejadas
-1. **Histórico de erros**: Salvar explicações anteriores
-2. **Personalização de prompts**: Permitir prompts customizados
-3. **Integração com mais APIs**: Suporte a outras IAs
-4. **Análise de código**: Sugestões de melhoria de código
-5. **Detecção automática de idioma**: Detectar idioma do erro automaticamente
+### Planned Features
+1. **Error history**: Save previous explanations
+2. **Prompt customization**: Allow custom prompts
+3. **Integration with more APIs**: Support for other AIs
+4. **Code analysis**: Code improvement suggestions
+5. **Automatic language detection**: Automatically detect error language
 
-### Otimizações
-1. **Cache de explicações**: Evitar requisições repetidas
-2. **Compressão de dados**: Reduzir uso de banda
-3. **Análise offline**: Explicações pré-definidas
-4. **Modo econômico**: Limitar uso da API
+### Optimizations
+1. **Explanation cache**: Avoid repeated requests
+2. **Data compression**: Reduce bandwidth usage
+3. **Offline analysis**: Pre-defined explanations
+4. **Economy mode**: Limit API usage
 
-## 📝 Documentação da API
+## 📝 API Documentation
 
-### Endpoints Utilizados
+### Used Endpoints
 - **POST** `/openai/v1/chat/completions`
 - **Headers**: `Content-Type: application/json`, `Authorization: Bearer {api_key}`
-- **Body**: JSON com modelo, mensagens e parâmetros
+- **Body**: JSON with model, messages and parameters
 
-### Estrutura da Resposta
+### Response Structure
 ```json
 {
   "choices": [
     {
       "message": {
-        "content": "Explicação do erro..."
+        "content": "Error explanation..."
       }
     }
   ]
 }
 ```
 
-### Limitações
-- **Rate limiting**: Respeitar limites da API
-- **Tamanho do prompt**: Máximo de tokens
-- **Timeout**: 30 segundos por requisição
+### Limitations
+- **Rate limiting**: Respect API limits
+- **Prompt size**: Maximum tokens
+- **Timeout**: 30 seconds per request
 
-## 🤝 Contribuição
+## 🤝 Contribution
 
-### Como Contribuir
-1. Fork do repositório
-2. Criar branch para feature
-3. Implementar funcionalidade
-4. Testar extensivamente
-5. Submeter pull request
+### How to Contribute
+1. Fork the repository
+2. Create branch for feature
+3. Implement functionality
+4. Test extensively
+5. Submit pull request
 
-### Padrões de Código
-- Seguir convenções Java do projeto
-- Documentar métodos públicos
-- Usar strings de localização
-- Implementar tratamento de erros
+### Code Standards
+- Follow project Java conventions
+- Document public methods
+- Use localization strings
+- Implement error handling
 
-## 📄 Licença
+## 📄 License
 
-Esta implementação segue a mesma licença do projeto Sketchware-Pro.
+This implementation follows the same license as the Sketchware-Pro project.
 
 ---
 
-**Desenvolvido com ❤️ para a comunidade Sketchware-Pro** 
+**Developed with ❤️ for the Sketchware-Pro community** 

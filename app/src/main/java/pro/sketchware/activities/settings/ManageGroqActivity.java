@@ -26,8 +26,8 @@ import pro.sketchware.utility.GroqConfig;
 import pro.sketchware.utility.SketchwareUtil;
 
 /**
- * Atividade para gerenciar as configurações da API da Groq
- * Permite ao usuário configurar sua chave da API da Groq para explicações de erro
+ * Activity to manage Groq API settings
+ * Allows the user to configure their Groq API key for error explanations
  */
 public class ManageGroqActivity extends BaseAppCompatActivity implements View.OnClickListener {
     
@@ -55,7 +55,7 @@ public class ManageGroqActivity extends BaseAppCompatActivity implements View.On
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_main_logo).setVisibility(View.GONE);
         
-        getSupportActionBar().setTitle("Groq AI Settings");
+        getSupportActionBar().setTitle(Helper.getResString(R.string.groq_ai_settings));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
@@ -79,27 +79,26 @@ public class ManageGroqActivity extends BaseAppCompatActivity implements View.On
         editApiKey = findViewById(R.id.ed_api_key);
         
         tvApiKey = findViewById(R.id.tv_api_key);
-        tvApiKey.setText("API KEY");
+        tvApiKey.setText(Helper.getResString(R.string.groq_ai_api_key));
         
         tvDesc = findViewById(R.id.tv_desc);
-        tvDesc.setText("Groq AI pode explicar erros de forma inteligente. " +
-                      "Você deve inserir a chave da API para usar esta funcionalidade.");
+        tvDesc.setText(Helper.getResString(R.string.groq_ai_description));
         
         tvEnable = findViewById(R.id.tv_enable);
-        tvEnable.setText("Habilitar Groq AI");
+        tvEnable.setText(Helper.getResString(R.string.groq_ai_enable));
         
         tvResponseLanguage = findViewById(R.id.tv_response_language);
-        tvResponseLanguage.setText(R.string.groq_ai_response_language);
+        tvResponseLanguage.setText(Helper.getResString(R.string.groq_ai_response_language));
         
         spinnerLanguage = findViewById(R.id.spinner_language);
         setupLanguageSpinner();
         
         btnOpenDoc = findViewById(R.id.btn_open_doc);
-        btnOpenDoc.setText("Abrir Documentação");
+        btnOpenDoc.setText(Helper.getResString(R.string.groq_ai_open_docs));
         btnOpenDoc.setOnClickListener(this);
         
         btnTest = findViewById(R.id.btn_test);
-        btnTest.setText("Testar Conexão");
+        btnTest.setText(Helper.getResString(R.string.groq_ai_test_connection));
         btnTest.setOnClickListener(this);
     }
     
@@ -112,7 +111,7 @@ public class ManageGroqActivity extends BaseAppCompatActivity implements View.On
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerLanguage.setAdapter(adapter);
         
-        // Definir a seleção atual baseada na configuração salva
+        // Set current selection based on saved configuration
         int selectedIndex = getLanguageIndex(selectedLanguage);
         spinnerLanguage.setSelection(selectedIndex);
         
@@ -124,7 +123,7 @@ public class ManageGroqActivity extends BaseAppCompatActivity implements View.On
             
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Não fazer nada
+                // Do nothing
             }
         });
     }
@@ -135,7 +134,7 @@ public class ManageGroqActivity extends BaseAppCompatActivity implements View.On
                 return i;
             }
         }
-        return 0; // Retorna o primeiro item (Português do Brasil) como padrão
+        return 0; // Returns the first item (English) as default
     }
     
     private void configure() {
@@ -152,11 +151,11 @@ public class ManageGroqActivity extends BaseAppCompatActivity implements View.On
         boolean isEnabled = libSwitch.isChecked();
         
         if (isEnabled && TextUtils.isEmpty(apiKey)) {
-            SketchwareUtil.toast("A chave da API não pode estar vazia!", Toast.LENGTH_SHORT);
+            SketchwareUtil.toast("API key cannot be empty!", Toast.LENGTH_SHORT);
             return;
         }
         
-        // Salvar configurações
+        // Save configurations
         GroqConfig.setEnabled(this, isEnabled);
         GroqConfig.saveApiKey(this, apiKey);
         GroqConfig.saveResponseLanguage(this, selectedLanguage);
@@ -194,25 +193,24 @@ public class ManageGroqActivity extends BaseAppCompatActivity implements View.On
                 showBrowserDialog();
             }
         } else {
-            SketchwareUtil.toast("Verifique sua conexão com a internet", Toast.LENGTH_SHORT);
+            SketchwareUtil.toast(Helper.getResString(R.string.groq_ai_check_internet), Toast.LENGTH_SHORT);
         }
     }
     
     private void showBrowserDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle("Navegador Compatível Necessário");
-        dialog.setMessage("Para abrir a documentação da Groq, você precisa de um navegador compatível como o Chrome.");
-        dialog.setPositiveButton("OK", null);
+        dialog.setTitle(Helper.getResString(R.string.groq_ai_browser_required));
+        dialog.setMessage(Helper.getResString(R.string.groq_ai_browser_required_message));
+        dialog.setPositiveButton(Helper.getResString(R.string.groq_ai_ok), null);
         dialog.show();
     }
     
     private void showApiKeyRequiredDialog() {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle("Chave da API Necessária");
-        dialog.setMessage("Para habilitar a Groq AI, você precisa inserir uma chave da API válida. " +
-                         "Você pode obter uma chave gratuita em console.groq.com");
-        dialog.setPositiveButton("OK", null);
-        dialog.setNegativeButton("Cancelar", (dialogInterface, which) -> {
+        dialog.setTitle(Helper.getResString(R.string.groq_ai_api_key_required));
+        dialog.setMessage(Helper.getResString(R.string.groq_ai_api_key_required_message));
+        dialog.setPositiveButton(Helper.getResString(R.string.groq_ai_ok), null);
+        dialog.setNegativeButton(Helper.getResString(R.string.groq_ai_cancel), (dialogInterface, which) -> {
             libSwitch.setChecked(false);
         });
         dialog.show();
@@ -222,15 +220,15 @@ public class ManageGroqActivity extends BaseAppCompatActivity implements View.On
         String apiKey = Helper.getText(editApiKey);
         
         if (TextUtils.isEmpty(apiKey)) {
-            SketchwareUtil.toast("Insira uma chave da API primeiro", Toast.LENGTH_SHORT);
+            SketchwareUtil.toast(Helper.getResString(R.string.groq_ai_enter_api_key_first), Toast.LENGTH_SHORT);
             return;
         }
         
-        // Mostrar loading
+        // Show loading
         btnTest.setEnabled(false);
-        btnTest.setText("Testando...");
+        btnTest.setText(Helper.getResString(R.string.groq_ai_testing));
         
-        // Testar a conexão com a API da Groq
+        // Test the connection to the Groq API
         pro.sketchware.utility.GroqErrorExplainer explainer = 
             new pro.sketchware.utility.GroqErrorExplainer(apiKey);
         
@@ -238,13 +236,13 @@ public class ManageGroqActivity extends BaseAppCompatActivity implements View.On
             result -> {
                 runOnUiThread(() -> {
                     btnTest.setEnabled(true);
-                    btnTest.setText("Testar Conexão");
+                    btnTest.setText(Helper.getResString(R.string.groq_ai_test_connection));
                     
                     if (result.contains("API key not configured") || 
                         result.contains("Failed to get response")) {
-                        showTestResultDialog(false, "Falha na conexão. Verifique sua chave da API e conexão com a internet.");
+                        showTestResultDialog(false, Helper.getResString(R.string.groq_ai_connection_failed));
                     } else {
-                        showTestResultDialog(true, "Conexão bem-sucedida! A API da Groq está funcionando corretamente.");
+                        showTestResultDialog(true, Helper.getResString(R.string.groq_ai_connection_success));
                     }
                 });
             });
@@ -252,9 +250,9 @@ public class ManageGroqActivity extends BaseAppCompatActivity implements View.On
     
     private void showTestResultDialog(boolean success, String message) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(success ? "✅ Sucesso" : "❌ Erro");
+        dialog.setTitle(success ? Helper.getResString(R.string.groq_ai_success) : Helper.getResString(R.string.groq_ai_error));
         dialog.setMessage(message);
-        dialog.setPositiveButton("OK", null);
+        dialog.setPositiveButton(Helper.getResString(R.string.groq_ai_ok), null);
         dialog.show();
     }
 } 
