@@ -22,8 +22,11 @@ import mod.hey.studios.util.CompileLogHelper;
 import mod.hey.studios.util.Helper;
 import mod.jbk.diagnostic.CompileErrorSaver;
 import mod.jbk.util.AddMarginOnApplyWindowInsetsListener;
+import pro.sketchware.R;
 import pro.sketchware.databinding.CompileLogBinding;
 import pro.sketchware.utility.SketchwareUtil;
+import pro.sketchware.utility.GroqConfig;
+import pro.sketchware.utility.ErrorHelper;
 
 public class CompileLogActivity extends BaseAppCompatActivity {
 
@@ -54,6 +57,21 @@ public class CompileLogActivity extends BaseAppCompatActivity {
             binding.topAppBar.setTitle("Last compile log");
         } else {
             binding.topAppBar.setTitle("Compile log");
+        }
+
+        // Add AI explanation button if Groq is available
+        if (GroqConfig.isAvailable(this)) {
+            binding.topAppBar.getMenu().add(0, 1, 0, Helper.getResString(R.string.groq_ai_explanation))
+                    .setIcon(R.drawable.ic_mtrl_help)
+                    .setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
+            
+            binding.topAppBar.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == 1) {
+                    showAIExplanation();
+                    return true;
+                }
+                return false;
+            });
         }
 
         String sc_id = getIntent().getStringExtra("sc_id");
@@ -200,5 +218,23 @@ public class CompileLogActivity extends BaseAppCompatActivity {
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
+    }
+
+    /**
+     * Show AI explanation for the current compilation error
+     */
+    private void showAIExplanation() {
+        String error = getIntent().getStringExtra("error");
+        if (error == null) {
+            error = compileErrorSaver.getLogsFromFile();
+        }
+        
+        if (error == null || error.trim().isEmpty()) {
+            SketchwareUtil.toast("No error message available for AI analysis.");
+            return;
+        }
+
+        // Use ErrorHelper to show AI explanation
+        ErrorHelper.showError(this, error, Helper.getResString(R.string.groq_ai_compilation_error), true);
     }
 }

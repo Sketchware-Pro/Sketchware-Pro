@@ -98,6 +98,8 @@ import mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity;
 import mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity;
 import mod.hey.studios.activity.managers.assets.ManageAssetsActivity;
 import mod.hey.studios.activity.managers.java.ManageJavaActivity;
+import pro.sketchware.utility.GroqConfig;
+import pro.sketchware.utility.ErrorHelper;
 import mod.hey.studios.compiler.kotlin.KotlinCompilerBridge;
 import mod.hey.studios.project.custom_blocks.CustomBlocksDialog;
 import mod.hey.studios.project.proguard.ManageProguardActivity;
@@ -310,24 +312,39 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     }
 
     /**
-     * Shows a Snackbar indicating that a problem occurred while compiling. The user can click on "SHOW" to get to {@link CompileLogActivity}.
+     * Shows a dialog indicating that a problem occurred while compiling. The user can click on "SHOW" to get to {@link CompileLogActivity}.
      *
      * @param error The error, to be later displayed as text in {@link CompileLogActivity}
      */
     private void indicateCompileErrorOccurred(String error) {
         new CompileErrorSaver(sc_id).writeLogsToFile(error);
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Show compile log", Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction(Helper.getResString(R.string.common_word_show), v -> {
-            if (!mB.a()) {
-                snackbar.dismiss();
-                Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
-                intent.putExtra("error", error);
-                intent.putExtra("sc_id", sc_id);
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-            }
-        });
-        snackbar.show();
+        
+        // Check if Groq AI is available for AI explanation
+        boolean groqAvailable = GroqConfig.isAvailable(this);
+        
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(this)
+                .setTitle(Helper.getResString(R.string.groq_ai_compilation_error))
+                .setMessage("A compilation error occurred. Would you like to see the detailed error log?")
+                .setPositiveButton(Helper.getResString(R.string.common_word_show), (dialog, which) -> {
+                    if (!mB.a()) {
+                        Intent intent = new Intent(getApplicationContext(), CompileLogActivity.class);
+                        intent.putExtra("error", error);
+                        intent.putExtra("sc_id", sc_id);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+        
+        // Add AI explanation button if Groq is available
+        if (groqAvailable) {
+            dialogBuilder.setNeutralButton(Helper.getResString(R.string.groq_ai_explanation), (dialog, which) -> {
+                // Show AI explanation dialog
+                ErrorHelper.showError(this, error, Helper.getResString(R.string.groq_ai_compilation_error), true);
+            });
+        }
+        
+        dialogBuilder.show();
     }
 
     @Override
@@ -1213,11 +1230,11 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 });
             } catch (zy zy) {
                 isBuildFinished = true;
-                activity.indicateCompileErrorOccurred(zy.getMessage());
+                activity.runOnUiThread(() -> activity.indicateCompileErrorOccurred(zy.getMessage()));
             } catch (Throwable tr) {
                 isBuildFinished = true;
                 LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
-                activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));
+                activity.runOnUiThread(() -> activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr)));
             } finally {
                 activity.runOnUiThread(this::onPostExecute);
             }
