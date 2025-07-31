@@ -2350,4 +2350,25 @@ Please try again later"</string>
     <string name="groq_ai_language_arabic">العربية</string>
     <string name="groq_ai_language_hindi">हिन्दी</string>
 
+    <!-- AI Layout Generator -->
+    <string name="ai_layout_generator_title">Gerador de Layout com IA</string>
+    <string name="ai_layout_generator_description">Descreva o layout que você deseja criar. A IA irá gerar o código XML automaticamente.</string>
+    <string name="ai_layout_generator_prompt_hint">Descreva o layout (ex: tela de login com email, senha e botão)</string>
+    <string name="ai_layout_generator_examples_title">Exemplos de prompts:</string>
+    <string name="ai_layout_generator_examples">• Tela de login com campos de email e senha\n• Lista de produtos com imagens e preços\n• Formulário de cadastro com validação\n• Dashboard com cards de estatísticas\n• Galeria de fotos em grid</string>
+    <string name="ai_layout_generator_generating">Gerando layout com IA...</string>
+    <string name="ai_layout_generator_generating_description">Isso pode levar alguns segundos. A IA está criando o melhor layout para sua descrição.</string>
+    <string name="ai_layout_generator_generate">Gerar Layout</string>
+    <string name="ai_layout_generator_cancel">Cancelar</string>
+    <string name="ai_layout_generator_success">Layout gerado com sucesso! Revise e salve as alterações.</string>
+    <string name="ai_layout_generator_error_prompt_empty">Por favor, descreva o layout que você deseja criar.</string>
+    <string name="ai_layout_generator_error_not_configured">Groq AI não está configurado. Configure a API key nas configurações.</string>
+    <string name="ai_layout_generator_error_api_key">Chave da API da Groq não encontrada.</string>
+    <string name="ai_layout_generator_error_generation">Erro ao gerar layout: %s</string>
+    <string name="ai_layout_generator_not_configured_title">Groq AI não configurado</string>
+    <string name="ai_layout_generator_not_configured_message">Para usar o gerador de layout com IA, você precisa configurar a API da Groq primeiro. Deseja ir para as configurações?</string>
+    <string name="ai_layout_generator_configure">Configurar</string>
+    <string name="ai_layout_generator_settings_not_found">Configurações da Groq AI não encontradas.</string>
+    <string name="ai_layout_generator_menu_title">Generate with AI</string>
+
 </resources>

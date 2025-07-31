@@ -31,6 +31,7 @@ import pro.sketchware.tools.ViewBeanParser;
 import pro.sketchware.utility.EditorUtils;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.relativelayout.CircularDependencyDetector;
+import pro.sketchware.dialogs.AiLayoutGeneratorDialog;
 
 public class ViewCodeEditorActivity extends BaseAppCompatActivity {
     private ViewCodeEditorBinding binding;
@@ -141,6 +142,9 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
         menu.add(Menu.NONE, 2, Menu.NONE, "Save")
                 .setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_save))
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(Menu.NONE, 6, Menu.NONE, getString(R.string.ai_layout_generator_menu_title))
+                .setIcon(AppCompatResources.getDrawable(this, R.drawable.ic_mtrl_ai))
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         if (projectFile.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY
                 && projectLibrary.isEnabled()) {
             menu.add(Menu.NONE, 3, Menu.NONE, "Edit AppCompat");
@@ -175,6 +179,10 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
             }
             case 5 -> {
                 toLayoutPreview();
+                return true;
+            }
+            case 6 -> {
+                showAiLayoutGenerator();
                 return true;
             }
             default -> {
@@ -270,5 +278,30 @@ public class ViewCodeEditorActivity extends BaseAppCompatActivity {
         } catch (Exception e) {
             SketchwareUtil.toastError(e.toString());
         }
+    }
+    
+    /**
+     * Mostra o dialog para geração de layout com IA
+     */
+    private void showAiLayoutGenerator() {
+        AiLayoutGeneratorDialog dialog = new AiLayoutGeneratorDialog(this, new AiLayoutGeneratorDialog.LayoutGenerationCallback() {
+            @Override
+            public void onLayoutGenerated(String xmlLayout) {
+                // Substituir o conteúdo do editor com o layout gerado
+                editor.setText(xmlLayout);
+                SketchwareUtil.toast(getString(R.string.ai_layout_generator_success));
+            }
+            
+            @Override
+            public void onError(String errorMessage) {
+                // Erro já foi mostrado pelo dialog
+            }
+            
+            @Override
+            public void onCancelled() {
+                // Usuário cancelou a operação
+            }
+        }, sc_id); // Passar o ID do projeto para contexto
+        dialog.show();
     }
 }

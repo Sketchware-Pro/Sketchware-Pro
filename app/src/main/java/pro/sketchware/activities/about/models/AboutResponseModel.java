@@ -60,6 +60,27 @@ public class AboutResponseModel {
         public String getDescription() {
             return description.trim();
         }
+        
+        // Setters para permitir criação de dados estáticos
+        public void setMemberUsername(String username) {
+            this.user_username = username;
+        }
+        
+        public void setMemberImg(String img) {
+            this.user_img = img;
+        }
+        
+        public void setDescription(String desc) {
+            this.description = desc;
+        }
+        
+        public void setCoreTeamMember(boolean isCore) {
+            this.is_core_team = isCore;
+        }
+        
+        public void setActive(boolean active) {
+            this.is_active = active;
+        }
     }
 
     public static class ChangeLogs {

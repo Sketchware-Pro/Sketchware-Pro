@@ -27,6 +27,8 @@ import pro.sketchware.activities.about.models.AboutResponseModel;
 import pro.sketchware.databinding.ActivityAboutAppBinding;
 import pro.sketchware.utility.Network;
 
+import java.util.ArrayList;
+
 public class AboutActivity extends BaseAppCompatActivity {
 
     private final Network network = new Network();
@@ -99,7 +101,12 @@ public class AboutActivity extends BaseAppCompatActivity {
             } else {
                 response = sharedPref.getString("aboutData", null);
             }
-            if (response == null) return;
+            
+            // Se não conseguir carregar dados da API, usar dados estáticos
+            if (response == null) {
+                createStaticTeamData();
+                return;
+            }
 
             Gson gson = new Gson();
             AboutResponseModel aboutResponseModel = gson.fromJson(response, AboutResponseModel.class);
@@ -107,6 +114,33 @@ public class AboutActivity extends BaseAppCompatActivity {
             aboutAppData.setTeamMembers(aboutResponseModel.getTeam());
             aboutAppData.setChangelog(aboutResponseModel.getChangelog());
         });
+    }
+    
+    private void createStaticTeamData() {
+        // Criar dados estáticos da equipe incluindo Fábio Silva
+        ArrayList<AboutResponseModel.TeamMember> staticTeam = new ArrayList<>();
+        
+        // Adicionar Fábio Silva como contribuidor ativo
+        AboutResponseModel.TeamMember fabioSilva = new AboutResponseModel.TeamMember();
+        fabioSilva.setMemberUsername("FabioSilva11");
+        fabioSilva.setDescription("Desenvolvedor apaixonado por tecnologia e inovação. Contribuindo para o desenvolvimento do Sketchware Pro com foco em melhorias de UX/UI e funcionalidades avançadas.");
+        fabioSilva.setMemberImg("https://github.com/FabioSilva11.png");
+        fabioSilva.setCoreTeamMember(false);
+        fabioSilva.setActive(true);
+        staticTeam.add(fabioSilva);
+        
+        // Adicionar outros membros da equipe (exemplo)
+        AboutResponseModel.TeamMember coreMember = new AboutResponseModel.TeamMember();
+        coreMember.setMemberUsername("Sketchware-Pro");
+        coreMember.setDescription("Equipe principal do Sketchware Pro - IDE visual para desenvolvimento Android.");
+        coreMember.setMemberImg("https://github.com/Sketchware-Pro.png");
+        coreMember.setCoreTeamMember(true);
+        coreMember.setActive(true);
+        staticTeam.add(coreMember);
+        
+        aboutAppData.setDiscordInviteLink("https://discord.gg/kq39yhT4rX");
+        aboutAppData.setTeamMembers(staticTeam);
+        aboutAppData.setChangelog(new ArrayList<>());
     }
 
     // ----------------- classes ----------------- //
