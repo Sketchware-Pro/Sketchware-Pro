@@ -1,6 +1,7 @@
 package mod.hey.studios.project.backup;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.widget.CheckBox;
@@ -23,8 +24,10 @@ import a.a.a.lC;
 import dev.pranav.filepicker.FilePickerCallback;
 import dev.pranav.filepicker.FilePickerDialogFragment;
 import dev.pranav.filepicker.FilePickerOptions;
+import extensions.anbui.sketchware.configs.Configs;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
+import pro.sketchware.activities.main.activities.MainActivity;
 import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
 import pro.sketchware.databinding.ProgressMsgBoxBinding;
 import pro.sketchware.utility.FileUtil;
@@ -32,10 +35,10 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class BackupRestoreManager {
 
-    private final Activity act;
+    private Activity act;
 
     // Needed to refresh the project list after restoring
-    private ProjectsFragment projectsFragment;
+    private static ProjectsFragment projectsFragment;
 
     private HashMap<Integer, Boolean> backupDialogStates;
 
@@ -165,6 +168,10 @@ public class BackupRestoreManager {
 
     public void doRestore(String file, boolean restoreLocalLibs) {
         new RestoreAsyncTask(new WeakReference<>(act), file, restoreLocalLibs, projectsFragment).execute("");
+    }
+
+    public static void universalDoRestore(Activity activity, String file, boolean restoreLocalLibs) {
+        new RestoreAsyncTask(new WeakReference<>(activity), file, restoreLocalLibs, projectsFragment).execute("");
     }
 
     private static class BackupAsyncTask extends AsyncTask<String, Integer, String> {

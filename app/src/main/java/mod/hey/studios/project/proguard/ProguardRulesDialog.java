@@ -23,6 +23,9 @@ import mod.hey.studios.lib.code_editor.ColorScheme;
 import pro.sketchware.R;
 import pro.sketchware.utility.FileUtil;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.MaterialColors;
+
 public class ProguardRulesDialog extends Dialog implements View.OnClickListener {
 
     private static final int cancel_id = 626;
@@ -30,8 +33,8 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
     private final ProguardHandler pg;
     private ViewGroup base;
     private CodeEditorLayout codeEditor;
-    private TextView cancel;
-    private TextView save;
+    private MaterialButton cancel;
+    private MaterialButton save;
 
     public ProguardRulesDialog(Activity act, ProguardHandler pg) {
         super(act);
@@ -102,7 +105,7 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
             layout.setBackgroundColor(Color.WHITE);
         }
 
-        cancel = new TextView(getContext());
+        cancel = new MaterialButton(getContext());
         cancel.setLayoutParams(new LayoutParams(
                 0,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -114,62 +117,27 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
                 (int) getDip(8)
         );
         cancel.setText(R.string.common_word_cancel);
-        cancel.setTextColor(Color.WHITE);
-        cancel.setPadding(
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8)
-        );
         cancel.setGravity(Gravity.CENTER);
+        cancel.setAlpha(0.8f);
         cancel.setId(cancel_id);
-        if (codeEditor.dark_theme) {
-            cancel.setBackgroundColor(0xff333333);
-        } else {
-            cancel.setBackgroundColor(0xff008dcd);
-        }
-
-        cancel.setTextSize(15f);
         layout.addView(cancel);
-        save = new TextView(getContext());
-        save.setLayoutParams(new LayoutParams(
+        save = new MaterialButton(getContext());
+        save.setLayoutParams(new LinearLayout.LayoutParams(
                 0,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
-                1.0f));
-        ((LayoutParams) save.getLayoutParams()).setMargins(
+                1.0f
+        ));
+        ((LinearLayout.LayoutParams) save.getLayoutParams()).setMargins(
                 (int) getDip(8),
                 (int) getDip(8),
                 (int) getDip(8),
                 (int) getDip(8)
         );
+
         save.setText(R.string.common_word_save);
-        save.setTextColor(Color.WHITE);
-        save.setPadding(
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8),
-                (int) getDip(8)
-        );
-        save.setGravity(Gravity.CENTER);
         save.setId(save_id);
-        if (codeEditor.dark_theme) {
-            save.setBackgroundColor(0xff333333);
-        } else {
-            save.setBackgroundColor(0xff008dcd);
-        }
-
-        save.setTextSize(15f);
         layout.addView(save);
-        if (codeEditor.dark_theme) {
-            save.setBackground(getGD((int) getDip(4), 0, 0xff333333, 0xff333333));
-            cancel.setBackground(getGD((int) getDip(4), 0, 0xff333333, 0xff333333));
-        } else {
-            save.setBackground(getGD((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-            cancel.setBackground(getGD((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-        }
 
-        save.setElevation(getDip(1));
-        cancel.setElevation(getDip(1));
         base.addView(layout);
 
 
@@ -180,14 +148,8 @@ public class ProguardRulesDialog extends Dialog implements View.OnClickListener 
             public void run() {
                 if (codeEditor.dark_theme) {
                     layout.setBackgroundColor(0xff292929);
-
-                    save.setBackground(getGD((int) getDip(4), 0, 0xff333333, 0xff333333));
-                    cancel.setBackground(getGD((int) getDip(4), 0, 0xff333333, 0xff333333));
                 } else {
                     layout.setBackgroundColor(Color.WHITE);
-
-                    save.setBackground(getGD((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
-                    cancel.setBackground(getGD((int) getDip(4), 0, 0xff2196f3, 0xff2196f3));
                 }
 
                 handler.postDelayed(this, 500L);

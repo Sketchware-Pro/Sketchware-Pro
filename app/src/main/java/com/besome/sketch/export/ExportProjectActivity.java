@@ -1,5 +1,7 @@
 package com.besome.sketch.export;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,7 +22,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -48,7 +49,6 @@ import a.a.a.wq;
 import a.a.a.xq;
 import a.a.a.yB;
 import a.a.a.yq;
-import extensions.anbui.sketchware.configs.Configs;
 import extensions.anbui.sketchware.fragment.FragmentUtils;
 import kellinwood.security.zipsigner.ZipSigner;
 import kellinwood.security.zipsigner.optional.CustomKeySigner;
@@ -121,6 +121,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private LinearLayout sign_apk_progress_container;
     private TextView sign_apk_progress_text;
     private LinearProgressIndicator sign_apk_progress;
+    private LinearLayout sign_apk_output_path_container;
+    private Button export_apk_send_button;
     private Button sign_apk_cancel_button;
 
     //Export AAB UI
@@ -133,6 +135,8 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private LinearLayout export_aab_progress_container;
     private TextView export_aab_progress_text;
     private LinearProgressIndicator export_aab_progress;
+    private LinearLayout export_aab_output_path_container;
+    private Button export_aab_send_button;
     private Button export_aab_cancel_button;
 
     //Export Source UI
@@ -145,6 +149,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
     private LinearLayout export_source_output_stage;
     private TextView export_source_output_path;
     private LinearLayout export_source_progress_container;
+    private LinearLayout export_source_output_path_container;
     private Button export_source_send_button;
     private Button export_source_cancel_button;
 
@@ -161,81 +166,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         //Set Content View
         setContentView(R.layout.export_project);
 
-
-        //Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-
-
-        //APK Card Here
-        sign_apk_card = findViewById(R.id.sign_apk_card);
-        sign_apk_ic = findViewById(R.id.sign_apk_ic);
-        sign_apk_title = findViewById(R.id.sign_apk_title);
-        //Export Button
-        sign_apk_button = findViewById(R.id.sign_apk_button);
-        //After completion
-        sign_apk_output_path = findViewById(R.id.sign_apk_output_path);
-        sign_apk_output_stage = findViewById(R.id.sign_apk_output_stage);
-        //While processing
-        sign_apk_progress_container = findViewById(R.id.sign_apk_progress_container);
-        sign_apk_progress_text = findViewById(R.id.sign_apk_progress_text);
-        sign_apk_progress = findViewById(R.id.sign_apk_progress);
-        sign_apk_cancel_button = findViewById(R.id.sign_apk_cancel_button);
-
-
-        //AAB Card Here
-        export_aab_card = findViewById(R.id.export_aab_card);
-        export_aab_ic = findViewById(R.id.export_aab_ic);
-        export_aab_title = findViewById(R.id.export_aab_title);
-        //Export Button
-        export_aab_button = findViewById(R.id.export_aab_button);
-        //After completion
-        export_aab_output_stage = findViewById(R.id.export_aab_output_stage);
-        export_aab_output_path = findViewById(R.id.export_aab_output_path);
-        //While processing
-        export_aab_progress_container = findViewById(R.id.export_aab_progress_container);
-        export_aab_progress_text = findViewById(R.id.export_aab_progress_text);
-        export_aab_progress = findViewById(R.id.export_aab_progress);
-        export_aab_cancel_button = findViewById(R.id.export_aab_cancel_button);
-
-
-        //Source Card Here
-        export_source_card = findViewById(R.id.export_source_card);
-        export_source_ic = findViewById(R.id.export_source_ic);
-        export_source_title = findViewById(R.id.export_source_title);
-        //Export Button
-        export_source_button = findViewById(R.id.export_source_button);
-        //After completion
-        export_source_output_path = findViewById(R.id.export_source_output_path);
-        export_source_send_button = findViewById(R.id.export_source_send_button);
-        export_source_output_stage = findViewById(R.id.export_source_output_stage);
-        //While processing
-        export_source_progress_container = findViewById(R.id.export_source_progress_container);
-        export_source_progress_text = findViewById(R.id.export_source_progress_text);
-        export_source_progress = findViewById(R.id.export_source_progress);
-        export_source_cancel_button = findViewById(R.id.export_source_cancel_button);
-
-
-        //Code Shirnking Manager Card
-        ln_r8 = findViewById(R.id.ln_r8);
-        //Set On Click
-        ln_r8.setOnClickListener(view -> {
-            Intent intent = new Intent(this, ManageProguardActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            intent.putExtra("sc_id", sc_id);
-            startActivity(intent);
-        });
-
-        //Build Settings Card
-        ln_buid_settings = findViewById(R.id.ln_buid_settings);
-        //Set On Click
-        ln_buid_settings.setOnClickListener(view -> {
-            BuildSettingsBottomSheet sheet = BuildSettingsBottomSheet.newInstance(sc_id);
-            sheet.show(getSupportFragmentManager(), BuildSettingsBottomSheet.TAG);
-        });
-
+        setupUIAndInteraction();
 
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
@@ -308,12 +239,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             });
             confirmationDialog.show();
         });
-
-        Button export_apk_send_button = findViewById(R.id.export_apk_send_button);
-        export_apk_send_button.setOnClickListener(view -> shareAPK());
-
-        sign_apk_cancel_button.setOnClickListener(view -> cancelAnyExportNow());
-
     }
 
     private void showApkSigningDialog() {
@@ -366,10 +291,6 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             });
             confirmationDialog.show();
         });
-        Button export_aab_send_button = findViewById(R.id.export_aab_send_button);
-        export_aab_send_button.setOnClickListener(view -> shareAAB());
-
-        export_aab_cancel_button.setOnClickListener(view -> cancelAnyExportNow());
     }
 
     private void showAabSigningDialog() {
@@ -402,21 +323,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
      * Initialize Export to Android Studio views
      */
     private void initializeExportSrcViews() {
-
         exportSourceUIController(0, "");
-
-        export_source_button.setOnClickListener(v -> {
-            exportSourceUIController(1, "");
-            new Thread() {
-                @Override
-                public void run() {
-                    super.run();
-                    exportSrc();
-                }
-            }.start();
-        });
-        export_source_send_button.setOnClickListener(v -> shareExportedSourceCode());
-        export_source_cancel_button.setOnClickListener(view -> cancelAnyExportNow());
     }
 
 
@@ -439,57 +346,37 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
 
     //======================Share======================
 
-    //Share APK
-    private void shareAPK() {
-        if (!signed_apk_full_path.isEmpty()) {
+    //Prepare To Share
+    private void universalPrepareToShare(int type) {
+        String filePath;
+        String fileName;
+        String subject;
 
-            File file = new File(sign_apk_output_path.getText().toString());
-            String fileName = file.getName();
-            String filePath = (signed_apk_full_path + File.separator + fileName);
+        if (type == 0) {
+            //APK
+            filePath = sign_apk_output_path.getText().toString();
+            subject = "Here is my APK file just exported.";
+        } else if (type == 1) {
+            //AAB
+            filePath = export_aab_output_path.getText().toString();
+            subject = "Here is my AAB file just exported.";
+        } else {
+            //Source code
+            filePath = export_source_output_path.getText().toString();
+            subject = "Here is my source code file just exported.";
+        }
 
-            file = new File(filePath);
+        if (!filePath.isEmpty()) {
+
+            File file = new File(filePath);
             if (!file.exists()) {
                 signAPKUIController(0, "");
                 SketchwareUtil.toast("Cannot share because the file does not exist.");
                 return;
             }
+            fileName = file.getName();
 
-            universalShareFile("Here is my APK file just exported.", Helper.getResString(R.string.myprojects_export_src_title_email_body, fileName), filePath);
-        }
-    }
-
-    //Share AAB
-    private void shareAAB() {
-        if (!export_aab_full_path.isEmpty()) {
-
-            File file = new File(export_aab_output_path.getText().toString());
-            String fileName = file.getName();
-            String filePath = (export_aab_full_path + File.separator + fileName);
-
-            file = new File(filePath);
-            if (!file.exists()) {
-                exportAABUIController(0, "");
-                SketchwareUtil.toast("Cannot share because the file does not exist.");
-                return;
-            }
-
-            universalShareFile("Here is my AAB file just exported.", Helper.getResString(R.string.myprojects_export_src_title_email_body, fileName), filePath);
-        }
-    }
-
-    //Share Source Code
-    private void shareExportedSourceCode() {
-        if (!export_src_filename.isEmpty()) {
-
-            String filePath = export_src_full_path + File.separator + export_src_filename;
-            File file = new File(filePath);
-            if (!file.exists()) {
-                exportSourceUIController(0, "");
-                SketchwareUtil.toast("Cannot share because the file does not exist.");
-                return;
-            }
-
-            universalShareFile(Helper.getResString(R.string.myprojects_export_src_title_email_subject, export_src_filename), Helper.getResString(R.string.myprojects_export_src_title_email_body, export_src_filename), filePath);
+            universalShareFile(subject, Helper.getResString(R.string.myprojects_export_src_title_email_body, fileName), filePath);
         }
     }
 
@@ -505,6 +392,115 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(Intent.createChooser(intent, Helper.getResString(R.string.myprojects_export_src_chooser_title_email)));
+    }
+    //=================================================
+
+    //=========Interface and interaction setup=========
+    private void setupUIAndInteraction() {
+        //Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+
+
+        //APK Card Here
+        sign_apk_card = findViewById(R.id.sign_apk_card);
+        sign_apk_ic = findViewById(R.id.sign_apk_ic);
+        sign_apk_title = findViewById(R.id.sign_apk_title);
+        //Export Button
+        sign_apk_button = findViewById(R.id.sign_apk_button);
+        //After completion
+        sign_apk_output_path = findViewById(R.id.sign_apk_output_path);
+        sign_apk_output_stage = findViewById(R.id.sign_apk_output_stage);
+        sign_apk_output_path_container = findViewById(R.id.sign_apk_output_path_container);
+        export_apk_send_button = findViewById(R.id.export_apk_send_button);
+        //While processing
+        sign_apk_progress_container = findViewById(R.id.sign_apk_progress_container);
+        sign_apk_progress_text = findViewById(R.id.sign_apk_progress_text);
+        sign_apk_progress = findViewById(R.id.sign_apk_progress);
+        sign_apk_cancel_button = findViewById(R.id.sign_apk_cancel_button);
+
+
+        //Set On Click
+        sign_apk_output_path_container.setOnClickListener(view -> copyToClipboard(sign_apk_output_path.getText().toString()));
+        export_apk_send_button.setOnClickListener(view -> universalPrepareToShare(0));
+        sign_apk_cancel_button.setOnClickListener(view -> cancelAnyExportNow());
+
+
+        //AAB Card Here
+        export_aab_card = findViewById(R.id.export_aab_card);
+        export_aab_ic = findViewById(R.id.export_aab_ic);
+        export_aab_title = findViewById(R.id.export_aab_title);
+        //Export Button
+        export_aab_button = findViewById(R.id.export_aab_button);
+        //After completion
+        export_aab_output_stage = findViewById(R.id.export_aab_output_stage);
+        export_aab_output_path = findViewById(R.id.export_aab_output_path);
+        export_aab_output_path_container = findViewById(R.id.export_aab_output_path_container);
+        export_aab_send_button = findViewById(R.id.export_aab_send_button);
+        //While processing
+        export_aab_progress_container = findViewById(R.id.export_aab_progress_container);
+        export_aab_progress_text = findViewById(R.id.export_aab_progress_text);
+        export_aab_progress = findViewById(R.id.export_aab_progress);
+        export_aab_cancel_button = findViewById(R.id.export_aab_cancel_button);
+
+        //Set On Click
+        export_aab_output_path_container.setOnClickListener(view -> copyToClipboard(export_aab_output_path.getText().toString()));
+        export_aab_send_button.setOnClickListener(view -> universalPrepareToShare(1));
+        export_aab_cancel_button.setOnClickListener(view -> cancelAnyExportNow());
+
+
+        //Source Card Here
+        export_source_card = findViewById(R.id.export_source_card);
+        export_source_ic = findViewById(R.id.export_source_ic);
+        export_source_title = findViewById(R.id.export_source_title);
+        //Export Button
+        export_source_button = findViewById(R.id.export_source_button);
+        //After completion
+        export_source_output_path = findViewById(R.id.export_source_output_path);
+        export_source_output_path_container = findViewById(R.id.export_source_output_path_container);
+        export_source_send_button = findViewById(R.id.export_source_send_button);
+        export_source_output_stage = findViewById(R.id.export_source_output_stage);
+        //While processing
+        export_source_progress_container = findViewById(R.id.export_source_progress_container);
+        export_source_progress_text = findViewById(R.id.export_source_progress_text);
+        export_source_progress = findViewById(R.id.export_source_progress);
+        export_source_cancel_button = findViewById(R.id.export_source_cancel_button);
+
+        //Set On Click
+        export_source_button.setOnClickListener(v -> {
+            exportSourceUIController(1, "");
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    exportSrc();
+                }
+            }.start();
+        });
+        export_source_output_path_container.setOnClickListener(view -> copyToClipboard(export_source_output_path.getText().toString()));
+        export_source_send_button.setOnClickListener(v -> universalPrepareToShare(2));
+        export_source_cancel_button.setOnClickListener(view -> cancelAnyExportNow());
+
+
+        //Code Shirnking Manager Card
+        ln_r8 = findViewById(R.id.ln_r8);
+        //Set On Click
+        ln_r8.setOnClickListener(view -> {
+            Intent intent = new Intent(this, ManageProguardActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("sc_id", sc_id);
+            startActivity(intent);
+        });
+
+        //Build Settings Card
+        ln_buid_settings = findViewById(R.id.ln_buid_settings);
+        //Set On Click
+        ln_buid_settings.setOnClickListener(view -> {
+            BuildSettingsBottomSheet sheet = BuildSettingsBottomSheet.newInstance(sc_id);
+            sheet.show(getSupportFragmentManager(), BuildSettingsBottomSheet.TAG);
+        });
     }
     //=================================================
 
@@ -1194,7 +1190,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             //Delete exported file requested by user to cancel.
             deleteFilePath(signed_apk_full_path + File.separator + filePath);
         } else {
-            signAPKUIController(2, signed_apk_postfix + File.separator + filePath);
+            signAPKUIController(2, signed_apk_full_path + File.separator + filePath);
         }
 //        SketchwareUtil.toast(Helper.getResString(R.string.sign_apk_title_export_apk_file));
     }
@@ -1208,7 +1204,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             //Delete exported file requested by user to cancel.
             deleteFilePath(export_aab_full_path + File.separator + fileName);
         } else {
-            exportAABUIController(2, export_aab_postfix + File.separator + fileName);
+            exportAABUIController(2, export_aab_full_path + File.separator + fileName);
         }
     }
 
@@ -1358,7 +1354,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             //Delete exported file requested by user to cancel.
             deleteFilePath(export_src_full_path + File.separator + export_src_filename);
         } else {
-            exportSourceUIController(2, export_src_postfix + File.separator + export_src_filename);
+            exportSourceUIController(2, export_src_full_path + File.separator + export_src_filename);
         }
     }
 
@@ -1377,6 +1373,13 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
         } else {
             Log.w("ExportProjectActivity", "The exported file does not exist.");
         }
+    }
+
+    private void copyToClipboard(String text) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Exported and saved in", text);
+        clipboard.setPrimaryClip(clip);
+        SketchwareUtil.toast("Copied.");
     }
     //=================================================
 }

@@ -761,6 +761,9 @@ public class ProjectBuilder {
             builtInLibraryManager.addLibrary(BuiltInLibraries.ANDROIDX_APPCOMPAT);
             builtInLibraryManager.addLibrary(BuiltInLibraries.ANDROIDX_COORDINATORLAYOUT);
             builtInLibraryManager.addLibrary(BuiltInLibraries.MATERIAL);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.KOTLIN_STDLIB);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.ANDROIDX_COLLECTION_JVM);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.ANDROIDX_GRAPHICS_SHAPES_ANDROID);
         }
         if (yq.N.isFirebaseEnabled) {
             builtInLibraryManager.addLibrary(BuiltInLibraries.FIREBASE_COMMON);

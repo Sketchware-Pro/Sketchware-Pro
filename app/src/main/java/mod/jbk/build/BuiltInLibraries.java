@@ -85,6 +85,8 @@ public class BuiltInLibraries {
     public static String ANDROIDX_VIEWPAGER2 = "viewpager2-1.0.0";
     public static String ANDROIDX_VIEWPAGER = "viewpager-1.0.0";
     public static String ANDROIDX_WORK_RUNTIME = "work-runtime-2.7.1";
+    public static String ANDROIDX_COLLECTION_JVM = "collection-jvm-1.5.0";
+    public static String ANDROIDX_GRAPHICS_SHAPES_ANDROID = "graphics-shapes-android-1.0.1";
     public static String FIREBASE_AUTH = "firebase-auth-19.0.0";
     public static String FIREBASE_AUTH_INTEROP = "firebase-auth-interop-18.0.0";
     public static String FIREBASE_COMMON = "firebase-common-19.3.1";
@@ -109,10 +111,10 @@ public class BuiltInLibraries {
     public static String GUAVA_LISTENABLEFUTURE = "listenablefuture-1.0.0";
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
     public static String JETBRAINS_ANNOTATIONS = "annotations-13.0";
-    public static String KOTLIN_STDLIB = "kotlin-stdlib-1.4.30-M1-release-152";
+    public static String KOTLIN_STDLIB = "kotlin-stdlib-2.2.0";
     public static String KOTLIN_STDLIB_JDK7 = "kotlin-stdlib-jdk7-1.4.30-M1-release-152";
     public static String LOTTIE = "lottie-3.4.0";
-    public static String MATERIAL = "material-1.6.1";
+    public static String MATERIAL = "material-1.14.0-alpha03";
     public static String OKHTTP = "okhttp-3.9.1";
     public static String OKIO = "okio-1.17.4";
     public static String ONESIGNAL = "OneSignal-3.14.0";
@@ -251,6 +253,11 @@ public class BuiltInLibraries {
             new BuiltInLibrary(ANDROIDX_WORK_RUNTIME, List.of(ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_LIVEDATA,
                     ANDROIDX_LIFECYCLE_SERVICE, ANDROIDX_ROOM_RUNTIME, ANDROIDX_SQLITE, ANDROIDX_SQLITE_FRAMEWORK, ANDROIDX_STARTUP_RUNTIME,
                     GUAVA_LISTENABLEFUTURE), "androidx.work"),
+
+            new BuiltInLibrary(ANDROIDX_COLLECTION_JVM),
+
+            new BuiltInLibrary(ANDROIDX_GRAPHICS_SHAPES_ANDROID),
+
             new BuiltInLibrary(CIRCLE_IMAGEVIEW, List.of(ANDROIDX_ANNOTATION), "de.hdodenhof.circleimageview"),
             new BuiltInLibrary(CODE_VIEW, List.of(), "br.tiagohm.codeview"),
             new BuiltInLibrary(FACEBOOK_ADS_AUDIENCE_NETWORK_SDK),

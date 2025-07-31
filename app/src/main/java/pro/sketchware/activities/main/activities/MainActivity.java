@@ -45,6 +45,7 @@ import a.a.a.oB;
 import a.a.a.sB;
 import a.a.a.wq;
 import a.a.a.xB;
+import extensions.anbui.sketchware.configs.Configs;
 import mod.hey.studios.project.backup.BackupFactory;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;
@@ -78,6 +79,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     private ProjectsFragment projectsFragment;
     private ProjectsStoreFragment projectsStoreFragment;
     private Fragment activeFragment;
+    private BackupRestoreManager backupRestoreManager;
     @IdRes
     private int currentNavItemId = R.id.item_projects;
 
@@ -293,6 +295,9 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         }
 
         navigateToProjectsFragment();
+
+        backupRestoreManager = new BackupRestoreManager(this, projectsFragment);
+        Configs.mainActivity = this;
     }
 
     private Fragment getFragmentForNavId(int navItemId) {
@@ -378,6 +383,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         xB.b().a();
+        Configs.mainActivity = null;
     }
 
     @Override

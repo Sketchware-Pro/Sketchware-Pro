@@ -42,6 +42,7 @@ import a.a.a.DB;
 import a.a.a.lC;
 import dev.chrisbanes.insetter.Insetter;
 import extensions.anbui.sketchware.configs.Configs;
+import extensions.anbui.sketchware.project.RestoreProject;
 import mod.hey.studios.project.ProjectTracker;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import pro.sketchware.R;
@@ -159,6 +160,7 @@ public class ProjectsFragment extends DA {
 
         binding.iconSort.setOnClickListener(v -> showProjectSortingDialog());
         binding.specialAction.getRoot().setOnClickListener(v -> restoreProject());
+        RestoreProject.setupDropFileTo(getActivity(), binding.specialAction.getRoot());
 
         menuProvider = new MenuProvider() {
             @Override
