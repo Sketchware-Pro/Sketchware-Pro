@@ -156,6 +156,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         enableEdgeToEdgeNoContrast();
 
         tryLoadingCustomizedAppStrings();
+        checkAndExportStringsXmlIfNeeded();
         binding = MainBinding.inflate(getLayoutInflater());
 
         setContentView(binding.getRoot());
@@ -495,6 +496,53 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         // Actual loading part
         if (xB.b().b(getApplicationContext())) {
             SketchwareUtil.toast(Helper.getResString(R.string.message_strings_xml_loaded));
+        }
+    }
+
+    /**
+     * Verifica se a pasta de localização está vazia e exporta automaticamente o arquivo de strings interno
+     * Se a pasta estiver vazia, exporta automaticamente. Se não estiver, permite exportação manual nas configurações.
+     */
+    private void checkAndExportStringsXmlIfNeeded() {
+        try {
+            // Verifica se a pasta de localização existe
+            File localizationDir = new File(wq.k()); // wq.k() retorna o caminho absoluto para sketchware/localization
+            File stringsXmlFile = new File(wq.l()); // wq.l() retorna o caminho absoluto para strings.xml
+            
+            // Se a pasta não existe ou está vazia, exporta automaticamente
+            if (!localizationDir.exists() || !localizationDir.isDirectory() || 
+                localizationDir.listFiles() == null || localizationDir.listFiles().length == 0) {
+                
+                exportInternalStringsXmlToLocalization();
+                LogUtil.d("MainActivity", "Strings.xml exportado automaticamente para: " + wq.l());
+            }
+        } catch (Exception e) {
+            LogUtil.e("MainActivity", "Erro ao verificar pasta de localização", e);
+        }
+    }
+
+    /**
+     * Exporta o arquivo de strings interno para a pasta de localização externa
+     * Esta função pode ser chamada manualmente nas configurações
+     */
+    public void exportInternalStringsXmlToLocalization() {
+        try {
+            // Cria a pasta de localização se não existir
+            File localizationDir = new File(wq.k());
+            if (!localizationDir.exists()) {
+                localizationDir.mkdirs();
+            }
+
+            // Caminho do arquivo de destino
+            File outFile = new File(wq.l());
+            
+            // Copia o arquivo de strings interno para o externo
+            oB fileUtil = new oB();
+            fileUtil.a(getApplicationContext(), "localization/strings.xml", wq.l());
+            
+            LogUtil.d("MainActivity", "Strings.xml exportado com sucesso para: " + wq.l());
+        } catch (Exception e) {
+            LogUtil.e("MainActivity", "Erro ao exportar strings.xml", e);
         }
     }
     

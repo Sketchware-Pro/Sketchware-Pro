@@ -53,4 +53,10 @@
         app:key="backup-filename"
         app:summary="Default is &quot;$projectName v$versionName ($pkgName, $versionCode) $time(yyyy-MM-dd'T'HHmmss)&quot;"
         app:title="Backup filename format" />
+
+    <Preference
+        app:iconSpaceReserved="false"
+        app:key="export-strings-xml"
+        app:summary="Export the internal strings.xml file to /storage/emulated/0/sketchware/localization/ for translation"
+        app:title="Export strings.xml for translation" />
 </PreferenceScreen>

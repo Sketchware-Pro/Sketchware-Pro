@@ -2,6 +2,7 @@ package mod.hilal.saif.activities.tools;
 
 import static pro.sketchware.utility.GsonUtils.getGson;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
@@ -180,6 +181,46 @@ public class ConfigActivity extends BaseAppCompatActivity {
                 .commit();
     }
 
+    /**
+     * Exporta o arquivo de strings interno para a pasta de localização externa
+     * Esta função é chamada quando o usuário clica na preferência de exportação
+     */
+    public void exportStringsXmlForTranslation() {
+        try {
+            // Importa as classes necessárias
+            Class<?> wqClass = Class.forName("a.a.a.wq");
+            Class<?> oBClass = Class.forName("a.a.a.oB");
+            
+            // Obtém os métodos necessários
+            java.lang.reflect.Method getLocalizationPathMethod = wqClass.getMethod("k");
+            java.lang.reflect.Method getStringsXmlPathMethod = wqClass.getMethod("l");
+            
+            // Obtém os caminhos
+            String localizationPath = (String) getLocalizationPathMethod.invoke(null);
+            String stringsXmlPath = (String) getStringsXmlPathMethod.invoke(null);
+            
+            // Cria a pasta de localização se não existir
+            File localizationDir = new File(localizationPath);
+            if (!localizationDir.exists()) {
+                localizationDir.mkdirs();
+            }
+
+            // Cria uma instância da classe oB
+            Object fileUtil = oBClass.getDeclaredConstructor().newInstance();
+            
+            // Obtém o método para copiar arquivo
+            java.lang.reflect.Method copyFileMethod = oBClass.getMethod("a", Context.class, String.class, String.class);
+            
+            // Copia o arquivo de strings interno para o externo
+            copyFileMethod.invoke(fileUtil, this, "localization/strings.xml", stringsXmlPath);
+            
+            LogUtil.d("ConfigActivity", "Strings.xml exported successfully to: " + stringsXmlPath);
+        } catch (Exception e) {
+            LogUtil.e("ConfigActivity", "Error exporting strings.xml", e);
+            throw new RuntimeException("Failed to export strings.xml", e);
+        }
+    }
+
     public static class PreferenceFragment extends PreferenceFragmentCompat {
         private View snackbarView;
         private DataStore dataStore;
@@ -273,6 +314,28 @@ public class ConfigActivity extends BaseAppCompatActivity {
                     binding.inputText.requestFocus();
                 });
                 dialog.show();
+                return true;
+            });
+
+            // Adiciona a preferência para exportar strings.xml
+            Preference exportStringsXml = findPreference("export-strings-xml");
+            assert exportStringsXml != null;
+            exportStringsXml.setOnPreferenceClickListener(preference -> {
+                // Chama a função de exportação do MainActivity
+                try {
+                    // Obtém a instância do MainActivity através do contexto
+                    if (getActivity() instanceof ConfigActivity) {
+                        ConfigActivity activity = (ConfigActivity) getActivity();
+                        if (activity != null) {
+                            // Chama a função de exportação
+                            activity.exportStringsXmlForTranslation();
+                            Snackbar.make(snackbarView, "Strings.xml exported successfully!", BaseTransientBottomBar.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (Exception e) {
+                    Snackbar.make(snackbarView, "Failed to export strings.xml: " + e.getMessage(), BaseTransientBottomBar.LENGTH_LONG).show();
+                    LogUtil.e("ConfigActivity", "Error exporting strings.xml", e);
+                }
                 return true;
             });
         }
