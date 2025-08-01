@@ -15,7 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+
+
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
@@ -23,16 +27,21 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 import a.a.a.GB;
 import a.a.a.MA;
 import a.a.a.VB;
+import a.a.a.bB;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.nB;
@@ -72,6 +81,10 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private Bitmap icon;
     private String sc_id;
 
+    
+    private ThemePresetAdapter themePresetAdapter;
+    private List<ThemeManager.ThemePreset> themePresets;
+
     public static void saveBitmapTo(Bitmap bitmap, String path) {
         try (FileOutputStream fileOutputStream = new FileOutputStream(path)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
@@ -96,12 +109,17 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         binding.verCode.setSelected(true);
         binding.verName.setSelected(true);
 
+
         binding.appIconLayout.setOnClickListener(this);
         binding.verCodeHolder.setOnClickListener(this);
         binding.verNameHolder.setOnClickListener(this);
         binding.imgThemeColorHelp.setOnClickListener(this);
         binding.okButton.setOnClickListener(this);
         binding.cancel.setOnClickListener(this);
+        
+        initializeThemePresets();
+        
+        binding.btnGenerateRandomTheme.setOnClickListener(v -> generateRandomTheme());
 
         binding.tilAppName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
         binding.tilPackageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
@@ -546,5 +564,39 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             h();
         }
 
+    }
+
+    
+    private void initializeThemePresets() {
+        themePresets = Arrays.asList(ThemeManager.getThemePresets());
+        
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.layoutThemePresets.setLayoutManager(layoutManager);
+        
+        themePresetAdapter = new ThemePresetAdapter(this, themePresets, new ThemePresetAdapter.OnThemePresetClickListener() {
+            @Override
+            public void onThemePresetClick(ThemeManager.ThemePreset theme, int position) {
+                applyTheme(theme);
+            }
+        });
+        
+        binding.layoutThemePresets.setAdapter(themePresetAdapter);
+    }
+    
+    private void generateRandomTheme() {
+        ThemeManager.ThemePreset randomTheme = ThemeManager.generateRandomTheme();
+        applyTheme(randomTheme);
+        
+        bB.a(this, String.format(Helper.getResString(R.string.theme_random_generated), randomTheme.name), 0).show();
+    }
+    
+    private void applyTheme(ThemeManager.ThemePreset theme) {
+        projectThemeColors[0] = theme.colorAccent;
+        projectThemeColors[1] = theme.colorPrimary;
+        projectThemeColors[2] = theme.colorPrimaryDark;
+        projectThemeColors[3] = theme.colorControlHighlight;
+        projectThemeColors[4] = theme.colorControlNormal;
+        
+        syncThemeColors();
     }
 }
