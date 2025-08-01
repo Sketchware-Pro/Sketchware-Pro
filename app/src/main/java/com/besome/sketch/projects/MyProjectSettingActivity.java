@@ -82,7 +82,6 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private String sc_id;
 
     
-    // Variáveis para gerenciamento de temas
     private ThemePresetAdapter themePresetAdapter;
     private List<ThemeManager.ThemePreset> themePresets;
 
@@ -118,10 +117,8 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         binding.okButton.setOnClickListener(this);
         binding.cancel.setOnClickListener(this);
         
-        // Inicializar temas
         initializeThemePresets();
         
-        // Configurar listener para gerar tema aleatório
         binding.btnGenerateRandomTheme.setOnClickListener(v -> generateRandomTheme());
 
         binding.tilAppName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
@@ -570,11 +567,9 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     }
 
     
-    // Métodos para gerenciamento de temas
     private void initializeThemePresets() {
         themePresets = Arrays.asList(ThemeManager.getThemePresets());
         
-        // Configurar RecyclerView para temas
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         binding.layoutThemePresets.setLayoutManager(layoutManager);
         
@@ -592,19 +587,16 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         ThemeManager.ThemePreset randomTheme = ThemeManager.generateRandomTheme();
         applyTheme(randomTheme);
         
-        // Mostrar feedback visual
         bB.a(this, String.format(Helper.getResString(R.string.theme_random_generated), randomTheme.name), 0).show();
     }
     
     private void applyTheme(ThemeManager.ThemePreset theme) {
-        // Aplicar as cores do tema
         projectThemeColors[0] = theme.colorAccent;
         projectThemeColors[1] = theme.colorPrimary;
         projectThemeColors[2] = theme.colorPrimaryDark;
         projectThemeColors[3] = theme.colorControlHighlight;
         projectThemeColors[4] = theme.colorControlNormal;
         
-        // Sincronizar as cores na interface
         syncThemeColors();
     }
 }

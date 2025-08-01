@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import pro.sketchware.R;
+import pro.sketchware.databinding.ThemePresetItemBinding;
 
 import java.util.List;
 
@@ -35,32 +35,29 @@ public class ThemePresetAdapter extends RecyclerView.Adapter<ThemePresetAdapter.
     @NonNull
     @Override
     public ThemePresetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.theme_preset_item, parent, false);
-        return new ThemePresetViewHolder(view);
+        ThemePresetItemBinding binding = ThemePresetItemBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new ThemePresetViewHolder(binding);
     }
     
     @Override
     public void onBindViewHolder(@NonNull ThemePresetViewHolder holder, int position) {
         ThemeManager.ThemePreset theme = themePresets.get(position);
         
-        holder.themeName.setText(theme.name);
+        holder.binding.themeName.setText(theme.name);
         
-        // Define as cores do tema
-        holder.colorPrimary.setBackgroundColor(theme.colorPrimary);
-        holder.colorPrimaryDark.setBackgroundColor(theme.colorPrimaryDark);
-        holder.colorAccent.setBackgroundColor(theme.colorAccent);
-        holder.colorControlHighlight.setBackgroundColor(theme.colorControlHighlight);
-        holder.colorControlNormal.setBackgroundColor(theme.colorControlNormal);
+        holder.binding.colorPrimary.setBackgroundColor(theme.colorPrimary);
+        holder.binding.colorPrimaryDark.setBackgroundColor(theme.colorPrimaryDark);
+        holder.binding.colorAccent.setBackgroundColor(theme.colorAccent);
+        holder.binding.colorControlHighlight.setBackgroundColor(theme.colorControlHighlight);
+        holder.binding.colorControlNormal.setBackgroundColor(theme.colorControlNormal);
         
-        // Define o estado selecionado
         holder.itemView.setSelected(position == selectedPosition);
-        holder.themeColorsPreview.setSelected(position == selectedPosition);
+        holder.binding.themeColorsPreview.setSelected(position == selectedPosition);
         
         holder.itemView.setOnClickListener(v -> {
             int previousSelected = selectedPosition;
             selectedPosition = holder.getAbsoluteAdapterPosition();
             
-            // Notifica mudanças apenas nos itens afetados
             if (previousSelected != -1) {
                 notifyItemChanged(previousSelected);
             }
@@ -94,23 +91,11 @@ public class ThemePresetAdapter extends RecyclerView.Adapter<ThemePresetAdapter.
     }
     
     static class ThemePresetViewHolder extends RecyclerView.ViewHolder {
-        TextView themeName;
-        View colorPrimary;
-        View colorPrimaryDark;
-        View colorAccent;
-        View colorControlHighlight;
-        View colorControlNormal;
-        LinearLayout themeColorsPreview;
+        ThemePresetItemBinding binding;
         
-        public ThemePresetViewHolder(@NonNull View itemView) {
-            super(itemView);
-            themeName = itemView.findViewById(R.id.theme_name);
-            colorPrimary = itemView.findViewById(R.id.color_primary);
-            colorPrimaryDark = itemView.findViewById(R.id.color_primary_dark);
-            colorAccent = itemView.findViewById(R.id.color_accent);
-            colorControlHighlight = itemView.findViewById(R.id.color_control_highlight);
-            colorControlNormal = itemView.findViewById(R.id.color_control_normal);
-            themeColorsPreview = itemView.findViewById(R.id.theme_colors_preview);
+        public ThemePresetViewHolder(@NonNull ThemePresetItemBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 } 
