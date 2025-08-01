@@ -194,7 +194,24 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
             UI.animateLayoutChanges(binding.getRoot());
         });
 
-        binding.appIcoItems.setOnClickListener(v -> showCustomIconOptions());
+        binding.appIcoItems.setOnClickListener(v -> {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+            builder.setTitle(Helper.getResString(R.string.icon_creator_customize_icon));
+            builder.setItems(new String[]{
+                    Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery),
+                    Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_with_crop),
+                    Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_default)
+            }, (dialog, which) -> {
+                switch (which) {
+                    case 0 -> pickCustomIcon(REQUEST_CODE_PICK_ICON);
+                    case 1 -> pickAndCropCustomIcon();
+                    case 2 -> binding.appIcoImg.setBackgroundResource(R.drawable.default_image);
+                }
+            });
+            AlertDialog create = builder.create();
+            create.setCanceledOnTouchOutside(true);
+            create.show();
+        });
 
         binding.save.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), MyProjectSettingActivity.class);
@@ -505,24 +522,7 @@ public class IconCreatorActivity extends BaseAppCompatActivity {
                 REQUEST_CODE_PICK_CROPPED_ICON);
     }
 
-    private void showCustomIconOptions() {
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-        builder.setTitle(Helper.getResString(R.string.myprojects_settings_context_menu_title_choose));
-        builder.setItems(new String[]{
-                Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery),
-                Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_with_crop),
-                Helper.getResString(R.string.myprojects_settings_context_menu_title_choose_gallery_default)
-        }, (dialog, which) -> {
-            switch (which) {
-                case 0 -> pickCustomIcon(REQUEST_CODE_PICK_ICON);
-                case 1 -> pickAndCropCustomIcon();
-                case 2 -> binding.appIcoImg.setBackgroundResource(R.drawable.default_image);
-            }
-        });
-        AlertDialog create = builder.create();
-        create.setCanceledOnTouchOutside(true);
-        create.show();
-    }
+
 
     private void saveIconToRes() {
         saveBitmapTo(captureAppIco(binding.appIcoCard), getIconPath("mipmap-hdpi", "ic_launcher.png"));
