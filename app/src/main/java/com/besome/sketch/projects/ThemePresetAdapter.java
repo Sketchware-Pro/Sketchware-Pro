@@ -44,14 +44,14 @@ public class ThemePresetAdapter extends RecyclerView.Adapter<ThemePresetAdapter.
         
         holder.themeName.setText(theme.name);
         
-        // Define as cores do tema
+        // Define theme colors
         holder.colorPrimary.setBackgroundColor(theme.colorPrimary);
         holder.colorPrimaryDark.setBackgroundColor(theme.colorPrimaryDark);
         holder.colorAccent.setBackgroundColor(theme.colorAccent);
         holder.colorControlHighlight.setBackgroundColor(theme.colorControlHighlight);
         holder.colorControlNormal.setBackgroundColor(theme.colorControlNormal);
         
-        // Define o estado selecionado
+        // Define selected state
         holder.itemView.setSelected(position == selectedPosition);
         holder.themeColorsPreview.setSelected(position == selectedPosition);
         
@@ -59,7 +59,7 @@ public class ThemePresetAdapter extends RecyclerView.Adapter<ThemePresetAdapter.
             int previousSelected = selectedPosition;
             selectedPosition = holder.getAbsoluteAdapterPosition();
             
-            // Notifica mudanças apenas nos itens afetados
+            // Notify changes only for affected items
             if (previousSelected != -1) {
                 notifyItemChanged(previousSelected);
             }
