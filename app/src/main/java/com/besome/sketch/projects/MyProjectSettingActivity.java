@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+
+
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.besome.sketch.lib.ui.ColorPickerDialog;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+
 
 import a.a.a.GB;
 import a.a.a.MA;
@@ -76,6 +80,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private boolean isIconAdaptive;
     private Bitmap icon;
     private String sc_id;
+
     
     // Variáveis para gerenciamento de temas
     private ThemePresetAdapter themePresetAdapter;
@@ -104,6 +109,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
 
         binding.verCode.setSelected(true);
         binding.verName.setSelected(true);
+
 
         binding.appIconLayout.setOnClickListener(this);
         binding.verCodeHolder.setOnClickListener(this);
@@ -562,6 +568,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         }
 
     }
+
     
     // Métodos para gerenciamento de temas
     private void initializeThemePresets() {

@@ -173,6 +173,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+
             <!-- Nova seção de temas -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -198,7 +199,7 @@
                             android:layout_height="24dp"
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/ic_mtrl_palette"
-                            android:tint="?attr/colorPrimary" />
+                            app:tint="?attr/colorPrimary" />
 
                         <TextView
                             android:layout_width="0dp"

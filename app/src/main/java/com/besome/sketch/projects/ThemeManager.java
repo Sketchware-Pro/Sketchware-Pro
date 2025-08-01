@@ -3,6 +3,7 @@ package com.besome.sketch.projects;
 import android.graphics.Color;
 import java.util.Random;
 
+
 public class ThemeManager {
     
     public static class ThemePreset {
