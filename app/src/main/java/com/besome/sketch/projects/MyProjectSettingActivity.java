@@ -16,6 +16,8 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 
@@ -26,13 +28,16 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import a.a.a.GB;
 import a.a.a.MA;
 import a.a.a.VB;
+import a.a.a.bB;
 import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.nB;
@@ -71,6 +76,10 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
     private boolean isIconAdaptive;
     private Bitmap icon;
     private String sc_id;
+    
+    // Variáveis para gerenciamento de temas
+    private ThemePresetAdapter themePresetAdapter;
+    private List<ThemeManager.ThemePreset> themePresets;
 
     public static void saveBitmapTo(Bitmap bitmap, String path) {
         try (FileOutputStream fileOutputStream = new FileOutputStream(path)) {
@@ -102,6 +111,12 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
         binding.imgThemeColorHelp.setOnClickListener(this);
         binding.okButton.setOnClickListener(this);
         binding.cancel.setOnClickListener(this);
+        
+        // Inicializar temas
+        initializeThemePresets();
+        
+        // Configurar listener para gerar tema aleatório
+        binding.btnGenerateRandomTheme.setOnClickListener(v -> generateRandomTheme());
 
         binding.tilAppName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_application_name));
         binding.tilPackageName.setHint(Helper.getResString(R.string.myprojects_settings_hint_enter_package_name));
@@ -546,5 +561,43 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             h();
         }
 
+    }
+    
+    // Métodos para gerenciamento de temas
+    private void initializeThemePresets() {
+        themePresets = Arrays.asList(ThemeManager.getThemePresets());
+        
+        // Configurar RecyclerView para temas
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.layoutThemePresets.setLayoutManager(layoutManager);
+        
+        themePresetAdapter = new ThemePresetAdapter(this, themePresets, new ThemePresetAdapter.OnThemePresetClickListener() {
+            @Override
+            public void onThemePresetClick(ThemeManager.ThemePreset theme, int position) {
+                applyTheme(theme);
+            }
+        });
+        
+        binding.layoutThemePresets.setAdapter(themePresetAdapter);
+    }
+    
+    private void generateRandomTheme() {
+        ThemeManager.ThemePreset randomTheme = ThemeManager.generateRandomTheme();
+        applyTheme(randomTheme);
+        
+        // Mostrar feedback visual
+        bB.a(this, String.format(Helper.getResString(R.string.theme_random_generated), randomTheme.name), 0).show();
+    }
+    
+    private void applyTheme(ThemeManager.ThemePreset theme) {
+        // Aplicar as cores do tema
+        projectThemeColors[0] = theme.colorAccent;
+        projectThemeColors[1] = theme.colorPrimary;
+        projectThemeColors[2] = theme.colorPrimaryDark;
+        projectThemeColors[3] = theme.colorControlHighlight;
+        projectThemeColors[4] = theme.colorControlNormal;
+        
+        // Sincronizar as cores na interface
+        syncThemeColors();
     }
 }
