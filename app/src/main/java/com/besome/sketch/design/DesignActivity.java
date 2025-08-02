@@ -1185,8 +1185,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
                 activity.installBuiltApk();
                 isBuildFinished = true;
+                canceled = false; 
             } catch (MissingFileException e) {
                 isBuildFinished = true;
+                canceled = false; 
                 activity.runOnUiThread(() -> {
                     boolean isMissingDirectory = e.isMissingDirectory();
 
@@ -1213,15 +1215,18 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 });
             } catch (zy zy) {
                 isBuildFinished = true;
+                canceled = false; 
                 activity.indicateCompileErrorOccurred(zy.getMessage());
             } catch (Throwable tr) {
                 isBuildFinished = true;
+                canceled = false; 
                 LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
                 activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));
             } finally {
                 activity.runOnUiThread(this::onPostExecute);
             }
         }
+
 
         @Override
         public void onProgress(String progress, int step) {
@@ -1242,7 +1247,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             });
         }
 
-        private void onPostExecute() {
+        private void onPostExecute() { 
             DesignActivity activity = getActivity();
             if (activity == null) return;
 
@@ -1255,6 +1260,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     updateRunButton(false);
                     activity.updateBottomMenu();
                     activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    activity.currentBuildTask = null; // Destroy notification after a built
                 }
             });
         }
@@ -1274,9 +1280,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             }
         }
 
-        private void maybeShowNotification() {
+
+                private void maybeShowNotification() {
             DesignActivity activity = getActivity();
             if (activity == null) return;
+            if (canceled || isBuildFinished) {
+                return;
+            }
 
             if (!isShowingNotification) {
                 createNotificationChannelIfNeeded();
@@ -1297,6 +1307,9 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private void updateNotification(String progress) {
             DesignActivity activity = getActivity();
             if (activity == null) return;
+            if (canceled || isBuildFinished) {
+                return;
+            }
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_mtrl_code)
@@ -1307,6 +1320,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     .addAction(R.drawable.ic_cancel_white_96dp, "Cancel Build", getCancelPendingIntent());
 
             notificationManager.notify(notificationId, builder.build());
+            isShowingNotification = true;
         }
 
         private PendingIntent getCancelPendingIntent() {
@@ -1328,6 +1342,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             channel.setDescription(description);
             notificationManager.createNotificationChannel(channel);
         }
+
 
         private void updateRunButton(boolean isRunning) {
             var context = getActivity();

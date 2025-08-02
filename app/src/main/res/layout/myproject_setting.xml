@@ -264,30 +264,30 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <com.google.android.material.button.MaterialButtonGroup
+    android:id="@+id/button_group"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="?attr/colorSurface"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="12dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/cancel"
+        style="@style/Widget.Material3Expressive.Button.TonalButton"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?attr/colorSurface"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="12dp">
+        android:layout_weight="1"
+        android:text="@string/common_word_cancel" />
 
-        <Button
-            android:id="@+id/cancel"
-            style="@style/Widget.Material3Expressive.Button.TonalButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:text="@string/common_word_cancel" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ok_button"
+        style="@style/Widget.Material3Expressive.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/common_word_create" />
 
-        <Button
-            android:id="@+id/ok_button"
-            style="@style/Widget.Material3Expressive.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/common_word_create" />
-    </LinearLayout>
+</com.google.android.material.button.MaterialButtonGroup>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
