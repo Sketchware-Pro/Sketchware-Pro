@@ -38,7 +38,7 @@ public class BuiltInLibraries {
     public static String ANDROIDX_COORDINATORLAYOUT = "coordinatorlayout-1.1.0";
     public static String ANDROIDX_CORE = "core-1.7.0";
     public static String ANDROIDX_CORE_COMMON = "core-common-2.1.0";
-    public static String ANDROIDX_CORE_KTX = "core-ktx-1.5.0-beta01";
+    public static String ANDROIDX_CORE_KTX = "core-ktx-1.16.0";
     public static String ANDROIDX_CORE_RUNTIME = "core-runtime-2.1.0";
     public static String ANDROIDX_CURSORADAPTER = "cursoradapter-1.0.0";
     public static String ANDROIDX_CUSTOMVIEW = "customview-1.1.0";
@@ -112,7 +112,7 @@ public class BuiltInLibraries {
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
     public static String JETBRAINS_ANNOTATIONS = "annotations-13.0";
     public static String KOTLIN_STDLIB = "kotlin-stdlib-2.2.0";
-    public static String KOTLIN_STDLIB_JDK7 = "kotlin-stdlib-jdk7-1.4.30-M1-release-152";
+    public static String KOTLIN_STDLIB_JDK7 = "kotlin-stdlib-jdk7-1.6.21";
     public static String LOTTIE = "lottie-3.4.0";
     public static String MATERIAL = "material-1.14.0-alpha03";
     public static String OKHTTP = "okhttp-3.9.1";
@@ -143,6 +143,18 @@ public class BuiltInLibraries {
     public static String UMP_USER_MESSAGING_PLATFORM = "user-messaging-platform-2.0.0";
     public static String WAVE_SIDE_BAR = "wave-side-bar";
     public static String YOUTUBE_PLAYER = "android-youtube-player-10.0.5";
+
+    //NEW
+    public static String ANDROIDX_ACTIVITY_ACTIVITY = "activity-1.10.1";
+    public static String ANDROIDX_ANNOTATION_ANNOTATION = "annotation-1.5.0";
+    public static String ANDROIDX_ANNOTATION_ANNOTATION_JVM = "annotation-jvm-1.9.1";
+    public static String ANDROIDX_CORE_CORE_VIEWTREE = "core-viewtree-1.0.0";
+    public static String ANDROIDX_LIFECYCLE_LIFECYCLE_COMMON = "lifecycle-common-2.6.1";
+    public static String ANDROIDX_LIFECYCLE_LIFECYCLE_RUNTIME = "lifecycle-runtime-2.6.1";
+    public static String ANDROIDX_LIFECYCLE_LIFECYCLE_VIEWMODEL = "lifecycle-viewmodel-2.6.1";
+    public static String ANDROIDX_LIFECYCLE_LIFECYCLE_VIEWMODEL_SAVEDSTATE = "lifecycle-viewmodel-savedstate-2.6.1";
+    public static String ANDROIDX_SAVEDSTATE_SAVEDSTATE = "savedstate-1.2.1";
+    public static String GUAVA = "guava-33.1.0-android";
 
     public static final BuiltInLibrary[] KNOWN_BUILT_IN_LIBRARIES = {
             new BuiltInLibrary(ANDROIDX_ACTIVITY, List.of(ANDROIDX_ANNOTATION, ANDROIDX_COLLECTION, ANDROIDX_CORE, ANDROIDX_LIFECYCLE_RUNTIME,
@@ -302,7 +314,7 @@ public class BuiltInLibraries {
             new BuiltInLibrary(MATERIAL, List.of(ANDROIDX_ANNOTATION, ANDROIDX_ANNOTATION_EXPERIMENTAL, ANDROIDX_APPCOMPAT, ANDROIDX_CARDVIEW,
                     ANDROIDX_CONSTRAINTLAYOUT, ANDROIDX_COORDINATORLAYOUT, ANDROIDX_CORE, ANDROIDX_DRAWERLAYOUT, ANDROIDX_DYNAMIC_ANIMATION,
                     ANDROIDX_FRAGMENT, ANDROIDX_LIFECYCLE_RUNTIME, ANDROIDX_RECYCLERVIEW, ANDROIDX_TRANSITION, ANDROIDX_VECTORDRAWABLE,
-                    ANDROIDX_VIEWPAGER2), "com.google.android.material"),
+                    ANDROIDX_VIEWPAGER2, KOTLIN_STDLIB, ANDROIDX_COLLECTION_JVM, ANDROIDX_GRAPHICS_SHAPES_ANDROID), "com.google.android.material"),
 
             new BuiltInLibrary(OKHTTP, List.of(OKIO)),
             new BuiltInLibrary(OKIO),
@@ -358,6 +370,23 @@ public class BuiltInLibraries {
             new BuiltInLibrary(WAVE_SIDE_BAR, List.of(), "com.sayuti.lib"),
             new BuiltInLibrary(YOUTUBE_PLAYER, List.of(ANDROIDX_APPCOMPAT, ANDROIDX_RECYCLERVIEW, KOTLIN_STDLIB_JDK7),
                     "com.pierfrancescosoffritti.androidyoutubeplayer"),
+
+            new BuiltInLibrary(GUAVA),
+
+            //Overwrite old versions.
+            new BuiltInLibrary(ANDROIDX_ACTIVITY_ACTIVITY, List.of(ANDROIDX_ANNOTATION_ANNOTATION_JVM, ANDROIDX_CORE_CORE_VIEWTREE, ANDROIDX_LIFECYCLE_LIFECYCLE_COMMON,
+                    ANDROIDX_LIFECYCLE_LIFECYCLE_RUNTIME, ANDROIDX_LIFECYCLE_LIFECYCLE_VIEWMODEL,ANDROIDX_LIFECYCLE_LIFECYCLE_VIEWMODEL_SAVEDSTATE,
+                    ANDROIDX_SAVEDSTATE_SAVEDSTATE, GUAVA),
+                    "androidx.activity"),
+
+            new BuiltInLibrary(ANDROIDX_ANNOTATION_ANNOTATION),
+            new BuiltInLibrary(ANDROIDX_ANNOTATION_ANNOTATION_JVM),
+            new BuiltInLibrary(ANDROIDX_CORE_CORE_VIEWTREE),
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_LIFECYCLE_COMMON),
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_LIFECYCLE_RUNTIME),
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_LIFECYCLE_VIEWMODEL),
+            new BuiltInLibrary(ANDROIDX_LIFECYCLE_LIFECYCLE_VIEWMODEL_SAVEDSTATE),
+            new BuiltInLibrary(ANDROIDX_SAVEDSTATE_SAVEDSTATE),
     };
 
     public static File getLibraryPath(String libraryName) {
