@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import pro.sketchware.R;
+
 public class SB extends MB {
 
     private final int min;
@@ -20,7 +22,7 @@ public class SB extends MB {
         if (s.toString().trim().length() < min) {
             b.setErrorEnabled(true);
             if (e == 0) {
-                b.setError(xB.b().a(a, 2131625433, min));
+                b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, min));
             } else {
                 b.setError(xB.b().a(a, e, min));
             }
@@ -30,7 +32,7 @@ public class SB extends MB {
             if (s.toString().trim().length() > max) {
                 b.setErrorEnabled(true);
                 if (e == 0) {
-                    b.setError(xB.b().a(a, 2131625432, max));
+                    b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, max));
                 } else {
                     b.setError(xB.b().a(a, e, max));
                 }
