@@ -1,50 +1,47 @@
 package a.a.a;
 
-import android.content.Context;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.firebase.FirebaseActivity;
 
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryFirebaseStorageUrlSettingsBinding;
+
 public class mv extends LinearLayout implements nv {
 
-    public EditText a;
+    private final ManageLibraryFirebaseStorageUrlSettingsBinding binding;
 
     public mv(FirebaseActivity firebaseActivity) {
         super(firebaseActivity);
-        a(firebaseActivity);
+        binding = ManageLibraryFirebaseStorageUrlSettingsBinding.inflate(firebaseActivity.getLayoutInflater(), this, true);
+
+        gB.b(this, 600, 200, null);
+        binding.tvTitleStorageUrl.setText(xB.b().a(firebaseActivity, R.string.design_library_firebase_title_storage_bucket_url));
     }
 
     @Override
     public void a() {
-        mB.a(getContext(), a);
-    }
-
-    private void a(Context context) {
-        wB.a(context, this, 2131427544);
-        gB.b(this, 600, 200, null);
-        ((TextView) findViewById(2131232241)).setText(xB.b().a(context, 2131625239));
-        a = findViewById(2131231003);
+        mB.a(getContext(), binding.edInputStorageUrl);
     }
 
     @Override
-    public void a(ProjectLibraryBean var1) {
-        String var2 = a.getText().toString().trim();
+    public void a(ProjectLibraryBean libraryBean) {
+        String var2 = binding.edInputStorageUrl.getText().toString().trim();
         if (!var2.isEmpty()) {
-            var1.reserved3 = var2;
+            libraryBean.reserved3 = var2;
             if (var2.startsWith("gs://")) {
-                var1.reserved3 = var2.replaceFirst("gs://", "");
+                libraryBean.reserved3 = var2.replaceFirst("gs://", "");
             }
 
             if (var2.endsWith("/")) {
-                var1.reserved3 = var2.substring(0, var2.lastIndexOf("/"));
+                libraryBean.reserved3 = var2.substring(0, var2.lastIndexOf("/"));
             }
         }
 
     }
 
+    //todo: Update docs url
     @Override
     public String getDocUrl() {
         return "https://docs.sketchware.io/docs/firebase-storage.html";
@@ -58,7 +55,7 @@ public class mv extends LinearLayout implements nv {
     public void setData(ProjectLibraryBean libraryBean) {
         String reserved3 = libraryBean.reserved3;
         if (reserved3 != null && reserved3.length() > 0) {
-            a.setText(libraryBean.reserved3);
+            binding.edInputStorageUrl.setText(libraryBean.reserved3);
         }
     }
 }
