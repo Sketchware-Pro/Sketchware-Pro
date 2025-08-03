@@ -26,8 +26,8 @@ public class BuiltInLibraries {
     public static String ANDROIDX_ACTIVITY = "activity-1.3.0";
     public static String ANDROIDX_ANNOTATION = "annotation-1.3.0";
     public static String ANDROIDX_ANNOTATION_EXPERIMENTAL = "annotation-experimental-1.2.0";
-    public static String ANDROIDX_APPCOMPAT = "appcompat-1.4.0";
-    public static String ANDROIDX_APPCOMPAT_RESOURCES = "appcompat-resources-1.4.0";
+    public static String ANDROIDX_APPCOMPAT = "appcompat-1.6.1";
+    public static String ANDROIDX_APPCOMPAT_RESOURCES = "appcompat-resources-1.6.1";
     public static String ANDROIDX_ASYNCLAYOUTINFLATER = "asynclayoutinflater-1.0.0";
     public static String ANDROIDX_BROWSER = "browser-1.5.0";
     public static String ANDROIDX_CARDVIEW = "cardview-1.0.0";
