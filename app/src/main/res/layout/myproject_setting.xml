@@ -6,7 +6,9 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:liftOnScroll="false"
+        app:liftOnScrollColor="@android:color/transparent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
@@ -173,7 +175,6 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -194,8 +195,8 @@
                         android:layout_marginBottom="12dp">
 
                         <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/ic_mtrl_palette"
                             app:tint="?attr/colorPrimary" />
@@ -210,7 +211,7 @@
 
                         <Button
                             android:id="@+id/btn_generate_random_theme"
-                            style="@style/Widget.Material3.Button.TextButton"
+                            style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/theme_generate_random"

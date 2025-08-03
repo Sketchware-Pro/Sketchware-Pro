@@ -1594,8 +1594,8 @@ But, components should be added manually for working correctly."</string>
     <string name="theme_section_title">Theme Presets </string>
     <string name="theme_section_description">Choose from predefined themes or generate a random one</string>
     <string name="theme_generate_random">Generate Random</string>
-    <string name="theme_random_generated">Random theme generated: %s</string>
-    
+    <string name="theme_random_generated">Random theme generated</string>
+
     <string name="myprojects_sign_apk_dialog_complete_create_certificate">A new certificate has been created</string>
     <string name="myprojects_sign_apk_error_failed_create_new_certificate">Failed to create a new certificate</string>
     <string name="myprojects_sign_apk_hint_enter_new_password">Enter new password</string>

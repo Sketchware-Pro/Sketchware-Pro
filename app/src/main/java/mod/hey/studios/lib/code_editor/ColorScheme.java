@@ -46,19 +46,19 @@ public class ColorScheme {
         ArrayList<ColorScheme> list = new ArrayList<>();
 
         list.add(new ColorScheme(Pattern.compile("\\b(String|int|abstract|assert|boolean|break|byte|case|catch|char|class|const|continue|default|do|double|else|enum|extends|final|finally|float|for|goto|if|implements|import|instanceof|interface|long|native|new|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|void|volatile|while|true|false|null)\\b"),
-                theme.PRIMARY_COLOR));
+                theme.primaryColor()));
 
         list.add(new ColorScheme(Pattern.compile("\\b([A-Z]\\w+)\\b"),
-                theme.CLASS_COLOR));
+                theme.classColor()));
 
         list.add(new ColorScheme(Pattern.compile("[(),;<>{}*]*"),
-                theme.SYMBOLS_COLOR));
+                theme.symbolsColor()));
 
         list.add(new ColorScheme(Pattern.compile("\"(.*?)\"|'(.*?)'|\\b([0-9]+)\\b"),
-                theme.STRINGS_NUMBERS_COLOR));
+                theme.stringsNumbersColor()));
 
         list.add(new ColorScheme(Pattern.compile("/\\*(?:.|[\\n\\r])*?\\*/|//.*"),
-                theme.COMMENTS_COLOR));
+                theme.commentsColor()));
 
         return list;
     }
@@ -67,16 +67,16 @@ public class ColorScheme {
         ArrayList<ColorScheme> list = new ArrayList<>();
 
         list.add(new ColorScheme(Pattern.compile("<(/)?[A-Za-z_.]+(/)?(>)?"),
-                theme.CLASS_COLOR));
+                theme.classColor()));
 
         list.add(new ColorScheme(Pattern.compile("[(),;<>{}*]*"),
-                theme.SYMBOLS_COLOR));
+                theme.symbolsColor()));
 
         list.add(new ColorScheme(Pattern.compile("\"(.*?)\"|'(.*?)'"),
-                theme.STRINGS_NUMBERS_COLOR));
+                theme.stringsNumbersColor()));
 
         list.add(new ColorScheme(Pattern.compile("<!--(?:.|[\\n\\r])*?-->"),
-                theme.COMMENTS_COLOR));
+                theme.commentsColor()));
 
         return list;
     }
