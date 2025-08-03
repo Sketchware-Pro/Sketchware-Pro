@@ -1,50 +1,44 @@
 package a.a.a;
 
 import android.content.Context;
-import android.text.InputFilter;
-import android.text.Spanned;
+
 import com.google.android.material.textfield.TextInputLayout;
 
 public class SB extends MB {
-    public int f;
-    public int g;
 
-    public SB(Context var1, TextInputLayout var2, int var3, int var4) {
-        super(var1, var2);
-        this.f = var3;
-        this.g = var4;
-        super.c = var2.getEditText();
-        super.c.setFilters(new InputFilter[]{this});
-        super.c.addTextChangedListener(this);
+    private final int min;
+    private final int max;
+
+    public SB(Context context, TextInputLayout textInputLayout, int min, int max) {
+        super(context, textInputLayout);
+        this.min = min;
+        this.max = max;
     }
 
-    public CharSequence filter(CharSequence var1, int var2, int var3, Spanned var4, int var5, int var6) {
-        return null;
-    }
-
-    public void onTextChanged(CharSequence var1, int var2, int var3, int var4) {
-        if (var1.toString().trim().length() < this.f) {
-            super.b.setErrorEnabled(true);
-            if (super.e == 0) {
-                super.b.setError(xB.b().a(super.a, 2131625433, new Object[]{this.f}));
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if (s.toString().trim().length() < min) {
+            b.setErrorEnabled(true);
+            if (e == 0) {
+                b.setError(xB.b().a(a, 2131625433, min));
             } else {
-                super.b.setError(xB.b().a(super.a, super.e, new Object[]{this.f}));
+                b.setError(xB.b().a(a, e, min));
             }
 
-            super.d = false;
+            d = false;
         } else {
-            if (var1.toString().trim().length() > this.g) {
-                super.b.setErrorEnabled(true);
-                if (super.e == 0) {
-                    super.b.setError(xB.b().a(super.a, 2131625432, new Object[]{this.g}));
+            if (s.toString().trim().length() > max) {
+                b.setErrorEnabled(true);
+                if (e == 0) {
+                    b.setError(xB.b().a(a, 2131625432, max));
                 } else {
-                    super.b.setError(xB.b().a(super.a, super.e, new Object[]{this.g}));
+                    b.setError(xB.b().a(a, e, max));
                 }
 
-                super.d = false;
+                d = false;
             } else {
-                super.b.setErrorEnabled(false);
-                super.d = true;
+                b.setErrorEnabled(false);
+                d = true;
             }
 
         }
