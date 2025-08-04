@@ -1,48 +1,40 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package a.a.a;
 
 import android.content.Context;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.besome.sketch.beans.ProjectLibraryBean;
 import com.besome.sketch.editor.manage.library.firebase.FirebaseActivity;
 
-public class lv extends LinearLayout implements nv {
-    public EditText a;
-    public EditText b;
-    public EditText c;
+import pro.sketchware.R;
+import pro.sketchware.databinding.ManageLibraryFirebaseProjectSettingsBinding;
 
-    public lv(FirebaseActivity var1) {
-        super(var1);
-        a(var1);
+public class lv extends LinearLayout implements nv {
+
+    private final ManageLibraryFirebaseProjectSettingsBinding binding;
+
+    public lv(FirebaseActivity activity) {
+        super(activity);
+        binding = ManageLibraryFirebaseProjectSettingsBinding.inflate(activity.getLayoutInflater(), this, true);
+        initialize(activity);
     }
 
     @Override
     public void a() {
     }
 
-    private void a(Context var1) {
-        wB.a(var1, this, 2131427542);
+    private void initialize(Context context) {
         gB.b(this, 600, 200, null);
-        ((TextView) findViewById(2131232232)).setText(xB.b().a(var1, 2131625238));
-        ((TextView) findViewById(2131232199)).setText(xB.b().a(var1, 2131625232));
-        ((TextView) findViewById(2131232197)).setText(xB.b().a(var1, 2131625231));
-        a = findViewById(2131230999);
-        b = findViewById(2131230992);
-        c = findViewById(2131230991);
+        binding.tvTitleProjectId.setText(xB.b().a(context, R.string.design_library_firebase_title_project_id));
+        binding.tvTitleAppId.setText(xB.b().a(context, R.string.design_library_firebase_title_app_id));
+        binding.tvTitleApiKey.setText(xB.b().a(context, R.string.design_library_firebase_title_api_key));
     }
 
     @Override
     public void a(ProjectLibraryBean libraryBean) {
-        libraryBean.data = a.getText().toString().trim();
-        libraryBean.reserved1 = b.getText().toString().trim();
-        libraryBean.reserved2 = c.getText().toString().trim();
+        libraryBean.data = binding.edInputProjectId.getText().toString().trim();
+        libraryBean.reserved1 = binding.edInputAppId.getText().toString().trim();
+        libraryBean.reserved2 = binding.edInputApiKey.getText().toString().trim();
     }
 
     public void b() {
@@ -56,16 +48,16 @@ public class lv extends LinearLayout implements nv {
 
     @Override
     public boolean isValid() {
-        if (a.getText().toString().trim().length() == 0) {
-            a.requestFocus();
+        if (binding.edInputProjectId.getText().toString().trim().length() == 0) {
+            binding.edInputProjectId.requestFocus();
             b();
             return false;
-        } else if (b.getText().toString().trim().length() == 0) {
-            b.requestFocus();
+        } else if (binding.edInputAppId.getText().toString().trim().length() == 0) {
+            binding.edInputAppId.requestFocus();
             b();
             return false;
-        } else if (c.getText().toString().trim().length() == 0) {
-            c.requestFocus();
+        } else if (binding.edInputApiKey.getText().toString().trim().length() == 0) {
+            binding.edInputApiKey.requestFocus();
             b();
             return false;
         } else {
@@ -76,18 +68,17 @@ public class lv extends LinearLayout implements nv {
     public void setData(ProjectLibraryBean libraryBean) {
         String data = libraryBean.data;
         if (data != null && data.length() > 0) {
-            a.setText(data);
+            binding.edInputProjectId.setText(data);
         }
 
         String reserved1 = libraryBean.reserved1;
         if (reserved1 != null && reserved1.length() > 0) {
-            b.setText(reserved1);
+            binding.edInputAppId.setText(reserved1);
         }
 
         String reserved2 = libraryBean.reserved2;
         if (reserved2 != null && reserved2.length() > 0) {
-            c.setText(reserved2);
+            binding.edInputApiKey.setText(reserved2);
         }
-
     }
 }
