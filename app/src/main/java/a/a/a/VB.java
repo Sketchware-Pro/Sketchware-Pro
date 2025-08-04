@@ -6,6 +6,8 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.regex.Pattern;
 
+import pro.sketchware.R;
+
 public class VB extends MB {
 
     private final Pattern PATTERN = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_]*");
@@ -18,22 +20,22 @@ public class VB extends MB {
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (s.toString().trim().length() == 0) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 2131625433, 1));
+            b.setError(xB.b().a(a, R.string.invalid_value_min_lenth, 1));
             d = false;
         } else if (s.toString().trim().length() > 20) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 2131625432, 20));
+            b.setError(xB.b().a(a, R.string.invalid_value_max_lenth, 20));
             d = false;
         } else if (!Character.isLetter(s.charAt(0))) {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 2131625497));
+            b.setError(xB.b().a(a, R.string.logic_editor_message_variable_name_must_start_letter));
             d = false;
         } else if (PATTERN.matcher(s.toString()).matches()) {
             b.setErrorEnabled(false);
             d = true;
         } else {
             b.setErrorEnabled(true);
-            b.setError(xB.b().a(a, 2131625436));
+            b.setError(xB.b().a(a, R.string.invalid_value_rule_3));
             d = false;
         }
     }
