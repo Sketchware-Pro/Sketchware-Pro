@@ -125,15 +125,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fr_logic_list, container, false);
         initialize(view);
-        setHasOptionsMenu(true);
         if (savedInstanceState != null) {
             sc_id = savedInstanceState.getString("sc_id");
         } else {
