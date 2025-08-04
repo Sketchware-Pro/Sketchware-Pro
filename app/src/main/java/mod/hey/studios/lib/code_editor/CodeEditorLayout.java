@@ -322,10 +322,10 @@ public class CodeEditorLayout extends LinearLayout implements TextWatcher {
     }
 
     private void initEditorColors(ColorTheme colorTheme) {
-        scrollView.setBackgroundColor(colorTheme.BACKGROUND_COLOR);
-        editText.setTextColor(colorTheme.TEXT_COLOR);
-        editText.setLineHighlightColor(colorTheme.LINE_HIGHLIGHT_COLOR);
-        editText.setLineNumbersColor(colorTheme.LINE_NUMBERS_COLOR);
+        scrollView.setBackgroundColor(colorTheme.backgroundColor());
+        editText.setTextColor(colorTheme.textColor());
+        editText.setLineHighlightColor(colorTheme.lineHighlightColor());
+        editText.setLineNumbersColor(colorTheme.lineNumbersColor());
     }
 
     private int getCurrentCursorLine() {
