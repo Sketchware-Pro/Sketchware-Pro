@@ -79,7 +79,7 @@ public class Material3LibraryManager {
         if (!isMaterial3Enabled()) {
             return R.style.ThemeOverlay_SketchwarePro_ViewEditor;
         }
-        boolean isDark = isDarkVariant();
+        boolean isDark = canUseNightVariantColors();
 
         if (isDynamicColorsEnabled()) {
             return isDark
@@ -90,11 +90,6 @@ public class Material3LibraryManager {
                     ? R.style.ThemeOverlay_SketchwarePro_ViewEditor_Material3_NON_DYNAMIC_Dark
                     : R.style.ThemeOverlay_SketchwarePro_ViewEditor_Material3_NON_DYNAMIC_Light;
         }
-    }
-
-    public boolean isDarkVariant() {
-        return getTheme().equals("Dark") ||
-                (!getTheme().equals("Light") && ThemeUtils.isDarkThemeEnabled(context));
     }
 
     public boolean canUseNightVariantColors() {
