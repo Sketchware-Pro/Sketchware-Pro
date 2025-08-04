@@ -375,12 +375,15 @@ public class Jx {
 
             if (buildConfig.g) {
                 if (ProjectDataDayDream.isEnableWindowInsetsHandling(sc_id, projectFileBean.fileName)) {
-                    sb.append("ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id._coordinator), (v, insets) -> {").append(EOL);
+                    if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
+                        sb.append("ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id._coordinator), (v, insets) -> {").append(EOL);
+                    } else {
+                        sb.append("ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id._main), (v, insets) -> {").append(EOL);
+                    }
                     sb.append("Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout() | WindowInsetsCompat.Type.ime());").append(EOL);
                     sb.append("v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);").append(EOL);
                     sb.append("return insets;").append(EOL);
                     sb.append("});").append(EOL);
-
                 }
             }
 

@@ -118,6 +118,8 @@ public class Ox {
                     if (!root.getAttributes().containsKey("app:layout_behavior")) {
                         nx.addAttribute("app", "layout_behavior", "@string/appbar_scrolling_view_behavior");
                     }
+                } else {
+                    nx.addAttribute("android", "id", "@+id/_main");
                 }
                 if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)
                         || projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB)) {
