@@ -38,7 +38,7 @@ public class lv extends LinearLayout implements nv {
     }
 
     public void b() {
-        bB.a(getContext(), xB.b().a(getContext(), 2131625224), 1).show();
+        bB.a(getContext(), xB.b().a(getContext(), R.string.design_library_firebase_message_not_input_text), 1).show();
     }
 
     @Override
