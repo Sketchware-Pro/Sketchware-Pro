@@ -111,7 +111,7 @@ public class BuiltInLibraries {
     public static String GUAVA_LISTENABLEFUTURE = "listenablefuture-1.0.0";
     public static String HTTP_LEGACY_ANDROID_28 = "http-legacy-android-28";
     public static String JETBRAINS_ANNOTATIONS = "annotations-13.0";
-    public static String KOTLIN_STDLIB = "kotlin-stdlib-2.2.0";
+    public static String KOTLIN_STDLIB = "kotlin-stdlib-2.0.0";
     public static String KOTLIN_STDLIB_JDK7 = "kotlin-stdlib-jdk7-1.6.21";
     public static String LOTTIE = "lottie-3.4.0";
     public static String MATERIAL = "material-1.14.0-alpha03";
