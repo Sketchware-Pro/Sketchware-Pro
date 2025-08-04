@@ -738,7 +738,7 @@ public class ColorPickerDialog extends PopupWindow {
 
             holder.binding.container.setOnClickListener(view -> {
                 if (materialColorAttr != null) {
-                    materialColorAttr.selectedMaterialColorAttr(attribute.name(), material3LibraryManager.isDarkVariant() ? darkColor : lightColor);
+                    materialColorAttr.selectedMaterialColorAttr(attribute.name(), material3LibraryManager.canUseNightVariantColors() ? darkColor : lightColor);
                 }
                 dismiss();
             });

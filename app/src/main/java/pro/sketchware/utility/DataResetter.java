@@ -1,4 +1,4 @@
-package a.a.a;
+package pro.sketchware.utility;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,12 +6,18 @@ import android.content.Intent;
 
 import java.util.HashMap;
 
+import a.a.a.DB;
+import a.a.a.bB;
+import a.a.a.lC;
+import a.a.a.oB;
+import a.a.a.wq;
+import a.a.a.yB;
 import mod.hey.studios.util.Helper;
 import mod.jbk.build.BuiltInLibraries;
 import pro.sketchware.R;
 import pro.sketchware.activities.main.activities.MainActivity;
 
-public class sB {
+public class DataResetter {
     public static void a(Context context, boolean resetOnlySettings) {
         new DB(context, "P2").a();
         new DB(context, "P3").a();
