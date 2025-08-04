@@ -1,8 +1,8 @@
 package pro.sketchware.activities.main.activities;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
@@ -31,9 +31,9 @@ import com.besome.sketch.lib.base.BasePermissionAppCompatActivity;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.FirebaseApp;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,7 +42,6 @@ import java.util.Objects;
 import a.a.a.DB;
 import a.a.a.GB;
 import a.a.a.oB;
-import a.a.a.sB;
 import a.a.a.wq;
 import a.a.a.xB;
 import extensions.anbui.sketchware.configs.Configs;
@@ -58,6 +57,7 @@ import pro.sketchware.activities.main.fragments.projects.ProjectsFragment;
 import pro.sketchware.activities.main.fragments.projects_store.ProjectsStoreFragment;
 import pro.sketchware.databinding.MainBinding;
 import pro.sketchware.lib.base.BottomSheetDialogView;
+import pro.sketchware.utility.DataResetter;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.UI;
@@ -122,7 +122,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 105:
-                    sB.a(this, data.getBooleanExtra("onlyConfig", true));
+                    DataResetter.a(this, data.getBooleanExtra("onlyConfig", true));
                     break;
 
                 case 111:
@@ -504,13 +504,13 @@ public class MainActivity extends BasePermissionAppCompatActivity {
             SketchwareUtil.toast(Helper.getResString(R.string.message_strings_xml_loaded));
         }
     }
-    
+
     private static boolean isFirebaseInitialized(Context context) {
-    	try {
-	    	return FirebaseApp.getApps(context) != null && !FirebaseApp.getApps(context).isEmpty();
-    	} catch (Exception e) {
-	    	return false;
-    	}
+        try {
+            return FirebaseApp.getApps(context) != null && !FirebaseApp.getApps(context).isEmpty();
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }
