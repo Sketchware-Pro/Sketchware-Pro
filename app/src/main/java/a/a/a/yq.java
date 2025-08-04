@@ -982,7 +982,7 @@ public class yq {
                     BuildSettings.SETTING_GENERIC_VALUE_FALSE).equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
             XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
             stylesFileBuilder.addStyle("AppTheme", "Theme.MaterialComponents.Light.NoActionBar" + (useNewMaterialComponentsTheme ? "" : ".Bridge"));
-            // todo: add `colorOnPrimary` to custom theme colors.
+            // todo: add 'colorOnPrimary' to custom theme colors.
             stylesFileBuilder.addItemToStyle("AppTheme", "colorOnPrimary", "@android:color/white");
             stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimary", "@color/colorPrimary");
             stylesFileBuilder.addItemToStyle("AppTheme", "colorPrimaryDark", "@color/colorPrimaryDark");
