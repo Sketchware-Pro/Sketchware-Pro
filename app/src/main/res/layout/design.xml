@@ -55,114 +55,119 @@
                     android:layout_height="match_parent" />
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-            <com.google.android.material.divider.MaterialDivider
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:dividerColor="?attr/colorSurfaceContainerHighest" />
+<!--            <com.google.android.material.divider.MaterialDivider-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:dividerColor="?attr/colorSurfaceContainerHighest" />-->
 
             <LinearLayout
-                android:id="@+id/progress_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorSurfaceContainer"
+                android:background="@drawable/design_shape_bottom_bar"
                 android:orientation="vertical"
-                android:visibility="gone"
-                tools:visibility="visible">
+                android:layout_marginTop="1dp">
 
-                <TextView
-                    android:id="@+id/progress_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="12dp"
-                    android:singleLine="true"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    tools:text="Building your awesome app..." />
-
-                <com.google.android.material.progressindicator.LinearProgressIndicator
-                    android:id="@+id/progress"
+                <LinearLayout
+                    android:id="@+id/progress_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:indeterminate="false"
-                    android:progress="0"
-                    app:trackStopIndicatorSize="0dp"
-                    app:showAnimationBehavior="inward"/>
-            </LinearLayout>
+                    android:orientation="vertical"
+                    android:paddingHorizontal="8dp"
+                    android:paddingBottom="2dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
 
-            <LinearLayout
-                android:id="@+id/bottom_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/colorSurfaceContainer"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingVertical="4dp">
+                    <TextView
+                        android:id="@+id/progress_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="12dp"
+                        android:singleLine="true"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        tools:text="Building your awesome app..." />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/file_name_container"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
-                    app:contentPadding="8dp">
-
-                    <LinearLayout
+                    <com.google.android.material.progressindicator.LinearProgressIndicator
+                        android:id="@+id/progress"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:paddingVertical="2dp">
+                        android:layout_height="wrap_content"
+                        android:indeterminate="false"
+                        android:progress="0"
+                        app:showAnimationBehavior="inward" />
+                </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/img_orientation"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="8dp"
-                            android:src="@drawable/ic_mtrl_screen"
-                            app:tint="?attr/colorControlNormal" />
-
-                        <TextView
-                            android:id="@+id/file_name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="8dp"
-                            android:layout_weight="1"
-                            android:singleLine="true"
-                            android:text="main"
-                            android:textAppearance="?attr/textAppearanceBodyMedium" />
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginEnd="4dp"
-                            android:src="@drawable/ic_arrow_drop_down_24px"
-                            app:tint="?attr/colorControlNormal" />
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <Button
-                    android:id="@+id/btn_run"
-                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/bottom_bar"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:paddingHorizontal="8dp"
-                    app:icon="@drawable/ic_mtrl_run" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="4dp">
 
-                <Button
-                    android:id="@+id/btn_options"
-                    style="@style/Widget.Material3Expressive.Button.IconButton.Tonal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:paddingHorizontal="8dp"
-                    app:icon="@drawable/ic_tune_24" />
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/file_name_container"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        app:cardBackgroundColor="?attr/colorSurfaceContainerLowest"
+                        app:contentPadding="8dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:paddingVertical="2dp">
+
+                            <ImageView
+                                android:id="@+id/img_orientation"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginEnd="8dp"
+                                android:src="@drawable/ic_mtrl_screen"
+                                app:tint="?attr/colorControlNormal" />
+
+                            <TextView
+                                android:id="@+id/file_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
+                                android:layout_weight="1"
+                                android:singleLine="true"
+                                android:text="main"
+                                android:textAppearance="?attr/textAppearanceBodyMedium" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginEnd="4dp"
+                                android:src="@drawable/keyboard_arrow_down_24px"
+                                app:tint="?attr/colorControlNormal" />
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <Button
+                        android:id="@+id/btn_run"
+                        style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/ic_mtrl_run" />
+
+                    <Button
+                        android:id="@+id/btn_options"
+                        style="@style/Widget.Material3Expressive.Button.IconButton.Tonal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="8dp"
+                        app:icon="@drawable/ic_tune_24" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
 
         <com.besome.sketch.editor.view.ViewProperty
             android:id="@+id/view_property"

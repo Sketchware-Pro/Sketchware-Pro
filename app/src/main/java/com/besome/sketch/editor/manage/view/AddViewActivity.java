@@ -20,6 +20,7 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import a.a.a.YB;
 import a.a.a.bB;
@@ -27,6 +28,8 @@ import a.a.a.rq;
 import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.xB;
+import extensions.anbui.sketchware.configs.Configs;
+import extensions.anbui.sketchware.project.ProjectDataDayDream;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageScreenActivityAddTempBinding;
@@ -165,6 +168,23 @@ public class AddViewActivity extends BaseAppCompatActivity {
         featuresAdapter.notifyDataSetChanged();
     }
 
+    private void initializeDayDreamFeature() {
+        if (projectFileBean != null) {
+            binding.edgetoedge.setChecked(ProjectDataDayDream.isEnableEdgeToEdge(Configs.currentProjectID, projectFileBean.fileName));
+            binding.windowinsetshandling.setChecked(ProjectDataDayDream.isEnableWindowInsetsHandling(Configs.currentProjectID, projectFileBean.fileName));
+        }
+    }
+
+    private void saveDayDreamData() {
+        if (projectFileBean != null) {
+            ProjectDataDayDream.setEnableEdgeToEdge(Configs.currentProjectID, projectFileBean.fileName, binding.edgetoedge.isChecked());
+            ProjectDataDayDream.setEnableWindowInsetsHandling(Configs.currentProjectID, projectFileBean.fileName, binding.windowinsetshandling.isChecked());
+        } else {
+            ProjectDataDayDream.setEnableEdgeToEdge(Configs.currentProjectID, Objects.requireNonNull(binding.edName.getText()).toString(), binding.edgetoedge.isChecked());
+            ProjectDataDayDream.setEnableWindowInsetsHandling(Configs.currentProjectID, Objects.requireNonNull(binding.edName.getText()).toString(), binding.windowinsetshandling.isChecked());
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -238,6 +258,9 @@ public class AddViewActivity extends BaseAppCompatActivity {
                 intent.putExtra("project_file", projectFileBean);
                 setResult(RESULT_OK, intent);
                 bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete, new Object[0]), bB.TOAST_NORMAL).show();
+
+                saveDayDreamData();
+
                 finish();
             } else if (isValid(nameValidator)) {
                 String var4 = Helper.getText(binding.edName) + getSuffix(binding.viewTypeSelector);
@@ -249,6 +272,9 @@ public class AddViewActivity extends BaseAppCompatActivity {
                 }
                 setResult(RESULT_OK, intent);
                 bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
+
+                saveDayDreamData();
+
                 finish();
             }
 
@@ -269,6 +295,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
             if (projectFileBean.fileName.endsWith("_fragment")) {
                 binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
                 binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
+                binding.lnDaydreamfeaturesforactivity.setVisibility(View.GONE);
             }
             binding.screenOrientationSelector.check(binding.screenOrientationSelector.getChildAt(projectFileBean.orientation).getId());
             binding.keyboardSettingsSelector.check(binding.keyboardSettingsSelector.getChildAt(projectFileBean.keyboardSetting).getId());
@@ -284,6 +311,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
             nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, screenNames);
         }
         initializeItems();
+        initializeDayDreamFeature();
     }
 
     private String getSuffix(MaterialButtonToggleGroup toggleGroup) {
@@ -400,9 +428,11 @@ public class AddViewActivity extends BaseAppCompatActivity {
         if (vis) {
             resetTranslationX(binding.viewOrientationSelectorLayout);
             resetTranslationX(binding.viewKeyboardSettingsSelectorLayout);
+            resetTranslationX(binding.lnDaydreamfeaturesforactivity);
         } else {
             slideOutHorizontally(binding.viewOrientationSelectorLayout, "left");
             slideOutHorizontally(binding.viewKeyboardSettingsSelectorLayout, "left");
+            slideOutHorizontally(binding.lnDaydreamfeaturesforactivity, "left");
         }
     }
 }
