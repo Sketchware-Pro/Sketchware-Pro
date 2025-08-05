@@ -9,19 +9,31 @@ import extensions.anbui.daydream.file.FileUtils;
 public class ProjectDataLibrary {
 
     public static boolean isEnabledFirebase(String projectID) {
-        return Objects.equals(getFirebaseSettingsData(projectID).get("useYn"), "Y");
+        Map<String, Object> map = getFirebaseSettingsData(projectID);
+        if (map == null) return false;
+
+        return Objects.equals(map.get("useYn"), "Y");
     }
 
     public static boolean isEnabledAppCompat(String projectID) {
-        return Objects.equals(getAppCompatSettingsData(projectID).get("useYn"), "Y");
+        Map<String, Object> map = getAppCompatSettingsData(projectID);
+        if (map == null) return false;
+
+        return Objects.equals(map.get("useYn"), "Y");
     }
 
     public static boolean isEnabledAdmob(String projectID) {
-        return Objects.equals(getAdmobSettingsData(projectID).get("useYn"), "Y");
+        Map<String, Object> map = getAdmobSettingsData(projectID);
+        if (map == null) return false;
+
+        return Objects.equals(map.get("useYn"), "Y");
     }
 
     public static boolean isEnabledGoogleMap(String projectID) {
-        return Objects.equals(getGoogleMapSettingsData(projectID).get("useYn"), "Y");
+        Map<String, Object> map = getGoogleMapSettingsData(projectID);
+        if (map == null) return false;
+
+        return Objects.equals(map.get("useYn"), "Y");
     }
 
     public static Map<String, Object> getFirebaseSettingsData(String projectID) {

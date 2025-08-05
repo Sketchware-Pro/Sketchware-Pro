@@ -177,6 +177,15 @@
                     android:lines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <CheckBox
+                android:id="@+id/cb_add_suffix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add _fragment suffix."
+                android:checked="true"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
