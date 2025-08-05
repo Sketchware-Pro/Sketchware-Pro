@@ -13,20 +13,28 @@ import extensions.anbui.sketchware.file.FileUtils;
 
 public class ProjectDataDayDream {
 
-    public static boolean isEnableEdgeToEdge(String projectID, String activity) {
-        return getDataBoolean(projectID, "EdgeToEdge", activity);
+    public static boolean isEnableEdgeToEdge(String projectID, String activityName) {
+        return getDataBoolean(projectID, activityName, "isEnableEdgeToEdge");
     }
 
-    public static void setEnableEdgeToEdge(String projectID, String activity, boolean isEnable) {
-        setDataBoolean(projectID, "EdgeToEdge", activity, isEnable);
+    public static void setEnableEdgeToEdge(String projectID, String activityName, boolean isEnable) {
+        setDataBoolean(projectID, activityName, "isEnableEdgeToEdge", isEnable);
     }
 
-    public static boolean isEnableWindowInsetsHandling(String projectID, String activity) {
-        return getDataBoolean(projectID, "WindowInsetsHandling", activity);
+    public static boolean isEnableWindowInsetsHandling(String projectID, String activityName) {
+        return getDataBoolean(projectID, activityName, "isEnableWindowInsetsHandling");
     }
 
-    public static void setEnableWindowInsetsHandling(String projectID, String activity, boolean isEnable) {
-        setDataBoolean(projectID, "WindowInsetsHandling", activity, isEnable);
+    public static void setEnableWindowInsetsHandling(String projectID, String activityName, boolean isEnable) {
+        setDataBoolean(projectID, activityName, "isEnableWindowInsetsHandling", isEnable);
+    }
+
+    public static boolean isDisableAutomaticPermissionRequests(String projectID, String activityName) {
+        return getDataBoolean(projectID, ProjectUtils.convertJavaNameToXMLName(activityName), "isDisableAutomaticPermissionRequests");
+    }
+
+    public static void setDisableAutomaticPermissionRequests(String projectID, String activityName, boolean isEnable) {
+        setDataBoolean(projectID, activityName, "isDisableAutomaticPermissionRequests", isEnable);
     }
 
     public static boolean getDataBoolean(String projectID, String toplevelkey, String key) {

@@ -172,6 +172,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
         if (projectFileBean != null) {
             binding.edgetoedge.setChecked(ProjectDataDayDream.isEnableEdgeToEdge(Configs.currentProjectID, projectFileBean.fileName));
             binding.windowinsetshandling.setChecked(ProjectDataDayDream.isEnableWindowInsetsHandling(Configs.currentProjectID, projectFileBean.fileName));
+            binding.disableautomaticpermissionrequests.setChecked(ProjectDataDayDream.isDisableAutomaticPermissionRequests(Configs.currentProjectID, projectFileBean.fileName));
         }
     }
 
@@ -179,9 +180,11 @@ public class AddViewActivity extends BaseAppCompatActivity {
         if (projectFileBean != null) {
             ProjectDataDayDream.setEnableEdgeToEdge(Configs.currentProjectID, projectFileBean.fileName, binding.edgetoedge.isChecked());
             ProjectDataDayDream.setEnableWindowInsetsHandling(Configs.currentProjectID, projectFileBean.fileName, binding.windowinsetshandling.isChecked());
+            ProjectDataDayDream.setDisableAutomaticPermissionRequests(Configs.currentProjectID, projectFileBean.fileName, binding.disableautomaticpermissionrequests.isChecked());
         } else {
             ProjectDataDayDream.setEnableEdgeToEdge(Configs.currentProjectID, Objects.requireNonNull(binding.edName.getText()).toString(), binding.edgetoedge.isChecked());
             ProjectDataDayDream.setEnableWindowInsetsHandling(Configs.currentProjectID, Objects.requireNonNull(binding.edName.getText()).toString(), binding.windowinsetshandling.isChecked());
+            ProjectDataDayDream.setDisableAutomaticPermissionRequests(Configs.currentProjectID, Objects.requireNonNull(binding.edName.getText()).toString(), binding.disableautomaticpermissionrequests.isChecked());
         }
     }
 

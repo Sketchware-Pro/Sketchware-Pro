@@ -406,6 +406,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
+                        android:layout_marginTop="16dp"
                         android:text="Edge overflow (Requires AppCompat library enabled)"
                         android:textColor="?colorPrimary" />
 
@@ -482,6 +483,54 @@
 
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/windowinsetshandling"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Permission requests"
+                        android:textColor="?colorPrimary" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ln_disableautomaticpermissionrequests"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/disableautomaticpermissionrequests"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Disable Automatic Permission Requests"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Good if you want to control permission requests more appropriately. Permissions will no longer be automatically checked and requested when opening this Activity. You can still call it using &quot;_requestPermissions();&quot; where you want. Not all Activities have it so if you use &quot;_requestPermissions();&quot; and it breaks, remove it and create your own code to call permissions."
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/disableautomaticpermissionrequests"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintBottom_toBottomOf="parent"

@@ -1,5 +1,7 @@
 package pro.sketchware.control.logic;
 
+import android.util.Log;
+
 import com.besome.sketch.beans.BlockBean;
 
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.Map.Entry;
 import a.a.a.Jx;
 import a.a.a.jC;
 import a.a.a.jq;
+import extensions.anbui.sketchware.project.ProjectDataDayDream;
 
 public class PermissionManager {
 
@@ -105,6 +108,13 @@ public class PermissionManager {
             removePermission(true, checkPerm, addPerm);
 
             if (!checkPerm.isEmpty() && !addPerm.isEmpty()) {
+
+                if (ProjectDataDayDream.isDisableAutomaticPermissionRequests(sc_id, javaName)) {
+                    permissionCode.append("initializeLogic();" + Jx.EOL);
+                    permissionCode.append("}" + Jx.EOL);
+                    permissionCode.append(Jx.EOL + "private void _requestPermissions() {" + Jx.EOL);
+                }
+
                 permissionCode.append("if (");
 
                 for (int i = 0; i < checkPerm.size(); i++) {
@@ -119,10 +129,15 @@ public class PermissionManager {
                     permissionCode.append(addPerm.get(i));
                 }
 
-                permissionCode.append("}, 1000);" + Jx.EOL +
-                        "} else {" + Jx.EOL +
-                        "initializeLogic();" + Jx.EOL +
-                        "}" + Jx.EOL);
+                permissionCode.append("}, 1000);");
+
+                if (ProjectDataDayDream.isDisableAutomaticPermissionRequests(sc_id, javaName)) {
+                    permissionCode.append(Jx.EOL + "}" + Jx.EOL);
+                } else {
+                    permissionCode.append("} else {" + Jx.EOL +
+                            "initializeLogic();" + Jx.EOL +
+                            "}" + Jx.EOL);
+                }
             }
 
         } else {
@@ -153,6 +168,13 @@ public class PermissionManager {
             removePermission(false, checkPerm, addPerm);
 
             if (!checkPerm.isEmpty() && !addPerm.isEmpty()) {
+
+                if (ProjectDataDayDream.isDisableAutomaticPermissionRequests(sc_id, javaName)) {
+                    permissionCode.append("initializeLogic();" + Jx.EOL);
+                    permissionCode.append("}" + Jx.EOL);
+                    permissionCode.append(Jx.EOL + "private void _requestPermissions() {" + Jx.EOL);
+                }
+
                 permissionCode.append("if (Build.VERSION.SDK_INT >= 23) {" + Jx.EOL + "if (");
 
                 for (int i = 0; i < checkPerm.size(); i++) {
@@ -167,13 +189,19 @@ public class PermissionManager {
                     permissionCode.append(addPerm.get(i));
                 }
 
-                permissionCode.append("}, 1000);" + Jx.EOL +
-                        "} else {" + Jx.EOL +
-                        "initializeLogic();" + Jx.EOL +
-                        "}" + Jx.EOL +
-                        "} else {" + Jx.EOL +
-                        "initializeLogic();" + Jx.EOL +
-                        "}" + Jx.EOL);
+                permissionCode.append("}, 1000);" + Jx.EOL);
+
+                if (ProjectDataDayDream.isDisableAutomaticPermissionRequests(sc_id, javaName)) {
+                    permissionCode.append(Jx.EOL + "}" + Jx.EOL);
+                } else {
+                    permissionCode.append("} else {" + Jx.EOL +
+                            "initializeLogic();" + Jx.EOL +
+                            "}" + Jx.EOL +
+                            "} else {" + Jx.EOL +
+                            "initializeLogic();" + Jx.EOL);
+                }
+
+                permissionCode.append(Jx.EOL + "}" + Jx.EOL);
             }
         }
 
