@@ -1,4 +1,4 @@
-package extensions.anbui.sketchware.project;
+package extensions.anbui.daydream.project;
 
 import android.util.Log;
 
@@ -10,9 +10,9 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import extensions.anbui.sketchware.configs.Configs;
+import extensions.anbui.daydream.configs.Configs;
 
-public class ProjectDecryptor {
+public class ProjectDataDecryptor {
 
     //Since it is encrypted, it needs to be decrypted before reading.
     public static String decryptProjectFile(String path) {

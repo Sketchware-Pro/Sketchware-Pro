@@ -29,7 +29,7 @@ import a.a.a.lC;
 import a.a.a.mB;
 import a.a.a.wq;
 import a.a.a.yB;
-import extensions.anbui.sketchware.configs.Configs;
+import extensions.anbui.daydream.configs.Configs;
 import mod.hey.studios.project.ProjectSettingsDialog;
 import mod.hey.studios.project.backup.BackupRestoreManager;
 import mod.hey.studios.util.Helper;

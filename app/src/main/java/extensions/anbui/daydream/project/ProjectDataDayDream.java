@@ -1,4 +1,4 @@
-package extensions.anbui.sketchware.project;
+package extensions.anbui.daydream.project;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -8,8 +8,8 @@ import com.google.gson.JsonParser;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-import extensions.anbui.sketchware.configs.Configs;
-import extensions.anbui.sketchware.file.FileUtils;
+import extensions.anbui.daydream.configs.Configs;
+import extensions.anbui.daydream.file.FileUtils;
 
 public class ProjectDataDayDream {
 

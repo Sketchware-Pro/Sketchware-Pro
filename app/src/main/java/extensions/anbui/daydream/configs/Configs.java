@@ -1,4 +1,4 @@
-package extensions.anbui.sketchware.configs;
+package extensions.anbui.daydream.configs;
 
 import android.app.Activity;
 

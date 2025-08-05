@@ -1,10 +1,11 @@
-package extensions.anbui.sketchware.file;
+package extensions.anbui.daydream.file;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -67,11 +68,17 @@ public class FileUtils {
     }
 
     public static void writeTextFile(String path, String content) {
+        File file = new File(path);
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            if (!parentDir.mkdirs()) return;
+        }
 
         try (FileWriter writer = new FileWriter(path)) {
             writer.write(content);
+            Log.i("FileUtils", "writeTextFile: " + path);
         } catch (IOException e) {
-            System.err.println("Error writing file: " + e.getMessage());
+            Log.e("FileUtils", "writeTextFile: " + e.getMessage());
         }
     }
 }

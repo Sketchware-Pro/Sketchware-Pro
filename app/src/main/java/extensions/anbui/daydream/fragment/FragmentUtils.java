@@ -1,10 +1,10 @@
-package extensions.anbui.sketchware.fragment;
+package extensions.anbui.daydream.fragment;
 
 import android.util.Log;
 
-import extensions.anbui.sketchware.java.JavaFileUtils;
-import extensions.anbui.sketchware.configs.Configs;
-import extensions.anbui.sketchware.project.GetProjectInfo;
+import extensions.anbui.daydream.java.JavaFileUtils;
+import extensions.anbui.daydream.configs.Configs;
+import extensions.anbui.daydream.project.GetProjectInfo;
 
 public class FragmentUtils {
 

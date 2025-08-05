@@ -1,4 +1,4 @@
-package extensions.anbui.sketchware.project;
+package extensions.anbui.daydream.project;
 
 public class ProjectUtils {
     public static String convertJavaNameToXMLName(String javaName) {

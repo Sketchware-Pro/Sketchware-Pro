@@ -18,8 +18,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import extensions.anbui.sketchware.configs.Configs;
-import extensions.anbui.sketchware.project.ProjectDataDayDream;
+import extensions.anbui.daydream.configs.Configs;
+import extensions.anbui.daydream.project.ProjectDataLibrary;
+import extensions.anbui.daydream.project.ProjectDataDayDream;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
 import mod.agus.jcoderz.handle.component.ConstVarComponent;
@@ -361,7 +362,7 @@ public class Jx {
             sb.append("protected void onCreate(Bundle _savedInstanceState) {").append(EOL);
             sb.append("super.onCreate(_savedInstanceState);").append(EOL);
 
-            if (buildConfig.g) {
+            if (ProjectDataLibrary.isEnabledAppCompat(sc_id)) {
                 if (ProjectDataDayDream.isEnableEdgeToEdge(sc_id, projectFileBean.fileName))
                     sb.append("EdgeToEdge.enable(this);").append(EOL);
             }
@@ -373,7 +374,7 @@ public class Jx {
                 sb.append("setContentView(R.layout.").append(projectFileBean.fileName).append(");").append(EOL);
             }
 
-            if (buildConfig.g) {
+            if (ProjectDataLibrary.isEnabledAppCompat(sc_id)) {
                 if (ProjectDataDayDream.isEnableWindowInsetsHandling(sc_id, projectFileBean.fileName)) {
                     if (projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_TOOLBAR)) {
                         sb.append("ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id._coordinator), (v, insets) -> {").append(EOL);
@@ -764,7 +765,11 @@ public class Jx {
         if (buildConfig.g) {
             addImport("androidx.appcompat.app.AppCompatActivity");
             addImport("androidx.annotation.*");
+        } else {
+            addImport("android.app.Activity");
+        }
 
+        if (ProjectDataLibrary.isEnabledAppCompat(Configs.currentProjectID)) {
             if (ProjectDataDayDream.isEnableEdgeToEdge(Configs.currentProjectID, projectFileBean.fileName))
                 addImport("androidx.activity.EdgeToEdge");
 
@@ -773,9 +778,8 @@ public class Jx {
                 addImport("androidx.core.view.ViewCompat");
                 addImport("androidx.core.view.WindowInsetsCompat");
             }
-        } else {
-            addImport("android.app.Activity");
         }
+
         if (isViewBindingEnabled) {
             fields.add("private " + ViewBindingBuilder.generateFileNameForLayout(projectFileBean.fileName) + " binding;");
         }
