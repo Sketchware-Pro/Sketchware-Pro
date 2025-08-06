@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/tooltip_background_light" />
+    <corners android:radius="@dimen/tooltip_corner_radius" />
+</shape>

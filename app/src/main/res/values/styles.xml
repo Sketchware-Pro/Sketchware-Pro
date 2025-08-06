@@ -1,0 +1,116 @@
+<resources>
+    <!-- PLEASE, If you're going to create or modify a style -->
+    <!-- please MOVE (not copy) the style to a new styles file (styles_new.xml) -->
+    <!-- THIS FILE IS READ-ONLY (except deleting a style) -->
+
+    <style name="AppTheme.Check.White" parent="@style/Base.Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="colorControlActivated">@color/color_chk_white_highlight</item>
+        <item name="colorControlNormal">@color/color_chk_white_normal</item>
+    </style>
+
+    <style name="CardViewStyle.White" parent="@style/CardView">
+        <item name="cardBackgroundColor">@color/cardview_light_background</item>
+    </style>
+
+    <style name="CustomCollapsingCollapsed">
+        <item name="android:textColor">@color/tool_bar_text_color</item>
+    </style>
+
+    <style name="CustomCollapsingExpanded">
+        <item name="android:textSize">0sp</item>
+        <item name="android:textColor">@color/transparent</item>
+    </style>
+
+    <style name="CustomProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:maxHeight">5dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/custom_progress_bar_horizontal</item>
+        <item name="android:minHeight">3dp</item>
+    </style>
+
+    <style name="NumberPickerText" parent="@style/Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/scolor_blue_01</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColorHighlight">#ffeeeeee</item>
+    </style>
+
+    <style name="SoundProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:maxHeight">5dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/sound_progress_bar_horizontal</item>
+        <item name="android:minHeight">3dp</item>
+    </style>
+
+    <style name="Theme.AppCompat.Light.NoActionBar.Translucent" parent="Theme.SketchwarePro">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="progress" parent="">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+    </style>
+
+    <style name="AppTheme.Et" parent="Theme.SketchwarePro">
+        <item name="colorControlHighlight">@android:color/transparent</item>
+        <item name="colorControlNormal">@android:color/transparent</item>
+        <item name="colorPrimary">#ff212121</item>
+        <item name="colorPrimaryDark">#ff000000</item>
+    </style>
+
+    <!--  bottom sheet style  -->
+    <style name="BottomSheetCardStyle" parent="">
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="ChipStyle.SWPro.Chip.Rounded" parent="">
+        <item name="chipCornerRadius">5dp</item>
+        <item name="checkedIconEnabled">false</item>
+        <item name="chipStrokeWidth">0.5dp</item>
+        <item name="chipIconVisible">true</item>
+        <item name="textEndPadding">0dp</item>
+        <item name="checkedIconVisible">false</item>
+        <item name="textStartPadding">1dp</item>
+        <item name="chipIconTint">?attr/colorOutline</item>
+        <item name="chipStrokeColor">?attr/colorOutline</item>
+        <item name="chipBackgroundColor">@color/bg_chip_states</item>
+        <item name="chipStartPadding">2dp</item>
+        <item name="chipMinTouchTargetSize">32dp</item>
+    </style>
+
+    <style name="Widget.App.Button.OutlinedButton.IconOnly" parent="Widget.Material3Expressive.Button.OutlinedButton">
+        <item name="iconPadding">0dp</item>
+        <item name="cornerRadius">5dp</item>
+        <item name="iconSize">30dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:minWidth">48dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+
+    <style name="RoundedCornersDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="dialogCornerRadius">16dp</item>
+        <item name="android:background">?attr/colorSurfaceContainer</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Material3.Corner.Medium</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+</resources>

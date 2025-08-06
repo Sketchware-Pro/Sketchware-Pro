@@ -1,0 +1,6 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_chevron_left_grey600_48dp" android:state_enabled="false" />
+    <item android:drawable="@drawable/ic_chevron_left_grey600_48dp" android:state_pressed="true" />
+    <item android:drawable="@drawable/ic_chevron_left_grey600_48dp" android:state_focused="true" android:state_pressed="false" />
+    <item android:drawable="@drawable/ic_chevron_left_white_48dp" />
+</selector>

@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_screen_edit"
+        android:icon="@drawable/ic_mtrl_edit"
+        android:orderInCategory="1"
+        android:title="edit"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_screen_delete"
+        android:icon="@drawable/ic_mtrl_delete"
+        android:orderInCategory="1"
+        android:title="@string/common_word_delete"
+        app:showAsAction="always" />
+</menu>

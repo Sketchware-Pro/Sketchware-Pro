@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+ * Copyright (C) 2012 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+-->
+<xsd:schema targetNamespace="http://schemas.android.com/sdk/android/stats/1"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:ast="http://schemas.android.com/sdk/android/stats/1" elementFormDefault="qualified"
+    attributeFormDefault="unqualified" version="1">
+
+    <!--
+        A simple list of platforms provided by the SDK Manager and some
+        statistics on them, namely the market share percentage for that
+        platform.
+        This can be used by the SDK Manager or the ADT New Project Wizard
+        to give users an idea of the relative install base of platforms.
+
+        Scope, Caveat & Limitation:
+        The "share percentage" corresponds to the Platform Versions table
+        from the SDK Dashboard as seen at
+        http://developer.android.com/resources/dashboard/platform-versions.html
+        However the data is not automatically generated and there is NO
+        freshness implied.  The values may or may not be up-to-date and it is
+        most likely they will only get refreshed when there's a significant
+        change that affects the usage of the SDK tools.
+
+        =>  The data is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES
+        OR CONDITIONS OF ANY KIND, either express or implied.
+    -->
+
+    <xsd:element name="sdk-stats" type="ast:platformsListType" />
+
+    <xsd:complexType name="platformsListType">
+        <xsd:annotation>
+            <xsd:documentation>
+                A simple list of platform stats.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:choice minOccurs="0" maxOccurs="unbounded">
+            <xsd:element name="platform" type="ast:platformType" />
+        </xsd:choice>
+    </xsd:complexType>
+
+
+    <!-- The definition of stats for a platform. -->
+
+    <xsd:complexType name="platformType">
+        <xsd:annotation>
+            <xsd:documentation>Stats information for a given Android platform.
+                The api-level acts as a key, and it is epxected there should only
+                be one platform listed with the same API-level.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:all>
+            <!-- The Android API Level for the platform. An int > 0. -->
+            <xsd:element name="api-level" type="xsd:positiveInteger" />
+
+            <!-- The official codename for this platform, for example "Cupcake". -->
+            <xsd:element name="codename" type="xsd:normalizedString" />
+
+            <!-- The official version name of this platform, for example "Android 1.5". -->
+            <xsd:element name="version" type="xsd:normalizedString" />
+
+            <!-- An approximate share percentage of this platform. -->
+            <xsd:element name="share" type="ast:percent" />
+        </xsd:all>
+    </xsd:complexType>
+
+
+    <!-- A decimal percentage, between 0.0 and 100.0% -->
+
+    <xsd:simpleType name="percent" id="percent">
+        <xsd:annotation>
+            <xsd:documentation>A decimal percentage, between 0.0 and 100.0%.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:decimal">
+            <xsd:minInclusive value="0" />
+            <xsd:maxInclusive value="100" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_import_events"
+        android:title="Import events"
+        android:orderInCategory="100"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/action_export_events"
+        android:title="Export events"
+        android:orderInCategory="101"
+        android:showAsAction="never" />
+</menu>

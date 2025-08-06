@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fadingEdgeLength="144dp"
+        android:requiresFadingEdge="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="?attr/actionBarSize">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/icon"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
+                    android:adjustViewBounds="true"
+                    android:background="?attr/colorSurfaceContainer"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearance="?attr/shapeAppearanceCornerLarge"
+                    app:srcCompat="@drawable/default_icon"
+                    app:strokeColor="?attr/colorSurfaceContainerHighest"
+                    app:strokeWidth="0.5dp" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:ellipsize="end"
+                    android:includeFontPadding="false"
+                    android:maxLines="3"
+                    android:textAppearance="?attr/textAppearanceTitleLargeEmphasized"
+                    android:textSize="27sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/icon"
+                    app:layout_constraintTop_toTopOf="@+id/icon"
+                    app:lineHeight="33dp"
+                    tools:text="Sketchware Pro - a new place to create android apps!" />
+
+                <TextView
+                    android:id="@+id/author"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="24dp"
+                    android:textAppearance="?attr/textAppearanceBodyMediumEmphasized"
+                    android:textColor="?attr/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/icon"
+                    app:layout_constraintTop_toBottomOf="@+id/name"
+                    tools:text="Modders Team" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_what_is_new"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:cardCornerRadius="18dp"
+                app:contentPadding="14dp">
+
+                <TextView
+                    android:id="@+id/what_is_new"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textIsSelectable="true"
+                    tools:text="Meet Sketchware Pro v7.0.0!\nFinally, the long-awaited version has been released!" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/text_screenshots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="16dp"
+                android:text="Screenshots"
+                android:textAppearance="?attr/textAppearanceTitleLargeEmphasized" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/screenshots"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:paddingHorizontal="24dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="3"
+                tools:listitem="@layout/view_store_project_screenshot" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/chips_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="24dp"
+                    android:theme="@style/ThemeOverlay.SketchwarePro.Chip.ProjectPreview" />
+
+            </HorizontalScrollView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="24dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="16dp"
+                android:text="About this project"
+                android:textAppearance="?attr/textAppearanceTitleLargeEmphasized" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp">
+
+                <ImageView
+                    android:id="@+id/icon_downloads"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_mtrl_download" />
+
+                <TextView
+                    android:id="@+id/downloads"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    app:layout_constraintBottom_toBottomOf="@id/icon_downloads"
+                    app:layout_constraintStart_toEndOf="@id/icon_downloads"
+                    app:layout_constraintTop_toTopOf="@id/icon_downloads"
+                    tools:text="Downloads: 140920" />
+
+                <ImageView
+                    android:id="@+id/icon_timestamp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="3dp"
+                    android:padding="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/icon_downloads"
+                    app:srcCompat="@drawable/ic_mtrl_time" />
+
+                <TextView
+                    android:id="@+id/timestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    app:layout_constraintBottom_toBottomOf="@id/icon_timestamp"
+                    app:layout_constraintStart_toEndOf="@id/icon_timestamp"
+                    app:layout_constraintTop_toTopOf="@id/icon_timestamp"
+                    tools:text="Uploaded: 26.09.2024" />
+
+                <ImageView
+                    android:id="@+id/icon_filesize"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="3dp"
+                    android:padding="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/icon_timestamp"
+                    app:srcCompat="@drawable/ic_mtrl_file" />
+
+                <TextView
+                    android:id="@+id/filesize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    app:layout_constraintBottom_toBottomOf="@id/icon_filesize"
+                    app:layout_constraintStart_toEndOf="@id/icon_filesize"
+                    app:layout_constraintTop_toTopOf="@id/icon_filesize"
+                    tools:text="Size: 112 MB" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_description"
+                style="?attr/materialCardViewFilledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="88dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                app:cardCornerRadius="18dp"
+                app:contentPadding="14dp">
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textIsSelectable="true"
+                    tools:text="Sketchware Pro's sources in Java. Now anyone can contribute to Sketchware Pro." />
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <View
+        android:id="@+id/top_scrim"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/shadow_gradient_top_bottom" />
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btn_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="2dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/project_store_preview_toolbar_icon_bg"
+            android:elevation="3dp"
+            android:scaleType="centerInside"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+            app:srcCompat="?attr/homeAsUpIndicator" />
+
+        <LinearLayout
+            android:id="@+id/toolbar_title_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:textAppearance="?attr/textAppearanceBodyLargeEmphasized"
+                android:textSize="18sp"
+                tools:text="Sketchware Pro - a new place to create android apps!" />
+
+            <TextView
+                android:id="@+id/toolbar_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="Modders Team" />
+        </LinearLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btn_open_in"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="2dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/project_store_preview_toolbar_icon_bg"
+            android:elevation="3dp"
+            android:scaleType="centerInside"
+            app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+            app:srcCompat="@drawable/ic_mtrl_link" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/buttons_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_comments"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:text="Comments"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@id/btn_download"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_download"
+            style="@style/Widget.Material3Expressive.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Download"
+            app:layout_constraintEnd_toStartOf="@id/btn_like"
+            app:layout_constraintStart_toEndOf="@id/btn_comments"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_like"
+            style="@style/Widget.Material3Expressive.Button.IconButton.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="?attr/colorSurface"
+            android:visibility="gone"
+            app:icon="@drawable/heart_empty_white_outline_96"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_download"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

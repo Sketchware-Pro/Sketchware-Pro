@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurfaceContainer"
+    android:orientation="horizontal">
+
+    <com.besome.sketch.lib.ui.CustomScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/actions_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="8dp"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp" />
+
+            <com.besome.sketch.lib.ui.CustomHorizontalScrollView
+                android:id="@+id/scroll_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/block_builder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp" />
+            </com.besome.sketch.lib.ui.CustomHorizontalScrollView>
+        </LinearLayout>
+    </com.besome.sketch.lib.ui.CustomScrollView>
+
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/search_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingHorizontal="10dp"
+            android:text="@string/search_header" />
+
+        <com.besome.sketch.editor.logic.PaletteSelector
+            android:id="@+id/palette_selector"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </LinearLayout>
+
+</LinearLayout>

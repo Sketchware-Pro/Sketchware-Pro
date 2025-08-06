@@ -1,0 +1,3 @@
+<resources>
+  <bool name="is_light_theme">true</bool>
+</resources>

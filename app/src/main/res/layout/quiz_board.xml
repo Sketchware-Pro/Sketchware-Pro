@@ -1,0 +1,176 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="While you wait..."
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_remaing_time"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/circle_bg"
+            android:gravity="center"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="11sp"
+            tools:text="15" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/qa_q" />
+
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textSize="14sp"
+            tools:text="Can we use Ketchup on Pizza?" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/timeout_bar"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/layout_answer_ox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:gravity="center"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/img_answer_o"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_toStartOf="@+id/separator"
+                android:background="@drawable/bg_outline"
+                android:src="@drawable/answer_o" />
+
+            <View
+                android:id="@+id/separator"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"
+                android:layout_marginHorizontal="25dp" />
+
+            <ImageView
+                android:id="@+id/img_answer_x"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_toEndOf="@+id/separator"
+                android:background="@drawable/bg_outline"
+                android:src="@drawable/answer_x" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_answer_ab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="10dp"
+            tools:layout_below="@id/layout_answer_ox">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/view_answer_a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="?colorSurfaceContainerHigh"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_answer_a"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        tools:text="Yes" />
+
+                    <ImageView
+                        android:id="@+id/img_answer_a"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ok_48"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/view_answer_b"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view_answer_a"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="?colorSurfaceContainerHigh"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_answer_b"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        tools:text="No" />
+
+                    <ImageView
+                        android:id="@+id/img_answer_b"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ok_48"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

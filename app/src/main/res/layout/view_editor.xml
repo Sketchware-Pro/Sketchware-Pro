@@ -1,0 +1,107 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/layout_palette"
+        android:layout_width="120dp"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/palette_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.besome.sketch.editor.view.palette.PaletteWidget
+                android:id="@+id/palette_widget"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.besome.sketch.editor.view.palette.PaletteFavorite
+                android:id="@+id/palette_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/shape"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@+id/layout_palette"
+        android:background="?attr/colorSurface"
+        android:forceDarkAllowed="false"
+        tools:ignore="UnusedAttribute" />
+
+
+    <com.besome.sketch.editor.view.ViewDummy
+        android:id="@+id/dummy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <com.besome.sketch.editor.view.ViewProperties
+        android:id="@+id/properties"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:translationY="150dp" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/delete_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:animateLayoutChanges="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:translationY="106dp"
+        app:cardBackgroundColor="?colorSurfaceContainerHighest"
+        app:cardCornerRadius="18dp"
+        app:strokeWidth="1dp"
+        tools:translationY="-20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/icon_delete"
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:contentDescription="@null"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_mtrl_delete"
+                app:tint="?colorOnSurfaceVariant" />
+
+            <TextView
+                android:id="@+id/text_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Drag here to delete"
+                android:textColor="?colorOnSurfaceVariant" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>

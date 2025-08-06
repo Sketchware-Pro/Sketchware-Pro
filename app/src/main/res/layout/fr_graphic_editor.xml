@@ -1,0 +1,9 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.besome.sketch.editor.view.ViewEditor
+        android:id="@+id/view_editor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <integer name="enter_fade_duration_time">100</integer>
+    <integer name="exit_fade_duration_time">500</integer>
+    <integer name="flip_time_full">300</integer>
+    <integer name="flip_time_half">150</integer>
+    <integer name="google_play_services_version">12451000</integer>
+</resources>

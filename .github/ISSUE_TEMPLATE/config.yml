@@ -1,0 +1,6 @@
+# Disable blank issue creation
+blank_issues_enabled: false
+contact_links:
+  - name: Discord
+    url: http://discord.gg/kq39yhT4rX
+    about: If you have any question, you can join and ask questions.

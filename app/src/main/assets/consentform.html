@@ -1,0 +1,930 @@
+<html>
+<head>
+    <meta name='viewport' content='initial-scale=1, viewport-fit=cover'/>
+    <meta charset="utf-8"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+    <style type="text/css">
+    /* Overwrite the default to keep the scrollbar always visible */
+    ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, .4);
+      border-radius: 3px;
+    }
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: transparent;
+      max-height: 100%;
+      overflow: hidden;
+      font-size: 16px;
+      -webkit-touch-callout: none;
+      /* iOS Safari */
+      -webkit-user-select: none;
+      /* Safari */
+      user-select: none;
+      /* Chrome */
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      -webkit-text-size-adjust: none;
+      -moz-text-size-adjust: none;
+      -ms-text-size-adjust: none;
+      text-size-adjust: none;
+    }
+    body {
+      color: rgba(0, 0, 0, .86);
+      font-family: 'Roboto', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .no-display {
+      display: none !important;
+    }
+    .hidden {
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+    .flex-center {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+    }
+    .btn {
+      cursor: pointer;
+    }
+    #overlay {
+      position: fixed;
+      top: 30px;
+      bottom: 30px;
+      left: 20px;
+      right: 20px;
+      min-width: 300px;
+      -webkit-transition: all 0.3s ease-in-out;
+      -o-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+    }
+    #overlay.center {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+      top: 0;
+      bottom: 0;
+    }
+    #overlay::before {
+      background-color: rgba(0, 0, 0, .5);
+      content: '';
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    #content {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.23);
+      box-sizing: border-box;
+      -webkit-flex-basis: 100%;
+      -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      overflow: hidden;
+      padding: 20px;
+      position: relative;
+      text-align: center;
+      -webkit-transition: height 0.3s ease-in-out;
+      -o-transition: height 0.3s ease-in-out;
+      transition: height 0.3s ease-in-out;
+    }
+    #content.NPA-only {
+      max-width: 338px;
+    }
+    #title_head {
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .head_intro {
+      color: rgba(0, 0, 0, .71);
+      font-size: 12px;
+      line-height: 16px;
+    }
+    #head_question {
+      font-size: 18px;
+      line-height: 23px;
+      margin-top: 12px;
+    }
+    .head_detail {
+      color: rgba(0, 0, 0, .71);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      margin-top: 12px;
+    }
+    .app_icon {
+      margin-bottom: 2px;
+      margin-right: 10px;
+      width: 32px;
+      height: 32px;
+      vertical-align: middle;
+    }
+    #app_name {
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 18px;
+      line-height: 20px;
+      text-align: left;
+    }
+    #buttons {
+      color: #1A73E8;
+    }
+    .button {
+      border-radius: 8px;
+      border: 1px solid #DADCE0;
+      box-sizing: border-box;
+      cursor: pointer;
+      padding: 12px 16px 14px;
+      margin-top: 16px;
+      min-height: 52px;
+      text-align: center;
+      overflow: hidden;
+      opacity: 1;
+      visibility: visible;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1 1 0;
+      -ms-flex: 1 1 0px;
+      flex: 1 1 0;
+      -webkit-transition: all .2s ease-in-out;
+      -o-transition: all .2s ease-in-out;
+      transition: all .2s ease-in-out;
+    }
+    .button.sel {
+      background-color: rgba(26, 115, 232, .08);
+      border: 1px solid #1A73E8;
+      box-shadow: none;
+    }
+    .button_title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 19px;
+    }
+    .message {
+      color: rgba(0, 0, 0, .71);
+      font-size: 12px;
+      line-height: 16px;
+    }
+    #providers {
+      color: rgba(0, 0, 0, .71);
+      font-family: 'Roboto', Arial, sans-serif;
+      font-size: 14px;
+      padding: 0;
+      text-align: center;
+      min-height: 36px;
+      line-height: 18px;
+    }
+    #providers::after {
+      background-color: #DADCE0;
+      content: '';
+      height: 1px;
+      left: 0;
+      position: absolute;
+      right: 0;
+    }
+    #providers > div {
+      box-sizing: border-box;
+      padding: 2px 10px;
+    }
+    #providers ul {
+      box-sizing: border-box;
+      font-size: 12px;
+      list-style-type: none;
+      margin-bottom: 0;
+      margin-right: -2px;
+      overflow: auto;
+      padding: 0 0 12px;
+      text-align: left;
+    }
+    #providers li {
+      border: 1px solid #DADCE0;
+      border-radius: 8px;
+      display: inline-block;
+      margin-bottom: 5px;
+      margin-right: 2px;
+    }
+    #providers li:active {
+      background-color: #EEEEEE;
+    }
+    #providers a {
+      color: #3C4043;
+      display: inline-block;
+      padding: 6px 10px;
+    }
+    .how-use-data {
+      font-size: 12px;
+      margin-top: 16px;
+    }
+    .actions {
+      margin-top: 20px;
+    }
+    .back {
+      background-color: white;
+      background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMHB4IiBoZWlnaHQ9IjIwcHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzQyODVGNCI+ICAgIDxwYXRoIGQ9Ik0xMS42NyAzLjg3TDkuOSAyLjEgMCAxMmw5LjkgOS45IDEuNzctMS43N0wzLjU0IDEyeiIvPiAgICA8cGF0aCBmaWxsPSJub25lIiBkPSJNMCAwaDI0djI0SDB6Ii8+PC9zdmc+);
+      background-position: 14px center;
+      background-repeat: no-repeat;
+      border: 1px solid #DADCE0;
+      border-radius: 4px;
+      color: #1A73E8;
+      display: inline-block;
+      font-size: 14px;
+      font-weight: 500;
+      height: 32px;
+      line-height: 32px;
+      padding: 0 16px 0 34px;
+      vertical-align: middle;
+    }
+    .agree {
+      background-color: #1A73E8;
+      border: 1px solid #1A73E8;
+      border-radius: 4px;
+      color: white;
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 500;
+      height: 32px;
+      line-height: 32px;
+      margin-left: 12px;
+      padding: 0 16px;
+      vertical-align: middle;
+    }
+    .consent {
+      margin-top: 16px;
+    }
+    .consent.fade-in,
+    #options.fade-in {
+      opacity: 1 !important;
+      -webkit-transition: opacity .3s .15s ease-in-out;
+      -o-transition: opacity .3s .15s ease-in-out;
+      transition: opacity .3s .15s ease-in-out;
+    }
+    #consent2 .head_intro {
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+    a {
+      color: #1A73E8;
+    }
+    a:link {
+      text-decoration: none;
+    }
+    a:visited {
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: none;
+    }
+    a:active {
+      text-decoration: none;
+    }
+    @media screen and (max-width: 410px) and (max-height: 730px) {
+      /* e.g. iPhone 4, 5, 6/7/8 portrait */
+      #overlay {
+        left: 10px;
+        right: 10px;
+      }
+      #content {
+        padding: 12px;
+      }
+      #content.NPA-AdFree {
+        padding: 14px;
+      }
+      #buttons.selected .button:not(.sel) {
+        height: 0;
+        padding: 0;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+      }
+      #buttons.selected .button:not(.sel) div {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .button {
+        margin-top: 12px;
+      }
+      .message {
+        display: inline;
+      }
+      #providers {
+        padding: 0;
+      }
+      .back.btn {
+        display: inline-block;
+      }
+    }
+    @media screen and (max-width: 730px) and (max-height: 410px) {
+      /* e.g. iPhone 4, 5, 6/7/8 landscape */
+      #overlay {
+        left: 8px;
+        right: 8px;
+      }
+      #buttons.selected .button:not(.sel) {
+        display: none;
+      }
+      #content {
+        max-width: 900px;
+        padding: 12px;
+      }
+      #content.NPA-only {
+        max-width: 386px;
+        padding: 16px;
+      }
+      #title_head {
+        font-size: 13px;
+        margin-top: 8px;
+      }
+      #buttons {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin: 0 -5px;
+      }
+      .button {
+        margin: 12px 5px 0;
+        padding: 8px;
+      }
+      .button_title {
+        font-size: 13px;
+        line-height: 16px;
+      }
+      .consent {
+        line-height: 16px;
+        margin-top: 8px;
+      }
+      .message {
+        display: inline;
+        font-size: 12px;
+      }
+      #providers {
+        font-size: 12px;
+        padding: 0;
+      }
+      .how-use-data {
+        margin-top: 12px;
+      }
+      .back.btn {
+        display: inline-block;
+      }
+      .agree.btn {
+        margin-left: 8px;
+      }
+      .footer {
+        margin-top: 16px;
+      }
+      .actions {
+        margin-top: 0;
+      }
+    }
+    @media screen and (min-width: 731px) and (max-height: 731px), screen and (min-width: 1024px) {
+      /* e.g. iPhone 6/7/8 Plus, Pixel, Pixel XL, Tablets landscape */
+      #content {
+        max-width: 900px;
+      }
+      #title_head {
+        margin-top: 8px;
+      }
+      #content.NPA-only {
+        max-width: 386px;
+        padding: 16px;
+      }
+      #buttons {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        margin: 0 -5px;
+      }
+      .button {
+        margin: 14px 5px 0;
+        padding: 9px 8px 12px;
+      }
+      .button_title {
+        font-size: 14px;
+      }
+      .message {
+        display: inline;
+      }
+      #providers {
+        padding: 0;
+      }
+      #providers ul {
+        padding: 0 16px 12px;
+      }
+      .footer {
+        margin-top: 20px;
+      }
+      .actions {
+        margin-top: 0;
+      }
+    }
+    @media screen and (min-height: 377px) and (max-height: 700px) {
+      /* e.g. iPhone 4, 5, 6/7/8 portrait, 6/7/8 Plus landscape */
+      #providers ul {
+        max-height: calc(100vh - 246px);
+      }
+    }
+    @media screen and (min-height: 701px) {
+      /* e.g. iPhone 6/7/8 Plus portrait or taller (tablets) */
+      #providers ul {
+        max-height: 460px;
+      }
+    }
+    @media screen and (min-height: 361px) and (max-height: 376px) {
+      /* e.g. iPhone 6/7/8, X landscape */
+      #providers ul {
+        max-height: calc(100vh - 212px);
+      }
+    }
+    @media screen and (max-height: 360px) {
+      /* e.g. iPhone 4, 5 landscape */
+      #providers ul {
+        max-height: calc(100vh - 230px);
+      }
+    }
+
+    </style>
+    <script type="text/javascript">
+    var obj = {};
+    var state = 'init';
+    var consentDelayMs = 1000;
+     // Function that opens app privacy policy URL in a browser.
+    var showAppPrivacyPolicy = function() {};
+
+    function getStyle(el, prop, notParseToNumber) {
+      var style = window.getComputedStyle(el, null);
+      var val;
+      if (prop === undefined) {
+        return style;
+      } else {
+        val = style.getPropertyValue(prop);
+        if (val === undefined || val === null || val === '') {
+          return;
+        }
+        return notParseToNumber ? val : parseFloat(val);
+      }
+    };
+
+    function hideAllConsents() {
+      var consentList = document.getElementsByClassName('consent')
+      var i = consentList.length;
+      while (i-- > 0) {
+        consentList[i].classList.add('no-display');
+        consentList[i].classList.remove('fade-in');
+      }
+    };
+
+    function consentAnimation(consentEl, to) {
+      var contentEl = obj.contentEl;
+      var contentBoxEl = obj.contentBoxEl;
+      var contentElPadding = 2 * getStyle(contentEl, 'padding-top');
+      var optionsEl = obj.optionsEl;
+      var newH;
+
+      // set the height with number (instead of 'auto') to get ready for animation
+      contentEl.style.height = contentBoxEl.offsetHeight + contentElPadding;
+      if (to === 'in') {
+        optionsEl.classList.add('no-display');
+        optionsEl.classList.remove('fade-in');
+        consentEl.classList.remove('no-display');
+        consentEl.style.opacity = 0;
+      } else if (to === 'out') {
+        consentEl.classList.add('no-display');
+        consentEl.classList.remove('fade-in');
+        optionsEl.classList.remove('no-display');
+        optionsEl.style.opacity = 0;
+      }
+
+      setTimeout(function() {
+        if (to === 'in') {
+          // fade in the detail info
+          consentEl.classList.add('fade-in');
+        } else if (to === 'out') {
+          // fade in the options
+          optionsEl.classList.add('fade-in');
+        }
+        // make animation occurs towards the new height
+        newH = contentBoxEl.offsetHeight + contentElPadding;
+        contentEl.style.height =  newH % 2 === 0 ? newH : newH + 1;
+      }, 0)
+    };
+
+    function showProviders() {
+      consentAnimation(obj.consent0El, 'in');
+      document.getElementById('providersList').scrollTop = 0;
+    };
+
+    function showUniqueIdInfo() {
+      consentAnimation(obj.consent1El, 'in');
+    };
+
+    function actionClick(e, id) {
+      switch (id) {
+        case 'close':
+          // 'Close App'
+          dismissConsentModal('close_app');
+          break;
+        case 'back0':
+          consentAnimation(obj.consent0El, 'out');
+          break;
+        case 'back1':
+          consentAnimation(obj.consent1El, 'out');
+          break;
+        case 'agree0':
+          // 'Agree' on 'See personalized ads'
+          dismissConsentModal('personalized');
+          break;
+        case 'agree1':
+          // 'Agree' on 'See non-personalized ads'
+          dismissConsentModal('non_personalized');
+          break;
+        case 'install':
+          // 'Install' on 'See no ads'
+          dismissConsentModal('ad_free');
+          break;
+      }
+    };
+
+    function dismissConsentModal(status) {
+      var info = {
+        'action': 'dismiss',
+        'status': status || 'Error: no status.'
+      };
+      sendMessage(info);
+    };
+
+    function formLoadCompleted(status) {
+      var info = {
+        'action': 'load_complete',
+        'status': status || 'Error: no status.'
+      };
+      sendMessage(info);
+    };
+
+    function openBrowser(url) {
+      var info = {
+        'action': 'browser',
+        'url': url || ''
+      }
+      sendMessage(info);
+      // Return false to prevent default click handling.
+      return false;
+    }
+
+    function sendMessage(info) {
+      function queryStringFromDictionary(d) {
+        var params = [];
+        for(var k in d) {
+          params.push(encodeURIComponent(k) + '=' + encodeURIComponent(d[k]));
+        }
+        return params.join('&');
+      };
+      var iframe = document.createElement('iframe');
+      iframe.onload = function() { iframe.parentNode.removeChild(iframe); };
+      iframe.style.display = 'none';
+      iframe.src = 'consent://consent/?' + queryStringFromDictionary(info);
+      document.body.appendChild(iframe);
+    };
+
+    function validateRawResponse(rawResponse) {
+      var adNetworks = rawResponse['ad_network_ids'] || [];
+      if (!adNetworks) {
+        throw Error('Error: invalid ad networks.');
+      }
+    }
+
+    function setUpConsentDialog(argsDictionary) {
+      argsDictionary = argsDictionary || {};
+      var args = argsDictionary['args'];
+      var infoJSON = args['info'] || '';
+
+      var formInfo;
+      try {
+        formInfo = JSON.parse(infoJSON) || {};
+      } catch(e) {
+        formLoadCompleted('Error: consent SDK passed invalid data to the ' +
+                          'consent form. ' + e.message);
+        return;
+      }
+
+      var consentInfo = formInfo['consent_info'] || {};
+      var rawResponseJSON = consentInfo['raw_response'] || '';
+
+      if (!rawResponseJSON) {
+        var method;
+        if (formInfo['plat'] === 'ios') {
+          method = '-[PACConsentInformation ' +
+              'requestConsentInfoUpdateForPublisherIdentifiers:completionHandler:]';
+        } else {
+          method = 'com.google.ads.consent.ConsentInformation.requestConsentInfoUpdate()';
+        }
+        var message = 'Error: no information available. Successful call to ' +
+            method + ' required before using this form.';
+        formLoadCompleted(message);
+        return;
+      }
+
+      var rawResponse;
+      try {
+        rawResponse = JSON.parse(rawResponseJSON) || {};
+      } catch(e) {
+        formLoadCompleted('Error: consent form received invalid data from ' +
+                          'the consent server. ' + e.message);
+        return;
+      }
+
+      try {
+        validateRawResponse(rawResponse);
+      } catch(e) {
+        formLoadCompleted(e.message);
+        return;
+      }
+
+      // iOS may encode the boolean info as numbers (0/1) or Booleans.
+
+      // Don't show for child users.
+      var isChild = consentInfo['tag_for_under_age_of_consent'] || false;
+      if (isChild) {
+        formLoadCompleted('Error: tagged for under age of consent.');
+        return;
+      }
+
+      // Consent not required if request is not EEA or unknown.
+      if (!consentInfo['is_request_in_eea_or_unknown']) {
+        formLoadCompleted('Error: request is not in EEA or unknown.');
+        return;
+      }
+
+      // Set app name.
+      var appName = formInfo['app_name'] || '';
+      if (appName.length <= 0) {
+        formLoadCompleted('Error: invalid app name.');
+      }
+      var appNameEls = document.getElementsByClassName('app_name');
+      for (var i = 0; i < appNameEls.length; i++) {
+        appNameEls[i].innerText = appName;
+      }
+
+      // Add the app icon.
+      var appIconSrc = formInfo['app_icon'] || '';
+      if (appIconSrc) {
+        var appIconEl = document.createElement('img');
+        appIconEl.src = appIconSrc;
+        appIconEl.id = 'app_icon';
+        appIconEl.className = 'app_icon';
+        obj.titleAppNameEl.parentNode.insertBefore(appIconEl, obj.titleAppNameEl);
+      }
+
+      // Returns an onclick handler that opens a URL in a browser.
+      function createPolicyUrlOnClick(url) {
+        return function() {
+          openBrowser(url);
+          return false;  // Return false to prevent default click logic.
+        };
+      };
+
+      // Create the app's privacy policy URL handler.
+      var app_privacy_url = formInfo['app_privacy_url'];
+      if (!app_privacy_url) {
+        formLoadCompleted('Error: must provided app privacy URL.');
+        return;
+      }
+      showAppPrivacyPolicy = createPolicyUrlOnClick(app_privacy_url);
+
+      // Update provider list.
+      var providers = consentInfo['providers'] || [];
+      var providersLen = providers.length;
+
+      obj.providersEl.innerHTML = '';
+      var providersList = document.createElement('ul');
+      providersList.setAttribute('id', 'providersList');
+      for (var i = 0; i < providersLen; i++) {
+        var provider = providers[i];
+        var providerTag = document.createElement('a');
+        providerTag.innerText = provider['company_name'];
+        providerTag.onclick = createPolicyUrlOnClick(provider['policy_url']);
+
+        var providerListItem = document.createElement('li');
+        providerListItem.appendChild(providerTag);
+        providersList.appendChild(providerListItem);
+      }
+      obj.providersEl.appendChild(providersList);
+
+      // Hide unavailable options.
+      var hasValidProviderCount = providersLen > 0;
+      if (hasValidProviderCount) {
+        document.getElementById('providers_count').innerText = providersLen;
+      }
+      var hasAnyNonPersonalizedOnlyPubId = consentInfo['has_any_npa_pub_id'] || false;
+      if (!formInfo['offer_personalized'] ||
+          !hasValidProviderCount ||
+          hasAnyNonPersonalizedOnlyPubId) {
+        obj.btn0El.parentNode.removeChild(obj.btn0El);
+      }
+      if (!formInfo['offer_non_personalized']) {
+        obj.btn1El.parentNode.removeChild(obj.btn1El);
+      }
+      if (!formInfo['offer_ad_free']) {
+        obj.btn2El.parentNode.removeChild(obj.btn2El);
+      }
+
+      // Form must have at least one of the personalized or non-personalized options.
+      if (!obj.btn0El.parentElement && !obj.btn1El.parentElement) {
+        formLoadCompleted('Error: no options.');
+        return;
+      }
+
+      var buttons = obj.buttonsEl;
+      if (buttons.childElementCount == 2 && !obj.btn0El.parentNode) {
+        showState('NPA-AdFree');
+      } if (buttons.childElementCount == 1 && obj.btn0El.parentNode) {
+        showState('PA-only');
+      } if (buttons.childElementCount == 1 && obj.btn1El.parentNode) {
+        showState('NPA-only');
+      }
+
+      formLoadCompleted('success');
+    }
+
+    function showState(stateName) {
+      switch (stateName) {
+        case 'NPA-AdFree':
+          // Show NPA and AdFree buttons
+          obj.contentEl.classList.add('NPA-AdFree');
+          obj.headQuestionEl.parentNode.removeChild(obj.headQuestionEl);
+          obj.btn1TitleEl.innerHTML = 'See ads that are less relevant';
+          obj.headDetailTextEl.innerHTML = 'If you choose to see ads, we’ll partner with Google and use a unique identifier on your device.';
+          break;
+        case 'PA-only':
+          // Show PA-only consent if it's the only available option.
+          obj.headDetailChangeEl.classList.add('no-display');
+          obj.consent0ChangeEl.classList.add('no-display');
+          break;
+        case 'NPA-only':
+          // Show NPA-only consent if it's the only available option.
+          obj.contentEl.classList.add('NPA-only');
+          obj.optionsEl.classList.add('no-display');
+          obj.backButtonEl.classList.add('no-display');
+          obj.consent2El.classList.remove('no-display');
+          break;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function(event) {
+      obj.overlayEl = document.getElementById('overlay');
+      obj.contentEl = document.getElementById('content');
+      obj.contentBoxEl = document.getElementById('content-box');
+      obj.titleAppNameEl = document.getElementById('title_app_name');
+      obj.optionsEl = document.getElementById('options');
+      obj.titleHeadEl = document.getElementById('title_head');
+      obj.headQuestionEl = document.getElementById('head_question');
+      obj.headDetailChangeEl = document.getElementById('change_anytime_text1');
+      obj.headDetailTextEl = document.getElementById('head_detail_text');
+      obj.buttonsEl = document.getElementById('buttons');
+      obj.btn0El = document.getElementById('btn0');
+      obj.btn1El = document.getElementById('btn1');
+      obj.btn2El = document.getElementById('btn2');
+      obj.btn1TitleEl = document.getElementById('btn1_title');
+      obj.consent0El = document.getElementById('consent0');
+      obj.consent0ChangeEl = document.getElementById('change_anytime_text2');
+      obj.consent1El = document.getElementById('consent1');
+      obj.consent2El = document.getElementById('consent2');
+      obj.providersEl = document.getElementById('providers');
+      obj.backButtonEl = document.getElementById('back-btn');
+    });
+
+    window.onresize = function(event) {
+      if (state === 'consent') {
+        // this makes the height of consent modal grow/shrink automatically
+        obj.contentEl.style.height = 'auto';
+      }
+    };
+
+    // Make the consent modal fade-in in the beginning (after delay (consentDelayMs))
+    setTimeout(function() {
+      state = 'consent';
+      obj.overlayEl.classList.remove('hidden');
+    }, consentDelayMs);
+
+    </script>
+</head>
+<body>
+<div id="overlay" class="center hidden">
+    <div id="content">
+        <div id="content-box">
+            <div class="app-title flex-center">
+                <span id="title_app_name" class="app_name">App Name</span>
+            </div>
+            <div id="options">
+                <div id="title_head">
+                    <div class="head_intro">We care about your privacy and data security. We keep
+                        this app free by showing ads.
+                    </div>
+                    <div id="head_question">Can we continue to use your data to tailor ads for
+                        you?
+                    </div>
+                    <div class="head_detail">
+                        <span id="change_anytime_text1">You can change your choice anytime for <span
+                                class="app_name">App Name</span> in the app settings.</span>
+                        <span id="head_detail_text">Our partners will collect data and use a unique identifier on your device to show you ads.
+                <a href="#" onclick="showProviders();">Learn how <span
+                        class="app_name">App Name</span> and our <span id="providers_count"></span> partners collect and use data</a>
+              </span>
+                    </div>
+                </div>
+                <div id="buttons" data-sel="">
+                    <div id="btn0" class="button btn0 flex-center"
+                         onclick="actionClick(event, 'agree0');">
+                        <div class="button_title">Yes, continue to see relevant ads</div>
+                    </div>
+                    <div id="btn1" class="button btn1 flex-center" onclick="showUniqueIdInfo();">
+                        <div id="btn1_title" class="button_title">No, see ads that are less
+                            relevant
+                        </div>
+                    </div>
+                    <div id="btn2" class="button btn2 flex-center"
+                         onclick="actionClick(event, 'install');">
+                        <div class="button_title">Pay for the ad-free version</div>
+                    </div>
+                </div>
+            </div>
+            <div id="consent0" class="consent no-display">
+                <div class="message"><span id="change_anytime_text2">You can change your choice anytime for <span
+                        class="app_name">App Name</span> in the app settings. </span>Learn how our
+                    partners collect and use data:
+                </div>
+                <div id="providers">
+                </div>
+                <div class="how-use-data"><a href="#" onclick="showAppPrivacyPolicy(event)">How
+                    <span class="app_name">App Name</span> uses your data</a></div>
+                <div class="footer">
+                    <div class="actions">
+                        <div class="back btn" onclick="actionClick(event, 'back0')">Back</div>
+                    </div>
+                </div>
+            </div>
+            <div id="consent1" class="consent no-display">
+                <div class="message">We’ll partner with Google and use a unique identifier on your
+                    device to respect your data usage choice. You can change your choice anytime for
+                    <span class="app_name">App Name</span> in the app settings.
+                </div>
+                <div class="how-use-data"><a href="#" onclick="showAppPrivacyPolicy(event)">How
+                    <span class="app_name">App Name</span> uses your data</a></div>
+                <div class="footer">
+                    <div class="actions">
+                        <div id="back-btn" class="back btn" onclick="actionClick(event, 'back1')">
+                            Back
+                        </div>
+                        <div class="agree btn" onclick="actionClick(event, 'agree1')">Agree</div>
+                    </div>
+                </div>
+            </div>
+            <div id="consent2" class="consent no-display">
+                <div class="head_intro">We care about your privacy and data security. We keep this
+                    app free by showing ads.
+                </div>
+                <div class="message">We’ll partner with Google and use a unique identifier on your
+                    device to serve non-personalized ads.
+                </div>
+                <div class="how-use-data"><a href="#" onclick="showAppPrivacyPolicy(event)">How
+                    <span class="app_name">App Name</span> uses your data</a></div>
+                <div class="footer">
+                    <div class="actions">
+                        <div class="agree btn" onclick="actionClick(event, 'agree1')">Agree</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

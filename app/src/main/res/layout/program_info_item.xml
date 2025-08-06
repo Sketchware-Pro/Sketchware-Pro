@@ -1,0 +1,28 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="64dp"
+        android:paddingStart="20dp"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
+        tools:text="Program Info Item" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/layout_divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:dividerInsetEnd="20dp"
+        app:dividerInsetStart="20dp"
+        app:dividerThickness="0.5dp" />
+
+</FrameLayout>

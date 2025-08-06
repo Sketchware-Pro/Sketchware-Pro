@@ -1,0 +1,93 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground">
+
+            <ImageView
+                android:id="@+id/img_icon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="24dp"
+                android:layout_centerVertical="true"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/tv_component_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="72dp"
+                android:layout_marginTop="12dp"
+                android:textSize="16sp"
+                tools:text="Firebase DB" />
+
+            <TextView
+                android:id="@+id/tv_component_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_component_type"
+                android:layout_marginLeft="72dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                tools:text="description" />
+
+            <LinearLayout
+                android:id="@+id/events_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/img_menu"
+                android:orientation="horizontal" />
+
+            <ImageView
+                android:id="@+id/img_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:contentDescription="@null"
+                android:padding="14dp"
+                android:src="@drawable/ic_arrow_drop_down_24px" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/component_option_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp" />
+
+            <pro.sketchware.activities.editor.component.CollapsibleCustomComponentLayout
+                android:id="@+id/component_option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,81 @@
+<resources>
+    <attr name="circle_color" format="color" />
+    <attr name="circle_fill" format="color" />
+    <attr name="circle_progress_color" format="color" />
+    <attr name="circle_stroke_width" format="dimension" />
+    <attr name="circle_x_radius" format="dimension" />
+    <attr name="circle_y_radius" format="dimension" />
+    <attr name="contentProviderUri" format="string" />
+    <attr name="corpusId" format="string" />
+    <attr name="corpusVersion" format="string" />
+    <attr name="defaultIntentAction" format="string" />
+    <attr name="defaultIntentActivity" format="string" />
+    <attr name="defaultIntentData" format="string" />
+    <attr name="documentMaxAgeSecs" format="integer" />
+    <attr name="end_angle" format="float" />
+    <attr name="indexPrefixes" format="boolean" />
+    <attr name="inputEnabled" format="boolean" />
+    <attr name="lock_enabled" format="boolean" />
+    <attr name="maintain_equal_circle" format="boolean" />
+    <attr name="max" format="integer" />
+    <attr name="move_outside_circle" format="boolean" />
+    <attr name="noIndex" format="boolean" />
+    <attr name="paramName" format="string" />
+    <attr name="paramValue" format="string" />
+    <attr name="perAccountTemplate" format="boolean" />
+    <attr name="pointer_alpha_ontouch" format="integer" />
+    <attr name="pointer_color" format="color" />
+    <attr name="pointer_halo_border_width" format="dimension" />
+    <attr name="pointer_halo_color" format="color" />
+    <attr name="pointer_halo_color_ontouch" format="color" />
+    <attr name="pointer_halo_width" format="dimension" />
+    <attr name="pointer_radius" format="dimension" />
+    <attr name="progress" format="integer" />
+    <attr name="schemaOrgProperty" format="string" />
+    <attr name="searchEnabled" format="boolean" />
+    <attr name="searchLabel" format="string" />
+    <attr name="sectionContent" format="string" />
+    <attr name="sectionFormat">
+        <enum name="date" value="4" />
+        <enum name="html" value="1" />
+        <enum name="plain" value="0" />
+        <enum name="rfc822" value="2" />
+        <enum name="url" value="3" />
+    </attr>
+    <attr name="semanticallySearchable" format="boolean" />
+    <attr name="settingsDescription" format="string" />
+    <attr name="sourceClass">
+        <enum name="contact" value="1" />
+        <enum name="email" value="0" />
+        <enum name="instant_message" value="2" />
+    </attr>
+    <attr name="start_angle" format="float" />
+    <attr name="subsectionSeparator" format="string" />
+    <attr name="toAddressesSection" format="string" />
+    <attr name="trimmable" format="boolean" />
+    <attr name="use_custom_radii" format="boolean" />
+    <attr name="userInputSection" format="string" />
+    <attr name="userInputTag" format="string" />
+    <attr name="userInputValue" format="string" />
+
+    <attr name="colorAmber" format="color" />
+    <attr name="colorOnAmber" format="color" />
+    <attr name="colorAmberContainer" format="color" />
+    <attr name="colorOnAmberContainer" format="color" />
+    <attr name="harmonizeAmber" format="boolean" />
+    <attr name="colorCoolGreen" format="color" />
+    <attr name="colorOnCoolGreen" format="color" />
+    <attr name="colorCoolGreenContainer" format="color" />
+    <attr name="colorOnCoolGreenContainer" format="color" />
+    <attr name="harmonizeCoolGreen" format="boolean" />
+    <attr name="colorGreen" format="color" />
+    <attr name="colorOnGreen" format="color" />
+    <attr name="colorGreenContainer" format="color" />
+    <attr name="colorOnGreenContainer" format="color" />
+    <attr name="harmonizeGreen" format="boolean" />
+    <attr name="colorViolet" format="color" />
+    <attr name="colorOnViolet" format="color" />
+    <attr name="colorVioletContainer" format="color" />
+    <attr name="colorOnVioletContainer" format="color" />
+    <attr name="harmonizeViolet" format="boolean" />
+</resources>

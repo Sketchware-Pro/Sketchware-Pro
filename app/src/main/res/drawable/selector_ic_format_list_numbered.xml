@@ -1,0 +1,6 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_format_list_numbered_grey600_24dp" android:state_enabled="false" />
+    <item android:drawable="@drawable/ic_format_list_numbered_grey600_24dp" android:state_pressed="true" />
+    <item android:drawable="@drawable/ic_format_list_numbered_grey600_24dp" android:state_focused="true" android:state_pressed="false" />
+    <item android:drawable="@drawable/ic_format_list_numbered_white_24dp" />
+</selector>

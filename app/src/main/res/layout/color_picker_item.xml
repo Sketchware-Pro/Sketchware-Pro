@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_color_item"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    tools:background="#4177FF">
+
+    <TextView
+        android:id="@+id/tv_color_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="8dp"
+        tools:text="BLUE"
+        tools:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/tv_color_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:padding="8dp"
+        tools:text="#4177FF"
+        tools:textColor="#FFFFFF" />
+
+    <ImageView
+        android:id="@+id/img_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="4dp"
+        tools:src="@drawable/ic_checked_24" />
+</RelativeLayout>

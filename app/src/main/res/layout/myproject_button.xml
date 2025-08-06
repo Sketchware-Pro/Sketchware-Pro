@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/img_button"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/project_button_height"
+    android:layout_weight="1"
+    android:background="?android:selectableItemBackground"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:layout_width="wrap_content">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:contentDescription="@null"
+        android:scaleType="fitCenter"
+        app:tint="?attr/colorControlNormal"
+        tools:src="@drawable/ic_backup" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="?attr/colorControlNormal"
+        android:textSize="12sp"
+        tools:text="Back up" />
+</LinearLayout>

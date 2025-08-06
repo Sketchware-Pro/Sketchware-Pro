@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:id="@+id/customView"
+     android:layout_height="wrap_content"
+     android:layout_width="match_parent"
+     android:orientation="vertical"
+     android:paddingHorizontal="20dp"
+     android:paddingTop="20dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+         android:id="@+id/name"
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameEditText"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:imeOptions="actionNext"
+                android:hint="Palette name"
+                android:textSize="16sp"
+                android:singleLine="true"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <RelativeLayout
+         android:id="@+id/colorContainer"
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"
+         android:gravity="center"
+         android:orientation="horizontal">
+         
+
+        <com.google.android.material.textfield.TextInputLayout
+             android:id="@+id/color"
+             android:layout_height="wrap_content"
+             android:layout_width="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                 android:id="@+id/colorEditText"
+                 android:layout_height="match_parent"
+                 android:layout_width="match_parent"
+                 android:hint="Color hex code"
+                 android:textSize="16sp"
+                 android:paddingLeft="32dp"
+                 android:singleLine="true"
+                 android:maxLength="8"
+                 app:errorEnabled="false"
+                 android:digits="0123456789ABCDEFabcdef"
+                 android:inputType="text|textCapCharacters"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+             android:id="@+id/openColorPalette"
+             android:layout_height="35dp"
+             android:layout_width="35dp"
+             android:scaleType="fitCenter"
+             android:paddingRight="13dp"
+             android:padding="5dp"
+             android:layout_alignParentEnd="true"
+             android:layout_centerHorizontal="true"
+             android:layout_marginTop="14dp"
+             app:srcCompat="@drawable/color_palette_48"/>
+
+        <TextView
+             android:id="@+id/hash"
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+             app:layout_constraintTop_toTopOf="@+id/color"
+             app:layout_constraintStart_toStartOf="@+id/color"
+             android:textSize="20sp"
+             android:paddingLeft="13dp"
+             android:layout_marginTop="20dp"
+             android:text="\#"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

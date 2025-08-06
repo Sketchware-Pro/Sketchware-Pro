@@ -1,0 +1,143 @@
+<resources>
+    <!--
+      I decided that new or modified styles will be stored here.
+      If you change the style of a component from styles.xml, please MOVE (not copy) that style here.
+
+      So, contributors, can you follow the following "guidelines" xD:
+      — 'Theme|ThemeOverlay|Widget|TextAppearance|ShapeAppearanceOverlay' -
+           this prefix must always be included first
+      — 'SketchwarePro' - remains unchanged, as the name of the app speaks for itself.
+      — '*' - instead of using the asterisk (*), replace it with the specific name of the component whose style is being modified or created.
+    -->
+
+    <style name="Widget.SketchwarePro.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:background">?attr/colorSurfaceContainer</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.CollapsingToolbar" parent="Widget.Material3Expressive.CollapsingToolbar.Large">
+        <item name="collapsedTitleTextAppearance">
+            @style/TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed
+        </item>
+        <item name="expandedTitleTextAppearance">
+            @style/TextAppearance.SketchwarePro.CollapsingToolbar.Expanded
+        </item>
+        <item name="titleCollapseMode">scale</item>
+    </style>
+
+    <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Collapsed" parent="TextAppearance.SketchwarePro.TitleLarge" />
+    <style name="TextAppearance.SketchwarePro.CollapsingToolbar.Expanded" parent="TextAppearance.SketchwarePro.HeadlineMedium" />
+
+    <style name="Widget.SketchwarePro.Toolbar.SmallText" parent="Widget.Material3Expressive.Toolbar.OnSurface">
+        <item name="titleTextAppearance">?attr/textAppearanceBodyLarge</item>
+        <item name="subtitleTextAppearance">?attr/textAppearanceBodyMedium</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.NavigationView.Main" parent="Widget.Material3.NavigationView">
+        <item name="dividerInsetEnd">@dimen/main_drawer_horizontal_padding</item>
+        <item name="dividerInsetStart">@dimen/main_drawer_horizontal_padding</item>
+        <item name="itemHorizontalPadding">@dimen/main_drawer_horizontal_padding</item>
+        <item name="itemIconPadding">@dimen/main_drawer_icon_padding</item>
+        <item name="itemShapeInsetEnd">@dimen/main_drawer_shape_horizontal_inset</item>
+        <item name="itemShapeInsetStart">@dimen/main_drawer_shape_horizontal_inset</item>
+        <item name="itemTextAppearance">?attr/textAppearanceBodyMedium</item>
+        <item name="subheaderInsetEnd">@dimen/main_drawer_horizontal_padding</item>
+        <item name="subheaderInsetStart">@dimen/main_drawer_horizontal_padding</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Medium</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.TextInputLayout.ExposedDropdownMenu" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Medium</item>
+    </style>
+
+    <style name="ThemeOverlay.SketchwarePro.ViewEditor" parent="Base.Theme.MaterialComponents.Light" />
+
+    <style name="ThemeOverlay.SketchwarePro.ViewEditor.Material3.Light" parent="ThemeOverlay.Material3.DynamicColors.Light" />
+
+    <style name="ThemeOverlay.SketchwarePro.ViewEditor.Material3.Dark" parent="ThemeOverlay.Material3.DynamicColors.Dark" />
+
+    <style name="ThemeOverlay.SketchwarePro.ViewEditor.Material3.NON_DYNAMIC.Light" parent="Base.Theme.Material3.Light" />
+
+    <style name="ThemeOverlay.SketchwarePro.ViewEditor.Material3.NON_DYNAMIC.Dark" parent="Base.Theme.Material3.Dark" />
+
+    <style name="Preference.SketchwarePro.SwitchPreferenceCompat" parent="Preference.SwitchPreferenceCompat.Material">
+        <item name="widgetLayout">@layout/preference_widget_layout_m3_switch</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.TabLayout" parent="Widget.Material3.TabLayout">
+        <item name="tabIndicator">@drawable/view_tab_indicator</item>
+    </style>
+
+    <style name="ThemeOverlay.SketchwarePro.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.SketchwarePro.BottomSheet.Modal</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.BottomSheet.Modal" parent="Widget.Material3.BottomSheet">
+        <item name="android:elevation">0dp</item>
+        <item name="backgroundTint">?attr/colorSurface</item>
+    </style>
+
+    <style name="ThemeOverlay.SketchwarePro.AlertDialog" parent="ThemeOverlay.Material3Expressive.MaterialAlertDialog.Centered">
+        <item name="android:colorBackground">?attr/colorSurfaceContainer</item>
+        <item name="android:windowAnimationStyle">@style/MaterialAlertDialog.Material3.Animation
+        </item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="android:windowMinWidthMajor">65%</item>
+        <item name="android:windowMinWidthMinor">98%</item>
+        <item name="alertDialogStyle">@style/MaterialAlertDialog.SketchwarePro</item>
+
+        <!-- Expressive button styles have increased horizontal padding, which we don't need at all. -->
+        <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog
+        </item>
+        <item name="buttonBarNeutralButtonStyle">
+            @style/Widget.Material3.Button.TextButton.Dialog.Flush
+        </item>
+        <item name="buttonBarPositiveButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog
+        </item>
+    </style>
+
+    <style name="MaterialAlertDialog.SketchwarePro" parent="MaterialAlertDialog.Material3Expressive">
+        <item name="backgroundInsetBottom">8dp</item>
+        <item name="backgroundInsetTop">8dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.CardView" parent="Widget.Material3.CardView.Filled">
+        <item name="cardCornerRadius">18dp</item>
+        <item name="cardBackgroundColor">?attr/colorSurfaceContainer</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.Chip" parent="Widget.Material3.Chip.Input.Icon.Elevated">
+        <item name="closeIconEnabled">false</item>
+        <item name="closeIcon">@null</item>
+        <item name="checkedIconEnabled">true</item>
+        <item name="checkedIconTint">?attr/colorOnSecondary</item>
+        <item name="checkedIcon">@drawable/ic_mtrl_done</item>
+        <item name="chipBackgroundColor">?attr/colorSecondary</item>
+        <item name="chipCornerRadius">90dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.SketchwarePro.Chip</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="Widget.SketchwarePro.Chip.ProjectPreview" parent="Widget.Material3.Chip.Suggestion">
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="rippleColor">@null</item>
+        <item name="shapeAppearance">?attr/shapeAppearanceCornerLarge</item>
+    </style>
+
+    <style name="TextAppearance.SketchwarePro.Chip" parent="TextAppearance.SketchwarePro.BodyMedium">
+        <item name="android:fontFamily">@font/gilroy</item>
+        <item name="fontFamily">@font/gilroy</item>
+    </style>
+
+    <style name="ThemeOverlay.SketchwarePro.Chip.ProjectPreview" parent="">
+        <item name="chipStyle">@style/Widget.SketchwarePro.Chip.ProjectPreview</item>
+    </style>
+</resources>

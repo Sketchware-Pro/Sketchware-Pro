@@ -1,0 +1,137 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:colorBackground"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:focusable="false"
+        android:padding="8dp"
+        android:id="@+id/tv_variant"
+        android:textAppearance="?attr/textAppearanceLabelLarge"
+        android:textStyle="bold"
+        tools:text="Official / Beta" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:animateLayoutChanges="true"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:id="@+id/log_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/view_leftline"
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                app:cardCornerRadius="11.2dp">
+
+                <ImageView
+                    android:id="@+id/img_variant_icon"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:focusable="false"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sketch_app_icon" />
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fadingEdgeLength="20dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:paddingLeft="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingBottom="2dp"
+                    android:requiresFadingEdge="horizontal"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:textColor="?attr/colorPrimary"
+                    tools:text="Sketchware Pro v6.4" />
+
+                <TextView
+                    android:id="@+id/tv_release_note"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:paddingHorizontal="8dp"
+                    android:paddingBottom="8dp"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    tools:text="Released on: ----- (= never ¯\\_(ツ)_/¯)" />
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_expand_less_grey600_24dp"
+                android:id="@+id/ic_arrow"
+                app:tint="?attr/colorControlNormal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:orientation="vertical"
+            android:id="@+id/view_additional_info">
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                app:dividerInsetEnd="10dp"
+                app:dividerInsetStart="10dp" />
+
+            <TextView
+                android:id="@+id/tv_sub_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="8dp"
+                android:autoLink="all"
+                android:clickable="true"
+                android:focusable="true"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                tools:text="A version that's newer than v6.3.0. That's it." />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="14dp">
+
+    <RadioGroup
+        android:id="@+id/rg_width_height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rb_matchparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="match_parent"
+            android:textSize="15sp" />
+
+        <RadioButton
+            android:id="@+id/rb_wrapcontent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="wrap_content"
+            android:textSize="15sp" />
+
+        <RadioButton
+            android:id="@+id/rb_directinput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Custom value"
+            android:textSize="15sp" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/direct_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ti_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Enter value"
+            android:importantForAutofill="noExcludeDescendants"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="numberSigned"
+                android:lines="1"
+                android:maxLength="3" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_input_dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dp"
+            android:layout_marginStart="4dp"
+            android:textSize="16sp" />
+    </LinearLayout>
+</LinearLayout>

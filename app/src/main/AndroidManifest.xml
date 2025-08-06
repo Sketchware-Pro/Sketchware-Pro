@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:name=".SketchApplication"
+        android:allowBackup="true"
+        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
+        android:theme="@style/Theme.SketchwarePro"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="p">
+        <activity
+            android:name=".activities.iconcreator.IconCreatorActivity"
+            android:exported="false"
+            android:label="@string/title_activity_icon_creator"
+            android:theme="@style/Theme.SketchwarePro" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+        <activity
+            android:name="com.besome.sketch.common.SrcViewerActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="pro.sketchware.activities.importicon.ImportIconActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name="com.besome.sketch.help.LicenseActivity" />
+        <activity android:name="com.besome.sketch.help.ProgramInfoActivity" />
+        <activity
+            android:name="com.besome.sketch.help.SystemSettingActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name="com.besome.sketch.help.SystemInfoActivity" />
+        <activity
+            android:name="com.besome.sketch.editor.LogicEditorActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="false"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.PropertyActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.makeblock.MakeBlockActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.projects.MyProjectSettingActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity android:name="com.besome.sketch.tools.CompileLogActivity" />
+        <activity android:name="com.besome.sketch.tools.CollectErrorActivity" />
+        <activity
+            android:name="com.besome.sketch.tools.NewKeyStoreActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.export.ExportProjectActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.design.DesignActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|keyboard"
+            android:theme="@style/Theme.SketchwarePro.SmallToolbar" />
+        <activity
+            android:name="pro.sketchware.activities.main.activities.MainActivity"
+            android:configChanges="orientation|screenSize"
+            android:exported="true"
+            android:theme="@style/Theme.SketchwarePro.Starting">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="*/*" />
+                <data android:host="*" />
+                <data android:pathPattern=".*\\.swb" />
+                <data android:pathPattern=".*\\..*\\.swb" />
+                <data android:pathPattern=".*\\..*\\..*\\.swb" />
+                <data android:pathPattern=".*\\..*\\..*\\..*\\.swb" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.besome.sketch.editor.manage.view.ManageViewActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.sound.ManageSoundActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.sound.ManageSoundImportActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.image.ManageImageActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.image.ManageImageImportActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.font.ManageFontActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.font.ManageFontImportActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.library.ManageLibraryActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.ManageCollectionActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.ShowWidgetCollectionActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.event.AddEventActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.ViewSelectorActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.view.AddViewActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.view.AddCustomViewActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.image.AddImageActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.sound.AddSoundActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.font.AddFontActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.ShowBlockCollectionActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.ShowMoreBlockCollectionActivity"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.image.AddImageCollectionActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.sound.AddSoundCollectionActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.font.AddFontCollectionActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.library.admob.AdmobActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.library.firebase.FirebaseActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.library.firebase.ManageFirebaseActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.library.admob.ManageAdmobActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.library.compat.ManageCompatActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.library.googlemap.ManageGoogleMapActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="dev.aldi.sayuti.editor.manage.ManageLocalLibraryActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.agus.jcoderz.editor.manage.permission.ManagePermissionActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="mod.agus.jcoderz.editor.manage.resource.ManageResourceActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hey.studios.activity.managers.assets.ManageAssetsActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hey.studios.activity.managers.java.ManageJavaActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hey.studios.activity.managers.nativelib.ManageNativelibsActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hey.studios.code.SrcCodeEditor"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hey.studios.project.proguard.ManageProguardActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hilal.saif.activities.android_manifest.AndroidManifestInjection"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hilal.saif.activities.android_manifest.AndroidManifestInjectionDetails"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name="mod.hilal.saif.activities.tools.BlocksManager"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hilal.saif.activities.tools.BlocksManagerCreatorActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hilal.saif.activities.tools.BlocksManagerDetailsActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hilal.saif.activities.tools.ConfigActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="mod.hilal.saif.activities.tools.AppSettings"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name="pro.sketchware.activities.about.AboutActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name="mod.jbk.editor.manage.library.ExcludeBuiltInLibrariesActivity" />
+        <activity
+            android:name="com.besome.sketch.editor.manage.view.PresetSettingActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.Translucent"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="mod.khaled.logcat.LogReaderActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize" />
+
+        <activity
+            android:name="pro.sketchware.activities.main.fragments.projects_store.ProjectPreviewActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.SketchwarePro.ProjectPreview" />
+
+        <activity android:name="pro.sketchware.activities.settings.SettingsActivity" />
+
+        <activity android:name="pro.sketchware.activities.resourceseditor.ResourcesEditorActivity" />
+
+        <activity
+            android:name="com.besome.sketch.editor.manage.library.material3.Material3LibraryActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".activities.appcompat.ManageAppCompatActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".activities.editor.command.ManageXMLCommandActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".activities.editor.component.ManageCustomComponentActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
+        <activity
+            android:name=".activities.editor.component.AddCustomComponentActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".activities.editor.view.ViewCodeEditorActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".activities.editor.view.CodeViewerActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".activities.preview.LayoutPreviewActivity"
+            android:configChanges="orientation|screenSize" />
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="true" />
+
+        <service
+            android:name="pro.sketchware.firebase.FirebaseMessagingServiceImpl"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>

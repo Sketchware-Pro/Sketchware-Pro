@@ -1,0 +1,60 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_item"
+    style="?attr/materialCardViewElevatedStyle"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+    app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Medium">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:background="?selectableItemBackground"
+        android:gravity="center|left"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/chk_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:contentDescription="@null" />
+
+        <LinearLayout
+            android:id="@+id/delete_img_container"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:alpha="0.8"
+            android:background="@drawable/circle_bg_dark_grey_alpha"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/img_delete"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_trashcan_white_48dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_widget"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:padding="8dp" />
+
+        <TextView
+            android:id="@+id/tv_widget_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

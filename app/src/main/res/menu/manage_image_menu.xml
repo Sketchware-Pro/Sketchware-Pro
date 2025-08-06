@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_image_import"
+        android:icon="@drawable/ic_mtrl_download"
+        android:title="@string/common_word_import"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_image_delete"
+        android:icon="@drawable/ic_mtrl_delete"
+        android:title="@string/common_word_delete"
+        app:showAsAction="ifRoom" />
+</menu>

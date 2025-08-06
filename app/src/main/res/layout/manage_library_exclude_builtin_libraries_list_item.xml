@@ -1,0 +1,42 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:paddingHorizontal="4dp"
+    android:paddingVertical="10dp"
+    android:gravity="center"
+    android:clickable="true"
+    android:focusable="true">
+
+        <CheckBox
+            android:id="@+id/chk_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_screen_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium.Emphasized"
+                tools:text="material-1.14.0-alpha01"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_activity_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                tools:text="com.google.android.material:material:1.14.0-alpha01"
+                android:textSize="15sp" />
+        </LinearLayout>
+</LinearLayout>

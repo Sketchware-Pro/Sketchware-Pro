@@ -1,0 +1,6 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/user_72_grey_filled" android:state_enabled="false" />
+    <item android:drawable="@drawable/user_72_grey_filled" android:state_pressed="true" />
+    <item android:drawable="@drawable/user_72_grey_filled" android:state_focused="true" android:state_pressed="false" />
+    <item android:drawable="@drawable/user_72_white_filled" />
+</selector>

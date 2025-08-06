@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_highlight_filled" android:state_selected="true" />
+    <item android:drawable="@drawable/bg_highlight_outline" android:state_selected="false" />
+</selector>
