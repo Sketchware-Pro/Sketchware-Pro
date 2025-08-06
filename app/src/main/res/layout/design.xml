@@ -144,7 +144,6 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.button.MaterialSplitButton
-                    android:id="@+id/splitbutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -153,8 +152,8 @@
                         style="?attr/materialSplitButtonLeadingFilledStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:icon="@drawable/ic_mtrl_run"
-                        android:text="Run"/>
+                        android:text="Run"
+                        app:icon="@drawable/ic_mtrl_run" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_options"
@@ -162,7 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:icon="@drawable/m3_split_button_chevron_avd"
-                        app:iconSize="24dp"/>
+                        app:iconSize="24dp" />
 
                 </com.google.android.material.button.MaterialSplitButton>
             </LinearLayout>
