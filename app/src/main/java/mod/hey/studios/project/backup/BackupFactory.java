@@ -39,8 +39,6 @@ import java.util.zip.ZipOutputStream;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.crypto.spec.GCMParameterSpec;
-import java.security.SecureRandom;
 
 import a.a.a.lC;
 import a.a.a.yB;
@@ -87,24 +85,14 @@ public class BackupFactory {
 
     private static HashMap<String, Object> getProject(File file) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             byte[] key = "sketchwaresecure".getBytes();
-            // GCM requires a 12-byte IV (nonce)
-            byte[] iv = new byte[12];
             cipher.init(2, new SecretKeySpec(key, "AES"), new IvParameterSpec(key));
             byte[] encrypted;
             try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
-                if (raf.length() < 12) {
-                    return null; // Invalid file
-                }
-                raf.readFully(iv);
-                encrypted = new byte[(int) (raf.length() - 12)];
+                encrypted = new byte[(int) raf.length()];
                 raf.readFully(encrypted);
             }
-            cipher.init(Cipher.DECRYPT_MODE, new 
-SecretKeySpec(key, "AES"), new 
-javax.crypto.spec.GCMParameterSpec(128, iv));
             byte[] decrypted = cipher.doFinal(encrypted);
             String decryptedString = new String(decrypted);
 
@@ -118,18 +106,12 @@ javax.crypto.spec.GCMParameterSpec(128, iv));
         String path = file.getAbsolutePath();
 
         try {
-            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             byte[] key = "sketchwaresecure".getBytes();
-            // Generate a random 12-byte IV for GCM
-            byte[] iv = new byte[12];
-            new java.security.SecureRandom().nextBytes(iv);
-            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new javax.crypto.spec.GCMParameterSpec(128, iv));
             cipher.init(1, new SecretKeySpec(key, "AES"), new IvParameterSpec(key));
             byte[] encrypted = cipher.doFinal((string.trim()).getBytes());
             try (RandomAccessFile raf = new RandomAccessFile(path, "rw")) {
                 raf.setLength(0);
-                raf.write(iv); // Write IV first
                 raf.write(encrypted);
             }
 
