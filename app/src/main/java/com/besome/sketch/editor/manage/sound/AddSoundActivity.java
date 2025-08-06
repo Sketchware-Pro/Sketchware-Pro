@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 import a.a.a.Qp;
 import a.a.a.WB;
@@ -291,6 +293,14 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
     }
 
     private void playSound(Uri uri) {
+        if (!isUriSafe(uri)) {
+            // Show error and do not proceed
+            bB.b(this, "Selected file is not allowed or is unsafe.", 1);
+            isSoundPlayable = false;
+            nowPlayingContainer.setVisibility(View.GONE);
+            guide.setVisibility(View.VISIBLE);
+            return;
+        }
         soundUri = uri;
         try {
             if (nowPlayingPlayer != null) {
@@ -341,6 +351,29 @@ public class AddSoundActivity extends BaseDialogActivity implements View.OnClick
             guide.setVisibility(View.VISIBLE);
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Validates that the URI is safe to use.
+     * Only allows content:// and file:// schemes, and blocks access to /data/ and private app directories.
+     */
+    private boolean isUriSafe(Uri uri) {
+        if (uri == null) return false;
+        String scheme = uri.getScheme();
+        if (!"content".equals(scheme) && !"file".equals(scheme)) {
+            return false;
+        }
+        String path = uri.getPath();
+        if (path == null) return false;
+        // Normalize path to prevent path traversal
+        java.nio.file.Path normalizedPath = java.nio.file.Paths.get(path).normalize();
+        String normalized = normalizedPath.toString();
+        // Block access to /data/ and app private directories
+        if (normalized.startsWith("/data") || normalized.contains("/data/data/")) {
+            return false;
+        }
+        // Optionally, block other sensitive directories if needed
+        return true;
     }
 
     private void setAlbumCover() throws IOException {
