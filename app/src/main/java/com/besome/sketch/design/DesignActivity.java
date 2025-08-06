@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -141,6 +140,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     private Menu bottomMenu;
     private PopupMenu bottomPopupMenu;
     private MaterialButton btnRun;
+    private MaterialButton btnOptions;
     private ProjectFileBean projectFile;
     private TextView fileName;
     private String currentJavaFileName;
@@ -475,10 +475,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             buildTask.execute();
         });
 
-        Button btnOptions = findViewById(R.id.btn_options);
-        btnOptions.setOnClickListener(v -> {
-            bottomPopupMenu.show();
-        });
+        btnOptions = findViewById(R.id.btn_options);
+        btnOptions.setOnClickListener(v -> bottomPopupMenu.show());
 
         bottomPopupMenu = new PopupMenu(this, btnOptions);
         bottomMenu = bottomPopupMenu.getMenu();
@@ -518,6 +516,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             toViewCodeEditor();
             return true;
         });
+        bottomPopupMenu.setOnDismissListener(menu -> btnOptions.setChecked(false));
 
         xmlLayoutOrientation = findViewById(R.id.img_orientation);
         viewPager = findViewById(R.id.viewpager);
@@ -1032,6 +1031,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         private final NotificationManager notificationManager;
         private final int notificationId = 1;
         private final MaterialButton btnRun;
+        private final MaterialButton btnOptions;
         private final LinearLayout progressContainer;
         private final TextView progressText;
         private final LinearProgressIndicator progressBar;
@@ -1043,6 +1043,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             super(activity);
             notificationManager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
             btnRun = activity.btnRun;
+            btnOptions = activity.btnOptions;
             progressContainer = activity.findViewById(R.id.progress_container);
             progressText = activity.findViewById(R.id.progress_text);
             progressBar = activity.findViewById(R.id.progress);
@@ -1331,9 +1332,12 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
         private void updateRunButton(boolean isRunning) {
             var context = getActivity();
-            btnRun.setBackgroundTintList(ColorStateList.valueOf(ThemeUtils.getColor(context, isRunning ? R.attr.colorErrorContainer : R.attr.colorPrimaryContainer)));
+            btnRun.setBackgroundTintList(ColorStateList.valueOf(ThemeUtils.getColor(context, isRunning ? R.attr.colorErrorContainer : R.attr.colorPrimary)));
             btnRun.setIcon(ContextCompat.getDrawable(context, isRunning ? R.drawable.ic_mtrl_stop : R.drawable.ic_mtrl_run));
-            btnRun.setIconTint(ColorStateList.valueOf(ThemeUtils.getColor(context, isRunning ? R.attr.colorOnErrorContainer : R.attr.colorOnPrimaryContainer)));
+            btnRun.setIconTint(ColorStateList.valueOf(ThemeUtils.getColor(context, isRunning ? R.attr.colorOnErrorContainer : R.attr.colorSurfaceContainerLowest)));
+            btnRun.setTextColor(ColorStateList.valueOf(ThemeUtils.getColor(context, isRunning ? R.attr.colorOnErrorContainer : R.attr.colorSurfaceContainerLowest)));
+            btnRun.setText(isRunning ? "Stop" : "Run");
+            btnOptions.setEnabled(!isRunning);
             progressContainer.setVisibility(isRunning ? View.VISIBLE : View.GONE);
         }
     }
