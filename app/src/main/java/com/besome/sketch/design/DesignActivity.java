@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.NotificationCompat;
@@ -479,6 +482,10 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
         btnOptions = findViewById(R.id.btn_options);
         btnOptions.setOnClickListener(v -> {
             bottomPopupMenu.show();
+            Drawable icon = AppCompatResources.getDrawable(DesignActivity.this, R.drawable.keyboard_arrow_down_to_up_animated);
+            btnOptions.setIcon(icon);
+            assert icon != null;
+            ((AnimatedVectorDrawable) icon).start();
         });
 
         bottomPopupMenu = new PopupMenu(this, btnOptions);
@@ -519,7 +526,13 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             toViewCodeEditor();
             return true;
         });
-        bottomPopupMenu.setOnDismissListener(menu -> btnOptions.setChecked(false));
+        bottomPopupMenu.setOnDismissListener(menu -> {
+            btnOptions.setChecked(false);
+            Drawable icon = AppCompatResources.getDrawable(DesignActivity.this, R.drawable.keyboard_arrow_up_to_down_animated);
+            btnOptions.setIcon(icon);
+            assert icon != null;
+            ((AnimatedVectorDrawable) icon).start();
+        });
 
         xmlLayoutOrientation = findViewById(R.id.img_orientation);
         viewPager = findViewById(R.id.viewpager);
