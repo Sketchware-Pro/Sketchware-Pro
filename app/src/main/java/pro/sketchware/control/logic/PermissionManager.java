@@ -1,7 +1,5 @@
 package pro.sketchware.control.logic;
 
-import android.util.Log;
-
 import com.besome.sketch.beans.BlockBean;
 
 import java.util.ArrayList;
@@ -10,7 +8,7 @@ import java.util.Map.Entry;
 import a.a.a.Jx;
 import a.a.a.jC;
 import a.a.a.jq;
-import extensions.anbui.sketchware.project.ProjectDataDayDream;
+import extensions.anbui.daydream.project.ProjectDataDayDream;
 
 public class PermissionManager {
 

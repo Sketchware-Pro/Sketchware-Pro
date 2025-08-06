@@ -177,6 +177,15 @@
                     android:lines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <CheckBox
+                android:id="@+id/cb_add_suffix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add _fragment suffix."
+                android:checked="true"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -537,6 +546,26 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_marginRight="8dp"
+                            android:padding="4dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_mtrl_info" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Please click Save to save project data before running, exporting APK, AAB or source code for DayDream features to work properly." />
+                    </LinearLayout>
 
                 </LinearLayout>
 

@@ -28,8 +28,8 @@ import a.a.a.rq;
 import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.xB;
-import extensions.anbui.sketchware.configs.Configs;
-import extensions.anbui.sketchware.project.ProjectDataDayDream;
+import extensions.anbui.daydream.configs.Configs;
+import extensions.anbui.daydream.project.ProjectDataDayDream;
 import mod.hey.studios.util.Helper;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageScreenActivityAddTempBinding;
@@ -266,7 +266,8 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
                 finish();
             } else if (isValid(nameValidator)) {
-                String var4 = Helper.getText(binding.edName) + getSuffix(binding.viewTypeSelector);
+                String var4 = Helper.getText(binding.edName);
+                if (binding.cbAddSuffix.isChecked()) var4 += getSuffix(binding.viewTypeSelector);
                 ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
                 Intent intent = new Intent();
                 intent.putExtra("project_file", projectFileBean);
@@ -432,10 +433,13 @@ public class AddViewActivity extends BaseAppCompatActivity {
             resetTranslationX(binding.viewOrientationSelectorLayout);
             resetTranslationX(binding.viewKeyboardSettingsSelectorLayout);
             resetTranslationX(binding.lnDaydreamfeaturesforactivity);
+//            binding.cbAddSuffix.setVisibility(View.GONE);
         } else {
             slideOutHorizontally(binding.viewOrientationSelectorLayout, "left");
             slideOutHorizontally(binding.viewKeyboardSettingsSelectorLayout, "left");
             slideOutHorizontally(binding.lnDaydreamfeaturesforactivity, "left");
+//            binding.cbAddSuffix.setVisibility(View.VISIBLE);
+//            binding.cbAddSuffix.setText("Add " + getSuffix(binding.viewTypeSelector) + " suffix.");
         }
     }
 }

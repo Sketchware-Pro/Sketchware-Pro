@@ -45,6 +45,7 @@ import a.a.a.oB;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
+import extensions.anbui.daydream.project.ProjectDataBuildConfig;
 import mod.hey.studios.project.ProjectSettings;
 import mod.hey.studios.util.Helper;
 import mod.hey.studios.util.ProjectFile;
@@ -231,6 +232,7 @@ public class MyProjectSettingActivity extends BaseAppCompatActivity implements V
             if (isInputValid()) {
                 new SaveProjectAsyncTask(getApplicationContext()).execute();
                 if (icon != null) saveBitmapTo(icon, getCustomIconPath());
+                if (!updatingExistingProject) ProjectDataBuildConfig.setDataForFirstTimeProjectCreation(sc_id);
             }
         } else if (id == R.id.cancel) {
             finish();
