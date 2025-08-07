@@ -381,13 +381,28 @@ public class yq {
         String customApplicationClassName = new ProjectSettings(sc_id).getValue(ProjectSettings.SETTING_APPLICATION_CLASS,
                 ".SketchApplication");
         boolean notUsingCustomApplicationClass = customApplicationClassName.equals(".SketchApplication");
-        if (!new File(javaDir, "SketchApplication.java").exists() && notUsingCustomApplicationClass) {
+
+        if (!customApplicationClassName.startsWith(".")) {
+            customApplicationClassName = "." + customApplicationClassName; // since sketchware don't allow creating any java file outside the package name
+        }
+
+        String fullCustomClassName = packageName + customApplicationClassName;
+
+        int lastDot = fullCustomClassName.lastIndexOf('.');
+        String customClassSimpleName = fullCustomClassName.substring(lastDot + 1);
+        String customClassPackage = fullCustomClassName.substring(0, lastDot);
+        String customClassPackageAsFolders = customClassPackage.replace('.', File.separatorChar);
+
+        File targetApplicationFile = new File(javaDir + File.separator + customClassPackageAsFolders + ".java");
+
+        if (!targetApplicationFile.exists()) {
             boolean applyMultiDex = projectSettings.getMinSdkVersion() < 21;
 
             String sketchApplicationFileContent = PACKAGE_PLACEHOLDER_PATTERN.matcher(fileUtil.b(
                     context,
                     "debug" + File.separator + "SketchApplication.java"
             )).replaceAll(packageName);
+
             if (applyMultiDex) {
                 sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
                         "Application \\{", "androidx.multidex.MultiDexApplication {");
@@ -407,29 +422,52 @@ public class yq {
                                         "        DynamicColors.applyToActivitiesIfAvailable(this);")
                         .replace("import android.util.Log;", "import android.util.Log;\nimport com.google.android.material.color.DynamicColors;");
             }
+            if (!notUsingCustomApplicationClass) {
+                sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
+                        "public class SketchApplication", "public class " + customClassSimpleName);
+                sketchApplicationFileContent = sketchApplicationFileContent.replaceAll(
+                        "package " + packageName + ";", "package " + customClassPackage + ";");
+
+                if (logcatEnabled) {
+                    sketchApplicationFileContent = sketchApplicationFileContent.replace(
+                            "import android.util.Log;",
+                            "import android.util.Log;\n" +
+                                    "import " + packageName + ".DebugActivity;\n" +
+                                    "import " + packageName + ".SketchLogger;"
+                    );
+                } else {
+                    sketchApplicationFileContent = sketchApplicationFileContent.replace(
+                            "import android.util.Log;",
+                            "import android.util.Log;\n" +
+                                    "import " + packageName + ".DebugActivity;"
+                    );
+                }
+            }
 
             fileUtil.b(javaFilesPath + File.separator
-                            + packageNameAsFolders + File.separator
-                            + "SketchApplication.java",
+                            + customClassPackageAsFolders + File.separator
+                            + customClassSimpleName + ".java",
                     sketchApplicationFileContent);
         }
 
         if (logcatEnabled) {
-            if (!new File(javaDir, "SketchLogger.java").exists()) {
-                String sketchLoggerFileContent = PACKAGE_PLACEHOLDER_PATTERN.matcher(fileUtil.b(
+            File sketchLoggerFile = new File(javaDir, "SketchLogger.java");
+            if (!sketchLoggerFile.exists()) {
+                String sketchLoggerFileContent = fileUtil.b(
                         context,
-                        "debug" + File.separator
-                                + "SketchLogger.java"
-                )).replaceAll(packageName);
+                        "debug" + File.separator + "SketchLogger.java"
+                );
 
-                if (!notUsingCustomApplicationClass && customApplicationClassName.charAt(0) == '.') {
-                    sketchLoggerFileContent = sketchLoggerFileContent.replaceAll("SketchApplication\\.getContext\\(\\)",
-                            customApplicationClassName.substring(1) + ".getContext()");
-                }
+                sketchLoggerFileContent = PACKAGE_PLACEHOLDER_PATTERN.matcher(sketchLoggerFileContent).replaceAll(packageName);
 
-                fileUtil.b(javaFilesPath + File.separator
-                        + packageNameAsFolders + File.separator
-                        + "SketchLogger.java", sketchLoggerFileContent);
+                sketchLoggerFileContent = sketchLoggerFileContent.replace("<?class_name_package?>", customClassPackage);
+
+                sketchLoggerFileContent = sketchLoggerFileContent.replace("<?class_name?>", customClassSimpleName);
+
+                fileUtil.b(
+                        javaFilesPath + File.separator + packageNameAsFolders + File.separator + "SketchLogger.java",
+                        sketchLoggerFileContent
+                );
             }
         }
     }
