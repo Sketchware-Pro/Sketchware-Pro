@@ -465,7 +465,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
 
         btnRun = findViewById(R.id.btn_run);
         btnRun.setOnClickListener(v -> {
-            if (currentBuildTask != null && !currentBuildTask.canceled) {
+            if (currentBuildTask != null && !currentBuildTask.canceled && !currentBuildTask.isBuildFinished) {
                 currentBuildTask.cancelBuild();
                 return;
             }
