@@ -102,7 +102,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_expand_less_grey600_24dp"
+                android:src="@drawable/ic_expand_less_grey600_48"
                 android:id="@+id/ic_arrow"
                 app:tint="?attr/colorControlNormal" />
         </LinearLayout>
