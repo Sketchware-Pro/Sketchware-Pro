@@ -143,23 +143,27 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <Button
-                    android:id="@+id/btn_run"
-                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
+                <com.google.android.material.button.MaterialSplitButton
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:paddingHorizontal="8dp"
-                    app:icon="@drawable/ic_mtrl_run" />
+                    android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/btn_options"
-                    style="@style/Widget.Material3Expressive.Button.IconButton.Tonal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:paddingHorizontal="8dp"
-                    app:icon="@drawable/ic_tune_24" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_run"
+                        style="?attr/materialSplitButtonLeadingFilledStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Run"
+                        app:icon="@drawable/ic_mtrl_run" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_options"
+                        style="?attr/materialSplitButtonIconFilledStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:icon="@drawable/m3_split_button_chevron_avd"
+                        app:iconSize="24dp" />
+
+                </com.google.android.material.button.MaterialSplitButton>
             </LinearLayout>
         </LinearLayout>
 

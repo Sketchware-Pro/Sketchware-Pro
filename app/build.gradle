@@ -142,7 +142,7 @@ dependencies {
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
 
-    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.26.4'
+    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.25.3'
 
     // Analytics and Crashlytics
     if (analyticsEnabled) {

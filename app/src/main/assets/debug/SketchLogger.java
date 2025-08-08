@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import <?class_name_package?>.<?class_name?>;
+
 /**
  * This class provides a mechanism to read and broadcast logcat messages to a designated receiver.
  * It utilizes a dedicated thread to continuously read logcat output and send it via a broadcast intent.
@@ -65,7 +67,7 @@ public class SketchLogger {
     }
 
     public static void broadcastLog(String log) {
-        Context context = SketchApplication.getContext();
+        Context context = <?class_name?>.getContext();
 
         Intent intent = new Intent();
         intent.setAction("pro.sketchware.ACTION_NEW_DEBUG_LOG");
