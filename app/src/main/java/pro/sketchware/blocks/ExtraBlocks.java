@@ -75,6 +75,179 @@ public class ExtraBlocks {
         //RewardedVideoAd
         arrayList.add(addBlock("rewardedVideoAdLoad", " ", "", "RewardedAd.load(%2$s.this, _reward_ad_unit_id, new AdRequest.Builder().build(), _%1$s_rewarded_ad_load_callback);", "#2ca5e2", "%m.videoad load in %m.activity"));
         arrayList.add(addBlock("rewardedVideoAdShow", " ", "", "%1s.show(%2$s.this, _%1$s_on_user_earned_reward_listener);", "#2ca5e2", "%m.videoad show in %m.activity"));
+
+        // RequestNetwork REST helpers
+        arrayList.add(addBlock(
+                "requestnetworkAddHeader",
+                " ",
+                "",
+                "%1$s.getHeaders().put(%2$s, %3$s);",
+                "#2ca5e2",
+                "%m.requestnetwork addHeader key %s value %s"
+        ));
+        arrayList.add(addBlock(
+                "requestnetworkClearHeaders",
+                " ",
+                "",
+                "%1$s.getHeaders().clear();",
+                "#2ca5e2",
+                "%m.requestnetwork clearHeaders"
+        ));
+        arrayList.add(addBlock(
+                "requestnetworkAddParam",
+                " ",
+                "",
+                "%1$s.getParams().put(%2$s, %3$s);",
+                "#2ca5e2",
+                "%m.requestnetwork addParam key %s value %s"
+        ));
+        arrayList.add(addBlock(
+                "requestnetworkClearParams",
+                " ",
+                "",
+                "%1$s.getParams().clear();",
+                "#2ca5e2",
+                "%m.requestnetwork clearParams"
+        ));
+        arrayList.add(addBlock(
+                "requestnetworkSetJsonBodyFromMap",
+                " ",
+                "",
+                "%1$s.setParams(%2$s, RequestNetworkController.REQUEST_BODY);",
+                "#2ca5e2",
+                "%m.requestnetwork setJsonBody from %m.varMap"
+        ));
+        arrayList.add(addBlock(
+                "requestnetworkSetRequestType",
+                " ",
+                "",
+                "%1$s.setParams(%1$s.getParams(), RequestNetworkController.%2$s);",
+                "#2ca5e2",
+                "%m.requestnetwork setRequestType %m.requestType"
+        ));
+        arrayList.add(addBlock(
+                "requestnetworkGET",
+                " ",
+                "",
+                "%1$s.startRequestNetwork(RequestNetworkController.GET, %2$s, %3$s, _%1$s_request_listener);",
+                "#2ca5e2",
+                "%m.requestnetwork GET url %s tag %s"
+        ));
+        arrayList.add(addBlock(
+                "requestnetworkPOST",
+                " ",
+                "",
+                "%1$s.startRequestNetwork(RequestNetworkController.POST, %2$s, %3$s, _%1$s_request_listener);",
+                "#2ca5e2",
+                "%m.requestnetwork POST url %s tag %s"
+        ));
+        arrayList.add(addBlock(
+                "requestnetworkPUT",
+                " ",
+                "",
+                "%1$s.startRequestNetwork(RequestNetworkController.PUT, %2$s, %3$s, _%1$s_request_listener);",
+                "#2ca5e2",
+                "%m.requestnetwork PUT url %s tag %s"
+        ));
+        arrayList.add(addBlock(
+                "requestnetworkDELETE",
+                " ",
+                "",
+                "%1$s.startRequestNetwork(RequestNetworkController.DELETE, %2$s, %3$s, _%1$s_request_listener);",
+                "#2ca5e2",
+                "%m.requestnetwork DELETE url %s tag %s"
+        ));
+
+        // REST API (RequestNetwork) convenience blocks
+        arrayList.add(addBlock(
+                "requestnetworkAddHeader",
+                " ",
+                "",
+                "%1$s.getHeaders().put(%2$s, %3$s);",
+                "#2ca5e2",
+                "%m.requestnetwork addHeader key %s value %s"
+        ));
+
+        arrayList.add(addBlock(
+                "requestnetworkClearHeaders",
+                " ",
+                "",
+                "%1$s.getHeaders().clear();",
+                "#2ca5e2",
+                "%m.requestnetwork clearHeaders"
+        ));
+
+        arrayList.add(addBlock(
+                "requestnetworkAddParam",
+                " ",
+                "",
+                "%1$s.getParams().put(%2$s, %3$s);",
+                "#2ca5e2",
+                "%m.requestnetwork addParam key %s value %s"
+        ));
+
+        arrayList.add(addBlock(
+                "requestnetworkClearParams",
+                " ",
+                "",
+                "%1$s.getParams().clear();",
+                "#2ca5e2",
+                "%m.requestnetwork clearParams"
+        ));
+
+        arrayList.add(addBlock(
+                "requestnetworkSetJsonBodyFromMap",
+                " ",
+                "",
+                "%1$s.setParams(%2$s, RequestNetworkController.REQUEST_BODY);",
+                "#2ca5e2",
+                "%m.requestnetwork setJsonBody from %m.map"
+        ));
+
+        arrayList.add(addBlock(
+                "requestnetworkSetRequestType",
+                " ",
+                "",
+                "%1$s.setParams(%1$s.getParams(), RequestNetworkController.%2$s);",
+                "#2ca5e2",
+                "%m.requestnetwork setRequestType %m.requestType"
+        ));
+
+        arrayList.add(addBlock(
+                "requestnetworkGET",
+                " ",
+                "",
+                "%1$s.startRequestNetwork(RequestNetworkController.GET, %2$s, %3$s, _%1$s_request_listener);",
+                "#2ca5e2",
+                "%m.requestnetwork GET url %s tag %s"
+        ));
+
+        arrayList.add(addBlock(
+                "requestnetworkPOST",
+                " ",
+                "",
+                "%1$s.startRequestNetwork(RequestNetworkController.POST, %2$s, %3$s, _%1$s_request_listener);",
+                "#2ca5e2",
+                "%m.requestnetwork POST url %s tag %s"
+        ));
+
+        arrayList.add(addBlock(
+                "requestnetworkPUT",
+                " ",
+                "",
+                "%1$s.startRequestNetwork(RequestNetworkController.PUT, %2$s, %3$s, _%1$s_request_listener);",
+                "#2ca5e2",
+                "%m.requestnetwork PUT url %s tag %s"
+        ));
+
+        arrayList.add(addBlock(
+                "requestnetworkDELETE",
+                " ",
+                "",
+                "%1$s.startRequestNetwork(RequestNetworkController.DELETE, %2$s, %3$s, _%1$s_request_listener);",
+                "#2ca5e2",
+                "%m.requestnetwork DELETE url %s tag %s"
+        ));
     }
 
     /**

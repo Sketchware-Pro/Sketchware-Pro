@@ -1128,6 +1128,18 @@ public class ExtraPaletteBlock {
                     logicEditor.a(" ", "requestnetworkSetParams");
                     logicEditor.a(" ", "requestnetworkSetHeaders");
                     logicEditor.a(" ", "requestnetworkStartRequestNetwork");
+
+                    // Extra REST API helpers
+                    logicEditor.a(" ", "requestnetworkAddHeader");
+                    logicEditor.a(" ", "requestnetworkClearHeaders");
+                    logicEditor.a(" ", "requestnetworkAddParam");
+                    logicEditor.a(" ", "requestnetworkClearParams");
+                    logicEditor.a(" ", "requestnetworkSetJsonBodyFromMap");
+                    logicEditor.a(" ", "requestnetworkSetRequestType");
+                    logicEditor.a(" ", "requestnetworkGET");
+                    logicEditor.a(" ", "requestnetworkPOST");
+                    logicEditor.a(" ", "requestnetworkPUT");
+                    logicEditor.a(" ", "requestnetworkDELETE");
                 }
                 if (extraBlocks.isComponentUsed(ComponentBean.COMPONENT_TYPE_TEXT_TO_SPEECH)) {
                     logicEditor.a("TextToSpeech", getTitleBgColor());
