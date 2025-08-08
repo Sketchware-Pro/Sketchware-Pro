@@ -79,9 +79,7 @@ public class Material3LibraryManager {
         if (!isMaterial3Enabled()) {
             return R.style.ThemeOverlay_SketchwarePro_ViewEditor;
         }
-
-        boolean isDark = getTheme().equals("Dark") ||
-                (!getTheme().equals("Light") && ThemeUtils.isDarkThemeEnabled(context));
+        boolean isDark = canUseNightVariantColors();
 
         if (isDynamicColorsEnabled()) {
             return isDark

@@ -69,6 +69,17 @@ public class StringsEditorManager {
         String value = node.getTextContent().replace("\\", "");
         map.put("key", key);
         map.put("text", value);
+
+        for (int i = 0; i < node.getAttributes().getLength(); i++) {
+            Node attr = node.getAttributes().item(i);
+            String attrName = attr.getNodeName();
+            String attrValue = attr.getNodeValue();
+
+            if (!attrName.equals("name")) {
+                map.put(attrName, attrValue);
+            }
+        }
+
         if (key.equals("app_name")) {
             hasAppNameKey = true;
             list.add(0, map);
@@ -95,14 +106,13 @@ public class StringsEditorManager {
             }
             HashMap<String, Object> map = listMap.get(i);
             String key = (String) map.get("key");
-            Object textObj = map.get("text");
-            assert textObj != null;
-            String text = textObj instanceof String ? (String) textObj : textObj.toString();
+            String text = (String) map.getOrDefault("text", "");
             String escapedText = ResourcesEditorActivity.escapeXml(text);
             xmlString.append("    <string name=\"").append(key).append("\"");
-            if (map.containsKey("translatable")) {
-                String translatable = (String) map.get("translatable");
-                xmlString.append(" translatable=\"").append(translatable).append("\"");
+            for (String mapKey : map.keySet()) {
+                if (mapKey.equals("text") || mapKey.equals("key")) continue;
+                String translatable = (String) map.get(mapKey);
+                xmlString.append(" ").append(mapKey).append("=\"").append(translatable).append("\"");
             }
             xmlString.append(">").append(escapedText).append("</string>\n");
         }

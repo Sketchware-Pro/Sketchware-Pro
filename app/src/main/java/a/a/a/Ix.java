@@ -13,7 +13,6 @@ import android.util.Pair;
 import com.besome.sketch.beans.ProjectFileBean;
 import com.google.gson.Gson;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -556,10 +555,7 @@ public class Ix {
         applicationTag.addAttribute("android", "label", "@string/app_name");
 
         String applicationClassName = settings.getValue(ProjectSettings.SETTING_APPLICATION_CLASS, ".SketchApplication");
-        if (c.isDebugBuild || !applicationClassName.equals(".SketchApplication") ||
-                new File(fpu.getPathJava(c.sc_id), "SketchApplication.java").exists()) {
-            applicationTag.addAttribute("android", "name", applicationClassName);
-        }
+        applicationTag.addAttribute("android", "name", applicationClassName);
         if (addRequestLegacyExternalStorage) {
             applicationTag.addAttribute("android", "requestLegacyExternalStorage", "true");
         }

@@ -112,6 +112,7 @@ import pro.sketchware.utility.InjectAttributeHandler;
 import pro.sketchware.utility.InvokeUtil;
 import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.ResourceUtil;
+import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.SvgUtils;
 
 public class ViewPane extends RelativeLayout {
@@ -418,23 +419,19 @@ public class ViewPane extends RelativeLayout {
                                 }
                             }
                         } else {
-                            try {
-                                XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
-                                ImageView tempImageView = new AppCompatImageView(getContext()) {
-                                    @Override
-                                    public void setImageDrawable(android.graphics.drawable.Drawable drawable) {
-                                        fab.setImageDrawable(drawable);
-                                    }
-                                };
-                                xmlToSvgConverter.setImageVectorFromFile(tempImageView,
-                                        xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
-                            } catch (Exception fallbackException) {
-                                fab.setImageResource(R.drawable.default_image);
-                            }
+                            XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
+                            ImageView tempImageView = new AppCompatImageView(getContext()) {
+                                @Override
+                                public void setImageDrawable(android.graphics.drawable.Drawable drawable) {
+                                    fab.setImageDrawable(drawable);
+                                }
+                            };
+                            xmlToSvgConverter.setImageVectorFromFile(tempImageView, xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                         }
                     }
                 } catch (Exception e) {
                     Log.e("ViewPane", "Error setting FAB icon: " + e.getMessage(), e);
+                    viewBean.image.resName = "default_image";
                     ((FloatingActionButton) view).setImageResource(R.drawable.default_image);
                 }
             }
@@ -518,7 +515,7 @@ public class ViewPane extends RelativeLayout {
                 try {
                     String imagelocation = resourcesManager.f(viewBean.image.resName);
                     File file = new File(imagelocation);
-                    if (file.exists()) {
+                    if (file.exists() && file.length() > 0) {
                         int round3 = Math.round(getResources().getDisplayMetrics().density / 2.0f);
                         if (imagelocation.endsWith(".xml")) {
                             FilePathUtil fpu = new FilePathUtil();
@@ -532,6 +529,8 @@ public class ViewPane extends RelativeLayout {
                         xmlToSvgConverter.setImageVectorFromFile(((ImageView) view), xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                     }
                 } catch (Exception unused2) {
+                    FileUtil.deleteFile(new XmlToSvgConverter().getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
+                    viewBean.image.resName = "default_image";
                     ((ImageView) view).setImageResource(R.drawable.default_image);
                 }
             }
