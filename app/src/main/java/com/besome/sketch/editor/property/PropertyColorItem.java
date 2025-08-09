@@ -93,14 +93,12 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
         this.resValue = resValue;
         if (value == 0) {
             tvValue.setText("TRANSPARENT");
-            viewColor.setBackgroundColor(value);
         } else if (value == 0xffffff) {
             tvValue.setText("NONE");
-            viewColor.setBackgroundColor(value);
         } else {
             tvValue.setText(resValue);
-            viewColor.setBackgroundColor(value);
         }
+        viewColor.setBackgroundColor(value);
     }
 
     @Override
@@ -144,23 +142,14 @@ public class PropertyColorItem extends RelativeLayout implements View.OnClickLis
     }
 
     private void showColorPicker(View anchorView) {
-        boolean colorNoneAvailable;
-        boolean colorTransparentAvailable;
-        if (key.equals("property_background_color")) {
-            colorTransparentAvailable = true;
-            colorNoneAvailable = true;
-        } else {
-            colorTransparentAvailable = false;
-            colorNoneAvailable = false;
-        }
-        String color;
         String tvValueStr = tvValue.getText().toString();
+        String color;
         if (tvValueStr.equals("NONE") || tvValueStr.equals("TRANSPARENT")) {
             color = tvValueStr;
         } else
             color = Objects.requireNonNullElseGet(resValue, () -> String.format("#%06X", value));
 
-        ColorPickerDialog colorPicker = new ColorPickerDialog((Activity) context, color, colorTransparentAvailable, colorNoneAvailable, sc_id);
+        ColorPickerDialog colorPicker = new ColorPickerDialog((Activity) context, color, key.equals("property_background_color"), true, sc_id);
         colorPicker.a(new ColorPickerDialog.b() {
             @Override
             public void a(int var1) {

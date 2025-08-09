@@ -69,9 +69,9 @@ public class TextBean extends nA implements Parcelable {
         text = "";
         textSize = 12;
         textType = TEXT_TYPE_NORMAL;
-        textColor = 0xff000000;
+        textColor = 0xffffff;
         hint = "";
-        hintColor = 0xff607d8b;
+        hintColor = 0xffffff;
         singleLine = 0;
         line = 0;
         inputType = INPUT_TYPE_TEXT;

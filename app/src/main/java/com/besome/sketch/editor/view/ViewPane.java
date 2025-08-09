@@ -12,6 +12,7 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Pair;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.View;
@@ -113,6 +114,7 @@ import pro.sketchware.utility.InvokeUtil;
 import pro.sketchware.utility.PropertiesUtil;
 import pro.sketchware.utility.ResourceUtil;
 import pro.sketchware.utility.SvgUtils;
+import pro.sketchware.utility.ThemeUtils;
 
 public class ViewPane extends RelativeLayout {
     private final String stringsStart = "@string/";
@@ -125,6 +127,8 @@ public class ViewPane extends RelativeLayout {
     private kC resourcesManager;
     private String sc_id;
     private SvgUtils svgUtils;
+    private int defaultTextColor = 0; // need to save the original color before changes, cause using getDefaultColor() returns the current text color
+    private int defaultHintColor = 0;
 
     private Material3LibraryManager material3LibraryManager;
 
@@ -1276,8 +1280,13 @@ public class ViewPane extends RelativeLayout {
         } else {
             textView.setTypeface(null, viewBean.text.textType);
         }
+        if (defaultTextColor == 0) {
+            defaultTextColor =  textView.getTextColors().getDefaultColor();
+        }
         if (viewBean.text.resTextColor == null) {
-            textView.setTextColor(viewBean.text.textColor);
+            textView.setTextColor(
+                    viewBean.text.textColor == 0xffffff ? defaultTextColor : viewBean.text.textColor
+            );
         } else {
             textView.setTextColor(PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(context, viewBean.text.resTextColor, 3, material3LibraryManager.canUseNightVariantColors())));
         }
@@ -1314,8 +1323,13 @@ public class ViewPane extends RelativeLayout {
     private void updateEditText(EditText editText, ViewBean viewBean) {
         String str = viewBean.text.hint;
         editText.setHint(str.startsWith(stringsStart) ? getXmlString(str) : str);
+        if (defaultHintColor == 0) {
+            defaultHintColor = editText.getHintTextColors().getDefaultColor();
+        }
         if (viewBean.text.resHintColor == null) {
-            editText.setHintTextColor(viewBean.text.hintColor);
+            editText.setHintTextColor(
+                    viewBean.text.hintColor == 0xffffff ? defaultHintColor : viewBean.text.hintColor
+            );
         } else {
             editText.setHintTextColor(PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(context, viewBean.text.resHintColor, 3, material3LibraryManager.canUseNightVariantColors())));
         }

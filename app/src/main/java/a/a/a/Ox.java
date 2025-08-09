@@ -768,7 +768,7 @@ public class Ox {
                 nx.addAttribute("android", "textStyle", "bold|italic");
             }
         }
-        if (viewBean.text.textColor != 0) {
+        if (viewBean.text.textColor != 0xffffff) {
             if (!hasAttr("textColor", viewBean) && !toNotAdd.contains("android:textColor") && !injectHandler.contains("textColor") && viewBean.text.resTextColor != null) {
                 if (viewBean.text.resTextColor.startsWith("?") || viewBean.text.resTextColor.startsWith("@color/")) {
                     nx.addAttribute("android", "textColor", viewBean.text.resTextColor);
@@ -791,7 +791,7 @@ public class Ox {
                         nx.addAttribute("android", "hint", escapeXML(hint));
                     }
                 }
-                if (viewBean.text.hintColor != 0) {
+                if (viewBean.text.hintColor != 0xffffff) {
                     if (!hasAttr("textColorHint", viewBean) && !toNotAdd.contains("android:textColorHint") && (viewBean.text.resHintColor != null)) {
                         if (viewBean.text.resHintColor.startsWith("?") || viewBean.text.resHintColor.startsWith("@color/")) {
                             nx.addAttribute("android", "textColorHint", viewBean.text.resHintColor);
