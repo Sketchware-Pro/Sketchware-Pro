@@ -33,20 +33,31 @@ import pro.sketchware.databinding.ManageScreenActivityAddTempBinding;
 
 public class AddViewActivity extends BaseAppCompatActivity {
 
+    public static final int REQUEST_CODE_EDIT = 265;
+    public static final int REQUEST_CODE_ADD = 264;
+    public static final int REQUEST_CODE_PRESET_SELECTION = 276;
+    public static final int VIEW_TYPE_ACTIVITY = 0;
+    public static final int VIEW_TYPE_FRAGMENT = 1;
+    public static final int VIEW_TYPE_DIALOG_FRAGMENT = 2;
+    public static final int VIEW_TYPE_BOTTOM_DIALOG_FRAGMENT = 3;
+    private static final int FEATURE_TYPE_STATUS_BAR = 0;
+    private static final int FEATURE_TYPE_TOOLBAR = 1;
+    private static final int FEATURE_TYPE_DRAWER = 2;
+    private static final int FEATURE_TYPE_FAB = 3;
     private YB nameValidator;
     private boolean featureStatusBar, featureToolbar, featureFab, featureDrawer;
     private int requestCode;
     private ProjectFileBean projectFileBean;
-    private String P;
+    private String presetName;
     private ArrayList<FeatureItem> featureItems;
     private FeaturesAdapter featuresAdapter;
-
+    private ArrayList<String> screenNames;
     private ManageScreenActivityAddTempBinding binding;
 
-    private void a(FeatureItem featureItem) {
+    private void handleFeatureAnimation(FeatureItem featureItem) {
         int type = featureItem.type;
         switch (type) {
-            case 0 -> {
+            case FEATURE_TYPE_STATUS_BAR -> {
                 if (featureItem.isEnabled) {
                     resetTranslationY(binding.previewStatusbar);
                     if (featureToolbar) {
@@ -61,7 +72,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
                     }
                 }
             }
-            case 1 -> {
+            case FEATURE_TYPE_TOOLBAR -> {
                 if (featureItem.isEnabled) {
                     if (!featureStatusBar) {
                         binding.previewToolbar.animate().translationY((float) (-binding.previewStatusbar.getMeasuredHeight())).start();
@@ -74,14 +85,14 @@ public class AddViewActivity extends BaseAppCompatActivity {
                     slideInVertically(binding.previewToolbar);
                 }
             }
-            case 2 -> {
+            case FEATURE_TYPE_DRAWER -> {
                 if (featureItem.isEnabled) {
                     resetTranslationX(binding.previewDrawer);
                 } else {
                     slideOutHorizontally(binding.previewDrawer, "left");
                 }
             }
-            case 3 -> {
+            case FEATURE_TYPE_FAB -> {
                 if (featureItem.isEnabled) {
                     resetTranslationX(binding.previewFab);
                 } else {
@@ -145,15 +156,15 @@ public class AddViewActivity extends BaseAppCompatActivity {
         view.animate().translationY(0.0F).start();
     }
 
-    private ArrayList<ViewBean> getPresetData(String var1) {
-        return rq.f(var1);
+    private ArrayList<ViewBean> getPresetData(String presetName) {
+        return rq.f(presetName);
     }
 
-    private void initItem(int option) {
-        featureToolbar = (option & ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) == ProjectFileBean.OPTION_ACTIVITY_TOOLBAR;
-        featureStatusBar = (option & ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN) != ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
-        featureFab = (option & ProjectFileBean.OPTION_ACTIVITY_FAB) == ProjectFileBean.OPTION_ACTIVITY_FAB;
-        featureDrawer = (option & ProjectFileBean.OPTION_ACTIVITY_DRAWER) == ProjectFileBean.OPTION_ACTIVITY_DRAWER;
+    private void initItem(int featureOptions) {
+        featureToolbar = (featureOptions & ProjectFileBean.OPTION_ACTIVITY_TOOLBAR) == ProjectFileBean.OPTION_ACTIVITY_TOOLBAR;
+        featureStatusBar = (featureOptions & ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN) != ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
+        featureFab = (featureOptions & ProjectFileBean.OPTION_ACTIVITY_FAB) == ProjectFileBean.OPTION_ACTIVITY_FAB;
+        featureDrawer = (featureOptions & ProjectFileBean.OPTION_ACTIVITY_DRAWER) == ProjectFileBean.OPTION_ACTIVITY_DRAWER;
     }
 
     private void initializeItems() {
@@ -170,7 +181,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 276 && resultCode == RESULT_OK) {
             ProjectFileBean presetData = data.getParcelableExtra("preset_data");
-            P = presetData.presetName;
+            presetName = presetData.presetName;
             initItem(presetData.options);
             initializeItems();
         }
@@ -186,8 +197,8 @@ public class AddViewActivity extends BaseAppCompatActivity {
         binding.toolbar.setNavigationOnClickListener(v -> finish());
 
         Intent intent1 = getIntent();
-        ArrayList<String> screenNames = intent1.getStringArrayListExtra("screen_names");
-        requestCode = intent1.getIntExtra("request_code", 264);
+        screenNames = intent1.getStringArrayListExtra("screen_names");
+        requestCode = intent1.getIntExtra("request_code", REQUEST_CODE_ADD);
         projectFileBean = intent1.getParcelableExtra("project_file");
         if (projectFileBean != null) {
             binding.toolbar.setTitle("Edit " + projectFileBean.fileName);
@@ -215,82 +226,92 @@ public class AddViewActivity extends BaseAppCompatActivity {
                 }
             }
         });
-        
-        binding.btnSave.setOnClickListener(v -> {
-            int options = ProjectFileBean.OPTION_ACTIVITY_TOOLBAR;
-            if (265 == requestCode) {
-                projectFileBean.orientation = getSelectedButtonIndex(binding.screenOrientationSelector);
-                projectFileBean.keyboardSetting = getSelectedButtonIndex(binding.keyboardSettingsSelector);
-                if (!featureToolbar) {
-                    options = 0;
-                }
-                if (!featureStatusBar) {
-                    options = options | ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
-                }
-                if (featureFab) {
-                    options = options | ProjectFileBean.OPTION_ACTIVITY_FAB;
-                }
-                if (featureDrawer) {
-                    options = options | ProjectFileBean.OPTION_ACTIVITY_DRAWER;
-                }
-                projectFileBean.options = options;
-                Intent intent = new Intent();
-                intent.putExtra("project_file", projectFileBean);
-                setResult(RESULT_OK, intent);
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete, new Object[0]), bB.TOAST_NORMAL).show();
-                finish();
-            } else if (isValid(nameValidator)) {
-                String var4 = Helper.getText(binding.edName) + getSuffix(binding.viewTypeSelector);
-                ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
-                Intent intent = new Intent();
-                intent.putExtra("project_file", projectFileBean);
-                if (P != null) {
-                    intent.putExtra("preset_views", getPresetData(P));
-                }
-                setResult(RESULT_OK, intent);
-                bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
-                finish();
-            }
 
-        });
+        binding.btnSave.setOnClickListener(v -> handleSaveButtonClick());
 
         binding.btnCancel.setOnClickListener(v -> {
             setResult(RESULT_CANCELED);
             finish();
         });
 
-        if (requestCode == 265) {
-            nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), projectFileBean.fileName);
-            binding.edName.setText(projectFileBean.fileName);
-            binding.edName.setEnabled(false);
-            binding.edName.setBackgroundResource(R.color.transparent);
-            initItem(projectFileBean.options);
-            binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
-            if (projectFileBean.fileName.endsWith("_fragment")) {
-                binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
-                binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
-            }
-            binding.screenOrientationSelector.check(binding.screenOrientationSelector.getChildAt(projectFileBean.orientation).getId());
-            binding.keyboardSettingsSelector.check(binding.keyboardSettingsSelector.getChildAt(projectFileBean.keyboardSetting).getId());
-
-            binding.imgKeyboard.post(() -> {
-                if (binding.keyboardSettingsSelector.getCheckedButtonId() == R.id.select_hidden) {
-                    slideOutVertically(binding.imgKeyboard);
-                }
-            });
+        if (requestCode == REQUEST_CODE_EDIT) {
+            handleEditModeInitialization();
         } else {
-            featureToolbar = true;
-            featureStatusBar = true;
-            nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, screenNames);
+            handleCreateModeInitialization();
         }
         initializeItems();
     }
 
+    private void handleSaveButtonClick() {
+        int options = ProjectFileBean.OPTION_ACTIVITY_TOOLBAR;
+        if (REQUEST_CODE_EDIT == requestCode) {
+            projectFileBean.orientation = getSelectedButtonIndex(binding.screenOrientationSelector);
+            projectFileBean.keyboardSetting = getSelectedButtonIndex(binding.keyboardSettingsSelector);
+            if (!featureToolbar) {
+                options = 0;
+            }
+            if (!featureStatusBar) {
+                options = options | ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
+            }
+            if (featureFab) {
+                options = options | ProjectFileBean.OPTION_ACTIVITY_FAB;
+            }
+            if (featureDrawer) {
+                options = options | ProjectFileBean.OPTION_ACTIVITY_DRAWER;
+            }
+            projectFileBean.options = options;
+            Intent intent = new Intent();
+            intent.putExtra("project_file", projectFileBean);
+            setResult(RESULT_OK, intent);
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete, new Object[0]), bB.TOAST_NORMAL).show();
+            finish();
+        } else if (isValid(nameValidator)) {
+            String var4 = Helper.getText(binding.edName) + getSuffix(binding.viewTypeSelector);
+            ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
+            Intent intent = new Intent();
+            intent.putExtra("project_file", projectFileBean);
+            if (presetName != null) {
+                intent.putExtra("preset_views", getPresetData(presetName));
+            }
+            setResult(RESULT_OK, intent);
+            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
+            finish();
+        }
+    }
+
+    private void handleEditModeInitialization() {
+        nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, new ArrayList<>(), projectFileBean.fileName);
+        binding.edName.setText(projectFileBean.fileName);
+        binding.edName.setEnabled(false);
+        binding.edName.setBackgroundResource(R.color.transparent);
+        initItem(projectFileBean.options);
+        binding.addViewTypeSelectorLayout.setVisibility(View.GONE);
+        if (projectFileBean.fileName.endsWith("_fragment")) {
+            binding.viewOrientationSelectorLayout.setVisibility(View.GONE);
+            binding.viewKeyboardSettingsSelectorLayout.setVisibility(View.GONE);
+        }
+        binding.screenOrientationSelector.check(binding.screenOrientationSelector.getChildAt(projectFileBean.orientation).getId());
+        binding.keyboardSettingsSelector.check(binding.keyboardSettingsSelector.getChildAt(projectFileBean.keyboardSetting).getId());
+
+        binding.imgKeyboard.post(() -> {
+            if (binding.keyboardSettingsSelector.getCheckedButtonId() == R.id.select_hidden) {
+                slideOutVertically(binding.imgKeyboard);
+            }
+        });
+    }
+
+    private void handleCreateModeInitialization() {
+        featureToolbar = true;
+        featureStatusBar = true;
+        nameValidator = new YB(getApplicationContext(), binding.tiName, uq.b, screenNames);
+    }
+
+
     private String getSuffix(MaterialButtonToggleGroup toggleGroup) {
         return switch (getSelectedButtonIndex(toggleGroup)) {
-            case 1 -> "_fragment";
-            case 2 -> "_dialog_fragment";
-            case 3 -> "_bottomdialog_fragment";
+            case VIEW_TYPE_FRAGMENT -> "_fragment";
+            case VIEW_TYPE_DIALOG_FRAGMENT -> "_dialog_fragment";
+            case VIEW_TYPE_BOTTOM_DIALOG_FRAGMENT -> "_bottomdialog_fragment";
             default -> "";
         };
     }
@@ -306,9 +327,19 @@ public class AddViewActivity extends BaseAppCompatActivity {
     }
 
     public void makeTransitionAnimation(LinearLayout linearLayout) {
-        AutoTransition autoTransition = new android.transition.AutoTransition();
+        AutoTransition autoTransition = new AutoTransition();
         autoTransition.setDuration(200);
         TransitionManager.beginDelayedTransition(linearLayout, autoTransition);
+    }
+
+    private void setManifestViewState(boolean vis) {
+        if (vis) {
+            resetTranslationX(binding.viewOrientationSelectorLayout);
+            resetTranslationX(binding.viewKeyboardSettingsSelectorLayout);
+        } else {
+            slideOutHorizontally(binding.viewOrientationSelectorLayout, "left");
+            slideOutHorizontally(binding.viewKeyboardSettingsSelectorLayout, "left");
+        }
     }
 
     private static class FeatureItem {
@@ -327,7 +358,7 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
     public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.ViewHolder> {
         public int layoutPosition = -1;
-        public boolean d;
+        public boolean isUpdatingAdapter;
 
         public FeaturesAdapter() {
         }
@@ -339,16 +370,17 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
-            d = true;
+            isUpdatingAdapter = true;
             FeatureItem featureItem = featureItems.get(position);
-            viewHolder.t.setImageResource(featureItem.previewImg);
-            viewHolder.u.setText(featureItem.name);
-            viewHolder.v.setChecked(featureItem.isEnabled);
+            viewHolder.iconImageView.setImageResource(featureItem.previewImg);
+            viewHolder.nameTextView.setText(featureItem.name);
+            viewHolder.featureCheckBox.setChecked(featureItem.isEnabled);
+
             switch (featureItem.type) {
-                case 0 -> featureStatusBar = featureItem.isEnabled;
-                case 1 -> featureToolbar = featureItem.isEnabled;
-                case 2 -> featureDrawer = featureItem.isEnabled;
-                case 3 -> featureFab = featureItem.isEnabled;
+                case FEATURE_TYPE_STATUS_BAR -> featureStatusBar = featureItem.isEnabled;
+                case FEATURE_TYPE_TOOLBAR -> featureToolbar = featureItem.isEnabled;
+                case FEATURE_TYPE_DRAWER -> featureDrawer = featureItem.isEnabled;
+                case FEATURE_TYPE_FAB -> featureFab = featureItem.isEnabled;
             }
 
             if (featureFab || featureDrawer) {
@@ -356,8 +388,8 @@ public class AddViewActivity extends BaseAppCompatActivity {
                 binding.fabDrawerTipView.setVisibility(View.VISIBLE);
             }
 
-            a(featureItem);
-            d = false;
+            handleFeatureAnimation(featureItem);
+            isUpdatingAdapter = false;
         }
 
         @NonNull
@@ -370,39 +402,33 @@ public class AddViewActivity extends BaseAppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
 
-            public ImageView t;
-            public TextView u;
-            public CheckBox v;
+            public ImageView iconImageView;
+            public TextView nameTextView;
+            public CheckBox featureCheckBox;
 
             public ViewHolder(View var2) {
                 super(var2);
-                t = var2.findViewById(R.id.img_icon);
-                u = var2.findViewById(R.id.tv_name);
-                v = var2.findViewById(R.id.checkbox);
-                v.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                    if (!d) {
+                iconImageView = var2.findViewById(R.id.img_icon);
+                nameTextView = var2.findViewById(R.id.tv_name);
+                featureCheckBox = var2.findViewById(R.id.checkbox);
+                featureCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (!isUpdatingAdapter) {
                         layoutPosition = getLayoutPosition();
                         FeatureItem item = featureItems.get(layoutPosition);
                         item.isEnabled = isChecked;
-                        if (item.type == 2 || item.isEnabled) {
-                            enableToolbar();
-                        } else if (item.type == 1 || !item.isEnabled) {
-                            disableDrawer();
+                        if (item.type == FEATURE_TYPE_DRAWER) {
+                            if (item.isEnabled) {
+                                enableToolbar();
+                            }
+                        } else if (item.type == FEATURE_TYPE_TOOLBAR) {
+                            if (!item.isEnabled) {
+                                disableDrawer();
+                            }
                         }
                         notifyItemChanged(layoutPosition);
                     }
                 });
             }
-        }
-    }
-
-    private void setManifestViewState(boolean vis) {
-        if (vis) {
-            resetTranslationX(binding.viewOrientationSelectorLayout);
-            resetTranslationX(binding.viewKeyboardSettingsSelectorLayout);
-        } else {
-            slideOutHorizontally(binding.viewOrientationSelectorLayout, "left");
-            slideOutHorizontally(binding.viewKeyboardSettingsSelectorLayout, "left");
         }
     }
 }
