@@ -46,6 +46,9 @@ public class ProjectFileBean extends SelectableBean implements Parcelable {
     public static final int PROJECT_FILE_TYPE_ACTIVITY = 0;
     public static final int PROJECT_FILE_TYPE_CUSTOM_VIEW = 1;
     public static final int PROJECT_FILE_TYPE_DRAWER = 2;
+    public static final int PROJECT_FILE_TYPE_FRAGMENT = 3;
+    public static final int PROJECT_FILE_TYPE_SHEET = 4;
+    public static final int PROJECT_FILE_TYPE_DIALOG_FRAGMENT = 5;
 
     public static final int THEME_DEFAULT = 0;
     public static final int THEME_FULLSCREEN = 2;

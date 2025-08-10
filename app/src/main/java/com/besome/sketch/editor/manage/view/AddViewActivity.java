@@ -227,7 +227,13 @@ public class AddViewActivity extends BaseAppCompatActivity {
             }
         });
 
-        binding.btnSave.setOnClickListener(v -> handleSaveButtonClick());
+        binding.btnSave.setOnClickListener(v -> {
+            if (REQUEST_CODE_EDIT == requestCode) {
+                handleEditFile();
+            } else if (isValid(nameValidator)) {
+                handleCreateFile();
+            }
+        });
 
         binding.btnCancel.setOnClickListener(v -> {
             setResult(RESULT_CANCELED);
@@ -242,41 +248,41 @@ public class AddViewActivity extends BaseAppCompatActivity {
         initializeItems();
     }
 
-    private void handleSaveButtonClick() {
+    private void handleEditFile() {
         int options = ProjectFileBean.OPTION_ACTIVITY_TOOLBAR;
-        if (REQUEST_CODE_EDIT == requestCode) {
-            projectFileBean.orientation = getSelectedButtonIndex(binding.screenOrientationSelector);
-            projectFileBean.keyboardSetting = getSelectedButtonIndex(binding.keyboardSettingsSelector);
-            if (!featureToolbar) {
-                options = 0;
-            }
-            if (!featureStatusBar) {
-                options = options | ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
-            }
-            if (featureFab) {
-                options = options | ProjectFileBean.OPTION_ACTIVITY_FAB;
-            }
-            if (featureDrawer) {
-                options = options | ProjectFileBean.OPTION_ACTIVITY_DRAWER;
-            }
-            projectFileBean.options = options;
-            Intent intent = new Intent();
-            intent.putExtra("project_file", projectFileBean);
-            setResult(RESULT_OK, intent);
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete, new Object[0]), bB.TOAST_NORMAL).show();
-            finish();
-        } else if (isValid(nameValidator)) {
-            String var4 = Helper.getText(binding.edName) + getSuffix(binding.viewTypeSelector);
-            ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, var4, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
-            Intent intent = new Intent();
-            intent.putExtra("project_file", projectFileBean);
-            if (presetName != null) {
-                intent.putExtra("preset_views", getPresetData(presetName));
-            }
-            setResult(RESULT_OK, intent);
-            bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
-            finish();
+        projectFileBean.orientation = getSelectedButtonIndex(binding.screenOrientationSelector);
+        projectFileBean.keyboardSetting = getSelectedButtonIndex(binding.keyboardSettingsSelector);
+        if (!featureToolbar) {
+            options = 0;
         }
+        if (!featureStatusBar) {
+            options = options | ProjectFileBean.OPTION_ACTIVITY_FULLSCREEN;
+        }
+        if (featureFab) {
+            options = options | ProjectFileBean.OPTION_ACTIVITY_FAB;
+        }
+        if (featureDrawer) {
+            options = options | ProjectFileBean.OPTION_ACTIVITY_DRAWER;
+        }
+        projectFileBean.options = options;
+        Intent intent = new Intent();
+        intent.putExtra("project_file", projectFileBean);
+        setResult(RESULT_OK, intent);
+        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_edit_complete, new Object[0]), bB.TOAST_NORMAL).show();
+        finish();
+    }
+
+    private void handleCreateFile() {
+        String fileName = Helper.getText(binding.edName) + getSuffix(binding.viewTypeSelector);
+        ProjectFileBean projectFileBean = new ProjectFileBean(ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY, fileName, getSelectedButtonIndex(binding.screenOrientationSelector), getSelectedButtonIndex(binding.keyboardSettingsSelector), featureToolbar, !featureStatusBar, featureFab, featureDrawer);
+        Intent intent = new Intent();
+        intent.putExtra("project_file", projectFileBean);
+        if (presetName != null) {
+            intent.putExtra("preset_views", getPresetData(presetName));
+        }
+        setResult(RESULT_OK, intent);
+        bB.a(getApplicationContext(), xB.b().a(getApplicationContext(), R.string.design_manager_message_add_complete, new Object[0]), bB.TOAST_NORMAL).show();
+        finish();
     }
 
     private void handleEditModeInitialization() {
