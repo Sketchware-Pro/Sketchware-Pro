@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -279,11 +280,6 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
             binding.tiInput.setVisibility(View.GONE);
 
             dialog.setView(binding.getRoot());
-            dialog.setNeutralButton(Helper.getResString(R.string.strings_xml), (v, which) -> {
-                binding.edTiAutoCompleteInput.setText(stringsStart);
-                binding.edTiAutoCompleteInput.setSelection(stringsStart.length());
-                binding.edTiAutoCompleteInput.requestFocus();
-            });
 
             setupAutoCompleteTextView(binding.edTiAutoCompleteInput);
         }
@@ -293,7 +289,24 @@ public class PropertyInputItem extends RelativeLayout implements View.OnClickLis
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) ->
                 handleSave(lengthValidator, binding.edInput, binding.edTiAutoCompleteInput, binding.tiAutoCompleteInput, isInject, v));
         dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
-        dialog.show();
+
+        AlertDialog alertDialog = dialog.create();
+
+        alertDialog.setOnShowListener(d -> {
+            if (!isInject) {
+                Button neutralButton = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralButton.setVisibility(View.VISIBLE);
+                neutralButton.setText(Helper.getResString(R.string.strings_xml));
+                neutralButton.setOnClickListener(view -> {
+                    if (binding.edTiAutoCompleteInput.getText().toString().isEmpty()) {
+                        binding.edTiAutoCompleteInput.setText(stringsStart);
+                        binding.edTiAutoCompleteInput.setSelection(stringsStart.length());
+                    }
+                    binding.edTiAutoCompleteInput.requestFocus();
+                });
+            }
+        });
+        alertDialog.show();
     }
 
     private void setupAutoCompleteTextView(MaterialAutoCompleteTextView autoCompleteTextView) {
