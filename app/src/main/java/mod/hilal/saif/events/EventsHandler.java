@@ -30,7 +30,7 @@ public class EventsHandler {
     }
 
     /**
-     * Used in {@link oq#a()}
+     * Used in {@link oq#getAllActivityEvents()}
      *
      * @return Array of Activity Events.
      * @apiNote Custom Activity Events can be added by writing to the file
@@ -84,7 +84,7 @@ public class EventsHandler {
     }
 
     /**
-     * Used in {@link mod.agus.jcoderz.editor.event.ManageEvent#a(Gx, ArrayList)} to retrieve extra
+     * Used in {@link mod.agus.jcoderz.editor.event.ManageEvent#addExtraEvents(Gx, ArrayList)} to retrieve extra
      * Events for Components, such as custom ones.
      */
     public static void addEvents(Gx gx, ArrayList<String> list) {
@@ -126,7 +126,7 @@ public class EventsHandler {
     }
 
     /**
-     * Used in {@link mod.agus.jcoderz.editor.event.ManageEvent#b(Gx, ArrayList)} to get extra
+     * Used in {@link mod.agus.jcoderz.editor.event.ManageEvent#addExtraListeners(Gx, ArrayList)} to get extra
      * listeners for Components and Widgets, such as custom ones.
      */
     public static void addListeners(Gx gx, ArrayList<String> list) {
@@ -167,7 +167,7 @@ public class EventsHandler {
     }
 
     /**
-     * Used in {@link mod.agus.jcoderz.editor.event.ManageEvent#c(String, ArrayList)} to get extra
+     * Used in {@link mod.agus.jcoderz.editor.event.ManageEvent#addEventsForListener(String, ArrayList)} to get extra
      * listeners' Events, such as custom ones.
      */
     public static void addEventsToListener(String name, ArrayList<String> list) {

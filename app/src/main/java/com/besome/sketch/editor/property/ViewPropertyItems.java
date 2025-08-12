@@ -230,7 +230,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
     public void a(String scId, ViewBean bean) {
         sc_id = scId;
         c = bean;
-        Cx.a().b(c.getClassInfo().a());
+        Cx.a().b(c.getClassInfo().getClassName());
         removeAllViews();
         if (bean.id.equals("_fab")) {
             b(bean);
@@ -251,7 +251,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
 
     @Override
     public void a(String var1, Object var2) {
-        Cx.a().a(c.getClassInfo().a(), var1);
+        Cx.a().a(c.getClassInfo().getClassName(), var1);
         if (d != null) {
             ViewBean cloned = c.clone();
             i(c);
@@ -483,7 +483,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
         params.gravity = Gravity.LEFT;
         setLayoutParams(params);
         setGravity(Gravity.LEFT);
-        ArrayList<String> items = Cx.a().a(bean.getClassInfo().a());
+        ArrayList<String> items = Cx.a().a(bean.getClassInfo().getClassName());
         if (items == null) {
             setupViews();
         } else {
@@ -842,7 +842,7 @@ public class ViewPropertyItems extends LinearLayout implements Kw, View.OnClickL
 
                 HashMap<String, ArrayList<BlockBean>> beanMap = jC.a(sc_id).b(e.getJavaName());
 
-                for (String events : oq.c(bean.getClassInfo())) {
+                for (String events : oq.getEventsForClass(bean.getClassInfo())) {
                     StringBuilder eventBodyBuilder = new StringBuilder();
                     eventBodyBuilder.append(bean.preId);
                     eventBodyBuilder.append("_");

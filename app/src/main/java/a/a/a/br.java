@@ -221,7 +221,7 @@ public class br extends qA implements View.OnClickListener {
                 ArrayList<EventBean> addedEvents =
                         jC.a(sc_id).a(projectFile.getJavaName(), componentBean);
                 ArrayList<String> availableEvents =
-                        new ArrayList<>(Arrays.asList(oq.a(componentBean.getClassInfo())));
+                        new ArrayList<>(Arrays.asList(oq.getComponentEventsForClass(componentBean.getClassInfo())));
 
                 binding.eventsPreview.removeAllViews();
                 binding.eventsPreview.setAlpha(1.0f);
@@ -263,7 +263,7 @@ public class br extends qA implements View.OnClickListener {
                                             ViewGroup.LayoutParams.WRAP_CONTENT);
                             layoutParams.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
                             previewBinding.getRoot().setLayoutParams(layoutParams);
-                            previewBinding.icon.setImageResource(oq.a(event.eventName));
+                            previewBinding.icon.setImageResource(oq.getEventIconResource(event.eventName));
                             previewBinding.iconBg.setBackgroundResource(
                                     R.drawable.circle_bg_surface);
                             binding.eventsPreview.addView(previewBinding.getRoot());
@@ -280,7 +280,7 @@ public class br extends qA implements View.OnClickListener {
                                         ViewGroup.LayoutParams.WRAP_CONTENT);
                         layoutParams2.setMargins(0, 0, (int) wB.a(requireContext(), 4.0f), 0);
                         previewBinding.getRoot().setLayoutParams(layoutParams2);
-                        previewBinding.icon.setImageResource(oq.a(eventName));
+                        previewBinding.icon.setImageResource(oq.getEventIconResource(eventName));
                         ColorMatrix colorMatrix = new ColorMatrix();
                         colorMatrix.setSaturation(0.0f);
                         previewBinding.icon.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
@@ -380,7 +380,7 @@ public class br extends qA implements View.OnClickListener {
                     var event = getItem(position);
                     holder.button.onEventAdded();
                     holder.button.getName().setText(event.eventName);
-                    holder.button.getIcon().setImageResource(oq.a(event.eventName));
+                    holder.button.getIcon().setImageResource(oq.getEventIconResource(event.eventName));
                     holder.button.setClickListener(v -> {
                         if (!mB.a()) {
                             openEvent(event.targetId, event.eventName, event.eventName);
@@ -423,7 +423,7 @@ public class br extends qA implements View.OnClickListener {
                     var eventName = getItem(position);
                     holder.button.onEventAvailableToAdd();
                     holder.button.getName().setText(eventName);
-                    holder.button.getIcon().setImageResource(oq.a(eventName));
+                    holder.button.getIcon().setImageResource(oq.getEventIconResource(eventName));
                     holder.button.setClickListener(v -> {
                         if (!mB.a()) {
                             var component = components.get(getLayoutPosition());

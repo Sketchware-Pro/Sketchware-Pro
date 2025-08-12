@@ -285,12 +285,12 @@ public class Ox {
     }
 
     private void writeWidget(XmlBuilder nx, ViewBean viewBean) {
-        viewBean.getClassInfo().a();
+        viewBean.getClassInfo().getClassName();
         String convert = viewBean.convert;
         var injectHandler = new InjectAttributeHandler(viewBean);
         Set<String> toNotAdd = readAttributesToReplace(viewBean);
 
-        XmlBuilder widgetTag = convert.isEmpty() ? new XmlBuilder(viewBean.getClassInfo().a()) :
+        XmlBuilder widgetTag = convert.isEmpty() ? new XmlBuilder(viewBean.getClassInfo().getClassName()) :
                 new XmlBuilder(convert.replaceAll(" ", ""));
         if (convert.equals("include")) {
             if (!toNotAdd.contains("layout") && !injectHandler.contains("layout")) {

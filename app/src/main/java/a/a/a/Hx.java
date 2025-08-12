@@ -354,7 +354,7 @@ public class Hx {
             this.id = id;
             this.isViewBindingEnabled = isViewBindingEnabled;
 
-            String[] listeners = oq.b(classInfo);
+            String[] listeners = oq.getListenersForClass(classInfo);
             if (listeners.length > 0) {
                 for (String listener : listeners) {
                     /* Found functionally same instructions in vanilla Sketchware, keep it this way */
@@ -363,7 +363,7 @@ public class Hx {
                     }
                 }
 
-                switch (classInfo.a()) {
+                switch (classInfo.getClassName()) {
                     case "FirebaseDB":
                     case "FirebaseStorage":
                     case "FirebaseAuth":
@@ -426,7 +426,7 @@ public class Hx {
         private ComponentEvents(String listenerName) {
             this.listenerName = listenerName;
             activityEvents = new ArrayList<>();
-            for (String eventName : oq.b(listenerName)) {
+            for (String eventName : oq.getEventsForListener(listenerName)) {
                 activityEvents.add(new ActivityEvent(eventName));
             }
         }

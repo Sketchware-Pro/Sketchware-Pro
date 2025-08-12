@@ -11,9 +11,9 @@ import pro.sketchware.blocks.generator.components.analyzers.BlockReturnAnalyzer;
 public class ManageEvent {
 
     /**
-     * Used in {@link a.a.a.oq#c(Gx)} to retrieve extra Events of Components.
+     * Used in {@link a.a.a.oq#getEventsForClass(Gx)} to retrieve extra Events of Components.
      */
-    public static void a(Gx gx, ArrayList<String> events) {
+    public static void addExtraEvents(Gx gx, ArrayList<String> events) {
         if (gx.a("RatingBar")) {
             events.add("onRatingChanged");
         }
@@ -76,9 +76,10 @@ public class ManageEvent {
     }
 
     /**
-     * Used in {@link a.a.a.oq#b(Gx)} to get extra listeners for Components and Widgets.
+     * Used in {@link a.a.a.oq#getListenersForClass(Gx)}
+     * to get extra listeners for Components and Widgets.
      */
-    public static void b(Gx gx, ArrayList<String> listeners) {
+    public static void addExtraListeners(Gx gx, ArrayList<String> listeners) {
         if (gx.a("RatingBar")) {
             listeners.add("OnRatingBarChangeListener");
         }
@@ -165,9 +166,9 @@ public class ManageEvent {
     }
 
     /**
-     * Used in {@link a.a.a.oq#b(String)} to get extra listeners' Events.
+     * Used in {@link a.a.a.oq#getEventsForListener(String)} to get extra listeners' Events.
      */
-    public static void c(String eventName, ArrayList<String> list) {
+    public static void addEventsForListener(String eventName, ArrayList<String> list) {
         switch (eventName) {
             case "rewardedAdLoadCallback":
                 list.add("onRewardAdLoaded");
@@ -332,7 +333,7 @@ public class ManageEvent {
         }
     }
 
-    public static int d(String str) {
+    public static int getDrawableForEvent(String str) {
         return switch (str) {
             case "onUpdateProfileComplete" -> R.drawable.ic_mtrl_user_edit;
             case "FBAdsBanner_onLoggingImpression", "FBAdsInterstitial_onLoggingImpression" ->
@@ -385,7 +386,7 @@ public class ManageEvent {
     /**
      * @return Descriptions for Events added by Agus
      */
-    public static String e(String eventName) {
+    public static String getEventDescription(String eventName) {
         return switch (eventName) {
             case "FBAdsBanner_onLoggingImpression", "FBAdsInterstitial_onLoggingImpression" ->
                     "onLoggingImpression";
@@ -966,7 +967,7 @@ public class ManageEvent {
         };
     }
 
-    public static void h(Gx gx, ArrayList<String> list) {
+    public static void addExtraComponentEvents(Gx gx, ArrayList<String> list) {
         if (gx.a("RewardedVideoAd")) {
             list.add("onRewardAdLoaded");
             list.add("onRewardAdFailedToLoad");

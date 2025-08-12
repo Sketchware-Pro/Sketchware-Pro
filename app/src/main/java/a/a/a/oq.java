@@ -1,6 +1,6 @@
 package a.a.a;
 
-import android.content.Context;
+import androidx.annotation.DrawableRes;
 
 import java.util.ArrayList;
 
@@ -14,12 +14,13 @@ public class oq {
     /**
      * The known Event names that can be added to all Activities.
      */
-    public static final String[] a = EventsHandler.getActivityEvents();
+    public static final String[] ACTIVITY_EVENTS = EventsHandler.getActivityEvents();
 
     /**
      * @return The resource ID for an Event's icon
      */
-    public static int a(String eventName) {
+    @DrawableRes
+    public static int getEventIconResource(String eventName) {
         return switch (eventName) {
             case "initializeLogic", "onBackPressed", "onPostCreate", "onStart", "onStop",
                  "onDestroy", "onResume", "onPause", "moreBlock" ->
@@ -31,7 +32,8 @@ public class oq {
             case "onItemLongClicked" -> R.drawable.ic_mtrl_touch_long;
             case "onTextChanged" -> R.drawable.ic_mtrl_text_change;
             case "onPageStarted" -> R.drawable.ic_mtrl_progress;
-            case "onPageFinished" -> R.drawable.ic_mtrl_preview;
+            case "onPageFinished", "onAdShowedFullScreenContent", "onBannerAdOpened" ->
+                    R.drawable.ic_mtrl_preview;
             case "onProgressChanged" -> R.drawable.ic_mtrl_progress_check;
             case "onStartTrackingTouch" -> R.drawable.ic_mtrl_track_started;
             case "onStopTrackingTouch" -> R.drawable.ic_mtrl_target;
@@ -49,14 +51,13 @@ public class oq {
             case "onCreateUserComplete" -> R.drawable.ic_mtrl_user_create;
             case "onSignInUserComplete" -> R.drawable.ic_mtrl_signin;
             case "onResetPasswordEmailSent" -> R.drawable.ic_mtrl_reset;
-            case "onSensorChanged" -> R.drawable.ic_mtrl_sensor;
+            case "onSensorChanged", "onResponse" -> R.drawable.ic_mtrl_sensor;
             case "onAccuracyChanged" -> R.drawable.ic_mtrl_center;
             case "onInterstitialAdLoaded", "onBannerAdLoaded", "onRewardAdLoaded" ->
                     R.drawable.ic_mtrl_loaded;
             case "onBannerAdFailedToLoad", "onInterstitialAdFailedToLoad",
                  "onAdFailedToShowFullScreenContent", "onRewardAdFailedToLoad", "onFailure" ->
                     R.drawable.ic_mtrl_load_failed;
-            case "onAdShowedFullScreenContent", "onBannerAdOpened" -> R.drawable.ic_mtrl_preview;
             case "onAdDismissedFullScreenContent", "onBannerAdClosed" ->
                     R.drawable.ic_mtrl_preview_off;
             case "onUploadProgress" -> R.drawable.ic_mtrl_uploading;
@@ -67,7 +68,6 @@ public class oq {
             case "onPictureTakenCancel" -> R.drawable.ic_mtrl_pic_cancel;
             case "onFilesPicked" -> R.drawable.ic_mtrl_file_picked;
             case "onFilesPickedCancel" -> R.drawable.ic_mtrl_pick_cancel;
-            case "onResponse" -> R.drawable.ic_mtrl_sensor;
             case "onErrorResponse" -> R.drawable.ic_mtrl_sensor_cancel;
             case "onSpeechResult" -> R.drawable.ic_mtrl_speech;
             case "onSpeechError" -> R.drawable.ic_mtrl_speech_cancel;
@@ -79,11 +79,11 @@ public class oq {
             case "onLocationChanged" -> R.drawable.ic_mtrl_location_changed;
             case "onMapReady" -> R.drawable.ic_mtrl_map_ready;
             case "onMarkerClicked" -> R.drawable.ic_mtrl_loc_click;
-            default -> ManageEvent.d(eventName);
+            default -> ManageEvent.getDrawableForEvent(eventName);
         };
     }
 
-    public static String a(String eventName, Context context) {
+    public static String getEventName(String eventName) {
         return switch (eventName) {
             case "initializeLogic" -> Helper.getResString(R.string.event_initialize);
             case "onBackPressed" -> Helper.getResString(R.string.event_onbackpressed);
@@ -146,17 +146,17 @@ public class oq {
             case "onMapReady" -> Helper.getResString(R.string.event_on_map_ready);
             case "onMarkerClicked" -> Helper.getResString(R.string.event_on_marker_clicked);
             case "onLocationChanged" -> Helper.getResString(R.string.event_on_location_changed);
-            default -> ManageEvent.e(eventName);
+            default -> ManageEvent.getEventDescription(eventName);
         };
     }
 
-    public static String[] a() {
-        return a;
+    public static String[] getAllActivityEvents() {
+        return ACTIVITY_EVENTS;
     }
 
-    public static String[] a(Gx classInfo) {
+    public static String[] getComponentEventsForClass(Gx classInfo) {
         ArrayList<String> eventList = new ArrayList<>();
-        ManageEvent.h(classInfo, eventList);
+        ManageEvent.addExtraComponentEvents(classInfo, eventList);
         if (classInfo.a("ObjectAnimator")) {
             eventList.add("onAnimationStart");
             eventList.add("onAnimationEnd");
@@ -232,9 +232,9 @@ public class oq {
         return eventList.toArray(new String[0]);
     }
 
-    public static String[] b(Gx classInfo) {
+    public static String[] getListenersForClass(Gx classInfo) {
         ArrayList<String> eventList = new ArrayList<>();
-        ManageEvent.b(classInfo, eventList);
+        ManageEvent.addExtraListeners(classInfo, eventList);
         if (classInfo.a("Clickable")) {
             eventList.add("onClickListener");
             eventList.add("onLongClickListener");
@@ -329,9 +329,9 @@ public class oq {
         return eventList.toArray(new String[0]);
     }
 
-    public static String[] b(String listenerName) {
+    public static String[] getEventsForListener(String listenerName) {
         ArrayList<String> eventList = new ArrayList<>();
-        ManageEvent.c(listenerName, eventList);
+        ManageEvent.addEventsForListener(listenerName, eventList);
 
         switch (listenerName) {
             case "onClickListener" -> eventList.add("onClick");
@@ -422,9 +422,9 @@ public class oq {
         return eventList.toArray(new String[0]);
     }
 
-    public static String[] c(Gx classInfo) {
+    public static String[] getEventsForClass(Gx classInfo) {
         ArrayList<String> eventList = new ArrayList<>();
-        ManageEvent.a(classInfo, eventList);
+        ManageEvent.addExtraEvents(classInfo, eventList);
         if (classInfo.a("Clickable")) {
             eventList.add("onClick");
         }

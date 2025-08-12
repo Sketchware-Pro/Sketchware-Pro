@@ -637,7 +637,7 @@ public class Jx {
     private String getDrawerViewDeclarationAndAddImports(ViewBean viewBean) {
         String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
         if (viewType.isEmpty()) {
-            viewType = viewBean.getClassInfo().a();
+            viewType = viewBean.getClassInfo().getClassName();
         }
         addImports(mq.getImportsByTypeName(projectDataManager.a, viewType, null));
         return Lx.a(viewType, "_drawer_" + viewBean.id, Lx.AccessModifier.PRIVATE);
@@ -655,7 +655,7 @@ public class Jx {
     private String getViewDeclarationAndAddImports(ViewBean viewBean) {
         String viewType = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
         if (viewType.isEmpty()) {
-            viewType = viewBean.getClassInfo().a();
+            viewType = viewBean.getClassInfo().getClassName();
         }
         if (requireImports(viewBean)) {
             addImports(mq.getImportsByTypeName(projectDataManager.a, viewType, viewBean.convert));
@@ -864,7 +864,7 @@ public class Jx {
     private String getDrawerViewInitializer(ViewBean viewBean) {
         String replaceAll = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
         if (replaceAll.isEmpty()) {
-            replaceAll = viewBean.getClassInfo().a();
+            replaceAll = viewBean.getClassInfo().getClassName();
         }
         return Lx.getDrawerViewInitializer(replaceAll, viewBean.id, "_nav_view");
     }
@@ -892,7 +892,7 @@ public class Jx {
     private String getViewInitializer(ViewBean viewBean) {
         String replaceAll = WIDGET_NAME_PATTERN.matcher(viewBean.convert).replaceAll("");
         if (replaceAll.isEmpty()) {
-            replaceAll = viewBean.getClassInfo().a();
+            replaceAll = viewBean.getClassInfo().getClassName();
         }
         if (projectFileBean.fileName.contains("_fragment")) {
             return Lx.getViewInitializer(replaceAll, viewBean.id, true, isViewBindingEnabled);

@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Pair;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -389,7 +387,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
             holder.targetType.setVisibility(View.VISIBLE);
             holder.previewContainer.setVisibility(View.VISIBLE);
             holder.preview.setVisibility(View.VISIBLE);
-            holder.preview.setImageResource(oq.a(eventBean.eventName));
+            holder.preview.setImageResource(oq.getEventIconResource(eventBean.eventName));
             holder.optionsLayout.showDelete();
             if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
                 holder.optionsLayout.showAddToCollection();
@@ -401,9 +399,9 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                     holder.optionsLayout.hideDelete();
                 }
                 holder.targetId.setText(eventBean.targetId);
-                holder.type.setBackgroundResource(oq.a(eventBean.eventName));
+                holder.type.setBackgroundResource(oq.getEventIconResource(eventBean.eventName));
                 holder.name.setText(eventBean.eventName);
-                holder.description.setText(oq.a(eventBean.eventName, requireContext()));
+                holder.description.setText(oq.getEventName(eventBean.eventName));
                 holder.icon.setImageResource(R.drawable.ic_mtrl_code);
                 holder.preview.setVisibility(View.GONE);
                 holder.targetType.setVisibility(View.GONE);
@@ -428,7 +426,7 @@ public class rs extends qA implements View.OnClickListener, MoreblockImporterDia
                 holder.type.setText(EventBean.getEventTypeName(eventBean.eventType));
                 holder.type.setBackgroundResource(EventBean.getEventTypeBgRes(eventBean.eventType));
                 holder.name.setText(eventBean.eventName);
-                holder.description.setText(oq.a(eventBean.eventName, requireContext()));
+                holder.description.setText(oq.getEventName(eventBean.eventName));
                 if (eventBean.eventType == EventBean.EVENT_TYPE_ETC) {
                     holder.description.setText(ReturnMoreblockManager.getMbTypeList(eventBean.targetId));
                 }

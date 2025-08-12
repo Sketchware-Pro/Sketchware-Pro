@@ -111,7 +111,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         addableEtcEvents.clear();
         eventsToAdd.clear();
 
-        for (var activityEvent : oq.a()) {
+        for (var activityEvent : oq.getAllActivityEvents()) {
             boolean exists = false;
             for (var existingEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
                 if (existingEvent.eventType == EventBean.EVENT_TYPE_ACTIVITY
@@ -130,7 +130,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         if (views != null) {
             for (ViewBean view : views) {
                 Set<String> toNotAdd = new Ox(new jq(), projectFile).readAttributesToReplace(view);
-                for (String viewEvent : oq.c(view.getClassInfo())) {
+                for (String viewEvent : oq.getEventsForClass(view.getClassInfo())) {
                     boolean exists;
                     if (viewEvent.equals("onBindCustomView") && (view.customView.isEmpty()
                             || view.customView.equals("none"))) {
@@ -155,7 +155,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
         if (components != null) {
             for (ComponentBean component : components) {
-                for (String componentEvent : oq.a(component.getClassInfo())) {
+                for (String componentEvent : oq.getComponentEventsForClass(component.getClassInfo())) {
                     boolean exists = false;
                     for (var existingEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
                         if (existingEvent.eventType == EventBean.EVENT_TYPE_COMPONENT
@@ -173,7 +173,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
         }
         ViewBean fab;
         if (projectFile.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB) && (fab = jC.a(sc_id).h(projectFile.getXmlName())) != null) {
-            for (String fabEvent : oq.c(fab.getClassInfo())) {
+            for (String fabEvent : oq.getEventsForClass(fab.getClassInfo())) {
                 boolean exists = false;
                 for (var existingFabEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
                     if (existingFabEvent.eventType == EventBean.EVENT_TYPE_VIEW
@@ -193,7 +193,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             if (drawerViews != null) {
                 for (ViewBean drawerView : drawerViews) {
                     Set<String> toNotAdd = new Ox(new jq(), projectFile).readAttributesToReplace(drawerView);
-                    for (String drawerViewEvent : oq.c(drawerView.getClassInfo())) {
+                    for (String drawerViewEvent : oq.getEventsForClass(drawerView.getClassInfo())) {
                         boolean exists = false;
                         for (var existingEvent : jC.a(sc_id).g(projectFile.getJavaName())) {
                             if (existingEvent.eventType == EventBean.EVENT_TYPE_DRAWER_VIEW
@@ -378,7 +378,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             layoutParams.width = a;
             layoutParams.height = a;
             imageView.setLayoutParams(layoutParams);
-            imageView.setImageResource(oq.a(event.eventName));
+            imageView.setImageResource(oq.getEventIconResource(event.eventName));
             imageView.setColorFilter(MaterialColors.getColor(imageView, com.google.android.material.R.attr.colorOutline));
             holder.events_preview.addView(imageView);
             holder.img_icon.setImageResource(EventBean.getEventIconResource(event.eventType, event.targetType));
@@ -400,7 +400,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
             } else {
                 holder.tv_target_id.setText(event.targetId);
             }
-            holder.tv_event_name.setText(oq.a(event.eventName, getApplicationContext()));
+            holder.tv_event_name.setText(oq.getEventName(event.eventName));
             holder.checkbox.setChecked(event.isSelected);
             e = false;
         }
@@ -569,7 +569,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 holder.ll_img_event.setVisibility(View.GONE);
             }
             holder.img_icon.setImageResource(EventBean.getEventIconResource(event.eventType, event.targetType));
-            holder.img_event.setImageResource(oq.a(event.eventName));
+            holder.img_event.setImageResource(oq.getEventIconResource(event.eventName));
         }
 
         @Override

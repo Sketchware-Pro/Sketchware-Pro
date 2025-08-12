@@ -62,7 +62,7 @@ public class ViewEvents extends LinearLayout {
         this.sc_id = sc_id;
         this.projectFileBean = projectFileBean;
 
-        String[] viewEvents = oq.c(viewBean.getClassInfo());
+        String[] viewEvents = oq.getEventsForClass(viewBean.getClassInfo());
         events.clear();
 
         ArrayList<EventBean> alreadyAddedEvents = jC.a(sc_id).g(projectFileBean.getJavaName());
@@ -128,7 +128,7 @@ public class ViewEvents extends LinearLayout {
 
             public void bind(EventBean event, int position) {
                 binding.container.setOnClickListener(v -> createEvent(getLayoutPosition()));
-                binding.imgIcon.setImageResource(oq.a(event.eventName));
+                binding.imgIcon.setImageResource(oq.getEventIconResource(event.eventName));
                 binding.tvTitle.setText(event.eventName);
                 binding.tvTitle.setTextColor(MaterialColors.getColor(binding.tvTitle, event.isSelected ? com.google.android.material.R.attr.colorOnSurface : com.google.android.material.R.attr.colorOutline));
                 binding.imgIcon.setColorFilter(MaterialColors.getColor(binding.tvTitle, event.isSelected ? com.google.android.material.R.attr.colorOnSurface : com.google.android.material.R.attr.colorOutline));

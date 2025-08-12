@@ -3,28 +3,28 @@ package a.a.a;
 import mod.hilal.saif.components.ComponentsHandler;
 
 public class Gx {
-    public String a;
-    public String[] b;
+    public String className;
+    public String[] classPath;
 
     public Gx(String classInfo) {
-        a = classInfo;
-        b = null;
-        e();
+        className = classInfo;
+        classPath = null;
+        initializeClassPath();
     }
 
-    public String a() {
-        return a;
+    public String getClassName() {
+        return className;
     }
 
     public boolean a(Gx gx) {
-        return a(gx.a);
+        return a(gx.className);
     }
 
     public boolean a(String classInfo) {
-        if (classInfo.equals("!") || classInfo.equals(a)) {
+        if (classInfo.equals("!") || classInfo.equals(className)) {
             return true;
         } else {
-            for (String s : b) {
+            for (String s : classPath) {
                 if (s.equals(classInfo)) return true;
             }
             return false;
@@ -36,7 +36,7 @@ public class Gx {
     }
 
     public boolean b(String classInfo) {
-        return a.equals(classInfo);
+        return className.equals(classInfo);
     }
 
     public boolean c() {
@@ -47,9 +47,9 @@ public class Gx {
         return a("View");
     }
 
-    private void e() {
+    private void initializeClassPath() {
         String classInfos = "";
-        switch (a) {
+        switch (className) {
             case "boolean":
                 classInfos = "Var.boolean";
                 break;
@@ -414,9 +414,9 @@ public class Gx {
                 break;
 
             default:
-                classInfos = ComponentsHandler.c(a);
+                classInfos = ComponentsHandler.c(className);
         }
 
-        b = classInfos.split("\\.");
+        classPath = classInfos.split("\\.");
     }
 }

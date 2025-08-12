@@ -246,7 +246,7 @@ public class Lx {
         if (!bean.convert.isEmpty()) {
             type = bean.convert;
         } else {
-            type = bean.getClassInfo().a();
+            type = bean.getClassInfo().getClassName();
         }
 
         return "final " + type + " " + bean.id + " = _view.findViewById(R.id." + bean.id + ");";
