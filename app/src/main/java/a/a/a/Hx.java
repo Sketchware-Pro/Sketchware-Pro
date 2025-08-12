@@ -368,6 +368,7 @@ public class Hx {
                     case "FirebaseStorage":
                     case "FirebaseAuth":
                     case "Gyroscope":
+                    case "FragmentAdapter":
                     case "WebView":
                     case "InterstitialAd":
                     case "RequestNetwork":
