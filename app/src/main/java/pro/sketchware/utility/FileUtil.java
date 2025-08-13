@@ -784,11 +784,15 @@ public class FileUtil {
 
         ZipEntry entry = input.getNextEntry();
         while (entry != null) {
-            String entryPathExtracted = new File(outPath, entry.getName()).getAbsolutePath();
+            File destFile = new File(outPath, entry.getName());
+            // Validate the file path to prevent path traversal
+            if (!destFile.toPath().normalize().startsWith(outDir.toPath().normalize())) {
+                throw new IOException("Bad zip entry: " + entry.getName());
+            }
 
             if (!entry.isDirectory()) {
-                new File(entryPathExtracted).getParentFile().mkdirs();
-                writeBytes(new File(entryPathExtracted), readFromInputStream(input));
+                destFile.getParentFile().mkdirs();
+                writeBytes(destFile, readFromInputStream(input));
             }
             input.closeEntry();
             entry = input.getNextEntry();
