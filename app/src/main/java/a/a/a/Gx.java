@@ -16,6 +16,11 @@ public class Gx {
         return className;
     }
 
+    // keeping this method, because it's used in a.a.a.eC
+    public String a() {
+        return className;
+    }
+
     public boolean a(Gx gx) {
         return a(gx.className);
     }
