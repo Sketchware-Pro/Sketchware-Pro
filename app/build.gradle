@@ -78,7 +78,6 @@ android {
 
     configurations.implementation {
         exclude group: 'javax.inject', module: 'javax.inject'
-        exclude group: 'org.codehaus.woodstox', module: 'stax2-api'
         exclude group: "org.jetbrains.kotlin", module: "kotlin-scripting-compiler-embeddable"
         exclude group: "org.jetbrains.kotlin", module: "kotlin-scripting-common"
         exclude group: "org.jetbrains.kotlin", module: "kotlin-scripting-jvm"
@@ -142,7 +141,8 @@ dependencies {
     implementation "com.github.waelchateur:kotlinc-for-sketchware:2.1.21_rc2"
     compileOnly "org.jetbrains.kotlin:kotlin-compiler:2.1.21"
     implementation 'io.github.itsaky:nb-javac-android:17.0.0.3'
-
+    implementation 'com.fasterxml.woodstox:woodstox-core:6.5.1'
+    
     implementation "com.github.Cosmic-Ide:DependencyResolver:05ec26af0b"
     implementation "com.github.PranavPurwar:filepicker:74526bea66"
 
