@@ -28,7 +28,7 @@ public class IconCardView extends IconBase {
         viewBean.layout.paddingRight = 8;
         viewBean.layout.paddingBottom = 8;
         viewBean.convert = "androidx.cardview.widget.CardView";
-        viewBean.inject = "app:cardElevation=\"10dp\"\napp:cardCornerRadius=\"20dp\"";
+        viewBean.inject = "app:cardElevation=\"2dp\"\napp:cardCornerRadius=\"20dp\"";
         return viewBean;
     }
 }
