@@ -1344,7 +1344,15 @@ public class ViewPane extends RelativeLayout {
         String strokeColor = handler.getAttributeValueOf("strokeColor");
         String strokeWidth = handler.getAttributeValueOf("strokeWidth");
 
-        cardView.setBackgroundColor(PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(context, String.format("#%08X", bean.layout.backgroundColor), 3, material3LibraryManager.canUseNightVariantColors())));
+        if (cardBackgroundColor.isEmpty()) {
+            if (bean.layout.backgroundResColor == null) {
+                cardView.setCardBackgroundColor(bean.layout.backgroundColor);
+            } else {
+                cardView.setCardBackgroundColor(PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(context, bean.layout.backgroundResColor, 3, material3LibraryManager.canUseNightVariantColors())));
+            }
+        } else {
+            cardView.setCardBackgroundColor(PropertiesUtil.parseColor(new ColorsEditorManager().getColorValue(context, cardBackgroundColor, 3, material3LibraryManager.canUseNightVariantColors())));
+        }
 
         cardView.setCardElevation(PropertiesUtil.resolveSize(cardElevation, 4));
         cardView.setRadius(PropertiesUtil.resolveSize(cardCornerRadius, 8));
