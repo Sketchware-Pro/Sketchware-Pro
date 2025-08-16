@@ -1,39 +1,48 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_width="80dp"
+    android:layout_height="128dp"
     android:clickable="true"
-    app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
-    app:cardCornerRadius="18dp">
+    android:focusable="true"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="8dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            app:tint="?attr/colorControlNormal"
-            tools:src="@drawable/file_48_blue" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:cardBackgroundColor="?attr/colorSurfaceContainerHigh"
+            app:cardCornerRadius="18dp">
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                app:tint="?attr/colorControlNormal"
+                tools:src="@drawable/file_48_blue" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2dp"
             android:layout_marginTop="8dp"
             android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="3"
+            android:gravity="center_horizontal"
+            android:lines="2"
             android:textAppearance="?attr/textAppearanceBodyMedium"
             android:textColor="?attr/colorOnSurface"
             tools:text="SharedPreferences" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>
