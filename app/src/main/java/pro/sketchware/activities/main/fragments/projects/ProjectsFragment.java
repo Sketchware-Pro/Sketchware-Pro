@@ -29,6 +29,7 @@ import com.besome.sketch.editor.manage.library.ProjectComparator;
 import com.besome.sketch.projects.MyProjectSettingActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.transition.MaterialFadeThrough;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +72,15 @@ public class ProjectsFragment extends DA {
     private DB preference;
     private SearchView projectsSearchView;
     private MenuProvider menuProvider;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setEnterTransition(new MaterialFadeThrough());
+        setReturnTransition(new MaterialFadeThrough());
+        setExitTransition(new MaterialFadeThrough());
+        setReenterTransition(new MaterialFadeThrough());
+    }
 
     @Override
     public void b(int requestCode) {
