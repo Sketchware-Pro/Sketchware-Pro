@@ -105,13 +105,15 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
                 if (isTitleContainerShown) return;
                 isTitleContainerShown = true;
 
+                binding.toolbarTitleContainer.setVisibility(View.VISIBLE);
+                binding.toolbarTitleContainer.setTranslationY(24f);
+
                 binding.topScrim.animate().alpha(1f).setDuration(TITLE_CONTAINER_FADE_DURATION).start();
                 binding.toolbarTitleContainer.animate()
                         .alpha(1f)
                         .translationY(0f)
                         .setInterpolator(new LinearInterpolator())
                         .setDuration(TITLE_CONTAINER_FADE_DURATION)
-                        .withStartAction(() -> binding.toolbarTitleContainer.setVisibility(View.VISIBLE))
                         .start();
             } else {
                 if (!isTitleContainerShown) return;
@@ -123,7 +125,6 @@ public class ProjectPreviewActivity extends BaseAppCompatActivity {
                         .alpha(0f)
                         .setInterpolator(new LinearInterpolator())
                         .setDuration(TITLE_CONTAINER_FADE_DURATION)
-                        .withEndAction(() -> binding.toolbarTitleContainer.setVisibility(View.INVISIBLE))
                         .start();
             }
         });
