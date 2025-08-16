@@ -74,7 +74,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="16dp"
-                    android:paddingVertical="12dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="8dp"
                     android:singleLine="true"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     tools:text="Building your awesome app..." />
@@ -83,6 +84,8 @@
                     android:id="@+id/progress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="2dp"
                     android:indeterminate="false"
                     android:progress="0"
                     app:trackStopIndicatorSize="0dp" />
@@ -145,7 +148,10 @@
 
                 <com.google.android.material.button.MaterialSplitButton
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_run"
