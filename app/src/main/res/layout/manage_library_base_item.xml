@@ -1,76 +1,79 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="6dp"
-    android:paddingVertical="16dp"
-    android:gravity="center"
-    android:foreground="?selectableItemBackground"
-    android:focusable="true"
-    android:clickable="true">
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
 
-        <LinearLayout
-            android:layout_width="44dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="6dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/lib_icon"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                tools:src="@drawable/ic_mtrl_component"
-                app:tint="?attr/colorPrimary" />
-
-            <TextView
-                android:id="@+id/tv_enable"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textSize="11sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/lib_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBodyLargeEmphasized"
-                tools:text="Component Manager"
-                android:textColor="?attr/colorOnSurface" />
-
-            <TextView
-                android:id="@+id/lib_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginTop="4dp"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                tools:text="Something something something"
-                android:textSize="13sp" />
-
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/icon_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="12dp"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginEnd="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:focusable="true"
-            android:clickable="true"
-            android:padding="8dp"
-            android:src="@drawable/side_menu_setting_icon_over"
-            android:visibility="gone" />
+            android:id="@+id/lib_icon"
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:tint="?attr/colorOnSurfaceVariant"
+            tools:src="@drawable/ic_mtrl_component" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_enable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textSize="11sp"
+            tools:text="OFF" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lib_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="12dp"
+        android:textAppearance="?attr/textAppearanceBodyLargeEmphasized"
+        android:textColor="?attr/colorOnSurface"
+        app:layout_constraintBottom_toTopOf="@id/lib_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/icon_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Component Manager" />
+
+    <TextView
+        android:id="@+id/lib_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/lib_title"
+        app:layout_constraintStart_toStartOf="@id/lib_title"
+        app:layout_constraintTop_toBottomOf="@id/lib_title"
+        tools:text="Something something something" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:dividerThickness="0.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/lib_title" />
+</androidx.constraintlayout.widget.ConstraintLayout>

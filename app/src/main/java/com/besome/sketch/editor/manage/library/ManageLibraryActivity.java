@@ -7,9 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -62,9 +60,18 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private String originalAdmobUseYn = "N";
     private String originalGoogleMapUseYn = "N";
 
-    private TextView externalLib;
+    private LibraryCategoryView addCategoryItem(String text) {
+        LibraryCategoryView libraryCategoryView = new LibraryCategoryView(this);
+        libraryCategoryView.setTitle(text);
+        libraryItemLayout.addView(libraryCategoryView);
+        return libraryCategoryView;
+    }
 
-    private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean) {
+    private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean, LibraryCategoryView parent) {
+        addLibraryItem(libraryBean, parent, true);
+    }
+
+    private void addLibraryItem(@Nullable ProjectLibraryBean libraryBean, LibraryCategoryView parent, boolean addDivider) {
         LibraryItemView libraryItemView;
         libraryItemView = new LibraryItemView(this);
         libraryItemView.setTag(libraryBean != null ? libraryBean.libType : null);
@@ -74,17 +81,15 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
 
         if (libraryBean.libType == ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB || libraryBean.libType == ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB) {
             libraryItemView.setHideEnabled();
-            if (externalLib == null) {
-                externalLib = findViewById(R.id.external_lib);
-                externalLib.setText("External libraries");
-                ((ViewGroup) externalLib.getParent()).removeView(externalLib);
-                libraryItemLayout.addView(externalLib);
-            }
         }
-        libraryItemLayout.addView(libraryItemView);
+        parent.addLibraryItem(libraryItemView, addDivider);
     }
 
-    private void addCustomLibraryItem(int type) {
+    private void addCustomLibraryItem(int type, LibraryCategoryView parent) {
+        addCustomLibraryItem(type, parent, true);
+    }
+
+    private void addCustomLibraryItem(int type, LibraryCategoryView parent, boolean addDivider) {
         LibraryItemView libraryItemView;
         if (type == ProjectLibraryBean.PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES) {
             libraryItemView = new ExcludeBuiltInLibrariesLibraryItemView(this, sc_id);
@@ -96,14 +101,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         libraryItemView.setTag(type);
         //noinspection ConstantConditions since the variant if it's nullable handles nulls correctly
         libraryItemView.setOnClickListener(this);
-
-        if (type == ProjectLibraryBean.PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES) {
-            TextView title = findViewById(R.id.title);
-            title.setText("Advanced");
-            ((ViewGroup) title.getParent()).removeView(title);
-            libraryItemLayout.addView(title);
-        }
-        libraryItemLayout.addView(libraryItemView);
+        parent.addLibraryItem(libraryItemView, addDivider);
     }
 
     private void toCompatActivity(ProjectLibraryBean compatLibraryBean, ProjectLibraryBean firebaseLibraryBean) {
@@ -365,15 +363,19 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             originalGoogleMapUseYn = savedInstanceState.getString("originalGoogleMapUseYn");
         }
 
-        addLibraryItem(compatLibraryBean);
-        addCustomLibraryItem(ProjectLibraryBean.PROJECT_LIB_TYPE_MATERIAL3);
-        addLibraryItem(firebaseLibraryBean);
-        addLibraryItem(admobLibraryBean);
-        addLibraryItem(googleMapLibraryBean);
-        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB));
-        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB));
-        // Exclude built-in libraries
-        addCustomLibraryItem(ProjectLibraryBean.PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES);
+        LibraryCategoryView basicCategory = addCategoryItem(null);
+        addLibraryItem(compatLibraryBean, basicCategory);
+        addCustomLibraryItem(ProjectLibraryBean.PROJECT_LIB_TYPE_MATERIAL3, basicCategory);
+        addLibraryItem(firebaseLibraryBean, basicCategory);
+        addLibraryItem(admobLibraryBean, basicCategory);
+        addLibraryItem(googleMapLibraryBean, basicCategory, false);
+
+        LibraryCategoryView externalCategory = addCategoryItem("External libraries");
+        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB), externalCategory);
+        addLibraryItem(new ProjectLibraryBean(ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB), externalCategory, false);
+
+        LibraryCategoryView advancedCategory = addCategoryItem("Advanced");
+        addCustomLibraryItem(ProjectLibraryBean.PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES, advancedCategory, false);
     }
 
     @Override
