@@ -33,7 +33,7 @@ def main():
     payload = {
         "chat_id": chat_id,
         "text": escaped_message,
-        "parse_mode": "MarkdownV2",
+        "parse_mode": "markdownv2",
         "disable_web_page_preview": True
     }
     if topic_id:
