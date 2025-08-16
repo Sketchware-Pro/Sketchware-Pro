@@ -833,6 +833,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public void a(String str, ProjectFileBean projectFileBean) {
         a = str;
         setPreviewColors(str);
+        if (viewPane != null) {
+            viewPane.initialize(str, false);
+        }
         this.projectFileBean = projectFileBean;
         b = projectFileBean.getXmlName();
         if (projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_DRAWER) {
@@ -852,9 +855,6 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             T = false;
         }
         isLayoutChanged = true;
-        if (viewPane != null) {
-            viewPane.initialize(str, false);
-        }
     }
 
     public void updateSelection(String tag) {
