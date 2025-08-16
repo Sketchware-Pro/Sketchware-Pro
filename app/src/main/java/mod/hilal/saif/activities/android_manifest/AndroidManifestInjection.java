@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.besome.sketch.editor.manage.library.LibraryCategoryView;
 import com.besome.sketch.editor.manage.library.LibraryItemView;
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -72,14 +73,9 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     private void checkAttrs() {
-        String path =
-                FileUtil.getExternalStorageDir()
-                        .concat("/.sketchware/data/")
-                        .concat(sc_id)
-                        .concat("/Injection/androidmanifest/attributes.json");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         if (FileUtil.isExistFile(path)) {
-            ArrayList<HashMap<String, Object>> data =
-                    getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
+            ArrayList<HashMap<String, Object>> data = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < data.size(); i++) {
                 String str = (String) data.get(i).get("name");
                 if (Objects.requireNonNull(str).equals("_application_attrs")) {
@@ -98,73 +94,43 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     private void setupOptions() {
-        List<LibraryItemView> options = new ArrayList<>();
+        List<LibraryCategoryView> options = new ArrayList<>();
 
-        options.add(
-                createOption(
-                        "Application",
-                        "Default properties for the app",
-                        R.drawable.ic_mtrl_settings_applications,
-                        v -> {
-                            Intent intent = new Intent();
-                            intent.setClass(
-                                    getApplicationContext(), AndroidManifestInjectionDetails.class);
-                            intent.putExtra("sc_id", sc_id);
-                            intent.putExtra("file_name", currentActivityName);
-                            intent.putExtra("type", "application");
-                            startActivity(intent);
-                        }));
-        options.add(
-                createOption(
-                        "Permissions",
-                        "Add custom Permissions to the app",
-                        R.drawable.ic_mtrl_shield_check,
-                        v -> {
-                            Intent intent = new Intent();
-                            intent.setClass(
-                                    getApplicationContext(), AndroidManifestInjectionDetails.class);
-                            intent.putExtra("sc_id", sc_id);
-                            intent.putExtra("file_name", currentActivityName);
-                            intent.putExtra("type", "permission");
-                            startActivity(intent);
-                        }));
-        options.add(
-                createOption(
-                        "Launcher Activity",
-                        "Change the default Launcher Activity",
-                        R.drawable.ic_mtrl_login,
-                        v ->
-                                showLauncherActDialog(
-                                        AndroidManifestInjector.getLauncherActivity(sc_id))));
-        options.add(
-                createOption(
-                        "All Activities",
-                        "Add attributes for all Activities",
-                        R.drawable.ic_mtrl_frame_source,
-                        v -> {
-                            Intent intent = new Intent();
-                            intent.setClass(
-                                    getApplicationContext(), AndroidManifestInjectionDetails.class);
-                            intent.putExtra("sc_id", sc_id);
-                            intent.putExtra("file_name", currentActivityName);
-                            intent.putExtra("type", "all");
-                            startActivity(intent);
-                        }));
-        options.add(
-                createOption(
-                        "App Components",
-                        "Add extra components",
-                        R.drawable.ic_mtrl_component,
-                        v -> showAppComponentDialog()));
+        LibraryCategoryView basicCategoryView = new LibraryCategoryView(this);
+        basicCategoryView.setTitle(null);
+        options.add(basicCategoryView);
+
+        basicCategoryView.addLibraryItem(createOption("Application", "Default properties for the app", R.drawable.ic_mtrl_settings_applications, v -> {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+            intent.putExtra("sc_id", sc_id);
+            intent.putExtra("file_name", currentActivityName);
+            intent.putExtra("type", "application");
+            startActivity(intent);
+        }), true);
+        basicCategoryView.addLibraryItem(createOption("Permissions", "Add custom Permissions to the app", R.drawable.ic_mtrl_shield_check, v -> {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+            intent.putExtra("sc_id", sc_id);
+            intent.putExtra("file_name", currentActivityName);
+            intent.putExtra("type", "permission");
+            startActivity(intent);
+        }), true);
+        basicCategoryView.addLibraryItem(createOption("Launcher Activity", "Change the default Launcher Activity", R.drawable.ic_mtrl_login, v -> showLauncherActDialog(AndroidManifestInjector.getLauncherActivity(sc_id))), true);
+        basicCategoryView.addLibraryItem(createOption("All Activities", "Add attributes for all Activities", R.drawable.ic_mtrl_frame_source, v -> {
+            Intent intent = new Intent();
+            intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+            intent.putExtra("sc_id", sc_id);
+            intent.putExtra("file_name", currentActivityName);
+            intent.putExtra("type", "all");
+            startActivity(intent);
+        }), true);
+        basicCategoryView.addLibraryItem(createOption("App Components", "Add extra components", R.drawable.ic_mtrl_component, v -> showAppComponentDialog()), false);
 
         options.forEach(binding.cards::addView);
     }
 
-    private LibraryItemView createOption(
-            String title,
-            String description,
-            int icon,
-            View.OnClickListener onClick) {
+    private LibraryItemView createOption(String title, String description, int icon, View.OnClickListener onClick) {
         var card = new LibraryItemView(this);
         makeup(card, icon, title, description);
         card.setOnClickListener(onClick);
@@ -175,11 +141,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(getApplicationContext(), SrcCodeEditor.class);
 
-        String APP_COMPONENTS_PATH =
-                FileUtil.getExternalStorageDir()
-                        .concat("/.sketchware/data/")
-                        .concat(sc_id)
-                        .concat("/Injection/androidmanifest/app_components.txt");
+        String APP_COMPONENTS_PATH = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/app_components.txt");
         if (!FileUtil.isExistFile(APP_COMPONENTS_PATH)) FileUtil.writeFile(APP_COMPONENTS_PATH, "");
         intent.putExtra("content", APP_COMPONENTS_PATH);
         intent.putExtra("xml", "");
@@ -201,8 +163,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         dialog.setView(view);
         dialog.setPositiveButton(Helper.getResString(R.string.common_word_save), (v, which) -> {
             if (!Helper.getText(activity_name_input).trim().isEmpty()) {
-                AndroidManifestInjector.setLauncherActivity(
-                        sc_id, Helper.getText(activity_name_input));
+                AndroidManifestInjector.setLauncherActivity(sc_id, Helper.getText(activity_name_input));
                 SketchwareUtil.toast("Saved");
                 v.dismiss();
             } else {
@@ -219,8 +180,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         dialog.setTitle(Helper.getResString(R.string.common_word_add_activtiy));
         View inflate = wB.a(this, R.layout.dialog_add_custom_activity);
 
-        TextInputEditText activity_name_input =
-                inflate.findViewById(R.id.activity_name_input);
+        TextInputEditText activity_name_input = inflate.findViewById(R.id.activity_name_input);
 
         activity_name_input.setText(currentActivityName);
 
@@ -239,11 +199,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     private void addNewActivity(String componentName) {
-        String path =
-                FileUtil.getExternalStorageDir()
-                        .concat("/.sketchware/data/")
-                        .concat(sc_id)
-                        .concat("/Injection/androidmanifest/attributes.json");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         ArrayList<HashMap<String, Object>> data = new ArrayList<>();
         if (FileUtil.isExistFile(path)) {
             data = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
@@ -251,9 +207,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
         {
             HashMap<String, Object> _item = new HashMap<>();
             _item.put("name", componentName);
-            _item.put(
-                    "value",
-                    "android:configChanges=\"orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout\"");
+            _item.put("value", "android:configChanges=\"orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout\"");
 
             data.add(_item);
         }
@@ -300,23 +254,14 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
     private void refreshList() {
         activitiesListMap.clear();
-        String path =
-                FileUtil.getExternalStorageDir()
-                        .concat("/.sketchware/data/")
-                        .concat(sc_id)
-                        .concat("/Injection/androidmanifest/attributes.json");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         ArrayList<String> temp = new ArrayList<>();
         ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(path)) {
             data = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
             for (int i = 0; i < data.size(); i++) {
                 if (!temp.contains(Objects.requireNonNull(data.get(i).get("name")).toString())) {
-                    if (!Objects.requireNonNull(data.get(i).get("name"))
-                            .equals("_application_attrs")
-                            && !Objects.requireNonNull(data.get(i).get("name"))
-                            .equals("_apply_for_all_activities")
-                            && !Objects.requireNonNull(data.get(i).get("name"))
-                            .equals("_application_permissions")) {
+                    if (!Objects.requireNonNull(data.get(i).get("name")).equals("_application_attrs") && !Objects.requireNonNull(data.get(i).get("name")).equals("_apply_for_all_activities") && !Objects.requireNonNull(data.get(i).get("name")).equals("_application_permissions")) {
                         temp.add((String) data.get(i).get("name"));
                     }
                 }
@@ -333,11 +278,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
     private void deleteActivity(int pos) {
         String activity_name = (String) activitiesListMap.get(pos).get("act_name");
-        String path =
-                FileUtil.getExternalStorageDir()
-                        .concat("/.sketchware/data/")
-                        .concat(sc_id)
-                        .concat("/Injection/androidmanifest/attributes.json");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/attributes.json");
         ArrayList<HashMap<String, Object>> data;
         data = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
         for (int i = data.size() - 1; i > -1; i--) {
@@ -353,11 +294,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
     }
 
     private void removeComponents(String str) {
-        String path =
-                FileUtil.getExternalStorageDir()
-                        .concat("/.sketchware/data/")
-                        .concat(sc_id)
-                        .concat("/Injection/androidmanifest/activities_components.json");
+        String path = FileUtil.getExternalStorageDir().concat("/.sketchware/data/").concat(sc_id).concat("/Injection/androidmanifest/activities_components.json");
         ArrayList<HashMap<String, Object>> data;
         if (FileUtil.isExistFile(path)) {
             data = getGson().fromJson(FileUtil.readFile(path), Helper.TYPE_MAP_LIST);
@@ -383,9 +320,7 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Show Manifest Source")
-                .setIcon(getDrawable(R.drawable.ic_mtrl_code))
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "Show Manifest Source").setIcon(getDrawable(R.drawable.ic_mtrl_code)).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         return true;
     }
 
@@ -402,32 +337,19 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
 
     private void showQuickManifestSourceDialog() {
         k();
-        new Thread(
-                () -> {
-                    String source =
-                            new yq(getApplicationContext(), sc_id)
-                                    .getFileSrc(
-                                            "AndroidManifest.xml",
-                                            jC.b(sc_id),
-                                            jC.a(sc_id),
-                                            jC.c(sc_id));
+        new Thread(() -> {
+            String source = new yq(getApplicationContext(), sc_id).getFileSrc("AndroidManifest.xml", jC.b(sc_id), jC.a(sc_id), jC.c(sc_id));
 
-                    runOnUiThread(
-                            () -> {
-                                if (isFinishing()) return;
-                                h();
-                                var intent = new Intent(this, CodeViewerActivity.class);
-                                intent.putExtra(
-                                        "code",
-                                        !source.isEmpty()
-                                                ? source
-                                                : "Failed to generate source.");
-                                intent.putExtra("sc_id", sc_id);
-                                intent.putExtra("scheme", CodeViewerActivity.SCHEME_XML);
-                                startActivity(intent);
-                            });
-                })
-                .start();
+            runOnUiThread(() -> {
+                if (isFinishing()) return;
+                h();
+                var intent = new Intent(this, CodeViewerActivity.class);
+                intent.putExtra("code", !source.isEmpty() ? source : "Failed to generate source.");
+                intent.putExtra("sc_id", sc_id);
+                intent.putExtra("scheme", CodeViewerActivity.SCHEME_XML);
+                startActivity(intent);
+            });
+        }).start();
     }
 
     private void makeup(LibraryItemView parent, int icon, String title, String description) {
@@ -464,41 +386,31 @@ public class AndroidManifestInjection extends BaseAppCompatActivity {
             CustomAttributeView attributeView = new CustomAttributeView(parent.getContext());
 
             attributeView.getImageView().setVisibility(View.GONE);
-            attributeView
-                    .getTextView()
-                    .setText((String) activitiesListMap.get(position).get("act_name"));
-            attributeView.setOnClickListener(
-                    v -> {
-                        Intent intent = new Intent();
-                        intent.setClass(
-                                getApplicationContext(), AndroidManifestInjectionDetails.class);
-                        intent.putExtra("sc_id", sc_id);
-                        intent.putExtra("file_name", (String) _data.get(position).get("act_name"));
-                        intent.putExtra("type", "activity");
-                        startActivity(intent);
-                    });
-            attributeView.setOnLongClickListener(
-                    v -> {
-                        {
-                            MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AndroidManifestInjection.this);
-                            dialog.setIcon(R.drawable.icon_delete);
-                            dialog.setTitle(Helper.getResString(
-                                    R.string.delete_custom_activity_dialog_title));
-                            dialog.setMessage(Helper.getResString(
-                                            R.string.delete_custom_activity_dialog_message)
-                                    .replace(
-                                            "%1$s",
-                                            (String) _data.get(position).get("act_name")));
+            attributeView.getTextView().setText((String) activitiesListMap.get(position).get("act_name"));
+            attributeView.setOnClickListener(v -> {
+                Intent intent = new Intent();
+                intent.setClass(getApplicationContext(), AndroidManifestInjectionDetails.class);
+                intent.putExtra("sc_id", sc_id);
+                intent.putExtra("file_name", (String) _data.get(position).get("act_name"));
+                intent.putExtra("type", "activity");
+                startActivity(intent);
+            });
+            attributeView.setOnLongClickListener(v -> {
+                {
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(AndroidManifestInjection.this);
+                    dialog.setIcon(R.drawable.icon_delete);
+                    dialog.setTitle(Helper.getResString(R.string.delete_custom_activity_dialog_title));
+                    dialog.setMessage(Helper.getResString(R.string.delete_custom_activity_dialog_message).replace("%1$s", (String) _data.get(position).get("act_name")));
 
-                            dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v1, which) -> {
-                                deleteActivity(position);
-                                v1.dismiss();
-                            });
-                            dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
-                            dialog.show();
-                        }
-                        return true;
+                    dialog.setPositiveButton(Helper.getResString(R.string.common_word_delete), (v1, which) -> {
+                        deleteActivity(position);
+                        v1.dismiss();
                     });
+                    dialog.setNegativeButton(Helper.getResString(R.string.common_word_cancel), null);
+                    dialog.show();
+                }
+                return true;
+            });
 
             return attributeView;
         }

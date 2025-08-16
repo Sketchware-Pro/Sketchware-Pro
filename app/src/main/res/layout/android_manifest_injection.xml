@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true">
 
-            <include layout="@layout/toolbar_improved" />
+        <include layout="@layout/toolbar_improved" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
@@ -39,19 +39,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginHorizontal="24dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="4dp"
                     android:text="Activities"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textAppearance="?attr/textAppearanceBodyMediumEmphasized"
                     android:textColor="?attr/colorPrimary" />
 
                 <ListView
+                    android:id="@+id/activities_list_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:dividerHeight="0dp"
-                    android:id="@+id/activities_list_view"
-                    android:divider="@null" />
+                    android:divider="@null"
+                    android:dividerHeight="0dp" />
             </LinearLayout>
 
             <Button
