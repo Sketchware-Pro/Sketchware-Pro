@@ -181,6 +181,9 @@ public class yq {
      * Example content: /storage/emulated/0/.sketchware/mysc/605/app/src/main/res/raw
      */
     public final String importedSoundsPath;
+
+    private final Material3LibraryManager material3LibraryManager;
+
     private final oB fileUtil;
     private final Context context;
 
@@ -209,6 +212,7 @@ public class yq {
         this.metadata = metadata;
         N = new jq();
         sc_id = yB.c(metadata, "sc_id");
+        material3LibraryManager = new Material3LibraryManager(sc_id);
         N.sc_id = sc_id;
         projectMyscPath = myscFolderPath.endsWith(File.separator) ? myscFolderPath : myscFolderPath + File.separator;
         packageName = yB.c(metadata, "my_sc_pkg_name");
@@ -853,7 +857,7 @@ public class yq {
         // Make generated classes viewable
         if (!javaFiles.contains(new File(javaDir + "SketchwareUtil.java"))) {
             srcCodeBeans.add(new SrcCodeBean("SketchwareUtil.java",
-                    Lx.i(packageName)));
+                    Lx.i(packageName, material3LibraryManager.isMaterial3Enabled())));
         }
 
         if (!javaFiles.contains(new File(javaDir + "FileUtil.java"))) {
@@ -992,7 +996,6 @@ public class yq {
         if (FileUtil.isExistFile(filePath) && exportingType == ExportType.SOURCE_CODE_VIEWING) {
             return FileUtil.readFile(filePath);
         }
-        Material3LibraryManager material3LibraryManager = new Material3LibraryManager(sc_id);
         if (material3LibraryManager.isMaterial3Enabled()) {
             XmlBuilderHelper stylesFileBuilder = new XmlBuilderHelper();
             stylesFileBuilder.addStyle("AppTheme", String.format("Theme.Material3.%s.NoActionBar", material3LibraryManager.getTheme()));
