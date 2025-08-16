@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import com.google.android.material.transition.MaterialFadeThrough;
 
+import pro.sketchware.BuildConfig;
 import pro.sketchware.activities.main.fragments.projects_store.adapters.StorePagerProjectsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.adapters.StoreProjectsAdapter;
 import pro.sketchware.activities.main.fragments.projects_store.api.SketchubAPI;
