@@ -37,9 +37,11 @@ public class Fx {
     public jq buildConfig;
     public ArrayList<BlockBean> eventBlocks;
     public Map<String, BlockBean> blockMap;
+    private final boolean isActivity;
 
     public Fx(String activityName, jq buildConfig, ArrayList<BlockBean> eventBlocks, boolean isViewBindingEnabled) {
         this.activityName = activityName;
+        isActivity = activityName.endsWith("Activity");
         this.buildConfig = buildConfig;
         this.eventBlocks = eventBlocks;
         this.isViewBindingEnabled = isViewBindingEnabled;
@@ -186,20 +188,39 @@ public class Fx {
         ArrayList<String> params = new ArrayList<>();
         ArrayList<String> paramsTypes = extractParamsTypes(bean.spec);
         for (int i = 0; i < bean.parameters.size(); i++) {
-            String param = getParamValue(bean.parameters.get(i), viewParamsTypes.contains(paramsTypes.get(i)));
+            String param = getParamValue(bean.parameters.get(i), paramsTypes.get(i));
             int type = getBlockType(bean, i);
             params.add(a(param, type, bean.opCode));
         }
         return params;
     }
 
-    private String getParamValue(String param, boolean isWidgetParam) {
-        String bindingStart = "binding.";
-        if (isViewBindingEnabled && isWidgetParam && !param.isEmpty() && param.charAt(0) != '@' && !param.startsWith(bindingStart)) {
-            return bindingStart + ViewBindingBuilder.generateParameterFromId(param);
-        } else {
-            return param;
+    private String getParamValue(String param, String paramType) {
+        boolean isWidgetParam = viewParamsTypes.contains(paramType);
+        boolean isColorParam = paramType.equals("%m.color");
+
+        if (isWidgetParam) {
+            String bindingStart = "binding.";
+            if (isViewBindingEnabled && !param.isEmpty() && !param.startsWith("@") && !param.startsWith(bindingStart)) {
+                return bindingStart + ViewBindingBuilder.generateParameterFromId(param);
+            }
+        } else if (isColorParam) {
+            if (param.startsWith("R.color.")) {
+                return "getResources().getColor(" + param + ")";
+            }
+            String context = isActivity ? "this" : "getContext()";
+            String attr = null;
+            if (param.startsWith("R.attr.")) {
+                attr = param;
+            } else if (param.startsWith("getMaterialColor(") && param.endsWith(")")) {
+                // to keep backward compatibility with old getMaterialColor calls
+                attr = param.substring("getMaterialColor(".length(), param.length() - 1);
+            }
+            if (attr != null) {
+                return String.format("SketchwareUtil.getMaterialColor(%s, %s)", context, attr);
+            }
         }
+        return param;
     }
 
     private ArrayList<String> extractParamsTypes(String input) {
@@ -229,7 +250,7 @@ public class Fx {
 
                     for (int i = 0; i < params.size(); i++) {
                         if (i > 0) opcode += ", ";
-                        String param = getParamValue(params.get(i), viewParamsTypes.contains(paramsTypes.get(i)));
+                        String param = getParamValue(params.get(i), paramsTypes.get(i));
                         if (param.isEmpty()) {
                             Gx paramInfo = bean.getParamClassInfo().get(i);
                             if (paramInfo.b("boolean")) {
@@ -1399,7 +1420,7 @@ public class Fx {
         ArrayList<String> paramsTypes = extractParamsTypes(blockBean.spec);
 
         for (int i = 0; i < blockBean.parameters.size(); i++) {
-            String parameterValue = getParamValue(blockBean.parameters.get(i), viewParamsTypes.contains(paramsTypes.get(i)));
+            String parameterValue = getParamValue(blockBean.parameters.get(i), paramsTypes.get(i));
 
             switch (getBlockType(blockBean, i)) {
                 case 0:

@@ -208,7 +208,6 @@ public class Jx {
             if (isBottomDialogFragment) {
                 addImport("com.google.android.material.bottomsheet.BottomSheetDialogFragment");
             }
-            addImport("com.google.android.material.color.MaterialColors");
         } else {
             addImport("android.app.Fragment");
             addImport("android.app.FragmentManager");
@@ -575,20 +574,6 @@ public class Jx {
             if (j != qSize - 1) {
                 sb.append(EOL);
             }
-        }
-        if (new Material3LibraryManager(sc_id).isMaterial3Enabled()) {
-            String contextReference;
-            if (isFragment || isDialogFragment || isBottomDialogFragment) {
-                contextReference = "getContext()";
-            } else {
-                contextReference = "this";
-            }
-            sb.append(String.format("""
-                    
-                    private int getMaterialColor(int resourceId) {
-                    return MaterialColors.getColor(%s, resourceId, "getMaterialColor");
-                    }
-                    """, contextReference));
         }
         if (!isFragment && !settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, BuildSettings.SETTING_GENERIC_VALUE_FALSE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE)) {
