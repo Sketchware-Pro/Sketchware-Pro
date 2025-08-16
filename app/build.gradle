@@ -10,20 +10,19 @@ if (analyticsEnabled) {
 }
 
 android {
-    compileSdk 36
+    compileSdk = 36
 
     def gitCommitHash = "git rev-parse HEAD".execute().text.trim()
-
     def shortCommitHash = "git rev-parse --short HEAD".execute().text.trim()
 
     defaultConfig {
-        applicationId "pro.sketchware"
-        namespace "pro.sketchware"
+        applicationId = "pro.sketchware"
+        namespace = "pro.sketchware"
         //noinspection ExpiredTargetSdkVersion since we don't target getting Sketchware Pro on Google Play.
-        targetSdkVersion 28
-        minSdkVersion 26
-        versionCode 150
-        versionName "v7.0.0-SNAPSHOT-" + shortCommitHash
+        targetSdk = 28
+        minSdk = 26
+        versionCode = 150
+        versionName = "v7.0.0-SNAPSHOT-" + shortCommitHash
 
         buildConfigField("String", "GIT_HASH", "\"${gitCommitHash}\"")
 
@@ -37,9 +36,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.debug
+            minifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs.debug
         }
     }
 
@@ -50,9 +49,9 @@ android {
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
@@ -65,25 +64,29 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file("../testkey.keystore")
-            storePassword "testkey"
-            keyAlias "testkey"
-            keyPassword "testkey"
+            storeFile = file("../testkey.keystore")
+            storePassword = "testkey"
+            keyAlias = "testkey"
+            keyPassword = "testkey"
         }
     }
 
     buildFeatures {
-        viewBinding true
-        buildConfig true
+        viewBinding = true
+        buildConfig = true
     }
 
     configurations.implementation {
         exclude group: 'javax.inject', module: 'javax.inject'
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-scripting-compiler-embeddable"
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-scripting-common"
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-scripting-jvm"
+        exclude group: "org.jetbrains.kotlin", module: "kotlin-script-runtime"
     }
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"], exclude: "proguard-base-7.2.2.jar")
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
 
     implementation "androidx.appcompat:appcompat:1.7.1"
     implementation "androidx.core:core-splashscreen:1.0.1"
@@ -100,7 +103,6 @@ dependencies {
 
     implementation 'androidx.exifinterface:exifinterface:1.4.1'
     implementation "androidx.preference:preference:1.2.1"
-    implementation files('libs/android-svg.jar')
 
     def editorGroupId = "io.github.Rosemoe.sora-editor"
     implementation platform("$editorGroupId:bom:0.23.5")
@@ -118,7 +120,10 @@ dependencies {
     //noinspection GradleDependency copied from above dependency for not just runtime access
     implementation "com.google.protobuf:protobuf-java:3.19.2"
     //noinspection GradleDependency
-    implementation "com.android.tools:sdklib:25.3.0", { exclude group: "com.intellij", module: "annotations" }
+    implementation("com.android.tools:sdklib:25.3.0") {
+        exclude group: "com.intellij", module: "annotations"
+    }
+
     implementation "com.android.tools:r8:8.9.35"
     implementation "com.github.Iyxan23:zipalign-java:1.2.2"
 
@@ -131,18 +136,24 @@ dependencies {
     implementation "com.squareup.okio:okio:3.12.0"
 
     implementation "org.eclipse.jdt:ecj:3.26.0"
+    implementation 'javax.xml.stream:stax-api:1.0-2'
 
+    implementation "com.github.waelchateur:kotlinc-for-sketchware:2.1.21_rc3"
+    compileOnly "org.jetbrains.kotlin:kotlin-compiler:2.1.21"
+    implementation 'io.github.itsaky:nb-javac-android:17.0.0.3'
+    implementation 'com.fasterxml.woodstox:woodstox-core:6.5.1'
+    
     implementation "com.github.Cosmic-Ide:DependencyResolver:05ec26af0b"
-    implementation "com.github.Cosmic-IDE:kotlinc-android:fce2462f00"
     implementation "com.github.PranavPurwar:filepicker:74526bea66"
 
-    implementation files('libs/proguard-base-7.2.2.jar')
     implementation 'com.guardsquare:proguard-core:9.0.2'
 
     implementation "com.github.topjohnwu.libsu:core:5.0.4"
     implementation "dev.chrisbanes.insetter:insetter:0.6.1"
 
-    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.25.3'
+    implementation("com.github.javaparser:javaparser-symbol-solver-core:3.25.3") {
+        exclude group: "com.google.guava", module: "guava"
+    }
 
     // Analytics and Crashlytics
     if (analyticsEnabled) {
