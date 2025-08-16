@@ -308,7 +308,7 @@ public class yq {
         fileUtil.b(projectMyscPath + File.separator + "app" + File.separator + "build.gradle",
                 Lx.getBuildGradleString(VAR_DEFAULT_TARGET_SDK_VERSION, VAR_DEFAULT_MIN_SDK_VERSION, projectSettings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)), N, projectSettings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, ProjectSettings.SETTING_GENERIC_VALUE_FALSE).equals(ProjectSettings.SETTING_GENERIC_VALUE_TRUE)));
         fileUtil.b(projectMyscPath + File.separator + "settings.gradle", Lx.a());
-        fileUtil.b(projectMyscPath + File.separator + "build.gradle", Lx.c("8.7.0", "4.4.2"));
+        fileUtil.b(projectMyscPath + File.separator + "build.gradle", Lx.c("8.12.0", "4.4.3"));
 
         fileUtil.b(projectMyscPath + File.separator + "gradle.properties", """
                 android.enableR8.fullMode=false

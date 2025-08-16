@@ -89,13 +89,13 @@ public class Lx {
         List<BuiltInLibraries.BuiltInLibrary> excludedLibraries = ExcludeBuiltInLibrariesActivity.getExcludedLibraries(metadata.sc_id);
         if (isLibraryNotExcluded(BuiltInLibraries.ANDROIDX_APPCOMPAT, excludedLibraries) && metadata.g) {
             content.append("""
-                    implementation 'androidx.appcompat:appcompat:1.7.0'\r
+                    implementation 'androidx.appcompat:appcompat:1.7.1'\r
                     implementation 'com.google.android.material:material:1.12.0'\r
                     """);
         }
 
         if (metadata.isFirebaseEnabled) {
-            content.append("implementation platform('com.google.firebase:firebase-bom:33.4.0')\r\n");
+            content.append("implementation platform('com.google.firebase:firebase-bom:34.1.0')\r\n");
         }
 
         if (isLibraryNotExcluded(BuiltInLibraries.FIREBASE_AUTH, excludedLibraries) && metadata.isFirebaseAuthUsed) {
@@ -1609,7 +1609,6 @@ public class Lx {
                 "    repositories {\r\n" +
                 "        google()\r\n" +
                 "        mavenCentral()\r\n" +
-                "        jcenter()\r\n" +
                 "    }\r\n" +
                 "    dependencies {\r\n" +
                 "        classpath 'com.android.tools.build:gradle:" + androidGradlePluginVersion + "'\r\n" +
@@ -1623,7 +1622,6 @@ public class Lx {
                 "    repositories {\r\n" +
                 "        google()\r\n" +
                 "        mavenCentral()\r\n" +
-                "        jcenter()\r\n" +
                 "    }\r\n" +
                 "}\r\n" +
                 "\r\n" +
