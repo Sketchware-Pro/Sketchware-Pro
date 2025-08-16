@@ -11,7 +11,7 @@ def get_git_commit_info():
     return commit_author, commit_message, commit_hash, commit_hash_short
 
 def escape_markdown_v2(text):
-    escape_chars = r'_~`#+-=|{}.!'
+    escape_chars = r'_*[\]()~`>#+-=|{}.!'
     return re.sub(r'([%s])' % re.escape(escape_chars), r'\\\1', text)
 
 def main():
@@ -33,12 +33,12 @@ def main():
     payload = {
         "chat_id": chat_id,
         "text": escaped_message,
-        "parse_mode": "markdownv2",
+        "parse_mode": "MarkdownV2",
         "disable_web_page_preview": True
     }
     if topic_id:
         payload["message_thread_id"] = topic_id
-    
+
     response = requests.post(url, json=payload)
     if response.status_code != 200:
         print(f"Failed to send message: {response.status_code} {response.text}")
