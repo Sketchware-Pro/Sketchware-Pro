@@ -417,11 +417,7 @@ public class ViewPane extends RelativeLayout {
                             xmlToSvgConverter.setImageVectorFromFile(tempImageView, xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                         }
                     }
-                } catch (Exception e) {
-                    Log.e("ViewPane", "Error setting FAB icon: " + e.getMessage(), e);
-                    viewBean.image.resName = "default_image";
-                    ((FloatingActionButton) view).setImageResource(R.drawable.default_image);
-                }
+                } catch (Exception ignored) {}
             }
             view.setRotation(viewBean.image.rotate);
             view.setAlpha(viewBean.alpha);
