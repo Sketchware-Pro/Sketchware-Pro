@@ -80,7 +80,7 @@ public class ColorPickerDialog extends PopupWindow {
         binding = ColorPickerBinding.inflate(activity.getLayoutInflater());
         sc_id = scId;
         yq = new yq(activity, sc_id);
-        yq.a(jC.c(sc_id), jC.b(sc_id), jC.a(sc_id));
+        yq.a(jC.c(sc_id), jC.b(sc_id), jC.a(sc_id), a.a.a.yq.ExportType.SOURCE_CODE_VIEWING);
         material3LibraryManager = new Material3LibraryManager(scId);
         colorsEditorManager = new ColorsEditorManager();
         hasMaterialColors = true;
