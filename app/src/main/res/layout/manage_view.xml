@@ -68,32 +68,32 @@
         app:strokeWidth="0.5dp"
         tools:visibility="visible">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:orientation="horizontal">
+        <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:background="@android:color/transparent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_cancel"
-                style="?attr/materialIconButtonFilledTonalStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_weight="1"
-                android:text="@string/cancel"
-                android:textSize="@dimen/text_size_button_material"
-                app:cornerRadius="15dp" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cancel"
+        style="@style/Widget.Material3Expressive.Button.TonalButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:layout_weight="1"
+        android:text="@string/cancel"
+        android:textSize="@dimen/text_size_button_material" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_delete"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_weight="1"
-                android:text="@string/common_word_delete"
-                android:textSize="@dimen/text_size_button_material"
-                app:cornerRadius="15dp" />
-        </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_delete"
+        style="@style/Widget.Material3Expressive.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="4dp"
+        android:layout_weight="1"
+        android:text="@string/common_word_delete"
+        android:textSize="@dimen/text_size_button_material" />
+
+</com.google.android.material.button.MaterialButtonGroup>
     </com.google.android.material.card.MaterialCardView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

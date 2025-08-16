@@ -49,33 +49,38 @@
         app:layout_constraintTop_toBottomOf="@id/app_name"
         tools:text="v7.0.0-SNAPSHOT-xxxxxx" />
 
-    <Button
-        android:id="@+id/btn_reset"
-        style="@style/Widget.Material3Expressive.Button.TonalButton"
+    <com.google.android.material.button.MaterialButtonGroup
+        android:id="@+id/button_group"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/program_information_button_reset_system"
-        app:layout_constraintEnd_toStartOf="@id/btn_upgrade"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_icon" />
-
-    <Button
-        android:id="@+id/btn_upgrade"
-        style="@style/Widget.Material3Expressive.Button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="20dp"
-        android:text="@string/program_information_button_check_update"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_reset"
-        app:layout_constraintTop_toBottomOf="@id/app_icon" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/app_icon">
 
-    <LinearLayout
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_reset"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="@string/program_information_button_reset_system" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_upgrade"
+            style="@style/Widget.Material3Expressive.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:text="@string/program_information_button_check_update" />
+    </com.google.android.material.button.MaterialButtonGroup>
+
+<LinearLayout
         android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -84,6 +89,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_reset" />
+        app:layout_constraintTop_toBottomOf="@id/button_group" /> <!-- Changed from btn_reset to button_group -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
