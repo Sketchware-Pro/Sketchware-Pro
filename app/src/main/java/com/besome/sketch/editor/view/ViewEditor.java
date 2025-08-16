@@ -853,7 +853,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
         isLayoutChanged = true;
         if (viewPane != null) {
-            viewPane.setScId(str);
+            viewPane.initialize(str, false);
         }
     }
 

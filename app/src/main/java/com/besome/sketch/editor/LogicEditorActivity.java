@@ -1449,10 +1449,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
             @Override
             public void a(String var1, int var2) {
-                LogicEditorActivity.this.a(ss, "getResources().getColor(R.color." + var1 + ")");
+                LogicEditorActivity.this.a(ss, "R.color." + var1);
             }
         });
-        colorPickerDialog.materialColorAttr((attr, attrColor) -> LogicEditorActivity.this.a(ss, "getMaterialColor(R.attr." + attr + ")"));
+        colorPickerDialog.materialColorAttr((attr, attrColor) -> LogicEditorActivity.this.a(ss, "R.attr." + attr));
         colorPickerDialog.showAtLocation(ss, Gravity.CENTER, 0, 0);
     }
 

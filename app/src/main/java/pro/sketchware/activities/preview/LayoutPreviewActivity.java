@@ -44,7 +44,7 @@ public class LayoutPreviewActivity extends BaseAppCompatActivity {
         content = getIntent().getStringExtra("xml");
         var sc_id = getIntent().getStringExtra("sc_id");
         pane = binding.pane;
-        pane.setScId(sc_id);
+        pane.initialize(sc_id, true);
         pane.updateRootLayout(sc_id, getIntent().getStringExtra("title"));
         pane.setVerticalScrollBarEnabled(true);
         pane.setResourceManager(jC.d(sc_id));
