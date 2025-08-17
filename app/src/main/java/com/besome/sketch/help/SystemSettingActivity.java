@@ -1,8 +1,12 @@
 package com.besome.sketch.help;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.besome.sketch.lib.base.BaseAppCompatActivity;
@@ -24,6 +28,34 @@ public class SystemSettingActivity extends BaseAppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(binding.fragmentContainer.getId(), new PreferenceFragment())
                 .commit();
+
+        {
+            View view1 = binding.appBarLayout;
+            int left = view1.getPaddingLeft();
+            int top = view1.getPaddingTop();
+            int right = view1.getPaddingRight();
+            int bottom = view1.getPaddingBottom();
+
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(left + insets.left, top + insets.top, right + insets.right, bottom);
+                return i;
+            });
+        }
+
+        {
+            View view1 = binding.fragmentContainer;
+            int left = view1.getPaddingLeft();
+            int top = view1.getPaddingTop();
+            int right = view1.getPaddingRight();
+            int bottom = view1.getPaddingBottom();
+
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(left + insets.left, top, right + insets.right, bottom + insets.bottom);
+                return i;
+            });
+        }
     }
 
     public static class PreferenceFragment extends PreferenceFragmentCompat {
