@@ -2,30 +2,20 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:title="Theme Settings">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="?attr/homeAsUpIndicator" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="Theme Settings" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -34,6 +24,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
+            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -95,80 +86,80 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/theme_light"
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal">
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="1"
+                    android:checkable="true"
+                    android:clickable="true"
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                    app:contentPadding="14dp"
+                    app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/theme_light"
-                        style="?attr/materialCardViewFilledStyle"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="12dp"
-                        android:layout_weight="1"
-                        android:checkable="true"
-                        android:clickable="true"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                        app:contentPadding="14dp"
-                        app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="100dp"
+                            android:layout_height="120dp"
+                            android:background="@drawable/img_preview_light_theme"
+                            app:shapeAppearance="?attr/shapeAppearanceCornerMedium" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_marginTop="12dp"
+                            android:text="Light"
+                            android:textAppearance="?attr/textAppearanceBodyLarge" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                            <com.google.android.material.imageview.ShapeableImageView
-                                android:layout_width="100dp"
-                                android:layout_height="120dp"
-                                android:background="@drawable/img_preview_light_theme"
-                                app:shapeAppearance="?attr/shapeAppearanceCornerMedium" />
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/theme_dark"
+                    style="?attr/materialCardViewFilledStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checkable="true"
+                    android:clickable="true"
+                    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+                    app:contentPadding="14dp"
+                    app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:text="Light"
-                                android:textAppearance="?attr/textAppearanceBodyLarge" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/theme_dark"
-                        style="?attr/materialCardViewFilledStyle"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:checkable="true"
-                        android:clickable="true"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainer"
-                        app:contentPadding="14dp"
-                        app:shapeAppearance="?attr/shapeAppearanceCornerLarge">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="100dp"
+                            android:layout_height="120dp"
+                            android:background="@drawable/img_preview_dark_theme"
+                            app:shapeAppearance="?attr/shapeAppearanceCornerMedium" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <com.google.android.material.imageview.ShapeableImageView
-                                android:layout_width="100dp"
-                                android:layout_height="120dp"
-                                android:background="@drawable/img_preview_dark_theme"
-                                app:shapeAppearance="?attr/shapeAppearanceCornerMedium" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
-                                android:text="Dark"
-                                android:textAppearance="?attr/textAppearanceBodyLarge" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
+                            android:layout_marginTop="12dp"
+                            android:text="Dark"
+                            android:textAppearance="?attr/textAppearanceBodyLarge" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
