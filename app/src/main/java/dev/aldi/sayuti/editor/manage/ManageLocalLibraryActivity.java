@@ -63,29 +63,76 @@ public class ManageLocalLibraryActivity extends BaseAppCompatActivity {
         binding = ManageLocallibrariesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        AtomicInteger existingBottomMargin = new AtomicInteger(-1);
+        {
+            View view1 = binding.searchBar;
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view1.getLayoutParams();
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.downloadLibraryButton, (view, insets) -> {
-            Insets navigationBarsInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars());
+            int end = lp.getMarginEnd();
+            int start = lp.getMarginStart();
 
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.displayCutout());
+                lp.setMarginEnd(end + insets.right);
+                lp.setMarginStart(start + insets.left);
+                v.setLayoutParams(lp);
+                return i;
+            });
+        }
 
-            if (existingBottomMargin.get() == -1) {
-                existingBottomMargin.set(params.bottomMargin);
-            }
+        {
+            View view1 = binding.contextualToolbarContainer;
+            int left = view1.getPaddingLeft();
+            int top = view1.getPaddingTop();
+            int right = view1.getPaddingRight();
+            int bottom = view1.getPaddingBottom();
 
-            params.bottomMargin = existingBottomMargin.get() + navigationBarsInsets.bottom;
-            view.setLayoutParams(params);
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(left + insets.left, top + insets.top, right + insets.right, bottom);
+                return i;
+            });
+        }
 
-            return WindowInsetsCompat.CONSUMED;
-        });
+        {
+            View view1 = binding.librariesList;
+            int left = view1.getPaddingLeft();
+            int top = view1.getPaddingTop();
+            int right = view1.getPaddingRight();
+            int bottom = view1.getPaddingBottom();
 
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(left + insets.left, top, right + insets.right, bottom + insets.bottom);
+                return i;
+            });
+        }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.contextualToolbarContainer, (v, windowInsets) -> {
-            var insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(insets.left, insets.top, insets.right, 0);
-            return windowInsets;
-        });
+        {
+            View view1 = binding.searchList;
+            int left = view1.getPaddingLeft();
+            int top = view1.getPaddingTop();
+            int right = view1.getPaddingRight();
+            int bottom = view1.getPaddingBottom();
+
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(left + insets.left, top, right + insets.right, bottom + insets.bottom);
+                return i;
+            });
+        }
+
+        {
+            View view1 = binding.downloadLibraryButton;
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view1.getLayoutParams();
+            int bottom = lp.bottomMargin;
+
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars());
+                lp.bottomMargin = bottom + insets.bottom;
+                v.setLayoutParams(lp);
+                return i;
+            });
+        }
 
         if (getIntent().hasExtra("sc_id")) {
             scId = Objects.requireNonNull(getIntent().getStringExtra("sc_id"));
