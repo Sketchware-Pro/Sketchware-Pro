@@ -210,7 +210,7 @@
                         android:id="@+id/spec_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="8dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/spec"
@@ -224,7 +224,7 @@
                         android:id="@+id/spec2_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
+                        android:layout_marginTop="8dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/spec2"
@@ -331,7 +331,6 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
-            android:id="@+id/buttons_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
