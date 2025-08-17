@@ -42,7 +42,7 @@ public class ColorsEditor extends Fragment {
     public static String contentPath;
     public final ArrayList<ColorModel> colorList = new ArrayList<>();
     public final HashMap<String, String> defaultColors = new HashMap<>();
-    private final ResourcesEditorActivity activity;
+    private ResourcesEditorActivity activity;
     public ColorsAdapter adapter;
     public boolean hasUnsavedChanges;
     public ColorsEditorManager colorsEditorManager;
@@ -50,8 +50,10 @@ public class ColorsEditor extends Fragment {
     private boolean isNightVariant;
     private HashMap<Integer, String> notesMap = new HashMap<>();
 
-    public ColorsEditor(ResourcesEditorActivity activity) {
-        this.activity = activity;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (ResourcesEditorActivity) getActivity();
     }
 
     @Nullable

@@ -32,10 +32,9 @@ import pro.sketchware.utility.SketchwareUtil;
 import pro.sketchware.utility.XmlUtil;
 
 public class StringsEditor extends Fragment {
-
     private ResourcesEditorFragmentBinding binding;
 
-    private final ResourcesEditorActivity activity;
+    private ResourcesEditorActivity activity;
 
     public StringsAdapter adapter;
 
@@ -47,8 +46,10 @@ public class StringsEditor extends Fragment {
 
     public final StringsEditorManager stringsEditorManager = new StringsEditorManager();
 
-    public StringsEditor(ResourcesEditorActivity activity) {
-        this.activity = activity;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (ResourcesEditorActivity) getActivity();
     }
 
     @Nullable

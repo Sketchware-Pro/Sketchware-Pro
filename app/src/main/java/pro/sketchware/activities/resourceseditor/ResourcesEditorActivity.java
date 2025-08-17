@@ -108,11 +108,11 @@ public class ResourcesEditorActivity extends BaseAppCompatActivity {
     }
 
     private void initializeEditors() {
-        stringsEditor = new StringsEditor(this);
-        colorsEditor = new ColorsEditor(this);
-        stylesEditor = new StylesEditor(this);
-        themesEditor = new ThemesEditor(this);
-        arraysEditor = new ArraysEditor(this);
+        stringsEditor = new StringsEditor();
+        colorsEditor = new ColorsEditor();
+        stylesEditor = new StylesEditor();
+        themesEditor = new ThemesEditor();
+        arraysEditor = new ArraysEditor();
     }
 
     private void initializeBackgroundTask(String variant) {

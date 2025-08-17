@@ -38,7 +38,7 @@ import pro.sketchware.utility.SketchwareUtil;
 public class ThemesEditor extends Fragment {
 
     private ResourcesEditorFragmentBinding binding;
-    private final ResourcesEditorActivity activity;
+    private ResourcesEditorActivity activity;
 
     public StylesAdapter adapter;
     private PropertyInputItem.AttributesAdapter attributesAdapter;
@@ -51,8 +51,10 @@ public class ThemesEditor extends Fragment {
     public boolean hasUnsavedChanges;
     private String filePath;
 
-    public ThemesEditor(ResourcesEditorActivity activity) {
-        this.activity = activity;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (ResourcesEditorActivity) getActivity();
     }
 
     @Nullable

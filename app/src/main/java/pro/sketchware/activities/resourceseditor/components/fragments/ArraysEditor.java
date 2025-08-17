@@ -46,14 +46,16 @@ public class ArraysEditor extends Fragment {
     private final ArrayList<ArrayModel> arraysList = new ArrayList<>();
     private HashMap<Integer, String> notesMap = new HashMap<>();
 
-    public final ArraysEditorManager arraysEditorManager;
+    public ArraysEditorManager arraysEditorManager;
 
     public boolean hasUnsavedChanges;
     private String filePath;
-    private final ResourcesEditorActivity activity;
+    private ResourcesEditorActivity activity;
 
-    public ArraysEditor(ResourcesEditorActivity activity) {
-        this.activity = activity;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (ResourcesEditorActivity) getActivity();
         arraysEditorManager = new ArraysEditorManager();
     }
 

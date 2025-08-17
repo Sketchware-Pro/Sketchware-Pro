@@ -49,10 +49,12 @@ public class StylesEditor extends Fragment {
 
     public boolean hasUnsavedChanges;
     private String filePath;
-    private final ResourcesEditorActivity activity;
+    private ResourcesEditorActivity activity;
 
-    public StylesEditor(ResourcesEditorActivity activity) {
-        this.activity = activity;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        activity = (ResourcesEditorActivity) getActivity();
     }
 
     @Nullable
