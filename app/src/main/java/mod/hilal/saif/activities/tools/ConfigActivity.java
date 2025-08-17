@@ -11,6 +11,8 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceDataStore;
@@ -165,10 +167,6 @@ public class ConfigActivity extends BaseAppCompatActivity {
         enableEdgeToEdgeNoContrast();
         super.onCreate(savedInstanceState);
         var binding = PreferenceActivityBinding.inflate(getLayoutInflater());
-        // unfortunately, androidx.preference doesn't make it easy to support edge-to-edge layout properly, so this will have to do
-        Insetter.builder()
-                .padding(WindowInsetsCompat.Type.navigationBars())
-                .applyToView(binding.getRoot());
         setContentView(binding.getRoot());
 
         binding.topAppBar.setTitle("App Settings");
@@ -178,6 +176,34 @@ public class ConfigActivity extends BaseAppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(binding.fragmentContainer.getId(), fragment)
                 .commit();
+
+        {
+            View view1 = binding.appBarLayout;
+            int left = view1.getPaddingLeft();
+            int top = view1.getPaddingTop();
+            int right = view1.getPaddingRight();
+            int bottom = view1.getPaddingBottom();
+
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(left + insets.left, top + insets.top, right + insets.right, bottom);
+                return i;
+            });
+        }
+
+        {
+            View view1 = binding.fragmentContainer;
+            int left = view1.getPaddingLeft();
+            int top = view1.getPaddingTop();
+            int right = view1.getPaddingRight();
+            int bottom = view1.getPaddingBottom();
+
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(left + insets.left, top, right + insets.right, bottom + insets.bottom);
+                return i;
+            });
+        }
     }
 
     public static class PreferenceFragment extends PreferenceFragmentCompat {
