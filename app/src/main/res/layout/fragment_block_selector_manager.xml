@@ -1,31 +1,20 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?collapsingToolbarLayoutLargeSize"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/abc_ic_ab_back_material"
-                app:title="@string/settings_block_selector"
-                app:menu="@menu/block_selector_menu" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_height="wrap_content"
+            app:menu="@menu/block_selector_menu"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="@string/settings_block_selector" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -38,8 +27,8 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="8dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
@@ -55,7 +44,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/common_word_new"
         app:icon="@drawable/ic_mtrl_add" />
 
