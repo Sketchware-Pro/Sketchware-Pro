@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="24dp"
-        android:text="new Color"
+        android:text="New color"
         app:icon="@drawable/ic_mtrl_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
