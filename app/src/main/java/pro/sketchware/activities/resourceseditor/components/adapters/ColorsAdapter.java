@@ -52,7 +52,7 @@ public class ColorsAdapter extends RecyclerView.Adapter<ColorsAdapter.ViewHolder
             holder.itemBinding.tvTitle.setVisibility(View.GONE);
         }
 
-        holder.itemBinding.title.setHint(colorName);
+        holder.itemBinding.title.setText(colorName);
         holder.itemBinding.sub.setText(colorValue);
 
         holder.itemBinding.color.setBackgroundColor(PropertiesUtil.parseColor(colorsEditorManager.getColorValue(activity.getApplicationContext(), colorValue, 4, activity.variant.contains("night"))));

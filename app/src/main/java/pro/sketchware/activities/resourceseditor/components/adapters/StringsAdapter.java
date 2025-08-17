@@ -59,7 +59,7 @@ public class StringsAdapter extends RecyclerView.Adapter<StringsAdapter.ViewHold
         HashMap<String, Object> item = filteredData.get(position);
         String key = (String) item.get("key");
         String text = (String) item.get("text");
-        holder.binding.title.setHint(key);
+        holder.binding.title.setText(key);
         holder.binding.sub.setText(text);
 
         if (notesMap.containsKey(position)) {

@@ -72,7 +72,7 @@ public class StylesAdapter extends RecyclerView.Adapter<StylesAdapter.StyleViewH
         }
 
         public void bind(StyleModel style) {
-            binding.title.setHint(style.getStyleName());
+            binding.title.setText(style.getStyleName());
             if (style.getParent().isEmpty()) {
                 binding.sub.setText("No Parent");
             } else {

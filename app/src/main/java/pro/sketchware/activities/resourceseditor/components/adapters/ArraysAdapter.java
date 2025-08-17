@@ -71,7 +71,7 @@ public class ArraysAdapter extends RecyclerView.Adapter<ArraysAdapter.ArrayViewH
         }
 
         public void bind(ArrayModel array) {
-            binding.title.setHint(array.getArrayName());
+            binding.title.setText(array.getArrayName());
             binding.sub.setText(array.getArrayType().name());
             if (notesMap.containsKey(getAbsoluteAdapterPosition())) {
                 binding.tvTitle.setText(notesMap.get(getAbsoluteAdapterPosition()));
