@@ -1,51 +1,62 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar_improved" />
-
-    <ScrollView
-        android:id="@+id/scroll_view"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        app:liftOnScrollTargetViewId="@id/scroll_view">
 
-        <LinearLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="Edit block" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardv"
+    <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:paddingTop="8dp"
+            android:scrollbars="none">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:orientation="vertical"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
+                        android:layout_marginStart="8dp"
                         android:text="Properties"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/name_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:errorEnabled="true"
                         android:layout_marginTop="8dp"
                         android:orientation="vertical">
 
@@ -61,12 +72,14 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:baselineAligned="false"
                         android:gravity="center"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/type_layout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -93,6 +106,7 @@
                     </RelativeLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/typename_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -105,28 +119,19 @@
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="14dp"
-                android:orientation="vertical"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
+                        android:layout_marginStart="8dp"
                         android:text="Design"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -137,7 +142,7 @@
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/colour_lay"
+                            android:id="@+id/colour_layout"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1">
@@ -173,24 +178,24 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:padding="4dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
                         android:text="Parameters"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textSize="12sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                        android:layout_marginTop="8dp">
 
                         <HorizontalScrollView
                             android:id="@+id/parameterScrollView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingVertical="6dp"
-                            android:requiresFadingEdge="horizontal">
+                            android:scrollbars="none">
 
                             <LinearLayout
                                 android:id="@+id/parametersHolder"
@@ -200,9 +205,9 @@
                                 android:padding="8dp" />
                         </HorizontalScrollView>
                     </com.google.android.material.card.MaterialCardView>
-                    
+
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/specInputLayout"
+                        android:id="@+id/spec_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp">
@@ -216,7 +221,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/spec2InputLayout"
+                        android:id="@+id/spec2_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp">
@@ -228,54 +233,54 @@
                             android:hint="Spec2"
                             android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
-                    
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:padding="4dp"
-                        android:text="Block preview"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Block Preview"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
-                        android:textSize="12sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                    <HorizontalScrollView
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginRight="8dp">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp">
 
-                        <RelativeLayout
-                            android:id="@+id/block_area"
+                        <HorizontalScrollView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </HorizontalScrollView>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                            android:layout_height="wrap_content"
+                            android:paddingVertical="6dp"
+                            android:scrollbars="none">
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="14dp"
-                android:orientation="vertical"
-                app:cardBackgroundColor="?attr/colorSurfaceContainer">
+                            <RelativeLayout
+                                android:id="@+id/block_area"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="8dp" />
+                        </HorizontalScrollView>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-                    
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
+                        android:layout_marginStart="8dp"
                         android:text="Block import (e.g., android.view.View)"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/custom_import_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
@@ -293,16 +298,19 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="4dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
                         android:text="Block embedded code"
                         android:textAppearance="?attr/textAppearanceBodyLarge"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/code_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp">
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="16dp">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/code"
@@ -315,36 +323,39 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/buttons_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <Button
+                android:id="@+id/cancel"
+                style="@style/Widget.Material3Expressive.Button.TonalButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/common_word_cancel" />
+
+            <Button
+                android:id="@+id/save"
+                style="@style/Widget.Material3Expressive.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="@string/common_word_save" />
         </LinearLayout>
-    </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingHorizontal="14dp"
-        android:paddingVertical="10dp">
-
-        <Button
-            style="@style/Widget.Material3Expressive.Button.TonalButton"
-            android:id="@+id/cancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="7dp"
-            android:layout_weight="1"
-            android:text="@string/common_word_cancel"
-            android:textSize="@dimen/text_size_button_material" />
-
-        <Button
-            android:id="@+id/save"
-            style="@style/Widget.Material3Expressive.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:layout_weight="1"
-            android:text="@string/common_word_save"
-            android:textSize="@dimen/text_size_button_material" />
     </LinearLayout>
-</LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
