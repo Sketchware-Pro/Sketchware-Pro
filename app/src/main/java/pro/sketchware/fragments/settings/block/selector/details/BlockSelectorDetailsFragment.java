@@ -11,10 +11,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import a.a.a.qA;
@@ -28,15 +32,27 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class BlockSelectorDetailsFragment extends qA {
-
-    private final int index;
-    private final List<Selector> selectors;
+    private int index;
+    private List<Selector> selectors;
     private FragmentBlockSelectorManagerBinding binding;
     private BlockSelectorDetailsAdapter adapter;
 
-    public BlockSelectorDetailsFragment(int index, List<Selector> selectors) {
-        this.index = index;
-        this.selectors = selectors;
+    public static BlockSelectorDetailsFragment newInstance(int index, ArrayList<Selector> selectors) {
+        var fragment = new BlockSelectorDetailsFragment();
+        var args = new Bundle();
+        args.putInt("index", index);
+        args.putParcelableArrayList("selectors", selectors);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Bundle args = getArguments();
+        index = args.getInt("index");
+        selectors = args.getParcelableArrayList("selectors");
     }
 
     @Nullable
@@ -50,7 +66,6 @@ public class BlockSelectorDetailsFragment extends qA {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         configureToolbar(binding.toolbar);
-        handleInsetts(binding.getRoot());
 
         adapter = new BlockSelectorDetailsAdapter(
                 (selector, indexA) -> showActionsDialog(indexA)
@@ -60,6 +75,49 @@ public class BlockSelectorDetailsFragment extends qA {
         binding.list.setAdapter(adapter);
 
         binding.createNew.setOnClickListener(v -> showCreateEditDialog(false, 0));
+
+        {
+            View view1 = binding.appBarLayout;
+            int left = view1.getPaddingLeft();
+            int top = view1.getPaddingTop();
+            int right = view1.getPaddingRight();
+            int bottom = view1.getPaddingBottom();
+
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(left + insets.left, top + insets.top, right + insets.right, bottom + insets.bottom);
+                return i;
+            });
+        }
+
+        {
+            View view1 = binding.content;
+            int left = view1.getPaddingLeft();
+            int top = view1.getPaddingTop();
+            int right = view1.getPaddingRight();
+            int bottom = view1.getPaddingBottom();
+
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(left + insets.left, top, right + insets.right, bottom + insets.bottom);
+                return i;
+            });
+        }
+
+        {
+            View view1 = binding.createNew;
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view1.getLayoutParams();
+            int end = lp.getMarginEnd();
+            int bottom = lp.bottomMargin;
+
+            ViewCompat.setOnApplyWindowInsetsListener(view1, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                lp.setMarginEnd(end + insets.right);
+                lp.bottomMargin = bottom + insets.bottom;
+                v.setLayoutParams(lp);
+                return i;
+            });
+        }
     }
 
     private void showCreateEditDialog(boolean isEdit, int indexA) {

@@ -43,7 +43,7 @@ import pro.sketchware.utility.SketchwareUtil;
 
 public class BlockSelectorManagerFragment extends qA {
     private FragmentBlockSelectorManagerBinding binding;
-    private List<Selector> selectors = new ArrayList<>();
+    private ArrayList<Selector> selectors = new ArrayList<>();
     private BlockSelectorAdapter adapter;
 
     @Override
@@ -57,7 +57,7 @@ public class BlockSelectorManagerFragment extends qA {
         super.onViewCreated(view, savedInstanceState);
         configureToolbar(binding.toolbar);
 
-        adapter = new BlockSelectorAdapter((selector, index) -> openFragment(new BlockSelectorDetailsFragment(index, selectors)), (selector, index) -> showActionsDialog(index));
+        adapter = new BlockSelectorAdapter((selector, index) -> openFragment(BlockSelectorDetailsFragment.newInstance(index, selectors)), (selector, index) -> showActionsDialog(index));
 
         if (FileUtil.isExistFile(BlockSelectorConsts.BLOCK_SELECTORS_FILE.getAbsolutePath())) {
             selectors = parseJson(FileUtil.readFile(BlockSelectorConsts.BLOCK_SELECTORS_FILE.getAbsolutePath()));
@@ -115,8 +115,8 @@ public class BlockSelectorManagerFragment extends qA {
         }
     }
 
-    private List<Selector> parseJson(String jsonString) {
-        Type listType = new TypeToken<List<Selector>>() {
+    private ArrayList<Selector> parseJson(String jsonString) {
+        Type listType = new TypeToken<ArrayList<Selector>>() {
         }.getType();
         return getGson().fromJson(jsonString, listType);
     }

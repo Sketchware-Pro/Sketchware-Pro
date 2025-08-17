@@ -1,10 +1,15 @@
 package pro.sketchware.fragments.settings.block.selector;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Selector {
+public class Selector implements Parcelable {
     private List<String> data;
     private String name;
     private String title;
@@ -19,6 +24,24 @@ public class Selector {
         this.data = data;
         this.name = name;
         this.title = title;
+    }
+
+    public static final Creator<Selector> CREATOR = new Creator<Selector>() {
+        @Override
+        public Selector createFromParcel(Parcel in) {
+            return new Selector(in);
+        }
+
+        @Override
+        public Selector[] newArray(int size) {
+            return new Selector[size];
+        }
+    };
+
+    protected Selector(Parcel in) {
+        data = in.createStringArrayList();
+        name = in.readString();
+        title = in.readString();
     }
 
     public List<String> getData() {
@@ -57,6 +80,18 @@ public class Selector {
     @Override
     public int hashCode() {
         return Objects.hash(getData(), getName(), getTitle());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(name);
+        dest.writeStringList(data);
     }
 }
 
