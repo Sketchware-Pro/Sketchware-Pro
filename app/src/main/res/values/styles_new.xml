@@ -30,7 +30,6 @@
 
     <style name="Widget.SketchwarePro.Toolbar.SmallText" parent="Widget.Material3Expressive.Toolbar.OnSurface">
         <item name="titleTextAppearance">?attr/textAppearanceBodyLarge</item>
-        <item name="subtitleTextAppearance">?attr/textAppearanceBodyMedium</item>
     </style>
 
     <style name="Widget.SketchwarePro.NavigationView.Main" parent="Widget.Material3.NavigationView">
