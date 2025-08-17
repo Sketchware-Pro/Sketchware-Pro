@@ -50,7 +50,6 @@ import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;
 
 public class AppSettings extends BaseAppCompatActivity {
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         enableEdgeToEdgeNoContrast();
@@ -58,14 +57,35 @@ public class AppSettings extends BaseAppCompatActivity {
         var binding = ActivityAppSettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.contentScroll, (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), systemBars.bottom);
-            return insets;
-        });
+        {
+            View view = binding.appBarLayout;
+            int left = view.getPaddingLeft();
+            int top = view.getPaddingTop();
+            int right = view.getPaddingRight();
+            int bottom = view.getPaddingBottom();
+
+            ViewCompat.setOnApplyWindowInsetsListener(view, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(left + insets.left, top + insets.top, right + insets.right, bottom + insets.bottom);
+                return i;
+            });
+        }
+
+        {
+            View view = binding.contentScroll;
+            int left = view.getPaddingLeft();
+            int top = view.getPaddingTop();
+            int right = view.getPaddingRight();
+            int bottom = view.getPaddingBottom();
+
+            ViewCompat.setOnApplyWindowInsetsListener(view, (v, i) -> {
+                Insets insets = i.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(left, top, right, bottom + insets.bottom);
+                return i;
+            });
+        }
 
         binding.topAppBar.setNavigationOnClickListener(Helper.getBackPressedClickListener(this));
-
         setupPreferences(binding.content);
     }
 
