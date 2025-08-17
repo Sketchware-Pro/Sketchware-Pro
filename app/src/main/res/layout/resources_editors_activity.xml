@@ -10,16 +10,13 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
         android:fitsSystemWindows="true"
-        app:liftOnScrollColor="@color/transparent">
+        app:liftOnScrollColor="@android:color/transparent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_collapseMode="pin"
+            android:layout_height="wrap_content"
             app:navigationIcon="?attr/homeAsUpIndicator"
             app:title="@string/design_actionbar_title_manager_resources" />
 
@@ -27,14 +24,14 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             app:tabMode="scrollable"
             app:tabGravity="fill" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:dividerThickness="0.5dp" />
-
+            app:dividerColor="?attr/colorSurfaceContainerHighest" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2
