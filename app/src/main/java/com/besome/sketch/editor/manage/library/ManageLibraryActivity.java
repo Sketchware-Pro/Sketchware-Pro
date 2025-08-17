@@ -26,6 +26,8 @@ import com.besome.sketch.lib.base.BaseAppCompatActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import a.a.a.MA;
 import a.a.a.jC;
@@ -60,6 +62,8 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
     private String originalAdmobUseYn = "N";
     private String originalGoogleMapUseYn = "N";
 
+    private final List<LibraryItemView> libraryItems = new ArrayList<>();
+
     private LibraryCategoryView addCategoryItem(String text) {
         LibraryCategoryView libraryCategoryView = new LibraryCategoryView(this);
         libraryCategoryView.setTitle(text);
@@ -83,6 +87,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             libraryItemView.setHideEnabled();
         }
         parent.addLibraryItem(libraryItemView, addDivider);
+        libraryItems.add(libraryItemView);
     }
 
     private void addCustomLibraryItem(int type, LibraryCategoryView parent) {
@@ -102,6 +107,7 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         //noinspection ConstantConditions since the variant if it's nullable handles nulls correctly
         libraryItemView.setOnClickListener(this);
         parent.addLibraryItem(libraryItemView, addDivider);
+        libraryItems.add(libraryItemView);
     }
 
     private void toCompatActivity(ProjectLibraryBean compatLibraryBean, ProjectLibraryBean firebaseLibraryBean) {
@@ -125,17 +131,14 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
             }
         }
 
-        for (int i = 0; i < libraryItemLayout.getChildCount(); i++) {
-            View child = libraryItemLayout.getChildAt(i);
-            if (child instanceof ExcludeBuiltInLibrariesLibraryItemView libraryItemView) {
-                libraryItemView.setData(null);
-            }
-            if (child instanceof Material3LibraryItemView libraryItemView) {
-                libraryItemView.setData(compatLibraryBean);
-            } else if (child instanceof LibraryItemView libraryItemView) {
-                if (libraryBean != null && libraryBean.libType == (Integer) libraryItemView.getTag()) {
-                    libraryItemView.setData(libraryBean);
-                }
+        for (LibraryItemView itemView : libraryItems) {
+            Object tag = itemView.getTag();
+            if (itemView instanceof ExcludeBuiltInLibrariesLibraryItemView) {
+                itemView.setData(null);
+            } else if (itemView instanceof Material3LibraryItemView) {
+                itemView.setData(compatLibraryBean);
+            } else if (tag instanceof Integer && libraryBean != null && ((Integer) tag) == libraryBean.libType) {
+                itemView.setData(libraryBean);
             }
         }
     }
@@ -276,15 +279,19 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
                     case ProjectLibraryBean.PROJECT_LIB_TYPE_GOOGLE_MAP:
                         toGoogleMapActivity(googleMapLibraryBean);
                         break;
+
                     case ProjectLibraryBean.PROJECT_LIB_TYPE_LOCAL_LIB:
                         launchActivity(ManageLocalLibraryActivity.class);
                         break;
+
                     case ProjectLibraryBean.PROJECT_LIB_TYPE_NATIVE_LIB:
                         launchActivity(ManageNativelibsActivity.class);
                         break;
+
                     case ProjectLibraryBean.PROJECT_LIB_TYPE_EXCLUDE_BUILTIN_LIBRARIES:
                         launchCustomActivity(ExcludeBuiltInLibrariesActivity.class);
                         break;
+
                     case ProjectLibraryBean.PROJECT_LIB_TYPE_MATERIAL3:
                         toMaterial3Activity();
                 }
@@ -322,12 +329,12 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         });
 
         UI.addSystemWindowInsetToPadding(libraryItemLayout, false, false, false, true);
-
     }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
         if (savedInstanceState == null) {
             compatLibraryBean = jC.c(sc_id).c();
             if (compatLibraryBean == null) {
@@ -436,7 +443,6 @@ public class ManageLibraryActivity extends BaseAppCompatActivity implements View
         public void a(String idk) {
             activity.get().h();
         }
-
 
         @Override
         public void b() {
