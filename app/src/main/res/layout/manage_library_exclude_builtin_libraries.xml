@@ -1,34 +1,46 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:background="?attr/colorSurface">
 
-    <include layout="@layout/toolbar_improved" />
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:title="Exclude built-in libraries" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/layout_switch_card"
+            style="?attr/materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
-            style="?attr/materialCardViewFilledStyle"
-            app:cardBackgroundColor="?attr/colorSurfaceContainer">
+            android:clickable="true"
+            android:focusable="true">
 
             <LinearLayout
-                android:id="@+id/layout_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?selectableItemBackground"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="6dp"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="6dp">
 
                 <TextView
                     android:id="@+id/tv_enable"
@@ -47,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginLeft="8dp"
+                    android:focusable="false"
                     android:clickable="false" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -59,78 +72,99 @@
             android:fillViewport="true">
 
             <LinearLayout
+                android:id="@+id/content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:transitionGroup="true">
 
                 <LinearLayout
+                    android:id="@+id/no_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:id="@+id/lib_icon"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginRight="8dp"
-                        android:padding="4dp"
-                        app:tint="?colorAmber"
-                        android:src="@drawable/ic_mtrl_warning" />
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="24dp"
+                    tools:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/tv_desc"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:textColor="?colorAmber"
-                        android:textSize="14sp"
-                        android:text="This might break your project if you don't know what you're doing!" />
+                        android:text="No excluded built-in libraries found"
+                        android:textAppearance="?attr/textAppearanceBodyLargeEmphasized"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:text="Enable this feature if disabled, and tap a floating action button to select and exclude built-in library."
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="?attr/colorOnSurfaceVariant" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/actual_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="8dp"
-                        android:src="@drawable/ic_mtrl_label" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:paddingBottom="80dp"
+                    tools:layout_weight="1">
 
                     <TextView
                         android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:textColor="?colorControlNormal"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:text="Excluded built-in libraries" />
-                </LinearLayout>
+                        android:layout_marginStart="8dp"
+                        android:text="Excluded built-in libraries"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/item"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    app:contentPadding="12dp">
-
-                    <TextView
-                        android:id="@+id/item_desc"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/excluded_libraries_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="8dp"
-                        android:textColor="?colorControlNormal"
-                        android:textSize="12sp"
-                        tools:text="firebase-common-19.3.1, firebase-database-19.3.1" />
-                </com.google.android.material.card.MaterialCardView>
+                        android:layout_marginTop="8dp"
+                        app:contentPadding="16dp">
+
+                        <TextView
+                            android:id="@+id/item_desc"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textSize="13sp"
+                            tools:text="firebase-common-19.3.1, firebase-database-19.3.1" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="16dp"
+                        android:drawablePadding="12dp"
+                        android:paddingEnd="16dp"
+                        android:text="This might break your project if you don't know what you're doing!"
+                        android:textColor="?attr/colorError"
+                        app:drawableStartCompat="@drawable/ic_mtrl_warning"
+                        app:drawableTint="?attr/colorError" />
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-</LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/exclude_library"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="24dp"
+        android:text="Exclude library"
+        app:icon="@drawable/ic_mtrl_add" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
