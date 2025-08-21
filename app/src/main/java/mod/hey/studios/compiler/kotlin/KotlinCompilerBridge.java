@@ -19,7 +19,7 @@ public class KotlinCompilerBridge {
 
     public static void maybeAddKotlinBuiltInLibraryDependenciesIfPossible(ProjectBuilder builder, BuiltInLibraryManager builtInLibraryManager) {
         if (KotlinCompilerUtil.areAnyKtFilesPresent(builder)) {
-            builtInLibraryManager.addLibrary(BuiltInLibraries.KOTLIN_STDLIB);
+            builtInLibraryManager.addLibrary(BuiltInLibraries.JETBRAINS_KOTLIN_STDLIB);
         }
     }
 

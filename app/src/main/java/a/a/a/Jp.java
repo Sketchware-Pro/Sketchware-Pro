@@ -16,7 +16,7 @@ public class Jp {
     public Jp(String libraryName) {
         name = libraryName;
         hasResources = BuiltInLibraryUtils.hasResources(libraryName);
-        hasAssets = libraryName.equals(BuiltInLibraries.CODE_VIEW);
+        hasAssets = libraryName.equals(BuiltInLibraries.CODEVIEW);
         if (hasResources || hasAssets) {
             packageName = BuiltInLibraryUtils.getPackageName(libraryName);
         } else {

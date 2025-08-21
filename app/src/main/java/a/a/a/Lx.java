@@ -135,15 +135,15 @@ public class Lx {
         }
 
         ConstVarComponent extraMetadata = metadata.x;
-        if (isLibraryNotExcluded(BuiltInLibraries.CIRCLE_IMAGEVIEW, excludedLibraries) && extraMetadata.isCircleImageViewUsed) {
+        if (isLibraryNotExcluded(BuiltInLibraries.CIRCLEIMAGEVIEW, excludedLibraries) && extraMetadata.isCircleImageViewUsed) {
             content.append("implementation 'de.hdodenhof:circleimageview:3.1.0'\r\n");
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.YOUTUBE_PLAYER, excludedLibraries) && extraMetadata.isYoutubePlayerUsed) {
+        if (isLibraryNotExcluded(BuiltInLibraries.ANDROID_YOUTUBE_PLAYER, excludedLibraries) && extraMetadata.isYoutubePlayerUsed) {
             content.append("implementation 'com.pierfrancescosoffritti:androidyoutubeplayer:10.0.5'\r\n");
         }
 
-        if (isLibraryNotExcluded(BuiltInLibraries.CODE_VIEW, excludedLibraries) && extraMetadata.isCodeViewUsed) {
+        if (isLibraryNotExcluded(BuiltInLibraries.CODEVIEW, excludedLibraries) && extraMetadata.isCodeViewUsed) {
             content.append("implementation 'br.tiagohm:codeview:0.4.0'\r\n");
         }
 
