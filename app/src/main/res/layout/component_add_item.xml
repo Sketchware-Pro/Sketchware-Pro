@@ -25,7 +25,6 @@
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_gravity="center"
-                app:tint="?attr/colorControlNormal"
                 tools:src="@drawable/file_48_blue" />
 
         </com.google.android.material.card.MaterialCardView>
