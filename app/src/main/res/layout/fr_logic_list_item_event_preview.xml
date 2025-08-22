@@ -12,6 +12,5 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:src="@drawable/ic_mtrl_database_added"
-        android:scaleType="fitCenter"
-        app:tint="?colorSecondary"/>
+        android:scaleType="fitCenter"/>
 </LinearLayout>
