@@ -316,7 +316,6 @@
                             android:id="@+id/code"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:minLines="10"
                             android:gravity="top"
                             android:hint="Code"
                             android:textSize="14sp" />
