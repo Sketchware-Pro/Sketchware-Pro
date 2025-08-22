@@ -42,7 +42,7 @@ public class ProjectSettingsDialog {
         binding.cbEnableViewbinding.setChecked(
                 settings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "false").equals("true"));
         binding.cbRemoveOldMethods.setChecked(
-                settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, "false").equals("true"));
+                settings.getValue(ProjectSettings.SETTING_DISABLE_OLD_METHODS, "true").equals("true"));
         binding.cbUseNewMaterialComponentsAppTheme.setChecked(
                 settings.getValue(ProjectSettings.SETTING_ENABLE_BRIDGELESS_THEMES, "false").equals("true"));
 
