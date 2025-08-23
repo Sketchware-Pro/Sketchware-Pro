@@ -1,85 +1,77 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                style="@style/Widget.SketchwarePro.Toolbar.SmallText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:title="Activity"
-                app:subtitle="onCreate"
-                app:subtitleTextColor="?colorSecondary"
-                app:navigationIcon="?attr/homeAsUpIndicator" />
-
-            <com.besome.sketch.editor.view.ViewLogicEditor
-                android:id="@+id/editor"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="4dp"/>
-        </LinearLayout>
-
-        <com.besome.sketch.editor.LogicEditorDrawer
-            android:id="@+id/right_drawer"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:translationX="200dp" />
-
-        <LinearLayout
-            android:id="@+id/layout_palette"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_toggle_palette"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/action_button_margin"
-                android:src="@drawable/block_flled_white"
-                tools:ignore="ContentDescription" />
-
-            <LinearLayout
-                android:id="@+id/area_palette"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="16dp"
-                android:orientation="horizontal">
-
-                <com.besome.sketch.editor.logic.PaletteBlock
-                    android:id="@+id/palette_block"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <com.besome.sketch.editor.logic.LogicTopMenu
-            android:id="@+id/top_menu"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            style="@style/Widget.SketchwarePro.Toolbar.SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:translationY="-48dp" />
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:subtitle="onCreate"
+            app:title="Activity" />
 
-        <com.besome.sketch.editor.view.ViewDummy
-            android:id="@+id/dummy"
+        <com.besome.sketch.editor.view.ViewLogicEditor
+            android:id="@+id/editor"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
-</LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_margin="4dp" />
+    </LinearLayout>
+
+    <com.besome.sketch.editor.LogicEditorDrawer
+        android:id="@+id/right_drawer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:translationX="200dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_palette"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_toggle_palette"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/action_button_margin"
+            android:src="@drawable/block_flled_white"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:id="@+id/area_palette"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="16dp"
+            android:orientation="horizontal">
+
+            <com.besome.sketch.editor.logic.PaletteBlock
+                android:id="@+id/palette_block"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.besome.sketch.editor.logic.LogicTopMenu
+        android:id="@+id/top_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:translationY="-48dp" />
+
+    <com.besome.sketch.editor.view.ViewDummy
+        android:id="@+id/dummy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>
