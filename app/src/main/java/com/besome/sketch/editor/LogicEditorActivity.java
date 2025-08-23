@@ -82,6 +82,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
 import a.a.a.DB;
@@ -99,6 +101,7 @@ import a.a.a.Ts;
 import a.a.a.Us;
 import a.a.a.Vs;
 import a.a.a.ZB;
+import a.a.a.bB;
 import a.a.a.bC;
 import a.a.a.eC;
 import a.a.a.jC;
@@ -1781,7 +1784,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     private Context getContext() {
-        return getApplicationContext();
+        return this;
     }
 
     public void g(int i) {
@@ -2054,7 +2057,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 } else if (tag.equals("listRemove")) {
                     J();
                 } else if (tag.equals("blockAdd")) {
-                    Intent intent = new Intent(getContext(), MakeBlockActivity.class);
+                    Intent intent = new Intent(LogicEditorActivity.this, MakeBlockActivity.class);
                     intent.putExtra("sc_id", B);
                     intent.putExtra("project_file", M);
                     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -2104,7 +2107,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
         isViewBindingEnabled = new ProjectSettings(B).getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, "false").equals("true");
         M = (ProjectFileBean) parcelable;
-        T = (int) wB.a(getBaseContext(), (float) T);
+        T = (int) wB.a(getContext(), (float) T);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> {
@@ -2200,7 +2203,10 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         o.getRoot().k();
         g(getResources().getConfiguration().orientation);
         a(0, 0xffee7d16);
-        loadEventBlocks();
+
+        LoadEventBlocksTask loadEventBlocksTask = new LoadEventBlocksTask(this);
+        loadEventBlocksTask.execute();
+
         z();
     }
 
@@ -2669,7 +2675,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
         @Override
         public void a(String str) {
-            Toast.makeText(a, xB.b().a(activity.get().getContext(), R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
+            Toast.makeText(a, xB.b().a(activity.get(), R.string.common_error_failed_to_save), Toast.LENGTH_SHORT).show();
             activity.get().h();
         }
 
