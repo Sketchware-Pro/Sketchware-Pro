@@ -7,11 +7,11 @@ import android.graphics.Paint;
 import androidx.appcompat.widget.AppCompatCheckBox;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemCheckBox extends AppCompatCheckBox implements sy {
+public class ItemCheckBox extends AppCompatCheckBox implements ItemView {
 
     public ViewBean viewBean;
 

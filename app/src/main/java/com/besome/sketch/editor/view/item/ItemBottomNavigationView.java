@@ -10,13 +10,13 @@ import android.view.MotionEvent;
 import androidx.annotation.NonNull;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 import pro.sketchware.R;
 
-public class ItemBottomNavigationView extends BottomNavigationView implements sy {
+public class ItemBottomNavigationView extends BottomNavigationView implements ItemView {
 
     private final Paint paint;
     private final Rect rect;

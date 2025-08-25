@@ -13,12 +13,12 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.ty;
 import a.a.a.wB;
 
-public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
+public class ItemHorizontalScrollView extends FrameLayout implements ItemView, ty {
 
     private final Rect rect = new Rect();
     private ViewBean viewBean;
@@ -247,8 +247,8 @@ public class ItemHorizontalScrollView extends FrameLayout implements sy, ty {
         int i = 0;
         for (int j = 0; j < getChildCount(); j++) {
             KeyEvent.Callback firstChild = getChildAt(j);
-            if (firstChild instanceof sy) {
-                ((sy) firstChild).getBean().index = i;
+            if (firstChild instanceof ItemView) {
+                ((ItemView) firstChild).getBean().index = i;
                 i++;
             }
         }

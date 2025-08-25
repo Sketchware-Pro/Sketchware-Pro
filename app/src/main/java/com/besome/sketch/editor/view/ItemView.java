@@ -1,10 +1,9 @@
-package a.a.a;
+package com.besome.sketch.editor.view;
 
 import com.besome.sketch.beans.ViewBean;
 
-// todo: move this to another package
 // 'sy' is used in ViewPane items, example ItemLinearLayout
-public interface sy {
+public interface ItemView {
     ViewBean getBean();
 
     void setBean(ViewBean viewBean);

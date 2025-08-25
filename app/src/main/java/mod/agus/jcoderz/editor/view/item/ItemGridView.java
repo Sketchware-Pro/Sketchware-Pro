@@ -8,13 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
 import java.util.ArrayList;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemGridView extends GridView implements sy {
+public class ItemGridView extends GridView implements ItemView {
 
     private final Paint paint;
     private final int paddingFactor;

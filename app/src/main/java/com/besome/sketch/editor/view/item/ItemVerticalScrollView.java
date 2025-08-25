@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.ty;
 import a.a.a.wB;
 
@@ -86,8 +86,8 @@ public class ItemVerticalScrollView extends FrameLayout implements sy, ty {
         for (int var2 = 0; var1 < getChildCount(); var2 = var4) {
             View var3 = getChildAt(var1);
             var4 = var2;
-            if (var3 instanceof sy) {
-                ((sy) var3).getBean().index = var2;
+            if (var3 instanceof ItemView) {
+                ((ItemView) var3).getBean().index = var2;
                 var4 = var2 + 1;
             }
 

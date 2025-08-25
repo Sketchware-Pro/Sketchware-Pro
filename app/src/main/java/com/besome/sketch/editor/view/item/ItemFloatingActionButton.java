@@ -5,12 +5,12 @@ import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import a.a.a.sy;
 import pro.sketchware.R;
 
-public class ItemFloatingActionButton extends FloatingActionButton implements sy {
+public class ItemFloatingActionButton extends FloatingActionButton implements ItemView {
 
     private int maincolor;
     private ViewBean viewBean;

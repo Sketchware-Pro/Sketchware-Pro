@@ -7,12 +7,12 @@ import android.graphics.Rect;
 import android.widget.AnalogClock;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
 @Deprecated
-public class ItemAnalogClock extends AnalogClock implements sy {
+public class ItemAnalogClock extends AnalogClock implements ItemView {
 
     private final Paint paint;
     private final int paddingFactor;

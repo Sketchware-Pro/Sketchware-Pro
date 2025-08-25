@@ -7,13 +7,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
 import java.util.ArrayList;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemListView extends ListView implements sy {
+public class ItemListView extends ListView implements ItemView {
 
     public ViewBean viewBean;
 

@@ -6,12 +6,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ItemCircleImageView extends CircleImageView implements sy {
+public class ItemCircleImageView extends CircleImageView implements ItemView {
 
     private final Paint paint;
     private final Rect rect;

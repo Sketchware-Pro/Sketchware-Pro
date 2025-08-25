@@ -8,13 +8,13 @@ import android.graphics.Rect;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 import a.a.a.xB;
 import pro.sketchware.R;
 
-public class ItemSignInButton extends AppCompatButton implements sy {
+public class ItemSignInButton extends AppCompatButton implements ItemView {
     private final Paint paint;
     private final float paddingFactor;
     private final Rect rect;

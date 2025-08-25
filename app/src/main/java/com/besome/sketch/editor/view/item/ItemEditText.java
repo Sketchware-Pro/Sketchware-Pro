@@ -8,11 +8,11 @@ import android.graphics.drawable.Drawable;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemEditText extends AppCompatEditText implements sy {
+public class ItemEditText extends AppCompatEditText implements ItemView {
 
     public ViewBean viewBean;
 

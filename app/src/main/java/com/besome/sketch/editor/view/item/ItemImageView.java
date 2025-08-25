@@ -7,11 +7,11 @@ import android.graphics.Paint;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemImageView extends AppCompatImageView implements sy {
+public class ItemImageView extends AppCompatImageView implements ItemView {
 
     public ViewBean viewBean;
 

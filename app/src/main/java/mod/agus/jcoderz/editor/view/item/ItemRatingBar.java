@@ -8,11 +8,11 @@ import android.graphics.Rect;
 import androidx.appcompat.widget.AppCompatRatingBar;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemRatingBar extends AppCompatRatingBar implements sy {
+public class ItemRatingBar extends AppCompatRatingBar implements ItemView {
 
     private final Paint paint;
     private final int paddingFactor;

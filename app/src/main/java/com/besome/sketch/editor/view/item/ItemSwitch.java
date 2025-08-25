@@ -7,11 +7,11 @@ import android.graphics.Paint;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemSwitch extends SwitchCompat implements sy {
+public class ItemSwitch extends SwitchCompat implements ItemView {
 
     public ViewBean viewBean;
 

@@ -8,12 +8,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.ty;
 import a.a.a.wB;
 
-public class ItemLinearLayout extends LinearLayout implements sy, ty {
+public class ItemLinearLayout extends LinearLayout implements ItemView, ty {
 
     private ViewBean viewBean = null;
     private boolean isSelected = false;
@@ -36,8 +36,8 @@ public class ItemLinearLayout extends LinearLayout implements sy, ty {
         for (int i = 0; var1 < getChildCount(); i = var4) {
             View child = getChildAt(var1);
             var4 = i;
-            if (child instanceof sy) {
-                ((sy) child).getBean().index = i;
+            if (child instanceof ItemView) {
+                ((ItemView) child).getBean().index = i;
                 var4 = i + 1;
             }
 

@@ -9,13 +9,13 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 import com.google.android.material.card.MaterialCardView;
 
-import a.a.a.sy;
 import a.a.a.ty;
 import a.a.a.wB;
 
-public class ItemCardView extends MaterialCardView implements sy, ty {
+public class ItemCardView extends MaterialCardView implements ItemView, ty {
 
     private final Rect rect = new Rect();
     private ViewBean viewBean;
@@ -33,8 +33,8 @@ public class ItemCardView extends MaterialCardView implements sy, ty {
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
-            if (child instanceof sy) {
-                ((sy) child).getBean().index = i;
+            if (child instanceof ItemView) {
+                ((ItemView) child).getBean().index = i;
             }
         }
     }

@@ -8,11 +8,11 @@ import android.view.MotionEvent;
 import android.widget.TimePicker;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemTimePicker extends TimePicker implements sy {
+public class ItemTimePicker extends TimePicker implements ItemView {
 
     private final Paint paint;
     private final int paddingFactor;

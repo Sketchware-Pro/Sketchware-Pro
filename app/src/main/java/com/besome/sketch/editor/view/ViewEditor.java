@@ -54,7 +54,6 @@ import a.a.a.cC;
 import a.a.a.cy;
 import a.a.a.jC;
 import a.a.a.oB;
-import a.a.a.sy;
 import a.a.a.uy;
 import a.a.a.wB;
 import a.a.a.wq;
@@ -86,7 +85,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private boolean isAnimating = false;
     private boolean C = false;
     private boolean D = false;
-    private sy H;
+    private ItemView H;
     private int I = 50;
     private int J = 30;
     private boolean isVibrationEnabled;
@@ -293,7 +292,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             u = motionEvent.getRawX();
             v = motionEvent.getRawY();
             r = view;
-            if ((view instanceof sy bean) && bean.getFixed()) {
+            if ((view instanceof ItemView bean) && bean.getFixed()) {
                 return true;
             }
             if (isInsideItemScrollView(view) && draggingListener != null) {
@@ -348,7 +347,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 return true;
             }
         } else if (!t) {
-            if (r instanceof sy sy) {
+            if (r instanceof ItemView sy) {
                 a(sy, true);
             }
             if (draggingListener != null) {
@@ -362,7 +361,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         } else {
             lol:
             if (dummyView.getAllow()) {
-                if (D && r instanceof sy widget) {
+                if (D && r instanceof ItemView widget) {
                     deleteWidget(widget.getBean());
                     break lol;
                 }
@@ -434,13 +433,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         jC.a(a).a(projectFileBean.getJavaName(), 1, bean.type, bean.id, "onClick");
                     }
                     a(a(bean, true), true);
-                } else if (r instanceof sy sy) {
+                } else if (r instanceof ItemView sy) {
                     ViewBean bean = sy.getBean();
                     viewPane.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                     a(b(bean, true), true);
                 }
             } else {
-                if (r instanceof sy) {
+                if (r instanceof ItemView) {
                     r.setVisibility(View.VISIBLE);
                 }
             }
@@ -621,8 +620,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         paletteWidget.removeWidgets();
     }
 
-    public sy e(ViewBean viewBean) {
-        sy g = viewPane.g(viewBean);
+    public ItemView e(ViewBean viewBean) {
+        ItemView g = viewPane.g(viewBean);
         L.a();
         L.a(viewBean.id);
         return g;
@@ -724,7 +723,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         } else {
             r.setVisibility(View.GONE);
             b(true, r instanceof IconCustomWidget);
-            viewPane.addRootLayout(((sy) r).getBean());
+            viewPane.addRootLayout(((ItemView) r).getBean());
         }
         if (b(u, v)) {
             dummyView.setAllow(true);
@@ -740,7 +739,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         viewPane.resetView(true);
     }
 
-    public sy b(ViewBean viewBean, boolean z) {
+    public ItemView b(ViewBean viewBean, boolean z) {
         if (z) {
             cC.c(a).b(projectFileBean.getXmlName(), viewBean);
             if (O != null) {
@@ -750,7 +749,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         return viewPane.d(viewBean);
     }
 
-    public sy createAndAddView(ViewBean viewBean) {
+    public ItemView createAndAddView(ViewBean viewBean) {
         View itemView = viewPane.createItemView(viewBean);
         viewPane.addViewAndUpdateIndex(itemView);
         String generatedId = wq.b(viewBean.type);
@@ -764,7 +763,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             }
         }
         itemView.setOnTouchListener(this);
-        return (sy) itemView;
+        return (ItemView) itemView;
     }
 
     private boolean isInsideItemScrollView(View view) {
@@ -858,8 +857,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void updateSelection(String tag) {
-        sy syVar;
-        sy itemView = viewPane.findItemViewByTag(tag);
+        ItemView syVar;
+        ItemView itemView = viewPane.findItemViewByTag(tag);
         if (itemView == null || (syVar = H) == itemView) {
             return;
         }
@@ -1003,14 +1002,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
-    public sy a(ArrayList<ViewBean> arrayList, boolean z) {
+    public ItemView a(ArrayList<ViewBean> arrayList, boolean z) {
         if (z) {
             cC.c(a).a(projectFileBean.getXmlName(), arrayList);
             if (O != null) {
                 O.a();
             }
         }
-        sy syVar = null;
+        ItemView syVar = null;
         for (ViewBean view : arrayList) {
             if (arrayList.indexOf(view) == 0) {
                 syVar = createAndAddView(view);
@@ -1021,7 +1020,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         return syVar;
     }
 
-    public sy a(ViewBean viewBean, boolean z) {
+    public ItemView a(ViewBean viewBean, boolean z) {
         if (z) {
             cC.c(a).a(projectFileBean.getXmlName(), viewBean);
             if (O != null) {
@@ -1044,7 +1043,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         viewPane.addFab(viewBean).setOnTouchListener(this);
     }
 
-    public void a(sy syVar, boolean z) {
+    public void a(ItemView syVar, boolean z) {
         if (H != null) {
             H.setSelection(false);
         }

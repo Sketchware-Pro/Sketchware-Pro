@@ -7,9 +7,11 @@ import android.graphics.Rect;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.besome.sketch.beans.ViewBean;
+import androidx.annotation.NonNull;
 
-import a.a.a.sy;
+import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
+
 import a.a.a.ty;
 import a.a.a.wB;
 
@@ -31,7 +33,7 @@ public class ItemRelativeLayout extends RelativeLayout implements sy, ty {
     public void a() {
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
-            if (child instanceof sy editorItem) {
+            if (child instanceof ItemView editorItem) {
                 editorItem.getBean().index = i;
             }
         }
@@ -91,7 +93,7 @@ public class ItemRelativeLayout extends RelativeLayout implements sy, ty {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
         if (!isFixed) {
             if (isSelected) {
                 paint.setColor(0x9599d5d0);

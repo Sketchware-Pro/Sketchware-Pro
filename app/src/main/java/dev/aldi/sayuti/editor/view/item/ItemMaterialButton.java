@@ -7,12 +7,12 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 import com.google.android.material.button.MaterialButton;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemMaterialButton extends MaterialButton implements sy {
+public class ItemMaterialButton extends MaterialButton implements ItemView {
 
     private final Paint paint;
     private final float paddingFactor;

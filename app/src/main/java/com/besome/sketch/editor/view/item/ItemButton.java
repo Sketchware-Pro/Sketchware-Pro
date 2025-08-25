@@ -8,11 +8,11 @@ import android.graphics.drawable.Drawable;
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemButton extends AppCompatButton implements sy {
+public class ItemButton extends AppCompatButton implements ItemView {
 
     public ViewBean viewBean;
 

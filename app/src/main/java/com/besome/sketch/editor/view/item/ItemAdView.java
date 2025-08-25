@@ -9,12 +9,12 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 import pro.sketchware.R;
 
-public class ItemAdView extends LinearLayout implements sy {
+public class ItemAdView extends LinearLayout implements ItemView {
 
     private final Rect rect = new Rect();
     private ViewBean viewBean;

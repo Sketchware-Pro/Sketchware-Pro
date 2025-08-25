@@ -9,11 +9,11 @@ import android.graphics.drawable.Drawable;
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemMultiAutoCompleteTextView extends AppCompatMultiAutoCompleteTextView implements sy {
+public class ItemMultiAutoCompleteTextView extends AppCompatMultiAutoCompleteTextView implements ItemView {
 
     private final Paint paint;
     private final int paddingFactor;

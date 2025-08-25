@@ -8,11 +8,11 @@ import android.view.MotionEvent;
 import android.widget.SearchView;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemSearchView extends SearchView implements sy {
+public class ItemSearchView extends SearchView implements ItemView {
 
     private final Paint paint;
     private final int paddingFactor;

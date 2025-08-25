@@ -15,15 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.EditorListItem;
+import com.besome.sketch.editor.view.ItemView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import a.a.a.sy;
 import a.a.a.wB;
 import pro.sketchware.utility.PropertiesUtil;
 
-public class ItemRecyclerView extends RecyclerView implements sy, EditorListItem {
+public class ItemRecyclerView extends RecyclerView implements ItemView, EditorListItem {
 
     private final Paint paint;
     private final Rect rect;

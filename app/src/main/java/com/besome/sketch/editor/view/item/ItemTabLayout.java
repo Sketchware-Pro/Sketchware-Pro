@@ -9,12 +9,12 @@ import android.view.MotionEvent;
 import androidx.annotation.NonNull;
 
 import com.besome.sketch.beans.ViewBean;
+import com.besome.sketch.editor.view.ItemView;
 import com.google.android.material.tabs.TabLayout;
 
-import a.a.a.sy;
 import a.a.a.wB;
 
-public class ItemTabLayout extends TabLayout implements sy {
+public class ItemTabLayout extends TabLayout implements ItemView {
 
     private final Paint paint;
     private final Rect rect;
