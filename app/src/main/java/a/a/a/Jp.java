@@ -3,6 +3,7 @@ package a.a.a;
 import java.util.Objects;
 
 import mod.jbk.build.BuiltInLibraries;
+import pro.sketchware.util.library.BuiltInLibraryUtils;
 
 /**
  * An object representing a built-in library, e.g. the MDC library (nicknamed material-1.0.0)

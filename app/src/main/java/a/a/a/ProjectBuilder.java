@@ -72,6 +72,7 @@ import mod.pranav.build.JarBuilder;
 import mod.pranav.build.R8Compiler;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.SketchApplication;
+import pro.sketchware.util.library.BuiltInLibraryManager;
 import pro.sketchware.utility.FilePathUtil;
 import pro.sketchware.utility.FileUtil;
 import pro.sketchware.utility.SketchwareUtil;

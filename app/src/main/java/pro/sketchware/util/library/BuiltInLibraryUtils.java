@@ -1,4 +1,4 @@
-package a.a.a;
+package pro.sketchware.util.library;
 
 import mod.jbk.build.BuiltInLibraries;
 import mod.jbk.build.BuiltInLibraries.BuiltInLibrary;
