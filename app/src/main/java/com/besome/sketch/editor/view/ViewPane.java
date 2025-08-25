@@ -74,7 +74,6 @@ import java.util.regex.Pattern;
 import a.a.a.Gx;
 import a.a.a.kC;
 import a.a.a.lC;
-import a.a.a.ty;
 import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
@@ -126,7 +125,7 @@ public class ViewPane extends RelativeLayout {
         resetView(true);
         viewInfos = new ArrayList<>();
         if (rootLayout != null) {
-            ((ty) rootLayout).setChildScrollEnabled(true);
+            ((ScrollContainer) rootLayout).setChildScrollEnabled(true);
         }
     }
 
@@ -160,8 +159,8 @@ public class ViewPane extends RelativeLayout {
     public void removeView(ViewBean viewBean) {
         ViewGroup viewGroup = rootLayout.findViewWithTag(viewBean.parent);
         viewGroup.removeView(rootLayout.findViewWithTag(viewBean.id));
-        if (viewGroup instanceof ty) {
-            ((ty) viewGroup).a();
+        if (viewGroup instanceof ScrollContainer) {
+            ((ScrollContainer) viewGroup).reindexChildren();
         }
     }
 
@@ -191,7 +190,7 @@ public class ViewPane extends RelativeLayout {
         if (str != null && !str.isEmpty() && !viewBean.parent.equals(viewBean.preParent)) {
             ViewGroup viewGroup = rootLayout.findViewWithTag(viewBean.preParent);
             viewGroup.removeView(findViewWithTag);
-            ((ty) viewGroup).a();
+            ((ScrollContainer) viewGroup).reindexChildren();
             addViewAndUpdateIndex(findViewWithTag);
         } else if (viewBean.index != viewBean.preIndex) {
             ((ViewGroup) rootLayout.findViewWithTag(viewBean.parent)).removeView(findViewWithTag);
@@ -232,7 +231,7 @@ public class ViewPane extends RelativeLayout {
             } else {
                 addDroppableForViewGroup(viewBean, rootLayout);
             }
-            ((ty) rootLayout).setChildScrollEnabled(false);
+            ((ScrollContainer) rootLayout).setChildScrollEnabled(false);
         }
     }
 
@@ -977,8 +976,8 @@ public class ViewPane extends RelativeLayout {
             if (bean.parentType == ViewBean.VIEW_TYPE_LAYOUT_RELATIVE) {
                 updateRelativeParentViews(view, new InjectAttributeHandler(bean));
             }
-            if (viewGroup instanceof ty) {
-                ((ty) viewGroup).a();
+            if (viewGroup instanceof ScrollContainer scrollContainer) {
+                scrollContainer.reindexChildren();
             }
         }
     }

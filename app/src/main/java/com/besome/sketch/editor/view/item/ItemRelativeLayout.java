@@ -11,11 +11,11 @@ import androidx.annotation.NonNull;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ItemView;
+import com.besome.sketch.editor.view.ScrollContainer;
 
-import a.a.a.ty;
 import a.a.a.wB;
 
-public class ItemRelativeLayout extends RelativeLayout implements sy, ty {
+public class ItemRelativeLayout extends RelativeLayout implements ItemView, ScrollContainer {
 
     private ViewBean viewBean = null;
     private boolean isSelected = false;
@@ -30,7 +30,7 @@ public class ItemRelativeLayout extends RelativeLayout implements sy, ty {
     }
 
     @Override
-    public void a() {
+    public void reindexChildren() {
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
             if (child instanceof ItemView editorItem) {
@@ -115,19 +115,19 @@ public class ItemRelativeLayout extends RelativeLayout implements sy, ty {
     }
 
     @Override
-    public void setChildScrollEnabled(boolean childScrollEnabled) {
+    public void setChildScrollEnabled(boolean scrollEnabled) {
         for (int i = 0; i < getChildCount(); ++i) {
             View child = getChildAt(i);
-            if (child instanceof ty) {
-                ((ty) child).setChildScrollEnabled(childScrollEnabled);
+            if (child instanceof ScrollContainer) {
+                ((ScrollContainer) child).setChildScrollEnabled(scrollEnabled);
             }
 
             if (child instanceof ItemHorizontalScrollView) {
-                ((ItemHorizontalScrollView) child).setScrollEnabled(childScrollEnabled);
+                ((ItemHorizontalScrollView) child).setScrollEnabled(scrollEnabled);
             }
 
             if (child instanceof ItemVerticalScrollView) {
-                ((ItemVerticalScrollView) child).setScrollEnabled(childScrollEnabled);
+                ((ItemVerticalScrollView) child).setScrollEnabled(scrollEnabled);
             }
         }
     }

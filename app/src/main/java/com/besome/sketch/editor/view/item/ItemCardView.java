@@ -10,12 +10,12 @@ import androidx.annotation.NonNull;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ItemView;
+import com.besome.sketch.editor.view.ScrollContainer;
 import com.google.android.material.card.MaterialCardView;
 
-import a.a.a.ty;
 import a.a.a.wB;
 
-public class ItemCardView extends MaterialCardView implements ItemView, ty {
+public class ItemCardView extends MaterialCardView implements ItemView, ScrollContainer {
 
     private final Rect rect = new Rect();
     private ViewBean viewBean;
@@ -29,7 +29,7 @@ public class ItemCardView extends MaterialCardView implements ItemView, ty {
     }
 
     @Override
-    public void a() {
+    public void reindexChildren() {
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
@@ -106,18 +106,18 @@ public class ItemCardView extends MaterialCardView implements ItemView, ty {
     }
 
     @Override
-    public void setChildScrollEnabled(boolean childScrollEnabled) {
+    public void setChildScrollEnabled(boolean scrollEnabled) {
         int count = getChildCount();
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
-            if (child instanceof ty) {
-                ((ty) child).setChildScrollEnabled(childScrollEnabled);
+            if (child instanceof ScrollContainer) {
+                ((ScrollContainer) child).setChildScrollEnabled(scrollEnabled);
             }
             if (child instanceof ItemHorizontalScrollView) {
-                ((ItemHorizontalScrollView) child).setScrollEnabled(childScrollEnabled);
+                ((ItemHorizontalScrollView) child).setScrollEnabled(scrollEnabled);
             }
             if (child instanceof ItemVerticalScrollView) {
-                ((ItemVerticalScrollView) child).setScrollEnabled(childScrollEnabled);
+                ((ItemVerticalScrollView) child).setScrollEnabled(scrollEnabled);
             }
         }
     }

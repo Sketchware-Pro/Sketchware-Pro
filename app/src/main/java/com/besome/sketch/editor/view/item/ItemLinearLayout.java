@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ItemView;
+import com.besome.sketch.editor.view.ScrollContainer;
 
-import a.a.a.ty;
 import a.a.a.wB;
 
-public class ItemLinearLayout extends LinearLayout implements ItemView, ty {
+public class ItemLinearLayout extends LinearLayout implements ItemView, ScrollContainer {
 
     private ViewBean viewBean = null;
     private boolean isSelected = false;
@@ -29,7 +29,7 @@ public class ItemLinearLayout extends LinearLayout implements ItemView, ty {
     }
 
     @Override
-    public void a() {
+    public void reindexChildren() {
         int var1 = 0;
 
         int var4;
@@ -150,19 +150,19 @@ public class ItemLinearLayout extends LinearLayout implements ItemView, ty {
     }
 
     @Override
-    public void setChildScrollEnabled(boolean childScrollEnabled) {
+    public void setChildScrollEnabled(boolean scrollEnabled) {
         for (int i = 0; i < getChildCount(); ++i) {
             View child = getChildAt(i);
-            if (child instanceof ty) {
-                ((ty) child).setChildScrollEnabled(childScrollEnabled);
+            if (child instanceof ScrollContainer) {
+                ((ScrollContainer) child).setChildScrollEnabled(scrollEnabled);
             }
 
             if (child instanceof ItemHorizontalScrollView) {
-                ((ItemHorizontalScrollView) child).setScrollEnabled(childScrollEnabled);
+                ((ItemHorizontalScrollView) child).setScrollEnabled(scrollEnabled);
             }
 
             if (child instanceof ItemVerticalScrollView) {
-                ((ItemVerticalScrollView) child).setScrollEnabled(childScrollEnabled);
+                ((ItemVerticalScrollView) child).setScrollEnabled(scrollEnabled);
             }
         }
     }
