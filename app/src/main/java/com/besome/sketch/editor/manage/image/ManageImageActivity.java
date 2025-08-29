@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.*;
+import android.view.View.*;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -30,6 +34,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
     private pu projectImagesFragment;
     private fu collectionImagesFragment;
     private ManageImageBinding binding;
+    public boolean isSearching = false;
 
     public static int getImageGridColumnCount(Context context) {
         var displayMetrics = context.getResources().getDisplayMetrics();
@@ -58,6 +63,8 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
+
         if (projectImagesFragment.isSelecting) {
             projectImagesFragment.a(false);
         } else if (collectionImagesFragment.isSelecting()) {
@@ -79,13 +86,7 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
             finish();
         }
 
-        setSupportActionBar(binding.topAppBar);
-        binding.topAppBar.setTitle(getTranslatedString(R.string.design_actionbar_title_manager_image));
-        binding.topAppBar.setNavigationOnClickListener(v -> {
-            if (!mB.a()) {
-                onBackPressed();
-            }
-        });
+        setNormalAppBarState(true);
         if (savedInstanceState == null) {
             sc_id = getIntent().getStringExtra("sc_id");
         } else {
@@ -96,6 +97,35 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
         binding.viewPager.setOffscreenPageLimit(2);
         binding.viewPager.addOnPageChangeListener(this);
         binding.tabLayout.setupWithViewPager(binding.viewPager);
+
+        binding.editTextSearch.addTextChangedListener(new TextWatcher() {
+            pu fragment = (pu) getSupportFragmentManager()
+                    .findFragmentById(R.id.view_pager);
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().isEmpty()) { // we can't use charSequence.isEmpty() api level 35 required (current min is 26)
+                    isSearching = false;
+                    return; // we don't want to search for nothing
+                } else {
+                    isSearching = true;
+                }
+
+                if (fragment != null) {
+                    fragment.searchImages(charSequence.toString());
+                }
+            }
+        });
     }
 
     @Override
@@ -125,6 +155,27 @@ public class ManageImageActivity extends BaseAppCompatActivity implements ViewPa
             binding.fab.animate().translationY(400F).setDuration(200L).start();
             binding.fab.hide();
             projectImagesFragment.a(false);
+        }
+    }
+
+    // Why does this break the icon list in some cases
+    // I'll keep it like this until I find a fix
+    // or someones else find a fix ^_^
+    public void setNormalAppBarState(boolean visible) {
+        if (visible) {
+            binding.appbarSearch.setVisibility(View.GONE);
+            setSupportActionBar(binding.topAppBar);
+            binding.topAppBar.setTitle(getTranslatedString(R.string.design_actionbar_title_manager_image));
+            binding.topAppBar.setNavigationOnClickListener(v -> {
+                if (!mB.a()) {
+                    onBackPressed();
+                }
+            });
+        } else {
+            binding.topAppBar.setVisibility(View.GONE);
+            binding.appbarSearch.setVisibility(View.VISIBLE);
+            setSupportActionBar(binding.toolbarSearch);
+            binding.toolbarSearch.setTitle("");  // WE DON'T WANT TITLE ELSE BUGGY :P
         }
     }
 
