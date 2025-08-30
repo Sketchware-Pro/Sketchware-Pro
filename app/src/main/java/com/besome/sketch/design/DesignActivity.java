@@ -470,6 +470,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 return;
             }
 
+            if (currentBuildTask != null && !currentBuildTask.isBuildFinished) return;
+            
             BuildTask buildTask = new BuildTask(this);
             currentBuildTask = buildTask;
             buildTask.execute();
@@ -1185,9 +1187,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 }
 
                 activity.installBuiltApk();
-                isBuildFinished = true;
             } catch (MissingFileException e) {
-                isBuildFinished = true;
                 activity.runOnUiThread(() -> {
                     boolean isMissingDirectory = e.isMissingDirectory();
 
@@ -1213,13 +1213,12 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     dialog.show();
                 });
             } catch (zy zy) {
-                isBuildFinished = true;
                 activity.indicateCompileErrorOccurred(zy.getMessage());
             } catch (Throwable tr) {
-                isBuildFinished = true;
                 LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
                 activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));
             } finally {
+                isBuildFinished = true;
                 activity.runOnUiThread(this::onPostExecute);
             }
         }
