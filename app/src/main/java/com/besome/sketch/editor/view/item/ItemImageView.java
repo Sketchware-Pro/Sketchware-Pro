@@ -21,7 +21,7 @@ public class ItemImageView extends AppCompatImageView implements ItemView {
 
     public Paint paint;
 
-    public float oneDp;
+    public float dip;
 
     public ItemImageView(Context context) {
         super(context);
@@ -29,8 +29,8 @@ public class ItemImageView extends AppCompatImageView implements ItemView {
     }
 
     public void initialize(Context context) {
-        oneDp = wB.a(context, 1.0f);
-        paint = new Paint(1);
+        dip = wB.a(context, 1.0f);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
     }
@@ -75,7 +75,6 @@ public class ItemImageView extends AppCompatImageView implements ItemView {
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        float oneDp = this.oneDp;
-        super.setPadding((int) (left * oneDp), (int) (top * oneDp), (int) (right * oneDp), (int) (bottom * oneDp));
+        super.setPadding((int) (left * dip), (int) (top * dip), (int) (right * dip), (int) (bottom * dip));
     }
 }
