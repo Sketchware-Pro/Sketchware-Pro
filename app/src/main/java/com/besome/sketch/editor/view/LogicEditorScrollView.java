@@ -36,11 +36,10 @@ public class LogicEditorScrollView extends FrameLayout {
 
     @Override
     public void addView(View child) {
-        if (getChildCount() <= 1) {
-            super.addView(child);
-            return;
+        if (getChildCount() > 1) {
+            throw new IllegalStateException("BothDirectionScrollView should have child View only one");
         }
-        throw new IllegalStateException("BothDirectionScrollView should have child View only one");
+        super.addView(child);
     }
 
     public boolean getScrollEnabled() {
@@ -61,7 +60,7 @@ public class LogicEditorScrollView extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (!a()) {
+        if (!isPossibleScroll()) {
             return false;
         }
         int action = ev.getAction();
@@ -91,7 +90,7 @@ public class LogicEditorScrollView extends FrameLayout {
     public boolean onTouchEvent(MotionEvent event) {
         int min;
         int i = 0;
-        if (!a()) {
+        if (!isPossibleScroll()) {
             return false;
         }
         View child = getChildAt(0);
@@ -142,11 +141,14 @@ public class LogicEditorScrollView extends FrameLayout {
         return true;
     }
 
-    private boolean a() {
+    private boolean isPossibleScroll() {
         if (getChildCount() <= 0 || !useScroll || !scrollEnabled) {
             return false;
         }
-        View childAt = getChildAt(0);
-        return getWidth() < (childAt.getWidth() + getPaddingLeft()) + getPaddingRight() || getHeight() < (childAt.getHeight() + getPaddingTop()) + getPaddingBottom();
+        View firstView = getChildAt(0);
+        int width = firstView.getWidth();
+        int height = firstView.getHeight();
+        if (getWidth() < (getPaddingLeft() + width) + getPaddingRight()) return true;
+        return getHeight() < (getPaddingTop() + height) + getPaddingBottom();
     }
 }
