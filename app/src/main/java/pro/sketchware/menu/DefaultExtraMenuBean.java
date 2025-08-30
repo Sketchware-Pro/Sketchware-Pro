@@ -29,7 +29,7 @@ public class DefaultExtraMenuBean {
 
     public DefaultExtraMenuBean(LogicEditorActivity logicEditor) {
         this.logicEditor = logicEditor;
-        sc_id = logicEditor.B;
+        sc_id = logicEditor.scId;
         projectDataManager = jC.a(sc_id);
     }
 

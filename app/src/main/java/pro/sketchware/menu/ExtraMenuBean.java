@@ -80,11 +80,11 @@ public class ExtraMenuBean {
 
     public ExtraMenuBean(LogicEditorActivity logicA) {
         logicEditor = logicA;
-        sc_id = logicA.B;
+        sc_id = logicA.scId;
         fpu = new FilePathUtil();
-        frc = new FileResConfig(logicA.B);
+        frc = new FileResConfig(logicA.scId);
         defaultExtraMenu = new DefaultExtraMenuBean(logicA);
-        projectDataManager = jC.a(logicA.B);
+        projectDataManager = jC.a(logicA.scId);
         javaName = logicA.M.getJavaName();
     }
 

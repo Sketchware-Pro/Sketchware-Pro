@@ -53,12 +53,12 @@ public class ExtraPaletteBlock {
 
     public ExtraPaletteBlock(LogicEditorActivity logicEditorActivity, Boolean isViewBindingEnabled) {
         logicEditor = logicEditorActivity;
-        eventName = logicEditorActivity.D;
+        eventName = logicEditorActivity.eventName;
 
         projectFile = logicEditor.M;
         javaName = projectFile.getJavaName();
         xmlName = projectFile.getXmlName();
-        sc_id = logicEditor.B;
+        sc_id = logicEditor.scId;
         this.isViewBindingEnabled = isViewBindingEnabled;
 
         frc = new FileResConfig(sc_id);
@@ -81,10 +81,10 @@ public class ExtraPaletteBlock {
         }
         if (eventName.equals("onBindCustomView")) {
             var eC = jC.a(sc_id);
-            var view = eC.c(xmlName, logicEditor.C);
+            var view = eC.c(xmlName, logicEditor.id);
             if (view == null) {
                 // in case the View's in a Drawer
-                view = eC.c("_drawer_" + xmlName, logicEditor.C);
+                view = eC.c("_drawer_" + xmlName, logicEditor.id);
             }
             String customView = view.customView;
             if (customView != null && !customView.isEmpty()) {
@@ -254,7 +254,7 @@ public class ExtraPaletteBlock {
 
     private void blockCustomViews() {
         if (eventName.equals("onBindCustomView")) {
-            String viewId = logicEditor.C;
+            String viewId = logicEditor.id;
             var eC = jC.a(sc_id);
             ViewBean viewBean = eC.c(xmlName, viewId);
             if (viewBean == null) {

@@ -21,10 +21,10 @@ public class ExtraBlocks {
     private final eC projectDataManager;
 
     public ExtraBlocks(LogicEditorActivity logicEditor) {
-        eventName = logicEditor.D;
+        eventName = logicEditor.eventName;
         this.logicEditor = logicEditor;
         javaName = logicEditor.M.getJavaName();
-        projectDataManager = jC.a(logicEditor.B);
+        projectDataManager = jC.a(logicEditor.scId);
     }
 
     public static void extraBlocks(ArrayList<HashMap<String, Object>> arrayList) {

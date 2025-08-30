@@ -2664,7 +2664,7 @@ public class BlocksHandler {
             boolean isListNumUsed,
             boolean isListStrUsed,
             boolean isListMapUsed) {
-        String eventName = logicEditorActivity.D;
+        String eventName = logicEditorActivity.eventName;
         boolean inOnBindCustomViewEvent = eventName.equals("onBindCustomView");
         boolean inOnFilesPickedEvent = eventName.equals("onFilesPicked");
         if (showAll() || isListNumUsed) {
