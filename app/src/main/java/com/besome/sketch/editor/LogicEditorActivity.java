@@ -2364,9 +2364,14 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     n(rs5.T);
                 } else {
                     activeIconDelete(false);
-                    int id = Integer.parseInt(rs5.getBean().id);
+                    int id;
+                    try {
+                        id = Integer.parseInt(rs5.getBean().id);
+                    } catch (NumberFormatException e) {
+                        id = -1;
+                    }
                     BlockBean blockBean2;
-                    if (w != null) {
+                    if (w != null && id != -1) {
                         BlockBean clone = w.getBean().clone();
                         if (x == 0) {
                             clone.nextBlock = id;
@@ -2443,28 +2448,38 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     rs10.E = w;
                     w.p().k();
                 } else {
-                    rs10.p().k();
+                    // somehow the blocks is moving to the last position
+                    // commenting it to fix it too
+                    // rs10.p().k();
                 }
                 ArrayList<BlockBean> arrayList2 = new ArrayList<>();
                 for (Rs rs : rs10.getAllChildren()) {
                     BlockBean clone2 = rs.getBean().clone();
-                    clone2.id = String.valueOf(Integer.parseInt(clone2.id) + 99000000);
-                    if (clone2.nextBlock > 0) {
-                        clone2.nextBlock = clone2.nextBlock + 99000000;
+                    int id;
+                    try {
+                        id = Integer.parseInt(clone2.id);
+                    } catch (NumberFormatException e) {
+                        id = -1;
                     }
-                    if (clone2.subStack1 > 0) {
-                        clone2.subStack1 = clone2.subStack1 + 99000000;
-                    }
-                    if (clone2.subStack2 > 0) {
-                        clone2.subStack2 = clone2.subStack2 + 99000000;
-                    }
-                    for (int i = 0; i < clone2.parameters.size(); i++) {
-                        String parameter = clone2.parameters.get(i);
-                        if (parameter != null && !parameter.isEmpty() && parameter.charAt(0) == '@') {
-                            clone2.parameters.set(i, "@" + (Integer.parseInt(parameter.substring(1)) + 99000000));
+                    if (id != -1) {
+                        clone2.id = String.valueOf(id + 99000000);
+                        if (clone2.nextBlock > 0) {
+                            clone2.nextBlock = clone2.nextBlock + 99000000;
                         }
+                        if (clone2.subStack1 > 0) {
+                            clone2.subStack1 = clone2.subStack1 + 99000000;
+                        }
+                        if (clone2.subStack2 > 0) {
+                            clone2.subStack2 = clone2.subStack2 + 99000000;
+                        }
+                        for (int i = 0; i < clone2.parameters.size(); i++) {
+                            String parameter = clone2.parameters.get(i);
+                            if (parameter != null && !parameter.isEmpty() && parameter.charAt(0) == '@') {
+                                clone2.parameters.set(i, "@" + (Integer.parseInt(parameter.substring(1)) + 99000000));
+                            }
+                        }
+                        arrayList2.add(clone2);
                     }
-                    arrayList2.add(clone2);
                 }
                 int[] nLocationOnScreen = new int[2];
                 n.getLocationOnScreen(nLocationOnScreen);
