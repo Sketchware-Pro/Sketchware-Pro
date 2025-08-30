@@ -21,7 +21,7 @@ public class ItemAdView extends LinearLayout implements ItemView {
     private boolean hasSelection;
     private boolean isFixed;
     private Paint paint;
-    private float paddingFactor;
+    private float dip;
     private ImageView imgView;
 
     public ItemAdView(Context context) {
@@ -30,8 +30,8 @@ public class ItemAdView extends LinearLayout implements ItemView {
     }
 
     private void initialize(Context context) {
-        paddingFactor = wB.a(context, 1.0F);
-        paint = new Paint(1);
+        dip = wB.a(context, 1.0F);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
         setDrawingCacheEnabled(true);
         imgView = new ImageView(getContext());
@@ -87,18 +87,18 @@ public class ItemAdView extends LinearLayout implements ItemView {
         switch (adSize) {
             case "BANNER", "SMART_BANNER" -> {
                 imgView.setImageResource(R.drawable.admob_banner);
-                imgView.getLayoutParams().width = (int) (paddingFactor * 320.0F);
-                imgView.getLayoutParams().height = (int) (paddingFactor * 50.0F);
+                imgView.getLayoutParams().width = (int) (dip * 320.0F);
+                imgView.getLayoutParams().height = (int) (dip * 50.0F);
             }
             case "MEDIUM_RECTANGLE" -> {
                 imgView.setImageResource(R.drawable.admob_medium_banner);
-                imgView.getLayoutParams().width = (int) (paddingFactor * 300.0F);
-                imgView.getLayoutParams().height = (int) (paddingFactor * 250.0F);
+                imgView.getLayoutParams().width = (int) (dip * 300.0F);
+                imgView.getLayoutParams().height = (int) (dip * 250.0F);
             }
             case "LARGE_BANNER" -> {
                 imgView.setImageResource(R.drawable.admob_large_banner);
-                imgView.getLayoutParams().width = (int) (paddingFactor * 320.0F);
-                imgView.getLayoutParams().height = (int) (paddingFactor * 100.0F);
+                imgView.getLayoutParams().width = (int) (dip * 320.0F);
+                imgView.getLayoutParams().height = (int) (dip * 100.0F);
             }
         }
     }
@@ -106,7 +106,7 @@ public class ItemAdView extends LinearLayout implements ItemView {
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
         super.setPadding(
-                (int) (left * paddingFactor), (int) (top * paddingFactor),
-                (int) (right * paddingFactor), (int) (bottom * paddingFactor));
+                (int) (left * dip), (int) (top * dip),
+                (int) (right * dip), (int) (bottom * dip));
     }
 }
