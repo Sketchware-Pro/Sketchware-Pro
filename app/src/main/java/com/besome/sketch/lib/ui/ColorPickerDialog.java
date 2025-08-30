@@ -198,7 +198,7 @@ public class ColorPickerDialog extends PopupWindow {
             ColorGroupItem colorGroupItem = new ColorGroupItem(activity);
             ColorBean colorBean = colorList.get(j);
             int finalJ = j;
-            colorGroupItem.b.setOnClickListener(v -> {
+            colorGroupItem.tvColorName.setOnClickListener(v -> {
                 l = finalJ;
                 if (finalJ == 0 && colorGroups.get(finalJ).length == 0) {
                     bB.b(activity, xB.b().a(activity, R.string.picker_color_custom_color_not_found), 1).show();
@@ -220,18 +220,18 @@ public class ColorPickerDialog extends PopupWindow {
                     binding.colorList.setAdapter(colorsAdapter);
                 }
             });
-            colorGroupItem.b.setText(colorBean.colorName);
-            colorGroupItem.b.setTextColor(colorBean.displayNameColor);
-            colorGroupItem.b.setBackgroundColor(colorBean.colorCode);
+            colorGroupItem.tvColorName.setText(colorBean.colorName);
+            colorGroupItem.tvColorName.setTextColor(colorBean.displayNameColor);
+            colorGroupItem.tvColorName.setBackgroundColor(colorBean.colorCode);
             binding.layoutColorTitle.addView(colorGroupItem);
             if (j == k) {
-                colorGroupItem.c.setImageResource(colorBean.icon);
-                colorGroupItem.c.setVisibility(View.VISIBLE);
+                colorGroupItem.imgColorSelector.setImageResource(colorBean.icon);
+                colorGroupItem.imgColorSelector.setVisibility(View.VISIBLE);
             } else {
-                colorGroupItem.c.setVisibility(View.GONE);
+                colorGroupItem.imgColorSelector.setVisibility(View.GONE);
             }
 
-            colorGroupItem.b.setOnLongClickListener(v -> {
+            colorGroupItem.tvColorName.setOnLongClickListener(v -> {
                 if (finalJ == 0) deleteAllSavedColors();
                 return false;
             });
