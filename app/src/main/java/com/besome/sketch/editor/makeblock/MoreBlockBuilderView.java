@@ -140,6 +140,9 @@ public class MoreBlockBuilderView extends LinearLayout {
             }
         });
         block = new Rs(activity, 0, "", " ", "definedFunc");
+        // main reason why some blocks are not showing because Ts class is using View#LAYER_TYPE_SOFTWARE.
+        // we are changing it to fix it.
+        block.setLayerType(LAYER_TYPE_HARDWARE, null);
         binding.blockArea.addView(block);
     }
 
@@ -262,6 +265,9 @@ public class MoreBlockBuilderView extends LinearLayout {
     private void refresh(String type) {
         type = ReturnMoreblockManager.getPreviewType(type);
         Rs var2 = new Rs(activity, 0, "", type, "definedFunc");
+        // main reason why some blocks are not showing because Ts class is using View#LAYER_TYPE_SOFTWARE.
+        // we are changing it to fix it.
+        var2.setLayerType(LAYER_TYPE_HARDWARE, null);
         block = var2;
         updateBlockPreview(binding.blockArea, binding.removeArea, var2, Helper.getText(binding.edName), variablesSpecAndNamePair);
     }

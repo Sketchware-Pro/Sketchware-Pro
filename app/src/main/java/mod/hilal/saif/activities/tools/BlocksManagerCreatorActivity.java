@@ -1,5 +1,6 @@
 package mod.hilal.saif.activities.tools;
 
+import static android.view.View.LAYER_TYPE_HARDWARE;
 import static pro.sketchware.utility.GsonUtils.getGson;
 
 import android.annotation.SuppressLint;
@@ -462,6 +463,9 @@ public class BlocksManagerCreatorActivity extends BaseAppCompatActivity {
         try {
             var block = new Rs(this, -1, Helper.getText(binding.spec), blockType, Helper.getText(binding.name));
             block.e = PropertiesUtil.isHexColor(color) ? PropertiesUtil.parseColor(color) : Color.parseColor("#F0F0F0");
+            // main reason why some blocks are not showing because Ts class is using View#LAYER_TYPE_SOFTWARE.
+            // we are changing it to fix it.
+            block.setLayerType(LAYER_TYPE_HARDWARE, null);
             binding.blockArea.addView(block);
         } catch (Exception e) {
             var block = new TextView(this);

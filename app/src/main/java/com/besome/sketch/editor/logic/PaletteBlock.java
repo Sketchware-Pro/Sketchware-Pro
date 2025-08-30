@@ -49,6 +49,9 @@ public class PaletteBlock extends LinearLayout {
         Rs blockView = new Rs(context, -1, var1, var2, var3);
         blockView.setContentDescription(generateContentDescription(var3));
         blockView.setBlockType(1);
+        // main reason why some blocks are not showing because Ts class is using View#LAYER_TYPE_SOFTWARE.
+        // we are changing it to fix it.
+        blockView.setLayerType(LAYER_TYPE_HARDWARE, null);
         binding.blockBuilder.addView(blockView);
         return blockView;
     }

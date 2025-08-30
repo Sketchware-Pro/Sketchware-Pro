@@ -1,5 +1,7 @@
 package mod.hey.studios.project.custom_blocks;
 
+import static android.view.View.LAYER_TYPE_HARDWARE;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -287,6 +289,9 @@ public class CustomBlocksDialog {
                 blockBean.opCode
         );
         block.e = blockBean.color;
+        // main reason why some blocks are not showing because Ts class is using View#LAYER_TYPE_SOFTWARE.
+        // we are changing it to fix it.
+        block.setLayerType(LAYER_TYPE_HARDWARE, null);
         return block;
     }
 
