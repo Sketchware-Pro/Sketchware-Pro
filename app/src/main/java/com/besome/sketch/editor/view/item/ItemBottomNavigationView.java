@@ -20,14 +20,14 @@ public class ItemBottomNavigationView extends BottomNavigationView implements It
 
     private final Paint paint;
     private final Rect rect;
-    private final float paddingFactor;
+    private final float dip;
     private ViewBean viewBean;
     private boolean hasSelection;
     private boolean hasFixed;
 
     public ItemBottomNavigationView(Context context) {
         super(context);
-        paddingFactor = wB.a(context, 1.0f);
+        dip = wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
         rect = new Rect();
@@ -85,10 +85,10 @@ public class ItemBottomNavigationView extends BottomNavigationView implements It
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding((int) (left * paddingFactor),
-                (int) (top * paddingFactor),
-                (int) (right * paddingFactor),
-                (int) (bottom * paddingFactor));
+        super.setPadding((int) (left * dip),
+                (int) (top * dip),
+                (int) (right * dip),
+                (int) (bottom * dip));
     }
 
     @Override
