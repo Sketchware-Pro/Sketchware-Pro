@@ -6,6 +6,8 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.widget.CalendarView;
 
+import androidx.annotation.NonNull;
+
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ItemView;
 
@@ -21,7 +23,7 @@ public class ItemCalendarView extends CalendarView implements ItemView {
 
     public Paint paint;
 
-    public float oneDp;
+    public float dip;
 
     public ItemCalendarView(Context context) {
         super(context);
@@ -29,7 +31,7 @@ public class ItemCalendarView extends CalendarView implements ItemView {
     }
 
     public void initialize(Context context) {
-        oneDp = wB.a(context, 1.0f);
+        dip = wB.a(context, 1.0f);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(0x9599d5d0);
         setFocusable(false);
@@ -68,7 +70,7 @@ public class ItemCalendarView extends CalendarView implements ItemView {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
         if (selected) {
             canvas.drawRect(0, 0, getMeasuredWidth(), getMeasuredHeight(), paint);
         }
@@ -82,7 +84,6 @@ public class ItemCalendarView extends CalendarView implements ItemView {
 
     @Override
     public void setPadding(int left, int top, int right, int bottom) {
-        float oneDp = this.oneDp;
-        super.setPadding((int) (left * oneDp), (int) (top * oneDp), (int) (right * oneDp), (int) (bottom * oneDp));
+        super.setPadding((int) (left * dip), (int) (top * dip), (int) (right * dip), (int) (bottom * dip));
     }
 }
