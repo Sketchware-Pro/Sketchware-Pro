@@ -201,6 +201,7 @@ public class ProjectsFragment extends DA {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        if (getActivity() == null) return;
         if (hidden) {
             requireActivity().removeMenuProvider(menuProvider);
         } else {
