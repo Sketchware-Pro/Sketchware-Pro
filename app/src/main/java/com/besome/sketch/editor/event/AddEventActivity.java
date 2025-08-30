@@ -359,7 +359,7 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
 
     private class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
         private int lastSelectedEvent = -1;
-        private ArrayList<EventBean> events = new ArrayList<>();
+        private final ArrayList<EventBean> events = new ArrayList<>();
         private boolean e;
 
         public EventAdapter() {
@@ -423,7 +423,8 @@ public class AddEventActivity extends BaseAppCompatActivity implements View.OnCl
                 empty_message.setVisibility(View.GONE);
                 event_list.setVisibility(View.VISIBLE);
             }
-            this.events = events;
+            this.events.clear();
+            this.events.addAll(events);
         }
 
         private class ViewHolder extends RecyclerView.ViewHolder {
