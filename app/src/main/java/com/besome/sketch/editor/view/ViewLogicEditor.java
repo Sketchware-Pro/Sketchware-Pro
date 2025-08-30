@@ -9,8 +9,8 @@ import com.besome.sketch.editor.logic.BlockPane;
 
 public class ViewLogicEditor extends LogicEditorScrollView {
     private final BlockPane blockPane;
-    private final int[] locationOnScreen = new int[2];
-    private boolean k = true;
+    private final int[] posArea = new int[2];
+    private boolean isFirst = true;
 
     public ViewLogicEditor(Context context) {
         this(context, null);
@@ -39,21 +39,20 @@ public class ViewLogicEditor extends LogicEditorScrollView {
     @Override
     public void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (k) {
+        if (isFirst) {
             blockPane.getLayoutParams().width = right - left;
             blockPane.getLayoutParams().height = bottom - top;
             blockPane.b();
-            k = false;
+            isFirst = false;
         }
     }
 
-    public boolean a(float x, float y) {
-        getLocationOnScreen(locationOnScreen);
-        int[] iArr = locationOnScreen;
-        if (x > iArr[0] && x < iArr[0] + getWidth()) {
-            int[] iArr2 = locationOnScreen;
-            return y > iArr2[1] && y < iArr2[1] + getHeight();
-        }
-        return false;
+    public boolean hitTest(float x, float y) {
+        getLocationOnScreen(posArea);
+        if (!(x > posArea[0])) return false;
+        if (!(x < posArea[0] + getWidth())) return false;
+        if (!(y > posArea[1])) return false;
+        if (!(y < posArea[1] + getHeight())) return false;
+        return true;
     }
 }

@@ -102,7 +102,6 @@ import a.a.a.Ts;
 import a.a.a.Us;
 import a.a.a.Vs;
 import a.a.a.ZB;
-import a.a.a.bB;
 import a.a.a.bC;
 import a.a.a.eC;
 import a.a.a.jC;
@@ -2311,7 +2310,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             }
             c(false);
             p.a(this.v);
-            if (n.a(this.v[0], this.v[1])) {
+            if (n.hitTest(this.v[0], this.v[1])) {
                 p.setAllow(true);
                 o.c((Rs) v, this.v[0], this.v[1]);
             } else {
@@ -2619,7 +2618,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             float b = r - t;
             p.a(Y, a, b, a, b, S, T);
             p.a(v);
-            if (n.a(v[0], v[1])) {
+            if (n.hitTest(v[0], v[1])) {
                 p.setAllow(true);
                 o.c((Rs) Y, v[0], v[1]);
             } else {
