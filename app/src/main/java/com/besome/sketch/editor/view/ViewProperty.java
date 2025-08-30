@@ -146,11 +146,9 @@ public class ViewProperty extends LinearLayout implements Kw {
 
             if (selectedGroupId == (Integer) item.getTag()) {
                 item.setSelected(true);
-                item.title.setTextColor(getResources().getColor(R.color.view_property_tab_active_text));
                 item.animate().scaleX(0.9f).scaleY(0.9f).start();
             } else {
                 item.setSelected(false);
-                item.title.setTextColor(getResources().getColor(R.color.view_property_tab_deactive_text));
                 item.animate().scaleX(0.8f).scaleY(0.8f).start();
             }
         }

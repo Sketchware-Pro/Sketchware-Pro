@@ -1,4 +1,4 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/bg_rounded_top_primary_container" android:state_selected="true" />
+    <item android:drawable="@drawable/bg_rounded_top_secondary_container" android:state_selected="true" />
     <item android:drawable="@drawable/bg_rounded_top_surface_highest" />
 </selector>
