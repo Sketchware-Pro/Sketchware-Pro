@@ -10,14 +10,14 @@
 
     <item
         android:id="@+id/menu_logic_undo"
-        android:icon="@drawable/selector_undo_24"
+        android:icon="@drawable/ic_mtrl_undo"
         android:orderInCategory="100"
         android:title="Undo"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/menu_logic_redo"
-        android:icon="@drawable/selector_redo_24"
+        android:icon="@drawable/ic_mtrl_redo"
         android:orderInCategory="100"
         android:title="Redo"
         app:showAsAction="always" />

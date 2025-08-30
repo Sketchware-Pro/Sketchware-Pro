@@ -2152,13 +2152,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.logic_menu, menu);
-        menu.findItem(R.id.menu_logic_redo).setEnabled(false);
-        menu.findItem(R.id.menu_logic_undo).setEnabled(false);
-        if (M == null) {
-            return true;
-        }
-        menu.findItem(R.id.menu_logic_redo).setEnabled(bC.d(scId).g(s()));
-        menu.findItem(R.id.menu_logic_undo).setEnabled(bC.d(scId).h(s()));
+        menu.findItem(R.id.menu_logic_redo).setEnabled(M != null && bC.d(scId).g(s()));
+        menu.findItem(R.id.menu_logic_undo).setEnabled(M != null && bC.d(scId).h(s()));
         return true;
     }
 
