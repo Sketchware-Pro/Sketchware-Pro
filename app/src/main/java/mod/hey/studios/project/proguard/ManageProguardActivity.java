@@ -1,5 +1,6 @@
 package mod.hey.studios.project.proguard;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -11,8 +12,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import mod.agus.jcoderz.editor.manage.library.locallibrary.ManageLocalLibrary;
+import mod.hey.studios.code.SrcCodeEditor;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ManageProguardBinding;
+import pro.sketchware.utility.FileUtil;
 
 public class ManageProguardActivity extends BaseAppCompatActivity
         implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -27,7 +30,10 @@ public class ManageProguardActivity extends BaseAppCompatActivity
         if (id == R.id.ig_toolbar_back) {
             finish();
         } else if (id == R.id.ln_pg_rules) {
-            new ProguardRulesDialog(this, pg).show();
+            Intent intent = new Intent(this, SrcCodeEditor.class);
+            intent.putExtra("title", "proguard-rules.pro");
+            intent.putExtra("content", pg.getCustomProguardRules());
+            startActivity(intent);
         } else if (id == R.id.ln_pg_fm) {
             fmDialog();
         }

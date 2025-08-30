@@ -3,6 +3,7 @@ package mod.hilal.saif.activities.android_manifest;
 import static pro.sketchware.utility.GsonUtils.getGson;
 import static pro.sketchware.utility.SketchwareUtil.getDip;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -18,8 +19,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import mod.hey.studios.code.SrcCodeEditor;
 import mod.hey.studios.util.Helper;
-import mod.hilal.saif.android_manifest.ActComponentsDialog;
 import mod.remaker.view.CustomAttributeView;
 import pro.sketchware.R;
 import pro.sketchware.databinding.ActivityManageCustomAttributeBinding;
@@ -112,8 +113,12 @@ public class AndroidManifestInjectionDetails extends BaseAppCompatActivity {
             binding.toolbar.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.asd_components:
-                        ActComponentsDialog acd = new ActComponentsDialog(this, src_id, activityName);
-                        acd.show();
+                        Intent intent = new Intent(this, SrcCodeEditor.class);
+                        intent.putExtra(SrcCodeEditor.FLAG_FROM_ANDROID_MANIFEST, true);
+                        intent.putExtra("title", activityName + " Components");
+                        intent.putExtra("sc_id", src_id);
+                        intent.putExtra("activity_name", activityName);
+                        startActivity(intent);
                         return true;
                     default:
                         return false;
