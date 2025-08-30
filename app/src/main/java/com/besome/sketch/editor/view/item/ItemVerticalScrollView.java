@@ -106,7 +106,7 @@ public class ItemVerticalScrollView extends FrameLayout implements ItemView, Scr
         setDrawingCacheEnabled(true);
         setMinimumWidth((int) wB.a(var1, 32.0F));
         setMinimumHeight((int) wB.a(var1, 32.0F));
-        paint = new Paint(1);
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(wB.a(getContext(), 2.0F));
     }
 
