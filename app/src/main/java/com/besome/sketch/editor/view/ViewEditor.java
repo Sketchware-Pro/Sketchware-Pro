@@ -27,6 +27,7 @@ import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.beans.WidgetCollectionBean;
+import com.besome.sketch.editor.view.ItemView;
 import com.besome.sketch.editor.view.item.ItemHorizontalScrollView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.palette.IconAdView;
@@ -76,7 +77,7 @@ import pro.sketchware.widgets.WidgetsCreatorManager;
 
 @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
 public class ViewEditor extends RelativeLayout implements View.OnClickListener, View.OnTouchListener {
-    private final int[] G = new int[2];
+    private final int[] posDummy = new int[2];
     private final Handler handler = new Handler();
     public boolean isLayoutChanged = true;
     public PaletteWidget paletteWidget;
@@ -85,14 +86,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private boolean isAnimating = false;
     private boolean C = false;
     private boolean D = false;
-    private ItemView H;
-    private int I = 50;
-    private int J = 30;
-    private boolean isVibrationEnabled;
-    private cy L;
-    private Iw M;
+    private ItemView selectedItem;
+    private int defaultIconWidth = 50;
+    private int defaultIconHeight = 30;
+    private boolean useVibrate;
+    private cy widgetSelectedListener;
+    private Iw propertyClickListener;
     private DraggingListener draggingListener;
-    private ay O;
+    private ay historyChangeListener;
     private ProjectFileBean projectFileBean;
     private boolean S = true;
     private boolean T = false;
@@ -102,22 +103,22 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private String b;
     private int screenType;
     private boolean da = true;
-    private int[] e = new int[20];
-    private float f = 0;
+    private int[] countItems = new int[20];
+    private float dip = 0;
     private int displayWidth;
     private int displayHeight;
     private PaletteFavorite paletteFavorite;
-    private LinearLayout k;
+    private LinearLayout bgStatus;
     private TextView fileName;
     private ImageView imgPhoneTopBg;
     private LinearLayout toolbar;
     private ViewPane viewPane;
     private Vibrator vibrator;
-    private View r = null;
-    private boolean t = false;
-    private float u = 0;
-    private float v = 0;
-    private int scaledTouchSlop = 0;
+    private View currentTouchedView = null;
+    private boolean isDragged = false;
+    private float posInitX = 0;
+    private float posInitY = 0;
+    private int minDist = 0;
     private ViewDummy dummyView;
     private ImageView deleteIcon;
     private TextView deleteText;
@@ -201,11 +202,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void i() {
-        if (H != null) {
-            H.setSelection(false);
-            H = null;
+        if (selectedItem != null) {
+            selectedItem.setSelection(false);
+            selectedItem = null;
         }
-        if (L != null) L.a(false, "");
+        if (widgetSelectedListener != null) widgetSelectedListener.a(false, "");
     }
 
     public void j() {
@@ -220,11 +221,11 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void l() {
-        e = new int[99];
+        countItems = new int[99];
     }
 
-    private void m() {
-        if (M != null) M.a(b, H.getBean());
+    private void showMoreProperties() {
+        if (propertyClickListener != null) propertyClickListener.a(b, selectedItem.getBean());
     }
 
     private void showPaletteFavorite() {
@@ -264,7 +265,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.btn_editproperties) {
-            m();
+            showMoreProperties();
         }
     }
 
@@ -284,14 +285,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         if (view == viewPane) {
             if (actionMasked == MotionEvent.ACTION_DOWN) {
                 i();
-                r = null;
+                currentTouchedView = null;
             }
             return true;
         } else if (actionMasked == MotionEvent.ACTION_DOWN) {
-            t = false;
-            u = motionEvent.getRawX();
-            v = motionEvent.getRawY();
-            r = view;
+            isDragged = false;
+            posInitX = motionEvent.getRawX();
+            posInitY = motionEvent.getRawY();
+            currentTouchedView = view;
             if ((view instanceof ItemView bean) && bean.getFixed()) {
                 return true;
             }
@@ -312,33 +313,33 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     dummyView.setDummyVisibility(View.GONE);
                     viewPane.clearViews();
                     handler.removeCallbacks(ea);
-                    t = false;
+                    isDragged = false;
                     return true;
                 }
                 return true;
-            } else if (!t) {
-                if (Math.abs(u - motionEvent.getRawX()) >= scaledTouchSlop || Math.abs(v - motionEvent.getRawY()) >= scaledTouchSlop) {
-                    r = null;
+            } else if (!isDragged) {
+                if (Math.abs(posInitX - motionEvent.getRawX()) >= minDist || Math.abs(posInitY - motionEvent.getRawY()) >= minDist) {
+                    currentTouchedView = null;
                     handler.removeCallbacks(ea);
                     return true;
                 }
                 return true;
             } else {
                 handler.removeCallbacks(ea);
-                dummyView.a(view, motionEvent.getRawX(), motionEvent.getRawY(), u, v);
-                if (a(motionEvent.getRawX(), motionEvent.getRawY())) {
+                dummyView.a(view, motionEvent.getRawX(), motionEvent.getRawY(), posInitX, posInitY);
+                if (hitTestIconDelete(motionEvent.getRawX(), motionEvent.getRawY())) {
                     dummyView.setAllow(true);
-                    updateDeleteIcon(true, r instanceof IconCustomWidget);
+                    updateDeleteIcon(true, currentTouchedView instanceof IconCustomWidget);
                     return true;
                 }
-                if (D) updateDeleteIcon(false, r instanceof IconCustomWidget);
-                if (b(motionEvent.getRawX(), motionEvent.getRawY())) {
+                if (D) updateDeleteIcon(false, currentTouchedView instanceof IconCustomWidget);
+                if (hitTestToPane(motionEvent.getRawX(), motionEvent.getRawY())) {
                     dummyView.setAllow(true);
-                    boolean isNotIcon = !isViewAnIconBase(r);
-                    int width = isNotIcon ? r.getWidth() : (r instanceof IconLinearHorizontal ?
-                            ViewGroup.LayoutParams.MATCH_PARENT : I);
-                    int height = isNotIcon ? r.getHeight() : (r instanceof IconLinearVertical ?
-                            ViewGroup.LayoutParams.MATCH_PARENT : J);
+                    boolean isNotIcon = !isViewAnIconBase(currentTouchedView);
+                    int width = isNotIcon ? currentTouchedView.getWidth() : (currentTouchedView instanceof IconLinearHorizontal ?
+                            ViewGroup.LayoutParams.MATCH_PARENT : defaultIconWidth);
+                    int height = isNotIcon ? currentTouchedView.getHeight() : (currentTouchedView instanceof IconLinearVertical ?
+                            ViewGroup.LayoutParams.MATCH_PARENT : defaultIconHeight);
                     viewPane.updateView((int) motionEvent.getRawX(), (int) motionEvent.getRawY(), width, height);
                 } else {
                     dummyView.setAllow(false);
@@ -346,35 +347,35 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 }
                 return true;
             }
-        } else if (!t) {
-            if (r instanceof ItemView sy) {
+        } else if (!isDragged) {
+            if (currentTouchedView instanceof ItemView sy) {
                 a(sy, true);
             }
             if (draggingListener != null) {
                 draggingListener.d();
             }
             dummyView.setDummyVisibility(View.GONE);
-            r = null;
+            currentTouchedView = null;
             viewPane.clearViews();
             handler.removeCallbacks(ea);
             return true;
         } else {
             lol:
             if (dummyView.getAllow()) {
-                if (D && r instanceof ItemView widget) {
+                if (D && currentTouchedView instanceof ItemView widget) {
                     deleteWidget(widget.getBean());
                     break lol;
                 }
-                if (D && r instanceof uy collectionWidget) {
+                if (D && currentTouchedView instanceof uy collectionWidget) {
                     deleteWidgetFromCollection(collectionWidget.getName());
                     break lol;
                 }
-                if (D && r instanceof IconCustomWidget) {
+                if (D && currentTouchedView instanceof IconCustomWidget) {
                     widgetsCreatorManager.showActionsDialog((int) view.getTag());
                     break lol;
                 }
                 viewPane.resetView(false);
-                if (r instanceof uy uyVar) {
+                if (currentTouchedView instanceof uy uyVar) {
                     ArrayList<ViewBean> arrayList = new ArrayList<>();
                     oB oBVar = new oB();
                     boolean areImagesAdded = false;
@@ -424,7 +425,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         }
                         a(a(arrayList, true), true);
                     }
-                } else if (r instanceof IconBase icon) {
+                } else if (currentTouchedView instanceof IconBase icon) {
                     ViewBean bean = icon.getBean();
                     bean.id = a(bean);
                     viewPane.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
@@ -433,14 +434,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                         jC.a(a).a(projectFileBean.getJavaName(), 1, bean.type, bean.id, "onClick");
                     }
                     a(a(bean, true), true);
-                } else if (r instanceof ItemView sy) {
+                } else if (currentTouchedView instanceof ItemView sy) {
                     ViewBean bean = sy.getBean();
                     viewPane.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                     a(b(bean, true), true);
                 }
             } else {
-                if (r instanceof ItemView) {
-                    r.setVisibility(View.VISIBLE);
+                if (currentTouchedView instanceof ItemView) {
+                    currentTouchedView.setVisibility(View.VISIBLE);
                 }
             }
             paletteWidget.setScrollEnabled(true);
@@ -450,10 +451,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             }
             b(false, false);
             dummyView.setDummyVisibility(View.GONE);
-            r = null;
+            currentTouchedView = null;
             viewPane.clearViews();
             handler.removeCallbacks(ea);
-            t = false;
+            isDragged = false;
             return true;
         }
     }
@@ -482,15 +483,15 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void setOnHistoryChangeListener(ay ayVar) {
-        O = ayVar;
+        historyChangeListener = ayVar;
     }
 
     public void setOnPropertyClickListener(Iw iw) {
-        M = iw;
+        propertyClickListener = iw;
     }
 
     public void setOnWidgetSelectedListener(cy cyVar) {
-        L = cyVar;
+        widgetSelectedListener = cyVar;
     }
 
     public void setPaletteLayoutVisible(int i) {
@@ -522,9 +523,9 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         findViewById(R.id.btn_editproperties).setOnClickListener(this);
         findViewById(R.id.img_close).setOnClickListener(this);
 
-        f = wB.a(context, 1.0f);
-        I = (int) (I * f);
-        J = (int) (J * f);
+        dip = wB.a(context, 1.0f);
+        defaultIconWidth = (int) (defaultIconWidth * dip);
+        defaultIconHeight = (int) (defaultIconHeight * dip);
         displayWidth = getResources().getDisplayMetrics().widthPixels;
         displayHeight = getResources().getDisplayMetrics().heightPixels;
 
@@ -534,39 +535,39 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         aa.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, displayHeight));
         shape.addView(aa);
 
-        k = new LinearLayout(context);
-        k.setBackgroundColor(0xff0084c2);
-        k.setOrientation(LinearLayout.HORIZONTAL);
-        k.setGravity(Gravity.CENTER_VERTICAL);
-        k.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 25f)));
+        bgStatus = new LinearLayout(context);
+        bgStatus.setBackgroundColor(0xff0084c2);
+        bgStatus.setOrientation(LinearLayout.HORIZONTAL);
+        bgStatus.setGravity(Gravity.CENTER_VERTICAL);
+        bgStatus.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (dip * 25f)));
 
         fileName = new TextView(context);
         fileName.setTextColor(Color.WHITE);
         fileName.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        fileName.setPadding((int) (f * 8f), 0, 0, 0);
+        fileName.setPadding((int) (dip * 8f), 0, 0, 0);
         fileName.setGravity(Gravity.CENTER_VERTICAL);
-        k.addView(fileName);
+        bgStatus.addView(fileName);
 
         imgPhoneTopBg = new ImageView(context);
         imgPhoneTopBg.setImageResource(R.drawable.phone_bg_top);
         imgPhoneTopBg.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         imgPhoneTopBg.setScaleType(ImageView.ScaleType.FIT_END);
-        k.addView(imgPhoneTopBg);
-        shape.addView(k);
+        bgStatus.addView(imgPhoneTopBg);
+        shape.addView(bgStatus);
 
         toolbar = new LinearLayout(context);
         toolbar.setBackgroundColor(0xff008dcd);
         toolbar.setOrientation(LinearLayout.HORIZONTAL);
         toolbar.setGravity(Gravity.CENTER_VERTICAL);
-        toolbar.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (f * 48f)));
+        toolbar.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, (int) (dip * 48f)));
 
         TextView tvToolbar = new TextView(context);
         tvToolbar.setTextColor(Color.WHITE);
         tvToolbar.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        tvToolbar.setPadding((int) (f * 16f), 0, 0, 0);
+        tvToolbar.setPadding((int) (dip * 16f), 0, 0, 0);
         tvToolbar.setGravity(Gravity.CENTER_VERTICAL);
         tvToolbar.setTextSize(15f);
         tvToolbar.setText("Toolbar");
@@ -580,8 +581,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         shape.addView(viewPane);
 
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        isVibrationEnabled = new DB(context, "P12").a("P12I0", true);
-        scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+        useVibrate = new DB(context, "P12").a("P12I0", true);
+        minDist = ViewConfiguration.get(context).getScaledTouchSlop();
 
         paletteWidget.cardView.setOnClickListener(view -> widgetsCreatorManager.showWidgetsCreatorDialog(-1));
 
@@ -597,8 +598,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public void b(ArrayList<ViewBean> arrayList, boolean z) {
         if (z) {
             cC.c(a).b(projectFileBean.getXmlName(), arrayList);
-            if (O != null) {
-                O.a();
+            if (historyChangeListener != null) {
+                historyChangeListener.a();
             }
         }
         int size = arrayList.size();
@@ -622,8 +623,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     public ItemView e(ViewBean viewBean) {
         ItemView g = viewPane.g(viewBean);
-        L.a();
-        L.a(viewBean.id);
+        widgetSelectedListener.a();
+        widgetSelectedListener.a(viewBean.id);
         return g;
     }
 
@@ -632,10 +633,10 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void e() {
-        if (r == null) return;
-        if (isViewAnIconBase(r)) {
+        if (currentTouchedView == null) return;
+        if (isViewAnIconBase(currentTouchedView)) {
             boolean isAppCompatEnabled = jC.c(a).c().isEnabled();
-            if (r instanceof uy collectionWidget) {
+            if (currentTouchedView instanceof uy collectionWidget) {
                 var collectionData = collectionWidget.getData();
                 boolean isAdViewUsed = false;
                 for (ViewBean view : collectionData) {
@@ -682,21 +683,21 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
-            } else if ((r instanceof IconAdView) && !draggingListener.isAdmobEnabled()) {
+            } else if ((currentTouchedView instanceof IconAdView) && !draggingListener.isAdmobEnabled()) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
-            } else if ((r instanceof IconMapView) && !draggingListener.isGoogleMapEnabled()) {
+            } else if ((currentTouchedView instanceof IconMapView) && !draggingListener.isGoogleMapEnabled()) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
-            } else if (((r instanceof IconMaterialButton)
-                    || (r instanceof IconRecyclerView)
-                    || (r instanceof IconBottomNavigationView)
-                    || (r instanceof IconTabLayout)
-                    || (r instanceof IconViewPager)
-                    || (r instanceof IconCollapsingToolbar)
-                    || (r instanceof IconTextInputLayout)
-                    || (r instanceof IconSwipeRefreshLayout)
-                    || (r instanceof IconCardView))
+            } else if (((currentTouchedView instanceof IconMaterialButton)
+                    || (currentTouchedView instanceof IconRecyclerView)
+                    || (currentTouchedView instanceof IconBottomNavigationView)
+                    || (currentTouchedView instanceof IconTabLayout)
+                    || (currentTouchedView instanceof IconViewPager)
+                    || (currentTouchedView instanceof IconCollapsingToolbar)
+                    || (currentTouchedView instanceof IconTextInputLayout)
+                    || (currentTouchedView instanceof IconSwipeRefreshLayout)
+                    || (currentTouchedView instanceof IconCardView))
                     && !isAppCompatEnabled) {
                 bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
@@ -705,34 +706,34 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         paletteWidget.setScrollEnabled(false);
         paletteFavorite.setScrollEnabled(false);
         if (draggingListener != null) draggingListener.b();
-        if (isVibrationEnabled) vibrator.vibrate(100L);
-        t = true;
-        dummyView.b(r);
+        if (useVibrate) vibrator.vibrate(100L);
+        isDragged = true;
+        dummyView.b(currentTouchedView);
         dummyView.bringToFront();
         i();
-        dummyView.a(r, u, v, u, v);
-        dummyView.a(G);
-        if (isViewAnIconBase(r)) {
-            if (r instanceof uy || r instanceof IconCustomWidget) {
-                b(true, r instanceof IconCustomWidget);
+        dummyView.a(currentTouchedView, posInitX, posInitY, posInitX, posInitY);
+        dummyView.a(posDummy);
+        if (isViewAnIconBase(currentTouchedView)) {
+            if (currentTouchedView instanceof uy || currentTouchedView instanceof IconCustomWidget) {
+                b(true, currentTouchedView instanceof IconCustomWidget);
                 viewPane.addRootLayout(null);
             } else {
                 b(false, false);
                 viewPane.addRootLayout(null);
             }
         } else {
-            r.setVisibility(View.GONE);
-            b(true, r instanceof IconCustomWidget);
-            viewPane.addRootLayout(((ItemView) r).getBean());
+            currentTouchedView.setVisibility(View.GONE);
+            b(true, currentTouchedView instanceof IconCustomWidget);
+            viewPane.addRootLayout(((ItemView) currentTouchedView).getBean());
         }
-        if (b(u, v)) {
+        if (hitTestToPane(posInitX, posInitY)) {
             dummyView.setAllow(true);
-            boolean isNotIcon = !isViewAnIconBase(r);
-            int width = isNotIcon ? r.getWidth() : r instanceof IconLinearHorizontal ?
-                    ViewGroup.LayoutParams.MATCH_PARENT : I;
-            int height = isNotIcon ? r.getHeight() : r instanceof IconLinearVertical ?
-                    ViewGroup.LayoutParams.MATCH_PARENT : J;
-            viewPane.updateView((int) u, (int) v, width, height);
+            boolean isNotIcon = !isViewAnIconBase(currentTouchedView);
+            int width = isNotIcon ? currentTouchedView.getWidth() : currentTouchedView instanceof IconLinearHorizontal ?
+                    ViewGroup.LayoutParams.MATCH_PARENT : defaultIconWidth;
+            int height = isNotIcon ? currentTouchedView.getHeight() : currentTouchedView instanceof IconLinearVertical ?
+                    ViewGroup.LayoutParams.MATCH_PARENT : defaultIconHeight;
+            viewPane.updateView((int) posInitX, (int) posInitY, width, height);
             return;
         }
         dummyView.setAllow(false);
@@ -742,8 +743,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public ItemView b(ViewBean viewBean, boolean z) {
         if (z) {
             cC.c(a).b(projectFileBean.getXmlName(), viewBean);
-            if (O != null) {
-                O.a();
+            if (historyChangeListener != null) {
+                historyChangeListener.a();
             }
         }
         return viewPane.d(viewBean);
@@ -756,8 +757,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         if (viewBean.id.indexOf(generatedId) == 0 && viewBean.id.length() > generatedId.length()) {
             try {
                 int intValue = Integer.parseInt(viewBean.id.substring(generatedId.length()));
-                if (e[viewBean.type] < intValue) {
-                    e[viewBean.type] = intValue;
+                if (countItems[viewBean.type] < intValue) {
+                    countItems[viewBean.type] = intValue;
                 }
             } catch (NumberFormatException ignored) {
             }
@@ -775,10 +776,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         return false;
     }
 
-    private boolean b(float f, float f2) {
+    private boolean hitTestToPane(float x, float y) {
         int[] locationOnScreen = new int[2];
         viewPane.getLocationOnScreen(locationOnScreen);
-        return f > locationOnScreen[0] && f < locationOnScreen[0] + (viewPane.getWidth() * viewPane.getScaleX()) && f2 > locationOnScreen[1] && f2 < locationOnScreen[1] + (viewPane.getHeight() * viewPane.getScaleY());
+        if (!(x > locationOnScreen[0])) return false;
+        if (!(x < locationOnScreen[0] + viewPane.getWidth() * viewPane.getScaleX())) return false;
+        if (!(y > locationOnScreen[1])) return false;
+        if (!(y < locationOnScreen[1] + viewPane.getHeight() * viewPane.getScaleY())) return false;
+        return true;
     }
 
     private void deleteWidgetFromCollection(String str) {
@@ -801,7 +806,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void setPreviewColors(String str) {
-        k.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY_DARK));
+        bgStatus.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY_DARK));
         imgPhoneTopBg.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY_DARK));
         toolbar.setBackgroundColor(ProjectFile.getColor(str, ProjectFile.COLOR_PRIMARY));
     }
@@ -859,32 +864,32 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public void updateSelection(String tag) {
         ItemView syVar;
         ItemView itemView = viewPane.findItemViewByTag(tag);
-        if (itemView == null || (syVar = H) == itemView) {
+        if (itemView == null || (syVar = selectedItem) == itemView) {
             return;
         }
         if (syVar != null) {
             syVar.setSelection(false);
         }
         itemView.setSelection(true);
-        H = itemView;
+        selectedItem = itemView;
     }
 
     private void a() {
         toolbar.setVisibility(S ? View.VISIBLE : View.GONE);
-        k.setVisibility(T ? View.GONE : View.VISIBLE);
+        bgStatus.setVisibility(T ? View.GONE : View.VISIBLE);
 
         viewPane.setVisibility(View.VISIBLE);
         displayWidth = getResources().getDisplayMetrics().widthPixels;
         displayHeight = getResources().getDisplayMetrics().heightPixels;
         boolean isLandscapeMode = displayWidth > displayHeight;
-        int var4 = (int) (f * (!isLandscapeMode ? 12.0F : 24.0F));
-        int var5 = (int) (f * (!isLandscapeMode ? 20.0F : 10.0F));
+        int var4 = (int) (dip * (!isLandscapeMode ? 12.0F : 24.0F));
+        int var5 = (int) (dip * (!isLandscapeMode ? 20.0F : 10.0F));
         int statusBarHeight = GB.f(getContext());
         int toolBarHeight = GB.a(getContext());
-        int var9 = displayWidth - (int) (120.0F * f);
-        int var8 = displayHeight - statusBarHeight - toolBarHeight - (int) (f * 48.0F) - (int) (f * 48.0F);
+        int var9 = displayWidth - (int) (120.0F * dip);
+        int var8 = displayHeight - statusBarHeight - toolBarHeight - (int) (dip * 48.0F) - (int) (dip * 48.0F);
         if (screenType == 0 && da) {
-            var8 -= (int) (f * 56.0F);
+            var8 -= (int) (dip * 56.0F);
         }
 
         float var11 = Math.min((float) var9 / (float) displayWidth, (float) var8 / (float) displayHeight);
@@ -897,14 +902,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         aa.setY(-((int) ((displayHeight - displayHeight * var11) / 2.0F)));
         int var10 = var4 - (int) ((displayWidth - displayWidth * var3) / 2.0F);
         int var13 = var5;
-        if (k.getVisibility() == View.VISIBLE) {
-            k.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, statusBarHeight));
-            k.setScaleX(var3);
-            k.setScaleY(var3);
+        if (bgStatus.getVisibility() == View.VISIBLE) {
+            bgStatus.setLayoutParams(new FrameLayout.LayoutParams(displayWidth, statusBarHeight));
+            bgStatus.setScaleX(var3);
+            bgStatus.setScaleY(var3);
             var11 = statusBarHeight;
             float var12 = var11 * var3;
-            k.setX(var10);
-            k.setY((var5 - (int) ((var11 - var12) / 2.0F)));
+            bgStatus.setX(var10);
+            bgStatus.setY((var5 - (int) ((var11 - var12) / 2.0F)));
             var13 = var5 + (int) var12;
         }
 
@@ -920,7 +925,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
 
         var13 = displayHeight;
-        if (k.getVisibility() == View.VISIBLE) {
+        if (bgStatus.getVisibility() == View.VISIBLE) {
             var13 = displayHeight - statusBarHeight;
         }
 
@@ -977,8 +982,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         String b2 = !bean.isCustomWidget ? wq.b(i) : widgetsCreatorManager.generateCustomWidgetId(bean.convert);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
-        int i2 = e[i] + 1;
-        e[i] = i2;
+        int i2 = countItems[i] + 1;
+        countItems[i] = i2;
         sb.append(i2);
         String sb2 = sb.toString();
         ArrayList<ViewBean> d = jC.a(a).d(b);
@@ -995,8 +1000,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             }
             StringBuilder sb3 = new StringBuilder();
             sb3.append(b2);
-            int i3 = e[i] + 1;
-            e[i] = i3;
+            int i3 = countItems[i] + 1;
+            countItems[i] = i3;
             sb3.append(i3);
             sb2 = sb3.toString();
         }
@@ -1005,8 +1010,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public ItemView a(ArrayList<ViewBean> arrayList, boolean z) {
         if (z) {
             cC.c(a).a(projectFileBean.getXmlName(), arrayList);
-            if (O != null) {
-                O.a();
+            if (historyChangeListener != null) {
+                historyChangeListener.a();
             }
         }
         ItemView syVar = null;
@@ -1023,8 +1028,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     public ItemView a(ViewBean viewBean, boolean z) {
         if (z) {
             cC.c(a).a(projectFileBean.getXmlName(), viewBean);
-            if (O != null) {
-                O.a();
+            if (historyChangeListener != null) {
+                historyChangeListener.a();
             }
         }
         return createAndAddView(viewBean);
@@ -1044,20 +1049,24 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     public void a(ItemView syVar, boolean z) {
-        if (H != null) {
-            H.setSelection(false);
+        if (selectedItem != null) {
+            selectedItem.setSelection(false);
         }
-        H = syVar;
-        H.setSelection(true);
-        if (L != null) {
-            L.a(z, H.getBean().id);
+        selectedItem = syVar;
+        selectedItem.setSelection(true);
+        if (widgetSelectedListener != null) {
+            widgetSelectedListener.a(z, selectedItem.getBean().id);
         }
     }
 
-    private boolean a(float x, float y) {
+    private boolean hitTestIconDelete(float x, float y) {
         int[] locationOnScreen = new int[2];
         deleteView.getLocationOnScreen(locationOnScreen);
-        return x > locationOnScreen[0] && x < locationOnScreen[0] + deleteView.getWidth() && y > locationOnScreen[1] && y < (locationOnScreen[1] + deleteView.getHeight());
+        if (!(x > locationOnScreen[0])) return false;
+        if (!(x < (locationOnScreen[0] + deleteView.getWidth()))) return false;
+        if (!(y > locationOnScreen[1])) return false;
+        if (!(y < (locationOnScreen[1] + deleteView.getHeight()))) return false;
+        return true;
     }
 
     private void updateDeleteIcon(boolean z, boolean isCustomWidget) {
