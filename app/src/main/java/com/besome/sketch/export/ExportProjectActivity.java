@@ -193,7 +193,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
             if (yB.a(lC.b(sc_id), "custom_icon")) {
                 project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
                 if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
-                    project_metadata.cf("""
+                    project_metadata.createLauncherIconXml("""
                             <?xml version="1.0" encoding="utf-8"?>
                             <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
                             <background android:drawable="@mipmap/ic_launcher_background"/>
@@ -506,7 +506,7 @@ public class ExportProjectActivity extends BaseAppCompatActivity {
                 if (yB.a(lC.b(sc_id), "custom_icon")) {
                     project_metadata.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
                     if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
-                        project_metadata.cf("""
+                        project_metadata.createLauncherIconXml("""
                                 <?xml version="1.0" encoding="utf-8"?>
                                 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
                                 <background android:drawable="@mipmap/ic_launcher_background"/>

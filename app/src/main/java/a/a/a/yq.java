@@ -305,7 +305,7 @@ public class yq {
     /**
      * Generates top-level build.gradle, build.gradle for module ':app' and settings.gradle files.
      */
-    public void h() {
+    public void generateGradleFiles() {
         fileUtil.b(projectMyscPath + File.separator + "app" + File.separator + "build.gradle",
                 Lx.getBuildGradleString(VAR_DEFAULT_TARGET_SDK_VERSION, VAR_DEFAULT_MIN_SDK_VERSION, projectSettings.getValue(ProjectSettings.SETTING_TARGET_SDK_VERSION, String.valueOf(VAR_DEFAULT_TARGET_SDK_VERSION)), N, projectSettings.getValue(ProjectSettings.SETTING_ENABLE_VIEWBINDING, ProjectSettings.SETTING_GENERIC_VALUE_FALSE).equals(ProjectSettings.SETTING_GENERIC_VALUE_TRUE)));
         fileUtil.b(projectMyscPath + File.separator + "settings.gradle", Lx.a());
@@ -353,10 +353,10 @@ public class yq {
     }
 
     /**
-     * creates ic_launcher.xml to the project's app icon path, {@link yq#resDirectoryPath}/mipmap-anydpi-v26
+     * Creates ic_launcher.xml to the project's app icon path, {@link yq#resDirectoryPath}/mipmap-anydpi-v26
      */
 
-    public void cf(String content) {
+    public void createLauncherIconXml(String content) {
         try {
             fileUtil.b(resDirectoryPath + File.separator + "mipmap-anydpi-v26" + File.separator + "ic_launcher.xml", content);
         } catch (Exception e2) {
@@ -367,7 +367,7 @@ public class yq {
     /**
      * Generates DebugActivity.java, SketchApplication.java, and SketchLogger.java, if necessary.
      */
-    public void a(Context context) {
+    public void generateDebugFiles(Context context) {
         boolean logcatEnabled = N.isDebugBuild && new BuildSettings(sc_id).getValue(
                         BuildSettings.SETTING_ENABLE_LOGCAT, BuildSettings.SETTING_GENERIC_VALUE_TRUE)
                 .equals(BuildSettings.SETTING_GENERIC_VALUE_TRUE);
@@ -765,14 +765,14 @@ public class yq {
             fileUtil.b(resDirectoryPath + File.separator + filePath,
                     CommandBlock.applyCommands(filePath, mx.toCode()));
         }
-        h();
+        generateGradleFiles();
     }
 
     /**
      * Get source code files that are viewable in SrcCodeViewer
      */
     public ArrayList<SrcCodeBean> a(hC projectFileManager, eC projectDataManager, BuiltInLibraryManager builtInLibraryManager) {
-        a(SketchApplication.getContext());
+        generateDebugFiles(SketchApplication.getContext());
         CommandBlock.x();
 
         String javaDir = FileUtil.getExternalStorageDir() + "/.sketchware/data/" + sc_id + "/files/java/";

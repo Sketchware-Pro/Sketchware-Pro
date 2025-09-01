@@ -399,7 +399,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.END)) {
             drawer.closeDrawer(GravityCompat.END);
-        } else if (viewTabAdapter.g()) {
+        } else if (viewTabAdapter.isPropertyViewVisible()) {
             hideViewPropertyView();
         } else {
             if (currentTabNumber > 0) {
@@ -1083,7 +1083,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 if (yB.a(lC.b(sc_id), "custom_icon")) {
                     q.aa(wq.e() + File.separator + sc_id + File.separator + "mipmaps");
                     if (yB.a(lC.b(sc_id), "isIconAdaptive", false)) {
-                        q.cf("""
+                        q.createLauncherIconXml("""
                                 <?xml version="1.0" encoding="utf-8"?>
                                 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android" >
                                 <background android:drawable="@mipmap/ic_launcher_background"/>
