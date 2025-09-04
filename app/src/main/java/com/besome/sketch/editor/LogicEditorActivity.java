@@ -1,7 +1,5 @@
 package com.besome.sketch.editor;
 
-import static android.view.View.LAYER_TYPE_HARDWARE;
-
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -1242,11 +1240,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     }
 
     public Rs b(BlockBean blockBean) {
-        Rs block = new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
-        // main reason why some blocks are not showing because Ts class is using View#LAYER_TYPE_SOFTWARE.
-        // we are changing it to fix it.
-        block.setLayerType(LAYER_TYPE_HARDWARE, null);
-        return block;
+        return new Rs(this, Integer.parseInt(blockBean.id), blockBean.spec, blockBean.type, blockBean.typeName, blockBean.opCode);
     }
 
     private RadioButton getFontRadioButton(String fontName) {
