@@ -1,7 +1,6 @@
 package com.besome.sketch.editor;
 
 import static android.view.View.LAYER_TYPE_HARDWARE;
-import static pro.sketchware.widgets.WidgetsCreatorManager.clearErrorOnTextChanged;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -374,187 +373,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         });
         dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
         dialog.show();
-    }
-
-    private void showAddNewXmlStringDialog() {
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        ViewStringEditorAddBinding binding = ViewStringEditorAddBinding.inflate(LayoutInflater.from(this));
-        dialog.setTitle("Create new string");
-        dialog.setPositiveButton("Create", (v1, which) -> {
-
-            String filePath = new FilePathUtil().getPathResource(scId) + "/values/strings.xml";
-            ArrayList<HashMap<String, Object>> StringsListMap = new ArrayList<>();
-            StringsEditorManager stringsEditorManager = new StringsEditorManager();
-            stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFile(filePath), StringsListMap);
-
-            clearErrorOnTextChanged(binding.stringKeyInput, binding.stringKeyInputLayout);
-
-            String key = Objects.requireNonNull(binding.stringKeyInput.getText()).toString();
-            String value = Objects.requireNonNull(binding.stringValueInput.getText()).toString();
-
-            if (stringsEditorManager.isXmlStringsExist(StringsListMap, key)) {
-                binding.stringKeyInputLayout.setError("\"" + key + "\" is already exist");
-                return;
-            }
-
-            if (key.isEmpty() || value.isEmpty()) {
-                SketchwareUtil.toastError("Please fill in all fields");
-                return;
-            }
-
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("key", key);
-            map.put("text", value);
-            StringsListMap.add(map);
-            FileUtil.writeFile(filePath, stringsEditorManager.convertListMapToXmlStrings(StringsListMap, new HashMap<>()));
-            paletteSelector.performClickPalette(-1);
-            v1.dismiss();
-        });
-        dialog.setNegativeButton(Helper.getResString(R.string.cancel), (v1, which) -> v1.dismiss());
-        dialog.setView(binding.getRoot());
-        dialog.show();
-    }
-
-    private void showRemoveXmlStringDialog() {
-        String filePath = new FilePathUtil().getPathResource(scId) + "/values/strings.xml";
-
-        ArrayList<HashMap<String, Object>> stringsList = new ArrayList<>();
-        StringsEditorManager stringsEditorManager = new StringsEditorManager();
-        stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFile(filePath), stringsList);
-
-        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-        dialog.setTitle(getTranslatedString(R.string.logic_editor_title_remove_xml_strings));
-
-        PropertyPopupSelectorSingleBinding binding = PropertyPopupSelectorSingleBinding.inflate(LayoutInflater.from(this));
-        ViewGroup viewGroup = binding.rgContent;
-
-        for (HashMap<String, Object> map : stringsList) {
-            String key = Objects.requireNonNull(map.get("key")).toString();
-            CheckBox checkBox = createCheckBox(key);
-            checkBox.setTag(key);
-            setOnCheckedListener(checkBox);
-            viewGroup.addView(checkBox);
-        }
-
-        dialog.setView(binding.getRoot());
-
-        dialog.setPositiveButton(getTranslatedString(R.string.common_word_remove), (v, which) -> {
-            int childCount = viewGroup.getChildCount();
-
-            for (int i = 0; i < childCount; i++) {
-                CheckBox checkBox = (CheckBox) viewGroup.getChildAt(i);
-                if (checkBox.isChecked()) {
-                    removeItem(stringsList, Helper.getText(checkBox));
-                }
-            }
-
-            FileUtil.writeFile(filePath, stringsEditorManager.convertListMapToXmlStrings(stringsList, new HashMap<>()));
-
-            paletteSelector.performClickPalette(-1);
-            v.dismiss();
-        });
-
-        dialog.setNegativeButton(getTranslatedString(R.string.common_word_cancel), null);
-        dialog.show();
-    }
-
-    public void setOnCheckedListener(CheckBox checkBox) {
-        checkBox.setOnCheckedChangeListener((view, isChecked) -> {
-            if (isChecked && isXmlStringUsed(scId, Helper.getText(checkBox))) {
-                checkBox.setChecked(false);
-            }
-        });
-    }
-
-    public void removeItem(ArrayList<HashMap<String, Object>> listMap, String key) {
-        listMap.removeIf(map -> key.equals(map.get("key")));
-    }
-
-    private boolean isXmlStringUsed(String projectScId, String key) {
-        if ("app_name".equals(key)) {
-            return true;
-        }
-        eC projectDataManager = jC.a(projectScId);
-
-        return isKeyHasNonSavedUsage(key) || isKeyUsedInJavaFiles(projectDataManager, projectScId, key) || isKeyUsedInXmlFiles(projectDataManager, projectScId, key);
-    }
-
-    private boolean isKeyHasNonSavedUsage(String key) {
-        for (BlockBean block : o.getBlocks()) {
-            if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
-
-                showToastError();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isKeyHasSavedUsage(String key) {
-        for (BlockBean block : savedBlockBean) {
-            if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                    (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
-
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isKeyUsedInJavaFiles(eC projectDataManager, String projectScId, String key) {
-
-        if ((getStringUsageLengthInJava(projectDataManager, projectScId, key) == 1) && isKeyHasSavedUsage(key) && !isKeyHasNonSavedUsage(key)) {
-            return false;
-        }
-
-        for (String javaFileName : getAllJavaFileNames(projectScId)) {
-            for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
-                for (BlockBean block : entry.getValue()) {
-                    if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
-
-                        showToastError();
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean isKeyUsedInXmlFiles(eC projectDataManager, String projectScId, String key) {
-        for (String xmlFileName : getAllXmlFileNames(projectScId)) {
-            for (ViewBean view : projectDataManager.d(xmlFileName)) {
-                if (view.text.text.equals("@string/" + key) ||
-                        (view.text.hint.equals("@string/" + key))) {
-
-                    showToastError();
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private void showToastError() {
-        SketchwareUtil.toastError(Helper.getResString(R.string.logic_editor_title_remove_xml_string_error));
-    }
-
-    private int getStringUsageLengthInJava(eC projectDataManager, String projectScId, String key) {
-        int length = 0;
-        for (String javaFileName : getAllJavaFileNames(projectScId)) {
-            for (Map.Entry<String, ArrayList<BlockBean>> entry : projectDataManager.b(javaFileName).entrySet()) {
-                for (BlockBean block : entry.getValue()) {
-                    if (block.opCode.equals("getResStr") && block.spec.equals(key) ||
-                            (block.opCode.equals("getResString") && block.parameters.get(0).equals("R.string." + key))) {
-
-                        length++;
-                    }
-                }
-            }
-        }
-        return length;
     }
 
     public void openResourcesEditor() {
@@ -2058,10 +1876,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                     showAddNewVariableDialog();
                 } else if (tag.equals("variableRemove")) {
                     K();
-                } else if (tag.equals("XmlString.Add")) {
-                    showAddNewXmlStringDialog();
-                } else if (tag.equals("XmlString.remove")) {
-                    showRemoveXmlStringDialog();
                 } else if (tag.equals("openResourcesEditor")) {
                     openResourcesEditor();
                 } else if (tag.equals("listAdd")) {

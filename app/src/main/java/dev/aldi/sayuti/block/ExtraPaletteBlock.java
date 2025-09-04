@@ -407,8 +407,6 @@ public class ExtraPaletteBlock {
                 StringsEditorManager stringsEditorManager = new StringsEditorManager();
                 stringsEditorManager.convertXmlStringsToListMap(FileUtil.readFileIfExist(filePath), StringsListMap);
 
-                logicEditor.b("Add new String", "XmlString.Add");
-                logicEditor.b("Remove String(s)", "XmlString.remove");
                 logicEditor.b("Open Resources editor", "openResourcesEditor");
 
                 logicEditor.a("s", "getResString");
