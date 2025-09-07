@@ -904,7 +904,7 @@ public class Fx {
                 opcode = String.format("%s = new TimerTask() {\n@Override\npublic void run() {\nrunOnUiThread(new Runnable() {\n@Override\npublic void run() {\n%s\n}\n});\n}\n};\n_timer.scheduleAtFixedRate(%s, (int)(%s), (int)(%s));", params.get(0), onRun, params.get(0), params.get(1), params.get(2));
                 break;
             case "timerCancel":
-                opcode = String.format("%s.cancel();", params.get(0));
+                opcode = String.format("if (%s != null) { %s.cancel(); }", params.get(0), params.get(0));
                 break;
             case "firebaseAdd":
                 opcode = String.format("%s.child(%s).updateChildren(%s);", params.get(0), params.get(1), params.get(2));
