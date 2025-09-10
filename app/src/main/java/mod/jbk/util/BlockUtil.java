@@ -1,7 +1,5 @@
 package mod.jbk.util;
 
-import static android.view.View.LAYER_TYPE_HARDWARE;
-
 import android.content.Context;
 import android.view.ViewGroup;
 
@@ -16,9 +14,6 @@ import mod.hey.studios.moreblock.ReturnMoreblockManager;
 public class BlockUtil {
     public static void loadMoreblockPreview(ViewGroup blockArea, String spec) {
         var moreblock = new Rs(blockArea.getContext(), 0, ReturnMoreblockManager.getMbName(spec), ReturnMoreblockManager.getMoreblockType(spec), "definedFunc");
-        // main reason why some blocks are not showing because Ts class is using View#LAYER_TYPE_SOFTWARE.
-        // we are changing it to fix it.
-        moreblock.setLayerType(LAYER_TYPE_HARDWARE, null);
         blockArea.addView(moreblock);
 
         loadPreviewBlockVariables(blockArea, moreblock, spec);
@@ -59,11 +54,7 @@ public class BlockUtil {
             case 'm' -> {
                 String specLast = spec.substring(spec.lastIndexOf(".") + 1);
                 String specFirst = spec.substring(spec.indexOf(".") + 1, spec.lastIndexOf("."));
-                Rs block = new Rs(context, id, specLast, kq.a(specFirst), kq.b(specFirst), opCode);
-                // main reason why some blocks are not showing because Ts class is using View#LAYER_TYPE_SOFTWARE.
-                // we are changing it to fix it.
-                block.setLayerType(LAYER_TYPE_HARDWARE, null);
-                yield block;
+                yield new Rs(context, id, specLast, kq.a(specFirst), kq.b(specFirst), opCode);
             }
             default -> null;
         };
