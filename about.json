@@ -1,12 +1,12 @@
 {
-  "discordInviteLink": "https://discord.gg/kq39yhT4rX",
+  "discordInviteLink": "https://discord.gg/BvK2spJCwR",
   "team": [
     {
-      "user_username": "JavkhlanK",
-      "user_img": "https://avatars.githubusercontent.com/u/40118124?v=4",
-      "description": "hi",
+      "user_username": "Naruto Dev",
+      "user_img": "https://avatars.githubusercontent.com/u/213140907?v=4",
+      "description": "The owner of this version of Sketchware is one of the core team",
       "is_core_team": true,
-      "is_active": false
+      "is_active": true
     },
     {
       "user_username": "hasrat-ali",
