@@ -234,17 +234,19 @@ public class FileUtil {
         if (!source.isDirectory()) {
             File parentFile = copyInto.getParentFile();
             if (parentFile == null || parentFile.exists() || parentFile.mkdirs()) {
-                FileInputStream fileInputStream = new FileInputStream(source);
-                FileOutputStream fileOutputStream = new FileOutputStream(copyInto);
-                byte[] bArr = new byte[2048];
-                while (true) {
-                    int read = fileInputStream.read(bArr);
-                    if (read <= 0) {
-                        fileInputStream.close();
-                        fileOutputStream.close();
-                        return;
+                try (FileInputStream fileInputStream = new FileInputStream(source);
+                     FileOutputStream fileOutputStream = new FileOutputStream(copyInto)) {
+                    byte[] bArr = new byte[2048];
+                    while (true) {
+                        int read = fileInputStream.read(bArr);
+                        if (read <= 0) {
+                            return;
+                        }
+                        fileOutputStream.write(bArr, 0, read);
                     }
-                    fileOutputStream.write(bArr, 0, read);
+                } catch (IOException e) {
+                    Log.e("FileUtil", "Error copying file " + source.getAbsolutePath() + " to " + copyInto.getAbsolutePath(), e);
+                    throw e;
                 }
             } else {
                 throw new IOException("Cannot create dir " + parentFile.getAbsolutePath());
