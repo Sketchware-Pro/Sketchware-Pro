@@ -315,7 +315,11 @@ public class FileUtil {
 
     public static void makeDir(String path) {
         if (!isExistFile(path)) {
-            new File(path).mkdirs();
+            try {
+                new File(path).mkdirs();
+            } catch (SecurityException e) {
+                Log.e("FileUtil", "Error creating directory: " + path, e);
+            }
         }
     }
 
