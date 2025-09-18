@@ -638,17 +638,17 @@ public class ViewPane extends RelativeLayout {
 
     public void a(ViewBean viewBean, int i, int i2) {
         if (viewInfo != null) {
-            View view = viewInfo.getView();
+            View view = viewInfo.view();
             if (view instanceof LinearLayout) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = viewInfo.getIndex();
+                viewBean.index = viewInfo.index();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.preParentType = viewBean.parentType;
                 viewBean.parentType = ViewBean.VIEW_TYPE_LAYOUT_LINEAR;
             } else if (view instanceof ItemVerticalScrollView) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = viewInfo.getIndex();
+                viewBean.index = viewInfo.index();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.preParentType = viewBean.parentType;
@@ -656,7 +656,7 @@ public class ViewPane extends RelativeLayout {
                 viewBean.layout.height = ViewGroup.LayoutParams.WRAP_CONTENT;
             } else if (view instanceof ItemHorizontalScrollView) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = viewInfo.getIndex();
+                viewBean.index = viewInfo.index();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.preParentType = viewBean.parentType;
@@ -664,7 +664,7 @@ public class ViewPane extends RelativeLayout {
                 viewBean.layout.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             } else if (view instanceof ItemCardView) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = viewInfo.getIndex();
+                viewBean.index = viewInfo.index();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.preParentType = viewBean.parentType;
@@ -672,7 +672,7 @@ public class ViewPane extends RelativeLayout {
                 viewBean.layout.width = ViewGroup.LayoutParams.MATCH_PARENT;
             } else if (view instanceof ItemRelativeLayout) {
                 viewBean.preIndex = viewBean.index;
-                viewBean.index = viewInfo.getIndex();
+                viewBean.index = viewInfo.index();
                 viewBean.preParent = viewBean.parent;
                 viewBean.parent = view.getTag().toString();
                 viewBean.preParentType = viewBean.parentType;
@@ -738,8 +738,8 @@ public class ViewPane extends RelativeLayout {
             resetView(true);
         } else if (this.viewInfo != viewInfo) {
             resetView(true);
-            ViewGroup viewGroup = (ViewGroup) viewInfo.getView();
-            viewGroup.addView(highlightedTextView, viewInfo.getIndex());
+            ViewGroup viewGroup = (ViewGroup) viewInfo.view();
+            viewGroup.addView(highlightedTextView, viewInfo.index());
             if (viewGroup instanceof LinearLayout) {
                 highlightedTextView.setLayoutParams(new LinearLayout.LayoutParams(width, height));
             } else if (viewGroup instanceof FrameLayout) {
@@ -756,8 +756,8 @@ public class ViewPane extends RelativeLayout {
         ViewInfo result = null;
         int highestPriority = -1;
         for (ViewInfo viewInfo : viewInfos) {
-            if (viewInfo.getRect().contains(x, y) && highestPriority < viewInfo.getDepth()) {
-                highestPriority = viewInfo.getDepth();
+            if (viewInfo.rect().contains(x, y) && highestPriority < viewInfo.depth()) {
+                highestPriority = viewInfo.depth();
                 result = viewInfo;
             }
         }
@@ -1396,34 +1396,6 @@ public class ViewPane extends RelativeLayout {
         return getClass().getName() + "@" + Integer.toHexString(hashCode());
     }
 
-    private static class ViewInfo {
-
-        private final Rect rect;
-        private final View view;
-        private final int index;
-        private final int depth;
-
-        public ViewInfo(Rect rect, View view, int index, int depth) {
-            this.rect = rect;
-            this.view = view;
-            this.index = index;
-            this.depth = depth;
-        }
-
-        public Rect getRect() {
-            return rect;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public View getView() {
-            return view;
-        }
-
-        public int getDepth() {
-            return depth;
-        }
+    private record ViewInfo(Rect rect, View view, int index, int depth) {
     }
 }
