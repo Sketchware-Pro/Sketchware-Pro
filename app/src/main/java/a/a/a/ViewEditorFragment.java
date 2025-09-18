@@ -132,10 +132,10 @@ public class ViewEditorFragment extends qA {
         viewEditor.setFavoriteData(Rp.h().f());
     }
 
-    public void a(ProjectFileBean projectFileBean) {
+    public void initialize(ProjectFileBean projectFileBean) {
         this.projectFileBean = projectFileBean;
         isFabEnabled = projectFileBean.hasActivityOption(ProjectFileBean.OPTION_ACTIVITY_FAB);
-        viewEditor.a(sc_id, projectFileBean);
+        viewEditor.initialize(sc_id, projectFileBean);
         viewEditor.h();
         viewProperty.a(sc_id, this.projectFileBean);
         e();
@@ -203,11 +203,6 @@ public class ViewEditorFragment extends qA {
         a(viewBeans);
     }
 
-    public void b(boolean var1) {
-        viewEditor.setIsAdLoaded(var1);
-        viewEditor.requestLayout();
-    }
-
     private void cancelAnimations() {
         if (showPropertyViewAnimator.isRunning()) showPropertyViewAnimator.cancel();
         if (hidePropertyViewAnimator.isRunning()) hidePropertyViewAnimator.cancel();
@@ -217,8 +212,8 @@ public class ViewEditorFragment extends qA {
         viewEditor.e(var1);
     }
 
-    public void c(boolean var1) {
-        viewProperty.setVisibility(var1 ? View.VISIBLE : View.GONE);
+    public void showHidePropertyView(boolean shouldShow) {
+        viewProperty.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
     }
 
     public ProjectFileBean d() {

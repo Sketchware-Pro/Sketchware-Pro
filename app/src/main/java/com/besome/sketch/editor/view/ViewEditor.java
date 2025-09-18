@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,13 +22,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.StringRes;
 import androidx.appcompat.content.res.AppCompatResources;
 
 import com.besome.sketch.beans.ProjectFileBean;
 import com.besome.sketch.beans.ProjectResourceBean;
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.beans.WidgetCollectionBean;
-import com.besome.sketch.editor.view.ItemView;
 import com.besome.sketch.editor.view.item.ItemHorizontalScrollView;
 import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.palette.IconAdView;
@@ -70,6 +71,7 @@ import dev.aldi.sayuti.editor.view.palette.IconTextInputLayout;
 import dev.aldi.sayuti.editor.view.palette.IconViewPager;
 import mod.agus.jcoderz.beans.ViewBeans;
 import mod.hey.studios.util.ProjectFile;
+import mod.jbk.util.LogUtil;
 import pro.sketchware.R;
 import pro.sketchware.utility.ThemeUtils;
 import pro.sketchware.widgets.IconCustomWidget;
@@ -128,7 +130,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     private int colorCoolGreenContainer;
     private int colorCoolGreen;
     private int colorError;
-    private final Runnable ea = this::e;
+    private final Runnable longPressRunnable = this::e;
     private int colorErrorContainer;
 
     public ViewEditor(Context context) {
@@ -299,7 +301,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             if (isInsideItemScrollView(view) && draggingListener != null) {
                 draggingListener.b();
             }
-            handler.postDelayed(ea, ViewConfiguration.getLongPressTimeout() / 2);
+            handler.postDelayed(longPressRunnable, ViewConfiguration.getLongPressTimeout() / 2);
             return true;
         } else if (actionMasked != MotionEvent.ACTION_UP) {
             if (actionMasked != MotionEvent.ACTION_MOVE) {
@@ -312,7 +314,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     b(false, false);
                     dummyView.setDummyVisibility(View.GONE);
                     viewPane.clearViews();
-                    handler.removeCallbacks(ea);
+                    handler.removeCallbacks(longPressRunnable);
                     isDragged = false;
                     return true;
                 }
@@ -320,12 +322,12 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             } else if (!isDragged) {
                 if (Math.abs(posInitX - motionEvent.getRawX()) >= minDist || Math.abs(posInitY - motionEvent.getRawY()) >= minDist) {
                     currentTouchedView = null;
-                    handler.removeCallbacks(ea);
+                    handler.removeCallbacks(longPressRunnable);
                     return true;
                 }
                 return true;
             } else {
-                handler.removeCallbacks(ea);
+                handler.removeCallbacks(longPressRunnable);
                 dummyView.a(view, motionEvent.getRawX(), motionEvent.getRawY(), posInitX, posInitY);
                 if (hitTestIconDelete(motionEvent.getRawX(), motionEvent.getRawY())) {
                     dummyView.setAllow(true);
@@ -357,7 +359,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             dummyView.setDummyVisibility(View.GONE);
             currentTouchedView = null;
             viewPane.clearViews();
-            handler.removeCallbacks(ea);
+            handler.removeCallbacks(longPressRunnable);
             return true;
         } else {
             lol:
@@ -389,7 +391,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                             try {
                                 oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a2.resFullName, wq.g() + File.separator + a + File.separator + a2.resFullName);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                LogUtil.e("ViewEditor", "", e);
                             }
                             jC.d(a).b.add(a2);
                             areImagesAdded = true;
@@ -399,27 +401,27 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                             try {
                                 oBVar.a(wq.a() + File.separator + "image" + File.separator + "data" + File.separator + a3.resFullName, wq.g() + File.separator + a + File.separator + a3.resFullName);
                             } catch (Exception e2) {
-                                e2.printStackTrace();
+                                LogUtil.e("ViewEditor", "", e2);
                             }
                             jC.d(a).b.add(a3);
                             areImagesAdded = true;
                         }
                     }
                     if (areImagesAdded) {
-                        bB.a(getContext(), xB.b().a(getContext(), R.string.view_widget_favorites_image_auto_added), bB.TOAST_NORMAL).show();
+                        bB.a(getContext(), getString(R.string.view_widget_favorites_image_auto_added), bB.TOAST_NORMAL).show();
                     }
                     if (!arrayList.isEmpty()) {
-                        HashMap<String, String> hashMap = new HashMap<>();
-                        viewPane.a(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
+                        HashMap<String, String> idMappings = new HashMap<>();
+                        viewPane.updateViewBeanProperties(arrayList.get(0), (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                         for (ViewBean next : arrayList) {
                             if (jC.a(a).h(projectFileBean.getXmlName(), next.id)) {
-                                hashMap.put(next.id, a(next));
+                                idMappings.put(next.id, generateWidgetId(next));
                             } else {
-                                hashMap.put(next.id, next.id);
+                                idMappings.put(next.id, next.id);
                             }
-                            next.id = hashMap.get(next.id);
+                            next.id = idMappings.get(next.id);
                             if (arrayList.indexOf(next) != 0 && (str = next.parent) != null && !str.isEmpty()) {
-                                next.parent = hashMap.get(next.parent);
+                                next.parent = idMappings.get(next.parent);
                             }
                             jC.a(a).a(b, next);
                         }
@@ -427,8 +429,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     }
                 } else if (currentTouchedView instanceof IconBase icon) {
                     ViewBean bean = icon.getBean();
-                    bean.id = a(bean);
-                    viewPane.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
+                    bean.id = generateWidgetId(bean);
+                    viewPane.updateViewBeanProperties(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                     jC.a(a).a(b, bean);
                     if (bean.type == 3 && projectFileBean.fileType == ProjectFileBean.PROJECT_FILE_TYPE_ACTIVITY) {
                         jC.a(a).a(projectFileBean.getJavaName(), 1, bean.type, bean.id, "onClick");
@@ -436,7 +438,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     a(a(bean, true), true);
                 } else if (currentTouchedView instanceof ItemView sy) {
                     ViewBean bean = sy.getBean();
-                    viewPane.a(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
+                    viewPane.updateViewBeanProperties(bean, (int) motionEvent.getRawX(), (int) motionEvent.getRawY());
                     a(b(bean, true), true);
                 }
             } else {
@@ -453,7 +455,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             dummyView.setDummyVisibility(View.GONE);
             currentTouchedView = null;
             viewPane.clearViews();
-            handler.removeCallbacks(ea);
+            handler.removeCallbacks(longPressRunnable);
             isDragged = false;
             return true;
         }
@@ -613,7 +615,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
     }
 
     private void clearCollectionWidget() {
-        paletteFavorite.a();
+        paletteFavorite.removeAllWidgets();
     }
 
     public void removeWidgetsAndLayouts() {
@@ -646,7 +648,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     }
                 }
                 if (isAdViewUsed && !draggingListener.isAdmobEnabled()) {
-                    bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
+                    bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
 
@@ -658,7 +660,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     }
                 }
                 if (isMapViewUsed && !draggingListener.isGoogleMapEnabled()) {
-                    bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
+                    bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
                 boolean isAppCompatViewUsed = false;
@@ -680,14 +682,14 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                 }
 
                 if (isAppCompatViewUsed && !isAppCompatEnabled) {
-                    bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
+                    bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                     return;
                 }
             } else if ((currentTouchedView instanceof IconAdView) && !draggingListener.isAdmobEnabled()) {
-                bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
+                bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             } else if ((currentTouchedView instanceof IconMapView) && !draggingListener.isGoogleMapEnabled()) {
-                bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
+                bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             } else if (((currentTouchedView instanceof IconMaterialButton)
                     || (currentTouchedView instanceof IconRecyclerView)
@@ -699,7 +701,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
                     || (currentTouchedView instanceof IconSwipeRefreshLayout)
                     || (currentTouchedView instanceof IconCardView))
                     && !isAppCompatEnabled) {
-                bB.b(getContext(), xB.b().a(getContext(), R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
+                bB.b(getContext(), getString(R.string.design_library_guide_setup_first), bB.TOAST_NORMAL).show();
                 return;
             }
         }
@@ -788,16 +790,20 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
 
     private void deleteWidgetFromCollection(String str) {
         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(getContext());
-        dialog.setTitle(xB.b().a(getContext(), R.string.view_widget_favorites_delete_title));
+        dialog.setTitle(getString(R.string.view_widget_favorites_delete_title));
         dialog.setIcon(R.drawable.ic_mtrl_delete);
-        dialog.setMessage(xB.b().a(getContext(), R.string.view_widget_favorites_delete_message));
-        dialog.setPositiveButton(xB.b().a(getContext(), R.string.common_word_delete), (v, which) -> {
+        dialog.setMessage(getString(R.string.view_widget_favorites_delete_message));
+        dialog.setPositiveButton(getString(R.string.common_word_delete), (v, which) -> {
             Rp.h().a(str, true);
             setFavoriteData(Rp.h().f());
             v.dismiss();
         });
-        dialog.setNegativeButton(xB.b().a(getContext(), R.string.common_word_cancel), null);
+        dialog.setNegativeButton(getString(R.string.common_word_cancel), null);
         dialog.show();
+    }
+
+    private String getString(@StringRes int res) {
+        return xB.b().a(getContext(), res);
     }
 
     private void cancelAnimation() {
@@ -834,7 +840,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
-    public void a(String str, ProjectFileBean projectFileBean) {
+    public void initialize(String str, ProjectFileBean projectFileBean) {
         a = str;
         setPreviewColors(str);
         if (viewPane != null) {
@@ -889,6 +895,7 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         int var9 = displayWidth - (int) (120.0F * dip);
         int var8 = displayHeight - statusBarHeight - toolBarHeight - (int) (dip * 48.0F) - (int) (dip * 48.0F);
         if (screenType == 0 && da) {
+            Log.d("ViewEditor", "hmmm");
             var8 -= (int) (dip * 56.0F);
         }
 
@@ -977,13 +984,13 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         a2.setOnTouchListener(this);
     }
 
-    public final String a(ViewBean bean) {
-        int i = bean.type;
-        String b2 = !bean.isCustomWidget ? wq.b(i) : widgetsCreatorManager.generateCustomWidgetId(bean.convert);
+    private String generateWidgetId(ViewBean bean) {
+        int type = bean.type;
+        String b2 = !bean.isCustomWidget ? wq.b(type) : widgetsCreatorManager.generateCustomWidgetId(bean.convert);
         StringBuilder sb = new StringBuilder();
         sb.append(b2);
-        int i2 = countItems[i] + 1;
-        countItems[i] = i2;
+        int i2 = countItems[type] + 1;
+        countItems[type] = i2;
         sb.append(i2);
         String sb2 = sb.toString();
         ArrayList<ViewBean> d = jC.a(a).d(b);
@@ -1000,8 +1007,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
             }
             StringBuilder sb3 = new StringBuilder();
             sb3.append(b2);
-            int i3 = countItems[i] + 1;
-            countItems[i] = i3;
+            int i3 = countItems[type] + 1;
+            countItems[type] = i3;
             sb3.append(i3);
             sb2 = sb3.toString();
         }
@@ -1025,8 +1032,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         return syVar;
     }
 
-    public ItemView a(ViewBean viewBean, boolean z) {
-        if (z) {
+    public ItemView a(ViewBean viewBean, boolean isInHistory) {
+        if (isInHistory) {
             cC.c(a).a(projectFileBean.getXmlName(), viewBean);
             if (historyChangeListener != null) {
                 historyChangeListener.a();
@@ -1107,8 +1114,8 @@ public class ViewEditor extends RelativeLayout implements View.OnClickListener, 
         }
     }
 
-    public void CreateCustomWidget(HashMap<String, Object> map) {
-        View extraWidget = paletteWidget.CustomWidget(map);
+    public void createCustomWidget(HashMap<String, Object> map) {
+        View extraWidget = paletteWidget.customWidget(map);
         extraWidget.setClickable(true);
         Object position = map.get("position");
         int tagValue = 0;

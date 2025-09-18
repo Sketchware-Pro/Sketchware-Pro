@@ -34,7 +34,7 @@ public class PaletteFavorite extends LinearLayout {
         return favoriteWidget;
     }
 
-    public void a() {
+    public void removeAllWidgets() {
         collectionWidgets.removeAllViews();
     }
 

@@ -69,11 +69,11 @@ public class PaletteWidget extends LinearLayout {
         initialize(context);
     }
 
-    public void AddCustomWidgets(View view) {
+    public void addCustomWidgets(View view) {
         layoutContainer.addView(view);
     }
 
-    public View CustomWidget(HashMap<String, Object> map) {
+    public View customWidget(HashMap<String, Object> map) {
         String title = map.get("title").toString();
         String name = map.get("name").toString();
         if (map.get("Class").toString().equals("Layouts")) {

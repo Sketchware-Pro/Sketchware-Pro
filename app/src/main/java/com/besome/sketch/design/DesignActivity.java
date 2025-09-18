@@ -273,7 +273,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             } else {
                 xmlLayoutOrientation.setImageResource(R.drawable.ic_screen_rotation_grey600_24dp);
             }
-            viewTabAdapter.a(projectFile);
+            viewTabAdapter.initialize(projectFile);
         }
     }
 
@@ -544,14 +544,14 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 if (position == 0) {
                     bottomMenu.findItem(7).setVisible(true);
                     if (viewTabAdapter != null) {
-                        viewTabAdapter.c(true);
+                        viewTabAdapter.showHidePropertyView(true);
                         xmlLayoutOrientation.setImageResource(R.drawable.ic_mtrl_screen);
                     }
                 } else if (position == 1) {
                     bottomMenu.findItem(7).setVisible(false);
                     if (viewTabAdapter != null) {
                         xmlLayoutOrientation.setImageResource(R.drawable.ic_mtrl_code);
-                        viewTabAdapter.c(false);
+                        viewTabAdapter.showHidePropertyView(false);
                         if (eventTabAdapter != null) {
                             eventTabAdapter.refreshEvents();
                         }
@@ -560,7 +560,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     bottomMenu.findItem(7).setVisible(false);
                     if (viewTabAdapter != null) {
                         xmlLayoutOrientation.setImageResource(R.drawable.ic_mtrl_code);
-                        viewTabAdapter.c(false);
+                        viewTabAdapter.showHidePropertyView(false);
                         if (componentTabAdapter != null) {
                             componentTabAdapter.refreshData();
                         }

@@ -636,7 +636,7 @@ public class ViewPane extends RelativeLayout {
         return null;
     }
 
-    public void a(ViewBean viewBean, int i, int i2) {
+    public void updateViewBeanProperties(ViewBean viewBean, int i, int i2) {
         if (viewInfo != null) {
             View view = viewInfo.view();
             if (view instanceof LinearLayout) {

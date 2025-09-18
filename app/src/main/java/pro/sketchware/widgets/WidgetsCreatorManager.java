@@ -448,7 +448,7 @@ public class WidgetsCreatorManager {
                     if (typeObj instanceof Double) {
                         map.put("type", ((Double) typeObj).intValue());
                     }
-                    viewEditor.CreateCustomWidget(map);
+                    viewEditor.createCustomWidget(map);
                 }
             } catch (Exception ignored) {
             }
