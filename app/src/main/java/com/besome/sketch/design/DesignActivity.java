@@ -63,6 +63,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.topjohnwu.superuser.Shell;
 
 import java.io.File;
@@ -128,6 +129,7 @@ import pro.sketchware.utility.apk.ApkSignatures;
 public class DesignActivity extends BaseAppCompatActivity implements View.OnClickListener {
     public static String sc_id;
     private final Handler handler = new Handler(Looper.getMainLooper());
+    private final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
     private ImageView xmlLayoutOrientation;
     private boolean B;
     private int currentTabNumber;
@@ -639,7 +641,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
             ProjectLoader projectLoader = new ProjectLoader(this, savedInstanceState);
             projectLoader.execute();
         } catch (Exception e) {
-            e.printStackTrace();
+            crashlytics.log("ProjectLoader failed");
+            crashlytics.recordException(e);
         } finally {
             SystemLogPrinter.stop();
         }
@@ -697,7 +700,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 try {
                     saveChangesAndCloseProject();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    crashlytics.recordException(e);
                     h();
                 }
             }
@@ -710,7 +713,7 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                     DiscardChangesProjectCloser discardChangesProjectCloser = new DiscardChangesProjectCloser(this);
                     discardChangesProjectCloser.execute();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    crashlytics.recordException(e);
                     h();
                 }
             }
@@ -1216,6 +1219,8 @@ public class DesignActivity extends BaseAppCompatActivity implements View.OnClic
                 isBuildFinished = true;
                 activity.indicateCompileErrorOccurred(zy.getMessage());
             } catch (Throwable tr) {
+                FirebaseCrashlytics.getInstance().log("Project build error");
+                FirebaseCrashlytics.getInstance().recordException(tr);
                 isBuildFinished = true;
                 LogUtil.e("DesignActivity$BuildTask", "Failed to build project", tr);
                 activity.indicateCompileErrorOccurred(Log.getStackTraceString(tr));

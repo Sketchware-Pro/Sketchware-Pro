@@ -71,6 +71,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -109,7 +111,6 @@ import a.a.a.uq;
 import a.a.a.wB;
 import a.a.a.xB;
 import a.a.a.yq;
-import a.a.a.yy;
 import dev.aldi.sayuti.block.ExtraPaletteBlock;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.editor.view.IdGenerator;
@@ -120,6 +121,7 @@ import mod.hey.studios.util.Helper;
 import mod.hilal.saif.asd.AsdDialog;
 import mod.jbk.editor.manage.MoreblockImporter;
 import mod.jbk.util.BlockUtil;
+import mod.jbk.util.LogUtil;
 import mod.pranav.viewbinding.ViewBindingBuilder;
 import pro.sketchware.R;
 import pro.sketchware.activities.editor.view.CodeViewerActivity;
@@ -135,6 +137,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
 
     private final Handler handler = new Handler();
     private final int[] v = new int[2];
+    private final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
     public ProjectFileBean M;
     public PaletteBlock m;
     public BlockPane o;
@@ -151,7 +154,11 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private ViewLogicEditor viewLogicEditor;
     private ViewDummy dummy;
     private PaletteSelector paletteSelector;
-
+    private final ActivityResultLauncher<Intent> openResourcesEditor = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == RESULT_OK) {
+            paletteSelector.performClickPalette(-1);
+        }
+    });
     private Rs w;
     private float posInitY, posInitX, s, t;
     private int minDist, S, x, y;
@@ -160,16 +167,29 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
     private boolean G, isDragged, W, X, da, ea, ha, ia;
     private ArrayList<BlockBean> savedBlockBean = new ArrayList<>();
     private final Runnable longPressed = this::r;
-
-    private final ActivityResultLauncher<Intent> openResourcesEditor = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            paletteSelector.performClickPalette(-1);
-        }
-    });
-
     private Boolean isViewBindingEnabled;
 
+    public static ArrayList<String> getAllJavaFileNames(String projectScId) {
+        ArrayList<String> javaFileNames = new ArrayList<>();
+        for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
+            javaFileNames.add(projectFile.getJavaName());
+        }
+        return javaFileNames;
+    }
+
+    public static ArrayList<String> getAllXmlFileNames(String projectScId) {
+        ArrayList<String> xmlFileNames = new ArrayList<>();
+        for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
+            String xmlName = projectFile.getXmlName();
+            if (xmlName != null && !xmlName.isEmpty()) {
+                xmlFileNames.add(xmlName);
+            }
+        }
+        return xmlFileNames;
+    }
+
     private void loadEventBlocks() {
+        crashlytics.log("Loading event blocks");
         ArrayList<BlockBean> eventBlocks = jC.a(scId).a(M.getJavaName(), id + "_" + eventName);
         if (eventBlocks != null) {
             if (eventBlocks.isEmpty()) {
@@ -234,25 +254,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 o.b();
             });
         }
-    }
-
-    public static ArrayList<String> getAllJavaFileNames(String projectScId) {
-        ArrayList<String> javaFileNames = new ArrayList<>();
-        for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
-            javaFileNames.add(projectFile.getJavaName());
-        }
-        return javaFileNames;
-    }
-
-    public static ArrayList<String> getAllXmlFileNames(String projectScId) {
-        ArrayList<String> xmlFileNames = new ArrayList<>();
-        for (ProjectFileBean projectFile : jC.b(projectScId).b()) {
-            String xmlName = projectFile.getXmlName();
-            if (xmlName != null && !xmlName.isEmpty()) {
-                xmlFileNames.add(xmlName);
-            }
-        }
-        return xmlFileNames;
     }
 
     private void redo() {
@@ -447,7 +448,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         try {
             new Handler().postDelayed(() -> new ProjectSaver(this).execute(), 500L);
         } catch (Exception e) {
-            e.printStackTrace();
+            crashlytics.recordException(e);
         }
     }
 
@@ -561,6 +562,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                         XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
                         xmlToSvgConverter.setImageVectorFromFile(imageView, xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, str));
                     } catch (Exception e) {
+                        crashlytics.log("Converting SVG to XML.");
+                        crashlytics.recordException(e);
                         imageView.setImageResource(R.drawable.ic_remove_grey600_24dp);
                     }
                 }
@@ -789,7 +792,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                             break emptyStringSetter;
                         }
                     } catch (NumberFormatException e) {
-                        e.printStackTrace();
+                        LogUtil.e("LogicEditor", "", e);
                     }
                 } else if (!text.isEmpty()) {
                     if (text.charAt(0) == '@') {
@@ -1198,13 +1201,7 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             Mp.h().a(str, arrayList2, true);
             O.a(str, arrayList2).setOnTouchListener(this);
         } catch (Exception e) {
-            // The bytecode is lying. Checked exceptions suck.
-            //noinspection ConstantConditions
-            if (e instanceof yy) {
-                e.printStackTrace();
-            } else {
-                throw e;
-            }
+            crashlytics.recordException(e);
         }
     }
 
@@ -1375,6 +1372,8 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
             try {
                 typeface = Typeface.createFromFile(jC.d(scId).d(fontName));
             } catch (RuntimeException e) {
+                crashlytics.log("Loading font preview");
+                crashlytics.recordException(e);
                 typeface = Typeface.DEFAULT;
                 preview.setText("Couldn't load font");
             }
@@ -2510,6 +2509,32 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
         }
     }
 
+    public static class LoadEventBlocksTask {
+        private final WeakReference<LogicEditorActivity> activityRef;
+        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        public LoadEventBlocksTask(LogicEditorActivity activity) {
+            activityRef = new WeakReference<>(activity);
+        }
+
+        public void execute() {
+            getActivity().k();
+            executorService.execute(this::doInBackground);
+        }
+
+        private void doInBackground() {
+            LogicEditorActivity activity = getActivity();
+            if (activity != null) {
+                activity.loadEventBlocks();
+                activity.runOnUiThread(activity::h);
+            }
+        }
+
+        private LogicEditorActivity getActivity() {
+            return activityRef.get();
+        }
+    }
+
     public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.ViewHolder> {
 
         private final ArrayList<String> images;
@@ -2592,32 +2617,6 @@ public class LogicEditorActivity extends BaseAppCompatActivity implements View.O
                 super(binding.getRoot());
                 this.binding = binding;
             }
-        }
-    }
-
-    public static class LoadEventBlocksTask {
-        private final WeakReference<LogicEditorActivity> activityRef;
-        private final ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-        public LoadEventBlocksTask(LogicEditorActivity activity) {
-            activityRef = new WeakReference<>(activity);
-        }
-
-        public void execute() {
-            getActivity().k();
-            executorService.execute(this::doInBackground);
-        }
-
-        private void doInBackground() {
-            LogicEditorActivity activity = getActivity();
-            if (activity != null) {
-                activity.loadEventBlocks();
-                activity.runOnUiThread(activity::h);
-            }
-        }
-
-        private LogicEditorActivity getActivity() {
-            return activityRef.get();
         }
     }
 }

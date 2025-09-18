@@ -64,6 +64,7 @@ import com.besome.sketch.editor.view.item.ItemVerticalScrollView;
 import com.besome.sketch.editor.view.item.ItemWebView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -78,9 +79,27 @@ import a.a.a.wB;
 import a.a.a.wq;
 import a.a.a.yB;
 import a.a.a.zB;
-import dev.aldi.sayuti.editor.view.item.*;
+import dev.aldi.sayuti.editor.view.item.ItemBadgeView;
+import dev.aldi.sayuti.editor.view.item.ItemCircleImageView;
+import dev.aldi.sayuti.editor.view.item.ItemCodeView;
+import dev.aldi.sayuti.editor.view.item.ItemLottieAnimation;
+import dev.aldi.sayuti.editor.view.item.ItemMaterialButton;
+import dev.aldi.sayuti.editor.view.item.ItemOTPView;
+import dev.aldi.sayuti.editor.view.item.ItemPatternLockView;
+import dev.aldi.sayuti.editor.view.item.ItemViewPager;
+import dev.aldi.sayuti.editor.view.item.ItemWaveSideBar;
+import dev.aldi.sayuti.editor.view.item.ItemYoutubePlayer;
 import mod.agus.jcoderz.beans.ViewBeans;
-import mod.agus.jcoderz.editor.view.item.*;
+import mod.agus.jcoderz.editor.view.item.ItemAnalogClock;
+import mod.agus.jcoderz.editor.view.item.ItemAutoCompleteTextView;
+import mod.agus.jcoderz.editor.view.item.ItemDatePicker;
+import mod.agus.jcoderz.editor.view.item.ItemDigitalClock;
+import mod.agus.jcoderz.editor.view.item.ItemGridView;
+import mod.agus.jcoderz.editor.view.item.ItemMultiAutoCompleteTextView;
+import mod.agus.jcoderz.editor.view.item.ItemRadioButton;
+import mod.agus.jcoderz.editor.view.item.ItemRatingBar;
+import mod.agus.jcoderz.editor.view.item.ItemTimePicker;
+import mod.agus.jcoderz.editor.view.item.ItemVideoView;
 import mod.bobur.XmlToSvgConverter;
 import mod.hey.studios.util.ProjectFile;
 import pro.sketchware.R;
@@ -98,6 +117,7 @@ import pro.sketchware.utility.ThemeUtils;
 
 public class ViewPane extends RelativeLayout {
     private final String stringsStart = "@string/";
+    private final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
     private Context context;
     private ViewGroup rootLayout;
     private int b = 99;
@@ -110,7 +130,6 @@ public class ViewPane extends RelativeLayout {
     private ColorsEditorManager colorsEditorManager;
     private int defaultTextColor = 0; // need to save the original color before changes, cause using getDefaultColor() returns the current text color
     private int defaultHintColor = 0;
-
     private Material3LibraryManager material3LibraryManager;
 
     public ViewPane(Context context) {
@@ -369,6 +388,7 @@ public class ViewPane extends RelativeLayout {
             view.setLayoutParams(layoutParams);
             if (viewBean.getClassInfo().b("FloatingActionButton") && (imageBean = viewBean.image) != null && (str = imageBean.resName) != null && !str.isEmpty()) {
                 try {
+                    crashlytics.log("ViewPane: trying to set image to FAB");
                     FloatingActionButton fab = (FloatingActionButton) view;
                     if (resourcesManager.h(viewBean.image.resName) == ProjectResourceBean.PROJECT_RES_TYPE_RESOURCE) {
                         int resourceId = getContext().getResources().getIdentifier(viewBean.image.resName, "drawable", getContext().getPackageName());
@@ -385,6 +405,7 @@ public class ViewPane extends RelativeLayout {
                             int scaleFactor = Math.round(getResources().getDisplayMetrics().density / 2.0f);
 
                             if (imagePath.endsWith(".xml")) {
+                                crashlytics.log("ViewPane: loading scaled XML/SVG image");
                                 FilePathUtil fpu = new FilePathUtil();
                                 svgUtils.loadScaledSvgIntoImageView(new AppCompatImageView(getContext()) {
                                     @Override
@@ -405,6 +426,7 @@ public class ViewPane extends RelativeLayout {
                                 }
                             }
                         } else {
+                            crashlytics.log("ViewPane: converting XML to SVG for FAB");
                             XmlToSvgConverter xmlToSvgConverter = new XmlToSvgConverter();
                             ImageView tempImageView = new AppCompatImageView(getContext()) {
                                 @Override
@@ -415,7 +437,8 @@ public class ViewPane extends RelativeLayout {
                             xmlToSvgConverter.setImageVectorFromFile(tempImageView, xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                         }
                     }
-                } catch (Exception ignored) {
+                } catch (Exception exception) {
+                    crashlytics.recordException(exception);
                 }
             }
             view.setRotation(viewBean.image.rotate);
@@ -457,6 +480,7 @@ public class ViewPane extends RelativeLayout {
                     }
                 }
             } catch (Exception e) {
+                crashlytics.recordException(e);
                 Log.e("DEBUG", e.getMessage(), e);
             }
         }
@@ -512,6 +536,7 @@ public class ViewPane extends RelativeLayout {
                         xmlToSvgConverter.setImageVectorFromFile(((ImageView) view), xmlToSvgConverter.getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                     }
                 } catch (Exception unused2) {
+                    crashlytics.recordException(unused2);
                     FileUtil.deleteFile(new XmlToSvgConverter().getVectorFullPath(DesignActivity.sc_id, viewBean.image.resName));
                     viewBean.image.resName = "default_image";
                     ((ImageView) view).setImageResource(R.drawable.default_image);
@@ -610,11 +635,13 @@ public class ViewPane extends RelativeLayout {
                 //lmao use simple_list_item_1 for now
                 listItem.setListItem(android.R.layout.simple_list_item_1);
             }
+            crashlytics.log("ViewPane: setting item count to EditorListItem");
             if (!TextUtils.isEmpty(itemCount)) {
                 if (TextUtils.isEmpty(listitem)) {
                     try {
                         listItem.setItemCount(Integer.parseInt(itemCount));
-                    } catch (Exception ignored) {
+                    } catch (Exception exception) {
+                        crashlytics.recordException(exception);
                     }
                 }
             }
@@ -1001,6 +1028,7 @@ public class ViewPane extends RelativeLayout {
     }
 
     private void updateLayout(View view, ViewBean viewBean) {
+        crashlytics.log("ViewPane: Updating layout");
         LayoutBean layoutBean = viewBean.layout;
         int width = layoutBean.width;
         int height = layoutBean.height;
