@@ -10,11 +10,10 @@ import pro.sketchware.R;
 public class IconScrollViewVertical extends IconBase {
     public IconScrollViewVertical(Context context) {
         super(context);
+        initialize();
     }
 
-    @Override
-    public void a(Context context) {
-        super.a(context);
+    private void initialize() {
         setWidgetImage(R.drawable.ic_mtrl_swipe_vertical);
         setWidgetName("Scroll(V)");
     }

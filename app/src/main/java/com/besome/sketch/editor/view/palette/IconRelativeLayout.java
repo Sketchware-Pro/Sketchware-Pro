@@ -10,11 +10,10 @@ import pro.sketchware.R;
 public class IconRelativeLayout extends IconBase {
     public IconRelativeLayout(Context context) {
         super(context);
+        initialize();
     }
 
-    @Override
-    public void a(Context context) {
-        super.a(context);
+    private void initialize() {
         setWidgetImage(R.drawable.ic_mtrl_view_relative);
         setWidgetName("RelativeLayout");
     }

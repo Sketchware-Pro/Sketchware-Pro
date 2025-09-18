@@ -10,11 +10,10 @@ import pro.sketchware.R;
 public class IconCheckBox extends IconBase {
     public IconCheckBox(Context context) {
         super(context);
+        initialize();
     }
 
-    @Override
-    public void a(Context context) {
-        super.a(context);
+    private void initialize() {
         setWidgetImage(R.drawable.ic_mtrl_checkbox);
         setWidgetName("CheckBox");
     }

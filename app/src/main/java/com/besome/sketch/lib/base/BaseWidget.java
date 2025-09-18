@@ -26,10 +26,10 @@ public class BaseWidget extends LinearLayout {
         setOrientation(HORIZONTAL);
         setGravity(Gravity.CENTER);
 
-        a(context);
+        initialize();
     }
 
-    public void a(Context context) {
+    private void initialize() {
         img_widget = findViewById(R.id.img_widget);
         tv_widget = findViewById(R.id.tv_widget);
 
