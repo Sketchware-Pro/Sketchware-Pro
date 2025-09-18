@@ -1390,12 +1390,6 @@ public class ViewPane extends RelativeLayout {
         return matcher.find() ? matcher.group(1) : "";
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        Log.d("ViewEditor", "onMeasure" + getMeasuredWidth() + "x" + getMeasuredHeight());
-    }
-
     @NonNull
     @Override
     public String toString() {
