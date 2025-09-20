@@ -22,7 +22,9 @@ public class gB {
         int color = Color.parseColor("#b2000000");
         ValueAnimator valueAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), 0, color);
         valueAnimator.setDuration(duration);
-        valueAnimator.addUpdateListener(new fB(view));
+        valueAnimator.addUpdateListener(animation -> {
+            view.setBackgroundColor((int) animation.getAnimatedValue());
+        });
         valueAnimator.start();
     }
 
@@ -37,7 +39,14 @@ public class gB {
 
     public static void a(ViewGroup viewGroup, int duration, Animator.AnimatorListener listener) {
         ValueAnimator valueAnimator = ValueAnimator.ofInt(viewGroup.getHeight(), 0);
-        valueAnimator.addUpdateListener(new eB(viewGroup));
+        valueAnimator.addUpdateListener(animation -> {
+            int animatedValue = (int) animation.getAnimatedValue();
+
+            ViewGroup.LayoutParams params = viewGroup.getLayoutParams();
+            params.height = animatedValue;
+
+            viewGroup.setLayoutParams(params);
+        });
         valueAnimator.addListener(listener);
         valueAnimator.setDuration(duration);
         valueAnimator.start();
@@ -56,7 +65,14 @@ public class gB {
     public static void b(ViewGroup viewGroup, int duration, Animator.AnimatorListener listener) {
         viewGroup.measure(-1, -2);
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, viewGroup.getMeasuredHeight());
-        valueAnimator.addUpdateListener(new dB(viewGroup));
+        valueAnimator.addUpdateListener(animation -> {
+            int animatedValue = (int) animation.getAnimatedValue();
+
+            ViewGroup.LayoutParams params = viewGroup.getLayoutParams();
+            params.height = animatedValue;
+
+            viewGroup.setLayoutParams(params);
+        });
         if (listener != null) {
             valueAnimator.addListener(listener);
         }
