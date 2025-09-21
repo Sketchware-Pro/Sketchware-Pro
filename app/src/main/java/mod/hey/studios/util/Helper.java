@@ -216,7 +216,7 @@ public class Helper {
         private final DialogInterface dialog;
 
         /**
-         * Constructor for {@link Helper#getDialogDismissListener(Dialog)}.
+         * Constructor for {@link Helper#getDialogDismissListener(DialogInterface)}.
          */
         private DialogDismissListener(DialogInterface dialog) {
             this.dialog = dialog;

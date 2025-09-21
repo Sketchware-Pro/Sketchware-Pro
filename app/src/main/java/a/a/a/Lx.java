@@ -254,7 +254,7 @@ public class Lx {
 
     /**
      * @param widgetName The list widget's name
-     * @return The adapter's class name (e.g. List_filesAdapter from list_files)
+     * @return The adapter's class name (e.g., List_filesAdapter from list_files)
      */
     public static String a(String widgetName, boolean isViewBindingEnabled) {
         if (isViewBindingEnabled)
@@ -359,7 +359,7 @@ public class Lx {
                     eventLogic + "\r\n" +
                     "}";
             case "onStopTrackingTouch" ->
-                // Why's the parameter named <code>_param2</code> even if it's the first parameter
+                // Why's the parameter named <code>_param2</code> even if it's the first parameter?
                     "@Override\r\n" +
                             "public void onStopTrackingTouch(SeekBar _param2) {\r\n" +
                             eventLogic + "\r\n" +
@@ -588,7 +588,7 @@ public class Lx {
     }
 
     /**
-     * @return One or more lines which declare a Type's needed fields.
+     * @return One or more lines which declare a Type's necessary fields.
      * Example for a Camera Component:
      * <pre>
      * private File _file_&lt;component name&gt;;
@@ -3416,7 +3416,7 @@ public class Lx {
      * A field's access modifier. Can either be
      * <code>private</code>, <code>protected</code> or <code>public</code>.
      */
-    enum AccessModifier {
+    public enum AccessModifier {
         /**
          * MODE_PRIVATE
          */
