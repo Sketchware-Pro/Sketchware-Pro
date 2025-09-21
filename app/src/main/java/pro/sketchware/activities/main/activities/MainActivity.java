@@ -220,7 +220,7 @@ public class MainActivity extends BasePermissionAppCompatActivity {
                     }
 
                     @Override
-                    public void onCopyPostExecute(String path, boolean wasSuccessful, String reason) {
+                    public void onCopyPostExecute(@NonNull String path, boolean wasSuccessful, @NonNull String reason) {
                         if (wasSuccessful) {
                             BackupRestoreManager manager = new BackupRestoreManager(MainActivity.this, projectsFragment);
 

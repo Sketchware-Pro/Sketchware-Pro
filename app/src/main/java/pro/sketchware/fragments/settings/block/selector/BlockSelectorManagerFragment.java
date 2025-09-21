@@ -237,7 +237,7 @@ public class BlockSelectorManagerFragment extends qA {
 
         FilePickerCallback callback = new FilePickerCallback() {
             @Override
-            public void onFileSelected(File file) {
+            public void onFileSelected(@NonNull File file) {
                 handleToImportFile(file);
             }
 

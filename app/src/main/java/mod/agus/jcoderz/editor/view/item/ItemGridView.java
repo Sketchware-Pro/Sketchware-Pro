@@ -7,6 +7,8 @@ import android.graphics.Rect;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
+import androidx.annotation.NonNull;
+
 import com.besome.sketch.beans.ViewBean;
 import com.besome.sketch.editor.view.ItemView;
 
@@ -74,7 +76,7 @@ public class ItemGridView extends GridView implements ItemView {
     }
 
     @Override
-    public void onDraw(Canvas canvas) {
+    public void onDraw(@NonNull Canvas canvas) {
         if (hasSelection) {
             paint.setColor(0x9599d5d0);
             rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
